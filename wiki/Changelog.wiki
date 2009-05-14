@@ -1,7 +1,6 @@
 #summary Ember Media Manager Changelog
 
-= r2 - Unreleased =
-
 *Changes in upcoming release:*
  * Disable doublebuffering on main form as a fix to the "black status bar" issue
  * Ability to open read-only files
+ * Changed versioning again. I wrote a powershell script to automatically get the proper version from svn to make it easier on me.
