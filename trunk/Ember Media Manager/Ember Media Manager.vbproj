@@ -342,6 +342,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>call "$(SolutionDir)svnrev.bat"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+    <PreBuildEvent>call "$(SolutionDir)svnrev.bat"</PreBuildEvent>
   </PropertyGroup>
 </Project>

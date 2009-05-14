@@ -2444,6 +2444,11 @@ Public Class frmMain
                                 IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID.ToString, Master.currMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast)
                             End If
                         End If
+                        Me.tsbAutoPilot.Enabled = True
+                        Me.tsbRefreshMedia.Enabled = True
+                        Me.tsbEdit.Enabled = True
+                        Me.tsbRescrape.Enabled = True
+                        Me.tabsMain.Enabled = True
                     End If
             End Select
         Catch ex As Exception

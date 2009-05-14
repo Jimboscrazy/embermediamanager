@@ -1202,13 +1202,13 @@ Partial Class frmMain
         'mnuRescrapeAuto
         '
         Me.mnuRescrapeAuto.Name = "mnuRescrapeAuto"
-        Me.mnuRescrapeAuto.Size = New System.Drawing.Size(136, 22)
+        Me.mnuRescrapeAuto.Size = New System.Drawing.Size(152, 22)
         Me.mnuRescrapeAuto.Text = "Current ID"
         '
         'mnuRescrapeSearch
         '
         Me.mnuRescrapeSearch.Name = "mnuRescrapeSearch"
-        Me.mnuRescrapeSearch.Size = New System.Drawing.Size(136, 22)
+        Me.mnuRescrapeSearch.Size = New System.Drawing.Size(152, 22)
         Me.mnuRescrapeSearch.Text = "Search New"
         '
         'pbFanartCache
