@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in upcoming release:*
- * Disable doublebuffering on main form as a fix to the "black status bar" issue
+ * Disable doublebuffering on main form as a fix to the "black status bar" issue (Needs verification)
  * Ability to open read-only files
  * Changed versioning again. I wrote a powershell script to automatically get the proper version from svn to make it easier on me.
+ * Fix for Ember not appearing on top when first opened (Needs verification)
+ * Fix for IMDB single scraper not working in some instances (Needs verification)
+ * Fix some elements of the interface not re-enabling after searching IMDB
