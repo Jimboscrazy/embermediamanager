@@ -127,6 +127,7 @@ Public Class dlgIMDBSearchResults
     Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
         Try
             Me.ClearInfo()
+            Me.OK_Button.Enabled = True
             If Not IsNothing(e.Node.Tag) Then
                 IMDB.GetSearchMovieInfoAsync(e.Node.Tag, Master.tmpMovie)
             End If
