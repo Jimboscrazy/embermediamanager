@@ -122,6 +122,7 @@ Namespace IMDB
                         ElseIf r.ExactMatches.Count > 0 Then
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast, False)
                         Else
+                            Master.tmpMovie = New Media.Movie
                             If dlgIMDBSearchResults.ShowDialog(r) = Windows.Forms.DialogResult.OK Then
                                 If String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                     b = False

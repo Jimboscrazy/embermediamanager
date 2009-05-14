@@ -2431,6 +2431,7 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) AndAlso doSearch = False Then
                         IMDB.GetMovieInfoAsync(Master.currMovie.IMDBID, Master.currMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast)
                     Else
+                        Master.tmpMovie = New Media.Movie
                         If dlgIMDBSearchResults.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
                             If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                 Me.ClearInfo(True)
@@ -2443,6 +2444,10 @@ Public Class frmMain
                                 Me.tspbLoading.Visible = True
                                 IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID.ToString, Master.currMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast)
                             End If
+                        Else
+                            Me.tslLoading.Visible = False
+                            Me.tspbLoading.Visible = False
+                            Me.tslStatus.Text = String.Empty
                         End If
                         Me.tsbAutoPilot.Enabled = True
                         Me.tsbRefreshMedia.Enabled = True
