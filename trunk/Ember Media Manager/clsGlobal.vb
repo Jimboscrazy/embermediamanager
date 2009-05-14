@@ -1311,20 +1311,20 @@ foundIT:
             If Not String.IsNullOrEmpty(strTag) Then
                 strOutput += String.Format("Tag: {0}{1}{2}", strTag, vbNewLine, vbNewLine)
             End If
-            If Not miFI.StreamData Is Nothing Then
-                If miFI.StreamData.Video.Count > 0 Then
-                    strOutput += String.Format("Video Streams: {0}{1}", miFI.StreamData.Video.Count.ToString, vbNewLine)
+            If Not miFI.StreamDetails Is Nothing Then
+                If miFI.StreamDetails.Video.Count > 0 Then
+                    strOutput += String.Format("Video Streams: {0}{1}", miFI.StreamDetails.Video.Count.ToString, vbNewLine)
                 End If
 
-                If miFI.StreamData.Audio.Count > 0 Then
-                    strOutput += String.Format("Audio Streams: {0}{1}", miFI.StreamData.Audio.Count.ToString, vbNewLine)
+                If miFI.StreamDetails.Audio.Count > 0 Then
+                    strOutput += String.Format("Audio Streams: {0}{1}", miFI.StreamDetails.Audio.Count.ToString, vbNewLine)
                 End If
 
-                If miFI.StreamData.Subtitle.Count > 0 Then
-                    strOutput += String.Format("Subtitle Streams: {0}{1}", miFI.StreamData.Subtitle.Count.ToString, vbNewLine)
+                If miFI.StreamDetails.Subtitle.Count > 0 Then
+                    strOutput += String.Format("Subtitle Streams: {0}{1}", miFI.StreamDetails.Subtitle.Count.ToString, vbNewLine)
                 End If
 
-                For Each miVideo As MediaInfo.Video In miFI.StreamData.Video
+                For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
                     strOutput += String.Format("{0}Video Stream {1}{0}", vbNewLine, iVS.ToString)
                     strOutput += String.Format("- Size: {0}x{1}{2}", miVideo.Width, miVideo.Height, vbNewLine)
                     strOutput += String.Format("- Display Aspect Ratio: {0}{1}", miVideo.AspectDisplayRatio, vbNewLine)
@@ -1340,7 +1340,7 @@ foundIT:
                     iVS += 1
                 Next
 
-                For Each miAudio As MediaInfo.Audio In miFI.StreamData.Audio
+                For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
                     'audio
                     strOutput += String.Format("{0}Audio Stream {1}{0}", vbNewLine, iAS.ToString)
                     strOutput += String.Format("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
@@ -1350,7 +1350,7 @@ foundIT:
                     iAS += 1
                 Next
 
-                For Each miSub As MediaInfo.Subtitle In miFI.StreamData.Subtitle
+                For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
                     'subtitles
                     strOutput += String.Format("{0}Subtitle {1}{0}", vbNewLine, iSS.ToString)
                     strOutput += String.Format("- Language: {0}", miSub.Language)
@@ -1377,7 +1377,7 @@ foundIT:
 
         Dim statusStr As String = String.Empty
         Try
-            If Not IsNothing(miFI.StreamData) Then
+            If Not IsNothing(miFI.StreamDetails) Then
                 Dim hasVS As Boolean = False
                 Dim sinWidest As Single = 0
                 Dim sinWidth As Single = 0
@@ -1391,7 +1391,7 @@ foundIT:
                 Dim sLang As String = String.Empty
                 Dim sSubLang As String = String.Empty
 
-                For Each miVideo As MediaInfo.Video In miFI.StreamData.Video
+                For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
                     hasVS = True
                     Single.TryParse(miVideo.Width, sinWidth)
                     If sinWidth > sinWidest Then
@@ -1403,7 +1403,7 @@ foundIT:
                     End If
                 Next
 
-                For Each miAudio As MediaInfo.Audio In miFI.StreamData.Audio
+                For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
                     'audio
                     If Not String.IsNullOrEmpty(miAudio.Channels) Then
                         Single.TryParse(miAudio.Channels, sinChans)
@@ -1416,7 +1416,7 @@ foundIT:
 
                 Next
 
-                For Each curSS As MediaInfo.Subtitle In miFI.StreamData.Subtitle
+                For Each curSS As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
                     'audio
                     sSubLang += String.Concat(" / sub", curSS.Language)
                 Next
