@@ -85,7 +85,21 @@ Public Class frmMain
 
 #Region "Form/Controls"
 
+    Private Sub frmMain_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+
+        '//
+        ' Make sure the window is kicked to the front when loading
+        '\\
+
+        Me.BringToFront()
+
+    End Sub
+
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+
+        '//
+        ' Do some events before closing
+        '\\
 
         'save the list of movies to settings so we know which ones are new
 
@@ -2568,5 +2582,4 @@ Public Class frmMain
         End Try
     End Sub
 #End Region
-
 End Class
