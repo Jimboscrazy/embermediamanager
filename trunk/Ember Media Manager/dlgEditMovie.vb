@@ -548,6 +548,10 @@ Public Class dlgEditMovie
                     If Directory.Exists(Application.StartupPath & "\Temp\extrathumbs") Then
                         Dim di As New DirectoryInfo(Application.StartupPath & "\Temp\extrathumbs")
 
+                        If Not Directory.Exists(String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs\")) Then
+                            Directory.CreateDirectory(String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs\"))
+                        End If
+
                         For Each fFile As FileInfo In di.GetFiles()
                             Master.MoveFileWithStream(fFile.FullName.ToString, String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs\", fFile.Name.ToString))
                         Next

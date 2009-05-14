@@ -1700,7 +1700,6 @@ foundIT:
             Dim extraPath As String = String.Concat(d.Parent.FullName, "\extrathumbs")
 
             If Not Directory.Exists(extraPath) Then
-                Directory.CreateDirectory(extraPath)
                 iMod = -1
             Else
                 Dim dirInfo As New DirectoryInfo(extraPath)
