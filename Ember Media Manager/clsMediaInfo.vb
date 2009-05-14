@@ -178,7 +178,7 @@ Namespace MediaInfo
                             Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.CodecID) OrElse Not String.IsNullOrEmpty(.CodecidInfo) OrElse _
                             Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.FormatInfo) OrElse Not String.IsNullOrEmpty(.Height) OrElse _
                             Not String.IsNullOrEmpty(.ScanType) OrElse Not String.IsNullOrEmpty(.Width) Then
-                        fiInfo.StreamData.Video.Add(miVideo)
+                        fiInfo.StreamDetails.Video.Add(mivideo)
                     End If
                 End With
             Next
@@ -194,7 +194,7 @@ Namespace MediaInfo
                 miAudio.Language = GetLangCode(MI.Get_(StreamKind.Audio, a, "Language/String"))
                 With miAudio
                     If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Bitrate) OrElse Not String.IsNullOrEmpty(.Language) Then
-                        fiInfo.StreamData.Audio.Add(miAudio)
+                        fiInfo.StreamDetails.Audio.Add(miAudio)
                     End If
                 End With
             Next
@@ -206,7 +206,7 @@ Namespace MediaInfo
                 miSubtitle = New MediaInfo.Subtitle
                 miSubtitle.Language = GetLangCode(MI.Get_(StreamKind.Text, s, "Language/String"))
                 If Not String.IsNullOrEmpty(miSubtitle.Language) Then
-                    fiInfo.StreamData.Subtitle.Add(miSubtitle)
+                    fiInfo.StreamDetails.Subtitle.Add(miSubtitle)
                 End If
             Next
 
@@ -1218,7 +1218,7 @@ Namespace MediaInfo
         ' ############# DECLARATIONS #############
         ' ########################################
 
-        Private _streamdata As New StreamDetails
+        Private _streamdetails As New StreamData
 
 #End Region '*** Fileinfo - Declarations
 
@@ -1229,12 +1229,13 @@ Namespace MediaInfo
         ' ############## PROPERTIES ##############
         ' ########################################
 
-        Property StreamData() As StreamDetails
+        <XmlElement("streamdetails")> _
+        Property StreamDetails() As StreamData
             Get
-                Return _streamdata
+                Return _streamdetails
             End Get
-            Set(ByVal value As StreamDetails)
-                _streamdata = value
+            Set(ByVal value As StreamData)
+                _streamdetails = value
             End Set
         End Property
 
@@ -1246,12 +1247,12 @@ Namespace MediaInfo
 
 
 
-#Region "StreamDetails Class"
+#Region "StreamData Class"
 
-    <XmlRoot("streamdetails")> _
-    Public Class StreamDetails
+    <XmlRoot("streamdata")> _
+    Public Class StreamData
 
-#Region "StreamDetails - Declarations"
+#Region "StreamData - Declarations"
 
         ' ########################################
         ' ############# DECLARATIONS #############
@@ -1261,11 +1262,11 @@ Namespace MediaInfo
         Private _audio As New List(Of Audio)
         Private _subtitle As New List(Of Subtitle)
 
-#End Region '*** StreamDetails - Declarations
+#End Region '*** StreamData - Declarations
 
 
 
-#Region "StreamDetails - Properties"
+#Region "StreamData - Properties"
 
         ' ########################################
         ' ############## PROPERTIES ##############
@@ -1301,12 +1302,12 @@ Namespace MediaInfo
             End Set
         End Property
 
-#End Region '*** StreamDetails - Properties
+#End Region '*** StreamData - Properties
 
 
     End Class
 
-#End Region '*** StreamDetails Class
+#End Region '*** StreamData Class
 
 
 
