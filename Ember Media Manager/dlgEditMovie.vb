@@ -431,7 +431,7 @@ Public Class dlgEditMovie
                 Dim fPath As String = Master.GetFanartPath(Master.currPath, Master.isFile)
                 .oldFanart = fPath
                 If File.Exists(fPath) Then
-                    Dim fsImage As New FileStream(.oldFanart, IO.FileMode.Open)
+                    Dim fsImage As New FileStream(.oldFanart, FileMode.Open, FileAccess.Read)
 
                     .pbFanart.Image = Image.FromStream(fsImage)
 
@@ -445,7 +445,7 @@ Public Class dlgEditMovie
                 Dim pPath As String = Master.GetPosterPath(Master.currPath, Master.isFile)
                 .oldPoster = pPath
                 If File.Exists(pPath) Then
-                    Dim fsImage As New FileStream(.oldPoster, IO.FileMode.Open)
+                    Dim fsImage As New FileStream(.oldPoster, FileMode.Open, FileAccess.Read)
 
                     .pbPoster.Image = Image.FromStream(fsImage)
 
@@ -635,7 +635,7 @@ Public Class dlgEditMovie
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Dim fsImage As New FileStream(ofdImage.FileName, IO.FileMode.Open)
+                Dim fsImage As New FileStream(ofdImage.FileName, FileMode.Open, FileAccess.Read)
 
                 pbPoster.Image = Image.FromStream(fsImage)
 
@@ -660,7 +660,7 @@ Public Class dlgEditMovie
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Dim fsImage As New FileStream(ofdImage.FileName, IO.FileMode.Open)
+                Dim fsImage As New FileStream(ofdImage.FileName, FileMode.Open, FileAccess.Read)
 
                 pbFanart.Image = Image.FromStream(fsImage)
 
@@ -689,7 +689,7 @@ Public Class dlgEditMovie
             sPath += "\poster.tbn"
 
             If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.currPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
-                Dim fsImage As New FileStream(sPath, IO.FileMode.Open)
+                Dim fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
 
                 pbPoster.Image = Image.FromStream(fsImage)
 
@@ -718,7 +718,7 @@ Public Class dlgEditMovie
             sPath += "\fanart.jpg"
 
             If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.currPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
-                Dim fsImage As New FileStream(sPath, IO.FileMode.Open)
+                Dim fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
 
                 pbFanart.Image = Image.FromStream(fsImage)
 
@@ -770,7 +770,7 @@ Public Class dlgEditMovie
             ffmpeg.Dispose()
 
             If File.Exists(tPath & "\frame.jpg") Then
-                Dim fsFImage As New FileStream(tPath & "\frame.jpg", IO.FileMode.Open)
+                Dim fsFImage As New FileStream(tPath & "\frame.jpg", FileMode.Open, FileAccess.Read)
                 pbFrame.Image = Image.FromStream(fsFImage)
                 fsFImage.Close()
                 fsFImage.Dispose()
@@ -831,7 +831,7 @@ Public Class dlgEditMovie
             ffmpeg.Dispose()
 
             If File.Exists(tPath & "\frame.jpg") Then
-                Dim fsFImage As FileStream = New FileStream(tPath & "\frame.jpg", FileMode.Open)
+                Dim fsFImage As FileStream = New FileStream(tPath & "\frame.jpg", FileMode.Open, FileAccess.Read)
                 pbFrame.Image = Image.FromStream(fsFImage)
                 fsFImage.Close()
                 fsFImage.Dispose()

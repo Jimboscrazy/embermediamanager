@@ -1262,7 +1262,6 @@ Partial Class frmMain
         Me.Controls.Add(Me.scMain)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.MenuStrip)
-        Me.DoubleBuffered = True
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip
         Me.MinimumSize = New System.Drawing.Size(1024, 768)

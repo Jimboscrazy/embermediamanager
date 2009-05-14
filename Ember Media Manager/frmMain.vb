@@ -1181,14 +1181,14 @@ Public Class frmMain
             Dim fPath As String = Master.GetFanartPath(Master.currPath, Master.isFile)
 
             If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                Dim fsFImage As New FileStream(fPath, FileMode.Open)
+                Dim fsFImage As New FileStream(fPath, FileMode.Open, FileAccess.Read)
                 Me.fImage = Image.FromStream(fsFImage)
                 fsFImage.Close()
                 fsFImage = Nothing
             Else
                 fPath = Master.SecondaryFileCheck(Master.currPath, "fanart")
                 If Not String.IsNullOrEmpty(fPath) Then
-                    Dim fsFImage As New FileStream(fPath, FileMode.Open)
+                    Dim fsFImage As New FileStream(fPath, FileMode.Open, FileAccess.Read)
                     Me.fImage = Image.FromStream(fsFImage)
                     fsFImage.Close()
                     fsFImage = Nothing
@@ -1198,14 +1198,14 @@ Public Class frmMain
             Dim pPath As String = Master.GetPosterPath(Master.currPath, Master.isFile)
 
             If Not String.IsNullOrEmpty(pPath) AndAlso File.Exists(pPath) Then
-                Dim fsPImage As New FileStream(pPath, FileMode.Open)
+                Dim fsPImage As New FileStream(pPath, FileMode.Open, FileAccess.Read)
                 Me.pImage = Image.FromStream(fsPImage)
                 fsPImage.Close()
                 fsPImage = Nothing
             Else
                 pPath = Master.SecondaryFileCheck(Master.currPath, "poster")
                 If Not String.IsNullOrEmpty(pPath) Then
-                    Dim fsPImage As New FileStream(pPath, FileMode.Open)
+                    Dim fsPImage As New FileStream(pPath, FileMode.Open, FileAccess.Read)
                     Me.pImage = Image.FromStream(fsPImage)
                     fsPImage.Close()
                     fsPImage = Nothing

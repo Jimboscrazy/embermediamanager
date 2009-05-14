@@ -59,7 +59,7 @@ Public Class dlgImgSelect
 
         Try
             If Not IsNothing(Me.tmpImage) Then
-                Dim fs As New FileStream(Me.sPath, FileMode.OpenOrCreate)
+                Dim fs As New FileStream(Me.sPath, FileMode.OpenOrCreate, FileAccess.ReadWrite)
                 Me.tmpImage.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg)
                 fs.Close()
                 fs = Nothing
@@ -91,7 +91,7 @@ Public Class dlgImgSelect
                         Me.DownloadSinglePic(Me.rbSmall.Tag, tmpImage)
                 End Select
                 If Not IsNothing(tmpImage) Then
-                    Dim fs As New FileStream(Me.sPath, FileMode.OpenOrCreate)
+                    Dim fs As New FileStream(Me.sPath, FileMode.OpenOrCreate, FileAccess.ReadWrite)
                     tmpImage.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg)
                     fs.Close()
                     fs = Nothing
@@ -111,7 +111,7 @@ Public Class dlgImgSelect
 
                     For i As Integer = 0 To UBound(Me.chkImage)
                         If Me.chkImage(i).Checked Then
-                            Dim fsET As New FileStream(String.Concat(Directory.GetParent(Me.sPath).FullName.ToString, "\extrathumbs\thumb", iVal + iMod, ".jpg"), FileMode.OpenOrCreate)
+                            Dim fsET As New FileStream(String.Concat(Directory.GetParent(Me.sPath).FullName.ToString, "\extrathumbs\thumb", iVal + iMod, ".jpg"), FileMode.OpenOrCreate, FileAccess.ReadWrite)
                             Me.pbImage(i).Image.Save(fsET, System.Drawing.Imaging.ImageFormat.Jpeg)
                             fsET.Close()
                             fsET = Nothing
