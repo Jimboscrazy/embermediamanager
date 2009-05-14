@@ -306,7 +306,7 @@ quickExit:
                 For Each fiItem As FileInfo In lFi
                     If alFileList.Count > 0 Then
                         For i As Integer = 0 To alFileList.Count - 1
-                            If Not CleanStackingMarkers(fiItem.FullName.ToString.ToLower) = CleanStackingMarkers(alFileList.Item(i).FullNaToString.ToLower) Then
+                            If Not CleanStackingMarkers(fiItem.FullName.ToString.ToLower) = CleanStackingMarkers(alFileList.Item(i).FullName.ToString.ToLower) Then
                                 alFileList.Add(fiItem)
                                 Exit For
                             End If
