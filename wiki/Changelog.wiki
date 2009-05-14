@@ -2,7 +2,7 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None so far
+ * Fix for extrathumbs being created even when not utilized
 
 *Changes in r10:*
  * Disable doublebuffering on main form as a fix to the "black status bar" issue (Needs verification)
