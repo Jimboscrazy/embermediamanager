@@ -830,7 +830,7 @@ foundIT:
                 Next nodeAchan
 
                 If File.Exists(vresImage) Then
-                    Dim fsImage As New FileStream(vresImage, IO.FileMode.Open)
+                    Dim fsImage As New FileStream(vresImage, FileMode.Open, FileAccess.Read)
 
                     frmMain.pbResolution.Image = Image.FromStream(fsImage)
 
@@ -839,7 +839,7 @@ foundIT:
                 End If
 
                 If File.Exists(vsourceImage) Then
-                    Dim fsImage As New FileStream(vsourceImage, IO.FileMode.Open)
+                    Dim fsImage As New FileStream(vsourceImage, FileMode.Open, FileAccess.Read)
 
                     frmMain.pbVideo.Image = Image.FromStream(fsImage)
 
@@ -848,7 +848,7 @@ foundIT:
                 End If
 
                 If File.Exists(atypeImage) Then
-                    Dim fsImage As New FileStream(atypeImage, IO.FileMode.Open)
+                    Dim fsImage As New FileStream(atypeImage, FileMode.Open, FileAccess.Read)
 
                     frmMain.pbAudio.Image = Image.FromStream(fsImage)
 
@@ -857,7 +857,7 @@ foundIT:
                 End If
 
                 If File.Exists(achanImage) Then
-                    Dim fsImage As New FileStream(achanImage, IO.FileMode.Open)
+                    Dim fsImage As New FileStream(achanImage, FileMode.Open, FileAccess.Read)
 
                     frmMain.pbChannels.Image = Image.FromStream(fsImage)
 
@@ -933,7 +933,7 @@ foundIT:
         End If
 
         If File.Exists(imgStudioStr) Then
-            Dim fsImage As New FileStream(imgStudioStr, IO.FileMode.Open)
+            Dim fsImage As New FileStream(imgStudioStr, FileMode.Open, FileAccess.Read)
 
             imgStudio = Image.FromStream(fsImage)
 
