@@ -167,6 +167,7 @@ Public Class frmMain
         '\\
 
         Try
+
             'setup some dummies so we don't get exceptions when resizing form/info panel
             ReDim Preserve Me.pnlGenre(0)
             ReDim Preserve Me.pbGenre(0)

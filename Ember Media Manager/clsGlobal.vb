@@ -72,7 +72,6 @@ Public Class Master
         Fanart = 1
     End Enum
 
-
     'Global Routines/Functions
     Public Shared Sub ResizePB(ByRef pbResize As PictureBox, ByRef pbCache As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)
 

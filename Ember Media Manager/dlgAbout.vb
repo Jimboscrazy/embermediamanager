@@ -32,7 +32,7 @@ Public NotInheritable Class dlgAbout
         End If
         Me.Text = String.Format("About {0}", ApplicationTitle)
         Me.lblProductName.Text = My.Application.Info.ProductName
-        Me.lblVersion.Text = String.Format("Version {0}", My.Application.Info.Version.ToString)
+        Me.lblVersion.Text = String.Format("Version r{0}", My.Application.Info.Version.Revision)
         Me.lblCopyright.Text = My.Application.Info.Copyright
     End Sub
 
