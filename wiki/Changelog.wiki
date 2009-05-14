@@ -1,4 +1,5 @@
 #summary Ember Media Manager Changelog
+#labels Featured
 
 *Changes in upcoming release:*
  * Disable doublebuffering on main form as a fix to the "black status bar" issue
