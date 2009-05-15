@@ -332,8 +332,10 @@ mResult:
                 IMDBMovie.IMDBID = strID
 
                 Dim OriginalTitle As String = Regex.Match(Html, MOVIE_TITLE_PATTERN).ToString()
-                IMDBMovie.Title = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString))
-                IMDBMovie.OriginalTitle = IMDBMovie.Title
+                IMDBMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString))
+                If String.IsNullOrEmpty(IMDBMovie.Title) OrElse Not Master.uSettings.LockTitle Then
+                    IMDBMovie.Title = IMDBMovie.OriginalTitle
+                End If
                 If GetPoster Then
                     sPoster = Regex.Match(Regex.Match(Html, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
                 End If
@@ -494,38 +496,40 @@ mResult:
                     bwIMDB.ReportProgress(7)
                 End If
 
-                'Get the Plot Outline
-                D = 0 : W = 0
+                If String.IsNullOrEmpty(IMDBMovie.Outline) OrElse Not Master.uSettings.LockOutline Then
+                    'Get the Plot Outline
+                    D = 0 : W = 0
 
-                'Check if is a VideoGame
-                Try
-                    If IMDBMovie.Title.Contains("(VG)") Then
-                        D = If(Html.IndexOf("<h5>Plot Summary:</h5>") > 0, Html.IndexOf("<h5>Plot Summary:</h5>"), Html.IndexOf("<h5>Tagline:</h5>"))
-                        If Not D <= 0 Then W = Html.IndexOf("</div>", D)
-                    Else
-                        D = If(Html.IndexOf("<h5>Plot:</h5>") > 0, Html.IndexOf("<h5>Plot:</h5>"), Html.IndexOf("<h5>Plot Summary:</h5>"))
-                        If D <= 0 Then D = Html.IndexOf("<h5>Plot Synopsis:</h5>")
-                        If D > 0 Then
-                            W = Html.IndexOf("<a class=", D)
-                            If W > 0 Then
-                                W = Html.IndexOf("</div>", D)
+                    'Check if is a VideoGame
+                    Try
+                        If IMDBMovie.Title.Contains("(VG)") Then
+                            D = If(Html.IndexOf("<h5>Plot Summary:</h5>") > 0, Html.IndexOf("<h5>Plot Summary:</h5>"), Html.IndexOf("<h5>Tagline:</h5>"))
+                            If Not D <= 0 Then W = Html.IndexOf("</div>", D)
+                        Else
+                            D = If(Html.IndexOf("<h5>Plot:</h5>") > 0, Html.IndexOf("<h5>Plot:</h5>"), Html.IndexOf("<h5>Plot Summary:</h5>"))
+                            If D <= 0 Then D = Html.IndexOf("<h5>Plot Synopsis:</h5>")
+                            If D > 0 Then
+                                W = Html.IndexOf("<a class=", D)
+                                If W > 0 Then
+                                    W = Html.IndexOf("</div>", D)
+                                Else
+                                    IMDBMovie.Outline = String.Empty
+                                    GoTo mplot
+                                End If
                             Else
                                 IMDBMovie.Outline = String.Empty
-                                GoTo mplot
+                                GoTo mPlot 'This plot synopsis is empty
                             End If
-                        Else
-                            IMDBMovie.Outline = String.Empty
-                            GoTo mPlot 'This plot synopsis is empty
                         End If
-                    End If
-                    Dim PlotOutline As String = Html.Substring(D, W - D).Remove(0, "<h5>Plot:</h5> ".Length)
+                        Dim PlotOutline As String = Html.Substring(D, W - D).Remove(0, "<h5>Plot:</h5> ".Length)
 
-                    PlotOutline = Web.HttpUtility.HtmlDecode(PlotOutline.Replace("|", String.Empty)).Trim
-                    IMDBMovie.Outline = Regex.Replace(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
-                                       , String.Empty, PlotOutline), HREF_PATTERN, String.Empty).Trim
-                Catch ex As Exception
-                    IMDBMovie.Outline = String.Empty
-                End Try
+                        PlotOutline = Web.HttpUtility.HtmlDecode(PlotOutline.Replace("|", String.Empty)).Trim
+                        IMDBMovie.Outline = Regex.Replace(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
+                                           , String.Empty, PlotOutline), HREF_PATTERN, String.Empty).Trim
+                    Catch ex As Exception
+                        IMDBMovie.Outline = String.Empty
+                    End Try
+                End If
 
                 If bwIMDB.WorkerReportsProgress Then
                     bwIMDB.ReportProgress(8)
@@ -533,8 +537,10 @@ mResult:
 
 mPlot:
                 'Get the full Plot
-                Dim FullPlot As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)<i>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value
-                IMDBMovie.Plot = Web.HttpUtility.HtmlDecode(FullPlot.Replace("|", String.Empty)).Trim
+                If String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.uSettings.LockPlot Then
+                    Dim FullPlot As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)<i>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value
+                    IMDBMovie.Plot = Web.HttpUtility.HtmlDecode(FullPlot.Replace("|", String.Empty)).Trim
+                End If
 
                 If bwIMDB.WorkerReportsProgress Then
                     bwIMDB.ReportProgress(9)
