@@ -413,6 +413,18 @@ Public Class dlgSettings
     Private Sub chkMovieNameDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameDotFanartJPG.CheckedChanged
         btnApply.Enabled = True
     End Sub
+
+    Private Sub chkLockPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockPlot.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkLockOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockOutline.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkLockTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockTitle.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -540,7 +552,9 @@ Public Class dlgSettings
             Master.uSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
             Master.uSettings.MovieNFO = Me.chkMovieNFO.Checked
             Master.uSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
-
+            Master.uSettings.LockPlot = Me.chkLockPlot.Checked
+            Master.uSettings.LockOutline = Me.chkLockOutline.Checked
+            Master.uSettings.LockTitle = Me.chkLockTitle.Checked
 
             Master.uSettings.Save()
         Catch ex As Exception
@@ -616,6 +630,9 @@ Public Class dlgSettings
             Me.chkMovieNameDotFanartJPG.Checked = Master.uSettings.MovieNameDotFanartJPG
             Me.chkMovieNFO.Checked = Master.uSettings.MovieNFO
             Me.chkMovieNameNFO.Checked = Master.uSettings.MovieNameNFO
+            Me.chkLockPlot.Checked = Master.uSettings.LockPlot
+            Me.chkLockOutline.Checked = Master.uSettings.LockOutline
+            Me.chkLockTitle.Checked = Master.uSettings.LockTitle
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74

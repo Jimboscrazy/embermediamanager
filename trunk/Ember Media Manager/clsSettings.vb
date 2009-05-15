@@ -74,6 +74,9 @@ Public Class ummSettings
     Private _movienamedotfanartjpg As Boolean
     Private _movienfo As Boolean
     Private _movienamenfo As Boolean
+    Private _lockplot As Boolean
+    Private _lockoutline As Boolean
+    Private _locktitle As Boolean
 
     Public Property FilterCustom() As ArrayList
         Get
@@ -516,6 +519,32 @@ Public Class ummSettings
         End Set
     End Property
 
+    Public Property LockPlot() As Boolean
+        Get
+            Return Me._lockplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._lockplot = value
+        End Set
+    End Property
+
+    Public Property LockOutline() As Boolean
+        Get
+            Return Me._lockoutline
+        End Get
+        Set(ByVal value As Boolean)
+            Me._lockoutline = value
+        End Set
+    End Property
+
+    Public Property LockTitle() As Boolean
+        Get
+            Return Me._locktitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._locktitle = value
+        End Set
+    End Property
     Public Sub New()
         Me.Clear()
     End Sub
@@ -570,6 +599,9 @@ Public Class ummSettings
         Me._movienamedotfanartjpg = False
         Me._movienfo = False
         Me._movienamenfo = False
+        Me._lockplot = False
+        Me._lockoutline = False
+        Me._locktitle = False
     End Sub
 
     Public Sub Save()
