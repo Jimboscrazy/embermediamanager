@@ -90,25 +90,27 @@ Namespace TMDB
 
                 Dim tmdbNode As XmlNodeList = xmlTMDB.SelectNodes("//results/moviematches/movie")
 
-                If Not tmdbNode(0).InnerText = "Your query didn't return any results." Then
-                    Dim movieID As String = tmdbNode(0).ChildNodes(5).InnerText
+                If tmdbNode.Count > 0 Then
+                    If Not tmdbNode(0).InnerText = "Your query didn't return any results." Then
+                        Dim movieID As String = tmdbNode(0).ChildNodes(5).InnerText
 
-                    xmlTMDB.Load(String.Format("{0}{1}&api_key={2}", "http://api.themoviedb.org/2.0/Movie.getInfo?id=", movieID, APIKey))
+                        xmlTMDB.Load(String.Format("{0}{1}&api_key={2}", "http://api.themoviedb.org/2.0/Movie.getInfo?id=", movieID, APIKey))
 
-                    If bwTMDB.WorkerReportsProgress Then
-                        bwTMDB.ReportProgress(2)
-                    End If
-
-                    Dim resultsNode As XmlNodeList = xmlTMDB.SelectNodes("//results/moviematches/movie")
-
-                    Dim xmlPosters As XmlNode = resultsNode(0)
-
-                    For i As Integer = 17 To (xmlPosters.ChildNodes.Count - 3)
-                        If xmlPosters.ChildNodes(i).Name = sType Then
-                            Dim tmpPoster As New Media.Image With {.URL = xmlPosters.ChildNodes(i).InnerText, .Description = xmlPosters.ChildNodes(i).Attributes(0).InnerText}
-                            alPosters.Add(tmpPoster)
+                        If bwTMDB.WorkerReportsProgress Then
+                            bwTMDB.ReportProgress(2)
                         End If
-                    Next
+
+                        Dim resultsNode As XmlNodeList = xmlTMDB.SelectNodes("//results/moviematches/movie")
+
+                        Dim xmlPosters As XmlNode = resultsNode(0)
+
+                        For i As Integer = 17 To (xmlPosters.ChildNodes.Count - 3)
+                            If xmlPosters.ChildNodes(i).Name = sType Then
+                                Dim tmpPoster As New Media.Image With {.URL = xmlPosters.ChildNodes(i).InnerText, .Description = xmlPosters.ChildNodes(i).Attributes(0).InnerText}
+                                alPosters.Add(tmpPoster)
+                            End If
+                        Next
+                    End If
                 End If
                 If bwTMDB.WorkerReportsProgress Then
                     bwTMDB.ReportProgress(3)

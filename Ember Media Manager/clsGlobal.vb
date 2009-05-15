@@ -1164,20 +1164,26 @@ quickExit:
             Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
             Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
             Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
+            Dim tPath As String = String.Empty
 
             If uSettings.MovieNameNFO OrElse isFile Then
-                Dim xmlSW As New StreamWriter(String.Concat(RemoveExtFromPath(nPath), ".nfo"))
-                xmlSer.Serialize(xmlSW, movieToSave)
-                xmlSW.Close()
-                xmlSW.Dispose()
+                tPath = String.Concat(RemoveExtFromPath(nPath), ".nfo")
+                If Not CBool(File.GetAttributes(tPath) AndAlso FileAttributes.ReadOnly) Then
+                    Dim xmlSW As New StreamWriter(tPath)
+                    xmlSer.Serialize(xmlSW, movieToSave)
+                    xmlSW.Close()
+                    xmlSW.Dispose()
+                End If
             End If
 
             If Not isFile AndAlso uSettings.MovieNFO Then
-                Dim xmlSW As New StreamWriter(String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo"))
-
-                xmlSer.Serialize(xmlSW, movieToSave)
-                xmlSW.Close()
-                xmlSW.Dispose()
+                tPath = String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")
+                If Not CBool(File.GetAttributes(tPath) AndAlso FileAttributes.ReadOnly) Then
+                    Dim xmlSW As New StreamWriter(tPath)
+                    xmlSer.Serialize(xmlSW, movieToSave)
+                    xmlSW.Close()
+                    xmlSW.Dispose()
+                End If
             End If
 
         Catch ex As Exception
