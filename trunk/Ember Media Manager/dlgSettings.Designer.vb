@@ -124,6 +124,7 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -886,9 +887,9 @@ Partial Class dlgSettings
         Me.GroupBox10.Controls.Add(Me.chkLockTitle)
         Me.GroupBox10.Controls.Add(Me.chkLockOutline)
         Me.GroupBox10.Controls.Add(Me.chkLockPlot)
-        Me.GroupBox10.Location = New System.Drawing.Point(261, 151)
+        Me.GroupBox10.Location = New System.Drawing.Point(261, 163)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(241, 95)
+        Me.GroupBox10.Size = New System.Drawing.Size(241, 81)
         Me.GroupBox10.TabIndex = 57
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "Locks (Do not allow updates during scraping)"
@@ -896,7 +897,7 @@ Partial Class dlgSettings
         'chkLockTitle
         '
         Me.chkLockTitle.AutoSize = True
-        Me.chkLockTitle.Location = New System.Drawing.Point(6, 65)
+        Me.chkLockTitle.Location = New System.Drawing.Point(6, 63)
         Me.chkLockTitle.Name = "chkLockTitle"
         Me.chkLockTitle.Size = New System.Drawing.Size(73, 17)
         Me.chkLockTitle.TabIndex = 41
@@ -906,7 +907,7 @@ Partial Class dlgSettings
         'chkLockOutline
         '
         Me.chkLockOutline.AutoSize = True
-        Me.chkLockOutline.Location = New System.Drawing.Point(6, 42)
+        Me.chkLockOutline.Location = New System.Drawing.Point(6, 40)
         Me.chkLockOutline.Name = "chkLockOutline"
         Me.chkLockOutline.Size = New System.Drawing.Size(86, 17)
         Me.chkLockOutline.TabIndex = 40
@@ -916,7 +917,7 @@ Partial Class dlgSettings
         'chkLockPlot
         '
         Me.chkLockPlot.AutoSize = True
-        Me.chkLockPlot.Location = New System.Drawing.Point(6, 19)
+        Me.chkLockPlot.Location = New System.Drawing.Point(6, 17)
         Me.chkLockPlot.Name = "chkLockPlot"
         Me.chkLockPlot.Size = New System.Drawing.Size(71, 17)
         Me.chkLockPlot.TabIndex = 39
@@ -1031,6 +1032,7 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkSingleScrapeImages)
         Me.GroupBox1.Controls.Add(Me.chkFullCast)
         Me.GroupBox1.Controls.Add(Me.chkFullCrew)
         Me.GroupBox1.Controls.Add(Me.cbCert)
@@ -1038,7 +1040,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkStudio)
         Me.GroupBox1.Location = New System.Drawing.Point(261, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(241, 139)
+        Me.GroupBox1.Size = New System.Drawing.Size(241, 151)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -1088,7 +1090,7 @@ Partial Class dlgSettings
         'chkStudio
         '
         Me.chkStudio.AutoSize = True
-        Me.chkStudio.Location = New System.Drawing.Point(6, 115)
+        Me.chkStudio.Location = New System.Drawing.Point(6, 113)
         Me.chkStudio.Name = "chkStudio"
         Me.chkStudio.Size = New System.Drawing.Size(105, 17)
         Me.chkStudio.TabIndex = 36
@@ -1189,6 +1191,16 @@ Partial Class dlgSettings
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
+        '
+        'chkSingleScrapeImages
+        '
+        Me.chkSingleScrapeImages.AutoSize = True
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 133)
+        Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
+        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(181, 17)
+        Me.chkSingleScrapeImages.TabIndex = 37
+        Me.chkSingleScrapeImages.Text = "Scrape Images on Single Scrape"
+        Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -1345,4 +1357,5 @@ Partial Class dlgSettings
     Friend WithEvents chkLockTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkLockOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkLockPlot As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSingleScrapeImages As System.Windows.Forms.CheckBox
 End Class
