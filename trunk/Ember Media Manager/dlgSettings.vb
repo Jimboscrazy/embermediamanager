@@ -78,7 +78,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnHeaders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnHeaders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHeaders.Click
         Try
             With Me.cdColor
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -93,7 +93,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnBackground_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnBackground_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBackground.Click
         Try
             With Me.cdColor
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -108,7 +108,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnInfoPanel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnInfoPanel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnInfoPanel.Click
         Try
             With Me.cdColor
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -123,7 +123,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTopPanel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnTopPanel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTopPanel.Click
         Try
             With Me.cdColor
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -240,7 +240,7 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
-    Private Sub chkMovieMediaCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieMediaCol.CheckedChanged
+    Private Sub chkMovieMediaCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.btnApply.Enabled = True
     End Sub
 
@@ -316,7 +316,7 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
-    Private Sub chkUseFolderNames_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub chkUseFolderNames_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFolderNames.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
 
@@ -350,21 +350,66 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub rbMovieName_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbMovieName.CheckedChanged
+    Private Sub rbMovieName_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.btnApply.Enabled = True
     End Sub
 
-    Private Sub rbMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbMovie.CheckedChanged
+    Private Sub rbMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.btnApply.Enabled = True
     End Sub
 
-    Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitleFromNfo.CheckedChanged
+    Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.btnApply.Enabled = True
     End Sub
 
-    Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMPDB.CheckedChanged
+    Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkMovieTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieTBN.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMovieNameTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameTBN.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMovieJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMovieNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterTBN.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFolderJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFanartJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMovieNameFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameFanartJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMovieNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNFO.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMovieNameNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameNFO.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -467,7 +512,6 @@ Public Class dlgSettings
             Master.uSettings.UseStudioTags = Me.chkStudio.Checked
             Master.uSettings.FullCast = Me.chkFullCast.Checked
             Master.uSettings.FullCrew = Me.chkFullCrew.Checked
-            Master.uSettings.MovieMediaCol = Me.chkMovieMediaCol.Checked
             Master.uSettings.MoviePosterCol = Me.chkMoviePosterCol.Checked
             Master.uSettings.MovieFanartCol = Me.chkMovieFanartCol.Checked
             Master.uSettings.MovieInfoCol = Me.chkMovieInfoCol.Checked
@@ -480,8 +524,19 @@ Public Class dlgSettings
             Master.uSettings.OverwritePoster = Me.chkOverwritePoster.Checked
             Master.uSettings.OverwriteFanart = Me.chkOverwriteFanart.Checked
             Master.uSettings.UseFolderName = Me.chkUseFolderNames.Checked
-            Master.uSettings.MovieExt = Me.rbMovieName.Checked
             Master.uSettings.UseNameFromNfo = Me.chkTitleFromNfo.Checked
+            Master.uSettings.MovieTBN = Me.chkMovieTBN.Checked
+            Master.uSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
+            Master.uSettings.MovieJPG = Me.chkMovieJPG.Checked
+            Master.uSettings.MovieNameJPG = Me.chkMovieNameJPG.Checked
+            Master.uSettings.PosterTBN = Me.chkPosterTBN.Checked
+            Master.uSettings.PosterJPG = Me.chkPosterJPG.Checked
+            Master.uSettings.FolderJPG = Me.chkFolderJPG.Checked
+            Master.uSettings.FanartJPG = Me.chkFanartJPG.Checked
+            Master.uSettings.MovieNameFanartJPG = Me.chkMovieNameFanartJPG.Checked
+            Master.uSettings.MovieNFO = Me.chkMovieNFO.Checked
+            Master.uSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
+
 
             Master.uSettings.Save()
         Catch ex As Exception
@@ -532,7 +587,6 @@ Public Class dlgSettings
             Me.chkStudio.Checked = Master.uSettings.UseStudioTags
             Me.chkFullCast.Checked = Master.uSettings.FullCast
             Me.chkFullCrew.Checked = Master.uSettings.FullCrew
-            Me.chkMovieMediaCol.Checked = Master.uSettings.MovieMediaCol
             Me.chkMoviePosterCol.Checked = Master.uSettings.MoviePosterCol
             Me.chkMovieFanartCol.Checked = Master.uSettings.MovieFanartCol
             Me.chkMovieInfoCol.Checked = Master.uSettings.MovieInfoCol
@@ -545,9 +599,18 @@ Public Class dlgSettings
             Me.chkOverwritePoster.Checked = Master.uSettings.OverwritePoster
             Me.chkOverwriteFanart.Checked = Master.uSettings.OverwriteFanart
             Me.chkUseFolderNames.Checked = Master.uSettings.UseFolderName
-            Me.rbMovieName.Checked = Master.uSettings.MovieExt
-            Me.rbMovie.Checked = Not Master.uSettings.MovieExt
             Me.chkTitleFromNfo.Checked = Master.uSettings.UseNameFromNfo
+            Me.chkMovieTBN.Checked = Master.uSettings.MovieTBN
+            Me.chkMovieNameTBN.Checked = Master.uSettings.MovieNameTBN
+            Me.chkMovieJPG.Checked = Master.uSettings.MovieJPG
+            Me.chkMovieNameJPG.Checked = Master.uSettings.MovieNameJPG
+            Me.chkPosterTBN.Checked = Master.uSettings.PosterTBN
+            Me.chkPosterJPG.Checked = Master.uSettings.PosterJPG
+            Me.chkFolderJPG.Checked = Master.uSettings.FolderJPG
+            Me.chkFanartJPG.Checked = Master.uSettings.FanartJPG
+            Me.chkMovieNameFanartJPG.Checked = Master.uSettings.MovieNameFanartJPG
+            Me.chkMovieNFO.Checked = Master.uSettings.MovieNFO
+            Me.chkMovieNameNFO.Checked = Master.uSettings.MovieNameNFO
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
@@ -557,6 +620,5 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
-
 
 End Class

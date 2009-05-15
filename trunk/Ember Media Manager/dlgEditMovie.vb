@@ -26,15 +26,19 @@ Imports System.Text.RegularExpressions
 Public Class dlgEditMovie
     Private lvwColumnSorter As ListViewColumnSorter
     Private tmpRating As String = String.Empty
-    Private newPoster As String = String.Empty
-    Private oldPoster As String = String.Empty
-    Private newFanart As String = String.Empty
-    Private oldFanart As String = String.Empty
+    Private Poster As New Images
+    Private Fanart As New Images
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
             Me.SetInfo()
-            Master.SaveMovieToNFO(Master.currMovie, Master.currNFO)
+            Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.isFile)
+
+            Me.Poster.Clear()
+            Me.Poster = Nothing
+
+            Me.Fanart.Clear()
+            Me.Fanart = Nothing
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -428,32 +432,20 @@ Public Class dlgEditMovie
                     .pbStar5.Tag = "0"
                 End If
 
-                Dim fPath As String = Master.GetFanartPath(Master.currPath, Master.isFile)
-                .oldFanart = fPath
-                If File.Exists(fPath) Then
-                    Dim fsImage As New FileStream(.oldFanart, FileMode.Open, FileAccess.Read)
-
-                    .pbFanart.Image = Image.FromStream(fsImage)
+                Fanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
+                If Not IsNothing(Fanart.Image) Then
+                    .pbFanart.Image = Fanart.Image
 
                     .lblFanartSize.Text = String.Format("Size: {0}x{1}", .pbFanart.Image.Width, .pbFanart.Image.Height)
                     .lblFanartSize.Visible = True
-
-                    fsImage.Close()
-                    fsImage.Dispose()
                 End If
 
-                Dim pPath As String = Master.GetPosterPath(Master.currPath, Master.isFile)
-                .oldPoster = pPath
-                If File.Exists(pPath) Then
-                    Dim fsImage As New FileStream(.oldPoster, FileMode.Open, FileAccess.Read)
-
-                    .pbPoster.Image = Image.FromStream(fsImage)
+                Poster.Load(Master.currPath, Master.isFile, Master.ImageType.Posters)
+                If Not IsNothing(Poster.Image) Then
+                    .pbPoster.Image = Poster.Image
 
                     .lblPosterSize.Text = String.Format("Size: {0}x{1}", .pbPoster.Image.Width, .pbPoster.Image.Height)
                     .lblPosterSize.Visible = True
-
-                    fsImage.Close()
-                    fsImage.Dispose()
                 End If
 
                 If Not Master.uSettings.UseTMDB Then
@@ -530,18 +522,12 @@ Public Class dlgEditMovie
                     Next
                 End If
 
-                If (Not .newFanart = .oldFanart) AndAlso (Not String.IsNullOrEmpty(.newFanart)) AndAlso (Not String.IsNullOrEmpty(.oldFanart)) Then
-                    Try
-                        Master.MoveFileWithStream(.newFanart, .oldFanart)
-                    Catch
-                    End Try
+                If Not IsNothing(Fanart.Image) Then
+                    Fanart.SaveAsFanart(Master.currPath, Master.isFile)
                 End If
 
-                If Not .newPoster = .oldPoster AndAlso (Not String.IsNullOrEmpty(.newPoster)) AndAlso (Not String.IsNullOrEmpty(.oldPoster)) Then
-                    Try
-                        Master.MoveFileWithStream(.newPoster, .oldPoster)
-                    Catch
-                    End Try
+                If Not IsNothing(Poster.Image) Then
+                    Poster.SaveAsPoster(Master.currPath, Master.isFile)
                 End If
 
                 If Directory.Exists(Application.StartupPath & "\Temp") Then
@@ -633,22 +619,17 @@ Public Class dlgEditMovie
     Private Sub btnSetPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Me.oldPoster).FullName.ToString
+                .InitialDirectory = Directory.GetParent(Master.currPath).FullName.ToString
                 .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
                 .FilterIndex = 0
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Dim fsImage As New FileStream(ofdImage.FileName, FileMode.Open, FileAccess.Read)
-
-                pbPoster.Image = Image.FromStream(fsImage)
+                Poster.FromFile(ofdImage.FileName)
+                pbPoster.Image = Poster.Image
 
                 Me.lblPosterSize.Text = String.Format("Size: {0}x{1}", Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                 Me.lblPosterSize.Visible = True
-
-                fsImage.Close()
-                fsImage.Dispose()
-                Me.newPoster = ofdImage.FileName
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -658,22 +639,17 @@ Public Class dlgEditMovie
     Private Sub btnSetFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Me.oldFanart).FullName.ToString
+                .InitialDirectory = Directory.GetParent(Master.currPath).FullName.ToString
                 .Filter = "JPEGs|*.jpg"
                 .FilterIndex = 4
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                Dim fsImage As New FileStream(ofdImage.FileName, FileMode.Open, FileAccess.Read)
-
-                pbFanart.Image = Image.FromStream(fsImage)
+                Fanart.FromFile(ofdImage.FileName)
+                pbFanart.Image = Fanart.Image
 
                 Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                 Me.lblFanartSize.Visible = True
-
-                fsImage.Close()
-                fsImage.Dispose()
-                Me.newFanart = ofdImage.FileName
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -684,25 +660,20 @@ Public Class dlgEditMovie
         Dim sPath As String
         Try
             sPath = Application.StartupPath & "\Temp"
-            'Master.GetPosterPath(Master.currPath, Master.isFile)
 
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
             End If
 
-            sPath += "\poster.tbn"
+            sPath += "\poster.jpg"
 
-            If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.currPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
-                Dim fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
+            If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters, True) = Windows.Forms.DialogResult.OK Then
 
-                pbPoster.Image = Image.FromStream(fsImage)
+                Poster.FromFile(sPath)
+                pbPoster.Image = Poster.Image
 
                 Me.lblPosterSize.Text = String.Format("Size: {0}x{1}", Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                 Me.lblPosterSize.Visible = True
-
-                fsImage.Close()
-                fsImage.Dispose()
-                Me.newPoster = sPath
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -713,7 +684,6 @@ Public Class dlgEditMovie
         Dim sPath As String
         Try
             sPath = Application.StartupPath & "\Temp"
-            'Master.GetFanartPath(Master.currPath, Master.isFile)
 
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
@@ -721,17 +691,14 @@ Public Class dlgEditMovie
 
             sPath += "\fanart.jpg"
 
-            If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.currPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
-                Dim fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
+            If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart, True) = Windows.Forms.DialogResult.OK Then
 
-                pbFanart.Image = Image.FromStream(fsImage)
+                Fanart.FromFile(sPath)
+                pbFanart.Image = Fanart.Image
 
                 Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                 Me.lblFanartSize.Visible = True
 
-                fsImage.Close()
-                fsImage.Dispose()
-                Me.newFanart = sPath
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

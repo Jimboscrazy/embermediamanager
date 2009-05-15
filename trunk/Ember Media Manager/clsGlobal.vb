@@ -330,411 +330,6 @@ quickExit:
         Return X.FullName.CompareTo(Y.FullName)
     End Function
 
-    Public Shared Function GetImageDims(ByVal imgImage As Image, ByVal imgType As ImageType) As Integer
-
-        '//
-        ' Check the size of the image and return a generic name for the size
-        '\\
-
-        Dim x As Integer = imgImage.Width
-        Dim y As Integer = imgImage.Height
-
-        Try
-            If imgType = ImageType.Posters Then
-                If (x > y) AndAlso (x > (y * 2)) AndAlso (x > 300) Then
-                    'at least twice as wide than tall... consider it wide (also make sure it's big enough)
-                    Return PosterSize.Wide
-                ElseIf (y > 1000 AndAlso x > 750) OrElse (x > 1000 AndAlso y > 750) Then
-                    Return PosterSize.Xlrg
-                ElseIf (y > 700 AndAlso x > 500) OrElse (x > 700 AndAlso y > 500) Then
-                    Return PosterSize.Lrg
-                ElseIf (y > 250 AndAlso x > 150) OrElse (x > 250 AndAlso y > 150) Then
-                    Return PosterSize.Mid
-                Else
-                    Return PosterSize.Small
-                End If
-            Else
-                If (y > 1000 AndAlso x > 750) OrElse (x > 1000 AndAlso y > 750) Then
-                    Return FanartSize.Lrg
-                ElseIf (y > 700 AndAlso x > 400) OrElse (x > 700 AndAlso y > 400) Then
-                    Return FanartSize.Mid
-                Else
-                    Return FanartSize.Small
-                End If
-            End If
-        Catch ex As Exception
-            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Function
-
-    Public Shared Function GetPreferredImage(ByVal iType As ImageType, ByRef fArt As Media.Fanart, Optional ByVal doAsk As Boolean = False) As Image
-
-        '//
-        ' Try to get the best match between what the user selected in settings and the actual posters downloaded
-        '\\
-
-
-        Dim TMDB As New TMDB.Scraper
-        Dim IMPA As New IMPA.Scraper
-        Dim MPDB As New MPDB.Scraper
-        Dim tmpListTMDB As New List(Of Media.Image)
-        Dim tmpListIMPA As New List(Of Media.Image)
-        Dim tmpListMPDB As New List(Of Media.Image)
-        Dim tmpImage As Image = Nothing
-        Dim tmpIMPAX As Image = Nothing
-        Dim tmpIMPAL As Image = Nothing
-        Dim tmpIMPAM As Image = Nothing
-        Dim tmpIMPAS As Image = Nothing
-        Dim tmpIMPAW As Image = Nothing
-        Dim tmpMPDBX As Image = Nothing
-        Dim tmpMPDBL As Image = Nothing
-        Dim tmpMPDBM As Image = Nothing
-        Dim tmpMPDBS As Image = Nothing
-        Dim tmpMPDBW As Image = Nothing
-        Dim wrRequest As WebRequest
-        Dim wrResponse As WebResponse
-
-        Try
-
-            If iType = ImageType.Posters Then 'posters
-                If uSettings.UseTMDB Then
-                    'download all TMBD images
-                    tmpListTMDB = TMDB.GetTMDBImages(currMovie.IMDBID, "poster")
-
-                    'check each one for it's size to see if it matched the preferred size
-                    If tmpListTMDB.Count > 0 Then
-                        For Each iMovie As Media.Image In tmpListTMDB
-                            Select Case uSettings.PreferredPosterSize
-                                Case PosterSize.Xlrg
-                                    If iMovie.Description.ToLower = "original" Then
-                                        wrRequest = WebRequest.Create(iMovie.URL)
-                                        wrResponse = wrRequest.GetResponse()
-                                        tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                        wrResponse.Close()
-                                        GoTo foundIT
-                                    End If
-                                Case PosterSize.Lrg
-                                    If iMovie.Description.ToLower = "mid" Then
-                                        wrRequest = WebRequest.Create(iMovie.URL)
-                                        wrResponse = wrRequest.GetResponse()
-                                        tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                        wrResponse.Close()
-                                        GoTo foundIT
-                                    End If
-                                Case PosterSize.Mid
-                                    If iMovie.Description.ToLower = "cover" Then
-                                        wrRequest = WebRequest.Create(iMovie.URL)
-                                        wrResponse = wrRequest.GetResponse()
-                                        tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                        wrResponse.Close()
-                                        GoTo foundIT
-                                    End If
-                                Case PosterSize.Small
-                                    If iMovie.Description.ToLower = "thumb" Then
-                                        wrRequest = WebRequest.Create(iMovie.URL)
-                                        wrResponse = wrRequest.GetResponse()
-                                        tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                        wrResponse.Close()
-                                        GoTo foundIT
-                                    End If
-                                    'no "wide" for TMDB
-                            End Select
-                        Next
-                    End If
-                End If
-
-                If uSettings.UseIMPA Then
-                    If IsNothing(tmpImage) Then
-                        'no poster of the proper size from TMDB found... try IMPA
-
-                        tmpListIMPA = IMPA.GetIMPAPosters(currMovie.IMDBID)
-
-                        If tmpListIMPA.Count > 0 Then
-                            For Each iMovie As Media.Image In tmpListIMPA
-                                wrRequest = WebRequest.Create(iMovie.URL)
-                                wrResponse = wrRequest.GetResponse()
-                                tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                wrResponse.Close()
-                                Dim tmpSize As PosterSize = GetImageDims(tmpImage, ImageType.Posters)
-                                If Not tmpSize = uSettings.PreferredPosterSize Then
-                                    tmpImage = Nothing
-                                    'cache the first result from each type in case the preferred size is not available
-                                    Select Case tmpSize
-                                        Case PosterSize.Xlrg
-                                            If IsNothing(tmpIMPAX) Then
-                                                tmpIMPAX = tmpImage
-                                            End If
-                                        Case PosterSize.Lrg
-                                            If IsNothing(tmpIMPAL) Then
-                                                tmpIMPAL = tmpImage
-                                            End If
-                                        Case PosterSize.Mid
-                                            If IsNothing(tmpIMPAM) Then
-                                                tmpIMPAM = tmpImage
-                                            End If
-                                        Case PosterSize.Small
-                                            If IsNothing(tmpIMPAS) Then
-                                                tmpIMPAS = tmpImage
-                                            End If
-                                        Case PosterSize.Wide
-                                            If IsNothing(tmpIMPAW) Then
-                                                tmpIMPAW = tmpImage
-                                            End If
-                                    End Select
-                                Else
-                                    'image found
-                                    GoTo foundIT
-                                End If
-
-                            Next
-                        End If
-                    End If
-                End If
-
-                If uSettings.UseMPDB Then
-                    If IsNothing(tmpImage) Then
-                        'no poster of the proper size from TMDB or IMPA found... try MPDB
-
-                        tmpListMPDB = MPDB.GetMPDBPosters(currMovie.IMDBID)
-
-                        If tmpListMPDB.Count > 0 Then
-                            For Each iMovie As Media.Image In tmpListMPDB
-                                wrRequest = WebRequest.Create(iMovie.URL)
-                                wrResponse = wrRequest.GetResponse()
-                                tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                wrResponse.Close()
-                                Dim tmpSize As PosterSize = GetImageDims(tmpImage, ImageType.Posters)
-                                If Not tmpSize = uSettings.PreferredPosterSize Then
-                                    tmpImage = Nothing
-                                    'cache the first result from each type in case the preferred size is not available
-                                    Select Case tmpSize
-                                        Case PosterSize.Xlrg
-                                            If IsNothing(tmpMPDBX) Then
-                                                tmpMPDBX = tmpImage
-                                            End If
-                                        Case PosterSize.Lrg
-                                            If IsNothing(tmpMPDBL) Then
-                                                tmpMPDBL = tmpImage
-                                            End If
-                                        Case PosterSize.Mid
-                                            If IsNothing(tmpMPDBM) Then
-                                                tmpMPDBM = tmpImage
-                                            End If
-                                        Case PosterSize.Small
-                                            If IsNothing(tmpMPDBS) Then
-                                                tmpMPDBS = tmpImage
-                                            End If
-                                        Case PosterSize.Wide
-                                            If IsNothing(tmpMPDBW) Then
-                                                tmpMPDBW = tmpImage
-                                            End If
-                                    End Select
-                                Else
-                                    'image found
-                                    GoTo foundIT
-                                End If
-
-                            Next
-                        End If
-                    End If
-                End If
-
-                If IsNothing(tmpImage) AndAlso Not doAsk Then
-                    'STILL no image found, just get the first available image, starting with the largest
-                    If uSettings.UseTMDB Then
-                        'check TMDB first
-                        If tmpListTMDB.Count > 0 Then
-                            Dim x = From MI As Media.Image In tmpListTMDB Where MI.Description = "original"
-                            If x.Count > 0 Then
-                                wrRequest = WebRequest.Create(x(0).URL)
-                                wrResponse = wrRequest.GetResponse()
-                                tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                wrResponse.Close()
-                                GoTo foundIT
-                            End If
-
-                            Dim l = From MI As Media.Image In tmpListTMDB Where MI.Description = "mid"
-                            If l.Count > 0 Then
-                                wrRequest = WebRequest.Create(l(0).URL)
-                                wrResponse = wrRequest.GetResponse()
-                                tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                wrResponse.Close()
-                                GoTo foundIT
-                            End If
-
-                            Dim m = From MI As Media.Image In tmpListTMDB Where MI.Description = "cover"
-                            If m.Count > 0 Then
-                                wrRequest = WebRequest.Create(m(0).URL)
-                                wrResponse = wrRequest.GetResponse()
-                                tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                wrResponse.Close()
-                                GoTo foundIT
-                            End If
-
-                            Dim s = From MI As Media.Image In tmpListTMDB Where MI.Description = "thumb"
-                            If s.Count > 0 Then
-                                wrRequest = WebRequest.Create(s(0).URL)
-                                wrResponse = wrRequest.GetResponse()
-                                tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                wrResponse.Close()
-                                GoTo foundIT
-                            End If
-
-                        End If
-                    End If
-
-                    If uSettings.UseIMPA Then
-                        If tmpListIMPA.Count > 0 Then
-                            If Not IsNothing(tmpIMPAX) Then
-                                tmpImage = tmpIMPAX
-                                GoTo foundIT
-                            End If
-                            If Not IsNothing(tmpIMPAL) Then
-                                tmpImage = tmpIMPAL
-                                GoTo foundIT
-                            End If
-                            If Not IsNothing(tmpIMPAM) Then
-                                tmpImage = tmpIMPAM
-                                GoTo foundIT
-                            End If
-                            If Not IsNothing(tmpIMPAS) Then
-                                tmpImage = tmpIMPAS
-                                GoTo foundIT
-                            End If
-                            If Not IsNothing(tmpIMPAW) Then
-                                tmpImage = tmpIMPAW
-                                GoTo foundIT
-                            End If
-                        End If
-                    End If
-
-                    If uSettings.UseMPDB Then
-                        If tmpListMPDB.Count > 0 Then
-                            If Not IsNothing(tmpMPDBX) Then
-                                tmpImage = tmpMPDBX
-                                GoTo foundIT
-                            End If
-                            If Not IsNothing(tmpMPDBL) Then
-                                tmpImage = tmpMPDBL
-                                GoTo foundIT
-                            End If
-                            If Not IsNothing(tmpMPDBM) Then
-                                tmpImage = tmpMPDBM
-                                GoTo foundIT
-                            End If
-                            If Not IsNothing(tmpMPDBS) Then
-                                tmpImage = tmpMPDBS
-                                GoTo foundIT
-                            End If
-                            If Not IsNothing(tmpMPDBW) Then
-                                tmpImage = tmpMPDBW
-                                GoTo foundIT
-                            End If
-                        End If
-                    End If
-
-                End If
-
-
-            Else 'fanart
-
-                If uSettings.UseTMDB Then
-
-                    'download all the fanart from TMDB
-                    tmpListTMDB = TMDB.GetTMDBImages(currMovie.IMDBID, "backdrop")
-
-                    If tmpListTMDB.Count > 0 Then
-
-                        'setup fanart for nfo
-                        Dim thumbLink As String = String.Empty
-                        fArt = New Media.Fanart
-                        For Each miFanart As Media.Image In tmpListTMDB
-                            fArt.URL = "http://www.themoviedb.org"
-                            thumbLink = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)
-                            If Not Strings.InStr(miFanart.URL, "_thumb") > 0 Then
-                                thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
-                            End If
-                            fArt.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)})
-                        Next
-
-                        For Each iMovie As Media.Image In tmpListTMDB
-                            Select Case uSettings.PreferredPosterSize
-                                Case FanartSize.Lrg
-                                    If iMovie.Description.ToLower = "original" Then
-                                        wrRequest = WebRequest.Create(iMovie.URL)
-                                        wrResponse = wrRequest.GetResponse()
-                                        tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                        wrResponse.Close()
-                                        GoTo foundIT
-                                    End If
-                                Case FanartSize.Mid
-                                    If iMovie.Description.ToLower = "mid" Then
-                                        wrRequest = WebRequest.Create(iMovie.URL)
-                                        wrResponse = wrRequest.GetResponse()
-                                        tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                        wrResponse.Close()
-                                        GoTo foundIT
-                                    End If
-                                Case FanartSize.Small
-                                    If iMovie.Description.ToLower = "thumb" Then
-                                        wrRequest = WebRequest.Create(iMovie.URL)
-                                        wrResponse = wrRequest.GetResponse()
-                                        tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                                        wrResponse.Close()
-                                        GoTo foundIT
-                                    End If
-                                    'no "wide" for TMDB
-                            End Select
-                        Next
-                    End If
-                End If
-
-                If IsNothing(tmpImage) AndAlso Not doAsk Then
-                    'STILL no image found, just get the first available image, starting with the largest
-
-                    If tmpListTMDB.Count > 0 Then
-                        Dim l = From MI As Media.Image In tmpListTMDB Where MI.Description = "original"
-                        If l.Count > 0 Then
-                            wrRequest = WebRequest.Create(l(0).URL)
-                            wrResponse = wrRequest.GetResponse()
-                            tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                            wrResponse.Close()
-                            GoTo foundIT
-                        End If
-
-                        Dim m = From MI As Media.Image In tmpListTMDB Where MI.Description = "mid"
-                        If m.Count > 0 Then
-                            wrRequest = WebRequest.Create(m(0).URL)
-                            wrResponse = wrRequest.GetResponse()
-                            tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                            wrResponse.Close()
-                            GoTo foundIT
-                        End If
-
-                        Dim s = From MI As Media.Image In tmpListTMDB Where MI.Description = "thumb"
-                        If s.Count > 0 Then
-                            wrRequest = WebRequest.Create(s(0).URL)
-                            wrResponse = wrRequest.GetResponse()
-                            tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                            wrResponse.Close()
-                            GoTo foundIT
-                        End If
-
-                    End If
-                End If
-            End If
-        Catch ex As Exception
-            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-foundIT:
-
-        wrResponse = Nothing
-        wrRequest = Nothing
-        Return tmpImage
-
-    End Function
-
     Public Shared Sub GetAVImages(ByVal strAV As String, ByVal strPath As String)
 
         '//
@@ -1305,23 +900,6 @@ foundIT:
 
     End Function
 
-    Public Shared Sub SaveMovieToNFO(ByVal movieToSave As Media.Movie, ByVal nfoFile As String)
-
-        '//
-        ' Serialize Media.Movie to an NFO
-        '\\
-
-        Try
-            Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
-            Dim xmlSW As New StreamWriter(nfoFile)
-
-            xmlSer.Serialize(xmlSW, movieToSave)
-            xmlSW.Close()
-        Catch ex As Exception
-            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
     Public Shared Function GetFolderContents(ByVal sPath As String, ByVal isFile As Boolean)
 
         '//
@@ -1329,11 +907,10 @@ foundIT:
         '\\
 
         Dim hasNfo As Boolean = False
-        Dim hasMedia As Boolean = False
         Dim hasPoster As Boolean = False
         Dim hasFanart As Boolean = False
         Dim hasTrailer As Boolean = False
-        Dim aResults(4) As Boolean
+        Dim aResults(3) As Boolean
         Dim tmpName As String = String.Empty
         Try
             Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName.ToString)
@@ -1359,18 +936,15 @@ foundIT:
                     Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar"
                         If sfile.Name.Contains("-trailer") Then
                             hasTrailer = True
-                        Else
-                            hasMedia = True
                         End If
                 End Select
 
             Next
 
-            aResults(0) = hasMedia
-            aResults(1) = hasPoster
-            aResults(2) = hasFanart
-            aResults(3) = hasNfo
-            aResults(4) = hasTrailer
+            aResults(0) = hasPoster
+            aResults(1) = hasFanart
+            aResults(2) = hasNfo
+            aResults(3) = hasTrailer
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1560,40 +1134,6 @@ foundIT:
         Return String.Empty
     End Function
 
-    Public Shared Function GetFanartPath(ByVal sPath As String, ByVal isFile As Boolean) As String
-
-        '//
-        ' Get the proper path to fanart
-        '\\
-
-        Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
-        Dim fPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
-
-        If uSettings.MovieExt Or isFile Then
-            Return String.Concat(RemoveExtFromPath(fPath), "-fanart.jpg")
-        Else
-            Return String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")
-        End If
-
-    End Function
-
-    Public Shared Function GetPosterPath(ByVal sPath As String, ByVal isFile As Boolean) As String
-
-        '//
-        ' Get the proper path to poster
-        '\\
-
-        Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
-        Dim pPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
-
-        If uSettings.MovieExt Or isFile Then
-            Return String.Concat(RemoveExtFromPath(pPath), ".tbn")
-        Else
-            Return String.Concat(Directory.GetParent(pPath).ToString, "\movie.tbn")
-        End If
-
-    End Function
-
     Public Shared Function GetNfoPath(ByVal sPath As String, ByVal isFile As Boolean) As String
 
         '//
@@ -1603,13 +1143,47 @@ foundIT:
         Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
         Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
 
-        If uSettings.MovieExt Or isFile Then
+        If uSettings.MovieNameNFO AndAlso File.Exists(String.Concat(RemoveExtFromPath(nPath), ".nfo")) Then
             Return String.Concat(RemoveExtFromPath(nPath), ".nfo")
-        Else
+        ElseIf Not isFile AndAlso uSettings.MovieNFO AndAlso File.Exists(String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")) Then
             Return String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")
+        Else
+            Return String.Empty
         End If
 
     End Function
+
+    Public Shared Sub SaveMovieToNFO(ByVal movieToSave As Media.Movie, ByVal sPath As String, ByVal isFile As Boolean)
+
+        '//
+        ' Serialize Media.Movie to an NFO
+        '\\
+
+        Try
+
+            Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
+            Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
+            Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
+
+            If uSettings.MovieNameNFO OrElse isFile Then
+                Dim xmlSW As New StreamWriter(String.Concat(RemoveExtFromPath(nPath), ".nfo"))
+                xmlSer.Serialize(xmlSW, movieToSave)
+                xmlSW.Close()
+                xmlSW.Dispose()
+            End If
+
+            If Not isFile AndAlso uSettings.MovieNFO Then
+                Dim xmlSW As New StreamWriter(String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo"))
+
+                xmlSer.Serialize(xmlSW, movieToSave)
+                xmlSW.Close()
+                xmlSW.Dispose()
+            End If
+
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
     Public Shared Function GetTrailerPath(ByVal sPath As String) As String
 
@@ -1717,57 +1291,6 @@ foundIT:
         End If
     End Function
 
-    Public Shared Function SecondaryFileCheck(ByVal sPath As String, ByVal sType As String) As String
-
-        '//
-        ' If a file isn't in the proper location, see if an alternate exists
-        '\\
-
-        Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
-        Dim fPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
-        Dim rPath As String = String.Empty
-        Try
-
-            Select Case sType
-                Case "fanart"
-                    rPath = String.Concat(RemoveExtFromPath(fPath), "-fanart.jpg")
-                    If File.Exists(rPath) Then
-                        Return rPath
-                    End If
-
-                    rPath = String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")
-                    If File.Exists(rPath) Then
-                        Return rPath
-                    End If
-                Case "poster"
-                    rPath = String.Concat(RemoveExtFromPath(fPath), ".tbn")
-                    If File.Exists(rPath) Then
-                        Return rPath
-                    End If
-
-                    rPath = String.Concat(Directory.GetParent(fPath).ToString, "\movie.tbn")
-                    If File.Exists(rPath) Then
-                        Return rPath
-                    End If
-                Case "nfo"
-                    rPath = String.Concat(RemoveExtFromPath(fPath), ".nfo")
-                    If File.Exists(rPath) Then
-                        Return rPath
-                    End If
-
-                    rPath = String.Concat(Directory.GetParent(fPath).ToString, "\movie.nfo")
-                    If File.Exists(rPath) Then
-                        Return rPath
-                    End If
-            End Select
-
-            Return String.Empty
-
-        Catch ex As Exception
-            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Return String.Empty
-        End Try
-    End Function
 
     Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
 

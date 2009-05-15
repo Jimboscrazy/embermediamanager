@@ -169,7 +169,7 @@ Namespace IMDB
             End Try
         End Sub
 
-        Public Sub GetMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As Media.Movie, Optional ByVal FullCrew As Boolean = False, Optional ByVal FullCast As Boolean = False)
+        Public Sub GetMovieInfoAsync(ByVal imdbID As String, ByRef IMDBMovie As Media.Movie, Optional ByVal FullCrew As Boolean = False, Optional ByVal FullCast As Boolean = False)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = True
@@ -358,7 +358,13 @@ mResult:
 
                     Dim Cert = From M As Match In rCert Select N = String.Format("{0}:{1}", M.Groups(1).ToString.Trim, M.Groups(2).ToString.Trim) Where N.Contains(Master.uSettings.CertificationLang)
 
-                    IMDBMovie.Certification = Strings.Join(Cert.ToArray, " / ").Trim
+                    If Not String.IsNullOrEmpty(Master.uSettings.CertificationLang) Then
+                        If Cert.Count > 0 Then
+                            IMDBMovie.Certification = Cert(0).ToString
+                        End If
+                    Else
+                        IMDBMovie.Certification = Strings.Join(Cert.ToArray, " / ").Trim
+                    End If
                 End If
 
                 'Get Release Date ( According to your country )

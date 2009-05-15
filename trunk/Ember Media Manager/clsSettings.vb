@@ -38,7 +38,6 @@ Public Class ummSettings
     Private _studiotags As Boolean
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
-    Private _moviemediaCol As Boolean
     Private _movieposterCol As Boolean
     Private _moviefanartCol As Boolean
     Private _movieinfoCol As Boolean
@@ -60,10 +59,20 @@ Public Class ummSettings
     Private _logerrors As Boolean
     Private _usefolderName As Boolean
     Private _properCase As Boolean
-    Private _movieext As Boolean
     Private _overwritenfo As Boolean
     Private _usenamefromNfo As Boolean
     Private _movielist As New ArrayList
+    Private _movietbn As Boolean
+    Private _movienametbn As Boolean
+    Private _moviejpg As Boolean
+    Private _movienamejpg As Boolean
+    Private _postertbn As Boolean
+    Private _posterjpg As Boolean
+    Private _folderjpg As Boolean
+    Private _fanartjpg As Boolean
+    Private _movienamefanartjpg As Boolean
+    Private _movienfo As Boolean
+    Private _movienamenfo As Boolean
 
     Public Property FilterCustom() As ArrayList
         Get
@@ -179,15 +188,6 @@ Public Class ummSettings
         End Get
         Set(ByVal value As Boolean)
             Me._fullcrew = value
-        End Set
-    End Property
-
-    Public Property MovieMediaCol() As Boolean
-        Get
-            Return Me._moviemediaCol
-        End Get
-        Set(ByVal value As Boolean)
-            Me._moviemediaCol = value
         End Set
     End Property
 
@@ -380,15 +380,6 @@ Public Class ummSettings
         End Set
     End Property
 
-    Public Property MovieExt() As Boolean
-        Get
-            Return Me._movieext
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movieext = value
-        End Set
-    End Property
-
     Public Property OverwriteNfo() As Boolean
         Get
             Return Me._overwritenfo
@@ -416,6 +407,95 @@ Public Class ummSettings
         End Set
     End Property
 
+    Public Property MovieTBN() As Boolean
+        Get
+            Return Me._movietbn
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movietbn = value
+        End Set
+    End Property
+    Public Property MovieNameTBN() As Boolean
+        Get
+            Return Me._movienametbn
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movienametbn = value
+        End Set
+    End Property
+    Public Property MovieJPG() As Boolean
+        Get
+            Return Me._moviejpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviejpg = value
+        End Set
+    End Property
+    Public Property MovieNameJPG() As Boolean
+        Get
+            Return Me._movienamejpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movienamejpg = value
+        End Set
+    End Property
+    Public Property PosterTBN() As Boolean
+        Get
+            Return Me._postertbn
+        End Get
+        Set(ByVal value As Boolean)
+            Me._postertbn = value
+        End Set
+    End Property
+    Public Property PosterJPG() As Boolean
+        Get
+            Return Me._posterjpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._posterjpg = value
+        End Set
+    End Property
+    Public Property FolderJPG() As Boolean
+        Get
+            Return Me._folderjpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._folderjpg = value
+        End Set
+    End Property
+    Public Property FanartJPG() As Boolean
+        Get
+            Return Me._fanartjpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fanartjpg = value
+        End Set
+    End Property
+    Public Property MovieNameFanartJPG() As Boolean
+        Get
+            Return Me._movienamefanartjpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movienamefanartjpg = value
+        End Set
+    End Property
+    Public Property MovieNFO() As Boolean
+        Get
+            Return Me._movienfo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movienfo = value
+        End Set
+    End Property
+    Public Property MovieNameNFO() As Boolean
+        Get
+            Return Me._movienamenfo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movienamenfo = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -434,7 +514,6 @@ Public Class ummSettings
         Me._studiotags = False
         Me._fullcast = False
         Me._fullcrew = False
-        Me._moviemediaCol = False
         Me._movieposterCol = False
         Me._moviefanartCol = False
         Me._movieinfoCol = False
@@ -456,10 +535,20 @@ Public Class ummSettings
         Me._logerrors = False
         Me._usefolderName = True
         Me._properCase = False
-        Me._movieext = True
         Me._overwritenfo = False
         Me._usenamefromNfo = False
         Me._movielist.Clear()
+        Me._movietbn = False
+        Me._movienametbn = False
+        Me._moviejpg = False
+        Me._movienamejpg = False
+        Me._postertbn = False
+        Me._posterjpg = False
+        Me._folderjpg = False
+        Me._fanartjpg = False
+        Me._movienamefanartjpg = False
+        Me._movienfo = False
+        Me._movienamenfo = False
     End Sub
 
     Public Sub Save()
