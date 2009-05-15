@@ -2,16 +2,19 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * Fix for extrathumbs being created even when not utilized
- * Fix for file type sources not loading all movies
- * Fix for incompatible media info
- * Support for MoviePostersDB.com
- * Another attempt to fix Ember not appearing on top when first opened
+ * Fix: Extrathumbs being created even when not utilized
+ * Fix: File type sources not loading all movies
+ * Fix: Incompatible media info
+ * Fix: Another attempt to fix Ember not appearing on top when first opened
+ * Fix: Scraper not working if certification language is selected
+ * Feature: Support for MoviePostersDB.com
+ * Feature: More file naming schemes
+ * Feature: Lock plot, outline, and title
 
 *Changes in r10:*
- * Disable doublebuffering on main form as a fix to the "black status bar" issue 
- * Ability to open read-only files
- * Changed versioning again. I wrote a powershell script to automatically get the proper version from svn to make it easier on me.
- * Fix for Ember not appearing on top when first opened
- * Fix for IMDB single scraper not working in some instances
- * Fix some elements of the interface not re-enabling after searching IMDB
+ * Fix: Disable doublebuffering on main form as a fix to the "black status bar" issue 
+ * Fix: Ability to open read-only files
+ * Change: Versioning (again). I wrote a powershell script to automatically get the proper version from svn to make it easier on me.
+ * Fix: Ember not appearing on top when first opened
+ * Fix: IMDB single scraper not working in some instances
+ * Fix: Some elements of the interface not re-enabling after searching IMDB
