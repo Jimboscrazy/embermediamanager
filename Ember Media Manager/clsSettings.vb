@@ -77,6 +77,7 @@ Public Class ummSettings
     Private _lockplot As Boolean
     Private _lockoutline As Boolean
     Private _locktitle As Boolean
+    Private _singlescrapeimages As Boolean
 
     Public Property FilterCustom() As ArrayList
         Get
@@ -545,6 +546,16 @@ Public Class ummSettings
             Me._locktitle = value
         End Set
     End Property
+
+    Public Property SingleScrapeImages() As Boolean
+        Get
+            Return Me._singlescrapeimages
+        End Get
+        Set(ByVal value As Boolean)
+            Me._singlescrapeimages = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -602,6 +613,7 @@ Public Class ummSettings
         Me._lockplot = False
         Me._lockoutline = False
         Me._locktitle = False
+        Me._singlescrapeimages = False
     End Sub
 
     Public Sub Save()

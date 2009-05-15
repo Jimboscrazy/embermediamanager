@@ -2472,6 +2472,10 @@ Public Class frmMain
                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                     End If
                 End If
+                If Master.uSettings.SingleScrapeImages Then
+                    dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
+                    dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
+                End If
                 If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                 End If

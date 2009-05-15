@@ -425,6 +425,10 @@ Public Class dlgSettings
     Private Sub chkLockTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockTitle.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkSingleScrapeImages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingleScrapeImages.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -555,6 +559,7 @@ Public Class dlgSettings
             Master.uSettings.LockPlot = Me.chkLockPlot.Checked
             Master.uSettings.LockOutline = Me.chkLockOutline.Checked
             Master.uSettings.LockTitle = Me.chkLockTitle.Checked
+            Master.uSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
 
             Master.uSettings.Save()
         Catch ex As Exception
@@ -633,6 +638,7 @@ Public Class dlgSettings
             Me.chkLockPlot.Checked = Master.uSettings.LockPlot
             Me.chkLockOutline.Checked = Master.uSettings.LockOutline
             Me.chkLockTitle.Checked = Master.uSettings.LockTitle
+            Me.chkSingleScrapeImages.Checked = Master.uSettings.SingleScrapeImages
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
