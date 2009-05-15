@@ -71,6 +71,7 @@ Public Class ummSettings
     Private _folderjpg As Boolean
     Private _fanartjpg As Boolean
     Private _movienamefanartjpg As Boolean
+    Private _movienamedotfanartjpg As Boolean
     Private _movienfo As Boolean
     Private _movienamenfo As Boolean
 
@@ -415,6 +416,7 @@ Public Class ummSettings
             Me._movietbn = value
         End Set
     End Property
+
     Public Property MovieNameTBN() As Boolean
         Get
             Return Me._movienametbn
@@ -423,6 +425,7 @@ Public Class ummSettings
             Me._movienametbn = value
         End Set
     End Property
+
     Public Property MovieJPG() As Boolean
         Get
             Return Me._moviejpg
@@ -431,6 +434,7 @@ Public Class ummSettings
             Me._moviejpg = value
         End Set
     End Property
+
     Public Property MovieNameJPG() As Boolean
         Get
             Return Me._movienamejpg
@@ -439,6 +443,7 @@ Public Class ummSettings
             Me._movienamejpg = value
         End Set
     End Property
+
     Public Property PosterTBN() As Boolean
         Get
             Return Me._postertbn
@@ -447,6 +452,7 @@ Public Class ummSettings
             Me._postertbn = value
         End Set
     End Property
+
     Public Property PosterJPG() As Boolean
         Get
             Return Me._posterjpg
@@ -455,6 +461,7 @@ Public Class ummSettings
             Me._posterjpg = value
         End Set
     End Property
+
     Public Property FolderJPG() As Boolean
         Get
             Return Me._folderjpg
@@ -463,6 +470,7 @@ Public Class ummSettings
             Me._folderjpg = value
         End Set
     End Property
+
     Public Property FanartJPG() As Boolean
         Get
             Return Me._fanartjpg
@@ -471,6 +479,7 @@ Public Class ummSettings
             Me._fanartjpg = value
         End Set
     End Property
+
     Public Property MovieNameFanartJPG() As Boolean
         Get
             Return Me._movienamefanartjpg
@@ -479,6 +488,16 @@ Public Class ummSettings
             Me._movienamefanartjpg = value
         End Set
     End Property
+
+    Public Property MovieNameDotFanartJPG() As Boolean
+        Get
+            Return Me._movienamedotfanartjpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movienamedotfanartjpg = value
+        End Set
+    End Property
+
     Public Property MovieNFO() As Boolean
         Get
             Return Me._movienfo
@@ -487,6 +506,7 @@ Public Class ummSettings
             Me._movienfo = value
         End Set
     End Property
+
     Public Property MovieNameNFO() As Boolean
         Get
             Return Me._movienamenfo
@@ -547,6 +567,7 @@ Public Class ummSettings
         Me._folderjpg = False
         Me._fanartjpg = False
         Me._movienamefanartjpg = False
+        Me._movienamedotfanartjpg = False
         Me._movienfo = False
         Me._movienamenfo = False
     End Sub

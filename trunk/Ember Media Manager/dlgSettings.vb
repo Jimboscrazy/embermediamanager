@@ -410,6 +410,9 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub chkMovieNameDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameDotFanartJPG.CheckedChanged
+        btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -534,6 +537,7 @@ Public Class dlgSettings
             Master.uSettings.FolderJPG = Me.chkFolderJPG.Checked
             Master.uSettings.FanartJPG = Me.chkFanartJPG.Checked
             Master.uSettings.MovieNameFanartJPG = Me.chkMovieNameFanartJPG.Checked
+            Master.uSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
             Master.uSettings.MovieNFO = Me.chkMovieNFO.Checked
             Master.uSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
 
@@ -609,6 +613,7 @@ Public Class dlgSettings
             Me.chkFolderJPG.Checked = Master.uSettings.FolderJPG
             Me.chkFanartJPG.Checked = Master.uSettings.FanartJPG
             Me.chkMovieNameFanartJPG.Checked = Master.uSettings.MovieNameFanartJPG
+            Me.chkMovieNameDotFanartJPG.Checked = Master.uSettings.MovieNameDotFanartJPG
             Me.chkMovieNFO.Checked = Master.uSettings.MovieNFO
             Me.chkMovieNameNFO.Checked = Master.uSettings.MovieNameNFO
 

@@ -118,6 +118,8 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.GroupBox9 = New System.Windows.Forms.GroupBox
+        Me.chkMovieNameDotFanartJPG = New System.Windows.Forms.CheckBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -136,6 +138,7 @@ Partial Class dlgSettings
         Me.GroupBox5.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox9.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -550,9 +553,9 @@ Partial Class dlgSettings
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.GroupBox8)
         Me.TabPage1.Controls.Add(Me.chkTitleFromNfo)
         Me.TabPage1.Controls.Add(Me.lvMovies)
-        Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.btnMovieAddFiles)
         Me.TabPage1.Controls.Add(Me.GroupBox2)
         Me.TabPage1.Controls.Add(Me.btnMovieRem)
@@ -601,31 +604,22 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.chkUseMPDB)
-        Me.GroupBox1.Controls.Add(Me.chkOverwriteFanart)
-        Me.GroupBox1.Controls.Add(Me.chkOverwritePoster)
-        Me.GroupBox1.Controls.Add(Me.cbFanartSize)
-        Me.GroupBox1.Controls.Add(Me.lblFanartSize)
-        Me.GroupBox1.Controls.Add(Me.lblPosterSize)
-        Me.GroupBox1.Controls.Add(Me.cbPosterSize)
-        Me.GroupBox1.Controls.Add(Me.chkUseIMPA)
-        Me.GroupBox1.Controls.Add(Me.chkUseTMDB)
         Me.GroupBox1.Controls.Add(Me.chkFullCast)
         Me.GroupBox1.Controls.Add(Me.chkFullCrew)
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Controls.Add(Me.chkStudio)
-        Me.GroupBox1.Location = New System.Drawing.Point(149, 138)
+        Me.GroupBox1.Location = New System.Drawing.Point(261, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(433, 179)
+        Me.GroupBox1.Size = New System.Drawing.Size(193, 139)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Scraper Settings"
+        Me.GroupBox1.Text = "Options"
         '
         'chkUseMPDB
         '
         Me.chkUseMPDB.AutoSize = True
-        Me.chkUseMPDB.Location = New System.Drawing.Point(244, 65)
+        Me.chkUseMPDB.Location = New System.Drawing.Point(15, 65)
         Me.chkUseMPDB.Name = "chkUseMPDB"
         Me.chkUseMPDB.Size = New System.Drawing.Size(188, 17)
         Me.chkUseMPDB.TabIndex = 43
@@ -635,7 +629,7 @@ Partial Class dlgSettings
         'chkOverwriteFanart
         '
         Me.chkOverwriteFanart.AutoSize = True
-        Me.chkOverwriteFanart.Location = New System.Drawing.Point(6, 160)
+        Me.chkOverwriteFanart.Location = New System.Drawing.Point(15, 212)
         Me.chkOverwriteFanart.Name = "chkOverwriteFanart"
         Me.chkOverwriteFanart.Size = New System.Drawing.Size(143, 17)
         Me.chkOverwriteFanart.TabIndex = 38
@@ -645,7 +639,7 @@ Partial Class dlgSettings
         'chkOverwritePoster
         '
         Me.chkOverwritePoster.AutoSize = True
-        Me.chkOverwritePoster.Location = New System.Drawing.Point(6, 138)
+        Me.chkOverwritePoster.Location = New System.Drawing.Point(15, 190)
         Me.chkOverwritePoster.Name = "chkOverwritePoster"
         Me.chkOverwritePoster.Size = New System.Drawing.Size(143, 17)
         Me.chkOverwritePoster.TabIndex = 37
@@ -657,7 +651,7 @@ Partial Class dlgSettings
         Me.cbFanartSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFanartSize.FormattingEnabled = True
         Me.cbFanartSize.Items.AddRange(New Object() {"Large", "Medium", "Small"})
-        Me.cbFanartSize.Location = New System.Drawing.Point(244, 151)
+        Me.cbFanartSize.Location = New System.Drawing.Point(15, 151)
         Me.cbFanartSize.Name = "cbFanartSize"
         Me.cbFanartSize.Size = New System.Drawing.Size(179, 21)
         Me.cbFanartSize.TabIndex = 42
@@ -665,7 +659,7 @@ Partial Class dlgSettings
         'lblFanartSize
         '
         Me.lblFanartSize.AutoSize = True
-        Me.lblFanartSize.Location = New System.Drawing.Point(241, 135)
+        Me.lblFanartSize.Location = New System.Drawing.Point(12, 135)
         Me.lblFanartSize.Name = "lblFanartSize"
         Me.lblFanartSize.Size = New System.Drawing.Size(106, 13)
         Me.lblFanartSize.TabIndex = 15
@@ -674,7 +668,7 @@ Partial Class dlgSettings
         'lblPosterSize
         '
         Me.lblPosterSize.AutoSize = True
-        Me.lblPosterSize.Location = New System.Drawing.Point(241, 88)
+        Me.lblPosterSize.Location = New System.Drawing.Point(12, 88)
         Me.lblPosterSize.Name = "lblPosterSize"
         Me.lblPosterSize.Size = New System.Drawing.Size(106, 13)
         Me.lblPosterSize.TabIndex = 14
@@ -685,7 +679,7 @@ Partial Class dlgSettings
         Me.cbPosterSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbPosterSize.FormattingEnabled = True
         Me.cbPosterSize.Items.AddRange(New Object() {"X-Large", "Large", "Medium", "Small", "Wide"})
-        Me.cbPosterSize.Location = New System.Drawing.Point(244, 105)
+        Me.cbPosterSize.Location = New System.Drawing.Point(15, 105)
         Me.cbPosterSize.Name = "cbPosterSize"
         Me.cbPosterSize.Size = New System.Drawing.Size(179, 21)
         Me.cbPosterSize.TabIndex = 41
@@ -693,7 +687,7 @@ Partial Class dlgSettings
         'chkUseIMPA
         '
         Me.chkUseIMPA.AutoSize = True
-        Me.chkUseIMPA.Location = New System.Drawing.Point(244, 42)
+        Me.chkUseIMPA.Location = New System.Drawing.Point(15, 42)
         Me.chkUseIMPA.Name = "chkUseIMPA"
         Me.chkUseIMPA.Size = New System.Drawing.Size(163, 17)
         Me.chkUseIMPA.TabIndex = 40
@@ -703,7 +697,7 @@ Partial Class dlgSettings
         'chkUseTMDB
         '
         Me.chkUseTMDB.AutoSize = True
-        Me.chkUseTMDB.Location = New System.Drawing.Point(244, 19)
+        Me.chkUseTMDB.Location = New System.Drawing.Point(15, 19)
         Me.chkUseTMDB.Name = "chkUseTMDB"
         Me.chkUseTMDB.Size = New System.Drawing.Size(140, 17)
         Me.chkUseTMDB.TabIndex = 39
@@ -777,7 +771,7 @@ Partial Class dlgSettings
         Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 138)
+        Me.GroupBox2.Location = New System.Drawing.Point(445, 138)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(137, 112)
         Me.GroupBox2.TabIndex = 54
@@ -854,13 +848,14 @@ Partial Class dlgSettings
         '
         'TabPage2
         '
-        Me.TabPage2.Controls.Add(Me.GroupBox8)
+        Me.TabPage2.Controls.Add(Me.GroupBox9)
+        Me.TabPage2.Controls.Add(Me.GroupBox1)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(585, 321)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Other"
+        Me.TabPage2.Text = "Scraper"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
         'GroupBox8
@@ -868,9 +863,9 @@ Partial Class dlgSettings
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
-        Me.GroupBox8.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox8.Location = New System.Drawing.Point(6, 138)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(241, 206)
+        Me.GroupBox8.Size = New System.Drawing.Size(362, 177)
         Me.GroupBox8.TabIndex = 64
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
@@ -879,9 +874,9 @@ Partial Class dlgSettings
         '
         Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
         Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
-        Me.GroupBox7.Location = New System.Drawing.Point(118, 120)
+        Me.GroupBox7.Location = New System.Drawing.Point(231, 110)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(117, 78)
+        Me.GroupBox7.Size = New System.Drawing.Size(117, 61)
         Me.GroupBox7.TabIndex = 65
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "NFO"
@@ -889,7 +884,7 @@ Partial Class dlgSettings
         'chkMovieNameNFO
         '
         Me.chkMovieNameNFO.AutoSize = True
-        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 48)
+        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 41)
         Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
         Me.chkMovieNameNFO.Size = New System.Drawing.Size(84, 17)
         Me.chkMovieNameNFO.TabIndex = 69
@@ -899,7 +894,7 @@ Partial Class dlgSettings
         'chkMovieNFO
         '
         Me.chkMovieNFO.AutoSize = True
-        Me.chkMovieNFO.Location = New System.Drawing.Point(6, 25)
+        Me.chkMovieNFO.Location = New System.Drawing.Point(6, 18)
         Me.chkMovieNFO.Name = "chkMovieNFO"
         Me.chkMovieNFO.Size = New System.Drawing.Size(72, 17)
         Me.chkMovieNFO.TabIndex = 68
@@ -908,11 +903,12 @@ Partial Class dlgSettings
         '
         'GroupBox6
         '
+        Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
-        Me.GroupBox6.Location = New System.Drawing.Point(118, 19)
+        Me.GroupBox6.Location = New System.Drawing.Point(229, 18)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(117, 78)
+        Me.GroupBox6.Size = New System.Drawing.Size(117, 86)
         Me.GroupBox6.TabIndex = 64
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Fanart"
@@ -920,7 +916,7 @@ Partial Class dlgSettings
         'chkMovieNameFanartJPG
         '
         Me.chkMovieNameFanartJPG.AutoSize = True
-        Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 48)
+        Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 42)
         Me.chkMovieNameFanartJPG.Name = "chkMovieNameFanartJPG"
         Me.chkMovieNameFanartJPG.Size = New System.Drawing.Size(113, 17)
         Me.chkMovieNameFanartJPG.TabIndex = 67
@@ -930,7 +926,7 @@ Partial Class dlgSettings
         'chkFanartJPG
         '
         Me.chkFanartJPG.AutoSize = True
-        Me.chkFanartJPG.Location = New System.Drawing.Point(6, 25)
+        Me.chkFanartJPG.Location = New System.Drawing.Point(6, 19)
         Me.chkFanartJPG.Name = "chkFanartJPG"
         Me.chkFanartJPG.Size = New System.Drawing.Size(70, 17)
         Me.chkFanartJPG.TabIndex = 66
@@ -948,7 +944,7 @@ Partial Class dlgSettings
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
         Me.GroupBox5.Location = New System.Drawing.Point(6, 18)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(106, 180)
+        Me.GroupBox5.Size = New System.Drawing.Size(199, 126)
         Me.GroupBox5.TabIndex = 61
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Posters"
@@ -956,7 +952,7 @@ Partial Class dlgSettings
         'chkFolderJPG
         '
         Me.chkFolderJPG.AutoSize = True
-        Me.chkFolderJPG.Location = New System.Drawing.Point(6, 157)
+        Me.chkFolderJPG.Location = New System.Drawing.Point(10, 97)
         Me.chkFolderJPG.Name = "chkFolderJPG"
         Me.chkFolderJPG.Size = New System.Drawing.Size(69, 17)
         Me.chkFolderJPG.TabIndex = 70
@@ -966,7 +962,7 @@ Partial Class dlgSettings
         'chkPosterJPG
         '
         Me.chkPosterJPG.AutoSize = True
-        Me.chkPosterJPG.Location = New System.Drawing.Point(6, 134)
+        Me.chkPosterJPG.Location = New System.Drawing.Point(101, 74)
         Me.chkPosterJPG.Name = "chkPosterJPG"
         Me.chkPosterJPG.Size = New System.Drawing.Size(72, 17)
         Me.chkPosterJPG.TabIndex = 69
@@ -976,7 +972,7 @@ Partial Class dlgSettings
         'chkPosterTBN
         '
         Me.chkPosterTBN.AutoSize = True
-        Me.chkPosterTBN.Location = New System.Drawing.Point(6, 111)
+        Me.chkPosterTBN.Location = New System.Drawing.Point(10, 74)
         Me.chkPosterTBN.Name = "chkPosterTBN"
         Me.chkPosterTBN.Size = New System.Drawing.Size(73, 17)
         Me.chkPosterTBN.TabIndex = 68
@@ -986,7 +982,7 @@ Partial Class dlgSettings
         'chkMovieNameJPG
         '
         Me.chkMovieNameJPG.AutoSize = True
-        Me.chkMovieNameJPG.Location = New System.Drawing.Point(6, 88)
+        Me.chkMovieNameJPG.Location = New System.Drawing.Point(101, 51)
         Me.chkMovieNameJPG.Name = "chkMovieNameJPG"
         Me.chkMovieNameJPG.Size = New System.Drawing.Size(83, 17)
         Me.chkMovieNameJPG.TabIndex = 67
@@ -996,7 +992,7 @@ Partial Class dlgSettings
         'chkMovieJPG
         '
         Me.chkMovieJPG.AutoSize = True
-        Me.chkMovieJPG.Location = New System.Drawing.Point(6, 65)
+        Me.chkMovieJPG.Location = New System.Drawing.Point(10, 51)
         Me.chkMovieJPG.Name = "chkMovieJPG"
         Me.chkMovieJPG.Size = New System.Drawing.Size(71, 17)
         Me.chkMovieJPG.TabIndex = 66
@@ -1006,7 +1002,7 @@ Partial Class dlgSettings
         'chkMovieNameTBN
         '
         Me.chkMovieNameTBN.AutoSize = True
-        Me.chkMovieNameTBN.Location = New System.Drawing.Point(6, 42)
+        Me.chkMovieNameTBN.Location = New System.Drawing.Point(101, 28)
         Me.chkMovieNameTBN.Name = "chkMovieNameTBN"
         Me.chkMovieNameTBN.Size = New System.Drawing.Size(84, 17)
         Me.chkMovieNameTBN.TabIndex = 65
@@ -1016,7 +1012,7 @@ Partial Class dlgSettings
         'chkMovieTBN
         '
         Me.chkMovieTBN.AutoSize = True
-        Me.chkMovieTBN.Location = New System.Drawing.Point(6, 19)
+        Me.chkMovieTBN.Location = New System.Drawing.Point(10, 28)
         Me.chkMovieTBN.Name = "chkMovieTBN"
         Me.chkMovieTBN.Size = New System.Drawing.Size(72, 17)
         Me.chkMovieTBN.TabIndex = 64
@@ -1081,7 +1077,7 @@ Partial Class dlgSettings
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(616, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(1058, 64)
         Me.pnlTop.TabIndex = 57
         '
         'Label2
@@ -1118,13 +1114,41 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
+        'GroupBox9
+        '
+        Me.GroupBox9.Controls.Add(Me.chkOverwriteFanart)
+        Me.GroupBox9.Controls.Add(Me.chkUseMPDB)
+        Me.GroupBox9.Controls.Add(Me.chkOverwritePoster)
+        Me.GroupBox9.Controls.Add(Me.chkUseTMDB)
+        Me.GroupBox9.Controls.Add(Me.chkUseIMPA)
+        Me.GroupBox9.Controls.Add(Me.cbPosterSize)
+        Me.GroupBox9.Controls.Add(Me.cbFanartSize)
+        Me.GroupBox9.Controls.Add(Me.lblPosterSize)
+        Me.GroupBox9.Controls.Add(Me.lblFanartSize)
+        Me.GroupBox9.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox9.Name = "GroupBox9"
+        Me.GroupBox9.Size = New System.Drawing.Size(249, 240)
+        Me.GroupBox9.TabIndex = 56
+        Me.GroupBox9.TabStop = False
+        Me.GroupBox9.Text = "Images"
+        '
+        'chkMovieNameDotFanartJPG
+        '
+        Me.chkMovieNameDotFanartJPG.AutoSize = True
+        Me.chkMovieNameDotFanartJPG.Location = New System.Drawing.Point(6, 63)
+        Me.chkMovieNameDotFanartJPG.Name = "chkMovieNameDotFanartJPG"
+        Me.chkMovieNameDotFanartJPG.Size = New System.Drawing.Size(113, 17)
+        Me.chkMovieNameDotFanartJPG.TabIndex = 68
+        Me.chkMovieNameDotFanartJPG.Text = "<movie>.fanart.jpg"
+        Me.chkMovieNameDotFanartJPG.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(616, 477)
+        Me.ClientSize = New System.Drawing.Size(1058, 477)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
@@ -1165,6 +1189,8 @@ Partial Class dlgSettings
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox9.ResumeLayout(False)
+        Me.GroupBox9.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1263,4 +1289,6 @@ Partial Class dlgSettings
     Friend WithEvents chkMovieNFO As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNameFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox9 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMovieNameDotFanartJPG As System.Windows.Forms.CheckBox
 End Class
