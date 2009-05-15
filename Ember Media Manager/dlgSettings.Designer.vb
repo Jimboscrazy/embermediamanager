@@ -23,8 +23,6 @@ Partial Class dlgSettings
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Me.btnMovieAddFolder = New System.Windows.Forms.Button
-        Me.btnMovieRem = New System.Windows.Forms.Button
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.tabGeneral = New System.Windows.Forms.TabPage
@@ -64,17 +62,14 @@ Partial Class dlgSettings
         Me.txtFilter = New System.Windows.Forms.TextBox
         Me.lstFilters = New System.Windows.Forms.ListBox
         Me.tabMovies = New System.Windows.Forms.TabPage
+        Me.TabControl2 = New System.Windows.Forms.TabControl
+        Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.chkTitleFromNfo = New System.Windows.Forms.CheckBox
-        Me.rbMovieName = New System.Windows.Forms.RadioButton
-        Me.rbMovie = New System.Windows.Forms.RadioButton
-        Me.chkUseFolderNames = New System.Windows.Forms.CheckBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.chkMovieTrailerCol = New System.Windows.Forms.CheckBox
-        Me.chkMovieInfoCol = New System.Windows.Forms.CheckBox
-        Me.chkMovieFanartCol = New System.Windows.Forms.CheckBox
-        Me.chkMoviePosterCol = New System.Windows.Forms.CheckBox
-        Me.chkMovieMediaCol = New System.Windows.Forms.CheckBox
+        Me.lvMovies = New System.Windows.Forms.ListView
+        Me.colPath = New System.Windows.Forms.ColumnHeader
+        Me.colType = New System.Windows.Forms.ColumnHeader
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.chkUseMPDB = New System.Windows.Forms.CheckBox
         Me.chkOverwriteFanart = New System.Windows.Forms.CheckBox
         Me.chkOverwritePoster = New System.Windows.Forms.CheckBox
         Me.cbFanartSize = New System.Windows.Forms.ComboBox
@@ -89,9 +84,30 @@ Partial Class dlgSettings
         Me.chkCert = New System.Windows.Forms.CheckBox
         Me.chkStudio = New System.Windows.Forms.CheckBox
         Me.btnMovieAddFiles = New System.Windows.Forms.Button
-        Me.lvMovies = New System.Windows.Forms.ListView
-        Me.colPath = New System.Windows.Forms.ColumnHeader
-        Me.colType = New System.Windows.Forms.ColumnHeader
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.chkMovieTrailerCol = New System.Windows.Forms.CheckBox
+        Me.chkMovieInfoCol = New System.Windows.Forms.CheckBox
+        Me.chkMovieFanartCol = New System.Windows.Forms.CheckBox
+        Me.chkMoviePosterCol = New System.Windows.Forms.CheckBox
+        Me.btnMovieRem = New System.Windows.Forms.Button
+        Me.btnMovieAddFolder = New System.Windows.Forms.Button
+        Me.chkUseFolderNames = New System.Windows.Forms.CheckBox
+        Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.GroupBox8 = New System.Windows.Forms.GroupBox
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox
+        Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
+        Me.chkMovieNFO = New System.Windows.Forms.CheckBox
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox
+        Me.chkMovieNameFanartJPG = New System.Windows.Forms.CheckBox
+        Me.chkFanartJPG = New System.Windows.Forms.CheckBox
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox
+        Me.chkFolderJPG = New System.Windows.Forms.CheckBox
+        Me.chkPosterJPG = New System.Windows.Forms.CheckBox
+        Me.chkPosterTBN = New System.Windows.Forms.CheckBox
+        Me.chkMovieNameJPG = New System.Windows.Forms.CheckBox
+        Me.chkMovieJPG = New System.Windows.Forms.CheckBox
+        Me.chkMovieNameTBN = New System.Windows.Forms.CheckBox
+        Me.chkMovieTBN = New System.Windows.Forms.CheckBox
         Me.tabShows = New System.Windows.Forms.TabPage
         Me.tabMusic = New System.Windows.Forms.TabPage
         Me.btnOK = New System.Windows.Forms.Button
@@ -102,7 +118,6 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.chkUseMPDB = New System.Windows.Forms.CheckBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -110,29 +125,18 @@ Partial Class dlgSettings
         Me.gbColors.SuspendLayout()
         Me.gbFilters.SuspendLayout()
         Me.tabMovies.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
+        Me.TabControl2.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
+        Me.GroupBox8.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'btnMovieAddFolder
-        '
-        Me.btnMovieAddFolder.Location = New System.Drawing.Point(478, 6)
-        Me.btnMovieAddFolder.Name = "btnMovieAddFolder"
-        Me.btnMovieAddFolder.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieAddFolder.TabIndex = 24
-        Me.btnMovieAddFolder.Text = "Add Folders Path"
-        Me.btnMovieAddFolder.UseVisualStyleBackColor = True
-        '
-        'btnMovieRem
-        '
-        Me.btnMovieRem.Location = New System.Drawing.Point(478, 88)
-        Me.btnMovieRem.Name = "btnMovieRem"
-        Me.btnMovieRem.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieRem.TabIndex = 26
-        Me.btnMovieRem.Text = "Remove Selected"
-        Me.btnMovieRem.UseVisualStyleBackColor = True
         '
         'TabControl1
         '
@@ -143,7 +147,7 @@ Partial Class dlgSettings
         Me.TabControl1.Location = New System.Drawing.Point(6, 70)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(596, 413)
+        Me.TabControl1.Size = New System.Drawing.Size(603, 379)
         Me.TabControl1.TabIndex = 43
         '
         'tabGeneral
@@ -155,7 +159,7 @@ Partial Class dlgSettings
         Me.tabGeneral.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneral.Name = "tabGeneral"
         Me.tabGeneral.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabGeneral.Size = New System.Drawing.Size(588, 387)
+        Me.tabGeneral.Size = New System.Drawing.Size(595, 353)
         Me.tabGeneral.TabIndex = 0
         Me.tabGeneral.Text = "General"
         Me.tabGeneral.UseVisualStyleBackColor = True
@@ -165,7 +169,7 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.chkLogErrors)
-        Me.GroupBox4.Location = New System.Drawing.Point(204, 189)
+        Me.GroupBox4.Location = New System.Drawing.Point(207, 189)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(184, 126)
         Me.GroupBox4.TabIndex = 3
@@ -211,7 +215,7 @@ Partial Class dlgSettings
         Me.GroupBox3.Controls.Add(Me.chkCleanMovieTBNb)
         Me.GroupBox3.Controls.Add(Me.chkCleanMovieTBN)
         Me.GroupBox3.Controls.Add(Me.chkCleanFolderJPG)
-        Me.GroupBox3.Location = New System.Drawing.Point(204, 6)
+        Me.GroupBox3.Location = New System.Drawing.Point(207, 6)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(184, 177)
         Me.GroupBox3.TabIndex = 1
@@ -304,7 +308,7 @@ Partial Class dlgSettings
         Me.gbColors.Controls.Add(Me.btnBackground)
         Me.gbColors.Controls.Add(Me.btnInfoPanel)
         Me.gbColors.Controls.Add(Me.btnHeaders)
-        Me.gbColors.Location = New System.Drawing.Point(394, 6)
+        Me.gbColors.Location = New System.Drawing.Point(400, 6)
         Me.gbColors.Name = "gbColors"
         Me.gbColors.Size = New System.Drawing.Size(188, 216)
         Me.gbColors.TabIndex = 2
@@ -525,129 +529,75 @@ Partial Class dlgSettings
         '
         'tabMovies
         '
-        Me.tabMovies.Controls.Add(Me.chkTitleFromNfo)
-        Me.tabMovies.Controls.Add(Me.rbMovieName)
-        Me.tabMovies.Controls.Add(Me.rbMovie)
-        Me.tabMovies.Controls.Add(Me.chkUseFolderNames)
-        Me.tabMovies.Controls.Add(Me.GroupBox2)
-        Me.tabMovies.Controls.Add(Me.GroupBox1)
-        Me.tabMovies.Controls.Add(Me.btnMovieAddFiles)
-        Me.tabMovies.Controls.Add(Me.lvMovies)
-        Me.tabMovies.Controls.Add(Me.btnMovieRem)
-        Me.tabMovies.Controls.Add(Me.btnMovieAddFolder)
+        Me.tabMovies.Controls.Add(Me.TabControl2)
         Me.tabMovies.Location = New System.Drawing.Point(4, 22)
         Me.tabMovies.Name = "tabMovies"
         Me.tabMovies.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabMovies.Size = New System.Drawing.Size(588, 387)
+        Me.tabMovies.Size = New System.Drawing.Size(595, 353)
         Me.tabMovies.TabIndex = 1
         Me.tabMovies.Text = "Movies"
         Me.tabMovies.UseVisualStyleBackColor = True
         '
+        'TabControl2
+        '
+        Me.TabControl2.Controls.Add(Me.TabPage1)
+        Me.TabControl2.Controls.Add(Me.TabPage2)
+        Me.TabControl2.Location = New System.Drawing.Point(0, 6)
+        Me.TabControl2.Name = "TabControl2"
+        Me.TabControl2.SelectedIndex = 0
+        Me.TabControl2.Size = New System.Drawing.Size(593, 347)
+        Me.TabControl2.TabIndex = 49
+        '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.chkTitleFromNfo)
+        Me.TabPage1.Controls.Add(Me.lvMovies)
+        Me.TabPage1.Controls.Add(Me.GroupBox1)
+        Me.TabPage1.Controls.Add(Me.btnMovieAddFiles)
+        Me.TabPage1.Controls.Add(Me.GroupBox2)
+        Me.TabPage1.Controls.Add(Me.btnMovieRem)
+        Me.TabPage1.Controls.Add(Me.btnMovieAddFolder)
+        Me.TabPage1.Controls.Add(Me.chkUseFolderNames)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(585, 321)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Main"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
         'chkTitleFromNfo
         '
         Me.chkTitleFromNfo.AutoSize = True
-        Me.chkTitleFromNfo.Location = New System.Drawing.Point(6, 134)
+        Me.chkTitleFromNfo.Location = New System.Drawing.Point(177, 115)
         Me.chkTitleFromNfo.Name = "chkTitleFromNfo"
         Me.chkTitleFromNfo.Size = New System.Drawing.Size(295, 17)
-        Me.chkTitleFromNfo.TabIndex = 32
+        Me.chkTitleFromNfo.TabIndex = 53
         Me.chkTitleFromNfo.Text = "Use Title From NFO if Available (Increases Loading Time)"
         Me.chkTitleFromNfo.UseVisualStyleBackColor = True
         '
-        'rbMovieName
+        'lvMovies
         '
-        Me.rbMovieName.AutoSize = True
-        Me.rbMovieName.Location = New System.Drawing.Point(279, 114)
-        Me.rbMovieName.Name = "rbMovieName"
-        Me.rbMovieName.Size = New System.Drawing.Size(104, 17)
-        Me.rbMovieName.TabIndex = 48
-        Me.rbMovieName.TabStop = True
-        Me.rbMovieName.Text = "Use <movie>.ext"
-        Me.rbMovieName.UseVisualStyleBackColor = True
+        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colPath, Me.colType})
+        Me.lvMovies.FullRowSelect = True
+        Me.lvMovies.HideSelection = False
+        Me.lvMovies.Location = New System.Drawing.Point(6, 6)
+        Me.lvMovies.Name = "lvMovies"
+        Me.lvMovies.Size = New System.Drawing.Size(466, 105)
+        Me.lvMovies.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvMovies.TabIndex = 49
+        Me.lvMovies.UseCompatibleStateImageBehavior = False
+        Me.lvMovies.View = System.Windows.Forms.View.Details
         '
-        'rbMovie
+        'colPath
         '
-        Me.rbMovie.AutoSize = True
-        Me.rbMovie.Location = New System.Drawing.Point(387, 114)
-        Me.rbMovie.Name = "rbMovie"
-        Me.rbMovie.Size = New System.Drawing.Size(92, 17)
-        Me.rbMovie.TabIndex = 47
-        Me.rbMovie.TabStop = True
-        Me.rbMovie.Text = "Use movie.ext"
-        Me.rbMovie.UseVisualStyleBackColor = True
+        Me.colPath.Text = "Path"
+        Me.colPath.Width = 388
         '
-        'chkUseFolderNames
+        'colType
         '
-        Me.chkUseFolderNames.AutoSize = True
-        Me.chkUseFolderNames.Location = New System.Drawing.Point(6, 115)
-        Me.chkUseFolderNames.Name = "chkUseFolderNames"
-        Me.chkUseFolderNames.Size = New System.Drawing.Size(146, 17)
-        Me.chkUseFolderNames.TabIndex = 46
-        Me.chkUseFolderNames.Text = "Use Folder Name for Title"
-        Me.chkUseFolderNames.UseVisualStyleBackColor = True
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.chkMovieTrailerCol)
-        Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
-        Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
-        Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
-        Me.GroupBox2.Controls.Add(Me.chkMovieMediaCol)
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 171)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(137, 132)
-        Me.GroupBox2.TabIndex = 44
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Media List Options"
-        '
-        'chkMovieTrailerCol
-        '
-        Me.chkMovieTrailerCol.AutoSize = True
-        Me.chkMovieTrailerCol.Location = New System.Drawing.Point(6, 111)
-        Me.chkMovieTrailerCol.Name = "chkMovieTrailerCol"
-        Me.chkMovieTrailerCol.Size = New System.Drawing.Size(118, 17)
-        Me.chkMovieTrailerCol.TabIndex = 31
-        Me.chkMovieTrailerCol.Text = "Hide Trailer Column"
-        Me.chkMovieTrailerCol.UseVisualStyleBackColor = True
-        '
-        'chkMovieInfoCol
-        '
-        Me.chkMovieInfoCol.AutoSize = True
-        Me.chkMovieInfoCol.Location = New System.Drawing.Point(6, 88)
-        Me.chkMovieInfoCol.Name = "chkMovieInfoCol"
-        Me.chkMovieInfoCol.Size = New System.Drawing.Size(107, 17)
-        Me.chkMovieInfoCol.TabIndex = 30
-        Me.chkMovieInfoCol.Text = "Hide Info Column"
-        Me.chkMovieInfoCol.UseVisualStyleBackColor = True
-        '
-        'chkMovieFanartCol
-        '
-        Me.chkMovieFanartCol.AutoSize = True
-        Me.chkMovieFanartCol.Location = New System.Drawing.Point(6, 65)
-        Me.chkMovieFanartCol.Name = "chkMovieFanartCol"
-        Me.chkMovieFanartCol.Size = New System.Drawing.Size(119, 17)
-        Me.chkMovieFanartCol.TabIndex = 29
-        Me.chkMovieFanartCol.Text = "Hide Fanart Column"
-        Me.chkMovieFanartCol.UseVisualStyleBackColor = True
-        '
-        'chkMoviePosterCol
-        '
-        Me.chkMoviePosterCol.AutoSize = True
-        Me.chkMoviePosterCol.Location = New System.Drawing.Point(6, 42)
-        Me.chkMoviePosterCol.Name = "chkMoviePosterCol"
-        Me.chkMoviePosterCol.Size = New System.Drawing.Size(119, 17)
-        Me.chkMoviePosterCol.TabIndex = 28
-        Me.chkMoviePosterCol.Text = "Hide Poster Column"
-        Me.chkMoviePosterCol.UseVisualStyleBackColor = True
-        '
-        'chkMovieMediaCol
-        '
-        Me.chkMovieMediaCol.AutoSize = True
-        Me.chkMovieMediaCol.Location = New System.Drawing.Point(6, 19)
-        Me.chkMovieMediaCol.Name = "chkMovieMediaCol"
-        Me.chkMovieMediaCol.Size = New System.Drawing.Size(118, 17)
-        Me.chkMovieMediaCol.TabIndex = 27
-        Me.chkMovieMediaCol.Text = "Hide Media Column"
-        Me.chkMovieMediaCol.UseVisualStyleBackColor = True
+        Me.colType.Text = "Folders/Files"
+        Me.colType.Width = 74
         '
         'GroupBox1
         '
@@ -665,12 +615,22 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Controls.Add(Me.chkStudio)
-        Me.GroupBox1.Location = New System.Drawing.Point(149, 171)
+        Me.GroupBox1.Location = New System.Drawing.Point(149, 138)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(433, 179)
-        Me.GroupBox1.TabIndex = 45
+        Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Scraper Settings"
+        '
+        'chkUseMPDB
+        '
+        Me.chkUseMPDB.AutoSize = True
+        Me.chkUseMPDB.Location = New System.Drawing.Point(244, 65)
+        Me.chkUseMPDB.Name = "chkUseMPDB"
+        Me.chkUseMPDB.Size = New System.Drawing.Size(188, 17)
+        Me.chkUseMPDB.TabIndex = 43
+        Me.chkUseMPDB.Text = "Get Images From MoviePostersDB"
+        Me.chkUseMPDB.UseVisualStyleBackColor = True
         '
         'chkOverwriteFanart
         '
@@ -807,39 +767,268 @@ Partial Class dlgSettings
         Me.btnMovieAddFiles.Location = New System.Drawing.Point(478, 35)
         Me.btnMovieAddFiles.Name = "btnMovieAddFiles"
         Me.btnMovieAddFiles.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieAddFiles.TabIndex = 25
+        Me.btnMovieAddFiles.TabIndex = 51
         Me.btnMovieAddFiles.Text = "Add Files Path"
         Me.btnMovieAddFiles.UseVisualStyleBackColor = True
         '
-        'lvMovies
+        'GroupBox2
         '
-        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colPath, Me.colType})
-        Me.lvMovies.FullRowSelect = True
-        Me.lvMovies.HideSelection = False
-        Me.lvMovies.Location = New System.Drawing.Point(6, 6)
-        Me.lvMovies.Name = "lvMovies"
-        Me.lvMovies.Size = New System.Drawing.Size(466, 105)
-        Me.lvMovies.Sorting = System.Windows.Forms.SortOrder.Ascending
-        Me.lvMovies.TabIndex = 23
-        Me.lvMovies.UseCompatibleStateImageBehavior = False
-        Me.lvMovies.View = System.Windows.Forms.View.Details
+        Me.GroupBox2.Controls.Add(Me.chkMovieTrailerCol)
+        Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
+        Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
+        Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 138)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(137, 112)
+        Me.GroupBox2.TabIndex = 54
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Media List Options"
         '
-        'colPath
+        'chkMovieTrailerCol
         '
-        Me.colPath.Text = "Path"
-        Me.colPath.Width = 388
+        Me.chkMovieTrailerCol.AutoSize = True
+        Me.chkMovieTrailerCol.Location = New System.Drawing.Point(6, 88)
+        Me.chkMovieTrailerCol.Name = "chkMovieTrailerCol"
+        Me.chkMovieTrailerCol.Size = New System.Drawing.Size(118, 17)
+        Me.chkMovieTrailerCol.TabIndex = 31
+        Me.chkMovieTrailerCol.Text = "Hide Trailer Column"
+        Me.chkMovieTrailerCol.UseVisualStyleBackColor = True
         '
-        'colType
+        'chkMovieInfoCol
         '
-        Me.colType.Text = "Folders/Files"
-        Me.colType.Width = 74
+        Me.chkMovieInfoCol.AutoSize = True
+        Me.chkMovieInfoCol.Location = New System.Drawing.Point(6, 65)
+        Me.chkMovieInfoCol.Name = "chkMovieInfoCol"
+        Me.chkMovieInfoCol.Size = New System.Drawing.Size(107, 17)
+        Me.chkMovieInfoCol.TabIndex = 30
+        Me.chkMovieInfoCol.Text = "Hide Info Column"
+        Me.chkMovieInfoCol.UseVisualStyleBackColor = True
+        '
+        'chkMovieFanartCol
+        '
+        Me.chkMovieFanartCol.AutoSize = True
+        Me.chkMovieFanartCol.Location = New System.Drawing.Point(6, 42)
+        Me.chkMovieFanartCol.Name = "chkMovieFanartCol"
+        Me.chkMovieFanartCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkMovieFanartCol.TabIndex = 29
+        Me.chkMovieFanartCol.Text = "Hide Fanart Column"
+        Me.chkMovieFanartCol.UseVisualStyleBackColor = True
+        '
+        'chkMoviePosterCol
+        '
+        Me.chkMoviePosterCol.AutoSize = True
+        Me.chkMoviePosterCol.Location = New System.Drawing.Point(6, 19)
+        Me.chkMoviePosterCol.Name = "chkMoviePosterCol"
+        Me.chkMoviePosterCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkMoviePosterCol.TabIndex = 28
+        Me.chkMoviePosterCol.Text = "Hide Poster Column"
+        Me.chkMoviePosterCol.UseVisualStyleBackColor = True
+        '
+        'btnMovieRem
+        '
+        Me.btnMovieRem.Location = New System.Drawing.Point(478, 88)
+        Me.btnMovieRem.Name = "btnMovieRem"
+        Me.btnMovieRem.Size = New System.Drawing.Size(104, 23)
+        Me.btnMovieRem.TabIndex = 52
+        Me.btnMovieRem.Text = "Remove Selected"
+        Me.btnMovieRem.UseVisualStyleBackColor = True
+        '
+        'btnMovieAddFolder
+        '
+        Me.btnMovieAddFolder.Location = New System.Drawing.Point(478, 6)
+        Me.btnMovieAddFolder.Name = "btnMovieAddFolder"
+        Me.btnMovieAddFolder.Size = New System.Drawing.Size(104, 23)
+        Me.btnMovieAddFolder.TabIndex = 50
+        Me.btnMovieAddFolder.Text = "Add Folders Path"
+        Me.btnMovieAddFolder.UseVisualStyleBackColor = True
+        '
+        'chkUseFolderNames
+        '
+        Me.chkUseFolderNames.AutoSize = True
+        Me.chkUseFolderNames.Location = New System.Drawing.Point(6, 115)
+        Me.chkUseFolderNames.Name = "chkUseFolderNames"
+        Me.chkUseFolderNames.Size = New System.Drawing.Size(146, 17)
+        Me.chkUseFolderNames.TabIndex = 56
+        Me.chkUseFolderNames.Text = "Use Folder Name for Title"
+        Me.chkUseFolderNames.UseVisualStyleBackColor = True
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Controls.Add(Me.GroupBox8)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(585, 321)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Other"
+        Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'GroupBox8
+        '
+        Me.GroupBox8.Controls.Add(Me.GroupBox7)
+        Me.GroupBox8.Controls.Add(Me.GroupBox6)
+        Me.GroupBox8.Controls.Add(Me.GroupBox5)
+        Me.GroupBox8.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox8.Name = "GroupBox8"
+        Me.GroupBox8.Size = New System.Drawing.Size(241, 206)
+        Me.GroupBox8.TabIndex = 64
+        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.Text = "File Naming"
+        '
+        'GroupBox7
+        '
+        Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
+        Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
+        Me.GroupBox7.Location = New System.Drawing.Point(118, 120)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(117, 78)
+        Me.GroupBox7.TabIndex = 65
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "NFO"
+        '
+        'chkMovieNameNFO
+        '
+        Me.chkMovieNameNFO.AutoSize = True
+        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 48)
+        Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
+        Me.chkMovieNameNFO.Size = New System.Drawing.Size(84, 17)
+        Me.chkMovieNameNFO.TabIndex = 69
+        Me.chkMovieNameNFO.Text = "<movie>.nfo"
+        Me.chkMovieNameNFO.UseVisualStyleBackColor = True
+        '
+        'chkMovieNFO
+        '
+        Me.chkMovieNFO.AutoSize = True
+        Me.chkMovieNFO.Location = New System.Drawing.Point(6, 25)
+        Me.chkMovieNFO.Name = "chkMovieNFO"
+        Me.chkMovieNFO.Size = New System.Drawing.Size(72, 17)
+        Me.chkMovieNFO.TabIndex = 68
+        Me.chkMovieNFO.Text = "movie.nfo"
+        Me.chkMovieNFO.UseVisualStyleBackColor = True
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
+        Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
+        Me.GroupBox6.Location = New System.Drawing.Point(118, 19)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(117, 78)
+        Me.GroupBox6.TabIndex = 64
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Fanart"
+        '
+        'chkMovieNameFanartJPG
+        '
+        Me.chkMovieNameFanartJPG.AutoSize = True
+        Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 48)
+        Me.chkMovieNameFanartJPG.Name = "chkMovieNameFanartJPG"
+        Me.chkMovieNameFanartJPG.Size = New System.Drawing.Size(113, 17)
+        Me.chkMovieNameFanartJPG.TabIndex = 67
+        Me.chkMovieNameFanartJPG.Text = "<movie>-fanart.jpg"
+        Me.chkMovieNameFanartJPG.UseVisualStyleBackColor = True
+        '
+        'chkFanartJPG
+        '
+        Me.chkFanartJPG.AutoSize = True
+        Me.chkFanartJPG.Location = New System.Drawing.Point(6, 25)
+        Me.chkFanartJPG.Name = "chkFanartJPG"
+        Me.chkFanartJPG.Size = New System.Drawing.Size(70, 17)
+        Me.chkFanartJPG.TabIndex = 66
+        Me.chkFanartJPG.Text = "fanart.jpg"
+        Me.chkFanartJPG.UseVisualStyleBackColor = True
+        '
+        'GroupBox5
+        '
+        Me.GroupBox5.Controls.Add(Me.chkFolderJPG)
+        Me.GroupBox5.Controls.Add(Me.chkPosterJPG)
+        Me.GroupBox5.Controls.Add(Me.chkPosterTBN)
+        Me.GroupBox5.Controls.Add(Me.chkMovieNameJPG)
+        Me.GroupBox5.Controls.Add(Me.chkMovieJPG)
+        Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
+        Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 18)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(106, 180)
+        Me.GroupBox5.TabIndex = 61
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Posters"
+        '
+        'chkFolderJPG
+        '
+        Me.chkFolderJPG.AutoSize = True
+        Me.chkFolderJPG.Location = New System.Drawing.Point(6, 157)
+        Me.chkFolderJPG.Name = "chkFolderJPG"
+        Me.chkFolderJPG.Size = New System.Drawing.Size(69, 17)
+        Me.chkFolderJPG.TabIndex = 70
+        Me.chkFolderJPG.Text = "folder.jpg"
+        Me.chkFolderJPG.UseVisualStyleBackColor = True
+        '
+        'chkPosterJPG
+        '
+        Me.chkPosterJPG.AutoSize = True
+        Me.chkPosterJPG.Location = New System.Drawing.Point(6, 134)
+        Me.chkPosterJPG.Name = "chkPosterJPG"
+        Me.chkPosterJPG.Size = New System.Drawing.Size(72, 17)
+        Me.chkPosterJPG.TabIndex = 69
+        Me.chkPosterJPG.Text = "poster.jpg"
+        Me.chkPosterJPG.UseVisualStyleBackColor = True
+        '
+        'chkPosterTBN
+        '
+        Me.chkPosterTBN.AutoSize = True
+        Me.chkPosterTBN.Location = New System.Drawing.Point(6, 111)
+        Me.chkPosterTBN.Name = "chkPosterTBN"
+        Me.chkPosterTBN.Size = New System.Drawing.Size(73, 17)
+        Me.chkPosterTBN.TabIndex = 68
+        Me.chkPosterTBN.Text = "poster.tbn"
+        Me.chkPosterTBN.UseVisualStyleBackColor = True
+        '
+        'chkMovieNameJPG
+        '
+        Me.chkMovieNameJPG.AutoSize = True
+        Me.chkMovieNameJPG.Location = New System.Drawing.Point(6, 88)
+        Me.chkMovieNameJPG.Name = "chkMovieNameJPG"
+        Me.chkMovieNameJPG.Size = New System.Drawing.Size(83, 17)
+        Me.chkMovieNameJPG.TabIndex = 67
+        Me.chkMovieNameJPG.Text = "<movie>.jpg"
+        Me.chkMovieNameJPG.UseVisualStyleBackColor = True
+        '
+        'chkMovieJPG
+        '
+        Me.chkMovieJPG.AutoSize = True
+        Me.chkMovieJPG.Location = New System.Drawing.Point(6, 65)
+        Me.chkMovieJPG.Name = "chkMovieJPG"
+        Me.chkMovieJPG.Size = New System.Drawing.Size(71, 17)
+        Me.chkMovieJPG.TabIndex = 66
+        Me.chkMovieJPG.Text = "movie.jpg"
+        Me.chkMovieJPG.UseVisualStyleBackColor = True
+        '
+        'chkMovieNameTBN
+        '
+        Me.chkMovieNameTBN.AutoSize = True
+        Me.chkMovieNameTBN.Location = New System.Drawing.Point(6, 42)
+        Me.chkMovieNameTBN.Name = "chkMovieNameTBN"
+        Me.chkMovieNameTBN.Size = New System.Drawing.Size(84, 17)
+        Me.chkMovieNameTBN.TabIndex = 65
+        Me.chkMovieNameTBN.Text = "<movie>.tbn"
+        Me.chkMovieNameTBN.UseVisualStyleBackColor = True
+        '
+        'chkMovieTBN
+        '
+        Me.chkMovieTBN.AutoSize = True
+        Me.chkMovieTBN.Location = New System.Drawing.Point(6, 19)
+        Me.chkMovieTBN.Name = "chkMovieTBN"
+        Me.chkMovieTBN.Size = New System.Drawing.Size(72, 17)
+        Me.chkMovieTBN.TabIndex = 64
+        Me.chkMovieTBN.Text = "movie.tbn"
+        Me.chkMovieTBN.UseVisualStyleBackColor = True
         '
         'tabShows
         '
         Me.tabShows.Location = New System.Drawing.Point(4, 22)
         Me.tabShows.Name = "tabShows"
         Me.tabShows.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabShows.Size = New System.Drawing.Size(588, 387)
+        Me.tabShows.Size = New System.Drawing.Size(595, 353)
         Me.tabShows.TabIndex = 2
         Me.tabShows.Text = "Shows"
         Me.tabShows.UseVisualStyleBackColor = True
@@ -848,14 +1037,14 @@ Partial Class dlgSettings
         '
         Me.tabMusic.Location = New System.Drawing.Point(4, 22)
         Me.tabMusic.Name = "tabMusic"
-        Me.tabMusic.Size = New System.Drawing.Size(588, 387)
+        Me.tabMusic.Size = New System.Drawing.Size(595, 353)
         Me.tabMusic.TabIndex = 3
         Me.tabMusic.Text = "Music"
         Me.tabMusic.UseVisualStyleBackColor = True
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(527, 489)
+        Me.btnOK.Location = New System.Drawing.Point(534, 451)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 22
@@ -865,7 +1054,7 @@ Partial Class dlgSettings
         'btnApply
         '
         Me.btnApply.Enabled = False
-        Me.btnApply.Location = New System.Drawing.Point(364, 489)
+        Me.btnApply.Location = New System.Drawing.Point(371, 451)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(75, 23)
         Me.btnApply.TabIndex = 20
@@ -875,7 +1064,7 @@ Partial Class dlgSettings
         'btnCancel
         '
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(446, 489)
+        Me.btnCancel.Location = New System.Drawing.Point(453, 451)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 21
@@ -892,7 +1081,7 @@ Partial Class dlgSettings
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(607, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(616, 64)
         Me.pnlTop.TabIndex = 57
         '
         'Label2
@@ -929,23 +1118,13 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'chkUseMPDB
-        '
-        Me.chkUseMPDB.AutoSize = True
-        Me.chkUseMPDB.Location = New System.Drawing.Point(244, 65)
-        Me.chkUseMPDB.Name = "chkUseMPDB"
-        Me.chkUseMPDB.Size = New System.Drawing.Size(188, 17)
-        Me.chkUseMPDB.TabIndex = 43
-        Me.chkUseMPDB.Text = "Get Images From MoviePostersDB"
-        Me.chkUseMPDB.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(607, 520)
+        Me.ClientSize = New System.Drawing.Size(616, 477)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
@@ -968,19 +1147,27 @@ Partial Class dlgSettings
         Me.gbFilters.ResumeLayout(False)
         Me.gbFilters.PerformLayout()
         Me.tabMovies.ResumeLayout(False)
-        Me.tabMovies.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
+        Me.TabControl2.ResumeLayout(False)
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.TabPage2.ResumeLayout(False)
+        Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.GroupBox5.PerformLayout()
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents btnMovieAddFolder As System.Windows.Forms.Button
-    Friend WithEvents btnMovieRem As System.Windows.Forms.Button
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents tabGeneral As System.Windows.Forms.TabPage
@@ -989,10 +1176,6 @@ Partial Class dlgSettings
     Friend WithEvents tabMusic As System.Windows.Forms.TabPage
     Friend WithEvents btnOK As System.Windows.Forms.Button
     Friend WithEvents btnApply As System.Windows.Forms.Button
-    Friend WithEvents lvMovies As System.Windows.Forms.ListView
-    Friend WithEvents btnMovieAddFiles As System.Windows.Forms.Button
-    Friend WithEvents colPath As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colType As System.Windows.Forms.ColumnHeader
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents gbFilters As System.Windows.Forms.GroupBox
     Friend WithEvents btnAddFilter As System.Windows.Forms.Button
@@ -1019,18 +1202,6 @@ Partial Class dlgSettings
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents cbCert As System.Windows.Forms.ComboBox
-    Friend WithEvents chkCert As System.Windows.Forms.CheckBox
-    Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
-    Friend WithEvents chkFullCast As System.Windows.Forms.CheckBox
-    Friend WithEvents chkFullCrew As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkMovieInfoCol As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieFanartCol As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMoviePosterCol As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieMediaCol As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkMovieTrailerCol As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents chkCleanFolderJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanFanartJPG As System.Windows.Forms.CheckBox
@@ -1039,24 +1210,57 @@ Partial Class dlgSettings
     Friend WithEvents chkCleanMovieNFOb As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanMovieNFO As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanMovieFanartJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents chkUseTMDB As System.Windows.Forms.CheckBox
-    Friend WithEvents chkUseIMPA As System.Windows.Forms.CheckBox
-    Friend WithEvents cbFanartSize As System.Windows.Forms.ComboBox
-    Friend WithEvents lblFanartSize As System.Windows.Forms.Label
-    Friend WithEvents lblPosterSize As System.Windows.Forms.Label
-    Friend WithEvents cbPosterSize As System.Windows.Forms.ComboBox
-    Friend WithEvents chkOverwriteFanart As System.Windows.Forms.CheckBox
-    Friend WithEvents chkOverwritePoster As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents chkLogErrors As System.Windows.Forms.CheckBox
     Friend WithEvents chkProperCase As System.Windows.Forms.CheckBox
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
-    Friend WithEvents rbMovieName As System.Windows.Forms.RadioButton
-    Friend WithEvents rbMovie As System.Windows.Forms.RadioButton
-    Friend WithEvents chkUseFolderNames As System.Windows.Forms.CheckBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents chkOverwriteNfo As System.Windows.Forms.CheckBox
+    Friend WithEvents TabControl2 As System.Windows.Forms.TabControl
+    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents chkTitleFromNfo As System.Windows.Forms.CheckBox
+    Friend WithEvents lvMovies As System.Windows.Forms.ListView
+    Friend WithEvents colPath As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colType As System.Windows.Forms.ColumnHeader
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents chkUseMPDB As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOverwriteFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOverwritePoster As System.Windows.Forms.CheckBox
+    Friend WithEvents cbFanartSize As System.Windows.Forms.ComboBox
+    Friend WithEvents lblFanartSize As System.Windows.Forms.Label
+    Friend WithEvents lblPosterSize As System.Windows.Forms.Label
+    Friend WithEvents cbPosterSize As System.Windows.Forms.ComboBox
+    Friend WithEvents chkUseIMPA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseTMDB As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFullCast As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFullCrew As System.Windows.Forms.CheckBox
+    Friend WithEvents cbCert As System.Windows.Forms.ComboBox
+    Friend WithEvents chkCert As System.Windows.Forms.CheckBox
+    Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
+    Friend WithEvents btnMovieAddFiles As System.Windows.Forms.Button
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMovieTrailerCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieInfoCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieFanartCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMoviePosterCol As System.Windows.Forms.CheckBox
+    Friend WithEvents btnMovieRem As System.Windows.Forms.Button
+    Friend WithEvents btnMovieAddFolder As System.Windows.Forms.Button
+    Friend WithEvents chkUseFolderNames As System.Windows.Forms.CheckBox
+    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
+    Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox8 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkFolderJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNameJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNameTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNameNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieNameFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFanartJPG As System.Windows.Forms.CheckBox
 End Class

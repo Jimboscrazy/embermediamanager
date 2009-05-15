@@ -33,9 +33,9 @@ Public Class dlgImgSelect
     Friend WithEvents bwTMDBDownload As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMPDBDownload As New System.ComponentModel.BackgroundWorker
 
-    Private imdbID As String
-    Private sPath As String
-    Private sRealPath As String
+    Private imdbID As String = String.Empty
+    Private sPath As String = String.Empty
+    Private isEdit As Boolean = False
     Private DLType As Master.ImageType
 
     Private iCounter As Integer = 0
@@ -46,7 +46,7 @@ Public Class dlgImgSelect
     Private pnlImage() As Panel
     Private lblImage() As Label
     Private chkImage() As CheckBox
-    Private tmpImage As Image = Nothing
+    Private tmpImage As New Images
     Private selIndex As Integer = -1
 
     Private IMPAPosters As New List(Of Media.Image)
@@ -65,11 +65,32 @@ Public Class dlgImgSelect
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         Try
-            If Not IsNothing(Me.tmpImage) Then
-                Dim fs As New FileStream(Me.sPath, FileMode.OpenOrCreate, FileAccess.ReadWrite)
-                Me.tmpImage.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg)
-                fs.Close()
-                fs = Nothing
+
+            Dim tmpPath As String = String.Empty
+            Dim tmpPathPlus As String = String.Empty
+
+            tmpPath = Application.StartupPath & "\Temp"
+
+            If Not Directory.Exists(tmpPath) Then
+                Directory.CreateDirectory(tmpPath)
+            End If
+
+            If DLType = Master.ImageType.Fanart Then
+                tmpPathPlus = String.Concat(tmpPath, "\fanart.jpg")
+            Else
+                tmpPathPlus = String.Concat(tmpPath, "\poster.jpg")
+            End If
+
+            If Not IsNothing(Me.tmpImage.Image) Then
+                If isEdit Then
+                    Me.tmpImage.Save(tmpPathPlus)
+                Else
+                    If Me.DLType = Master.ImageType.Fanart Then
+                        Me.tmpImage.SaveAsFanart(Me.sPath, Master.isFile)
+                    Else
+                        Me.tmpImage.SaveAsPoster(Me.sPath, Master.isFile)
+                    End If
+                End If
             Else
                 Select Case True
                     Case Me.rbXLarge.Checked
@@ -77,48 +98,59 @@ Public Class dlgImgSelect
                         Me.pnlSinglePic.Visible = True
                         Me.Refresh()
                         Application.DoEvents()
-                        Me.DownloadSinglePic(Me.rbXLarge.Tag, tmpImage)
+                        Me.tmpImage.FromWeb(Me.rbXLarge.Tag)
                     Case Me.rbLarge.Checked
                         Me.pnlBG.Visible = False
                         Me.pnlSinglePic.Visible = True
                         Me.Refresh()
                         Application.DoEvents()
-                        Me.DownloadSinglePic(Me.rbLarge.Tag, tmpImage)
+                        Me.tmpImage.FromWeb(Me.rbLarge.Tag)
                     Case Me.rbMedium.Checked
                         Me.pnlBG.Visible = False
                         Me.pnlSinglePic.Visible = True
                         Me.Refresh()
                         Application.DoEvents()
-                        tmpImage = Me.pbImage(selIndex).Image
+                        Me.tmpImage.Image = Me.pbImage(selIndex).Image
                     Case Me.rbSmall.Checked
                         Me.pnlBG.Visible = False
                         Me.pnlSinglePic.Visible = True
                         Me.Refresh()
                         Application.DoEvents()
-                        Me.DownloadSinglePic(Me.rbSmall.Tag, tmpImage)
+                        Me.tmpImage.FromWeb(Me.rbSmall.Tag)
                 End Select
-                If Not IsNothing(tmpImage) Then
-                    Dim fs As New FileStream(Me.sPath, FileMode.OpenOrCreate, FileAccess.ReadWrite)
-                    tmpImage.Save(fs, System.Drawing.Imaging.ImageFormat.Jpeg)
-                    fs.Close()
-                    fs = Nothing
+                If Not IsNothing(Me.tmpImage.Image) Then
+                    If isEdit Then
+                        Me.tmpImage.Save(tmpPathPlus)
+                    Else
+                        If Me.DLType = Master.ImageType.Fanart Then
+                            Me.tmpImage.SaveAsFanart(Me.sPath, Master.isFile)
+                        Else
+                            Me.tmpImage.SaveAsPoster(Me.sPath, Master.isFile)
+                        End If
+                    End If
                 End If
                 Me.pnlSinglePic.Visible = False
             End If
 
             If Me.DLType = Master.ImageType.Fanart Then
-                Dim iMod As Integer = Master.GetExtraModifier(Me.sRealPath)
-                If iMod = -1 Then iMod = 0
+                Dim iMod As Integer = Master.GetExtraModifier(Me.sPath)
+                Dim extraPath As String = String.Empty
                 Dim iVal As Integer = 1
+                If iMod = -1 Then iMod = 0
                 If Me.chkImage.Count > 0 Then
 
-                    If Not Directory.Exists(String.Concat(Directory.GetParent(Me.sPath).FullName.ToString, "\extrathumbs")) Then
-                        Directory.CreateDirectory(String.Concat(Directory.GetParent(Me.sPath).FullName.ToString, "\extrathumbs"))
+                    If isEdit Then
+                        extraPath = String.Concat(tmpPath, "\extrathumbs")
+                    Else
+                        extraPath = String.Concat(Directory.GetParent(Me.sPath).FullName.ToString, "\extrathumbs")
+                    End If
+                    If Not Directory.Exists(extraPath) Then
+                        Directory.CreateDirectory(extraPath)
                     End If
 
                     For i As Integer = 0 To UBound(Me.chkImage)
                         If Me.chkImage(i).Checked Then
-                            Dim fsET As New FileStream(String.Concat(Directory.GetParent(Me.sPath).FullName.ToString, "\extrathumbs\thumb", iVal + iMod, ".jpg"), FileMode.OpenOrCreate, FileAccess.ReadWrite)
+                            Dim fsET As New FileStream(String.Concat(extraPath, "\thumb", iVal + iMod, ".jpg"), FileMode.OpenOrCreate, FileAccess.ReadWrite)
                             Me.pbImage(i).Image.Save(fsET, System.Drawing.Imaging.ImageFormat.Jpeg)
                             fsET.Close()
                             fsET = Nothing
@@ -130,6 +162,8 @@ Public Class dlgImgSelect
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+
+        Me.tmpImage.Dispose()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Dispose()
@@ -159,7 +193,8 @@ Public Class dlgImgSelect
                 Me.pnlDLStatus.Visible = True
             Else
                 Me.pnlDLStatus.Visible = False
-                Me.pnlSinglePic.Visible = True
+                Me.pnlDLStatus.Height = 75
+                Me.pnlDLStatus.Top = 207
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -481,7 +516,7 @@ Public Class dlgImgSelect
             If Not Me.DLType = Master.ImageType.Fanart AndAlso sURL.ToLower.Contains("themoviedb.org") Then
                 Me.SetupSizes(sURL)
                 Me.OK_Button.Enabled = False
-                Me.tmpImage = Nothing
+                Me.tmpImage.Image = Nothing
             Else
                 Me.pnlSize.Visible = False
                 Me.rbXLarge.Checked = False
@@ -489,7 +524,7 @@ Public Class dlgImgSelect
                 Me.rbMedium.Checked = False
                 Me.rbSmall.Checked = False
                 Me.OK_Button.Enabled = True
-                Me.tmpImage = Me.pbImage(iIndex).Image
+                Me.tmpImage.Image = Me.pbImage(iIndex).Image
             End If
 
         Catch ex As Exception
@@ -708,15 +743,6 @@ Public Class dlgImgSelect
 
     End Sub
 
-    Private Sub DownloadSinglePic(ByVal sURL As String, ByRef tImage As Image)
-        Dim wrRequest As WebRequest = WebRequest.Create(sURL)
-        Dim wrResponse As WebResponse = wrRequest.GetResponse()
-        tImage = Image.FromStream(wrResponse.GetResponseStream)
-        wrResponse.Close()
-        wrResponse = Nothing
-        wrRequest = Nothing
-    End Sub
-
     Private Sub btnCheckAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCheckAll.Click
 
         For i As Integer = 0 To UBound(Me.chkImage)
@@ -749,7 +775,7 @@ Public Class dlgImgSelect
         Me.OK_Button.Enabled = True
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal _imdbID As String, ByVal _sPath As String, ByVal _sRealPath As String, ByVal _DLType As Master.ImageType) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal _imdbID As String, ByVal _sPath As String, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As Windows.Forms.DialogResult
 
         '//
         ' Overload to pass data
@@ -757,8 +783,8 @@ Public Class dlgImgSelect
 
         Me.imdbID = _imdbID
         Me.sPath = _sPath
-        Me.sRealPath = _sRealPath
         Me.DLType = _DLType
+        Me.isEdit = _isEdit
 
         Return MyBase.ShowDialog()
     End Function
