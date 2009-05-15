@@ -31,23 +31,25 @@ Partial Class dlgAbout
         Me.lblProductName = New System.Windows.Forms.Label
         Me.OKButton = New System.Windows.Forms.Button
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.pbXBMC = New System.Windows.Forms.PictureBox
+        Me.pbMPDB = New System.Windows.Forms.PictureBox
         Me.pbFFMPEG = New System.Windows.Forms.PictureBox
         Me.pbMI = New System.Windows.Forms.PictureBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.pbIMDB = New System.Windows.Forms.PictureBox
         Me.pbIMPA = New System.Windows.Forms.PictureBox
-        Me.Label1 = New System.Windows.Forms.Label
         Me.pbTMDB = New System.Windows.Forms.PictureBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.Panel1.SuspendLayout()
+        CType(Me.pbXBMC, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbMPDB, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFFMPEG, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbMI, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbIMDB, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbIMPA, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lblVersion
@@ -98,7 +100,8 @@ Partial Class dlgAbout
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel1.Controls.Add(Me.PictureBox2)
+        Me.Panel1.Controls.Add(Me.pbXBMC)
+        Me.Panel1.Controls.Add(Me.pbMPDB)
         Me.Panel1.Controls.Add(Me.pbFFMPEG)
         Me.Panel1.Controls.Add(Me.pbMI)
         Me.Panel1.Controls.Add(Me.Label2)
@@ -111,13 +114,35 @@ Partial Class dlgAbout
         Me.Panel1.Size = New System.Drawing.Size(416, 216)
         Me.Panel1.TabIndex = 8
         '
+        'pbXBMC
+        '
+        Me.pbXBMC.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbXBMC.Image = CType(resources.GetObject("pbXBMC.Image"), System.Drawing.Image)
+        Me.pbXBMC.Location = New System.Drawing.Point(294, 7)
+        Me.pbXBMC.Name = "pbXBMC"
+        Me.pbXBMC.Size = New System.Drawing.Size(114, 25)
+        Me.pbXBMC.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbXBMC.TabIndex = 16
+        Me.pbXBMC.TabStop = False
+        '
+        'pbMPDB
+        '
+        Me.pbMPDB.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbMPDB.Image = CType(resources.GetObject("pbMPDB.Image"), System.Drawing.Image)
+        Me.pbMPDB.Location = New System.Drawing.Point(7, 115)
+        Me.pbMPDB.Name = "pbMPDB"
+        Me.pbMPDB.Size = New System.Drawing.Size(78, 38)
+        Me.pbMPDB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbMPDB.TabIndex = 15
+        Me.pbMPDB.TabStop = False
+        '
         'pbFFMPEG
         '
         Me.pbFFMPEG.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbFFMPEG.Image = CType(resources.GetObject("pbFFMPEG.Image"), System.Drawing.Image)
-        Me.pbFFMPEG.Location = New System.Drawing.Point(36, 141)
+        Me.pbFFMPEG.Location = New System.Drawing.Point(302, 94)
         Me.pbFFMPEG.Name = "pbFFMPEG"
-        Me.pbFFMPEG.Size = New System.Drawing.Size(145, 26)
+        Me.pbFFMPEG.Size = New System.Drawing.Size(106, 26)
         Me.pbFFMPEG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbFFMPEG.TabIndex = 14
         Me.pbFFMPEG.TabStop = False
@@ -126,7 +151,7 @@ Partial Class dlgAbout
         '
         Me.pbMI.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbMI.Image = CType(resources.GetObject("pbMI.Image"), System.Drawing.Image)
-        Me.pbMI.Location = New System.Drawing.Point(330, 173)
+        Me.pbMI.Location = New System.Drawing.Point(7, 169)
         Me.pbMI.Name = "pbMI"
         Me.pbMI.Size = New System.Drawing.Size(78, 38)
         Me.pbMI.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -137,7 +162,7 @@ Partial Class dlgAbout
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(126, 6)
+        Me.Label2.Location = New System.Drawing.Point(91, 50)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(118, 13)
         Me.Label2.TabIndex = 12
@@ -147,7 +172,7 @@ Partial Class dlgAbout
         '
         Me.pbIMDB.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbIMDB.Image = CType(resources.GetObject("pbIMDB.Image"), System.Drawing.Image)
-        Me.pbIMDB.Location = New System.Drawing.Point(114, 173)
+        Me.pbIMDB.Location = New System.Drawing.Point(7, 61)
         Me.pbIMDB.Name = "pbIMDB"
         Me.pbIMDB.Size = New System.Drawing.Size(78, 38)
         Me.pbIMDB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -158,33 +183,33 @@ Partial Class dlgAbout
         '
         Me.pbIMPA.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbIMPA.Image = CType(resources.GetObject("pbIMPA.Image"), System.Drawing.Image)
-        Me.pbIMPA.Location = New System.Drawing.Point(6, 173)
+        Me.pbIMPA.Location = New System.Drawing.Point(7, 7)
         Me.pbIMPA.Name = "pbIMPA"
         Me.pbIMPA.Size = New System.Drawing.Size(78, 38)
         Me.pbIMPA.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbIMPA.TabIndex = 10
         Me.pbIMPA.TabStop = False
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(126, 26)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(189, 91)
-        Me.Label1.TabIndex = 9
-        Me.Label1.Text = "Carlos ""asphinx"" Nabb - Genre Images" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & """Halibutt"" - Studio Icon Pack" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & """fekker""" & _
-            " - Media Info Plus" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & """billyad2000"" - Media Companion"
-        '
         'pbTMDB
         '
         Me.pbTMDB.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbTMDB.Image = CType(resources.GetObject("pbTMDB.Image"), System.Drawing.Image)
-        Me.pbTMDB.Location = New System.Drawing.Point(238, 143)
+        Me.pbTMDB.Location = New System.Drawing.Point(263, 184)
         Me.pbTMDB.Name = "pbTMDB"
         Me.pbTMDB.Size = New System.Drawing.Size(145, 23)
         Me.pbTMDB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.pbTMDB.TabIndex = 8
         Me.pbTMDB.TabStop = False
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(91, 70)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(189, 91)
+        Me.Label1.TabIndex = 9
+        Me.Label1.Text = "Carlos ""asphinx"" Nabb - Genre Images" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & """Halibutt"" - Studio Icon Pack" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & """fekker""" & _
+            " - Media Info Plus" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & """billyad2000"" - Media Companion"
         '
         'PictureBox1
         '
@@ -195,17 +220,6 @@ Partial Class dlgAbout
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 9
         Me.PictureBox1.TabStop = False
-        '
-        'PictureBox2
-        '
-        Me.PictureBox2.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(224, 173)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(78, 38)
-        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox2.TabIndex = 15
-        Me.PictureBox2.TabStop = False
         '
         'dlgAbout
         '
@@ -229,13 +243,14 @@ Partial Class dlgAbout
         Me.Text = "About UMM"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        CType(Me.pbXBMC, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbMPDB, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFFMPEG, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbMI, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbIMDB, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbIMPA, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -250,6 +265,7 @@ Partial Class dlgAbout
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents pbFFMPEG As System.Windows.Forms.PictureBox
     Friend WithEvents pbMI As System.Windows.Forms.PictureBox
-    Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
+    Friend WithEvents pbMPDB As System.Windows.Forms.PictureBox
+    Friend WithEvents pbXBMC As System.Windows.Forms.PictureBox
 
 End Class

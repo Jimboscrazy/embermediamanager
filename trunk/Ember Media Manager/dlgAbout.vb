@@ -60,7 +60,11 @@ Public NotInheritable Class dlgAbout
         System.Diagnostics.Process.Start("http://www.ffmpeg.org/")
     End Sub
 
-    Private Sub PictureBox2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox2.Click
+    Private Sub pbMPDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMPDB.Click
         System.Diagnostics.Process.Start("http://www.moviepostersdb.com/")
+    End Sub
+
+    Private Sub pbXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbXBMC.Click
+        System.Diagnostics.Process.Start("http://www.xbmc.org/")
     End Sub
 End Class
