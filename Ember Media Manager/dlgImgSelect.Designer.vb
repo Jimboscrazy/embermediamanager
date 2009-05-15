@@ -36,7 +36,7 @@ Partial Class dlgImgSelect
         Me.btnCheckNone = New System.Windows.Forms.Button
         Me.btnCheckAll = New System.Windows.Forms.Button
         Me.pnlDLStatus = New System.Windows.Forms.Panel
-        Me.pnlBottom = New System.Windows.Forms.Panel
+        Me.pnlIMPA = New System.Windows.Forms.Panel
         Me.lblDL2Status = New System.Windows.Forms.Label
         Me.lblDL2 = New System.Windows.Forms.Label
         Me.pbDL2 = New System.Windows.Forms.ProgressBar
@@ -46,12 +46,17 @@ Partial Class dlgImgSelect
         Me.pnlSinglePic = New System.Windows.Forms.Panel
         Me.Label2 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.pnlMPDB = New System.Windows.Forms.Panel
+        Me.lblDL3Status = New System.Windows.Forms.Label
+        Me.lblDL3 = New System.Windows.Forms.Label
+        Me.pbDL3 = New System.Windows.Forms.ProgressBar
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
         Me.pnlSize.SuspendLayout()
         Me.pnlDLStatus.SuspendLayout()
-        Me.pnlBottom.SuspendLayout()
+        Me.pnlIMPA.SuspendLayout()
         Me.pnlSinglePic.SuspendLayout()
+        Me.pnlMPDB.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -208,26 +213,25 @@ Partial Class dlgImgSelect
         '
         Me.pnlDLStatus.BackColor = System.Drawing.Color.White
         Me.pnlDLStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlDLStatus.Controls.Add(Me.pnlBottom)
+        Me.pnlDLStatus.Controls.Add(Me.pnlMPDB)
+        Me.pnlDLStatus.Controls.Add(Me.pnlIMPA)
         Me.pnlDLStatus.Controls.Add(Me.lblDL1Status)
         Me.pnlDLStatus.Controls.Add(Me.lblDL1)
         Me.pnlDLStatus.Controls.Add(Me.pbDL1)
-        Me.pnlDLStatus.Location = New System.Drawing.Point(257, 184)
+        Me.pnlDLStatus.Location = New System.Drawing.Point(257, 132)
         Me.pnlDLStatus.Name = "pnlDLStatus"
-        Me.pnlDLStatus.Size = New System.Drawing.Size(323, 150)
+        Me.pnlDLStatus.Size = New System.Drawing.Size(323, 223)
         Me.pnlDLStatus.TabIndex = 0
         '
-        'pnlBottom
+        'pnlIMPA
         '
-        Me.pnlBottom.Controls.Add(Me.lblDL2Status)
-        Me.pnlBottom.Controls.Add(Me.lblDL2)
-        Me.pnlBottom.Controls.Add(Me.pbDL2)
-        Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottom.Location = New System.Drawing.Point(0, 73)
-        Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(321, 75)
-        Me.pnlBottom.TabIndex = 6
-        Me.pnlBottom.Visible = False
+        Me.pnlIMPA.Controls.Add(Me.lblDL2Status)
+        Me.pnlIMPA.Controls.Add(Me.lblDL2)
+        Me.pnlIMPA.Controls.Add(Me.pbDL2)
+        Me.pnlIMPA.Location = New System.Drawing.Point(0, 73)
+        Me.pnlIMPA.Name = "pnlIMPA"
+        Me.pnlIMPA.Size = New System.Drawing.Size(321, 75)
+        Me.pnlIMPA.TabIndex = 6
         '
         'lblDL2Status
         '
@@ -281,7 +285,7 @@ Partial Class dlgImgSelect
         Me.pnlSinglePic.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlSinglePic.Controls.Add(Me.Label2)
         Me.pnlSinglePic.Controls.Add(Me.ProgressBar1)
-        Me.pnlSinglePic.Location = New System.Drawing.Point(258, 184)
+        Me.pnlSinglePic.Location = New System.Drawing.Point(258, 206)
         Me.pnlSinglePic.Name = "pnlSinglePic"
         Me.pnlSinglePic.Size = New System.Drawing.Size(321, 75)
         Me.pnlSinglePic.TabIndex = 9
@@ -303,6 +307,39 @@ Partial Class dlgImgSelect
         Me.ProgressBar1.Size = New System.Drawing.Size(309, 19)
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.ProgressBar1.TabIndex = 6
+        '
+        'pnlMPDB
+        '
+        Me.pnlMPDB.Controls.Add(Me.lblDL3Status)
+        Me.pnlMPDB.Controls.Add(Me.lblDL3)
+        Me.pnlMPDB.Controls.Add(Me.pbDL3)
+        Me.pnlMPDB.Location = New System.Drawing.Point(0, 147)
+        Me.pnlMPDB.Name = "pnlMPDB"
+        Me.pnlMPDB.Size = New System.Drawing.Size(321, 75)
+        Me.pnlMPDB.TabIndex = 9
+        '
+        'lblDL3Status
+        '
+        Me.lblDL3Status.Location = New System.Drawing.Point(5, 36)
+        Me.lblDL3Status.Name = "lblDL3Status"
+        Me.lblDL3Status.Size = New System.Drawing.Size(310, 13)
+        Me.lblDL3Status.TabIndex = 8
+        '
+        'lblDL3
+        '
+        Me.lblDL3.Location = New System.Drawing.Point(5, 10)
+        Me.lblDL3.Name = "lblDL3"
+        Me.lblDL3.Size = New System.Drawing.Size(310, 13)
+        Me.lblDL3.TabIndex = 7
+        Me.lblDL3.Text = "Performing Preliminary Tasks..."
+        '
+        'pbDL3
+        '
+        Me.pbDL3.Location = New System.Drawing.Point(6, 52)
+        Me.pbDL3.Name = "pbDL3"
+        Me.pbDL3.Size = New System.Drawing.Size(309, 19)
+        Me.pbDL3.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.pbDL3.TabIndex = 6
         '
         'dlgImgSelect
         '
@@ -330,8 +367,9 @@ Partial Class dlgImgSelect
         Me.pnlSize.ResumeLayout(False)
         Me.pnlSize.PerformLayout()
         Me.pnlDLStatus.ResumeLayout(False)
-        Me.pnlBottom.ResumeLayout(False)
+        Me.pnlIMPA.ResumeLayout(False)
         Me.pnlSinglePic.ResumeLayout(False)
+        Me.pnlMPDB.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -344,7 +382,7 @@ Partial Class dlgImgSelect
     Friend WithEvents lblDL1Status As System.Windows.Forms.Label
     Friend WithEvents lblDL1 As System.Windows.Forms.Label
     Friend WithEvents pbDL1 As System.Windows.Forms.ProgressBar
-    Friend WithEvents pnlBottom As System.Windows.Forms.Panel
+    Friend WithEvents pnlIMPA As System.Windows.Forms.Panel
     Friend WithEvents lblDL2Status As System.Windows.Forms.Label
     Friend WithEvents lblDL2 As System.Windows.Forms.Label
     Friend WithEvents pbDL2 As System.Windows.Forms.ProgressBar
@@ -359,5 +397,9 @@ Partial Class dlgImgSelect
     Friend WithEvents pnlSinglePic As System.Windows.Forms.Panel
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents pnlMPDB As System.Windows.Forms.Panel
+    Friend WithEvents lblDL3Status As System.Windows.Forms.Label
+    Friend WithEvents lblDL3 As System.Windows.Forms.Label
+    Friend WithEvents pbDL3 As System.Windows.Forms.ProgressBar
 
 End Class

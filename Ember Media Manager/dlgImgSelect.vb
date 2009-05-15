@@ -27,8 +27,11 @@ Imports System.Text.RegularExpressions
 Public Class dlgImgSelect
     Private TMDB As New TMDB.Scraper
     Private IMPA As New IMPA.Scraper
+    Private MPDB As New MPDB.Scraper
+
     Friend WithEvents bwIMPADownload As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwTMDBDownload As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwMPDBDownload As New System.ComponentModel.BackgroundWorker
 
     Private imdbID As String
     Private sPath As String
@@ -48,11 +51,15 @@ Public Class dlgImgSelect
 
     Private IMPAPosters As New List(Of Media.Image)
     Private TMDBPosters As New List(Of Media.Image)
+    Private MPDBPosters As New List(Of Media.Image)
 
-    Private _impaDone As Boolean = False
-    Private _tmdbDone As Boolean = False
+    Private _impaDone As Boolean = True
+    Private _tmdbDone As Boolean = True
+    Private _mpdbDone As Boolean = True
+
     Private Event IMPADone()
     Private Event TMDBDone()
+    Private Event MPDBDone()
 
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -142,23 +149,28 @@ Public Class dlgImgSelect
             AddHandler TMDB.ProgressUpdated, AddressOf TMDBProgressUpdated
             AddHandler IMPA.PostersDownloaded, AddressOf IMPAPostersDownloaded
             AddHandler IMPA.ProgressUpdated, AddressOf IMPAProgressUpdated
+            AddHandler MPDB.PostersDownloaded, AddressOf MPDBPostersDownloaded
+            AddHandler MPDB.ProgressUpdated, AddressOf MPDBProgressUpdated
             AddHandler IMPADone, AddressOf IMPADoneDownloading
             AddHandler TMDBDone, AddressOf TMDBDoneDownloading
+            AddHandler MPDBDone, AddressOf MPDBDoneDownloading
 
             If Me.DLType = Master.ImageType.Posters Then
-                If Master.uSettings.UseTMDB AndAlso Master.uSettings.UseIMPA Then
-                    Me.pnlDLStatus.Height = 150
-                    Me.pnlBottom.Visible = True
-                Else
-                    Me.pnlDLStatus.Height = 75
-                    If Master.uSettings.UseIMPA Then
-                        Me.pnlBottom.Visible = True
-                    End If
-                End If
+                Me.pnlDLStatus.Visible = True
             Else
-                Me.pnlDLStatus.Height = 75
-                Me.pnlBottom.Visible = False
+                Me.pnlDLStatus.Visible = False
+                Me.pnlSinglePic.Visible = True
             End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub MPDBDoneDownloading()
+
+        Try
+            Me._mpdbDone = True
+            Me.AllDoneDownloading()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -169,18 +181,7 @@ Public Class dlgImgSelect
         Try
             If Me.DLType = Master.ImageType.Posters Then
                 Me._tmdbDone = True
-                If Master.uSettings.UseIMPA Then
-                    If Me._impaDone Then
-                        Me.pnlDLStatus.Visible = False
-                        Me.TMDBPosters.AddRange(Me.IMPAPosters)
-                        Me.ProcessPics(Me.TMDBPosters)
-                        Me.pnlBG.Visible = True
-                    End If
-                Else
-                    Me.pnlDLStatus.Visible = False
-                    Me.ProcessPics(Me.TMDBPosters)
-                    Me.pnlBG.Visible = True
-                End If
+                Me.AllDoneDownloading()
             Else
                 Me.pnlDLStatus.Visible = False
                 Me.ProcessPics(Me.TMDBPosters)
@@ -198,21 +199,20 @@ Public Class dlgImgSelect
     Private Sub IMPADoneDownloading()
         Try
             Me._impaDone = True
-            If Master.uSettings.UseTMDB Then
-                If Me._tmdbDone = True Then
-                    Me.pnlDLStatus.Visible = False
-                    Me.TMDBPosters.AddRange(Me.IMPAPosters)
-                    Me.ProcessPics(Me.TMDBPosters)
-                    Me.pnlBG.Visible = True
-                End If
-            Else
-                Me.pnlDLStatus.Visible = False
-                Me.ProcessPics(Me.IMPAPosters)
-                Me.pnlBG.Visible = True
-            End If
+            Me.AllDoneDownloading()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub AllDoneDownloading()
+        If Me._impaDone AndAlso Me._tmdbDone AndAlso Me._mpdbDone Then
+            Me.pnlDLStatus.Visible = False
+            Me.TMDBPosters.AddRange(Me.IMPAPosters)
+            Me.TMDBPosters.AddRange(Me.MPDBPosters)
+            Me.ProcessPics(Me.TMDBPosters)
+            Me.pnlBG.Visible = True
+        End If
     End Sub
 
     Private Sub ProcessPics(ByVal posters As List(Of Media.Image))
@@ -238,6 +238,29 @@ Public Class dlgImgSelect
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub MPDBProgressUpdated(ByVal iPercent As Integer)
+        Me.pbDL3.Value = iPercent
+    End Sub
+
+    Private Sub MPDBPostersDownloaded(ByVal Posters As List(Of Media.Image))
+
+        Try
+            Me.pbDL3.Value = 0
+
+            Me.lblDL3.Text = "Preparing images..."
+            Me.lblDL3Status.Text = String.Empty
+            Me.pbDL3.Maximum = Posters.Count
+
+            Me.MPDBPosters = Posters
+
+            Me.bwMPDBDownload.WorkerReportsProgress = True
+            Me.bwMPDBDownload.RunWorkerAsync()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
     End Sub
 
     Private Sub TMDBProgressUpdated(ByVal iPercent As Integer)
@@ -296,7 +319,11 @@ Public Class dlgImgSelect
                 Me.pnlDLStatus.Visible = True
                 Me.Refresh()
 
+                Me._tmdbDone = False
+
                 Me.TMDB.GetImagesAsync(imdbID, "poster")
+            Else
+                Me.lblDL1.Text = "TheMovieDB.com is not enabled"
             End If
 
             If Master.uSettings.UseIMPA Then
@@ -306,7 +333,25 @@ Public Class dlgImgSelect
                 Me.pnlDLStatus.Visible = True
                 Me.Refresh()
 
+                Me._impaDone = False
+
                 Me.IMPA.GetImagesAsync(imdbID)
+            Else
+                Me.lblDL2.Text = "IMPAwards.com is not enabled"
+            End If
+
+            If Master.uSettings.UseMPDB Then
+                Me.lblDL3.Text = "Retrieving data from MoviePostersDB.com..."
+                Me.lblDL3Status.Text = String.Empty
+                Me.pbDL3.Maximum = 3
+                Me.pnlDLStatus.Visible = True
+                Me.Refresh()
+
+                Me._mpdbDone = False
+
+                Me.MPDB.GetImagesAsync(imdbID)
+            Else
+                Me.lblDL3.Text = "MoviePostersDB.com is not enabled"
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -557,6 +602,7 @@ Public Class dlgImgSelect
         ' Thread finished: process the pics
         '\\
 
+        Me._impaDone = True
         RaiseEvent IMPADone()
 
     End Sub
@@ -608,7 +654,57 @@ Public Class dlgImgSelect
         ' Thread finished: process the pics
         '\\
 
+        Me._tmdbDone = True
         RaiseEvent TMDBDone()
+
+    End Sub
+
+    Private Sub bwMPDBDownload_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMPDBDownload.DoWork
+
+        '//
+        ' Thread to download mpdb posters from the internet (multi-threaded because sometimes
+        ' the web server is slow to respond or not reachable, hanging the GUI)
+        '\\
+        For i As Integer = 0 To Me.MPDBPosters.Count - 1
+            Try
+                Me.bwMPDBDownload.ReportProgress(i + 1, Me.MPDBPosters.Item(i).URL)
+                Dim wrRequest As WebRequest = WebRequest.Create(Me.MPDBPosters.Item(i).URL)
+                Dim wrResponse As WebResponse = wrRequest.GetResponse()
+                If wrResponse.ContentType = "image/jpeg" Then
+                    Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                End If
+                wrResponse.Close()
+                wrResponse = Nothing
+                wrRequest = Nothing
+            Catch
+            End Try
+        Next
+
+    End Sub
+
+    Private Sub bwMPDBDownload_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMPDBDownload.ProgressChanged
+
+        '//
+        ' Update the status bar with the name of the current media name and increase progress bar
+        '\\
+        Try
+            Dim sStatus As String = e.UserState.ToString
+            Me.lblDL3Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, Master.TruncateURL(sStatus, 40), sStatus))
+            Me.pbDL3.Value = e.ProgressPercentage
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub bwMPDBDownload_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMPDBDownload.RunWorkerCompleted
+
+        '//
+        ' Thread finished: process the pics
+        '\\
+
+        Me._mpdbDone = True
+        RaiseEvent MPDBDone()
 
     End Sub
 

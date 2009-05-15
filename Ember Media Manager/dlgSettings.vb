@@ -361,6 +361,10 @@ Public Class dlgSettings
     Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitleFromNfo.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMPDB.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -470,6 +474,7 @@ Public Class dlgSettings
             Master.uSettings.MovieTrailerCol = Me.chkMovieTrailerCol.Checked
             Master.uSettings.UseTMDB = Me.chkUseTMDB.Checked
             Master.uSettings.UseIMPA = Me.chkUseIMPA.Checked
+            Master.uSettings.UseMPDB = Me.chkUseMPDB.Checked
             Master.uSettings.PreferredPosterSize = Me.cbPosterSize.SelectedIndex
             Master.uSettings.PreferredFanartSize = Me.cbFanartSize.SelectedIndex
             Master.uSettings.OverwritePoster = Me.chkOverwritePoster.Checked
@@ -534,6 +539,7 @@ Public Class dlgSettings
             Me.chkMovieTrailerCol.Checked = Master.uSettings.MovieTrailerCol
             Me.chkUseTMDB.Checked = Master.uSettings.UseTMDB
             Me.chkUseIMPA.Checked = Master.uSettings.UseIMPA
+            Me.chkUseMPDB.Checked = Master.uSettings.UseMPDB
             Me.cbPosterSize.SelectedIndex = Master.uSettings.PreferredPosterSize
             Me.cbFanartSize.SelectedIndex = Master.uSettings.PreferredFanartSize
             Me.chkOverwritePoster.Checked = Master.uSettings.OverwritePoster
@@ -551,5 +557,6 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
+
 
 End Class
