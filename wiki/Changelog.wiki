@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r29:*
  * Fix: Extrathumbs being created even when not utilized
  * Fix: File type sources not loading all movies
  * Fix: Incompatible media info
@@ -11,6 +14,8 @@
  * Feature: More file naming schemes
  * Feature: Lock plot, outline, and title
  * Feature: Option to automatically scrape for posters/fanart on single scrape
+ * Change: Misc code clean up, sanity checks, and changes
+ * Change: Re-enabled doublebuffering on the main form since it didn't fix the black status bar issue by disabling it
 
 *Changes in r10:*
  * Fix: Disable doublebuffering on main form as a fix to the "black status bar" issue 
