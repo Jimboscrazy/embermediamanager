@@ -85,6 +85,16 @@ Public Class frmMain
 
 #Region "Form/Controls"
 
+    Private Sub frmMain_VisibleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.VisibleChanged
+
+        '//
+        ' Make sure the window is kicked to the front when visible
+        '\\
+
+        Me.BringToFront()
+
+    End Sub
+
     Private Sub frmMain_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
 
         '//
@@ -202,6 +212,8 @@ Public Class frmMain
             Me.SetColors()
             Me.pnlInfoPanel.Height = 25
             Me.ClearInfo()
+
+            Me.BringToFront()
 
             Me.LoadMedia(1)
         Catch ex As Exception
@@ -2582,4 +2594,5 @@ Public Class frmMain
         End Try
     End Sub
 #End Region
+
 End Class
