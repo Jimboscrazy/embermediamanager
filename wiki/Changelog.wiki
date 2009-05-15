@@ -10,6 +10,7 @@
  * Feature: Support for MoviePostersDB.com
  * Feature: More file naming schemes
  * Feature: Lock plot, outline, and title
+ * Feature: Option to automatically scrape for posters/fanart on single scrape
 
 *Changes in r10:*
  * Fix: Disable doublebuffering on main form as a fix to the "black status bar" issue 
