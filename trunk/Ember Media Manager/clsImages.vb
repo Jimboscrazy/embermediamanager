@@ -21,6 +21,7 @@
 Option Explicit On
 
 Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class Images
 
@@ -102,14 +103,16 @@ Public Class Images
 
     Public Sub Save(ByVal sPath As String)
         Try
-            ms.Position = 0
-            _image.Save(ms, Imaging.ImageFormat.Jpeg)
-            Ret = ms.ToArray
+            If Not CBool(File.GetAttributes(sPath) AndAlso FileAttributes.ReadOnly) Then
+                ms.Position = 0
+                _image.Save(ms, Imaging.ImageFormat.Jpeg)
+                Ret = ms.ToArray
 
-            Dim fs As New FileStream(sPath, FileMode.OpenOrCreate, FileAccess.Write)
-            fs.Write(Ret, 0, Ret.Length)
-            fs.Flush()
-            fs.Close()
+                Dim fs As New FileStream(sPath, FileMode.OpenOrCreate, FileAccess.Write)
+                fs.Write(Ret, 0, Ret.Length)
+                fs.Flush()
+                fs.Close()
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -246,14 +249,15 @@ Public Class Images
     Private Function GenericFromWeb(ByVal sURL As String) As Image
         Dim tmpImage As Image = Nothing
         Try
-            Dim wrRequest As WebRequest = WebRequest.Create(sURL)
-            Dim wrResponse As WebResponse = wrRequest.GetResponse()
-            tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-            wrResponse.Close()
-            wrResponse = Nothing
-            wrRequest = Nothing
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            If Regex.IsMatch(sURL, "^(https?://)?(([\w!~*'().&=+$%-]+: )?[\w!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([\w!~*'()-]+\.)*([\w^-][\w-]{0,61})?[\w]\.[a-z]{2,6})(:[0-9]{1,4})?((/*)|(/+[\w!~*'().;?:@&=+$,%#-]+)+/*)$", RegexOptions.IgnoreCase) Then
+                Dim wrRequest As WebRequest = WebRequest.Create(sURL)
+                Dim wrResponse As WebResponse = wrRequest.GetResponse()
+                tmpImage = Image.FromStream(wrResponse.GetResponseStream)
+                wrResponse.Close()
+                wrResponse = Nothing
+                wrRequest = Nothing
+            End If
+        Catch
         End Try
         Return tmpImage
     End Function
@@ -299,22 +303,22 @@ Public Class Images
                                 Case Master.PosterSize.Xlrg
                                     If iMovie.Description.ToLower = "original" Then
                                         tmpImage = GenericFromWeb(iMovie.URL)
-                                        GoTo foundIT
+                                        If Not IsNothing(tmpImage) Then GoTo foundIT
                                     End If
                                 Case Master.PosterSize.Lrg
                                     If iMovie.Description.ToLower = "mid" Then
                                         tmpImage = GenericFromWeb(iMovie.URL)
-                                        GoTo foundIT
+                                        If Not IsNothing(tmpImage) Then GoTo foundIT
                                     End If
                                 Case Master.PosterSize.Mid
                                     If iMovie.Description.ToLower = "cover" Then
                                         tmpImage = GenericFromWeb(iMovie.URL)
-                                        GoTo foundIT
+                                        If Not IsNothing(tmpImage) Then GoTo foundIT
                                     End If
                                 Case Master.PosterSize.Small
                                     If iMovie.Description.ToLower = "thumb" Then
                                         tmpImage = GenericFromWeb(iMovie.URL)
-                                        GoTo foundIT
+                                        If Not IsNothing(tmpImage) Then GoTo foundIT
                                     End If
                                     'no "wide" for TMDB
                             End Select
@@ -331,37 +335,38 @@ Public Class Images
                         If tmpListIMPA.Count > 0 Then
                             For Each iMovie As Media.Image In tmpListIMPA
                                 tmpImage = GenericFromWeb(iMovie.URL)
-                                Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
-                                If Not tmpSize = Master.uSettings.PreferredPosterSize Then
-                                    tmpImage = Nothing
-                                    'cache the first result from each type in case the preferred size is not available
-                                    Select Case tmpSize
-                                        Case Master.PosterSize.Xlrg
-                                            If IsNothing(tmpIMPAX) Then
-                                                tmpIMPAX = tmpImage
-                                            End If
-                                        Case Master.PosterSize.Lrg
-                                            If IsNothing(tmpIMPAL) Then
-                                                tmpIMPAL = tmpImage
-                                            End If
-                                        Case Master.PosterSize.Mid
-                                            If IsNothing(tmpIMPAM) Then
-                                                tmpIMPAM = tmpImage
-                                            End If
-                                        Case Master.PosterSize.Small
-                                            If IsNothing(tmpIMPAS) Then
-                                                tmpIMPAS = tmpImage
-                                            End If
-                                        Case Master.PosterSize.Wide
-                                            If IsNothing(tmpIMPAW) Then
-                                                tmpIMPAW = tmpImage
-                                            End If
-                                    End Select
-                                Else
-                                    'image found
-                                    GoTo foundIT
+                                If Not IsNothing(tmpImage) Then
+                                    Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
+                                    If Not tmpSize = Master.uSettings.PreferredPosterSize Then
+                                        tmpImage = Nothing
+                                        'cache the first result from each type in case the preferred size is not available
+                                        Select Case tmpSize
+                                            Case Master.PosterSize.Xlrg
+                                                If IsNothing(tmpIMPAX) Then
+                                                    tmpIMPAX = tmpImage
+                                                End If
+                                            Case Master.PosterSize.Lrg
+                                                If IsNothing(tmpIMPAL) Then
+                                                    tmpIMPAL = tmpImage
+                                                End If
+                                            Case Master.PosterSize.Mid
+                                                If IsNothing(tmpIMPAM) Then
+                                                    tmpIMPAM = tmpImage
+                                                End If
+                                            Case Master.PosterSize.Small
+                                                If IsNothing(tmpIMPAS) Then
+                                                    tmpIMPAS = tmpImage
+                                                End If
+                                            Case Master.PosterSize.Wide
+                                                If IsNothing(tmpIMPAW) Then
+                                                    tmpIMPAW = tmpImage
+                                                End If
+                                        End Select
+                                    Else
+                                        'image found
+                                        GoTo foundIT
+                                    End If
                                 End If
-
                             Next
                         End If
                     End If
@@ -376,37 +381,38 @@ Public Class Images
                         If tmpListMPDB.Count > 0 Then
                             For Each iMovie As Media.Image In tmpListMPDB
                                 tmpImage = GenericFromWeb(iMovie.URL)
-                                Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
-                                If Not tmpSize = Master.uSettings.PreferredPosterSize Then
-                                    tmpImage = Nothing
-                                    'cache the first result from each type in case the preferred size is not available
-                                    Select Case tmpSize
-                                        Case Master.PosterSize.Xlrg
-                                            If IsNothing(tmpMPDBX) Then
-                                                tmpMPDBX = tmpImage
-                                            End If
-                                        Case Master.PosterSize.Lrg
-                                            If IsNothing(tmpMPDBL) Then
-                                                tmpMPDBL = tmpImage
-                                            End If
-                                        Case Master.PosterSize.Mid
-                                            If IsNothing(tmpMPDBM) Then
-                                                tmpMPDBM = tmpImage
-                                            End If
-                                        Case Master.PosterSize.Small
-                                            If IsNothing(tmpMPDBS) Then
-                                                tmpMPDBS = tmpImage
-                                            End If
-                                        Case Master.PosterSize.Wide
-                                            If IsNothing(tmpMPDBW) Then
-                                                tmpMPDBW = tmpImage
-                                            End If
-                                    End Select
-                                Else
-                                    'image found
-                                    GoTo foundIT
+                                If Not IsNothing(tmpImage) Then
+                                    Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
+                                    If Not tmpSize = Master.uSettings.PreferredPosterSize Then
+                                        tmpImage = Nothing
+                                        'cache the first result from each type in case the preferred size is not available
+                                        Select Case tmpSize
+                                            Case Master.PosterSize.Xlrg
+                                                If IsNothing(tmpMPDBX) Then
+                                                    tmpMPDBX = tmpImage
+                                                End If
+                                            Case Master.PosterSize.Lrg
+                                                If IsNothing(tmpMPDBL) Then
+                                                    tmpMPDBL = tmpImage
+                                                End If
+                                            Case Master.PosterSize.Mid
+                                                If IsNothing(tmpMPDBM) Then
+                                                    tmpMPDBM = tmpImage
+                                                End If
+                                            Case Master.PosterSize.Small
+                                                If IsNothing(tmpMPDBS) Then
+                                                    tmpMPDBS = tmpImage
+                                                End If
+                                            Case Master.PosterSize.Wide
+                                                If IsNothing(tmpMPDBW) Then
+                                                    tmpMPDBW = tmpImage
+                                                End If
+                                        End Select
+                                    Else
+                                        'image found
+                                        GoTo foundIT
+                                    End If
                                 End If
-
                             Next
                         End If
                     End If
@@ -420,25 +426,25 @@ Public Class Images
                             Dim x = From MI As Media.Image In tmpListTMDB Where MI.Description = "original"
                             If x.Count > 0 Then
                                 tmpImage = GenericFromWeb(x(0).URL)
-                                GoTo foundIT
+                                If Not IsNothing(tmpImage) Then GoTo foundIT
                             End If
 
                             Dim l = From MI As Media.Image In tmpListTMDB Where MI.Description = "mid"
                             If l.Count > 0 Then
                                 tmpImage = GenericFromWeb(l(0).URL)
-                                GoTo foundIT
+                                If Not IsNothing(tmpImage) Then GoTo foundIT
                             End If
 
                             Dim m = From MI As Media.Image In tmpListTMDB Where MI.Description = "cover"
                             If m.Count > 0 Then
                                 tmpImage = GenericFromWeb(m(0).URL)
-                                GoTo foundIT
+                                If Not IsNothing(tmpImage) Then GoTo foundIT
                             End If
 
                             Dim s = From MI As Media.Image In tmpListTMDB Where MI.Description = "thumb"
                             If s.Count > 0 Then
                                 tmpImage = GenericFromWeb(s(0).URL)
-                                GoTo foundIT
+                                If Not IsNothing(tmpImage) Then GoTo foundIT
                             End If
 
                         End If
