@@ -102,6 +102,7 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.chkUseMPDB = New System.Windows.Forms.CheckBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -650,6 +651,7 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkUseMPDB)
         Me.GroupBox1.Controls.Add(Me.chkOverwriteFanart)
         Me.GroupBox1.Controls.Add(Me.chkOverwritePoster)
         Me.GroupBox1.Controls.Add(Me.cbFanartSize)
@@ -927,6 +929,16 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
+        'chkUseMPDB
+        '
+        Me.chkUseMPDB.AutoSize = True
+        Me.chkUseMPDB.Location = New System.Drawing.Point(244, 65)
+        Me.chkUseMPDB.Name = "chkUseMPDB"
+        Me.chkUseMPDB.Size = New System.Drawing.Size(188, 17)
+        Me.chkUseMPDB.TabIndex = 43
+        Me.chkUseMPDB.Text = "Get Images From MoviePostersDB"
+        Me.chkUseMPDB.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -1046,4 +1058,5 @@ Partial Class dlgSettings
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents chkOverwriteNfo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitleFromNfo As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseMPDB As System.Windows.Forms.CheckBox
 End Class

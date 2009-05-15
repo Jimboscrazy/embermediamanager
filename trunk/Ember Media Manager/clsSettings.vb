@@ -52,6 +52,7 @@ Public Class ummSettings
     Private _cleanmovieNfoB As Boolean
     Private _useTMDB As Boolean
     Private _useIMPA As Boolean
+    Private _useMPDB As Boolean
     Private _postersize As Master.PosterSize
     Private _fanartsize As Master.FanartSize
     Private _overwritePoster As Boolean
@@ -307,6 +308,15 @@ Public Class ummSettings
         End Set
     End Property
 
+    Public Property UseMPDB() As Boolean
+        Get
+            Return Me._useMPDB
+        End Get
+        Set(ByVal value As Boolean)
+            Me._useMPDB = value
+        End Set
+    End Property
+
     Public Property PreferredPosterSize() As Master.PosterSize
         Get
             Return Me._postersize
@@ -436,6 +446,9 @@ Public Class ummSettings
         Me._cleanmoviefanartJpg = False
         Me._cleanmovieNfo = False
         Me._cleanmovieNfoB = False
+        Me._useTMDB = False
+        Me._useIMPA = False
+        Me._useMPDB = False
         Me._postersize = Master.PosterSize.Xlrg
         Me._fanartsize = Master.FanartSize.Lrg
         Me._overwritePoster = False

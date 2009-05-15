@@ -154,6 +154,7 @@
     <Compile Include="clsErrorLog.vb" />
     <Compile Include="clsScrapeIMDB.vb" />
     <Compile Include="clsScrapeIMPA.vb" />
+    <Compile Include="clsScrapeMPDB.vb" />
     <Compile Include="clsSettings.vb" />
     <Compile Include="clsSorter.vb" />
     <Compile Include="clsScrapeTMDB.vb" />
