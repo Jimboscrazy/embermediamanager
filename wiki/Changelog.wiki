@@ -5,6 +5,7 @@
  * Fix for extrathumbs being created even when not utilized
  * Fix for file type sources not loading all movies
  * Fix for incompatible media info
+ * Support for MoviePostersDB.com
 
 *Changes in r10:*
  * Disable doublebuffering on main form as a fix to the "black status bar" issue (Needs verification)
