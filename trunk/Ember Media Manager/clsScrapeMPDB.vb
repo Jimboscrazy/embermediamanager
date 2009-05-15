@@ -53,7 +53,7 @@ Namespace MPDB
             End Try
         End Sub
 
-        Public Function GetMPDBImages(ByVal imdbID As String) As List(Of Media.Image)
+        Public Function GetMPDBPosters(ByVal imdbID As String) As List(Of Media.Image)
             Dim Html As String
             Dim alPosters As New List(Of Media.Image)
             Dim sUrl As String = String.Concat("http://www.movieposterdb.com/movie/", imdbID.Replace("tt", String.Empty))
@@ -63,7 +63,7 @@ Namespace MPDB
                 Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
                 Wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 3.5;)")
 
-                Dim Ms As New MemoryStream(Wc.DownloadData(sURL))
+                Dim Ms As New MemoryStream(Wc.DownloadData(sUrl))
 
                 If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
                     Html = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
@@ -100,7 +100,7 @@ Namespace MPDB
         Private Sub bwMPDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMPDB.DoWork
             Dim Args As Arguments = e.Argument
             Try
-                e.Result = GetMPDBImages(Args.Parameter)
+                e.Result = GetMPDBPosters(Args.Parameter)
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 e.Result = Nothing

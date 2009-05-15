@@ -376,14 +376,21 @@ quickExit:
 
         Dim TMDB As New TMDB.Scraper
         Dim IMPA As New IMPA.Scraper
+        Dim MPDB As New MPDB.Scraper
         Dim tmpListTMDB As New List(Of Media.Image)
         Dim tmpListIMPA As New List(Of Media.Image)
+        Dim tmpListMPDB As New List(Of Media.Image)
         Dim tmpImage As Image = Nothing
         Dim tmpIMPAX As Image = Nothing
         Dim tmpIMPAL As Image = Nothing
         Dim tmpIMPAM As Image = Nothing
         Dim tmpIMPAS As Image = Nothing
         Dim tmpIMPAW As Image = Nothing
+        Dim tmpMPDBX As Image = Nothing
+        Dim tmpMPDBL As Image = Nothing
+        Dim tmpMPDBM As Image = Nothing
+        Dim tmpMPDBS As Image = Nothing
+        Dim tmpMPDBW As Image = Nothing
         Dim wrRequest As WebRequest
         Dim wrResponse As WebResponse
 
@@ -483,6 +490,55 @@ quickExit:
                         End If
                     End If
                 End If
+
+                If uSettings.UseMPDB Then
+                    If IsNothing(tmpImage) Then
+                        'no poster of the proper size from TMDB or IMPA found... try MPDB
+
+                        tmpListMPDB = MPDB.GetMPDBPosters(currMovie.IMDBID)
+
+                        If tmpListMPDB.Count > 0 Then
+                            For Each iMovie As Media.Image In tmpListMPDB
+                                wrRequest = WebRequest.Create(iMovie.URL)
+                                wrResponse = wrRequest.GetResponse()
+                                tmpImage = Image.FromStream(wrResponse.GetResponseStream)
+                                wrResponse.Close()
+                                Dim tmpSize As PosterSize = GetImageDims(tmpImage, ImageType.Posters)
+                                If Not tmpSize = uSettings.PreferredPosterSize Then
+                                    tmpImage = Nothing
+                                    'cache the first result from each type in case the preferred size is not available
+                                    Select Case tmpSize
+                                        Case PosterSize.Xlrg
+                                            If IsNothing(tmpMPDBX) Then
+                                                tmpMPDBX = tmpImage
+                                            End If
+                                        Case PosterSize.Lrg
+                                            If IsNothing(tmpMPDBL) Then
+                                                tmpMPDBL = tmpImage
+                                            End If
+                                        Case PosterSize.Mid
+                                            If IsNothing(tmpMPDBM) Then
+                                                tmpMPDBM = tmpImage
+                                            End If
+                                        Case PosterSize.Small
+                                            If IsNothing(tmpMPDBS) Then
+                                                tmpMPDBS = tmpImage
+                                            End If
+                                        Case PosterSize.Wide
+                                            If IsNothing(tmpMPDBW) Then
+                                                tmpMPDBW = tmpImage
+                                            End If
+                                    End Select
+                                Else
+                                    'image found
+                                    GoTo foundIT
+                                End If
+
+                            Next
+                        End If
+                    End If
+                End If
+
                 If IsNothing(tmpImage) AndAlso Not doAsk Then
                     'STILL no image found, just get the first available image, starting with the largest
                     If uSettings.UseTMDB Then
@@ -551,7 +607,34 @@ quickExit:
                             End If
                         End If
                     End If
+
+                    If uSettings.UseMPDB Then
+                        If tmpListMPDB.Count > 0 Then
+                            If Not IsNothing(tmpMPDBX) Then
+                                tmpImage = tmpMPDBX
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpMPDBL) Then
+                                tmpImage = tmpMPDBL
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpMPDBM) Then
+                                tmpImage = tmpMPDBM
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpMPDBS) Then
+                                tmpImage = tmpMPDBS
+                                GoTo foundIT
+                            End If
+                            If Not IsNothing(tmpMPDBW) Then
+                                tmpImage = tmpMPDBW
+                                GoTo foundIT
+                            End If
+                        End If
+                    End If
+
                 End If
+
 
             Else 'fanart
 

@@ -1365,7 +1365,7 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB Then
+                                If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB OrElse Master.uSettings.UseMPDB Then
 
                                     posterPath = Master.GetPosterPath(sPath, drvRow.Item(7))
 
@@ -1438,7 +1438,7 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB Then
+                                If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB OrElse Master.uSettings.UseMPDB Then
 
                                     posterPath = Master.GetPosterPath(sPath, drvRow.Item(7))
 
@@ -1601,7 +1601,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
-                                    If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB Then
+                                    If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB OrElse Master.uSettings.UseMPDB Then
                                         posterPath = Master.GetPosterPath(sPath, drvRow.Item(7))
 
                                         If (Not File.Exists(posterPath)) OrElse Master.uSettings.OverwritePoster Then
@@ -1668,7 +1668,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
-                                    If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB Then
+                                    If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB OrElse Master.uSettings.UseMPDB Then
                                         posterPath = Master.GetPosterPath(sPath, drvRow.Item(7))
 
                                         If (Not File.Exists(posterPath)) OrElse Master.uSettings.OverwritePoster Then
