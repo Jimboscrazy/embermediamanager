@@ -6,11 +6,12 @@
  * Fix for file type sources not loading all movies
  * Fix for incompatible media info
  * Support for MoviePostersDB.com
+ * Another attempt to fix Ember not appearing on top when first opened
 
 *Changes in r10:*
- * Disable doublebuffering on main form as a fix to the "black status bar" issue (Needs verification)
+ * Disable doublebuffering on main form as a fix to the "black status bar" issue 
  * Ability to open read-only files
  * Changed versioning again. I wrote a powershell script to automatically get the proper version from svn to make it easier on me.
- * Fix for Ember not appearing on top when first opened (Needs verification)
- * Fix for IMDB single scraper not working in some instances (Needs verification)
+ * Fix for Ember not appearing on top when first opened
+ * Fix for IMDB single scraper not working in some instances
  * Fix some elements of the interface not re-enabling after searching IMDB
