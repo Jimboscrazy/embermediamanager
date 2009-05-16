@@ -1018,7 +1018,7 @@ quickExit:
 
             If uSettings.MovieNameNFO OrElse isFile Then
                 tPath = String.Concat(RemoveExtFromPath(nPath), ".nfo")
-                If Not CBool(File.GetAttributes(tPath) AndAlso FileAttributes.ReadOnly) Then
+                If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                     Dim xmlSW As New StreamWriter(tPath)
                     xmlSer.Serialize(xmlSW, movieToSave)
                     xmlSW.Close()
@@ -1028,7 +1028,7 @@ quickExit:
 
             If Not isFile AndAlso uSettings.MovieNFO Then
                 tPath = String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")
-                If Not CBool(File.GetAttributes(tPath) AndAlso FileAttributes.ReadOnly) Then
+                If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                     Dim xmlSW As New StreamWriter(tPath)
                     xmlSer.Serialize(xmlSW, movieToSave)
                     xmlSW.Close()
