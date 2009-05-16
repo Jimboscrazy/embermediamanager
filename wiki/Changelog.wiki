@@ -7,6 +7,7 @@
 
 *Changes in r34:*
  * Fix: Stupid mistake in new nfo saving code
+ * Rewrite of the studio and media flags code
 
 *Changes in r31:*
  * Fix: Stupid mistake in new image saving code
