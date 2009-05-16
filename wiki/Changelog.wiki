@@ -2,7 +2,11 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Fix for <movie>.fanart.jpg saving, but not displaying
+ * Fix for new file types not being detected to fill the list checkboxes
+
+*Changes in r34:*
+ * Fix: Stupid mistake in new nfo saving code
 
 *Changes in r31:*
  * Fix: Stupid mistake in new image saving code
