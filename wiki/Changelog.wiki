@@ -4,6 +4,9 @@
 *Changes in Upcoming Release:*
  * None yet
 
+*Changes in r31:*
+ * Fix: Stupid mistake in new image saving code
+
 *Changes in r29:*
  * Fix: Extrathumbs being created even when not utilized
  * Fix: File type sources not loading all movies
