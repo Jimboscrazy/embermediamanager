@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ *None yet
+
+*Changes in r39:*
  * Fix: "moviename".fanart.jpg saving, but not displaying
  * Fix: New file types not being detected to fill the list checkboxes
  * Change: Add new file types to folder cleaner scraper
