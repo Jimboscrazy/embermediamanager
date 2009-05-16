@@ -66,7 +66,6 @@ Public Class ummSettings
     Private _properCase As Boolean
     Private _overwritenfo As Boolean
     Private _usenamefromNfo As Boolean
-    Private _movielist As New ArrayList
     Private _movietbn As Boolean
     Private _movienametbn As Boolean
     Private _moviejpg As Boolean
@@ -83,6 +82,7 @@ Public Class ummSettings
     Private _lockoutline As Boolean
     Private _locktitle As Boolean
     Private _singlescrapeimages As Boolean
+    Private _movielist As New ArrayList
 
     Public Property FilterCustom() As ArrayList
         Get
@@ -453,15 +453,6 @@ Public Class ummSettings
         End Set
     End Property
 
-    Public Property MovieList() As ArrayList
-        Get
-            Return Me._movielist
-        End Get
-        Set(ByVal value As ArrayList)
-            Me._movielist = value
-        End Set
-    End Property
-
     Public Property MovieTBN() As Boolean
         Get
             Return Me._movietbn
@@ -606,6 +597,15 @@ Public Class ummSettings
         End Set
     End Property
 
+    Public Property MovieList() As ArrayList
+        Get
+            Return Me._movielist
+        End Get
+        Set(ByVal value As ArrayList)
+            Me._movielist = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -652,7 +652,6 @@ Public Class ummSettings
         Me._properCase = False
         Me._overwritenfo = False
         Me._usenamefromNfo = False
-        Me._movielist.Clear()
         Me._movietbn = False
         Me._movienametbn = False
         Me._moviejpg = False
@@ -669,6 +668,7 @@ Public Class ummSettings
         Me._lockoutline = False
         Me._locktitle = False
         Me._singlescrapeimages = False
+        Me._movielist.Clear()
     End Sub
 
     Public Sub Save()
