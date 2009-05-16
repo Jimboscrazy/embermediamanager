@@ -2,7 +2,7 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- *None yet
+ * None yet
 
 *Changes in r39:*
  * Fix: "moviename".fanart.jpg saving, but not displaying
