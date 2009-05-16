@@ -2,7 +2,7 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * Fix for <movie>.fanart.jpg saving, but not displaying
+ * Fix for "moviename".fanart.jpg saving, but not displaying
  * Fix for new file types not being detected to fill the list checkboxes
 
 *Changes in r34:*
