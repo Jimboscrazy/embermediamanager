@@ -1479,6 +1479,27 @@ Public Class frmMain
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
+                            If Master.uSettings.CleanPosterTBN Then
+                                If File.Exists(sPathShort & "\poster.tbn") Then
+                                    File.Delete(sPathShort & "\poster.tbn")
+                                End If
+                            End If
+
+                            If Me.bwScraper.CancellationPending Then Return
+                            If Master.uSettings.CleanPosterJPG Then
+                                If File.Exists(sPathShort & "\poster.jpg") Then
+                                    File.Delete(sPathShort & "\poster.jpg")
+                                End If
+                            End If
+
+                            If Me.bwScraper.CancellationPending Then Return
+                            If Master.uSettings.CleanMovieJPG Then
+                                If File.Exists(sPathShort & "\movie.jpg") Then
+                                    File.Delete(sPathShort & "\movie.jpg")
+                                End If
+                            End If
+
+                            If Me.bwScraper.CancellationPending Then Return
                             If Master.uSettings.CleanMovieTBNB Then
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".tbn") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".tbn")
@@ -1516,6 +1537,33 @@ Public Class frmMain
                                     File.Delete(String.Format("{0}\{1}.nfo", sPathShort, Master.CleanStackingMarkers(sOrName)))
                                 End If
                             End If
+
+                            If Me.bwScraper.CancellationPending Then Return
+                            If Master.uSettings.CleanDotFanartJPG Then
+                                If File.Exists(Master.RemoveExtFromPath(sPath) & ".fanart.jpg") Then
+                                    File.Delete(Master.RemoveExtFromPath(sPath) & ".fanart.jpg")
+                                End If
+                                If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, sOrName)) Then
+                                    File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, sOrName))
+                                End If
+                                If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
+                                    File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
+                                End If
+                            End If
+
+                            If Me.bwScraper.CancellationPending Then Return
+                            If Master.uSettings.CleanMovieNameJPG Then
+                                If File.Exists(Master.RemoveExtFromPath(sPath) & ".jpg") Then
+                                    File.Delete(Master.RemoveExtFromPath(sPath) & ".jpg")
+                                End If
+                                If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, sOrName)) Then
+                                    File.Delete(String.Format("{0}\{1}.jpg", sPathShort, sOrName))
+                                End If
+                                If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
+                                    File.Delete(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
+                                End If
+                            End If
+
                         Next
 
                     Case Master.ScrapeType.UpdateAuto
@@ -2414,12 +2462,12 @@ Public Class frmMain
                             Me.tslLoading.Visible = False
                             Me.tspbLoading.Visible = False
                             Me.tslStatus.Text = String.Empty
+                            Me.tsbAutoPilot.Enabled = True
+                            Me.tsbRefreshMedia.Enabled = True
+                            Me.tsbEdit.Enabled = True
+                            Me.tsbRescrape.Enabled = True
+                            Me.tabsMain.Enabled = True
                         End If
-                        Me.tsbAutoPilot.Enabled = True
-                        Me.tsbRefreshMedia.Enabled = True
-                        Me.tsbEdit.Enabled = True
-                        Me.tsbRescrape.Enabled = True
-                        Me.tabsMain.Enabled = True
                     End If
             End Select
         Catch ex As Exception
@@ -2479,18 +2527,22 @@ Public Class frmMain
                 If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                 End If
-                Me.tslLoading.Visible = False
-                Me.tspbLoading.Visible = False
                 Me.LoadInfo(Master.currPath, True, False, Master.isFile)
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Me.tslLoading.Visible = False
-            Me.tspbLoading.Visible = False
-            Me.tslStatus.Text = String.Empty
         End Try
+
+        Me.tslLoading.Visible = False
+        Me.tspbLoading.Visible = False
+        Me.tslStatus.Text = String.Empty
+        Me.tsbAutoPilot.Enabled = True
+        Me.tsbRefreshMedia.Enabled = True
+        Me.tsbEdit.Enabled = True
+        Me.tsbRescrape.Enabled = True
+        Me.tabsMain.Enabled = True
 
     End Sub
 
@@ -2502,38 +2554,44 @@ Public Class frmMain
             Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
             Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
             Dim lFi As New List(Of FileInfo)()
+            Dim hasNfo As Boolean = False
+            Dim hasPoster As Boolean = False
+            Dim hasFanart As Boolean = False
+            Dim hasTrailer As Boolean = False
 
             lFi.AddRange(di.GetFiles())
 
             For Each sfile As FileInfo In lFi
                 Select Case sfile.Extension.ToLower
                     Case ".jpg"
-                        If sfile.FullName = String.Concat(Master.RemoveExtFromPath(nPath), "-fanart.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(nPath).ToString, "\fanart.jpg") Then
-                            Me.dgvMediaList.Item(3, iIndex).Value = True
-                        Else
-                            Me.dgvMediaList.Item(3, iIndex).Value = False
+                        If sfile.Name = String.Concat(tmpName, "-fanart.jpg") OrElse sfile.Name = String.Concat(tmpName, ".fanart.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg") Then
+                            hasFanart = True
+                        ElseIf sfile.Name = String.Concat(tmpName, ".jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg") OrElse _
+                        sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg") Then
+                            hasPoster = True
                         End If
                     Case ".tbn"
-                        If sfile.FullName = String.Concat(Master.RemoveExtFromPath(nPath), ".tbn") OrElse sfile.FullName = String.Concat(Directory.GetParent(nPath).ToString, "\movie.tbn") Then
-                            Me.dgvMediaList.Item(2, iIndex).Value = True
-                        Else
-                            Me.dgvMediaList.Item(2, iIndex).Value = False
+                        If sfile.Name = String.Concat(tmpName, ".tbn") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn") OrElse _
+                            sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn") Then
+                            hasPoster = True
                         End If
                     Case ".nfo"
-                        If sfile.FullName = String.Concat(Master.RemoveExtFromPath(nPath), ".nfo") OrElse sfile.FullName = String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo") Then
-                            Me.dgvMediaList.Item(4, iIndex).Value = True
-                        Else
-                            Me.dgvMediaList.Item(4, iIndex).Value = False
+                        If sfile.Name = String.Concat(tmpName, ".nfo") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.nfo") Then
+                            hasNfo = True
                         End If
                     Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar"
                         If sfile.Name.Contains("-trailer") Then
-                            Me.dgvMediaList.Item(5, iIndex).Value = True
-                        Else
-                            Me.dgvMediaList.Item(5, iIndex).Value = False
+                            hasTrailer = True
                         End If
                 End Select
 
             Next
+
+            Me.dgvMediaList.Item(3, iIndex).Value = hasFanart
+            Me.dgvMediaList.Item(2, iIndex).Value = hasPoster
+            Me.dgvMediaList.Item(4, iIndex).Value = hasNfo
+            Me.dgvMediaList.Item(5, iIndex).Value = hasTrailer
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

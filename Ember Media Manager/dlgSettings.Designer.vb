@@ -109,6 +109,7 @@ Partial Class dlgSettings
         Me.lblPosterSize = New System.Windows.Forms.Label
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
         Me.chkFullCast = New System.Windows.Forms.CheckBox
         Me.chkFullCrew = New System.Windows.Forms.CheckBox
         Me.cbCert = New System.Windows.Forms.ComboBox
@@ -124,7 +125,11 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
+        Me.chkCleanDotFanartJPG = New System.Windows.Forms.CheckBox
+        Me.chkCleanMovieJPG = New System.Windows.Forms.CheckBox
+        Me.chkCleanPosterJPG = New System.Windows.Forms.CheckBox
+        Me.chkCleanPosterTBN = New System.Windows.Forms.CheckBox
+        Me.chkCleanMovieNameJPG = New System.Windows.Forms.CheckBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -178,9 +183,9 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.chkLogErrors)
-        Me.GroupBox4.Location = New System.Drawing.Point(207, 189)
+        Me.GroupBox4.Location = New System.Drawing.Point(404, 227)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(184, 126)
+        Me.GroupBox4.Size = New System.Drawing.Size(184, 122)
         Me.GroupBox4.TabIndex = 3
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
@@ -217,6 +222,11 @@ Partial Class dlgSettings
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.chkCleanMovieNameJPG)
+        Me.GroupBox3.Controls.Add(Me.chkCleanMovieJPG)
+        Me.GroupBox3.Controls.Add(Me.chkCleanPosterJPG)
+        Me.GroupBox3.Controls.Add(Me.chkCleanPosterTBN)
+        Me.GroupBox3.Controls.Add(Me.chkCleanDotFanartJPG)
         Me.GroupBox3.Controls.Add(Me.chkCleanMovieNFOb)
         Me.GroupBox3.Controls.Add(Me.chkCleanMovieNFO)
         Me.GroupBox3.Controls.Add(Me.chkCleanMovieFanartJPG)
@@ -226,7 +236,7 @@ Partial Class dlgSettings
         Me.GroupBox3.Controls.Add(Me.chkCleanFolderJPG)
         Me.GroupBox3.Location = New System.Drawing.Point(207, 6)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(184, 177)
+        Me.GroupBox3.Size = New System.Drawing.Size(184, 289)
         Me.GroupBox3.TabIndex = 1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Clean Folders"
@@ -234,7 +244,7 @@ Partial Class dlgSettings
         'chkCleanMovieNFOb
         '
         Me.chkCleanMovieNFOb.AutoSize = True
-        Me.chkCleanMovieNFOb.Location = New System.Drawing.Point(13, 153)
+        Me.chkCleanMovieNFOb.Location = New System.Drawing.Point(13, 267)
         Me.chkCleanMovieNFOb.Name = "chkCleanMovieNFOb"
         Me.chkCleanMovieNFOb.Size = New System.Drawing.Size(89, 17)
         Me.chkCleanMovieNFOb.TabIndex = 12
@@ -244,7 +254,7 @@ Partial Class dlgSettings
         'chkCleanMovieNFO
         '
         Me.chkCleanMovieNFO.AutoSize = True
-        Me.chkCleanMovieNFO.Location = New System.Drawing.Point(13, 131)
+        Me.chkCleanMovieNFO.Location = New System.Drawing.Point(13, 245)
         Me.chkCleanMovieNFO.Name = "chkCleanMovieNFO"
         Me.chkCleanMovieNFO.Size = New System.Drawing.Size(77, 17)
         Me.chkCleanMovieNFO.TabIndex = 11
@@ -254,7 +264,7 @@ Partial Class dlgSettings
         'chkCleanMovieFanartJPG
         '
         Me.chkCleanMovieFanartJPG.AutoSize = True
-        Me.chkCleanMovieFanartJPG.Location = New System.Drawing.Point(13, 109)
+        Me.chkCleanMovieFanartJPG.Location = New System.Drawing.Point(13, 200)
         Me.chkCleanMovieFanartJPG.Name = "chkCleanMovieFanartJPG"
         Me.chkCleanMovieFanartJPG.Size = New System.Drawing.Size(118, 17)
         Me.chkCleanMovieFanartJPG.TabIndex = 10
@@ -264,7 +274,7 @@ Partial Class dlgSettings
         'chkCleanFanartJPG
         '
         Me.chkCleanFanartJPG.AutoSize = True
-        Me.chkCleanFanartJPG.Location = New System.Drawing.Point(13, 87)
+        Me.chkCleanFanartJPG.Location = New System.Drawing.Point(13, 178)
         Me.chkCleanFanartJPG.Name = "chkCleanFanartJPG"
         Me.chkCleanFanartJPG.Size = New System.Drawing.Size(75, 17)
         Me.chkCleanFanartJPG.TabIndex = 9
@@ -1045,6 +1055,16 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
         '
+        'chkSingleScrapeImages
+        '
+        Me.chkSingleScrapeImages.AutoSize = True
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 133)
+        Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
+        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(181, 17)
+        Me.chkSingleScrapeImages.TabIndex = 37
+        Me.chkSingleScrapeImages.Text = "Scrape Images on Single Scrape"
+        Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
+        '
         'chkFullCast
         '
         Me.chkFullCast.AutoSize = True
@@ -1192,15 +1212,55 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'chkSingleScrapeImages
+        'chkCleanDotFanartJPG
         '
-        Me.chkSingleScrapeImages.AutoSize = True
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 133)
-        Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
-        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(181, 17)
-        Me.chkSingleScrapeImages.TabIndex = 37
-        Me.chkSingleScrapeImages.Text = "Scrape Images on Single Scrape"
-        Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
+        Me.chkCleanDotFanartJPG.AutoSize = True
+        Me.chkCleanDotFanartJPG.Location = New System.Drawing.Point(13, 223)
+        Me.chkCleanDotFanartJPG.Name = "chkCleanDotFanartJPG"
+        Me.chkCleanDotFanartJPG.Size = New System.Drawing.Size(118, 17)
+        Me.chkCleanDotFanartJPG.TabIndex = 13
+        Me.chkCleanDotFanartJPG.Text = "/<movie>.fanart.jpg"
+        Me.chkCleanDotFanartJPG.UseVisualStyleBackColor = True
+        '
+        'chkCleanMovieJPG
+        '
+        Me.chkCleanMovieJPG.AutoSize = True
+        Me.chkCleanMovieJPG.Location = New System.Drawing.Point(13, 132)
+        Me.chkCleanMovieJPG.Name = "chkCleanMovieJPG"
+        Me.chkCleanMovieJPG.Size = New System.Drawing.Size(76, 17)
+        Me.chkCleanMovieJPG.TabIndex = 16
+        Me.chkCleanMovieJPG.Text = "/movie.jpg"
+        Me.chkCleanMovieJPG.UseVisualStyleBackColor = True
+        '
+        'chkCleanPosterJPG
+        '
+        Me.chkCleanPosterJPG.AutoSize = True
+        Me.chkCleanPosterJPG.Location = New System.Drawing.Point(13, 110)
+        Me.chkCleanPosterJPG.Name = "chkCleanPosterJPG"
+        Me.chkCleanPosterJPG.Size = New System.Drawing.Size(77, 17)
+        Me.chkCleanPosterJPG.TabIndex = 15
+        Me.chkCleanPosterJPG.Text = "/poster.jpg"
+        Me.chkCleanPosterJPG.UseVisualStyleBackColor = True
+        '
+        'chkCleanPosterTBN
+        '
+        Me.chkCleanPosterTBN.AutoSize = True
+        Me.chkCleanPosterTBN.Location = New System.Drawing.Point(13, 88)
+        Me.chkCleanPosterTBN.Name = "chkCleanPosterTBN"
+        Me.chkCleanPosterTBN.Size = New System.Drawing.Size(78, 17)
+        Me.chkCleanPosterTBN.TabIndex = 14
+        Me.chkCleanPosterTBN.Text = "/poster.tbn"
+        Me.chkCleanPosterTBN.UseVisualStyleBackColor = True
+        '
+        'chkCleanMovieNameJPG
+        '
+        Me.chkCleanMovieNameJPG.AutoSize = True
+        Me.chkCleanMovieNameJPG.Location = New System.Drawing.Point(13, 155)
+        Me.chkCleanMovieNameJPG.Name = "chkCleanMovieNameJPG"
+        Me.chkCleanMovieNameJPG.Size = New System.Drawing.Size(88, 17)
+        Me.chkCleanMovieNameJPG.TabIndex = 17
+        Me.chkCleanMovieNameJPG.Text = "/<movie>.jpg"
+        Me.chkCleanMovieNameJPG.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -1358,4 +1418,9 @@ Partial Class dlgSettings
     Friend WithEvents chkLockOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkLockPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkSingleScrapeImages As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCleanMovieNameJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCleanMovieJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCleanPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCleanPosterTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCleanDotFanartJPG As System.Windows.Forms.CheckBox
 End Class
