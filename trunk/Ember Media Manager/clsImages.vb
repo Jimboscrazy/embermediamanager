@@ -597,7 +597,7 @@ foundIT:
                 Return String.Concat(Master.RemoveExtFromPath(fPath), "-fanart.jpg")
             ElseIf Not isFile AndAlso Master.uSettings.FanartJPG AndAlso File.Exists(String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")) Then
                 Return String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")
-            ElseIf Master.uSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")) Then
+            ElseIf Master.uSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")) Then
                 Return String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")
             Else
                 Return String.Empty
