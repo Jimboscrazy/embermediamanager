@@ -103,7 +103,7 @@ Public Class Images
 
     Public Sub Save(ByVal sPath As String)
         Try
-            If Not CBool(File.GetAttributes(sPath) AndAlso FileAttributes.ReadOnly) Then
+            If Not File.Exists(sPath) OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly)) Then
                 ms.Position = 0
                 _image.Save(ms, Imaging.ImageFormat.Jpeg)
                 Ret = ms.ToArray
