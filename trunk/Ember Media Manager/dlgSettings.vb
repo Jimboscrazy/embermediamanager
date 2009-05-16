@@ -429,6 +429,26 @@ Public Class dlgSettings
     Private Sub chkSingleScrapeImages_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingleScrapeImages.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkCleanPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanPosterTBN.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkCleanPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanPosterJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkCleanMovieJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanMovieJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkCleanMovieNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanMovieNameJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkCleanDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanDotFanartJPG.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -518,6 +538,11 @@ Public Class dlgSettings
             Master.uSettings.CleanMovieFanartJPG = Me.chkCleanMovieFanartJPG.Checked
             Master.uSettings.CleanMovieNFO = Me.chkCleanMovieNFO.Checked
             Master.uSettings.CleanMovieNFOB = Me.chkCleanMovieNFOb.Checked
+            Master.uSettings.CleanPosterTBN = Me.chkCleanPosterTBN.Checked
+            Master.uSettings.CleanPosterJPG = Me.chkCleanPosterJPG.Checked
+            Master.uSettings.CleanMovieJPG = Me.chkCleanMovieJPG.Checked
+            Master.uSettings.CleanMovieNameJPG = Me.chkCleanMovieNameJPG.Checked
+            Master.uSettings.CleanDotFanartJPG = Me.chkCleanDotFanartJPG.Checked
             Master.uSettings.LogErrors = Me.chkLogErrors.Checked
             Master.uSettings.ProperCase = Me.chkProperCase.Checked
 
@@ -592,6 +617,13 @@ Public Class dlgSettings
             Me.chkCleanMovieFanartJPG.Checked = Master.uSettings.CleanMovieFanartJPG
             Me.chkCleanMovieNFO.Checked = Master.uSettings.CleanMovieNFO
             Me.chkCleanMovieNFOb.Checked = Master.uSettings.CleanMovieNFOB
+
+            Me.chkCleanPosterTBN.Checked = Master.uSettings.CleanPosterTBN
+            Me.chkCleanPosterJPG.Checked = Master.uSettings.CleanPosterJPG
+            Me.chkCleanMovieJPG.Checked = Master.uSettings.CleanMovieJPG
+            Me.chkCleanMovieNameJPG.Checked = Master.uSettings.CleanMovieNameJPG
+            Me.chkCleanDotFanartJPG.Checked = Master.uSettings.CleanDotFanartJPG
+
             Me.chkLogErrors.Checked = Master.uSettings.LogErrors
             Me.chkProperCase.Checked = Master.uSettings.ProperCase
 

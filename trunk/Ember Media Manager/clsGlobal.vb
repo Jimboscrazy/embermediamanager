@@ -772,11 +772,15 @@ quickExit:
                 tmpName = CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath)))
                 Select Case sfile.Extension.ToLower
                     Case ".jpg"
-                        If sfile.Name = String.Concat(tmpName, "-fanart.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg") Then
+                        If sfile.Name = String.Concat(tmpName, "-fanart.jpg") OrElse sfile.Name = String.Concat(tmpName, ".fanart.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg") Then
                             hasFanart = True
+                        ElseIf sfile.Name = String.Concat(tmpName, ".jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg") OrElse _
+                        sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg") Then
+                            hasPoster = True
                         End If
                     Case ".tbn"
-                        If sfile.Name = String.Concat(tmpName, ".tbn") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn") Then
+                        If sfile.Name = String.Concat(tmpName, ".tbn") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn") OrElse _
+                            sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn") Then
                             hasPoster = True
                         End If
                     Case ".nfo"

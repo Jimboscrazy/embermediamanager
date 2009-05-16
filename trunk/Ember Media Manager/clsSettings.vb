@@ -49,6 +49,11 @@ Public Class ummSettings
     Private _cleanmoviefanartJpg As Boolean
     Private _cleanmovieNfo As Boolean
     Private _cleanmovieNfoB As Boolean
+    Private _cleanposterTbn As Boolean
+    Private _cleanposterJpg As Boolean
+    Private _cleanmovieJpg As Boolean
+    Private _cleandotfanartJpg As Boolean
+    Private _cleanmovienameJpg As Boolean
     Private _useTMDB As Boolean
     Private _useIMPA As Boolean
     Private _useMPDB As Boolean
@@ -292,6 +297,51 @@ Public Class ummSettings
         End Get
         Set(ByVal value As Boolean)
             Me._cleanmovieNfoB = value
+        End Set
+    End Property
+
+    Public Property CleanPosterTBN() As Boolean
+        Get
+            Return Me._cleanposterTbn
+        End Get
+        Set(ByVal value As Boolean)
+            Me._cleanposterTbn = value
+        End Set
+    End Property
+
+    Public Property CleanPosterJPG() As Boolean
+        Get
+            Return Me._cleanposterJpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._cleanposterJpg = value
+        End Set
+    End Property
+
+    Public Property CleanMovieNameJPG() As Boolean
+        Get
+            Return Me._cleanmovienameJpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._cleanmovienameJpg = value
+        End Set
+    End Property
+
+    Public Property CleanMovieJPG() As Boolean
+        Get
+            Return Me._cleanmovieJpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._cleanmovieJpg = value
+        End Set
+    End Property
+
+    Public Property CleanDotFanartJPG() As Boolean
+        Get
+            Return Me._cleandotfanartJpg
+        End Get
+        Set(ByVal value As Boolean)
+            Me._cleandotfanartJpg = value
         End Set
     End Property
 
@@ -585,6 +635,11 @@ Public Class ummSettings
         Me._cleanmoviefanartJpg = False
         Me._cleanmovieNfo = False
         Me._cleanmovieNfoB = False
+        Me._cleanposterTbn = False
+        Me._cleanposterJpg = False
+        Me._cleanmovieJpg = False
+        Me._cleandotfanartJpg = False
+        Me._cleanmovienameJpg = False
         Me._useTMDB = False
         Me._useIMPA = False
         Me._useMPDB = False
