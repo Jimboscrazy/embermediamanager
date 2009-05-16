@@ -2,12 +2,13 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * Fix for "moviename".fanart.jpg saving, but not displaying
- * Fix for new file types not being detected to fill the list checkboxes
+ * Fix: "moviename".fanart.jpg saving, but not displaying
+ * Fix: New file types not being detected to fill the list checkboxes
+ * Change: Add new file types to folder cleaner scraper
 
 *Changes in r34:*
  * Fix: Stupid mistake in new nfo saving code
- * Rewrite of the studio and media flags code
+ * Change: Rewrite of the studio and media flags code
 
 *Changes in r31:*
  * Fix: Stupid mistake in new image saving code
