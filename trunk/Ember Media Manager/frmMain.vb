@@ -2513,7 +2513,7 @@ Public Class frmMain
             Dim MI As New MediaInfo.MInfo
             Dim miFileInfo = New MediaInfo.Fileinfo
 
-            If Not Master.GetExtFromPath(Master.currPath) = ".rar" Then
+            If Not Master.GetExtFromPath(Master.currPath) = ".rar" AndAlso Not Master.GetExtFromPath(Master.currPath) = ".iso" Then
                 MI.GetMovieMIFromPath(miFileInfo, Master.currPath)
 
                 Master.currMovie.FileInfo = miFileInfo
