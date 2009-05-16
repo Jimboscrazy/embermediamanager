@@ -339,205 +339,86 @@ quickExit:
         Dim mePath As String = Application.StartupPath & "\Images\Flags\"
         If File.Exists(mePath & "Flags.xml") Then
             Try
-                Dim strWithoutFirst As String = Strings.Right(strAV, strAV.Length - Strings.InStr(strAV, "/"))
-                Dim xmlStudio As New XmlDocument
-                Dim xmlName As XmlElement
-                Dim currSearch As String = String.Empty
-                Dim currSplit() As String
-                Dim audRef As String = String.Empty
+                Dim strWithoutFirst As String = String.Format("{0} {1}", Strings.Trim(Strings.Right(strAV, strAV.Length - Strings.InStr(strAV, "/"))).ToLower, Path.GetFileName(strPath).ToLower)
+                Dim atypeRef As String = String.Empty
                 Dim vresImage As String = String.Empty
                 Dim vsourceImage As String = String.Empty
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
-                Dim wasFound As Boolean = False
 
-                xmlStudio.Load(mePath & "Flags.xml")
+                Dim xmlFlags As XDocument = XDocument.Load(mePath & "Flags.xml")
 
-                'video resolutions
-                For Each nodeVres As XmlNode In xmlStudio.SelectNodes("flags/vres")
+                'video resolution
+                Dim xVResDefault = From xDef In xmlFlags...<vres> Select xDef.Element("default").Element("icon").Value
+                If xVResDefault.Count > 0 Then
+                    vresImage = mePath & xVResDefault(0).ToString
+                End If
 
-                    xmlName = nodeVres
-
-                    vresImage = mePath & xmlName.GetElementsByTagName("default").ItemOf(0).InnerText
-
-                    'go through all the search strings
-                    For Each innerVres As XmlNode In xmlStudio.SelectNodes("flags/vres/name")
-                        'get the search string
-                        currSearch = innerVres.Attributes.GetNamedItem("searchstring").Value
-
-                        'no reqs for video res
-
-                        'split the search string
-                        currSplit = Strings.Split(currSearch, "|")
-
-                        'compare each string
-                        For Each strVres As String In currSplit
-                            If Strings.InStr(Strings.Trim(strWithoutFirst), strVres, CompareMethod.Text) > 0 Then
-                                vresImage = mePath & innerVres.ChildNodes.Item(0).InnerText
-                                wasFound = True
-                                Exit For
-                            End If
-                        Next strVres
-
-                        If wasFound Then Exit For
-                    Next innerVres
-
-                    If wasFound Then Exit For
-
-                Next nodeVres
-
-
-                wasFound = False
-
-
+                Dim xVResFlag = From xVRes In xmlFlags...<vres>...<name> Where Regex.IsMatch(strWithoutFirst, xVRes.@searchstring) Select xVRes.<icon>.Value
+                If xVResFlag.Count > 0 Then
+                    vresImage = mePath & xVResFlag(0).ToString
+                End If
 
                 'video source
-                For Each nodeVsource As XmlNode In xmlStudio.SelectNodes("flags/vtype")
+                Dim xVSourceDefault = From xDef In xmlFlags...<vtype> Select xDef.Element("default").Element("icon").Value
+                If xVSourceDefault.Count > 0 Then
+                    vsourceImage = mePath & xVSourceDefault(0).ToString
+                End If
 
-                    xmlName = nodeVsource
-
-                    vsourceImage = mePath & xmlName.GetElementsByTagName("default").ItemOf(0).InnerText
-
-                    'go through all the search strings
-                    For Each innerVsource As XmlNode In xmlStudio.SelectNodes("flags/vtype/name")
-                        'get the search string
-                        currSearch = innerVsource.Attributes.GetNamedItem("searchstring").Value
-
-                        'no reqs for video source
-
-                        'split the search string
-                        currSplit = Strings.Split(currSearch, "|")
-
-                        'compare each string
-                        For Each strVsource As String In currSplit
-                            If Strings.InStr(Path.GetFileName(strPath), strVsource, CompareMethod.Text) > 0 OrElse Strings.InStr(Strings.Trim(strWithoutFirst), strVsource, CompareMethod.Text) > 0 Then
-                                vsourceImage = mePath & innerVsource.ChildNodes.Item(0).InnerText
-                                wasFound = True
-                                Exit For
-                            End If
-                        Next strVsource
-
-                        If wasFound Then Exit For
-                    Next innerVsource
-
-                    If wasFound Then Exit For
-
-                Next nodeVsource
-
-                wasFound = False
+                Dim xVSourceFlag = From xVSource In xmlFlags...<vtype>...<name> Where Regex.IsMatch(strWithoutFirst, xVSource.@searchstring) Select xVSource.<icon>.Value
+                If xVSourceFlag.Count > 0 Then
+                    vsourceImage = mePath & xVSourceFlag(0).ToString
+                End If
 
                 'audio type
-                For Each nodeAtype As XmlNode In xmlStudio.SelectNodes("flags/atype")
+                Dim xATypeDefault = From xDef In xmlFlags...<atype> Select xDef.Element("default").Element("icon").Value
+                If xATypeDefault.Count > 0 Then
+                    atypeImage = mePath & xATypeDefault(0).ToString
+                End If
 
-                    xmlName = nodeAtype
-
-                    atypeImage = mePath & xmlName.GetElementsByTagName("default").ItemOf(0).InnerText
-
-                    'go through all the search strings
-                    For Each innerAtype As XmlNode In xmlStudio.SelectNodes("flags/atype/name")
-                        'get the search string
-                        currSearch = innerAtype.Attributes.GetNamedItem("searchstring").Value
-
-                        'no reqs for audio type
-
-                        'split the search string
-                        currSplit = Strings.Split(currSearch, "|")
-
-                        'compare each string
-                        For Each strAtype As String In currSplit
-                            If Strings.InStr(Path.GetFileName(strPath), strAtype, CompareMethod.Text) > 0 OrElse Strings.InStr(Strings.Trim(strWithoutFirst), strAtype, CompareMethod.Text) > 0 Then
-                                atypeImage = mePath & innerAtype.ChildNodes.Item(0).InnerText
-                                If innerAtype.ChildNodes.Count > 1 Then
-                                    audRef = innerAtype.ChildNodes.Item(1).InnerText
-                                Else
-                                    audRef = String.Empty
-                                End If
-                                wasFound = True
-                                Exit For
-                            End If
-                        Next strAtype
-
-                        If wasFound Then Exit For
-                    Next innerAtype
-
-                    If wasFound Then Exit For
-
-                Next nodeAtype
-
-                wasFound = False
+                Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(strWithoutFirst, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
+                If xATypeFlag.Count > 0 Then
+                    atypeImage = mePath & xATypeFlag(0).icon.ToString
+                    If Not IsNothing(xATypeFlag(0).ref) Then
+                        atypeRef = xATypeFlag(0).ref.ToString
+                    End If
+                End If
 
                 'audio channels
-                For Each nodeAchan As XmlNode In xmlStudio.SelectNodes("flags/achan")
+                Dim xAChanDefault = From xDef In xmlFlags...<achan> Select xDef.Element("default").Element("icon").Value
+                If xAChanDefault.Count > 0 Then
+                    achanImage = mePath & xAChanDefault(0).ToString
+                End If
 
-                    xmlName = nodeAchan
-
-                    achanImage = mePath & xmlName.GetElementsByTagName("default").ItemOf(0).InnerText
-
-                    'go through all the search strings
-                    For Each innerAchan As XmlNode In xmlStudio.SelectNodes("flags/achan/name")
-                        'get the search string
-                        currSearch = innerAchan.Attributes.GetNamedItem("searchstring").Value
-
-                        'reqs for audio chan
-                        Dim currReq() As String
-
-                        'split req
-                        '0 = type, 1 = value
-                        currReq = Strings.Split(Regex.Match(currSearch, "{(.*?)}").Groups(1).Value, "=")
-
-                        'split the search string
-                        currSplit = Strings.Split(Strings.Replace(currSearch, Regex.Match(currSearch, "({.*?})").Groups(1).Value, String.Empty), "|")
-
-                        If currReq(1).ToString = audRef Then
-                            'compare each string
-                            For Each strAchan As String In currSplit
-                                If Strings.InStr(Strings.Trim(strWithoutFirst), strAchan, CompareMethod.Text) > 0 Then
-                                    achanImage = mePath & innerAchan.ChildNodes.Item(0).InnerText
-                                    wasFound = True
-                                    Exit For
-                                End If
-                            Next strAchan
-                        End If
-
-                        If wasFound Then Exit For
-                    Next innerAchan
-
-                    If wasFound Then Exit For
-
-                Next nodeAchan
+                Dim xAChanFlag = From xAChan In xmlFlags...<achan>...<name> Where Regex.IsMatch(strWithoutFirst, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
+                If xAChanFlag.Count > 0 Then
+                    achanImage = mePath & xAChanFlag(0).ToString
+                End If
 
                 If File.Exists(vresImage) Then
                     Dim fsImage As New FileStream(vresImage, FileMode.Open, FileAccess.Read)
-
                     frmMain.pbResolution.Image = Image.FromStream(fsImage)
-
                     fsImage.Close()
                     fsImage = Nothing
                 End If
 
                 If File.Exists(vsourceImage) Then
                     Dim fsImage As New FileStream(vsourceImage, FileMode.Open, FileAccess.Read)
-
                     frmMain.pbVideo.Image = Image.FromStream(fsImage)
-
                     fsImage.Close()
                     fsImage = Nothing
                 End If
 
                 If File.Exists(atypeImage) Then
                     Dim fsImage As New FileStream(atypeImage, FileMode.Open, FileAccess.Read)
-
                     frmMain.pbAudio.Image = Image.FromStream(fsImage)
-
                     fsImage.Close()
                     fsImage = Nothing
                 End If
 
                 If File.Exists(achanImage) Then
                     Dim fsImage As New FileStream(achanImage, FileMode.Open, FileAccess.Read)
-
                     frmMain.pbChannels.Image = Image.FromStream(fsImage)
-
                     fsImage.Close()
                     fsImage = Nothing
                 End If
@@ -561,61 +442,30 @@ quickExit:
 
         If File.Exists(mePath & "Studios.xml") Then
             Try
-                Dim xmlStudio As New XmlDocument
-                Dim xmlName As XmlElement
-                Dim currSearch As String = String.Empty
-                Dim currSplit() As String
-                Dim wasFound As Boolean = False
+                Dim xmlStudio As XDocument = XDocument.Load(mePath & "Studios.xml")
 
-                xmlStudio.Load(mePath & "Studios.xml")
+                Dim xDefault = From xDef In xmlStudio...<default> Select xDef.<icon>.Value
+                If xDefault.Count > 0 Then
+                    imgStudioStr = mePath & xDefault(0).ToString
+                End If
 
-                'studios
-                For Each nodeStudio As XmlNode In xmlStudio.SelectNodes("studios")
+                Dim xStudio = From xStu In xmlStudio...<name> Where Regex.IsMatch(Strings.Trim(strStudio).ToLower, xStu.@searchstring) Select xStu.<icon>.Value
+                If xStudio.Count > 0 Then
+                    imgStudioStr = mePath & xStudio(0).ToString
+                End If
 
-                    xmlName = nodeStudio
-
-                    imgStudioStr = mePath & xmlName.GetElementsByTagName("default").ItemOf(0).InnerText
-
-                    'go through all the search strings
-                    For Each innerStudio As XmlNode In xmlStudio.SelectNodes("studios/name")
-
-                        'get the search string
-                        currSearch = innerStudio.Attributes.GetNamedItem("searchstring").Value
-
-                        'split the search string
-                        currSplit = Strings.Split(currSearch, "|")
-
-                        'compare each string
-                        For Each strStudioSearch As String In currSplit
-                            If Strings.InStr(Strings.Trim(strStudio), strStudioSearch, CompareMethod.Text) > 0 Then
-                                imgStudioStr = mePath & innerStudio.ChildNodes.Item(0).InnerText
-                                wasFound = True
-                                Exit For
-                            End If
-                        Next strStudioSearch
-
-                        If wasFound Then Exit For
-                    Next innerStudio
-
-                    If wasFound Then Exit For
-
-                Next nodeStudio
-
+                If Not String.IsNullOrEmpty(imgStudioStr) AndAlso File.Exists(imgStudioStr) Then
+                    Dim fsImage As New FileStream(imgStudioStr, FileMode.Open, FileAccess.Read)
+                    imgStudio = Image.FromStream(fsImage)
+                    fsImage.Close()
+                    fsImage = Nothing
+                End If
 
             Catch ex As Exception
-                eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Else
             MsgBox("Cannot find Studios.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Studios.xml", MsgBoxStyle.Critical, "File Not Found")
-        End If
-
-        If File.Exists(imgStudioStr) Then
-            Dim fsImage As New FileStream(imgStudioStr, FileMode.Open, FileAccess.Read)
-
-            imgStudio = Image.FromStream(fsImage)
-
-            fsImage.Close()
-            fsImage = Nothing
         End If
 
         Return imgStudio
