@@ -1283,6 +1283,7 @@ Public Class frmMain
         Dim sPath As String = String.Empty
         Dim sPathShort As String = String.Empty
         Dim sOrName As String = String.Empty
+        Dim sStackName As String = String.Empty
         Dim nfoPath As String = String.Empty
         Dim fArt As New Media.Fanart
         Dim Poster As New Images
@@ -1448,6 +1449,7 @@ Public Class frmMain
 
                             sPath = drvRow.Item(0).ToString
                             sOrName = Master.GetNameFromPath(sPath).ToString
+                            sStackName = Master.RemoveExtFromPath(sPath).ToString
                             sPathShort = Directory.GetParent(sPath).FullName.ToString
 
                             If Me.bwScraper.CancellationPending Then Return
@@ -1510,6 +1512,12 @@ Public Class frmMain
                                 If File.Exists(String.Format("{0}\{1}.tbn", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
                                     File.Delete(String.Format("{0}\{1}.tbn", sPathShort, Master.CleanStackingMarkers(sOrName)))
                                 End If
+                                If File.Exists(String.Format("{0}\{1}.tbn", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}\{1}.tbn", sPathShort, sStackName))
+                                End If
+                                If File.Exists(String.Format("{0}\{1}.tbn", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}\{1}.tbn", sPathShort, Master.CleanStackingMarkers(sStackName)))
+                                End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
@@ -1522,6 +1530,12 @@ Public Class frmMain
                                 End If
                                 If File.Exists(String.Format("{0}\{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
                                     File.Delete(String.Format("{0}\{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
+                                End If
+                                If File.Exists(String.Format("{0}\{1}-fanart.jpg", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}\{1}-fanart.jpg", sPathShort, sStackName))
+                                End If
+                                If File.Exists(String.Format("{0}\{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}\{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName)))
                                 End If
                             End If
 
@@ -1536,6 +1550,12 @@ Public Class frmMain
                                 If File.Exists(String.Format("{0}\{1}.nfo", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
                                     File.Delete(String.Format("{0}\{1}.nfo", sPathShort, Master.CleanStackingMarkers(sOrName)))
                                 End If
+                                If File.Exists(String.Format("{0}\{1}.nfo", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}\{1}.nfo", sPathShort, sStackName))
+                                End If
+                                If File.Exists(String.Format("{0}\{1}.nfo", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}\{1}.nfo", sPathShort, Master.CleanStackingMarkers(sStackName)))
+                                End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
@@ -1549,6 +1569,12 @@ Public Class frmMain
                                 If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
                                     File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
                                 End If
+                                If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, sStackName))
+                                End If
+                                If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName)))
+                                End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
@@ -1561,6 +1587,12 @@ Public Class frmMain
                                 End If
                                 If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
                                     File.Delete(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
+                                End If
+                                If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}\{1}.jpg", sPathShort, sStackName))
+                                End If
+                                If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sStackName)))
                                 End If
                             End If
 

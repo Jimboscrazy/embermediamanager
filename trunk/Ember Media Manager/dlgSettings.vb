@@ -617,7 +617,6 @@ Public Class dlgSettings
             Me.chkCleanMovieFanartJPG.Checked = Master.uSettings.CleanMovieFanartJPG
             Me.chkCleanMovieNFO.Checked = Master.uSettings.CleanMovieNFO
             Me.chkCleanMovieNFOb.Checked = Master.uSettings.CleanMovieNFOB
-
             Me.chkCleanPosterTBN.Checked = Master.uSettings.CleanPosterTBN
             Me.chkCleanPosterJPG.Checked = Master.uSettings.CleanPosterJPG
             Me.chkCleanMovieJPG.Checked = Master.uSettings.CleanMovieJPG
