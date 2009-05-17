@@ -301,7 +301,6 @@ quickExit:
 
 
 
-                'handle stacking
                 lFi.Sort(AddressOf CompFilesByName)
 
                 alFileList.AddRange(lFi)
@@ -310,10 +309,6 @@ quickExit:
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
-    Public Shared Function ConvertPathToStack(ByVal tFI As FileInfo) As String
-        Return CleanStackingMarkers(tFI.FullName.ToString)
-    End Function
 
     Private Shared Function CompFilesByName(ByVal X As FileInfo, ByVal Y As FileInfo) As Integer
 
