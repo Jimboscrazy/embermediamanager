@@ -2,7 +2,19 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Fix: Patch hole in the logic to convert the video resolution to a simple text descriptor
+ * Fix: File cleaner wasn't properly looking for "moviename".ext type files
+ * Fix: Don't create an extrathumbs dir if no extrathumbs are selected (again)
+ * Change: Don't attempt to scan media info from ISOs
+ * Change: Rearrange settings file to put movies list at the very bottom
+ * Change: Rearrange some items in the Info Panel
+ * Change: Added a default actor picture (silhouette)
+ * Change: Simplified file mode movie scanning and stacking detection (Man, was I over
+doing that)
+ * Change: Smarter/faster media list searching
+ * Change: Misc tweaks to code
+ * Change: Don't scan media info it it already exists (unless using MI Only AP or manual MI
+refresh)
 
 *Changes in r39:*
  * Fix: "moviename".fanart.jpg saving, but not displaying
