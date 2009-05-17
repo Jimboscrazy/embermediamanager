@@ -728,42 +728,19 @@ Public Class frmMain
 
     Private Sub tmrSearch_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch.Tick
         Me.tmrSearchWait.Enabled = False
-        Me.dgvMediaList.SuspendLayout()
-        Me.dgvMediaList.CurrentCell = Nothing
-        Me.dgvMediaList.ScrollBars = ScrollBars.None
-        'reset the search dt when txtsearch is empty
-        If String.IsNullOrEmpty(Me.txtSearch.Text) Then
-            For Each Row As DataGridViewRow In Me.dgvMediaList.Rows
-                Row.Visible = True
-            Next Row
+        If Not String.IsNullOrEmpty(txtSearch.Text) Then
+            Dim dvFilter As DataView = dtMedia.DefaultView
+
+            dvFilter.RowFilter = "Name Like '%" & txtSearch.Text & "%'"
+
+            dgvMediaList.DataSource = dvFilter
         Else
-            For Each Row As DataGridViewRow In Me.dgvMediaList.Rows
-                Row.Visible = True
-            Next Row
-            For Each dgvRow As DataGridViewRow In Me.dgvMediaList.Rows
-                If Not Strings.Left(dgvRow.Cells(1).Value.ToString, txtSearch.Text.Length).ToLower = Me.txtSearch.Text.ToLower Then
-                    dgvRow.Visible = False
-                End If
-            Next
+            Dim dvFilter As DataView = dtMedia.DefaultView
+
+            dvFilter.RowFilter = String.Empty
+
+            dgvMediaList.DataSource = dvFilter
         End If
-
-        Dim foundOne As Boolean = False
-        For Each Row As DataGridViewRow In dgvMediaList.Rows
-            If Row.Visible Then
-                If Not Me.currRow = Row.Index Then
-                    Me.dgvMediaList.CurrentCell = Row.Cells(1)
-                    Row.Cells(1).Selected = True
-                    Me.currRow = Row.Index
-                End If
-                foundOne = True
-                Exit For
-            End If
-        Next Row
-
-        If Not foundOne Then Me.ClearInfo()
-
-        Me.dgvMediaList.ScrollBars = ScrollBars.Both
-        Me.dgvMediaList.ResumeLayout()
         Me.tmrSearch.Enabled = False
     End Sub
 #End Region '*** Form/Controls
@@ -979,6 +956,10 @@ Public Class frmMain
                     End If
                 End If
             Next
+
+            tmpAL = Nothing
+            tmpMovie = Nothing
+            aContents = Nothing
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
