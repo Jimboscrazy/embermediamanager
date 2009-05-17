@@ -100,7 +100,11 @@ Public Class frmMain
         If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy Then
             Master.uSettings.MovieList.Clear()
             For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-                Master.uSettings.MovieList.Add(drvRow.Cells(1).Value.ToString)
+                If drvRow.Cells(1).Style.ForeColor = Color.Crimson Then
+                    Master.uSettings.MovieList.Add(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark"))
+                Else
+                    Master.uSettings.MovieList.Add(drvRow.Cells(1).Value.ToString)
+                End If
             Next
             Master.uSettings.Save()
         End If
@@ -551,6 +555,10 @@ Public Class frmMain
 
         '  Try
         If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If Master.currMark Then
+                Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
+                Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+            End If
             Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
             Me.LoadInfo(Master.currPath, True, False, Master.isFile)
         End If
@@ -689,12 +697,20 @@ Public Class frmMain
 
     Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
         Me.tmrWait.Enabled = False
-        If Me.dgvMediaList.SelectedRows.Count > 0 Then
-            'set tmpTitle to title in list - used for searching IMDB
-            Me.tmpTitle = Me.dgvMediaList.Item(1, currRow).Value.ToString
-            'try to load the info from the NFO
-            Me.LoadInfo(Me.dgvMediaList.Item(0, currRow).Value.ToString, True, False, Me.dgvMediaList.Item(6, currRow).Value)
-        End If
+        Try
+            If Me.dgvMediaList.SelectedRows.Count > 0 Then
+                If Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson Then
+                    Master.currMark = True
+                Else
+                    Master.currMark = False
+                End If
+                'set tmpTitle to title in list - used for searching IMDB
+                Me.tmpTitle = Me.dgvMediaList.Item(1, currRow).Value.ToString
+                'try to load the info from the NFO
+                Me.LoadInfo(Me.dgvMediaList.Item(0, currRow).Value.ToString, True, False, Me.dgvMediaList.Item(6, currRow).Value)
+            End If
+        Catch
+        End Try
         Me.tmrLoad.Enabled = False
     End Sub
 
@@ -716,23 +732,29 @@ Public Class frmMain
 
     Private Sub tmrSearch_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch.Tick
         Me.tmrSearchWait.Enabled = False
-        If Not String.IsNullOrEmpty(txtSearch.Text) Then
-            Dim dvFilter As DataView = dtMedia.DefaultView
-            dvFilter.RowFilter = "Name Like '%" & txtSearch.Text & "%'"
-            dgvMediaList.DataSource = dvFilter
-        Else
-            Dim dvFilter As DataView = dtMedia.DefaultView
-            dvFilter.RowFilter = String.Empty
-            dgvMediaList.DataSource = dvFilter
-        End If
+        Try
+            If Not String.IsNullOrEmpty(txtSearch.Text) Then
+                Dim dvFilter As DataView = dtMedia.DefaultView
+                dvFilter.RowFilter = "Name Like '%" & txtSearch.Text & "%'"
+                dgvMediaList.DataSource = dvFilter
+            Else
+                Dim dvFilter As DataView = dtMedia.DefaultView
+                dvFilter.RowFilter = String.Empty
+                dgvMediaList.DataSource = dvFilter
+            End If
+        Catch
+        End Try
         Me.tmrSearch.Enabled = False
     End Sub
 
     Private Sub tsbUpdateXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbUpdateXBMC.Click
-        If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
-            Dim Wr As WebRequest = WebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", Master.uSettings.XBMCIP, Master.uSettings.XBMCPort))
-            Wr = Nothing
-        End If
+        Try
+            If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
+                Dim Wr As WebRequest = WebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", Master.uSettings.XBMCIP, Master.uSettings.XBMCPort))
+                Wr = Nothing
+            End If
+        Catch
+        End Try
     End Sub
 #End Region '*** Form/Controls
 
@@ -1020,7 +1042,10 @@ Public Class frmMain
                     .dgvMediaList.Sort(.dgvMediaList.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
                     For Each drvRow As DataGridViewRow In .dgvMediaList.Rows
-                        If Not Master.uSettings.MovieList.Contains(drvRow.Cells(1).Value.ToString) Then
+                        If Master.uSettings.MovieList.Contains(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark")) Then
+                            drvRow.Cells(1).Style.ForeColor = Color.Crimson
+                            drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                        ElseIf Not Master.uSettings.MovieList.Contains(drvRow.Cells(1).Value.ToString) Then
                             drvRow.Cells(1).Style.ForeColor = Color.Green
                             drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
                         End If
@@ -2532,6 +2557,10 @@ Public Class frmMain
                     dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
                 End If
                 If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    If Master.currMark Then
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    End If
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                 End If
                 Me.LoadInfo(Master.currPath, True, False, Master.isFile)

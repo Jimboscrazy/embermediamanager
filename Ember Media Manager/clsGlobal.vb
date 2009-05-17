@@ -37,6 +37,7 @@ Public Class Master
     Public Shared tmpMovie As New Media.Movie
     Public Shared currNFO As String = String.Empty
     Public Shared currPath As String = String.Empty
+    Public Shared currMark As Boolean = False
     Public Shared alFolderList As New ArrayList
     Public Shared alFileList As New ArrayList
     Public Shared eLog As New ErrorLogger
