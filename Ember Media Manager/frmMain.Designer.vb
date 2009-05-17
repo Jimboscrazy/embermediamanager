@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -370,8 +370,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -485,7 +485,7 @@ Partial Class frmMain
         Me.txtCerts.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtCerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtCerts.Location = New System.Drawing.Point(429, 143)
+        Me.txtCerts.Location = New System.Drawing.Point(116, 208)
         Me.txtCerts.Name = "txtCerts"
         Me.txtCerts.Size = New System.Drawing.Size(261, 20)
         Me.txtCerts.TabIndex = 41
@@ -498,7 +498,7 @@ Partial Class frmMain
         Me.lblCertsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblCertsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCertsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblCertsHeader.Location = New System.Drawing.Point(429, 123)
+        Me.lblCertsHeader.Location = New System.Drawing.Point(116, 188)
         Me.lblCertsHeader.Name = "lblCertsHeader"
         Me.lblCertsHeader.Size = New System.Drawing.Size(261, 17)
         Me.lblCertsHeader.TabIndex = 40
@@ -507,9 +507,10 @@ Partial Class frmMain
         '
         'lblReleaseDate
         '
+        Me.lblReleaseDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblReleaseDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblReleaseDate.ForeColor = System.Drawing.Color.Black
-        Me.lblReleaseDate.Location = New System.Drawing.Point(316, 144)
+        Me.lblReleaseDate.Location = New System.Drawing.Point(179, 48)
         Me.lblReleaseDate.Name = "lblReleaseDate"
         Me.lblReleaseDate.Size = New System.Drawing.Size(105, 16)
         Me.lblReleaseDate.TabIndex = 39
@@ -518,11 +519,12 @@ Partial Class frmMain
         '
         'lblReleaseDateHeader
         '
+        Me.lblReleaseDateHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblReleaseDateHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblReleaseDateHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblReleaseDateHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblReleaseDateHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblReleaseDateHeader.Location = New System.Drawing.Point(317, 123)
+        Me.lblReleaseDateHeader.Location = New System.Drawing.Point(180, 27)
         Me.lblReleaseDateHeader.Name = "lblReleaseDateHeader"
         Me.lblReleaseDateHeader.Size = New System.Drawing.Size(105, 17)
         Me.lblReleaseDateHeader.TabIndex = 38
@@ -597,7 +599,7 @@ Partial Class frmMain
         '
         Me.btnPlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnPlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlay.Location = New System.Drawing.Point(598, 95)
+        Me.btnPlay.Location = New System.Drawing.Point(357, 254)
         Me.btnPlay.Name = "btnPlay"
         Me.btnPlay.Size = New System.Drawing.Size(20, 20)
         Me.btnPlay.TabIndex = 32
@@ -608,9 +610,9 @@ Partial Class frmMain
         Me.txtFilePath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFilePath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilePath.Location = New System.Drawing.Point(316, 95)
+        Me.txtFilePath.Location = New System.Drawing.Point(3, 254)
         Me.txtFilePath.Name = "txtFilePath"
-        Me.txtFilePath.Size = New System.Drawing.Size(281, 20)
+        Me.txtFilePath.Size = New System.Drawing.Size(352, 20)
         Me.txtFilePath.TabIndex = 31
         '
         'lblFilePathHeader
@@ -621,32 +623,30 @@ Partial Class frmMain
         Me.lblFilePathHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblFilePathHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblFilePathHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilePathHeader.Location = New System.Drawing.Point(316, 75)
+        Me.lblFilePathHeader.Location = New System.Drawing.Point(3, 234)
         Me.lblFilePathHeader.Name = "lblFilePathHeader"
-        Me.lblFilePathHeader.Size = New System.Drawing.Size(302, 17)
+        Me.lblFilePathHeader.Size = New System.Drawing.Size(373, 17)
         Me.lblFilePathHeader.TabIndex = 30
         Me.lblFilePathHeader.Text = "File Path"
         Me.lblFilePathHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtIMDBID
         '
-        Me.txtIMDBID.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtIMDBID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIMDBID.Location = New System.Drawing.Point(493, 49)
+        Me.txtIMDBID.Location = New System.Drawing.Point(3, 208)
         Me.txtIMDBID.Name = "txtIMDBID"
-        Me.txtIMDBID.Size = New System.Drawing.Size(125, 20)
+        Me.txtIMDBID.Size = New System.Drawing.Size(108, 20)
         Me.txtIMDBID.TabIndex = 29
         '
         'lblIMDBHeader
         '
-        Me.lblIMDBHeader.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblIMDBHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
         Me.lblIMDBHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblIMDBHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblIMDBHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblIMDBHeader.Location = New System.Drawing.Point(493, 29)
+        Me.lblIMDBHeader.Location = New System.Drawing.Point(3, 188)
         Me.lblIMDBHeader.Name = "lblIMDBHeader"
-        Me.lblIMDBHeader.Size = New System.Drawing.Size(125, 17)
+        Me.lblIMDBHeader.Size = New System.Drawing.Size(108, 17)
         Me.lblIMDBHeader.TabIndex = 28
         Me.lblIMDBHeader.Text = "IMDB ID"
         Me.lblIMDBHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -657,7 +657,7 @@ Partial Class frmMain
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblDirector.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDirector.ForeColor = System.Drawing.Color.Black
-        Me.lblDirector.Location = New System.Drawing.Point(315, 50)
+        Me.lblDirector.Location = New System.Drawing.Point(2, 48)
         Me.lblDirector.Name = "lblDirector"
         Me.lblDirector.Size = New System.Drawing.Size(172, 16)
         Me.lblDirector.TabIndex = 27
@@ -672,7 +672,7 @@ Partial Class frmMain
         Me.lblDirectorHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblDirectorHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDirectorHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblDirectorHeader.Location = New System.Drawing.Point(316, 29)
+        Me.lblDirectorHeader.Location = New System.Drawing.Point(3, 27)
         Me.lblDirectorHeader.Name = "lblDirectorHeader"
         Me.lblDirectorHeader.Size = New System.Drawing.Size(171, 17)
         Me.lblDirectorHeader.TabIndex = 21
@@ -681,12 +681,13 @@ Partial Class frmMain
         '
         'pnlActors
         '
+        Me.pnlActors.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlActors.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlActors.Controls.Add(Me.pbActLoad)
         Me.pnlActors.Controls.Add(Me.lstActors)
         Me.pnlActors.Controls.Add(Me.pbActors)
         Me.pnlActors.Controls.Add(Me.lblActorsHeader)
-        Me.pnlActors.Location = New System.Drawing.Point(3, 28)
+        Me.pnlActors.Location = New System.Drawing.Point(389, 29)
         Me.pnlActors.Name = "pnlActors"
         Me.pnlActors.Size = New System.Drawing.Size(302, 244)
         Me.pnlActors.TabIndex = 19
@@ -716,6 +717,7 @@ Partial Class frmMain
         '
         'pbActors
         '
+        Me.pbActors.Image = Global.Ember_Media_Manager.My.Resources.Resources.actor_silhouette
         Me.pbActors.Location = New System.Drawing.Point(220, 75)
         Me.pbActors.Name = "pbActors"
         Me.pbActors.Size = New System.Drawing.Size(81, 106)
@@ -744,7 +746,7 @@ Partial Class frmMain
         Me.lblOutlineHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblOutlineHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOutlineHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblOutlineHeader.Location = New System.Drawing.Point(316, 171)
+        Me.lblOutlineHeader.Location = New System.Drawing.Point(3, 81)
         Me.lblOutlineHeader.Name = "lblOutlineHeader"
         Me.lblOutlineHeader.Size = New System.Drawing.Size(374, 17)
         Me.lblOutlineHeader.TabIndex = 17
@@ -759,7 +761,7 @@ Partial Class frmMain
         Me.txtOutline.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.txtOutline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtOutline.ForeColor = System.Drawing.Color.Black
-        Me.txtOutline.Location = New System.Drawing.Point(316, 193)
+        Me.txtOutline.Location = New System.Drawing.Point(3, 103)
         Me.txtOutline.Multiline = True
         Me.txtOutline.Name = "txtOutline"
         Me.txtOutline.ReadOnly = True
@@ -773,9 +775,9 @@ Partial Class frmMain
         Me.pnlTop250.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlTop250.Controls.Add(Me.lblTop250)
         Me.pnlTop250.Controls.Add(Me.pbTop250)
-        Me.pnlTop250.Location = New System.Drawing.Point(623, 37)
+        Me.pnlTop250.Location = New System.Drawing.Point(310, 28)
         Me.pnlTop250.Name = "pnlTop250"
-        Me.pnlTop250.Size = New System.Drawing.Size(68, 70)
+        Me.pnlTop250.Size = New System.Drawing.Size(56, 48)
         Me.pnlTop250.TabIndex = 15
         '
         'lblTop250
@@ -783,9 +785,9 @@ Partial Class frmMain
         Me.lblTop250.BackColor = System.Drawing.Color.Gainsboro
         Me.lblTop250.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTop250.ForeColor = System.Drawing.Color.Black
-        Me.lblTop250.Location = New System.Drawing.Point(1, 48)
+        Me.lblTop250.Location = New System.Drawing.Point(1, 30)
         Me.lblTop250.Name = "lblTop250"
-        Me.lblTop250.Size = New System.Drawing.Size(64, 19)
+        Me.lblTop250.Size = New System.Drawing.Size(52, 17)
         Me.lblTop250.TabIndex = 15
         Me.lblTop250.Text = "# 250"
         Me.lblTop250.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -795,8 +797,8 @@ Partial Class frmMain
         Me.pbTop250.Image = CType(resources.GetObject("pbTop250.Image"), System.Drawing.Image)
         Me.pbTop250.Location = New System.Drawing.Point(1, 1)
         Me.pbTop250.Name = "pbTop250"
-        Me.pbTop250.Size = New System.Drawing.Size(67, 46)
-        Me.pbTop250.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbTop250.Size = New System.Drawing.Size(54, 30)
+        Me.pbTop250.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbTop250.TabIndex = 14
         Me.pbTop250.TabStop = False
         '

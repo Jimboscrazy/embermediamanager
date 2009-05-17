@@ -245,10 +245,7 @@ Public Class frmMain
                 Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pType = PicType.Actor, .pURL = Me.alActors.Item(Me.lstActors.SelectedIndex).ToString})
 
             Else
-                If Not IsNothing(Me.pbActors.Image) Then
-                    Me.pbActors.Image.Dispose()
-                    Me.pbActors.Image = Nothing
-                End If
+                Me.pbActors.Image = My.Resources.actor_silhouette
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -868,6 +865,7 @@ Public Class frmMain
         Dim mName As String = String.Empty
         Dim aContents(4) As Boolean
         Dim tmpMovie As New Media.Movie
+        Dim tmpAL As New ArrayList
 
         Try
             Me.dtMedia.Clear()
@@ -886,6 +884,7 @@ Public Class frmMain
             For Each sName As String In Master.alFolderList
                 If Me.bwFolderData.CancellationPending Then Return
                 mPath = Master.GetMoviePath(sName)
+
                 If Not String.IsNullOrEmpty(mPath) Then
                     If Master.uSettings.UseNameFromNfo Then
                         tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(mPath, False))
@@ -934,47 +933,51 @@ Public Class frmMain
             Next
 
             'process the file type media
-            For Each sFile As IO.FileInfo In Master.alFileList
+            For Each sFile As FileInfo In Master.alFileList
                 If Me.bwFolderData.CancellationPending Then Return
 
-                'parse just the movie name
-                If Master.uSettings.UseNameFromNfo Then
-                    tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.FullName.ToString, True))
-                    mName = tmpMovie.Title
-                    tmpMovie = Nothing
-                    If String.IsNullOrEmpty(mName) Then
+                If Not tmpAL.Contains(Master.CleanStackingMarkers(sFile.FullName)) Then
+
+                    tmpAL.Add(Master.CleanStackingMarkers(sFile.FullName))
+
+                    'parse just the movie name
+                    If Master.uSettings.UseNameFromNfo Then
+                        tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.FullName.ToString, True))
+                        mName = tmpMovie.Title
+                        tmpMovie = Nothing
+                        If String.IsNullOrEmpty(mName) Then
+                            mName = Master.RemoveExtFromFile(sFile.Name.ToString).ToString
+                        End If
+                    Else
                         mName = Master.RemoveExtFromFile(sFile.Name.ToString).ToString
                     End If
-                Else
-                    mName = Master.RemoveExtFromFile(sFile.Name.ToString).ToString
+
+                    cleanName = Master.FilterName(mName).ToString
+
+                    Me.bwFolderData.ReportProgress(currentIndex, cleanName)
+
+                    If Not String.IsNullOrEmpty(cleanName) Then
+
+                        Dim newFileRow(6) As Object
+
+                        newFileRow(0) = sFile.FullName
+                        newFileRow(1) = cleanName
+                        'check what's in the folder
+                        aContents = Master.GetFolderContents(sFile.FullName.ToString, True)
+                        newFileRow(2) = aContents(0)
+                        newFileRow(3) = aContents(1)
+                        newFileRow(4) = aContents(2)
+                        newFileRow(5) = aContents(3)
+                        newFileRow(6) = True
+
+                        Me.dtMedia.LoadDataRow(newFileRow, True)
+
+                        aContents = Nothing
+                        mName = Nothing
+                        newFileRow = Nothing
+                        currentIndex += 1
+                    End If
                 End If
-
-                cleanName = Master.FilterName(mName).ToString
-
-                Me.bwFolderData.ReportProgress(currentIndex, cleanName)
-
-                If Not String.IsNullOrEmpty(cleanName) Then
-
-                    Dim newFileRow(6) As Object
-
-                    newFileRow(0) = sFile.FullName
-                    newFileRow(1) = cleanName
-                    'check what's in the folder
-                    aContents = Master.GetFolderContents(sFile.FullName.ToString, True)
-                    newFileRow(2) = aContents(0)
-                    newFileRow(3) = aContents(1)
-                    newFileRow(4) = aContents(2)
-                    newFileRow(5) = aContents(3)
-                    newFileRow(6) = True
-
-                    Me.dtMedia.LoadDataRow(newFileRow, True)
-
-                    aContents = Nothing
-                    mName = Nothing
-                    newFileRow = Nothing
-                    currentIndex += 1
-                End If
-
             Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

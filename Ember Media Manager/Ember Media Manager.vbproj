@@ -333,6 +333,7 @@
     <None Include="Resources\overlay.png" />
     <None Include="Resources\overlay2.png" />
     <None Include="Resources\Splash.jpg" />
+    <None Include="Resources\actor_silhouette.jpg" />
     <Content Include="television.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

@@ -70,7 +70,14 @@ Namespace TMDB
                 Dim Ms As New MemoryStream(Wc.DownloadData(Url))
 
                 If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                    ApiXML = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
+                    Try
+                        ApiXML = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
+                    Catch
+                        'sometimes TMDB returns invalid compression. In that case, download uncompressed
+                        Wc.Headers.Clear()
+                        Ms = New MemoryStream(Wc.DownloadData(Url))
+                        ApiXML = New StreamReader(Ms).ReadToEnd
+                    End Try
                 Else
                     ApiXML = New StreamReader(Ms).ReadToEnd
                 End If
