@@ -730,15 +730,11 @@ Public Class frmMain
         Me.tmrSearchWait.Enabled = False
         If Not String.IsNullOrEmpty(txtSearch.Text) Then
             Dim dvFilter As DataView = dtMedia.DefaultView
-
             dvFilter.RowFilter = "Name Like '%" & txtSearch.Text & "%'"
-
             dgvMediaList.DataSource = dvFilter
         Else
             Dim dvFilter As DataView = dtMedia.DefaultView
-
             dvFilter.RowFilter = String.Empty
-
             dgvMediaList.DataSource = dvFilter
         End If
         Me.tmrSearch.Enabled = False
@@ -1295,7 +1291,7 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseStudioTags Then
+                                If Master.uSettings.UseStudioTags AndAlso IsNothing(Master.currMovie.FileInfo) Then
                                     If UpdateMediaInfo() Then
                                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                     End If
@@ -1363,7 +1359,7 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseStudioTags Then
+                                If Master.uSettings.UseStudioTags AndAlso IsNothing(Master.currMovie.FileInfo) Then
                                     If UpdateMediaInfo() Then
                                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                     End If
@@ -1415,10 +1411,8 @@ Public Class frmMain
                                 Master.currMovie = New Media.Movie
                             End If
 
-                            If Master.uSettings.UseStudioTags = True Then
-                                If UpdateMediaInfo() Then
-                                    Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
-                                End If
+                            If UpdateMediaInfo() Then
+                                Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
@@ -1596,7 +1590,7 @@ Public Class frmMain
                                 If Not drvRow.Item(4) Then
                                     Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
 
-                                    If Master.uSettings.UseStudioTags Then
+                                    If Master.uSettings.UseStudioTags AndAlso IsNothing(Master.currMovie.FileInfo) Then
                                         If UpdateMediaInfo() Then
                                             Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                         End If
@@ -1661,7 +1655,7 @@ Public Class frmMain
 
                                     Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
 
-                                    If Master.uSettings.UseStudioTags Then
+                                    If Master.uSettings.UseStudioTags AndAlso IsNothing(Master.currMovie.FileInfo) Then
                                         If UpdateMediaInfo() Then
                                             Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                         End If
@@ -2532,7 +2526,7 @@ Public Class frmMain
                     Me.tspbLoading.Style = ProgressBarStyle.Marquee
                     Me.tspbLoading.MarqueeAnimationSpeed = 100
                     Me.Refresh()
-                    If Me.UpdateMediaInfo() Then
+                    If Me.UpdateMediaInfo AndAlso IsNothing(Master.currMovie.FileInfo) Then
                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                     End If
                 End If
