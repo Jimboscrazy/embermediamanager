@@ -300,26 +300,20 @@ quickExit:
                                       AndAlso Not f.Name.Contains("-trailer"))
 
 
+
                 'handle stacking
                 lFi.Sort(AddressOf CompFilesByName)
 
-                For Each fiItem As FileInfo In lFi
-                    If alFileList.Count > 0 Then
-                        For i As Integer = 0 To alFileList.Count - 1
-                            If Not CleanStackingMarkers(fiItem.FullName.ToString.ToLower) = CleanStackingMarkers(alFileList.Item(i).FullName.ToString.ToLower) Then
-                                alFileList.Add(fiItem)
-                                Exit For
-                            End If
-                        Next
-                    Else
-                        alFileList.Add(fiItem)
-                    End If
-                Next
+                alFileList.AddRange(lFi)
             End If
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Public Shared Function ConvertPathToStack(ByVal tFI As FileInfo) As String
+        Return CleanStackingMarkers(tFI.FullName.ToString)
+    End Function
 
     Private Shared Function CompFilesByName(ByVal X As FileInfo, ByVal Y As FileInfo) As Integer
 
