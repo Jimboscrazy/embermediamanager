@@ -85,24 +85,8 @@ Public Class frmMain
 
 #Region "Form/Controls"
 
-    Private Sub frmMain_VisibleChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.VisibleChanged
-
-        '//
-        ' Make sure the window is kicked to the front when visible
-        '\\
-
-        Me.BringToFront()
-
-    End Sub
-
     Private Sub frmMain_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-
-        '//
-        ' Make sure the window is kicked to the front when loading
-        '\\
-
-        Me.BringToFront()
-
+        Me.Activate()
     End Sub
 
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -200,6 +184,8 @@ Public Class frmMain
             AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
             AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
 
+            Me.Activate()
+
             Dim sPath As String = Application.StartupPath & "\Log\errlog.txt"
             If File.Exists(sPath) Then
                 Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
@@ -208,11 +194,13 @@ Public Class frmMain
 
             Master.uSettings.Load()
 
+            If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
+                Me.tsbUpdateXBMC.Enabled = True
+            End If
+
             Me.SetColors()
             Me.pnlInfoPanel.Height = 25
             Me.ClearInfo()
-
-            Me.BringToFront()
 
             Me.LoadMedia(1)
         Catch ex As Exception
@@ -362,7 +350,7 @@ Public Class frmMain
                     Me.btnUp.Enabled = True
                 End If
             ElseIf Me.aniType = 1 Then
-                If Me.pnlInfoPanel.Height = 275 Then
+                If Me.pnlInfoPanel.Height = 280 Then
                     Me.tmrAni.Stop()
                     Me.btnMid.Enabled = False
                     Me.btnDown.Enabled = True
@@ -738,6 +726,13 @@ Public Class frmMain
             dgvMediaList.DataSource = dvFilter
         End If
         Me.tmrSearch.Enabled = False
+    End Sub
+
+    Private Sub tsbUpdateXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbUpdateXBMC.Click
+        If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
+            Dim Wr As WebRequest = WebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", Master.uSettings.XBMCIP, Master.uSettings.XBMCPort))
+            Wr = Nothing
+        End If
     End Sub
 #End Region '*** Form/Controls
 

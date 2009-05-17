@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -122,6 +122,8 @@ Partial Class frmMain
         Me.tsbRescrape = New System.Windows.Forms.ToolStripDropDownButton
         Me.mnuRescrapeAuto = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuRescrapeSearch = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripButton
         Me.pbFanartCache = New System.Windows.Forms.PictureBox
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
@@ -370,8 +372,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -1104,7 +1106,7 @@ Partial Class frmMain
         Me.tsMain.CanOverflow = False
         Me.tsMain.GripMargin = New System.Windows.Forms.Padding(0)
         Me.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.tsbEdit, Me.tsbRescrape})
+        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.tsbEdit, Me.tsbRescrape, Me.ToolStripSeparator1, Me.tsbUpdateXBMC})
         Me.tsMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
@@ -1213,6 +1215,20 @@ Partial Class frmMain
         Me.mnuRescrapeSearch.Name = "mnuRescrapeSearch"
         Me.mnuRescrapeSearch.Size = New System.Drawing.Size(136, 22)
         Me.mnuRescrapeSearch.Text = "Search New"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+        '
+        'tsbUpdateXBMC
+        '
+        Me.tsbUpdateXBMC.Enabled = False
+        Me.tsbUpdateXBMC.Image = CType(resources.GetObject("tsbUpdateXBMC.Image"), System.Drawing.Image)
+        Me.tsbUpdateXBMC.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbUpdateXBMC.Name = "tsbUpdateXBMC"
+        Me.tsbUpdateXBMC.Size = New System.Drawing.Size(134, 22)
+        Me.tsbUpdateXBMC.Text = "Begin XBMC Update"
         '
         'pbFanartCache
         '
@@ -1423,4 +1439,6 @@ Partial Class frmMain
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents tmrSearchWait As System.Windows.Forms.Timer
     Friend WithEvents tmrSearch As System.Windows.Forms.Timer
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents tsbUpdateXBMC As System.Windows.Forms.ToolStripButton
 End Class

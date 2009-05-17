@@ -82,6 +82,8 @@ Public Class ummSettings
     Private _lockoutline As Boolean
     Private _locktitle As Boolean
     Private _singlescrapeimages As Boolean
+    Private _xbmcport As String
+    Private _xbmcip As String
     Private _movielist As New ArrayList
 
     Public Property FilterCustom() As ArrayList
@@ -597,6 +599,24 @@ Public Class ummSettings
         End Set
     End Property
 
+    Public Property XBMCIP() As String
+        Get
+            Return Me._xbmcip
+        End Get
+        Set(ByVal value As String)
+            Me._xbmcip = value
+        End Set
+    End Property
+
+    Public Property XBMCPort() As String
+        Get
+            Return Me._xbmcport
+        End Get
+        Set(ByVal value As String)
+            Me._xbmcport = value
+        End Set
+    End Property
+
     Public Property MovieList() As ArrayList
         Get
             Return Me._movielist
@@ -668,6 +688,8 @@ Public Class ummSettings
         Me._lockoutline = False
         Me._locktitle = False
         Me._singlescrapeimages = False
+        Me._xbmcip = String.Empty
+        Me._xbmcport = String.Empty
         Me._movielist.Clear()
     End Sub
 
