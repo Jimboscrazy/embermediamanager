@@ -743,6 +743,8 @@ quickExit:
 
         '//
         ' Check if a folder has all the items (nfo, poster, fanart, etc)
+        ' Why 2 methods? Because it's faster to scan each file in folder mode and faster to scan
+        ' for specific files in file mode.
         '\\
 
         Dim hasNfo As Boolean = False
@@ -752,38 +754,69 @@ quickExit:
         Dim aResults(3) As Boolean
         Dim tmpName As String = String.Empty
         Try
-            Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName.ToString)
-            Dim lFi As New List(Of FileInfo)()
 
-            lFi.AddRange(di.GetFiles())
 
-            For Each sfile As FileInfo In lFi
-                tmpName = CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath)))
-                Select Case sfile.Extension.ToLower
-                    Case ".jpg"
-                        If sfile.Name = String.Concat(tmpName, "-fanart.jpg") OrElse sfile.Name = String.Concat(tmpName, ".fanart.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg") Then
-                            hasFanart = True
-                        ElseIf sfile.Name = String.Concat(tmpName, ".jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg") OrElse _
-                        sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg") Then
-                            hasPoster = True
-                        End If
-                    Case ".tbn"
-                        If sfile.Name = String.Concat(tmpName, ".tbn") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn") OrElse _
-                            sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn") Then
-                            hasPoster = True
-                        End If
-                    Case ".nfo"
-                        If sfile.Name = String.Concat(tmpName, ".nfo") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.nfo") Then
-                            hasNfo = True
-                        End If
-                    Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar"
-                        If sfile.Name.Contains("-trailer") Then
-                            hasTrailer = True
-                        End If
-                End Select
+            If isFile Then
+                tmpName = String.Format("{0}\{1}", Directory.GetParent(sPath).FullName.ToString, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))))
+                'fanart
+                If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg")) Then
+                    hasFanart = True
+                End If
 
-            Next
+                'poster
+                If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg")) OrElse _
+                    File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg")) OrElse _
+                    File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn")) OrElse _
+                    File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn")) Then
+                    hasPoster = True
+                End If
 
+                'nfo
+                If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\movie.nfo")) Then
+                    hasNfo = True
+                End If
+
+                Dim sExt() As String = Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar")
+
+                For Each t As String In sExt
+                    If File.Exists(String.Concat(tmpName, "-trailer", t)) Then
+                        hasTrailer = True
+                        Exit For
+                    End If
+                Next
+            Else
+                Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName.ToString)
+                Dim lFi As New List(Of FileInfo)()
+
+                lFi.AddRange(di.GetFiles())
+
+                For Each sfile As FileInfo In lFi
+                    tmpName = CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath)))
+                    Select Case sfile.Extension.ToLower
+                        Case ".jpg"
+                            If sfile.Name = String.Concat(tmpName, "-fanart.jpg") OrElse sfile.Name = String.Concat(tmpName, ".fanart.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg") Then
+                                hasFanart = True
+                            ElseIf sfile.Name = String.Concat(tmpName, ".jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg") OrElse _
+                            sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg") Then
+                                hasPoster = True
+                            End If
+                        Case ".tbn"
+                            If sfile.Name = String.Concat(tmpName, ".tbn") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn") OrElse _
+                                sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn") Then
+                                hasPoster = True
+                            End If
+                        Case ".nfo"
+                            If sfile.Name = String.Concat(tmpName, ".nfo") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.nfo") Then
+                                hasNfo = True
+                            End If
+                        Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar"
+                            If sfile.Name.Contains("-trailer") Then
+                                hasTrailer = True
+                            End If
+                    End Select
+
+                Next
+            End If
             aResults(0) = hasPoster
             aResults(1) = hasFanart
             aResults(2) = hasNfo

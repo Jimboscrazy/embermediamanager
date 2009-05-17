@@ -623,7 +623,7 @@ foundIT:
             ElseIf Master.uSettings.MovieNameTBN AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")) Then
                 Return String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")
             ElseIf Not isFile AndAlso Master.uSettings.MovieJPG AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\movie.jpg")) Then
-                Return String.Concat(Directory.GetParent(pPath).ToString, "\movie.tbn")
+                Return String.Concat(Directory.GetParent(pPath).ToString, "\movie.jpg")
             ElseIf Master.uSettings.MovieNameJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")) Then
                 Return String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")
             ElseIf Not isFile AndAlso Master.uSettings.PosterTBN AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\poster.tbn")) Then
