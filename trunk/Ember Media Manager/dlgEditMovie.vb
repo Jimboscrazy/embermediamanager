@@ -449,11 +449,13 @@ Public Class dlgEditMovie
                 End If
 
                 If Not Master.uSettings.UseTMDB Then
-                    Me.btnSetFanartScrape.Enabled = False
+                    .btnSetFanartScrape.Enabled = False
                     If Not Master.uSettings.UseIMPA Then
-                        Me.btnSetPosterScrape.Enabled = False
+                        .btnSetPosterScrape.Enabled = False
                     End If
                 End If
+
+                .chkMark.Checked = Master.currMark
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -545,6 +547,7 @@ Public Class dlgEditMovie
                     Directory.Delete(Application.StartupPath & "\Temp", True)
                 End If
 
+                Master.currMark = chkMark.Checked
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

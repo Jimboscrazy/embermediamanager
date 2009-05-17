@@ -91,7 +91,6 @@ Partial Class dlgEditMovie
         Me.btnSetFanart = New System.Windows.Forms.Button
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
-        Me.pbFrame = New System.Windows.Forms.PictureBox
         Me.btnFrameSave = New System.Windows.Forms.Button
         Me.pnlFrameProgress = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
@@ -100,7 +99,9 @@ Partial Class dlgEditMovie
         Me.lblTime = New System.Windows.Forms.Label
         Me.tbFrame = New System.Windows.Forms.TrackBar
         Me.btnFrameLoad = New System.Windows.Forms.Button
+        Me.pbFrame = New System.Windows.Forms.PictureBox
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
+        Me.chkMark = New System.Windows.Forms.CheckBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -115,9 +116,9 @@ Partial Class dlgEditMovie
         Me.TabPage3.SuspendLayout()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
-        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlFrameProgress.SuspendLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -804,16 +805,6 @@ Partial Class dlgEditMovie
         Me.TabPage4.Text = "Frame Extraction"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
-        'pbFrame
-        '
-        Me.pbFrame.BackColor = System.Drawing.Color.DimGray
-        Me.pbFrame.Location = New System.Drawing.Point(6, 6)
-        Me.pbFrame.Name = "pbFrame"
-        Me.pbFrame.Size = New System.Drawing.Size(724, 414)
-        Me.pbFrame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbFrame.TabIndex = 8
-        Me.pbFrame.TabStop = False
-        '
         'btnFrameSave
         '
         Me.btnFrameSave.Enabled = False
@@ -896,6 +887,26 @@ Partial Class dlgEditMovie
         Me.btnFrameLoad.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnFrameLoad.UseVisualStyleBackColor = True
         '
+        'pbFrame
+        '
+        Me.pbFrame.BackColor = System.Drawing.Color.DimGray
+        Me.pbFrame.Location = New System.Drawing.Point(6, 6)
+        Me.pbFrame.Name = "pbFrame"
+        Me.pbFrame.Size = New System.Drawing.Size(724, 414)
+        Me.pbFrame.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbFrame.TabIndex = 8
+        Me.pbFrame.TabStop = False
+        '
+        'chkMark
+        '
+        Me.chkMark.AutoSize = True
+        Me.chkMark.Location = New System.Drawing.Point(4, 559)
+        Me.chkMark.Name = "chkMark"
+        Me.chkMark.Size = New System.Drawing.Size(82, 17)
+        Me.chkMark.TabIndex = 57
+        Me.chkMark.Text = "Mark Movie"
+        Me.chkMark.UseVisualStyleBackColor = True
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -903,6 +914,7 @@ Partial Class dlgEditMovie
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.Controls.Add(Me.chkMark)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
@@ -932,11 +944,12 @@ Partial Class dlgEditMovie
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage4.PerformLayout()
-        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlFrameProgress.ResumeLayout(False)
         Me.pnlFrameProgress.PerformLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
@@ -1017,5 +1030,6 @@ Partial Class dlgEditMovie
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents btnFrameSave As System.Windows.Forms.Button
     Friend WithEvents pbFrame As System.Windows.Forms.PictureBox
+    Friend WithEvents chkMark As System.Windows.Forms.CheckBox
 
 End Class
