@@ -31,6 +31,11 @@ Partial Class dlgSettings
         Me.chkOverwriteNfo = New System.Windows.Forms.CheckBox
         Me.chkLogErrors = New System.Windows.Forms.CheckBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.chkCleanMovieNameJPG = New System.Windows.Forms.CheckBox
+        Me.chkCleanMovieJPG = New System.Windows.Forms.CheckBox
+        Me.chkCleanPosterJPG = New System.Windows.Forms.CheckBox
+        Me.chkCleanPosterTBN = New System.Windows.Forms.CheckBox
+        Me.chkCleanDotFanartJPG = New System.Windows.Forms.CheckBox
         Me.chkCleanMovieNFOb = New System.Windows.Forms.CheckBox
         Me.chkCleanMovieNFO = New System.Windows.Forms.CheckBox
         Me.chkCleanMovieFanartJPG = New System.Windows.Forms.CheckBox
@@ -125,11 +130,11 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.chkCleanDotFanartJPG = New System.Windows.Forms.CheckBox
-        Me.chkCleanMovieJPG = New System.Windows.Forms.CheckBox
-        Me.chkCleanPosterJPG = New System.Windows.Forms.CheckBox
-        Me.chkCleanPosterTBN = New System.Windows.Forms.CheckBox
-        Me.chkCleanMovieNameJPG = New System.Windows.Forms.CheckBox
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox
+        Me.txtIP = New System.Windows.Forms.TextBox
+        Me.txtPort = New System.Windows.Forms.TextBox
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.Label7 = New System.Windows.Forms.Label
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -150,6 +155,7 @@ Partial Class dlgSettings
         Me.GroupBox1.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox11.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -166,6 +172,7 @@ Partial Class dlgSettings
         '
         'tabGeneral
         '
+        Me.tabGeneral.Controls.Add(Me.GroupBox11)
         Me.tabGeneral.Controls.Add(Me.GroupBox4)
         Me.tabGeneral.Controls.Add(Me.GroupBox3)
         Me.tabGeneral.Controls.Add(Me.gbColors)
@@ -240,6 +247,56 @@ Partial Class dlgSettings
         Me.GroupBox3.TabIndex = 1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Clean Folders"
+        '
+        'chkCleanMovieNameJPG
+        '
+        Me.chkCleanMovieNameJPG.AutoSize = True
+        Me.chkCleanMovieNameJPG.Location = New System.Drawing.Point(13, 155)
+        Me.chkCleanMovieNameJPG.Name = "chkCleanMovieNameJPG"
+        Me.chkCleanMovieNameJPG.Size = New System.Drawing.Size(88, 17)
+        Me.chkCleanMovieNameJPG.TabIndex = 17
+        Me.chkCleanMovieNameJPG.Text = "/<movie>.jpg"
+        Me.chkCleanMovieNameJPG.UseVisualStyleBackColor = True
+        '
+        'chkCleanMovieJPG
+        '
+        Me.chkCleanMovieJPG.AutoSize = True
+        Me.chkCleanMovieJPG.Location = New System.Drawing.Point(13, 132)
+        Me.chkCleanMovieJPG.Name = "chkCleanMovieJPG"
+        Me.chkCleanMovieJPG.Size = New System.Drawing.Size(76, 17)
+        Me.chkCleanMovieJPG.TabIndex = 16
+        Me.chkCleanMovieJPG.Text = "/movie.jpg"
+        Me.chkCleanMovieJPG.UseVisualStyleBackColor = True
+        '
+        'chkCleanPosterJPG
+        '
+        Me.chkCleanPosterJPG.AutoSize = True
+        Me.chkCleanPosterJPG.Location = New System.Drawing.Point(13, 110)
+        Me.chkCleanPosterJPG.Name = "chkCleanPosterJPG"
+        Me.chkCleanPosterJPG.Size = New System.Drawing.Size(77, 17)
+        Me.chkCleanPosterJPG.TabIndex = 15
+        Me.chkCleanPosterJPG.Text = "/poster.jpg"
+        Me.chkCleanPosterJPG.UseVisualStyleBackColor = True
+        '
+        'chkCleanPosterTBN
+        '
+        Me.chkCleanPosterTBN.AutoSize = True
+        Me.chkCleanPosterTBN.Location = New System.Drawing.Point(13, 88)
+        Me.chkCleanPosterTBN.Name = "chkCleanPosterTBN"
+        Me.chkCleanPosterTBN.Size = New System.Drawing.Size(78, 17)
+        Me.chkCleanPosterTBN.TabIndex = 14
+        Me.chkCleanPosterTBN.Text = "/poster.tbn"
+        Me.chkCleanPosterTBN.UseVisualStyleBackColor = True
+        '
+        'chkCleanDotFanartJPG
+        '
+        Me.chkCleanDotFanartJPG.AutoSize = True
+        Me.chkCleanDotFanartJPG.Location = New System.Drawing.Point(13, 223)
+        Me.chkCleanDotFanartJPG.Name = "chkCleanDotFanartJPG"
+        Me.chkCleanDotFanartJPG.Size = New System.Drawing.Size(118, 17)
+        Me.chkCleanDotFanartJPG.TabIndex = 13
+        Me.chkCleanDotFanartJPG.Text = "/<movie>.fanart.jpg"
+        Me.chkCleanDotFanartJPG.UseVisualStyleBackColor = True
         '
         'chkCleanMovieNFOb
         '
@@ -478,14 +535,14 @@ Partial Class dlgSettings
         Me.gbFilters.Controls.Add(Me.lstFilters)
         Me.gbFilters.Location = New System.Drawing.Point(6, 6)
         Me.gbFilters.Name = "gbFilters"
-        Me.gbFilters.Size = New System.Drawing.Size(192, 309)
+        Me.gbFilters.Size = New System.Drawing.Size(192, 289)
         Me.gbFilters.TabIndex = 0
         Me.gbFilters.TabStop = False
         Me.gbFilters.Text = "Folder/File Name Filters"
         '
         'btnDown
         '
-        Me.btnDown.Location = New System.Drawing.Point(129, 277)
+        Me.btnDown.Location = New System.Drawing.Point(129, 259)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(23, 23)
         Me.btnDown.TabIndex = 9
@@ -494,7 +551,7 @@ Partial Class dlgSettings
         '
         'btnUp
         '
-        Me.btnUp.Location = New System.Drawing.Point(105, 277)
+        Me.btnUp.Location = New System.Drawing.Point(105, 259)
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(23, 23)
         Me.btnUp.TabIndex = 8
@@ -513,7 +570,7 @@ Partial Class dlgSettings
         '
         'btnRemoveFilter
         '
-        Me.btnRemoveFilter.Location = New System.Drawing.Point(163, 277)
+        Me.btnRemoveFilter.Location = New System.Drawing.Point(163, 259)
         Me.btnRemoveFilter.Name = "btnRemoveFilter"
         Me.btnRemoveFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveFilter.TabIndex = 5
@@ -522,7 +579,7 @@ Partial Class dlgSettings
         '
         'btnAddFilter
         '
-        Me.btnAddFilter.Location = New System.Drawing.Point(68, 277)
+        Me.btnAddFilter.Location = New System.Drawing.Point(68, 259)
         Me.btnAddFilter.Name = "btnAddFilter"
         Me.btnAddFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddFilter.TabIndex = 4
@@ -532,7 +589,7 @@ Partial Class dlgSettings
         'txtFilter
         '
         Me.txtFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilter.Location = New System.Drawing.Point(6, 278)
+        Me.txtFilter.Location = New System.Drawing.Point(6, 260)
         Me.txtFilter.Name = "txtFilter"
         Me.txtFilter.Size = New System.Drawing.Size(61, 20)
         Me.txtFilter.TabIndex = 3
@@ -540,10 +597,10 @@ Partial Class dlgSettings
         'lstFilters
         '
         Me.lstFilters.FormattingEnabled = True
-        Me.lstFilters.Location = New System.Drawing.Point(6, 46)
+        Me.lstFilters.Location = New System.Drawing.Point(6, 42)
         Me.lstFilters.Name = "lstFilters"
         Me.lstFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
-        Me.lstFilters.Size = New System.Drawing.Size(180, 225)
+        Me.lstFilters.Size = New System.Drawing.Size(180, 212)
         Me.lstFilters.TabIndex = 2
         '
         'tabMovies
@@ -1212,55 +1269,52 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'chkCleanDotFanartJPG
+        'GroupBox11
         '
-        Me.chkCleanDotFanartJPG.AutoSize = True
-        Me.chkCleanDotFanartJPG.Location = New System.Drawing.Point(13, 223)
-        Me.chkCleanDotFanartJPG.Name = "chkCleanDotFanartJPG"
-        Me.chkCleanDotFanartJPG.Size = New System.Drawing.Size(118, 17)
-        Me.chkCleanDotFanartJPG.TabIndex = 13
-        Me.chkCleanDotFanartJPG.Text = "/<movie>.fanart.jpg"
-        Me.chkCleanDotFanartJPG.UseVisualStyleBackColor = True
+        Me.GroupBox11.Controls.Add(Me.Label7)
+        Me.GroupBox11.Controls.Add(Me.Label6)
+        Me.GroupBox11.Controls.Add(Me.txtPort)
+        Me.GroupBox11.Controls.Add(Me.txtIP)
+        Me.GroupBox11.Location = New System.Drawing.Point(6, 301)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Size = New System.Drawing.Size(385, 46)
+        Me.GroupBox11.TabIndex = 4
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "XBMC Communication"
         '
-        'chkCleanMovieJPG
+        'txtIP
         '
-        Me.chkCleanMovieJPG.AutoSize = True
-        Me.chkCleanMovieJPG.Location = New System.Drawing.Point(13, 132)
-        Me.chkCleanMovieJPG.Name = "chkCleanMovieJPG"
-        Me.chkCleanMovieJPG.Size = New System.Drawing.Size(76, 17)
-        Me.chkCleanMovieJPG.TabIndex = 16
-        Me.chkCleanMovieJPG.Text = "/movie.jpg"
-        Me.chkCleanMovieJPG.UseVisualStyleBackColor = True
+        Me.txtIP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtIP.Location = New System.Drawing.Point(68, 20)
+        Me.txtIP.Name = "txtIP"
+        Me.txtIP.Size = New System.Drawing.Size(90, 20)
+        Me.txtIP.TabIndex = 4
         '
-        'chkCleanPosterJPG
+        'txtPort
         '
-        Me.chkCleanPosterJPG.AutoSize = True
-        Me.chkCleanPosterJPG.Location = New System.Drawing.Point(13, 110)
-        Me.chkCleanPosterJPG.Name = "chkCleanPosterJPG"
-        Me.chkCleanPosterJPG.Size = New System.Drawing.Size(77, 17)
-        Me.chkCleanPosterJPG.TabIndex = 15
-        Me.chkCleanPosterJPG.Text = "/poster.jpg"
-        Me.chkCleanPosterJPG.UseVisualStyleBackColor = True
+        Me.txtPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPort.Location = New System.Drawing.Point(294, 20)
+        Me.txtPort.Name = "txtPort"
+        Me.txtPort.Size = New System.Drawing.Size(61, 20)
+        Me.txtPort.TabIndex = 5
         '
-        'chkCleanPosterTBN
+        'Label6
         '
-        Me.chkCleanPosterTBN.AutoSize = True
-        Me.chkCleanPosterTBN.Location = New System.Drawing.Point(13, 88)
-        Me.chkCleanPosterTBN.Name = "chkCleanPosterTBN"
-        Me.chkCleanPosterTBN.Size = New System.Drawing.Size(78, 17)
-        Me.chkCleanPosterTBN.TabIndex = 14
-        Me.chkCleanPosterTBN.Text = "/poster.tbn"
-        Me.chkCleanPosterTBN.UseVisualStyleBackColor = True
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(226, 22)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(62, 13)
+        Me.Label6.TabIndex = 6
+        Me.Label6.Text = "XBMC Port:"
         '
-        'chkCleanMovieNameJPG
+        'Label7
         '
-        Me.chkCleanMovieNameJPG.AutoSize = True
-        Me.chkCleanMovieNameJPG.Location = New System.Drawing.Point(13, 155)
-        Me.chkCleanMovieNameJPG.Name = "chkCleanMovieNameJPG"
-        Me.chkCleanMovieNameJPG.Size = New System.Drawing.Size(88, 17)
-        Me.chkCleanMovieNameJPG.TabIndex = 17
-        Me.chkCleanMovieNameJPG.Text = "/<movie>.jpg"
-        Me.chkCleanMovieNameJPG.UseVisualStyleBackColor = True
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(6, 24)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(53, 13)
+        Me.Label7.TabIndex = 7
+        Me.Label7.Text = "XBMC IP:"
         '
         'dlgSettings
         '
@@ -1313,6 +1367,8 @@ Partial Class dlgSettings
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox11.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1423,4 +1479,9 @@ Partial Class dlgSettings
     Friend WithEvents chkCleanPosterJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanPosterTBN As System.Windows.Forms.CheckBox
     Friend WithEvents chkCleanDotFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox11 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents txtPort As System.Windows.Forms.TextBox
+    Friend WithEvents txtIP As System.Windows.Forms.TextBox
 End Class

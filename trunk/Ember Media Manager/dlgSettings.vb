@@ -449,6 +449,14 @@ Public Class dlgSettings
     Private Sub chkCleanDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanDotFanartJPG.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub txtIP_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIP.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPort.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -546,6 +554,14 @@ Public Class dlgSettings
             Master.uSettings.LogErrors = Me.chkLogErrors.Checked
             Master.uSettings.ProperCase = Me.chkProperCase.Checked
 
+            If Not String.IsNullOrEmpty(Me.txtIP.text) Then
+                Master.uSettings.XBMCIP = Me.txtIP.text
+            End If
+
+            If Not String.IsNullOrEmpty(Me.txtPort.text) Then
+                Master.uSettings.XBMCPort = Me.txtPort.text
+            End If
+
             '######## MOVIES TAB ########
             Master.uSettings.MovieFolders.Clear()
             For Each lvItem As ListViewItem In Me.lvMovies.Items
@@ -622,6 +638,9 @@ Public Class dlgSettings
             Me.chkCleanMovieJPG.Checked = Master.uSettings.CleanMovieJPG
             Me.chkCleanMovieNameJPG.Checked = Master.uSettings.CleanMovieNameJPG
             Me.chkCleanDotFanartJPG.Checked = Master.uSettings.CleanDotFanartJPG
+
+            Me.txtIP.text = Master.uSettings.XBMCIP
+            Me.txtPort.text = Master.uSettings.XBMCPort
 
             Me.chkLogErrors.Checked = Master.uSettings.LogErrors
             Me.chkProperCase.Checked = Master.uSettings.ProperCase
