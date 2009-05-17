@@ -137,7 +137,17 @@ Public Class dlgImgSelect
                 Dim extraPath As String = String.Empty
                 Dim iVal As Integer = 1
                 If iMod = -1 Then iMod = 0
-                If Me.chkImage.Count > 0 Then
+
+                Dim isChecked As Boolean = False
+
+                For i As Integer = 0 To UBound(Me.chkImage)
+                    If Me.chkImage(i).Checked Then
+                        isChecked = True
+                        Exit For
+                    End If
+                Next
+
+                If isChecked Then
 
                     If isEdit Then
                         extraPath = String.Concat(tmpPath, "\extrathumbs")
