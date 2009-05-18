@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r55:*
  * Feature: First iteration of the extrathumbs manager
  * Feature: Begin XBMC update process from EMM (Not sure if this works because the xbmc web server is broken for me)
  * Feature: Ability to "Mark" movies (eg - to can keep track of ones needing editing)
