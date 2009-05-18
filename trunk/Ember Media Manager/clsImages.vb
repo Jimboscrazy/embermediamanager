@@ -183,6 +183,9 @@ Public Class Images
             Dim fPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
             Dim tPath As String = String.Empty
 
+            If Master.uSettings.ResizeFanart AndAlso (_image.Width > Master.uSettings.FanartWidth OrElse _image.Height > Master.uSettings.FanartHeight) Then
+                _image = ResizeImage(_image, Master.ImageType.Fanart)
+            End If
             If Master.uSettings.FanartJPG AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")
                 If Not File.Exists(tPath) OrElse Master.uSettings.OverwriteFanart Then
@@ -662,5 +665,49 @@ foundIT:
             Return False
         End Try
 
+    End Function
+
+    Private Function ResizeImage(ByVal theImage As Image, ByVal imgType As Master.ImageType) As Image
+
+        Dim imgOut As Image = Nothing
+        Dim maxHeight = Master.uSettings.FanartHeight
+        Dim maxWidth = Master.uSettings.FanartWidth
+        'for later
+        'Dim maxheight = If(imgType = Master.ImageType.Fanart, Master.uSettings.FanartHeight, Master.uSettings.Posterheight)
+        Try
+            If Not IsNothing(theImage) Then
+                Dim sPropPerc As Single = 1.0 'no default scaling
+
+                If theImage.Width > theImage.Height Then
+                    sPropPerc = CSng(maxWidth / theImage.Width)
+                Else
+                    sPropPerc = CSng(maxheight / theImage.Height)
+                End If
+
+                ' Get the source bitmap.
+                Dim bmSource As New Bitmap(theImage)
+                ' Make a bitmap for the result.
+                Dim bmDest As New Bitmap( _
+                CInt(bmSource.Width * sPropPerc), _
+                CInt(bmSource.Height * sPropPerc))
+                ' Make a Graphics object for the result Bitmap.
+                Dim grDest As Graphics = Graphics.FromImage(bmDest)
+                ' Copy the source image into the destination bitmap.
+                grDest.DrawImage(bmSource, 0, 0, _
+                bmDest.Width + 1, _
+                bmDest.Height + 1)
+                ' Display the result.
+                imgOut = bmDest
+
+                'Clean up
+                bmSource = Nothing
+                bmDest = Nothing
+                grDest = Nothing
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return imgOut
     End Function
 End Class

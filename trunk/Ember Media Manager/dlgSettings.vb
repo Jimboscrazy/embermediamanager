@@ -450,8 +450,16 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub txtIP_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtIP.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar), True)
+    End Sub
+
     Private Sub txtIP_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIP.TextChanged
         Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPort.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
     End Sub
 
     Private Sub txtPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPort.TextChanged
@@ -463,6 +471,30 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMarkNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMarkNew.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkResizeFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkResizeFanart.CheckedChanged
+        Me.btnApply.Enabled = True
+
+        txtFanartWidth.Enabled = chkResizeFanart.Checked
+        txtFanartHeight.Enabled = chkResizeFanart.Checked
+
+        If Not chkResizeFanart.Checked Then
+            txtFanartWidth.Text = String.Empty
+            txtFanartHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFanartWidth.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
+    Private Sub txtFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFanartWidth.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFanartHeight.TextChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -562,14 +594,8 @@ Public Class dlgSettings
             Master.uSettings.LogErrors = Me.chkLogErrors.Checked
             Master.uSettings.ProperCase = Me.chkProperCase.Checked
             Master.uSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
-
-            If Not String.IsNullOrEmpty(Me.txtIP.text) Then
-                Master.uSettings.XBMCIP = Me.txtIP.text
-            End If
-
-            If Not String.IsNullOrEmpty(Me.txtPort.text) Then
-                Master.uSettings.XBMCPort = Me.txtPort.text
-            End If
+            Master.uSettings.XBMCIP = Me.txtIP.Text
+            Master.uSettings.XBMCPort = Me.txtPort.Text
 
             '######## MOVIES TAB ########
             Master.uSettings.MovieFolders.Clear()
@@ -611,6 +637,9 @@ Public Class dlgSettings
             Master.uSettings.LockTitle = Me.chkLockTitle.Checked
             Master.uSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
             Master.uSettings.MarkNew = Me.chkMarkNew.Checked
+            Master.uSettings.ResizeFanart = Me.chkResizeFanart.Checked
+            Master.uSettings.FanartHeight = Me.txtFanartHeight.Text
+            Master.uSettings.FanartWidth = Me.txtFanartWidth.Text
 
             Master.uSettings.Save()
         Catch ex As Exception
@@ -650,7 +679,7 @@ Public Class dlgSettings
             Me.chkCleanDotFanartJPG.Checked = Master.uSettings.CleanDotFanartJPG
             Me.chkOverwriteNfo.Checked = Master.uSettings.OverwriteNfo
 
-            Me.txtIP.text = Master.uSettings.XBMCIP
+            Me.txtIP.Text = Master.uSettings.XBMCIP
             Me.txtPort.text = Master.uSettings.XBMCPort
 
             Me.chkLogErrors.Checked = Master.uSettings.LogErrors
@@ -701,6 +730,11 @@ Public Class dlgSettings
             Me.chkLockTitle.Checked = Master.uSettings.LockTitle
             Me.chkSingleScrapeImages.Checked = Master.uSettings.SingleScrapeImages
             Me.chkMarkNew.Checked = Master.uSettings.MarkNew
+            Me.chkResizeFanart.Checked = Master.uSettings.ResizeFanart
+            If Master.uSettings.ResizeFanart Then
+                Me.txtFanartWidth.Text = Master.uSettings.FanartWidth
+                Me.txtFanartHeight.Text = Master.uSettings.FanartHeight
+            End If
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
@@ -710,6 +744,5 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
-
 
 End Class
