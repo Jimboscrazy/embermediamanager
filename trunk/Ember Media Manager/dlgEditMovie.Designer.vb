@@ -32,6 +32,8 @@ Partial Class dlgEditMovie
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.txtStudioTag = New System.Windows.Forms.TextBox
         Me.lblStudio = New System.Windows.Forms.Label
         Me.txtStudio = New System.Windows.Forms.TextBox
         Me.lblTrailer = New System.Windows.Forms.Label
@@ -110,8 +112,6 @@ Partial Class dlgEditMovie
         Me.pbFrame = New System.Windows.Forms.PictureBox
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
         Me.chkMark = New System.Windows.Forms.CheckBox
-        Me.txtStudioTag = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -269,6 +269,23 @@ Partial Class dlgEditMovie
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(635, 381)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(67, 13)
+        Me.Label4.TabIndex = 103
+        Me.Label4.Text = "Studio Tags:"
+        '
+        'txtStudioTag
+        '
+        Me.txtStudioTag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtStudioTag.Location = New System.Drawing.Point(635, 397)
+        Me.txtStudioTag.Name = "txtStudioTag"
+        Me.txtStudioTag.Size = New System.Drawing.Size(193, 20)
+        Me.txtStudioTag.TabIndex = 102
         '
         'lblStudio
         '
@@ -483,7 +500,6 @@ Partial Class dlgEditMovie
         'lbGenre
         '
         Me.lbGenre.FormattingEnabled = True
-        Me.lbGenre.Items.AddRange(New Object() {"[none]", "Action", "Adult", "Adventure", "Animation", "Anime", "Biography", "Bollywood", "Children", "Christmas", "Comedy", "Concert", "Crime", "Disaster", "Documentary", "Drama", "Family", "Fantasy", "Film Noir", "Halloween", "Hentai", "History", "Horror", "Independent", "Interview", "Martial Arts", "Mini-TV Series", "Monster", "Music", "Musical", "Mystery", "Nature", "Post-Apocalypse", "Religion", "Romance", "Sci-Fi", "Short", "Sport", "Stageplay", "Stand Up", "Superhero", "Supernatural", "Thriller", "War", "Wester", "Wrestling"})
         Me.lbGenre.Location = New System.Drawing.Point(6, 284)
         Me.lbGenre.Name = "lbGenre"
         Me.lbGenre.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
@@ -994,23 +1010,6 @@ Partial Class dlgEditMovie
         Me.chkMark.TabIndex = 57
         Me.chkMark.Text = "Mark Movie"
         Me.chkMark.UseVisualStyleBackColor = True
-        '
-        'txtStudioTag
-        '
-        Me.txtStudioTag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtStudioTag.Location = New System.Drawing.Point(635, 397)
-        Me.txtStudioTag.Name = "txtStudioTag"
-        Me.txtStudioTag.Size = New System.Drawing.Size(193, 20)
-        Me.txtStudioTag.TabIndex = 102
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(635, 381)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(67, 13)
-        Me.Label4.TabIndex = 103
-        Me.Label4.Text = "Studio Tags:"
         '
         'dlgEditMovie
         '

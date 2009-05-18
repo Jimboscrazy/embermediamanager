@@ -518,106 +518,37 @@ quickExit:
         '\\
 
         Dim imgGenre As Image = Nothing
+        Dim imgGenreStr As String = String.Empty
 
-        Try
-            Select Case strGenre.ToString.ToLower
+        Dim mePath As String = Application.StartupPath & "\Images\Genres\"
 
-                Case "action"
-                    imgGenre = My.Resources.action
-                Case "adult"
-                    imgGenre = My.Resources.adult
-                Case "adventure"
-                    imgGenre = My.Resources.adventure
-                Case "animation"
-                    imgGenre = My.Resources.animation
-                Case "anime"
-                    imgGenre = My.Resources.anime
-                Case "biography"
-                    imgGenre = My.Resources.biography
-                Case "bollywood"
-                    imgGenre = My.Resources.bollywood
-                Case "children"
-                    imgGenre = My.Resources.children
-                Case "christmas"
-                    imgGenre = My.Resources.christmas
-                Case "comedy"
-                    imgGenre = My.Resources.comedy
-                Case "concert"
-                    imgGenre = My.Resources.concert
-                Case "crime"
-                    imgGenre = My.Resources.crime
-                Case "disaster"
-                    imgGenre = My.Resources.disaster
-                Case "documentary"
-                    imgGenre = My.Resources.documentary
-                Case "drama"
-                    imgGenre = My.Resources.drama
-                Case "family"
-                    imgGenre = My.Resources.family
-                Case "fantasy"
-                    imgGenre = My.Resources.fantasy
-                Case "film noir"
-                    imgGenre = My.Resources.film_noir
-                Case "halloween"
-                    imgGenre = My.Resources.halloween
-                Case "hentai"
-                    imgGenre = My.Resources.hentai
-                Case "history"
-                    imgGenre = My.Resources.history
-                Case "horror"
-                    imgGenre = My.Resources.horror
-                Case "independent"
-                    imgGenre = My.Resources.independent
-                Case "interview"
-                    imgGenre = My.Resources.interview
-                Case "martial arts"
-                    imgGenre = My.Resources.martial_arts
-                Case "mini-tv series"
-                    imgGenre = My.Resources.mini_tv_series
-                Case "monster"
-                    imgGenre = My.Resources.monster
-                Case "music"
-                    imgGenre = My.Resources.music
-                Case "musical"
-                    imgGenre = My.Resources.musical
-                Case "mystery"
-                    imgGenre = My.Resources.mystery
-                Case "nature"
-                    imgGenre = My.Resources.nature
-                Case "post-apocalypse"
-                    imgGenre = My.Resources.post_apocalypse
-                Case "religion"
-                    imgGenre = My.Resources.religion
-                Case "romance"
-                    imgGenre = My.Resources.romance
-                Case "sci-fi"
-                    imgGenre = My.Resources.sci_fi
-                Case "sport"
-                    imgGenre = My.Resources.sport
-                Case "stageplay"
-                    imgGenre = My.Resources.stageplay
-                Case "stand up"
-                    imgGenre = My.Resources.stand_up
-                Case "superhero"
-                    imgGenre = My.Resources.superhero
-                Case "supernatural"
-                    imgGenre = My.Resources.supernatural
-                Case "thriller"
-                    imgGenre = My.Resources.thriller
-                Case "war"
-                    imgGenre = My.Resources.war
-                Case "western"
-                    imgGenre = My.Resources.western
-                Case "wrestling"
-                    imgGenre = My.Resources.wrestling
-                Case "short"
-                    imgGenre = My.Resources._short
-                Case Else
-                    imgGenre = My.Resources._default
-            End Select
-        Catch ex As Exception
-            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+        If File.Exists(mePath & "Genres.xml") Then
+            Try
+                Dim xmlGenre As XDocument = XDocument.Load(mePath & "Genres.xml")
+
+                Dim xDefault = From xDef In xmlGenre...<default> Select xDef.<icon>.Value
+                If xDefault.Count > 0 Then
+                    imgGenreStr = mePath & xDefault(0).ToString
+                End If
+
+                Dim xGenre = From xGen In xmlGenre...<name> Where strGenre.ToLower = xGen.@searchstring.ToLower Select xGen.<icon>.Value
+                If xGenre.Count > 0 Then
+                    imgGenreStr = mePath & xGenre(0).ToString
+                End If
+
+                If Not String.IsNullOrEmpty(imgGenreStr) AndAlso File.Exists(imgGenreStr) Then
+                    Dim fsImage As New FileStream(imgGenreStr, FileMode.Open, FileAccess.Read)
+                    imgGenre = Image.FromStream(fsImage)
+                    fsImage.Close()
+                    fsImage = Nothing
+                End If
+
+            Catch ex As Exception
+                eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        Else
+            MsgBox("Cannot find Genres.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Genres.xml", MsgBoxStyle.Critical, "File Not Found")
+        End If
 
         Return imgGenre
     End Function
