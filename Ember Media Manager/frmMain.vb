@@ -384,7 +384,7 @@ Public Class frmMain
         '\\
 
         Try
-            Me.LoadInfo(Master.currPath, False, True, True, True)
+            Me.LoadInfo(Master.currPath, False, True, Master.isFile, True)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
