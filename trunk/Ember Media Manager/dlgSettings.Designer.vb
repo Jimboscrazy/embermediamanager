@@ -144,6 +144,12 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.GroupBox14 = New System.Windows.Forms.GroupBox
+        Me.Label11 = New System.Windows.Forms.Label
+        Me.Label12 = New System.Windows.Forms.Label
+        Me.chkResizePoster = New System.Windows.Forms.CheckBox
+        Me.txtPosterWidth = New System.Windows.Forms.TextBox
+        Me.txtPosterHeight = New System.Windows.Forms.TextBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -167,6 +173,7 @@ Partial Class dlgSettings
         Me.GroupBox1.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox14.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -1037,6 +1044,7 @@ Partial Class dlgSettings
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.GroupBox14)
         Me.TabPage2.Controls.Add(Me.GroupBox13)
         Me.TabPage2.Controls.Add(Me.GroupBox10)
         Me.TabPage2.Controls.Add(Me.GroupBox9)
@@ -1116,7 +1124,7 @@ Partial Class dlgSettings
         Me.GroupBox10.Controls.Add(Me.chkLockPlot)
         Me.GroupBox10.Location = New System.Drawing.Point(261, 163)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(241, 81)
+        Me.GroupBox10.Size = New System.Drawing.Size(249, 81)
         Me.GroupBox10.TabIndex = 57
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "Locks (Do not allow updates during scraping)"
@@ -1267,7 +1275,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkStudio)
         Me.GroupBox1.Location = New System.Drawing.Point(261, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(241, 153)
+        Me.GroupBox1.Size = New System.Drawing.Size(249, 153)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -1429,6 +1437,66 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
+        'GroupBox14
+        '
+        Me.GroupBox14.Controls.Add(Me.Label11)
+        Me.GroupBox14.Controls.Add(Me.Label12)
+        Me.GroupBox14.Controls.Add(Me.chkResizePoster)
+        Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
+        Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
+        Me.GroupBox14.Location = New System.Drawing.Point(261, 249)
+        Me.GroupBox14.Name = "GroupBox14"
+        Me.GroupBox14.Size = New System.Drawing.Size(249, 70)
+        Me.GroupBox14.TabIndex = 59
+        Me.GroupBox14.TabStop = False
+        Me.GroupBox14.Text = "Poster"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(3, 46)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(61, 13)
+        Me.Label11.TabIndex = 43
+        Me.Label11.Text = "Max Width:"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(124, 46)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(64, 13)
+        Me.Label12.TabIndex = 42
+        Me.Label12.Text = "Max Height:"
+        '
+        'chkResizePoster
+        '
+        Me.chkResizePoster.AutoSize = True
+        Me.chkResizePoster.Location = New System.Drawing.Point(6, 19)
+        Me.chkResizePoster.Name = "chkResizePoster"
+        Me.chkResizePoster.Size = New System.Drawing.Size(156, 17)
+        Me.chkResizePoster.TabIndex = 39
+        Me.chkResizePoster.Text = "Automatically Resize Poster"
+        Me.chkResizePoster.UseVisualStyleBackColor = True
+        '
+        'txtPosterWidth
+        '
+        Me.txtPosterWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPosterWidth.Enabled = False
+        Me.txtPosterWidth.Location = New System.Drawing.Point(65, 42)
+        Me.txtPosterWidth.Name = "txtPosterWidth"
+        Me.txtPosterWidth.Size = New System.Drawing.Size(53, 20)
+        Me.txtPosterWidth.TabIndex = 40
+        '
+        'txtPosterHeight
+        '
+        Me.txtPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPosterHeight.Enabled = False
+        Me.txtPosterHeight.Location = New System.Drawing.Point(190, 42)
+        Me.txtPosterHeight.Name = "txtPosterHeight"
+        Me.txtPosterHeight.Size = New System.Drawing.Size(53, 20)
+        Me.txtPosterHeight.TabIndex = 41
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -1486,6 +1554,8 @@ Partial Class dlgSettings
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox14.ResumeLayout(False)
+        Me.GroupBox14.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1610,4 +1680,10 @@ Partial Class dlgSettings
     Friend WithEvents chkResizeFanart As System.Windows.Forms.CheckBox
     Friend WithEvents txtFanartWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtFanartHeight As System.Windows.Forms.TextBox
+    Friend WithEvents GroupBox14 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents chkResizePoster As System.Windows.Forms.CheckBox
+    Friend WithEvents txtPosterWidth As System.Windows.Forms.TextBox
+    Friend WithEvents txtPosterHeight As System.Windows.Forms.TextBox
 End Class
