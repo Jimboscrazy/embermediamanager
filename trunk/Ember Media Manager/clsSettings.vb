@@ -24,7 +24,7 @@ Imports System.IO
 Imports System.Xml.Serialization
 
 <Serializable()> _
-Public Class ummSettings
+Public Class emmSettings
     Private _movieFolders As New ArrayList
     Private _filterCustom As New ArrayList
     Private _headerColor As String
@@ -695,7 +695,7 @@ Public Class ummSettings
 
     Public Sub Save()
         Try
-            Dim xmlSerial As New XmlSerializer(GetType(ummSettings))
+            Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
             Dim xmlWriter As New StreamWriter(Application.StartupPath & "\settings.xml")
             xmlSerial.Serialize(xmlWriter, Master.uSettings)
             xmlWriter.Close()
@@ -705,14 +705,14 @@ Public Class ummSettings
     End Sub
 
     Public Sub Load()
-        Dim xmlSerial As New XmlSerializer(GetType(ummSettings))
+        Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
         Try
             Dim strmReader As New StreamReader(Application.StartupPath & "\settings.xml")
-            Master.uSettings = CType(xmlSerial.Deserialize(strmReader), ummSettings)
+            Master.uSettings = CType(xmlSerial.Deserialize(strmReader), emmSettings)
             strmReader.Close()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Master.uSettings = New ummSettings
+            Master.uSettings = New emmSettings
         End Try
     End Sub
 End Class

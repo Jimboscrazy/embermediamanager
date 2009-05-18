@@ -22,6 +22,7 @@ Partial Class dlgEditMovie
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMovie))
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
@@ -90,6 +91,13 @@ Partial Class dlgEditMovie
         Me.btnSetFanartScrape = New System.Windows.Forms.Button
         Me.btnSetFanart = New System.Windows.Forms.Button
         Me.pbFanart = New System.Windows.Forms.PictureBox
+        Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.btnRemoveThumb = New System.Windows.Forms.Button
+        Me.btnDown = New System.Windows.Forms.Button
+        Me.btnUp = New System.Windows.Forms.Button
+        Me.lvThumbs = New System.Windows.Forms.ListView
+        Me.ilThumbs = New System.Windows.Forms.ImageList(Me.components)
+        Me.pbExtraThumbs = New System.Windows.Forms.PictureBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
         Me.btnFrameSave = New System.Windows.Forms.Button
         Me.pnlFrameProgress = New System.Windows.Forms.Panel
@@ -115,6 +123,8 @@ Partial Class dlgEditMovie
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage5.SuspendLayout()
+        CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
         Me.pnlFrameProgress.SuspendLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -192,6 +202,7 @@ Partial Class dlgEditMovie
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
+        Me.TabControl1.Controls.Add(Me.TabPage5)
         Me.TabControl1.Controls.Add(Me.TabPage4)
         Me.TabControl1.Location = New System.Drawing.Point(4, 70)
         Me.TabControl1.Name = "TabControl1"
@@ -377,20 +388,20 @@ Partial Class dlgEditMovie
         '
         'btnEditActor
         '
-        Me.btnEditActor.Location = New System.Drawing.Point(298, 293)
+        Me.btnEditActor.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
+        Me.btnEditActor.Location = New System.Drawing.Point(246, 291)
         Me.btnEditActor.Name = "btnEditActor"
-        Me.btnEditActor.Size = New System.Drawing.Size(75, 23)
+        Me.btnEditActor.Size = New System.Drawing.Size(23, 23)
         Me.btnEditActor.TabIndex = 13
-        Me.btnEditActor.Text = "Edit"
         Me.btnEditActor.UseVisualStyleBackColor = True
         '
         'btnAddActor
         '
-        Me.btnAddActor.Location = New System.Drawing.Point(217, 293)
+        Me.btnAddActor.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
+        Me.btnAddActor.Location = New System.Drawing.Point(217, 291)
         Me.btnAddActor.Name = "btnAddActor"
-        Me.btnAddActor.Size = New System.Drawing.Size(75, 23)
+        Me.btnAddActor.Size = New System.Drawing.Size(23, 23)
         Me.btnAddActor.TabIndex = 12
-        Me.btnAddActor.Text = "Add New"
         Me.btnAddActor.UseVisualStyleBackColor = True
         '
         'btnManual
@@ -404,11 +415,11 @@ Partial Class dlgEditMovie
         '
         'btnRemove
         '
-        Me.btnRemove.Location = New System.Drawing.Point(550, 293)
+        Me.btnRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
+        Me.btnRemove.Location = New System.Drawing.Point(602, 291)
         Me.btnRemove.Name = "btnRemove"
-        Me.btnRemove.Size = New System.Drawing.Size(75, 23)
+        Me.btnRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnRemove.TabIndex = 14
-        Me.btnRemove.Text = "Remove"
         Me.btnRemove.UseVisualStyleBackColor = True
         '
         'lblActors
@@ -788,6 +799,79 @@ Partial Class dlgEditMovie
         Me.pbFanart.TabIndex = 1
         Me.pbFanart.TabStop = False
         '
+        'TabPage5
+        '
+        Me.TabPage5.Controls.Add(Me.btnRemoveThumb)
+        Me.TabPage5.Controls.Add(Me.btnDown)
+        Me.TabPage5.Controls.Add(Me.btnUp)
+        Me.TabPage5.Controls.Add(Me.lvThumbs)
+        Me.TabPage5.Controls.Add(Me.pbExtraThumbs)
+        Me.TabPage5.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage5.Name = "TabPage5"
+        Me.TabPage5.Size = New System.Drawing.Size(836, 452)
+        Me.TabPage5.TabIndex = 4
+        Me.TabPage5.Text = "Extrathumbs"
+        Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'btnRemoveThumb
+        '
+        Me.btnRemoveThumb.Image = CType(resources.GetObject("btnRemoveThumb.Image"), System.Drawing.Image)
+        Me.btnRemoveThumb.Location = New System.Drawing.Point(147, 422)
+        Me.btnRemoveThumb.Name = "btnRemoveThumb"
+        Me.btnRemoveThumb.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveThumb.TabIndex = 13
+        Me.btnRemoveThumb.UseVisualStyleBackColor = True
+        '
+        'btnDown
+        '
+        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
+        Me.btnDown.Location = New System.Drawing.Point(28, 422)
+        Me.btnDown.Name = "btnDown"
+        Me.btnDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnDown.TabIndex = 11
+        Me.btnDown.UseVisualStyleBackColor = True
+        '
+        'btnUp
+        '
+        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
+        Me.btnUp.Location = New System.Drawing.Point(4, 422)
+        Me.btnUp.Name = "btnUp"
+        Me.btnUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnUp.TabIndex = 10
+        Me.btnUp.UseVisualStyleBackColor = True
+        '
+        'lvThumbs
+        '
+        Me.lvThumbs.AutoArrange = False
+        Me.lvThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lvThumbs.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvThumbs.FullRowSelect = True
+        Me.lvThumbs.HideSelection = False
+        Me.lvThumbs.Location = New System.Drawing.Point(5, 8)
+        Me.lvThumbs.Name = "lvThumbs"
+        Me.lvThumbs.Size = New System.Drawing.Size(165, 408)
+        Me.lvThumbs.SmallImageList = Me.ilThumbs
+        Me.lvThumbs.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvThumbs.TabIndex = 3
+        Me.lvThumbs.UseCompatibleStateImageBehavior = False
+        Me.lvThumbs.View = System.Windows.Forms.View.SmallIcon
+        '
+        'ilThumbs
+        '
+        Me.ilThumbs.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit
+        Me.ilThumbs.ImageSize = New System.Drawing.Size(96, 54)
+        Me.ilThumbs.TransparentColor = System.Drawing.Color.Transparent
+        '
+        'pbExtraThumbs
+        '
+        Me.pbExtraThumbs.BackColor = System.Drawing.Color.DimGray
+        Me.pbExtraThumbs.Location = New System.Drawing.Point(176, 8)
+        Me.pbExtraThumbs.Name = "pbExtraThumbs"
+        Me.pbExtraThumbs.Size = New System.Drawing.Size(653, 437)
+        Me.pbExtraThumbs.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbExtraThumbs.TabIndex = 2
+        Me.pbExtraThumbs.TabStop = False
+        '
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.btnFrameSave)
@@ -942,6 +1026,8 @@ Partial Class dlgEditMovie
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage5.ResumeLayout(False)
+        CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage4.PerformLayout()
         Me.pnlFrameProgress.ResumeLayout(False)
@@ -1031,5 +1117,12 @@ Partial Class dlgEditMovie
     Friend WithEvents btnFrameSave As System.Windows.Forms.Button
     Friend WithEvents pbFrame As System.Windows.Forms.PictureBox
     Friend WithEvents chkMark As System.Windows.Forms.CheckBox
+    Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
+    Friend WithEvents pbExtraThumbs As System.Windows.Forms.PictureBox
+    Friend WithEvents lvThumbs As System.Windows.Forms.ListView
+    Friend WithEvents ilThumbs As System.Windows.Forms.ImageList
+    Friend WithEvents btnDown As System.Windows.Forms.Button
+    Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveThumb As System.Windows.Forms.Button
 
 End Class

@@ -24,10 +24,13 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 
 Public Class dlgEditMovie
+    Friend WithEvents bwThumbs As New System.ComponentModel.BackgroundWorker
     Private lvwColumnSorter As ListViewColumnSorter
     Private tmpRating As String = String.Empty
     Private Poster As New Images
     Private Fanart As New Images
+    Private Thumbs As New List(Of ExtraThumbs)
+    Private DeleteList As New ArrayList
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
@@ -302,6 +305,8 @@ Public Class dlgEditMovie
     Private Sub FillInfo()
         Try
             With Me
+                .bwThumbs.RunWorkerAsync()
+
                 If Not String.IsNullOrEmpty(Master.currMovie.Title) Then
                     .txtTitle.Text = Master.currMovie.Title
                 End If
@@ -525,23 +530,33 @@ Public Class dlgEditMovie
                 End If
 
                 If Not IsNothing(Fanart.Image) Then
-                    Fanart.SaveAsFanart(Master.currPath, Master.isFile)
+                    .Fanart.SaveAsFanart(Master.currPath, Master.isFile)
                 End If
 
                 If Not IsNothing(Poster.Image) Then
-                    Poster.SaveAsPoster(Master.currPath, Master.isFile)
+                    .Poster.SaveAsPoster(Master.currPath, Master.isFile)
                 End If
+
+                .SaveExtraThumbsList()
 
                 If Directory.Exists(Application.StartupPath & "\Temp") Then
                     If Directory.Exists(Application.StartupPath & "\Temp\extrathumbs") Then
                         Dim di As New DirectoryInfo(Application.StartupPath & "\Temp\extrathumbs")
+                        Dim ePath As String = String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs\")
 
-                        If Not Directory.Exists(String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs\")) Then
-                            Directory.CreateDirectory(String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs\"))
+                        If Not Directory.Exists(ePath) Then
+                            Directory.CreateDirectory(ePath)
                         End If
 
-                        For Each fFile As FileInfo In di.GetFiles()
-                            Master.MoveFileWithStream(fFile.FullName.ToString, String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs\", fFile.Name.ToString))
+                        'we need to recheck which thumbs we already have 
+                        'again in case user made changes to the order of
+                        'extrathumbs after downloading new extrathumbs
+                        Dim iMod As Integer = Master.GetExtraModifier(ePath)
+                        Dim fList As New List(Of FileInfo)
+                        fList.AddRange(di.GetFiles("thumb*.jpg"))
+
+                        For i As Integer = 0 To fList.Count - 1
+                            Master.MoveFileWithStream(fList.Item(i).FullName.ToString, String.Format("{0}\thumb{1}.jpg", ePath, i + iMod))
                         Next
                     End If
                     Directory.Delete(Application.StartupPath & "\Temp", True)
@@ -851,4 +866,157 @@ Public Class dlgEditMovie
 
         btnFrameSave.Enabled = False
     End Sub
+
+    Private Sub LoadThumbs()
+        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs")
+        Dim di As New DirectoryInfo(tPath)
+        Dim i As Integer = 0
+        Try
+            For Each thumb As FileInfo In di.GetFiles("thumb*.jpg")
+                Dim fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
+                Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i})
+                ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
+                fsImage.Close()
+                fsImage = Nothing
+                i += 1
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub lvThumbs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThumbs.SelectedIndexChanged
+        If lvThumbs.SelectedIndices.Count > 0 Then
+            Try
+                pbExtraThumbs.Image = Thumbs.Item(lvThumbs.SelectedIndices(0)).Image
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End If
+    End Sub
+
+
+    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+        Try
+            If lvThumbs.Items.Count > 0 AndAlso lvThumbs.SelectedIndices(0) > 0 Then
+                Dim iIndex As Integer = lvThumbs.SelectedIndices(0)
+                lvThumbs.Items(iIndex).Text = String.Concat("  ", CStr(CInt(lvThumbs.Items(iIndex).Text.Trim) - 1))
+                lvThumbs.Items(iIndex - 1).Text = String.Concat("  ", CStr(CInt(lvThumbs.Items(iIndex - 1).Text.Trim) + 1))
+                lvThumbs.Sort()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+        Try
+            If lvThumbs.Items.Count > 0 AndAlso lvThumbs.SelectedIndices(0) < (lvThumbs.Items.Count - 1) Then
+                Dim iIndex As Integer = lvThumbs.SelectedIndices(0)
+                lvThumbs.Items(iIndex).Text = String.Concat("  ", CStr(CInt(lvThumbs.Items(iIndex).Text.Trim) + 1))
+                lvThumbs.Items(iIndex + 1).Text = String.Concat("  ", CStr(CInt(lvThumbs.Items(iIndex + 1).Text.Trim) - 1))
+                lvThumbs.Sort()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub SaveExtraThumbsList()
+        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs")
+
+        'first delete the ones from the delete list
+        Try
+            For Each del As String In DeleteList
+                File.Delete(String.Format("{0}\{1}", tPath, del))
+            Next
+
+            'now name the rest something arbitrary so we don't get any conflicts
+            For Each lItem As ListViewItem In lvThumbs.Items
+                FileSystem.Rename(String.Format("{0}\{1}", tPath, lItem.Name), String.Format("{0}\temp{1}", tPath, lItem.Name))
+            Next
+
+            'now rename them properly
+            For Each lItem As ListViewItem In lvThumbs.Items
+                FileSystem.Rename(String.Format("{0}\temp{1}", tPath, lItem.Name), String.Format("{0}\thumb{1}.jpg", tPath, lItem.Text.Trim))
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub btnRemoveThumb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveThumb.Click
+        Try
+            DeleteList.Add(lvThumbs.SelectedItems(0).Name)
+            lvThumbs.Items.Remove(lvThumbs.SelectedItems(0))
+            RenumberThumbs()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub RenumberThumbs()
+        For i As Integer = 0 To lvThumbs.Items.Count - 1
+            lvThumbs.Items(i).Text = String.Concat("  ", CStr(i + 1))
+            lvThumbs.Sort()
+        Next
+    End Sub
+
+    Private Sub bwThumbs_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwThumbs.DoWork
+        LoadThumbs()
+    End Sub
+
+    Private Sub bwThumbs_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwThumbs.RunWorkerCompleted
+        Try
+            For Each thumb As ExtraThumbs In Thumbs
+                lvThumbs.Items.Add(thumb.Name, String.Concat("  ", CStr(thumb.Index + 1)), thumb.Name)
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Friend Class ExtraThumbs
+        Private _image As Image
+        Private _name As String
+        Private _index As Integer
+
+        Friend Property Image() As Image
+            Get
+                Return _image
+            End Get
+            Set(ByVal value As Image)
+                _image = value
+            End Set
+        End Property
+
+        Friend Property Name() As String
+            Get
+                Return _name
+            End Get
+            Set(ByVal value As String)
+                _name = value
+            End Set
+        End Property
+
+        Friend Property Index() As String
+            Get
+                Return _index
+            End Get
+            Set(ByVal value As String)
+                _index = value
+            End Set
+        End Property
+
+        Friend Sub New()
+            Clear()
+        End Sub
+
+        Private Sub Clear()
+            _image = Nothing
+            _name = String.Empty
+            _index = Nothing
+        End Sub
+    End Class
 End Class
