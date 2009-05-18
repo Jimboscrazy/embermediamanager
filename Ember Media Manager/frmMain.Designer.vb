@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -41,7 +41,6 @@ Partial Class frmMain
         Me.tslLoading = New System.Windows.Forms.ToolStripStatusLabel
         Me.tspbLoading = New System.Windows.Forms.ToolStripProgressBar
         Me.tmrAni = New System.Windows.Forms.Timer(Me.components)
-        Me.TestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuStrip = New System.Windows.Forms.MenuStrip
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.pnlSearch = New System.Windows.Forms.Panel
@@ -250,8 +249,8 @@ Partial Class frmMain
         '
         'StatusStrip
         '
-        Me.StatusStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tslLoading, Me.tspbLoading})
+        Me.StatusStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
         Me.StatusStrip.Location = New System.Drawing.Point(0, 710)
         Me.StatusStrip.Name = "StatusStrip"
         Me.StatusStrip.Size = New System.Drawing.Size(1008, 22)
@@ -287,11 +286,6 @@ Partial Class frmMain
         'tmrAni
         '
         Me.tmrAni.Interval = 1
-        '
-        'TestToolStripMenuItem
-        '
-        Me.TestToolStripMenuItem.Name = "TestToolStripMenuItem"
-        Me.TestToolStripMenuItem.Size = New System.Drawing.Size(32, 19)
         '
         'MenuStrip
         '
@@ -372,8 +366,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -1103,10 +1097,10 @@ Partial Class frmMain
         '
         'tsMain
         '
+        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.ToolStripSeparator1, Me.tsbUpdateXBMC, Me.tsbEdit, Me.tsbRescrape})
         Me.tsMain.CanOverflow = False
         Me.tsMain.GripMargin = New System.Windows.Forms.Padding(0)
         Me.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.tsbEdit, Me.tsbRescrape, Me.ToolStripSeparator1, Me.tsbUpdateXBMC})
         Me.tsMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
@@ -1351,7 +1345,6 @@ Partial Class frmMain
     Friend WithEvents tspbLoading As System.Windows.Forms.ToolStripProgressBar
     Friend WithEvents tmrAni As System.Windows.Forms.Timer
     Friend WithEvents AboutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents TestToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents MenuStrip As System.Windows.Forms.MenuStrip
     Friend WithEvents scMain As System.Windows.Forms.SplitContainer
     Friend WithEvents pbFanartCache As System.Windows.Forms.PictureBox

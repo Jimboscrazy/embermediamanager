@@ -107,6 +107,12 @@ Partial Class dlgSettings
         Me.btnMovieAddFolder = New System.Windows.Forms.Button
         Me.chkUseFolderNames = New System.Windows.Forms.CheckBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.GroupBox13 = New System.Windows.Forms.GroupBox
+        Me.Label9 = New System.Windows.Forms.Label
+        Me.Label10 = New System.Windows.Forms.Label
+        Me.chkResizeFanart = New System.Windows.Forms.CheckBox
+        Me.txtFanartWidth = New System.Windows.Forms.TextBox
+        Me.txtFanartHeight = New System.Windows.Forms.TextBox
         Me.GroupBox10 = New System.Windows.Forms.GroupBox
         Me.chkLockTitle = New System.Windows.Forms.CheckBox
         Me.chkLockOutline = New System.Windows.Forms.CheckBox
@@ -155,6 +161,7 @@ Partial Class dlgSettings
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox13.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -1030,6 +1037,7 @@ Partial Class dlgSettings
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.GroupBox13)
         Me.TabPage2.Controls.Add(Me.GroupBox10)
         Me.TabPage2.Controls.Add(Me.GroupBox9)
         Me.TabPage2.Controls.Add(Me.GroupBox1)
@@ -1040,6 +1048,66 @@ Partial Class dlgSettings
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Scraper"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'GroupBox13
+        '
+        Me.GroupBox13.Controls.Add(Me.Label9)
+        Me.GroupBox13.Controls.Add(Me.Label10)
+        Me.GroupBox13.Controls.Add(Me.chkResizeFanart)
+        Me.GroupBox13.Controls.Add(Me.txtFanartWidth)
+        Me.GroupBox13.Controls.Add(Me.txtFanartHeight)
+        Me.GroupBox13.Location = New System.Drawing.Point(6, 248)
+        Me.GroupBox13.Name = "GroupBox13"
+        Me.GroupBox13.Size = New System.Drawing.Size(249, 70)
+        Me.GroupBox13.TabIndex = 58
+        Me.GroupBox13.TabStop = False
+        Me.GroupBox13.Text = "Fanart"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(3, 46)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(61, 13)
+        Me.Label9.TabIndex = 43
+        Me.Label9.Text = "Max Width:"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(124, 46)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(64, 13)
+        Me.Label10.TabIndex = 42
+        Me.Label10.Text = "Max Height:"
+        '
+        'chkResizeFanart
+        '
+        Me.chkResizeFanart.AutoSize = True
+        Me.chkResizeFanart.Location = New System.Drawing.Point(6, 19)
+        Me.chkResizeFanart.Name = "chkResizeFanart"
+        Me.chkResizeFanart.Size = New System.Drawing.Size(156, 17)
+        Me.chkResizeFanart.TabIndex = 39
+        Me.chkResizeFanart.Text = "Automatically Resize Fanart"
+        Me.chkResizeFanart.UseVisualStyleBackColor = True
+        '
+        'txtFanartWidth
+        '
+        Me.txtFanartWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFanartWidth.Enabled = False
+        Me.txtFanartWidth.Location = New System.Drawing.Point(65, 42)
+        Me.txtFanartWidth.Name = "txtFanartWidth"
+        Me.txtFanartWidth.Size = New System.Drawing.Size(53, 20)
+        Me.txtFanartWidth.TabIndex = 40
+        '
+        'txtFanartHeight
+        '
+        Me.txtFanartHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFanartHeight.Enabled = False
+        Me.txtFanartHeight.Location = New System.Drawing.Point(190, 42)
+        Me.txtFanartHeight.Name = "txtFanartHeight"
+        Me.txtFanartHeight.Size = New System.Drawing.Size(53, 20)
+        Me.txtFanartHeight.TabIndex = 41
         '
         'GroupBox10
         '
@@ -1334,9 +1402,9 @@ Partial Class dlgSettings
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(61, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(219, 13)
+        Me.Label2.Size = New System.Drawing.Size(228, 13)
         Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Configure UMM's appearance and operation."
+        Me.Label2.Text = "Configure Embers's appearance and operation."
         '
         'Label4
         '
@@ -1378,7 +1446,7 @@ Partial Class dlgSettings
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgSettings"
-        Me.Text = "UMM Settings"
+        Me.Text = "Ember Settings"
         Me.TabControl1.ResumeLayout(False)
         Me.tabGeneral.ResumeLayout(False)
         Me.GroupBox11.ResumeLayout(False)
@@ -1407,6 +1475,8 @@ Partial Class dlgSettings
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
+        Me.GroupBox13.ResumeLayout(False)
+        Me.GroupBox13.PerformLayout()
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox10.PerformLayout()
         Me.GroupBox9.ResumeLayout(False)
@@ -1534,4 +1604,10 @@ Partial Class dlgSettings
     Friend WithEvents GroupBox12 As System.Windows.Forms.GroupBox
     Friend WithEvents chkMarkNew As System.Windows.Forms.CheckBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox13 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents chkResizeFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents txtFanartWidth As System.Windows.Forms.TextBox
+    Friend WithEvents txtFanartHeight As System.Windows.Forms.TextBox
 End Class

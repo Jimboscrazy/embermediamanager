@@ -85,6 +85,9 @@ Public Class emmSettings
     Private _xbmcport As String
     Private _xbmcip As String
     Private _marknew As Boolean
+    Private _resizefanart As Boolean
+    Private _fanartheight As Integer
+    Private _fanartwidth As Integer
     Private _movielist As New ArrayList
 
     Public Property FilterCustom() As ArrayList
@@ -627,6 +630,33 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property ResizeFanart() As Boolean
+        Get
+            Return Me._resizefanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizefanart = value
+        End Set
+    End Property
+
+    Public Property FanartWidth() As Long
+        Get
+            Return Me._fanartwidth
+        End Get
+        Set(ByVal value As Long)
+            Me._fanartwidth = value
+        End Set
+    End Property
+
+    Public Property FanartHeight() As Long
+        Get
+            Return Me._fanartheight
+        End Get
+        Set(ByVal value As Long)
+            Me._fanartheight = value
+        End Set
+    End Property
+
     Public Property MovieList() As ArrayList
         Get
             Return Me._movielist
@@ -701,6 +731,9 @@ Public Class emmSettings
         Me._xbmcip = String.Empty
         Me._xbmcport = String.Empty
         Me._marknew = False
+        Me._resizefanart = False
+        Me._fanartheight = 720
+        Me._fanartwidth = 1280
         Me._movielist.Clear()
     End Sub
 
