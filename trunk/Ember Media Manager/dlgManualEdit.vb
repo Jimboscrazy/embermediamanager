@@ -334,7 +334,7 @@ Public Class dlgManualEdit
 
 #Region " Event handlers..."
 
-    Private Sub MenuItem10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub mnuExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuExit.Click
 
         Me.Close()
 
@@ -349,13 +349,13 @@ Public Class dlgManualEdit
 
     End Sub
 
-    Private Sub MenuItem4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click
         RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
         ReturnOK = True
         Changed = False
     End Sub
 
-    Private Sub RichTextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub RichTextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RichTextBox1.TextChanged
         Changed = True
     End Sub
 
@@ -368,7 +368,7 @@ Public Class dlgManualEdit
                 RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
                 Me.DialogResult = Windows.Forms.DialogResult.OK
 
-            Else
+            ElseIf DResult = MsgBoxResult.Cancel Then
 
                 e.Cancel = True
 
@@ -384,16 +384,16 @@ Public Class dlgManualEdit
 
     End Sub
 
-    Private Sub MenuItem21_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub mnuFormat_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFormat.Click
         IndentFormat()
     End Sub
 
-    Private Sub MenuItem20_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub mnuParse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuParse.Click
         ParseFile()
     End Sub
 
 
-    Private Sub ListBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub ListBox1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListBox1.SelectedIndexChanged
 
         Dim SelItem As String
         Dim linN, colN As Integer
