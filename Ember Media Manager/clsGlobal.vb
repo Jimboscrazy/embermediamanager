@@ -196,7 +196,7 @@ Public Class Master
 
     End Function
 
-    Public Shared Function CleanStackingMarkers(ByVal sPath As String)
+    Public Shared Function CleanStackingMarkers(ByVal sPath As String) As String
 
         '//
         ' Removes the stacking indicators from the file name
@@ -302,24 +302,12 @@ quickExit:
                                       AndAlso Not f.Name.Contains("-trailer"))
 
 
-
-                lFi.Sort(AddressOf CompFilesByName)
-
                 alFileList.AddRange(lFi)
             End If
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
-    Private Shared Function CompFilesByName(ByVal X As FileInfo, ByVal Y As FileInfo) As Integer
-
-        '//
-        ' Sort function for sorting our List(Of T) for FileInfo
-        '\\
-
-        Return X.FullName.CompareTo(Y.FullName)
-    End Function
 
     Public Shared Sub GetAVImages(ByVal strAV As String, ByVal strPath As String)
 
@@ -686,26 +674,29 @@ quickExit:
         Dim hasTrailer As Boolean = False
         Dim aResults(3) As Boolean
         Dim tmpName As String = String.Empty
+        Dim currname As String = String.Empty
+        Dim parPath As String = String.Empty
         Try
 
 
             If isFile Then
-                tmpName = String.Format("{0}\{1}", Directory.GetParent(sPath).FullName.ToString, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))))
+                parPath = Directory.GetParent(sPath).ToString
+                tmpName = String.Format("{0}\{1}", parPath, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))))
                 'fanart
-                If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg")) Then
+                If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(parPath, "\fanart.jpg")) Then
                     hasFanart = True
                 End If
 
                 'poster
-                If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg")) OrElse _
-                    File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg")) OrElse _
-                    File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn")) OrElse _
-                    File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn")) Then
+                If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(parPath, "\movie.jpg")) OrElse _
+                    File.Exists(String.Concat(parPath, "\poster.jpg")) OrElse File.Exists(String.Concat(parPath, "\folder.jpg")) OrElse _
+                    File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(parPath, "\movie.tbn")) OrElse _
+                    File.Exists(String.Concat(parPath, "\poster.tbn")) Then
                     hasPoster = True
                 End If
 
                 'nfo
-                If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\movie.nfo")) Then
+                If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(parPath, "\movie.nfo")) Then
                     hasNfo = True
                 End If
 
@@ -724,22 +715,23 @@ quickExit:
                 lFi.AddRange(di.GetFiles())
 
                 For Each sfile As FileInfo In lFi
-                    tmpName = CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath)))
+                    tmpName = CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))).ToLower
+                    currname = sfile.Name.ToLower
                     Select Case sfile.Extension.ToLower
                         Case ".jpg"
-                            If sfile.Name.ToLower = String.Concat(tmpName, "-fanart.jpg") OrElse sfile.Name.ToLower = String.Concat(tmpName, ".fanart.jpg") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg") Then
+                            If currname = String.Concat(tmpName, "-fanart.jpg") OrElse currname = String.Concat(tmpName, ".fanart.jpg") OrElse currname = "fanart.jpg" Then
                                 hasFanart = True
-                            ElseIf sfile.Name.ToLower = String.Concat(tmpName, ".jpg") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg") OrElse _
-                            sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg") Then
+                            ElseIf currname = String.Concat(tmpName, ".jpg") OrElse currname = "movie.jpg" OrElse _
+                            currname = "poster.jpg" OrElse currname = "folder.jpg" Then
                                 hasPoster = True
                             End If
                         Case ".tbn"
-                            If sfile.Name.ToLower = String.Concat(tmpName, ".tbn") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn") OrElse _
-                                sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn") Then
+                            If currname = String.Concat(tmpName, ".tbn") OrElse currname = "movie.tbn" OrElse _
+                                currname = "poster.tbn" Then
                                 hasPoster = True
                             End If
                         Case ".nfo"
-                            If sfile.Name.ToLower = String.Concat(tmpName, ".nfo") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\movie.nfo") Then
+                            If currname = String.Concat(tmpName, ".nfo") OrElse currname = "movie.nfo" Then
                                 hasNfo = True
                             End If
                         Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar", ".m2ts", ".dvr-ms"
@@ -1045,7 +1037,6 @@ quickExit:
                               OrElse f.Extension.ToLower() = ".m2ts" _
                               OrElse f.Extension.ToLower() = ".dvr-ms") _
                               AndAlso f.Name.Contains("-trailer"))
-        lFi.Sort(AddressOf CompFilesByName)
 
         If lFi.Count > 0 Then
             Return lFi(0).FullName.ToString
@@ -1060,8 +1051,14 @@ quickExit:
         ' Get the proper path to movie
         '\\
 
-        Dim di As New DirectoryInfo(sPath)
-        Dim lFi As New List(Of FileInfo)()
+        Dim di As DirectoryInfo
+        Dim lFi As New List(Of FileInfo)
+
+        If Directory.Exists(String.Format("{0}\{1}", sPath, "VIDEO_TS")) Then
+            di = New DirectoryInfo(String.Format("{0}\{1}", sPath, "VIDEO_TS"))
+        Else
+            di = New DirectoryInfo(sPath)
+        End If
 
         lFi.AddRange(di.GetFiles())
 
@@ -1099,8 +1096,6 @@ quickExit:
                               OrElse f.Extension.ToLower() = ".m2ts" _
                               OrElse f.Extension.ToLower() = ".dvr-ms") _
                               AndAlso Not f.Name.Contains("-trailer"))
-
-        lFi.Sort(AddressOf CompFilesByName)
 
         If lFi.Count > 0 Then
             Return lFi(0).FullName.ToString
