@@ -2,7 +2,8 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Fix: Manual Editor not saving
+ * Change: Some tweaks to how the Manual Editor is handled
 
 *Changes in r59:*
  * Feature: First iteration of the extrathumbs manager
