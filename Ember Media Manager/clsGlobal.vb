@@ -345,6 +345,8 @@ quickExit:
                                       OrElse f.Extension.ToLower() = ".nut" _
                                       OrElse f.Extension.ToLower() = ".viv" _
                                       OrElse f.Extension.ToLower() = ".rar" _
+                                      OrElse f.Extension.ToLower() = ".m2ts" _
+                                      OrElse f.Extension.ToLower() = ".dvr-ms" _
                                       AndAlso Not f.Name.Contains("-trailer"))
 
 
@@ -824,7 +826,7 @@ quickExit:
                     hasNfo = True
                 End If
 
-                Dim sExt() As String = Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar")
+                Dim sExt() As String = Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms")
 
                 For Each t As String In sExt
                     If File.Exists(String.Concat(tmpName, "-trailer", t)) Then
@@ -842,22 +844,22 @@ quickExit:
                     tmpName = CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath)))
                     Select Case sfile.Extension.ToLower
                         Case ".jpg"
-                            If sfile.Name = String.Concat(tmpName, "-fanart.jpg") OrElse sfile.Name = String.Concat(tmpName, ".fanart.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg") Then
+                            If sfile.Name.ToLower = String.Concat(tmpName, "-fanart.jpg") OrElse sfile.Name.ToLower = String.Concat(tmpName, ".fanart.jpg") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg") Then
                                 hasFanart = True
-                            ElseIf sfile.Name = String.Concat(tmpName, ".jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg") OrElse _
-                            sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg") Then
+                            ElseIf sfile.Name.ToLower = String.Concat(tmpName, ".jpg") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg") OrElse _
+                            sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg") Then
                                 hasPoster = True
                             End If
                         Case ".tbn"
-                            If sfile.Name = String.Concat(tmpName, ".tbn") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn") OrElse _
-                                sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn") Then
+                            If sfile.Name.ToLower = String.Concat(tmpName, ".tbn") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn") OrElse _
+                                sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn") Then
                                 hasPoster = True
                             End If
                         Case ".nfo"
-                            If sfile.Name = String.Concat(tmpName, ".nfo") OrElse sfile.FullName = String.Concat(Directory.GetParent(sPath).ToString, "\movie.nfo") Then
+                            If sfile.Name.ToLower = String.Concat(tmpName, ".nfo") OrElse sfile.FullName.ToLower = String.Concat(Directory.GetParent(sPath).ToString, "\movie.nfo") Then
                                 hasNfo = True
                             End If
-                        Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar"
+                        Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar", ".m2ts", ".dvr-ms"
                             If sfile.Name.Contains("-trailer") Then
                                 hasTrailer = True
                             End If
@@ -1156,9 +1158,10 @@ quickExit:
                               OrElse f.Extension.ToLower() = ".swf" _
                               OrElse f.Extension.ToLower() = ".nut" _
                               OrElse f.Extension.ToLower() = ".viv" _
-                              OrElse f.Extension.ToLower() = ".rar") _
+                              OrElse f.Extension.ToLower() = ".rar" _
+                              OrElse f.Extension.ToLower() = ".m2ts" _
+                              OrElse f.Extension.ToLower() = ".dvr-ms") _
                               AndAlso f.Name.Contains("-trailer"))
-
         lFi.Sort(AddressOf CompFilesByName)
 
         If lFi.Count > 0 Then
@@ -1209,7 +1212,9 @@ quickExit:
                               OrElse f.Extension.ToLower() = ".swf" _
                               OrElse f.Extension.ToLower() = ".nut" _
                               OrElse f.Extension.ToLower() = ".viv" _
-                              OrElse f.Extension.ToLower() = ".rar") _
+                              OrElse f.Extension.ToLower() = ".rar" _
+                              OrElse f.Extension.ToLower() = ".m2ts" _
+                              OrElse f.Extension.ToLower() = ".dvr-ms") _
                               AndAlso Not f.Name.Contains("-trailer"))
 
         lFi.Sort(AddressOf CompFilesByName)
