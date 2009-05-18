@@ -110,6 +110,8 @@ Partial Class dlgEditMovie
         Me.pbFrame = New System.Windows.Forms.PictureBox
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
         Me.chkMark = New System.Windows.Forms.CheckBox
+        Me.txtStudioTag = New System.Windows.Forms.TextBox
+        Me.Label4 = New System.Windows.Forms.Label
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -212,6 +214,8 @@ Partial Class dlgEditMovie
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Label4)
+        Me.TabPage1.Controls.Add(Me.txtStudioTag)
         Me.TabPage1.Controls.Add(Me.lblStudio)
         Me.TabPage1.Controls.Add(Me.txtStudio)
         Me.TabPage1.Controls.Add(Me.lblTrailer)
@@ -269,16 +273,16 @@ Partial Class dlgEditMovie
         'lblStudio
         '
         Me.lblStudio.AutoSize = True
-        Me.lblStudio.Location = New System.Drawing.Point(635, 343)
+        Me.lblStudio.Location = New System.Drawing.Point(635, 339)
         Me.lblStudio.Name = "lblStudio"
-        Me.lblStudio.Size = New System.Drawing.Size(40, 13)
+        Me.lblStudio.Size = New System.Drawing.Size(65, 13)
         Me.lblStudio.TabIndex = 101
-        Me.lblStudio.Text = "Studio:"
+        Me.lblStudio.Text = "Real Studio:"
         '
         'txtStudio
         '
         Me.txtStudio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtStudio.Location = New System.Drawing.Point(635, 359)
+        Me.txtStudio.Location = New System.Drawing.Point(635, 355)
         Me.txtStudio.Name = "txtStudio"
         Me.txtStudio.Size = New System.Drawing.Size(193, 20)
         Me.txtStudio.TabIndex = 100
@@ -371,7 +375,7 @@ Partial Class dlgEditMovie
         'lblMPAADesc
         '
         Me.lblMPAADesc.AutoSize = True
-        Me.lblMPAADesc.Location = New System.Drawing.Point(632, 251)
+        Me.lblMPAADesc.Location = New System.Drawing.Point(632, 247)
         Me.lblMPAADesc.Name = "lblMPAADesc"
         Me.lblMPAADesc.Size = New System.Drawing.Size(130, 13)
         Me.lblMPAADesc.TabIndex = 89
@@ -380,7 +384,7 @@ Partial Class dlgEditMovie
         'txtMPAADesc
         '
         Me.txtMPAADesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtMPAADesc.Location = New System.Drawing.Point(635, 268)
+        Me.txtMPAADesc.Location = New System.Drawing.Point(635, 264)
         Me.txtMPAADesc.Multiline = True
         Me.txtMPAADesc.Name = "txtMPAADesc"
         Me.txtMPAADesc.Size = New System.Drawing.Size(193, 68)
@@ -991,6 +995,23 @@ Partial Class dlgEditMovie
         Me.chkMark.Text = "Mark Movie"
         Me.chkMark.UseVisualStyleBackColor = True
         '
+        'txtStudioTag
+        '
+        Me.txtStudioTag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtStudioTag.Location = New System.Drawing.Point(635, 397)
+        Me.txtStudioTag.Name = "txtStudioTag"
+        Me.txtStudioTag.Size = New System.Drawing.Size(193, 20)
+        Me.txtStudioTag.TabIndex = 102
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(635, 381)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(67, 13)
+        Me.Label4.TabIndex = 103
+        Me.Label4.Text = "Studio Tags:"
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1124,5 +1145,7 @@ Partial Class dlgEditMovie
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
     Friend WithEvents btnRemoveThumb As System.Windows.Forms.Button
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents txtStudioTag As System.Windows.Forms.TextBox
 
 End Class
