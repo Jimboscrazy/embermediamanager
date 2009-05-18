@@ -490,11 +490,43 @@ Public Class dlgSettings
         e.Handled = Master.NumericOnly(Asc(e.KeyChar))
     End Sub
 
+    Private Sub txtFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFanartHeight.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
     Private Sub txtFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFanartWidth.TextChanged
         Me.btnApply.Enabled = True
     End Sub
 
     Private Sub txtFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFanartHeight.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkResizePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkResizePoster.CheckedChanged
+        Me.btnApply.Enabled = True
+
+        txtPosterWidth.Enabled = chkResizePoster.Checked
+        txtPosterHeight.Enabled = chkResizePoster.Checked
+
+        If Not chkResizePoster.Checked Then
+            txtPosterWidth.Text = String.Empty
+            txtPosterHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPosterWidth.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
+    Private Sub txtPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPosterHeight.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
+    Private Sub txtPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPosterWidth.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPosterHeight.TextChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -640,6 +672,9 @@ Public Class dlgSettings
             Master.uSettings.ResizeFanart = Me.chkResizeFanart.Checked
             Master.uSettings.FanartHeight = Me.txtFanartHeight.Text
             Master.uSettings.FanartWidth = Me.txtFanartWidth.Text
+            Master.uSettings.ResizePoster = Me.chkResizePoster.Checked
+            Master.uSettings.PosterHeight = Me.txtPosterHeight.Text
+            Master.uSettings.PosterWidth = Me.txtPosterWidth.Text
 
             Master.uSettings.Save()
         Catch ex As Exception
@@ -734,6 +769,11 @@ Public Class dlgSettings
             If Master.uSettings.ResizeFanart Then
                 Me.txtFanartWidth.Text = Master.uSettings.FanartWidth
                 Me.txtFanartHeight.Text = Master.uSettings.FanartHeight
+            End If
+            Me.chkResizePoster.Checked = Master.uSettings.ResizePoster
+            If Master.uSettings.ResizePoster Then
+                Me.txtPosterWidth.Text = Master.uSettings.PosterWidth
+                Me.txtPosterHeight.Text = Master.uSettings.PosterHeight
             End If
 
             Me.lvMovies.Columns(0).Width = 388

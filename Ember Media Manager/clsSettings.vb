@@ -88,6 +88,9 @@ Public Class emmSettings
     Private _resizefanart As Boolean
     Private _fanartheight As Integer
     Private _fanartwidth As Integer
+    Private _resizeposter As Boolean
+    Private _posterheight As Integer
+    Private _posterwidth As Integer
     Private _movielist As New ArrayList
 
     Public Property FilterCustom() As ArrayList
@@ -657,6 +660,33 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property ResizePoster() As Boolean
+        Get
+            Return Me._resizeposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeposter = value
+        End Set
+    End Property
+
+    Public Property PosterWidth() As Long
+        Get
+            Return Me._posterwidth
+        End Get
+        Set(ByVal value As Long)
+            Me._posterwidth = value
+        End Set
+    End Property
+
+    Public Property PosterHeight() As Long
+        Get
+            Return Me._posterheight
+        End Get
+        Set(ByVal value As Long)
+            Me._posterheight = value
+        End Set
+    End Property
+
     Public Property MovieList() As ArrayList
         Get
             Return Me._movielist
@@ -732,8 +762,11 @@ Public Class emmSettings
         Me._xbmcport = String.Empty
         Me._marknew = False
         Me._resizefanart = False
-        Me._fanartheight = 720
-        Me._fanartwidth = 1280
+        Me._fanartheight = 0
+        Me._fanartwidth = 0
+        Me._resizeposter = False
+        Me._posterheight = 0
+        Me._posterwidth = 0
         Me._movielist.Clear()
     End Sub
 

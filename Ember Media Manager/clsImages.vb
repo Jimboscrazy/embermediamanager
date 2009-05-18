@@ -124,6 +124,10 @@ Public Class Images
             Dim pPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
             Dim tPath = String.Empty
 
+            If Master.uSettings.ResizePoster AndAlso (_image.Width > Master.uSettings.PosterWidth OrElse _image.Height > Master.uSettings.PosterHeight) Then
+                _image = ResizeImage(_image, Master.ImageType.Posters)
+            End If
+
             If Master.uSettings.MovieTBN AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(pPath).ToString, "\movie.tbn")
                 If Not File.Exists(tPath) OrElse Master.uSettings.OverwritePoster Then
@@ -186,6 +190,7 @@ Public Class Images
             If Master.uSettings.ResizeFanart AndAlso (_image.Width > Master.uSettings.FanartWidth OrElse _image.Height > Master.uSettings.FanartHeight) Then
                 _image = ResizeImage(_image, Master.ImageType.Fanart)
             End If
+
             If Master.uSettings.FanartJPG AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")
                 If Not File.Exists(tPath) OrElse Master.uSettings.OverwriteFanart Then
@@ -670,10 +675,8 @@ foundIT:
     Private Function ResizeImage(ByVal theImage As Image, ByVal imgType As Master.ImageType) As Image
 
         Dim imgOut As Image = Nothing
-        Dim maxHeight = Master.uSettings.FanartHeight
-        Dim maxWidth = Master.uSettings.FanartWidth
-        'for later
-        'Dim maxheight = If(imgType = Master.ImageType.Fanart, Master.uSettings.FanartHeight, Master.uSettings.Posterheight)
+        Dim maxHeight = If(imgType = Master.ImageType.Fanart, Master.uSettings.FanartHeight, Master.uSettings.PosterHeight)
+        Dim maxWidth = If(imgType = Master.ImageType.Fanart, Master.uSettings.FanartWidth, Master.uSettings.PosterHeight)
         Try
             If Not IsNothing(theImage) Then
                 Dim sPropPerc As Single = 1.0 'no default scaling
