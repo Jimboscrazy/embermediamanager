@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -117,12 +117,12 @@ Partial Class frmMain
         Me.MediaTagsOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripButton
         Me.tsbEdit = New System.Windows.Forms.ToolStripButton
         Me.tsbRescrape = New System.Windows.Forms.ToolStripDropDownButton
         Me.mnuRescrapeAuto = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuRescrapeSearch = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripButton
         Me.pbFanartCache = New System.Windows.Forms.PictureBox
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
@@ -249,8 +249,8 @@ Partial Class frmMain
         '
         'StatusStrip
         '
-        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tslLoading, Me.tspbLoading})
         Me.StatusStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tslLoading, Me.tspbLoading})
         Me.StatusStrip.Location = New System.Drawing.Point(0, 710)
         Me.StatusStrip.Name = "StatusStrip"
         Me.StatusStrip.Size = New System.Drawing.Size(1008, 22)
@@ -366,8 +366,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -1097,10 +1097,10 @@ Partial Class frmMain
         '
         'tsMain
         '
-        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.ToolStripSeparator1, Me.tsbUpdateXBMC, Me.tsbEdit, Me.tsbRescrape})
         Me.tsMain.CanOverflow = False
         Me.tsMain.GripMargin = New System.Windows.Forms.Padding(0)
         Me.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.ToolStripSeparator1, Me.tsbUpdateXBMC, Me.tsbEdit, Me.tsbRescrape})
         Me.tsMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
@@ -1176,6 +1176,20 @@ Partial Class frmMain
         Me.tsbRefreshMedia.Size = New System.Drawing.Size(100, 22)
         Me.tsbRefreshMedia.Text = "Rescan Media"
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+        '
+        'tsbUpdateXBMC
+        '
+        Me.tsbUpdateXBMC.Enabled = False
+        Me.tsbUpdateXBMC.Image = CType(resources.GetObject("tsbUpdateXBMC.Image"), System.Drawing.Image)
+        Me.tsbUpdateXBMC.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbUpdateXBMC.Name = "tsbUpdateXBMC"
+        Me.tsbUpdateXBMC.Size = New System.Drawing.Size(134, 22)
+        Me.tsbUpdateXBMC.Text = "Begin XBMC Update"
+        '
         'tsbEdit
         '
         Me.tsbEdit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -1209,20 +1223,6 @@ Partial Class frmMain
         Me.mnuRescrapeSearch.Name = "mnuRescrapeSearch"
         Me.mnuRescrapeSearch.Size = New System.Drawing.Size(136, 22)
         Me.mnuRescrapeSearch.Text = "Search New"
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
-        '
-        'tsbUpdateXBMC
-        '
-        Me.tsbUpdateXBMC.Enabled = False
-        Me.tsbUpdateXBMC.Image = CType(resources.GetObject("tsbUpdateXBMC.Image"), System.Drawing.Image)
-        Me.tsbUpdateXBMC.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbUpdateXBMC.Name = "tsbUpdateXBMC"
-        Me.tsbUpdateXBMC.Size = New System.Drawing.Size(134, 22)
-        Me.tsbUpdateXBMC.Text = "Begin XBMC Update"
         '
         'pbFanartCache
         '
