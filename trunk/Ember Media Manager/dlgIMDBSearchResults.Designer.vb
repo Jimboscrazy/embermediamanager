@@ -103,7 +103,7 @@ Partial Class dlgIMDBSearchResults
         Me.pbPoster.Location = New System.Drawing.Point(294, 130)
         Me.pbPoster.Name = "pbPoster"
         Me.pbPoster.Size = New System.Drawing.Size(110, 130)
-        Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbPoster.TabIndex = 2
         Me.pbPoster.TabStop = False
         Me.pbPoster.Visible = False

@@ -238,47 +238,52 @@ Public Class dlgIMDBSearchResults
 
         Try
             Me.tvResults.Nodes.Clear()
+            Me.ClearInfo()
             If Not IsNothing(M) Then
-                Dim TnP As New TreeNode(String.Format("Partial Matches ({0})", M.PartialMatches.Count))
-                Dim selNode As New TreeNode
+                If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 OrElse M.ExactMatches.Count > 0 Then
+                    Dim TnP As New TreeNode(String.Format("Partial Matches ({0})", M.PartialMatches.Count))
+                    Dim selNode As New TreeNode
 
-                If M.PartialMatches.Count > 0 Then
-                    For Each Movie As Media.Movie In M.PartialMatches
-                        TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
-                    Next
-                    TnP.Expand()
-                    Me.tvResults.Nodes.Add(TnP)
-                    selNode = TnP.FirstNode
-                End If
-
-                If M.PopularTitles.Count > 0 Then
                     If M.PartialMatches.Count > 0 Then
-                        Me.tvResults.Nodes(TnP.Index).Collapse()
+                        For Each Movie As Media.Movie In M.PartialMatches
+                            TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
+                        Next
+                        TnP.Expand()
+                        Me.tvResults.Nodes.Add(TnP)
+                        selNode = TnP.FirstNode
                     End If
-                    TnP = New TreeNode(String.Format("Popular Titles ({0})", M.PopularTitles.Count))
-                    For Each Movie As Media.Movie In M.PopularTitles
-                        TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
-                    Next
-                    TnP.Expand()
-                    Me.tvResults.Nodes.Add(TnP)
-                    selNode = TnP.FirstNode
-                End If
 
-                If M.ExactMatches.Count > 0 Then
-                    If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 Then
-                        Me.tvResults.Nodes(TnP.Index).Collapse()
+                    If M.PopularTitles.Count > 0 Then
+                        If M.PartialMatches.Count > 0 Then
+                            Me.tvResults.Nodes(TnP.Index).Collapse()
+                        End If
+                        TnP = New TreeNode(String.Format("Popular Titles ({0})", M.PopularTitles.Count))
+                        For Each Movie As Media.Movie In M.PopularTitles
+                            TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
+                        Next
+                        TnP.Expand()
+                        Me.tvResults.Nodes.Add(TnP)
+                        selNode = TnP.FirstNode
                     End If
-                    TnP = New TreeNode("Exact Matches")
-                    For Each Movie As Media.Movie In M.ExactMatches
-                        TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
-                    Next
-                    TnP.Expand()
-                    Me.tvResults.Nodes.Add(TnP)
-                    selNode = TnP.FirstNode
-                End If
 
-                Me.tvResults.SelectedNode = selNode
-                Me.tvResults.Focus()
+                    If M.ExactMatches.Count > 0 Then
+                        If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 Then
+                            Me.tvResults.Nodes(TnP.Index).Collapse()
+                        End If
+                        TnP = New TreeNode("Exact Matches")
+                        For Each Movie As Media.Movie In M.ExactMatches
+                            TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
+                        Next
+                        TnP.Expand()
+                        Me.tvResults.Nodes.Add(TnP)
+                        selNode = TnP.FirstNode
+                    End If
+
+                    Me.tvResults.SelectedNode = selNode
+                    Me.tvResults.Focus()
+                Else
+                    Me.tvResults.Nodes.Add(New TreeNode With {.Text = "No Matches Found"})
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
