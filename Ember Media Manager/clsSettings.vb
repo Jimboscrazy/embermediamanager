@@ -84,6 +84,7 @@ Public Class emmSettings
     Private _singlescrapeimages As Boolean
     Private _xbmcport As String
     Private _xbmcip As String
+    Private _marknew As Boolean
     Private _movielist As New ArrayList
 
     Public Property FilterCustom() As ArrayList
@@ -608,6 +609,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property MarkNew() As Boolean
+        Get
+            Return Me._marknew
+        End Get
+        Set(ByVal value As Boolean)
+            Me._marknew = value
+        End Set
+    End Property
+
     Public Property XBMCPort() As String
         Get
             Return Me._xbmcport
@@ -690,6 +700,7 @@ Public Class emmSettings
         Me._singlescrapeimages = False
         Me._xbmcip = String.Empty
         Me._xbmcport = String.Empty
+        Me._marknew = False
         Me._movielist.Clear()
     End Sub
 

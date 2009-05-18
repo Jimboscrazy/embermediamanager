@@ -705,11 +705,8 @@ Public Class frmMain
         Me.tmrWait.Enabled = False
         Try
             If Me.dgvMediaList.SelectedRows.Count > 0 Then
-                If Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson Then
-                    Master.currMark = True
-                Else
-                    Master.currMark = False
-                End If
+                Master.currMark = If(Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson, True, False)
+
                 'set tmpTitle to title in list - used for searching IMDB
                 Me.tmpTitle = Me.dgvMediaList.Item(1, currRow).Value.ToString
                 'try to load the info from the NFO
@@ -1052,7 +1049,11 @@ Public Class frmMain
                             drvRow.Cells(1).Style.ForeColor = Color.Crimson
                             drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
                         ElseIf Not Master.uSettings.MovieList.Contains(drvRow.Cells(1).Value.ToString) Then
-                            drvRow.Cells(1).Style.ForeColor = Color.Green
+                            If Master.uSettings.MarkNew Then
+                                drvRow.Cells(1).Style.ForeColor = Color.Crimson
+                            Else
+                                drvRow.Cells(1).Style.ForeColor = Color.Green
+                            End If
                             drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
                         End If
                     Next

@@ -461,6 +461,10 @@ Public Class dlgSettings
     Private Sub chkOverwriteNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteNfo.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkMarkNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMarkNew.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -606,6 +610,7 @@ Public Class dlgSettings
             Master.uSettings.LockOutline = Me.chkLockOutline.Checked
             Master.uSettings.LockTitle = Me.chkLockTitle.Checked
             Master.uSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
+            Master.uSettings.MarkNew = Me.chkMarkNew.Checked
 
             Master.uSettings.Save()
         Catch ex As Exception
@@ -695,6 +700,7 @@ Public Class dlgSettings
             Me.chkLockOutline.Checked = Master.uSettings.LockOutline
             Me.chkLockTitle.Checked = Master.uSettings.LockTitle
             Me.chkSingleScrapeImages.Checked = Master.uSettings.SingleScrapeImages
+            Me.chkMarkNew.Checked = Master.uSettings.MarkNew
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
@@ -704,5 +710,6 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
+
 
 End Class
