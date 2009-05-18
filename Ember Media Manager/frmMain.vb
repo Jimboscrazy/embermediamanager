@@ -753,7 +753,7 @@ Public Class frmMain
     Private Sub tsbUpdateXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbUpdateXBMC.Click
         Try
             If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
-                Dim Wr As WebRequest = WebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", Master.uSettings.XBMCIP, Master.uSettings.XBMCPort))
+                Dim Wr As HttpWebRequest = HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", Master.uSettings.XBMCIP, Master.uSettings.XBMCPort))
                 Wr = Nothing
             End If
         Catch
@@ -2142,22 +2142,26 @@ Public Class frmMain
             Me.lblTagline.Text = Master.currMovie.Tagline
 
             Me.alActors = New ArrayList
-            For Each imdbAct As Media.Person In Master.currMovie.Actors
-                If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
 
-                    'Was it XBMC or MIP that set some of the actor thumbs to
-                    'the default "Add Pic" image??
-                    If Not Strings.InStr(imdbAct.Thumb.ToString.ToLower, "addtiny.gif") > 0 Then
-                        Me.alActors.Add(imdbAct.Thumb.ToString)
+            If Master.currMovie.Actors.Count > 0 Then
+                Me.pbActors.Image = My.Resources.actor_silhouette
+                For Each imdbAct As Media.Person In Master.currMovie.Actors
+                    If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
+
+                        'Was it XBMC or MIP that set some of the actor thumbs to
+                        'the default "Add Pic" image??
+                        If Not Strings.InStr(imdbAct.Thumb.ToString.ToLower, "addtiny.gif") > 0 Then
+                            Me.alActors.Add(imdbAct.Thumb.ToString)
+                        Else
+                            Me.alActors.Add("none")
+                        End If
                     Else
                         Me.alActors.Add("none")
                     End If
-                Else
-                    Me.alActors.Add("none")
-                End If
 
-                Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.ToString, imdbAct.Role.ToString))
-            Next
+                    Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.ToString, imdbAct.Role.ToString))
+                Next
+            End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.MPAA) Then
                 Me.createMPAABox(Master.currMovie.MPAA)

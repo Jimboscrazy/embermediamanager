@@ -76,6 +76,8 @@ Public Class dlgEditMovie
             Me.pnlTop.BackgroundImage = iBackground
             g.Dispose()
 
+            Me.LoadGenres()
+
             Me.FillInfo()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1030,4 +1032,35 @@ Public Class dlgEditMovie
             _index = Nothing
         End Sub
     End Class
+
+    Private Sub LoadGenres()
+
+        '//
+        ' Read all the genres from the xml and load into the list
+        '\\
+
+        Me.lbGenre.Items.Add("[none]")
+
+        Dim mePath As String = Application.StartupPath & "\Images\Genres\"
+
+        If File.Exists(mePath & "Genres.xml") Then
+            Try
+                Dim xmlGenre As XDocument = XDocument.Load(mePath & "Genres.xml")
+
+                Dim xGenre = From xGen In xmlGenre...<name> Select xGen.@searchstring
+                If xGenre.Count > 0 Then
+                    For Each strGenre As String In xGenre
+                        Me.lbGenre.Items.Add(strGenre)
+                    Next
+                End If
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        Else
+            MsgBox("Cannot find Studios.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Studios.xml", MsgBoxStyle.Critical, "File Not Found")
+        End If
+
+    End Sub
+
 End Class

@@ -60,27 +60,6 @@ Namespace My.Resources
             End Set
         End Property
         
-        Friend ReadOnly Property _default() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("_default", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property _short() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("_short", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property action() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("action", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property actor_silhouette() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("actor_silhouette", resourceCulture)
@@ -88,191 +67,9 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property adult() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("adult", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property adventure() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("adventure", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property animation() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("animation", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property anime() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("anime", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property biography() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("biography", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property bollywood() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("bollywood", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property children() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("children", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property christmas() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("christmas", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property comedy() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("comedy", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property concert() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("concert", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property crime() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("crime", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property disaster() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("disaster", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property documentary() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("documentary", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property drama() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("drama", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property family() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("family", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property fantasy() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("fantasy", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property film_noir() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("film_noir", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property halloween() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("halloween", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property hentai() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("hentai", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property history() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("history", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property horror() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("horror", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property independent() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("independent", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property interview() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("interview", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Logo() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Logo", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property martial_arts() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("martial_arts", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property mini_tv_series() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("mini_tv_series", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property monster() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("monster", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -312,34 +109,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property music() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("music", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property musical() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("musical", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property mystery() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("mystery", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property nature() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("nature", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property overlay() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("overlay", resourceCulture)
@@ -361,58 +130,9 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property post_apocalypse() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("post_apocalypse", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property religion() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("religion", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property romance() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("romance", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property sci_fi() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("sci_fi", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property Splash() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Splash", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property sport() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("sport", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property stageplay() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("stageplay", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property stand_up() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("stand_up", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -431,52 +151,10 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property superhero() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("superhero", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property supernatural() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("supernatural", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property television() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("television", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property thriller() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("thriller", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property war() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("war", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property western() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("western", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property wrestling() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("wrestling", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
     End Module
