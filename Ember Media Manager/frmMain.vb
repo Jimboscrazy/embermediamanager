@@ -98,15 +98,15 @@ Public Class frmMain
         'save the list of movies to settings so we know which ones are new
 
         If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy Then
-            Master.uSettings.MovieList.Clear()
+            Master.eSettings.MovieList.Clear()
             For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
                 If drvRow.Cells(1).Style.ForeColor = Color.Crimson Then
-                    Master.uSettings.MovieList.Add(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark"))
+                    Master.eSettings.MovieList.Add(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark"))
                 Else
-                    Master.uSettings.MovieList.Add(drvRow.Cells(1).Value.ToString)
+                    Master.eSettings.MovieList.Add(drvRow.Cells(1).Value.ToString)
                 End If
             Next
-            Master.uSettings.Save()
+            Master.eSettings.Save()
         End If
 
         If Me.bwFolderData.IsBusy Then Me.bwFolderData.CancelAsync()
@@ -155,10 +155,10 @@ Public Class frmMain
                 Me.SetColors()
 
                 If Me.dgvMediaList.RowCount > 0 Then
-                    Me.dgvMediaList.Columns(2).Visible = Not Master.uSettings.MoviePosterCol
-                    Me.dgvMediaList.Columns(3).Visible = Not Master.uSettings.MovieFanartCol
-                    Me.dgvMediaList.Columns(4).Visible = Not Master.uSettings.MovieInfoCol
-                    Me.dgvMediaList.Columns(5).Visible = Not Master.uSettings.MovieTrailerCol
+                    Me.dgvMediaList.Columns(2).Visible = Not Master.eSettings.MoviePosterCol
+                    Me.dgvMediaList.Columns(3).Visible = Not Master.eSettings.MovieFanartCol
+                    Me.dgvMediaList.Columns(4).Visible = Not Master.eSettings.MovieInfoCol
+                    Me.dgvMediaList.Columns(5).Visible = Not Master.eSettings.MovieTrailerCol
 
                     'Trick to autosize the first column, but still allow resizing by user
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -166,7 +166,7 @@ Public Class frmMain
                 End If
             End If
 
-            If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
+            If Not String.IsNullOrEmpty(Master.eSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPort) Then
                 Me.tsbUpdateXBMC.Enabled = True
             End If
         Catch ex As Exception
@@ -200,9 +200,9 @@ Public Class frmMain
                 File.Delete(sPath)
             End If
 
-            Master.uSettings.Load()
+            Master.eSettings.Load()
 
-            If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
+            If Not String.IsNullOrEmpty(Master.eSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPort) Then
                 Me.tsbUpdateXBMC.Enabled = True
             Else
                 Me.tsbUpdateXBMC.Enabled = False
@@ -752,8 +752,8 @@ Public Class frmMain
 
     Private Sub tsbUpdateXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbUpdateXBMC.Click
         Try
-            If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
-                Dim Wr As HttpWebRequest = HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", Master.uSettings.XBMCIP, Master.uSettings.XBMCPort))
+            If Not String.IsNullOrEmpty(Master.eSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPort) Then
+                Dim Wr As HttpWebRequest = HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", Master.eSettings.XBMCIP, Master.eSettings.XBMCPort))
                 Wr = Nothing
             End If
         Catch
@@ -783,7 +783,7 @@ Public Class frmMain
             Case 3 'music
             Case Else 'default to movies
                 'load all the movie folders from settings
-                alMedia = Master.uSettings.MovieFolders
+                alMedia = Master.eSettings.MovieFolders
         End Select
 
         Try
@@ -877,19 +877,19 @@ Public Class frmMain
                 mPath = Master.GetMoviePath(sName)
 
                 If Not String.IsNullOrEmpty(mPath) Then
-                    If Master.uSettings.UseNameFromNfo Then
+                    If Master.eSettings.UseNameFromNfo Then
                         tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(mPath, False))
                         mName = tmpMovie.Title
                         tmpMovie = Nothing
                         If String.IsNullOrEmpty(mName) Then
-                            If Master.uSettings.UseFolderName Then
+                            If Master.eSettings.UseFolderName Then
                                 mName = Master.GetNameFromPath(sName)
                             Else
                                 mName = Master.RemoveExtFromFile(mPath)
                             End If
                         End If
                     Else
-                        If Master.uSettings.UseFolderName Then
+                        If Master.eSettings.UseFolderName Then
                             mName = Master.GetNameFromPath(sName)
                         Else
                             mName = Master.RemoveExtFromFile(mPath)
@@ -933,7 +933,7 @@ Public Class frmMain
                     tmpAL.Add(Master.CleanStackingMarkers(sFile.FullName))
 
                     'parse just the movie name
-                    If Master.uSettings.UseNameFromNfo Then
+                    If Master.eSettings.UseNameFromNfo Then
                         tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.FullName.ToString, True))
                         mName = tmpMovie.Title
                         tmpMovie = Nothing
@@ -1018,22 +1018,22 @@ Public Class frmMain
                     .dgvMediaList.Columns(2).Resizable = True
                     .dgvMediaList.Columns(2).ReadOnly = True
                     .dgvMediaList.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvMediaList.Columns(2).Visible = Not Master.uSettings.MoviePosterCol
+                    .dgvMediaList.Columns(2).Visible = Not Master.eSettings.MoviePosterCol
                     .dgvMediaList.Columns(3).Width = 20
                     .dgvMediaList.Columns(3).Resizable = True
                     .dgvMediaList.Columns(3).ReadOnly = True
                     .dgvMediaList.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvMediaList.Columns(3).Visible = Not Master.uSettings.MovieFanartCol
+                    .dgvMediaList.Columns(3).Visible = Not Master.eSettings.MovieFanartCol
                     .dgvMediaList.Columns(4).Width = 20
                     .dgvMediaList.Columns(4).Resizable = True
                     .dgvMediaList.Columns(4).ReadOnly = True
                     .dgvMediaList.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvMediaList.Columns(4).Visible = Not Master.uSettings.MovieInfoCol
+                    .dgvMediaList.Columns(4).Visible = Not Master.eSettings.MovieInfoCol
                     .dgvMediaList.Columns(5).Width = 20
                     .dgvMediaList.Columns(5).Resizable = True
                     .dgvMediaList.Columns(5).ReadOnly = True
                     .dgvMediaList.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvMediaList.Columns(5).Visible = Not Master.uSettings.MovieTrailerCol
+                    .dgvMediaList.Columns(5).Visible = Not Master.eSettings.MovieTrailerCol
                     .dgvMediaList.Columns(6).Visible = False
 
                     'Trick to autosize the first column, but still allow resizing by user
@@ -1045,11 +1045,11 @@ Public Class frmMain
                     .dgvMediaList.Sort(.dgvMediaList.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
                     For Each drvRow As DataGridViewRow In .dgvMediaList.Rows
-                        If Master.uSettings.MovieList.Contains(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark")) Then
+                        If Master.eSettings.MovieList.Contains(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark")) Then
                             drvRow.Cells(1).Style.ForeColor = Color.Crimson
                             drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                        ElseIf Not Master.uSettings.MovieList.Contains(drvRow.Cells(1).Value.ToString) Then
-                            If Master.uSettings.MarkNew Then
+                        ElseIf Not Master.eSettings.MovieList.Contains(drvRow.Cells(1).Value.ToString) Then
+                            If Master.eSettings.MarkNew Then
                                 drvRow.Cells(1).Style.ForeColor = Color.Crimson
                             Else
                                 drvRow.Cells(1).Style.ForeColor = Color.Green
@@ -1098,7 +1098,7 @@ Public Class frmMain
         Try
             Dim Args As Arguments = e.Argument
             If Me.UpdateMediaInfo() Then
-                If Master.uSettings.UseStudioTags = True Then
+                If Master.eSettings.UseStudioTags = True Then
                     Master.currMovie.Studio = Master.currMovie.StudioReal & Master.FITagData(Master.currMovie.FileInfo)
                 End If
                 Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.isFile)
@@ -1124,7 +1124,7 @@ Public Class frmMain
                 Me.pbMILoading.Visible = False
                 Me.txtMediaInfo.SelectionLength = 0
                 Me.txtMediaInfo.Text = Res.fileInfo
-                If Master.uSettings.UseStudioTags = True Then
+                If Master.eSettings.UseStudioTags = True Then
                     If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
                         Master.GetAVImages(Master.currMovie.Studio, Master.currPath)
                         Me.pnlInfoIcons.Width = 346
@@ -1320,14 +1320,14 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseStudioTags Then
+                                If Master.eSettings.UseStudioTags Then
                                     If UpdateMediaInfo() Then
                                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                     End If
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB OrElse Master.uSettings.UseMPDB Then
+                                If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                     If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
                                         Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, True)
@@ -1344,7 +1344,7 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseTMDB Then
+                                If Master.eSettings.UseTMDB Then
 
                                     If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
                                         Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, True)
@@ -1388,14 +1388,14 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseStudioTags Then
+                                If Master.eSettings.UseStudioTags Then
                                     If UpdateMediaInfo() Then
                                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                     End If
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB OrElse Master.uSettings.UseMPDB Then
+                                If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                     If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
                                         Poster.GetPreferredImage(Master.ImageType.Posters, Nothing)
@@ -1407,7 +1407,7 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseTMDB Then
+                                If Master.eSettings.UseTMDB Then
                                     If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
                                         Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt)
                                         If Not IsNothing(Fanart.Image) Then
@@ -1460,56 +1460,56 @@ Public Class frmMain
                             sPathShort = Directory.GetParent(sPath).FullName.ToString
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanFolderJPG Then
+                            If Master.eSettings.CleanFolderJPG Then
                                 If File.Exists(sPathShort & "\folder.jpg") Then
                                     File.Delete(sPathShort & "\folder.jpg")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanFanartJPG Then
+                            If Master.eSettings.CleanFanartJPG Then
                                 If File.Exists(sPathShort & "\fanart.jpg") Then
                                     File.Delete(sPathShort & "\fanart.jpg")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanMovieTBN Then
+                            If Master.eSettings.CleanMovieTBN Then
                                 If File.Exists(sPathShort & "\movie.tbn") Then
                                     File.Delete(sPathShort & "\movie.tbn")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanMovieNFO Then
+                            If Master.eSettings.CleanMovieNFO Then
                                 If File.Exists(sPathShort & "\movie.nfo") Then
                                     File.Delete(sPathShort & "\movie.nfo")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanPosterTBN Then
+                            If Master.eSettings.CleanPosterTBN Then
                                 If File.Exists(sPathShort & "\poster.tbn") Then
                                     File.Delete(sPathShort & "\poster.tbn")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanPosterJPG Then
+                            If Master.eSettings.CleanPosterJPG Then
                                 If File.Exists(sPathShort & "\poster.jpg") Then
                                     File.Delete(sPathShort & "\poster.jpg")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanMovieJPG Then
+                            If Master.eSettings.CleanMovieJPG Then
                                 If File.Exists(sPathShort & "\movie.jpg") Then
                                     File.Delete(sPathShort & "\movie.jpg")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanMovieTBNB Then
+                            If Master.eSettings.CleanMovieTBNB Then
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".tbn") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".tbn")
                                 End If
@@ -1528,7 +1528,7 @@ Public Class frmMain
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanMovieFanartJPG Then
+                            If Master.eSettings.CleanMovieFanartJPG Then
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & "-fanart.jpg") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & "-fanart.jpg")
                                 End If
@@ -1547,7 +1547,7 @@ Public Class frmMain
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanMovieNFOB Then
+                            If Master.eSettings.CleanMovieNFOB Then
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".nfo") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".nfo")
                                 End If
@@ -1566,7 +1566,7 @@ Public Class frmMain
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanDotFanartJPG Then
+                            If Master.eSettings.CleanDotFanartJPG Then
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".fanart.jpg") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".fanart.jpg")
                                 End If
@@ -1585,7 +1585,7 @@ Public Class frmMain
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.uSettings.CleanMovieNameJPG Then
+                            If Master.eSettings.CleanMovieNameJPG Then
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".jpg") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".jpg")
                                 End If
@@ -1619,7 +1619,7 @@ Public Class frmMain
                                 If Not drvRow.Item(4) Then
                                     Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
 
-                                    If Master.uSettings.UseStudioTags Then
+                                    If Master.eSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
                                             Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                         End If
@@ -1631,7 +1631,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(2) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
-                                    If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB OrElse Master.uSettings.UseMPDB Then
+                                    If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                         If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
                                             Poster.GetPreferredImage(Master.ImageType.Posters, Nothing)
@@ -1646,7 +1646,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
-                                    If Master.uSettings.UseTMDB Then
+                                    If Master.eSettings.UseTMDB Then
                                         If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
                                             Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt)
 
@@ -1684,7 +1684,7 @@ Public Class frmMain
 
                                     Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
 
-                                    If Master.uSettings.UseStudioTags Then
+                                    If Master.eSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
                                             Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                         End If
@@ -1696,7 +1696,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(2) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
-                                    If Master.uSettings.UseIMPA OrElse Master.uSettings.UseTMDB OrElse Master.uSettings.UseMPDB Then
+                                    If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                         If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
                                             Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, True)
@@ -1716,7 +1716,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
-                                    If Master.uSettings.UseTMDB Then
+                                    If Master.eSettings.UseTMDB Then
 
                                         If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
                                             Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, True)
@@ -1825,73 +1825,73 @@ Public Class frmMain
         Try
             With Me
                 'top panel
-                .pnlTop.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pnlInfoIcons.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pnlRating.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbVideo.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbResolution.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbAudio.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbChannels.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbStudio.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbStar1.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbStar2.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbStar3.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbStar4.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .pbStar5.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-                .lblTitle.ForeColor = Color.FromArgb(Master.uSettings.TopPanelTextColor)
-                .lblVotes.ForeColor = Color.FromArgb(Master.uSettings.TopPanelTextColor)
-                .lblRuntime.ForeColor = Color.FromArgb(Master.uSettings.TopPanelTextColor)
-                .lblTagline.ForeColor = Color.FromArgb(Master.uSettings.TopPanelTextColor)
+                .pnlTop.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pnlInfoIcons.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pnlRating.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbVideo.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbResolution.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbAudio.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbChannels.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbStudio.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbStar1.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbStar2.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbStar3.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbStar4.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .pbStar5.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+                .lblTitle.ForeColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
+                .lblVotes.ForeColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
+                .lblRuntime.ForeColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
+                .lblTagline.ForeColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
 
                 'background
-                .scMain.Panel2.BackColor = Color.FromArgb(Master.uSettings.BackgroundColor)
-                .pbFanart.BackColor = Color.FromArgb(Master.uSettings.BackgroundColor)
+                .scMain.Panel2.BackColor = Color.FromArgb(Master.eSettings.BackgroundColor)
+                .pbFanart.BackColor = Color.FromArgb(Master.eSettings.BackgroundColor)
 
                 'info panel
-                .pnlInfoPanel.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .txtMediaInfo.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .txtMediaInfo.ForeColor = Color.FromArgb(Master.uSettings.PanelTextColor)
-                .txtPlot.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .txtPlot.ForeColor = Color.FromArgb(Master.uSettings.PanelTextColor)
-                .txtOutline.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .txtOutline.ForeColor = Color.FromArgb(Master.uSettings.PanelTextColor)
-                .pnlActors.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .lstActors.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .lstActors.ForeColor = Color.FromArgb(Master.uSettings.PanelTextColor)
-                .lblDirector.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .lblDirector.ForeColor = Color.FromArgb(Master.uSettings.PanelTextColor)
-                .lblReleaseDate.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .lblReleaseDate.ForeColor = Color.FromArgb(Master.uSettings.PanelTextColor)
-                .pnlTop250.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .lblTop250.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .lblTop250.ForeColor = Color.FromArgb(Master.uSettings.PanelTextColor)
+                .pnlInfoPanel.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .txtMediaInfo.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .txtMediaInfo.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
+                .txtPlot.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .txtPlot.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
+                .txtOutline.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .txtOutline.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
+                .pnlActors.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .lstActors.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .lstActors.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
+                .lblDirector.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .lblDirector.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
+                .lblReleaseDate.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .lblReleaseDate.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
+                .pnlTop250.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .lblTop250.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .lblTop250.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
 
-                .lblMIHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblMIHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-                .lblPlotHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblPlotHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-                .lblOutlineHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblOutlineHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-                .lblActorsHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblActorsHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-                .lblFilePathHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblFilePathHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-                .lblIMDBHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblIMDBHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-                .lblDirectorHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblDirectorHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-                .lblReleaseDateHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblReleaseDateHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-                .lblCertsHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblCertsHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-                .lblInfoPanelHeader.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-                .lblInfoPanelHeader.ForeColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
+                .lblMIHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblMIHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+                .lblPlotHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblPlotHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+                .lblOutlineHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblOutlineHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+                .lblActorsHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblActorsHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+                .lblFilePathHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblFilePathHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+                .lblIMDBHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblIMDBHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+                .lblDirectorHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblDirectorHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+                .lblReleaseDateHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblReleaseDateHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+                .lblCertsHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblCertsHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+                .lblInfoPanelHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblInfoPanelHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
 
                 'left panel
-                .lblMediaCount.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .lblMediaCount.ForeColor = Color.FromArgb(Master.uSettings.PanelTextColor)
-                .scMain.Panel1.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-                .pnlSearch.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
+                .lblMediaCount.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .lblMediaCount.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
+                .scMain.Panel1.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .pnlSearch.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2188,7 +2188,7 @@ Public Class frmMain
                 Me.pbStudio.Image = Master.GetStudioImage("####")
             End If
 
-            If Master.uSettings.UseStudioTags = True Then
+            If Master.eSettings.UseStudioTags = True Then
                 If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
                     Master.GetAVImages(Master.currMovie.Studio, Master.currPath)
                     Me.pnlInfoIcons.Width = 346
@@ -2486,7 +2486,7 @@ Public Class frmMain
 
 
                     If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) AndAlso doSearch = False Then
-                        IMDB.GetMovieInfoAsync(Master.currMovie.IMDBID, Master.currMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast)
+                        IMDB.GetMovieInfoAsync(Master.currMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                     Else
                         Master.tmpMovie = New Media.Movie
                         If dlgIMDBSearchResults.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
@@ -2499,7 +2499,7 @@ Public Class frmMain
                                 Me.ReportDownloadPercent = True
                                 Me.tslLoading.Visible = True
                                 Me.tspbLoading.Visible = True
-                                IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID.ToString, Master.currMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast)
+                                IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID.ToString, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                             End If
                         Else
                             Me.tslLoading.Visible = False
@@ -2553,7 +2553,7 @@ Public Class frmMain
 
         Try
             If bSuccess Then
-                If Master.uSettings.UseStudioTags Then
+                If Master.eSettings.UseStudioTags Then
                     Me.tslLoading.Text = "Scanning Media Info:"
                     Me.tspbLoading.Value = Me.tspbLoading.Maximum
                     Me.tspbLoading.Style = ProgressBarStyle.Marquee
@@ -2563,7 +2563,7 @@ Public Class frmMain
                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                     End If
                 End If
-                If Master.uSettings.SingleScrapeImages Then
+                If Master.eSettings.SingleScrapeImages Then
                     dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
                     dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
                 End If

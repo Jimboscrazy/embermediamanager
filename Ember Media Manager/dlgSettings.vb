@@ -599,84 +599,84 @@ Public Class dlgSettings
 
         Try
             '######## GENERAL TAB ########
-            Master.uSettings.FilterCustom.Clear()
+            Master.eSettings.FilterCustom.Clear()
             For Each str As String In Me.lstFilters.Items
-                Master.uSettings.FilterCustom.Add(str.ToString)
+                Master.eSettings.FilterCustom.Add(str.ToString)
             Next
 
-            Master.uSettings.HeaderColor = Me.btnHeaders.BackColor.ToArgb
-            Master.uSettings.BackgroundColor = Me.btnBackground.BackColor.ToArgb
-            Master.uSettings.InfoPanelColor = Me.btnInfoPanel.BackColor.ToArgb
-            Master.uSettings.TopPanelColor = Me.btnTopPanel.BackColor.ToArgb
-            Master.uSettings.PanelTextColor = Me.btnInfoPanelText.BackColor.ToArgb()
-            Master.uSettings.TopPanelTextColor = Me.btnTopPanelText.BackColor.ToArgb
-            Master.uSettings.HeaderTextColor = Me.btnHeaderText.BackColor.ToArgb
-            Master.uSettings.CleanFolderJPG = Me.chkCleanFolderJPG.Checked
-            Master.uSettings.CleanMovieTBN = Me.chkCleanMovieTBN.Checked
-            Master.uSettings.CleanMovieTBNB = Me.chkCleanMovieTBNb.Checked
-            Master.uSettings.CleanFanartJPG = Me.chkCleanFanartJPG.Checked
-            Master.uSettings.CleanMovieFanartJPG = Me.chkCleanMovieFanartJPG.Checked
-            Master.uSettings.CleanMovieNFO = Me.chkCleanMovieNFO.Checked
-            Master.uSettings.CleanMovieNFOB = Me.chkCleanMovieNFOb.Checked
-            Master.uSettings.CleanPosterTBN = Me.chkCleanPosterTBN.Checked
-            Master.uSettings.CleanPosterJPG = Me.chkCleanPosterJPG.Checked
-            Master.uSettings.CleanMovieJPG = Me.chkCleanMovieJPG.Checked
-            Master.uSettings.CleanMovieNameJPG = Me.chkCleanMovieNameJPG.Checked
-            Master.uSettings.CleanDotFanartJPG = Me.chkCleanDotFanartJPG.Checked
-            Master.uSettings.LogErrors = Me.chkLogErrors.Checked
-            Master.uSettings.ProperCase = Me.chkProperCase.Checked
-            Master.uSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
-            Master.uSettings.XBMCIP = Me.txtIP.Text
-            Master.uSettings.XBMCPort = Me.txtPort.Text
+            Master.eSettings.HeaderColor = Me.btnHeaders.BackColor.ToArgb
+            Master.eSettings.BackgroundColor = Me.btnBackground.BackColor.ToArgb
+            Master.eSettings.InfoPanelColor = Me.btnInfoPanel.BackColor.ToArgb
+            Master.eSettings.TopPanelColor = Me.btnTopPanel.BackColor.ToArgb
+            Master.eSettings.PanelTextColor = Me.btnInfoPanelText.BackColor.ToArgb()
+            Master.eSettings.TopPanelTextColor = Me.btnTopPanelText.BackColor.ToArgb
+            Master.eSettings.HeaderTextColor = Me.btnHeaderText.BackColor.ToArgb
+            Master.eSettings.CleanFolderJPG = Me.chkCleanFolderJPG.Checked
+            Master.eSettings.CleanMovieTBN = Me.chkCleanMovieTBN.Checked
+            Master.eSettings.CleanMovieTBNB = Me.chkCleanMovieTBNb.Checked
+            Master.eSettings.CleanFanartJPG = Me.chkCleanFanartJPG.Checked
+            Master.eSettings.CleanMovieFanartJPG = Me.chkCleanMovieFanartJPG.Checked
+            Master.eSettings.CleanMovieNFO = Me.chkCleanMovieNFO.Checked
+            Master.eSettings.CleanMovieNFOB = Me.chkCleanMovieNFOb.Checked
+            Master.eSettings.CleanPosterTBN = Me.chkCleanPosterTBN.Checked
+            Master.eSettings.CleanPosterJPG = Me.chkCleanPosterJPG.Checked
+            Master.eSettings.CleanMovieJPG = Me.chkCleanMovieJPG.Checked
+            Master.eSettings.CleanMovieNameJPG = Me.chkCleanMovieNameJPG.Checked
+            Master.eSettings.CleanDotFanartJPG = Me.chkCleanDotFanartJPG.Checked
+            Master.eSettings.LogErrors = Me.chkLogErrors.Checked
+            Master.eSettings.ProperCase = Me.chkProperCase.Checked
+            Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
+            Master.eSettings.XBMCIP = Me.txtIP.Text
+            Master.eSettings.XBMCPort = Me.txtPort.Text
 
             '######## MOVIES TAB ########
-            Master.uSettings.MovieFolders.Clear()
+            Master.eSettings.MovieFolders.Clear()
             For Each lvItem As ListViewItem In Me.lvMovies.Items
-                Master.uSettings.MovieFolders.Add(lvItem.Text.ToString & "|" & lvItem.SubItems(1).Text.ToString)
+                Master.eSettings.MovieFolders.Add(lvItem.Text.ToString & "|" & lvItem.SubItems(1).Text.ToString)
             Next
 
-            Master.uSettings.CertificationLang = Me.cbCert.Text
-            Master.uSettings.UseStudioTags = Me.chkStudio.Checked
-            Master.uSettings.FullCast = Me.chkFullCast.Checked
-            Master.uSettings.FullCrew = Me.chkFullCrew.Checked
-            Master.uSettings.MoviePosterCol = Me.chkMoviePosterCol.Checked
-            Master.uSettings.MovieFanartCol = Me.chkMovieFanartCol.Checked
-            Master.uSettings.MovieInfoCol = Me.chkMovieInfoCol.Checked
-            Master.uSettings.MovieTrailerCol = Me.chkMovieTrailerCol.Checked
-            Master.uSettings.UseTMDB = Me.chkUseTMDB.Checked
-            Master.uSettings.UseIMPA = Me.chkUseIMPA.Checked
-            Master.uSettings.UseMPDB = Me.chkUseMPDB.Checked
-            Master.uSettings.PreferredPosterSize = Me.cbPosterSize.SelectedIndex
-            Master.uSettings.PreferredFanartSize = Me.cbFanartSize.SelectedIndex
-            Master.uSettings.OverwritePoster = Me.chkOverwritePoster.Checked
-            Master.uSettings.OverwriteFanart = Me.chkOverwriteFanart.Checked
-            Master.uSettings.UseFolderName = Me.chkUseFolderNames.Checked
-            Master.uSettings.UseNameFromNfo = Me.chkTitleFromNfo.Checked
-            Master.uSettings.MovieTBN = Me.chkMovieTBN.Checked
-            Master.uSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
-            Master.uSettings.MovieJPG = Me.chkMovieJPG.Checked
-            Master.uSettings.MovieNameJPG = Me.chkMovieNameJPG.Checked
-            Master.uSettings.PosterTBN = Me.chkPosterTBN.Checked
-            Master.uSettings.PosterJPG = Me.chkPosterJPG.Checked
-            Master.uSettings.FolderJPG = Me.chkFolderJPG.Checked
-            Master.uSettings.FanartJPG = Me.chkFanartJPG.Checked
-            Master.uSettings.MovieNameFanartJPG = Me.chkMovieNameFanartJPG.Checked
-            Master.uSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
-            Master.uSettings.MovieNFO = Me.chkMovieNFO.Checked
-            Master.uSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
-            Master.uSettings.LockPlot = Me.chkLockPlot.Checked
-            Master.uSettings.LockOutline = Me.chkLockOutline.Checked
-            Master.uSettings.LockTitle = Me.chkLockTitle.Checked
-            Master.uSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
-            Master.uSettings.MarkNew = Me.chkMarkNew.Checked
-            Master.uSettings.ResizeFanart = Me.chkResizeFanart.Checked
-            Master.uSettings.FanartHeight = Me.txtFanartHeight.Text
-            Master.uSettings.FanartWidth = Me.txtFanartWidth.Text
-            Master.uSettings.ResizePoster = Me.chkResizePoster.Checked
-            Master.uSettings.PosterHeight = Me.txtPosterHeight.Text
-            Master.uSettings.PosterWidth = Me.txtPosterWidth.Text
+            Master.eSettings.CertificationLang = Me.cbCert.Text
+            Master.eSettings.UseStudioTags = Me.chkStudio.Checked
+            Master.eSettings.FullCast = Me.chkFullCast.Checked
+            Master.eSettings.FullCrew = Me.chkFullCrew.Checked
+            Master.eSettings.MoviePosterCol = Me.chkMoviePosterCol.Checked
+            Master.eSettings.MovieFanartCol = Me.chkMovieFanartCol.Checked
+            Master.eSettings.MovieInfoCol = Me.chkMovieInfoCol.Checked
+            Master.eSettings.MovieTrailerCol = Me.chkMovieTrailerCol.Checked
+            Master.eSettings.UseTMDB = Me.chkUseTMDB.Checked
+            Master.eSettings.UseIMPA = Me.chkUseIMPA.Checked
+            Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
+            Master.eSettings.PreferredPosterSize = Me.cbPosterSize.SelectedIndex
+            Master.eSettings.PreferredFanartSize = Me.cbFanartSize.SelectedIndex
+            Master.eSettings.OverwritePoster = Me.chkOverwritePoster.Checked
+            Master.eSettings.OverwriteFanart = Me.chkOverwriteFanart.Checked
+            Master.eSettings.UseFolderName = Me.chkUseFolderNames.Checked
+            Master.eSettings.UseNameFromNfo = Me.chkTitleFromNfo.Checked
+            Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked
+            Master.eSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
+            Master.eSettings.MovieJPG = Me.chkMovieJPG.Checked
+            Master.eSettings.MovieNameJPG = Me.chkMovieNameJPG.Checked
+            Master.eSettings.PosterTBN = Me.chkPosterTBN.Checked
+            Master.eSettings.PosterJPG = Me.chkPosterJPG.Checked
+            Master.eSettings.FolderJPG = Me.chkFolderJPG.Checked
+            Master.eSettings.FanartJPG = Me.chkFanartJPG.Checked
+            Master.eSettings.MovieNameFanartJPG = Me.chkMovieNameFanartJPG.Checked
+            Master.eSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
+            Master.eSettings.MovieNFO = Me.chkMovieNFO.Checked
+            Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
+            Master.eSettings.LockPlot = Me.chkLockPlot.Checked
+            Master.eSettings.LockOutline = Me.chkLockOutline.Checked
+            Master.eSettings.LockTitle = Me.chkLockTitle.Checked
+            Master.eSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
+            Master.eSettings.MarkNew = Me.chkMarkNew.Checked
+            Master.eSettings.ResizeFanart = Me.chkResizeFanart.Checked
+            Master.eSettings.FanartHeight = Me.txtFanartHeight.Text
+            Master.eSettings.FanartWidth = Me.txtFanartWidth.Text
+            Master.eSettings.ResizePoster = Me.chkResizePoster.Checked
+            Master.eSettings.PosterHeight = Me.txtPosterHeight.Text
+            Master.eSettings.PosterWidth = Me.txtPosterWidth.Text
 
-            Master.uSettings.Save()
+            Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -689,91 +689,91 @@ Public Class dlgSettings
 
         Try
             '######## GENERAL TAB ########
-            For Each strFilter As String In Master.uSettings.FilterCustom
+            For Each strFilter As String In Master.eSettings.FilterCustom
                 Me.lstFilters.Items.Add(strFilter)
             Next
 
-            Me.btnHeaders.BackColor = Color.FromArgb(Master.uSettings.HeaderColor)
-            Me.btnBackground.BackColor = Color.FromArgb(Master.uSettings.BackgroundColor)
-            Me.btnInfoPanel.BackColor = Color.FromArgb(Master.uSettings.InfoPanelColor)
-            Me.btnTopPanel.BackColor = Color.FromArgb(Master.uSettings.TopPanelColor)
-            Me.btnInfoPanelText.BackColor = Color.FromArgb(Master.uSettings.PanelTextColor)
-            Me.btnTopPanelText.BackColor = Color.FromArgb(Master.uSettings.TopPanelTextColor)
-            Me.btnHeaderText.BackColor = Color.FromArgb(Master.uSettings.HeaderTextColor)
-            Me.chkCleanFolderJPG.Checked = Master.uSettings.CleanFolderJPG
-            Me.chkCleanMovieTBN.Checked = Master.uSettings.CleanMovieTBN
-            Me.chkCleanMovieTBNb.Checked = Master.uSettings.CleanMovieTBNB
-            Me.chkCleanFanartJPG.Checked = Master.uSettings.CleanFanartJPG
-            Me.chkCleanMovieFanartJPG.Checked = Master.uSettings.CleanMovieFanartJPG
-            Me.chkCleanMovieNFO.Checked = Master.uSettings.CleanMovieNFO
-            Me.chkCleanMovieNFOb.Checked = Master.uSettings.CleanMovieNFOB
-            Me.chkCleanPosterTBN.Checked = Master.uSettings.CleanPosterTBN
-            Me.chkCleanPosterJPG.Checked = Master.uSettings.CleanPosterJPG
-            Me.chkCleanMovieJPG.Checked = Master.uSettings.CleanMovieJPG
-            Me.chkCleanMovieNameJPG.Checked = Master.uSettings.CleanMovieNameJPG
-            Me.chkCleanDotFanartJPG.Checked = Master.uSettings.CleanDotFanartJPG
-            Me.chkOverwriteNfo.Checked = Master.uSettings.OverwriteNfo
+            Me.btnHeaders.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+            Me.btnBackground.BackColor = Color.FromArgb(Master.eSettings.BackgroundColor)
+            Me.btnInfoPanel.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+            Me.btnTopPanel.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
+            Me.btnInfoPanelText.BackColor = Color.FromArgb(Master.eSettings.PanelTextColor)
+            Me.btnTopPanelText.BackColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
+            Me.btnHeaderText.BackColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+            Me.chkCleanFolderJPG.Checked = Master.eSettings.CleanFolderJPG
+            Me.chkCleanMovieTBN.Checked = Master.eSettings.CleanMovieTBN
+            Me.chkCleanMovieTBNb.Checked = Master.eSettings.CleanMovieTBNB
+            Me.chkCleanFanartJPG.Checked = Master.eSettings.CleanFanartJPG
+            Me.chkCleanMovieFanartJPG.Checked = Master.eSettings.CleanMovieFanartJPG
+            Me.chkCleanMovieNFO.Checked = Master.eSettings.CleanMovieNFO
+            Me.chkCleanMovieNFOb.Checked = Master.eSettings.CleanMovieNFOB
+            Me.chkCleanPosterTBN.Checked = Master.eSettings.CleanPosterTBN
+            Me.chkCleanPosterJPG.Checked = Master.eSettings.CleanPosterJPG
+            Me.chkCleanMovieJPG.Checked = Master.eSettings.CleanMovieJPG
+            Me.chkCleanMovieNameJPG.Checked = Master.eSettings.CleanMovieNameJPG
+            Me.chkCleanDotFanartJPG.Checked = Master.eSettings.CleanDotFanartJPG
+            Me.chkOverwriteNfo.Checked = Master.eSettings.OverwriteNfo
 
-            Me.txtIP.Text = Master.uSettings.XBMCIP
-            Me.txtPort.text = Master.uSettings.XBMCPort
+            Me.txtIP.Text = Master.eSettings.XBMCIP
+            Me.txtPort.text = Master.eSettings.XBMCPort
 
-            Me.chkLogErrors.Checked = Master.uSettings.LogErrors
-            Me.chkProperCase.Checked = Master.uSettings.ProperCase
+            Me.chkLogErrors.Checked = Master.eSettings.LogErrors
+            Me.chkProperCase.Checked = Master.eSettings.ProperCase
 
             '######## MOVIES TAB ########
-            For Each strFolders As String In Master.uSettings.MovieFolders
+            For Each strFolders As String In Master.eSettings.MovieFolders
                 dirArray = Split(strFolders, "|")
                 lvItem = Me.lvMovies.Items.Add(dirArray(0).ToString)
                 lvItem.SubItems.Add(dirArray(1).ToString)
             Next
 
-            If Not String.IsNullOrEmpty(Master.uSettings.CertificationLang) Then
+            If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                 Me.chkCert.Checked = True
                 Me.cbCert.Enabled = True
-                Me.cbCert.Text = Master.uSettings.CertificationLang
+                Me.cbCert.Text = Master.eSettings.CertificationLang
             End If
-            Me.chkStudio.Checked = Master.uSettings.UseStudioTags
-            Me.chkFullCast.Checked = Master.uSettings.FullCast
-            Me.chkFullCrew.Checked = Master.uSettings.FullCrew
-            Me.chkMoviePosterCol.Checked = Master.uSettings.MoviePosterCol
-            Me.chkMovieFanartCol.Checked = Master.uSettings.MovieFanartCol
-            Me.chkMovieInfoCol.Checked = Master.uSettings.MovieInfoCol
-            Me.chkMovieTrailerCol.Checked = Master.uSettings.MovieTrailerCol
-            Me.chkUseTMDB.Checked = Master.uSettings.UseTMDB
-            Me.chkUseIMPA.Checked = Master.uSettings.UseIMPA
-            Me.chkUseMPDB.Checked = Master.uSettings.UseMPDB
-            Me.cbPosterSize.SelectedIndex = Master.uSettings.PreferredPosterSize
-            Me.cbFanartSize.SelectedIndex = Master.uSettings.PreferredFanartSize
-            Me.chkOverwritePoster.Checked = Master.uSettings.OverwritePoster
-            Me.chkOverwriteFanart.Checked = Master.uSettings.OverwriteFanart
-            Me.chkUseFolderNames.Checked = Master.uSettings.UseFolderName
-            Me.chkTitleFromNfo.Checked = Master.uSettings.UseNameFromNfo
-            Me.chkMovieTBN.Checked = Master.uSettings.MovieTBN
-            Me.chkMovieNameTBN.Checked = Master.uSettings.MovieNameTBN
-            Me.chkMovieJPG.Checked = Master.uSettings.MovieJPG
-            Me.chkMovieNameJPG.Checked = Master.uSettings.MovieNameJPG
-            Me.chkPosterTBN.Checked = Master.uSettings.PosterTBN
-            Me.chkPosterJPG.Checked = Master.uSettings.PosterJPG
-            Me.chkFolderJPG.Checked = Master.uSettings.FolderJPG
-            Me.chkFanartJPG.Checked = Master.uSettings.FanartJPG
-            Me.chkMovieNameFanartJPG.Checked = Master.uSettings.MovieNameFanartJPG
-            Me.chkMovieNameDotFanartJPG.Checked = Master.uSettings.MovieNameDotFanartJPG
-            Me.chkMovieNFO.Checked = Master.uSettings.MovieNFO
-            Me.chkMovieNameNFO.Checked = Master.uSettings.MovieNameNFO
-            Me.chkLockPlot.Checked = Master.uSettings.LockPlot
-            Me.chkLockOutline.Checked = Master.uSettings.LockOutline
-            Me.chkLockTitle.Checked = Master.uSettings.LockTitle
-            Me.chkSingleScrapeImages.Checked = Master.uSettings.SingleScrapeImages
-            Me.chkMarkNew.Checked = Master.uSettings.MarkNew
-            Me.chkResizeFanart.Checked = Master.uSettings.ResizeFanart
-            If Master.uSettings.ResizeFanart Then
-                Me.txtFanartWidth.Text = Master.uSettings.FanartWidth
-                Me.txtFanartHeight.Text = Master.uSettings.FanartHeight
+            Me.chkStudio.Checked = Master.eSettings.UseStudioTags
+            Me.chkFullCast.Checked = Master.eSettings.FullCast
+            Me.chkFullCrew.Checked = Master.eSettings.FullCrew
+            Me.chkMoviePosterCol.Checked = Master.eSettings.MoviePosterCol
+            Me.chkMovieFanartCol.Checked = Master.eSettings.MovieFanartCol
+            Me.chkMovieInfoCol.Checked = Master.eSettings.MovieInfoCol
+            Me.chkMovieTrailerCol.Checked = Master.eSettings.MovieTrailerCol
+            Me.chkUseTMDB.Checked = Master.eSettings.UseTMDB
+            Me.chkUseIMPA.Checked = Master.eSettings.UseIMPA
+            Me.chkUseMPDB.Checked = Master.eSettings.UseMPDB
+            Me.cbPosterSize.SelectedIndex = Master.eSettings.PreferredPosterSize
+            Me.cbFanartSize.SelectedIndex = Master.eSettings.PreferredFanartSize
+            Me.chkOverwritePoster.Checked = Master.eSettings.OverwritePoster
+            Me.chkOverwriteFanart.Checked = Master.eSettings.OverwriteFanart
+            Me.chkUseFolderNames.Checked = Master.eSettings.UseFolderName
+            Me.chkTitleFromNfo.Checked = Master.eSettings.UseNameFromNfo
+            Me.chkMovieTBN.Checked = Master.eSettings.MovieTBN
+            Me.chkMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
+            Me.chkMovieJPG.Checked = Master.eSettings.MovieJPG
+            Me.chkMovieNameJPG.Checked = Master.eSettings.MovieNameJPG
+            Me.chkPosterTBN.Checked = Master.eSettings.PosterTBN
+            Me.chkPosterJPG.Checked = Master.eSettings.PosterJPG
+            Me.chkFolderJPG.Checked = Master.eSettings.FolderJPG
+            Me.chkFanartJPG.Checked = Master.eSettings.FanartJPG
+            Me.chkMovieNameFanartJPG.Checked = Master.eSettings.MovieNameFanartJPG
+            Me.chkMovieNameDotFanartJPG.Checked = Master.eSettings.MovieNameDotFanartJPG
+            Me.chkMovieNFO.Checked = Master.eSettings.MovieNFO
+            Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
+            Me.chkLockPlot.Checked = Master.eSettings.LockPlot
+            Me.chkLockOutline.Checked = Master.eSettings.LockOutline
+            Me.chkLockTitle.Checked = Master.eSettings.LockTitle
+            Me.chkSingleScrapeImages.Checked = Master.eSettings.SingleScrapeImages
+            Me.chkMarkNew.Checked = Master.eSettings.MarkNew
+            Me.chkResizeFanart.Checked = Master.eSettings.ResizeFanart
+            If Master.eSettings.ResizeFanart Then
+                Me.txtFanartWidth.Text = Master.eSettings.FanartWidth
+                Me.txtFanartHeight.Text = Master.eSettings.FanartHeight
             End If
-            Me.chkResizePoster.Checked = Master.uSettings.ResizePoster
-            If Master.uSettings.ResizePoster Then
-                Me.txtPosterWidth.Text = Master.uSettings.PosterWidth
-                Me.txtPosterHeight.Text = Master.uSettings.PosterHeight
+            Me.chkResizePoster.Checked = Master.eSettings.ResizePoster
+            If Master.eSettings.ResizePoster Then
+                Me.txtPosterWidth.Text = Master.eSettings.PosterWidth
+                Me.txtPosterHeight.Text = Master.eSettings.PosterHeight
             End If
 
             Me.lvMovies.Columns(0).Width = 388

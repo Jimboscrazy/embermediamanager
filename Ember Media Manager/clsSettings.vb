@@ -774,7 +774,7 @@ Public Class emmSettings
         Try
             Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
             Dim xmlWriter As New StreamWriter(Application.StartupPath & "\settings.xml")
-            xmlSerial.Serialize(xmlWriter, Master.uSettings)
+            xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -785,11 +785,11 @@ Public Class emmSettings
         Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
         Try
             Dim strmReader As New StreamReader(Application.StartupPath & "\settings.xml")
-            Master.uSettings = CType(xmlSerial.Deserialize(strmReader), emmSettings)
+            Master.eSettings = CType(xmlSerial.Deserialize(strmReader), emmSettings)
             strmReader.Close()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Master.uSettings = New emmSettings
+            Master.eSettings = New emmSettings
         End Try
     End Sub
 End Class

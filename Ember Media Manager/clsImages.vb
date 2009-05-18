@@ -124,55 +124,63 @@ Public Class Images
             Dim pPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
             Dim tPath = String.Empty
 
-            If Master.uSettings.ResizePoster AndAlso (_image.Width > Master.uSettings.PosterWidth OrElse _image.Height > Master.uSettings.PosterHeight) Then
+            If Master.eSettings.ResizePoster AndAlso (_image.Width > Master.eSettings.PosterWidth OrElse _image.Height > Master.eSettings.PosterHeight) Then
                 _image = ResizeImage(_image, Master.ImageType.Posters)
             End If
 
-            If Master.uSettings.MovieTBN AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(pPath).ToString, "\movie.tbn")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwritePoster Then
+            If Master.eSettings.MovieTBN AndAlso Not isFile Then
+                tPath = String.Concat(Directory.GetParent(pPath).FullName, "\movie.tbn")
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
             End If
 
-            If Master.uSettings.MovieNameTBN Then
-                tPath = String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwritePoster Then
+            If Master.eSettings.MovieNameTBN Then
+                If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                    tPath = String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.tbn")
+                Else
+                    tPath = String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")
+                End If
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
             End If
 
-            If Master.uSettings.MovieJPG AndAlso Not isFile Then
+            If Master.eSettings.MovieJPG AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(pPath).ToString, "\movie.jpg")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwritePoster Then
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
             End If
 
-            If Master.uSettings.MovieNameJPG Then
-                tPath = String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwritePoster Then
+            If Master.eSettings.MovieNameJPG Then
+                If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                    tPath = String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.jpg")
+                Else
+                    tPath = String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")
+                End If
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
             End If
 
-            If Master.uSettings.PosterTBN AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(pPath).ToString, "\poster.tbn")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwritePoster Then
+            If Master.eSettings.PosterTBN AndAlso Not isFile Then
+                tPath = String.Concat(Directory.GetParent(pPath).FullName, "\poster.tbn")
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
             End If
 
-            If Master.uSettings.PosterJPG AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(pPath).ToString, "\poster.jpg")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwritePoster Then
+            If Master.eSettings.PosterJPG AndAlso Not isFile Then
+                tPath = String.Concat(Directory.GetParent(pPath).FullName, "\poster.jpg")
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
             End If
 
-            If Master.uSettings.FolderJPG AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(pPath).ToString, "\folder.jpg")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwritePoster Then
+            If Master.eSettings.FolderJPG AndAlso Not isFile Then
+                tPath = String.Concat(Directory.GetParent(pPath).FullName, "\folder.jpg")
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
             End If
@@ -187,27 +195,35 @@ Public Class Images
             Dim fPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
             Dim tPath As String = String.Empty
 
-            If Master.uSettings.ResizeFanart AndAlso (_image.Width > Master.uSettings.FanartWidth OrElse _image.Height > Master.uSettings.FanartHeight) Then
+            If Master.eSettings.ResizeFanart AndAlso (_image.Width > Master.eSettings.FanartWidth OrElse _image.Height > Master.eSettings.FanartHeight) Then
                 _image = ResizeImage(_image, Master.ImageType.Fanart)
             End If
 
-            If Master.uSettings.FanartJPG AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwriteFanart Then
+            If Master.eSettings.FanartJPG AndAlso Not isFile Then
+                tPath = String.Concat(Directory.GetParent(fPath).FullName, "\fanart.jpg")
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteFanart Then
                     Save(tPath)
                 End If
             End If
 
-            If Master.uSettings.MovieNameFanartJPG Then
-                tPath = String.Concat(Master.RemoveExtFromPath(fPath), "-fanart.jpg")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwriteFanart Then
+            If Master.eSettings.MovieNameFanartJPG Then
+                If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                    tPath = String.Concat(Directory.GetParent(sPath).FullName, "\video_ts-fanart.jpg")
+                Else
+                    tPath = String.Concat(Master.RemoveExtFromPath(fPath), "-fanart.jpg")
+                End If
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteFanart Then
                     Save(tPath)
                 End If
             End If
 
-            If Master.uSettings.MovieNameDotFanartJPG Then
-                tPath = String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")
-                If Not File.Exists(tPath) OrElse Master.uSettings.OverwriteFanart Then
+                If Master.eSettings.MovieNameDotFanartJPG Then
+                If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                    tPath = String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.fanart.jpg")
+                Else
+                    tPath = String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")
+                End If
+                If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteFanart Then
                     Save(tPath)
                 End If
             End If
@@ -300,14 +316,14 @@ Public Class Images
         Try
 
             If iType = Master.ImageType.Posters Then 'posters
-                If Master.uSettings.UseTMDB Then
+                If Master.eSettings.UseTMDB Then
                     'download all TMBD images
                     tmpListTMDB = TMDB.GetTMDBImages(Master.currMovie.IMDBID, "poster")
 
                     'check each one for it's size to see if it matched the preferred size
                     If tmpListTMDB.Count > 0 Then
                         For Each iMovie As Media.Image In tmpListTMDB
-                            Select Case Master.uSettings.PreferredPosterSize
+                            Select Case Master.eSettings.PreferredPosterSize
                                 Case Master.PosterSize.Xlrg
                                     If iMovie.Description.ToLower = "original" Then
                                         tmpImage = GenericFromWeb(iMovie.URL)
@@ -334,7 +350,7 @@ Public Class Images
                     End If
                 End If
 
-                If Master.uSettings.UseIMPA Then
+                If Master.eSettings.UseIMPA Then
                     If IsNothing(tmpImage) Then
                         'no poster of the proper size from TMDB found... try IMPA
 
@@ -345,7 +361,7 @@ Public Class Images
                                 tmpImage = GenericFromWeb(iMovie.URL)
                                 If Not IsNothing(tmpImage) Then
                                     Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
-                                    If Not tmpSize = Master.uSettings.PreferredPosterSize Then
+                                    If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                         tmpImage = Nothing
                                         'cache the first result from each type in case the preferred size is not available
                                         Select Case tmpSize
@@ -380,7 +396,7 @@ Public Class Images
                     End If
                 End If
 
-                If Master.uSettings.UseMPDB Then
+                If Master.eSettings.UseMPDB Then
                     If IsNothing(tmpImage) Then
                         'no poster of the proper size from TMDB or IMPA found... try MPDB
 
@@ -391,7 +407,7 @@ Public Class Images
                                 tmpImage = GenericFromWeb(iMovie.URL)
                                 If Not IsNothing(tmpImage) Then
                                     Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
-                                    If Not tmpSize = Master.uSettings.PreferredPosterSize Then
+                                    If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                         tmpImage = Nothing
                                         'cache the first result from each type in case the preferred size is not available
                                         Select Case tmpSize
@@ -428,7 +444,7 @@ Public Class Images
 
                 If IsNothing(tmpImage) AndAlso Not doAsk Then
                     'STILL no image found, just get the first available image, starting with the largest
-                    If Master.uSettings.UseTMDB Then
+                    If Master.eSettings.UseTMDB Then
                         'check TMDB first
                         If tmpListTMDB.Count > 0 Then
                             Dim x = From MI As Media.Image In tmpListTMDB Where MI.Description = "original"
@@ -458,7 +474,7 @@ Public Class Images
                         End If
                     End If
 
-                    If Master.uSettings.UseIMPA Then
+                    If Master.eSettings.UseIMPA Then
                         If tmpListIMPA.Count > 0 Then
                             If Not IsNothing(tmpIMPAX) Then
                                 tmpImage = tmpIMPAX
@@ -483,7 +499,7 @@ Public Class Images
                         End If
                     End If
 
-                    If Master.uSettings.UseMPDB Then
+                    If Master.eSettings.UseMPDB Then
                         If tmpListMPDB.Count > 0 Then
                             If Not IsNothing(tmpMPDBX) Then
                                 tmpImage = tmpMPDBX
@@ -513,7 +529,7 @@ Public Class Images
 
             Else 'fanart
 
-                If Master.uSettings.UseTMDB Then
+                If Master.eSettings.UseTMDB Then
 
                     'download all the fanart from TMDB
                     tmpListTMDB = TMDB.GetTMDBImages(Master.currMovie.IMDBID, "backdrop")
@@ -533,7 +549,7 @@ Public Class Images
                         Next
 
                         For Each iMovie As Media.Image In tmpListTMDB
-                            Select Case Master.uSettings.PreferredPosterSize
+                            Select Case Master.eSettings.PreferredPosterSize
                                 Case Master.FanartSize.Lrg
                                     If iMovie.Description.ToLower = "original" Then
                                         tmpImage = GenericFromWeb(iMovie.URL)
@@ -601,11 +617,11 @@ foundIT:
             Dim tmpName As String = Master.CleanStackingMarkers(Master.GetNameFromPath(sPath))
             Dim fPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
 
-            If Master.uSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(fPath), "-fanart.jpg")) Then
+            If Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(fPath), "-fanart.jpg")) Then
                 Return String.Concat(Master.RemoveExtFromPath(fPath), "-fanart.jpg")
-            ElseIf Not isFile AndAlso Master.uSettings.FanartJPG AndAlso File.Exists(String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")) Then
+            ElseIf Not isFile AndAlso Master.eSettings.FanartJPG AndAlso File.Exists(String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")) Then
                 Return String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")
-            ElseIf Master.uSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")) Then
+            ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")) Then
                 Return String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")
             Else
                 Return String.Empty
@@ -626,17 +642,17 @@ foundIT:
             Dim tmpName As String = Master.CleanStackingMarkers(Master.GetNameFromPath(sPath))
             Dim pPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
 
-            If Not isFile AndAlso Master.uSettings.MovieTBN AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\movie.tbn")) Then
+            If Not isFile AndAlso Master.eSettings.MovieTBN AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\movie.tbn")) Then
                 Return String.Concat(Directory.GetParent(pPath).ToString, "\movie.tbn")
-            ElseIf Master.uSettings.MovieNameTBN AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")) Then
+            ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")) Then
                 Return String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")
-            ElseIf Not isFile AndAlso Master.uSettings.MovieJPG AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\movie.jpg")) Then
+            ElseIf Not isFile AndAlso Master.eSettings.MovieJPG AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\movie.jpg")) Then
                 Return String.Concat(Directory.GetParent(pPath).ToString, "\movie.jpg")
-            ElseIf Master.uSettings.MovieNameJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")) Then
+            ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")) Then
                 Return String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")
-            ElseIf Not isFile AndAlso Master.uSettings.PosterTBN AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\poster.tbn")) Then
+            ElseIf Not isFile AndAlso Master.eSettings.PosterTBN AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\poster.tbn")) Then
                 Return String.Concat(Directory.GetParent(pPath).ToString, "\poster.jpg")
-            ElseIf Not isFile AndAlso Master.uSettings.FolderJPG AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\folder.jpg")) Then
+            ElseIf Not isFile AndAlso Master.eSettings.FolderJPG AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\folder.jpg")) Then
                 Return String.Concat(Directory.GetParent(pPath).ToString, "\folder.jpg")
             Else
                 Return String.Empty
@@ -653,13 +669,13 @@ foundIT:
         Try
             Select Case fType
                 Case Master.ImageType.Fanart
-                    If String.IsNullOrEmpty(GetFanartPath(sPath, isFile)) OrElse Master.uSettings.OverwriteFanart Then
+                    If String.IsNullOrEmpty(GetFanartPath(sPath, isFile)) OrElse Master.eSettings.OverwriteFanart Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Else
-                    If String.IsNullOrEmpty(GetPosterPath(sPath, isFile)) OrElse Master.uSettings.OverwritePoster Then
+                    If String.IsNullOrEmpty(GetPosterPath(sPath, isFile)) OrElse Master.eSettings.OverwritePoster Then
                         Return True
                     Else
                         Return False
@@ -675,8 +691,8 @@ foundIT:
     Private Function ResizeImage(ByVal theImage As Image, ByVal imgType As Master.ImageType) As Image
 
         Dim imgOut As Image = Nothing
-        Dim maxHeight = If(imgType = Master.ImageType.Fanart, Master.uSettings.FanartHeight, Master.uSettings.PosterHeight)
-        Dim maxWidth = If(imgType = Master.ImageType.Fanart, Master.uSettings.FanartWidth, Master.uSettings.PosterHeight)
+        Dim maxHeight = If(imgType = Master.ImageType.Fanart, Master.eSettings.FanartHeight, Master.eSettings.PosterHeight)
+        Dim maxWidth = If(imgType = Master.ImageType.Fanart, Master.eSettings.FanartWidth, Master.eSettings.PosterHeight)
         Try
             If Not IsNothing(theImage) Then
                 Dim sPropPerc As Single = 1.0 'no default scaling
