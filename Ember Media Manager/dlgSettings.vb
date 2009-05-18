@@ -457,6 +457,10 @@ Public Class dlgSettings
     Private Sub txtPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPort.TextChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkOverwriteNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteNfo.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -553,6 +557,7 @@ Public Class dlgSettings
             Master.uSettings.CleanDotFanartJPG = Me.chkCleanDotFanartJPG.Checked
             Master.uSettings.LogErrors = Me.chkLogErrors.Checked
             Master.uSettings.ProperCase = Me.chkProperCase.Checked
+            Master.uSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
 
             If Not String.IsNullOrEmpty(Me.txtIP.text) Then
                 Master.uSettings.XBMCIP = Me.txtIP.text
@@ -638,6 +643,7 @@ Public Class dlgSettings
             Me.chkCleanMovieJPG.Checked = Master.uSettings.CleanMovieJPG
             Me.chkCleanMovieNameJPG.Checked = Master.uSettings.CleanMovieNameJPG
             Me.chkCleanDotFanartJPG.Checked = Master.uSettings.CleanDotFanartJPG
+            Me.chkOverwriteNfo.Checked = Master.uSettings.OverwriteNfo
 
             Me.txtIP.text = Master.uSettings.XBMCIP
             Me.txtPort.text = Master.uSettings.XBMCPort

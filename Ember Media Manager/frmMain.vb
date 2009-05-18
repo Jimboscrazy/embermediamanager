@@ -165,6 +165,10 @@ Public Class frmMain
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                 End If
             End If
+
+            If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
+                Me.tsbUpdateXBMC.Enabled = True
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1313,7 +1317,7 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseStudioTags AndAlso IsNothing(Master.currMovie.FileInfo) Then
+                                If Master.uSettings.UseStudioTags Then
                                     If UpdateMediaInfo() Then
                                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                     End If
@@ -1381,7 +1385,7 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.uSettings.UseStudioTags AndAlso IsNothing(Master.currMovie.FileInfo) Then
+                                If Master.uSettings.UseStudioTags Then
                                     If UpdateMediaInfo() Then
                                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                     End If
@@ -1612,7 +1616,7 @@ Public Class frmMain
                                 If Not drvRow.Item(4) Then
                                     Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
 
-                                    If Master.uSettings.UseStudioTags AndAlso IsNothing(Master.currMovie.FileInfo) Then
+                                    If Master.uSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
                                             Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                         End If
@@ -1677,7 +1681,7 @@ Public Class frmMain
 
                                     Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
 
-                                    If Master.uSettings.UseStudioTags AndAlso IsNothing(Master.currMovie.FileInfo) Then
+                                    If Master.uSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
                                             Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                                         End If
@@ -2548,7 +2552,7 @@ Public Class frmMain
                     Me.tspbLoading.Style = ProgressBarStyle.Marquee
                     Me.tspbLoading.MarqueeAnimationSpeed = 100
                     Me.Refresh()
-                    If Me.UpdateMediaInfo AndAlso IsNothing(Master.currMovie.FileInfo) Then
+                    If Me.UpdateMediaInfo Then
                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
                     End If
                 End If

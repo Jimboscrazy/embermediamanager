@@ -363,8 +363,14 @@ Public Class dlgEditMovie
                     .txtStudio.Text = Master.currMovie.StudioReal
                 ElseIf Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
                     If Strings.InStr(Master.currMovie.Studio, "/") Then
-                        Master.currMovie.StudioReal = Strings.Trim(Strings.Left(Master.currMovie.Studio, Strings.InStr(Master.currMovie.Studio, "/") - 1))
+                        Master.currMovie.StudioReal = Strings.Left(Master.currMovie.Studio, Strings.InStr(Master.currMovie.Studio, "/") - 1).Trim
                         .txtStudio.Text = Master.currMovie.StudioReal
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
+                    If Strings.InStr(Master.currMovie.Studio, "/") Then
+                        .txtStudioTag.Text = Strings.Right(Master.currMovie.Studio, Master.currMovie.Studio.Length - Strings.InStr(Master.currMovie.Studio, "/")).Trim
                     End If
                 End If
 
@@ -496,6 +502,7 @@ Public Class dlgEditMovie
                 Master.currMovie.Credits = .txtCredits.Text
                 Master.currMovie.Trailer = .txtTrailer.Text
                 Master.currMovie.StudioReal = .txtStudio.Text
+                Master.currMovie.Studio = String.Format("{0} / {1}", .txtStudio.Text.Trim, .txtStudioTag.Text.Trim)
 
                 If .lbGenre.SelectedIndices.Count > 0 Then
 
