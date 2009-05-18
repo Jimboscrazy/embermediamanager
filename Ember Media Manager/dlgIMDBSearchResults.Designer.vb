@@ -309,11 +309,11 @@ Partial Class dlgIMDBSearchResults
         '
         'btnSearch
         '
-        Me.btnSearch.Location = New System.Drawing.Point(210, 69)
+        Me.btnSearch.Image = CType(resources.GetObject("btnSearch.Image"), System.Drawing.Image)
+        Me.btnSearch.Location = New System.Drawing.Point(262, 70)
         Me.btnSearch.Name = "btnSearch"
-        Me.btnSearch.Size = New System.Drawing.Size(75, 22)
+        Me.btnSearch.Size = New System.Drawing.Size(23, 23)
         Me.btnSearch.TabIndex = 67
-        Me.btnSearch.Text = "Search"
         Me.btnSearch.UseVisualStyleBackColor = True
         '
         'txtSearch
@@ -321,7 +321,7 @@ Partial Class dlgIMDBSearchResults
         Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSearch.Location = New System.Drawing.Point(4, 71)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(200, 20)
+        Me.txtSearch.Size = New System.Drawing.Size(252, 20)
         Me.txtSearch.TabIndex = 66
         '
         'dlgIMDBSearchResults

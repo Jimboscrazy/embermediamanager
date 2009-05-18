@@ -32,7 +32,7 @@ Imports System.Net
 Public Class Master
 
     'Global Variables
-    Public Shared uSettings As New ummSettings
+    Public Shared uSettings As New emmSettings
     Public Shared currMovie As New Media.Movie
     Public Shared tmpMovie As New Media.Movie
     Public Shared currNFO As String = String.Empty
@@ -73,7 +73,6 @@ Public Class Master
         Fanart = 1
     End Enum
 
-    'Global Routines/Functions
     Public Shared Sub ResizePB(ByRef pbResize As PictureBox, ByRef pbCache As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)
 
         '//
@@ -134,6 +133,54 @@ Public Class Master
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Public Shared Function GetThumbnail(ByVal theImage As Image, ByVal maxHeight As Integer, ByVal maxWidth As Integer) As Image
+
+        '//
+        ' Resize the picture box based on the dimensions of the image and the dimensions
+        ' of the available space... try to use the most screen real estate
+        '
+        ' Why not use "Zoom" for fanart background? - To keep the image at the top. Zoom centers vertically.
+        '\\
+
+        Dim imgOut As Image = Nothing
+
+        Try
+            If Not IsNothing(theImage) Then
+                Dim sPropPerc As Single = 1.0 'no default scaling
+
+                If theImage.Width > theImage.Height Then
+                    sPropPerc = CSng(maxWidth / theImage.Width)
+                Else
+                    sPropPerc = CSng(maxHeight / theImage.Height)
+                End If
+
+                ' Get the source bitmap.
+                Dim bmSource As New Bitmap(theImage)
+                ' Make a bitmap for the result.
+                Dim bmDest As New Bitmap( _
+                CInt(bmSource.Width * sPropPerc), _
+                CInt(bmSource.Height * sPropPerc))
+                ' Make a Graphics object for the result Bitmap.
+                Dim grDest As Graphics = Graphics.FromImage(bmDest)
+                ' Copy the source image into the destination bitmap.
+                grDest.DrawImage(bmSource, 0, 0, _
+                bmDest.Width + 1, _
+                bmDest.Height + 1)
+                ' Display the result.
+                imgOut = bmDest
+
+                'Clean up
+                bmSource = Nothing
+                bmDest = Nothing
+                grDest = Nothing
+            End If
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return imgout
+    End Function
 
     Public Shared Sub SetOverlay(ByRef pbOverlay As PictureBox)
 
@@ -262,7 +309,7 @@ quickExit:
 
             If Directory.Exists(sPath) Then
                 Dim di As New DirectoryInfo(sPath)
-                Dim lFi As New List(Of FileInfo)()
+                Dim lFi As New List(Of FileInfo)
 
                 lFi.AddRange(di.GetFiles())
 

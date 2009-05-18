@@ -26,6 +26,11 @@ Partial Class dlgSettings
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.tabGeneral = New System.Windows.Forms.TabPage
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox
+        Me.Label7 = New System.Windows.Forms.Label
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.txtPort = New System.Windows.Forms.TextBox
+        Me.txtIP = New System.Windows.Forms.TextBox
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.chkOverwriteNfo = New System.Windows.Forms.CheckBox
@@ -130,13 +135,9 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.GroupBox11 = New System.Windows.Forms.GroupBox
-        Me.txtIP = New System.Windows.Forms.TextBox
-        Me.txtPort = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.Label7 = New System.Windows.Forms.Label
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
+        Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.gbColors.SuspendLayout()
@@ -155,7 +156,6 @@ Partial Class dlgSettings
         Me.GroupBox1.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox11.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -184,6 +184,53 @@ Partial Class dlgSettings
         Me.tabGeneral.TabIndex = 0
         Me.tabGeneral.Text = "General"
         Me.tabGeneral.UseVisualStyleBackColor = True
+        '
+        'GroupBox11
+        '
+        Me.GroupBox11.Controls.Add(Me.Label7)
+        Me.GroupBox11.Controls.Add(Me.Label6)
+        Me.GroupBox11.Controls.Add(Me.txtPort)
+        Me.GroupBox11.Controls.Add(Me.txtIP)
+        Me.GroupBox11.Location = New System.Drawing.Point(6, 301)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Size = New System.Drawing.Size(385, 46)
+        Me.GroupBox11.TabIndex = 4
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "XBMC Communication"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(6, 24)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(53, 13)
+        Me.Label7.TabIndex = 7
+        Me.Label7.Text = "XBMC IP:"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(226, 22)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(62, 13)
+        Me.Label6.TabIndex = 6
+        Me.Label6.Text = "XBMC Port:"
+        '
+        'txtPort
+        '
+        Me.txtPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPort.Location = New System.Drawing.Point(294, 20)
+        Me.txtPort.Name = "txtPort"
+        Me.txtPort.Size = New System.Drawing.Size(61, 20)
+        Me.txtPort.TabIndex = 5
+        '
+        'txtIP
+        '
+        Me.txtIP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtIP.Location = New System.Drawing.Point(68, 20)
+        Me.txtIP.Name = "txtIP"
+        Me.txtIP.Size = New System.Drawing.Size(90, 20)
+        Me.txtIP.TabIndex = 4
         '
         'GroupBox4
         '
@@ -542,20 +589,20 @@ Partial Class dlgSettings
         '
         'btnDown
         '
+        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
         Me.btnDown.Location = New System.Drawing.Point(129, 259)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(23, 23)
         Me.btnDown.TabIndex = 9
-        Me.btnDown.Text = "v"
         Me.btnDown.UseVisualStyleBackColor = True
         '
         'btnUp
         '
+        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
         Me.btnUp.Location = New System.Drawing.Point(105, 259)
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(23, 23)
         Me.btnUp.TabIndex = 8
-        Me.btnUp.Text = "^"
         Me.btnUp.UseVisualStyleBackColor = True
         '
         'chkProperCase
@@ -570,20 +617,20 @@ Partial Class dlgSettings
         '
         'btnRemoveFilter
         '
+        Me.btnRemoveFilter.Image = CType(resources.GetObject("btnRemoveFilter.Image"), System.Drawing.Image)
         Me.btnRemoveFilter.Location = New System.Drawing.Point(163, 259)
         Me.btnRemoveFilter.Name = "btnRemoveFilter"
         Me.btnRemoveFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveFilter.TabIndex = 5
-        Me.btnRemoveFilter.Text = "-"
         Me.btnRemoveFilter.UseVisualStyleBackColor = True
         '
         'btnAddFilter
         '
+        Me.btnAddFilter.Image = CType(resources.GetObject("btnAddFilter.Image"), System.Drawing.Image)
         Me.btnAddFilter.Location = New System.Drawing.Point(68, 259)
         Me.btnAddFilter.Name = "btnAddFilter"
         Me.btnAddFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddFilter.TabIndex = 4
-        Me.btnAddFilter.Text = "+"
         Me.btnAddFilter.UseVisualStyleBackColor = True
         '
         'txtFilter
@@ -848,11 +895,14 @@ Partial Class dlgSettings
         '
         'btnMovieAddFiles
         '
+        Me.btnMovieAddFiles.Image = CType(resources.GetObject("btnMovieAddFiles.Image"), System.Drawing.Image)
+        Me.btnMovieAddFiles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnMovieAddFiles.Location = New System.Drawing.Point(478, 35)
         Me.btnMovieAddFiles.Name = "btnMovieAddFiles"
         Me.btnMovieAddFiles.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieAddFiles.TabIndex = 51
-        Me.btnMovieAddFiles.Text = "Add Files Path"
+        Me.btnMovieAddFiles.Text = "Files Path"
+        Me.btnMovieAddFiles.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnMovieAddFiles.UseVisualStyleBackColor = True
         '
         'GroupBox2
@@ -910,20 +960,26 @@ Partial Class dlgSettings
         '
         'btnMovieRem
         '
+        Me.btnMovieRem.Image = CType(resources.GetObject("btnMovieRem.Image"), System.Drawing.Image)
+        Me.btnMovieRem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnMovieRem.Location = New System.Drawing.Point(478, 88)
         Me.btnMovieRem.Name = "btnMovieRem"
         Me.btnMovieRem.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieRem.TabIndex = 52
-        Me.btnMovieRem.Text = "Remove Selected"
+        Me.btnMovieRem.Text = "Remove"
+        Me.btnMovieRem.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnMovieRem.UseVisualStyleBackColor = True
         '
         'btnMovieAddFolder
         '
+        Me.btnMovieAddFolder.Image = CType(resources.GetObject("btnMovieAddFolder.Image"), System.Drawing.Image)
+        Me.btnMovieAddFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnMovieAddFolder.Location = New System.Drawing.Point(478, 6)
         Me.btnMovieAddFolder.Name = "btnMovieAddFolder"
         Me.btnMovieAddFolder.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieAddFolder.TabIndex = 50
-        Me.btnMovieAddFolder.Text = "Add Folders Path"
+        Me.btnMovieAddFolder.Text = "Folders Path"
+        Me.btnMovieAddFolder.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnMovieAddFolder.UseVisualStyleBackColor = True
         '
         'chkUseFolderNames
@@ -1269,53 +1325,6 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'GroupBox11
-        '
-        Me.GroupBox11.Controls.Add(Me.Label7)
-        Me.GroupBox11.Controls.Add(Me.Label6)
-        Me.GroupBox11.Controls.Add(Me.txtPort)
-        Me.GroupBox11.Controls.Add(Me.txtIP)
-        Me.GroupBox11.Location = New System.Drawing.Point(6, 301)
-        Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(385, 46)
-        Me.GroupBox11.TabIndex = 4
-        Me.GroupBox11.TabStop = False
-        Me.GroupBox11.Text = "XBMC Communication"
-        '
-        'txtIP
-        '
-        Me.txtIP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIP.Location = New System.Drawing.Point(68, 20)
-        Me.txtIP.Name = "txtIP"
-        Me.txtIP.Size = New System.Drawing.Size(90, 20)
-        Me.txtIP.TabIndex = 4
-        '
-        'txtPort
-        '
-        Me.txtPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPort.Location = New System.Drawing.Point(294, 20)
-        Me.txtPort.Name = "txtPort"
-        Me.txtPort.Size = New System.Drawing.Size(61, 20)
-        Me.txtPort.TabIndex = 5
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(226, 22)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(62, 13)
-        Me.Label6.TabIndex = 6
-        Me.Label6.Text = "XBMC Port:"
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 24)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(53, 13)
-        Me.Label7.TabIndex = 7
-        Me.Label7.Text = "XBMC IP:"
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -1336,6 +1345,8 @@ Partial Class dlgSettings
         Me.Text = "UMM Settings"
         Me.TabControl1.ResumeLayout(False)
         Me.tabGeneral.ResumeLayout(False)
+        Me.GroupBox11.ResumeLayout(False)
+        Me.GroupBox11.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
@@ -1367,8 +1378,6 @@ Partial Class dlgSettings
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox11.ResumeLayout(False)
-        Me.GroupBox11.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
