@@ -13,7 +13,7 @@
  * Fix: File cleaner wasn't properly looking for "moviename".ext type files
  * Fix: Don't create an extrathumbs dir if no extrathumbs are selected (again)
  * Fix: Non-conforming NFO setting not saving
- * Fix: Manual rescan of media info always creating a <movie>.nfo
+ * Fix: Manual rescan of media info always creating a "moviename".nfo
  * Change: Ability to edit studio tag in GUI editor
  * Change: Don't attempt to scan media info from ISOs
  * Change: Rearrange settings file to put movies list at the very bottom
