@@ -21,7 +21,6 @@
  * Change: Simplified file mode movie scanning and stacking detection (Man, was I over doing that)
  * Change: Smarter/faster media list searching
  * Change: Misc tweaks to code
- * Change: Don't scan media info it it already exists (unless using MI Only AP or manual MI refresh)
  * Change: Some tweaks to the GUI
 
 *Changes in r39:*
