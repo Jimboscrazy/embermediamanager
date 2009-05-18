@@ -74,6 +74,14 @@ Partial Class dlgSettings
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.TabControl2 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.GroupBox12 = New System.Windows.Forms.GroupBox
+        Me.Label8 = New System.Windows.Forms.Label
+        Me.chkMarkNew = New System.Windows.Forms.CheckBox
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.chkMovieTrailerCol = New System.Windows.Forms.CheckBox
+        Me.chkMovieInfoCol = New System.Windows.Forms.CheckBox
+        Me.chkMovieFanartCol = New System.Windows.Forms.CheckBox
+        Me.chkMoviePosterCol = New System.Windows.Forms.CheckBox
         Me.GroupBox8 = New System.Windows.Forms.GroupBox
         Me.GroupBox7 = New System.Windows.Forms.GroupBox
         Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
@@ -95,11 +103,6 @@ Partial Class dlgSettings
         Me.colPath = New System.Windows.Forms.ColumnHeader
         Me.colType = New System.Windows.Forms.ColumnHeader
         Me.btnMovieAddFiles = New System.Windows.Forms.Button
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.chkMovieTrailerCol = New System.Windows.Forms.CheckBox
-        Me.chkMovieInfoCol = New System.Windows.Forms.CheckBox
-        Me.chkMovieFanartCol = New System.Windows.Forms.CheckBox
-        Me.chkMoviePosterCol = New System.Windows.Forms.CheckBox
         Me.btnMovieRem = New System.Windows.Forms.Button
         Me.btnMovieAddFolder = New System.Windows.Forms.Button
         Me.chkUseFolderNames = New System.Windows.Forms.CheckBox
@@ -145,11 +148,12 @@ Partial Class dlgSettings
         Me.tabMovies.SuspendLayout()
         Me.TabControl2.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.GroupBox12.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
@@ -673,11 +677,11 @@ Partial Class dlgSettings
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.GroupBox12)
         Me.TabPage1.Controls.Add(Me.GroupBox8)
         Me.TabPage1.Controls.Add(Me.chkTitleFromNfo)
         Me.TabPage1.Controls.Add(Me.lvMovies)
         Me.TabPage1.Controls.Add(Me.btnMovieAddFiles)
-        Me.TabPage1.Controls.Add(Me.GroupBox2)
         Me.TabPage1.Controls.Add(Me.btnMovieRem)
         Me.TabPage1.Controls.Add(Me.btnMovieAddFolder)
         Me.TabPage1.Controls.Add(Me.chkUseFolderNames)
@@ -688,6 +692,91 @@ Partial Class dlgSettings
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Main"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'GroupBox12
+        '
+        Me.GroupBox12.Controls.Add(Me.Label8)
+        Me.GroupBox12.Controls.Add(Me.chkMarkNew)
+        Me.GroupBox12.Controls.Add(Me.GroupBox2)
+        Me.GroupBox12.Location = New System.Drawing.Point(377, 138)
+        Me.GroupBox12.Name = "GroupBox12"
+        Me.GroupBox12.Size = New System.Drawing.Size(200, 177)
+        Me.GroupBox12.TabIndex = 65
+        Me.GroupBox12.TabStop = False
+        Me.GroupBox12.Text = "Miscellaneous"
+        '
+        'Label8
+        '
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(9, 34)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(179, 27)
+        Me.Label8.TabIndex = 56
+        Me.Label8.Text = "(New movies will still display in green if not checked.)"
+        Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'chkMarkNew
+        '
+        Me.chkMarkNew.AutoSize = True
+        Me.chkMarkNew.Location = New System.Drawing.Point(12, 19)
+        Me.chkMarkNew.Name = "chkMarkNew"
+        Me.chkMarkNew.Size = New System.Drawing.Size(112, 17)
+        Me.chkMarkNew.TabIndex = 55
+        Me.chkMarkNew.Text = "Mark New Movies"
+        Me.chkMarkNew.UseVisualStyleBackColor = True
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.chkMovieTrailerCol)
+        Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
+        Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
+        Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 60)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(188, 112)
+        Me.GroupBox2.TabIndex = 54
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Media List Options"
+        '
+        'chkMovieTrailerCol
+        '
+        Me.chkMovieTrailerCol.AutoSize = True
+        Me.chkMovieTrailerCol.Location = New System.Drawing.Point(6, 88)
+        Me.chkMovieTrailerCol.Name = "chkMovieTrailerCol"
+        Me.chkMovieTrailerCol.Size = New System.Drawing.Size(118, 17)
+        Me.chkMovieTrailerCol.TabIndex = 31
+        Me.chkMovieTrailerCol.Text = "Hide Trailer Column"
+        Me.chkMovieTrailerCol.UseVisualStyleBackColor = True
+        '
+        'chkMovieInfoCol
+        '
+        Me.chkMovieInfoCol.AutoSize = True
+        Me.chkMovieInfoCol.Location = New System.Drawing.Point(6, 65)
+        Me.chkMovieInfoCol.Name = "chkMovieInfoCol"
+        Me.chkMovieInfoCol.Size = New System.Drawing.Size(107, 17)
+        Me.chkMovieInfoCol.TabIndex = 30
+        Me.chkMovieInfoCol.Text = "Hide Info Column"
+        Me.chkMovieInfoCol.UseVisualStyleBackColor = True
+        '
+        'chkMovieFanartCol
+        '
+        Me.chkMovieFanartCol.AutoSize = True
+        Me.chkMovieFanartCol.Location = New System.Drawing.Point(6, 42)
+        Me.chkMovieFanartCol.Name = "chkMovieFanartCol"
+        Me.chkMovieFanartCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkMovieFanartCol.TabIndex = 29
+        Me.chkMovieFanartCol.Text = "Hide Fanart Column"
+        Me.chkMovieFanartCol.UseVisualStyleBackColor = True
+        '
+        'chkMoviePosterCol
+        '
+        Me.chkMoviePosterCol.AutoSize = True
+        Me.chkMoviePosterCol.Location = New System.Drawing.Point(6, 19)
+        Me.chkMoviePosterCol.Name = "chkMoviePosterCol"
+        Me.chkMoviePosterCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkMoviePosterCol.TabIndex = 28
+        Me.chkMoviePosterCol.Text = "Hide Poster Column"
+        Me.chkMoviePosterCol.UseVisualStyleBackColor = True
         '
         'GroupBox8
         '
@@ -905,59 +994,6 @@ Partial Class dlgSettings
         Me.btnMovieAddFiles.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnMovieAddFiles.UseVisualStyleBackColor = True
         '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.chkMovieTrailerCol)
-        Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
-        Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
-        Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
-        Me.GroupBox2.Location = New System.Drawing.Point(445, 138)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(137, 112)
-        Me.GroupBox2.TabIndex = 54
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Media List Options"
-        '
-        'chkMovieTrailerCol
-        '
-        Me.chkMovieTrailerCol.AutoSize = True
-        Me.chkMovieTrailerCol.Location = New System.Drawing.Point(6, 88)
-        Me.chkMovieTrailerCol.Name = "chkMovieTrailerCol"
-        Me.chkMovieTrailerCol.Size = New System.Drawing.Size(118, 17)
-        Me.chkMovieTrailerCol.TabIndex = 31
-        Me.chkMovieTrailerCol.Text = "Hide Trailer Column"
-        Me.chkMovieTrailerCol.UseVisualStyleBackColor = True
-        '
-        'chkMovieInfoCol
-        '
-        Me.chkMovieInfoCol.AutoSize = True
-        Me.chkMovieInfoCol.Location = New System.Drawing.Point(6, 65)
-        Me.chkMovieInfoCol.Name = "chkMovieInfoCol"
-        Me.chkMovieInfoCol.Size = New System.Drawing.Size(107, 17)
-        Me.chkMovieInfoCol.TabIndex = 30
-        Me.chkMovieInfoCol.Text = "Hide Info Column"
-        Me.chkMovieInfoCol.UseVisualStyleBackColor = True
-        '
-        'chkMovieFanartCol
-        '
-        Me.chkMovieFanartCol.AutoSize = True
-        Me.chkMovieFanartCol.Location = New System.Drawing.Point(6, 42)
-        Me.chkMovieFanartCol.Name = "chkMovieFanartCol"
-        Me.chkMovieFanartCol.Size = New System.Drawing.Size(119, 17)
-        Me.chkMovieFanartCol.TabIndex = 29
-        Me.chkMovieFanartCol.Text = "Hide Fanart Column"
-        Me.chkMovieFanartCol.UseVisualStyleBackColor = True
-        '
-        'chkMoviePosterCol
-        '
-        Me.chkMoviePosterCol.AutoSize = True
-        Me.chkMoviePosterCol.Location = New System.Drawing.Point(6, 19)
-        Me.chkMoviePosterCol.Name = "chkMoviePosterCol"
-        Me.chkMoviePosterCol.Size = New System.Drawing.Size(119, 17)
-        Me.chkMoviePosterCol.TabIndex = 28
-        Me.chkMoviePosterCol.Text = "Hide Poster Column"
-        Me.chkMoviePosterCol.UseVisualStyleBackColor = True
-        '
         'btnMovieRem
         '
         Me.btnMovieRem.Image = CType(resources.GetObject("btnMovieRem.Image"), System.Drawing.Image)
@@ -1163,7 +1199,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkStudio)
         Me.GroupBox1.Location = New System.Drawing.Point(261, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(241, 151)
+        Me.GroupBox1.Size = New System.Drawing.Size(241, 153)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -1171,7 +1207,7 @@ Partial Class dlgSettings
         'chkSingleScrapeImages
         '
         Me.chkSingleScrapeImages.AutoSize = True
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 133)
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 135)
         Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
         Me.chkSingleScrapeImages.Size = New System.Drawing.Size(181, 17)
         Me.chkSingleScrapeImages.TabIndex = 37
@@ -1359,6 +1395,10 @@ Partial Class dlgSettings
         Me.TabControl2.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.GroupBox12.ResumeLayout(False)
+        Me.GroupBox12.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
@@ -1366,8 +1406,6 @@ Partial Class dlgSettings
         Me.GroupBox6.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         Me.GroupBox10.ResumeLayout(False)
         Me.GroupBox10.PerformLayout()
@@ -1493,4 +1531,7 @@ Partial Class dlgSettings
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents txtPort As System.Windows.Forms.TextBox
     Friend WithEvents txtIP As System.Windows.Forms.TextBox
+    Friend WithEvents GroupBox12 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMarkNew As System.Windows.Forms.CheckBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
 End Class
