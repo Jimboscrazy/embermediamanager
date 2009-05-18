@@ -2,12 +2,15 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * Feature: First iteration of the extrathumbs manager
  * Feature: Begin XBMC update process from EMM (Not sure if this works because the xbmc web server is broken for me)
  * Feature: Ability to "Mark" movies (eg - to can keep track of ones needing editing)
  * Fix: Sometimes TMDB returns invalid/malformed compression, revert to non-compressed
  * Fix: Patch hole in the logic to convert the video resolution to a simple text descriptor
  * Fix: File cleaner wasn't properly looking for "moviename".ext type files
  * Fix: Don't create an extrathumbs dir if no extrathumbs are selected (again)
+ * Fix: Non-conforming NFO setting not saving
+ * Change: Ability to edit studio tag in GUI editor
  * Change: Don't attempt to scan media info from ISOs
  * Change: Rearrange settings file to put movies list at the very bottom
  * Change: Rearrange some items in the Info Panel
@@ -16,6 +19,7 @@
  * Change: Smarter/faster media list searching
  * Change: Misc tweaks to code
  * Change: Don't scan media info it it already exists (unless using MI Only AP or manual MI refresh)
+ * Change: Some tweaks to the GUI
 
 *Changes in r39:*
  * Fix: "moviename".fanart.jpg saving, but not displaying
