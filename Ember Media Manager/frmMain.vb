@@ -204,6 +204,8 @@ Public Class frmMain
 
             If Not String.IsNullOrEmpty(Master.uSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.uSettings.XBMCPort) Then
                 Me.tsbUpdateXBMC.Enabled = True
+            Else
+                Me.tsbUpdateXBMC.Enabled = False
             End If
 
             Me.SetColors()

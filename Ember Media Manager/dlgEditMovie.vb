@@ -262,7 +262,7 @@ Public Class dlgEditMovie
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
             If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Master.LoadMovieFromNFO(Master.currNFO)
+                Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
                 Me.FillInfo()
             End If
         Catch ex As Exception
@@ -876,20 +876,22 @@ Public Class dlgEditMovie
 
     Private Sub LoadThumbs()
         Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs")
-        Dim di As New DirectoryInfo(tPath)
-        Dim i As Integer = 0
-        Try
-            For Each thumb As FileInfo In di.GetFiles("thumb*.jpg")
-                Dim fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
-                Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i})
-                ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
-                fsImage.Close()
-                fsImage = Nothing
-                i += 1
-            Next
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+        If Directory.Exists(tPath) Then
+            Dim di As New DirectoryInfo(tPath)
+            Dim i As Integer = 0
+            Try
+                For Each thumb As FileInfo In di.GetFiles("thumb*.jpg")
+                    Dim fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
+                    Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i})
+                    ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
+                    fsImage.Close()
+                    fsImage = Nothing
+                    i += 1
+                Next
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End If
     End Sub
 
     Private Sub lvThumbs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThumbs.SelectedIndexChanged
@@ -976,9 +978,11 @@ Public Class dlgEditMovie
 
     Private Sub bwThumbs_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwThumbs.RunWorkerCompleted
         Try
-            For Each thumb As ExtraThumbs In Thumbs
-                lvThumbs.Items.Add(thumb.Name, String.Concat("  ", CStr(thumb.Index + 1)), thumb.Name)
-            Next
+            If Thumbs.Count > 0 Then
+                For Each thumb As ExtraThumbs In Thumbs
+                    lvThumbs.Items.Add(thumb.Name, String.Concat("  ", CStr(thumb.Index + 1)), thumb.Name)
+                Next
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
