@@ -357,7 +357,7 @@ Public Class dlgImgSelect
     Private Sub GetPosters()
 
         Try
-            If Master.uSettings.UseTMDB Then
+            If Master.eSettings.UseTMDB Then
                 Me.lblDL1.Text = "Retrieving data from TheMovieDB.com..."
                 Me.lblDL1Status.Text = String.Empty
                 Me.pbDL1.Maximum = 3
@@ -371,7 +371,7 @@ Public Class dlgImgSelect
                 Me.lblDL1.Text = "TheMovieDB.com is not enabled"
             End If
 
-            If Master.uSettings.UseIMPA Then
+            If Master.eSettings.UseIMPA Then
                 Me.lblDL2.Text = "Retrieving data from IMPAwards.com..."
                 Me.lblDL2Status.Text = String.Empty
                 Me.pbDL2.Maximum = 3
@@ -385,7 +385,7 @@ Public Class dlgImgSelect
                 Me.lblDL2.Text = "IMPAwards.com is not enabled"
             End If
 
-            If Master.uSettings.UseMPDB Then
+            If Master.eSettings.UseMPDB Then
                 Me.lblDL3.Text = "Retrieving data from MoviePostersDB.com..."
                 Me.lblDL3Status.Text = String.Empty
                 Me.pbDL3.Maximum = 3
@@ -406,7 +406,7 @@ Public Class dlgImgSelect
 
     Private Sub GetFanart()
         Try
-            If Master.uSettings.UseTMDB Then
+            If Master.eSettings.UseTMDB Then
                 Me.lblDL1.Text = "Retrieving data from TheMovieDB.com..."
                 Me.lblDL1Status.Text = String.Empty
                 Me.pbDL1.Maximum = 3

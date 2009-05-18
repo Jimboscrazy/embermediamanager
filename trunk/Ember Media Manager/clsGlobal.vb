@@ -32,7 +32,7 @@ Imports System.Net
 Public Class Master
 
     'Global Variables
-    Public Shared uSettings As New emmSettings
+    Public Shared eSettings As New emmSettings
     Public Shared currMovie As New Media.Movie
     Public Shared tmpMovie As New Media.Movie
     Public Shared currNFO As String = String.Empty
@@ -171,8 +171,8 @@ Public Class Master
         Try
 
             'run through each of the custom filters
-            If uSettings.FilterCustom.Count > 0 Then
-                For Each Str As String In uSettings.FilterCustom
+            If eSettings.FilterCustom.Count > 0 Then
+                For Each Str As String In eSettings.FilterCustom
 
                     If Strings.InStr(Str, "[->]") > 0 Then
                         strSplit = Strings.Split(Str, "[->]")
@@ -184,7 +184,7 @@ Public Class Master
             End If
 
             'Convert String To Proper Case
-            If uSettings.ProperCase Then
+            If eSettings.ProperCase Then
                 movieName = Strings.StrConv(movieName, VbStrConv.ProperCase)
             End If
 
@@ -441,8 +441,8 @@ quickExit:
                 End If
 
             Catch ex As Exception
-            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+                eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
         Else
             MsgBox("Cannot find Studios.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Studios.xml", MsgBoxStyle.Critical, "File Not Found")
         End If
@@ -645,7 +645,7 @@ quickExit:
                 xmlSer = Nothing
             End If
             'non-conforming nfo... rename per setting
-            If Not uSettings.OverwriteNfo Then
+            If Not eSettings.OverwriteNfo Then
                 Dim i As Integer = 2
                 Dim strNewName As String = GetNameFromPath(RemoveExtFromPath(sPath)) & ".info"
                 Do While File.Exists(strNewName)
@@ -944,9 +944,9 @@ quickExit:
         Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
         Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
 
-        If uSettings.MovieNameNFO AndAlso File.Exists(String.Concat(RemoveExtFromPath(nPath), ".nfo")) Then
+        If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(RemoveExtFromPath(nPath), ".nfo")) Then
             Return String.Concat(RemoveExtFromPath(nPath), ".nfo")
-        ElseIf Not isFile AndAlso uSettings.MovieNFO AndAlso File.Exists(String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")) Then
+        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")) Then
             Return String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")
         Else
             Return String.Empty
@@ -967,8 +967,12 @@ quickExit:
             Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
             Dim tPath As String = String.Empty
 
-            If uSettings.MovieNameNFO OrElse isFile Then
-                tPath = String.Concat(RemoveExtFromPath(nPath), ".nfo")
+            If eSettings.MovieNameNFO OrElse isFile Then
+                If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                    tPath = String.Concat(Directory.GetParent(sPath).FullName, "video_ts.nfo")
+                Else
+                    tPath = String.Concat(RemoveExtFromPath(nPath), ".nfo")
+                End If
                 If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                     Dim xmlSW As New StreamWriter(tPath)
                     xmlSer.Serialize(xmlSW, movieToSave)
@@ -977,8 +981,8 @@ quickExit:
                 End If
             End If
 
-            If Not isFile AndAlso uSettings.MovieNFO Then
-                tPath = String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")
+            If Not isFile AndAlso eSettings.MovieNFO Then
+                tPath = String.Concat(Directory.GetParent(nPath).FullName.ToString, "\movie.nfo")
                 If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                     Dim xmlSW As New StreamWriter(tPath)
                     xmlSer.Serialize(xmlSW, movieToSave)

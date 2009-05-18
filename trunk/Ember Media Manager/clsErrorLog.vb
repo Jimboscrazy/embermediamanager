@@ -33,7 +33,7 @@ Public Class ErrorLogger
         '\\
 
         Try
-            If Master.uSettings.LogErrors Then
+            If Master.eSettings.LogErrors Then
                 Dim sPath As String = Application.StartupPath & "\Log\"
 
                 If Not System.IO.Directory.Exists(sPath) Then

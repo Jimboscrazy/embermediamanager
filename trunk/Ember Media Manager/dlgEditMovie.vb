@@ -461,9 +461,9 @@ Public Class dlgEditMovie
                     .lblPosterSize.Visible = True
                 End If
 
-                If Not Master.uSettings.UseTMDB Then
+                If Not Master.eSettings.UseTMDB Then
                     .btnSetFanartScrape.Enabled = False
-                    If Not Master.uSettings.UseIMPA Then
+                    If Not Master.eSettings.UseIMPA Then
                         .btnSetPosterScrape.Enabled = False
                     End If
                 End If

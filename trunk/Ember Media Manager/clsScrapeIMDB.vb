@@ -118,16 +118,16 @@ Namespace IMDB
                 Select Case iType
                     Case Master.ScrapeType.FullAsk, Master.ScrapeType.UpdateAsk
                         If r.PopularTitles.Count = 1 Then
-                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast, False)
+                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                         ElseIf r.ExactMatches.Count > 0 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast, False)
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                         Else
                             Master.tmpMovie = New Media.Movie
                             If dlgIMDBSearchResults.ShowDialog(r) = Windows.Forms.DialogResult.OK Then
                                 If String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                     b = False
                                 Else
-                                    b = GetMovieInfo(Master.tmpMovie.IMDBID, imdbMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast, False)
+                                    b = GetMovieInfo(Master.tmpMovie.IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                                 End If
                             Else
                                 b = False
@@ -136,13 +136,13 @@ Namespace IMDB
                     Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto
                         'it seems "popular matches" is a better result than "exact matches"
                         If r.PopularTitles.Count > 0 Then
-                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast, False)
+                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                             'no popular matches, try exact matches
                         ElseIf r.ExactMatches.Count > 0 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast, False)
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                             'no populartitles, get partial matches
                         ElseIf r.PartialMatches.Count > 0 Then
-                            b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.uSettings.FullCrew, Master.uSettings.FullCast, False)
+                            b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                         End If
                 End Select
 
@@ -333,7 +333,7 @@ mResult:
 
                 Dim OriginalTitle As String = Regex.Match(Html, MOVIE_TITLE_PATTERN).ToString()
                 IMDBMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString))
-                If String.IsNullOrEmpty(IMDBMovie.Title) OrElse Not Master.uSettings.LockTitle Then
+                If String.IsNullOrEmpty(IMDBMovie.Title) OrElse Not Master.eSettings.LockTitle Then
                     IMDBMovie.Title = IMDBMovie.OriginalTitle
                 End If
                 If GetPoster Then
@@ -358,9 +358,9 @@ mResult:
                     W = Html.IndexOf("</div>", D)
                     Dim rCert As MatchCollection = Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN_3)
 
-                    Dim Cert = From M As Match In rCert Select N = String.Format("{0}:{1}", M.Groups(1).ToString.Trim, M.Groups(2).ToString.Trim) Where N.Contains(Master.uSettings.CertificationLang)
+                    Dim Cert = From M As Match In rCert Select N = String.Format("{0}:{1}", M.Groups(1).ToString.Trim, M.Groups(2).ToString.Trim) Where N.Contains(Master.eSettings.CertificationLang)
 
-                    If Not String.IsNullOrEmpty(Master.uSettings.CertificationLang) Then
+                    If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                         If Cert.Count > 0 Then
                             IMDBMovie.Certification = Cert(0).ToString
                         End If
@@ -496,7 +496,7 @@ mResult:
                     bwIMDB.ReportProgress(7)
                 End If
 
-                If String.IsNullOrEmpty(IMDBMovie.Outline) OrElse Not Master.uSettings.LockOutline Then
+                If String.IsNullOrEmpty(IMDBMovie.Outline) OrElse Not Master.eSettings.LockOutline Then
                     'Get the Plot Outline
                     D = 0 : W = 0
 
@@ -537,7 +537,7 @@ mResult:
 
 mPlot:
                 'Get the full Plot
-                If String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.uSettings.LockPlot Then
+                If String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.eSettings.LockPlot Then
                     Dim FullPlot As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)<i>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value
                     IMDBMovie.Plot = Web.HttpUtility.HtmlDecode(FullPlot.Replace("|", String.Empty)).Trim
                 End If
