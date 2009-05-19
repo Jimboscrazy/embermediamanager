@@ -145,6 +145,8 @@ Public Class Master
             Dim grOverlay As Graphics = Graphics.FromImage(bmOverlay)
             Dim bmHeight As Integer = pbOverlay.Image.Height * 0.65
 
+            grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+
             grOverlay.DrawImage(My.Resources.overlay, 0, 0, pbOverlay.Image.Width, bmHeight)
             pbOverlay.Image = bmOverlay
 
