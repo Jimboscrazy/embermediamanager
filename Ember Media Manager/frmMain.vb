@@ -106,8 +106,9 @@ Public Class frmMain
                     Master.eSettings.MovieList.Add(drvRow.Cells(1).Value.ToString)
                 End If
             Next
-            Master.eSettings.Save()
         End If
+        Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
+        Master.eSettings.Save()
 
         If Me.bwFolderData.IsBusy Then Me.bwFolderData.CancelAsync()
         If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
@@ -213,7 +214,14 @@ Public Class frmMain
             Me.pnlInfoPanel.Height = 25
             Me.ClearInfo()
 
-            Me.LoadMedia(1)
+            If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
+                Me.LoadMedia(1)
+            Else
+                If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    Me.LoadMedia(1)
+                End If
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -713,6 +721,8 @@ Public Class frmMain
                 If Not Me.dgvMediaList.Item(2, currRow).Value AndAlso Not Me.dgvMediaList.Item(3, currRow).Value AndAlso Not Me.dgvMediaList.Item(4, currRow).Value Then
                     Me.ClearInfo()
                     Me.pnlNoInfo.Visible = True
+                    Master.currPath = Me.dgvMediaList.Item(0, currRow).Value.ToString
+                    Master.isFile = Me.dgvMediaList.Item(6, currRow).Value.ToString
                 Else
                     Me.pnlNoInfo.Visible = False
                     'try to load the info from the NFO
@@ -2001,6 +2011,7 @@ Public Class frmMain
             Me.tsbRescrape.Enabled = False
             Me.tsbEdit.Enabled = False
             Me.tabsMain.Enabled = False
+            Me.pnlNoInfo.Visible = False
 
             'set status bar text to movie path
             Me.tslStatus.Text = sPath
