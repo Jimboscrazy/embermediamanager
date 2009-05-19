@@ -129,7 +129,7 @@ Public Class Images
             End If
 
             If Master.eSettings.MovieTBN AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(pPath).FullName, "\movie.tbn")
+                tPath = String.Concat(Directory.GetParent(sPath).FullName, "\movie.tbn")
                 If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
@@ -147,7 +147,7 @@ Public Class Images
             End If
 
             If Master.eSettings.MovieJPG AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(pPath).ToString, "\movie.jpg")
+                tPath = String.Concat(Directory.GetParent(sPath).FullName, "\movie.jpg")
                 If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
@@ -165,21 +165,21 @@ Public Class Images
             End If
 
             If Master.eSettings.PosterTBN AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(pPath).FullName, "\poster.tbn")
+                tPath = String.Concat(Directory.GetParent(sPath).FullName, "\poster.tbn")
                 If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
             End If
 
             If Master.eSettings.PosterJPG AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(pPath).FullName, "\poster.jpg")
+                tPath = String.Concat(Directory.GetParent(sPath).FullName, "\poster.jpg")
                 If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
             End If
 
             If Master.eSettings.FolderJPG AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(pPath).FullName, "\folder.jpg")
+                tPath = String.Concat(Directory.GetParent(sPath).FullName, "\folder.jpg")
                 If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
                     Save(tPath)
                 End If
@@ -200,7 +200,7 @@ Public Class Images
             End If
 
             If Master.eSettings.FanartJPG AndAlso Not isFile Then
-                tPath = String.Concat(Directory.GetParent(fPath).FullName, "\fanart.jpg")
+                tPath = String.Concat(Directory.GetParent(sPath).FullName, "\fanart.jpg")
                 If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteFanart Then
                     Save(tPath)
                 End If
@@ -619,10 +619,14 @@ foundIT:
 
             If Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(fPath), "-fanart.jpg")) Then
                 Return String.Concat(Master.RemoveExtFromPath(fPath), "-fanart.jpg")
-            ElseIf Not isFile AndAlso Master.eSettings.FanartJPG AndAlso File.Exists(String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")) Then
-                Return String.Concat(Directory.GetParent(fPath).ToString, "\fanart.jpg")
+            ElseIf Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts-fanart.jpg")) Then
+                Return String.Concat(Directory.GetParent(sPath).FullName, "\video_ts-fanart.jpg")
+            ElseIf Not isFile AndAlso Master.eSettings.FanartJPG AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\fanart.jpg")) Then
+                Return String.Concat(Directory.GetParent(sPath).FullName, "\fanart.jpg")
             ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")) Then
                 Return String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")
+            ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.fanart.jpg")) Then
+                Return String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.fanart.jpg")
             Else
                 Return String.Empty
             End If
@@ -642,18 +646,22 @@ foundIT:
             Dim tmpName As String = Master.CleanStackingMarkers(Master.GetNameFromPath(sPath))
             Dim pPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
 
-            If Not isFile AndAlso Master.eSettings.MovieTBN AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\movie.tbn")) Then
-                Return String.Concat(Directory.GetParent(pPath).ToString, "\movie.tbn")
+            If Not isFile AndAlso Master.eSettings.MovieTBN AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.tbn")) Then
+                Return String.Concat(Directory.GetParent(sPath).FullName, "\movie.tbn")
             ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")) Then
                 Return String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")
-            ElseIf Not isFile AndAlso Master.eSettings.MovieJPG AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\movie.jpg")) Then
-                Return String.Concat(Directory.GetParent(pPath).ToString, "\movie.jpg")
+            ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.tbn")) Then
+                Return String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.tbn")
+            ElseIf Not isFile AndAlso Master.eSettings.MovieJPG AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.jpg")) Then
+                Return String.Concat(Directory.GetParent(sPath).FullName, "\movie.jpg")
             ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")) Then
                 Return String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")
-            ElseIf Not isFile AndAlso Master.eSettings.PosterTBN AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\poster.tbn")) Then
-                Return String.Concat(Directory.GetParent(pPath).ToString, "\poster.jpg")
-            ElseIf Not isFile AndAlso Master.eSettings.FolderJPG AndAlso File.Exists(String.Concat(Directory.GetParent(pPath).ToString, "\folder.jpg")) Then
-                Return String.Concat(Directory.GetParent(pPath).ToString, "\folder.jpg")
+            ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.jpg")) Then
+                Return String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.jpg")
+            ElseIf Not isFile AndAlso Master.eSettings.PosterTBN AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\poster.tbn")) Then
+                Return String.Concat(Directory.GetParent(sPath).FullName, "\poster.jpg")
+            ElseIf Not isFile AndAlso Master.eSettings.FolderJPG AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\folder.jpg")) Then
+                Return String.Concat(Directory.GetParent(sPath).FullName, "\folder.jpg")
             Else
                 Return String.Empty
             End If
@@ -711,17 +719,19 @@ foundIT:
                 CInt(bmSource.Height * sPropPerc))
                 ' Make a Graphics object for the result Bitmap.
                 Dim grDest As Graphics = Graphics.FromImage(bmDest)
+                grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                 ' Copy the source image into the destination bitmap.
-                grDest.DrawImage(bmSource, 0, 0, _
-                bmDest.Width + 1, _
-                bmDest.Height + 1)
-                ' Display the result.
+                grDest.DrawImage(bmSource, New Rectangle(0, 0, _
+                bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
+                bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
+
+                grDest.Dispose()
+
                 imgOut = bmDest
 
                 'Clean up
                 bmSource = Nothing
                 bmDest = Nothing
-                grDest = Nothing
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

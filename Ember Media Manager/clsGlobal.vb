@@ -565,7 +565,7 @@ quickExit:
         '\\
 
         Try
-            Return Path.GetFileNameWithoutExtension(sFile).ToString
+            Return Path.GetFileNameWithoutExtension(sFile)
         Catch
             Return String.Empty
         End Try
@@ -579,7 +579,7 @@ quickExit:
         '\\
 
         Try
-            Return String.Concat(Directory.GetParent(sPath).FullName.ToString, "\", Path.GetFileNameWithoutExtension(sPath).ToString)
+            Return String.Concat(Directory.GetParent(sPath).FullName, "\", Path.GetFileNameWithoutExtension(sPath))
         Catch
             Return String.Empty
         End Try
@@ -680,7 +680,7 @@ quickExit:
 
 
             If isFile Then
-                parPath = Directory.GetParent(sPath).ToString
+                parPath = Directory.GetParent(sPath).FullName
                 tmpName = String.Format("{0}\{1}", parPath, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))))
                 'fanart
                 If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(parPath, "\fanart.jpg")) Then
@@ -719,19 +719,20 @@ quickExit:
                     currname = sfile.Name.ToLower
                     Select Case sfile.Extension.ToLower
                         Case ".jpg"
-                            If currname = String.Concat(tmpName, "-fanart.jpg") OrElse currname = String.Concat(tmpName, ".fanart.jpg") OrElse currname = "fanart.jpg" Then
+                            If currname = String.Concat(tmpName, "-fanart.jpg") OrElse currname = String.Concat(tmpName, ".fanart.jpg") OrElse _
+                            currname = "fanart.jpg" OrElse currname = "video_ts-fanart.jpg" OrElse currname = "video_ts.fanart.jpg" Then
                                 hasFanart = True
                             ElseIf currname = String.Concat(tmpName, ".jpg") OrElse currname = "movie.jpg" OrElse _
-                            currname = "poster.jpg" OrElse currname = "folder.jpg" Then
+                            currname = "poster.jpg" OrElse currname = "folder.jpg" OrElse currname = "video_ts.jpg" Then
                                 hasPoster = True
                             End If
                         Case ".tbn"
                             If currname = String.Concat(tmpName, ".tbn") OrElse currname = "movie.tbn" OrElse _
-                                currname = "poster.tbn" Then
+                                currname = "poster.tbn" OrElse currname = "video_ts.tbn" Then
                                 hasPoster = True
                             End If
                         Case ".nfo"
-                            If currname = String.Concat(tmpName, ".nfo") OrElse currname = "movie.nfo" Then
+                            If currname = String.Concat(tmpName, ".nfo") OrElse currname = "movie.nfo" OrElse currname = "video_ts.nfo" Then
                                 hasNfo = True
                             End If
                         Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar", ".m2ts", ".dvr-ms"
@@ -946,8 +947,8 @@ quickExit:
 
         If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(RemoveExtFromPath(nPath), ".nfo")) Then
             Return String.Concat(RemoveExtFromPath(nPath), ".nfo")
-        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")) Then
-            Return String.Concat(Directory.GetParent(nPath).ToString, "\movie.nfo")
+        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(String.Concat(Directory.GetParent(nPath).FullName, "\movie.nfo")) Then
+            Return String.Concat(Directory.GetParent(nPath).FullName, "\movie.nfo")
         Else
             Return String.Empty
         End If
