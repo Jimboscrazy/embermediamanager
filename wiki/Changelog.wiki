@@ -2,8 +2,13 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * Feature: Custom genres
  * Fix: Manual Editor not saving
  * Change: Some tweaks to how the Manual Editor is handled
+ * Change: Support for a m2ts and dvr-ms 
+ * Change: Tweaks to IMDB search results GUI
+ * Change: Some minor clean up and streamlining of some functions
+ * Change: Support for VIDEO_TS
 
 *Changes in r59:*
  * Feature: First iteration of the extrathumbs manager
