@@ -784,7 +784,7 @@ Public Class emmSettings
     Public Sub Save()
         Try
             Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
-            Dim xmlWriter As New StreamWriter(Application.StartupPath & "\settings.xml")
+            Dim xmlWriter As New StreamWriter(String.Concat(Application.StartupPath, Master.pathSep, "settings.xml"))
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
@@ -795,7 +795,7 @@ Public Class emmSettings
     Public Sub Load()
         Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
         Try
-            Dim strmReader As New StreamReader(Application.StartupPath & "\settings.xml")
+            Dim strmReader As New StreamReader(String.Concat(Application.StartupPath, Master.pathSep, "settings.xml"))
             Master.eSettings = CType(xmlSerial.Deserialize(strmReader), emmSettings)
             strmReader.Close()
         Catch ex As Exception
