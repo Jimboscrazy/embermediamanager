@@ -1103,6 +1103,7 @@ Public Class frmMain
 
         Me.lblMediaCount.Text = String.Format("Media Count: {0}", Me.dgvMediaList.Rows.Count)
         Me.lblMediaCount.Visible = True
+        Me.txtSearch.Text = String.Empty
 
         Me.loadType = 0
     End Sub
@@ -1967,10 +1968,24 @@ Public Class frmMain
 
 
         Try
-            Master.alFolderList.Clear()
-            Master.alFileList.Clear()
+            If bwPrelim.IsBusy Then
+                bwPrelim.CancelAsync()
+                While bwPrelim.IsBusy
+                    Application.DoEvents()
+                End While
+            End If
+
+            If bwFolderData.IsBusy Then
+                bwFolderData.CancelAsync()
+                While bwFolderData.IsBusy
+                    Application.DoEvents()
+                End While
+            End If
 
             Me.dgvMediaList.DataSource = Nothing
+
+            Master.alFolderList.Clear()
+            Master.alFileList.Clear()
 
             Me.pnlInfoPanel.Height = 25
             Me.btnDown.Enabled = False
@@ -2027,14 +2042,23 @@ Public Class frmMain
 
             If Me.bwDownloadPic.IsBusy Then
                 Me.bwDownloadPic.CancelAsync()
+                While Me.bwDownloadPic.IsBusy
+                    Application.DoEvents()
+                End While
             End If
 
             If Me.bwMediaInfo.IsBusy Then
                 Me.bwMediaInfo.CancelAsync()
+                While Me.bwMediaInfo.IsBusy
+                    Application.DoEvents()
+                End While
             End If
 
             If Me.bwLoadInfo.IsBusy Then
                 Me.bwLoadInfo.CancelAsync()
+                While Me.bwLoadInfo.IsBusy
+                    Application.DoEvents()
+                End While
             End If
 
             If doMI Then

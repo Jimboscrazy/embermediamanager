@@ -26,8 +26,9 @@ Imports System.Text.RegularExpressions
 Public Class Images
 
     Private _image As Image
-    Dim Ret As Byte()
-    Dim ms As MemoryStream = New MemoryStream()
+    Private _isedit As Boolean
+    Private Ret As Byte()
+    Private ms As MemoryStream = New MemoryStream()
 
     Public Property [Image]() As Image
         Get
@@ -38,11 +39,21 @@ Public Class Images
         End Set
     End Property
 
+    Public Property IsEdit() As Boolean
+        Get
+            Return _isedit
+        End Get
+        Set(ByVal value As Boolean)
+            _isedit = value
+        End Set
+    End Property
+
     Public Sub New()
         Clear()
     End Sub
 
     Public Sub Clear()
+        _isedit = False
         If Not IsNothing(_image) Then
             _image = Nothing
         End If
@@ -130,7 +141,7 @@ Public Class Images
 
             If Master.eSettings.MovieTBN AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "movie.tbn")
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                     Save(tPath)
                 End If
             End If
@@ -141,14 +152,14 @@ Public Class Images
                 Else
                     tPath = String.Concat(Master.RemoveExtFromPath(pPath), ".tbn")
                 End If
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                     Save(tPath)
                 End If
             End If
 
             If Master.eSettings.MovieJPG AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "movie.jpg")
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                     Save(tPath)
                 End If
             End If
@@ -159,28 +170,28 @@ Public Class Images
                 Else
                     tPath = String.Concat(Master.RemoveExtFromPath(pPath), ".jpg")
                 End If
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                     Save(tPath)
                 End If
             End If
 
             If Master.eSettings.PosterTBN AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "poster.tbn")
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                     Save(tPath)
                 End If
             End If
 
             If Master.eSettings.PosterJPG AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "poster.jpg")
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                     Save(tPath)
                 End If
             End If
 
             If Master.eSettings.FolderJPG AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "folder.jpg")
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwritePoster Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                     Save(tPath)
                 End If
             End If
@@ -201,7 +212,7 @@ Public Class Images
 
             If Master.eSettings.FanartJPG AndAlso Not isFile Then
                 tPath = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "fanart.jpg")
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteFanart Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                     Save(tPath)
                 End If
             End If
@@ -212,7 +223,7 @@ Public Class Images
                 Else
                     tPath = String.Concat(Master.RemoveExtFromPath(fPath), "-fanart.jpg")
                 End If
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteFanart Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                     Save(tPath)
                 End If
             End If
@@ -223,7 +234,7 @@ Public Class Images
                 Else
                     tPath = String.Concat(Master.RemoveExtFromPath(fPath), ".fanart.jpg")
                 End If
-                If Not File.Exists(tPath) OrElse Master.eSettings.OverwriteFanart Then
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                     Save(tPath)
                 End If
             End If
