@@ -551,7 +551,7 @@ Public Class dlgEditMovie
                 If Directory.Exists(Application.StartupPath & "\Temp") Then
                     If Directory.Exists(Application.StartupPath & "\Temp\extrathumbs") Then
                         Dim di As New DirectoryInfo(Application.StartupPath & "\Temp\extrathumbs")
-                        Dim ePath As String = String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs\")
+                        Dim ePath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, "\extrathumbs\")
 
                         If Not Directory.Exists(ePath) Then
                             Directory.CreateDirectory(ePath)
@@ -565,7 +565,7 @@ Public Class dlgEditMovie
                         fList.AddRange(di.GetFiles("thumb*.jpg"))
 
                         For i As Integer = 0 To fList.Count - 1
-                            Master.MoveFileWithStream(fList.Item(i).FullName.ToString, String.Format("{0}\thumb{1}.jpg", ePath, i + iMod))
+                            Master.MoveFileWithStream(fList.Item(i).FullName, String.Format("{0}\thumb{1}.jpg", ePath, i + iMod))
                         Next
                     End If
                     Directory.Delete(Application.StartupPath & "\Temp", True)
@@ -646,7 +646,7 @@ Public Class dlgEditMovie
     Private Sub btnSetPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Master.currPath).FullName.ToString
+                .InitialDirectory = Directory.GetParent(Master.currPath).FullName
                 .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
                 .FilterIndex = 0
             End With
@@ -666,7 +666,7 @@ Public Class dlgEditMovie
     Private Sub btnSetFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Master.currPath).FullName.ToString
+                .InitialDirectory = Directory.GetParent(Master.currPath).FullName
                 .Filter = "JPEGs|*.jpg"
                 .FilterIndex = 4
             End With
@@ -877,7 +877,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub LoadThumbs()
-        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs")
+        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, "\extrathumbs")
         If Directory.Exists(tPath) Then
             Dim di As New DirectoryInfo(tPath)
             Dim i As Integer = 0
@@ -934,7 +934,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SaveExtraThumbsList()
-        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName.ToString, "\extrathumbs")
+        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, "\extrathumbs")
 
         'first delete the ones from the delete list
         Try

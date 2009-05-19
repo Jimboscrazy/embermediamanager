@@ -152,7 +152,7 @@ Public Class dlgImgSelect
                     If isEdit Then
                         extraPath = String.Concat(tmpPath, "\extrathumbs")
                     Else
-                        extraPath = String.Concat(Directory.GetParent(Me.sPath).FullName.ToString, "\extrathumbs")
+                        extraPath = String.Concat(Directory.GetParent(Me.sPath).FullName, "\extrathumbs")
                     End If
                     If Not Directory.Exists(extraPath) Then
                         Directory.CreateDirectory(extraPath)

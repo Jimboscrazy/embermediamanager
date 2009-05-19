@@ -601,7 +601,7 @@ Public Class dlgSettings
             '######## GENERAL TAB ########
             Master.eSettings.FilterCustom.Clear()
             For Each str As String In Me.lstFilters.Items
-                Master.eSettings.FilterCustom.Add(str.ToString)
+                Master.eSettings.FilterCustom.Add(str)
             Next
 
             Master.eSettings.HeaderColor = Me.btnHeaders.BackColor.ToArgb
@@ -632,7 +632,7 @@ Public Class dlgSettings
             '######## MOVIES TAB ########
             Master.eSettings.MovieFolders.Clear()
             For Each lvItem As ListViewItem In Me.lvMovies.Items
-                Master.eSettings.MovieFolders.Add(lvItem.Text.ToString & "|" & lvItem.SubItems(1).Text.ToString)
+                Master.eSettings.MovieFolders.Add(lvItem.Text & "|" & lvItem.SubItems(1).Text)
             Next
 
             Master.eSettings.CertificationLang = Me.cbCert.Text

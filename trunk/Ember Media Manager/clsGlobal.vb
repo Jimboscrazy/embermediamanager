@@ -551,7 +551,7 @@ quickExit:
         '\\
 
         Try
-            Return Path.GetExtension(sPath).ToString
+            Return Path.GetExtension(sPath)
         Catch
             Return String.Empty
         End Try
@@ -709,7 +709,7 @@ quickExit:
                     End If
                 Next
             Else
-                Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName.ToString)
+                Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
                 Dim lFi As New List(Of FileInfo)()
 
                 lFi.AddRange(di.GetFiles())
@@ -983,7 +983,7 @@ quickExit:
             End If
 
             If Not isFile AndAlso eSettings.MovieNFO Then
-                tPath = String.Concat(Directory.GetParent(nPath).FullName.ToString, "\movie.nfo")
+                tPath = String.Concat(Directory.GetParent(nPath).FullName, "\movie.nfo")
                 If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                     Dim xmlSW As New StreamWriter(tPath)
                     xmlSer.Serialize(xmlSW, movieToSave)
@@ -1003,7 +1003,7 @@ quickExit:
         ' Get the proper path to trailer
         '\\
 
-        Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName.ToString)
+        Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
         Dim lFi As New List(Of FileInfo)()
 
         lFi.AddRange(di.GetFiles())
@@ -1044,7 +1044,7 @@ quickExit:
                               AndAlso f.Name.Contains("-trailer"))
 
         If lFi.Count > 0 Then
-            Return lFi(0).FullName.ToString
+            Return lFi(0).FullName
         Else
             Return String.Empty
         End If
@@ -1103,7 +1103,7 @@ quickExit:
                               AndAlso Not f.Name.Contains("-trailer"))
 
         If lFi.Count > 0 Then
-            Return lFi(0).FullName.ToString
+            Return lFi(0).FullName
         Else
             Return String.Empty
         End If
