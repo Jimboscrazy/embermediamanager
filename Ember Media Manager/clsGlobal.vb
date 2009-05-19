@@ -1190,4 +1190,24 @@ quickExit:
         End If
     End Function
 
+    Public Shared Function Encode(ByVal decText As String) As String
+
+        Dim eByte() As Byte
+        ReDim eByte(decText.Length)
+        eByte = System.Text.Encoding.ASCII.GetBytes(decText)
+        Dim encText As String
+        encText = System.Convert.ToBase64String(eByte)
+        Return encText
+
+    End Function
+
+    Public Shared Function Decode(ByVal encText As String) As String
+
+        Dim dByte() As Byte
+        dByte = System.Convert.FromBase64String(encText)
+        Dim decText As String
+        decText = System.Text.Encoding.ASCII.GetString(dByte)
+        Return decText
+
+    End Function
 End Class

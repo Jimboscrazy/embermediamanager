@@ -466,6 +466,14 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub txtUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtUsername.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtPassword_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPassword.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
     Private Sub chkOverwriteNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteNfo.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
@@ -628,6 +636,8 @@ Public Class dlgSettings
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
             Master.eSettings.XBMCIP = Me.txtIP.Text
             Master.eSettings.XBMCPort = Me.txtPort.Text
+            Master.eSettings.XBMCUsername = Me.txtUsername.Text
+            Master.eSettings.XBMCPassword = Me.txtPassword.Text
 
             '######## MOVIES TAB ########
             Master.eSettings.MovieFolders.Clear()
@@ -715,7 +725,9 @@ Public Class dlgSettings
             Me.chkOverwriteNfo.Checked = Master.eSettings.OverwriteNfo
 
             Me.txtIP.Text = Master.eSettings.XBMCIP
-            Me.txtPort.text = Master.eSettings.XBMCPort
+            Me.txtPort.Text = Master.eSettings.XBMCPort
+            Me.txtUsername.Text = Master.eSettings.XBMCUsername
+            Me.txtPassword.Text = Master.eSettings.XBMCPassword
 
             Me.chkLogErrors.Checked = Master.eSettings.LogErrors
             Me.chkProperCase.Checked = Master.eSettings.ProperCase
