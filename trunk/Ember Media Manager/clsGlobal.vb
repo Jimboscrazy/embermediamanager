@@ -269,7 +269,7 @@ quickExit:
                 lFi.AddRange(di.GetFiles())
 
                 'only process proper file types
-                lFi = lFi.FindAll(Function(f As FileInfo) f.Extension.ToLower() = ".avi" _
+                lFi = lFi.FindAll(Function(f As FileInfo) (f.Extension.ToLower() = ".avi" _
                                       OrElse f.Extension.ToLower() = ".divx" _
                                       OrElse f.Extension.ToLower() = ".mkv" _
                                       OrElse f.Extension.ToLower() = ".iso" _
@@ -302,6 +302,7 @@ quickExit:
                                       OrElse f.Extension.ToLower() = ".rar" _
                                       OrElse f.Extension.ToLower() = ".m2ts" _
                                       OrElse f.Extension.ToLower() = ".dvr-ms" _
+                                      OrElse f.Extension.ToLower() = ".m4v") _
                                       AndAlso Not f.Name.Contains("-trailer"))
 
 
@@ -703,7 +704,7 @@ quickExit:
                     hasNfo = True
                 End If
 
-                Dim sExt() As String = Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms")
+                Dim sExt() As String = Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.m4v")
 
                 For Each t As String In sExt
                     If File.Exists(String.Concat(tmpName, "-trailer", t)) Then
@@ -738,7 +739,7 @@ quickExit:
                             If currname = String.Concat(tmpName, ".nfo") OrElse currname = "movie.nfo" OrElse currname = "video_ts.nfo" Then
                                 hasNfo = True
                             End If
-                        Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar", ".m2ts", ".dvr-ms"
+                        Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar", ".m2ts", ".dvr-ms", ".m4v"
                             If sfile.Name.Contains("-trailer") Then
                                 hasTrailer = True
                             End If
@@ -1043,7 +1044,8 @@ quickExit:
                               OrElse f.Extension.ToLower() = ".viv" _
                               OrElse f.Extension.ToLower() = ".rar" _
                               OrElse f.Extension.ToLower() = ".m2ts" _
-                              OrElse f.Extension.ToLower() = ".dvr-ms") _
+                              OrElse f.Extension.ToLower() = ".dvr-ms" _
+                              OrElse f.Extension.ToLower() = ".m4v") _
                               AndAlso f.Name.Contains("-trailer"))
 
         If lFi.Count > 0 Then
@@ -1102,8 +1104,9 @@ quickExit:
                               OrElse f.Extension.ToLower() = ".viv" _
                               OrElse f.Extension.ToLower() = ".rar" _
                               OrElse f.Extension.ToLower() = ".m2ts" _
-                              OrElse f.Extension.ToLower() = ".dvr-ms") _
-                              AndAlso Not f.Name.Contains("-trailer"))
+                              OrElse f.Extension.ToLower() = ".dvr-ms" _
+                              OrElse f.Extension.ToLower() = ".m4v") _
+                             AndAlso Not f.Name.Contains("-trailer"))
 
         If lFi.Count > 0 Then
             Return lFi(0).FullName
