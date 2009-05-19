@@ -184,8 +184,6 @@ Public Class frmMain
         '\\
 
         Try
-            Master.SetOpSys()
-
             'setup some dummies so we don't get exceptions when resizing form/info panel
             ReDim Preserve Me.pnlGenre(0)
             ReDim Preserve Me.pbGenre(0)
@@ -197,7 +195,7 @@ Public Class frmMain
 
             Me.Activate()
 
-            Dim sPath As String = String.Concat(Application.StartupPath, Master.pathSep, "Log", Master.pathSep, "errlog.txt")
+            Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
             If File.Exists(sPath) Then
                 Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
                 File.Delete(sPath)
@@ -1476,7 +1474,7 @@ Public Class frmMain
                             sPath = drvRow.Item(0).ToString
                             sOrName = Master.GetNameFromPath(sPath)
                             sStackName = Master.RemoveExtFromPath(sPath)
-                            sPathShort = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep)
+                            sPathShort = String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar)
 
                             If Me.bwScraper.CancellationPending Then Return
                             If Master.eSettings.CleanFolderJPG Then
@@ -2661,25 +2659,25 @@ Public Class frmMain
             Dim hasTrailer As Boolean = False
 
 
-            tmpName = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath))))
+            tmpName = String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath))), Path.DirectorySeparatorChar)
             'fanart
-            If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "fanart.jpg")) OrElse _
-            File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts-fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts.fanart.jpg")) Then
+            If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")) OrElse _
+            File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts-fanart.jpg")) OrElse File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.fanart.jpg")) Then
                 hasFanart = True
             End If
 
             'poster
-            If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "movie.jpg")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "poster.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "folder.jpg")) OrElse _
-                File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "movie.tbn")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "poster.tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts.tbn")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts.jpg")) Then
+            If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.jpg")) OrElse _
+                File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "poster.jpg")) OrElse File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "folder.jpg")) OrElse _
+                File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")) OrElse _
+                File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "poster.tbn")) OrElse File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.tbn")) OrElse _
+                File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.jpg")) Then
                 hasPoster = True
             End If
 
             'nfo
-            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "movie.nfo")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts.nfo")) Then
+            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) OrElse _
+                File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.nfo")) Then
                 hasNfo = True
             End If
 

@@ -34,20 +34,20 @@ Public Class ErrorLogger
 
         Try
             If Master.eSettings.LogErrors Then
-                Dim sPath As String = String.Concat(Application.StartupPath, Master.pathSep, "Log", Master.pathSep)
+                Dim sPath As String = Path.Combine(Application.StartupPath, "Log")
 
                 If Not System.IO.Directory.Exists(sPath) Then
                     System.IO.Directory.CreateDirectory(sPath)
                 End If
 
                 'check the file
-                Dim fs As FileStream = New FileStream(sPath & "errlog.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite)
+                Dim fs As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.OpenOrCreate, FileAccess.ReadWrite)
                 Dim s As StreamWriter = New StreamWriter(fs)
                 s.Close()
                 fs.Close()
 
                 'log it
-                Dim fs1 As FileStream = New FileStream(sPath & "errlog.txt", FileMode.Append, FileAccess.Write)
+                Dim fs1 As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.Append, FileAccess.Write)
                 Dim s1 As StreamWriter = New StreamWriter(fs1)
                 s1.Write("Title: " & title & vbCrLf)
                 s1.Write("Message: " & msg & vbCrLf)
