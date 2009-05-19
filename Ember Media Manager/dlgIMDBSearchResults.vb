@@ -253,12 +253,12 @@ Public Class dlgIMDBSearchResults
                         selNode = TnP.FirstNode
                     End If
 
-                    If M.PopularTitles.Count > 0 Then
-                        If M.PartialMatches.Count > 0 Then
+                    If M.ExactMatches.Count > 0 Then
+                        If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 Then
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
-                        TnP = New TreeNode(String.Format("Popular Titles ({0})", M.PopularTitles.Count))
-                        For Each Movie As Media.Movie In M.PopularTitles
+                        TnP = New TreeNode("Exact Matches")
+                        For Each Movie As Media.Movie In M.ExactMatches
                             TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
                         Next
                         TnP.Expand()
@@ -266,12 +266,12 @@ Public Class dlgIMDBSearchResults
                         selNode = TnP.FirstNode
                     End If
 
-                    If M.ExactMatches.Count > 0 Then
-                        If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 Then
+                    If M.PopularTitles.Count > 0 Then
+                        If M.PartialMatches.Count > 0 Then
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
-                        TnP = New TreeNode("Exact Matches")
-                        For Each Movie As Media.Movie In M.ExactMatches
+                        TnP = New TreeNode(String.Format("Popular Titles ({0})", M.PopularTitles.Count))
+                        For Each Movie As Media.Movie In M.PopularTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
                         Next
                         TnP.Expand()

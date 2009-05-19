@@ -670,11 +670,11 @@ Public Class dlgSettings
             Master.eSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
             Master.eSettings.MarkNew = Me.chkMarkNew.Checked
             Master.eSettings.ResizeFanart = Me.chkResizeFanart.Checked
-            Master.eSettings.FanartHeight = Me.txtFanartHeight.Text
-            Master.eSettings.FanartWidth = Me.txtFanartWidth.Text
+            Master.eSettings.FanartHeight = If(Not String.IsNullOrEmpty(Me.txtFanartHeight.Text), CLng(Me.txtFanartHeight.Text), 0)
+            Master.eSettings.FanartWidth = If(Not String.IsNullOrEmpty(Me.txtFanartWidth.Text), CLng(Me.txtFanartWidth.Text), 0)
             Master.eSettings.ResizePoster = Me.chkResizePoster.Checked
-            Master.eSettings.PosterHeight = Me.txtPosterHeight.Text
-            Master.eSettings.PosterWidth = Me.txtPosterWidth.Text
+            Master.eSettings.PosterHeight = If(Not String.IsNullOrEmpty(Me.txtPosterHeight.Text), CLng(Me.txtPosterHeight.Text), 0)
+            Master.eSettings.PosterWidth = If(Not String.IsNullOrEmpty(Me.txtPosterWidth.Text), CLng(Me.txtPosterWidth.Text), 0)
 
             Master.eSettings.Save()
         Catch ex As Exception

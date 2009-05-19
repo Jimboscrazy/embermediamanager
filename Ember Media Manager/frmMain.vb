@@ -137,6 +137,7 @@ Public Class frmMain
                 Me.MoveGenres()
                 Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width / 2) - (Me.pbFanart.Width / 2)
+                Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width / 2) - (Me.pnlNoInfo.Width / 2), (Me.scMain.Panel2.Height / 2) - (Me.pnlNoInfo.Height / 2))
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -559,18 +560,18 @@ Public Class frmMain
         ' Show the NFO Editor
         '\\
 
-        '  Try
-        If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            If Master.currMark Then
-                Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
-                Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+        Try
+            If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                If Master.currMark Then
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                End If
+                Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
+                Me.LoadInfo(Master.currPath, True, False, Master.isFile)
             End If
-            Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
-            Me.LoadInfo(Master.currPath, True, False, Master.isFile)
-        End If
-        ' Catch ex As Exception
-        'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        ' End Try
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
     Private Sub mnuRescrapeAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRescrapeAuto.Click
 
@@ -709,8 +710,14 @@ Public Class frmMain
 
                 'set tmpTitle to title in list - used for searching IMDB
                 Me.tmpTitle = Me.dgvMediaList.Item(1, currRow).Value.ToString
-                'try to load the info from the NFO
-                Me.LoadInfo(Me.dgvMediaList.Item(0, currRow).Value.ToString, True, False, Me.dgvMediaList.Item(6, currRow).Value)
+                If Not Me.dgvMediaList.Item(2, currRow).Value AndAlso Not Me.dgvMediaList.Item(3, currRow).Value AndAlso Not Me.dgvMediaList.Item(4, currRow).Value Then
+                    Me.ClearInfo()
+                    Me.pnlNoInfo.Visible = True
+                Else
+                    Me.pnlNoInfo.Visible = False
+                    'try to load the info from the NFO
+                    Me.LoadInfo(Me.dgvMediaList.Item(0, currRow).Value.ToString, True, False, Me.dgvMediaList.Item(6, currRow).Value)
+                End If
             End If
         Catch
         End Try
@@ -1229,51 +1236,51 @@ Public Class frmMain
         ' Thread finished: display it
         '\\
 
-        ' Try
-        Me.fillScreenInfo()
+        Try
+            Me.fillScreenInfo()
 
-        If Not IsNothing(Me.MainFanart.Image) Then
-            Me.pbFanartCache.Image = Me.MainFanart.Image
-        Else
-            If Not IsNothing(Me.pbFanartCache.Image) Then
-                Me.pbFanartCache.Image.Dispose()
-                Me.pbFanartCache.Image = Nothing
+            If Not IsNothing(Me.MainFanart.Image) Then
+                Me.pbFanartCache.Image = Me.MainFanart.Image
+            Else
+                If Not IsNothing(Me.pbFanartCache.Image) Then
+                    Me.pbFanartCache.Image.Dispose()
+                    Me.pbFanartCache.Image = Nothing
+                End If
+                If Not IsNothing(Me.pbFanart.Image) Then
+                    Me.pbFanart.Image.Dispose()
+                    Me.pbFanart.Image = Nothing
+                End If
             End If
-            If Not IsNothing(Me.pbFanart.Image) Then
-                Me.pbFanart.Image.Dispose()
-                Me.pbFanart.Image = Nothing
+
+            If Not IsNothing(Me.MainPoster.Image) Then
+                Me.pbPosterCache.Image = Me.MainPoster.Image
+                Master.ResizePB(Me.pbPoster, Me.pbPosterCache, 160, 160)
+                Master.SetOverlay(Me.pbPoster)
+                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
+                Me.pbPoster.Location = New Point(4, 4)
+                Me.pnlPoster.Visible = True
+            Else
+                If Not IsNothing(Me.pbPoster.Image) Then
+                    Me.pbPoster.Image.Dispose()
+                    Me.pbPoster.Image = Nothing
+                    Me.pnlPoster.Visible = False
+                End If
             End If
-        End If
 
-        If Not IsNothing(Me.MainPoster.Image) Then
-            Me.pbPosterCache.Image = Me.MainPoster.Image
-            Master.ResizePB(Me.pbPoster, Me.pbPosterCache, 160, 160)
-            Master.SetOverlay(Me.pbPoster)
-            Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
-            Me.pbPoster.Location = New Point(4, 4)
-            Me.pnlPoster.Visible = True
-        Else
-            If Not IsNothing(Me.pbPoster.Image) Then
-                Me.pbPoster.Image.Dispose()
-                Me.pbPoster.Image = Nothing
-                Me.pnlPoster.Visible = False
+            Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+            Me.pbFanart.Left = (Me.scMain.Panel2.Width / 2) - (Me.pbFanart.Width / 2)
+
+            If Not bwScraper.IsBusy Then
+                Me.tsbAutoPilot.Enabled = True
+                Me.tsbRefreshMedia.Enabled = True
+                Me.tsbRescrape.Enabled = True
+                Me.tsbEdit.Enabled = True
+                Me.tabsMain.Enabled = True
             End If
-        End If
 
-        Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-        Me.pbFanart.Left = (Me.scMain.Panel2.Width / 2) - (Me.pbFanart.Width / 2)
-
-        If Not bwScraper.IsBusy Then
-            Me.tsbAutoPilot.Enabled = True
-            Me.tsbRefreshMedia.Enabled = True
-            Me.tsbRescrape.Enabled = True
-            Me.tsbEdit.Enabled = True
-            Me.tabsMain.Enabled = True
-        End If
-
-        ' Catch ex As Exception
-        '     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        ' End Try
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
     End Sub
 
@@ -2005,7 +2012,6 @@ Public Class frmMain
                 Me.txtMediaInfo.Clear()
                 Me.pbMILoading.Visible = True
             End If
-            Me.Refresh()
 
             If Me.bwDownloadPic.IsBusy Then
                 Me.bwDownloadPic.CancelAsync()
