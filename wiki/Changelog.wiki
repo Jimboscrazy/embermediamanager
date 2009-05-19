@@ -9,6 +9,7 @@
  * Change: Tweaks to IMDB search results GUI
  * Change: Some minor clean up and streamlining of some functions
  * Change: Support for VIDEO_TS
+ * Change: "No Information Available" message if movie doesn't have nfo, poster, or fanart
 
 *Changes in r59:*
  * Feature: First iteration of the extrathumbs manager
