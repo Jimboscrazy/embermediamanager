@@ -27,13 +27,17 @@ Partial Class dlgSettings
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.tabGeneral = New System.Windows.Forms.TabPage
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
+        Me.Label13 = New System.Windows.Forms.Label
+        Me.Label14 = New System.Windows.Forms.Label
+        Me.txtPassword = New System.Windows.Forms.TextBox
+        Me.txtUsername = New System.Windows.Forms.TextBox
         Me.Label7 = New System.Windows.Forms.Label
         Me.Label6 = New System.Windows.Forms.Label
         Me.txtPort = New System.Windows.Forms.TextBox
         Me.txtIP = New System.Windows.Forms.TextBox
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
-        Me.Label5 = New System.Windows.Forms.Label
         Me.chkOverwriteNfo = New System.Windows.Forms.CheckBox
+        Me.Label5 = New System.Windows.Forms.Label
         Me.chkLogErrors = New System.Windows.Forms.CheckBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.chkCleanMovieNameJPG = New System.Windows.Forms.CheckBox
@@ -107,6 +111,12 @@ Partial Class dlgSettings
         Me.btnMovieAddFolder = New System.Windows.Forms.Button
         Me.chkUseFolderNames = New System.Windows.Forms.CheckBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.GroupBox14 = New System.Windows.Forms.GroupBox
+        Me.Label11 = New System.Windows.Forms.Label
+        Me.Label12 = New System.Windows.Forms.Label
+        Me.chkResizePoster = New System.Windows.Forms.CheckBox
+        Me.txtPosterWidth = New System.Windows.Forms.TextBox
+        Me.txtPosterHeight = New System.Windows.Forms.TextBox
         Me.GroupBox13 = New System.Windows.Forms.GroupBox
         Me.Label9 = New System.Windows.Forms.Label
         Me.Label10 = New System.Windows.Forms.Label
@@ -144,12 +154,6 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.GroupBox14 = New System.Windows.Forms.GroupBox
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.chkResizePoster = New System.Windows.Forms.CheckBox
-        Me.txtPosterWidth = New System.Windows.Forms.TextBox
-        Me.txtPosterHeight = New System.Windows.Forms.TextBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -167,13 +171,13 @@ Partial Class dlgSettings
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.GroupBox14.SuspendLayout()
         Me.GroupBox13.SuspendLayout()
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox14.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -205,21 +209,60 @@ Partial Class dlgSettings
         '
         'GroupBox11
         '
+        Me.GroupBox11.Controls.Add(Me.txtPassword)
+        Me.GroupBox11.Controls.Add(Me.txtUsername)
+        Me.GroupBox11.Controls.Add(Me.Label13)
+        Me.GroupBox11.Controls.Add(Me.Label14)
         Me.GroupBox11.Controls.Add(Me.Label7)
         Me.GroupBox11.Controls.Add(Me.Label6)
         Me.GroupBox11.Controls.Add(Me.txtPort)
         Me.GroupBox11.Controls.Add(Me.txtIP)
         Me.GroupBox11.Location = New System.Drawing.Point(6, 301)
         Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(385, 46)
+        Me.GroupBox11.Size = New System.Drawing.Size(582, 46)
         Me.GroupBox11.TabIndex = 4
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "XBMC Communication"
         '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(296, 21)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(58, 13)
+        Me.Label13.TabIndex = 11
+        Me.Label13.Text = "Username:"
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(439, 21)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(56, 13)
+        Me.Label14.TabIndex = 10
+        Me.Label14.Text = "Password:"
+        '
+        'txtPassword
+        '
+        Me.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPassword.Location = New System.Drawing.Point(495, 17)
+        Me.txtPassword.Name = "txtPassword"
+        Me.txtPassword.Size = New System.Drawing.Size(80, 20)
+        Me.txtPassword.TabIndex = 9
+        Me.txtPassword.UseSystemPasswordChar = True
+        '
+        'txtUsername
+        '
+        Me.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtUsername.Location = New System.Drawing.Point(353, 17)
+        Me.txtUsername.Name = "txtUsername"
+        Me.txtUsername.Size = New System.Drawing.Size(80, 20)
+        Me.txtUsername.TabIndex = 8
+        '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(6, 24)
+        Me.Label7.Location = New System.Drawing.Point(2, 21)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(53, 13)
         Me.Label7.TabIndex = 7
@@ -228,7 +271,7 @@ Partial Class dlgSettings
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(226, 22)
+        Me.Label6.Location = New System.Drawing.Point(151, 21)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(62, 13)
         Me.Label6.TabIndex = 6
@@ -237,55 +280,55 @@ Partial Class dlgSettings
         'txtPort
         '
         Me.txtPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPort.Location = New System.Drawing.Point(294, 20)
+        Me.txtPort.Location = New System.Drawing.Point(214, 17)
         Me.txtPort.Name = "txtPort"
-        Me.txtPort.Size = New System.Drawing.Size(61, 20)
+        Me.txtPort.Size = New System.Drawing.Size(51, 20)
         Me.txtPort.TabIndex = 5
         '
         'txtIP
         '
         Me.txtIP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIP.Location = New System.Drawing.Point(68, 20)
+        Me.txtIP.Location = New System.Drawing.Point(55, 17)
         Me.txtIP.Name = "txtIP"
-        Me.txtIP.Size = New System.Drawing.Size(90, 20)
+        Me.txtIP.Size = New System.Drawing.Size(85, 20)
         Me.txtIP.TabIndex = 4
         '
         'GroupBox4
         '
-        Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
+        Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.chkLogErrors)
-        Me.GroupBox4.Location = New System.Drawing.Point(404, 227)
+        Me.GroupBox4.Location = New System.Drawing.Point(400, 216)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(184, 122)
+        Me.GroupBox4.Size = New System.Drawing.Size(189, 78)
         Me.GroupBox4.TabIndex = 3
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
         '
-        'Label5
-        '
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(13, 62)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(165, 24)
-        Me.Label5.TabIndex = 15
-        Me.Label5.Text = "(If unchecked, non-conforming nfos will be renamed to <filename>.info)"
-        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'chkOverwriteNfo
         '
         Me.chkOverwriteNfo.AutoSize = True
-        Me.chkOverwriteNfo.Location = New System.Drawing.Point(13, 42)
+        Me.chkOverwriteNfo.Location = New System.Drawing.Point(13, 34)
         Me.chkOverwriteNfo.Name = "chkOverwriteNfo"
         Me.chkOverwriteNfo.Size = New System.Drawing.Size(172, 17)
         Me.chkOverwriteNfo.TabIndex = 14
         Me.chkOverwriteNfo.Text = "Overwrite Non-conforming nfos"
         Me.chkOverwriteNfo.UseVisualStyleBackColor = True
         '
+        'Label5
+        '
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(13, 49)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(165, 24)
+        Me.Label5.TabIndex = 15
+        Me.Label5.Text = "(If unchecked, non-conforming nfos will be renamed to <filename>.info)"
+        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'chkLogErrors
         '
         Me.chkLogErrors.AutoSize = True
-        Me.chkLogErrors.Location = New System.Drawing.Point(13, 19)
+        Me.chkLogErrors.Location = New System.Drawing.Point(13, 14)
         Me.chkLogErrors.Name = "chkLogErrors"
         Me.chkLogErrors.Size = New System.Drawing.Size(105, 17)
         Me.chkLogErrors.TabIndex = 13
@@ -451,7 +494,7 @@ Partial Class dlgSettings
         Me.gbColors.Controls.Add(Me.btnHeaders)
         Me.gbColors.Location = New System.Drawing.Point(400, 6)
         Me.gbColors.Name = "gbColors"
-        Me.gbColors.Size = New System.Drawing.Size(188, 216)
+        Me.gbColors.Size = New System.Drawing.Size(188, 211)
         Me.gbColors.TabIndex = 2
         Me.gbColors.TabStop = False
         Me.gbColors.Text = "Colors"
@@ -1057,6 +1100,66 @@ Partial Class dlgSettings
         Me.TabPage2.Text = "Scraper"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'GroupBox14
+        '
+        Me.GroupBox14.Controls.Add(Me.Label11)
+        Me.GroupBox14.Controls.Add(Me.Label12)
+        Me.GroupBox14.Controls.Add(Me.chkResizePoster)
+        Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
+        Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
+        Me.GroupBox14.Location = New System.Drawing.Point(261, 249)
+        Me.GroupBox14.Name = "GroupBox14"
+        Me.GroupBox14.Size = New System.Drawing.Size(249, 70)
+        Me.GroupBox14.TabIndex = 59
+        Me.GroupBox14.TabStop = False
+        Me.GroupBox14.Text = "Poster"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(3, 46)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(61, 13)
+        Me.Label11.TabIndex = 43
+        Me.Label11.Text = "Max Width:"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(124, 46)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(64, 13)
+        Me.Label12.TabIndex = 42
+        Me.Label12.Text = "Max Height:"
+        '
+        'chkResizePoster
+        '
+        Me.chkResizePoster.AutoSize = True
+        Me.chkResizePoster.Location = New System.Drawing.Point(6, 19)
+        Me.chkResizePoster.Name = "chkResizePoster"
+        Me.chkResizePoster.Size = New System.Drawing.Size(156, 17)
+        Me.chkResizePoster.TabIndex = 39
+        Me.chkResizePoster.Text = "Automatically Resize Poster"
+        Me.chkResizePoster.UseVisualStyleBackColor = True
+        '
+        'txtPosterWidth
+        '
+        Me.txtPosterWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPosterWidth.Enabled = False
+        Me.txtPosterWidth.Location = New System.Drawing.Point(65, 42)
+        Me.txtPosterWidth.Name = "txtPosterWidth"
+        Me.txtPosterWidth.Size = New System.Drawing.Size(53, 20)
+        Me.txtPosterWidth.TabIndex = 40
+        '
+        'txtPosterHeight
+        '
+        Me.txtPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPosterHeight.Enabled = False
+        Me.txtPosterHeight.Location = New System.Drawing.Point(190, 42)
+        Me.txtPosterHeight.Name = "txtPosterHeight"
+        Me.txtPosterHeight.Size = New System.Drawing.Size(53, 20)
+        Me.txtPosterHeight.TabIndex = 41
+        '
         'GroupBox13
         '
         Me.GroupBox13.Controls.Add(Me.Label9)
@@ -1437,66 +1540,6 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'GroupBox14
-        '
-        Me.GroupBox14.Controls.Add(Me.Label11)
-        Me.GroupBox14.Controls.Add(Me.Label12)
-        Me.GroupBox14.Controls.Add(Me.chkResizePoster)
-        Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
-        Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
-        Me.GroupBox14.Location = New System.Drawing.Point(261, 249)
-        Me.GroupBox14.Name = "GroupBox14"
-        Me.GroupBox14.Size = New System.Drawing.Size(249, 70)
-        Me.GroupBox14.TabIndex = 59
-        Me.GroupBox14.TabStop = False
-        Me.GroupBox14.Text = "Poster"
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(3, 46)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(61, 13)
-        Me.Label11.TabIndex = 43
-        Me.Label11.Text = "Max Width:"
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(124, 46)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(64, 13)
-        Me.Label12.TabIndex = 42
-        Me.Label12.Text = "Max Height:"
-        '
-        'chkResizePoster
-        '
-        Me.chkResizePoster.AutoSize = True
-        Me.chkResizePoster.Location = New System.Drawing.Point(6, 19)
-        Me.chkResizePoster.Name = "chkResizePoster"
-        Me.chkResizePoster.Size = New System.Drawing.Size(156, 17)
-        Me.chkResizePoster.TabIndex = 39
-        Me.chkResizePoster.Text = "Automatically Resize Poster"
-        Me.chkResizePoster.UseVisualStyleBackColor = True
-        '
-        'txtPosterWidth
-        '
-        Me.txtPosterWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPosterWidth.Enabled = False
-        Me.txtPosterWidth.Location = New System.Drawing.Point(65, 42)
-        Me.txtPosterWidth.Name = "txtPosterWidth"
-        Me.txtPosterWidth.Size = New System.Drawing.Size(53, 20)
-        Me.txtPosterWidth.TabIndex = 40
-        '
-        'txtPosterHeight
-        '
-        Me.txtPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPosterHeight.Enabled = False
-        Me.txtPosterHeight.Location = New System.Drawing.Point(190, 42)
-        Me.txtPosterHeight.Name = "txtPosterHeight"
-        Me.txtPosterHeight.Size = New System.Drawing.Size(53, 20)
-        Me.txtPosterHeight.TabIndex = 41
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -1543,6 +1586,8 @@ Partial Class dlgSettings
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
+        Me.GroupBox14.ResumeLayout(False)
+        Me.GroupBox14.PerformLayout()
         Me.GroupBox13.ResumeLayout(False)
         Me.GroupBox13.PerformLayout()
         Me.GroupBox10.ResumeLayout(False)
@@ -1554,8 +1599,6 @@ Partial Class dlgSettings
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox14.ResumeLayout(False)
-        Me.GroupBox14.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1686,4 +1729,8 @@ Partial Class dlgSettings
     Friend WithEvents chkResizePoster As System.Windows.Forms.CheckBox
     Friend WithEvents txtPosterWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtPosterHeight As System.Windows.Forms.TextBox
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents txtPassword As System.Windows.Forms.TextBox
+    Friend WithEvents txtUsername As System.Windows.Forms.TextBox
 End Class

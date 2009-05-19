@@ -770,6 +770,18 @@ Public Class frmMain
         Try
             If Not String.IsNullOrEmpty(Master.eSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPort) Then
                 Dim Wr As HttpWebRequest = HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", Master.eSettings.XBMCIP, Master.eSettings.XBMCPort))
+                Wr.Method = "GET"
+                Wr.Timeout = 2500
+                If Not String.IsNullOrEmpty(Master.eSettings.XBMCUsername) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPassword) Then
+                    Wr.Credentials = New NetworkCredential(Master.eSettings.XBMCUsername, Master.eSettings.XBMCPassword)
+                End If
+                Dim Wres As HttpWebResponse = Wr.GetResponse
+                Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
+                If Not Sr.Contains("OK") Then
+                    MsgBox("There was a problem communicating with XBMC" & vbNewLine & "Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings.", MsgBoxStyle.Exclamation, "Unable to Start XBMC Update")
+                End If
+                Wres.Close()
+                Wres = Nothing
                 Wr = Nothing
             End If
         Catch
