@@ -42,6 +42,7 @@ Public Class Master
     Public Shared alFileList As New ArrayList
     Public Shared eLog As New ErrorLogger
     Public Shared isFile As Boolean = False
+    Public Shared pathSep As String = "\"
 
     'Global Enums
     Public Enum PosterSize As Integer
@@ -317,7 +318,7 @@ quickExit:
         ' Parse the Flags XML and set the proper images
         '\\
 
-        Dim mePath As String = Application.StartupPath & "\Images\Flags\"
+        Dim mePath As String = String.Concat(Application.StartupPath, pathSep, "Images", pathSep, "Flags", pathSep)
         If File.Exists(mePath & "Flags.xml") Then
             Try
                 Dim strWithoutFirst As String = String.Format("{0} {1}", Strings.Trim(Strings.Right(strAV, strAV.Length - Strings.InStr(strAV, "/"))).ToLower, Path.GetFileName(strPath).ToLower)
@@ -327,7 +328,7 @@ quickExit:
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
 
-                Dim xmlFlags As XDocument = XDocument.Load(mePath & "Flags.xml")
+                Dim xmlFlags As XDocument = XDocument.Load(String.Concat(mePath, "Flags.xml"))
 
                 'video resolution
                 Dim xVResDefault = From xDef In xmlFlags...<vres> Select xDef.Element("default").Element("icon").Value
@@ -419,7 +420,7 @@ quickExit:
 
         Dim imgStudioStr As String = String.Empty
         Dim imgStudio As Image = Nothing
-        Dim mePath As String = Application.StartupPath & "\Images\Studios\"
+        Dim mePath As String = String.Concat(Application.StartupPath, pathSep, "Images", pathSep, "Studios", pathSep)
 
         If File.Exists(mePath & "Studios.xml") Then
             Try
@@ -462,7 +463,7 @@ quickExit:
         Dim imgGenre As Image = Nothing
         Dim imgGenreStr As String = String.Empty
 
-        Dim mePath As String = Application.StartupPath & "\Images\Genres\"
+        Dim mePath As String = String.Concat(Application.StartupPath, pathSep, "Images", pathSep, "Genres", pathSep)
 
         If File.Exists(mePath & "Genres.xml") Then
             Try
@@ -539,7 +540,7 @@ quickExit:
         Try
             'this seems to be the best way to do this. I could use Directory.GetParent, but the path that is
             'passed to the function may be a folder so it would return the folder name above the one we want
-            Return Strings.Right(sPath, Len(sPath) - (Strings.InStrRev(sPath, "\")))
+            Return Strings.Right(sPath, Len(sPath) - (Strings.InStrRev(sPath, pathSep)))
         Catch
             Return String.Empty
         End Try
@@ -581,7 +582,7 @@ quickExit:
         '\\
 
         Try
-            Return String.Concat(Directory.GetParent(sPath).FullName, "\", Path.GetFileNameWithoutExtension(sPath))
+            Return String.Concat(Directory.GetParent(sPath).FullName, pathSep, Path.GetFileNameWithoutExtension(sPath))
         Catch
             Return String.Empty
         End Try
@@ -683,22 +684,22 @@ quickExit:
 
             If isFile Then
                 parPath = Directory.GetParent(sPath).FullName
-                tmpName = String.Format("{0}\{1}", parPath, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))))
+                tmpName = String.Format("{0}{1}{2}", parPath, pathSep, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))))
                 'fanart
-                If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(parPath, "\fanart.jpg")) Then
+                If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(parPath, pathSep, "fanart.jpg")) Then
                     hasFanart = True
                 End If
 
                 'poster
-                If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(parPath, "\movie.jpg")) OrElse _
-                    File.Exists(String.Concat(parPath, "\poster.jpg")) OrElse File.Exists(String.Concat(parPath, "\folder.jpg")) OrElse _
-                    File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(parPath, "\movie.tbn")) OrElse _
-                    File.Exists(String.Concat(parPath, "\poster.tbn")) Then
+                If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(parPath, pathSep, "movie.jpg")) OrElse _
+                    File.Exists(String.Concat(parPath, pathSep, "poster.jpg")) OrElse File.Exists(String.Concat(parPath, pathSep, "folder.jpg")) OrElse _
+                    File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(parPath, pathSep, "movie.tbn")) OrElse _
+                    File.Exists(String.Concat(parPath, pathSep, "poster.tbn")) Then
                     hasPoster = True
                 End If
 
                 'nfo
-                If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(parPath, "\movie.nfo")) Then
+                If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(parPath, pathSep, "movie.nfo")) Then
                     hasNfo = True
                 End If
 
@@ -945,12 +946,12 @@ quickExit:
         '\\
 
         Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
-        Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
+        Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, pathSep, tmpName)
 
         If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(RemoveExtFromPath(nPath), ".nfo")) Then
             Return String.Concat(RemoveExtFromPath(nPath), ".nfo")
-        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(String.Concat(Directory.GetParent(nPath).FullName, "\movie.nfo")) Then
-            Return String.Concat(Directory.GetParent(nPath).FullName, "\movie.nfo")
+        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(String.Concat(Directory.GetParent(nPath).FullName, pathSep, "movie.nfo")) Then
+            Return String.Concat(Directory.GetParent(nPath).FullName, pathSep, "movie.nfo")
         Else
             Return String.Empty
         End If
@@ -966,7 +967,7 @@ quickExit:
         Try
 
             Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
-            Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, "\", tmpName)
+            Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, pathSep, tmpName)
             Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
             Dim tPath As String = String.Empty
 
@@ -985,7 +986,7 @@ quickExit:
             End If
 
             If Not isFile AndAlso eSettings.MovieNFO Then
-                tPath = String.Concat(Directory.GetParent(nPath).FullName, "\movie.nfo")
+                tPath = String.Concat(Directory.GetParent(nPath).FullName, pathSep, "movie.nfo")
                 If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                     Dim xmlSW As New StreamWriter(tPath)
                     xmlSer.Serialize(xmlSW, movieToSave)
@@ -1061,8 +1062,8 @@ quickExit:
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
 
-        If Directory.Exists(String.Format("{0}\{1}", sPath, "VIDEO_TS")) Then
-            di = New DirectoryInfo(String.Format("{0}\{1}", sPath, "VIDEO_TS"))
+        If Directory.Exists(String.Format("{0}{1}{2}", sPath, pathSep, "VIDEO_TS")) Then
+            di = New DirectoryInfo(String.Format("{0}{1}{2}", sPath, pathSep, "VIDEO_TS"))
         Else
             di = New DirectoryInfo(sPath)
         End If
@@ -1123,7 +1124,7 @@ quickExit:
 
         Try
             Dim d As New DirectoryInfo(sPath)
-            Dim extraPath As String = String.Concat(d.Parent.FullName, "\extrathumbs")
+            Dim extraPath As String = String.Concat(d.Parent.FullName, pathSep, "extrathumbs")
 
             If Not Directory.Exists(extraPath) Then
                 iMod = -1
@@ -1186,4 +1187,13 @@ quickExit:
             Return True
         End If
     End Function
+
+    Public Shared Sub SetOpSys()
+        Dim oSys As OperatingSystem = System.Environment.OSVersion
+
+        If oSys.Platform = PlatformID.Unix Then
+            pathSep = "/"
+        End If
+
+    End Sub
 End Class

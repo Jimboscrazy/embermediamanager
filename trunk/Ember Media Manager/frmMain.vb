@@ -184,6 +184,7 @@ Public Class frmMain
         '\\
 
         Try
+            Master.SetOpSys()
 
             'setup some dummies so we don't get exceptions when resizing form/info panel
             ReDim Preserve Me.pnlGenre(0)
@@ -196,7 +197,7 @@ Public Class frmMain
 
             Me.Activate()
 
-            Dim sPath As String = Application.StartupPath & "\Log\errlog.txt"
+            Dim sPath As String = String.Concat(Application.StartupPath, Master.pathSep, "Log", Master.pathSep, "errlog.txt")
             If File.Exists(sPath) Then
                 Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
                 File.Delete(sPath)
@@ -917,7 +918,7 @@ Public Class frmMain
 
                     Me.bwFolderData.ReportProgress(currentIndex, cleanName)
 
-                    If Not (String.IsNullOrEmpty(cleanName) OrElse File.Exists(sName & "\specialfolder.nfo")) Then
+                    If Not String.IsNullOrEmpty(cleanName) Then
 
                         Dim newRow(6) As Object
 
@@ -1474,54 +1475,54 @@ Public Class frmMain
                             sPath = drvRow.Item(0).ToString
                             sOrName = Master.GetNameFromPath(sPath)
                             sStackName = Master.RemoveExtFromPath(sPath)
-                            sPathShort = Directory.GetParent(sPath).FullName
+                            sPathShort = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep)
 
                             If Me.bwScraper.CancellationPending Then Return
                             If Master.eSettings.CleanFolderJPG Then
-                                If File.Exists(sPathShort & "\folder.jpg") Then
-                                    File.Delete(sPathShort & "\folder.jpg")
+                                If File.Exists(sPathShort & "folder.jpg") Then
+                                    File.Delete(sPathShort & "folder.jpg")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
                             If Master.eSettings.CleanFanartJPG Then
-                                If File.Exists(sPathShort & "\fanart.jpg") Then
-                                    File.Delete(sPathShort & "\fanart.jpg")
+                                If File.Exists(sPathShort & "fanart.jpg") Then
+                                    File.Delete(sPathShort & "fanart.jpg")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
                             If Master.eSettings.CleanMovieTBN Then
-                                If File.Exists(sPathShort & "\movie.tbn") Then
-                                    File.Delete(sPathShort & "\movie.tbn")
+                                If File.Exists(sPathShort & "movie.tbn") Then
+                                    File.Delete(sPathShort & "movie.tbn")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
                             If Master.eSettings.CleanMovieNFO Then
-                                If File.Exists(sPathShort & "\movie.nfo") Then
-                                    File.Delete(sPathShort & "\movie.nfo")
+                                If File.Exists(sPathShort & "movie.nfo") Then
+                                    File.Delete(sPathShort & "movie.nfo")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
                             If Master.eSettings.CleanPosterTBN Then
-                                If File.Exists(sPathShort & "\poster.tbn") Then
-                                    File.Delete(sPathShort & "\poster.tbn")
+                                If File.Exists(sPathShort & "poster.tbn") Then
+                                    File.Delete(sPathShort & "poster.tbn")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
                             If Master.eSettings.CleanPosterJPG Then
-                                If File.Exists(sPathShort & "\poster.jpg") Then
-                                    File.Delete(sPathShort & "\poster.jpg")
+                                If File.Exists(sPathShort & "poster.jpg") Then
+                                    File.Delete(sPathShort & "poster.jpg")
                                 End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
                             If Master.eSettings.CleanMovieJPG Then
-                                If File.Exists(sPathShort & "\movie.jpg") Then
-                                    File.Delete(sPathShort & "\movie.jpg")
+                                If File.Exists(sPathShort & "movie.jpg") Then
+                                    File.Delete(sPathShort & "movie.jpg")
                                 End If
                             End If
 
@@ -1530,20 +1531,20 @@ Public Class frmMain
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".tbn") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".tbn")
                                 End If
-                                If File.Exists(sPathShort & "\video_ts.tbn") Then
-                                    File.Delete(sPathShort & "\video_ts.tbn")
+                                If File.Exists(sPathShort & "video_ts.tbn") Then
+                                    File.Delete(sPathShort & "video_ts.tbn")
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.tbn", sPathShort, sOrName)) Then
-                                    File.Delete(String.Format("{0}\{1}.tbn", sPathShort, sOrName))
+                                If File.Exists(String.Format("{0}{1}.tbn", sPathShort, sOrName)) Then
+                                    File.Delete(String.Format("{0}{1}.tbn", sPathShort, sOrName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.tbn", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
-                                    File.Delete(String.Format("{0}\{1}.tbn", sPathShort, Master.CleanStackingMarkers(sOrName)))
+                                If File.Exists(String.Format("{0}{1}.tbn", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
+                                    File.Delete(String.Format("{0}{1}.tbn", sPathShort, Master.CleanStackingMarkers(sOrName)))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.tbn", sPathShort, sStackName)) Then
-                                    File.Delete(String.Format("{0}\{1}.tbn", sPathShort, sStackName))
+                                If File.Exists(String.Format("{0}{1}.tbn", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}{1}.tbn", sPathShort, sStackName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.tbn", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
-                                    File.Delete(String.Format("{0}\{1}.tbn", sPathShort, Master.CleanStackingMarkers(sStackName)))
+                                If File.Exists(String.Format("{0}{1}.tbn", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}{1}.tbn", sPathShort, Master.CleanStackingMarkers(sStackName)))
                                 End If
                             End If
 
@@ -1552,20 +1553,20 @@ Public Class frmMain
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & "-fanart.jpg") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & "-fanart.jpg")
                                 End If
-                                If File.Exists(sPathShort & "\video_ts-fanart.jpg") Then
-                                    File.Delete(sPathShort & "\video_ts-fanart.jpg")
+                                If File.Exists(sPathShort & "video_ts-fanart.jpg") Then
+                                    File.Delete(sPathShort & "video_ts-fanart.jpg")
                                 End If
-                                If File.Exists(String.Format("{0}\{1}-fanart.jpg", sPathShort, sOrName)) Then
-                                    File.Delete(String.Format("{0}\{1}-fanart.jpg", sPathShort, sOrName))
+                                If File.Exists(String.Format("{0}{1}-fanart.jpg", sPathShort, sOrName)) Then
+                                    File.Delete(String.Format("{0}{1}-fanart.jpg", sPathShort, sOrName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
-                                    File.Delete(String.Format("{0}\{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
+                                If File.Exists(String.Format("{0}{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
+                                    File.Delete(String.Format("{0}{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}-fanart.jpg", sPathShort, sStackName)) Then
-                                    File.Delete(String.Format("{0}\{1}-fanart.jpg", sPathShort, sStackName))
+                                If File.Exists(String.Format("{0}{1}-fanart.jpg", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}{1}-fanart.jpg", sPathShort, sStackName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
-                                    File.Delete(String.Format("{0}\{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName)))
+                                If File.Exists(String.Format("{0}{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}{1}-fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName)))
                                 End If
                             End If
 
@@ -1574,20 +1575,20 @@ Public Class frmMain
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".nfo") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".nfo")
                                 End If
-                                If File.Exists(sPathShort & "\video_ts.nfo") Then
-                                    File.Delete(sPathShort & "\video_ts.nfo")
+                                If File.Exists(sPathShort & "video_ts.nfo") Then
+                                    File.Delete(sPathShort & "video_ts.nfo")
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.nfo", sPathShort, sOrName)) Then
-                                    File.Delete(String.Format("{0}\{1}.nfo", sPathShort, sOrName))
+                                If File.Exists(String.Format("{0}{1}.nfo", sPathShort, sOrName)) Then
+                                    File.Delete(String.Format("{0}{1}.nfo", sPathShort, sOrName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.nfo", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
-                                    File.Delete(String.Format("{0}\{1}.nfo", sPathShort, Master.CleanStackingMarkers(sOrName)))
+                                If File.Exists(String.Format("{0}{1}.nfo", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
+                                    File.Delete(String.Format("{0}{1}.nfo", sPathShort, Master.CleanStackingMarkers(sOrName)))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.nfo", sPathShort, sStackName)) Then
-                                    File.Delete(String.Format("{0}\{1}.nfo", sPathShort, sStackName))
+                                If File.Exists(String.Format("{0}{1}.nfo", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}{1}.nfo", sPathShort, sStackName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.nfo", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
-                                    File.Delete(String.Format("{0}\{1}.nfo", sPathShort, Master.CleanStackingMarkers(sStackName)))
+                                If File.Exists(String.Format("{0}{1}.nfo", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}{1}.nfo", sPathShort, Master.CleanStackingMarkers(sStackName)))
                                 End If
                             End If
 
@@ -1596,20 +1597,20 @@ Public Class frmMain
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".fanart.jpg") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".fanart.jpg")
                                 End If
-                                If File.Exists(sPathShort & "\video_ts.fanart.jpg") Then
-                                    File.Delete(sPathShort & "\video_ts.fanart.jpg")
+                                If File.Exists(sPathShort & "video_ts.fanart.jpg") Then
+                                    File.Delete(sPathShort & "video_ts.fanart.jpg")
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, sOrName)) Then
-                                    File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, sOrName))
+                                If File.Exists(String.Format("{0}{1}.fanart.jpg", sPathShort, sOrName)) Then
+                                    File.Delete(String.Format("{0}{1}.fanart.jpg", sPathShort, sOrName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
-                                    File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
+                                If File.Exists(String.Format("{0}{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
+                                    File.Delete(String.Format("{0}{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, sStackName)) Then
-                                    File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, sStackName))
+                                If File.Exists(String.Format("{0}{1}.fanart.jpg", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}{1}.fanart.jpg", sPathShort, sStackName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
-                                    File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName)))
+                                If File.Exists(String.Format("{0}{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}{1}.fanart.jpg", sPathShort, Master.CleanStackingMarkers(sStackName)))
                                 End If
                             End If
 
@@ -1618,20 +1619,20 @@ Public Class frmMain
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".jpg") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".jpg")
                                 End If
-                                If File.Exists(sPathShort & "\video_ts.jpg") Then
-                                    File.Delete(sPathShort & "\video_ts.jpg")
+                                If File.Exists(sPathShort & "video_ts.jpg") Then
+                                    File.Delete(sPathShort & "video_ts.jpg")
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, sOrName)) Then
-                                    File.Delete(String.Format("{0}\{1}.jpg", sPathShort, sOrName))
+                                If File.Exists(String.Format("{0}{1}.jpg", sPathShort, sOrName)) Then
+                                    File.Delete(String.Format("{0}{1}.jpg", sPathShort, sOrName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
-                                    File.Delete(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
+                                If File.Exists(String.Format("{0}{1}.jpg", sPathShort, Master.CleanStackingMarkers(sOrName))) Then
+                                    File.Delete(String.Format("{0}{1}.jpg", sPathShort, Master.CleanStackingMarkers(sOrName)))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, sStackName)) Then
-                                    File.Delete(String.Format("{0}\{1}.jpg", sPathShort, sStackName))
+                                If File.Exists(String.Format("{0}{1}.jpg", sPathShort, sStackName)) Then
+                                    File.Delete(String.Format("{0}{1}.jpg", sPathShort, sStackName))
                                 End If
-                                If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
-                                    File.Delete(String.Format("{0}\{1}.jpg", sPathShort, Master.CleanStackingMarkers(sStackName)))
+                                If File.Exists(String.Format("{0}{1}.jpg", sPathShort, Master.CleanStackingMarkers(sStackName))) Then
+                                    File.Delete(String.Format("{0}{1}.jpg", sPathShort, Master.CleanStackingMarkers(sStackName)))
                                 End If
                             End If
 
@@ -2636,25 +2637,25 @@ Public Class frmMain
             Dim hasTrailer As Boolean = False
 
 
-            tmpName = String.Format("{0}\{1}", Directory.GetParent(sPath).FullName, Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath))))
+            tmpName = String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath))))
             'fanart
-            If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\fanart.jpg")) OrElse _
-            File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts-fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.fanart.jpg")) Then
+            If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "fanart.jpg")) OrElse _
+            File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts-fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts.fanart.jpg")) Then
                 hasFanart = True
             End If
 
             'poster
-            If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.jpg")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\poster.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\folder.jpg")) OrElse _
-                File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.tbn")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\poster.tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.tbn")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.jpg")) Then
+            If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "movie.jpg")) OrElse _
+                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "poster.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "folder.jpg")) OrElse _
+                File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "movie.tbn")) OrElse _
+                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "poster.tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts.tbn")) OrElse _
+                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts.jpg")) Then
                 hasPoster = True
             End If
 
             'nfo
-            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.nfo")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.nfo")) Then
+            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "movie.nfo")) OrElse _
+                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Master.pathSep, "video_ts.nfo")) Then
                 hasNfo = True
             End If
 

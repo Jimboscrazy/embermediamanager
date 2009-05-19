@@ -52,8 +52,8 @@ Public Class dlgEditMovie
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
 
-        If Directory.Exists(Application.StartupPath & "\Temp") Then
-            Directory.Delete(Application.StartupPath & "\Temp", True)
+        If Directory.Exists(String.Concat(Application.StartupPath, Master.pathSep, "Temp")) Then
+            Directory.Delete(String.Concat(Application.StartupPath, Master.pathSep, "Temp"), True)
         End If
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -548,10 +548,10 @@ Public Class dlgEditMovie
 
                 .SaveExtraThumbsList()
 
-                If Directory.Exists(Application.StartupPath & "\Temp") Then
-                    If Directory.Exists(Application.StartupPath & "\Temp\extrathumbs") Then
-                        Dim di As New DirectoryInfo(Application.StartupPath & "\Temp\extrathumbs")
-                        Dim ePath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, "\extrathumbs\")
+                If Directory.Exists(String.Concat(Application.StartupPath, Master.pathSep, "Temp")) Then
+                    If Directory.Exists(String.Concat(Application.StartupPath, Master.pathSep, "Temp", Master.pathSep, "extrathumbs")) Then
+                        Dim di As New DirectoryInfo(String.Concat(Application.StartupPath, Master.pathSep, "Temp", Master.pathSep, "extrathumbs"))
+                        Dim ePath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, Master.pathSep, "extrathumbs", Master.pathSep)
 
                         If Not Directory.Exists(ePath) Then
                             Directory.CreateDirectory(ePath)
@@ -565,10 +565,10 @@ Public Class dlgEditMovie
                         fList.AddRange(di.GetFiles("thumb*.jpg"))
 
                         For i As Integer = 0 To fList.Count - 1
-                            Master.MoveFileWithStream(fList.Item(i).FullName, String.Format("{0}\thumb{1}.jpg", ePath, i + iMod))
+                            Master.MoveFileWithStream(fList.Item(i).FullName, String.Format("{0}{1}thumb{2}.jpg", ePath, Master.pathSep, i + iMod))
                         Next
                     End If
-                    Directory.Delete(Application.StartupPath & "\Temp", True)
+                    Directory.Delete(String.Concat(Application.StartupPath, Master.pathSep, "Temp"), True)
                 End If
 
                 Master.currMark = chkMark.Checked
@@ -686,13 +686,13 @@ Public Class dlgEditMovie
     Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
         Dim sPath As String
         Try
-            sPath = Application.StartupPath & "\Temp"
+            sPath = String.Concat(Application.StartupPath, Master.pathSep, "Temp", Master.pathSep)
 
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
             End If
 
-            sPath += "\poster.jpg"
+            sPath += "poster.jpg"
 
             If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters, True) = Windows.Forms.DialogResult.OK Then
 
@@ -710,13 +710,13 @@ Public Class dlgEditMovie
     Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
         Dim sPath As String
         Try
-            sPath = Application.StartupPath & "\Temp"
+            sPath = String.Concat(Application.StartupPath, Master.pathSep, "Temp", Master.pathSep)
 
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
             End If
 
-            sPath += "\fanart.jpg"
+            sPath += "fanart.jpg"
 
             If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart, True) = Windows.Forms.DialogResult.OK Then
 
@@ -735,15 +735,15 @@ Public Class dlgEditMovie
     Private Sub btnFrameLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameLoad.Click
         Try
             Dim ffmpeg As New Process()
-            Dim tPath As String = Application.StartupPath & "\Temp"
+            Dim tPath As String = String.Concat(Application.StartupPath, Master.pathSep, "Temp", Master.pathSep)
             Dim duration As Single = 0.0F, current As Single = 0.0F
 
             If Not Directory.Exists(tPath) Then
                 Directory.CreateDirectory(tPath)
             End If
 
-            ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, "\Bin\ffmpeg.exe")
-            ffmpeg.StartInfo.Arguments = "-ss 0 -i """ & Master.currPath & """ -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y """ & tPath & "\frame.jpg"""
+            ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Master.pathSep, "Bin", Master.pathSep, "ffmpeg.exe")
+            ffmpeg.StartInfo.Arguments = "-ss 0 -i """ & Master.currPath & """ -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y """ & tPath & "frame.jpg"""
             ffmpeg.EnableRaisingEvents = False
             ffmpeg.StartInfo.UseShellExecute = False
             ffmpeg.StartInfo.CreateNoWindow = True
@@ -767,8 +767,8 @@ Public Class dlgEditMovie
             ffmpeg.Close()
             ffmpeg.Dispose()
 
-            If File.Exists(tPath & "\frame.jpg") Then
-                Dim fsFImage As New FileStream(tPath & "\frame.jpg", FileMode.Open, FileAccess.Read)
+            If File.Exists(tPath & "frame.jpg") Then
+                Dim fsFImage As New FileStream(tPath & "frame.jpg", FileMode.Open, FileAccess.Read)
                 pbFrame.Image = Image.FromStream(fsFImage)
                 fsFImage.Close()
                 fsFImage.Dispose()
@@ -805,15 +805,15 @@ Public Class dlgEditMovie
             btnGrab.Enabled = False
 
             Dim ffmpeg As New Process()
-            Dim tPath As String = Application.StartupPath & "\Temp"
+            Dim tPath As String = String.Concat(Application.StartupPath, Master.pathSep, "Temp", Master.pathSep)
             Dim duration As Single = 0.0F, current As Single = 0.0F
 
             If Not Directory.Exists(tPath) Then
                 Directory.CreateDirectory(tPath)
             End If
 
-            ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, "\Bin\ffmpeg.exe")
-            ffmpeg.StartInfo.Arguments = "-ss " & tbFrame.Value & " -i """ & Master.currPath & """ -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y """ & tPath & "\frame.jpg"""
+            ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Master.pathSep, "Bin", Master.pathSep, "ffmpeg.exe")
+            ffmpeg.StartInfo.Arguments = "-ss " & tbFrame.Value & " -i """ & Master.currPath & """ -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y """ & tPath & "frame.jpg"""
             ffmpeg.EnableRaisingEvents = False
             ffmpeg.StartInfo.UseShellExecute = False
             ffmpeg.StartInfo.CreateNoWindow = True
@@ -828,8 +828,8 @@ Public Class dlgEditMovie
             ffmpeg.Close()
             ffmpeg.Dispose()
 
-            If File.Exists(tPath & "\frame.jpg") Then
-                Dim fsFImage As FileStream = New FileStream(tPath & "\frame.jpg", FileMode.Open, FileAccess.Read)
+            If File.Exists(tPath & "frame.jpg") Then
+                Dim fsFImage As FileStream = New FileStream(tPath & "frame.jpg", FileMode.Open, FileAccess.Read)
                 pbFrame.Image = Image.FromStream(fsFImage)
                 fsFImage.Close()
                 fsFImage.Dispose()
@@ -858,8 +858,8 @@ Public Class dlgEditMovie
 
     Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
         Try
-            Dim tPath As String = Application.StartupPath & "\Temp\frame.jpg"
-            Dim sPath As String = Directory.GetParent(Master.currPath).FullName & "\extrathumbs"
+            Dim tPath As String = String.Concat(Application.StartupPath, Master.pathSep, "Temp", Master.pathSep, "frame.jpg")
+            Dim sPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, Master.pathSep, "extrathumbs", Master.pathSep)
 
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
@@ -867,7 +867,7 @@ Public Class dlgEditMovie
 
             Dim iMod As Integer = Master.GetExtraModifier(Master.currPath)
 
-            Master.MoveFileWithStream(tPath, String.Concat(sPath, "\thumb", (iMod + 1), ".jpg"))
+            Master.MoveFileWithStream(tPath, String.Concat(sPath, "thumb", (iMod + 1), ".jpg"))
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -877,7 +877,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub LoadThumbs()
-        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, "\extrathumbs")
+        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, Master.pathSep, "extrathumbs")
         If Directory.Exists(tPath) Then
             Dim di As New DirectoryInfo(tPath)
             Dim i As Integer = 0
@@ -934,22 +934,22 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SaveExtraThumbsList()
-        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, "\extrathumbs")
+        Dim tPath As String = String.Concat(Directory.GetParent(Master.currPath).FullName, Master.pathSep, "extrathumbs")
 
         'first delete the ones from the delete list
         Try
             For Each del As String In DeleteList
-                File.Delete(String.Format("{0}\{1}", tPath, del))
+                File.Delete(String.Format("{0}{1}{2}", tPath, Master.pathSep, del))
             Next
 
             'now name the rest something arbitrary so we don't get any conflicts
             For Each lItem As ListViewItem In lvThumbs.Items
-                FileSystem.Rename(String.Format("{0}\{1}", tPath, lItem.Name), String.Format("{0}\temp{1}", tPath, lItem.Name))
+                FileSystem.Rename(String.Format("{0}{1}{2}", tPath, Master.pathSep, lItem.Name), String.Format("{0}{1}temp{2}", tPath, Master.pathSep, lItem.Name))
             Next
 
             'now rename them properly
             For Each lItem As ListViewItem In lvThumbs.Items
-                FileSystem.Rename(String.Format("{0}\temp{1}", tPath, lItem.Name), String.Format("{0}\thumb{1}.jpg", tPath, lItem.Text.Trim))
+                FileSystem.Rename(String.Format("{0}{1}temp{2}", tPath, Master.pathSep, lItem.Name), String.Format("{0}{1}thumb{2}.jpg", tPath, Master.pathSep, lItem.Text.Trim))
             Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1041,7 +1041,7 @@ Public Class dlgEditMovie
 
         Me.lbGenre.Items.Add("[none]")
 
-        Dim mePath As String = Application.StartupPath & "\Images\Genres\"
+        Dim mePath As String = String.Concat(Application.StartupPath, Master.pathSep, "Images", Master.pathSep, "Genres", Master.pathSep)
 
         If File.Exists(mePath & "Genres.xml") Then
             Try
