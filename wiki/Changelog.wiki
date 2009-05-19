@@ -3,7 +3,9 @@
 
 *Changes in Upcoming Release:*
  * Feature: Custom genres
+ * Feature(?): Startup Wizard for new users and updated versions
  * Fix: Manual Editor not saving
+ * Change: Resolution to descriptor logic, again
  * Change: Some tweaks to how the Manual Editor is handled
  * Change: Support for a m2ts and dvr-ms 
  * Change: Tweaks to IMDB search results GUI
