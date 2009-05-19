@@ -27,8 +27,8 @@ Public Class dlgEditMovie
     Friend WithEvents bwThumbs As New System.ComponentModel.BackgroundWorker
     Private lvwColumnSorter As ListViewColumnSorter
     Private tmpRating As String = String.Empty
-    Private Poster As New Images
-    Private Fanart As New Images
+    Private Poster As New Images With {.IsEdit = True}
+    Private Fanart As New Images With {.IsEdit = True}
     Private Thumbs As New List(Of ExtraThumbs)
     Private DeleteList As New ArrayList
 
@@ -990,6 +990,36 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
+    Private Sub LoadGenres()
+
+        '//
+        ' Read all the genres from the xml and load into the list
+        '\\
+
+        Me.lbGenre.Items.Add("[none]")
+
+        Dim mePath As String = String.Concat(Application.StartupPath, Master.pathSep, "Images", Master.pathSep, "Genres", Master.pathSep)
+
+        If File.Exists(mePath & "Genres.xml") Then
+            Try
+                Dim xmlGenre As XDocument = XDocument.Load(mePath & "Genres.xml")
+
+                Dim xGenre = From xGen In xmlGenre...<name> Select xGen.@searchstring
+                If xGenre.Count > 0 Then
+                    For Each strGenre As String In xGenre
+                        Me.lbGenre.Items.Add(strGenre)
+                    Next
+                End If
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        Else
+            MsgBox("Cannot find Studios.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Studios.xml", MsgBoxStyle.Critical, "File Not Found")
+        End If
+
+    End Sub
+
     Friend Class ExtraThumbs
         Private _image As Image
         Private _name As String
@@ -1032,35 +1062,4 @@ Public Class dlgEditMovie
             _index = Nothing
         End Sub
     End Class
-
-    Private Sub LoadGenres()
-
-        '//
-        ' Read all the genres from the xml and load into the list
-        '\\
-
-        Me.lbGenre.Items.Add("[none]")
-
-        Dim mePath As String = String.Concat(Application.StartupPath, Master.pathSep, "Images", Master.pathSep, "Genres", Master.pathSep)
-
-        If File.Exists(mePath & "Genres.xml") Then
-            Try
-                Dim xmlGenre As XDocument = XDocument.Load(mePath & "Genres.xml")
-
-                Dim xGenre = From xGen In xmlGenre...<name> Select xGen.@searchstring
-                If xGenre.Count > 0 Then
-                    For Each strGenre As String In xGenre
-                        Me.lbGenre.Items.Add(strGenre)
-                    Next
-                End If
-
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        Else
-            MsgBox("Cannot find Studios.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Studios.xml", MsgBoxStyle.Critical, "File Not Found")
-        End If
-
-    End Sub
-
 End Class
