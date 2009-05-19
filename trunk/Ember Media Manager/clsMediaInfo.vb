@@ -93,11 +93,14 @@ Namespace MediaInfo
         Private Declare Unicode Function MediaInfo_New Lib "Bin\MediaInfo.DLL" () As IntPtr
         Private Declare Unicode Sub MediaInfo_Delete Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr)
         Private Declare Unicode Function MediaInfo_Open Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal FileName As String) As UIntPtr
+        Private Declare Unicode Function MediaInfoA_Open Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal FileName As IntPtr) As UIntPtr
         Private Declare Unicode Sub MediaInfo_Close Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr)
         Private Declare Unicode Function MediaInfo_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
-        Private Declare Unicode Function MediaInfo_Count_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As UIntPtr 'see MediaInfoDLL.h for enumeration values
+        Private Declare Unicode Function MediaInfoA_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As IntPtr, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
+        Private Declare Unicode Function MediaInfo_Count_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As UIntPtr
 
         Private Handle As IntPtr
+        Private UseAnsi As Boolean
 
 #End Region '*** MInfo - Declarations
 
@@ -111,6 +114,12 @@ Namespace MediaInfo
 
         Public Sub New()
             Handle = MediaInfo_New()
+
+            If Environment.OSVersion.ToString.ToLower.IndexOf("windows") > 0 Then
+                UseAnsi = False
+            Else
+                UseAnsi = True
+            End If
         End Sub
 
         Protected Overrides Sub Finalize()
@@ -118,7 +127,14 @@ Namespace MediaInfo
         End Sub
 
         Private Function Open(ByVal FileName As String) As Integer
-            Return MediaInfo_Open(Handle, FileName)
+            If UseAnsi Then
+                Dim FileName_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(FileName)
+                Dim ToReturn As Integer = CInt(MediaInfoA_Open(Handle, FileName_Ptr))
+                Marshal.FreeHGlobal(FileName_Ptr)
+                Return ToReturn
+            Else
+                Return MediaInfo_Open(Handle, FileName)
+            End If
         End Function
 
         Private Sub Close()
@@ -126,15 +142,22 @@ Namespace MediaInfo
         End Sub
 
         Private Function Get_(ByVal StreamKind As StreamKind, ByVal StreamNumber As Integer, ByVal Parameter As String, Optional ByVal KindOfInfo As InfoKind = InfoKind.Text, Optional ByVal KindOfSearch As InfoKind = InfoKind.Name) As String
-            Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, StreamKind, StreamNumber, Parameter, KindOfInfo, KindOfSearch))
+            If UseAnsi Then
+                Dim Parameter_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(Parameter)
+                Dim ToReturn As String = Marshal.PtrToStringAnsi(MediaInfoA_Get(Handle, StreamKind, StreamNumber, Parameter_Ptr, KindOfInfo, KindOfSearch))
+                Marshal.FreeHGlobal(Parameter_Ptr)
+                Return ToReturn
+            Else
+                Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, StreamKind, StreamNumber, Parameter, KindOfInfo, KindOfSearch))
+            End If
         End Function
 
         Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
             If StreamNumber = UInteger.MaxValue Then
-                Dim A As Long
-                A = 0
-                A = A - 1 'If you know how to have (IntPtr)(-1) easier, I am interested ;-)
-                Return MediaInfo_Count_Get(Handle, StreamKind, A)
+                'Dim A As Long
+                'A = 0
+                'A = A - 1 'If you know how to have (IntPtr)(-1) easier, I am interested ;-)
+                Return MediaInfo_Count_Get(Handle, StreamKind, -1)
             Else
                 Return MediaInfo_Count_Get(Handle, StreamKind, StreamNumber)
             End If
