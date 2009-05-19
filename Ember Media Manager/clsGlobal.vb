@@ -902,11 +902,11 @@ quickExit:
         Try
             If sinWidth >= 1600 AndAlso sinHeight >= 800 Then Return "1080"
             If sinWidth >= 1350 AndAlso sinHeight >= 750 Then Return "768"
-            If sinWidth >= 960 AndAlso sinHeight >= 577 Then Return "720"
-            If sinWidth >= 720 AndAlso sinHeight >= 521 Then Return "576"
-            If sinWidth <= 720 AndAlso sinHeight >= 520 Then Return "540"
+            If sinWidth >= 960 AndAlso sinHeight >= 500 Then Return "720"
+            If sinWidth >= 720 AndAlso sinHeight >= 500 Then Return "576"
+            If sinWidth <= 720 AndAlso sinHeight >= 500 Then Return "540"
             If sinWidth < 640 Then Return "SD"
-            If sinWidth <= 720 AndAlso sinHeight <= 520 Then Return "480"
+            If sinWidth <= 720 AndAlso sinHeight <= 500 Then Return "480"
 
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
