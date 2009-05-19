@@ -224,7 +224,7 @@ Public Class frmMain
         ' Begin thread to download actor image if one exists
         '\\
         Try
-            If Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString = "none" Then
+            If Not Me.alActors.Item(Me.lstActors.SelectedIndex) = "none" Then
 
                 If Not IsNothing(Me.pbActors.Image) Then
                     Me.pbActors.Image.Dispose()
@@ -240,7 +240,7 @@ Public Class frmMain
 
                 Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadPic.WorkerSupportsCancellation = True
-                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pType = PicType.Actor, .pURL = Me.alActors.Item(Me.lstActors.SelectedIndex).ToString})
+                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pType = PicType.Actor, .pURL = Me.alActors.Item(Me.lstActors.SelectedIndex)})
 
             Else
                 Me.pbActors.Image = My.Resources.actor_silhouette
@@ -934,17 +934,17 @@ Public Class frmMain
 
                     'parse just the movie name
                     If Master.eSettings.UseNameFromNfo Then
-                        tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.FullName.ToString, True))
+                        tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.FullName, True))
                         mName = tmpMovie.Title
                         tmpMovie = Nothing
                         If String.IsNullOrEmpty(mName) Then
-                            mName = Master.RemoveExtFromFile(sFile.Name.ToString).ToString
+                            mName = Master.RemoveExtFromFile(sFile.Name)
                         End If
                     Else
-                        mName = Master.RemoveExtFromFile(sFile.Name.ToString).ToString
+                        mName = Master.RemoveExtFromFile(sFile.Name)
                     End If
 
-                    cleanName = Master.FilterName(mName).ToString
+                    cleanName = Master.FilterName(mName)
 
                     Me.bwFolderData.ReportProgress(currentIndex, cleanName)
 
@@ -955,7 +955,7 @@ Public Class frmMain
                         newFileRow(0) = sFile.FullName
                         newFileRow(1) = cleanName
                         'check what's in the folder
-                        aContents = Master.GetFolderContents(sFile.FullName.ToString, True)
+                        aContents = Master.GetFolderContents(sFile.FullName, True)
                         newFileRow(2) = aContents(0)
                         newFileRow(3) = aContents(1)
                         newFileRow(4) = aContents(2)
@@ -1313,16 +1313,16 @@ Public Class frmMain
                             nfoPath = Master.GetNfoPath(sPath, drvRow.Item(6))
 
                             If File.Exists(nfoPath) Then
-                                Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString(), Master.LoadMovieFromNFO(nfoPath), Args.scrapeType)
+                                Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, Master.LoadMovieFromNFO(nfoPath), Args.scrapeType)
                             Else
-                                Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString(), New Media.Movie, Args.scrapeType)
+                                Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
                             End If
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Master.eSettings.UseStudioTags Then
                                     If UpdateMediaInfo() Then
-                                        Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
+                                        Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                                     End If
                                 End If
 
@@ -1390,7 +1390,7 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Master.eSettings.UseStudioTags Then
                                     If UpdateMediaInfo() Then
-                                        Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
+                                        Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                                     End If
                                 End If
 
@@ -1441,7 +1441,7 @@ Public Class frmMain
                             End If
 
                             If UpdateMediaInfo() Then
-                                Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
+                                Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
@@ -1455,9 +1455,9 @@ Public Class frmMain
                             iCount += 1
 
                             sPath = drvRow.Item(0).ToString
-                            sOrName = Master.GetNameFromPath(sPath).ToString
-                            sStackName = Master.RemoveExtFromPath(sPath).ToString
-                            sPathShort = Directory.GetParent(sPath).FullName.ToString
+                            sOrName = Master.GetNameFromPath(sPath)
+                            sStackName = Master.RemoveExtFromPath(sPath)
+                            sPathShort = Directory.GetParent(sPath).FullName
 
                             If Me.bwScraper.CancellationPending Then Return
                             If Master.eSettings.CleanFolderJPG Then
@@ -1513,6 +1513,9 @@ Public Class frmMain
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".tbn") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".tbn")
                                 End If
+                                If File.Exists(sPathShort & "\video_ts.tbn") Then
+                                    File.Delete(sPathShort & "\video_ts.tbn")
+                                End If
                                 If File.Exists(String.Format("{0}\{1}.tbn", sPathShort, sOrName)) Then
                                     File.Delete(String.Format("{0}\{1}.tbn", sPathShort, sOrName))
                                 End If
@@ -1531,6 +1534,9 @@ Public Class frmMain
                             If Master.eSettings.CleanMovieFanartJPG Then
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & "-fanart.jpg") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & "-fanart.jpg")
+                                End If
+                                If File.Exists(sPathShort & "\video_ts-fanart.jpg") Then
+                                    File.Delete(sPathShort & "\video_ts-fanart.jpg")
                                 End If
                                 If File.Exists(String.Format("{0}\{1}-fanart.jpg", sPathShort, sOrName)) Then
                                     File.Delete(String.Format("{0}\{1}-fanart.jpg", sPathShort, sOrName))
@@ -1551,6 +1557,9 @@ Public Class frmMain
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".nfo") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".nfo")
                                 End If
+                                If File.Exists(sPathShort & "\video_ts.nfo") Then
+                                    File.Delete(sPathShort & "\video_ts.nfo")
+                                End If
                                 If File.Exists(String.Format("{0}\{1}.nfo", sPathShort, sOrName)) Then
                                     File.Delete(String.Format("{0}\{1}.nfo", sPathShort, sOrName))
                                 End If
@@ -1570,6 +1579,9 @@ Public Class frmMain
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".fanart.jpg") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".fanart.jpg")
                                 End If
+                                If File.Exists(sPathShort & "\video_ts.fanart.jpg") Then
+                                    File.Delete(sPathShort & "\video_ts.fanart.jpg")
+                                End If
                                 If File.Exists(String.Format("{0}\{1}.fanart.jpg", sPathShort, sOrName)) Then
                                     File.Delete(String.Format("{0}\{1}.fanart.jpg", sPathShort, sOrName))
                                 End If
@@ -1588,6 +1600,9 @@ Public Class frmMain
                             If Master.eSettings.CleanMovieNameJPG Then
                                 If File.Exists(Master.RemoveExtFromPath(sPath) & ".jpg") Then
                                     File.Delete(Master.RemoveExtFromPath(sPath) & ".jpg")
+                                End If
+                                If File.Exists(sPathShort & "\video_ts.jpg") Then
+                                    File.Delete(sPathShort & "\video_ts.jpg")
                                 End If
                                 If File.Exists(String.Format("{0}\{1}.jpg", sPathShort, sOrName)) Then
                                     File.Delete(String.Format("{0}\{1}.jpg", sPathShort, sOrName))
@@ -1621,7 +1636,7 @@ Public Class frmMain
 
                                     If Master.eSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
-                                            Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
+                                            Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                                         End If
                                     End If
 
@@ -1686,7 +1701,7 @@ Public Class frmMain
 
                                     If Master.eSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
-                                            Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
+                                            Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                                         End If
                                     End If
 
@@ -2150,8 +2165,8 @@ Public Class frmMain
 
                         'Was it XBMC or MIP that set some of the actor thumbs to
                         'the default "Add Pic" image??
-                        If Not Strings.InStr(imdbAct.Thumb.ToString.ToLower, "addtiny.gif") > 0 Then
-                            Me.alActors.Add(imdbAct.Thumb.ToString)
+                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 Then
+                            Me.alActors.Add(imdbAct.Thumb)
                         Else
                             Me.alActors.Add("none")
                         End If
@@ -2159,7 +2174,7 @@ Public Class frmMain
                         Me.alActors.Add("none")
                     End If
 
-                    Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.ToString, imdbAct.Role.ToString))
+                    Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name, imdbAct.Role))
                 Next
             End If
 
@@ -2499,7 +2514,7 @@ Public Class frmMain
                                 Me.ReportDownloadPercent = True
                                 Me.tslLoading.Visible = True
                                 Me.tspbLoading.Visible = True
-                                IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID.ToString, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast)
+                                IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                             End If
                         Else
                             Me.tslLoading.Visible = False
@@ -2560,7 +2575,7 @@ Public Class frmMain
                     Me.tspbLoading.MarqueeAnimationSpeed = 100
                     Me.Refresh()
                     If Me.UpdateMediaInfo Then
-                        Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal.ToString, Master.FITagData(Master.currMovie.FileInfo).ToString)
+                        Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                     End If
                 End If
                 If Master.eSettings.SingleScrapeImages Then
@@ -2604,7 +2619,7 @@ Public Class frmMain
             Dim hasTrailer As Boolean = False
 
 
-            tmpName = String.Format("{0}\{1}", Directory.GetParent(sPath).FullName.ToString, Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath))))
+            tmpName = String.Format("{0}\{1}", Directory.GetParent(sPath).FullName, Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath))))
             'fanart
             If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\fanart.jpg")) OrElse _
             File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts-fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.fanart.jpg")) Then
@@ -2621,8 +2636,8 @@ Public Class frmMain
             End If
 
             'nfo
-            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.nfo")) orelse _
-            OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.nfo")) Then
+            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.nfo")) OrElse _
+                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.nfo")) Then
                 hasNfo = True
             End If
 
