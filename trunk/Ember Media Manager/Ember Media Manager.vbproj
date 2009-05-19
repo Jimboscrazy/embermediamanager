@@ -159,6 +159,12 @@
     <Compile Include="clsSettings.vb" />
     <Compile Include="clsSorter.vb" />
     <Compile Include="clsScrapeTMDB.vb" />
+    <Compile Include="dlgWizard.Designer.vb">
+      <DependentUpon>dlgWizard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgWizard.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgManualEdit.Designer.vb">
       <DependentUpon>dlgManualEdit.vb</DependentUpon>
     </Compile>
@@ -240,6 +246,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="dlgWizard.resx">
+      <DependentUpon>dlgWizard.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgManualEdit.resx">
       <DependentUpon>dlgManualEdit.vb</DependentUpon>
     </EmbeddedResource>
@@ -330,6 +339,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Wizard.jpg" />
     <Content Include="television.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

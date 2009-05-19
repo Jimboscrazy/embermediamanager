@@ -25,6 +25,7 @@ Imports System.Xml.Serialization
 
 <Serializable()> _
 Public Class emmSettings
+    Private _version As String
     Private _movieFolders As New ArrayList
     Private _filterCustom As New ArrayList
     Private _headerColor As String
@@ -92,6 +93,15 @@ Public Class emmSettings
     Private _posterheight As Integer
     Private _posterwidth As Integer
     Private _movielist As New ArrayList
+
+    Public Property Version() As String
+        Get
+            Return Me._version
+        End Get
+        Set(ByVal value As String)
+            Me._version = value
+        End Set
+    End Property
 
     Public Property FilterCustom() As ArrayList
         Get
@@ -701,6 +711,7 @@ Public Class emmSettings
     End Sub
 
     Public Sub Clear()
+        Me._version = String.Empty
         Me._movieFolders.Clear()
         Me._filterCustom.Clear()
         Me._headerColor = Color.DimGray.ToArgb
