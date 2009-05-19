@@ -2606,20 +2606,23 @@ Public Class frmMain
 
             tmpName = String.Format("{0}\{1}", Directory.GetParent(sPath).FullName.ToString, Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath))))
             'fanart
-            If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\fanart.jpg")) Then
+            If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\fanart.jpg")) OrElse _
+            File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts-fanart.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.fanart.jpg")) Then
                 hasFanart = True
             End If
 
             'poster
-            If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\movie.jpg")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\poster.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\folder.jpg")) OrElse _
-                File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\movie.tbn")) OrElse _
-                File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\poster.tbn")) Then
+            If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.jpg")) OrElse _
+                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\poster.jpg")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\folder.jpg")) OrElse _
+                File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.tbn")) OrElse _
+                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\poster.tbn")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.tbn")) OrElse _
+                File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.jpg")) Then
                 hasPoster = True
             End If
 
             'nfo
-            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).ToString, "\movie.nfo")) Then
+            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\movie.nfo")) orelse _
+            OrElse File.Exists(String.Concat(Directory.GetParent(sPath).FullName, "\video_ts.nfo")) Then
                 hasNfo = True
             End If
 
