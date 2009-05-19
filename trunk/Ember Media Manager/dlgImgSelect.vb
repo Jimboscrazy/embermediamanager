@@ -69,16 +69,16 @@ Public Class dlgImgSelect
             Dim tmpPath As String = String.Empty
             Dim tmpPathPlus As String = String.Empty
 
-            tmpPath = String.Concat(Application.StartupPath, Master.pathSep, "Temp", Master.pathSep)
+            tmpPath = Path.Combine(Application.StartupPath, "Temp")
 
             If Not Directory.Exists(tmpPath) Then
                 Directory.CreateDirectory(tmpPath)
             End If
 
             If DLType = Master.ImageType.Fanart Then
-                tmpPathPlus = String.Concat(tmpPath, "fanart.jpg")
+                tmpPathPlus = Path.Combine(tmpPath, "fanart.jpg")
             Else
-                tmpPathPlus = String.Concat(tmpPath, "poster.jpg")
+                tmpPathPlus = Path.Combine(tmpPath, "poster.jpg")
             End If
 
             If Not IsNothing(Me.tmpImage.Image) Then
@@ -152,7 +152,7 @@ Public Class dlgImgSelect
                     If isEdit Then
                         extraPath = String.Concat(tmpPath, "extrathumbs")
                     Else
-                        extraPath = String.Concat(Directory.GetParent(Me.sPath).FullName, Master.pathSep, "extrathumbs")
+                        extraPath = Path.Combine(Directory.GetParent(Me.sPath).FullName, "extrathumbs")
                     End If
                     If Not Directory.Exists(extraPath) Then
                         Directory.CreateDirectory(extraPath)
@@ -160,7 +160,7 @@ Public Class dlgImgSelect
 
                     For i As Integer = 0 To UBound(Me.chkImage)
                         If Me.chkImage(i).Checked Then
-                            Dim fsET As New FileStream(String.Concat(extraPath, Master.pathSep, "thumb", iVal + iMod, ".jpg"), FileMode.OpenOrCreate, FileAccess.ReadWrite)
+                            Dim fsET As New FileStream(Path.Combine(extraPath, String.Concat("thumb", iVal + iMod, ".jpg")), FileMode.OpenOrCreate, FileAccess.ReadWrite)
                             Me.pbImage(i).Image.Save(fsET, System.Drawing.Imaging.ImageFormat.Jpeg)
                             fsET.Close()
                             fsET = Nothing

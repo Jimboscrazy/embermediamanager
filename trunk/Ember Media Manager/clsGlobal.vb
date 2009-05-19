@@ -42,7 +42,6 @@ Public Class Master
     Public Shared alFileList As New ArrayList
     Public Shared eLog As New ErrorLogger
     Public Shared isFile As Boolean = False
-    Public Shared pathSep As String = "\"
 
     'Global Enums
     Public Enum PosterSize As Integer
@@ -319,8 +318,8 @@ quickExit:
         ' Parse the Flags XML and set the proper images
         '\\
 
-        Dim mePath As String = String.Concat(Application.StartupPath, pathSep, "Images", pathSep, "Flags", pathSep)
-        If File.Exists(mePath & "Flags.xml") Then
+        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
+        If File.Exists(Path.Combine(mePath, "Flags.xml")) Then
             Try
                 Dim strWithoutFirst As String = String.Format("{0} {1}", Strings.Trim(Strings.Right(strAV, strAV.Length - Strings.InStr(strAV, "/"))).ToLower, Path.GetFileName(strPath).ToLower)
                 Dim atypeRef As String = String.Empty
@@ -329,34 +328,34 @@ quickExit:
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
 
-                Dim xmlFlags As XDocument = XDocument.Load(String.Concat(mePath, "Flags.xml"))
+                Dim xmlFlags As XDocument = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
 
                 'video resolution
                 Dim xVResDefault = From xDef In xmlFlags...<vres> Select xDef.Element("default").Element("icon").Value
                 If xVResDefault.Count > 0 Then
-                    vresImage = mePath & xVResDefault(0).ToString
+                    vresImage = Path.Combine(mePath, xVResDefault(0).ToString)
                 End If
 
                 Dim xVResFlag = From xVRes In xmlFlags...<vres>...<name> Where Regex.IsMatch(strWithoutFirst, xVRes.@searchstring) Select xVRes.<icon>.Value
                 If xVResFlag.Count > 0 Then
-                    vresImage = mePath & xVResFlag(0).ToString
+                    vresImage = Path.Combine(mePath, xVResFlag(0).ToString)
                 End If
 
                 'video source
                 Dim xVSourceDefault = From xDef In xmlFlags...<vtype> Select xDef.Element("default").Element("icon").Value
                 If xVSourceDefault.Count > 0 Then
-                    vsourceImage = mePath & xVSourceDefault(0).ToString
+                    vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
                 End If
 
                 Dim xVSourceFlag = From xVSource In xmlFlags...<vtype>...<name> Where Regex.IsMatch(strWithoutFirst, xVSource.@searchstring) Select xVSource.<icon>.Value
                 If xVSourceFlag.Count > 0 Then
-                    vsourceImage = mePath & xVSourceFlag(0).ToString
+                    vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
                 End If
 
                 'audio type
                 Dim xATypeDefault = From xDef In xmlFlags...<atype> Select xDef.Element("default").Element("icon").Value
                 If xATypeDefault.Count > 0 Then
-                    atypeImage = mePath & xATypeDefault(0).ToString
+                    atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
                 End If
 
                 Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(strWithoutFirst, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
@@ -370,12 +369,12 @@ quickExit:
                 'audio channels
                 Dim xAChanDefault = From xDef In xmlFlags...<achan> Select xDef.Element("default").Element("icon").Value
                 If xAChanDefault.Count > 0 Then
-                    achanImage = mePath & xAChanDefault(0).ToString
+                    achanImage = Path.Combine(mePath, xAChanDefault(0).ToString)
                 End If
 
                 Dim xAChanFlag = From xAChan In xmlFlags...<achan>...<name> Where Regex.IsMatch(strWithoutFirst, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
                 If xAChanFlag.Count > 0 Then
-                    achanImage = mePath & xAChanFlag(0).ToString
+                    achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
                 End If
 
                 If File.Exists(vresImage) Then
@@ -409,7 +408,7 @@ quickExit:
                 eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
-            MsgBox("Cannot find Flags.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Flags.xml", MsgBoxStyle.Critical, "File Not Found")
+            MsgBox("Cannot find Flags.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Flags.xml"), MsgBoxStyle.Critical, "File Not Found")
         End If
     End Sub
 
@@ -421,20 +420,20 @@ quickExit:
 
         Dim imgStudioStr As String = String.Empty
         Dim imgStudio As Image = Nothing
-        Dim mePath As String = String.Concat(Application.StartupPath, pathSep, "Images", pathSep, "Studios", pathSep)
+        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Studios")
 
-        If File.Exists(mePath & "Studios.xml") Then
+        If File.Exists(Path.Combine(mePath, "Studios.xml")) Then
             Try
-                Dim xmlStudio As XDocument = XDocument.Load(mePath & "Studios.xml")
+                Dim xmlStudio As XDocument = XDocument.Load(Path.Combine(mePath, "Studios.xml"))
 
                 Dim xDefault = From xDef In xmlStudio...<default> Select xDef.<icon>.Value
                 If xDefault.Count > 0 Then
-                    imgStudioStr = mePath & xDefault(0).ToString
+                    imgStudioStr = Path.Combine(mePath, xDefault(0).ToString)
                 End If
 
                 Dim xStudio = From xStu In xmlStudio...<name> Where Regex.IsMatch(Strings.Trim(strStudio).ToLower, xStu.@searchstring) Select xStu.<icon>.Value
                 If xStudio.Count > 0 Then
-                    imgStudioStr = mePath & xStudio(0).ToString
+                    imgStudioStr = Path.Combine(mePath, xStudio(0).ToString)
                 End If
 
                 If Not String.IsNullOrEmpty(imgStudioStr) AndAlso File.Exists(imgStudioStr) Then
@@ -448,7 +447,7 @@ quickExit:
                 eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
-            MsgBox("Cannot find Studios.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Studios.xml", MsgBoxStyle.Critical, "File Not Found")
+            MsgBox("Cannot find Studios.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Studios.xml"), MsgBoxStyle.Critical, "File Not Found")
         End If
 
         Return imgStudio
@@ -464,20 +463,20 @@ quickExit:
         Dim imgGenre As Image = Nothing
         Dim imgGenreStr As String = String.Empty
 
-        Dim mePath As String = String.Concat(Application.StartupPath, pathSep, "Images", pathSep, "Genres", pathSep)
+        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres")
 
-        If File.Exists(mePath & "Genres.xml") Then
+        If File.Exists(Path.Combine(mePath, "Genres.xml")) Then
             Try
-                Dim xmlGenre As XDocument = XDocument.Load(mePath & "Genres.xml")
+                Dim xmlGenre As XDocument = XDocument.Load(Path.Combine(mePath, "Genres.xml"))
 
                 Dim xDefault = From xDef In xmlGenre...<default> Select xDef.<icon>.Value
                 If xDefault.Count > 0 Then
-                    imgGenreStr = mePath & xDefault(0).ToString
+                    imgGenreStr = Path.Combine(mePath, xDefault(0).ToString)
                 End If
 
                 Dim xGenre = From xGen In xmlGenre...<name> Where strGenre.ToLower = xGen.@searchstring.ToLower Select xGen.<icon>.Value
                 If xGenre.Count > 0 Then
-                    imgGenreStr = mePath & xGenre(0).ToString
+                    imgGenreStr = Path.Combine(mePath, xGenre(0).ToString)
                 End If
 
                 If Not String.IsNullOrEmpty(imgGenreStr) AndAlso File.Exists(imgGenreStr) Then
@@ -491,7 +490,7 @@ quickExit:
                 eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
-            MsgBox("Cannot find Genres.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Genres.xml", MsgBoxStyle.Critical, "File Not Found")
+            MsgBox("Cannot find Genres.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Genres.xml"), MsgBoxStyle.Critical, "File Not Found")
         End If
 
         Return imgGenre
@@ -541,7 +540,7 @@ quickExit:
         Try
             'this seems to be the best way to do this. I could use Directory.GetParent, but the path that is
             'passed to the function may be a folder so it would return the folder name above the one we want
-            Return Strings.Right(sPath, Len(sPath) - (Strings.InStrRev(sPath, pathSep)))
+            Return Strings.Right(sPath, Len(sPath) - (Strings.InStrRev(sPath, Path.DirectorySeparatorChar)))
         Catch
             Return String.Empty
         End Try
@@ -583,7 +582,7 @@ quickExit:
         '\\
 
         Try
-            Return String.Concat(Directory.GetParent(sPath).FullName, pathSep, Path.GetFileNameWithoutExtension(sPath))
+            Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
         Catch
             Return String.Empty
         End Try
@@ -685,22 +684,22 @@ quickExit:
 
             If isFile Then
                 parPath = Directory.GetParent(sPath).FullName
-                tmpName = String.Format("{0}{1}{2}", parPath, pathSep, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))))
+                tmpName = String.Concat(parPath, Path.DirectorySeparatorChar, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))), Path.DirectorySeparatorChar)
                 'fanart
-                If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(String.Concat(parPath, pathSep, "fanart.jpg")) Then
+                If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "fanart.jpg")) Then
                     hasFanart = True
                 End If
 
                 'poster
-                If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(String.Concat(parPath, pathSep, "movie.jpg")) OrElse _
-                    File.Exists(String.Concat(parPath, pathSep, "poster.jpg")) OrElse File.Exists(String.Concat(parPath, pathSep, "folder.jpg")) OrElse _
-                    File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(String.Concat(parPath, pathSep, "movie.tbn")) OrElse _
-                    File.Exists(String.Concat(parPath, pathSep, "poster.tbn")) Then
+                If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(Path.Combine(parPath, "movie.jpg")) OrElse _
+                    File.Exists(Path.Combine(parPath, "poster.jpg")) OrElse File.Exists(Path.Combine(parPath, "folder.jpg")) OrElse _
+                    File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(Path.Combine(parPath, "movie.tbn")) OrElse _
+                    File.Exists(Path.Combine(parPath, "poster.tbn")) Then
                     hasPoster = True
                 End If
 
                 'nfo
-                If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(parPath, pathSep, "movie.nfo")) Then
+                If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(Path.Combine(parPath, "movie.nfo")) Then
                     hasNfo = True
                 End If
 
@@ -772,7 +771,7 @@ quickExit:
         Try
             Dim strTag As String = FITagData(miFI)
             If Not String.IsNullOrEmpty(strTag) Then
-                strOutput += String.Format("Tag: {0}{1}{2}", strTag, vbNewLine, vbNewLine)
+                strOutput += String.Format("Tag: {0}{1}{1}", strTag, vbNewLine)
             End If
             If Not miFI.StreamDetails Is Nothing Then
                 If miFI.StreamDetails.Video.Count > 0 Then
@@ -947,12 +946,12 @@ quickExit:
         '\\
 
         Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
-        Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, pathSep, tmpName)
+        Dim nPath As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
         If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(RemoveExtFromPath(nPath), ".nfo")) Then
             Return String.Concat(RemoveExtFromPath(nPath), ".nfo")
-        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(String.Concat(Directory.GetParent(nPath).FullName, pathSep, "movie.nfo")) Then
-            Return String.Concat(Directory.GetParent(nPath).FullName, pathSep, "movie.nfo")
+        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")) Then
+            Return Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
         Else
             Return String.Empty
         End If
@@ -968,7 +967,7 @@ quickExit:
         Try
 
             Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
-            Dim nPath As String = String.Concat(Directory.GetParent(sPath).FullName, pathSep, tmpName)
+            Dim nPath As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
             Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
             Dim tPath As String = String.Empty
 
@@ -987,7 +986,7 @@ quickExit:
             End If
 
             If Not isFile AndAlso eSettings.MovieNFO Then
-                tPath = String.Concat(Directory.GetParent(nPath).FullName, pathSep, "movie.nfo")
+                tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
                 If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                     Dim xmlSW As New StreamWriter(tPath)
                     xmlSer.Serialize(xmlSW, movieToSave)
@@ -1064,8 +1063,8 @@ quickExit:
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
 
-        If Directory.Exists(String.Format("{0}{1}{2}", sPath, pathSep, "VIDEO_TS")) Then
-            di = New DirectoryInfo(String.Format("{0}{1}{2}", sPath, pathSep, "VIDEO_TS"))
+        If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
+            di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
         Else
             di = New DirectoryInfo(sPath)
         End If
@@ -1127,7 +1126,7 @@ quickExit:
 
         Try
             Dim d As New DirectoryInfo(sPath)
-            Dim extraPath As String = String.Concat(d.Parent.FullName, pathSep, "extrathumbs")
+            Dim extraPath As String = Path.Combine(d.Parent.FullName, "extrathumbs")
 
             If Not Directory.Exists(extraPath) Then
                 iMod = -1
@@ -1191,12 +1190,4 @@ quickExit:
         End If
     End Function
 
-    Public Shared Sub SetOpSys()
-        Dim oSys As OperatingSystem = System.Environment.OSVersion
-
-        If oSys.Platform = PlatformID.Unix Then
-            pathSep = "/"
-        End If
-
-    End Sub
 End Class
