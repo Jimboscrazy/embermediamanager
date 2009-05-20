@@ -688,13 +688,16 @@ foundIT:
         Try
             Select Case fType
                 Case Master.ImageType.Fanart
-                    If String.IsNullOrEmpty(GetFanartPath(sPath, isFile)) OrElse Master.eSettings.OverwriteFanart Then
+                    If String.IsNullOrEmpty(GetFanartPath(sPath, isFile)) OrElse Master.eSettings.OverwriteFanart AndAlso _
+                    (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) Then
                         Return True
                     Else
                         Return False
                     End If
                 Case Else
-                    If String.IsNullOrEmpty(GetPosterPath(sPath, isFile)) OrElse Master.eSettings.OverwritePoster Then
+                    If String.IsNullOrEmpty(GetPosterPath(sPath, isFile)) OrElse Master.eSettings.OverwritePoster AndAlso _
+                    (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
+                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterTBN) Then
                         Return True
                     Else
                         Return False
