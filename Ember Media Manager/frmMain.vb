@@ -2634,8 +2634,13 @@ Public Class frmMain
                     End If
                 End If
                 If Master.eSettings.SingleScrapeImages Then
-                    dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
-                    dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
+                    If Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
+                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterTBN Then
+                        dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
+                    End If
+                    If Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG Then
+                        dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
+                    End If
                 End If
                 If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     If Master.currMark Then
