@@ -2681,7 +2681,6 @@ Public Class frmMain
             Dim hasFanart As Boolean = False
             Dim hasTrailer As Boolean = False
 
-            'tmpName = String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath))), Path.DirectorySeparatorChar)
             'fanart
             If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "fanart.jpg")) OrElse _
             File.Exists(Path.Combine(parPath, "video_ts-fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "video_ts.fanart.jpg")) Then
