@@ -204,32 +204,25 @@ Public Class Master
         ' Removes the stacking indicators from the file name
         '\\
 
-        Dim newPath As String = String.Empty
         Dim filename As String = String.Empty
         Dim strTemp As String = String.Empty
 
-        newPath = sPath
-
         strTemp = Regex.Match(sPath, "(?i)[ _\.-]+cd[ _\.-]*([0-9a-d]+)").ToString
         If Not String.IsNullOrEmpty(strTemp) Then
-            newPath = sPath.Replace(strTemp, String.Empty)
-            GoTo quickExit
+            sPath = sPath.Replace(strTemp, String.Empty)
         End If
 
         strTemp = Regex.Match(sPath, "(?i)[ _\.-]+dvd[ _\.-]*([0-9a-d]+)").ToString
         If Not String.IsNullOrEmpty(strTemp) Then
-            newPath = sPath.Replace(strTemp, String.Empty)
-            GoTo quickExit
+            sPath = sPath.Replace(strTemp, String.Empty)
         End If
 
         strTemp = Regex.Match(sPath, "(?i)[ _\.-]+part[ _\.-]*([0-9a-d]+)").ToString
         If Not String.IsNullOrEmpty(strTemp) Then
-            newPath = sPath.Replace(strTemp, String.Empty)
-            GoTo quickExit
+            sPath = sPath.Replace(strTemp, String.Empty)
         End If
 
-quickExit:
-        Return newPath.Trim
+        Return sPath.Trim
     End Function
 
     Public Shared Sub EnumerateDirectory(ByVal sPath As String)
@@ -684,7 +677,7 @@ quickExit:
 
             If isFile Then
                 parPath = Directory.GetParent(sPath).FullName
-                tmpName = String.Concat(parPath, Path.DirectorySeparatorChar, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))), Path.DirectorySeparatorChar)
+                tmpName = Path.Combine(parPath, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))))
                 'fanart
                 If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "fanart.jpg")) Then
                     hasFanart = True
