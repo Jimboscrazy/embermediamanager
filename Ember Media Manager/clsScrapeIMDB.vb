@@ -110,8 +110,8 @@ Namespace IMDB
             Return Regex.Match(strObj, IMDB_ID_REGEX).ToString
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal IMDB As String, ByRef imdbMovie As Media.Movie, ByVal iType As Master.ScrapeType) As Media.Movie
-            Dim r As MovieSearchResults = SearchMovie(IMDB)
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef imdbMovie As Media.Movie, ByVal iType As Master.ScrapeType) As Media.Movie
+            Dim r As MovieSearchResults = SearchMovie(sMovieName)
             Dim b As Boolean = False
 
             Try
@@ -123,7 +123,7 @@ Namespace IMDB
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                         Else
                             Master.tmpMovie = New Media.Movie
-                            If dlgIMDBSearchResults.ShowDialog(r) = Windows.Forms.DialogResult.OK Then
+                            If dlgIMDBSearchResults.ShowDialog(r, sMovieName) = Windows.Forms.DialogResult.OK Then
                                 If String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                     b = False
                                 Else
