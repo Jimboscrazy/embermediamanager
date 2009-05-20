@@ -78,15 +78,17 @@ Namespace MPDB
                     bwMPDB.ReportProgress(1)
                 End If
 
-                Dim mcPoster As MatchCollection = Regex.Matches(Html, "http://www.movieposterdb.com/posters/[0-9_](.*?)/[0-9](.*?)/[0-9](.*?)/[a-z0-9_](.*?).jpg")
+                If Not Regex.IsMatch(Html, "The movie you requested is not found or it has no posters.") Then
+                    Dim mcPoster As MatchCollection = Regex.Matches(Html, "http://www.movieposterdb.com/posters/[0-9_](.*?)/[0-9](.*?)/[0-9](.*?)/[a-z0-9_](.*?).jpg")
 
-                Dim PosterURL As String = String.Empty
+                    Dim PosterURL As String = String.Empty
 
-                For Each mPoster As Match In mcPoster
-                    PosterURL = mPoster.Value.Remove(mPoster.Value.LastIndexOf("/") + 1, 1)
-                    PosterURL = PosterURL.Insert(mPoster.Value.LastIndexOf("/") + 1, "l")
-                    alPosters.Add(New Media.Image With {.Description = "poster", .URL = PosterURL})
-                Next
+                    For Each mPoster As Match In mcPoster
+                        PosterURL = mPoster.Value.Remove(mPoster.Value.LastIndexOf("/") + 1, 1)
+                        PosterURL = PosterURL.Insert(mPoster.Value.LastIndexOf("/") + 1, "l")
+                        alPosters.Add(New Media.Image With {.Description = "poster", .URL = PosterURL})
+                    Next
+                End If
                 If bwMPDB.WorkerReportsProgress Then
                     bwMPDB.ReportProgress(3)
                 End If
