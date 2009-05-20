@@ -2627,20 +2627,22 @@ Public Class frmMain
                     Me.tslLoading.Text = "Scanning Media Info:"
                     Me.tspbLoading.Value = Me.tspbLoading.Maximum
                     Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                    Me.tspbLoading.MarqueeAnimationSpeed = 100
+                    Me.tspbLoading.MarqueeAnimationSpeed = 25
                     Me.Refresh()
                     If Me.UpdateMediaInfo Then
                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                     End If
                 End If
                 If Master.eSettings.SingleScrapeImages Then
-                    If Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
-                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterTBN Then
+                    Dim tmpImages As New Images
+                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Posters) Then
                         dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
                     End If
-                    If Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG Then
+                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Fanart) Then
                         dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
                     End If
+                    tmpImages.Dispose()
+                    tmpImages = Nothing
                 End If
                 If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     If Master.currMark Then
