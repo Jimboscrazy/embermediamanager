@@ -360,7 +360,7 @@ quickExit:
 
                 Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(strWithoutFirst, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
                 If xATypeFlag.Count > 0 Then
-                    atypeImage = mePath & xATypeFlag(0).icon.ToString
+                    atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
                     If Not IsNothing(xATypeFlag(0).ref) Then
                         atypeRef = xATypeFlag(0).ref.ToString
                     End If
