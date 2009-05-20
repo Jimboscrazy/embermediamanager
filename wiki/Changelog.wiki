@@ -5,13 +5,16 @@
  * Feature: Custom genres
  * Feature(?): Startup Wizard for new users and updated versions
  * Fix: Manual Editor not saving
+ * Fix: Begin XBMC update process actually works this time.
  * Change: Resolution to descriptor logic, again
  * Change: Some tweaks to how the Manual Editor is handled
- * Change: Support for a m2ts and dvr-ms 
+ * Change: Support for a m2ts, dvr-ms, and m4v
  * Change: Tweaks to IMDB search results GUI
  * Change: Some minor clean up and streamlining of some functions
  * Change: Support for VIDEO_TS
  * Change: "No Information Available" message if movie doesn't have nfo, poster, or fanart
+ * Change: Allow changing poster/fanart from movie editor even if overwrite poster/fanart is not enabled
+ * Change: A few more steps to getting EMM to work on Linux w/ Mono
 
 *Changes in r59:*
  * Feature: First iteration of the extrathumbs manager
