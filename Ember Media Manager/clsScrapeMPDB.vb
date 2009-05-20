@@ -78,7 +78,7 @@ Namespace MPDB
                     bwMPDB.ReportProgress(1)
                 End If
 
-                If Not Regex.IsMatch(Html, "The movie you requested is not found or it has no posters.") Then
+                If Not Regex.IsMatch(Html, "The movie you requested is not found or it has no posters.", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline) Then
                     Dim mcPoster As MatchCollection = Regex.Matches(Html, "http://www.movieposterdb.com/posters/[0-9_](.*?)/[0-9](.*?)/[0-9](.*?)/[a-z0-9_](.*?).jpg")
 
                     Dim PosterURL As String = String.Empty
