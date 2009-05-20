@@ -1000,7 +1000,7 @@ Public Class dlgEditMovie
 
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres")
 
-        If File.Exists(mePath & "Genres.xml") Then
+        If File.Exists(Path.Combine(mePath, "Genres.xml")) Then
             Try
                 Dim xmlGenre As XDocument = XDocument.Load(Path.Combine(mePath, "Genres.xml"))
 
@@ -1015,7 +1015,7 @@ Public Class dlgEditMovie
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
-            MsgBox("Cannot find Studios.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & mePath & "Studios.xml", MsgBoxStyle.Critical, "File Not Found")
+            MsgBox("Cannot find Genres.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Genres.xml"), MsgBoxStyle.Critical, "File Not Found")
         End If
 
     End Sub
