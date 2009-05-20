@@ -305,17 +305,19 @@ Public Class dlgIMDBSearchResults
         ' Overload to pass data
         '\\
 
+        Me.Text = String.Concat("Search Results - ", sMovieTitle)
         IMDB.SearchMovieAsync(sMovieTitle)
 
         Return MyBase.ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal Res As IMDB.MovieSearchResults) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal Res As IMDB.MovieSearchResults, ByVal sMovieTitle As String) As Windows.Forms.DialogResult
 
         '//
         ' Overload to pass data
         '\\
 
+        Me.Text = String.Concat("Search Results - ", sMovieTitle)
         SearchResultsDownloaded(Res)
 
         Return MyBase.ShowDialog()
