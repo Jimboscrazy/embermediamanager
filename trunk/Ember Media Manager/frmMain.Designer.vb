@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -322,6 +322,7 @@ Partial Class frmMain
         'scMain.Panel2
         '
         Me.scMain.Panel2.BackColor = System.Drawing.Color.Gainsboro
+        Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
         Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
         Me.scMain.Panel2.Controls.Add(Me.pnlPoster)
         Me.scMain.Panel2.Controls.Add(Me.pbPosterCache)
@@ -373,8 +374,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -478,9 +479,9 @@ Partial Class frmMain
         Me.pnlInfoPanel.Controls.Add(Me.btnUp)
         Me.pnlInfoPanel.Controls.Add(Me.lblInfoPanelHeader)
         Me.pnlInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 349)
+        Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 344)
         Me.pnlInfoPanel.Name = "pnlInfoPanel"
-        Me.pnlInfoPanel.Size = New System.Drawing.Size(696, 337)
+        Me.pnlInfoPanel.Size = New System.Drawing.Size(696, 342)
         Me.pnlInfoPanel.TabIndex = 10
         '
         'txtCerts
@@ -1275,9 +1276,10 @@ Partial Class frmMain
         '
         'pnlNoInfo
         '
+        Me.pnlNoInfo.BackColor = System.Drawing.Color.LightGray
         Me.pnlNoInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlNoInfo.Controls.Add(Me.Panel2)
-        Me.pnlNoInfo.Location = New System.Drawing.Point(544, 295)
+        Me.pnlNoInfo.Location = New System.Drawing.Point(241, 300)
         Me.pnlNoInfo.Name = "pnlNoInfo"
         Me.pnlNoInfo.Size = New System.Drawing.Size(259, 143)
         Me.pnlNoInfo.TabIndex = 8
@@ -1318,7 +1320,6 @@ Partial Class frmMain
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1008, 732)
-        Me.Controls.Add(Me.pnlNoInfo)
         Me.Controls.Add(Me.scMain)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.MenuStrip)
