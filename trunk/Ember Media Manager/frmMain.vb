@@ -1794,7 +1794,23 @@ Public Class frmMain
                     Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(1)
                     'set tmpTitle to title in list - used for searching IMDB
                     Me.tmpTitle = Me.dgvMediaList.Item(1, 0).Value.ToString
-                    Me.LoadInfo(Me.dgvMediaList.Item(0, 0).Value.ToString, True, False, Me.dgvMediaList.Item(6, 0).Value)
+
+                    Master.currMark = If(Me.dgvMediaList.Item(1, 0).Style.ForeColor = Color.Crimson, True, False)
+
+                    If Not Me.dgvMediaList.Item(2, 0).Value AndAlso Not Me.dgvMediaList.Item(3, 0).Value AndAlso Not Me.dgvMediaList.Item(4, 0).Value Then
+                        Me.ClearInfo()
+                        Me.pnlNoInfo.Visible = True
+                        Master.currPath = Me.dgvMediaList.Item(0, 0).Value.ToString
+                        Master.isFile = Me.dgvMediaList.Item(6, 0).Value.ToString
+                        Master.currMovie = New Media.Movie
+                        Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
+                        Me.tslStatus.Text = Master.currPath
+                    Else
+                        Me.pnlNoInfo.Visible = False
+                        'try to load the info from the NFO
+                        Me.LoadInfo(Me.dgvMediaList.Item(0, 0).Value.ToString, True, False, Me.dgvMediaList.Item(6, 0).Value)
+                    End If
+
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
