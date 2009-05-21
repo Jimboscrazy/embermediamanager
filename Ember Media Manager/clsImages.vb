@@ -689,7 +689,8 @@ foundIT:
             Select Case fType
                 Case Master.ImageType.Fanart
                     If (String.IsNullOrEmpty(GetFanartPath(sPath, isFile)) OrElse Master.eSettings.OverwriteFanart) AndAlso _
-                    (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) Then
+                    (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) AndAlso _
+                    Master.eSettings.UseTMDB Then
                         Return True
                     Else
                         Return False
@@ -697,7 +698,8 @@ foundIT:
                 Case Else
                     If (String.IsNullOrEmpty(GetPosterPath(sPath, isFile)) OrElse Master.eSettings.OverwritePoster) AndAlso _
                     (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
-                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterTBN) Then
+                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterTBN) AndAlso _
+                     (Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB OrElse Master.eSettings.UseTMDB) Then
                         Return True
                     Else
                         Return False
