@@ -771,8 +771,8 @@ Public Class dlgEditMovie
             ffmpeg.Close()
             ffmpeg.Dispose()
 
-            If File.Exists(tPath & "frame.jpg") Then
-                Dim fsFImage As New FileStream(tPath & "frame.jpg", FileMode.Open, FileAccess.Read)
+            If File.Exists(Path.Combine(tPath, "frame.jpg")) Then
+                Dim fsFImage As New FileStream(Path.Combine(tPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
                 pbFrame.Image = Image.FromStream(fsFImage)
                 fsFImage.Close()
                 fsFImage.Dispose()
@@ -832,8 +832,8 @@ Public Class dlgEditMovie
             ffmpeg.Close()
             ffmpeg.Dispose()
 
-            If File.Exists(tPath & "frame.jpg") Then
-                Dim fsFImage As FileStream = New FileStream(tPath & "frame.jpg", FileMode.Open, FileAccess.Read)
+            If File.Exists(Path.Combine(tPath, "frame.jpg")) Then
+                Dim fsFImage As FileStream = New FileStream(Path.Combine(tPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
                 pbFrame.Image = Image.FromStream(fsFImage)
                 fsFImage.Close()
                 fsFImage.Dispose()
