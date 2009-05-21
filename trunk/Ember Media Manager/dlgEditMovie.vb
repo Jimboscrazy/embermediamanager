@@ -513,14 +513,16 @@ Public Class dlgEditMovie
                     Else
                         Dim strGenre As String = String.Empty
                         Dim isFirst As Boolean = True
-                        For Each strSelected As String In .lbGenre.SelectedItems
-                            If isFirst Then
-                                strGenre = strSelected
-                                isFirst = False
-                            Else
-                                strGenre += " / " & strSelected
-                            End If
-                        Next
+                        Dim Selected = From Sel In .lbGenre.SelectedItems
+                        strGenre = Strings.Join(Selected.ToArray, " / ")
+                        'For Each strSelected As String In .lbGenre.SelectedItems
+                        '    If isFirst Then
+                        '        strGenre = strSelected
+                        '        isFirst = False
+                        '    Else
+                        '        strGenre += " / " & strSelected
+                        '    End If
+                        'Next
                         Master.currMovie.Genre = strGenre
                     End If
                 End If
