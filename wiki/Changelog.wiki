@@ -6,15 +6,20 @@
  * Feature(?): Startup Wizard for new users and updated versions
  * Fix: Manual Editor not saving
  * Fix: Begin XBMC update process actually works this time.
+ * Fix: Fix poster/fanart downloading on single scrape not considering overwrite posters option
+ * Fix: MPDB returning poster results even if no posters exist for the selected movie.
+ * Fix: Search not finding results for movies that exist on IMDB in some cases
  * Change: Resolution to descriptor logic, again
  * Change: Some tweaks to how the Manual Editor is handled
  * Change: Support for a m2ts, dvr-ms, and m4v
  * Change: Tweaks to IMDB search results GUI
- * Change: Some minor clean up and streamlining of some functions
+ * Change: Tons of minor clean up, tweaks, and streamlining of some functions
  * Change: Support for VIDEO_TS
  * Change: "No Information Available" message if movie doesn't have nfo, poster, or fanart
  * Change: Allow changing poster/fanart from movie editor even if overwrite poster/fanart is not enabled
  * Change: A few more steps to getting EMM to work on Linux w/ Mono
+ * Change: Only attempt to download poster/fanart if one of the file types is selected in settings
+ * Change: Some extra work done after running an Auto-Pilot
 
 *Changes in r59:*
  * Feature: First iteration of the extrathumbs manager
