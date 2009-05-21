@@ -2633,7 +2633,7 @@ Public Class frmMain
                 End If
 
                 Dim dEditMovie As New dlgEditMovie
-                If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                If dEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     If Master.currMark Then
                         Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
                         Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
