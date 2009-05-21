@@ -2,7 +2,7 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Change: Don't attempt to download posters if no image sources (IMPA, TMDB, MPDB) are selected.
 
 *Changes in r109:*
  * Feature: Custom genres
