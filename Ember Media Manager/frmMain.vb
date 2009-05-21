@@ -152,7 +152,9 @@ Public Class frmMain
         '\\
 
         Try
-            If dlgSettings.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Dim dSettings As New dlgSettings
+
+            If dSettings.ShowDialog() = Windows.Forms.DialogResult.OK Then
 
                 Me.SetColors()
 
@@ -167,6 +169,8 @@ Public Class frmMain
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                 End If
             End If
+
+            dSettings.Dispose()
 
             If Not String.IsNullOrEmpty(Master.eSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPort) Then
                 Me.tsbUpdateXBMC.Enabled = True
@@ -569,7 +573,8 @@ Public Class frmMain
         '\\
 
         Try
-            If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            Dim dEditMovie As New dlgEditMovie
+            If dEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 If Master.currMark Then
                     Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
                     Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
@@ -580,6 +585,7 @@ Public Class frmMain
                 Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                 Me.LoadInfo(Master.currPath, True, False, Master.isFile)
             End If
+            dEditMovie.Dispose()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1370,10 +1376,11 @@ Public Class frmMain
                                             Poster.SaveAsPoster(sPath, drvRow.Item(6))
                                             drvRow.Item(2) = True
                                         Else
-                                            If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
+                                            Dim dImgSelect As New dlgImgSelect
+                                            If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
                                                 drvRow.Item(2) = True
                                             End If
-                                            dlgImgSelect = Nothing
+                                            dImgSelect = Nothing
                                         End If
                                     End If
                                 End If
@@ -1389,11 +1396,12 @@ Public Class frmMain
                                             drvRow.Item(3) = True
                                             Master.currMovie.Fanart = fArt
                                         Else
-                                            If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
+                                            Dim dImgSelect As New dlgImgSelect
+                                            If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
                                                 drvRow.Item(3) = True
                                                 Master.currMovie.Fanart = fArt
                                             End If
-                                            dlgImgSelect = Nothing
+                                            dImgSelect.Dispose()
                                         End If
                                         fArt = Nothing
                                     End If
@@ -1708,10 +1716,11 @@ Public Class frmMain
                                                 Poster.SaveAsPoster(sPath, drvRow.Item(6))
                                                 drvRow.Item(2) = True
                                             Else
-                                                If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
+                                                Dim dImgSelect As New dlgImgSelect
+                                                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
                                                     drvRow.Item(2) = True
                                                 End If
-                                                dlgImgSelect = Nothing
+                                                dImgSelect.Dispose()
                                             End If
                                         End If
                                     End If
@@ -1730,7 +1739,8 @@ Public Class frmMain
                                                 drvRow.Item(3) = True
                                                 Master.currMovie.Fanart = fArt
                                             Else
-                                                If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
+                                                Dim dImgSelect As New dlgImgSelect
+                                                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
                                                     drvRow.Item(3) = True
 
                                                     If File.Exists(nfoPath) Then
@@ -1742,7 +1752,7 @@ Public Class frmMain
                                                     End If
                                                     fArt = Nothing
                                                 End If
-                                                dlgImgSelect = Nothing
+                                                dImgSelect.Dispose()
                                             End If
                                             fArt = Nothing
                                         End If
@@ -2607,14 +2617,20 @@ Public Class frmMain
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
                     If tmpImages.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Posters) Then
-                        dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
+                        Dim dImgSelect As New dlgImgSelect
+                        dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
+                        dImgSelect.Dispose()
                     End If
                     If tmpImages.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Fanart) Then
-                        dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
+                        Dim dImgSelect As New dlgImgSelect
+                        dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
+                        dImgSelect.Dispose()
                     End If
                     tmpImages.Dispose()
                     tmpImages = Nothing
                 End If
+
+                Dim dEditMovie As New dlgEditMovie
                 If dlgEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     If Master.currMark Then
                         Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
@@ -2622,6 +2638,7 @@ Public Class frmMain
                     End If
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                 End If
+                dEditMovie.Dispose()
                 Me.LoadInfo(Master.currPath, True, False, Master.isFile)
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")

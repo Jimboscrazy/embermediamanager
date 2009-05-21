@@ -123,7 +123,8 @@ Namespace IMDB
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                         Else
                             Master.tmpMovie = New Media.Movie
-                            If dlgIMDBSearchResults.ShowDialog(r, sMovieName) = Windows.Forms.DialogResult.OK Then
+                            Dim dIMDB As New dlgIMDBSearchResults
+                            If dIMDB.ShowDialog(r, sMovieName) = Windows.Forms.DialogResult.OK Then
                                 If String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                     b = False
                                 Else
@@ -132,6 +133,7 @@ Namespace IMDB
                             Else
                                 b = False
                             End If
+                            dIMDB.Dispose()
                         End If
                     Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto
                         'it seems "popular matches" is a better result than "exact matches"
