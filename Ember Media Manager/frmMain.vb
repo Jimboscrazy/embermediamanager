@@ -2095,7 +2095,7 @@ Public Class frmMain
 
                 'remove all the current genres
                 Try
-                    For iDel As Integer = (.pnlGenre.Length - 1) To 0 Step -1
+                    For iDel As Integer = UBound(.pnlGenre) To 0 Step -1
                         .scMain.Panel2.Controls.Remove(.pbGenre(iDel))
                         .scMain.Panel2.Controls.Remove(.pnlGenre(iDel))
                     Next

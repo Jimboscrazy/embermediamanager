@@ -406,7 +406,7 @@ Public Class dlgEditMovie
                     Dim genreArray() As String
 
                     genreArray = Strings.Split(Master.currMovie.Genre, "/")
-                    For g As Integer = 0 To (genreArray.Length - 1)
+                    For g As Integer = 0 To UBound(genreArray)
                         Dim l As Integer = .lbGenre.FindString(Strings.Trim(genreArray(g)))
                         .lbGenre.SelectedIndex = l
                     Next
@@ -515,14 +515,6 @@ Public Class dlgEditMovie
                         Dim isFirst As Boolean = True
                         Dim Selected = From Sel In .lbGenre.SelectedItems
                         strGenre = Strings.Join(Selected.ToArray, " / ")
-                        'For Each strSelected As String In .lbGenre.SelectedItems
-                        '    If isFirst Then
-                        '        strGenre = strSelected
-                        '        isFirst = False
-                        '    Else
-                        '        strGenre += " / " & strSelected
-                        '    End If
-                        'Next
                         Master.currMovie.Genre = strGenre
                     End If
                 End If
