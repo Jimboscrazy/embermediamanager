@@ -938,12 +938,12 @@ Public Class Master
         ' Get the proper path to NFO
         '\\
 
-        Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
+        Dim tmpName As String = CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath)))
         Dim nPath As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
-        If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(RemoveExtFromPath(nPath), ".nfo")) Then
-            Return String.Concat(RemoveExtFromPath(nPath), ".nfo")
-        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")) Then
+        If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(nPath, ".nfo")) Then
+            Return String.Concat(nPath, ".nfo")
+        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
             Return Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
         Else
             Return String.Empty
