@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r109:*
  * Feature: Custom genres
  * Feature(?): Startup Wizard for new users and updated versions
  * Fix: Manual Editor not saving
