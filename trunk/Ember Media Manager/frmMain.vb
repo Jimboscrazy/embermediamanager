@@ -573,6 +573,9 @@ Public Class frmMain
                 If Master.currMark Then
                     Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
                     Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                Else
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Black
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
                 End If
                 Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                 Me.LoadInfo(Master.currPath, True, False, Master.isFile)
