@@ -60,10 +60,6 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
-    Private Sub dlgEditMovie_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        Me.Dispose()
-    End Sub
-
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
 
@@ -275,7 +271,9 @@ Public Class dlgEditMovie
     Private Sub btnAddActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddActor.Click
         Try
             Dim eActor As New Media.Person
-            eActor = dlgAddEditActor.ShowDialog(True)
+            Dim dAddEditActor As New dlgAddEditActor
+            eActor = dAddEditActor.ShowDialog(True)
+            dAddEditActor.Dispose()
             If Not IsNothing(eActor) Then
                 Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
@@ -290,7 +288,9 @@ Public Class dlgEditMovie
         Try
             Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
             Dim eActor As New Media.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
-            eActor = dlgAddEditActor.ShowDialog(False, eActor)
+            Dim dAddEditActor As New dlgAddEditActor
+            eActor = dAddEditActor.ShowDialog(False, eActor)
+            dAddEditActor.Dispose()
             If Not IsNothing(eActor) Then
                 lvwItem.Text = eActor.Name
                 lvwItem.SubItems(1).Text = eActor.Role
@@ -694,7 +694,8 @@ Public Class dlgEditMovie
 
             sPath = Path.Combine(sPath, "poster.jpg")
 
-            If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters, True) = Windows.Forms.DialogResult.OK Then
+            Dim dImgSelect As New dlgImgSelect
+            If dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters, True) = Windows.Forms.DialogResult.OK Then
 
                 Poster.FromFile(sPath)
                 pbPoster.Image = Poster.Image
@@ -702,6 +703,7 @@ Public Class dlgEditMovie
                 Me.lblPosterSize.Text = String.Format("Size: {0}x{1}", Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                 Me.lblPosterSize.Visible = True
             End If
+            dImgSelect.Dispose()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -718,7 +720,8 @@ Public Class dlgEditMovie
 
             sPath = Path.Combine(sPath, "fanart.jpg")
 
-            If dlgImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart, True) = Windows.Forms.DialogResult.OK Then
+            Dim dImgSelect As New dlgImgSelect
+            If dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart, True) = Windows.Forms.DialogResult.OK Then
 
                 Fanart.FromFile(sPath)
                 pbFanart.Image = Fanart.Image
@@ -727,6 +730,7 @@ Public Class dlgEditMovie
                 Me.lblFanartSize.Visible = True
 
             End If
+            dImgSelect.Dispose()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

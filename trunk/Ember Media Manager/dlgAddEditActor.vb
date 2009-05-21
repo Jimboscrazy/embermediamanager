@@ -42,7 +42,6 @@ Public Class dlgAddEditActor
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        Me.Dispose()
         Me.Close()
     End Sub
 
@@ -54,7 +53,6 @@ Public Class dlgAddEditActor
 
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
 
-        Me.Dispose()
         Me.Close()
     End Sub
 

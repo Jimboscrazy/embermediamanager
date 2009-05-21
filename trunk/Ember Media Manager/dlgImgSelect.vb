@@ -176,13 +176,11 @@ Public Class dlgImgSelect
         Me.tmpImage.Dispose()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Dispose()
         Me.Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Dispose()
         Me.Close()
     End Sub
 
@@ -277,7 +275,6 @@ Public Class dlgImgSelect
                     MsgBox("No Posters found for this movie", MsgBoxStyle.Information, "No Posters Found")
                 End If
                 Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-                Me.Dispose()
                 Me.Close()
             End If
         Catch ex As Exception
