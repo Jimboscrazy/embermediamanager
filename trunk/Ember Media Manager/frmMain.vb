@@ -1342,7 +1342,6 @@ Public Class frmMain
 
         Try
             If Me.dtMedia.Rows.Count > 0 Then
-
                 Select Case Args.scrapeType
                     Case Master.ScrapeType.FullAsk
                         For Each drvRow As DataRowView In dvView
@@ -1800,7 +1799,8 @@ Public Class frmMain
                 LoadMedia(1)
             Case Else
                 Try
-                    Me.dgvMediaList.Update()
+                    Me.Invalidate()
+                    Me.Refresh()
                     Me.dgvMediaList.Rows(0).Selected = True
                     Me.dgvMediaList.Rows(0).Visible = True
                     Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(1)
