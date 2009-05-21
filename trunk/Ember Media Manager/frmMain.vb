@@ -1789,14 +1789,12 @@ Public Class frmMain
             Case Else
                 Try
                     Me.dgvMediaList.Update()
-                    Application.DoEvents()
-
                     Me.dgvMediaList.Rows(0).Selected = True
                     Me.dgvMediaList.Rows(0).Visible = True
                     Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(1)
                     'set tmpTitle to title in list - used for searching IMDB
                     Me.tmpTitle = Me.dgvMediaList.Item(1, 0).Value.ToString
-
+                    Me.LoadInfo(Me.dgvMediaList.Item(0, 0).Value.ToString, True, False, Me.dgvMediaList.Item(6, 0).Value)
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
