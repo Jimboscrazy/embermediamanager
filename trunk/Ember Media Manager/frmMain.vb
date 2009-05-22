@@ -157,6 +157,7 @@ Public Class frmMain
             If dSettings.ShowDialog() = Windows.Forms.DialogResult.OK Then
 
                 Me.SetColors()
+                Me.SetCleanFolders()
 
                 If Me.dgvMediaList.RowCount > 0 Then
                     Me.dgvMediaList.Columns(2).Visible = Not Master.eSettings.MoviePosterCol
@@ -207,13 +208,15 @@ Public Class frmMain
 
             Master.eSettings.Load()
 
+            Me.SetColors()
+            Me.SetCleanFolders()
+
             If Not String.IsNullOrEmpty(Master.eSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPort) Then
                 Me.tsbUpdateXBMC.Enabled = True
             Else
                 Me.tsbUpdateXBMC.Enabled = False
             End If
 
-            Me.SetColors()
             Me.pnlInfoPanel.Height = 25
             Me.ClearInfo()
 
@@ -2709,6 +2712,23 @@ Public Class frmMain
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub SetCleanFolders()
+
+        '//
+        ' Set the Clean Folders menu item enabled/disabled depending on if clean folder options are set
+        '\\
+
+        With Master.eSettings
+            If .CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
+            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
+            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN Then
+                Me.CleanFoldersToolStripMenuItem.Enabled = True
+            Else
+                Me.CleanFoldersToolStripMenuItem.Enabled = False
+            End If
+        End With
     End Sub
 #End Region
 
