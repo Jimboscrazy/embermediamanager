@@ -1674,7 +1674,7 @@ Public Class frmMain
                                 Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
 
                                 If Not drvRow.Item(4) Then
-                                    Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
+                                    Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, Master.currMovie, Args.scrapeType)
 
                                     If Master.eSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
@@ -1739,7 +1739,7 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(4) Then
 
-                                    Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
+                                    Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, Master.currMovie, Args.scrapeType)
 
                                     If Master.eSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
