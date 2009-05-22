@@ -2,7 +2,14 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * Feature: Optional title, outline, and plot from OFDB
+ * Feature: Pull IMDB ID (if exists) from non-conforming nfo
+ * Fix: Renaming non-conforming nfo not working as expected
+ * Fix: Fix for movie editor pulling info from other movies.
  * Change: Don't attempt to download posters if no image sources (IMPA, TMDB, MPDB) are selected.
+ * Change: Support for "[trailer]"
+ * Change: Rename Auto-pilots to be more descriptive
+ * Change: Disable clean folders menu item if no folder cleaning options are set
 
 *Changes in r109:*
  * Feature: Custom genres
