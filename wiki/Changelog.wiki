@@ -7,7 +7,7 @@
  * Fix: Renaming non-conforming nfo not working as expected
  * Fix: Fix for movie editor pulling info from other movies.
  * Change: Don't attempt to download posters if no image sources (IMPA, TMDB, MPDB) are selected.
- * Change: Support for "[trailer]"
+ * Change: Support for trailer in brackets (stupid wiki markup won't let me actually put trailer in bracket lol)
  * Change: Rename Auto-pilots to be more descriptive
  * Change: Disable clean folders menu item if no folder cleaning options are set
 
