@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -123,10 +123,10 @@ Partial Class frmMain
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripButton
+        Me.tsbEdit = New System.Windows.Forms.ToolStripButton
         Me.tsbRescrape = New System.Windows.Forms.ToolStripDropDownButton
         Me.mnuRescrapeAuto = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuRescrapeSearch = New System.Windows.Forms.ToolStripMenuItem
-        Me.tsbEdit = New System.Windows.Forms.ToolStripButton
         Me.pbFanartCache = New System.Windows.Forms.PictureBox
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
@@ -374,8 +374,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -1238,6 +1238,16 @@ Partial Class frmMain
         Me.tsbUpdateXBMC.Size = New System.Drawing.Size(134, 22)
         Me.tsbUpdateXBMC.Text = "Begin XBMC Update"
         '
+        'tsbEdit
+        '
+        Me.tsbEdit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.tsbEdit.Image = CType(resources.GetObject("tsbEdit.Image"), System.Drawing.Image)
+        Me.tsbEdit.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEdit.Name = "tsbEdit"
+        Me.tsbEdit.Size = New System.Drawing.Size(83, 22)
+        Me.tsbEdit.Text = "Edit Movie"
+        Me.tsbEdit.ToolTipText = "Edit Movie Information"
+        '
         'tsbRescrape
         '
         Me.tsbRescrape.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -1261,16 +1271,6 @@ Partial Class frmMain
         Me.mnuRescrapeSearch.Name = "mnuRescrapeSearch"
         Me.mnuRescrapeSearch.Size = New System.Drawing.Size(136, 22)
         Me.mnuRescrapeSearch.Text = "Search New"
-        '
-        'tsbEdit
-        '
-        Me.tsbEdit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.tsbEdit.Image = CType(resources.GetObject("tsbEdit.Image"), System.Drawing.Image)
-        Me.tsbEdit.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbEdit.Name = "tsbEdit"
-        Me.tsbEdit.Size = New System.Drawing.Size(83, 22)
-        Me.tsbEdit.Text = "Edit Movie"
-        Me.tsbEdit.ToolTipText = "Edit Movie Information"
         '
         'pbFanartCache
         '

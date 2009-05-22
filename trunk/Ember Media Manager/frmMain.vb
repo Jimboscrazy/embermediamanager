@@ -2409,7 +2409,7 @@ Public Class frmMain
                 Case Master.ScrapeType.FullAsk
                     Me.tspbLoading.Style = ProgressBarStyle.Continuous
                     Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount
-                    Me.tslLoading.Text = "Auto-Pilot (Full - Ask)"
+                    Me.tslLoading.Text = "Updating Media (All Movies - Ask):"
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
@@ -2420,7 +2420,7 @@ Public Class frmMain
                     End If
                 Case Master.ScrapeType.FullAuto
                     Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount
-                    Me.tslLoading.Text = "Auto-Pilot (Full - Auto)"
+                    Me.tslLoading.Text = "Updating Media (All Movies - Auto):"
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
@@ -2437,7 +2437,7 @@ Public Class frmMain
                     Next
 
                     Me.tspbLoading.Maximum = chkCount
-                    Me.tslLoading.Text = "Auto-Pilot (Update - Ask)"
+                    Me.tslLoading.Text = "Updating Media (Movies Missing Items - Ask):"
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
@@ -2467,7 +2467,7 @@ Public Class frmMain
                     Next
 
                     Me.tspbLoading.Maximum = chkCount
-                    Me.tslLoading.Text = "Auto-Pilot (Update - Auto)"
+                    Me.tslLoading.Text = "Updating Media (Movies Missing Items - Auto):"
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
@@ -2490,7 +2490,7 @@ Public Class frmMain
                     End If
                 Case Master.ScrapeType.MIOnly
                     Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount
-                    Me.tslLoading.Text = "Auto-Pilot (Media Info Only)"
+                    Me.tslLoading.Text = "Updating Media (All Movies - MI Only):"
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
@@ -2501,7 +2501,7 @@ Public Class frmMain
                     End If
                 Case Master.ScrapeType.CleanFolders
                     Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount
-                    Me.tslLoading.Text = "Cleaning Folders"
+                    Me.tslLoading.Text = "Cleaning Folders:"
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
@@ -2513,7 +2513,7 @@ Public Class frmMain
                 Case Master.ScrapeType.SingleScrape
                     Me.ClearInfo(True)
                     Me.tslStatus.Text = String.Format("Re-scraping {0}", Master.currMovie.Title)
-                    Me.tslLoading.Text = "Scraping"
+                    Me.tslLoading.Text = "Scraping:"
                     Me.tspbLoading.Maximum = 13
                     Me.ReportDownloadPercent = True
                     Me.tslLoading.Visible = True
@@ -2528,7 +2528,7 @@ Public Class frmMain
                             If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                 Me.ClearInfo(True)
                                 Me.tslStatus.Text = String.Format("Scraping {0}", Master.tmpMovie.Title)
-                                Me.tslLoading.Text = "Scraping"
+                                Me.tslLoading.Text = "Scraping:"
                                 Me.tspbLoading.Maximum = 13
                                 Me.tspbLoading.Style = ProgressBarStyle.Continuous
                                 Me.ReportDownloadPercent = True
