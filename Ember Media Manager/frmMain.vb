@@ -407,6 +407,41 @@ Public Class frmMain
         End Try
 
     End Sub
+    Private Sub dgvMediaList_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellDoubleClick
+
+        '//
+        ' Show the NFO Editor
+        '\\
+
+        Try
+
+            Master.currMark = If(Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson, True, False)
+
+            'set tmpTitle to title in list - used for searching IMDB
+            Me.tmpTitle = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+            Master.currPath = Me.dgvMediaList.Item(0, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+            Master.isFile = Me.dgvMediaList.Item(6, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+            Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
+            Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
+            Me.tslStatus.Text = Master.currPath
+
+            Dim dEditMovie As New dlgEditMovie
+            If dEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                If Master.currMark Then
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                Else
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Black
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                End If
+                Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
+                Me.LoadInfo(Master.currPath, True, False, Master.isFile)
+            End If
+            dEditMovie.Dispose()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
     Private Sub dgvMediaList_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMediaList.Sorted
 
@@ -577,17 +612,20 @@ Public Class frmMain
 
         Try
             Dim dEditMovie As New dlgEditMovie
-            If dEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                If Master.currMark Then
-                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
-                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                Else
-                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Black
-                    Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
-                End If
-                Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
-                Me.LoadInfo(Master.currPath, True, False, Master.isFile)
-            End If
+            Select dEditMovie.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    If Master.currMark Then
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    Else
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Black
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                    End If
+                    Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
+                    Me.LoadInfo(Master.currPath, True, False, Master.isFile)
+                Case Windows.Forms.DialogResult.Retry
+                    Me.ScrapeData(Master.ScrapeType.SingleScrape)
+            End Select
             dEditMovie.Dispose()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

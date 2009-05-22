@@ -61,6 +61,11 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
+    Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Retry
+        Me.Close()
+    End Sub
+
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
 
@@ -1143,4 +1148,5 @@ Public Class dlgEditMovie
             _index = Nothing
         End Sub
     End Class
+
 End Class
