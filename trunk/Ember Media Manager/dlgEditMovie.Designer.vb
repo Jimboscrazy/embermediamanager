@@ -112,6 +112,7 @@ Partial Class dlgEditMovie
         Me.pbFrame = New System.Windows.Forms.PictureBox
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
         Me.chkMark = New System.Windows.Forms.CheckBox
+        Me.btnRescrape = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -1010,6 +1011,18 @@ Partial Class dlgEditMovie
         Me.chkMark.Text = "Mark Movie"
         Me.chkMark.UseVisualStyleBackColor = True
         '
+        'btnRescrape
+        '
+        Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
+        Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRescrape.Location = New System.Drawing.Point(366, 553)
+        Me.btnRescrape.Name = "btnRescrape"
+        Me.btnRescrape.Size = New System.Drawing.Size(122, 23)
+        Me.btnRescrape.TabIndex = 58
+        Me.btnRescrape.Text = "Re-scrape IMDB"
+        Me.btnRescrape.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnRescrape.UseVisualStyleBackColor = True
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1017,6 +1030,7 @@ Partial Class dlgEditMovie
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.Controls.Add(Me.btnRescrape)
         Me.Controls.Add(Me.chkMark)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Cancel_Button)
@@ -1145,5 +1159,6 @@ Partial Class dlgEditMovie
     Friend WithEvents btnRemoveThumb As System.Windows.Forms.Button
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtStudioTag As System.Windows.Forms.TextBox
+    Friend WithEvents btnRescrape As System.Windows.Forms.Button
 
 End Class
