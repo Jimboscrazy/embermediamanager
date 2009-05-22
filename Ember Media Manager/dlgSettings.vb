@@ -533,6 +533,18 @@ Public Class dlgSettings
     Private Sub txtPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPosterHeight.TextChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkOFDBPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBPlot.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkOFDBOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBOutline.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBTitle.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -681,6 +693,9 @@ Public Class dlgSettings
             Master.eSettings.ResizePoster = Me.chkResizePoster.Checked
             Master.eSettings.PosterHeight = If(Not String.IsNullOrEmpty(Me.txtPosterHeight.Text), CLng(Me.txtPosterHeight.Text), 0)
             Master.eSettings.PosterWidth = If(Not String.IsNullOrEmpty(Me.txtPosterWidth.Text), CLng(Me.txtPosterWidth.Text), 0)
+            Master.eSettings.UseOFDBTitle = Me.chkOFDBTitle.Checked
+            Master.eSettings.UseOFDBOutline = Me.chkOFDBOutline.Checked
+            Master.eSettings.UseOFDBPlot = Me.chkOFDBPlot.Checked
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -783,6 +798,9 @@ Public Class dlgSettings
                 Me.txtPosterWidth.Text = Master.eSettings.PosterWidth
                 Me.txtPosterHeight.Text = Master.eSettings.PosterHeight
             End If
+            Me.chkOFDBTitle.Checked = Master.eSettings.UseOFDBTitle
+            Me.chkOFDBOutline.Checked = Master.eSettings.UseOFDBOutline
+            Me.chkOFDBPlot.Checked = Master.eSettings.UseOFDBPlot
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74

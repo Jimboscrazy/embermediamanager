@@ -94,6 +94,9 @@ Public Class emmSettings
     Private _resizeposter As Boolean
     Private _posterheight As Integer
     Private _posterwidth As Integer
+    Private _useofdbtitle As Boolean
+    Private _useofdboutline As Boolean
+    Private _useofdbplot As Boolean
     Private _movielist As New ArrayList
 
     Public Property Version() As String
@@ -725,6 +728,33 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property UseOFDBTitle() As Boolean
+        Get
+            Return Me._useofdbtitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._useofdbtitle = value
+        End Set
+    End Property
+
+    Public Property UseOFDBOutline() As Boolean
+        Get
+            Return Me._useofdboutline
+        End Get
+        Set(ByVal value As Boolean)
+            Me._useofdboutline = value
+        End Set
+    End Property
+
+    Public Property UseOFDBPlot() As Boolean
+        Get
+            Return Me._useofdbplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._useofdbplot = value
+        End Set
+    End Property
+
     Public Property MovieList() As ArrayList
         Get
             Return Me._movielist
@@ -808,6 +838,9 @@ Public Class emmSettings
         Me._resizeposter = False
         Me._posterheight = 0
         Me._posterwidth = 0
+        Me._useofdbtitle = False
+        Me._useofdboutline = False
+        Me._useofdbplot = False
         Me._movielist.Clear()
     End Sub
 

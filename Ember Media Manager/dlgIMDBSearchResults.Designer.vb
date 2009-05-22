@@ -49,10 +49,14 @@ Partial Class dlgIMDBSearchResults
         Me.lblPlotHeader = New System.Windows.Forms.Label
         Me.btnSearch = New System.Windows.Forms.Button
         Me.txtSearch = New System.Windows.Forms.TextBox
+        Me.pnlLoading = New System.Windows.Forms.Panel
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.Label3 = New System.Windows.Forms.Label
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlLoading.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -324,6 +328,37 @@ Partial Class dlgIMDBSearchResults
         Me.txtSearch.Size = New System.Drawing.Size(252, 20)
         Me.txtSearch.TabIndex = 66
         '
+        'pnlLoading
+        '
+        Me.pnlLoading.BackColor = System.Drawing.Color.White
+        Me.pnlLoading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlLoading.Controls.Add(Me.Label3)
+        Me.pnlLoading.Controls.Add(Me.ProgressBar1)
+        Me.pnlLoading.Location = New System.Drawing.Point(365, 183)
+        Me.pnlLoading.Name = "pnlLoading"
+        Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
+        Me.pnlLoading.TabIndex = 68
+        Me.pnlLoading.Visible = False
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(3, 32)
+        Me.ProgressBar1.MarqueeAnimationSpeed = 25
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(192, 17)
+        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.ProgressBar1.TabIndex = 0
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(3, 10)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(111, 13)
+        Me.Label3.TabIndex = 1
+        Me.Label3.Text = "Downloading details..."
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'dlgIMDBSearchResults
         '
         Me.AcceptButton = Me.OK_Button
@@ -332,6 +367,7 @@ Partial Class dlgIMDBSearchResults
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(643, 428)
         Me.ControlBox = False
+        Me.Controls.Add(Me.pnlLoading)
         Me.Controls.Add(Me.btnSearch)
         Me.Controls.Add(Me.txtSearch)
         Me.Controls.Add(Me.lblPlotHeader)
@@ -365,6 +401,8 @@ Partial Class dlgIMDBSearchResults
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlLoading.ResumeLayout(False)
+        Me.pnlLoading.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -395,5 +433,8 @@ Partial Class dlgIMDBSearchResults
     Friend WithEvents lblPlotHeader As System.Windows.Forms.Label
     Friend WithEvents btnSearch As System.Windows.Forms.Button
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
+    Friend WithEvents pnlLoading As System.Windows.Forms.Panel
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
 
 End Class
