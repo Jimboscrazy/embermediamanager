@@ -123,10 +123,10 @@ Partial Class frmMain
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripButton
-        Me.tsbEdit = New System.Windows.Forms.ToolStripButton
         Me.tsbRescrape = New System.Windows.Forms.ToolStripDropDownButton
         Me.mnuRescrapeAuto = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuRescrapeSearch = New System.Windows.Forms.ToolStripMenuItem
+        Me.tsbEdit = New System.Windows.Forms.ToolStripButton
         Me.pbFanartCache = New System.Windows.Forms.PictureBox
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
@@ -959,11 +959,10 @@ Partial Class frmMain
         '
         'pbMPAA
         '
-        Me.pbMPAA.Image = CType(resources.GetObject("pbMPAA.Image"), System.Drawing.Image)
         Me.pbMPAA.Location = New System.Drawing.Point(1, 1)
         Me.pbMPAA.Name = "pbMPAA"
-        Me.pbMPAA.Size = New System.Drawing.Size(198, 41)
-        Me.pbMPAA.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbMPAA.Size = New System.Drawing.Size(249, 57)
+        Me.pbMPAA.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.pbMPAA.TabIndex = 13
         Me.pbMPAA.TabStop = False
         '
@@ -1239,16 +1238,6 @@ Partial Class frmMain
         Me.tsbUpdateXBMC.Size = New System.Drawing.Size(134, 22)
         Me.tsbUpdateXBMC.Text = "Begin XBMC Update"
         '
-        'tsbEdit
-        '
-        Me.tsbEdit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.tsbEdit.Image = CType(resources.GetObject("tsbEdit.Image"), System.Drawing.Image)
-        Me.tsbEdit.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbEdit.Name = "tsbEdit"
-        Me.tsbEdit.Size = New System.Drawing.Size(83, 22)
-        Me.tsbEdit.Text = "Edit Movie"
-        Me.tsbEdit.ToolTipText = "Edit Movie Information"
-        '
         'tsbRescrape
         '
         Me.tsbRescrape.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -1272,6 +1261,16 @@ Partial Class frmMain
         Me.mnuRescrapeSearch.Name = "mnuRescrapeSearch"
         Me.mnuRescrapeSearch.Size = New System.Drawing.Size(136, 22)
         Me.mnuRescrapeSearch.Text = "Search New"
+        '
+        'tsbEdit
+        '
+        Me.tsbEdit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.tsbEdit.Image = CType(resources.GetObject("tsbEdit.Image"), System.Drawing.Image)
+        Me.tsbEdit.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbEdit.Name = "tsbEdit"
+        Me.tsbEdit.Size = New System.Drawing.Size(83, 22)
+        Me.tsbEdit.Text = "Edit Movie"
+        Me.tsbEdit.ToolTipText = "Edit Movie Information"
         '
         'pbFanartCache
         '
@@ -1357,6 +1356,7 @@ Partial Class frmMain
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlMPAA.ResumeLayout(False)
+        Me.pnlMPAA.PerformLayout()
         CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()

@@ -503,6 +503,51 @@ Public Class Master
         Return imgGenre
     End Function
 
+    Public Shared Function GetRatingImage(ByVal strRating As String) As Image
+
+        '//
+        ' Parse the floating Rating box
+        '\\
+
+        Dim imgRating As Image = Nothing
+        Dim imgRatingStr As String = String.Empty
+
+        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings")
+
+        If File.Exists(Path.Combine(mePath, "Ratings.xml")) Then
+
+            Try
+                Dim xmlRating As XDocument = XDocument.Load(Path.Combine(mePath, "Ratings.xml"))
+
+                If Master.eSettings.UseCertForMPAA AndAlso Not eSettings.CertificationLang = "USA" AndAlso xmlRating.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
+                    Dim xRating = From xRat In xmlRating.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Where strRating.ToLower = xRat.@searchstring.ToLower Select xRat.<icon>.Value
+                    If xRating.Count > 0 Then
+                        imgRatingStr = Path.Combine(mePath, xRating(0).ToString)
+                    End If
+                Else
+                    Dim xRating = From xRat In xmlRating...<usa>...<name> Where strRating.ToLower.Contains(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
+                    If xRating.Count > 0 Then
+                        imgRatingStr = Path.Combine(mePath, xRating(0).ToString)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(imgRatingStr) AndAlso File.Exists(imgRatingStr) Then
+                    Dim fsImage As New FileStream(imgRatingStr, FileMode.Open, FileAccess.Read)
+                    imgRating = Image.FromStream(fsImage)
+                    fsImage.Close()
+                    fsImage = Nothing
+                End If
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        Else
+            MsgBox("Cannot find Ratings.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Ratings.xml"), MsgBoxStyle.Critical, "File Not Found")
+        End If
+
+        Return imgRating
+    End Function
+
     Public Shared Function isValidDir(ByVal sPath As String) As Boolean
 
         '//

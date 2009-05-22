@@ -380,6 +380,9 @@ mResult:
                     If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                         If Cert.Count > 0 Then
                             IMDBMovie.Certification = Cert(0).ToString
+                            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" Then
+                                IMDBMovie.MPAA = IMDBMovie.Certification
+                            End If
                         End If
                     Else
                         IMDBMovie.Certification = Strings.Join(Cert.ToArray, " / ").Trim
@@ -402,12 +405,11 @@ mResult:
                 End If
 
                 Dim RegexRating As String = Regex.Match(Html, "\b\d\W\d/\d\d").ToString
-                If RegexRating = String.Empty Then
-                    IMDBMovie.Rating = Nothing
+                If String.IsNullOrEmpty(RegexRating) Then
+                    IMDBMovie.Rating = String.Empty
                 Else
                     IMDBMovie.Rating = RegexRating.Split("/".ToCharArray)(0).Trim
                 End If
-                'IIf(IsNumeric(RegexRating), RegexRating, 0)
 
                 'trailer
                 Dim sTrailerUrl As String = Regex.Match(Html, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim

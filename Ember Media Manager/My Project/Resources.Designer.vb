@@ -74,41 +74,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Friend ReadOnly Property mpaag() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("mpaag", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property mpaanc17() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("mpaanc17", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property mpaapg() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("mpaapg", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property mpaapg13() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("mpaapg13", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Friend ReadOnly Property mpaar() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("mpaar", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Friend ReadOnly Property overlay() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("overlay", resourceCulture)

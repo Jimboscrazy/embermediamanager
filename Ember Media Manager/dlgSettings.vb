@@ -226,6 +226,10 @@ Public Class dlgSettings
     Private Sub chkCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCert.CheckedChanged
         Me.cbCert.SelectedIndex = -1
         Me.cbCert.Enabled = Me.chkCert.Checked
+        Me.chkUseCertForMPAA.Enabled = Me.chkCert.Checked
+        If Not Me.chkCert.Checked Then
+            Me.chkUseCertForMPAA.Checked = False
+        End If
         Me.btnApply.Enabled = True
     End Sub
 
@@ -546,6 +550,11 @@ Public Class dlgSettings
     Private Sub chkOFDBTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBTitle.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkUseCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseCertForMPAA.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -655,6 +664,11 @@ Public Class dlgSettings
             Next
 
             Master.eSettings.CertificationLang = Me.cbCert.Text
+            If Not String.IsNullOrEmpty(Me.cbCert.Text) Then
+                Master.eSettings.UseCertForMPAA = Me.chkUseCertForMPAA.Checked
+            Else
+                Master.eSettings.UseCertForMPAA = False
+            End If
             Master.eSettings.UseStudioTags = Me.chkStudio.Checked
             Master.eSettings.FullCast = Me.chkFullCast.Checked
             Master.eSettings.FullCrew = Me.chkFullCrew.Checked
@@ -755,6 +769,8 @@ Public Class dlgSettings
                 Me.chkCert.Checked = True
                 Me.cbCert.Enabled = True
                 Me.cbCert.Text = Master.eSettings.CertificationLang
+                Me.chkUseCertForMPAA.Enabled = True
+                Me.chkUseCertForMPAA.Checked = Master.eSettings.UseCertForMPAA
             End If
             Me.chkStudio.Checked = Master.eSettings.UseStudioTags
             Me.chkFullCast.Checked = Master.eSettings.FullCast
