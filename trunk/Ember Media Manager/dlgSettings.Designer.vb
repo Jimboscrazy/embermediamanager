@@ -27,10 +27,10 @@ Partial Class dlgSettings
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.tabGeneral = New System.Windows.Forms.TabPage
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.Label14 = New System.Windows.Forms.Label
         Me.txtPassword = New System.Windows.Forms.TextBox
         Me.txtUsername = New System.Windows.Forms.TextBox
+        Me.Label13 = New System.Windows.Forms.Label
+        Me.Label14 = New System.Windows.Forms.Label
         Me.Label7 = New System.Windows.Forms.Label
         Me.Label6 = New System.Windows.Forms.Label
         Me.txtPort = New System.Windows.Forms.TextBox
@@ -154,6 +154,10 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.GroupBox15 = New System.Windows.Forms.GroupBox
+        Me.chkOFDBTitle = New System.Windows.Forms.CheckBox
+        Me.chkOFDBOutline = New System.Windows.Forms.CheckBox
+        Me.chkOFDBPlot = New System.Windows.Forms.CheckBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -178,6 +182,7 @@ Partial Class dlgSettings
         Me.GroupBox1.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox15.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -224,6 +229,23 @@ Partial Class dlgSettings
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "XBMC Communication"
         '
+        'txtPassword
+        '
+        Me.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPassword.Location = New System.Drawing.Point(495, 17)
+        Me.txtPassword.Name = "txtPassword"
+        Me.txtPassword.Size = New System.Drawing.Size(80, 20)
+        Me.txtPassword.TabIndex = 9
+        Me.txtPassword.UseSystemPasswordChar = True
+        '
+        'txtUsername
+        '
+        Me.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtUsername.Location = New System.Drawing.Point(353, 17)
+        Me.txtUsername.Name = "txtUsername"
+        Me.txtUsername.Size = New System.Drawing.Size(80, 20)
+        Me.txtUsername.TabIndex = 8
+        '
         'Label13
         '
         Me.Label13.AutoSize = True
@@ -241,23 +263,6 @@ Partial Class dlgSettings
         Me.Label14.Size = New System.Drawing.Size(56, 13)
         Me.Label14.TabIndex = 10
         Me.Label14.Text = "Password:"
-        '
-        'txtPassword
-        '
-        Me.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPassword.Location = New System.Drawing.Point(495, 17)
-        Me.txtPassword.Name = "txtPassword"
-        Me.txtPassword.Size = New System.Drawing.Size(80, 20)
-        Me.txtPassword.TabIndex = 9
-        Me.txtPassword.UseSystemPasswordChar = True
-        '
-        'txtUsername
-        '
-        Me.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtUsername.Location = New System.Drawing.Point(353, 17)
-        Me.txtUsername.Name = "txtUsername"
-        Me.txtUsername.Size = New System.Drawing.Size(80, 20)
-        Me.txtUsername.TabIndex = 8
         '
         'Label7
         '
@@ -1087,6 +1092,7 @@ Partial Class dlgSettings
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.GroupBox15)
         Me.TabPage2.Controls.Add(Me.GroupBox14)
         Me.TabPage2.Controls.Add(Me.GroupBox13)
         Me.TabPage2.Controls.Add(Me.GroupBox10)
@@ -1225,9 +1231,9 @@ Partial Class dlgSettings
         Me.GroupBox10.Controls.Add(Me.chkLockTitle)
         Me.GroupBox10.Controls.Add(Me.chkLockOutline)
         Me.GroupBox10.Controls.Add(Me.chkLockPlot)
-        Me.GroupBox10.Location = New System.Drawing.Point(261, 163)
+        Me.GroupBox10.Location = New System.Drawing.Point(216, 162)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(249, 81)
+        Me.GroupBox10.Size = New System.Drawing.Size(234, 84)
         Me.GroupBox10.TabIndex = 57
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "Locks (Do not allow updates during scraping)"
@@ -1275,7 +1281,7 @@ Partial Class dlgSettings
         Me.GroupBox9.Controls.Add(Me.lblFanartSize)
         Me.GroupBox9.Location = New System.Drawing.Point(6, 6)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(249, 240)
+        Me.GroupBox9.Size = New System.Drawing.Size(204, 240)
         Me.GroupBox9.TabIndex = 56
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
@@ -1376,9 +1382,9 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Controls.Add(Me.chkStudio)
-        Me.GroupBox1.Location = New System.Drawing.Point(261, 6)
+        Me.GroupBox1.Location = New System.Drawing.Point(216, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(249, 153)
+        Me.GroupBox1.Size = New System.Drawing.Size(234, 153)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -1540,6 +1546,48 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
+        'GroupBox15
+        '
+        Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
+        Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
+        Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
+        Me.GroupBox15.Location = New System.Drawing.Point(456, 7)
+        Me.GroupBox15.Name = "GroupBox15"
+        Me.GroupBox15.Size = New System.Drawing.Size(123, 90)
+        Me.GroupBox15.TabIndex = 60
+        Me.GroupBox15.TabStop = False
+        Me.GroupBox15.Text = "OFDB"
+        '
+        'chkOFDBTitle
+        '
+        Me.chkOFDBTitle.AutoSize = True
+        Me.chkOFDBTitle.Location = New System.Drawing.Point(6, 18)
+        Me.chkOFDBTitle.Name = "chkOFDBTitle"
+        Me.chkOFDBTitle.Size = New System.Drawing.Size(100, 17)
+        Me.chkOFDBTitle.TabIndex = 0
+        Me.chkOFDBTitle.Text = "Use OFDB Title"
+        Me.chkOFDBTitle.UseVisualStyleBackColor = True
+        '
+        'chkOFDBOutline
+        '
+        Me.chkOFDBOutline.AutoSize = True
+        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 41)
+        Me.chkOFDBOutline.Name = "chkOFDBOutline"
+        Me.chkOFDBOutline.Size = New System.Drawing.Size(113, 17)
+        Me.chkOFDBOutline.TabIndex = 1
+        Me.chkOFDBOutline.Text = "Use OFDB Outline"
+        Me.chkOFDBOutline.UseVisualStyleBackColor = True
+        '
+        'chkOFDBPlot
+        '
+        Me.chkOFDBPlot.AutoSize = True
+        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 64)
+        Me.chkOFDBPlot.Name = "chkOFDBPlot"
+        Me.chkOFDBPlot.Size = New System.Drawing.Size(98, 17)
+        Me.chkOFDBPlot.TabIndex = 2
+        Me.chkOFDBPlot.Text = "Use OFDB Plot"
+        Me.chkOFDBPlot.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -1599,6 +1647,8 @@ Partial Class dlgSettings
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox15.ResumeLayout(False)
+        Me.GroupBox15.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1733,4 +1783,8 @@ Partial Class dlgSettings
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents txtPassword As System.Windows.Forms.TextBox
     Friend WithEvents txtUsername As System.Windows.Forms.TextBox
+    Friend WithEvents GroupBox15 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkOFDBPlot As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOFDBOutline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOFDBTitle As System.Windows.Forms.CheckBox
 End Class

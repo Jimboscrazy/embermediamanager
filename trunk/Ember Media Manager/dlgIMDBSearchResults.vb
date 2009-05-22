@@ -87,6 +87,8 @@ Public Class dlgIMDBSearchResults
         ' Info downloaded... fill form with data
         '\\
 
+        Me.pnlLoading.Visible = False
+
         Try
             If bSuccess Then
                 Me.ControlsVisible(True)
@@ -127,6 +129,7 @@ Public Class dlgIMDBSearchResults
             Me.ClearInfo()
             Me.OK_Button.Enabled = True
             If Not IsNothing(e.Node.Tag) Then
+                Me.pnlLoading.Visible = True
                 IMDB.GetSearchMovieInfoAsync(e.Node.Tag, Master.tmpMovie)
             End If
         Catch ex As Exception
