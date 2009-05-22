@@ -28,6 +28,7 @@ Imports System.Security.Cryptography
 Imports System.Xml
 Imports System.Xml.Serialization
 Imports System.Net
+Imports System.Globalization
 
 Public Class Master
 
@@ -187,7 +188,7 @@ Public Class Master
 
             'Convert String To Proper Case
             If eSettings.ProperCase Then
-                movieName = Strings.StrConv(movieName, VbStrConv.ProperCase)
+                movieName = ProperCase(movieName)
             End If
 
         Catch ex As Exception
@@ -196,6 +197,18 @@ Public Class Master
 
         Return CleanStackingMarkers(movieName.Trim)
 
+    End Function
+
+    Private Shared Function ProperCase(ByVal sString As String) As String
+        Dim sReturn As String = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(sString)
+        Dim toUpper As String = "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix)\b"
+
+        Dim mcUp As MatchCollection = Regex.Matches(sReturn, toUpper, RegexOptions.IgnoreCase)
+        For Each M As Match In mcUp
+            sReturn = sReturn.Replace(M.Value, Strings.StrConv(M.Value, VbStrConv.Uppercase))
+        Next
+
+        Return sReturn
     End Function
 
     Public Shared Function CleanStackingMarkers(ByVal sPath As String) As String
