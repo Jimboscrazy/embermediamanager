@@ -646,6 +646,9 @@ Public Class Master
                 Return New Media.Movie
             End If
         Catch
+
+            Dim newMovie As New Media.Movie
+
             If Not IsNothing(xmlSR) Then
                 xmlSR.Close()
                 xmlSR = Nothing
@@ -654,18 +657,34 @@ Public Class Master
             If Not IsNothing(xmlSer) Then
                 xmlSer = Nothing
             End If
-            'non-conforming nfo... rename per setting
-            If Not eSettings.OverwriteNfo Then
-                Dim i As Integer = 2
-                Dim strNewName As String = GetNameFromPath(RemoveExtFromPath(sPath)) & ".info"
-                Do While File.Exists(strNewName)
-                    strNewName = String.Format("{0}({1}).info", GetNameFromPath(RemoveExtFromPath(sPath)), i)
-                    i += 1
-                Loop
-                My.Computer.FileSystem.RenameFile(sPath, strNewName)
+
+            Dim srInfo As New StreamReader(sPath)
+            Dim sInfo As String = srInfo.ReadToEnd
+            Dim sIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
+
+            If Not String.IsNullOrEmpty(sIMDBID) Then
+                newMovie.IMDBID = sIMDBID
             End If
 
-            Return New Media.Movie
+            srInfo.Close()
+            srInfo.Dispose()
+
+            'non-conforming nfo... rename per setting
+            If Not eSettings.OverwriteNfo Then
+                Dim i As Integer = 1
+                Dim strNewName As String = RemoveExtFromPath(sPath) & ".info"
+                'in case there is already a .info file
+                If File.Exists(strNewName) Then
+                    Do While File.Exists(strNewName)
+                        strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
+                        i += 1
+                    Loop
+                    strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
+                End If
+                My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
+            End If
+
+            Return newMovie
         End Try
 
     End Function
