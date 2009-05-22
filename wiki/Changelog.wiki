@@ -2,7 +2,14 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Feature: Use certification as MPAA rating
+ * Feature: Allow custom MPAA rating images
+ * Fix: Update Ask methods were not using IMDB ID from non-conforming nfos
+ * Fix: Fix for rating not saving properly after editing movie if locale uses , for decimal point
+ * Change: Message box to report preferred image size could not be found for ask type updaters
+ * Change: Change status bar text to reflect renaming auto-pilots
+ * Change: Re-scrape button in movie editor 
+ * Change: Double-click movie list to open movie editor
 
 *Changes in r119:*
  * Feature: Optional title, outline, and plot from OFDB
