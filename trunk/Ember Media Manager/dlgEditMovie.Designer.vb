@@ -482,7 +482,6 @@ Partial Class dlgEditMovie
         'lbMPAA
         '
         Me.lbMPAA.FormattingEnabled = True
-        Me.lbMPAA.Items.AddRange(New Object() {"[none]", "Rated G", "Rated PG", "Rated PG-13", "Rated R", "Rated NC-17"})
         Me.lbMPAA.Location = New System.Drawing.Point(635, 155)
         Me.lbMPAA.Name = "lbMPAA"
         Me.lbMPAA.Size = New System.Drawing.Size(193, 82)

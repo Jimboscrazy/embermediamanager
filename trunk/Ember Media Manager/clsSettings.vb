@@ -36,6 +36,7 @@ Public Class emmSettings
     Private _headertextColor As String
     Private _paneltextColor As String
     Private _certificationLang As String
+    Private _usecertformpaa As Boolean
     Private _studiotags As Boolean
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
@@ -195,6 +196,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As String)
             Me._certificationLang = value
+        End Set
+    End Property
+
+    Public Property UseCertForMPAA() As Boolean
+        Get
+            Return Me._usecertformpaa
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usecertformpaa = value
         End Set
     End Property
 
@@ -780,6 +790,7 @@ Public Class emmSettings
         Me._headertextColor = Color.White.ToArgb
         Me._paneltextColor = Color.Black.ToArgb
         Me._certificationLang = String.Empty
+        Me._usecertformpaa = False
         Me._studiotags = False
         Me._fullcast = False
         Me._fullcrew = False

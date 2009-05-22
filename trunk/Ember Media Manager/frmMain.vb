@@ -1960,7 +1960,10 @@ Public Class frmMain
         ' Slide the MPAA image along with the panel
         '\\
 
-        Me.pnlMPAA.Top = Me.pnlInfoPanel.Top - 49
+        Me.pnlMPAA.BringToFront()
+        Me.pnlMPAA.Size = New Size(Me.pbMPAA.Width + 10, Me.pbMPAA.Height + 10)
+        Me.pbMPAA.Location = New Point(4, 4)
+        Me.pnlMPAA.Top = Me.pnlInfoPanel.Top - (Me.pnlMPAA.Height + 10)
 
     End Sub
 
@@ -2225,11 +2228,19 @@ Public Class frmMain
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.MPAA) Then
-                Me.createMPAABox(Master.currMovie.MPAA)
+                Dim tmpRatingImg As Image = Master.GetRatingImage(Master.currMovie.MPAA)
+                If Not IsNothing(tmpRatingImg) Then
+                    Me.pbMPAA.Image = tmpRatingImg
+                    Me.MoveMPAA()
+                    Me.pnlMPAA.Visible = True
+                Else
+                    Me.pnlMPAA.Visible = False
+                End If
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Rating) AndAlso IsNumeric(Master.currMovie.Rating) AndAlso CDbl(Master.currMovie.Rating) > 0 Then
-                Me.BuildStars(CDbl(Master.currMovie.Rating))
+            Dim tmpRating As String = Master.currMovie.Rating.Replace(",", ".")
+            If Not String.IsNullOrEmpty(tmpRating) AndAlso IsNumeric(tmpRating) AndAlso CDbl(tmpRating) > 0 Then
+                Me.BuildStars(CDbl(tmpRating))
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Genre) Then
@@ -2340,43 +2351,6 @@ Public Class frmMain
                     End Select
                 End If
             End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
-
-    Private Sub createMPAABox(ByVal strRating As String)
-
-        '//
-        ' Parse the floating MPAA box
-        '\\
-
-        Try
-            Me.MoveMPAA()
-
-            If Strings.InStr(strRating.ToLower, "rated pg-13") > 0 Then
-                Me.pbMPAA.Image = My.Resources.mpaapg13
-                Me.pnlMPAA.Visible = True
-            ElseIf Strings.InStr(strRating.ToLower, "rated pg") > 0 Then
-                Me.pbMPAA.Image = My.Resources.mpaapg
-                Me.pnlMPAA.Visible = True
-            ElseIf Strings.InStr(strRating.ToLower, "rated r") > 0 Then
-                Me.pbMPAA.Image = My.Resources.mpaar
-                Me.pnlMPAA.Visible = True
-            ElseIf Strings.InStr(strRating.ToLower, "rated nc-17") > 0 Then
-                Me.pbMPAA.Image = My.Resources.mpaanc17
-                Me.pnlMPAA.Visible = True
-            ElseIf Strings.InStr(strRating.ToLower, "rated g") > 0 Then
-                Me.pbMPAA.Image = My.Resources.mpaag
-                Me.pnlMPAA.Visible = True
-            Else
-                If Not IsNothing(Me.pbMPAA.Image) Then
-                    Me.pnlMPAA.Visible = False
-                    Me.pbMPAA.Image.Dispose()
-                    Me.pbMPAA.Image = Nothing
-                End If
-            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

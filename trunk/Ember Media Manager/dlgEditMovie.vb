@@ -31,6 +31,7 @@ Public Class dlgEditMovie
     Private Fanart As New Images With {.IsEdit = True}
     Private Thumbs As New List(Of ExtraThumbs)
     Private DeleteList As New ArrayList
+    Private ConvertCommas As Boolean = False
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
@@ -73,6 +74,7 @@ Public Class dlgEditMovie
             g.Dispose()
 
             Me.LoadGenres()
+            Me.LoadRatings()
 
             Me.FillInfo()
         Catch ex As Exception
@@ -376,31 +378,7 @@ Public Class dlgEditMovie
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.MPAA) Then
-
-                    Dim strMPAA As String = Master.currMovie.MPAA
-                    If Strings.InStr(strMPAA.ToLower, "rated g") > 0 Then
-                        .lbMPAA.SelectedIndex = 1
-                    ElseIf Strings.InStr(strMPAA.ToLower, "rated pg-13") > 0 Then
-                        .lbMPAA.SelectedIndex = 3
-                    ElseIf Strings.InStr(strMPAA.ToLower, "rated pg") > 0 Then
-                        .lbMPAA.SelectedIndex = 2
-                    ElseIf Strings.InStr(strMPAA.ToLower, "rated r") > 0 Then
-                        .lbMPAA.SelectedIndex = 4
-                    ElseIf Strings.InStr(strMPAA.ToLower, "rated nc-17") > 0 Then
-                        .lbMPAA.SelectedIndex = 5
-                    Else
-                        .lbMPAA.SelectedIndex = 0
-                    End If
-
-                    Dim strMPAADesc As String = strMPAA
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated g", String.Empty, 1, -1, CompareMethod.Text))
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg-13", String.Empty, 1, -1, CompareMethod.Text))
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg", String.Empty, 1, -1, CompareMethod.Text))
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated r", String.Empty, 1, -1, CompareMethod.Text))
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated nc-17", String.Empty, 1, -1, CompareMethod.Text))
-                    txtMPAADesc.Text = strMPAADesc
-                End If
+                Me.SelectMPAA()
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Genre) Then
                     Dim genreArray() As String
@@ -416,6 +394,9 @@ Public Class dlgEditMovie
                     End If
 
                     .lbGenre.TopIndex = 0
+                Else
+                    .lbGenre.SelectedIndex = 0
+                    .lbGenre.TopIndex = 0
                 End If
 
 
@@ -426,8 +407,13 @@ Public Class dlgEditMovie
                     lvItem.SubItems.Add(imdbAct.Thumb)
                 Next
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Rating) AndAlso IsNumeric(Master.currMovie.Rating) AndAlso CDbl(Master.currMovie.Rating) > 0 Then
-                    Dim currRating As String = Master.currMovie.Rating
+                Dim noCommaRating As String = Master.currMovie.Rating
+                If Strings.InStr(noCommaRating, ",") > 0 Then
+                    ConvertCommas = True
+                    noCommaRating.Replace(",", ".")
+                End If
+                If Not String.IsNullOrEmpty(noCommaRating) AndAlso IsNumeric(noCommaRating) AndAlso CDbl(noCommaRating) > 0 Then
+                    Dim currRating As String = noCommaRating
                     .tmpRating = currRating
                     .BuildStars(CDbl(currRating))
                     .pbStar1.Tag = currRating
@@ -436,7 +422,7 @@ Public Class dlgEditMovie
                     .pbStar4.Tag = currRating
                     .pbStar5.Tag = currRating
                 Else
-                    Dim currRating As String = Master.currMovie.Rating
+                    Dim currRating As String = noCommaRating
                     .tmpRating = "0"
                     .pbStar1.Tag = "0"
                     .pbStar2.Tag = "0"
@@ -497,7 +483,12 @@ Public Class dlgEditMovie
                     Master.currMovie.MPAA = String.Empty
                 End If
 
-                Master.currMovie.Rating = .tmpRating
+                If ConvertCommas Then
+                    Master.currMovie.Rating = .tmpRating.Replace(".", ",")
+                Else
+                    Master.currMovie.Rating = .tmpRating
+                End If
+
                 Master.currMovie.Runtime = .txtRuntime.Text
                 Master.currMovie.Certification = .txtCerts.Text
                 Master.currMovie.ReleaseDate = .txtReleaseDate.Text
@@ -1016,6 +1007,98 @@ Public Class dlgEditMovie
             MsgBox("Cannot find Genres.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Genres.xml"), MsgBoxStyle.Critical, "File Not Found")
         End If
 
+    End Sub
+
+    Private Sub LoadRatings()
+
+        '//
+        ' Read all the ratings from the xml and load into the list
+        '\\
+
+        Me.lbMPAA.Items.Add("[none]")
+
+        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings")
+
+        If File.Exists(Path.Combine(mePath, "Ratings.xml")) Then
+            Try
+                Dim xmlRating As XDocument = XDocument.Load(Path.Combine(mePath, "Ratings.xml"))
+
+                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso xmlRating.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
+                    Dim xRating = From xRat In xmlRating.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
+                    If xRating.Count > 0 Then
+                        For Each strRating As String In xRating
+                            Me.lbMPAA.Items.Add(strRating)
+                        Next
+                    End If
+                Else
+                    Dim xRating = From xRat In xmlRating...<usa>...<name> Select xRat.@searchstring
+                    If xRating.Count > 0 Then
+                        For Each strRating As String In xRating
+                            Me.lbMPAA.Items.Add(strRating.Trim)
+                        Next
+                    End If
+                End If
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        Else
+            MsgBox("Cannot find Ratings.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Ratings.xml"), MsgBoxStyle.Critical, "File Not Found")
+        End If
+
+    End Sub
+
+    Private Sub SelectMPAA()
+        If Not String.IsNullOrEmpty(Master.currMovie.MPAA) Then
+
+
+            Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings")
+
+            If File.Exists(Path.Combine(mePath, "Ratings.xml")) Then
+                Try
+                    Dim xmlRating As XDocument = XDocument.Load(Path.Combine(mePath, "Ratings.xml"))
+                    If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso xmlRating.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
+                        Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.MPAA))
+                        Me.lbMPAA.SelectedIndex = l
+                        If Me.lbMPAA.SelectedItems.Count = 0 Then
+                            Me.lbMPAA.SelectedIndex = 0
+                        End If
+
+                        Me.lbMPAA.TopIndex = 0
+
+                        txtMPAADesc.Enabled = False
+                    Else
+                        Dim strMPAA As String = Master.currMovie.MPAA
+                        If Strings.InStr(strMPAA.ToLower, "rated g") > 0 Then
+                            Me.lbMPAA.SelectedIndex = 1
+                        ElseIf Strings.InStr(strMPAA.ToLower, "rated pg-13") > 0 Then
+                            Me.lbMPAA.SelectedIndex = 3
+                        ElseIf Strings.InStr(strMPAA.ToLower, "rated pg") > 0 Then
+                            Me.lbMPAA.SelectedIndex = 2
+                        ElseIf Strings.InStr(strMPAA.ToLower, "rated r") > 0 Then
+                            Me.lbMPAA.SelectedIndex = 4
+                        ElseIf Strings.InStr(strMPAA.ToLower, "rated nc-17") > 0 Then
+                            Me.lbMPAA.SelectedIndex = 5
+                        Else
+                            Me.lbMPAA.SelectedIndex = 0
+                        End If
+
+                        Dim strMPAADesc As String = strMPAA
+                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated g", String.Empty, 1, -1, CompareMethod.Text))
+                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg-13", String.Empty, 1, -1, CompareMethod.Text))
+                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg", String.Empty, 1, -1, CompareMethod.Text))
+                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated r", String.Empty, 1, -1, CompareMethod.Text))
+                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated nc-17", String.Empty, 1, -1, CompareMethod.Text))
+                        txtMPAADesc.Text = strMPAADesc
+                    End If
+
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+            Else
+                MsgBox("Cannot find Ratings.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Ratings.xml"), MsgBoxStyle.Critical, "File Not Found")
+            End If
+        End If
     End Sub
 
     Friend Class ExtraThumbs
