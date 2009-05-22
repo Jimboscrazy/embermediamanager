@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -52,6 +52,10 @@ Partial Class frmMain
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.tabTelevision = New System.Windows.Forms.TabPage
         Me.tabMusic = New System.Windows.Forms.TabPage
+        Me.pnlNoInfo = New System.Windows.Forms.Panel
+        Me.Panel2 = New System.Windows.Forms.Panel
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.pnlInfoPanel = New System.Windows.Forms.Panel
         Me.txtCerts = New System.Windows.Forms.TextBox
         Me.lblCertsHeader = New System.Windows.Forms.Label
@@ -111,10 +115,10 @@ Partial Class frmMain
         Me.FullToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.FullAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.FullAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.MediaTagsOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.UpdateOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.UpdateAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.UpdateAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.MediaTagsOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
@@ -130,10 +134,6 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
-        Me.pnlNoInfo = New System.Windows.Forms.Panel
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Label1 = New System.Windows.Forms.Label
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -143,6 +143,9 @@ Partial Class frmMain
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabsMain.SuspendLayout()
+        Me.pnlNoInfo.SuspendLayout()
+        Me.Panel2.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlInfoPanel.SuspendLayout()
         CType(Me.pbMILoading, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlActors.SuspendLayout()
@@ -171,9 +174,6 @@ Partial Class frmMain
         Me.tsMain.SuspendLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlNoInfo.SuspendLayout()
-        Me.Panel2.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -374,8 +374,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -448,6 +448,47 @@ Partial Class frmMain
         Me.tabMusic.TabIndex = 2
         Me.tabMusic.Text = "Music"
         Me.tabMusic.UseVisualStyleBackColor = True
+        '
+        'pnlNoInfo
+        '
+        Me.pnlNoInfo.BackColor = System.Drawing.Color.LightGray
+        Me.pnlNoInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNoInfo.Controls.Add(Me.Panel2)
+        Me.pnlNoInfo.Location = New System.Drawing.Point(241, 300)
+        Me.pnlNoInfo.Name = "pnlNoInfo"
+        Me.pnlNoInfo.Size = New System.Drawing.Size(259, 143)
+        Me.pnlNoInfo.TabIndex = 8
+        Me.pnlNoInfo.Visible = False
+        '
+        'Panel2
+        '
+        Me.Panel2.BackColor = System.Drawing.Color.White
+        Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel2.Controls.Add(Me.PictureBox1)
+        Me.Panel2.Controls.Add(Me.Label1)
+        Me.Panel2.Location = New System.Drawing.Point(3, 4)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(251, 133)
+        Me.Panel2.TabIndex = 0
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(7, 38)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(63, 63)
+        Me.PictureBox1.TabIndex = 1
+        Me.PictureBox1.TabStop = False
+        '
+        'Label1
+        '
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(71, 29)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(173, 78)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "No Information is Available for This Movie"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'pnlInfoPanel
         '
@@ -1119,61 +1160,61 @@ Partial Class frmMain
         '
         'tsbAutoPilot
         '
-        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem, Me.MediaTagsOnlyToolStripMenuItem, Me.CleanFoldersToolStripMenuItem})
+        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem, Me.CleanFoldersToolStripMenuItem})
         Me.tsbAutoPilot.Image = CType(resources.GetObject("tsbAutoPilot.Image"), System.Drawing.Image)
         Me.tsbAutoPilot.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAutoPilot.Name = "tsbAutoPilot"
-        Me.tsbAutoPilot.Size = New System.Drawing.Size(91, 22)
-        Me.tsbAutoPilot.Text = "Auto-Pilot"
+        Me.tsbAutoPilot.Size = New System.Drawing.Size(110, 22)
+        Me.tsbAutoPilot.Text = "Update Media"
         '
         'FullToolStripMenuItem
         '
-        Me.FullToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullAutoToolStripMenuItem, Me.FullAskToolStripMenuItem})
+        Me.FullToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullAutoToolStripMenuItem, Me.FullAskToolStripMenuItem, Me.MediaTagsOnlyToolStripMenuItem})
         Me.FullToolStripMenuItem.Name = "FullToolStripMenuItem"
-        Me.FullToolStripMenuItem.Size = New System.Drawing.Size(163, 22)
-        Me.FullToolStripMenuItem.Text = "Full"
+        Me.FullToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.FullToolStripMenuItem.Text = "All Movies"
         '
         'FullAutoToolStripMenuItem
         '
         Me.FullAutoToolStripMenuItem.Name = "FullAutoToolStripMenuItem"
-        Me.FullAutoToolStripMenuItem.Size = New System.Drawing.Size(100, 22)
-        Me.FullAutoToolStripMenuItem.Text = "Auto"
+        Me.FullAutoToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
+        Me.FullAutoToolStripMenuItem.Text = "Automatic (Force Best Match)"
         '
         'FullAskToolStripMenuItem
         '
         Me.FullAskToolStripMenuItem.Name = "FullAskToolStripMenuItem"
-        Me.FullAskToolStripMenuItem.Size = New System.Drawing.Size(100, 22)
-        Me.FullAskToolStripMenuItem.Text = "Ask"
+        Me.FullAskToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
+        Me.FullAskToolStripMenuItem.Text = "Ask (Require Input If No Exact Match)"
+        '
+        'MediaTagsOnlyToolStripMenuItem
+        '
+        Me.MediaTagsOnlyToolStripMenuItem.Name = "MediaTagsOnlyToolStripMenuItem"
+        Me.MediaTagsOnlyToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
+        Me.MediaTagsOnlyToolStripMenuItem.Text = "Media Tags Only"
         '
         'UpdateOnlyToolStripMenuItem
         '
         Me.UpdateOnlyToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UpdateAutoToolStripMenuItem, Me.UpdateAskToolStripMenuItem})
         Me.UpdateOnlyToolStripMenuItem.Name = "UpdateOnlyToolStripMenuItem"
-        Me.UpdateOnlyToolStripMenuItem.Size = New System.Drawing.Size(163, 22)
-        Me.UpdateOnlyToolStripMenuItem.Text = "Update Only"
+        Me.UpdateOnlyToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.UpdateOnlyToolStripMenuItem.Text = "Movies Missing Items"
         '
         'UpdateAutoToolStripMenuItem
         '
         Me.UpdateAutoToolStripMenuItem.Name = "UpdateAutoToolStripMenuItem"
-        Me.UpdateAutoToolStripMenuItem.Size = New System.Drawing.Size(100, 22)
-        Me.UpdateAutoToolStripMenuItem.Text = "Auto"
+        Me.UpdateAutoToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
+        Me.UpdateAutoToolStripMenuItem.Text = "Automatic (Force Best Match)"
         '
         'UpdateAskToolStripMenuItem
         '
         Me.UpdateAskToolStripMenuItem.Name = "UpdateAskToolStripMenuItem"
-        Me.UpdateAskToolStripMenuItem.Size = New System.Drawing.Size(100, 22)
-        Me.UpdateAskToolStripMenuItem.Text = "Ask"
-        '
-        'MediaTagsOnlyToolStripMenuItem
-        '
-        Me.MediaTagsOnlyToolStripMenuItem.Name = "MediaTagsOnlyToolStripMenuItem"
-        Me.MediaTagsOnlyToolStripMenuItem.Size = New System.Drawing.Size(163, 22)
-        Me.MediaTagsOnlyToolStripMenuItem.Text = "Media Tags Only"
+        Me.UpdateAskToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
+        Me.UpdateAskToolStripMenuItem.Text = "Ask (Require Input If No Exact Match)"
         '
         'CleanFoldersToolStripMenuItem
         '
         Me.CleanFoldersToolStripMenuItem.Name = "CleanFoldersToolStripMenuItem"
-        Me.CleanFoldersToolStripMenuItem.Size = New System.Drawing.Size(163, 22)
+        Me.CleanFoldersToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
         Me.CleanFoldersToolStripMenuItem.Text = "Clean Folders"
         '
         'tsbRefreshMedia
@@ -1274,47 +1315,6 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
-        'pnlNoInfo
-        '
-        Me.pnlNoInfo.BackColor = System.Drawing.Color.LightGray
-        Me.pnlNoInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlNoInfo.Controls.Add(Me.Panel2)
-        Me.pnlNoInfo.Location = New System.Drawing.Point(241, 300)
-        Me.pnlNoInfo.Name = "pnlNoInfo"
-        Me.pnlNoInfo.Size = New System.Drawing.Size(259, 143)
-        Me.pnlNoInfo.TabIndex = 8
-        Me.pnlNoInfo.Visible = False
-        '
-        'Panel2
-        '
-        Me.Panel2.BackColor = System.Drawing.Color.White
-        Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel2.Controls.Add(Me.PictureBox1)
-        Me.Panel2.Controls.Add(Me.Label1)
-        Me.Panel2.Location = New System.Drawing.Point(3, 4)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(251, 133)
-        Me.Panel2.TabIndex = 0
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(7, 38)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(63, 63)
-        Me.PictureBox1.TabIndex = 1
-        Me.PictureBox1.TabStop = False
-        '
-        'Label1
-        '
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(71, 29)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(173, 78)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "No Information is Available for This Movie"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1342,6 +1342,9 @@ Partial Class frmMain
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabsMain.ResumeLayout(False)
+        Me.pnlNoInfo.ResumeLayout(False)
+        Me.Panel2.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlInfoPanel.ResumeLayout(False)
         Me.pnlInfoPanel.PerformLayout()
         CType(Me.pbMILoading, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1374,9 +1377,6 @@ Partial Class frmMain
         Me.tsMain.PerformLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlNoInfo.ResumeLayout(False)
-        Me.Panel2.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
