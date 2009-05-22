@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r119:*
  * Feature: Optional title, outline, and plot from OFDB
  * Feature: Pull IMDB ID (if exists) from non-conforming nfo
  * Fix: Renaming non-conforming nfo not working as expected
