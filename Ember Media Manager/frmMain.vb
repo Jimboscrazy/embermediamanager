@@ -1379,6 +1379,7 @@ Public Class frmMain
                                             Poster.SaveAsPoster(sPath, drvRow.Item(6))
                                             drvRow.Item(2) = True
                                         Else
+                                            MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
                                             Dim dImgSelect As New dlgImgSelect
                                             If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
                                                 drvRow.Item(2) = True
@@ -1399,6 +1400,8 @@ Public Class frmMain
                                             drvRow.Item(3) = True
                                             Master.currMovie.Fanart = fArt
                                         Else
+                                            MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
+
                                             Dim dImgSelect As New dlgImgSelect
                                             If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
                                                 drvRow.Item(3) = True
@@ -1720,6 +1723,7 @@ Public Class frmMain
                                                 Poster.SaveAsPoster(sPath, drvRow.Item(6))
                                                 drvRow.Item(2) = True
                                             Else
+                                                MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
                                                 Dim dImgSelect As New dlgImgSelect
                                                 If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
                                                     drvRow.Item(2) = True
@@ -1743,6 +1747,7 @@ Public Class frmMain
                                                 drvRow.Item(3) = True
                                                 Master.currMovie.Fanart = fArt
                                             Else
+                                                MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
                                                 Dim dImgSelect As New dlgImgSelect
                                                 If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
                                                     drvRow.Item(3) = True
