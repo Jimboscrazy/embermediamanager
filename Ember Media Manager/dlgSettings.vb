@@ -555,8 +555,22 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
-#End Region '*** Form/Controls
+    Private Sub txtAutoThumbs_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtAutoThumbs.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
 
+    Private Sub txtAutoThumbs_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAutoThumbs.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkAutoThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoThumbs.CheckedChanged
+        Me.txtAutoThumbs.Enabled = Me.chkAutoThumbs.Checked
+        If Not chkAutoThumbs.Checked Then
+            Me.txtAutoThumbs.Text = String.Empty
+        End If
+        Me.btnApply.Enabled = True
+    End Sub
+#End Region '*** Form/Controls
 
 
 #Region "Routines/Functions"
@@ -711,6 +725,11 @@ Public Class dlgSettings
             Master.eSettings.UseOFDBTitle = Me.chkOFDBTitle.Checked
             Master.eSettings.UseOFDBOutline = Me.chkOFDBOutline.Checked
             Master.eSettings.UseOFDBPlot = Me.chkOFDBPlot.Checked
+            If Not String.IsNullOrEmpty(txtAutoThumbs.Text) AndAlso CInt(txtAutoThumbs.Text) > 0 Then
+                Master.eSettings.AutoThumbs = CInt(txtAutoThumbs.Text)
+            Else
+                Master.eSettings.AutoThumbs = 0
+            End If
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -818,7 +837,11 @@ Public Class dlgSettings
             Me.chkOFDBTitle.Checked = Master.eSettings.UseOFDBTitle
             Me.chkOFDBOutline.Checked = Master.eSettings.UseOFDBOutline
             Me.chkOFDBPlot.Checked = Master.eSettings.UseOFDBPlot
-
+            If Master.eSettings.AutoThumbs > 0 Then
+                Me.chkAutoThumbs.Checked = True
+                Me.txtAutoThumbs.Text = Master.eSettings.AutoThumbs.ToString
+                Me.txtAutoThumbs.Enabled = True
+            End If
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
         Catch ex As Exception
@@ -827,5 +850,6 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
+
 
 End Class

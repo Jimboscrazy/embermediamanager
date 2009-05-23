@@ -1491,6 +1491,11 @@ Public Class frmMain
                                 Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
                                 drvRow.Item(4) = True
                             End If
+
+                            If Me.bwScraper.CancellationPending Then Return
+                            If Master.eSettings.AutoThumbs > 0 Then
+                                Me.CreateRandomThumbs(sPath)
+                            End If
                         Next
 
                     Case Master.ScrapeType.FullAuto
@@ -1545,6 +1550,11 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then Return
                                 Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
                                 drvRow.Item(4) = True
+                            End If
+
+                            If Me.bwScraper.CancellationPending Then Return
+                            If Master.eSettings.AutoThumbs > 0 Then
+                                Me.CreateRandomThumbs(sPath)
                             End If
                         Next
                     Case Master.ScrapeType.MIOnly
@@ -1759,6 +1769,11 @@ Public Class frmMain
                                     End If
                                 End If
                             End If
+
+                            If Me.bwScraper.CancellationPending Then Return
+                            If Master.eSettings.AutoThumbs > 0 AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                                Me.CreateRandomThumbs(sPath)
+                            End If
                         Next
                     Case Master.ScrapeType.UpdateAsk
                         For Each drvRow As DataRowView In dvView
@@ -1842,6 +1857,11 @@ Public Class frmMain
                                     End If
                                 End If
 
+                            End If
+
+                            If Me.bwScraper.CancellationPending Then Return
+                            If Master.eSettings.AutoThumbs > 0 AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                                Me.CreateRandomThumbs(sPath)
                             End If
                         Next
 
@@ -2807,6 +2827,63 @@ Public Class frmMain
                 File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
             Next
         End If
+    End Sub
+
+    Private Sub CreateRandomThumbs(ByVal sPath As String)
+        Dim ffmpeg As New Process()
+        Dim intSeconds As Integer = 0
+        Dim intAdd As Integer = 0
+        Dim ThumbCount As Integer = Master.eSettings.AutoThumbs
+        Dim tPath As String = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
+        Dim iMod As Integer = Master.GetExtraModifier(Master.currPath)
+
+        If Not Directory.Exists(tPath) Then
+            Directory.CreateDirectory(tPath)
+        End If
+
+        ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+        ffmpeg.EnableRaisingEvents = False
+        ffmpeg.StartInfo.UseShellExecute = False
+        ffmpeg.StartInfo.CreateNoWindow = True
+        ffmpeg.StartInfo.RedirectStandardOutput = True
+        ffmpeg.StartInfo.RedirectStandardError = True
+
+        'first get the duration
+        ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", sPath)
+        ffmpeg.Start()
+        Dim d As StreamReader = ffmpeg.StandardError
+        Do
+            Dim s As String = d.ReadLine()
+            If s.Contains("Duration: ") Then
+                Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
+                Dim ts As TimeSpan = CDate(CDate(DateTime.Today & " " & sTime)).Subtract(CDate(DateTime.Today))
+                intSeconds = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
+            End If
+        Loop While Not d.EndOfStream
+
+        ffmpeg.WaitForExit()
+        ffmpeg.Close()
+
+        If intSeconds > ThumbCount + 2 Then
+            intSeconds = intSeconds / (ThumbCount + 2)
+            intAdd = intSeconds
+            intSeconds += intAdd
+
+            For i = 0 To (ThumbCount - 1)
+                If Me.bwScraper.CancellationPending Then Exit For
+                'check to see if file already exists... if so, don't bother running ffmpeg since we're not
+                'overwriting current thumbs anyway
+                If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + iMod + 1), ".jpg"))) Then
+                    ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg ""{2}""", intSeconds, sPath, Path.Combine(tPath, String.Concat("thumb", (i + iMod + 1), ".jpg")))
+                    ffmpeg.Start()
+                    ffmpeg.WaitForExit()
+                    ffmpeg.Close()
+                End If
+                intSeconds += intAdd
+            Next
+        End If
+        ffmpeg.Dispose()
+
     End Sub
 #End Region
 

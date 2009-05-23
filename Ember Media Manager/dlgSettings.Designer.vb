@@ -132,6 +132,10 @@ Partial Class dlgSettings
         Me.chkLockOutline = New System.Windows.Forms.CheckBox
         Me.chkLockPlot = New System.Windows.Forms.CheckBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
+        Me.Label15 = New System.Windows.Forms.Label
+        Me.txtAutoThumbs = New System.Windows.Forms.TextBox
+        Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
+        Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
         Me.chkOverwriteFanart = New System.Windows.Forms.CheckBox
         Me.chkUseMPDB = New System.Windows.Forms.CheckBox
         Me.chkOverwritePoster = New System.Windows.Forms.CheckBox
@@ -143,7 +147,6 @@ Partial Class dlgSettings
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.chkUseCertForMPAA = New System.Windows.Forms.CheckBox
-        Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
         Me.chkFullCast = New System.Windows.Forms.CheckBox
         Me.chkFullCrew = New System.Windows.Forms.CheckBox
         Me.cbCert = New System.Windows.Forms.ComboBox
@@ -1112,9 +1115,9 @@ Partial Class dlgSettings
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Location = New System.Drawing.Point(407, 113)
+        Me.GroupBox15.Location = New System.Drawing.Point(207, 169)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(123, 90)
+        Me.GroupBox15.Size = New System.Drawing.Size(116, 90)
         Me.GroupBox15.TabIndex = 60
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "OFDB"
@@ -1156,9 +1159,9 @@ Partial Class dlgSettings
         Me.GroupBox14.Controls.Add(Me.chkResizePoster)
         Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
         Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
-        Me.GroupBox14.Location = New System.Drawing.Point(261, 249)
+        Me.GroupBox14.Location = New System.Drawing.Point(330, 169)
         Me.GroupBox14.Name = "GroupBox14"
-        Me.GroupBox14.Size = New System.Drawing.Size(249, 70)
+        Me.GroupBox14.Size = New System.Drawing.Size(249, 66)
         Me.GroupBox14.TabIndex = 59
         Me.GroupBox14.TabStop = False
         Me.GroupBox14.Text = "Poster"
@@ -1166,7 +1169,7 @@ Partial Class dlgSettings
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(3, 46)
+        Me.Label11.Location = New System.Drawing.Point(3, 42)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(61, 13)
         Me.Label11.TabIndex = 43
@@ -1175,7 +1178,7 @@ Partial Class dlgSettings
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(124, 46)
+        Me.Label12.Location = New System.Drawing.Point(124, 42)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(64, 13)
         Me.Label12.TabIndex = 42
@@ -1184,7 +1187,7 @@ Partial Class dlgSettings
         'chkResizePoster
         '
         Me.chkResizePoster.AutoSize = True
-        Me.chkResizePoster.Location = New System.Drawing.Point(6, 19)
+        Me.chkResizePoster.Location = New System.Drawing.Point(6, 15)
         Me.chkResizePoster.Name = "chkResizePoster"
         Me.chkResizePoster.Size = New System.Drawing.Size(156, 17)
         Me.chkResizePoster.TabIndex = 39
@@ -1195,7 +1198,7 @@ Partial Class dlgSettings
         '
         Me.txtPosterWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPosterWidth.Enabled = False
-        Me.txtPosterWidth.Location = New System.Drawing.Point(65, 42)
+        Me.txtPosterWidth.Location = New System.Drawing.Point(65, 38)
         Me.txtPosterWidth.Name = "txtPosterWidth"
         Me.txtPosterWidth.Size = New System.Drawing.Size(53, 20)
         Me.txtPosterWidth.TabIndex = 40
@@ -1204,7 +1207,7 @@ Partial Class dlgSettings
         '
         Me.txtPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPosterHeight.Enabled = False
-        Me.txtPosterHeight.Location = New System.Drawing.Point(190, 42)
+        Me.txtPosterHeight.Location = New System.Drawing.Point(190, 38)
         Me.txtPosterHeight.Name = "txtPosterHeight"
         Me.txtPosterHeight.Size = New System.Drawing.Size(53, 20)
         Me.txtPosterHeight.TabIndex = 41
@@ -1216,9 +1219,9 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.chkResizeFanart)
         Me.GroupBox13.Controls.Add(Me.txtFanartWidth)
         Me.GroupBox13.Controls.Add(Me.txtFanartHeight)
-        Me.GroupBox13.Location = New System.Drawing.Point(6, 248)
+        Me.GroupBox13.Location = New System.Drawing.Point(330, 241)
         Me.GroupBox13.Name = "GroupBox13"
-        Me.GroupBox13.Size = New System.Drawing.Size(249, 70)
+        Me.GroupBox13.Size = New System.Drawing.Size(249, 66)
         Me.GroupBox13.TabIndex = 58
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Fanart"
@@ -1226,7 +1229,7 @@ Partial Class dlgSettings
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(3, 46)
+        Me.Label9.Location = New System.Drawing.Point(3, 42)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(61, 13)
         Me.Label9.TabIndex = 43
@@ -1235,7 +1238,7 @@ Partial Class dlgSettings
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(124, 46)
+        Me.Label10.Location = New System.Drawing.Point(124, 42)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(64, 13)
         Me.Label10.TabIndex = 42
@@ -1244,7 +1247,7 @@ Partial Class dlgSettings
         'chkResizeFanart
         '
         Me.chkResizeFanart.AutoSize = True
-        Me.chkResizeFanart.Location = New System.Drawing.Point(6, 19)
+        Me.chkResizeFanart.Location = New System.Drawing.Point(6, 15)
         Me.chkResizeFanart.Name = "chkResizeFanart"
         Me.chkResizeFanart.Size = New System.Drawing.Size(156, 17)
         Me.chkResizeFanart.TabIndex = 39
@@ -1255,7 +1258,7 @@ Partial Class dlgSettings
         '
         Me.txtFanartWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFanartWidth.Enabled = False
-        Me.txtFanartWidth.Location = New System.Drawing.Point(65, 42)
+        Me.txtFanartWidth.Location = New System.Drawing.Point(65, 38)
         Me.txtFanartWidth.Name = "txtFanartWidth"
         Me.txtFanartWidth.Size = New System.Drawing.Size(53, 20)
         Me.txtFanartWidth.TabIndex = 40
@@ -1264,7 +1267,7 @@ Partial Class dlgSettings
         '
         Me.txtFanartHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFanartHeight.Enabled = False
-        Me.txtFanartHeight.Location = New System.Drawing.Point(190, 42)
+        Me.txtFanartHeight.Location = New System.Drawing.Point(190, 38)
         Me.txtFanartHeight.Name = "txtFanartHeight"
         Me.txtFanartHeight.Size = New System.Drawing.Size(53, 20)
         Me.txtFanartHeight.TabIndex = 41
@@ -1313,6 +1316,10 @@ Partial Class dlgSettings
         '
         'GroupBox9
         '
+        Me.GroupBox9.Controls.Add(Me.Label15)
+        Me.GroupBox9.Controls.Add(Me.txtAutoThumbs)
+        Me.GroupBox9.Controls.Add(Me.chkAutoThumbs)
+        Me.GroupBox9.Controls.Add(Me.chkSingleScrapeImages)
         Me.GroupBox9.Controls.Add(Me.chkOverwriteFanart)
         Me.GroupBox9.Controls.Add(Me.chkUseMPDB)
         Me.GroupBox9.Controls.Add(Me.chkOverwritePoster)
@@ -1324,15 +1331,52 @@ Partial Class dlgSettings
         Me.GroupBox9.Controls.Add(Me.lblFanartSize)
         Me.GroupBox9.Location = New System.Drawing.Point(6, 6)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(195, 240)
+        Me.GroupBox9.Size = New System.Drawing.Size(195, 303)
         Me.GroupBox9.TabIndex = 56
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
         '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(32, 278)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(97, 13)
+        Me.Label15.TabIndex = 61
+        Me.Label15.Text = "Number To Create:"
+        '
+        'txtAutoThumbs
+        '
+        Me.txtAutoThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtAutoThumbs.Enabled = False
+        Me.txtAutoThumbs.Location = New System.Drawing.Point(132, 275)
+        Me.txtAutoThumbs.Name = "txtAutoThumbs"
+        Me.txtAutoThumbs.Size = New System.Drawing.Size(53, 20)
+        Me.txtAutoThumbs.TabIndex = 45
+        '
+        'chkAutoThumbs
+        '
+        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 245)
+        Me.chkAutoThumbs.Name = "chkAutoThumbs"
+        Me.chkAutoThumbs.Size = New System.Drawing.Size(179, 31)
+        Me.chkAutoThumbs.TabIndex = 44
+        Me.chkAutoThumbs.Text = "Automatically Create Extrathumbs During Update"
+        Me.chkAutoThumbs.UseVisualStyleBackColor = True
+        '
+        'chkSingleScrapeImages
+        '
+        Me.chkSingleScrapeImages.AutoSize = True
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 222)
+        Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
+        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(181, 17)
+        Me.chkSingleScrapeImages.TabIndex = 37
+        Me.chkSingleScrapeImages.Text = "Scrape Images on Single Scrape"
+        Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
+        '
         'chkOverwriteFanart
         '
         Me.chkOverwriteFanart.AutoSize = True
-        Me.chkOverwriteFanart.Location = New System.Drawing.Point(6, 212)
+        Me.chkOverwriteFanart.Location = New System.Drawing.Point(6, 199)
         Me.chkOverwriteFanart.Name = "chkOverwriteFanart"
         Me.chkOverwriteFanart.Size = New System.Drawing.Size(143, 17)
         Me.chkOverwriteFanart.TabIndex = 38
@@ -1352,7 +1396,7 @@ Partial Class dlgSettings
         'chkOverwritePoster
         '
         Me.chkOverwritePoster.AutoSize = True
-        Me.chkOverwritePoster.Location = New System.Drawing.Point(6, 190)
+        Me.chkOverwritePoster.Location = New System.Drawing.Point(6, 177)
         Me.chkOverwritePoster.Name = "chkOverwritePoster"
         Me.chkOverwritePoster.Size = New System.Drawing.Size(143, 17)
         Me.chkOverwritePoster.TabIndex = 37
@@ -1394,7 +1438,7 @@ Partial Class dlgSettings
         Me.cbFanartSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFanartSize.FormattingEnabled = True
         Me.cbFanartSize.Items.AddRange(New Object() {"Large", "Medium", "Small"})
-        Me.cbFanartSize.Location = New System.Drawing.Point(6, 151)
+        Me.cbFanartSize.Location = New System.Drawing.Point(6, 148)
         Me.cbFanartSize.Name = "cbFanartSize"
         Me.cbFanartSize.Size = New System.Drawing.Size(179, 21)
         Me.cbFanartSize.TabIndex = 42
@@ -1411,7 +1455,7 @@ Partial Class dlgSettings
         'lblFanartSize
         '
         Me.lblFanartSize.AutoSize = True
-        Me.lblFanartSize.Location = New System.Drawing.Point(3, 135)
+        Me.lblFanartSize.Location = New System.Drawing.Point(3, 132)
         Me.lblFanartSize.Name = "lblFanartSize"
         Me.lblFanartSize.Size = New System.Drawing.Size(106, 13)
         Me.lblFanartSize.TabIndex = 15
@@ -1420,7 +1464,6 @@ Partial Class dlgSettings
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.chkUseCertForMPAA)
-        Me.GroupBox1.Controls.Add(Me.chkSingleScrapeImages)
         Me.GroupBox1.Controls.Add(Me.chkFullCast)
         Me.GroupBox1.Controls.Add(Me.chkFullCrew)
         Me.GroupBox1.Controls.Add(Me.cbCert)
@@ -1428,7 +1471,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkStudio)
         Me.GroupBox1.Location = New System.Drawing.Point(207, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(194, 178)
+        Me.GroupBox1.Size = New System.Drawing.Size(194, 157)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -1443,16 +1486,6 @@ Partial Class dlgSettings
         Me.chkUseCertForMPAA.TabIndex = 38
         Me.chkUseCertForMPAA.Text = "Use Certification for MPAA"
         Me.chkUseCertForMPAA.UseVisualStyleBackColor = True
-        '
-        'chkSingleScrapeImages
-        '
-        Me.chkSingleScrapeImages.AutoSize = True
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 158)
-        Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
-        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(181, 17)
-        Me.chkSingleScrapeImages.TabIndex = 37
-        Me.chkSingleScrapeImages.Text = "Scrape Images on Single Scrape"
-        Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
         '
         'chkFullCast
         '
@@ -1801,4 +1834,7 @@ Partial Class dlgSettings
     Friend WithEvents chkOFDBOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkOFDBTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseCertForMPAA As System.Windows.Forms.CheckBox
+    Friend WithEvents chkAutoThumbs As System.Windows.Forms.CheckBox
+    Friend WithEvents Label15 As System.Windows.Forms.Label
+    Friend WithEvents txtAutoThumbs As System.Windows.Forms.TextBox
 End Class

@@ -98,6 +98,7 @@ Public Class emmSettings
     Private _useofdbtitle As Boolean
     Private _useofdboutline As Boolean
     Private _useofdbplot As Boolean
+    Private _autothumbs As Integer
     Private _movielist As New ArrayList
 
     Public Property Version() As String
@@ -762,6 +763,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._useofdbplot = value
+        End Set
+    End Property
+
+    Public Property AutoThumbs() As Integer
+        Get
+            Return Me._autothumbs
+        End Get
+        Set(ByVal value As Integer)
+            Me._autothumbs = value
         End Set
     End Property
 
