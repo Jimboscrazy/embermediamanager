@@ -1001,7 +1001,7 @@ Public Class frmMain
 
                 If Not String.IsNullOrEmpty(mPath) Then
                     If Master.eSettings.UseNameFromNfo Then
-                        tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(mPath, False), False)
+                        tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(mPath, False))
                         mName = tmpMovie.Title
                         tmpMovie = Nothing
                         If String.IsNullOrEmpty(mName) Then
@@ -1057,7 +1057,7 @@ Public Class frmMain
 
                     'parse just the movie name
                     If Master.eSettings.UseNameFromNfo Then
-                        tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.FullName, True), False)
+                        tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.FullName, True))
                         mName = tmpMovie.Title
                         tmpMovie = Nothing
                         If String.IsNullOrEmpty(mName) Then
@@ -1338,7 +1338,7 @@ Public Class frmMain
             'read nfo if it's there
             Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
             If Not String.IsNullOrEmpty(Master.currNFO) Then
-                Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO, False)
+                Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
