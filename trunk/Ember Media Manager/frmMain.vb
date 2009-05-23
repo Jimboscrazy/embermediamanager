@@ -2332,7 +2332,7 @@ Public Class frmMain
                 End If
             End If
 
-            Dim tmpRating As String = Master.currMovie.Rating.Replace(",", ".")
+            Dim tmpRating As String = Master.currMovie.Rating
             If Not String.IsNullOrEmpty(tmpRating) AndAlso IsNumeric(tmpRating) AndAlso CDbl(tmpRating) > 0 Then
                 Me.BuildStars(CDbl(tmpRating))
             End If
@@ -2400,19 +2400,19 @@ Public Class frmMain
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
 
-                If dblRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
+                If dblRating >= Double.Parse(0.5) Then ' if rating is less than .5 out of ten, consider it a 0
                     Select Case (dblRating / 2)
-                        Case Is <= 0.5
+                        Case Is <= Double.Parse(0.5)
                             .pbStar1.Image = My.Resources.starhalf
                         Case Is <= 1
                             .pbStar1.Image = My.Resources.star
-                        Case Is <= 1.5
+                        Case Is <= Double.Parse(1.5)
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.starhalf
                         Case Is <= 2
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
-                        Case Is <= 2.5
+                        Case Is <= Double.Parse(2.5)
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.starhalf
@@ -2420,7 +2420,7 @@ Public Class frmMain
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
-                        Case Is <= 3.5
+                        Case Is <= Double.Parse(3.5)
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
@@ -2430,7 +2430,7 @@ Public Class frmMain
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
-                        Case Is <= 4.5
+                        Case Is <= Double.Parse(4.5)
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
