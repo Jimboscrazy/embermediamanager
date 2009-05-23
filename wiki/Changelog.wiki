@@ -5,7 +5,8 @@
  * Feature: Use certification as MPAA rating
  * Feature: Allow custom MPAA rating images
  * Feature: Sort file-type sources into separate folders
- * Fix: Update Ask methods were not using IMDB ID from non-conforming nfos
+ * Feature: Option to create configurable amount of extrathumbs during update
+ * Fix: Update methods were not using IMDB ID from non-conforming nfos
  * Fix: Fix for rating not saving properly after editing movie if locale uses , for decimal point
  * Change: Message box to report preferred image size could not be found for ask type updaters
  * Change: Change status bar text to reflect renaming auto-pilots
