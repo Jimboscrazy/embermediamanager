@@ -705,17 +705,6 @@ Public Class frmMain
 
     End Sub
 
-
-    Private Sub CleanFoldersToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CleanFoldersToolStripMenuItem.Click
-
-        '//
-        ' Clean all items in folders that match user selected types
-        '\\
-
-        Me.ScrapeData(Master.ScrapeType.CleanFolders)
-
-    End Sub
-
     Private Sub UpdateAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UpdateAutoToolStripMenuItem.Click
 
         '//
@@ -840,6 +829,47 @@ Public Class frmMain
             End If
         Catch
         End Try
+    End Sub
+
+    Private Sub CleanFoldersToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CleanFoldersToolStripMenuItem.Click
+        '//
+        ' Clean all items in folders that match user selected types
+        '\\
+
+        Me.ScrapeData(Master.ScrapeType.CleanFolders)
+    End Sub
+
+    Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click
+        Dim dirArray() As String
+        Dim alMedia As New ArrayList
+
+        Me.tsbAutoPilot.Enabled = False
+        Me.tsbRefreshMedia.Enabled = False
+        Me.tsbEdit.Enabled = False
+        Me.tsbRescrape.Enabled = False
+        Me.tabsMain.Enabled = False
+        Me.tspbLoading.Style = ProgressBarStyle.Marquee
+        Me.tslLoading.Text = "Sorting Files:"
+        Me.tslLoading.Visible = True
+        Me.tspbLoading.Visible = True
+        Application.DoEvents()
+
+        Select Case Me.loadType
+            Case 2 'shows
+            Case 3 'music
+            Case Else 'default to movies
+                'load all the movie folders from settings
+                alMedia = Master.eSettings.MovieFolders
+        End Select
+
+        For Each movieSource As String In alMedia
+            dirArray = Split(movieSource, "|")
+            If dirArray(1).ToString = "Files" Then
+                SortFiles(dirArray(0).ToString)
+            End If
+        Next
+
+        Me.LoadMedia(1)
     End Sub
 #End Region '*** Form/Controls
 
@@ -2746,6 +2776,31 @@ Public Class frmMain
                 Me.CleanFoldersToolStripMenuItem.Enabled = False
             End If
         End With
+    End Sub
+
+    Private Sub SortFiles(ByVal sPath As String)
+        Dim tmpAL As New ArrayList
+        Dim tmpPath As String = String.Empty
+        Dim tmpName As String = String.Empty
+
+        If Directory.Exists(sPath) Then
+            Dim di As New DirectoryInfo(sPath)
+            Dim lFi As New List(Of FileInfo)
+
+            lFi.AddRange(di.GetFiles())
+
+            For Each sFile As FileInfo In lFi
+                tmpName = Master.CleanStackingMarkers(Master.RemoveExtFromFile(sFile.Name))
+                tmpName = tmpName.Replace(".fanart", String.Empty)
+                tmpName = tmpName.Replace("-fanart", String.Empty)
+                tmpPath = Path.Combine(sPath, tmpName)
+                If Not Directory.Exists(tmpPath) Then
+                    Directory.CreateDirectory(tmpPath)
+                End If
+
+                File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
+            Next
+        End If
     End Sub
 #End Region
 

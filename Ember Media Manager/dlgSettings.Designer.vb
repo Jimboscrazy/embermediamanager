@@ -142,6 +142,7 @@ Partial Class dlgSettings
         Me.lblPosterSize = New System.Windows.Forms.Label
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.chkUseCertForMPAA = New System.Windows.Forms.CheckBox
         Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
         Me.chkFullCast = New System.Windows.Forms.CheckBox
         Me.chkFullCrew = New System.Windows.Forms.CheckBox
@@ -158,7 +159,6 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.chkUseCertForMPAA = New System.Windows.Forms.CheckBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -1433,6 +1433,17 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
         '
+        'chkUseCertForMPAA
+        '
+        Me.chkUseCertForMPAA.AutoSize = True
+        Me.chkUseCertForMPAA.Enabled = False
+        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(34, 112)
+        Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
+        Me.chkUseCertForMPAA.Size = New System.Drawing.Size(151, 17)
+        Me.chkUseCertForMPAA.TabIndex = 38
+        Me.chkUseCertForMPAA.Text = "Use Certification for MPAA"
+        Me.chkUseCertForMPAA.UseVisualStyleBackColor = True
+        '
         'chkSingleScrapeImages
         '
         Me.chkSingleScrapeImages.AutoSize = True
@@ -1563,9 +1574,9 @@ Partial Class dlgSettings
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(61, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(228, 13)
+        Me.Label2.Size = New System.Drawing.Size(223, 13)
         Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Configure Embers's appearance and operation."
+        Me.Label2.Text = "Configure Ember's appearance and operation."
         '
         'Label4
         '
@@ -1589,17 +1600,6 @@ Partial Class dlgSettings
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
-        '
-        'chkUseCertForMPAA
-        '
-        Me.chkUseCertForMPAA.AutoSize = True
-        Me.chkUseCertForMPAA.Enabled = False
-        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(34, 112)
-        Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
-        Me.chkUseCertForMPAA.Size = New System.Drawing.Size(151, 17)
-        Me.chkUseCertForMPAA.TabIndex = 38
-        Me.chkUseCertForMPAA.Text = "Use Certification for MPAA"
-        Me.chkUseCertForMPAA.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '

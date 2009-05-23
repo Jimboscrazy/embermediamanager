@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -42,6 +42,8 @@ Partial Class frmMain
         Me.tspbLoading = New System.Windows.Forms.ToolStripProgressBar
         Me.tmrAni = New System.Windows.Forms.Timer(Me.components)
         Me.MenuStrip = New System.Windows.Forms.MenuStrip
+        Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.pnlSearch = New System.Windows.Forms.Panel
         Me.picSearch = New System.Windows.Forms.PictureBox
@@ -119,7 +121,6 @@ Partial Class frmMain
         Me.UpdateOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.UpdateAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.UpdateAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripButton
@@ -134,6 +135,7 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -237,7 +239,7 @@ Partial Class frmMain
         '
         Me.SettingsToolStripMenuItem.Image = CType(resources.GetObject("SettingsToolStripMenuItem.Image"), System.Drawing.Image)
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.SettingsToolStripMenuItem.Text = "Settings..."
         '
         'HelpToolStripMenuItem
@@ -296,12 +298,25 @@ Partial Class frmMain
         '
         'MenuStrip
         '
-        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.HelpToolStripMenuItem})
+        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.Name = "MenuStrip"
         Me.MenuStrip.Size = New System.Drawing.Size(1008, 24)
         Me.MenuStrip.TabIndex = 5
         Me.MenuStrip.Text = "MenuStrip"
+        '
+        'ToolsToolStripMenuItem
+        '
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
+        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
+        Me.ToolsToolStripMenuItem.Text = "Tools"
+        '
+        'CleanFoldersToolStripMenuItem
+        '
+        Me.CleanFoldersToolStripMenuItem.Name = "CleanFoldersToolStripMenuItem"
+        Me.CleanFoldersToolStripMenuItem.Size = New System.Drawing.Size(186, 22)
+        Me.CleanFoldersToolStripMenuItem.Text = "Clean Folders"
         '
         'scMain
         '
@@ -374,8 +389,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -1159,7 +1174,7 @@ Partial Class frmMain
         '
         'tsbAutoPilot
         '
-        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem, Me.CleanFoldersToolStripMenuItem})
+        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem})
         Me.tsbAutoPilot.Image = CType(resources.GetObject("tsbAutoPilot.Image"), System.Drawing.Image)
         Me.tsbAutoPilot.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAutoPilot.Name = "tsbAutoPilot"
@@ -1210,12 +1225,6 @@ Partial Class frmMain
         Me.UpdateAskToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
         Me.UpdateAskToolStripMenuItem.Text = "Ask (Require Input If No Exact Match)"
         '
-        'CleanFoldersToolStripMenuItem
-        '
-        Me.CleanFoldersToolStripMenuItem.Name = "CleanFoldersToolStripMenuItem"
-        Me.CleanFoldersToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
-        Me.CleanFoldersToolStripMenuItem.Text = "Clean Folders"
-        '
         'tsbRefreshMedia
         '
         Me.tsbRefreshMedia.Image = CType(resources.GetObject("tsbRefreshMedia.Image"), System.Drawing.Image)
@@ -1263,13 +1272,13 @@ Partial Class frmMain
         'mnuRescrapeAuto
         '
         Me.mnuRescrapeAuto.Name = "mnuRescrapeAuto"
-        Me.mnuRescrapeAuto.Size = New System.Drawing.Size(152, 22)
+        Me.mnuRescrapeAuto.Size = New System.Drawing.Size(136, 22)
         Me.mnuRescrapeAuto.Text = "Current ID"
         '
         'mnuRescrapeSearch
         '
         Me.mnuRescrapeSearch.Name = "mnuRescrapeSearch"
-        Me.mnuRescrapeSearch.Size = New System.Drawing.Size(152, 22)
+        Me.mnuRescrapeSearch.Size = New System.Drawing.Size(136, 22)
         Me.mnuRescrapeSearch.Text = "Search New"
         '
         'pbFanartCache
@@ -1313,6 +1322,12 @@ Partial Class frmMain
         'tmrSearch
         '
         Me.tmrSearch.Interval = 250
+        '
+        'ConvertFileSourceToFolderSourceToolStripMenuItem
+        '
+        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Name = "ConvertFileSourceToFolderSourceToolStripMenuItem"
+        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Size = New System.Drawing.Size(186, 22)
+        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Text = "Sort Files Into Folders"
         '
         'frmMain
         '
@@ -1457,7 +1472,6 @@ Partial Class frmMain
     Friend WithEvents pbMILoading As System.Windows.Forms.PictureBox
     Friend WithEvents tsbEdit As System.Windows.Forms.ToolStripButton
     Friend WithEvents tsbAutoPilot As System.Windows.Forms.ToolStripDropDownButton
-    Friend WithEvents CleanFoldersToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents MediaTagsOnlyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnMid As System.Windows.Forms.Button
     Friend WithEvents lblRuntime As System.Windows.Forms.Label
@@ -1490,4 +1504,7 @@ Partial Class frmMain
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents ToolsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CleanFoldersToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ConvertFileSourceToFolderSourceToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
