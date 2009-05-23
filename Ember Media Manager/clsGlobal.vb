@@ -1283,4 +1283,11 @@ Public Class Master
         Return decText
 
     End Function
+
+    Public Shared Function ConvertToDouble(ByVal sNumber As String) As Double
+        If String.IsNullOrEmpty(sNumber) Then Return 0
+        Dim numFormat As NumberFormatInfo = New NumberFormatInfo()
+        numFormat.NumberDecimalSeparator = "."
+        Return Double.Parse(sNumber, NumberStyles.Any, numFormat)
+    End Function
 End Class
