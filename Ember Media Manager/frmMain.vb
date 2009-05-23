@@ -1416,6 +1416,7 @@ Public Class frmMain
         Dim fArt As New Media.Fanart
         Dim Poster As New Images
         Dim Fanart As New Images
+        Dim tmpMovie As New Media.Movie
 
         Try
             If Me.dtMedia.Rows.Count > 0 Then
@@ -1431,7 +1432,13 @@ Public Class frmMain
                             nfoPath = Master.GetNfoPath(sPath, drvRow.Item(6))
 
                             If File.Exists(nfoPath) Then
-                                Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, Master.LoadMovieFromNFO(nfoPath), Args.scrapeType)
+                                tmpMovie = Master.LoadMovieFromNFO(nfoPath)
+                                If Not String.IsNullOrEmpty(tmpMovie.IMDBID) AndAlso IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
+                                    Master.currMovie = tmpMovie
+                                Else
+                                    Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, tmpMovie, Args.scrapeType)
+                                End If
+                                tmpMovie = Nothing
                             Else
                                 Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
                             End If
@@ -1509,7 +1516,13 @@ Public Class frmMain
                             nfoPath = Master.GetNfoPath(sPath, drvRow.Item(6))
 
                             If File.Exists(nfoPath) Then
-                                Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString(), Master.LoadMovieFromNFO(nfoPath), Args.scrapeType)
+                                tmpMovie = Master.LoadMovieFromNFO(nfoPath)
+                                If Not String.IsNullOrEmpty(tmpMovie.IMDBID) AndAlso IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
+                                    Master.currMovie = tmpMovie
+                                Else
+                                    Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, tmpMovie, Args.scrapeType)
+                                End If
+                                tmpMovie = Nothing
                             Else
                                 Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString(), New Media.Movie, Args.scrapeType)
                             End If
@@ -1720,7 +1733,9 @@ Public Class frmMain
                                 Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
 
                                 If Not drvRow.Item(4) Then
-                                    Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, Master.currMovie, Args.scrapeType)
+                                    If String.IsNullOrEmpty(Master.currMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.currMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
+                                        Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
+                                    End If
 
                                     If Master.eSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
@@ -1789,9 +1804,9 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(4) Then
-
-                                    Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, Master.currMovie, Args.scrapeType)
-
+                                    If String.IsNullOrEmpty(Master.currMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.currMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
+                                        Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
+                                    End If
                                     If Master.eSettings.UseStudioTags Then
                                         If UpdateMediaInfo() Then
                                             Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
