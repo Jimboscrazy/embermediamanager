@@ -842,6 +842,7 @@ Public Class frmMain
     Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click
         Dim dirArray() As String
         Dim alMedia As New ArrayList
+        Dim hasFileSource As Boolean = False
 
         Me.tsbAutoPilot.Enabled = False
         Me.tsbRefreshMedia.Enabled = False
@@ -866,10 +867,15 @@ Public Class frmMain
             dirArray = Split(movieSource, "|")
             If dirArray(1).ToString = "Files" Then
                 SortFiles(dirArray(0).ToString)
+                hasFileSource = True
             End If
         Next
 
-        Me.LoadMedia(1)
+        If hasFileSource Then
+            Me.LoadMedia(1)
+        Else
+            MsgBox("You do not have any file-type sources to sort.", MsgBoxStyle.Information, "No Files To Sort")
+        End If
     End Sub
 #End Region '*** Form/Controls
 
