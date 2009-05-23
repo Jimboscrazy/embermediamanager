@@ -2824,24 +2824,28 @@ Public Class frmMain
         Dim tmpPath As String = String.Empty
         Dim tmpName As String = String.Empty
 
-        If Directory.Exists(sPath) Then
-            Dim di As New DirectoryInfo(sPath)
-            Dim lFi As New List(Of FileInfo)
+        Try
+            If Directory.Exists(sPath) Then
+                Dim di As New DirectoryInfo(sPath)
+                Dim lFi As New List(Of FileInfo)
 
-            lFi.AddRange(di.GetFiles())
+                lFi.AddRange(di.GetFiles())
 
-            For Each sFile As FileInfo In lFi
-                tmpName = Master.CleanStackingMarkers(Master.RemoveExtFromFile(sFile.Name))
-                tmpName = tmpName.Replace(".fanart", String.Empty)
-                tmpName = tmpName.Replace("-fanart", String.Empty)
-                tmpPath = Path.Combine(sPath, tmpName)
-                If Not Directory.Exists(tmpPath) Then
-                    Directory.CreateDirectory(tmpPath)
-                End If
+                For Each sFile As FileInfo In lFi
+                    tmpName = Master.CleanStackingMarkers(Master.RemoveExtFromFile(sFile.Name))
+                    tmpName = tmpName.Replace(".fanart", String.Empty)
+                    tmpName = tmpName.Replace("-fanart", String.Empty)
+                    tmpPath = Path.Combine(sPath, tmpName)
+                    If Not Directory.Exists(tmpPath) Then
+                        Directory.CreateDirectory(tmpPath)
+                    End If
 
-                File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
-            Next
-        End If
+                    File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
+                Next
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub CreateRandomThumbs(ByVal sPath As String)
@@ -2855,50 +2859,52 @@ Public Class frmMain
         If Not Directory.Exists(tPath) Then
             Directory.CreateDirectory(tPath)
         End If
+        Try
+            ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+            ffmpeg.EnableRaisingEvents = False
+            ffmpeg.StartInfo.UseShellExecute = False
+            ffmpeg.StartInfo.CreateNoWindow = True
+            ffmpeg.StartInfo.RedirectStandardOutput = True
+            ffmpeg.StartInfo.RedirectStandardError = True
 
-        ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-        ffmpeg.EnableRaisingEvents = False
-        ffmpeg.StartInfo.UseShellExecute = False
-        ffmpeg.StartInfo.CreateNoWindow = True
-        ffmpeg.StartInfo.RedirectStandardOutput = True
-        ffmpeg.StartInfo.RedirectStandardError = True
-
-        'first get the duration
-        ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", sPath)
-        ffmpeg.Start()
-        Dim d As StreamReader = ffmpeg.StandardError
-        Do
-            Dim s As String = d.ReadLine()
-            If s.Contains("Duration: ") Then
-                Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-                Dim ts As TimeSpan = CDate(CDate(DateTime.Today & " " & sTime)).Subtract(CDate(DateTime.Today))
-                intSeconds = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
-            End If
-        Loop While Not d.EndOfStream
-
-        ffmpeg.WaitForExit()
-        ffmpeg.Close()
-
-        If intSeconds > ThumbCount + 2 Then
-            intSeconds = intSeconds / (ThumbCount + 2)
-            intAdd = intSeconds
-            intSeconds += intAdd
-
-            For i = 0 To (ThumbCount - 1)
-                If Me.bwScraper.CancellationPending Then Exit For
-                'check to see if file already exists... if so, don't bother running ffmpeg since we're not
-                'overwriting current thumbs anyway
-                If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + iMod + 1), ".jpg"))) Then
-                    ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg ""{2}""", intSeconds, sPath, Path.Combine(tPath, String.Concat("thumb", (i + iMod + 1), ".jpg")))
-                    ffmpeg.Start()
-                    ffmpeg.WaitForExit()
-                    ffmpeg.Close()
+            'first get the duration
+            ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", sPath)
+            ffmpeg.Start()
+            Dim d As StreamReader = ffmpeg.StandardError
+            Do
+                Dim s As String = d.ReadLine()
+                If s.Contains("Duration: ") Then
+                    Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
+                    Dim ts As TimeSpan = CDate(CDate(DateTime.Today & " " & sTime)).Subtract(CDate(DateTime.Today))
+                    intSeconds = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
                 End If
-                intSeconds += intAdd
-            Next
-        End If
-        ffmpeg.Dispose()
+            Loop While Not d.EndOfStream
 
+            ffmpeg.WaitForExit()
+            ffmpeg.Close()
+
+            If intSeconds > ThumbCount + 2 Then
+                intSeconds = intSeconds / (ThumbCount + 2)
+                intAdd = intSeconds
+                intSeconds += intAdd
+
+                For i = 0 To (ThumbCount - 1)
+                    If Me.bwScraper.CancellationPending Then Exit For
+                    'check to see if file already exists... if so, don't bother running ffmpeg since we're not
+                    'overwriting current thumbs anyway
+                    If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + iMod + 1), ".jpg"))) Then
+                        ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg ""{2}""", intSeconds, sPath, Path.Combine(tPath, String.Concat("thumb", (i + iMod + 1), ".jpg")))
+                        ffmpeg.Start()
+                        ffmpeg.WaitForExit()
+                        ffmpeg.Close()
+                    End If
+                    intSeconds += intAdd
+                Next
+            End If
+            ffmpeg.Dispose()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 #End Region
 
