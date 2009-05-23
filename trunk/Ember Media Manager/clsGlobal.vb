@@ -668,7 +668,7 @@ Public Class Master
         End Try
     End Sub
 
-    Public Shared Function LoadMovieFromNFO(ByVal sPath As String) As Media.Movie
+    Public Shared Function LoadMovieFromNFO(ByVal sPath As String, Optional ByVal doRename As Boolean = True) As Media.Movie
 
         '//
         ' Deserialze the NFO to pass all the data to a Media.Movie
@@ -715,7 +715,7 @@ Public Class Master
             srInfo.Dispose()
 
             'non-conforming nfo... rename per setting
-            If Not eSettings.OverwriteNfo Then
+            If Not eSettings.OverwriteNfo AndAlso doRename Then
                 Dim i As Integer = 1
                 Dim strNewName As String = RemoveExtFromPath(sPath) & ".info"
                 'in case there is already a .info file
