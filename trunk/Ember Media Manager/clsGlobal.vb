@@ -668,7 +668,7 @@ Public Class Master
         End Try
     End Sub
 
-    Public Shared Function LoadMovieFromNFO(ByVal sPath As String, Optional ByVal doRename As Boolean = True) As Media.Movie
+    Public Shared Function LoadMovieFromNFO(ByVal sPath As String) As Media.Movie
 
         '//
         ' Deserialze the NFO to pass all the data to a Media.Movie
@@ -713,21 +713,6 @@ Public Class Master
 
             srInfo.Close()
             srInfo.Dispose()
-
-            'non-conforming nfo... rename per setting
-            If Not eSettings.OverwriteNfo AndAlso doRename Then
-                Dim i As Integer = 1
-                Dim strNewName As String = RemoveExtFromPath(sPath) & ".info"
-                'in case there is already a .info file
-                If File.Exists(strNewName) Then
-                    Do While File.Exists(strNewName)
-                        strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
-                        i += 1
-                    Loop
-                    strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
-                End If
-                My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
-            End If
 
             Return newMovie
         End Try
@@ -1048,6 +1033,11 @@ Public Class Master
                 Else
                     tPath = String.Concat(RemoveExtFromPath(nPath), ".nfo")
                 End If
+
+                If Not eSettings.OverwriteNfo Then
+                    RenameNonConfNfo(tPath)
+                End If
+
                 If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                     Dim xmlSW As New StreamWriter(tPath)
                     xmlSer.Serialize(xmlSW, movieToSave)
@@ -1058,6 +1048,11 @@ Public Class Master
 
             If Not isFile AndAlso eSettings.MovieNFO Then
                 tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+
+                If Not eSettings.OverwriteNfo Then
+                    RenameNonConfNfo(tPath)
+                End If
+
                 If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                     Dim xmlSW As New StreamWriter(tPath)
                     xmlSer.Serialize(xmlSW, movieToSave)
@@ -1068,6 +1063,45 @@ Public Class Master
 
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Shared Sub RenameNonConfNfo(ByVal sPath As String)
+        'test if current nfo is non-conforming... rename per setting
+        Dim testSR As StreamReader = Nothing
+        Dim testSer As XmlSerializer = Nothing
+
+        Try
+            If File.Exists(sPath) Then
+                testSer = New XmlSerializer(GetType(Media.Movie))
+                testSR = New StreamReader(sPath)
+                Dim testMovie As Media.Movie = CType(testSer.Deserialize(testSR), Media.Movie)
+                testMovie = Nothing
+                testSR.Close()
+                testSR = Nothing
+                testSer = Nothing
+            End If
+        Catch
+            If Not IsNothing(testSR) Then
+                testSR.Close()
+                testSR = Nothing
+            End If
+
+            If Not IsNothing(testSer) Then
+                testSer = Nothing
+            End If
+
+            Dim i As Integer = 1
+            Dim strNewName As String = RemoveExtFromPath(sPath) & ".info"
+            'in case there is already a .info file
+            If File.Exists(strNewName) Then
+                Do While File.Exists(strNewName)
+                    strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
+                    i += 1
+                Loop
+                strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
+            End If
+            My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
         End Try
     End Sub
 
@@ -1288,6 +1322,6 @@ Public Class Master
         If String.IsNullOrEmpty(sNumber) Then Return 0
         Dim numFormat As NumberFormatInfo = New NumberFormatInfo()
         numFormat.NumberDecimalSeparator = "."
-        Return Double.Parse(sNumber, NumberStyles.Any, numFormat)
+        Return Double.Parse(sNumber.Replace(",", "."), NumberStyles.AllowDecimalPoint, numFormat)
     End Function
 End Class
