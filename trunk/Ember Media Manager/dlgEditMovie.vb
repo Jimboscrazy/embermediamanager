@@ -411,24 +411,14 @@ Public Class dlgEditMovie
                     lvItem.SubItems.Add(imdbAct.Thumb)
                 Next
 
-                Dim tRating As Double = 0
-                .tmpRating = "0"
-                .pbStar1.Tag = "0"
-                .pbStar2.Tag = "0"
-                .pbStar3.Tag = "0"
-                .pbStar4.Tag = "0"
-                .pbStar5.Tag = "0"
-                If Double.TryParse(Master.currMovie.Rating, tRating) Then
-                    If tRating > 0 Then
-                        .tmpRating = tRating
-                        .pbStar1.Tag = tRating
-                        .pbStar2.Tag = tRating
-                        .pbStar3.Tag = tRating
-                        .pbStar4.Tag = tRating
-                        .pbStar5.Tag = tRating
-                        .BuildStars(tRating)
-                    End If
-                End If
+                Dim tRating As Double = Master.ConvertToDouble(Master.currMovie.Rating)
+                .tmpRating = tRating
+                .pbStar1.Tag = tRating
+                .pbStar2.Tag = tRating
+                .pbStar3.Tag = tRating
+                .pbStar4.Tag = tRating
+                .pbStar5.Tag = tRating
+                If tRating > 0 Then .BuildStars(tRating)
 
                 Fanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
                 If Not IsNothing(Fanart.Image) Then
@@ -573,19 +563,19 @@ Public Class dlgEditMovie
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
 
-                If dblRating >= Double.Parse(0.5) Then ' if rating is less than .5 out of ten, consider it a 0
+                If dblRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
                     Select Case (dblRating / 2)
-                        Case Is <= Double.Parse(0.5)
+                        Case Is <= 0.5
                             .pbStar1.Image = My.Resources.starhalf
                         Case Is <= 1
                             .pbStar1.Image = My.Resources.star
-                        Case Is <= Double.Parse(1.5)
+                        Case Is <= 1.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.starhalf
                         Case Is <= 2
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
-                        Case Is <= Double.Parse(2.5)
+                        Case Is <= 2.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.starhalf
@@ -593,7 +583,7 @@ Public Class dlgEditMovie
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
-                        Case Is <= Double.Parse(3.5)
+                        Case Is <= 3.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
@@ -603,7 +593,7 @@ Public Class dlgEditMovie
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
-                        Case Is <= Double.Parse(4.5)
+                        Case Is <= 4.5
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
