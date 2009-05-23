@@ -309,7 +309,7 @@ Public Class Master
                                       OrElse f.Extension.ToLower() = ".dvr-ms" _
                                       OrElse f.Extension.ToLower() = ".m4v") _
                                       AndAlso Not f.Name.Contains("-trailer") _
-                                      AndAlso Not f.Name.Contains("[trailer]"))
+                                      AndAlso Not f.Name.Contains("[trailer"))
 
 
                 alFileList.AddRange(lFi)
@@ -810,7 +810,7 @@ Public Class Master
                                 hasNfo = True
                             End If
                         Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar", ".m2ts", ".dvr-ms", ".m4v"
-                            If sfile.Name.Contains("-trailer") OrElse sfile.Name.Contains("[trailer]") Then
+                            If sfile.Name.Contains("-trailer") OrElse sfile.Name.Contains("[trailer") Then
                                 hasTrailer = True
                             End If
                     End Select
@@ -1117,7 +1117,7 @@ Public Class Master
                               OrElse f.Extension.ToLower() = ".dvr-ms" _
                               OrElse f.Extension.ToLower() = ".m4v") _
                               AndAlso (f.Name.Contains("-trailer") _
-                              OrElse f.Name.Contains("[trailer]")))
+                              OrElse f.Name.Contains("[trailer")))
 
         If lFi.Count > 0 Then
             Return lFi(0).FullName
@@ -1178,7 +1178,7 @@ Public Class Master
                               OrElse f.Extension.ToLower() = ".dvr-ms" _
                               OrElse f.Extension.ToLower() = ".m4v") _
                              AndAlso Not f.Name.Contains("-trailer") _
-                             AndAlso Not f.Name.Contains("[trailer]"))
+                             AndAlso Not f.Name.Contains("[trailer"))
 
         If lFi.Count > 0 Then
             Return lFi(0).FullName
