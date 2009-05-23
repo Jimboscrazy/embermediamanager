@@ -730,7 +730,6 @@ Public Class dlgEditMovie
         Try
             Dim ffmpeg As New Process()
             Dim tPath As String = Path.Combine(Application.StartupPath, "Temp")
-            Dim duration As Single = 0.0F, current As Single = 0.0F
 
             If Not Directory.Exists(tPath) Then
                 Directory.CreateDirectory(tPath)
@@ -800,7 +799,6 @@ Public Class dlgEditMovie
 
             Dim ffmpeg As New Process()
             Dim tPath As String = Path.Combine(Application.StartupPath, "Temp")
-            Dim duration As Single = 0.0F, current As Single = 0.0F
 
             If Not Directory.Exists(tPath) Then
                 Directory.CreateDirectory(tPath)
