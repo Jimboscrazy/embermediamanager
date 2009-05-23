@@ -1068,6 +1068,29 @@ Public Class Master
 
     Private Shared Sub RenameNonConfNfo(ByVal sPath As String)
         'test if current nfo is non-conforming... rename per setting
+
+        Try
+            If Not IsConformingNfo(sPath) Then
+                If File.Exists(sPath) Then
+                    Dim i As Integer = 1
+                    Dim strNewName As String = RemoveExtFromPath(sPath) & ".info"
+                    'in case there is already a .info file
+                    If File.Exists(strNewName) Then
+                        Do While File.Exists(strNewName)
+                            strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
+                            i += 1
+                        Loop
+                        strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
+                    End If
+                    My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
+                End If
+            End If
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Shared Function IsConformingNfo(ByVal sPath As String) As Boolean
         Dim testSR As StreamReader = Nothing
         Dim testSer As XmlSerializer = Nothing
 
@@ -1080,6 +1103,10 @@ Public Class Master
                 testSR.Close()
                 testSR = Nothing
                 testSer = Nothing
+
+                Return True
+            Else
+                Return False
             End If
         Catch
             If Not IsNothing(testSR) Then
@@ -1091,19 +1118,9 @@ Public Class Master
                 testSer = Nothing
             End If
 
-            Dim i As Integer = 1
-            Dim strNewName As String = RemoveExtFromPath(sPath) & ".info"
-            'in case there is already a .info file
-            If File.Exists(strNewName) Then
-                Do While File.Exists(strNewName)
-                    strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
-                    i += 1
-                Loop
-                strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
-            End If
-            My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
+            Return False
         End Try
-    End Sub
+    End Function
 
     Public Shared Function GetTrailerPath(ByVal sPath As String) As String
 
