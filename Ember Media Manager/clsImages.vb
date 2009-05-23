@@ -297,13 +297,13 @@ Public Class Images
         Return tmpImage
     End Function
 
-    Public Sub GetPreferredImage(ByVal iType As Master.ImageType, ByRef fArt As Media.Fanart, Optional ByVal doAsk As Boolean = False)
+    Public Function GetPreferredImage(ByVal iType As Master.ImageType, ByRef fArt As Media.Fanart, Optional ByVal doAsk As Boolean = False) As Boolean
 
         '//
         ' Try to get the best match between what the user selected in settings and the actual posters downloaded
         '\\
 
-
+        Dim hasImages As Boolean = False
         Dim TMDB As New TMDB.Scraper
         Dim IMPA As New IMPA.Scraper
         Dim MPDB As New MPDB.Scraper
@@ -333,6 +333,7 @@ Public Class Images
 
                     'check each one for it's size to see if it matched the preferred size
                     If tmpListTMDB.Count > 0 Then
+                        hasImages = True
                         For Each iMovie As Media.Image In tmpListTMDB
                             Select Case Master.eSettings.PreferredPosterSize
                                 Case Master.PosterSize.Xlrg
@@ -368,6 +369,7 @@ Public Class Images
                         tmpListIMPA = IMPA.GetIMPAPosters(Master.currMovie.IMDBID)
 
                         If tmpListIMPA.Count > 0 Then
+                            hasImages = True
                             For Each iMovie As Media.Image In tmpListIMPA
                                 tmpImage = GenericFromWeb(iMovie.URL)
                                 If Not IsNothing(tmpImage) Then
@@ -414,6 +416,7 @@ Public Class Images
                         tmpListMPDB = MPDB.GetMPDBPosters(Master.currMovie.IMDBID)
 
                         If tmpListMPDB.Count > 0 Then
+                            hasImages = True
                             For Each iMovie As Media.Image In tmpListMPDB
                                 tmpImage = GenericFromWeb(iMovie.URL)
                                 If Not IsNothing(tmpImage) Then
@@ -546,7 +549,7 @@ Public Class Images
                     tmpListTMDB = TMDB.GetTMDBImages(Master.currMovie.IMDBID, "backdrop")
 
                     If tmpListTMDB.Count > 0 Then
-
+                        hasImages = True
                         'setup fanart for nfo
                         Dim thumbLink As String = String.Empty
                         fArt = New Media.Fanart
@@ -616,7 +619,9 @@ foundIT:
         wrResponse = Nothing
         wrRequest = Nothing
         _image = tmpImage
-    End Sub
+
+        Return hasImages
+    End Function
 
     Public Shared Function GetFanartPath(ByVal sPath As String, ByVal isFile As Boolean) As String
 

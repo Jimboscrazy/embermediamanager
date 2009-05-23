@@ -40,6 +40,7 @@ Public Class frmMain
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwScraper As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwValidateNfo As New System.ComponentModel.BackgroundWorker
 
     Public alActors As New ArrayList
 
@@ -67,6 +68,8 @@ Public Class frmMain
     End Enum
 
     Private Structure Results
+        Dim scrapeType As Master.ScrapeType
+        Dim Count As Integer
         Dim fileInfo As String
         Dim setEnabled As Boolean
         Dim ResultType As PicType
@@ -120,8 +123,9 @@ Public Class frmMain
         If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
         If Me.bwPrelim.IsBusy Then Me.bwPrelim.CancelAsync()
         If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
+        If Me.bwValidateNfo.IsBusy Then Me.bwValidateNfo.CancelAsync()
 
-        Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy
+        Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwValidateNfo.IsBusy
             Application.DoEvents()
         Loop
     End Sub
@@ -936,35 +940,35 @@ Public Class frmMain
         '//
         ' Thread finished: set up progress bar, display count, and begin thread to load data
         '\\
+        If Not bwPrelim.CancellationPending Then
+            Try
+                If Master.alFolderList.Count = 0 AndAlso Master.alFileList.Count = 0 Then
+                    Me.tslStatus.Text = "Unable to load directories. Please check settings."
+                    Me.tspbLoading.Visible = False
+                    Me.tslLoading.Visible = False
+                    Me.tabsMain.Enabled = True
+                    Me.tsbRefreshMedia.Enabled = True
+                    Me.tsbAutoPilot.Enabled = False
+                    Me.tsbEdit.Enabled = False
+                    Me.tsbRescrape.Enabled = False
 
-        Try
-            If Master.alFolderList.Count = 0 AndAlso Master.alFileList.Count = 0 Then
-                Me.tslStatus.Text = "Unable to load directories. Please check settings."
-                Me.tspbLoading.Visible = False
-                Me.tslLoading.Visible = False
-                Me.tabsMain.Enabled = True
-                Me.tsbRefreshMedia.Enabled = True
-                Me.tsbAutoPilot.Enabled = False
-                Me.tsbEdit.Enabled = False
-                Me.tsbRescrape.Enabled = False
-
-            Else
-                Me.tslLoading.Text = "Loading Media:"
-                Me.tspbLoading.Style = ProgressBarStyle.Continuous
-                Me.tslLoading.Visible = True
-                Me.tspbLoading.Visible = True
-                Me.tspbLoading.Maximum = (Master.alFolderList.Count + Master.alFileList.Count + 1)
+                Else
+                    Me.tslLoading.Text = "Loading Media:"
+                    Me.tspbLoading.Style = ProgressBarStyle.Continuous
+                    Me.tslLoading.Visible = True
+                    Me.tspbLoading.Visible = True
+                    Me.tspbLoading.Maximum = (Master.alFolderList.Count + Master.alFileList.Count + 1)
 
 
-                Me.bwFolderData = New System.ComponentModel.BackgroundWorker
-                Me.bwFolderData.WorkerReportsProgress = True
-                Me.bwFolderData.WorkerSupportsCancellation = True
-                Me.bwFolderData.RunWorkerAsync()
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
+                    Me.bwFolderData = New System.ComponentModel.BackgroundWorker
+                    Me.bwFolderData.WorkerReportsProgress = True
+                    Me.bwFolderData.WorkerSupportsCancellation = True
+                    Me.bwFolderData.RunWorkerAsync()
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End If
     End Sub
 
     Private Sub bwFolderData_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwFolderData.DoWork
@@ -1460,17 +1464,18 @@ Public Class frmMain
                                 If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                     If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
-                                        Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, True)
-                                        If Not IsNothing(Poster.Image) Then
-                                            Poster.SaveAsPoster(sPath, drvRow.Item(6))
-                                            drvRow.Item(2) = True
-                                        Else
-                                            MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
-                                            Dim dImgSelect As New dlgImgSelect
-                                            If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
+                                        If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, True) Then
+                                            If Not IsNothing(Poster.Image) Then
+                                                Poster.SaveAsPoster(sPath, drvRow.Item(6))
                                                 drvRow.Item(2) = True
+                                            Else
+                                                MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
+                                                Dim dImgSelect As New dlgImgSelect
+                                                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
+                                                    drvRow.Item(2) = True
+                                                End If
+                                                dImgSelect = Nothing
                                             End If
-                                            dImgSelect = Nothing
                                         End If
                                     End If
                                 End If
@@ -1479,23 +1484,24 @@ Public Class frmMain
                                 If Master.eSettings.UseTMDB Then
 
                                     If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
-                                        Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, True)
+                                        If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, True) Then
 
-                                        If Not IsNothing(Fanart.Image) Then
-                                            Fanart.SaveAsFanart(sPath, drvRow.Item(6))
-                                            drvRow.Item(3) = True
-                                            Master.currMovie.Fanart = fArt
-                                        Else
-                                            MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
-
-                                            Dim dImgSelect As New dlgImgSelect
-                                            If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
+                                            If Not IsNothing(Fanart.Image) Then
+                                                Fanart.SaveAsFanart(sPath, drvRow.Item(6))
                                                 drvRow.Item(3) = True
                                                 Master.currMovie.Fanart = fArt
+                                            Else
+                                                MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
+
+                                                Dim dImgSelect As New dlgImgSelect
+                                                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
+                                                    drvRow.Item(3) = True
+                                                    Master.currMovie.Fanart = fArt
+                                                End If
+                                                dImgSelect.Dispose()
                                             End If
-                                            dImgSelect.Dispose()
+                                            fArt = Nothing
                                         End If
-                                        fArt = Nothing
                                     End If
                                 End If
 
@@ -1544,10 +1550,11 @@ Public Class frmMain
                                 If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                     If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
-                                        Poster.GetPreferredImage(Master.ImageType.Posters, Nothing)
-                                        If Not IsNothing(Poster.Image) Then
-                                            Poster.SaveAsPoster(sPath, drvRow.Item(6))
-                                            drvRow.Item(2) = True
+                                        If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing) Then
+                                            If Not IsNothing(Poster.Image) Then
+                                                Poster.SaveAsPoster(sPath, drvRow.Item(6))
+                                                drvRow.Item(2) = True
+                                            End If
                                         End If
                                     End If
                                 End If
@@ -1555,13 +1562,14 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Master.eSettings.UseTMDB Then
                                     If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
-                                        Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt)
-                                        If Not IsNothing(Fanart.Image) Then
-                                            Fanart.SaveAsFanart(sPath, drvRow.Item(6))
-                                            Master.currMovie.Fanart = fArt
-                                            drvRow.Item(3) = True
+                                        If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt) Then
+                                            If Not IsNothing(Fanart.Image) Then
+                                                Fanart.SaveAsFanart(sPath, drvRow.Item(6))
+                                                Master.currMovie.Fanart = fArt
+                                                drvRow.Item(3) = True
+                                            End If
+                                            fArt = Nothing
                                         End If
-                                        fArt = Nothing
                                     End If
                                 End If
 
@@ -1757,11 +1765,12 @@ Public Class frmMain
                                     If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                         If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
-                                            Poster.GetPreferredImage(Master.ImageType.Posters, Nothing)
+                                            If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing) Then
 
-                                            If Not IsNothing(Poster.Image) Then
-                                                Poster.SaveAsPoster(sPath, drvRow.Item(6))
-                                                drvRow.Item(2) = True
+                                                If Not IsNothing(Poster.Image) Then
+                                                    Poster.SaveAsPoster(sPath, drvRow.Item(6))
+                                                    drvRow.Item(2) = True
+                                                End If
                                             End If
                                         End If
                                     End If
@@ -1771,19 +1780,20 @@ Public Class frmMain
                                 If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                     If Master.eSettings.UseTMDB Then
                                         If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
-                                            Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt)
+                                            If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt) Then
 
-                                            If Not IsNothing(Fanart.Image) Then
-                                                Fanart.SaveAsFanart(sPath, drvRow.Item(6))
-                                                drvRow.Item(3) = True
-                                                If File.Exists(nfoPath) Then
-                                                    'need to load movie from nfo here in case the movie already had
-                                                    'an nfo.... currmovie would not be set to the proper movie
-                                                    Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
-                                                    Master.currMovie.Fanart = fArt
-                                                    Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                                If Not IsNothing(Fanart.Image) Then
+                                                    Fanart.SaveAsFanart(sPath, drvRow.Item(6))
+                                                    drvRow.Item(3) = True
+                                                    If File.Exists(nfoPath) Then
+                                                        'need to load movie from nfo here in case the movie already had
+                                                        'an nfo.... currmovie would not be set to the proper movie
+                                                        Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
+                                                        Master.currMovie.Fanart = fArt
+                                                        Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                                    End If
+                                                    fArt = Nothing
                                                 End If
-                                                fArt = Nothing
                                             End If
                                         End If
                                     End If
@@ -1799,7 +1809,7 @@ Public Class frmMain
                         For Each drvRow As DataRowView In dvView
                             If Me.bwScraper.CancellationPending Then Return
                             If Not drvRow.Item(2) OrElse Not drvRow.Item(3) OrElse Not drvRow.Item(4) Then
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(2).ToString)
+                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(1).ToString)
                                 iCount += 1
 
                                 sPath = drvRow.Item(0).ToString
@@ -1827,17 +1837,18 @@ Public Class frmMain
                                     If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                         If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
-                                            Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, True)
-                                            If Not IsNothing(Poster.Image) Then
-                                                Poster.SaveAsPoster(sPath, drvRow.Item(6))
-                                                drvRow.Item(2) = True
-                                            Else
-                                                MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
-                                                Dim dImgSelect As New dlgImgSelect
-                                                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
+                                            If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, True) Then
+                                                If Not IsNothing(Poster.Image) Then
+                                                    Poster.SaveAsPoster(sPath, drvRow.Item(6))
                                                     drvRow.Item(2) = True
+                                                Else
+                                                    MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
+                                                    Dim dImgSelect As New dlgImgSelect
+                                                    If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
+                                                        drvRow.Item(2) = True
+                                                    End If
+                                                    dImgSelect.Dispose()
                                                 End If
-                                                dImgSelect.Dispose()
                                             End If
                                         End If
                                     End If
@@ -1849,30 +1860,31 @@ Public Class frmMain
                                     If Master.eSettings.UseTMDB Then
 
                                         If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
-                                            Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, True)
+                                            If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, True) Then
 
-                                            If Not IsNothing(Fanart.Image) Then
-                                                Fanart.SaveAsFanart(sPath, drvRow.Item(6))
-                                                drvRow.Item(3) = True
-                                                Master.currMovie.Fanart = fArt
-                                            Else
-                                                MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
-                                                Dim dImgSelect As New dlgImgSelect
-                                                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
+                                                If Not IsNothing(Fanart.Image) Then
+                                                    Fanart.SaveAsFanart(sPath, drvRow.Item(6))
                                                     drvRow.Item(3) = True
+                                                    Master.currMovie.Fanart = fArt
+                                                Else
+                                                    MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
+                                                    Dim dImgSelect As New dlgImgSelect
+                                                    If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
+                                                        drvRow.Item(3) = True
 
-                                                    If File.Exists(nfoPath) Then
-                                                        'need to load movie from nfo here in case the movie already had
-                                                        'an nfo.... currmovie would not be set to the proper movie
-                                                        Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
-                                                        Master.currMovie.Fanart = fArt
-                                                        Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                                        If File.Exists(nfoPath) Then
+                                                            'need to load movie from nfo here in case the movie already had
+                                                            'an nfo.... currmovie would not be set to the proper movie
+                                                            Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
+                                                            Master.currMovie.Fanart = fArt
+                                                            Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                                        End If
+                                                        fArt = Nothing
                                                     End If
-                                                    fArt = Nothing
+                                                    dImgSelect.Dispose()
                                                 End If
-                                                dImgSelect.Dispose()
+                                                fArt = Nothing
                                             End If
-                                            fArt = Nothing
                                         End If
                                     End If
                                 End If
@@ -1906,8 +1918,6 @@ Public Class frmMain
     Private Sub bwScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwScraper.ProgressChanged
         Me.tslStatus.Text = e.UserState.ToString
         Me.tspbLoading.Value = e.ProgressPercentage
-        Me.dgvMediaList.Update()
-        Me.Refresh()
     End Sub
 
     Private Sub bwScraper_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwScraper.RunWorkerCompleted
@@ -1962,6 +1972,74 @@ Public Class frmMain
 
     End Sub
 
+    Private Sub bwValidateNfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwValidateNfo.DoWork
+
+        '//
+        ' Thread to check each nfo to make sure it is valid
+        '\\
+
+        Dim nfoPath As String = String.Empty
+        Dim chkCount As Integer = 0
+
+        Dim Args As Arguments = e.Argument
+        'first count all the items in the list with no info just for the purpose of having a progress bar
+        For i As Integer = 0 To Me.dgvMediaList.RowCount - 1
+            If bwValidateNfo.CancellationPending Then Return
+            nfoPath = Master.GetNfoPath(Me.dgvMediaList.Item(0, i).Value, Me.dgvMediaList.Item(6, i).Value)
+            Me.bwValidateNfo.ReportProgress(i, nfoPath)
+            If Not Master.IsConformingNfo(nfoPath) Then
+                Me.dgvMediaList.Item(4, i).Value = False
+            End If
+            chkCount += If(Not Me.dgvMediaList.Item(2, i).Value OrElse Not Me.dgvMediaList.Item(3, i).Value OrElse Not Me.dgvMediaList.Item(4, i).Value, 1, 0)
+        Next
+
+        e.Result = New Results With {.Count = chkCount, .scrapeType = Args.scrapeType}
+
+    End Sub
+
+    Private Sub bwValidateNfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwValidateNfo.ProgressChanged
+        Me.tslStatus.Text = e.UserState.ToString
+        Me.tspbLoading.Value = e.ProgressPercentage
+    End Sub
+
+    Private Sub bwValidateNfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwValidateNfo.RunWorkerCompleted
+
+        '//
+        ' Thread finished: start scraping
+        '\\
+
+        Dim Res As Results = e.Result
+
+        If Not bwScraper.CancellationPending Then
+            Me.tspbLoading.Value = 0
+            Me.tspbLoading.Maximum = Res.Count
+            If Res.scrapeType = Master.ScrapeType.UpdateAuto Then
+                Me.tslLoading.Text = "Updating Media (Movies Missing Items - Auto):"
+            Else
+                Me.tslLoading.Text = "Updating Media (Movies Missing Items - Ask):"
+            End If
+            Me.tslLoading.Visible = True
+            Me.tspbLoading.Visible = True
+
+            If Res.Count > 0 Then
+                If Not bwScraper.IsBusy Then
+                    bwScraper.WorkerSupportsCancellation = True
+                    bwScraper.WorkerReportsProgress = True
+                    bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = Res.scrapeType})
+                End If
+            Else
+                Me.tslLoading.Visible = False
+                Me.tspbLoading.Visible = False
+                Me.tslStatus.Text = String.Empty
+
+                Me.tsbAutoPilot.Enabled = True
+                Me.tsbRefreshMedia.Enabled = True
+                Me.tsbEdit.Enabled = True
+                Me.tsbRescrape.Enabled = True
+                Me.tabsMain.Enabled = True
+            End If
+        End If
+    End Sub
 #End Region '*** Background Workers
 
 
@@ -2510,6 +2588,9 @@ Public Class frmMain
     Private Sub ScrapeData(ByVal sType As Master.ScrapeType, Optional ByVal doSearch As Boolean = False)
 
         Try
+            Dim chkCount As Integer = 0
+            Dim nfoPath As String = String.Empty
+
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.tsbEdit.Enabled = False
@@ -2541,65 +2622,19 @@ Public Class frmMain
                         bwScraper.WorkerReportsProgress = True
                         bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType})
                     End If
-                Case Master.ScrapeType.UpdateAsk
-                    Dim chkCount As Integer = 0
-                    'first count all the items in the list with no info just for the purpose of having a progress bar
-                    For i As Integer = 0 To Me.dgvMediaList.RowCount - 1
-                        chkCount += If(Not Me.dgvMediaList.Item(2, i).Value OrElse Not Me.dgvMediaList.Item(3, i).Value OrElse Not Me.dgvMediaList.Item(4, i).Value, 1, 0)
-                    Next
+                Case Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
 
-                    Me.tspbLoading.Maximum = chkCount
-                    Me.tslLoading.Text = "Updating Media (Movies Missing Items - Ask):"
+                    Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount - 1
+                    Me.tslLoading.Text = "Checking for valid NFO:"
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
-                    If chkCount > 0 Then
-                        If Not bwScraper.IsBusy Then
-                            bwScraper.WorkerSupportsCancellation = True
-                            bwScraper.WorkerReportsProgress = True
-                            bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType})
-                        End If
-                    Else
-                        Me.tslLoading.Visible = False
-                        Me.tspbLoading.Visible = False
-                        Me.tslStatus.Text = String.Empty
-
-                        Me.tsbAutoPilot.Enabled = True
-                        Me.tsbRefreshMedia.Enabled = True
-                        Me.tsbEdit.Enabled = True
-                        Me.tsbRescrape.Enabled = True
-                        Me.tabsMain.Enabled = True
+                    If Not bwValidateNfo.IsBusy Then
+                        bwValidateNfo.WorkerSupportsCancellation = True
+                        bwValidateNfo.WorkerReportsProgress = True
+                        bwValidateNfo.RunWorkerAsync(New Arguments With {.scrapeType = sType})
                     End If
-                Case Master.ScrapeType.UpdateAuto
-                    Dim chkCount As Integer = 0
 
-                    'first count all the items in the list with no info just for the purpose of having a progress bar
-                    For i As Integer = 0 To Me.dgvMediaList.RowCount - 1
-                        chkCount += If(Not Me.dgvMediaList.Item(2, i).Value OrElse Not Me.dgvMediaList.Item(3, i).Value OrElse Not Me.dgvMediaList.Item(4, i).Value, 1, 0)
-                    Next
-
-                    Me.tspbLoading.Maximum = chkCount
-                    Me.tslLoading.Text = "Updating Media (Movies Missing Items - Auto):"
-                    Me.tslLoading.Visible = True
-                    Me.tspbLoading.Visible = True
-
-                    If chkCount > 0 Then
-                        If Not bwScraper.IsBusy Then
-                            bwScraper.WorkerSupportsCancellation = True
-                            bwScraper.WorkerReportsProgress = True
-                            bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType})
-                        End If
-                    Else
-                        Me.tslLoading.Visible = False
-                        Me.tspbLoading.Visible = False
-                        Me.tslStatus.Text = String.Empty
-
-                        Me.tsbAutoPilot.Enabled = True
-                        Me.tsbRefreshMedia.Enabled = True
-                        Me.tsbEdit.Enabled = True
-                        Me.tsbRescrape.Enabled = True
-                        Me.tabsMain.Enabled = True
-                    End If
                 Case Master.ScrapeType.MIOnly
                     Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount
                     Me.tslLoading.Text = "Updating Media (All Movies - MI Only):"
