@@ -599,34 +599,6 @@ Public Class Master
 
     End Function
 
-    Public Shared Function GetExtFromPath(ByVal sPath As String)
-
-        '//
-        ' Get the extention
-        '\\
-
-        Try
-            Return Path.GetExtension(sPath)
-        Catch
-            Return String.Empty
-        End Try
-
-    End Function
-
-    Public Shared Function RemoveExtFromFile(ByVal sFile As String)
-
-        '//
-        ' Get the filename without the extension
-        '\\
-
-        Try
-            Return Path.GetFileNameWithoutExtension(sFile)
-        Catch
-            Return String.Empty
-        End Try
-
-    End Function
-
     Public Shared Function RemoveExtFromPath(ByVal sPath As String)
 
         '//
@@ -740,7 +712,7 @@ Public Class Master
 
             If isFile Then
                 parPath = Directory.GetParent(sPath).FullName
-                tmpName = Path.Combine(parPath, CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))))
+                tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(GetNameFromPath(sPath))))
                 'fanart
                 If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "fanart.jpg")) Then
                     hasFanart = True
@@ -774,7 +746,7 @@ Public Class Master
                 lFi.AddRange(di.GetFiles())
 
                 For Each sfile As FileInfo In lFi
-                    tmpName = CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath))).ToLower
+                    tmpName = CleanStackingMarkers(Path.GetFileNameWithoutExtension(GetNameFromPath(sPath))).ToLower
                     currname = sfile.Name.ToLower
                     Select Case sfile.Extension.ToLower
                         Case ".jpg"
@@ -1001,7 +973,7 @@ Public Class Master
         ' Get the proper path to NFO
         '\\
 
-        Dim tmpName As String = CleanStackingMarkers(RemoveExtFromFile(GetNameFromPath(sPath)))
+        Dim tmpName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(GetNameFromPath(sPath)))
         Dim nPath As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
         If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(nPath, ".nfo")) Then
@@ -1288,18 +1260,18 @@ Public Class Master
         '\\
 
         Try
-            Dim sourceStream As FileStream = New FileStream(sPathFrom, FileMode.Open, FileAccess.Read)
-            Dim destinationStream As FileStream = New FileStream(sPathTo, FileMode.OpenOrCreate, FileAccess.Write)
-            Dim streamBuffer(sourceStream.Length - 1) As Byte
+            Dim SourceStream As FileStream = New FileStream(sPathFrom, FileMode.Open, FileAccess.Read)
+            Dim DestinationStream As FileStream = New FileStream(sPathTo, FileMode.OpenOrCreate, FileAccess.Write)
+            Dim StreamBuffer(SourceStream.Length - 1) As Byte
 
-            sourceStream.Read(streamBuffer, 0, streamBuffer.Length)
-            destinationStream.Write(streamBuffer, 0, streamBuffer.Length)
+            SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
+            DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
 
-            streamBuffer = Nothing
-            destinationStream.Close()
-            destinationStream.Dispose()
-            sourceStream.Close()
-            sourceStream.Dispose()
+            StreamBuffer = Nothing
+            DestinationStream.Close()
+            DestinationStream.Dispose()
+            SourceStream.Close()
+            SourceStream.Dispose()
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

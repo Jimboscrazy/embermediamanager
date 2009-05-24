@@ -1012,14 +1012,14 @@ Public Class frmMain
                             If Master.eSettings.UseFolderName Then
                                 mName = Master.GetNameFromPath(sName)
                             Else
-                                mName = Master.RemoveExtFromFile(mPath)
+                                mName = Path.GetFileNameWithoutExtension(mPath)
                             End If
                         End If
                     Else
                         If Master.eSettings.UseFolderName Then
                             mName = Master.GetNameFromPath(sName)
                         Else
-                            mName = Master.RemoveExtFromFile(mPath)
+                            mName = Path.GetFileNameWithoutExtension(mPath)
                         End If
                     End If
 
@@ -1065,10 +1065,10 @@ Public Class frmMain
                         mName = tmpMovie.Title
                         tmpMovie = Nothing
                         If String.IsNullOrEmpty(mName) Then
-                            mName = Master.RemoveExtFromFile(sFile.Name)
+                            mName = Path.GetFileNameWithoutExtension(sFile.Name)
                         End If
                     Else
-                        mName = Master.RemoveExtFromFile(sFile.Name)
+                        mName = Path.GetFileNameWithoutExtension(sFile.Name)
                     End If
 
                     cleanName = Master.FilterName(mName)
@@ -1614,7 +1614,7 @@ Public Class frmMain
                             iCount += 1
 
                             sPath = drvRow.Item(0).ToString
-                            sOrName = Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath)))
+                            sOrName = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Master.GetNameFromPath(sPath)))
                             sPathShort = Directory.GetParent(sPath).FullName
                             sPathNoExt = Master.RemoveExtFromPath(sPath)
 
@@ -2706,7 +2706,7 @@ Public Class frmMain
             Dim MI As New MediaInfo.MInfo
             Dim miFileInfo = New MediaInfo.Fileinfo
 
-            If Not Master.GetExtFromPath(Master.currPath) = ".rar" AndAlso Not Master.GetExtFromPath(Master.currPath) = ".iso" Then
+            If Not Path.GetExtension(Master.currPath) = ".rar" AndAlso Not Path.GetExtension(Master.currPath) = ".iso" Then
                 MI.GetMovieMIFromPath(miFileInfo, Master.currPath)
 
                 Master.currMovie.FileInfo = miFileInfo
@@ -2794,7 +2794,7 @@ Public Class frmMain
         Dim aResults(3) As Boolean
         Try
             Dim parPath As String = Directory.GetParent(sPath).FullName
-            Dim tmpName As String = Path.Combine(parPath, Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath))))
+            Dim tmpName As String = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Master.GetNameFromPath(sPath))))
             Dim hasNfo As Boolean = False
             Dim hasPoster As Boolean = False
             Dim hasFanart As Boolean = False
@@ -2870,7 +2870,7 @@ Public Class frmMain
                 lFi.AddRange(di.GetFiles())
 
                 For Each sFile As FileInfo In lFi
-                    tmpName = Master.CleanStackingMarkers(Master.RemoveExtFromFile(sFile.Name))
+                    tmpName = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sFile.Name))
                     tmpName = tmpName.Replace(".fanart", String.Empty)
                     tmpName = tmpName.Replace("-fanart", String.Empty)
                     tmpPath = Path.Combine(sPath, tmpName)
