@@ -630,7 +630,7 @@ foundIT:
         '\\
 
         Try
-            Dim tmpName As String = Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath)))
+            Dim tmpName As String = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Master.GetNameFromPath(sPath)))
             Dim fPath As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
             If Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(fPath, "-fanart.jpg")) Then
@@ -659,7 +659,7 @@ foundIT:
         ' Get the proper path to poster
         '\\
         Try
-            Dim tmpName As String = Master.CleanStackingMarkers(Master.RemoveExtFromFile(Master.GetNameFromPath(sPath)))
+            Dim tmpName As String = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Master.GetNameFromPath(sPath)))
             Dim pPath As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
             If Not isFile AndAlso Master.eSettings.MovieTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")) Then
