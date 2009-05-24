@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r145:*
  * Feature: Use certification as MPAA rating
  * Feature: Allow custom MPAA rating images
  * Feature: Sort file-type sources into separate folders
