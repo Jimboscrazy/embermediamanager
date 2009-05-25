@@ -82,6 +82,7 @@ Public Class emmSettings
     Private _movienamedotfanartjpg As Boolean
     Private _movienfo As Boolean
     Private _movienamenfo As Boolean
+    Private _videotsparent As Boolean
     Private _lockplot As Boolean
     Private _lockoutline As Boolean
     Private _locktitle As Boolean
@@ -615,6 +616,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property VideoTSParent() As Boolean
+        Get
+            Return Me._videotsparent
+        End Get
+        Set(ByVal value As Boolean)
+            Me._videotsparent = value
+        End Set
+    End Property
+
     Public Property LockPlot() As Boolean
         Get
             Return Me._lockplot
@@ -865,6 +875,7 @@ Public Class emmSettings
         Me._movienamedotfanartjpg = False
         Me._movienfo = False
         Me._movienamenfo = False
+        Me._videotsparent = False
         Me._lockplot = False
         Me._lockoutline = False
         Me._locktitle = False

@@ -1007,14 +1007,14 @@ Public Class frmMain
                         tmpMovie = Nothing
                         If String.IsNullOrEmpty(mName) Then
                             If Master.eSettings.UseFolderName Then
-                                mName = Master.GetNameFromPath(sName)
+                                mName = Directory.GetParent(mPath).Name
                             Else
                                 mName = Path.GetFileNameWithoutExtension(mPath)
                             End If
                         End If
                     Else
                         If Master.eSettings.UseFolderName Then
-                            mName = Master.GetNameFromPath(sName)
+                            mName = Directory.GetParent(mPath).Name
                         Else
                             mName = Path.GetFileNameWithoutExtension(mPath)
                         End If
@@ -1623,7 +1623,7 @@ Public Class frmMain
                             iCount += 1
 
                             sPath = drvRow.Item(0).ToString
-                            sOrName = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Master.GetNameFromPath(sPath)))
+                            sOrName = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
                             sPathShort = Directory.GetParent(sPath).FullName
                             sPathNoExt = Master.RemoveExtFromPath(sPath)
 
@@ -2810,11 +2810,17 @@ Public Class frmMain
         Dim aResults(3) As Boolean
         Try
             Dim parPath As String = Directory.GetParent(sPath).FullName
-            Dim tmpName As String = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(Master.GetNameFromPath(sPath))))
+            Dim tmpName As String = String.Empty
             Dim hasNfo As Boolean = False
             Dim hasPoster As Boolean = False
             Dim hasFanart As Boolean = False
             Dim hasTrailer As Boolean = False
+
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                tmpName = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name)
+            Else
+                tmpName = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+            End If
 
             'fanart
             If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "fanart.jpg")) OrElse _
@@ -2907,7 +2913,13 @@ Public Class frmMain
         Dim intSeconds As Integer = 0
         Dim intAdd As Integer = 0
         Dim ThumbCount As Integer = Master.eSettings.AutoThumbs
-        Dim tPath As String = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
+        Dim tPath As String = String.Empty
+
+        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
+        Else
+            tPath = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
+        End If
 
         If Not Directory.Exists(tPath) Then
             Directory.CreateDirectory(tPath)

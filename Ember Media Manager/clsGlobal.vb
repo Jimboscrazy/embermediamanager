@@ -587,21 +587,6 @@ Public Class Master
 
     End Function
 
-    Public Shared Function GetNameFromPath(ByVal sPath As String)
-
-        '//
-        ' Return the folder name
-        '\\
-
-        Try
-            'this seems to be the best way to do this. I could use Directory.GetParent, but the path that is
-            'passed to the function may be a folder so it would return the folder name above the one we want
-            Return Strings.Right(sPath, Len(sPath) - (Strings.InStrRev(sPath, Path.DirectorySeparatorChar)))
-        Catch
-            Return String.Empty
-        End Try
-
-    End Function
 
     Public Shared Function RemoveExtFromPath(ByVal sPath As String)
 
@@ -713,10 +698,9 @@ Public Class Master
         Dim parPath As String = String.Empty
         Try
 
-
             If isFile Then
                 parPath = Directory.GetParent(sPath).FullName
-                tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(GetNameFromPath(sPath))))
+                tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(Directory.GetParent(sPath).Name)))
                 'fanart
                 If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "fanart.jpg")) Then
                     hasFanart = True
@@ -744,13 +728,25 @@ Public Class Master
                     End If
                 Next
             Else
-                Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
+
+                Dim di As DirectoryInfo
+                If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                    di = New DirectoryInfo(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName)
+                Else
+                    di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
+                End If
+
                 Dim lFi As New List(Of FileInfo)()
 
                 lFi.AddRange(di.GetFiles())
 
                 For Each sfile As FileInfo In lFi
-                    tmpName = CleanStackingMarkers(Path.GetFileNameWithoutExtension(GetNameFromPath(sPath))).ToLower
+                    If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                        tmpName = Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower
+                    Else
+                        tmpName = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)).ToLower
+                    End If
+
                     currname = sfile.Name.ToLower
                     Select Case sfile.Extension.ToLower
                         Case ".jpg"
@@ -977,16 +973,27 @@ Public Class Master
         ' Get the proper path to NFO
         '\\
 
-        Dim tmpName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(GetNameFromPath(sPath)))
-        Dim nPath As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
+        Dim npath As String = String.Empty
 
-        If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(nPath, ".nfo")) Then
-            Return String.Concat(nPath, ".nfo")
-        ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
-            Return Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+            npath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
+            If File.Exists(npath) Then
+                Return npath
+            Else
+                Return String.Empty
+            End If
         Else
-            Return String.Empty
+            Dim tmpName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
+            npath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
+            If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(npath, ".nfo")) Then
+                Return String.Concat(npath, ".nfo")
+            ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
+                Return Path.Combine(Directory.GetParent(npath).FullName, "movie.nfo")
+            Else
+                Return String.Empty
+            End If
         End If
+
 
     End Function
 
@@ -998,42 +1005,59 @@ Public Class Master
 
         Try
 
-            Dim tmpName As String = CleanStackingMarkers(GetNameFromPath(sPath))
-            Dim nPath As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
             Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
             Dim tPath As String = String.Empty
+            Dim nPath As String = String.Empty
 
-            If eSettings.MovieNameNFO OrElse isFile Then
-                If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                    tPath = String.Concat(Directory.GetParent(sPath).FullName, "video_ts.nfo")
-                Else
-                    tPath = String.Concat(RemoveExtFromPath(nPath), ".nfo")
-                End If
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
 
                 If Not eSettings.OverwriteNfo Then
-                    RenameNonConfNfo(tPath)
+                    RenameNonConfNfo(nPath)
                 End If
 
-                If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-                    Dim xmlSW As New StreamWriter(tPath)
+                If Not File.Exists(nPath) OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                    Dim xmlSW As New StreamWriter(nPath)
                     xmlSer.Serialize(xmlSW, movieToSave)
                     xmlSW.Close()
                     xmlSW.Dispose()
                 End If
-            End If
+            Else
+                Dim tmpName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
+                nPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
-            If Not isFile AndAlso eSettings.MovieNFO Then
-                tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+                If eSettings.MovieNameNFO OrElse isFile Then
+                    If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                        tPath = String.Concat(Directory.GetParent(sPath).FullName, "video_ts.nfo")
+                    Else
+                        tPath = String.Concat(nPath, ".nfo")
+                    End If
 
-                If Not eSettings.OverwriteNfo Then
-                    RenameNonConfNfo(tPath)
+                    If Not eSettings.OverwriteNfo Then
+                        RenameNonConfNfo(tPath)
+                    End If
+
+                    If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+                        Dim xmlSW As New StreamWriter(tPath)
+                        xmlSer.Serialize(xmlSW, movieToSave)
+                        xmlSW.Close()
+                        xmlSW.Dispose()
+                    End If
                 End If
 
-                If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-                    Dim xmlSW As New StreamWriter(tPath)
-                    xmlSer.Serialize(xmlSW, movieToSave)
-                    xmlSW.Close()
-                    xmlSW.Dispose()
+                If Not isFile AndAlso eSettings.MovieNFO Then
+                    tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+
+                    If Not eSettings.OverwriteNfo Then
+                        RenameNonConfNfo(tPath)
+                    End If
+
+                    If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+                        Dim xmlSW As New StreamWriter(tPath)
+                        xmlSer.Serialize(xmlSW, movieToSave)
+                        xmlSW.Close()
+                        xmlSW.Dispose()
+                    End If
                 End If
             End If
 
