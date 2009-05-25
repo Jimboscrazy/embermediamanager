@@ -1798,12 +1798,13 @@ Public Class frmMain
                                         End If
                                     End If
                                 End If
+
+                                If Me.bwScraper.CancellationPending Then Return
+                                If Master.eSettings.AutoThumbs > 0 AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                                    Me.CreateRandomThumbs(sPath)
+                                End If
                             End If
 
-                            If Me.bwScraper.CancellationPending Then Return
-                            If Master.eSettings.AutoThumbs > 0 AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
-                                Me.CreateRandomThumbs(sPath)
-                            End If
                         Next
                     Case Master.ScrapeType.UpdateAsk
                         For Each drvRow As DataRowView In dvView
@@ -1889,12 +1890,12 @@ Public Class frmMain
                                     End If
                                 End If
 
+                                If Me.bwScraper.CancellationPending Then Return
+                                If Master.eSettings.AutoThumbs > 0 AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                                    Me.CreateRandomThumbs(sPath)
+                                End If
                             End If
 
-                            If Me.bwScraper.CancellationPending Then Return
-                            If Master.eSettings.AutoThumbs > 0 AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
-                                Me.CreateRandomThumbs(sPath)
-                            End If
                         Next
 
                 End Select
