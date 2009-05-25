@@ -163,6 +163,7 @@ Partial Class dlgSettings
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.chkScanRecursive = New System.Windows.Forms.CheckBox
+        Me.chkCastWithImg = New System.Windows.Forms.CheckBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -1117,9 +1118,9 @@ Partial Class dlgSettings
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Location = New System.Drawing.Point(207, 169)
+        Me.GroupBox15.Location = New System.Drawing.Point(418, 92)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(116, 90)
+        Me.GroupBox15.Size = New System.Drawing.Size(156, 69)
         Me.GroupBox15.TabIndex = 60
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "OFDB"
@@ -1127,7 +1128,7 @@ Partial Class dlgSettings
         'chkOFDBPlot
         '
         Me.chkOFDBPlot.AutoSize = True
-        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 64)
+        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 50)
         Me.chkOFDBPlot.Name = "chkOFDBPlot"
         Me.chkOFDBPlot.Size = New System.Drawing.Size(98, 17)
         Me.chkOFDBPlot.TabIndex = 2
@@ -1137,7 +1138,7 @@ Partial Class dlgSettings
         'chkOFDBOutline
         '
         Me.chkOFDBOutline.AutoSize = True
-        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 41)
+        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 34)
         Me.chkOFDBOutline.Name = "chkOFDBOutline"
         Me.chkOFDBOutline.Size = New System.Drawing.Size(113, 17)
         Me.chkOFDBOutline.TabIndex = 1
@@ -1161,9 +1162,9 @@ Partial Class dlgSettings
         Me.GroupBox14.Controls.Add(Me.chkResizePoster)
         Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
         Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
-        Me.GroupBox14.Location = New System.Drawing.Point(330, 169)
+        Me.GroupBox14.Location = New System.Drawing.Point(330, 197)
         Me.GroupBox14.Name = "GroupBox14"
-        Me.GroupBox14.Size = New System.Drawing.Size(249, 66)
+        Me.GroupBox14.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox14.TabIndex = 59
         Me.GroupBox14.TabStop = False
         Me.GroupBox14.Text = "Poster"
@@ -1171,7 +1172,7 @@ Partial Class dlgSettings
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(3, 42)
+        Me.Label11.Location = New System.Drawing.Point(3, 37)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(61, 13)
         Me.Label11.TabIndex = 43
@@ -1180,7 +1181,7 @@ Partial Class dlgSettings
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(124, 42)
+        Me.Label12.Location = New System.Drawing.Point(124, 37)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(64, 13)
         Me.Label12.TabIndex = 42
@@ -1200,7 +1201,7 @@ Partial Class dlgSettings
         '
         Me.txtPosterWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPosterWidth.Enabled = False
-        Me.txtPosterWidth.Location = New System.Drawing.Point(65, 38)
+        Me.txtPosterWidth.Location = New System.Drawing.Point(65, 33)
         Me.txtPosterWidth.Name = "txtPosterWidth"
         Me.txtPosterWidth.Size = New System.Drawing.Size(53, 20)
         Me.txtPosterWidth.TabIndex = 40
@@ -1209,7 +1210,7 @@ Partial Class dlgSettings
         '
         Me.txtPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPosterHeight.Enabled = False
-        Me.txtPosterHeight.Location = New System.Drawing.Point(190, 38)
+        Me.txtPosterHeight.Location = New System.Drawing.Point(190, 33)
         Me.txtPosterHeight.Name = "txtPosterHeight"
         Me.txtPosterHeight.Size = New System.Drawing.Size(53, 20)
         Me.txtPosterHeight.TabIndex = 41
@@ -1221,9 +1222,9 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.chkResizeFanart)
         Me.GroupBox13.Controls.Add(Me.txtFanartWidth)
         Me.GroupBox13.Controls.Add(Me.txtFanartHeight)
-        Me.GroupBox13.Location = New System.Drawing.Point(330, 241)
+        Me.GroupBox13.Location = New System.Drawing.Point(330, 256)
         Me.GroupBox13.Name = "GroupBox13"
-        Me.GroupBox13.Size = New System.Drawing.Size(249, 66)
+        Me.GroupBox13.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox13.TabIndex = 58
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Fanart"
@@ -1231,7 +1232,7 @@ Partial Class dlgSettings
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(3, 42)
+        Me.Label9.Location = New System.Drawing.Point(3, 37)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(61, 13)
         Me.Label9.TabIndex = 43
@@ -1240,7 +1241,7 @@ Partial Class dlgSettings
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(124, 42)
+        Me.Label10.Location = New System.Drawing.Point(124, 37)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(64, 13)
         Me.Label10.TabIndex = 42
@@ -1260,7 +1261,7 @@ Partial Class dlgSettings
         '
         Me.txtFanartWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFanartWidth.Enabled = False
-        Me.txtFanartWidth.Location = New System.Drawing.Point(65, 38)
+        Me.txtFanartWidth.Location = New System.Drawing.Point(65, 33)
         Me.txtFanartWidth.Name = "txtFanartWidth"
         Me.txtFanartWidth.Size = New System.Drawing.Size(53, 20)
         Me.txtFanartWidth.TabIndex = 40
@@ -1269,7 +1270,7 @@ Partial Class dlgSettings
         '
         Me.txtFanartHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFanartHeight.Enabled = False
-        Me.txtFanartHeight.Location = New System.Drawing.Point(190, 38)
+        Me.txtFanartHeight.Location = New System.Drawing.Point(190, 33)
         Me.txtFanartHeight.Name = "txtFanartHeight"
         Me.txtFanartHeight.Size = New System.Drawing.Size(53, 20)
         Me.txtFanartHeight.TabIndex = 41
@@ -1279,9 +1280,9 @@ Partial Class dlgSettings
         Me.GroupBox10.Controls.Add(Me.chkLockTitle)
         Me.GroupBox10.Controls.Add(Me.chkLockOutline)
         Me.GroupBox10.Controls.Add(Me.chkLockPlot)
-        Me.GroupBox10.Location = New System.Drawing.Point(407, 6)
+        Me.GroupBox10.Location = New System.Drawing.Point(418, 6)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(172, 101)
+        Me.GroupBox10.Size = New System.Drawing.Size(156, 82)
         Me.GroupBox10.TabIndex = 57
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "Locks (Do not allow updates during scraping)"
@@ -1289,7 +1290,7 @@ Partial Class dlgSettings
         'chkLockTitle
         '
         Me.chkLockTitle.AutoSize = True
-        Me.chkLockTitle.Location = New System.Drawing.Point(6, 77)
+        Me.chkLockTitle.Location = New System.Drawing.Point(6, 63)
         Me.chkLockTitle.Name = "chkLockTitle"
         Me.chkLockTitle.Size = New System.Drawing.Size(73, 17)
         Me.chkLockTitle.TabIndex = 41
@@ -1299,7 +1300,7 @@ Partial Class dlgSettings
         'chkLockOutline
         '
         Me.chkLockOutline.AutoSize = True
-        Me.chkLockOutline.Location = New System.Drawing.Point(6, 54)
+        Me.chkLockOutline.Location = New System.Drawing.Point(6, 47)
         Me.chkLockOutline.Name = "chkLockOutline"
         Me.chkLockOutline.Size = New System.Drawing.Size(86, 17)
         Me.chkLockOutline.TabIndex = 40
@@ -1333,7 +1334,7 @@ Partial Class dlgSettings
         Me.GroupBox9.Controls.Add(Me.lblFanartSize)
         Me.GroupBox9.Location = New System.Drawing.Point(6, 6)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(195, 303)
+        Me.GroupBox9.Size = New System.Drawing.Size(195, 261)
         Me.GroupBox9.TabIndex = 56
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
@@ -1341,7 +1342,7 @@ Partial Class dlgSettings
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(32, 278)
+        Me.Label15.Location = New System.Drawing.Point(32, 239)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(97, 13)
         Me.Label15.TabIndex = 61
@@ -1351,14 +1352,14 @@ Partial Class dlgSettings
         '
         Me.txtAutoThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtAutoThumbs.Enabled = False
-        Me.txtAutoThumbs.Location = New System.Drawing.Point(132, 275)
+        Me.txtAutoThumbs.Location = New System.Drawing.Point(132, 236)
         Me.txtAutoThumbs.Name = "txtAutoThumbs"
         Me.txtAutoThumbs.Size = New System.Drawing.Size(53, 20)
         Me.txtAutoThumbs.TabIndex = 45
         '
         'chkAutoThumbs
         '
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 245)
+        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 206)
         Me.chkAutoThumbs.Name = "chkAutoThumbs"
         Me.chkAutoThumbs.Size = New System.Drawing.Size(179, 31)
         Me.chkAutoThumbs.TabIndex = 44
@@ -1368,7 +1369,7 @@ Partial Class dlgSettings
         'chkSingleScrapeImages
         '
         Me.chkSingleScrapeImages.AutoSize = True
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 222)
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 191)
         Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
         Me.chkSingleScrapeImages.Size = New System.Drawing.Size(181, 17)
         Me.chkSingleScrapeImages.TabIndex = 37
@@ -1378,7 +1379,7 @@ Partial Class dlgSettings
         'chkOverwriteFanart
         '
         Me.chkOverwriteFanart.AutoSize = True
-        Me.chkOverwriteFanart.Location = New System.Drawing.Point(6, 199)
+        Me.chkOverwriteFanart.Location = New System.Drawing.Point(6, 175)
         Me.chkOverwriteFanart.Name = "chkOverwriteFanart"
         Me.chkOverwriteFanart.Size = New System.Drawing.Size(143, 17)
         Me.chkOverwriteFanart.TabIndex = 38
@@ -1388,7 +1389,7 @@ Partial Class dlgSettings
         'chkUseMPDB
         '
         Me.chkUseMPDB.AutoSize = True
-        Me.chkUseMPDB.Location = New System.Drawing.Point(6, 65)
+        Me.chkUseMPDB.Location = New System.Drawing.Point(6, 51)
         Me.chkUseMPDB.Name = "chkUseMPDB"
         Me.chkUseMPDB.Size = New System.Drawing.Size(188, 17)
         Me.chkUseMPDB.TabIndex = 43
@@ -1398,7 +1399,7 @@ Partial Class dlgSettings
         'chkOverwritePoster
         '
         Me.chkOverwritePoster.AutoSize = True
-        Me.chkOverwritePoster.Location = New System.Drawing.Point(6, 177)
+        Me.chkOverwritePoster.Location = New System.Drawing.Point(6, 159)
         Me.chkOverwritePoster.Name = "chkOverwritePoster"
         Me.chkOverwritePoster.Size = New System.Drawing.Size(143, 17)
         Me.chkOverwritePoster.TabIndex = 37
@@ -1418,7 +1419,7 @@ Partial Class dlgSettings
         'chkUseIMPA
         '
         Me.chkUseIMPA.AutoSize = True
-        Me.chkUseIMPA.Location = New System.Drawing.Point(6, 42)
+        Me.chkUseIMPA.Location = New System.Drawing.Point(6, 35)
         Me.chkUseIMPA.Name = "chkUseIMPA"
         Me.chkUseIMPA.Size = New System.Drawing.Size(163, 17)
         Me.chkUseIMPA.TabIndex = 40
@@ -1430,7 +1431,7 @@ Partial Class dlgSettings
         Me.cbPosterSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbPosterSize.FormattingEnabled = True
         Me.cbPosterSize.Items.AddRange(New Object() {"X-Large", "Large", "Medium", "Small", "Wide"})
-        Me.cbPosterSize.Location = New System.Drawing.Point(6, 105)
+        Me.cbPosterSize.Location = New System.Drawing.Point(6, 88)
         Me.cbPosterSize.Name = "cbPosterSize"
         Me.cbPosterSize.Size = New System.Drawing.Size(179, 21)
         Me.cbPosterSize.TabIndex = 41
@@ -1440,7 +1441,7 @@ Partial Class dlgSettings
         Me.cbFanartSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFanartSize.FormattingEnabled = True
         Me.cbFanartSize.Items.AddRange(New Object() {"Large", "Medium", "Small"})
-        Me.cbFanartSize.Location = New System.Drawing.Point(6, 148)
+        Me.cbFanartSize.Location = New System.Drawing.Point(6, 131)
         Me.cbFanartSize.Name = "cbFanartSize"
         Me.cbFanartSize.Size = New System.Drawing.Size(179, 21)
         Me.cbFanartSize.TabIndex = 42
@@ -1448,7 +1449,7 @@ Partial Class dlgSettings
         'lblPosterSize
         '
         Me.lblPosterSize.AutoSize = True
-        Me.lblPosterSize.Location = New System.Drawing.Point(3, 88)
+        Me.lblPosterSize.Location = New System.Drawing.Point(3, 71)
         Me.lblPosterSize.Name = "lblPosterSize"
         Me.lblPosterSize.Size = New System.Drawing.Size(106, 13)
         Me.lblPosterSize.TabIndex = 14
@@ -1457,7 +1458,7 @@ Partial Class dlgSettings
         'lblFanartSize
         '
         Me.lblFanartSize.AutoSize = True
-        Me.lblFanartSize.Location = New System.Drawing.Point(3, 132)
+        Me.lblFanartSize.Location = New System.Drawing.Point(3, 115)
         Me.lblFanartSize.Name = "lblFanartSize"
         Me.lblFanartSize.Size = New System.Drawing.Size(106, 13)
         Me.lblFanartSize.TabIndex = 15
@@ -1465,6 +1466,7 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkCastWithImg)
         Me.GroupBox1.Controls.Add(Me.chkUseCertForMPAA)
         Me.GroupBox1.Controls.Add(Me.chkFullCast)
         Me.GroupBox1.Controls.Add(Me.chkFullCrew)
@@ -1473,7 +1475,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkStudio)
         Me.GroupBox1.Location = New System.Drawing.Point(207, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(194, 157)
+        Me.GroupBox1.Size = New System.Drawing.Size(204, 155)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -1482,7 +1484,7 @@ Partial Class dlgSettings
         '
         Me.chkUseCertForMPAA.AutoSize = True
         Me.chkUseCertForMPAA.Enabled = False
-        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(34, 112)
+        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(34, 104)
         Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
         Me.chkUseCertForMPAA.Size = New System.Drawing.Size(151, 17)
         Me.chkUseCertForMPAA.TabIndex = 38
@@ -1492,7 +1494,7 @@ Partial Class dlgSettings
         'chkFullCast
         '
         Me.chkFullCast.AutoSize = True
-        Me.chkFullCast.Location = New System.Drawing.Point(6, 19)
+        Me.chkFullCast.Location = New System.Drawing.Point(6, 15)
         Me.chkFullCast.Name = "chkFullCast"
         Me.chkFullCast.Size = New System.Drawing.Size(103, 17)
         Me.chkFullCast.TabIndex = 32
@@ -1502,7 +1504,7 @@ Partial Class dlgSettings
         'chkFullCrew
         '
         Me.chkFullCrew.AutoSize = True
-        Me.chkFullCrew.Location = New System.Drawing.Point(6, 42)
+        Me.chkFullCrew.Location = New System.Drawing.Point(6, 47)
         Me.chkFullCrew.Name = "chkFullCrew"
         Me.chkFullCrew.Size = New System.Drawing.Size(106, 17)
         Me.chkFullCrew.TabIndex = 33
@@ -1515,7 +1517,7 @@ Partial Class dlgSettings
         Me.cbCert.Enabled = False
         Me.cbCert.FormattingEnabled = True
         Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbCert.Location = New System.Drawing.Point(6, 86)
+        Me.cbCert.Location = New System.Drawing.Point(6, 81)
         Me.cbCert.Name = "cbCert"
         Me.cbCert.Size = New System.Drawing.Size(179, 21)
         Me.cbCert.Sorted = True
@@ -1524,7 +1526,7 @@ Partial Class dlgSettings
         'chkCert
         '
         Me.chkCert.AutoSize = True
-        Me.chkCert.Location = New System.Drawing.Point(6, 65)
+        Me.chkCert.Location = New System.Drawing.Point(6, 63)
         Me.chkCert.Name = "chkCert"
         Me.chkCert.Size = New System.Drawing.Size(157, 17)
         Me.chkCert.TabIndex = 34
@@ -1534,7 +1536,7 @@ Partial Class dlgSettings
         'chkStudio
         '
         Me.chkStudio.AutoSize = True
-        Me.chkStudio.Location = New System.Drawing.Point(6, 136)
+        Me.chkStudio.Location = New System.Drawing.Point(6, 120)
         Me.chkStudio.Name = "chkStudio"
         Me.chkStudio.Size = New System.Drawing.Size(105, 17)
         Me.chkStudio.TabIndex = 36
@@ -1645,6 +1647,16 @@ Partial Class dlgSettings
         Me.chkScanRecursive.TabIndex = 66
         Me.chkScanRecursive.Text = "Scan Folder Sources Recursively (Increases Loading Time)"
         Me.chkScanRecursive.UseVisualStyleBackColor = True
+        '
+        'chkCastWithImg
+        '
+        Me.chkCastWithImg.AutoSize = True
+        Me.chkCastWithImg.Location = New System.Drawing.Point(6, 31)
+        Me.chkCastWithImg.Name = "chkCastWithImg"
+        Me.chkCastWithImg.Size = New System.Drawing.Size(179, 17)
+        Me.chkCastWithImg.TabIndex = 39
+        Me.chkCastWithImg.Text = "Scrape Only Actors With Images"
+        Me.chkCastWithImg.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -1850,4 +1862,5 @@ Partial Class dlgSettings
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents txtAutoThumbs As System.Windows.Forms.TextBox
     Friend WithEvents chkScanRecursive As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCastWithImg As System.Windows.Forms.CheckBox
 End Class

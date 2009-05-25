@@ -41,6 +41,7 @@ Public Class emmSettings
     Private _studiotags As Boolean
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
+    Private _castimagesonly As Boolean
     Private _movieposterCol As Boolean
     Private _moviefanartCol As Boolean
     Private _movieinfoCol As Boolean
@@ -246,6 +247,14 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property CastImagesOnly() As Boolean
+        Get
+            Return Me._castimagesonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._castimagesonly = value
+        End Set
+    End Property
     Public Property MoviePosterCol() As Boolean
         Get
             Return Me._movieposterCol
@@ -815,6 +824,7 @@ Public Class emmSettings
         Me._studiotags = False
         Me._fullcast = False
         Me._fullcrew = False
+        Me._castimagesonly = False
         Me._movieposterCol = False
         Me._moviefanartCol = False
         Me._movieinfoCol = False
