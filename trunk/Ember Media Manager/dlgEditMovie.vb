@@ -831,7 +831,13 @@ Public Class dlgEditMovie
     Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
         Try
             Dim tPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Temp", Path.DirectorySeparatorChar, "frame.jpg")
-            Dim sPath As String = Path.Combine(Directory.GetParent(Master.currPath).FullName, "extrathumbs")
+            Dim sPath As String = String.Empty
+
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currPath).Name.ToLower = "video_ts" Then
+                sPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currPath).FullName).FullName, "extrathumbs")
+            Else
+                sPath = Path.Combine(Directory.GetParent(Master.currPath).FullName, "extrathumbs")
+            End If
 
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
