@@ -2893,7 +2893,6 @@ Public Class frmMain
         Dim intAdd As Integer = 0
         Dim ThumbCount As Integer = Master.eSettings.AutoThumbs
         Dim tPath As String = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
-        Dim iMod As Integer = Master.GetExtraModifier(Master.currPath)
 
         If Not Directory.Exists(tPath) Then
             Directory.CreateDirectory(tPath)
@@ -2931,8 +2930,8 @@ Public Class frmMain
                     If Me.bwScraper.CancellationPending Then Exit For
                     'check to see if file already exists... if so, don't bother running ffmpeg since we're not
                     'overwriting current thumbs anyway
-                    If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + iMod + 1), ".jpg"))) Then
-                        ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg ""{2}""", intSeconds, sPath, Path.Combine(tPath, String.Concat("thumb", (i + iMod + 1), ".jpg")))
+                    If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg"))) Then
+                        ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg ""{2}""", intSeconds, sPath, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
                         ffmpeg.Start()
                         ffmpeg.WaitForExit()
                         ffmpeg.Close()
