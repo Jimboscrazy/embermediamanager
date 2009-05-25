@@ -252,6 +252,10 @@ Public Class Master
                     If isValidDir(inDir) Then
                         alFolderList.Add(inDir)
                     End If
+
+                    If eSettings.ScanRecursive Then
+                        EnumerateDirectory(inDir)
+                    End If
                 Next
             End If
         Catch ex As Exception

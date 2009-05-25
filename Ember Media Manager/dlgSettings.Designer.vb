@@ -162,6 +162,7 @@ Partial Class dlgSettings
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.chkScanRecursive = New System.Windows.Forms.CheckBox
         Me.TabControl1.SuspendLayout()
         Me.tabGeneral.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
@@ -743,6 +744,7 @@ Partial Class dlgSettings
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.chkScanRecursive)
         Me.TabPage1.Controls.Add(Me.GroupBox12)
         Me.TabPage1.Controls.Add(Me.GroupBox8)
         Me.TabPage1.Controls.Add(Me.chkTitleFromNfo)
@@ -849,9 +851,9 @@ Partial Class dlgSettings
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
-        Me.GroupBox8.Location = New System.Drawing.Point(6, 138)
+        Me.GroupBox8.Location = New System.Drawing.Point(6, 160)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(362, 177)
+        Me.GroupBox8.Size = New System.Drawing.Size(362, 154)
         Me.GroupBox8.TabIndex = 64
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
@@ -860,9 +862,9 @@ Partial Class dlgSettings
         '
         Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
         Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
-        Me.GroupBox7.Location = New System.Drawing.Point(231, 110)
+        Me.GroupBox7.Location = New System.Drawing.Point(229, 93)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(117, 61)
+        Me.GroupBox7.Size = New System.Drawing.Size(117, 56)
         Me.GroupBox7.TabIndex = 65
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "NFO"
@@ -870,7 +872,7 @@ Partial Class dlgSettings
         'chkMovieNameNFO
         '
         Me.chkMovieNameNFO.AutoSize = True
-        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 41)
+        Me.chkMovieNameNFO.Location = New System.Drawing.Point(6, 36)
         Me.chkMovieNameNFO.Name = "chkMovieNameNFO"
         Me.chkMovieNameNFO.Size = New System.Drawing.Size(84, 17)
         Me.chkMovieNameNFO.TabIndex = 69
@@ -892,9 +894,9 @@ Partial Class dlgSettings
         Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
-        Me.GroupBox6.Location = New System.Drawing.Point(229, 18)
+        Me.GroupBox6.Location = New System.Drawing.Point(229, 14)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(117, 86)
+        Me.GroupBox6.Size = New System.Drawing.Size(117, 78)
         Me.GroupBox6.TabIndex = 64
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Fanart"
@@ -902,7 +904,7 @@ Partial Class dlgSettings
         'chkMovieNameDotFanartJPG
         '
         Me.chkMovieNameDotFanartJPG.AutoSize = True
-        Me.chkMovieNameDotFanartJPG.Location = New System.Drawing.Point(6, 63)
+        Me.chkMovieNameDotFanartJPG.Location = New System.Drawing.Point(6, 57)
         Me.chkMovieNameDotFanartJPG.Name = "chkMovieNameDotFanartJPG"
         Me.chkMovieNameDotFanartJPG.Size = New System.Drawing.Size(113, 17)
         Me.chkMovieNameDotFanartJPG.TabIndex = 68
@@ -912,7 +914,7 @@ Partial Class dlgSettings
         'chkMovieNameFanartJPG
         '
         Me.chkMovieNameFanartJPG.AutoSize = True
-        Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 42)
+        Me.chkMovieNameFanartJPG.Location = New System.Drawing.Point(6, 38)
         Me.chkMovieNameFanartJPG.Name = "chkMovieNameFanartJPG"
         Me.chkMovieNameFanartJPG.Size = New System.Drawing.Size(113, 17)
         Me.chkMovieNameFanartJPG.TabIndex = 67
@@ -938,7 +940,7 @@ Partial Class dlgSettings
         Me.GroupBox5.Controls.Add(Me.chkMovieJPG)
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
-        Me.GroupBox5.Location = New System.Drawing.Point(6, 18)
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 14)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(199, 126)
         Me.GroupBox5.TabIndex = 61
@@ -1634,6 +1636,16 @@ Partial Class dlgSettings
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
+        'chkScanRecursive
+        '
+        Me.chkScanRecursive.AutoSize = True
+        Me.chkScanRecursive.Location = New System.Drawing.Point(6, 133)
+        Me.chkScanRecursive.Name = "chkScanRecursive"
+        Me.chkScanRecursive.Size = New System.Drawing.Size(305, 17)
+        Me.chkScanRecursive.TabIndex = 66
+        Me.chkScanRecursive.Text = "Scan Folder Sources Recursively (Increases Loading Time)"
+        Me.chkScanRecursive.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -1837,4 +1849,5 @@ Partial Class dlgSettings
     Friend WithEvents chkAutoThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents Label15 As System.Windows.Forms.Label
     Friend WithEvents txtAutoThumbs As System.Windows.Forms.TextBox
+    Friend WithEvents chkScanRecursive As System.Windows.Forms.CheckBox
 End Class
