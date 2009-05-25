@@ -570,6 +570,10 @@ Public Class dlgSettings
         End If
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkScanRecursive_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanRecursive.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -730,6 +734,7 @@ Public Class dlgSettings
             Else
                 Master.eSettings.AutoThumbs = 0
             End If
+            Master.eSettings.ScanRecursive = Me.chkScanRecursive.Checked
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -842,6 +847,8 @@ Public Class dlgSettings
                 Me.txtAutoThumbs.Text = Master.eSettings.AutoThumbs.ToString
                 Me.txtAutoThumbs.Enabled = True
             End If
+            Me.chkScanRecursive.Checked = Master.eSettings.ScanRecursive
+
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
         Catch ex As Exception
@@ -850,6 +857,5 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
-
 
 End Class

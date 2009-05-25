@@ -27,6 +27,7 @@ Imports System.Xml.Serialization
 Public Class emmSettings
     Private _version As String
     Private _movieFolders As New ArrayList
+    Private _scanrecursive As Boolean
     Private _filterCustom As New ArrayList
     Private _headerColor As String
     Private _backgroundColor As String
@@ -125,6 +126,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As ArrayList)
             Me._movieFolders = value
+        End Set
+    End Property
+
+    Public Property ScanRecursive() As Boolean
+        Get
+            Return Me._scanrecursive
+        End Get
+        Set(ByVal value As Boolean)
+            Me._scanrecursive = value
         End Set
     End Property
 
@@ -791,6 +801,7 @@ Public Class emmSettings
     Public Sub Clear()
         Me._version = String.Empty
         Me._movieFolders.Clear()
+        Me._scanrecursive = False
         Me._filterCustom.Clear()
         Me._headerColor = Color.DimGray.ToArgb
         Me._backgroundColor = Color.DimGray.ToArgb
