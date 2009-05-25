@@ -345,12 +345,12 @@ mResult:
                 IMDBMovie.IMDBID = strID
 
                 Dim OriginalTitle As String = Regex.Match(Html, MOVIE_TITLE_PATTERN).ToString
-                IMDBMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString))
+                IMDBMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString)).Trim
                 If String.IsNullOrEmpty(IMDBMovie.Title) OrElse Not Master.eSettings.LockTitle Then
                     If Not String.IsNullOrEmpty(ofdbTitle) Then
-                        IMDBMovie.Title = ofdbTitle
+                        IMDBMovie.Title = ofdbTitle.Trim
                     Else
-                        IMDBMovie.Title = IMDBMovie.OriginalTitle
+                        IMDBMovie.Title = IMDBMovie.OriginalTitle.Trim
                     End If
                 End If
                 If GetPoster Then

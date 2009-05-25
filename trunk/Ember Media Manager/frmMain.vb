@@ -60,6 +60,7 @@ Public Class frmMain
     Private prevRow As Integer = -1
     Private currText As String = String.Empty
     Private prevText As String = String.Empty
+    Private FilterArray As New ArrayList
 
     Private Enum PicType As Integer
         Actor = 0
@@ -107,7 +108,7 @@ Public Class frmMain
         If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy Then
             Master.eSettings.MovieList.Clear()
             For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-                If drvRow.Cells(1).Style.ForeColor = Color.Crimson Then
+                If drvRow.Cells(8).Value Then
                     Master.eSettings.MovieList.Add(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark"))
                 Else
                     Master.eSettings.MovieList.Add(drvRow.Cells(1).Value.ToString)
@@ -419,7 +420,7 @@ Public Class frmMain
 
         Try
 
-            Master.currMark = If(Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson, True, False)
+            Master.currMark = Me.dgvMediaList.SelectedRows(0).Cells(8).Value
 
             'set tmpTitle to title in list - used for searching IMDB
             Me.tmpTitle = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
@@ -433,13 +434,10 @@ Public Class frmMain
 
             Select Case dEditMovie.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
-                    If Master.currMark Then
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                    Else
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Black
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
-                    End If
+                    'reset title in list just in case user changed it
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+                    Me.dgvMediaList.SelectedRows(0).Cells(8).Value = Master.currMark
+                    Me.SetFilterColors()
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                     Me.LoadInfo(Master.currPath, True, False, Master.isFile)
                 Case Windows.Forms.DialogResult.Retry
@@ -465,7 +463,7 @@ Public Class frmMain
 
             'set tmpTitle to title in list - used for searching IMDB
             Me.tmpTitle = Me.dgvMediaList.Item(1, 0).Value.ToString
-
+            Me.SetFilterColors()
         End If
 
     End Sub
@@ -623,13 +621,10 @@ Public Class frmMain
             Dim dEditMovie As New dlgEditMovie
             Select dEditMovie.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
-                    If Master.currMark Then
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                    Else
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Black
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
-                    End If
+                    'reset title in list just in case user changed it
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+                    Me.dgvMediaList.SelectedRows(0).Cells(8).Value = Master.currMark
+                    Me.SetFilterColors()
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                     Me.LoadInfo(Master.currPath, True, False, Master.isFile)
                 Case Windows.Forms.DialogResult.Retry
@@ -762,7 +757,7 @@ Public Class frmMain
         Me.tmrWait.Enabled = False
         Try
             If Me.dgvMediaList.SelectedRows.Count > 0 Then
-                Master.currMark = If(Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson, True, False)
+                Master.currMark = Me.dgvMediaList.SelectedRows(0).Cells(8).Value
 
                 'set tmpTitle to title in list - used for searching IMDB
                 Me.tmpTitle = Me.dgvMediaList.Item(1, currRow).Value.ToString
@@ -997,6 +992,8 @@ Public Class frmMain
             Me.dtMedia.Columns.Add("Info", GetType(System.Boolean))
             Me.dtMedia.Columns.Add("Trailer", GetType(System.Boolean))
             Me.dtMedia.Columns.Add("Type", GetType(System.Boolean))
+            Me.dtMedia.Columns.Add("FilterNew", GetType(System.Boolean))
+            Me.dtMedia.Columns.Add("FilterMark", GetType(System.Boolean))
 
             'process the folder type media
             For Each sName As String In Master.alFolderList
@@ -1029,7 +1026,7 @@ Public Class frmMain
 
                     If Not String.IsNullOrEmpty(cleanName) Then
 
-                        Dim newRow(6) As Object
+                        Dim newRow(8) As Object
 
                         newRow(0) = mPath
                         newRow(1) = cleanName
@@ -1039,6 +1036,17 @@ Public Class frmMain
                         newRow(4) = aContents(2)
                         newRow(5) = aContents(3)
                         newRow(6) = False
+
+                        newRow(7) = False
+                        newRow(8) = False
+                        If Master.eSettings.MovieList.Contains(String.Concat(cleanName, "=Mark")) Then
+                            newRow(8) = True
+                        ElseIf Not Master.eSettings.MovieList.Contains(cleanName) Then
+                            newRow(7) = True
+                            If Master.eSettings.MarkNew Then
+                                newRow(8) = True
+                            End If
+                        End If
 
                         Me.dtMedia.LoadDataRow(newRow, True)
 
@@ -1077,7 +1085,7 @@ Public Class frmMain
 
                     If Not String.IsNullOrEmpty(cleanName) Then
 
-                        Dim newFileRow(6) As Object
+                        Dim newFileRow(8) As Object
 
                         newFileRow(0) = sFile.FullName
                         newFileRow(1) = cleanName
@@ -1088,6 +1096,17 @@ Public Class frmMain
                         newFileRow(4) = aContents(2)
                         newFileRow(5) = aContents(3)
                         newFileRow(6) = True
+
+                        newFileRow(7) = False
+                        newFileRow(8) = False
+                        If Master.eSettings.MovieList.Contains(String.Concat(cleanName, "=Mark")) Then
+                            newFileRow(8) = True
+                        ElseIf Not Master.eSettings.MovieList.Contains(cleanName) Then
+                            newFileRow(7) = True
+                            If Master.eSettings.MarkNew Then
+                                newFileRow(8) = True
+                            End If
+                        End If
 
                         Me.dtMedia.LoadDataRow(newFileRow, True)
 
@@ -1162,6 +1181,8 @@ Public Class frmMain
                     .dgvMediaList.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
                     .dgvMediaList.Columns(5).Visible = Not Master.eSettings.MovieTrailerCol
                     .dgvMediaList.Columns(6).Visible = False
+                    .dgvMediaList.Columns(7).Visible = False
+                    .dgvMediaList.Columns(8).Visible = False
 
                     'Trick to autosize the first column, but still allow resizing by user
                     .dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -1171,19 +1192,7 @@ Public Class frmMain
                     .dgvMediaList.Sort(.dgvMediaList.Columns(1), ComponentModel.ListSortDirection.Descending)
                     .dgvMediaList.Sort(.dgvMediaList.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
-                    For Each drvRow As DataGridViewRow In .dgvMediaList.Rows
-                        If Master.eSettings.MovieList.Contains(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark")) Then
-                            drvRow.Cells(1).Style.ForeColor = Color.Crimson
-                            drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                        ElseIf Not Master.eSettings.MovieList.Contains(drvRow.Cells(1).Value.ToString) Then
-                            If Master.eSettings.MarkNew Then
-                                drvRow.Cells(1).Style.ForeColor = Color.Crimson
-                            Else
-                                drvRow.Cells(1).Style.ForeColor = Color.Green
-                            End If
-                            drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                        End If
-                    Next
+                    .SetFilterColors()
 
                     'Set current cell and automatically load the info for the first movie in the list
                     .tmpTitle = .dgvMediaList.Item(1, 0).Value.ToString
@@ -1940,7 +1949,7 @@ Public Class frmMain
                     'set tmpTitle to title in list - used for searching IMDB
                     Me.tmpTitle = Me.dgvMediaList.Item(1, 0).Value.ToString
 
-                    Master.currMark = If(Me.dgvMediaList.Item(1, 0).Style.ForeColor = Color.Crimson, True, False)
+                    Master.currMark = Me.dgvMediaList.Item(8, 0).Value
 
                     If Not Me.dgvMediaList.Item(2, 0).Value AndAlso Not Me.dgvMediaList.Item(3, 0).Value AndAlso Not Me.dgvMediaList.Item(4, 0).Value Then
                         Me.ClearInfo()
@@ -2123,6 +2132,11 @@ Public Class frmMain
                 .lblMediaCount.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
                 .scMain.Panel1.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
                 .pnlSearch.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .pnlFilter.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
+                .lblFilter.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
+                .lblFilter.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
+
+
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2764,10 +2778,11 @@ Public Class frmMain
 
                 Dim dEditMovie As New dlgEditMovie
                 If dEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    If Master.currMark Then
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.ForeColor = Color.Crimson
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                    End If
+                    'reset title in list just in case user changed it
+                    Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+
+                    Me.dgvMediaList.SelectedRows(0).Cells(8).Value = Master.currMark
+                    Me.SetFilterColors()
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                 End If
                 dEditMovie.Dispose()
@@ -2944,6 +2959,65 @@ Public Class frmMain
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Private Sub SetFilterColors()
+        For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+            If drvRow.Cells(8).Value Then
+                drvRow.Cells(1).Style.ForeColor = Color.Crimson
+                drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+            ElseIf drvRow.Cells(7).Value Then
+                drvRow.Cells(1).Style.ForeColor = Color.Green
+                drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+            Else
+                drvRow.Cells(1).Style.ForeColor = Color.Black
+                drvRow.Cells(1).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+            End If
+        Next
+    End Sub
 #End Region
 
+    Private Sub chkFilterNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterNew.CheckedChanged
+        Try
+            If Me.chkFilterNew.Checked Then
+                Me.FilterArray.Add("FilterNew = True")
+            Else
+                Me.FilterArray.Remove("FilterNew = True")
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub RunFilter()
+        Dim FilterString As String = String.Empty
+        If rbFilterAnd.Checked Then
+            FilterString = Strings.Join(FilterArray.ToArray, " AND ")
+        Else
+            FilterString = Strings.Join(FilterArray.ToArray, " OR ")
+        End If
+        Dim dvFilter As DataView = dtMedia.DefaultView
+        dvFilter.RowFilter = FilterString
+        Me.dgvMediaList.DataSource = dvFilter
+        Me.SetFilterColors()
+    End Sub
+
+    Private Sub chkFilterMark_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark.CheckedChanged
+        Try
+            If Me.chkFilterMark.Checked Then
+                Me.FilterArray.Add("FilterMark = True")
+            Else
+                Me.FilterArray.Remove("FilterMark = True")
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub rbFilterAnd_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd.CheckedChanged
+        Me.RunFilter()
+    End Sub
+
+    Private Sub rbFilterOr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.CheckedChanged
+        Me.RunFilter()
+    End Sub
 End Class

@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -46,6 +46,9 @@ Partial Class frmMain
         Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
+        Me.pnlFilter = New System.Windows.Forms.Panel
+        Me.lblFilter = New System.Windows.Forms.Label
+        Me.chkFilterNew = New System.Windows.Forms.CheckBox
         Me.pnlSearch = New System.Windows.Forms.Panel
         Me.picSearch = New System.Windows.Forms.PictureBox
         Me.txtSearch = New System.Windows.Forms.TextBox
@@ -136,11 +139,15 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.chkFilterMark = New System.Windows.Forms.CheckBox
+        Me.rbFilterAnd = New System.Windows.Forms.RadioButton
+        Me.rbFilterOr = New System.Windows.Forms.RadioButton
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
         Me.scMain.Panel2.SuspendLayout()
         Me.scMain.SuspendLayout()
+        Me.pnlFilter.SuspendLayout()
         Me.pnlSearch.SuspendLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -334,6 +341,7 @@ Partial Class frmMain
         'scMain.Panel1
         '
         Me.scMain.Panel1.BackColor = System.Drawing.Color.Gainsboro
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
         Me.scMain.Panel1.Controls.Add(Me.pnlSearch)
         Me.scMain.Panel1.Controls.Add(Me.dgvMediaList)
         Me.scMain.Panel1.Controls.Add(Me.lblMediaCount)
@@ -357,6 +365,45 @@ Partial Class frmMain
         Me.scMain.SplitterDistance = 308
         Me.scMain.TabIndex = 7
         '
+        'pnlFilter
+        '
+        Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilter.Controls.Add(Me.rbFilterOr)
+        Me.pnlFilter.Controls.Add(Me.rbFilterAnd)
+        Me.pnlFilter.Controls.Add(Me.chkFilterMark)
+        Me.pnlFilter.Controls.Add(Me.lblFilter)
+        Me.pnlFilter.Controls.Add(Me.chkFilterNew)
+        Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 625)
+        Me.pnlFilter.Name = "pnlFilter"
+        Me.pnlFilter.Size = New System.Drawing.Size(308, 61)
+        Me.pnlFilter.TabIndex = 12
+        '
+        'lblFilter
+        '
+        Me.lblFilter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFilter.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilter.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilter.Location = New System.Drawing.Point(4, 4)
+        Me.lblFilter.Name = "lblFilter"
+        Me.lblFilter.Size = New System.Drawing.Size(298, 17)
+        Me.lblFilter.TabIndex = 22
+        Me.lblFilter.Text = "Filters"
+        Me.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'chkFilterNew
+        '
+        Me.chkFilterNew.AutoSize = True
+        Me.chkFilterNew.Location = New System.Drawing.Point(6, 23)
+        Me.chkFilterNew.Name = "chkFilterNew"
+        Me.chkFilterNew.Size = New System.Drawing.Size(85, 17)
+        Me.chkFilterNew.TabIndex = 1
+        Me.chkFilterNew.Text = "New Movies"
+        Me.chkFilterNew.UseVisualStyleBackColor = True
+        '
         'pnlSearch
         '
         Me.pnlSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -364,16 +411,16 @@ Partial Class frmMain
         Me.pnlSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlSearch.Controls.Add(Me.picSearch)
         Me.pnlSearch.Controls.Add(Me.txtSearch)
-        Me.pnlSearch.Location = New System.Drawing.Point(1, 26)
+        Me.pnlSearch.Location = New System.Drawing.Point(0, 26)
         Me.pnlSearch.Name = "pnlSearch"
-        Me.pnlSearch.Size = New System.Drawing.Size(307, 33)
+        Me.pnlSearch.Size = New System.Drawing.Size(308, 33)
         Me.pnlSearch.TabIndex = 11
         '
         'picSearch
         '
         Me.picSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.picSearch.Image = CType(resources.GetObject("picSearch.Image"), System.Drawing.Image)
-        Me.picSearch.Location = New System.Drawing.Point(283, 8)
+        Me.picSearch.Location = New System.Drawing.Point(284, 8)
         Me.picSearch.Name = "picSearch"
         Me.picSearch.Size = New System.Drawing.Size(16, 16)
         Me.picSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -387,7 +434,7 @@ Partial Class frmMain
         Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSearch.Location = New System.Drawing.Point(7, 6)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(269, 20)
+        Me.txtSearch.Size = New System.Drawing.Size(270, 20)
         Me.txtSearch.TabIndex = 0
         '
         'dgvMediaList
@@ -395,8 +442,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -405,7 +452,7 @@ Partial Class frmMain
         Me.dgvMediaList.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvMediaList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMediaList.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.dgvMediaList.Location = New System.Drawing.Point(1, 59)
+        Me.dgvMediaList.Location = New System.Drawing.Point(0, 59)
         Me.dgvMediaList.MultiSelect = False
         Me.dgvMediaList.Name = "dgvMediaList"
         Me.dgvMediaList.ReadOnly = True
@@ -413,7 +460,7 @@ Partial Class frmMain
         Me.dgvMediaList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMediaList.ShowCellErrors = False
         Me.dgvMediaList.ShowRowErrors = False
-        Me.dgvMediaList.Size = New System.Drawing.Size(307, 627)
+        Me.dgvMediaList.Size = New System.Drawing.Size(308, 566)
         Me.dgvMediaList.TabIndex = 10
         '
         'lblMediaCount
@@ -1329,6 +1376,37 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
+        'chkFilterMark
+        '
+        Me.chkFilterMark.AutoSize = True
+        Me.chkFilterMark.Location = New System.Drawing.Point(6, 42)
+        Me.chkFilterMark.Name = "chkFilterMark"
+        Me.chkFilterMark.Size = New System.Drawing.Size(99, 17)
+        Me.chkFilterMark.TabIndex = 23
+        Me.chkFilterMark.Text = "Marked Movies"
+        Me.chkFilterMark.UseVisualStyleBackColor = True
+        '
+        'rbFilterAnd
+        '
+        Me.rbFilterAnd.AutoSize = True
+        Me.rbFilterAnd.Checked = True
+        Me.rbFilterAnd.Location = New System.Drawing.Point(258, 22)
+        Me.rbFilterAnd.Name = "rbFilterAnd"
+        Me.rbFilterAnd.Size = New System.Drawing.Size(44, 17)
+        Me.rbFilterAnd.TabIndex = 24
+        Me.rbFilterAnd.Text = "And"
+        Me.rbFilterAnd.UseVisualStyleBackColor = True
+        '
+        'rbFilterOr
+        '
+        Me.rbFilterOr.AutoSize = True
+        Me.rbFilterOr.Location = New System.Drawing.Point(258, 40)
+        Me.rbFilterOr.Name = "rbFilterOr"
+        Me.rbFilterOr.Size = New System.Drawing.Size(36, 17)
+        Me.rbFilterOr.TabIndex = 25
+        Me.rbFilterOr.Text = "Or"
+        Me.rbFilterOr.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1351,6 +1429,8 @@ Partial Class frmMain
         Me.scMain.Panel2.ResumeLayout(False)
         Me.scMain.Panel2.PerformLayout()
         Me.scMain.ResumeLayout(False)
+        Me.pnlFilter.ResumeLayout(False)
+        Me.pnlFilter.PerformLayout()
         Me.pnlSearch.ResumeLayout(False)
         Me.pnlSearch.PerformLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1507,4 +1587,10 @@ Partial Class frmMain
     Friend WithEvents ToolsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CleanFoldersToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ConvertFileSourceToFolderSourceToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents pnlFilter As System.Windows.Forms.Panel
+    Friend WithEvents lblFilter As System.Windows.Forms.Label
+    Friend WithEvents chkFilterNew As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFilterMark As System.Windows.Forms.CheckBox
+    Friend WithEvents rbFilterOr As System.Windows.Forms.RadioButton
+    Friend WithEvents rbFilterAnd As System.Windows.Forms.RadioButton
 End Class
