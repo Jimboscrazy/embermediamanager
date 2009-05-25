@@ -881,6 +881,55 @@ Public Class frmMain
             MsgBox("You do not have any file-type sources to sort.", MsgBoxStyle.Information, "No Files To Sort")
         End If
     End Sub
+
+    Private Sub chkFilterNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterNew.CheckedChanged
+        Try
+            If Me.chkFilterNew.Checked Then
+                Me.FilterArray.Add("FilterNew = True")
+            Else
+                Me.FilterArray.Remove("FilterNew = True")
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub chkFilterMark_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark.CheckedChanged
+        Try
+            If Me.chkFilterMark.Checked Then
+                Me.FilterArray.Add("FilterMark = True")
+            Else
+                Me.FilterArray.Remove("FilterMark = True")
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub rbFilterAnd_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd.CheckedChanged
+        Me.RunFilter()
+    End Sub
+
+    Private Sub rbFilterOr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.CheckedChanged
+        Me.RunFilter()
+    End Sub
+
+    Private Sub dgvMediaList_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMediaList.KeyPress
+
+        For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+            If drvRow.Cells(1).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
+                drvRow.Selected = True
+                drvRow.Visible = True
+                Me.dgvMediaList.CurrentCell = drvRow.Cells(1)
+
+                'set tmpTitle to title in list - used for searching IMDB
+                Me.tmpTitle = drvRow.Cells(1).Value.ToString
+                Me.SetFilterColors()
+                Exit For
+            End If
+        Next
+
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2986,19 +3035,6 @@ Public Class frmMain
             End If
         Next
     End Sub
-#End Region
-
-    Private Sub chkFilterNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterNew.CheckedChanged
-        Try
-            If Me.chkFilterNew.Checked Then
-                Me.FilterArray.Add("FilterNew = True")
-            Else
-                Me.FilterArray.Remove("FilterNew = True")
-            End If
-            Me.RunFilter()
-        Catch
-        End Try
-    End Sub
 
     Private Sub RunFilter()
         Dim FilterString As String = String.Empty
@@ -3012,24 +3048,6 @@ Public Class frmMain
         Me.dgvMediaList.DataSource = dvFilter
         Me.SetFilterColors()
     End Sub
+#End Region
 
-    Private Sub chkFilterMark_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark.CheckedChanged
-        Try
-            If Me.chkFilterMark.Checked Then
-                Me.FilterArray.Add("FilterMark = True")
-            Else
-                Me.FilterArray.Remove("FilterMark = True")
-            End If
-            Me.RunFilter()
-        Catch
-        End Try
-    End Sub
-
-    Private Sub rbFilterAnd_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd.CheckedChanged
-        Me.RunFilter()
-    End Sub
-
-    Private Sub rbFilterOr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.CheckedChanged
-        Me.RunFilter()
-    End Sub
 End Class
