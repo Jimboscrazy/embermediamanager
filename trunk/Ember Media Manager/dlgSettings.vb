@@ -574,6 +574,10 @@ Public Class dlgSettings
     Private Sub chkScanRecursive_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanRecursive.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkCastWithImg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCastWithImg.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -690,6 +694,7 @@ Public Class dlgSettings
             Master.eSettings.UseStudioTags = Me.chkStudio.Checked
             Master.eSettings.FullCast = Me.chkFullCast.Checked
             Master.eSettings.FullCrew = Me.chkFullCrew.Checked
+            Master.eSettings.CastImagesOnly = Me.chkCastWithImg.Checked
             Master.eSettings.MoviePosterCol = Me.chkMoviePosterCol.Checked
             Master.eSettings.MovieFanartCol = Me.chkMovieFanartCol.Checked
             Master.eSettings.MovieInfoCol = Me.chkMovieInfoCol.Checked
@@ -799,6 +804,7 @@ Public Class dlgSettings
             Me.chkStudio.Checked = Master.eSettings.UseStudioTags
             Me.chkFullCast.Checked = Master.eSettings.FullCast
             Me.chkFullCrew.Checked = Master.eSettings.FullCrew
+            Me.chkCastWithImg.Checked = Master.eSettings.CastImagesOnly
             Me.chkMoviePosterCol.Checked = Master.eSettings.MoviePosterCol
             Me.chkMovieFanartCol.Checked = Master.eSettings.MovieFanartCol
             Me.chkMovieInfoCol.Checked = Master.eSettings.MovieInfoCol

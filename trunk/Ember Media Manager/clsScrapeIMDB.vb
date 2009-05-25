@@ -453,10 +453,14 @@ mResult:
                             Web.HttpUtility.HtmlDecode(m2.ToString.Trim), _
                             If(Strings.InStr(m3.Groups("thumb").ToString, "addtiny") > 0, String.Empty, Strings.Replace(Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim), _
                             "._SY30_SX23_.jpg", "._SY275_SX400_.jpg")))
-                Dim Cast As List(Of Media.Person) = Cast1.ToList  ' Cast1.Union(Cast2).ToList
+                Dim Cast As List(Of Media.Person) = Cast1.ToList
 
-                'Clean up the character names
+                'Clean up the actors list
                 For Each Ps As Media.Person In Cast
+                    If Master.eSettings.CastImagesOnly AndAlso String.IsNullOrEmpty(Ps.Thumb) Then
+                        Cast.Remove(Ps)
+                        Continue For
+                    End If
                     Dim a_patterRegex = Regex.Match(Ps.Role, HREF_PATTERN)
                     If a_patterRegex.Success Then Ps.Role = a_patterRegex.Groups("name").ToString.Trim
                 Next
