@@ -175,9 +175,6 @@
   <metadata name="MenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>127, 17</value>
   </metadata>
-  <metadata name="tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>324, 17</value>
-  </metadata>
   <data name="picSearch.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -3140,6 +3137,9 @@
         E6xzAAAAAElFTkSuQmCC
 </value>
   </data>
+  <metadata name="tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>324, 17</value>
+  </metadata>
   <data name="tsbAutoPilot.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -3175,14 +3175,14 @@
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAfxJREFUOE9jYBgF
         4BCw981PcPQvuOXgnv7ezDfvBwjbumR/cvDJfubgk3fJ0T9/u7N/4XSXoKJ87/Byh9z6iXzwoLtw47ZH
-        QEzVGVOX1P/GDpn/DW2zwLRtQOJ/I/us/0YOaf8N7BP+69sl/De0d/2rZh/51cAx+ZGNZ85Gj9DSNIa7
+        QEzVGVOX1P/GDpn/DW2zwLRtQOJ/I/us/0YOaf8N7BP+69sl/De0d/qrZh/51cAx+ZGNZ85Gj9DSNIa7
         jx6lRKU1XTRxSfof2+z2P6LaC0wXLzX9H9fm8D8oM/N/ff+6/+Wdi//XT1j5P7NqKpC96H9kZtt/K/fM
         /wz//v2TzauYtMnALhVoa8L/irWGYDq6weO/XVjA/8Wnuv5buZX875639b+Za9r/jUdv/A9Nbf5vAHSR
         W3DREbBXuieuL/eIj/8f3+rxP7La739Uje//iErf/3Gtrv+TSrr+m7mk/4/P7wYbUNA453/z1LX/7aOz
         fpq7pieADbhw7ZpaYGzZR9eAiv/ugZX/PYMr/jv6FP938Cr5b++d/d83svS/e3AB0MaC/y4Buf+dA/L/
         OwUWng8NXcUMD8zGjulT7NwS/tu6xv8H0fbuQOwW/9/BPe6/s3vMf0+vmP/BATH/U8Ij/7ck+F6bmetl
         hZKI779/LxCT2XHEyj77q4197ldrn7wPLgHFT9zDy8/7xNSs809oavRP7va1SF8pjTP1P3vzRmve8m1T
-        Zi/e3LB286GIN2/eaI6ArAIA1or2L0VR0V0AAAAASUVORK5CYII=
+        Zi/e3LB286GIN2/eaI6ArAIAzrb2LG9Nj+kAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="tsbEdit.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

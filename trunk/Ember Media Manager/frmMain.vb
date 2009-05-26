@@ -458,7 +458,6 @@ Public Class frmMain
 
         If Me.dgvMediaList.Rows.Count > 0 Then
             Me.dgvMediaList.Rows(0).Selected = True
-            Me.dgvMediaList.Rows(0).Visible = True
             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(1)
 
             'set tmpTitle to title in list - used for searching IMDB
@@ -919,7 +918,6 @@ Public Class frmMain
         For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
             If drvRow.Cells(1).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
                 drvRow.Selected = True
-                drvRow.Visible = True
                 Me.dgvMediaList.CurrentCell = drvRow.Cells(1)
 
                 'set tmpTitle to title in list - used for searching IMDB
@@ -1993,7 +1991,6 @@ Public Class frmMain
                     Me.Invalidate()
                     Me.Refresh()
                     Me.dgvMediaList.Rows(0).Selected = True
-                    Me.dgvMediaList.Rows(0).Visible = True
                     Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(1)
                     'set tmpTitle to title in list - used for searching IMDB
                     Me.tmpTitle = Me.dgvMediaList.Item(1, 0).Value.ToString
@@ -3037,16 +3034,25 @@ Public Class frmMain
     End Sub
 
     Private Sub RunFilter()
-        Dim FilterString As String = String.Empty
-        If rbFilterAnd.Checked Then
-            FilterString = Strings.Join(FilterArray.ToArray, " AND ")
-        Else
-            FilterString = Strings.Join(FilterArray.ToArray, " OR ")
+        If Me.Created Then
+            Dim dvFilter As DataView = dtMedia.DefaultView
+            Dim FilterString As String = String.Empty
+
+            If rbFilterAnd.Checked Then
+                FilterString = Strings.Join(FilterArray.ToArray, " AND ")
+            Else
+                FilterString = Strings.Join(FilterArray.ToArray, " OR ")
+            End If
+
+            dvFilter.RowFilter = FilterString
+            Me.dgvMediaList.DataSource = dvFilter
+
+            If Me.dgvMediaList.Rows.Count > 0 Then
+                Me.SetFilterColors()
+            Else
+                Me.ClearInfo()
+            End If
         End If
-        Dim dvFilter As DataView = dtMedia.DefaultView
-        dvFilter.RowFilter = FilterString
-        Me.dgvMediaList.DataSource = dvFilter
-        Me.SetFilterColors()
     End Sub
 #End Region
 
