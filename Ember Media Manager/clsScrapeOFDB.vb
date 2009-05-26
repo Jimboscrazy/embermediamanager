@@ -76,7 +76,7 @@ Public Class OFDB
     Private Function GetOFDBUrlFromIMDBID() As String
         Dim ofdbURL As String = String.Empty
         Dim Html As String = String.Empty
-        Dim sURL = String.Concat("http://www.ofdb.de/view.php?SText=", imdbID.Replace("tt", String.Empty).Trim, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search")
+        Dim sURL = String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search")
         Try
             Dim Wc As New WebClient
             Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")

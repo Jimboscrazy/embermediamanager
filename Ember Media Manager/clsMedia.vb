@@ -61,10 +61,10 @@ Namespace Media
         <XmlElement("id")> _
         Public Property IMDBID() As String
             Get
-                Return Me._imdbid
+                Return Me._imdbid.Replace("tt", String.Empty).Trim
             End Get
             Set(ByVal value As String)
-                Me._imdbid = value
+                Me._imdbid = value.Replace("tt", String.Empty).Trim
             End Set
         End Property
 

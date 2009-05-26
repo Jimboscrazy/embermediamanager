@@ -46,7 +46,7 @@ Namespace IMPA
         Private Function GetLink(ByVal IMDBID As String) As String
 
             Try
-                Dim Url As String = String.Concat("http://www.imdb.com/title/", _
+                Dim Url As String = String.Concat("http://www.imdb.com/title/tt", _
                                           IMDBID, "/posters")
 
                 Dim Html As String

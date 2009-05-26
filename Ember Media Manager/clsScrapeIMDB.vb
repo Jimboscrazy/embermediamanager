@@ -107,7 +107,7 @@ Namespace IMDB
         End Structure
 
         Private Function GetMovieID(ByVal strObj As String) As String
-            Return Regex.Match(strObj, IMDB_ID_REGEX).ToString
+            Return Regex.Match(strObj, IMDB_ID_REGEX).ToString.Replace("tt", String.Empty)
         End Function
 
         Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef imdbMovie As Media.Movie, ByVal iType As Master.ScrapeType) As Media.Movie
@@ -312,9 +312,9 @@ mResult:
                     If Master.eSettings.UseOFDBPlot Then ofdbPlot = OFDBScrape.Plot
                 End If
 
-                Dim Url As String = String.Concat("http://www.imdb.com/title/", strID, _
+                Dim Url As String = String.Concat("http://www.imdb.com/title/tt", strID, _
                                                   If(FullCrew OrElse FullCast, "/combined", String.Empty))
-                Dim PlotUrl As String = String.Concat("http://www.imdb.com/title/", strID, "/plotsummary")
+                Dim PlotUrl As String = String.Concat("http://www.imdb.com/title/tt", strID, "/plotsummary")
 
                 Dim Html As String
                 Dim PlotHtml As String
