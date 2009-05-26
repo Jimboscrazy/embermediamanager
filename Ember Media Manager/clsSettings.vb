@@ -87,10 +87,6 @@ Public Class emmSettings
     Private _lockoutline As Boolean
     Private _locktitle As Boolean
     Private _singlescrapeimages As Boolean
-    Private _xbmcport As String
-    Private _xbmcip As String
-    Private _xbmcusername As String
-    Private _xbmcpassword As String
     Private _marknew As Boolean
     Private _resizefanart As Boolean
     Private _fanartheight As Integer
@@ -102,6 +98,7 @@ Public Class emmSettings
     Private _useofdboutline As Boolean
     Private _useofdbplot As Boolean
     Private _autothumbs As Integer
+    Private _xbmccoms As New List(Of XBMCCom)
     Private _movielist As New ArrayList
 
     Public Property Version() As String
@@ -670,50 +667,6 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property XBMCIP() As String
-        Get
-            Return Me._xbmcip
-        End Get
-        Set(ByVal value As String)
-            Me._xbmcip = value
-        End Set
-    End Property
-
-    Public Property XBMCPort() As String
-        Get
-            Return Me._xbmcport
-        End Get
-        Set(ByVal value As String)
-            Me._xbmcport = value
-        End Set
-    End Property
-
-    Public Property XBMCUsername() As String
-        Get
-            Return Me._xbmcusername
-        End Get
-        Set(ByVal value As String)
-            Me._xbmcusername = value
-        End Set
-    End Property
-
-    Public Property XBMCPassword() As String
-        Get
-            If String.IsNullOrEmpty(Me._xbmcpassword) Then
-                Return String.Empty
-            Else
-                Return Master.Decode(Me._xbmcpassword)
-            End If
-        End Get
-        Set(ByVal value As String)
-            If String.IsNullOrEmpty(value) Then
-                Me._xbmcpassword = value
-            Else
-                Me._xbmcpassword = Master.Encode(value)
-            End If
-        End Set
-    End Property
-
     Public Property ResizeFanart() As Boolean
         Get
             Return Me._resizefanart
@@ -804,6 +757,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property XBMCComs() As List(Of XBMCCom)
+        Get
+            Return Me._xbmccoms
+        End Get
+        Set(ByVal value As List(Of XBMCCom))
+            Me._xbmccoms = value
+        End Set
+    End Property
+
     Public Property MovieList() As ArrayList
         Get
             Return Me._movielist
@@ -880,10 +842,6 @@ Public Class emmSettings
         Me._lockoutline = False
         Me._locktitle = False
         Me._singlescrapeimages = False
-        Me._xbmcip = String.Empty
-        Me._xbmcport = String.Empty
-        Me._xbmcusername = String.Empty
-        Me._xbmcpassword = String.Empty
         Me._marknew = False
         Me._resizefanart = False
         Me._fanartheight = 0
@@ -894,6 +852,7 @@ Public Class emmSettings
         Me._useofdbtitle = False
         Me._useofdboutline = False
         Me._useofdbplot = False
+        Me._xbmccoms.Clear()
         Me._movielist.Clear()
     End Sub
 
@@ -919,5 +878,77 @@ Public Class emmSettings
             Master.eSettings = New emmSettings
         End Try
     End Sub
-End Class
 
+    Public Class XBMCCom
+        Private _xbmcname As String
+        Private _xbmcport As String
+        Private _xbmcip As String
+        Private _xbmcusername As String
+        Private _xbmcpassword As String
+
+        Public Property Name() As String
+            Get
+                Return Me._xbmcname
+            End Get
+            Set(ByVal value As String)
+                Me._xbmcname = value
+            End Set
+        End Property
+
+        Public Property IP() As String
+            Get
+                Return Me._xbmcip
+            End Get
+            Set(ByVal value As String)
+                Me._xbmcip = value
+            End Set
+        End Property
+
+        Public Property Port() As String
+            Get
+                Return Me._xbmcport
+            End Get
+            Set(ByVal value As String)
+                Me._xbmcport = value
+            End Set
+        End Property
+
+        Public Property Username() As String
+            Get
+                Return Me._xbmcusername
+            End Get
+            Set(ByVal value As String)
+                Me._xbmcusername = value
+            End Set
+        End Property
+
+        Public Property Password() As String
+            Get
+                If String.IsNullOrEmpty(Me._xbmcpassword) Then
+                    Return String.Empty
+                Else
+                    Return Master.Decode(Me._xbmcpassword)
+                End If
+            End Get
+            Set(ByVal value As String)
+                If String.IsNullOrEmpty(value) Then
+                    Me._xbmcpassword = value
+                Else
+                    Me._xbmcpassword = Master.Encode(value)
+                End If
+            End Set
+        End Property
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._xbmcname = String.Empty
+            Me._xbmcip = String.Empty
+            Me._xbmcport = String.Empty
+            Me._xbmcusername = String.Empty
+            Me._xbmcpassword = String.Empty
+        End Sub
+    End Class
+End Class
