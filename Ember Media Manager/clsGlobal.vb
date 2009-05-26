@@ -311,6 +311,7 @@ Public Class Master
                                       OrElse f.Extension.ToLower() = ".rar" _
                                       OrElse f.Extension.ToLower() = ".m2ts" _
                                       OrElse f.Extension.ToLower() = ".dvr-ms" _
+                                      OrElse f.Extension.ToLower() = ".ts" _
                                       OrElse f.Extension.ToLower() = ".m4v") _
                                       AndAlso Not f.Name.Contains("-trailer") _
                                       AndAlso Not f.Name.Contains("[trailer"))
@@ -719,7 +720,7 @@ Public Class Master
                     hasNfo = True
                 End If
 
-                Dim sExt() As String = Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.m4v")
+                Dim sExt() As String = Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v")
 
                 For Each t As String In sExt
                     If File.Exists(String.Concat(tmpName, "-trailer", t)) OrElse File.Exists(String.Concat(tmpName, "[trailer]", t)) Then
@@ -766,7 +767,7 @@ Public Class Master
                             If currname = String.Concat(tmpName, ".nfo") OrElse currname = "movie.nfo" OrElse currname = "video_ts.nfo" Then
                                 hasNfo = True
                             End If
-                        Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar", ".m2ts", ".dvr-ms", ".m4v"
+                        Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar", ".m2ts", ".dvr-ms", ".ts", ".m4v"
                             If sfile.Name.Contains("-trailer") OrElse sfile.Name.Contains("[trailer") Then
                                 hasTrailer = True
                             End If
@@ -1166,6 +1167,7 @@ Public Class Master
                               OrElse f.Extension.ToLower() = ".rar" _
                               OrElse f.Extension.ToLower() = ".m2ts" _
                               OrElse f.Extension.ToLower() = ".dvr-ms" _
+                              OrElse f.Extension.ToLower() = ".ts" _
                               OrElse f.Extension.ToLower() = ".m4v") _
                               AndAlso (f.Name.Contains("-trailer") _
                               OrElse f.Name.Contains("[trailer")))
@@ -1227,6 +1229,7 @@ Public Class Master
                               OrElse f.Extension.ToLower() = ".rar" _
                               OrElse f.Extension.ToLower() = ".m2ts" _
                               OrElse f.Extension.ToLower() = ".dvr-ms" _
+                              OrElse f.Extension.ToLower() = ".ts" _
                               OrElse f.Extension.ToLower() = ".m4v") _
                              AndAlso Not f.Name.Contains("-trailer") _
                              AndAlso Not f.Name.Contains("[trailer"))
