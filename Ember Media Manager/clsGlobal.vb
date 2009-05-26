@@ -1028,7 +1028,7 @@ Public Class Master
 
                 If eSettings.MovieNameNFO OrElse isFile Then
                     If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                        tPath = String.Concat(Directory.GetParent(sPath).FullName, "video_ts.nfo")
+                        tPath = Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.nfo")
                     Else
                         tPath = String.Concat(nPath, ".nfo")
                     End If
