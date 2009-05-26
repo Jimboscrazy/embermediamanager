@@ -627,31 +627,36 @@ Public Class dlgSettings
 
     Private Sub btnAddCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddCom.Click
         If Not String.IsNullOrEmpty(txtName.Text) Then
-            If Not Me.lbXBMCCom.Items.Contains(txtName.Text) Then
-                If Not String.IsNullOrEmpty(txtIP.Text) Then
-                    If Not String.IsNullOrEmpty(txtPort.Text) Then
-                        XComs.Add(New emmSettings.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text})
-                        Me.LoadXComs()
 
-                        Me.txtName.Text = String.Empty
-                        Me.txtIP.Text = String.Empty
-                        Me.txtPort.Text = String.Empty
-                        Me.txtUsername.Text = String.Empty
-                        Me.txtPassword.Text = String.Empty
+            'have to iterate the list instead of using .comtains so we can convert each to lower case
+            For i As Integer = 0 To lbXBMCCom.Items.Count - 1
+                If lbXBMCCom.Items(i).ToString.ToLower = Me.txtName.Text.ToLower Then
+                    MsgBox("The name you are attempting to use for this XBMC installation is already in use. Please choose another.", MsgBoxStyle.Exclamation, "Each name must be unique")
+                    txtName.Focus()
+                    Exit Sub
+                End If
+            Next
 
-                        Me.btnEditCom.Enabled = False
-                        Me.btnApply.Enabled = True
-                    Else
-                        MsgBox("You must enter a port for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Port")
-                        txtPort.Focus()
-                    End If
+            If Not String.IsNullOrEmpty(txtIP.Text) Then
+                If Not String.IsNullOrEmpty(txtPort.Text) Then
+                    XComs.Add(New emmSettings.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text})
+                    Me.LoadXComs()
+
+                    Me.txtName.Text = String.Empty
+                    Me.txtIP.Text = String.Empty
+                    Me.txtPort.Text = String.Empty
+                    Me.txtUsername.Text = String.Empty
+                    Me.txtPassword.Text = String.Empty
+
+                    Me.btnEditCom.Enabled = False
+                    Me.btnApply.Enabled = True
                 Else
-                    MsgBox("You must enter an IP for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter an IP")
-                    txtIP.Focus()
+                    MsgBox("You must enter a port for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Port")
+                    txtPort.Focus()
                 End If
             Else
-                MsgBox("The name you are attempting to use for this XBMC installation is already in use. Please choose another.", MsgBoxStyle.Exclamation, "Each name must be unique")
-                txtName.Focus()
+                MsgBox("You must enter an IP for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter an IP")
+                txtIP.Focus()
             End If
         Else
             MsgBox("You must enter a name for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Unique Name")
@@ -666,7 +671,7 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtName.Text) Then
 
             For i As Integer = 0 To lbXBMCCom.Items.Count - 1
-                If Not iSel = i AndAlso lbXBMCCom.Items(i).ToString = Me.txtName.Text Then
+                If Not iSel = i AndAlso lbXBMCCom.Items(i).ToString.ToLower = Me.txtName.Text.ToLower Then
                     MsgBox("The name you are attempting to use for this XBMC installation is already in use. Please choose another.", MsgBoxStyle.Exclamation, "Each name must be unique")
                     txtName.Focus()
                     Exit Sub
