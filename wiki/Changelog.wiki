@@ -7,8 +7,12 @@
  * Feature: Option to only scrape actors with images
  * Feature: Option for YAMJ compatible VIDEO_TS file placement/naming
  * Feature: Jump to letter in media list
+ * Feature: Support for updating multiple XBMC installations
  * Fix: Automatic extrathumb creation not creating the correct thumb names
  * Fix: Standard VIDEO_TS nfo not saving properly
+ * Change: Support for .ts files
+ * Change: Do not store "tt" prefix for IMDB ID in nfos
+ * Change: Slight redesign of settings dialog
 
 *Changes in r145:*
  * Feature: Use certification as MPAA rating
