@@ -138,10 +138,21 @@ Public Class Images
             End If
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".jpg")
-                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
-                    Save(pPath)
+
+                If Master.eSettings.MovieNameJPG Then
+                    pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".jpg")
+                    If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+                        Save(pPath)
+                    End If
                 End If
+
+                If Master.eSettings.MovieNameTBN Then
+                    pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".tbn")
+                    If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+                        Save(pPath)
+                    End If
+                End If
+
             Else
                 Dim tPath = String.Empty
                 Dim tmpName As String = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
@@ -691,9 +702,11 @@ foundIT:
             Dim pPath As String = String.Empty
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".jpg")
-                If File.Exists(pPath) Then
-                    Return pPath
+                pPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name)
+                If Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(pPath, ".jpg")) Then
+                    Return String.Concat(pPath, ".jpg")
+                ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(pPath, ".tbn")) Then
+                    Return String.Concat(pPath, ".tbn")
                 Else
                     Return String.Empty
                 End If
@@ -733,7 +746,7 @@ foundIT:
             Select Case fType
                 Case Master.ImageType.Fanart
                     If (String.IsNullOrEmpty(GetFanartPath(sPath, isFile)) OrElse Master.eSettings.OverwriteFanart) AndAlso _
-                    (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG OrElse Master.eSettings.VideoTSParent) AndAlso _
+                    (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) AndAlso _
                     Master.eSettings.UseTMDB Then
                         Return True
                     Else
@@ -742,7 +755,7 @@ foundIT:
                 Case Else
                     If (String.IsNullOrEmpty(GetPosterPath(sPath, isFile)) OrElse Master.eSettings.OverwritePoster) AndAlso _
                     (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
-                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.VideoTSParent) AndAlso _
+                     Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterTBN) AndAlso _
                      (Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB OrElse Master.eSettings.UseTMDB) Then
                         Return True
                     Else
