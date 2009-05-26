@@ -2,7 +2,13 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Feature: List filters - new, marked, duplicate
+ * Feature: Option to scan folders recursively
+ * Feature: Option to only scrape actors with images
+ * Feature: Option for YAMJ compatible VIDEO_TS file placement/naming
+ * Feature: Jump to letter in media list
+ * Fix: Automatic extrathumb creation not creating the correct thumb names
+ * Fix: Standard VIDEO_TS nfo not saving properly
 
 *Changes in r145:*
  * Feature: Use certification as MPAA rating
