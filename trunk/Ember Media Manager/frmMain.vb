@@ -106,6 +106,7 @@ Public Class frmMain
         'save the list of movies to settings so we know which ones are new
 
         If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy Then
+            Me.ClearFilters()
             Master.eSettings.MovieList.Clear()
             For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
                 If drvRow.Cells(8).Value Then
@@ -114,9 +115,9 @@ Public Class frmMain
                     Master.eSettings.MovieList.Add(drvRow.Cells(1).Value.ToString)
                 End If
             Next
+            Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
+            Master.eSettings.Save()
         End If
-        Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
-        Master.eSettings.Save()
 
         If Me.bwFolderData.IsBusy Then Me.bwFolderData.CancelAsync()
         If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
@@ -883,8 +884,10 @@ Public Class frmMain
 
     Private Sub chkFilterNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterNew.CheckedChanged
         Try
+            Me.chkFilterDupe.Enabled = Not Me.chkFilterNew.Checked
             If Me.chkFilterNew.Checked Then
                 Me.FilterArray.Add("FilterNew = True")
+                Me.chkFilterDupe.Checked = False
             Else
                 Me.FilterArray.Remove("FilterNew = True")
             End If
@@ -895,8 +898,10 @@ Public Class frmMain
 
     Private Sub chkFilterMark_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark.CheckedChanged
         Try
+            Me.chkFilterDupe.Enabled = Not Me.chkFilterMark.Checked
             If Me.chkFilterMark.Checked Then
                 Me.FilterArray.Add("FilterMark = True")
+                Me.chkFilterDupe.Checked = False
             Else
                 Me.FilterArray.Remove("FilterMark = True")
             End If
@@ -910,6 +915,18 @@ Public Class frmMain
     End Sub
 
     Private Sub rbFilterOr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.CheckedChanged
+        Me.RunFilter()
+    End Sub
+
+    Private Sub chkFilterDupe_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.CheckedChanged
+        Me.chkFilterMark.Enabled = Not chkFilterDupe.Checked
+        Me.chkFilterNew.Enabled = Not chkFilterDupe.Checked
+        Me.rbFilterAnd.Enabled = Not chkFilterDupe.Checked
+        Me.rbFilterOr.Enabled = Not chkFilterDupe.Checked
+        If Me.chkFilterDupe.Checked Then
+            Me.chkFilterMark.Checked = False
+            Me.chkFilterNew.Checked = False
+        End If
         Me.RunFilter()
     End Sub
 
@@ -1269,6 +1286,7 @@ Public Class frmMain
         Me.lblMediaCount.Text = String.Format("Media Count: {0}", Me.dgvMediaList.Rows.Count)
         Me.lblMediaCount.Visible = True
         Me.txtSearch.Text = String.Empty
+        Me.EnableFilters(True)
 
         Me.loadType = 0
     End Sub
@@ -1453,6 +1471,7 @@ Public Class frmMain
                 Me.tsbRescrape.Enabled = True
                 Me.tsbEdit.Enabled = True
                 Me.tabsMain.Enabled = True
+                Me.EnableFilters(True)
             End If
 
         Catch ex As Exception
@@ -2024,6 +2043,7 @@ Public Class frmMain
                 Me.tsbEdit.Enabled = True
                 Me.tsbRescrape.Enabled = True
                 Me.tabsMain.Enabled = True
+                Me.EnableFilters(True)
         End Select
 
     End Sub
@@ -2242,6 +2262,8 @@ Public Class frmMain
                 End While
             End If
 
+            Me.ClearFilters()
+
             Me.dgvMediaList.DataSource = Nothing
 
             Master.alFolderList.Clear()
@@ -2253,6 +2275,7 @@ Public Class frmMain
             Me.btnUp.Enabled = False
 
             Me.ClearInfo()
+            Me.EnableFilters(False)
 
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
@@ -2658,6 +2681,7 @@ Public Class frmMain
             Me.tsbRescrape.Enabled = False
             Me.tabsMain.Enabled = False
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.EnableFilters(False)
 
             Select Case sType
                 Case Master.ScrapeType.FullAsk
@@ -2753,6 +2777,7 @@ Public Class frmMain
                             Me.tsbEdit.Enabled = True
                             Me.tsbRescrape.Enabled = True
                             Me.tabsMain.Enabled = True
+                            Me.EnableFilters(True)
                         End If
                     End If
             End Select
@@ -3033,6 +3058,27 @@ Public Class frmMain
         Next
     End Sub
 
+    Private Sub EnableFilters(ByVal isEnabled As Boolean)
+        Me.chkFilterDupe.Enabled = isEnabled
+        Me.chkFilterMark.Enabled = isEnabled
+        Me.chkFilterNew.Enabled = isEnabled
+        Me.rbFilterOr.Enabled = isEnabled
+        Me.rbFilterAnd.Enabled = isEnabled
+    End Sub
+
+    Private Sub ClearFilters()
+        Me.chkFilterDupe.Enabled = True
+        Me.chkFilterDupe.Checked = False
+        Me.chkFilterMark.Enabled = True
+        Me.chkFilterMark.Checked = False
+        Me.chkFilterNew.Enabled = True
+        Me.chkFilterNew.Checked = False
+        Me.rbFilterOr.Enabled = True
+        Me.rbFilterOr.Checked = False
+        Me.rbFilterAnd.Enabled = True
+        Me.rbFilterAnd.Checked = True
+    End Sub
+
     Private Sub RunFilter()
         If Me.Created Then
             Dim dvFilter As DataView = dtMedia.DefaultView
@@ -3047,7 +3093,54 @@ Public Class frmMain
             dvFilter.RowFilter = FilterString
             Me.dgvMediaList.DataSource = dvFilter
 
+
             If Me.dgvMediaList.Rows.Count > 0 Then
+                For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+                    Me.dgvMediaList.ScrollBars = ScrollBars.None
+                    drvRow.Visible = True
+                    Me.dgvMediaList.ScrollBars = ScrollBars.Both
+                Next
+
+                If Me.chkFilterDupe.Checked Then
+                    dvFilter.Sort = "Name"
+                    With Me.dgvMediaList
+                        .ScrollBars = ScrollBars.None
+                        .CurrentCell = Nothing
+                        Dim rCount As Integer = .Rows.Count
+                        If rCount > 1 Then
+                            If Not .Rows(0).Cells(1).Value = .Rows(1).Cells(1).Value Then
+                                .Rows(0).Visible = False
+                                If rCount > 2 Then
+                                    For i As Integer = 1 To rCount - 2
+                                        If Not .Rows(i).Cells(1).Value = .Rows(i - 1).Cells(1).Value AndAlso _
+                                         Not .Rows(i).Cells(1).Value = .Rows(i + 1).Cells(1).Value Then
+                                            .Rows(i).Visible = False
+                                        End If
+                                    Next
+                                    If Not .Rows(rCount - 1).Cells(1).Value = .Rows(rCount - 2).Cells(1).Value Then
+                                        .Rows(rCount - 1).Visible = False
+                                    End If
+                                Else
+                                    .Rows(1).Visible = False
+                                End If
+                            End If
+                        Else
+                            .Rows(0).Visible = False
+                        End If
+                        .ScrollBars = ScrollBars.Both
+                    End With
+                End If
+
+                'find the first visible item
+                For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+                    If drvRow.Visible = True Then
+                        drvRow.Selected = True
+                        Me.dgvMediaList.CurrentCell = drvRow.Cells(1)
+                        'set tmpTitle to title in list - used for searching IMDB
+                        Me.tmpTitle = drvRow.Cells(1).Value.ToString
+                        Exit For
+                    End If
+                Next
                 Me.SetFilterColors()
             Else
                 Me.ClearInfo()
