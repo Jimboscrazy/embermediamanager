@@ -142,6 +142,7 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.chkFilterDupe = New System.Windows.Forms.CheckBox
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -368,6 +369,7 @@ Partial Class frmMain
         'pnlFilter
         '
         Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilter.Controls.Add(Me.chkFilterDupe)
         Me.pnlFilter.Controls.Add(Me.rbFilterOr)
         Me.pnlFilter.Controls.Add(Me.rbFilterAnd)
         Me.pnlFilter.Controls.Add(Me.chkFilterMark)
@@ -404,7 +406,7 @@ Partial Class frmMain
         'chkFilterMark
         '
         Me.chkFilterMark.AutoSize = True
-        Me.chkFilterMark.Location = New System.Drawing.Point(6, 42)
+        Me.chkFilterMark.Location = New System.Drawing.Point(136, 41)
         Me.chkFilterMark.Name = "chkFilterMark"
         Me.chkFilterMark.Size = New System.Drawing.Size(99, 17)
         Me.chkFilterMark.TabIndex = 23
@@ -429,7 +431,7 @@ Partial Class frmMain
         'chkFilterNew
         '
         Me.chkFilterNew.AutoSize = True
-        Me.chkFilterNew.Location = New System.Drawing.Point(6, 23)
+        Me.chkFilterNew.Location = New System.Drawing.Point(136, 23)
         Me.chkFilterNew.Name = "chkFilterNew"
         Me.chkFilterNew.Size = New System.Drawing.Size(85, 17)
         Me.chkFilterNew.TabIndex = 1
@@ -1408,6 +1410,16 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
+        'chkFilterDupe
+        '
+        Me.chkFilterDupe.AutoSize = True
+        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 23)
+        Me.chkFilterDupe.Name = "chkFilterDupe"
+        Me.chkFilterDupe.Size = New System.Drawing.Size(108, 17)
+        Me.chkFilterDupe.TabIndex = 26
+        Me.chkFilterDupe.Text = "Duplicate Movies"
+        Me.chkFilterDupe.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1594,4 +1606,5 @@ Partial Class frmMain
     Friend WithEvents chkFilterMark As System.Windows.Forms.CheckBox
     Friend WithEvents rbFilterOr As System.Windows.Forms.RadioButton
     Friend WithEvents rbFilterAnd As System.Windows.Forms.RadioButton
+    Friend WithEvents chkFilterDupe As System.Windows.Forms.CheckBox
 End Class
