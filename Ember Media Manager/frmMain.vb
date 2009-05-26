@@ -435,8 +435,10 @@ Public Class frmMain
 
             Select Case dEditMovie.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
-                    'reset title in list just in case user changed it
-                    Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+                    'reset title in list just in case user changed it (only if Use Title From NFO is selected)
+                    If Master.eSettings.UseNameFromNfo Then
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+                    End If
                     Me.dgvMediaList.SelectedRows(0).Cells(8).Value = Master.currMark
                     Me.SetFilterColors()
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
@@ -621,8 +623,10 @@ Public Class frmMain
             Dim dEditMovie As New dlgEditMovie
             Select dEditMovie.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
-                    'reset title in list just in case user changed it
-                    Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+                    'reset title in list just in case user changed it (only if Use Title From NFO is selected)
+                    If Master.eSettings.UseNameFromNfo Then
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+                    End If
                     Me.dgvMediaList.SelectedRows(0).Cells(8).Value = Master.currMark
                     Me.SetFilterColors()
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
@@ -2849,8 +2853,10 @@ Public Class frmMain
 
                 Dim dEditMovie As New dlgEditMovie
                 If dEditMovie.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    'reset title in list just in case user changed it
-                    Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+                    'reset title in list just in case user changed it (only if Use Title From NFO is selected)
+                    If Master.eSettings.UseNameFromNfo Then
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+                    End If
 
                     Me.dgvMediaList.SelectedRows(0).Cells(8).Value = Master.currMark
                     Me.SetFilterColors()
