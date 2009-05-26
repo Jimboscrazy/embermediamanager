@@ -56,7 +56,7 @@ Namespace MPDB
         Public Function GetMPDBPosters(ByVal imdbID As String) As List(Of Media.Image)
             Dim Html As String
             Dim alPosters As New List(Of Media.Image)
-            Dim sUrl As String = String.Concat("http://www.movieposterdb.com/movie/", imdbID.Replace("tt", String.Empty))
+            Dim sUrl As String = String.Concat("http://www.movieposterdb.com/movie/", imdbID)
             Dim Wc As New WebClient
 
             Try
@@ -78,7 +78,7 @@ Namespace MPDB
                     bwMPDB.ReportProgress(1)
                 End If
 
-                If Regex.IsMatch(Html, String.Concat("http://www.imdb.com/title/", imdbID), RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline) Then
+                If Regex.IsMatch(Html, String.Concat("http://www.imdb.com/title/tt", imdbID), RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline) Then
                     Dim mcPoster As MatchCollection = Regex.Matches(Html, "http://www.movieposterdb.com/posters/[0-9_](.*?)/[0-9](.*?)/[0-9](.*?)/[a-z0-9_](.*?).jpg")
 
                     Dim PosterURL As String = String.Empty

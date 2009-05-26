@@ -59,7 +59,7 @@ Namespace TMDB
         Public Function GetTMDBImages(ByVal imdbID As String, ByVal sType As String) As List(Of Media.Image)
             Dim alPosters As New List(Of Media.Image)
             Dim xmlTMDB As New XmlDocument
-            Dim Url As String = String.Format("{0}{1}&api_key={2}", "http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=", imdbID, APIKey)
+            Dim Url As String = String.Format("http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=tt{0}&api_key={1}", imdbID, APIKey)
             Dim ApiXML As String
             Dim Wc As New WebClient
 
@@ -101,7 +101,7 @@ Namespace TMDB
                     If Not tmdbNode(0).InnerText = "Your query didn't return any results." Then
                         Dim movieID As String = tmdbNode(0).ChildNodes(5).InnerText
 
-                        xmlTMDB.Load(String.Format("{0}{1}&api_key={2}", "http://api.themoviedb.org/2.0/Movie.getInfo?id=", movieID, APIKey))
+                        xmlTMDB.Load(String.Format("http://api.themoviedb.org/2.0/Movie.getInfo?id={0}&api_key={1}", movieID, APIKey))
 
                         If bwTMDB.WorkerReportsProgress Then
                             bwTMDB.ReportProgress(2)

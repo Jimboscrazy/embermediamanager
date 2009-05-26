@@ -209,8 +209,7 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        If Not Strings.Left(Me.txtIMDBID.Text.ToString, 2) = "tt" AndAlso IsNumeric(Me.txtIMDBID.Text) Then Me.txtIMDBID.Text = Me.txtIMDBID.Text.ToString & "tt"
-        If Regex.IsMatch(Me.txtIMDBID.Text, "tt\d\d\d\d\d\d\d") Then
+        If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
             IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text, Master.tmpMovie)
         Else
             MsgBox("The ID you entered is not a valid IMDB ID", MsgBoxStyle.Exclamation, "Invalid Entry")
