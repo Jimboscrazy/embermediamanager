@@ -47,6 +47,7 @@ Partial Class frmMain
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.pnlFilter = New System.Windows.Forms.Panel
+        Me.chkFilterDupe = New System.Windows.Forms.CheckBox
         Me.rbFilterOr = New System.Windows.Forms.RadioButton
         Me.rbFilterAnd = New System.Windows.Forms.RadioButton
         Me.chkFilterMark = New System.Windows.Forms.CheckBox
@@ -130,7 +131,6 @@ Partial Class frmMain
         Me.UpdateAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripButton
         Me.tsbEdit = New System.Windows.Forms.ToolStripButton
         Me.tsbRescrape = New System.Windows.Forms.ToolStripDropDownButton
         Me.mnuRescrapeAuto = New System.Windows.Forms.ToolStripMenuItem
@@ -142,7 +142,7 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
-        Me.chkFilterDupe = New System.Windows.Forms.CheckBox
+        Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripSplitButton
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -380,6 +380,16 @@ Partial Class frmMain
         Me.pnlFilter.Name = "pnlFilter"
         Me.pnlFilter.Size = New System.Drawing.Size(308, 61)
         Me.pnlFilter.TabIndex = 12
+        '
+        'chkFilterDupe
+        '
+        Me.chkFilterDupe.AutoSize = True
+        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 23)
+        Me.chkFilterDupe.Name = "chkFilterDupe"
+        Me.chkFilterDupe.Size = New System.Drawing.Size(108, 17)
+        Me.chkFilterDupe.TabIndex = 26
+        Me.chkFilterDupe.Text = "Duplicate Movies"
+        Me.chkFilterDupe.UseVisualStyleBackColor = True
         '
         'rbFilterOr
         '
@@ -1325,15 +1335,6 @@ Partial Class frmMain
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
         Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
-        'tsbUpdateXBMC
-        '
-        Me.tsbUpdateXBMC.Enabled = False
-        Me.tsbUpdateXBMC.Image = CType(resources.GetObject("tsbUpdateXBMC.Image"), System.Drawing.Image)
-        Me.tsbUpdateXBMC.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbUpdateXBMC.Name = "tsbUpdateXBMC"
-        Me.tsbUpdateXBMC.Size = New System.Drawing.Size(134, 22)
-        Me.tsbUpdateXBMC.Text = "Begin XBMC Update"
-        '
         'tsbEdit
         '
         Me.tsbEdit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -1410,15 +1411,14 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
-        'chkFilterDupe
+        'tsbUpdateXBMC
         '
-        Me.chkFilterDupe.AutoSize = True
-        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 23)
-        Me.chkFilterDupe.Name = "chkFilterDupe"
-        Me.chkFilterDupe.Size = New System.Drawing.Size(108, 17)
-        Me.chkFilterDupe.TabIndex = 26
-        Me.chkFilterDupe.Text = "Duplicate Movies"
-        Me.chkFilterDupe.UseVisualStyleBackColor = True
+        Me.tsbUpdateXBMC.Enabled = False
+        Me.tsbUpdateXBMC.Image = CType(resources.GetObject("tsbUpdateXBMC.Image"), System.Drawing.Image)
+        Me.tsbUpdateXBMC.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbUpdateXBMC.Name = "tsbUpdateXBMC"
+        Me.tsbUpdateXBMC.Size = New System.Drawing.Size(146, 22)
+        Me.tsbUpdateXBMC.Text = "Begin XBMC Update"
         '
         'frmMain
         '
@@ -1592,7 +1592,6 @@ Partial Class frmMain
     Friend WithEvents tmrSearchWait As System.Windows.Forms.Timer
     Friend WithEvents tmrSearch As System.Windows.Forms.Timer
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents tsbUpdateXBMC As System.Windows.Forms.ToolStripButton
     Friend WithEvents pnlNoInfo As System.Windows.Forms.Panel
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents Label1 As System.Windows.Forms.Label
@@ -1607,4 +1606,5 @@ Partial Class frmMain
     Friend WithEvents rbFilterOr As System.Windows.Forms.RadioButton
     Friend WithEvents rbFilterAnd As System.Windows.Forms.RadioButton
     Friend WithEvents chkFilterDupe As System.Windows.Forms.CheckBox
+    Friend WithEvents tsbUpdateXBMC As System.Windows.Forms.ToolStripSplitButton
 End Class

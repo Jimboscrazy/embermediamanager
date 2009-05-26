@@ -179,9 +179,7 @@ Public Class frmMain
 
             dSettings.Dispose()
 
-            If Not String.IsNullOrEmpty(Master.eSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPort) Then
-                Me.tsbUpdateXBMC.Enabled = True
-            End If
+            Me.SetupXComMenu()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -217,11 +215,7 @@ Public Class frmMain
             Me.SetColors()
             Me.SetCleanFolders()
 
-            If Not String.IsNullOrEmpty(Master.eSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPort) Then
-                Me.tsbUpdateXBMC.Enabled = True
-            Else
-                Me.tsbUpdateXBMC.Enabled = False
-            End If
+            Me.SetupXComMenu()
 
             Me.pnlInfoPanel.Height = 25
             Me.ClearInfo()
@@ -816,25 +810,11 @@ Public Class frmMain
         End Try
         Me.tmrSearch.Enabled = False
     End Sub
-
-    Private Sub tsbUpdateXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbUpdateXBMC.Click
+    Private Sub tsbUpdateXBMC_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbUpdateXBMC.ButtonClick
         Try
-            If Not String.IsNullOrEmpty(Master.eSettings.XBMCIP) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPort) Then
-                Dim Wr As HttpWebRequest = HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", Master.eSettings.XBMCIP, Master.eSettings.XBMCPort))
-                Wr.Method = "GET"
-                Wr.Timeout = 2500
-                If Not String.IsNullOrEmpty(Master.eSettings.XBMCUsername) AndAlso Not String.IsNullOrEmpty(Master.eSettings.XBMCPassword) Then
-                    Wr.Credentials = New NetworkCredential(Master.eSettings.XBMCUsername, Master.eSettings.XBMCPassword)
-                End If
-                Dim Wres As HttpWebResponse = Wr.GetResponse
-                Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
-                If Not Sr.Contains("OK") Then
-                    MsgBox("There was a problem communicating with XBMC" & vbNewLine & "Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings.", MsgBoxStyle.Exclamation, "Unable to Start XBMC Update")
-                End If
-                Wres.Close()
-                Wres = Nothing
-                Wr = Nothing
-            End If
+            For Each xCom As emmSettings.XBMCCom In Master.eSettings.XBMCComs
+                Me.DoXCom(xCom)
+            Next
         Catch
         End Try
     End Sub
@@ -3152,6 +3132,47 @@ Public Class frmMain
                 Me.ClearInfo()
             End If
         End If
+    End Sub
+
+    Private Sub SetupXComMenu()
+        If Master.eSettings.XBMCComs.Count > 0 Then
+            Me.tsbUpdateXBMC.Enabled = True
+            tsbUpdateXBMC.DropDownItems.Clear()
+            For Each xCom As emmSettings.XBMCCom In Master.eSettings.XBMCComs
+                tsbUpdateXBMC.DropDownItems.Add(String.Concat("Update ", xCom.Name, " Only"), Nothing, New System.EventHandler(AddressOf XComSubClick))
+            Next
+        Else
+            Me.tsbUpdateXBMC.Enabled = False
+        End If
+    End Sub
+
+    Private Sub XComSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim xComName As String = sender.ToString.Replace("Update ", String.Empty).Replace(" Only", String.Empty).Trim
+        Dim xCom = From x As emmSettings.XBMCCom In Master.eSettings.XBMCComs Where x.Name = xComName
+        If xCom.Count > 0 Then
+            DoXCom(xCom(0))
+        End If
+    End Sub
+
+    Private Sub DoXCom(ByVal xCom As emmSettings.XBMCCom)
+        Try
+            Dim Wr As HttpWebRequest = HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port))
+            Wr.Method = "GET"
+            Wr.Timeout = 2500
+            If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
+                Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
+            End If
+            Using Wres As HttpWebResponse = Wr.GetResponse
+                Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
+                If Not Sr.Contains("OK") Then
+                    MsgBox(String.Concat("There was a problem communicating with ", xCom.Name, vbNewLine, "Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), MsgBoxStyle.Exclamation, String.Concat("Unable to Start XBMC Update for ", xCom.Name))
+                End If
+                Wres.Close()
+            End Using
+            Wr = Nothing
+        Catch
+            MsgBox(String.Concat("There was a problem communicating with ", xCom.Name, vbNewLine, "Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), MsgBoxStyle.Exclamation, String.Concat("Unable to Start XBMC Update for ", xCom.Name))
+        End Try
     End Sub
 #End Region
 

@@ -26,6 +26,8 @@ Public Class dlgSettings
 
 #Region "Form/Controls"
 
+    Private XComs As List(Of emmSettings.XBMCCom)
+
     ' ########################################
     ' ############ FORMS/CONTROLS ############
     ' ########################################
@@ -184,10 +186,19 @@ Public Class dlgSettings
 
     Private Sub frmSettings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
+            tvSettings.ExpandAll()
+            tvSettings.SelectedNode = tvSettings.Nodes(0)
+
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Dim g As Graphics = Graphics.FromImage(iBackground)
             g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, 20), pnlTop.ClientRectangle)
             Me.pnlTop.BackgroundImage = iBackground
+            g.Dispose()
+
+            iBackground = New Bitmap(Me.pnlCurrent.Width, Me.pnlCurrent.Height)
+            g = Graphics.FromImage(iBackground)
+            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlCurrent.ClientRectangle, Color.SteelBlue, Color.FromKnownColor(KnownColor.Control), 20), pnlCurrent.ClientRectangle)
+            Me.pnlCurrent.BackgroundImage = iBackground
             g.Dispose()
 
             Me.FillSettings()
@@ -583,6 +594,124 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub tvSettings_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvSettings.AfterSelect
+        lblCurrent.Text = tvSettings.SelectedNode.Text
+
+        pnlGeneral.Visible = False
+        pnlXBMCCom.Visible = False
+        pnlMovies.Visible = False
+        pnlScraper.Visible = False
+        Select Case tvSettings.SelectedNode.Name
+            Case "nGeneral"
+                pnlGeneral.Visible = True
+            Case "nXBMCCom"
+                pnlXBMCCom.Visible = True
+            Case "nMovies"
+                pnlMovies.Visible = True
+            Case "nScraper"
+                pnlScraper.Visible = True
+        End Select
+    End Sub
+
+    Private Sub lbXBMCCom_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbXBMCCom.SelectedIndexChanged
+        Dim iSel As Integer = Me.lbXBMCCom.SelectedIndex
+
+        Me.txtName.Text = Me.XComs.Item(iSel).Name
+        Me.txtIP.Text = Me.XComs.Item(iSel).IP
+        Me.txtPort.Text = Me.XComs.Item(iSel).Port
+        Me.txtUsername.Text = Me.XComs.Item(iSel).Username
+        Me.txtPassword.Text = Me.XComs.Item(iSel).Password
+
+        btnEditCom.Enabled = True
+    End Sub
+
+    Private Sub btnAddCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddCom.Click
+        If Not String.IsNullOrEmpty(txtName.Text) Then
+            If Not Me.lbXBMCCom.Items.Contains(txtName.Text) Then
+                If Not String.IsNullOrEmpty(txtIP.Text) Then
+                    If Not String.IsNullOrEmpty(txtPort.Text) Then
+                        XComs.Add(New emmSettings.XBMCCom With {.Name = txtName.Text, .IP = txtIP.Text, .Port = txtPort.Text, .Username = txtUsername.Text, .Password = txtPassword.Text})
+                        Me.LoadXComs()
+
+                        Me.txtName.Text = String.Empty
+                        Me.txtIP.Text = String.Empty
+                        Me.txtPort.Text = String.Empty
+                        Me.txtUsername.Text = String.Empty
+                        Me.txtPassword.Text = String.Empty
+
+                        Me.btnEditCom.Enabled = False
+                        Me.btnApply.Enabled = True
+                    Else
+                        MsgBox("You must enter a port for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Port")
+                        txtPort.Focus()
+                    End If
+                Else
+                    MsgBox("You must enter an IP for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter an IP")
+                    txtIP.Focus()
+                End If
+            Else
+                MsgBox("The name you are attempting to use for this XBMC installation is already in use. Please choose another.", MsgBoxStyle.Exclamation, "Each name must be unique")
+                txtName.Focus()
+            End If
+        Else
+            MsgBox("You must enter a name for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Unique Name")
+            txtName.Focus()
+        End If
+
+    End Sub
+
+    Private Sub btnEditCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditCom.Click
+        Dim iSel As Integer = Me.lbXBMCCom.SelectedIndex
+
+        If Not String.IsNullOrEmpty(txtName.Text) Then
+
+            For i As Integer = 0 To lbXBMCCom.Items.Count - 1
+                If Not iSel = i AndAlso lbXBMCCom.Items(i).ToString = Me.txtName.Text Then
+                    MsgBox("The name you are attempting to use for this XBMC installation is already in use. Please choose another.", MsgBoxStyle.Exclamation, "Each name must be unique")
+                    txtName.Focus()
+                    Exit Sub
+                End If
+            Next
+
+            If Not String.IsNullOrEmpty(txtIP.Text) Then
+                If Not String.IsNullOrEmpty(txtPort.Text) Then
+
+                    Me.XComs.Item(iSel).Name = Me.txtName.Text
+                    Me.XComs.Item(iSel).IP = Me.txtIP.Text
+                    Me.XComs.Item(iSel).Port = Me.txtPort.Text
+                    Me.XComs.Item(iSel).Username = Me.txtUsername.Text
+                    Me.XComs.Item(iSel).Password = Me.txtPassword.Text
+
+                    btnEditCom.Enabled = False
+
+                    Me.txtName.Text = String.Empty
+                    Me.txtIP.Text = String.Empty
+                    Me.txtPort.Text = String.Empty
+                    Me.txtUsername.Text = String.Empty
+                    Me.txtPassword.Text = String.Empty
+
+                    Me.btnApply.Enabled = True
+                Else
+                    MsgBox("You must enter a port for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Port")
+                    txtPort.Focus()
+                End If
+            Else
+                MsgBox("You must enter an IP for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter an IP")
+                txtIP.Focus()
+            End If
+
+        Else
+            MsgBox("You must enter a name for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Unique Name")
+            txtName.Focus()
+        End If
+
+    End Sub
+
+    Private Sub btnRemoveCom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveCom.Click
+        Me.XComs.RemoveAt(lbXBMCCom.SelectedIndex)
+        Me.LoadXComs()
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -679,10 +808,7 @@ Public Class dlgSettings
             Master.eSettings.LogErrors = Me.chkLogErrors.Checked
             Master.eSettings.ProperCase = Me.chkProperCase.Checked
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
-            Master.eSettings.XBMCIP = Me.txtIP.Text
-            Master.eSettings.XBMCPort = Me.txtPort.Text
-            Master.eSettings.XBMCUsername = Me.txtUsername.Text
-            Master.eSettings.XBMCPassword = Me.txtPassword.Text
+            Master.eSettings.XBMCComs = Me.XComs
 
             '######## MOVIES TAB ########
             Master.eSettings.MovieFolders.Clear()
@@ -785,10 +911,8 @@ Public Class dlgSettings
             Me.chkCleanDotFanartJPG.Checked = Master.eSettings.CleanDotFanartJPG
             Me.chkOverwriteNfo.Checked = Master.eSettings.OverwriteNfo
 
-            Me.txtIP.Text = Master.eSettings.XBMCIP
-            Me.txtPort.Text = Master.eSettings.XBMCPort
-            Me.txtUsername.Text = Master.eSettings.XBMCUsername
-            Me.txtPassword.Text = Master.eSettings.XBMCPassword
+            Me.XComs = Master.eSettings.XBMCComs
+            Me.LoadXComs()
 
             Me.chkLogErrors.Checked = Master.eSettings.LogErrors
             Me.chkProperCase.Checked = Master.eSettings.ProperCase
@@ -869,6 +993,12 @@ Public Class dlgSettings
         End Try
     End Sub
 
+    Private Sub LoadXComs()
+        Me.lbXBMCCom.Items.Clear()
+        For Each x As emmSettings.XBMCCom In Me.XComs
+            Me.lbXBMCCom.Items.Add(x.Name)
+        Next
+    End Sub
 #End Region '*** Routines/Functions
 
 End Class
