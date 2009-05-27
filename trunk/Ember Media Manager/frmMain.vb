@@ -2895,6 +2895,7 @@ Public Class frmMain
         Try
             Dim parPath As String = Directory.GetParent(sPath).FullName
             Dim tmpName As String = String.Empty
+            Dim tmpNameNoStack As String = String.Empty
             Dim hasNfo As Boolean = False
             Dim hasPoster As Boolean = False
             Dim hasFanart As Boolean = False
@@ -2904,11 +2905,14 @@ Public Class frmMain
                 tmpName = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name)
             Else
                 tmpName = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+                tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
             End If
 
             'fanart
-            If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "fanart.jpg")) OrElse _
-            File.Exists(Path.Combine(parPath, "video_ts-fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "video_ts.fanart.jpg")) Then
+            If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse _
+            File.Exists(String.Concat(tmpNameNoStack, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".fanart.jpg")) OrElse _
+            File.Exists(Path.Combine(parPath, "fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "video_ts-fanart.jpg")) OrElse _
+            File.Exists(Path.Combine(parPath, "video_ts.fanart.jpg")) Then
                 hasFanart = True
             End If
 
@@ -2917,12 +2921,13 @@ Public Class frmMain
                 File.Exists(Path.Combine(parPath, "poster.jpg")) OrElse File.Exists(Path.Combine(parPath, "folder.jpg")) OrElse _
                 File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(Path.Combine(parPath, "movie.tbn")) OrElse _
                 File.Exists(Path.Combine(parPath, "poster.tbn")) OrElse File.Exists(Path.Combine(parPath, "video_ts.tbn")) OrElse _
-                File.Exists(Path.Combine(parPath, "video_ts.jpg")) Then
+                File.Exists(Path.Combine(parPath, "video_ts.jpg")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".jpg")) OrElse _
+                File.Exists(String.Concat(tmpNameNoStack, ".tbn")) Then
                 hasPoster = True
             End If
 
             'nfo
-            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(Path.Combine(parPath, "movie.nfo")) OrElse _
+            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".nfo")) OrElse File.Exists(Path.Combine(parPath, "movie.nfo")) OrElse _
                 File.Exists(Path.Combine(parPath, "video_ts.nfo")) Then
                 hasNfo = True
             End If
@@ -2930,7 +2935,8 @@ Public Class frmMain
             Dim sExt() As String = Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v")
 
             For Each t As String In sExt
-                If File.Exists(String.Concat(tmpName, "-trailer", t)) OrElse File.Exists(String.Concat(tmpName, "[trailer]", t)) Then
+                If File.Exists(String.Concat(tmpName, "-trailer", t)) OrElse File.Exists(String.Concat(tmpName, "[trailer]", t)) OrElse _
+                File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) OrElse File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
                     hasTrailer = True
                     Exit For
                 End If
