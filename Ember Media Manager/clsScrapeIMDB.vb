@@ -304,12 +304,14 @@ mResult:
                 Dim ofdbTitle As String = String.Empty
                 Dim ofdbOutline As String = String.Empty
                 Dim ofdbPlot As String = String.Empty
+                Dim ofdbGenre As String = String.Empty
 
-                If Master.eSettings.UseOFDBTitle OrElse Master.eSettings.UseOFDBOutline OrElse Master.eSettings.UseOFDBPlot Then
+                If Master.eSettings.UseOFDBTitle OrElse Master.eSettings.UseOFDBOutline OrElse Master.eSettings.UseOFDBPlot OrElse Master.eSettings.UseOFDBGenre Then
                     Dim OFDBScrape As New OFDB(strID, IMDBMovie)
                     If Master.eSettings.UseOFDBTitle Then ofdbTitle = OFDBScrape.Title
                     If Master.eSettings.UseOFDBOutline Then ofdbOutline = OFDBScrape.Outline
                     If Master.eSettings.UseOFDBPlot Then ofdbPlot = OFDBScrape.Plot
+                    If Master.eSettings.UseOFDBGenre Then ofdbGenre = OFDBScrape.Genre
                 End If
 
                 Dim Url As String = String.Concat("http://www.imdb.com/title/tt", strID, _
@@ -502,18 +504,25 @@ mResult:
 
 
                 'Get genres of the movie
-                D = 0 : W = 0
-                D = Html.IndexOf("<h5>Genre:</h5>")
-                'Check if doesnt find genres
-                If D > 0 Then
-                    W = Html.IndexOf("</div>", D)
+                If Not String.IsNullOrEmpty(ofdbGenre) Then
+                    IMDBMovie.Genre = ofdbGenre
+                Else
+                    D = 0 : W = 0
+                    D = Html.IndexOf("<h5>Genre:</h5>")
+                    'Check if doesnt find genres
+                    If D > 0 Then
+                        W = Html.IndexOf("</div>", D)
 
-                    Dim rGenres As MatchCollection = Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN)
+                        If W > 0 Then
+                            Dim rGenres As MatchCollection = Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN)
 
-                    Dim Gen = From M As Match In rGenres _
-                              Select N = M.Groups("name").ToString Where Not N.Contains("more")
-
-                    IMDBMovie.Genre = Strings.Join(Gen.ToArray, " / ").Trim
+                            Dim Gen = From M As Match In rGenres _
+                                      Select N = M.Groups("name").ToString Where Not N.Contains("more")
+                            If Gen.Count > 0 Then
+                                IMDBMovie.Genre = Strings.Join(Gen.ToArray, " / ").Trim
+                            End If
+                        End If
+                    End If
                 End If
 
                 If bwIMDB.WorkerReportsProgress Then

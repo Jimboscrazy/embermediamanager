@@ -177,6 +177,7 @@ Partial Class dlgSettings
         Me.lblCurrent = New System.Windows.Forms.Label
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.chkOFDBGenre = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -1110,12 +1111,13 @@ Partial Class dlgSettings
         '
         'GroupBox15
         '
+        Me.GroupBox15.Controls.Add(Me.chkOFDBGenre)
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
         Me.GroupBox15.Location = New System.Drawing.Point(418, 92)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(156, 69)
+        Me.GroupBox15.Size = New System.Drawing.Size(156, 85)
         Me.GroupBox15.TabIndex = 60
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "OFDB"
@@ -1782,6 +1784,16 @@ Partial Class dlgSettings
         Me.Panel1.Size = New System.Drawing.Size(221, 25)
         Me.Panel1.TabIndex = 65
         '
+        'chkOFDBGenre
+        '
+        Me.chkOFDBGenre.AutoSize = True
+        Me.chkOFDBGenre.Location = New System.Drawing.Point(6, 66)
+        Me.chkOFDBGenre.Name = "chkOFDBGenre"
+        Me.chkOFDBGenre.Size = New System.Drawing.Size(109, 17)
+        Me.chkOFDBGenre.TabIndex = 3
+        Me.chkOFDBGenre.Text = "Use OFDB Genre"
+        Me.chkOFDBGenre.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -1796,10 +1808,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2001,4 +2013,5 @@ Partial Class dlgSettings
     Friend WithEvents btnRemoveCom As System.Windows.Forms.Button
     Friend WithEvents lbXBMCCom As System.Windows.Forms.ListBox
     Friend WithEvents btnEditCom As System.Windows.Forms.Button
+    Friend WithEvents chkOFDBGenre As System.Windows.Forms.CheckBox
 End Class
