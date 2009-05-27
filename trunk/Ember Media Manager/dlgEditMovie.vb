@@ -877,7 +877,7 @@ Public Class dlgEditMovie
     Private Sub lvThumbs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThumbs.SelectedIndexChanged
         If lvThumbs.SelectedIndices.Count > 0 Then
             Try
-                pbExtraThumbs.Image = Thumbs.Item(lvThumbs.SelectedIndices(0)).Image
+                pbExtraThumbs.Image = Thumbs.Item(lvThumbs.SelectedItems(0).Tag).Image
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
@@ -939,6 +939,7 @@ Public Class dlgEditMovie
         Try
             DeleteList.Add(lvThumbs.SelectedItems(0).Name)
             lvThumbs.Items.Remove(lvThumbs.SelectedItems(0))
+            pbExtraThumbs.Image = Nothing
             RenumberThumbs()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -958,9 +959,11 @@ Public Class dlgEditMovie
 
     Private Sub bwThumbs_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwThumbs.RunWorkerCompleted
         Try
+            Dim lItem As ListViewItem
             If Thumbs.Count > 0 Then
                 For Each thumb As ExtraThumbs In Thumbs
-                    lvThumbs.Items.Add(thumb.Name, String.Concat("  ", CStr(thumb.Index + 1)), thumb.Name)
+                    lItem = lvThumbs.Items.Add(thumb.Name, String.Concat("  ", CStr(thumb.Index + 1)), thumb.Name)
+                    lItem.Tag = thumb.Index
                 Next
             End If
         Catch ex As Exception
