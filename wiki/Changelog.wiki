@@ -9,7 +9,7 @@
  * Fix: Extrathumbs manager displaying wrong image when items have been rearranged
  * Fix: Updaters not finding ANY posters if the preferred size does not exist
  * Fix: "Use Folder Name" not working properly with VIDEO_TS movies
- * Fix/Change: Load files with and without stacking markers, but only save files with full filename (if <movie> type files are selected in settings, of course)
+ * Fix/Change: Load files with and without stacking markers, but only save files with full filename (if "moviename" type files are selected in settings, of course)
  * Change: Tweaks to search results dialog
  * Change: Re-enable interface if "Sort Files" is selected, but no file-type sources exist
  * Change: Warning message/confirmation before running "Clean Files" and "Sort Folders"
