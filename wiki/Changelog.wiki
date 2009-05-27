@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r164:*
  * Feature: List filters - new, marked, duplicate
  * Feature: Option to scan folders recursively
  * Feature: Option to only scrape actors with images
