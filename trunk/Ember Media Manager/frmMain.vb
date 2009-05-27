@@ -2742,7 +2742,7 @@ Public Class frmMain
                     End If
                 Case Master.ScrapeType.CleanFolders
                     Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount
-                    Me.tslLoading.Text = "Cleaning Folders:"
+                    Me.tslLoading.Text = "Cleaning Files:"
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
