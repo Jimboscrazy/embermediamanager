@@ -155,7 +155,7 @@ Public Class Images
 
             Else
                 Dim tPath = String.Empty
-                Dim tmpName As String = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
+                Dim tmpName As String = Path.GetFileNameWithoutExtension(sPath)
                 pPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
                 If Master.eSettings.MovieTBN AndAlso Not isFile Then
@@ -235,7 +235,7 @@ Public Class Images
                     Save(fPath)
                 End If
             Else
-                Dim tmpName As String = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
+                Dim tmpName As String = Path.GetFileNameWithoutExtension(sPath)
                 fPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
                 If Master.eSettings.FanartJPG AndAlso Not isFile Then
@@ -672,14 +672,21 @@ foundIT:
                 Dim tmpName As String = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
                 fPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
+                Dim tmpNameNoStack As String = Path.GetFileNameWithoutExtension(sPath)
+                Dim fPathNoStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack)
+
                 If Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(fPath, "-fanart.jpg")) Then
-                    Return String.Concat(fPath, "-fanart.jpg")
+                    Return String.Concat(fPathNoStack, "-fanart.jpg")
+                ElseIf Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(fPathNoStack, "-fanart.jpg")) Then
+                    Return String.Concat(fPathNoStack, "-fanart.jpg")
                 ElseIf Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts-fanart.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts-fanart.jpg")
                 ElseIf Not isFile AndAlso Master.eSettings.FanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")
                 ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(fPath, ".fanart.jpg")) Then
                     Return String.Concat(fPath, ".fanart.jpg")
+                ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(fPathNoStack, ".fanart.jpg")) Then
+                    Return String.Concat(fPathNoStack, ".fanart.jpg")
                 ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.fanart.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.fanart.jpg")
                 Else
@@ -713,16 +720,24 @@ foundIT:
             Else
                 Dim tmpName As String = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
                 pPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
+
+                Dim tmpNameNoStack As String = Path.GetFileNameWithoutExtension(sPath)
+                Dim pPathNoStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack)
+
                 If Not isFile AndAlso Master.eSettings.MovieTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")
                 ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(pPath, ".tbn")) Then
                     Return String.Concat(pPath, ".tbn")
+                ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(pPathNoStack, ".tbn")) Then
+                    Return String.Concat(pPathNoStack, ".tbn")
                 ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.tbn")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.tbn")
                 ElseIf Not isFile AndAlso Master.eSettings.MovieJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "movie.jpg")
                 ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(pPath, ".jpg")) Then
                     Return String.Concat(pPath, ".jpg")
+                ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(pPathNoStack, ".jpg")) Then
+                    Return String.Concat(pPathNoStack, ".jpg")
                 ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.jpg")
                 ElseIf Not isFile AndAlso Master.eSettings.PosterTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "poster.tbn")) Then
