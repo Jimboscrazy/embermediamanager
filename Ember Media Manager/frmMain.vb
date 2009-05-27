@@ -839,7 +839,7 @@ Public Class frmMain
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.tsbEdit.Enabled = False
-            Me.tsbRescrape.Enabled = False
+            Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
             Me.tslLoading.Text = "Sorting Files:"
@@ -869,7 +869,7 @@ Public Class frmMain
                 Me.tsbAutoPilot.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
                 Me.tsbEdit.Enabled = True
-                Me.tsbRescrape.Enabled = True
+                Me.mnuMediaList.Enabled = True
                 Me.tabsMain.Enabled = True
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
                 Me.tslLoading.Text = "Sorting Files:"
@@ -1033,7 +1033,7 @@ Public Class frmMain
                     Me.tsbRefreshMedia.Enabled = True
                     Me.tsbAutoPilot.Enabled = False
                     Me.tsbEdit.Enabled = False
-                    Me.tsbRescrape.Enabled = False
+                    Me.mnuMediaList.Enabled = False
 
                 Else
                     Me.tslLoading.Text = "Loading Media:"
@@ -1289,12 +1289,12 @@ Public Class frmMain
 
                     .tsbAutoPilot.Enabled = True
                     .tsbEdit.Enabled = True
-                    .tsbRescrape.Enabled = True
+                    .mnuMediaList.Enabled = True
                 End With
             Else
                 Me.tsbAutoPilot.Enabled = False
                 Me.tsbEdit.Enabled = False
-                Me.tsbRescrape.Enabled = False
+                Me.mnuMediaList.Enabled = False
                 Me.tslStatus.Text = String.Empty
             End If
 
@@ -1372,7 +1372,7 @@ Public Class frmMain
             Me.tsbRefreshMedia.Enabled = True
             If Me.dgvMediaList.Rows.Count > 0 Then
                 Me.tsbAutoPilot.Enabled = True
-                Me.tsbRescrape.Enabled = True
+                Me.mnuMediaList.Enabled = True
                 Me.tsbEdit.Enabled = True
             End If
         End If
@@ -1491,7 +1491,7 @@ Public Class frmMain
             If Not bwScraper.IsBusy Then
                 Me.tsbAutoPilot.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
-                Me.tsbRescrape.Enabled = True
+                Me.mnuMediaList.Enabled = True
                 Me.tsbEdit.Enabled = True
                 Me.tabsMain.Enabled = True
                 Me.EnableFilters(True)
@@ -2046,7 +2046,7 @@ Public Class frmMain
                 Me.tsbAutoPilot.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
                 Me.tsbEdit.Enabled = True
-                Me.tsbRescrape.Enabled = True
+                Me.mnuMediaList.Enabled = True
                 Me.tabsMain.Enabled = True
                 Me.EnableFilters(True)
         End Select
@@ -2116,7 +2116,7 @@ Public Class frmMain
                 Me.tsbAutoPilot.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
                 Me.tsbEdit.Enabled = True
-                Me.tsbRescrape.Enabled = True
+                Me.mnuMediaList.Enabled = True
                 Me.tabsMain.Enabled = True
             End If
         End If
@@ -2285,7 +2285,7 @@ Public Class frmMain
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.tsbEdit.Enabled = False
-            Me.tsbRescrape.Enabled = False
+            Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
             Me.lblMediaCount.Visible = False
 
@@ -2312,7 +2312,7 @@ Public Class frmMain
         Try
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
-            Me.tsbRescrape.Enabled = False
+            Me.mnuMediaList.Enabled = False
             Me.tsbEdit.Enabled = False
             Me.tabsMain.Enabled = False
             Me.pnlNoInfo.Visible = False
@@ -2683,7 +2683,7 @@ Public Class frmMain
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.tsbEdit.Enabled = False
-            Me.tsbRescrape.Enabled = False
+            Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.EnableFilters(False)
@@ -2781,7 +2781,7 @@ Public Class frmMain
                             Me.tsbAutoPilot.Enabled = True
                             Me.tsbRefreshMedia.Enabled = True
                             Me.tsbEdit.Enabled = True
-                            Me.tsbRescrape.Enabled = True
+                            Me.mnuMediaList.Enabled = True
                             Me.tabsMain.Enabled = True
                             Me.EnableFilters(True)
                         End If
@@ -2880,7 +2880,7 @@ Public Class frmMain
         Me.tsbAutoPilot.Enabled = True
         Me.tsbRefreshMedia.Enabled = True
         Me.tsbEdit.Enabled = True
-        Me.tsbRescrape.Enabled = True
+        Me.mnuMediaList.Enabled = True
         Me.tabsMain.Enabled = True
 
     End Sub
