@@ -28,6 +28,7 @@ Public Class OFDB
     Private _title As String
     Private _outline As String
     Private _plot As String
+    Private _genre As String
 
     Private OFDBMovie As Media.Movie
     Private imdbID As String
@@ -59,10 +60,20 @@ Public Class OFDB
         End Set
     End Property
 
+    Public Property Genre() As String
+        Get
+            Return _genre
+        End Get
+        Set(ByVal value As String)
+            _genre = value
+        End Set
+    End Property
+
     Private Sub Clear()
         _title = String.Empty
         _outline = String.Empty
         _plot = String.Empty
+        _genre = String.Empty
     End Sub
 
     Public Sub New(ByVal sID As String, ByRef mMovie As Media.Movie)
@@ -129,7 +140,7 @@ Public Class OFDB
                 MS = Nothing
 
                 If Not String.IsNullOrEmpty(Html) Then
-
+                    'title
                     If String.IsNullOrEmpty(OFDBMovie.Title) OrElse Not Master.eSettings.LockTitle Then
                         Dim OFDBTitle As String = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(Html, "<td width=""99\%""><h2><font face=""Arial,Helvetica,sans-serif"" size=""3""><b>([^<]+)</b></font></h2></td>").Groups(1).Value.ToString))
                         _title = OFDBTitle
@@ -149,6 +160,7 @@ Public Class OFDB
                     End If
 
                     'full plot
+                    D = 0 : W = 0
                     If String.IsNullOrEmpty(OFDBMovie.Plot) OrElse Not Master.eSettings.LockPlot Then
                         D = Html.IndexOf("<b>Inhalt:</b>")
                         If D > 0 Then
@@ -166,6 +178,23 @@ Public Class OFDB
                             End If
                         End If
                     End If
+
+                    'genre
+                    D = 0 : W = 0
+                    D = Html.IndexOf("class=""Normal"">Genre(s):</font></td>")
+                    If D > 0 Then
+                        W = Html.IndexOf("</table>", D)
+                        If W > 0 Then
+                            Dim rGenres As MatchCollection = Regex.Matches(Html.Substring(D, W - D), "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>")
+                            Dim Gen = From M As Match In rGenres _
+                                  Select N = M.Groups("name").ToString
+                            If Gen.Count > 0 Then
+                                _Genre = Strings.Join(Gen.ToArray, " / ").Trim
+                            End If
+                        End If
+                    End If
+
+
                 End If
             End If
         Catch ex As Exception

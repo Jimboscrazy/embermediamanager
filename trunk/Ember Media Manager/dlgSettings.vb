@@ -717,6 +717,10 @@ Public Class dlgSettings
         Me.LoadXComs()
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBGenre.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -871,6 +875,7 @@ Public Class dlgSettings
             Master.eSettings.UseOFDBTitle = Me.chkOFDBTitle.Checked
             Master.eSettings.UseOFDBOutline = Me.chkOFDBOutline.Checked
             Master.eSettings.UseOFDBPlot = Me.chkOFDBPlot.Checked
+            Master.eSettings.UseOFDBGenre = Me.chkOFDBGenre.Checked
             If Not String.IsNullOrEmpty(txtAutoThumbs.Text) AndAlso CInt(txtAutoThumbs.Text) > 0 Then
                 Master.eSettings.AutoThumbs = CInt(txtAutoThumbs.Text)
             Else
@@ -984,6 +989,7 @@ Public Class dlgSettings
             Me.chkOFDBTitle.Checked = Master.eSettings.UseOFDBTitle
             Me.chkOFDBOutline.Checked = Master.eSettings.UseOFDBOutline
             Me.chkOFDBPlot.Checked = Master.eSettings.UseOFDBPlot
+            Me.chkOFDBGenre.Checked = Master.eSettings.UseOFDBGenre
             If Master.eSettings.AutoThumbs > 0 Then
                 Me.chkAutoThumbs.Checked = True
                 Me.txtAutoThumbs.Text = Master.eSettings.AutoThumbs.ToString
