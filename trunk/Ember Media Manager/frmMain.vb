@@ -841,7 +841,6 @@ Public Class frmMain
         Me.tslLoading.Text = "Sorting Files:"
         Me.tslLoading.Visible = True
         Me.tspbLoading.Visible = True
-        Application.DoEvents()
 
         Select Case Me.loadType
             Case 2 'shows
@@ -863,6 +862,15 @@ Public Class frmMain
             Me.LoadMedia(1)
         Else
             MsgBox("You do not have any file-type sources to sort.", MsgBoxStyle.Information, "No Files To Sort")
+            Me.tsbAutoPilot.Enabled = True
+            Me.tsbRefreshMedia.Enabled = True
+            Me.tsbEdit.Enabled = True
+            Me.tsbRescrape.Enabled = True
+            Me.tabsMain.Enabled = True
+            Me.tspbLoading.Style = ProgressBarStyle.Marquee
+            Me.tslLoading.Text = "Sorting Files:"
+            Me.tslLoading.Visible = False
+            Me.tspbLoading.Visible = False
         End If
     End Sub
 
