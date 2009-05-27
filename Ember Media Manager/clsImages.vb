@@ -403,7 +403,6 @@ Public Class Images
                                 If Not IsNothing(tmpImage) Then
                                     Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
                                     If Not tmpSize = Master.eSettings.PreferredPosterSize Then
-                                        tmpImage = Nothing
                                         'cache the first result from each type in case the preferred size is not available
                                         Select Case tmpSize
                                             Case Master.PosterSize.Xlrg
@@ -427,6 +426,7 @@ Public Class Images
                                                     tmpIMPAW = tmpImage
                                                 End If
                                         End Select
+                                        tmpImage = Nothing
                                     Else
                                         'image found
                                         GoTo foundIT
@@ -450,7 +450,6 @@ Public Class Images
                                 If Not IsNothing(tmpImage) Then
                                     Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
                                     If Not tmpSize = Master.eSettings.PreferredPosterSize Then
-                                        tmpImage = Nothing
                                         'cache the first result from each type in case the preferred size is not available
                                         Select Case tmpSize
                                             Case Master.PosterSize.Xlrg
@@ -474,6 +473,7 @@ Public Class Images
                                                     tmpMPDBW = tmpImage
                                                 End If
                                         End Select
+                                        tmpImage = Nothing
                                     Else
                                         'image found
                                         GoTo foundIT
