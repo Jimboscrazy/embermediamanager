@@ -113,6 +113,7 @@ Partial Class dlgEditMovie
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
         Me.chkMark = New System.Windows.Forms.CheckBox
         Me.btnRescrape = New System.Windows.Forms.Button
+        Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -1015,13 +1016,25 @@ Partial Class dlgEditMovie
         '
         Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
         Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRescrape.Location = New System.Drawing.Point(366, 553)
+        Me.btnRescrape.Location = New System.Drawing.Point(286, 554)
         Me.btnRescrape.Name = "btnRescrape"
         Me.btnRescrape.Size = New System.Drawing.Size(122, 23)
         Me.btnRescrape.TabIndex = 58
         Me.btnRescrape.Text = "Re-scrape IMDB"
         Me.btnRescrape.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnRescrape.UseVisualStyleBackColor = True
+        '
+        'btnChangeMovie
+        '
+        Me.btnChangeMovie.Image = CType(resources.GetObject("btnChangeMovie.Image"), System.Drawing.Image)
+        Me.btnChangeMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnChangeMovie.Location = New System.Drawing.Point(414, 554)
+        Me.btnChangeMovie.Name = "btnChangeMovie"
+        Me.btnChangeMovie.Size = New System.Drawing.Size(122, 23)
+        Me.btnChangeMovie.TabIndex = 59
+        Me.btnChangeMovie.Text = "Change Movie"
+        Me.btnChangeMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnChangeMovie.UseVisualStyleBackColor = True
         '
         'dlgEditMovie
         '
@@ -1030,6 +1043,7 @@ Partial Class dlgEditMovie
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.Controls.Add(Me.btnChangeMovie)
         Me.Controls.Add(Me.btnRescrape)
         Me.Controls.Add(Me.chkMark)
         Me.Controls.Add(Me.TabControl1)
@@ -1160,5 +1174,6 @@ Partial Class dlgEditMovie
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtStudioTag As System.Windows.Forms.TextBox
     Friend WithEvents btnRescrape As System.Windows.Forms.Button
+    Friend WithEvents btnChangeMovie As System.Windows.Forms.Button
 
 End Class
