@@ -439,6 +439,8 @@ Public Class frmMain
                     Me.LoadInfo(Master.currPath, True, False, Master.isFile)
                 Case Windows.Forms.DialogResult.Retry
                     Me.ScrapeData(Master.ScrapeType.SingleScrape)
+                Case Windows.Forms.DialogResult.Abort
+                    Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
             End Select
 
             dEditMovie.Dispose()
@@ -456,9 +458,6 @@ Public Class frmMain
         If Me.dgvMediaList.Rows.Count > 0 Then
             Me.dgvMediaList.Rows(0).Selected = True
             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(1)
-
-            'set tmpTitle to title in list - used for searching IMDB
-            Me.tmpTitle = Me.dgvMediaList.Item(1, 0).Value.ToString
             Me.SetFilterColors()
         End If
 
@@ -627,29 +626,13 @@ Public Class frmMain
                     Me.LoadInfo(Master.currPath, True, False, Master.isFile)
                 Case Windows.Forms.DialogResult.Retry
                     Me.ScrapeData(Master.ScrapeType.SingleScrape)
+                Case Windows.Forms.DialogResult.Abort
+                    Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
             End Select
             dEditMovie.Dispose()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
-    Private Sub mnuRescrapeAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRescrapeAuto.Click
-
-        '//
-        ' Begin the process to scrape IMDB for data
-        '\\
-
-        Me.ScrapeData(Master.ScrapeType.SingleScrape)
-    End Sub
-
-    Private Sub mnuRescrapeSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRescrapeSearch.Click
-
-        '//
-        ' Begin the process to search IMDB for data
-        '\\
-
-        Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
-
     End Sub
 
     Private Sub dgvMediaList_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMediaList.CellPainting
@@ -734,7 +717,9 @@ Public Class frmMain
 
         Try
             Me.currRow = e.RowIndex
-
+            cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(1, Me.currRow).Value.ToString, " <<")
+            cmnuMark.Text = If(Me.dgvMediaList.Item(8, Me.currRow).Value, "Unmark", "Mark")
+            Me.SetFilterColors()
             Me.tmrWait.Enabled = False
             Me.tmrWait.Enabled = True
 
@@ -758,19 +743,19 @@ Public Class frmMain
                 Master.currMark = Me.dgvMediaList.SelectedRows(0).Cells(8).Value
 
                 'set tmpTitle to title in list - used for searching IMDB
-                Me.tmpTitle = Me.dgvMediaList.Item(1, currRow).Value.ToString
-                If Not Me.dgvMediaList.Item(2, currRow).Value AndAlso Not Me.dgvMediaList.Item(3, currRow).Value AndAlso Not Me.dgvMediaList.Item(4, currRow).Value Then
+                Me.tmpTitle = Me.dgvMediaList.Item(1, Me.currRow).Value.ToString
+                If Not Me.dgvMediaList.Item(2, Me.currRow).Value AndAlso Not Me.dgvMediaList.Item(3, Me.currRow).Value AndAlso Not Me.dgvMediaList.Item(4, Me.currRow).Value Then
                     Me.ClearInfo()
                     Me.pnlNoInfo.Visible = True
-                    Master.currPath = Me.dgvMediaList.Item(0, currRow).Value.ToString
-                    Master.isFile = Me.dgvMediaList.Item(6, currRow).Value.ToString
+                    Master.currPath = Me.dgvMediaList.Item(0, Me.currRow).Value.ToString
+                    Master.isFile = Me.dgvMediaList.Item(6, Me.currRow).Value.ToString
                     Master.currMovie = New Media.Movie
                     Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
                     Me.tslStatus.Text = Master.currPath
                 Else
                     Me.pnlNoInfo.Visible = False
                     'try to load the info from the NFO
-                    Me.LoadInfo(Me.dgvMediaList.Item(0, currRow).Value.ToString, True, False, Me.dgvMediaList.Item(6, currRow).Value)
+                    Me.LoadInfo(Me.dgvMediaList.Item(0, Me.currRow).Value.ToString, True, False, Me.dgvMediaList.Item(6, Me.currRow).Value)
                 End If
             End If
         Catch
@@ -948,14 +933,41 @@ Public Class frmMain
             If drvRow.Cells(1).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
                 drvRow.Selected = True
                 Me.dgvMediaList.CurrentCell = drvRow.Cells(1)
-
-                'set tmpTitle to title in list - used for searching IMDB
-                Me.tmpTitle = drvRow.Cells(1).Value.ToString
-                Me.SetFilterColors()
                 Exit For
             End If
         Next
 
+    End Sub
+
+    Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
+        Select Case cmnuMark.Text
+            Case "Unmark"
+                Me.dgvMediaList.SelectedRows(0).Cells(8).Value = False
+                Master.currMark = False
+                Me.SetFilterColors()
+            Case Else
+                Me.dgvMediaList.SelectedRows(0).Cells(8).Value = True
+                Master.currMark = True
+                Me.SetFilterColors()
+        End Select
+    End Sub
+
+    Private Sub cmnuRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrape.Click
+
+        '//
+        ' Begin the process to scrape IMDB with the current ID
+        '\\
+
+        Me.ScrapeData(Master.ScrapeType.SingleScrape)
+    End Sub
+
+    Private Sub cmnuSearchNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSearchNew.Click
+
+        '//
+        ' Begin the process to search IMDB for data
+        '\\
+
+        Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
     End Sub
 #End Region '*** Form/Controls
 
@@ -1271,7 +1283,6 @@ Public Class frmMain
                     .SetFilterColors()
 
                     'Set current cell and automatically load the info for the first movie in the list
-                    .tmpTitle = .dgvMediaList.Item(1, 0).Value.ToString
                     .dgvMediaList.CurrentCell = .dgvMediaList.Rows(0).Cells(1)
                     .btnUp.Enabled = True
                     .btnMid.Enabled = True
@@ -2023,24 +2034,6 @@ Public Class frmMain
                     Me.Refresh()
                     Me.dgvMediaList.Rows(0).Selected = True
                     Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(1)
-                    'set tmpTitle to title in list - used for searching IMDB
-                    Me.tmpTitle = Me.dgvMediaList.Item(1, 0).Value.ToString
-
-                    Master.currMark = Me.dgvMediaList.Item(8, 0).Value
-
-                    If Not Me.dgvMediaList.Item(2, 0).Value AndAlso Not Me.dgvMediaList.Item(3, 0).Value AndAlso Not Me.dgvMediaList.Item(4, 0).Value Then
-                        Me.ClearInfo()
-                        Me.pnlNoInfo.Visible = True
-                        Master.currPath = Me.dgvMediaList.Item(0, 0).Value.ToString
-                        Master.isFile = Me.dgvMediaList.Item(6, 0).Value.ToString
-                        Master.currMovie = New Media.Movie
-                        Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
-                        Me.tslStatus.Text = Master.currPath
-                    Else
-                        Me.pnlNoInfo.Visible = False
-                        'try to load the info from the NFO
-                        Me.LoadInfo(Me.dgvMediaList.Item(0, 0).Value.ToString, True, False, Me.dgvMediaList.Item(6, 0).Value)
-                    End If
 
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3152,8 +3145,6 @@ Public Class frmMain
                     If drvRow.Visible = True Then
                         drvRow.Selected = True
                         Me.dgvMediaList.CurrentCell = drvRow.Cells(1)
-                        'set tmpTitle to title in list - used for searching IMDB
-                        Me.tmpTitle = drvRow.Cells(1).Value.ToString
                         Exit For
                     End If
                 Next

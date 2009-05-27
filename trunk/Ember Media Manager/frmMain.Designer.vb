@@ -57,6 +57,13 @@ Partial Class frmMain
         Me.picSearch = New System.Windows.Forms.PictureBox
         Me.txtSearch = New System.Windows.Forms.TextBox
         Me.dgvMediaList = New System.Windows.Forms.DataGridView
+        Me.mnuMediaList = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.cmnuTitle = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuMark = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuRescrape = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuSearchNew = New System.Windows.Forms.ToolStripMenuItem
         Me.lblMediaCount = New System.Windows.Forms.Label
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
@@ -133,9 +140,6 @@ Partial Class frmMain
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripSplitButton
         Me.tsbEdit = New System.Windows.Forms.ToolStripButton
-        Me.tsbRescrape = New System.Windows.Forms.ToolStripDropDownButton
-        Me.mnuRescrapeAuto = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuRescrapeSearch = New System.Windows.Forms.ToolStripMenuItem
         Me.pbFanartCache = New System.Windows.Forms.PictureBox
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
@@ -152,6 +156,7 @@ Partial Class frmMain
         Me.pnlSearch.SuspendLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.mnuMediaList.SuspendLayout()
         Me.tabsMain.SuspendLayout()
         Me.pnlNoInfo.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -495,6 +500,7 @@ Partial Class frmMain
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.dgvMediaList.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvMediaList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvMediaList.ContextMenuStrip = Me.mnuMediaList
         Me.dgvMediaList.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.dgvMediaList.Location = New System.Drawing.Point(0, 59)
         Me.dgvMediaList.MultiSelect = False
@@ -506,6 +512,51 @@ Partial Class frmMain
         Me.dgvMediaList.ShowRowErrors = False
         Me.dgvMediaList.Size = New System.Drawing.Size(308, 566)
         Me.dgvMediaList.TabIndex = 10
+        '
+        'mnuMediaList
+        '
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuMark, Me.ToolStripMenuItem1, Me.cmnuRescrape, Me.cmnuSearchNew})
+        Me.mnuMediaList.Name = "mnuMediaList"
+        Me.mnuMediaList.Size = New System.Drawing.Size(159, 104)
+        '
+        'cmnuTitle
+        '
+        Me.cmnuTitle.Enabled = False
+        Me.cmnuTitle.Image = CType(resources.GetObject("cmnuTitle.Image"), System.Drawing.Image)
+        Me.cmnuTitle.Name = "cmnuTitle"
+        Me.cmnuTitle.Size = New System.Drawing.Size(158, 22)
+        Me.cmnuTitle.Text = "Title"
+        '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(155, 6)
+        '
+        'cmnuMark
+        '
+        Me.cmnuMark.Image = CType(resources.GetObject("cmnuMark.Image"), System.Drawing.Image)
+        Me.cmnuMark.Name = "cmnuMark"
+        Me.cmnuMark.Size = New System.Drawing.Size(158, 22)
+        Me.cmnuMark.Text = "Mark"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(155, 6)
+        '
+        'cmnuRescrape
+        '
+        Me.cmnuRescrape.Image = CType(resources.GetObject("cmnuRescrape.Image"), System.Drawing.Image)
+        Me.cmnuRescrape.Name = "cmnuRescrape"
+        Me.cmnuRescrape.Size = New System.Drawing.Size(158, 22)
+        Me.cmnuRescrape.Text = "Re-scrape IMDB"
+        '
+        'cmnuSearchNew
+        '
+        Me.cmnuSearchNew.Image = CType(resources.GetObject("cmnuSearchNew.Image"), System.Drawing.Image)
+        Me.cmnuSearchNew.Name = "cmnuSearchNew"
+        Me.cmnuSearchNew.Size = New System.Drawing.Size(158, 22)
+        Me.cmnuSearchNew.Text = "Change Movie"
         '
         'lblMediaCount
         '
@@ -1260,7 +1311,7 @@ Partial Class frmMain
         Me.tsMain.CanOverflow = False
         Me.tsMain.GripMargin = New System.Windows.Forms.Padding(0)
         Me.tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.ToolStripSeparator1, Me.tsbUpdateXBMC, Me.tsbEdit, Me.tsbRescrape})
+        Me.tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbAutoPilot, Me.tsbRefreshMedia, Me.ToolStripSeparator1, Me.tsbUpdateXBMC, Me.tsbEdit})
         Me.tsMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
@@ -1354,30 +1405,6 @@ Partial Class frmMain
         Me.tsbEdit.Text = "Edit Movie"
         Me.tsbEdit.ToolTipText = "Edit Movie Information"
         '
-        'tsbRescrape
-        '
-        Me.tsbRescrape.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.tsbRescrape.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuRescrapeAuto, Me.mnuRescrapeSearch})
-        Me.tsbRescrape.Image = CType(resources.GetObject("tsbRescrape.Image"), System.Drawing.Image)
-        Me.tsbRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.tsbRescrape.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbRescrape.Name = "tsbRescrape"
-        Me.tsbRescrape.Size = New System.Drawing.Size(121, 22)
-        Me.tsbRescrape.Text = "Re-Scrape IMDB"
-        Me.tsbRescrape.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'mnuRescrapeAuto
-        '
-        Me.mnuRescrapeAuto.Name = "mnuRescrapeAuto"
-        Me.mnuRescrapeAuto.Size = New System.Drawing.Size(136, 22)
-        Me.mnuRescrapeAuto.Text = "Current ID"
-        '
-        'mnuRescrapeSearch
-        '
-        Me.mnuRescrapeSearch.Name = "mnuRescrapeSearch"
-        Me.mnuRescrapeSearch.Size = New System.Drawing.Size(136, 22)
-        Me.mnuRescrapeSearch.Text = "Search New"
-        '
         'pbFanartCache
         '
         Me.pbFanartCache.Location = New System.Drawing.Point(576, 107)
@@ -1448,6 +1475,7 @@ Partial Class frmMain
         Me.pnlSearch.PerformLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuMediaList.ResumeLayout(False)
         Me.tabsMain.ResumeLayout(False)
         Me.pnlNoInfo.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
@@ -1580,9 +1608,6 @@ Partial Class frmMain
     Friend WithEvents UpdateOnlyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents UpdateAutoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents UpdateAskToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents tsbRescrape As System.Windows.Forms.ToolStripDropDownButton
-    Friend WithEvents mnuRescrapeSearch As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents mnuRescrapeAuto As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tmrWait As System.Windows.Forms.Timer
     Friend WithEvents tmrLoad As System.Windows.Forms.Timer
     Friend WithEvents dgvMediaList As System.Windows.Forms.DataGridView
@@ -1607,4 +1632,11 @@ Partial Class frmMain
     Friend WithEvents rbFilterAnd As System.Windows.Forms.RadioButton
     Friend WithEvents chkFilterDupe As System.Windows.Forms.CheckBox
     Friend WithEvents tsbUpdateXBMC As System.Windows.Forms.ToolStripSplitButton
+    Friend WithEvents mnuMediaList As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents cmnuMark As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuRescrape As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuSearchNew As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuTitle As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
 End Class

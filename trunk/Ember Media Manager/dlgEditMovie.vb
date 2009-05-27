@@ -65,6 +65,11 @@ Public Class dlgEditMovie
         Me.Close()
     End Sub
 
+    Private Sub btnChangeMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeMovie.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Abort
+        Me.Close()
+    End Sub
+
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
 
@@ -1135,5 +1140,4 @@ Public Class dlgEditMovie
             _index = Nothing
         End Sub
     End Class
-
 End Class
