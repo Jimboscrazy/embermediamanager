@@ -2,7 +2,19 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Feature: Change movie from movie editor
+ * Feature: Context menu (right click) for media list
+ * Feature: Option to use genres from OFDB
+ * Fix: IMDB manual entry verification bug
+ * Fix: Extrathumbs manager displaying wrong image when items have been rearranged
+ * Fix: Updaters not finding ANY posters if the preferred size does not exist
+ * Fix: "Use Folder Name" not working properly with VIDEO_TS movies
+ * Fix/Change: Load files with and without stacking markers, but only save files with full filename (if <movie> type files are selected in settings, of course)
+ * Change: Tweaks to search results dialog
+ * Change: Re-enable interface if "Sort Files" is selected, but no file-type sources exist
+ * Change: Warning message/confirmation before running "Clean Files" and "Sort Folders"
+ * Change: Re-scrape/Search New moved to context menu of media list
+ * Change: Slight tweaks to code and GUI
 
 *Changes in r164:*
  * Feature: List filters - new, marked, duplicate
