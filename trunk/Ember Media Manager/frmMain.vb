@@ -2740,7 +2740,8 @@ Public Class frmMain
                         IMDB.GetMovieInfoAsync(Master.currMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                     Else
                         Master.tmpMovie = New Media.Movie
-                        If dlgIMDBSearchResults.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
+                        Dim dSearch As New dlgIMDBSearchResults
+                        If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
                             If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                 Me.ClearInfo(True)
                                 Me.tslStatus.Text = String.Format("Scraping {0}", Master.tmpMovie.Title)
@@ -2763,6 +2764,7 @@ Public Class frmMain
                             Me.tabsMain.Enabled = True
                             Me.EnableFilters(True)
                         End If
+                        dSearch.Dispose()
                     End If
             End Select
         Catch ex As Exception

@@ -37,15 +37,15 @@ Public Class dlgIMDBSearchResults
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
-            If Me.chkManual.Checked AndAlso Me.btnVerify.Enabled = True Then
-                If Not Regex.IsMatch(Me.txtIMDBID.Text, "\w\w\d\d\d\d\d\d\d") Then
+            If Me.chkManual.Checked AndAlso Me.btnVerify.Enabled Then
+                If Not Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
                     MsgBox("The ID you entered is not a valid IMDB ID", MsgBoxStyle.Exclamation, "Invalid Entry")
                     Exit Sub
                 Else
                     If MsgBox("You have manually entered an IMDB ID but have not verified it is correct." & vbNewLine & vbNewLine & "Are you sure you want to continue without verification?", MsgBoxStyle.YesNo, "Continue without verification?") = MsgBoxResult.No Then
                         Exit Sub
                     Else
-                        Master.tmpMovie.IMDBID = Me.txtIMDBID.Text
+                        Master.tmpMovie.IMDBID = Me.txtIMDBID.Text.Replace("tt", String.Empty)
                     End If
                 End If
             End If
@@ -100,8 +100,6 @@ Public Class dlgIMDBSearchResults
                 Me.txtOutline.Text = Master.tmpMovie.Outline
                 Me.lblIMDB.Text = Master.tmpMovie.IMDBID
 
-                'me.lblrating.Text = M.Rating
-
                 If Not String.IsNullOrEmpty(sPoster) Then
                     If Me.bwDownloadPic.IsBusy Then
                         Me.bwDownloadPic.CancelAsync()
@@ -111,9 +109,13 @@ Public Class dlgIMDBSearchResults
                     Me.bwDownloadPic.WorkerSupportsCancellation = True
                     Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster})
                 End If
+
+                Me.btnVerify.Enabled = False
             Else
-                MsgBox("Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again.", MsgBoxStyle.Exclamation, "Verification Failed")
-                Me.btnVerify.Enabled = True
+                If Me.chkManual.Checked Then
+                    MsgBox("Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again.", MsgBoxStyle.Exclamation, "Verification Failed")
+                    Me.btnVerify.Enabled = True
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -206,11 +208,15 @@ Public Class dlgIMDBSearchResults
         Me.txtIMDBID.Enabled = Me.chkManual.Checked
         Me.btnVerify.Enabled = Me.chkManual.Checked
         Me.tvResults.Enabled = Not Me.chkManual.Checked
+
+        If Not Me.chkManual.Checked Then
+            txtIMDBID.Text = String.Empty
+        End If
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
-            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text, Master.tmpMovie)
+            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie)
         Else
             MsgBox("The ID you entered is not a valid IMDB ID", MsgBoxStyle.Exclamation, "Invalid Entry")
         End If
@@ -221,7 +227,9 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub txtIMDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBID.TextChanged
-        Me.btnVerify.Enabled = True
+        If Me.chkManual.Checked Then
+            Me.btnVerify.Enabled = True
+        End If
     End Sub
 
     Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click

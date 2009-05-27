@@ -131,6 +131,7 @@ Partial Class frmMain
         Me.UpdateAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripButton
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripSplitButton
         Me.tsbEdit = New System.Windows.Forms.ToolStripButton
         Me.tsbRescrape = New System.Windows.Forms.ToolStripDropDownButton
         Me.mnuRescrapeAuto = New System.Windows.Forms.ToolStripMenuItem
@@ -142,7 +143,6 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
-        Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripSplitButton
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -1335,6 +1335,15 @@ Partial Class frmMain
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
         Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
+        'tsbUpdateXBMC
+        '
+        Me.tsbUpdateXBMC.Enabled = False
+        Me.tsbUpdateXBMC.Image = CType(resources.GetObject("tsbUpdateXBMC.Image"), System.Drawing.Image)
+        Me.tsbUpdateXBMC.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbUpdateXBMC.Name = "tsbUpdateXBMC"
+        Me.tsbUpdateXBMC.Size = New System.Drawing.Size(152, 22)
+        Me.tsbUpdateXBMC.Text = "Initiate XBMC Update"
+        '
         'tsbEdit
         '
         Me.tsbEdit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -1410,15 +1419,6 @@ Partial Class frmMain
         'tmrSearch
         '
         Me.tmrSearch.Interval = 250
-        '
-        'tsbUpdateXBMC
-        '
-        Me.tsbUpdateXBMC.Enabled = False
-        Me.tsbUpdateXBMC.Image = CType(resources.GetObject("tsbUpdateXBMC.Image"), System.Drawing.Image)
-        Me.tsbUpdateXBMC.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbUpdateXBMC.Name = "tsbUpdateXBMC"
-        Me.tsbUpdateXBMC.Size = New System.Drawing.Size(146, 22)
-        Me.tsbUpdateXBMC.Text = "Begin XBMC Update"
         '
         'frmMain
         '
