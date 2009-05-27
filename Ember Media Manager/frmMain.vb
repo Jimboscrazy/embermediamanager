@@ -824,53 +824,73 @@ Public Class frmMain
         ' Clean all items in folders that match user selected types
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.CleanFolders)
+        Dim sWarning As String = String.Empty
+        With Master.eSettings
+            If .CleanDotFanartJPG Then sWarning += String.Concat("<movie>.fanart.jpg", vbNewLine)
+            If .CleanFanartJPG Then sWarning += String.Concat("<movie>.jpg", vbNewLine)
+            If .CleanFolderJPG Then sWarning += String.Concat("folder.jpg", vbNewLine)
+            If .CleanMovieFanartJPG Then sWarning += String.Concat("<movie>-fanart.jpg", vbNewLine)
+            If .CleanMovieJPG Then sWarning += String.Concat("movie.jpg", vbNewLine)
+            If .CleanMovieNameJPG Then sWarning += String.Concat("<movie>.jpg", vbNewLine)
+            If .CleanMovieNFO Then sWarning += String.Concat("movie.nfo", vbNewLine)
+            If .CleanMovieNFOB Then sWarning += String.Concat("<movie>.nfo", vbNewLine)
+            If .CleanMovieTBN Then sWarning += String.Concat("movie.tbn", vbNewLine)
+            If .CleanMovieTBNB Then sWarning += String.Concat("<movie>.tbn", vbNewLine)
+            If .CleanPosterJPG Then sWarning += String.Concat("poster.jpg", vbNewLine)
+            If .CleanPosterTBN Then sWarning += String.Concat("poster.tbn", vbNewLine)
+        End With
+        If MsgBox(String.Concat("WARNING: If you continue, all files of the following types will be permanently deleted:", vbNewLine, vbNewLine, sWarning, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
+            Me.ScrapeData(Master.ScrapeType.CleanFolders)
+        End If
     End Sub
 
     Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click
-        Dim dirArray() As String
-        Dim alMedia As New ArrayList
-        Dim hasFileSource As Boolean = False
+        If MsgBox(String.Concat("WARNING: If you continue, all files from file-type sources will be sorted into separate folders.", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
 
-        Me.tsbAutoPilot.Enabled = False
-        Me.tsbRefreshMedia.Enabled = False
-        Me.tsbEdit.Enabled = False
-        Me.tsbRescrape.Enabled = False
-        Me.tabsMain.Enabled = False
-        Me.tspbLoading.Style = ProgressBarStyle.Marquee
-        Me.tslLoading.Text = "Sorting Files:"
-        Me.tslLoading.Visible = True
-        Me.tspbLoading.Visible = True
+            Dim dirArray() As String
+            Dim alMedia As New ArrayList
+            Dim hasFileSource As Boolean = False
 
-        Select Case Me.loadType
-            Case 2 'shows
-            Case 3 'music
-            Case Else 'default to movies
-                'load all the movie folders from settings
-                alMedia = Master.eSettings.MovieFolders
-        End Select
-
-        For Each movieSource As String In alMedia
-            dirArray = Split(movieSource, "|")
-            If dirArray(1).ToString = "Files" Then
-                SortFiles(dirArray(0).ToString)
-                hasFileSource = True
-            End If
-        Next
-
-        If hasFileSource Then
-            Me.LoadMedia(1)
-        Else
-            MsgBox("You do not have any file-type sources to sort.", MsgBoxStyle.Information, "No Files To Sort")
-            Me.tsbAutoPilot.Enabled = True
-            Me.tsbRefreshMedia.Enabled = True
-            Me.tsbEdit.Enabled = True
-            Me.tsbRescrape.Enabled = True
-            Me.tabsMain.Enabled = True
+            Me.tsbAutoPilot.Enabled = False
+            Me.tsbRefreshMedia.Enabled = False
+            Me.tsbEdit.Enabled = False
+            Me.tsbRescrape.Enabled = False
+            Me.tabsMain.Enabled = False
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
             Me.tslLoading.Text = "Sorting Files:"
-            Me.tslLoading.Visible = False
-            Me.tspbLoading.Visible = False
+            Me.tslLoading.Visible = True
+            Me.tspbLoading.Visible = True
+
+            Select Case Me.loadType
+                Case 2 'shows
+                Case 3 'music
+                Case Else 'default to movies
+                    'load all the movie folders from settings
+                    alMedia = Master.eSettings.MovieFolders
+            End Select
+
+            For Each movieSource As String In alMedia
+                dirArray = Split(movieSource, "|")
+                If dirArray(1).ToString = "Files" Then
+                    SortFiles(dirArray(0).ToString)
+                    hasFileSource = True
+                End If
+            Next
+
+            If hasFileSource Then
+                Me.LoadMedia(1)
+            Else
+                MsgBox("You do not have any file-type sources to sort.", MsgBoxStyle.Information, "No Files To Sort")
+                Me.tsbAutoPilot.Enabled = True
+                Me.tsbRefreshMedia.Enabled = True
+                Me.tsbEdit.Enabled = True
+                Me.tsbRescrape.Enabled = True
+                Me.tabsMain.Enabled = True
+                Me.tspbLoading.Style = ProgressBarStyle.Marquee
+                Me.tslLoading.Text = "Sorting Files:"
+                Me.tslLoading.Visible = False
+                Me.tspbLoading.Visible = False
+            End If
         End If
     End Sub
 
