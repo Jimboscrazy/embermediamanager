@@ -318,7 +318,12 @@ Public Class dlgEditMovie
     Private Sub FillInfo()
         Try
             With Me
-                .bwThumbs.RunWorkerAsync()
+                If Master.isFile Then
+                    TabControl1.TabPages.Remove(TabPage4)
+                    TabControl1.TabPages.Remove(TabPage5)
+                Else
+                    .bwThumbs.RunWorkerAsync()
+                End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Title) Then
                     .txtTitle.Text = Master.currMovie.Title

@@ -100,7 +100,7 @@ Public Class frmMain
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
         '//
-        ' Do some events before closing
+        ' Do some stuff before closing
         '\\
 
         'save the list of movies to settings so we know which ones are new
@@ -590,7 +590,6 @@ Public Class frmMain
 
     End Sub
 
-
     Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbFanart.DoubleClick
 
         '//
@@ -601,35 +600,6 @@ Public Class frmMain
             If Not IsNothing(Me.pbFanartCache.Image) Then
                 dlgImgView.ShowDialog(Me.pbFanartCache.Image)
             End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub tsbEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbEdit.Click
-
-        '//
-        ' Show the NFO Editor
-        '\\
-
-        Try
-            Dim dEditMovie As New dlgEditMovie
-            Select dEditMovie.ShowDialog()
-                Case Windows.Forms.DialogResult.OK
-                    'reset title in list just in case user changed it (only if Use Title From NFO is selected)
-                    If Master.eSettings.UseNameFromNfo Then
-                        Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
-                    End If
-                    Me.dgvMediaList.SelectedRows(0).Cells(8).Value = Master.currMark
-                    Me.SetFilterColors()
-                    Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
-                    Me.LoadInfo(Master.currPath, True, False, Master.isFile)
-                Case Windows.Forms.DialogResult.Retry
-                    Me.ScrapeData(Master.ScrapeType.SingleScrape)
-                Case Windows.Forms.DialogResult.Abort
-                    Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
-            End Select
-            dEditMovie.Dispose()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -711,6 +681,7 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMediaList_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellEnter
+
         '//
         ' Load media information for the selected item
         '\\
@@ -830,6 +801,11 @@ Public Class frmMain
     End Sub
 
     Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click
+
+        '//
+        ' Convert a file source into a folder source by separating everything into separate folders
+        '\\
+
         If MsgBox(String.Concat("WARNING: If you continue, all files from file-type sources will be sorted into separate folders.", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
 
             Dim dirArray() As String
@@ -838,7 +814,6 @@ Public Class frmMain
 
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
-            Me.tsbEdit.Enabled = False
             Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
             Me.tspbLoading.Style = ProgressBarStyle.Marquee
@@ -868,7 +843,6 @@ Public Class frmMain
                 MsgBox("You do not have any file-type sources to sort.", MsgBoxStyle.Information, "No Files To Sort")
                 Me.tsbAutoPilot.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
-                Me.tsbEdit.Enabled = True
                 Me.mnuMediaList.Enabled = True
                 Me.tabsMain.Enabled = True
                 Me.tspbLoading.Style = ProgressBarStyle.Marquee
@@ -969,6 +943,41 @@ Public Class frmMain
 
         Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
     End Sub
+
+    Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
+
+        '//
+        ' Show the NFO Editor
+        '\\
+
+        Try
+            Dim dEditMovie As New dlgEditMovie
+            Select Case dEditMovie.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    'reset title in list just in case user changed it (only if Use Title From NFO is selected)
+                    If Master.eSettings.UseNameFromNfo Then
+                        Me.dgvMediaList.SelectedRows(0).Cells(1).Value = Master.currMovie.Title.Trim
+                    End If
+                    Me.dgvMediaList.SelectedRows(0).Cells(8).Value = Master.currMark
+                    Me.SetFilterColors()
+                    Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
+                    Me.LoadInfo(Master.currPath, True, False, Master.isFile)
+                Case Windows.Forms.DialogResult.Retry
+                    Me.ScrapeData(Master.ScrapeType.SingleScrape)
+                Case Windows.Forms.DialogResult.Abort
+                    Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
+            End Select
+            dEditMovie.Dispose()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub dgvMediaList_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMediaList.MouseDown
+        cmnuMark.Text = If(Me.dgvMediaList.SelectedRows(0).Cells(8).Value, "Unmark", "Mark")
+        Me.SetFilterColors()
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -1032,7 +1041,6 @@ Public Class frmMain
                     Me.tabsMain.Enabled = True
                     Me.tsbRefreshMedia.Enabled = True
                     Me.tsbAutoPilot.Enabled = False
-                    Me.tsbEdit.Enabled = False
                     Me.mnuMediaList.Enabled = False
 
                 Else
@@ -1292,12 +1300,10 @@ Public Class frmMain
                     .btnMid.Enabled = True
 
                     .tsbAutoPilot.Enabled = True
-                    .tsbEdit.Enabled = True
                     .mnuMediaList.Enabled = True
                 End With
             Else
                 Me.tsbAutoPilot.Enabled = False
-                Me.tsbEdit.Enabled = False
                 Me.mnuMediaList.Enabled = False
                 Me.tslStatus.Text = String.Empty
             End If
@@ -1377,7 +1383,6 @@ Public Class frmMain
             If Me.dgvMediaList.Rows.Count > 0 Then
                 Me.tsbAutoPilot.Enabled = True
                 Me.mnuMediaList.Enabled = True
-                Me.tsbEdit.Enabled = True
             End If
         End If
 
@@ -1496,7 +1501,6 @@ Public Class frmMain
                 Me.tsbAutoPilot.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
                 Me.mnuMediaList.Enabled = True
-                Me.tsbEdit.Enabled = True
                 Me.tabsMain.Enabled = True
                 Me.EnableFilters(True)
             End If
@@ -1613,7 +1617,7 @@ Public Class frmMain
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.eSettings.AutoThumbs > 0 Then
+                            If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) Then
                                 Me.CreateRandomThumbs(sPath)
                             End If
                         Next
@@ -1681,7 +1685,7 @@ Public Class frmMain
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.eSettings.AutoThumbs > 0 Then
+                            If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) Then
                                 Me.CreateRandomThumbs(sPath)
                             End If
                         Next
@@ -1902,7 +1906,7 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.AutoThumbs > 0 AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                                If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
                                     Me.CreateRandomThumbs(sPath)
                                 End If
                             End If
@@ -1993,7 +1997,7 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.AutoThumbs > 0 AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                                If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
                                     Me.CreateRandomThumbs(sPath)
                                 End If
                             End If
@@ -2049,7 +2053,6 @@ Public Class frmMain
 
                 Me.tsbAutoPilot.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
-                Me.tsbEdit.Enabled = True
                 Me.mnuMediaList.Enabled = True
                 Me.tabsMain.Enabled = True
                 Me.EnableFilters(True)
@@ -2119,7 +2122,6 @@ Public Class frmMain
 
                 Me.tsbAutoPilot.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
-                Me.tsbEdit.Enabled = True
                 Me.mnuMediaList.Enabled = True
                 Me.tabsMain.Enabled = True
             End If
@@ -2288,7 +2290,6 @@ Public Class frmMain
 
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
-            Me.tsbEdit.Enabled = False
             Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
             Me.lblMediaCount.Visible = False
@@ -2317,7 +2318,6 @@ Public Class frmMain
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.mnuMediaList.Enabled = False
-            Me.tsbEdit.Enabled = False
             Me.tabsMain.Enabled = False
             Me.pnlNoInfo.Visible = False
 
@@ -2686,7 +2686,6 @@ Public Class frmMain
 
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
-            Me.tsbEdit.Enabled = False
             Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
@@ -2784,7 +2783,6 @@ Public Class frmMain
                             Me.tslStatus.Text = String.Empty
                             Me.tsbAutoPilot.Enabled = True
                             Me.tsbRefreshMedia.Enabled = True
-                            Me.tsbEdit.Enabled = True
                             Me.mnuMediaList.Enabled = True
                             Me.tabsMain.Enabled = True
                             Me.EnableFilters(True)
@@ -2884,7 +2882,6 @@ Public Class frmMain
         Me.tslStatus.Text = String.Empty
         Me.tsbAutoPilot.Enabled = True
         Me.tsbRefreshMedia.Enabled = True
-        Me.tsbEdit.Enabled = True
         Me.mnuMediaList.Enabled = True
         Me.tabsMain.Enabled = True
 
