@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r181:*
  * Feature: Change movie from movie editor
  * Feature: Context menu (right click) for media list
  * Feature: Option to use genres from OFDB
@@ -14,6 +17,7 @@
  * Change: Re-enable interface if "Sort Files" is selected, but no file-type sources exist
  * Change: Warning message/confirmation before running "Clean Files" and "Sort Folders"
  * Change: Re-scrape/Search New moved to context menu of media list
+ * Change: Edit Movie moved to context menu of media list
  * Change: Slight tweaks to code and GUI
 
 *Changes in r164:*
