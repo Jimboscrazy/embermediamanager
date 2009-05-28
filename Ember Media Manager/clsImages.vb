@@ -676,7 +676,7 @@ foundIT:
                 Dim fPathNoStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack)
 
                 If Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(fPath, "-fanart.jpg")) Then
-                    Return String.Concat(fPathNoStack, "-fanart.jpg")
+                    Return String.Concat(fPath, "-fanart.jpg")
                 ElseIf Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(fPathNoStack, "-fanart.jpg")) Then
                     Return String.Concat(fPathNoStack, "-fanart.jpg")
                 ElseIf Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts-fanart.jpg")) Then
