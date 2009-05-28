@@ -692,6 +692,7 @@ Public Class frmMain
             cmnuMark.Text = If(Me.dgvMediaList.Item(8, Me.currRow).Value, "Unmark", "Mark")
             Me.SetFilterColors()
             Me.tmrWait.Enabled = False
+            Me.tmrLoad.Enabled = False
             Me.tmrWait.Enabled = True
 
         Catch ex As Exception
@@ -704,11 +705,13 @@ Public Class frmMain
             Me.tmrLoad.Enabled = True
         Else
             Me.prevRow = Me.currRow
+            Me.tmrLoad.Enabled = False
         End If
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
         Me.tmrWait.Enabled = False
+        Me.tmrLoad.Enabled = False
         Try
             If Me.dgvMediaList.SelectedRows.Count > 0 Then
                 Master.currMark = Me.dgvMediaList.SelectedRows(0).Cells(8).Value
@@ -725,15 +728,18 @@ Public Class frmMain
                     Me.tslStatus.Text = Master.currPath
                 Else
                     Me.pnlNoInfo.Visible = False
+
+                    If Me.bwLoadInfo.IsBusy Then
+                        Me.bwLoadInfo.CancelAsync()
+                        Application.DoEvents()
+                    End If
                     'try to load the info from the NFO
                     Me.LoadInfo(Me.dgvMediaList.Item(0, Me.currRow).Value.ToString, True, False, Me.dgvMediaList.Item(6, Me.currRow).Value)
                 End If
             End If
         Catch
         End Try
-        Me.tmrLoad.Enabled = False
     End Sub
-
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
         Me.currText = Me.txtSearch.Text
@@ -1436,8 +1442,10 @@ Public Class frmMain
 
             Me.MainPoster.Clear()
 
+            If bwLoadInfo.CancellationPending Then Return
             Me.MainFanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
 
+            If bwLoadInfo.CancellationPending Then Return
             Me.MainPoster.Load(Master.currPath, Master.isFile, Master.ImageType.Posters)
 
             'wait for mediainfo to update the nfo
@@ -1445,6 +1453,7 @@ Public Class frmMain
                 Application.DoEvents()
             Loop
 
+            If bwLoadInfo.CancellationPending Then Return
             'read nfo if it's there
             Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
             If Not String.IsNullOrEmpty(Master.currNFO) Then
@@ -1464,47 +1473,48 @@ Public Class frmMain
         '\\
 
         Try
-            Me.fillScreenInfo()
+            If Not bwLoadInfo.CancellationPending Then
+                Me.fillScreenInfo()
 
-            If Not IsNothing(Me.MainFanart.Image) Then
-                Me.pbFanartCache.Image = Me.MainFanart.Image
-            Else
-                If Not IsNothing(Me.pbFanartCache.Image) Then
-                    Me.pbFanartCache.Image.Dispose()
-                    Me.pbFanartCache.Image = Nothing
+                If Not IsNothing(Me.MainFanart.Image) Then
+                    Me.pbFanartCache.Image = Me.MainFanart.Image
+                Else
+                    If Not IsNothing(Me.pbFanartCache.Image) Then
+                        Me.pbFanartCache.Image.Dispose()
+                        Me.pbFanartCache.Image = Nothing
+                    End If
+                    If Not IsNothing(Me.pbFanart.Image) Then
+                        Me.pbFanart.Image.Dispose()
+                        Me.pbFanart.Image = Nothing
+                    End If
                 End If
-                If Not IsNothing(Me.pbFanart.Image) Then
-                    Me.pbFanart.Image.Dispose()
-                    Me.pbFanart.Image = Nothing
+
+                If Not IsNothing(Me.MainPoster.Image) Then
+                    Me.pbPosterCache.Image = Me.MainPoster.Image
+                    Master.ResizePB(Me.pbPoster, Me.pbPosterCache, 160, 160)
+                    Master.SetOverlay(Me.pbPoster)
+                    Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
+                    Me.pbPoster.Location = New Point(4, 4)
+                    Me.pnlPoster.Visible = True
+                Else
+                    If Not IsNothing(Me.pbPoster.Image) Then
+                        Me.pbPoster.Image.Dispose()
+                        Me.pbPoster.Image = Nothing
+                        Me.pnlPoster.Visible = False
+                    End If
+                End If
+
+                Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                Me.pbFanart.Left = (Me.scMain.Panel2.Width / 2) - (Me.pbFanart.Width / 2)
+
+                If Not bwScraper.IsBusy Then
+                    Me.tsbAutoPilot.Enabled = True
+                    Me.tsbRefreshMedia.Enabled = True
+                    Me.mnuMediaList.Enabled = True
+                    Me.tabsMain.Enabled = True
+                    Me.EnableFilters(True)
                 End If
             End If
-
-            If Not IsNothing(Me.MainPoster.Image) Then
-                Me.pbPosterCache.Image = Me.MainPoster.Image
-                Master.ResizePB(Me.pbPoster, Me.pbPosterCache, 160, 160)
-                Master.SetOverlay(Me.pbPoster)
-                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
-                Me.pbPoster.Location = New Point(4, 4)
-                Me.pnlPoster.Visible = True
-            Else
-                If Not IsNothing(Me.pbPoster.Image) Then
-                    Me.pbPoster.Image.Dispose()
-                    Me.pbPoster.Image = Nothing
-                    Me.pnlPoster.Visible = False
-                End If
-            End If
-
-            Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-            Me.pbFanart.Left = (Me.scMain.Panel2.Width / 2) - (Me.pbFanart.Width / 2)
-
-            If Not bwScraper.IsBusy Then
-                Me.tsbAutoPilot.Enabled = True
-                Me.tsbRefreshMedia.Enabled = True
-                Me.mnuMediaList.Enabled = True
-                Me.tabsMain.Enabled = True
-                Me.EnableFilters(True)
-            End If
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
