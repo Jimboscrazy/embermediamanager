@@ -2788,6 +2788,7 @@ Public Class frmMain
                             Me.mnuMediaList.Enabled = True
                             Me.tabsMain.Enabled = True
                             Me.EnableFilters(True)
+                            Me.LoadInfo(Master.currPath, True, False, Master.isFile)
                         End If
                         dSearch.Dispose()
                     End If
