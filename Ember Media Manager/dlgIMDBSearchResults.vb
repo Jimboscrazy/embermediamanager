@@ -88,6 +88,7 @@ Public Class dlgIMDBSearchResults
         '\\
 
         Me.pnlLoading.Visible = False
+        Me.OK_Button.Enabled = True
 
         Try
             If bSuccess Then
@@ -129,8 +130,8 @@ Public Class dlgIMDBSearchResults
     Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
         Try
             Me.ClearInfo()
-            Me.OK_Button.Enabled = True
-            If Not IsNothing(e.Node.Tag) Then
+            Me.OK_Button.Enabled = False
+            If Not String.IsNullOrEmpty(e.Node.Tag) Then
                 Me.pnlLoading.Visible = True
                 IMDB.GetSearchMovieInfoAsync(e.Node.Tag, Master.tmpMovie)
             End If
@@ -205,6 +206,9 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub chkManual_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkManual.CheckedChanged
+
+        Me.ClearInfo()
+        Me.OK_Button.Enabled = False
         Me.txtIMDBID.Enabled = Me.chkManual.Checked
         Me.btnVerify.Enabled = Me.chkManual.Checked
         Me.tvResults.Enabled = Not Me.chkManual.Checked
@@ -229,6 +233,7 @@ Public Class dlgIMDBSearchResults
     Private Sub txtIMDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBID.TextChanged
         If Me.chkManual.Checked Then
             Me.btnVerify.Enabled = True
+            Me.OK_Button.Enabled = False
         End If
     End Sub
 
