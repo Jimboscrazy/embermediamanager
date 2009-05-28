@@ -4,7 +4,7 @@
 *Changes in Upcoming Release:*
  * None yet
 
-*Changes in r181:*
+*Changes in r183:*
  * Feature: Change movie from movie editor
  * Feature: Context menu (right click) for media list
  * Feature: Option to use genres from OFDB
