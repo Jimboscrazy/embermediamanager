@@ -796,69 +796,78 @@ Public Class Master
         Return aResults
     End Function
 
-    Public Shared Function FIToString(ByRef miFI As MediaInfo.Fileinfo) As String
+    Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal strAV As String) As String
 
         '//
         ' Convert Fileinfo into a string to be displayed in the GUI
         '\\
 
+        Dim strWithoutFirst As String = String.Empty
         Dim strOutput As String = String.Empty
         Dim iVS As Integer = 1
         Dim iAS As Integer = 1
         Dim iSS As Integer = 1
 
         Try
-            Dim strTag As String = FITagData(miFI)
-            If Not String.IsNullOrEmpty(strTag) Then
-                strOutput += String.Format("Tag: {0}{1}{1}", strTag, vbNewLine)
+            If Not IsNothing(miFI) Then
+                If strAV.Contains("/") Then
+                    strWithoutFirst = Strings.Right(strAV, strAV.Length - Strings.InStr(strAV, "/")).Trim()
+                End If
+                If Not String.IsNullOrEmpty(strWithoutFirst) Then
+                    strOutput = String.Format("Tag: {0}{1}{1}", strWithoutFirst, vbNewLine)
+                Else
+                    Dim strTag As String = FITagData(miFI)
+                    If Not String.IsNullOrEmpty(strTag) Then
+                        strOutput = String.Format("Tag: {0}{1}{1}", strTag, vbNewLine)
+                    End If
+                End If
+                If Not miFI.StreamDetails Is Nothing Then
+                    If miFI.StreamDetails.Video.Count > 0 Then
+                        strOutput += String.Format("Video Streams: {0}{1}", miFI.StreamDetails.Video.Count.ToString, vbNewLine)
+                    End If
+
+                    If miFI.StreamDetails.Audio.Count > 0 Then
+                        strOutput += String.Format("Audio Streams: {0}{1}", miFI.StreamDetails.Audio.Count.ToString, vbNewLine)
+                    End If
+
+                    If miFI.StreamDetails.Subtitle.Count > 0 Then
+                        strOutput += String.Format("Subtitle Streams: {0}{1}", miFI.StreamDetails.Subtitle.Count.ToString, vbNewLine)
+                    End If
+
+                    For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
+                        strOutput += String.Format("{0}Video Stream {1}{0}", vbNewLine, iVS.ToString)
+                        strOutput += String.Format("- Size: {0}x{1}{2}", miVideo.Width, miVideo.Height, vbNewLine)
+                        strOutput += String.Format("- Display Aspect Ratio: {0}{1}", miVideo.AspectDisplayRatio, vbNewLine)
+                        strOutput += String.Format("- Codec: {0}{1}", miVideo.Codec, vbNewLine)
+                        strOutput += String.Format("- Format Info: {0}{1}", miVideo.FormatInfo, vbNewLine)
+                        strOutput += String.Format("- Duration: {0}{1}", miVideo.Duration, vbNewLine)
+                        strOutput += String.Format("- BitRate: {0}{1}", miVideo.Bitrate, vbNewLine)
+                        strOutput += String.Format("- BitRate_Mode: {0}{1}", miVideo.BitrateMode, vbNewLine)
+                        strOutput += String.Format("- BitRate_Maximum: {0}{1}", miVideo.BitrateMax, vbNewLine)
+                        strOutput += String.Format("- CodecID: {0}{1}", miVideo.CodecID, vbNewLine)
+                        strOutput += String.Format("- CodecID Info: {0}{1}", miVideo.CodecidInfo, vbNewLine)
+                        strOutput += String.Format("- Scan type: {0}{1}", miVideo.ScanType, vbNewLine)
+                        iVS += 1
+                    Next
+
+                    For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
+                        'audio
+                        strOutput += String.Format("{0}Audio Stream {1}{0}", vbNewLine, iAS.ToString)
+                        strOutput += String.Format("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
+                        strOutput += String.Format("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
+                        strOutput += String.Format("- BitRate: {0}{1}", miAudio.Bitrate, vbNewLine)
+                        strOutput += String.Format("- Language: {0}{1}", miAudio.Language, vbNewLine)
+                        iAS += 1
+                    Next
+
+                    For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
+                        'subtitles
+                        strOutput += String.Format("{0}Subtitle {1}{0}", vbNewLine, iSS.ToString)
+                        strOutput += String.Format("- Language: {0}", miSub.Language)
+                        iSS += 1
+                    Next
+                End If
             End If
-            If Not miFI.StreamDetails Is Nothing Then
-                If miFI.StreamDetails.Video.Count > 0 Then
-                    strOutput += String.Format("Video Streams: {0}{1}", miFI.StreamDetails.Video.Count.ToString, vbNewLine)
-                End If
-
-                If miFI.StreamDetails.Audio.Count > 0 Then
-                    strOutput += String.Format("Audio Streams: {0}{1}", miFI.StreamDetails.Audio.Count.ToString, vbNewLine)
-                End If
-
-                If miFI.StreamDetails.Subtitle.Count > 0 Then
-                    strOutput += String.Format("Subtitle Streams: {0}{1}", miFI.StreamDetails.Subtitle.Count.ToString, vbNewLine)
-                End If
-
-                For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
-                    strOutput += String.Format("{0}Video Stream {1}{0}", vbNewLine, iVS.ToString)
-                    strOutput += String.Format("- Size: {0}x{1}{2}", miVideo.Width, miVideo.Height, vbNewLine)
-                    strOutput += String.Format("- Display Aspect Ratio: {0}{1}", miVideo.AspectDisplayRatio, vbNewLine)
-                    strOutput += String.Format("- Codec: {0}{1}", miVideo.Codec, vbNewLine)
-                    strOutput += String.Format("- Format Info: {0}{1}", miVideo.FormatInfo, vbNewLine)
-                    strOutput += String.Format("- Duration: {0}{1}", miVideo.Duration, vbNewLine)
-                    strOutput += String.Format("- BitRate: {0}{1}", miVideo.Bitrate, vbNewLine)
-                    strOutput += String.Format("- BitRate_Mode: {0}{1}", miVideo.BitrateMode, vbNewLine)
-                    strOutput += String.Format("- BitRate_Maximum: {0}{1}", miVideo.BitrateMax, vbNewLine)
-                    strOutput += String.Format("- CodecID: {0}{1}", miVideo.CodecID, vbNewLine)
-                    strOutput += String.Format("- CodecID Info: {0}{1}", miVideo.CodecidInfo, vbNewLine)
-                    strOutput += String.Format("- Scan type: {0}{1}", miVideo.ScanType, vbNewLine)
-                    iVS += 1
-                Next
-
-                For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
-                    'audio
-                    strOutput += String.Format("{0}Audio Stream {1}{0}", vbNewLine, iAS.ToString)
-                    strOutput += String.Format("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
-                    strOutput += String.Format("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
-                    strOutput += String.Format("- BitRate: {0}{1}", miAudio.Bitrate, vbNewLine)
-                    strOutput += String.Format("- Language: {0}{1}", miAudio.Language, vbNewLine)
-                    iAS += 1
-                Next
-
-                For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
-                    'subtitles
-                    strOutput += String.Format("{0}Subtitle {1}{0}", vbNewLine, iSS.ToString)
-                    strOutput += String.Format("- Language: {0}", miSub.Language)
-                    iSS += 1
-                Next
-            End If
-
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -946,9 +955,9 @@ Public Class Master
             If sinWidth >= 1350 AndAlso sinHeight >= 750 Then Return "768"
             If sinWidth >= 960 AndAlso sinHeight >= 500 Then Return "720"
             If sinWidth >= 720 AndAlso sinHeight >= 500 Then Return "576"
-            If sinWidth <= 720 AndAlso sinHeight >= 500 Then Return "540"
+            If sinWidth <= 960 AndAlso sinHeight >= 500 Then Return "540"
             If sinWidth < 640 Then Return "SD"
-            If sinWidth <= 720 AndAlso sinHeight <= 500 Then Return "480"
+            If sinWidth <= 960 AndAlso sinHeight <= 500 Then Return "480"
 
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

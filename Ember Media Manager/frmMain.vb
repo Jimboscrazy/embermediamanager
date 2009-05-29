@@ -1347,7 +1347,7 @@ Public Class frmMain
                     Master.currMovie.Studio = Master.currMovie.StudioReal & Master.FITagData(Master.currMovie.FileInfo)
                 End If
                 Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.isFile)
-                e.Result = New Results With {.fileinfo = Master.FIToString(Master.currMovie.FileInfo), .setEnabled = Args.setEnabled}
+                e.Result = New Results With {.fileinfo = Master.FIToString(Master.currMovie.FileInfo, Master.currMovie.Studio), .setEnabled = Args.setEnabled}
 
             Else
                 e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
@@ -2608,9 +2608,7 @@ Public Class frmMain
             Me.lblReleaseDate.Text = Master.currMovie.ReleaseDate
             Me.txtCerts.Text = Master.currMovie.Certification
 
-            If Not IsNothing(Master.currMovie.FileInfo) Then
-                Me.txtMediaInfo.Text = Master.FIToString(Master.currMovie.FileInfo)
-            End If
+            Me.txtMediaInfo.Text = Master.FIToString(Master.currMovie.FileInfo, Master.currMovie.Studio)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2842,12 +2840,11 @@ Public Class frmMain
 
     Private Function UpdateMediaInfo() As Boolean
         Try
-            Dim MI As New MediaInfo.MInfo
-            Dim miFileInfo = New MediaInfo.Fileinfo
 
             If Not Path.GetExtension(Master.currPath) = ".rar" AndAlso Not Path.GetExtension(Master.currPath) = ".iso" Then
+                Dim MI As New MediaInfo.MInfo
+                Dim miFileInfo = New MediaInfo.Fileinfo
                 MI.GetMovieMIFromPath(miFileInfo, Master.currPath)
-
                 Master.currMovie.FileInfo = miFileInfo
 
                 MI = Nothing
