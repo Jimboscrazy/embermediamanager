@@ -133,10 +133,25 @@ Partial Class frmMain
         Me.tsbAutoPilot = New System.Windows.Forms.ToolStripDropDownButton
         Me.FullToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.FullAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAutoAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAutoNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAutoPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAutoFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAutoExtra = New System.Windows.Forms.ToolStripMenuItem
         Me.FullAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAskAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAskNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAskPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAskFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuAllAskExtra = New System.Windows.Forms.ToolStripMenuItem
         Me.MediaTagsOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.UpdateOnlyToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.UpdateAutoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMissAutoAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMissAutoNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMissAutoPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMissAutoFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMissAutoExtra = New System.Windows.Forms.ToolStripMenuItem
         Me.UpdateAskToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripButton
         Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripSplitButton
@@ -147,6 +162,37 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.mnuMissAskAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMissAskNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMissAskPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMissAskFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMissAskExtra = New System.Windows.Forms.ToolStripMenuItem
+        Me.NewMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.MarkedMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.AutomaticForceBestMatchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.AskRequireInputToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.AutomaticForceBestMatchToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAutoAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAutoNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAutoPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAutoFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAutoExtra = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAskAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAskNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAskPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAskFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuNewAskExtra = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAutoAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAutoNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAutoPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAutoFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAutoExtra = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAskAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAskNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAskPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAskFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuMarkAskExtra = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -1336,7 +1382,7 @@ Partial Class frmMain
         '
         'tsbAutoPilot
         '
-        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem})
+        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem, Me.NewMoviesToolStripMenuItem, Me.MarkedMoviesToolStripMenuItem})
         Me.tsbAutoPilot.Image = CType(resources.GetObject("tsbAutoPilot.Image"), System.Drawing.Image)
         Me.tsbAutoPilot.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAutoPilot.Name = "tsbAutoPilot"
@@ -1352,15 +1398,77 @@ Partial Class frmMain
         '
         'FullAutoToolStripMenuItem
         '
+        Me.FullAutoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllAutoAll, Me.mnuAllAutoNfo, Me.mnuAllAutoPoster, Me.mnuAllAutoFanart, Me.mnuAllAutoExtra})
         Me.FullAutoToolStripMenuItem.Name = "FullAutoToolStripMenuItem"
         Me.FullAutoToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
         Me.FullAutoToolStripMenuItem.Text = "Automatic (Force Best Match)"
         '
+        'mnuAllAutoAll
+        '
+        Me.mnuAllAutoAll.Name = "mnuAllAutoAll"
+        Me.mnuAllAutoAll.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoAll.Text = "All Items"
+        '
+        'mnuAllAutoNfo
+        '
+        Me.mnuAllAutoNfo.Name = "mnuAllAutoNfo"
+        Me.mnuAllAutoNfo.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoNfo.Text = "NFO Only"
+        '
+        'mnuAllAutoPoster
+        '
+        Me.mnuAllAutoPoster.Name = "mnuAllAutoPoster"
+        Me.mnuAllAutoPoster.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoPoster.Text = "Posters Only"
+        '
+        'mnuAllAutoFanart
+        '
+        Me.mnuAllAutoFanart.Name = "mnuAllAutoFanart"
+        Me.mnuAllAutoFanart.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoFanart.Text = "Fanart Only"
+        '
+        'mnuAllAutoExtra
+        '
+        Me.mnuAllAutoExtra.Name = "mnuAllAutoExtra"
+        Me.mnuAllAutoExtra.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoExtra.Text = "Extra Thumbs Only"
+        '
         'FullAskToolStripMenuItem
         '
+        Me.FullAskToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuAllAskAll, Me.mnuAllAskNfo, Me.mnuAllAskPoster, Me.mnuAllAskFanart, Me.mnuAllAskExtra})
         Me.FullAskToolStripMenuItem.Name = "FullAskToolStripMenuItem"
         Me.FullAskToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
         Me.FullAskToolStripMenuItem.Text = "Ask (Require Input If No Exact Match)"
+        '
+        'mnuAllAskAll
+        '
+        Me.mnuAllAskAll.Name = "mnuAllAskAll"
+        Me.mnuAllAskAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuAllAskAll.Text = "All Items"
+        '
+        'mnuAllAskNfo
+        '
+        Me.mnuAllAskNfo.Name = "mnuAllAskNfo"
+        Me.mnuAllAskNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuAllAskNfo.Text = "NFO Only"
+        '
+        'mnuAllAskPoster
+        '
+        Me.mnuAllAskPoster.Name = "mnuAllAskPoster"
+        Me.mnuAllAskPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuAllAskPoster.Text = "Posters Only"
+        '
+        'mnuAllAskFanart
+        '
+        Me.mnuAllAskFanart.Name = "mnuAllAskFanart"
+        Me.mnuAllAskFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuAllAskFanart.Text = "Fanart Only"
+        '
+        'mnuAllAskExtra
+        '
+        Me.mnuAllAskExtra.Name = "mnuAllAskExtra"
+        Me.mnuAllAskExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuAllAskExtra.Text = "Extrathumbs Only"
         '
         'MediaTagsOnlyToolStripMenuItem
         '
@@ -1377,12 +1485,44 @@ Partial Class frmMain
         '
         'UpdateAutoToolStripMenuItem
         '
+        Me.UpdateAutoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissAutoAll, Me.mnuMissAutoNfo, Me.mnuMissAutoPoster, Me.mnuMissAutoFanart, Me.mnuMissAutoExtra})
         Me.UpdateAutoToolStripMenuItem.Name = "UpdateAutoToolStripMenuItem"
         Me.UpdateAutoToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
         Me.UpdateAutoToolStripMenuItem.Text = "Automatic (Force Best Match)"
         '
+        'mnuMissAutoAll
+        '
+        Me.mnuMissAutoAll.Name = "mnuMissAutoAll"
+        Me.mnuMissAutoAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAutoAll.Text = "All Items"
+        '
+        'mnuMissAutoNfo
+        '
+        Me.mnuMissAutoNfo.Name = "mnuMissAutoNfo"
+        Me.mnuMissAutoNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAutoNfo.Text = "NFO Only"
+        '
+        'mnuMissAutoPoster
+        '
+        Me.mnuMissAutoPoster.Name = "mnuMissAutoPoster"
+        Me.mnuMissAutoPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAutoPoster.Text = "Posters Only"
+        '
+        'mnuMissAutoFanart
+        '
+        Me.mnuMissAutoFanart.Name = "mnuMissAutoFanart"
+        Me.mnuMissAutoFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAutoFanart.Text = "Fanart Only"
+        '
+        'mnuMissAutoExtra
+        '
+        Me.mnuMissAutoExtra.Name = "mnuMissAutoExtra"
+        Me.mnuMissAutoExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAutoExtra.Text = "Extrathumbs Only"
+        '
         'UpdateAskToolStripMenuItem
         '
+        Me.UpdateAskToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMissAskAll, Me.mnuMissAskNfo, Me.mnuMissAskPoster, Me.mnuMissAskFanart, Me.mnuMissAskExtra})
         Me.UpdateAskToolStripMenuItem.Name = "UpdateAskToolStripMenuItem"
         Me.UpdateAskToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
         Me.UpdateAskToolStripMenuItem.Text = "Ask (Require Input If No Exact Match)"
@@ -1446,6 +1586,198 @@ Partial Class frmMain
         'tmrSearch
         '
         Me.tmrSearch.Interval = 250
+        '
+        'mnuMissAskAll
+        '
+        Me.mnuMissAskAll.Name = "mnuMissAskAll"
+        Me.mnuMissAskAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAskAll.Text = "All Items"
+        '
+        'mnuMissAskNfo
+        '
+        Me.mnuMissAskNfo.Name = "mnuMissAskNfo"
+        Me.mnuMissAskNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAskNfo.Text = "NFO Only"
+        '
+        'mnuMissAskPoster
+        '
+        Me.mnuMissAskPoster.Name = "mnuMissAskPoster"
+        Me.mnuMissAskPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAskPoster.Text = "Posters Only"
+        '
+        'mnuMissAskFanart
+        '
+        Me.mnuMissAskFanart.Name = "mnuMissAskFanart"
+        Me.mnuMissAskFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAskFanart.Text = "Fanart Only"
+        '
+        'mnuMissAskExtra
+        '
+        Me.mnuMissAskExtra.Name = "mnuMissAskExtra"
+        Me.mnuMissAskExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMissAskExtra.Text = "Extrathumbs Only"
+        '
+        'NewMoviesToolStripMenuItem
+        '
+        Me.NewMoviesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutomaticForceBestMatchToolStripMenuItem, Me.AskRequireInputToolStripMenuItem})
+        Me.NewMoviesToolStripMenuItem.Name = "NewMoviesToolStripMenuItem"
+        Me.NewMoviesToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.NewMoviesToolStripMenuItem.Text = "New Movies"
+        '
+        'MarkedMoviesToolStripMenuItem
+        '
+        Me.MarkedMoviesToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutomaticForceBestMatchToolStripMenuItem1, Me.AskRequireInputIfNoExactMatchToolStripMenuItem})
+        Me.MarkedMoviesToolStripMenuItem.Name = "MarkedMoviesToolStripMenuItem"
+        Me.MarkedMoviesToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.MarkedMoviesToolStripMenuItem.Text = "Marked Movies"
+        '
+        'AutomaticForceBestMatchToolStripMenuItem
+        '
+        Me.AutomaticForceBestMatchToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewAutoAll, Me.mnuNewAutoNfo, Me.mnuNewAutoPoster, Me.mnuNewAutoFanart, Me.mnuNewAutoExtra})
+        Me.AutomaticForceBestMatchToolStripMenuItem.Name = "AutomaticForceBestMatchToolStripMenuItem"
+        Me.AutomaticForceBestMatchToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
+        Me.AutomaticForceBestMatchToolStripMenuItem.Text = "Automatic (Force Best Match)"
+        '
+        'AskRequireInputToolStripMenuItem
+        '
+        Me.AskRequireInputToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuNewAskAll, Me.mnuNewAskNfo, Me.mnuNewAskPoster, Me.mnuNewAskFanart, Me.mnuNewAskExtra})
+        Me.AskRequireInputToolStripMenuItem.Name = "AskRequireInputToolStripMenuItem"
+        Me.AskRequireInputToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
+        Me.AskRequireInputToolStripMenuItem.Text = "Ask (Require Input If No Exact Match)"
+        '
+        'AutomaticForceBestMatchToolStripMenuItem1
+        '
+        Me.AutomaticForceBestMatchToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkAutoAll, Me.mnuMarkAutoNfo, Me.mnuMarkAutoPoster, Me.mnuMarkAutoFanart, Me.mnuMarkAutoExtra})
+        Me.AutomaticForceBestMatchToolStripMenuItem1.Name = "AutomaticForceBestMatchToolStripMenuItem1"
+        Me.AutomaticForceBestMatchToolStripMenuItem1.Size = New System.Drawing.Size(271, 22)
+        Me.AutomaticForceBestMatchToolStripMenuItem1.Text = "Automatic (Force Best Match)"
+        '
+        'AskRequireInputIfNoExactMatchToolStripMenuItem
+        '
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMarkAskAll, Me.mnuMarkAskNfo, Me.mnuMarkAskPoster, Me.mnuMarkAskFanart, Me.mnuMarkAskExtra})
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem.Name = "AskRequireInputIfNoExactMatchToolStripMenuItem"
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem.Size = New System.Drawing.Size(271, 22)
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem.Text = "Ask (Require Input If No Exact Match)"
+        '
+        'mnuNewAutoAll
+        '
+        Me.mnuNewAutoAll.Name = "mnuNewAutoAll"
+        Me.mnuNewAutoAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAutoAll.Text = "All Items"
+        '
+        'mnuNewAutoNfo
+        '
+        Me.mnuNewAutoNfo.Name = "mnuNewAutoNfo"
+        Me.mnuNewAutoNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAutoNfo.Text = "NFO Only"
+        '
+        'mnuNewAutoPoster
+        '
+        Me.mnuNewAutoPoster.Name = "mnuNewAutoPoster"
+        Me.mnuNewAutoPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAutoPoster.Text = "Posters Only"
+        '
+        'mnuNewAutoFanart
+        '
+        Me.mnuNewAutoFanart.Name = "mnuNewAutoFanart"
+        Me.mnuNewAutoFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAutoFanart.Text = "Fanart Only"
+        '
+        'mnuNewAutoExtra
+        '
+        Me.mnuNewAutoExtra.Name = "mnuNewAutoExtra"
+        Me.mnuNewAutoExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAutoExtra.Text = "Extrathumbs Only"
+        '
+        'mnuNewAskAll
+        '
+        Me.mnuNewAskAll.Name = "mnuNewAskAll"
+        Me.mnuNewAskAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAskAll.Text = "All Items"
+        '
+        'mnuNewAskNfo
+        '
+        Me.mnuNewAskNfo.Name = "mnuNewAskNfo"
+        Me.mnuNewAskNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAskNfo.Text = "NFO Only"
+        '
+        'mnuNewAskPoster
+        '
+        Me.mnuNewAskPoster.Name = "mnuNewAskPoster"
+        Me.mnuNewAskPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAskPoster.Text = "Posters Only"
+        '
+        'mnuNewAskFanart
+        '
+        Me.mnuNewAskFanart.Name = "mnuNewAskFanart"
+        Me.mnuNewAskFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAskFanart.Text = "Fanart Only"
+        '
+        'mnuNewAskExtra
+        '
+        Me.mnuNewAskExtra.Name = "mnuNewAskExtra"
+        Me.mnuNewAskExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuNewAskExtra.Text = "Extrathumbs Only"
+        '
+        'mnuMarkAutoAll
+        '
+        Me.mnuMarkAutoAll.Name = "mnuMarkAutoAll"
+        Me.mnuMarkAutoAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAutoAll.Text = "All Items"
+        '
+        'mnuMarkAutoNfo
+        '
+        Me.mnuMarkAutoNfo.Name = "mnuMarkAutoNfo"
+        Me.mnuMarkAutoNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAutoNfo.Text = "NFO Only"
+        '
+        'mnuMarkAutoPoster
+        '
+        Me.mnuMarkAutoPoster.Name = "mnuMarkAutoPoster"
+        Me.mnuMarkAutoPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAutoPoster.Text = "Posters Only"
+        '
+        'mnuMarkAutoFanart
+        '
+        Me.mnuMarkAutoFanart.Name = "mnuMarkAutoFanart"
+        Me.mnuMarkAutoFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAutoFanart.Text = "Fanart Only"
+        '
+        'mnuMarkAutoExtra
+        '
+        Me.mnuMarkAutoExtra.Name = "mnuMarkAutoExtra"
+        Me.mnuMarkAutoExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAutoExtra.Text = "Extrathumbs Only"
+        '
+        'mnuMarkAskAll
+        '
+        Me.mnuMarkAskAll.Name = "mnuMarkAskAll"
+        Me.mnuMarkAskAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAskAll.Text = "All Items"
+        '
+        'mnuMarkAskNfo
+        '
+        Me.mnuMarkAskNfo.Name = "mnuMarkAskNfo"
+        Me.mnuMarkAskNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAskNfo.Text = "NFO Only"
+        '
+        'mnuMarkAskPoster
+        '
+        Me.mnuMarkAskPoster.Name = "mnuMarkAskPoster"
+        Me.mnuMarkAskPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAskPoster.Text = "Posters Only"
+        '
+        'mnuMarkAskFanart
+        '
+        Me.mnuMarkAskFanart.Name = "mnuMarkAskFanart"
+        Me.mnuMarkAskFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAskFanart.Text = "Fanart Only"
+        '
+        'mnuMarkAskExtra
+        '
+        Me.mnuMarkAskExtra.Name = "mnuMarkAskExtra"
+        Me.mnuMarkAskExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuMarkAskExtra.Text = "Extrathumbs Only"
         '
         'frmMain
         '
@@ -1639,4 +1971,50 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuEditMovie As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAutoAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAutoNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAutoPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAutoFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAutoExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAskAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAskNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAskPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAskFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuAllAskExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAutoAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAutoNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAutoPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAutoFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAutoExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAskAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAskNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAskPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAskFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMissAskExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents NewMoviesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AutomaticForceBestMatchToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AskRequireInputToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MarkedMoviesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAutoAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAutoNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAutoPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAutoFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAutoExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAskAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAskNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAskPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAskFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuNewAskExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AutomaticForceBestMatchToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAutoAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAutoNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAutoPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAutoFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAutoExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AskRequireInputIfNoExactMatchToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAskAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAskNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAskPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAskFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuMarkAskExtra As System.Windows.Forms.ToolStripMenuItem
 End Class

@@ -67,6 +67,10 @@ Public Class Master
         UpdateAsk = 4
         MIOnly = 5
         CleanFolders = 6
+        NewAuto = 7
+        NewAsk = 8
+        MarkAuto = 9
+        MarkAsk = 10
     End Enum
 
     Public Enum ImageType As Integer
