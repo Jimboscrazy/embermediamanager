@@ -325,7 +325,7 @@ Public Class Images
         Return tmpImage
     End Function
 
-    Public Function GetPreferredImage(ByVal iType As Master.ImageType, ByRef fArt As Media.Fanart, Optional ByVal doAsk As Boolean = False) As Boolean
+    Public Function GetPreferredImage(ByVal iType As Master.ImageType, ByRef fArt As Media.Fanart, ByRef pThumbs As Media.Poster, Optional ByVal doAsk As Boolean = False) As Boolean
 
         '//
         ' Try to get the best match between what the user selected in settings and the actual posters downloaded
@@ -355,6 +355,7 @@ Public Class Images
         Try
 
             If iType = Master.ImageType.Posters Then 'posters
+                pThumbs = New Media.Poster
                 If Master.eSettings.UseTMDB Then
                     'download all TMBD images
                     tmpListTMDB = TMDB.GetTMDBImages(Master.currMovie.IMDBID, "poster")
@@ -362,6 +363,11 @@ Public Class Images
                     'check each one for it's size to see if it matched the preferred size
                     If tmpListTMDB.Count > 0 Then
                         hasImages = True
+
+                        For Each tmdbThumb As Media.Image In tmpListTMDB
+                            pThumbs.Thumb.Add(New Media.Posters With {.URL = tmdbThumb.URL})
+                        Next
+
                         For Each iMovie As Media.Image In tmpListTMDB
                             Select Case Master.eSettings.PreferredPosterSize
                                 Case Master.PosterSize.Xlrg
@@ -401,6 +407,7 @@ Public Class Images
                             For Each iMovie As Media.Image In tmpListIMPA
                                 tmpImage = GenericFromWeb(iMovie.URL)
                                 If Not IsNothing(tmpImage) Then
+                                    pThumbs.Thumb.Add(New Media.Posters With {.URL = iMovie.URL})
                                     Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
                                     If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                         'cache the first result from each type in case the preferred size is not available
@@ -448,6 +455,7 @@ Public Class Images
                             For Each iMovie As Media.Image In tmpListMPDB
                                 tmpImage = GenericFromWeb(iMovie.URL)
                                 If Not IsNothing(tmpImage) Then
+                                    pThumbs.Thumb.Add(New Media.Posters With {.URL = iMovie.URL})
                                     Dim tmpSize As Master.PosterSize = GetImageDims(tmpImage, Master.ImageType.Posters)
                                     If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                         'cache the first result from each type in case the preferred size is not available

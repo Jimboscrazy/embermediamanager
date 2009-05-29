@@ -1543,6 +1543,7 @@ Public Class frmMain
         Dim sOrName As String = String.Empty
         Dim nfoPath As String = String.Empty
         Dim fArt As New Media.Fanart
+        Dim pThumbs As New Media.Poster
         Dim Poster As New Images
         Dim Fanart As New Images
         Dim tmpMovie As New Media.Movie
@@ -1584,27 +1585,30 @@ Public Class frmMain
                                 If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                     If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
-                                        If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, True) Then
+                                        If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs, True) Then
                                             If Not IsNothing(Poster.Image) Then
                                                 Poster.SaveAsPoster(sPath, drvRow.Item(6))
                                                 drvRow.Item(2) = True
+                                                Master.currMovie.Thumbs = pThumbs
                                             Else
                                                 MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
                                                 Dim dImgSelect As New dlgImgSelect
                                                 If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
                                                     drvRow.Item(2) = True
+                                                    Master.currMovie.Thumbs = pThumbs
                                                 End If
                                                 dImgSelect = Nothing
                                             End If
                                         End If
                                     End If
                                 End If
+                                pThumbs = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Master.eSettings.UseTMDB Then
 
                                     If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
-                                        If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, True) Then
+                                        If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing, True) Then
 
                                             If Not IsNothing(Fanart.Image) Then
                                                 Fanart.SaveAsFanart(sPath, drvRow.Item(6))
@@ -1620,10 +1624,10 @@ Public Class frmMain
                                                 End If
                                                 dImgSelect.Dispose()
                                             End If
-                                            fArt = Nothing
                                         End If
                                     End If
                                 End If
+                                fArt = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
@@ -1670,28 +1674,30 @@ Public Class frmMain
                                 If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                     If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
-                                        If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing) Then
+                                        If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs) Then
                                             If Not IsNothing(Poster.Image) Then
                                                 Poster.SaveAsPoster(sPath, drvRow.Item(6))
+                                                Master.currMovie.Thumbs = pThumbs
                                                 drvRow.Item(2) = True
                                             End If
                                         End If
                                     End If
                                 End If
+                                pThumbs = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Master.eSettings.UseTMDB Then
                                     If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
-                                        If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt) Then
+                                        If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing) Then
                                             If Not IsNothing(Fanart.Image) Then
                                                 Fanart.SaveAsFanart(sPath, drvRow.Item(6))
                                                 Master.currMovie.Fanart = fArt
                                                 drvRow.Item(3) = True
                                             End If
-                                            fArt = Nothing
                                         End If
                                     End If
                                 End If
+                                fArt = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
@@ -1883,13 +1889,18 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(2) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                     If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
-
                                         If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
-                                            If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing) Then
-
+                                            If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs) Then
                                                 If Not IsNothing(Poster.Image) Then
                                                     Poster.SaveAsPoster(sPath, drvRow.Item(6))
                                                     drvRow.Item(2) = True
+                                                    If File.Exists(nfoPath) Then
+                                                        'need to load movie from nfo here in case the movie already had
+                                                        'an nfo.... currmovie would not be set to the proper movie
+                                                        Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
+                                                        Master.currMovie.Thumbs = pThumbs
+                                                        Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                                    End If
                                                 End If
                                             End If
                                         End If
@@ -1900,8 +1911,7 @@ Public Class frmMain
                                 If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                     If Master.eSettings.UseTMDB Then
                                         If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
-                                            If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt) Then
-
+                                            If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing) Then
                                                 If Not IsNothing(Fanart.Image) Then
                                                     Fanart.SaveAsFanart(sPath, drvRow.Item(6))
                                                     drvRow.Item(3) = True
@@ -1912,12 +1922,12 @@ Public Class frmMain
                                                         Master.currMovie.Fanart = fArt
                                                         Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
                                                     End If
-                                                    fArt = Nothing
                                                 End If
                                             End If
                                         End If
                                     End If
                                 End If
+                                fArt = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
@@ -1958,35 +1968,55 @@ Public Class frmMain
                                     If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                         If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
-                                            If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, True) Then
+                                            If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs, True) Then
                                                 If Not IsNothing(Poster.Image) Then
                                                     Poster.SaveAsPoster(sPath, drvRow.Item(6))
                                                     drvRow.Item(2) = True
+                                                    If File.Exists(nfoPath) Then
+                                                        'need to load movie from nfo here in case the movie already had
+                                                        'an nfo.... currmovie would not be set to the proper movie
+                                                        Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
+                                                        Master.currMovie.Thumbs = pThumbs
+                                                        Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                                    End If
                                                 Else
                                                     MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
                                                     Dim dImgSelect As New dlgImgSelect
                                                     If dImgSelect.ShowDialog(Master.currMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
                                                         drvRow.Item(2) = True
+                                                        If File.Exists(nfoPath) Then
+                                                            'need to load movie from nfo here in case the movie already had
+                                                            'an nfo.... currmovie would not be set to the proper movie
+                                                            Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
+                                                            Master.currMovie.Thumbs = pThumbs
+                                                            Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                                        End If
                                                     End If
                                                     dImgSelect.Dispose()
                                                 End If
                                             End If
                                         End If
                                     End If
-
                                 End If
+                                pThumbs = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                     If Master.eSettings.UseTMDB Then
 
                                         If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
-                                            If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, True) Then
+                                            If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing, True) Then
 
                                                 If Not IsNothing(Fanart.Image) Then
                                                     Fanart.SaveAsFanart(sPath, drvRow.Item(6))
                                                     drvRow.Item(3) = True
-                                                    Master.currMovie.Fanart = fArt
+                                                    If File.Exists(nfoPath) Then
+                                                        'need to load movie from nfo here in case the movie already had
+                                                        'an nfo.... currmovie would not be set to the proper movie
+                                                        Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
+                                                        Master.currMovie.Fanart = fArt
+                                                        Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                                    End If
                                                 Else
                                                     MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
                                                     Dim dImgSelect As New dlgImgSelect
@@ -2000,15 +2030,14 @@ Public Class frmMain
                                                             Master.currMovie.Fanart = fArt
                                                             Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
                                                         End If
-                                                        fArt = Nothing
                                                     End If
                                                     dImgSelect.Dispose()
                                                 End If
-                                                fArt = Nothing
                                             End If
                                         End If
                                     End If
                                 End If
+                                fArt = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
                                 If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then

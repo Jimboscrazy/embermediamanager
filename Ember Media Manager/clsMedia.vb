@@ -53,7 +53,7 @@ Namespace Media
         Private _path As String
         Private _filenameandpath As String
         Private _status As String
-        Private _thumb As String
+        Private _thumbs As New Poster
         Private _fanart As New Fanart
         Private _actors As New List(Of Person)
         Private _fileInfo As New MediaInfo.Fileinfo
@@ -328,13 +328,13 @@ Namespace Media
             End Set
         End Property
 
-        <XmlElement("thumb")> _
-        Public Property Thumb() As String
+        <XmlElement("thumbs")> _
+        Public Property Thumbs() As Poster
             Get
-                Return Me._thumb
+                Return Me._thumbs
             End Get
-            Set(ByVal value As String)
-                Me._thumb = value
+            Set(ByVal value As Poster)
+                Me._thumbs = value
             End Set
         End Property
 
@@ -406,7 +406,7 @@ Namespace Media
             Me._path = String.Empty
             Me._filenameandpath = String.Empty
             Me._status = String.Empty
-            Me._thumb = String.Empty
+            Me._thumbs = New Poster
             Me._fanart = New Fanart
             Me._actors.Clear()
             Me._fileInfo = Nothing
@@ -492,6 +492,16 @@ Namespace Media
                 Me._thumb = value
             End Set
         End Property
+
+        Public Sub New()
+            Me.Clean()
+        End Sub
+
+        Public Sub Clean()
+            Me._thumb.Clear()
+            Me._url = String.Empty
+        End Sub
+
     End Class
 
     Public Class Thumb
@@ -517,6 +527,52 @@ Namespace Media
                 Me._text = Value
             End Set
         End Property
+    End Class
+
+    Public Class Poster
+        Private _thumb As New List(Of Posters)
+
+        <XmlElement("thumb")> _
+        Public Property Thumb() As List(Of Posters)
+            Get
+                Return Me._thumb
+            End Get
+            Set(ByVal value As List(Of Posters))
+                Me._thumb = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clean()
+        End Sub
+
+        Public Sub Clean()
+            Me._thumb.Clear()
+        End Sub
+
+    End Class
+
+    Public Class Posters
+        Private _url As String
+
+        <XmlText()> _
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clean()
+        End Sub
+
+        Public Sub Clean()
+            Me._url = String.Empty
+        End Sub
+
     End Class
 
     Public Class [Image]
