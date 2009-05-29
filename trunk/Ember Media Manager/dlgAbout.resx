@@ -438,8 +438,8 @@
   <data name="pbFFMPEG.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAJEAAAAlCAYAAABCgwtAAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDgAA
-        Cw4BQL7hQQAACkxJREFUeF7tnHesFFUUxueBxK7YUETsvUVFsfdekVjBrrEG2x8au4CaFRuImNhiC0qi
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDQAA
+        Cw0B7QfALAAACkxJREFUeF7tnHesFFUUxueBxK7YUETsvUVFsfdekVjBrrEG2x8au4CaFRuImNhiC0qi
         qDEau4i9xY4Fe4ldsWIQ1Of3zbsze/bsPXfu7HvBfbKbnOzOzLln7tzz23Nu221rb29P+Gq7uK0Nb4ul
         B+EXC0xrP8MVDOjC5qK43KPIIK7PgL3fI/RaKs3YAilElWQI5HnIR5HyIvT2ZFmf4Nq2kHudrY8LbPL6
         e5CLIHNZNlvn/W3dDO1CgPaG/AVpLykss4J+CMIFmVXSVnbv45qhUVp1KAcsIRrRoMPp+C1lg+N4j04A
@@ -489,8 +489,8 @@
   <data name="pbMI.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAE4AAAAgCAYAAAC8VE43AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDgAA
-        Cw4BQL7hQQAACUdJREFUaEPtmXdQ1VcWx7N/RtdeZtQZe9YVy6ixoIh9VoPdYFtcKXYsWIAIRCBIxAUL
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDQAA
+        Cw0B7QfALAAACUdJREFUaEPtmXdQ1VcWx7N/RtdeZtQZe9YVy6ixoIh9VoPdYFtcKXYsWIAIRCBIxAUL
         UiKJS9QVyziMytiIBVdnghU1BtGlCCoKhkd98KSI373fu17ye4hRHo+3szt7Zu683+++87vl8zv3nHPv
         73cQ8tH/pf4ECM4SUlhUjoeP8pBWnIbMgjSUpaXhVWmpJbpulD4+apRWazVaWVWNwyfSsGP/NUSlfodD
         96LwPDISBWfPAq9f13sIr169QnZ2Nh49eoTS/xB8i4ArNVQhfF8KgvfdQGRaFGJ+jkROWDh0Bw8C1dX1
@@ -619,8 +619,8 @@
   <data name="pbIMPA.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAANYAAABkCAYAAAD64c5QAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALCAAA
-        CwgBwL2l2gAA1D5JREFUeF7s/QdUlmuW5w13nfeE1/AaxjCGMYyhDWMYwxjG0IZRGMIQWqAJLaEJTSiB
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALBwAA
+        CwcBtnMLwAAA1D5JREFUeF7s/QdUlmuW5w13nfeE1/AaxjCGMYyhDWMYwxjG0IZRGMIQWqAJLaEJTSiB
         JhShCCVQCpahEKSVUCqGMqcy5ywqJkyoKIoiIog5Avv77Qdu5VjnVIf51nrX961xrb0efOJ9X9f1v/be
         /x2uXzysif+r//Pv//UR+MVXV2D8v+lj0/d80/j+ps99/R1Nv1Ia//PvfTR9vGub38ij5wn/W4PFd/xv
         fd74MNfxs/er1/lv+ZGf+a6f+v6f/d4/+00F1v+R/9fG4BeM/Tdfyf/F/79FvmuU73n8Afm/keaN0oLH
