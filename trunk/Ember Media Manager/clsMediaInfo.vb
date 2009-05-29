@@ -154,9 +154,6 @@ Namespace MediaInfo
 
         Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
             If StreamNumber = UInteger.MaxValue Then
-                'Dim A As Long
-                'A = 0
-                'A = A - 1 'If you know how to have (IntPtr)(-1) easier, I am interested ;-)
                 Return MediaInfo_Count_Get(Handle, StreamKind, -1)
             Else
                 Return MediaInfo_Count_Get(Handle, StreamKind, StreamNumber)
@@ -168,31 +165,30 @@ Namespace MediaInfo
 
             'open the file
             If File.Exists(sPath) Then
-                Dim MI As New MInfo
 
-                MI.Open(sPath)
+                Me.Open(sPath)
 
                 'find the longest stream in the file
                 'find the number of video streams in the video file
-                Dim VideoStreams As Integer = MI.Count_Get(StreamKind.Visual)
+                Dim VideoStreams As Integer = Me.Count_Get(StreamKind.Visual)
                 Dim mivideo As New MediaInfo.Video
                 For v As Integer = 0 To VideoStreams - 1
                     mivideo = New MediaInfo.Video
                     'get video data
-                    mivideo.Width = MI.Get_(StreamKind.Visual, v, "Width")
-                    mivideo.Height = MI.Get_(StreamKind.Visual, v, "Height")
+                    mivideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
+                    mivideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
                     'switch avs to h264
-                    Dim miFormat As String = MI.Get_(StreamKind.Visual, v, "Format")
+                    Dim miFormat As String = Me.Get_(StreamKind.Visual, v, "Format")
                     mivideo.Codec = If(miFormat.ToLower = "avc", "h264", miFormat)
                     mivideo.FormatInfo = miFormat
-                    mivideo.Duration = MI.Get_(StreamKind.Visual, v, "Duration/String1")
-                    mivideo.Bitrate = MI.Get_(StreamKind.Visual, v, "BitRate/String")
-                    mivideo.BitrateMode = MI.Get_(StreamKind.Visual, v, "BitRate_Mode/String")
-                    mivideo.BitrateMax = MI.Get_(StreamKind.Visual, v, "BitRate_Maximum/String")
-                    mivideo.CodecID = MI.Get_(StreamKind.Visual, v, "CodecID")
-                    mivideo.CodecidInfo = MI.Get_(StreamKind.Visual, v, "CodecID/Info")
-                    mivideo.ScanType = MI.Get_(StreamKind.Visual, v, "ScanType")
-                    mivideo.AspectDisplayRatio = MI.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
+                    mivideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String1")
+                    mivideo.Bitrate = Me.Get_(StreamKind.Visual, v, "BitRate/String")
+                    mivideo.BitrateMode = Me.Get_(StreamKind.Visual, v, "BitRate_Mode/String")
+                    mivideo.BitrateMax = Me.Get_(StreamKind.Visual, v, "BitRate_Maximum/String")
+                    mivideo.CodecID = Me.Get_(StreamKind.Visual, v, "CodecID")
+                    mivideo.CodecidInfo = Me.Get_(StreamKind.Visual, v, "CodecID/Info")
+                    mivideo.ScanType = Me.Get_(StreamKind.Visual, v, "ScanType")
+                    mivideo.AspectDisplayRatio = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
 
                     With mivideo
                         If Not String.IsNullOrEmpty(.Bitrate) OrElse Not String.IsNullOrEmpty(.BitrateMax) OrElse Not String.IsNullOrEmpty(.BitrateMode) OrElse _
@@ -204,15 +200,15 @@ Namespace MediaInfo
                     End With
                 Next
 
-                Dim AudioStreams As Integer = MI.Count_Get(StreamKind.Audio)
+                Dim AudioStreams As Integer = Me.Count_Get(StreamKind.Audio)
                 Dim miAudio As New MediaInfo.Audio
                 For a As Integer = 0 To AudioStreams - 1
                     'get audio data
                     miAudio = New MediaInfo.Audio
-                    miAudio.Codec = MI.Get_(StreamKind.Audio, a, "Format")
-                    miAudio.Channels = MI.Get_(StreamKind.Audio, a, "Channel(s)")
-                    miAudio.Bitrate = MI.Get_(StreamKind.Audio, a, "BitRate/String")
-                    miAudio.Language = GetLangCode(MI.Get_(StreamKind.Audio, a, "Language/String"))
+                    miAudio.Codec = Me.Get_(StreamKind.Audio, a, "Format")
+                    miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
+                    miAudio.Bitrate = Me.Get_(StreamKind.Audio, a, "BitRate/String")
+                    miAudio.Language = GetLangCode(Me.Get_(StreamKind.Audio, a, "Language/String"))
                     With miAudio
                         If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Bitrate) OrElse Not String.IsNullOrEmpty(.Language) Then
                             fiInfo.StreamDetails.Audio.Add(miAudio)
@@ -220,20 +216,19 @@ Namespace MediaInfo
                     End With
                 Next
 
-                Dim SubtitleStreams As Integer = MI.Count_Get(StreamKind.Text)
+                Dim SubtitleStreams As Integer = Me.Count_Get(StreamKind.Text)
                 Dim miSubtitle As New MediaInfo.Subtitle
                 For s As Integer = 0 To SubtitleStreams - 1
                     'get subtitle data
                     miSubtitle = New MediaInfo.Subtitle
-                    miSubtitle.Language = GetLangCode(MI.Get_(StreamKind.Text, s, "Language/String"))
+                    miSubtitle.Language = GetLangCode(Me.Get_(StreamKind.Text, s, "Language/String"))
                     If Not String.IsNullOrEmpty(miSubtitle.Language) Then
                         fiInfo.StreamDetails.Subtitle.Add(miSubtitle)
                     End If
                 Next
 
-                MI.Close()
-                MI.Finalize()
-                MI = Nothing
+                Me.Close()
+                Me.Finalize()
             End If
 
         End Sub
