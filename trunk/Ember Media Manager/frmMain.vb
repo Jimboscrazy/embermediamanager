@@ -80,9 +80,19 @@ Public Class frmMain
     Private Structure Arguments
         Dim setEnabled As Boolean
         Dim scrapeType As Master.ScrapeType
+        Dim scrapeMod As ScrapeModifier
         Dim pType As PicType
         Dim pURL As String
     End Structure
+
+    Private Enum ScrapeModifier As Integer
+        All = 0
+        NFO = 1
+        Poster = 2
+        Fanart = 3
+        Extra = 4
+    End Enum
+
 #End Region '*** Declarations
 
 
@@ -438,7 +448,7 @@ Public Class frmMain
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                     Me.LoadInfo(Master.currPath, True, False, Master.isFile)
                 Case Windows.Forms.DialogResult.Retry
-                    Me.ScrapeData(Master.ScrapeType.SingleScrape)
+                    Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
                 Case Windows.Forms.DialogResult.Abort
                     Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
             End Select
@@ -630,53 +640,13 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub FullAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FullAutoToolStripMenuItem.Click
-
-        '//
-        ' Scrape all movies in list and attempt to pick the best match for movies without exact matches
-        '\\
-
-        Me.ScrapeData(Master.ScrapeType.FullAuto)
-
-    End Sub
-
-    Private Sub FullAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FullAskToolStripMenuItem.Click
-
-        '//
-        ' Scrape all movies in list and ask which movie to pick when a best match or popular match is not found
-        '\\
-
-        Me.ScrapeData(Master.ScrapeType.FullAsk)
-
-    End Sub
-
     Private Sub MediaTagsOnlyToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MediaTagsOnlyToolStripMenuItem.Click
 
         '//
         ' Scrape all movies in list for MediaInfo only
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.MIOnly)
-
-    End Sub
-
-    Private Sub UpdateAutoToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UpdateAutoToolStripMenuItem.Click
-
-        '//
-        ' Scrape only movies in list without nfos and attempt to pick the best match for movies without exact matches
-        '\\
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto)
-
-    End Sub
-
-    Private Sub UpdateAskToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UpdateAskToolStripMenuItem.Click
-
-        '//
-        ' Scrape only movies in list without nfos and ask which movie to pick when a best match or popular match is not found
-        '\\
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk)
+        Me.ScrapeData(Master.ScrapeType.MIOnly, Nothing)
 
     End Sub
 
@@ -802,7 +772,7 @@ Public Class frmMain
             If .CleanPosterTBN Then sWarning += String.Concat("poster.tbn", vbNewLine)
         End With
         If MsgBox(String.Concat("WARNING: If you continue, all files of the following types will be permanently deleted:", vbNewLine, vbNewLine, sWarning, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
-            Me.ScrapeData(Master.ScrapeType.CleanFolders)
+            Me.ScrapeData(Master.ScrapeType.CleanFolders, Nothing)
         End If
     End Sub
 
@@ -938,7 +908,7 @@ Public Class frmMain
         ' Begin the process to scrape IMDB with the current ID
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.SingleScrape)
+        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
     End Sub
 
     Private Sub cmnuSearchNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSearchNew.Click
@@ -947,7 +917,7 @@ Public Class frmMain
         ' Begin the process to search IMDB for data
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
+        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, True)
     End Sub
 
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
@@ -969,9 +939,9 @@ Public Class frmMain
                     Me.ReCheckItems(Me.dgvMediaList.SelectedRows(0).Index)
                     Me.LoadInfo(Master.currPath, True, False, Master.isFile)
                 Case Windows.Forms.DialogResult.Retry
-                    Me.ScrapeData(Master.ScrapeType.SingleScrape)
+                    Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
                 Case Windows.Forms.DialogResult.Abort
-                    Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
+                    Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, True)
             End Select
             dEditMovie.Dispose()
         Catch ex As Exception
@@ -1551,8 +1521,15 @@ Public Class frmMain
         Try
             If Me.dtMedia.Rows.Count > 0 Then
                 Select Case Args.scrapeType
-                    Case Master.ScrapeType.FullAsk
+                    Case Master.ScrapeType.FullAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk
                         For Each drvRow As DataRowView In dvView
+
+                            If Args.scrapeType = Master.ScrapeType.NewAsk Then
+                                If Not drvRow.Item(7) Then Continue For
+                            ElseIf Args.scrapeType = Master.ScrapeType.MarkAsk Then
+                                If Not drvRow.Item(8) Then Continue For
+                            End If
+
                             If Me.bwScraper.CancellationPending Then Return
                             Me.bwScraper.ReportProgress(iCount, drvRow.Item(1).ToString)
                             iCount += 1
@@ -1563,7 +1540,10 @@ Public Class frmMain
 
                             If File.Exists(nfoPath) Then
                                 tmpMovie = Master.LoadMovieFromNFO(nfoPath)
-                                If Not String.IsNullOrEmpty(tmpMovie.IMDBID) AndAlso IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
+                                If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
+                                    If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
+                                        IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                                    End If
                                     Master.currMovie = tmpMovie
                                 Else
                                     Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, tmpMovie, Args.scrapeType)
@@ -1575,14 +1555,14 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.UseStudioTags Then
+                                If Master.eSettings.UseStudioTags AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                     If UpdateMediaInfo() Then
                                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                                     End If
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
+                                If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
 
                                     If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
                                         If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs, True) Then
@@ -1605,7 +1585,7 @@ Public Class frmMain
                                 pThumbs = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.UseTMDB Then
+                                If Master.eSettings.UseTMDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
 
                                     If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
                                         If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing, True) Then
@@ -1630,19 +1610,31 @@ Public Class frmMain
                                 fArt = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
-                                drvRow.Item(4) = True
+                                If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
+                                    Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                    drvRow.Item(4) = True
+                                End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) Then
-                                Me.CreateRandomThumbs(sPath)
+                            If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
+                                If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) Then
+                                    Me.CreateRandomThumbs(sPath)
+                                End If
                             End If
+
                         Next
 
-                    Case Master.ScrapeType.FullAuto
+                    Case Master.ScrapeType.FullAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto
                         For Each drvRow As DataRowView In dvView
                             If Me.bwScraper.CancellationPending Then Return
+
+                            If Args.scrapeType = Master.ScrapeType.NewAuto Then
+                                If Not drvRow.Item(7) Then Continue For
+                            ElseIf Args.scrapeType = Master.ScrapeType.MarkAuto Then
+                                If Not drvRow.Item(8) Then Continue For
+                            End If
+
                             Me.bwScraper.ReportProgress(iCount, drvRow.Item(1).ToString)
                             iCount += 1
 
@@ -1652,7 +1644,10 @@ Public Class frmMain
 
                             If File.Exists(nfoPath) Then
                                 tmpMovie = Master.LoadMovieFromNFO(nfoPath)
-                                If Not String.IsNullOrEmpty(tmpMovie.IMDBID) AndAlso IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
+                                If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
+                                    If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
+                                        IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                                    End If
                                     Master.currMovie = tmpMovie
                                 Else
                                     Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, tmpMovie, Args.scrapeType)
@@ -1664,14 +1659,14 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.UseStudioTags Then
+                                If Master.eSettings.UseStudioTags AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                     If UpdateMediaInfo() Then
                                         Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                                     End If
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
+                                If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
 
                                     If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
                                         If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs) Then
@@ -1686,7 +1681,7 @@ Public Class frmMain
                                 pThumbs = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.UseTMDB Then
+                                If Master.eSettings.UseTMDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
                                     If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
                                         If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing) Then
                                             If Not IsNothing(Fanart.Image) Then
@@ -1700,13 +1695,17 @@ Public Class frmMain
                                 fArt = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
-                                drvRow.Item(4) = True
+                                If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
+                                    Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                    drvRow.Item(4) = True
+                                End If
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) Then
-                                Me.CreateRandomThumbs(sPath)
+                            If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
+                                If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) Then
+                                    Me.CreateRandomThumbs(sPath)
+                                End If
                             End If
                         Next
                     Case Master.ScrapeType.MIOnly
@@ -1871,7 +1870,7 @@ Public Class frmMain
                                 nfoPath = Master.GetNfoPath(sPath, drvRow.Item(6))
                                 Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
 
-                                If Not drvRow.Item(4) Then
+                                If Not drvRow.Item(4) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                     If String.IsNullOrEmpty(Master.currMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.currMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
                                         Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
                                     End If
@@ -1887,7 +1886,7 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Not drvRow.Item(2) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
+                                If Not drvRow.Item(2) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
                                     If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
                                         If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
                                             If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs) Then
@@ -1908,7 +1907,7 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
+                                If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
                                     If Master.eSettings.UseTMDB Then
                                         If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
                                             If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing) Then
@@ -1930,7 +1929,8 @@ Public Class frmMain
                                 fArt = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                                If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
+                                (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
                                     Me.CreateRandomThumbs(sPath)
                                 End If
                             End If
@@ -1949,7 +1949,7 @@ Public Class frmMain
                                 Master.currMovie = Master.LoadMovieFromNFO(nfoPath)
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Not drvRow.Item(4) Then
+                                If Not drvRow.Item(4) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                     If String.IsNullOrEmpty(Master.currMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.currMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
                                         Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
                                     End If
@@ -1964,7 +1964,7 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Not drvRow.Item(2) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
+                                If Not drvRow.Item(2) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
                                     If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                         If Poster.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Posters) Then
@@ -2001,7 +2001,7 @@ Public Class frmMain
                                 pThumbs = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
+                                If Not drvRow.Item(3) AndAlso Not String.IsNullOrEmpty(Master.currMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
                                     If Master.eSettings.UseTMDB Then
 
                                         If Fanart.IsAllowedToDownload(sPath, drvRow.Item(6), Master.ImageType.Fanart) Then
@@ -2040,7 +2040,8 @@ Public Class frmMain
                                 fArt = Nothing
 
                                 If Me.bwScraper.CancellationPending Then Return
-                                If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                                If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(6) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
+                                (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
                                     Me.CreateRandomThumbs(sPath)
                                 End If
                             End If
@@ -2719,7 +2720,7 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub ScrapeData(ByVal sType As Master.ScrapeType, Optional ByVal doSearch As Boolean = False)
+    Private Sub ScrapeData(ByVal sType As Master.ScrapeType, ByVal sMod As ScrapeModifier, Optional ByVal doSearch As Boolean = False)
 
         Try
             Dim chkCount As Integer = 0
@@ -2743,7 +2744,7 @@ Public Class frmMain
                     If Not bwScraper.IsBusy Then
                         bwScraper.WorkerReportsProgress = True
                         bwScraper.WorkerSupportsCancellation = True
-                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType})
+                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod})
                     End If
                 Case Master.ScrapeType.FullAuto
                     Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount
@@ -2754,11 +2755,11 @@ Public Class frmMain
                     If Not bwScraper.IsBusy Then
                         bwScraper.WorkerSupportsCancellation = True
                         bwScraper.WorkerReportsProgress = True
-                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType})
+                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod})
                     End If
                 Case Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
 
-                    Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount - 1
+                    Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount
                     Me.tslLoading.Text = "Checking for valid NFO:"
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
@@ -2766,9 +2767,49 @@ Public Class frmMain
                     If Not bwValidateNfo.IsBusy Then
                         bwValidateNfo.WorkerSupportsCancellation = True
                         bwValidateNfo.WorkerReportsProgress = True
-                        bwValidateNfo.RunWorkerAsync(New Arguments With {.scrapeType = sType})
+                        bwValidateNfo.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod})
                     End If
 
+                Case Master.ScrapeType.NewAsk, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAsk, Master.ScrapeType.MarkAuto
+                    For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+                        If drvRow.Cells(7).Value AndAlso (sType = Master.ScrapeType.NewAsk OrElse sType = Master.ScrapeType.NewAuto) Then
+                            chkCount += 1
+                        End If
+                        If drvRow.Cells(8).Value AndAlso (sType = Master.ScrapeType.MarkAsk OrElse sType = Master.ScrapeType.MarkAuto) Then
+                            chkCount += 1
+                        End If
+                    Next
+
+                    If chkCount > 0 Then
+                        Select Case sType
+                            Case Master.ScrapeType.NewAsk
+                                Me.tslLoading.Text = "Updating Media (New Movies - Ask):"
+                            Case Master.ScrapeType.NewAuto
+                                Me.tslLoading.Text = "Updating Media (New Movies - Auto):"
+                            Case Master.ScrapeType.MarkAsk
+                                Me.tslLoading.Text = "Updating Media (Marked Movies - Ask):"
+                            Case Master.ScrapeType.MarkAuto
+                                Me.tslLoading.Text = "Updating Media (Marked Movies - Auto):"
+                        End Select
+                        Me.tspbLoading.Maximum = chkCount
+                        Me.tslLoading.Visible = True
+                        Me.tspbLoading.Visible = True
+
+                        If Not bwScraper.IsBusy Then
+                            bwScraper.WorkerSupportsCancellation = True
+                            bwScraper.WorkerReportsProgress = True
+                            bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod})
+                        End If
+                    Else
+                        Me.tslLoading.Visible = False
+                        Me.tspbLoading.Visible = False
+                        Me.tslStatus.Text = String.Empty
+                        Me.tsbAutoPilot.Enabled = True
+                        Me.tsbRefreshMedia.Enabled = True
+                        Me.mnuMediaList.Enabled = True
+                        Me.tabsMain.Enabled = True
+                        Me.EnableFilters(True)
+                    End If
                 Case Master.ScrapeType.MIOnly
                     Me.tspbLoading.Maximum = Me.dgvMediaList.RowCount
                     Me.tslLoading.Text = "Updating Media (All Movies - MI Only):"
@@ -3245,4 +3286,236 @@ Public Class frmMain
     End Sub
 #End Region
 
+    Private Sub mnuAllAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.All)
+    End Sub
+
+    Private Sub mnuAllAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuAllAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuAllAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuAllAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Extra)
+    End Sub
+
+    Private Sub mnuAllAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuAllAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.NFO)
+    End Sub
+
+    Private Sub mnuAllAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Poster)
+    End Sub
+
+    Private Sub mnuAllAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Fanart)
+    End Sub
+
+    Private Sub mnuAllAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Extra)
+    End Sub
+
+    Private Sub mnuMissAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuMissAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuMissAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuMissAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.All)
+    End Sub
+
+    Private Sub mnuMissAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuMissAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuMissAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuNewAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuNewAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuNewAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuNewAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuNewAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuNewAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuNewAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuNewAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuNewAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuNewAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuMarkAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuMarkAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuMarkAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuMarkAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuMarkAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuMarkAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuMarkAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuMarkAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuMarkAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuMarkAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Extra)
+
+    End Sub
 End Class
