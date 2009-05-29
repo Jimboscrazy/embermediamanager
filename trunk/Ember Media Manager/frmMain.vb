@@ -1730,7 +1730,7 @@ Public Class frmMain
                             End If
 
                             If Me.bwScraper.CancellationPending Then Return
-                            Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                            Master.SaveMovieToNFO(Master.currMovie, drvRow.Item(0).ToString, drvRow.Item(6))
                         Next
 
                     Case Master.ScrapeType.CleanFolders
