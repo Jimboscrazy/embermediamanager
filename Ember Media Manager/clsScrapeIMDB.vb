@@ -616,25 +616,26 @@ mPlot:
                     bwIMDB.ReportProgress(10)
                 End If
 
+                'Get Writers
+                D = 0 : W = 0
+                D = Html.IndexOf("<h5>Writer")
+                If D > 0 Then W = Html.IndexOf("</div>", D)
+                If D > 0 AndAlso W > 0 Then
+                    Dim q = From M As Match In Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN) _
+                            Where Not M.Groups("name").ToString = "more" _
+                            AndAlso Not M.Groups("name").ToString = "(more)" _
+                            AndAlso Not M.Groups("name").ToString = "(WGA)" _
+                            Select Writer = M.Groups("name").ToString & " (writer)"
+
+                    IMDBMovie.Credits = Strings.Join(q.ToArray, " / ").Trim
+                End If
+
+                If bwIMDB.WorkerReportsProgress Then
+                    bwIMDB.ReportProgress(11)
+                End If
+
                 'Get All Other Info
                 If FullCrew Then
-                    'Get Writers
-                    D = 0 : W = 0
-                    D = Html.IndexOf("<h5>Writer")
-                    If D > 0 Then W = Html.IndexOf("</div>", D)
-                    If D > 0 AndAlso W > 0 Then
-                        Dim q = From M As Match In Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN) _
-                                Where Not M.Groups("name").ToString = "more" _
-                                AndAlso Not M.Groups("name").ToString = "(more)" _
-                                AndAlso Not M.Groups("name").ToString = "(WGA)" _
-                                Select Writer = M.Groups("name").ToString & " (writer)"
-
-                        IMDBMovie.Credits = Strings.Join(q.ToArray, " / ").Trim
-                    End If
-
-                    If bwIMDB.WorkerReportsProgress Then
-                        bwIMDB.ReportProgress(11)
-                    End If
 
                     D = 0 : W = 0
                     D = Html.IndexOf("Directed by</a></h5>")
