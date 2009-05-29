@@ -1120,7 +1120,11 @@ Public Class frmMain
                         End If
                     Else
                         If Master.eSettings.UseFolderName Then
-                            mName = Directory.GetParent(mPath).Name
+                            If Directory.GetParent(mPath).Name.ToLower = "video_ts" Then
+                                mName = Directory.GetParent(Directory.GetParent(mPath).FullName).Name
+                            Else
+                                mName = Directory.GetParent(mPath).Name
+                            End If
                         Else
                             mName = Path.GetFileNameWithoutExtension(mPath)
                         End If
