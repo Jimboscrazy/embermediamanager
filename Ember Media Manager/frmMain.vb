@@ -1524,8 +1524,7 @@ Public Class frmMain
         Me.tspbLoading.Visible = False
         Me.tspbLoading.Value = 0
 
-        Me.lblMediaCount.Text = String.Format("Media Count: {0}", Me.dgvMediaList.Rows.Count)
-        Me.lblMediaCount.Visible = True
+        Me.tabMovies.Text = String.Format("Movies ({0})", Me.dgvMediaList.Rows.Count)
         Me.txtSearch.Text = String.Empty
         Me.EnableFilters(True)
 
@@ -2480,8 +2479,6 @@ Public Class frmMain
                 .lblInfoPanelHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
 
                 'left panel
-                .lblMediaCount.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .lblMediaCount.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
                 .scMain.Panel1.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
                 .pnlSearch.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
                 .pnlFilter.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
@@ -2567,7 +2564,7 @@ Public Class frmMain
             Me.tsbRefreshMedia.Enabled = False
             Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
-            Me.lblMediaCount.Visible = False
+            Me.tabMovies.Text = "Movies"
 
             Me.tslStatus.Text = "Performing preliminary tasks..."
             Me.loadType = mediaType

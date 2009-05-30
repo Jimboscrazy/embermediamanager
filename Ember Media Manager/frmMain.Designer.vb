@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -66,7 +66,6 @@ Partial Class frmMain
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuRescrape = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuSearchNew = New System.Windows.Forms.ToolStripMenuItem
-        Me.lblMediaCount = New System.Windows.Forms.Label
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.tabTelevision = New System.Windows.Forms.TabPage
@@ -398,7 +397,6 @@ Partial Class frmMain
         Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
         Me.scMain.Panel1.Controls.Add(Me.pnlSearch)
         Me.scMain.Panel1.Controls.Add(Me.dgvMediaList)
-        Me.scMain.Panel1.Controls.Add(Me.lblMediaCount)
         Me.scMain.Panel1.Controls.Add(Me.tabsMain)
         Me.scMain.Panel1.Margin = New System.Windows.Forms.Padding(3)
         '
@@ -539,8 +537,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -617,18 +615,6 @@ Partial Class frmMain
         Me.cmnuSearchNew.Name = "cmnuSearchNew"
         Me.cmnuSearchNew.Size = New System.Drawing.Size(158, 22)
         Me.cmnuSearchNew.Text = "Change Movie"
-        '
-        'lblMediaCount
-        '
-        Me.lblMediaCount.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMediaCount.ForeColor = System.Drawing.Color.Black
-        Me.lblMediaCount.Location = New System.Drawing.Point(154, 4)
-        Me.lblMediaCount.Name = "lblMediaCount"
-        Me.lblMediaCount.Size = New System.Drawing.Size(146, 19)
-        Me.lblMediaCount.TabIndex = 9
-        Me.lblMediaCount.Text = "Media Count:"
-        Me.lblMediaCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.lblMediaCount.Visible = False
         '
         'tabsMain
         '
@@ -1871,7 +1857,6 @@ Partial Class frmMain
     Friend WithEvents pnlPoster As System.Windows.Forms.Panel
     Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
     Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
-    Friend WithEvents lblMediaCount As System.Windows.Forms.Label
     Friend WithEvents tabsMain As System.Windows.Forms.TabControl
     Friend WithEvents tabMovies As System.Windows.Forms.TabPage
     Friend WithEvents tabTelevision As System.Windows.Forms.TabPage
