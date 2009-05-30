@@ -7,7 +7,7 @@
  * Feature: "No Spoilers" option for automatic creation of extrathumbs
  * Fix: Folder name for "VIDEO_TS" movies.... for real this time
  * Fix: Another hole in the resolution to descriptor logic
- * Fix: Items not saving if movie filename includes stacking markers and <movie> file types are selected
+ * Fix: Items not saving if movie filename includes stacking markers and "moviename" file types are selected
  * Fix: Extrathumbs not created correctly from updaters
  * Change: Scrape writers even if full crew is not selected
  * Change: Support for listing thumbs in the nfo
