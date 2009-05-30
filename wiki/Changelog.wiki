@@ -4,8 +4,11 @@
 *Changes in Upcoming Release:*
  * Feature: New updaters: "New Movies" and "Marked Movies"
  * Feature: Each updater is now broken down into: All Items, NFO Only, Poster Only, Fanart Only, Extrathumbs Only
+ * Feature: "No Spoilers" option for automatic creation of extrathumbs
  * Fix: Folder name for "VIDEO_TS" movies.... for real this time
  * Fix: Another hole in the resolution to descriptor logic
+ * Fix: Items not saving if movie filename includes stacking markers and <movie> file types are selected
+ * Fix: Extrathumbs not created correctly from updaters
  * Change: Scrape writers even if full crew is not selected
  * Change: Support for listing thumbs in the nfo
  * Change: Tweaks to media info scanning
@@ -13,6 +16,8 @@
  * Change: Some tweaks to the updaters
  * Change: Revert to saving "tt" in nfo id again
  * Change: Ignore movie files with "sample" in the filename
+ * Change: Support for multiple directors
+ * Change: Lots of little tweaks to the code
 
 *Changes in r183:*
  * Feature: Change movie from movie editor
