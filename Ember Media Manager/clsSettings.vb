@@ -99,6 +99,7 @@ Public Class emmSettings
     Private _useofdbplot As Boolean
     Private _useofdbgenre As Boolean
     Private _autothumbs As Integer
+    Private _autothumbnospoilers As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
     Private _movielist As New ArrayList
 
@@ -767,6 +768,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property AutoThumbsNoSpoilers() As Boolean
+        Get
+            Return Me._autothumbnospoilers
+        End Get
+        Set(ByVal value As Boolean)
+            Me._autothumbnospoilers = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -863,6 +873,8 @@ Public Class emmSettings
         Me._useofdboutline = False
         Me._useofdbplot = False
         Me._useofdbgenre = False
+        Me._autothumbs = 0
+        Me._autothumbnospoilers = False
         Me._xbmccoms.Clear()
         Me._movielist.Clear()
     End Sub

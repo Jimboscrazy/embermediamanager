@@ -24,10 +24,10 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1})
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper", 3, 3)
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode3})
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode5})
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper", 3, 3)
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode7})
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
@@ -178,6 +178,8 @@ Partial Class dlgSettings
         Me.lblCurrent = New System.Windows.Forms.Label
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.chkNoSpoilers = New System.Windows.Forms.CheckBox
+        Me.Label17 = New System.Windows.Forms.Label
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -1169,7 +1171,7 @@ Partial Class dlgSettings
         Me.GroupBox14.Controls.Add(Me.chkResizePoster)
         Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
         Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
-        Me.GroupBox14.Location = New System.Drawing.Point(6, 272)
+        Me.GroupBox14.Location = New System.Drawing.Point(325, 203)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox14.TabIndex = 59
@@ -1229,7 +1231,7 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.chkResizeFanart)
         Me.GroupBox13.Controls.Add(Me.txtFanartWidth)
         Me.GroupBox13.Controls.Add(Me.txtFanartHeight)
-        Me.GroupBox13.Location = New System.Drawing.Point(261, 273)
+        Me.GroupBox13.Location = New System.Drawing.Point(327, 273)
         Me.GroupBox13.Name = "GroupBox13"
         Me.GroupBox13.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox13.TabIndex = 58
@@ -1326,6 +1328,8 @@ Partial Class dlgSettings
         '
         'GroupBox9
         '
+        Me.GroupBox9.Controls.Add(Me.Label17)
+        Me.GroupBox9.Controls.Add(Me.chkNoSpoilers)
         Me.GroupBox9.Controls.Add(Me.Label15)
         Me.GroupBox9.Controls.Add(Me.txtAutoThumbs)
         Me.GroupBox9.Controls.Add(Me.chkAutoThumbs)
@@ -1341,7 +1345,7 @@ Partial Class dlgSettings
         Me.GroupBox9.Controls.Add(Me.lblFanartSize)
         Me.GroupBox9.Location = New System.Drawing.Point(6, 6)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(195, 261)
+        Me.GroupBox9.Size = New System.Drawing.Size(195, 308)
         Me.GroupBox9.TabIndex = 56
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
@@ -1349,7 +1353,7 @@ Partial Class dlgSettings
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(32, 239)
+        Me.Label15.Location = New System.Drawing.Point(24, 245)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(97, 13)
         Me.Label15.TabIndex = 61
@@ -1359,14 +1363,14 @@ Partial Class dlgSettings
         '
         Me.txtAutoThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtAutoThumbs.Enabled = False
-        Me.txtAutoThumbs.Location = New System.Drawing.Point(132, 236)
+        Me.txtAutoThumbs.Location = New System.Drawing.Point(124, 242)
         Me.txtAutoThumbs.Name = "txtAutoThumbs"
         Me.txtAutoThumbs.Size = New System.Drawing.Size(53, 20)
         Me.txtAutoThumbs.TabIndex = 45
         '
         'chkAutoThumbs
         '
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 206)
+        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 212)
         Me.chkAutoThumbs.Name = "chkAutoThumbs"
         Me.chkAutoThumbs.Size = New System.Drawing.Size(179, 31)
         Me.chkAutoThumbs.TabIndex = 44
@@ -1654,27 +1658,27 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode1.ImageIndex = 1
-        TreeNode1.Name = "nXBMCCom"
-        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode1.SelectedImageIndex = 1
-        TreeNode1.Text = "XBMC Communication"
-        TreeNode2.ImageIndex = 0
-        TreeNode2.Name = "nGeneral"
-        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode2.SelectedImageIndex = 0
-        TreeNode2.Text = "General"
-        TreeNode3.ImageIndex = 3
-        TreeNode3.Name = "nScraper"
-        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode3.SelectedImageIndex = 3
-        TreeNode3.Text = "Scraper"
-        TreeNode4.ImageIndex = 2
-        TreeNode4.Name = "nMovies"
-        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode4.SelectedImageIndex = 2
-        TreeNode4.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode2, TreeNode4})
+        TreeNode5.ImageIndex = 1
+        TreeNode5.Name = "nXBMCCom"
+        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.SelectedImageIndex = 1
+        TreeNode5.Text = "XBMC Communication"
+        TreeNode6.ImageIndex = 0
+        TreeNode6.Name = "nGeneral"
+        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode6.SelectedImageIndex = 0
+        TreeNode6.Text = "General"
+        TreeNode7.ImageIndex = 3
+        TreeNode7.Name = "nScraper"
+        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode7.SelectedImageIndex = 3
+        TreeNode7.Text = "Scraper"
+        TreeNode8.ImageIndex = 2
+        TreeNode8.Name = "nMovies"
+        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 2
+        TreeNode8.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode8})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -1793,6 +1797,27 @@ Partial Class dlgSettings
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(221, 25)
         Me.Panel1.TabIndex = 65
+        '
+        'chkNoSpoilers
+        '
+        Me.chkNoSpoilers.AutoSize = True
+        Me.chkNoSpoilers.Enabled = False
+        Me.chkNoSpoilers.Location = New System.Drawing.Point(27, 263)
+        Me.chkNoSpoilers.Name = "chkNoSpoilers"
+        Me.chkNoSpoilers.Size = New System.Drawing.Size(80, 17)
+        Me.chkNoSpoilers.TabIndex = 62
+        Me.chkNoSpoilers.Text = "No Spoilers"
+        Me.chkNoSpoilers.UseVisualStyleBackColor = True
+        '
+        'Label17
+        '
+        Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label17.Location = New System.Drawing.Point(24, 279)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(168, 24)
+        Me.Label17.TabIndex = 63
+        Me.Label17.Text = "(If checked, Ember will use only the first half of the movie to extract thumbs)"
+        Me.Label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'dlgSettings
         '
@@ -2014,4 +2039,6 @@ Partial Class dlgSettings
     Friend WithEvents lbXBMCCom As System.Windows.Forms.ListBox
     Friend WithEvents btnEditCom As System.Windows.Forms.Button
     Friend WithEvents chkOFDBGenre As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNoSpoilers As System.Windows.Forms.CheckBox
+    Friend WithEvents Label17 As System.Windows.Forms.Label
 End Class
