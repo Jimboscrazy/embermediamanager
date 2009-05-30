@@ -541,11 +541,14 @@ Public Class dlgEditMovie
                         'again in case user made changes to the order of
                         'extrathumbs after downloading new extrathumbs
                         Dim iMod As Integer = Master.GetExtraModifier(ePath)
+                        Dim iVal As Integer = 1
+                        If iMod = -1 Then iMod = 0
                         Dim fList As New List(Of FileInfo)
                         fList.AddRange(di.GetFiles("thumb*.jpg"))
 
                         For i As Integer = 0 To fList.Count - 1
-                            Master.MoveFileWithStream(fList.Item(i).FullName, Path.Combine(ePath, String.Concat("thumb", i + iMod, ".jpg")))
+                            Master.MoveFileWithStream(fList.Item(i).FullName, Path.Combine(ePath, String.Concat("thumb", iVal + iMod, ".jpg")))
+                            iVal += 1
                         Next
                     End If
                     Directory.Delete(Path.Combine(Application.StartupPath, "Temp"), True)

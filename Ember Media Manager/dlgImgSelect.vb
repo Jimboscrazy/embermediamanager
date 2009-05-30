@@ -150,7 +150,7 @@ Public Class dlgImgSelect
                 If isChecked Then
 
                     If isEdit Then
-                        extraPath = String.Concat(tmpPath, "extrathumbs")
+                        extraPath = Path.Combine(tmpPath, "extrathumbs")
                     Else
                         extraPath = Path.Combine(Directory.GetParent(Me.sPath).FullName, "extrathumbs")
                     End If
