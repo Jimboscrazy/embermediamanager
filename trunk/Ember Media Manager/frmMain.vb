@@ -3348,9 +3348,14 @@ Public Class frmMain
             ffmpeg.WaitForExit()
             ffmpeg.Close()
 
-            If intSeconds > ThumbCount + 2 Then
-                intSeconds = intSeconds / (ThumbCount + 2)
-                intAdd = intSeconds
+            If intSeconds > 0 AndAlso ((Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds / 2 > ThumbCount + 300) OrElse (Not Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds > ThumbCount + 2)) Then
+                If Master.eSettings.AutoThumbsNoSpoilers Then
+                    intSeconds = ((intSeconds / 2) - 300) / ThumbCount
+                    intAdd = intSeconds + 300
+                Else
+                    intSeconds = intSeconds / (ThumbCount + 2)
+                    intAdd = intSeconds
+                End If
                 intSeconds += intAdd
 
                 For i = 0 To (ThumbCount - 1)

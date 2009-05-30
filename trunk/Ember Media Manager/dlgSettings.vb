@@ -576,8 +576,10 @@ Public Class dlgSettings
 
     Private Sub chkAutoThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoThumbs.CheckedChanged
         Me.txtAutoThumbs.Enabled = Me.chkAutoThumbs.Checked
+        Me.chkNoSpoilers.Enabled = Me.chkAutoThumbs.Checked
         If Not chkAutoThumbs.Checked Then
             Me.txtAutoThumbs.Text = String.Empty
+            Me.chkNoSpoilers.Checked = False
         End If
         Me.btnApply.Enabled = True
     End Sub
@@ -719,6 +721,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOFDBGenre.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkNoSpoilers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoSpoilers.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -878,8 +884,10 @@ Public Class dlgSettings
             Master.eSettings.UseOFDBGenre = Me.chkOFDBGenre.Checked
             If Not String.IsNullOrEmpty(txtAutoThumbs.Text) AndAlso CInt(txtAutoThumbs.Text) > 0 Then
                 Master.eSettings.AutoThumbs = CInt(txtAutoThumbs.Text)
+                Master.eSettings.AutoThumbsNoSpoilers = Me.chkNoSpoilers.Checked
             Else
                 Master.eSettings.AutoThumbs = 0
+                Master.eSettings.AutoThumbsNoSpoilers = False
             End If
             Master.eSettings.ScanRecursive = Me.chkScanRecursive.Checked
 
@@ -992,8 +1000,10 @@ Public Class dlgSettings
             Me.chkOFDBGenre.Checked = Master.eSettings.UseOFDBGenre
             If Master.eSettings.AutoThumbs > 0 Then
                 Me.chkAutoThumbs.Checked = True
-                Me.txtAutoThumbs.Text = Master.eSettings.AutoThumbs.ToString
                 Me.txtAutoThumbs.Enabled = True
+                Me.txtAutoThumbs.Text = Master.eSettings.AutoThumbs.ToString
+                Me.chkNoSpoilers.Enabled = True
+                Me.chkNoSpoilers.Checked = Master.eSettings.AutoThumbsNoSpoilers
             End If
             Me.chkScanRecursive.Checked = Master.eSettings.ScanRecursive
 
