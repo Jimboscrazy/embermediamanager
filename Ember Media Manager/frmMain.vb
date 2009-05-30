@@ -116,17 +116,7 @@ Public Class frmMain
         'save the list of movies to settings so we know which ones are new
 
         If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy Then
-            Me.ClearFilters()
-            Master.eSettings.MovieList.Clear()
-            For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-                If drvRow.Cells(8).Value Then
-                    Master.eSettings.MovieList.Add(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark"))
-                Else
-                    Master.eSettings.MovieList.Add(drvRow.Cells(1).Value.ToString)
-                End If
-            Next
-            Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
-            Master.eSettings.Save()
+            Me.SaveMovieList()
         End If
 
         If Me.bwFolderData.IsBusy Then Me.bwFolderData.CancelAsync()
@@ -892,11 +882,13 @@ Public Class frmMain
     Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
         Select Case cmnuMark.Text
             Case "Unmark"
-                Me.dgvMediaList.SelectedRows(0).Cells(8).Value = False
+                Me.dtMedia.Rows(Me.dgvMediaList.SelectedRows(0).Index).Item(8) = False
+                'Me.dgvMediaList.SelectedRows(0).Cells(8).Value = False
                 Master.currMark = False
                 Me.SetFilterColors()
             Case Else
-                Me.dgvMediaList.SelectedRows(0).Cells(8).Value = True
+                Me.dtMedia.Rows(Me.dgvMediaList.SelectedRows(0).Index).Item(8) = True
+                'Me.dgvMediaList.SelectedRows(0).Cells(8).Value = True
                 Master.currMark = True
                 Me.SetFilterColors()
         End Select
@@ -952,6 +944,239 @@ Public Class frmMain
     Private Sub dgvMediaList_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMediaList.MouseDown
         cmnuMark.Text = If(Me.dgvMediaList.SelectedRows(0).Cells(8).Value, "Unmark", "Mark")
         Me.SetFilterColors()
+    End Sub
+
+    Private Sub mnuAllAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.All)
+    End Sub
+
+    Private Sub mnuAllAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuAllAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuAllAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuAllAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Extra)
+    End Sub
+
+    Private Sub mnuAllAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuAllAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.NFO)
+    End Sub
+
+    Private Sub mnuAllAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Poster)
+    End Sub
+
+    Private Sub mnuAllAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Fanart)
+    End Sub
+
+    Private Sub mnuAllAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Extra)
+    End Sub
+
+    Private Sub mnuMissAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuMissAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuMissAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuMissAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.All)
+    End Sub
+
+    Private Sub mnuMissAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuMissAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuMissAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuNewAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuNewAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuNewAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuNewAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuNewAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuNewAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuNewAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuNewAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuNewAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuNewAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuMarkAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuMarkAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuMarkAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuMarkAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuMarkAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Extra)
+
+    End Sub
+
+    Private Sub mnuMarkAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskAll.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.All)
+
+    End Sub
+
+    Private Sub mnuMarkAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskNfo.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.NFO)
+
+    End Sub
+
+    Private Sub mnuMarkAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskPoster.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Poster)
+
+    End Sub
+
+    Private Sub mnuMarkAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskFanart.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Fanart)
+
+    End Sub
+
+    Private Sub mnuMarkAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskExtra.Click
+
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Extra)
+
     End Sub
 
 #End Region '*** Form/Controls
@@ -1874,15 +2099,16 @@ Public Class frmMain
                                     If String.IsNullOrEmpty(Master.currMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.currMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
                                         Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
                                     End If
-
-                                    If Master.eSettings.UseStudioTags Then
-                                        If UpdateMediaInfo() Then
-                                            Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
+                                    If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
+                                        If Master.eSettings.UseStudioTags Then
+                                            If UpdateMediaInfo() Then
+                                                Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
+                                            End If
                                         End If
-                                    End If
 
-                                    Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
-                                    drvRow.Item(4) = True
+                                        Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                        drvRow.Item(4) = True
+                                    End If
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
@@ -1953,14 +2179,16 @@ Public Class frmMain
                                     If String.IsNullOrEmpty(Master.currMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.currMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
                                         Master.currMovie = IMDB.GetSearchMovieInfo(drvRow.Item(1).ToString, New Media.Movie, Args.scrapeType)
                                     End If
-                                    If Master.eSettings.UseStudioTags Then
-                                        If UpdateMediaInfo() Then
-                                            Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
+                                    If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
+                                        If Master.eSettings.UseStudioTags Then
+                                            If UpdateMediaInfo() Then
+                                                Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
+                                            End If
                                         End If
-                                    End If
 
-                                    Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
-                                    drvRow.Item(4) = True
+                                        Master.SaveMovieToNFO(Master.currMovie, sPath, drvRow.Item(6))
+                                        drvRow.Item(4) = True
+                                    End If
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then Return
@@ -2317,7 +2545,7 @@ Public Class frmMain
                 End While
             End If
 
-            Me.ClearFilters()
+            Me.SaveMovieList()
 
             Me.dgvMediaList.DataSource = Nothing
 
@@ -3284,238 +3512,20 @@ Public Class frmMain
             MsgBox(String.Concat("There was a problem communicating with ", xCom.Name, vbNewLine, "Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), MsgBoxStyle.Exclamation, String.Concat("Unable to Start XBMC Update for ", xCom.Name))
         End Try
     End Sub
+
+    Private Sub SaveMovieList()
+        Me.ClearFilters()
+        Master.eSettings.MovieList.Clear()
+        For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+            If drvRow.Cells(8).Value Then
+                Master.eSettings.MovieList.Add(String.Concat(drvRow.Cells(1).Value.ToString, "=Mark"))
+            Else
+                Master.eSettings.MovieList.Add(drvRow.Cells(1).Value.ToString)
+            End If
+        Next
+        Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
+        Master.eSettings.Save()
+    End Sub
 #End Region
 
-    Private Sub mnuAllAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoAll.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.All)
-    End Sub
-
-    Private Sub mnuAllAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoNfo.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.NFO)
-
-    End Sub
-
-    Private Sub mnuAllAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoPoster.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Poster)
-
-    End Sub
-
-    Private Sub mnuAllAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoFanart.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Fanart)
-
-    End Sub
-
-    Private Sub mnuAllAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoExtra.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Extra)
-    End Sub
-
-    Private Sub mnuAllAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskAll.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.All)
-
-    End Sub
-
-    Private Sub mnuAllAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskNfo.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.NFO)
-    End Sub
-
-    Private Sub mnuAllAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskPoster.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Poster)
-    End Sub
-
-    Private Sub mnuAllAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskFanart.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Fanart)
-    End Sub
-
-    Private Sub mnuAllAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskExtra.Click
-
-        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Extra)
-    End Sub
-
-    Private Sub mnuMissAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoAll.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.All)
-
-    End Sub
-
-    Private Sub mnuMissAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoNfo.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.NFO)
-
-    End Sub
-
-    Private Sub mnuMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoPoster.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Poster)
-
-    End Sub
-
-    Private Sub mnuMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoFanart.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Fanart)
-
-    End Sub
-
-    Private Sub mnuMissAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoExtra.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Extra)
-
-    End Sub
-
-    Private Sub mnuMissAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskAll.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.All)
-    End Sub
-
-    Private Sub mnuMissAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskNfo.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.NFO)
-
-    End Sub
-
-    Private Sub mnuMissAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskPoster.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Poster)
-
-    End Sub
-
-    Private Sub mnuMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskFanart.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Fanart)
-
-    End Sub
-
-    Private Sub mnuMissAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskExtra.Click
-
-        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Extra)
-
-    End Sub
-
-    Private Sub mnuNewAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoAll.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.All)
-
-    End Sub
-
-    Private Sub mnuNewAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoNfo.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.NFO)
-
-    End Sub
-
-    Private Sub mnuNewAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoPoster.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Poster)
-
-    End Sub
-
-    Private Sub mnuNewAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoFanart.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Fanart)
-
-    End Sub
-
-    Private Sub mnuNewAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoExtra.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Extra)
-
-    End Sub
-
-    Private Sub mnuNewAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskAll.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.All)
-
-    End Sub
-
-    Private Sub mnuNewAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskNfo.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.NFO)
-
-    End Sub
-
-    Private Sub mnuNewAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskPoster.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Poster)
-
-    End Sub
-
-    Private Sub mnuNewAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskFanart.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Fanart)
-
-    End Sub
-
-    Private Sub mnuNewAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskExtra.Click
-
-        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Extra)
-
-    End Sub
-
-    Private Sub mnuMarkAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoAll.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.All)
-
-    End Sub
-
-    Private Sub mnuMarkAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoNfo.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.NFO)
-
-    End Sub
-
-    Private Sub mnuMarkAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoPoster.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Poster)
-
-    End Sub
-
-    Private Sub mnuMarkAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoFanart.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Fanart)
-
-    End Sub
-
-    Private Sub mnuMarkAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoExtra.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Extra)
-
-    End Sub
-
-    Private Sub mnuMarkAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskAll.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.All)
-
-    End Sub
-
-    Private Sub mnuMarkAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskNfo.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.NFO)
-
-    End Sub
-
-    Private Sub mnuMarkAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskPoster.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Poster)
-
-    End Sub
-
-    Private Sub mnuMarkAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskFanart.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Fanart)
-
-    End Sub
-
-    Private Sub mnuMarkAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskExtra.Click
-
-        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Extra)
-
-    End Sub
 End Class
