@@ -322,6 +322,7 @@ Public Class Master
                                       OrElse f.Extension.ToLower() = ".dvr-ms" _
                                       OrElse f.Extension.ToLower() = ".ts" _
                                       OrElse f.Extension.ToLower() = ".m4v") _
+                                      AndAlso Not f.Name.ToLower.Contains("sample") _
                                       AndAlso Not f.Name.ToLower.Contains("-trailer") _
                                       AndAlso Not f.Name.ToLower.Contains("[trailer"))
 
@@ -1279,8 +1280,9 @@ Public Class Master
                               OrElse f.Extension.ToLower() = ".dvr-ms" _
                               OrElse f.Extension.ToLower() = ".ts" _
                               OrElse f.Extension.ToLower() = ".m4v") _
-                             AndAlso Not f.Name.ToLower.Contains("-trailer") _
-                             AndAlso Not f.Name.ToLower.Contains("[trailer"))
+                              AndAlso Not f.Name.ToLower.Contains("sample") _
+                              AndAlso Not f.Name.ToLower.Contains("-trailer") _
+                              AndAlso Not f.Name.ToLower.Contains("[trailer"))
 
         If lFi.Count > 0 Then
             Return lFi(0).FullName
