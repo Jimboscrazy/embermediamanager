@@ -116,7 +116,7 @@ Namespace IMDB
 
             Try
                 Select Case iType
-                    Case Master.ScrapeType.FullAsk, Master.ScrapeType.UpdateAsk
+                    Case Master.ScrapeType.FullAsk, Master.ScrapeType.UpdateAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk
                         If r.PopularTitles.Count = 1 Then
                             b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                         ElseIf r.ExactMatches.Count > 0 Then
@@ -135,7 +135,7 @@ Namespace IMDB
                             End If
                             dIMDB.Dispose()
                         End If
-                    Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto
+                    Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto, Master.ScrapeType.FullAuto, Master.ScrapeType.MarkAuto
                         'it seems "popular matches" is a better result than "exact matches"
                         If r.PopularTitles.Count > 0 Then
                             b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
@@ -625,7 +625,7 @@ mPlot:
                             Where Not M.Groups("name").ToString = "more" _
                             AndAlso Not M.Groups("name").ToString = "(more)" _
                             AndAlso Not M.Groups("name").ToString = "(WGA)" _
-                            Select Writer = M.Groups("name").ToString & " (writer)"
+                            Select Writer = M.Groups("name").ToString & If(FullCrew, " (writer)", String.Empty)
 
                     IMDBMovie.Credits = Strings.Join(q.ToArray, " / ").Trim
                 End If
