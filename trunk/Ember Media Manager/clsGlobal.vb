@@ -1016,11 +1016,11 @@ Public Class Master
             Dim tmpName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
             Dim tmpNameNoStack As String = Path.GetFileNameWithoutExtension(sPath)
             nPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
-            Dim nPathNoStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack)
-            If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(npath, ".nfo")) Then
-                Return String.Concat(npath, ".nfo")
-            ElseIf eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(nPathNoStack, ".nfo")) Then
-                Return String.Concat(nPathNoStack, ".nfo")
+            Dim nPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack)
+            If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(nPathWithStack, ".nfo")) Then
+                Return String.Concat(nPathWithStack, ".nfo")
+            ElseIf eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(nPath, ".nfo")) Then
+                Return String.Concat(nPath, ".nfo")
             ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
                 Return Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
             Else

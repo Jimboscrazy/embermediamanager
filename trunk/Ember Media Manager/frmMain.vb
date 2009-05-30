@@ -221,10 +221,10 @@ Public Class frmMain
             Me.ClearInfo()
 
             If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                Me.LoadMedia(1)
+                Me.LoadMedia(1, True)
             Else
                 If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
-                    Me.LoadMedia(1)
+                    Me.LoadMedia(1, True)
                 End If
             End If
 
@@ -1511,6 +1511,9 @@ Public Class frmMain
                 Me.tsbAutoPilot.Enabled = False
                 Me.mnuMediaList.Enabled = False
                 Me.tslStatus.Text = String.Empty
+                Me.btnUp.Enabled = False
+                Me.btnDown.Enabled = False
+                Me.btnMid.Enabled = False
             End If
 
         Catch ex As Exception
@@ -2523,7 +2526,7 @@ Public Class frmMain
 
     End Sub
 
-    Public Sub LoadMedia(ByVal mediaType As Integer)
+    Public Sub LoadMedia(ByVal mediaType As Integer, Optional ByVal firstLoad As Boolean = False)
 
         '//
         ' Begin threads to fill datagrid with media data
@@ -2545,7 +2548,7 @@ Public Class frmMain
                 End While
             End If
 
-            Me.SaveMovieList()
+            If Not firstLoad Then Me.SaveMovieList()
 
             Me.dgvMediaList.DataSource = Nothing
 
