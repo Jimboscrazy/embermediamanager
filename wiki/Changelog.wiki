@@ -2,7 +2,17 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Feature: New updaters: "New Movies" and "Marked Movies"
+ * Feature: Each updater is now broken down into: All Items, NFO Only, Poster Only, Fanart Only, Extrathumbs Only
+ * Fix: Folder name for "VIDEO_TS" movies.... for real this time
+ * Fix: Another hole in the resolution to descriptor logic
+ * Change: Scrape writers even if full crew is not selected
+ * Change: Support for listing thumbs in the nfo
+ * Change: Tweaks to media info scanning
+ * Change: If a media info tag already exists, display that in the media info section of the info panel instead of recreating it each time.
+ * Change: Some tweaks to the updaters
+ * Change: Revert to saving "tt" in nfo id again
+ * Change: Ignore movie files with "sample" in the filename
 
 *Changes in r183:*
  * Feature: Change movie from movie editor
