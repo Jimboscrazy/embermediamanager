@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r200:*
  * Feature: New updaters: "New Movies" and "Marked Movies"
  * Feature: Each updater is now broken down into: All Items, NFO Only, Poster Only, Fanart Only, Extrathumbs Only
  * Feature: "No Spoilers" option for automatic creation of extrathumbs
