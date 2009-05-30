@@ -495,7 +495,9 @@ mResult:
                     Dim Dir = From M As Match In rDir Where Not M.Groups("name").ToString.Contains("more") _
                               Select Web.HttpUtility.HtmlDecode(M.Groups("name").ToString) Take 1
 
-                    IMDBMovie.Director = Dir(0).ToString.Trim
+                    If Dir.Count > 0 Then
+                        IMDBMovie.Director = Strings.Join(Dir.ToArray, " / ").Trim
+                    End If
                 End If
 
                 If bwIMDB.WorkerReportsProgress Then
