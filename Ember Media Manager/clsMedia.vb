@@ -58,13 +58,23 @@ Namespace Media
         Private _actors As New List(Of Person)
         Private _fileInfo As New MediaInfo.Fileinfo
 
-        <XmlElement("id")> _
+        <XmlIgnore()> _
         Public Property IMDBID() As String
             Get
                 Return Me._imdbid.Replace("tt", String.Empty).Trim
             End Get
             Set(ByVal value As String)
-                Me._imdbid = value.Replace("tt", String.Empty).Trim
+                Me._imdbid = value
+            End Set
+        End Property
+
+        <XmlElement("id")> _
+        Public Property ID() As String
+            Get
+                Return If(Strings.Left(Me._imdbid, 2) = "tt", Me._imdbid.Trim, String.Concat("tt", Me._imdbid))
+            End Get
+            Set(ByVal value As String)
+                Me._imdbid = If(Strings.Left(value, 2) = "tt", value.Trim, String.Concat("tt", value))
             End Set
         End Property
 

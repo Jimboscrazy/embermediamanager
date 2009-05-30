@@ -239,6 +239,11 @@ Public Class Master
             sPath = sPath.Replace(strTemp, String.Empty)
         End If
 
+        strTemp = Regex.Match(sPath, "(?i)[ _\.-]+dis[ck][ _\.-]*([0-9a-d]+)").ToString
+        If Not String.IsNullOrEmpty(strTemp) Then
+            sPath = sPath.Replace(strTemp, String.Empty)
+        End If
+
         Return sPath.Trim
     End Function
 
