@@ -18,6 +18,7 @@
  * Change: Ignore movie files with "sample" in the filename
  * Change: Support for multiple directors
  * Change: Lots of little tweaks to the code
+ * Change: Remove media count label and just display count in the tab
 
 *Changes in r183:*
  * Feature: Change movie from movie editor
