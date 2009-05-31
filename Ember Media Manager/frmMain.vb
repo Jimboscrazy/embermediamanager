@@ -2927,7 +2927,7 @@ Public Class frmMain
         Dim genreArray() As String
 
         Try
-            genreArray = Strings.Split(strGenres, "/")
+            genreArray = Strings.Split(strGenres, " / ")
             For i As Integer = 0 To UBound(genreArray)
                 ReDim Preserve Me.pnlGenre(i)
                 ReDim Preserve Me.pbGenre(i)
