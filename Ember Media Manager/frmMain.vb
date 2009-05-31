@@ -649,8 +649,6 @@ Public Class frmMain
         Try
             Me.currRow = e.RowIndex
             cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(1, Me.currRow).Value.ToString, " <<")
-            cmnuMark.Text = If(Me.dgvMediaList.Item(8, Me.currRow).Value, "Unmark", "Mark")
-            Me.SetFilterColors()
             Me.tmrWait.Enabled = False
             Me.tmrLoad.Enabled = False
             Me.tmrWait.Enabled = True
@@ -942,8 +940,19 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMediaList_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMediaList.MouseDown
-        cmnuMark.Text = If(Me.dgvMediaList.SelectedRows(0).Cells(8).Value, "Unmark", "Mark")
-        Me.SetFilterColors()
+        If e.Button = Windows.Forms.MouseButtons.Right Then
+            Dim dgvHTI As DataGridView.HitTestInfo = sender.HitTest(e.X, e.Y)
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+                If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
+                    Me.mnuMediaList.Enabled = False
+                    Me.dgvMediaList.ClearSelection()
+                    Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
+                    Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(dgvHTI.RowIndex).Cells(1)
+                End If
+                cmnuMark.Text = If(Me.dgvMediaList.Rows(dgvHTI.RowIndex).Cells(8).Value, "Unmark", "Mark")
+                Me.SetFilterColors()
+            End If
+        End If
     End Sub
 
     Private Sub mnuAllAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoAll.Click
@@ -2589,7 +2598,6 @@ Public Class frmMain
         Try
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
-            Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
             Me.pnlNoInfo.Visible = False
 
