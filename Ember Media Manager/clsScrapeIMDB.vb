@@ -493,7 +493,7 @@ mResult:
                     'get only the first director's name
                     Dim rDir As MatchCollection = Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN)
                     Dim Dir = From M As Match In rDir Where Not M.Groups("name").ToString.Contains("more") _
-                              Select Web.HttpUtility.HtmlDecode(M.Groups("name").ToString) Take 1
+                              Select Web.HttpUtility.HtmlDecode(M.Groups("name").ToString)
 
                     If Dir.Count > 0 Then
                         IMDBMovie.Director = Strings.Join(Dir.ToArray, " / ").Trim
