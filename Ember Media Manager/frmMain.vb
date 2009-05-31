@@ -880,13 +880,11 @@ Public Class frmMain
     Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
         Select Case cmnuMark.Text
             Case "Unmark"
-                Me.dtMedia.Rows(Me.dgvMediaList.SelectedRows(0).Index).Item(8) = False
-                'Me.dgvMediaList.SelectedRows(0).Cells(8).Value = False
+                Me.dgvMediaList.SelectedRows(0).Cells(8).Value = False
                 Master.currMark = False
                 Me.SetFilterColors()
             Case Else
-                Me.dtMedia.Rows(Me.dgvMediaList.SelectedRows(0).Index).Item(8) = True
-                'Me.dgvMediaList.SelectedRows(0).Cells(8).Value = True
+                Me.dgvMediaList.SelectedRows(0).Cells(8).Value = True
                 Master.currMark = True
                 Me.SetFilterColors()
         End Select
