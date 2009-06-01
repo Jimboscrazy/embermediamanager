@@ -322,8 +322,15 @@ Public Class dlgEditMovie
                     TabControl1.TabPages.Remove(TabPage4)
                     TabControl1.TabPages.Remove(TabPage5)
                 Else
+                    Dim pExt As String = Path.GetExtension(Master.currPath).ToLower
+                    If pExt = "rar" OrElse pExt = "iso" OrElse pExt = "img" OrElse _
+                    pExt = "bin" OrElse pExt = "cue" OrElse pExt = "dat" Then
+                        TabControl1.TabPages.Remove(TabPage4)
+                    End If
                     .bwThumbs.RunWorkerAsync()
                 End If
+
+
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Title) Then
                     .txtTitle.Text = Master.currMovie.Title
