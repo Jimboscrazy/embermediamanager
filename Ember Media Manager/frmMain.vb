@@ -2316,13 +2316,17 @@ Public Class frmMain
 
         Select Case e.Result
             Case Master.ScrapeType.CleanFolders
-                LoadMedia(1)
+                Me.LoadMedia(1)
             Case Else
                 Try
                     Me.Invalidate()
                     Me.Refresh()
-                    Me.dgvMediaList.Rows(0).Selected = True
-                    Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(1)
+                    If Me.dgvMediaList.SelectedRows.Count > 0 Then
+                        LoadInfo(Me.dgvMediaList.SelectedRows(0).Cells(0).Value, True, False, Me.dgvMediaList.SelectedRows(0).Cells(6).Value)
+                    Else
+                        Me.dgvMediaList.Rows(0).Selected = True
+                        Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(1)
+                    End If
 
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
