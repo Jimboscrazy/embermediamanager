@@ -3116,7 +3116,8 @@ Public Class frmMain
     Private Function UpdateMediaInfo() As Boolean
         Try
 
-            If Not Path.GetExtension(Master.currPath) = ".rar" AndAlso Not Path.GetExtension(Master.currPath) = ".iso" Then
+            If Not Path.GetExtension(Master.currPath).ToLower = ".rar" AndAlso Not Path.GetExtension(Master.currPath).ToLower = ".iso" AndAlso Not Path.GetExtension(Master.currPath).ToLower = ".img" AndAlso _
+            Not Path.GetExtension(Master.currPath).ToLower = ".bin" AndAlso Not Path.GetExtension(Master.currPath).ToLower = ".cue" AndAlso Not Path.GetExtension(Master.currPath).ToLower = ".dat" Then
                 Dim MI As New MediaInfo.MInfo
                 Dim miFileInfo = New MediaInfo.Fileinfo
                 MI.GetMovieMIFromPath(miFileInfo, Master.currPath)
