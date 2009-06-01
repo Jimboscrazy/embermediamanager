@@ -648,7 +648,6 @@ Public Class frmMain
 
         Try
             Me.currRow = e.RowIndex
-            cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(1, Me.currRow).Value.ToString, " <<")
             Me.tmrWait.Enabled = False
             Me.tmrLoad.Enabled = False
             Me.tmrWait.Enabled = True
@@ -941,14 +940,14 @@ Public Class frmMain
         If e.Button = Windows.Forms.MouseButtons.Right Then
             Dim dgvHTI As DataGridView.HitTestInfo = sender.HitTest(e.X, e.Y)
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+                cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(1, dgvHTI.RowIndex).Value, " <<")
                 If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                     Me.mnuMediaList.Enabled = False
                     Me.dgvMediaList.ClearSelection()
                     Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
                     Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(dgvHTI.RowIndex).Cells(1)
                 End If
-                cmnuMark.Text = If(Me.dgvMediaList.Rows(dgvHTI.RowIndex).Cells(8).Value, "Unmark", "Mark")
-                Me.SetFilterColors()
+                cmnuMark.Text = If(Me.dgvMediaList.Item(8, dgvHTI.RowIndex).Value, "Unmark", "Mark")
             End If
         End If
     End Sub
@@ -3542,6 +3541,6 @@ Public Class frmMain
         Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
         Master.eSettings.Save()
     End Sub
-#End Region
+#End Region '*** Routines/Functions
 
 End Class
