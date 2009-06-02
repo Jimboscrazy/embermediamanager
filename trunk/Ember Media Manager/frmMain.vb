@@ -3120,8 +3120,9 @@ Public Class frmMain
         Try
 
             Dim pExt As String = Path.GetExtension(Master.currPath).ToLower
-            If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso _
-            Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
+            'If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso _
+            'Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
+            If Not pExt = ".rar" Then
                 Dim MI As New MediaInfo.MInfo
                 Dim miFileInfo = New MediaInfo.Fileinfo
                 MI.GetMovieMIFromPath(miFileInfo, Master.currPath)
