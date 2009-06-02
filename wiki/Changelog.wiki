@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r214:*
  * Fix: File-type sources not loading files
  * Fix: New-Auto updater not working
  * Fix/Change: Do not split double genres (ie anime/manga)
