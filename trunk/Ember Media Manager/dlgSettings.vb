@@ -342,7 +342,9 @@ Public Class dlgSettings
                 Dim iIndex As Integer = lstFilters.SelectedIndices(0)
                 lstFilters.Items.Insert(iIndex - 1, lstFilters.SelectedItems(0))
                 lstFilters.Items.RemoveAt(iIndex + 1)
+                lstFilters.SelectedIndex = iIndex - 1
                 btnApply.Enabled = True
+                lstFilters.Focus()
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -355,7 +357,9 @@ Public Class dlgSettings
                 Dim iIndex As Integer = lstFilters.SelectedIndices(0)
                 lstFilters.Items.Insert(iIndex + 2, lstFilters.SelectedItems(0))
                 lstFilters.Items.RemoveAt(iIndex)
+                lstFilters.SelectedIndex = iIndex + 1
                 btnApply.Enabled = True
+                lstFilters.Focus()
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
