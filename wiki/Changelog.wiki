@@ -2,12 +2,14 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * Fix: File-type sources not loading files
  * Fix: New-Auto updater not working
- * Fix/Change: Do not run media info scan for .rar, .iso, .img, .dat, .bin, .cue
  * Fix/Change: Do not split double genres (ie anime/manga)
  * Fix/Change: Right-click menu behavior
  * Change: Tweaks to marking movies
  * Change: If movie is selected in list, reload info after running updater in case items were updated
+ * Change: Misc tweaks
+ * Change: Hide extract frames tab and do not attempt to automatically extract extrathumbs for bin, cue, img, iso, or rar files
 
 *Changes in r200:*
  * Feature: New updaters: "New Movies" and "Marked Movies"
