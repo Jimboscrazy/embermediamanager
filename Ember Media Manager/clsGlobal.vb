@@ -712,8 +712,8 @@ Public Class Master
 
             If isFile Then
                 parPath = Directory.GetParent(sPath).FullName
-                tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(Directory.GetParent(sPath).Name)))
-                tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(Directory.GetParent(sPath).Name))
+                tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+                tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
                 'fanart
                 If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse _
                     File.Exists(String.Concat(tmpNameNoStack, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".fanart.jpg")) OrElse _
