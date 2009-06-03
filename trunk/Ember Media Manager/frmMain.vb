@@ -721,9 +721,8 @@ Public Class frmMain
                 dvFilter.RowFilter = "Name Like '%" & txtSearch.Text & "%'"
                 dgvMediaList.DataSource = dvFilter
             Else
-                Dim dvFilter As DataView = dtMedia.DefaultView
-                dvFilter.RowFilter = String.Empty
-                dgvMediaList.DataSource = dvFilter
+                dtMedia.DefaultView.RowFilter = String.Empty
+                dgvMediaList.DataSource = dtMedia.DefaultView
             End If
         Catch
         End Try
@@ -1284,8 +1283,7 @@ Public Class frmMain
         Dim tmpAL As New ArrayList
 
         Try
-            Me.dtMedia.Clear()
-            Me.dtMedia.Reset()
+            Me.dtMedia = New DataTable
 
             'set up the columns for the temporary datatable
             Me.dtMedia.Columns.Add("Path", GetType(System.String))
@@ -1531,7 +1529,6 @@ Public Class frmMain
         Me.tspbLoading.Value = 0
 
         Me.tabMovies.Text = String.Format("Movies ({0})", Me.dgvMediaList.Rows.Count)
-        Me.txtSearch.Text = String.Empty
         Me.EnableFilters(True)
 
         Me.loadType = 0
@@ -2556,6 +2553,7 @@ Public Class frmMain
             End If
 
             If Not firstLoad Then Me.SaveMovieList()
+            Me.txtSearch.Text = String.Empty
 
             Me.dgvMediaList.DataSource = Nothing
 

@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -67,9 +67,6 @@ Partial Class frmMain
         Me.cmnuRescrape = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuSearchNew = New System.Windows.Forms.ToolStripMenuItem
         Me.tabsMain = New System.Windows.Forms.TabControl
-        Me.tabMovies = New System.Windows.Forms.TabPage
-        Me.tabTelevision = New System.Windows.Forms.TabPage
-        Me.tabMusic = New System.Windows.Forms.TabPage
         Me.pnlNoInfo = New System.Windows.Forms.Panel
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
@@ -192,6 +189,7 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.tabMovies = New System.Windows.Forms.TabPage
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -537,8 +535,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -621,42 +619,11 @@ Partial Class frmMain
         Me.tabsMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tabsMain.Controls.Add(Me.tabMovies)
-        Me.tabsMain.Controls.Add(Me.tabTelevision)
-        Me.tabsMain.Controls.Add(Me.tabMusic)
         Me.tabsMain.Location = New System.Drawing.Point(1, 4)
         Me.tabsMain.Name = "tabsMain"
         Me.tabsMain.SelectedIndex = 0
         Me.tabsMain.Size = New System.Drawing.Size(309, 35)
         Me.tabsMain.TabIndex = 8
-        '
-        'tabMovies
-        '
-        Me.tabMovies.Location = New System.Drawing.Point(4, 22)
-        Me.tabMovies.Name = "tabMovies"
-        Me.tabMovies.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabMovies.Size = New System.Drawing.Size(301, 9)
-        Me.tabMovies.TabIndex = 0
-        Me.tabMovies.Text = "Movies"
-        Me.tabMovies.UseVisualStyleBackColor = True
-        '
-        'tabTelevision
-        '
-        Me.tabTelevision.Location = New System.Drawing.Point(4, 22)
-        Me.tabTelevision.Name = "tabTelevision"
-        Me.tabTelevision.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabTelevision.Size = New System.Drawing.Size(301, 9)
-        Me.tabTelevision.TabIndex = 1
-        Me.tabTelevision.Text = "Television"
-        Me.tabTelevision.UseVisualStyleBackColor = True
-        '
-        'tabMusic
-        '
-        Me.tabMusic.Location = New System.Drawing.Point(4, 22)
-        Me.tabMusic.Name = "tabMusic"
-        Me.tabMusic.Size = New System.Drawing.Size(301, 9)
-        Me.tabMusic.TabIndex = 2
-        Me.tabMusic.Text = "Music"
-        Me.tabMusic.UseVisualStyleBackColor = True
         '
         'pnlNoInfo
         '
@@ -1765,6 +1732,16 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
+        'tabMovies
+        '
+        Me.tabMovies.Location = New System.Drawing.Point(4, 22)
+        Me.tabMovies.Name = "tabMovies"
+        Me.tabMovies.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabMovies.Size = New System.Drawing.Size(301, 9)
+        Me.tabMovies.TabIndex = 0
+        Me.tabMovies.Text = "Movies"
+        Me.tabMovies.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1858,9 +1835,6 @@ Partial Class frmMain
     Friend WithEvents pbPoster As System.Windows.Forms.PictureBox
     Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
     Friend WithEvents tabsMain As System.Windows.Forms.TabControl
-    Friend WithEvents tabMovies As System.Windows.Forms.TabPage
-    Friend WithEvents tabTelevision As System.Windows.Forms.TabPage
-    Friend WithEvents tabMusic As System.Windows.Forms.TabPage
     Friend WithEvents pnlMPAA As System.Windows.Forms.Panel
     Friend WithEvents pbMPAA As System.Windows.Forms.PictureBox
     Friend WithEvents pnlInfoPanel As System.Windows.Forms.Panel
@@ -2002,4 +1976,5 @@ Partial Class frmMain
     Friend WithEvents mnuMarkAskPoster As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMarkAskFanart As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMarkAskExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents tabMovies As System.Windows.Forms.TabPage
 End Class
