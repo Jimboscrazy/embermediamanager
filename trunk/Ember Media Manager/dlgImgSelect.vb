@@ -611,7 +611,7 @@ Public Class dlgImgSelect
                 Me.bwIMPADownload.ReportProgress(i + 1, Me.IMPAPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.IMPAPosters.Item(i).URL)
                 Dim wrResponse As WebResponse = wrRequest.GetResponse()
-                If wrResponse.ContentType = "image/jpeg" Then
+                If wrResponse.ContentType = "image" Then
                     Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                 End If
                 wrResponse.Close()
@@ -662,7 +662,7 @@ Public Class dlgImgSelect
                     Me.bwTMDBDownload.ReportProgress(i + 1, Me.TMDBPosters.Item(i).URL)
                     Dim wrRequest As WebRequest = WebRequest.Create(Me.TMDBPosters.Item(i).URL)
                     Dim wrResponse As WebResponse = wrRequest.GetResponse()
-                    If wrResponse.ContentType = "image/jpeg" Then
+                    If wrResponse.ContentType.Contains("image") Then
                         Me.TMDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                     End If
                     wrResponse.Close()
@@ -712,7 +712,7 @@ Public Class dlgImgSelect
                 Me.bwMPDBDownload.ReportProgress(i + 1, Me.MPDBPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.MPDBPosters.Item(i).URL)
                 Dim wrResponse As WebResponse = wrRequest.GetResponse()
-                If wrResponse.ContentType = "image/jpeg" Then
+                If wrResponse.ContentType = "image" Then
                     Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                 End If
                 wrResponse.Close()
