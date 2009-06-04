@@ -72,10 +72,10 @@ Public Class dlgIMDBSearchResults
 
         Try
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-            Dim g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, 20), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
-            g.Dispose()
+            Using g As Graphics = Graphics.FromImage(iBackground)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, 20), pnlTop.ClientRectangle)
+                Me.pnlTop.BackgroundImage = iBackground
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

@@ -808,26 +808,24 @@ foundIT:
                 End If
 
                 ' Get the source bitmap.
-                Dim bmSource As New Bitmap(theImage)
-                ' Make a bitmap for the result.
-                Dim bmDest As New Bitmap( _
-                CInt(bmSource.Width * sPropPerc), _
-                CInt(bmSource.Height * sPropPerc))
-                ' Make a Graphics object for the result Bitmap.
-                Dim grDest As Graphics = Graphics.FromImage(bmDest)
-                grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                ' Copy the source image into the destination bitmap.
-                grDest.DrawImage(bmSource, New Rectangle(0, 0, _
-                bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
-                bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
+                Using bmSource As New Bitmap(theImage)
+                    ' Make a bitmap for the result.
+                    Using bmDest As New Bitmap( _
+                    CInt(bmSource.Width * sPropPerc), _
+                    CInt(bmSource.Height * sPropPerc))
+                        ' Make a Graphics object for the result Bitmap.
+                        Using grDest As Graphics = Graphics.FromImage(bmDest)
+                            grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                            ' Copy the source image into the destination bitmap.
+                            grDest.DrawImage(bmSource, New Rectangle(0, 0, _
+                            bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
+                            bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
+                        End Using
 
-                grDest.Dispose()
+                        imgOut = bmDest
 
-                imgOut = bmDest
-
-                'Clean up
-                bmSource = Nothing
-                bmDest = Nothing
+                    End Using
+                End Using
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
