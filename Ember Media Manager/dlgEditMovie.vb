@@ -85,6 +85,8 @@ Public Class dlgEditMovie
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
 
+            Me.Activate()
+
             Me.lvwColumnSorter = New ListViewColumnSorter()
             Me.lvActors.ListViewItemSorter = Me.lvwColumnSorter
 
@@ -98,6 +100,7 @@ Public Class dlgEditMovie
             Me.LoadRatings()
 
             Me.FillInfo()
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -342,8 +345,6 @@ Public Class dlgEditMovie
                     .bwThumbs.RunWorkerAsync()
                 End If
 
-
-
                 If Not String.IsNullOrEmpty(Master.currMovie.Title) Then
                     .txtTitle.Text = Master.currMovie.Title
                 End If
@@ -486,6 +487,7 @@ Public Class dlgEditMovie
     Private Sub SetInfo()
         Try
             With Me
+
                 Master.currMovie.Title = .txtTitle.Text.Trim
 
                 'reset title in list just in case user changed it (only if Use Title From NFO is selected)

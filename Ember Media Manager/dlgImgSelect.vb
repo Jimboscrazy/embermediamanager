@@ -187,6 +187,8 @@ Public Class dlgImgSelect
     Private Sub dlgImgSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Try
+            Me.Activate()
+
             AddHandler TMDB.PostersDownloaded, AddressOf TMDBPostersDownloaded
             AddHandler TMDB.ProgressUpdated, AddressOf TMDBProgressUpdated
             AddHandler IMPA.PostersDownloaded, AddressOf IMPAPostersDownloaded
@@ -611,7 +613,7 @@ Public Class dlgImgSelect
                 Me.bwIMPADownload.ReportProgress(i + 1, Me.IMPAPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.IMPAPosters.Item(i).URL)
                 Dim wrResponse As WebResponse = wrRequest.GetResponse()
-                If wrResponse.ContentType = "image" Then
+                If wrResponse.ContentType.Contains("image") Then
                     Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                 End If
                 wrResponse.Close()
@@ -712,7 +714,7 @@ Public Class dlgImgSelect
                 Me.bwMPDBDownload.ReportProgress(i + 1, Me.MPDBPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.MPDBPosters.Item(i).URL)
                 Dim wrResponse As WebResponse = wrRequest.GetResponse()
-                If wrResponse.ContentType = "image" Then
+                If wrResponse.ContentType.Contains("image") Then
                     Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                 End If
                 wrResponse.Close()

@@ -343,6 +343,7 @@ Public Class dlgManualEdit
 
     Private Sub Editor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
+        Me.Activate()
         currFile = Master.currNFO
         RichTextBox1.LoadFile(Master.currNFO, RichTextBoxStreamType.PlainText)
         Me.Text = "Manual NFO Editor | " + Master.currNFO.Substring(currFile.LastIndexOf("\") + 1)

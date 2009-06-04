@@ -197,6 +197,8 @@ Public Class dlgSettings
 
     Private Sub frmSettings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
+            Me.Activate()
+
             tvSettings.ExpandAll()
             tvSettings.SelectedNode = tvSettings.Nodes(0)
 
