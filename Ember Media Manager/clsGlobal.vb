@@ -36,11 +36,14 @@ Public Class Master
     Public Shared eSettings As New emmSettings
     Public Shared currMovie As New Media.Movie
     Public Shared tmpMovie As New Media.Movie
+    Public Shared scrapeMovie As New Media.Movie
     Public Shared currNFO As String = String.Empty
     Public Shared currPath As String = String.Empty
+    Public Shared scrapePath As String = String.Empty
     Public Shared MediaList As New List(Of FileAndSource)
     Public Shared eLog As New ErrorLogger
     Public Shared isFile As Boolean = False
+    Public Shared scrapeisFile As Boolean = False
     Public Shared SQLcn As New SQLite.SQLiteConnection()
 
     'Global Enums
