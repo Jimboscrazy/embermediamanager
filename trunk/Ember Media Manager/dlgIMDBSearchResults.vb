@@ -67,6 +67,9 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        Me.Activate()
+
         AddHandler IMDB.SearchMovieInfoDownloaded, AddressOf SearchMovieInfoDownloaded
         AddHandler IMDB.SearchResultsDownloaded, AddressOf SearchResultsDownloaded
 

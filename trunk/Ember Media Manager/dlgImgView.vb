@@ -30,6 +30,8 @@ Public Class dlgImgView
         ' Default to Fit method
         '\\
 
+        Me.Activate()
+
         Me.DoFit()
 
     End Sub

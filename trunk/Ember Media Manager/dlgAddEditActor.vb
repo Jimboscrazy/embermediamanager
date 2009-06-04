@@ -63,6 +63,8 @@ Public Class dlgAddEditActor
         '\\
 
         Try
+            Me.Activate()
+
             If Me.isNew Then
                 Me.Text = "New Actor"
             Else

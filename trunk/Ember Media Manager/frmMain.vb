@@ -3050,9 +3050,6 @@ Public Class frmMain
                     tmpImages = Nothing
                 End If
 
-                Me.dgvMediaList.Enabled = True
-                Me.dgvMediaList.Focus()
-
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                 Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
 
@@ -3062,7 +3059,6 @@ Public Class frmMain
                         Me.FillList(indX)
                     End If
                 End Using
-                Me.LoadInfo(Master.currPath, True, False, Master.isFile)
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
             End If
@@ -3336,56 +3332,6 @@ Public Class frmMain
                 End If
                 Me.FillList(0)
             End If
-
-            'If Me.dgvMediaList.RowCount > 0 Then
-            '    For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-            '        Me.dgvMediaList.ScrollBars = ScrollBars.None
-            '        drvRow.Visible = True
-            '        Me.dgvMediaList.ScrollBars = ScrollBars.Both
-            '    Next
-
-            '    If Me.chkFilterDupe.Checked Then
-            '        bsMedia.Sort = "Name"
-            '        With Me.dgvMediaList
-            '            .ScrollBars = ScrollBars.None
-            '            .CurrentCell = Nothing
-            '            Dim rCount As Integer = .RowCount
-            '            If rCount > 1 Then
-            '                If Not .Rows(0).Cells(3).Value = .Rows(1).Cells(3).Value Then
-            '                    .Rows(0).Visible = False
-            '                    If rCount > 2 Then
-            '                        For i As Integer = 1 To rCount - 2
-            '                            If Not .Rows(i).Cells(3).Value = .Rows(i - 1).Cells(3).Value AndAlso _
-            '                             Not .Rows(i).Cells(3).Value = .Rows(i + 1).Cells(3).Value Then
-            '                                .Rows(i).Visible = False
-            '                            End If
-            '                        Next
-            '                        If Not .Rows(rCount - 1).Cells(3).Value = .Rows(rCount - 2).Cells(3).Value Then
-            '                            .Rows(rCount - 1).Visible = False
-            '                        End If
-            '                    Else
-            '                        .Rows(1).Visible = False
-            '                    End If
-            '                End If
-            '            Else
-            '                .Rows(0).Visible = False
-            '            End If
-            '            .ScrollBars = ScrollBars.Both
-            '        End With
-            '    End If
-
-            '    'find the first visible item
-            '    For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-            '        If drvRow.Visible = True Then
-            '            drvRow.Selected = True
-            '            Me.dgvMediaList.CurrentCell = drvRow.Cells(3)
-            '            Exit For
-            '        End If
-            '    Next
-            '    Me.SetFilterColors()
-            'Else
-            '    Me.ClearInfo()
-            'End If
         End If
     End Sub
 

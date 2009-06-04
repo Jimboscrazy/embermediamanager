@@ -147,6 +147,7 @@ Public Class dlgWizard
     End Sub
 
     Private Sub dlgWizard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.Activate()
         Me.FillSettings()
     End Sub
 

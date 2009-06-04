@@ -23,6 +23,7 @@ Option Explicit On
 Public NotInheritable Class dlgAbout
 
     Private Sub frmAbout_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.Activate()
         ' Set the title of the form.
         Dim ApplicationTitle As String
         If Not String.IsNullOrEmpty(My.Application.Info.Title) Then
