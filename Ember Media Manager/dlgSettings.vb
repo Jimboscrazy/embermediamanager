@@ -160,14 +160,25 @@ Public Class dlgSettings
     Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
         Try
             If Me.lvMovies.SelectedItems.Count > 0 Then
-                Me.lvMovies.BeginUpdate()
-                For Each lvItem As ListViewItem In Me.lvMovies.SelectedItems
-                    lvItem.Remove()
-                Next
-                Me.lvMovies.Sort()
-                Me.lvMovies.EndUpdate()
-                Me.lvMovies.Refresh()
-                Me.btnApply.Enabled = True
+                If MsgBox("Are you sure you want to remove the selected sources? This will remove the movies remove the movies from these sources from the Ember database.", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
+                    Me.lvMovies.BeginUpdate()
+
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                            For Each lvItem As ListViewItem In Me.lvMovies.SelectedItems
+                                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = """, lvItem.Text, """;")
+                                SQLcommand.ExecuteNonQuery()
+                                lvItem.Remove()
+                            Next
+                        End Using
+                        SQLtransaction.Commit()
+                    End Using
+
+                    Me.lvMovies.Sort()
+                    Me.lvMovies.EndUpdate()
+                    Me.lvMovies.Refresh()
+                    Me.btnApply.Enabled = True
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -190,16 +201,16 @@ Public Class dlgSettings
             tvSettings.SelectedNode = tvSettings.Nodes(0)
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-            Dim g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, 20), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
-            g.Dispose()
+            Using g As Graphics = Graphics.FromImage(iBackground)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, 20), pnlTop.ClientRectangle)
+                Me.pnlTop.BackgroundImage = iBackground
+            End Using
 
             iBackground = New Bitmap(Me.pnlCurrent.Width, Me.pnlCurrent.Height)
-            g = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlCurrent.ClientRectangle, Color.SteelBlue, Color.FromKnownColor(KnownColor.Control), 20), pnlCurrent.ClientRectangle)
-            Me.pnlCurrent.BackgroundImage = iBackground
-            g.Dispose()
+            Using b As Graphics = Graphics.FromImage(iBackground)
+                b.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlCurrent.ClientRectangle, Color.SteelBlue, Color.FromKnownColor(KnownColor.Control), 20), pnlCurrent.ClientRectangle)
+                Me.pnlCurrent.BackgroundImage = iBackground
+            End Using
 
             Me.FillSettings()
         Catch ex As Exception

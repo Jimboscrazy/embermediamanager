@@ -38,11 +38,10 @@ Public Class Master
     Public Shared tmpMovie As New Media.Movie
     Public Shared currNFO As String = String.Empty
     Public Shared currPath As String = String.Empty
-    Public Shared currMark As Boolean = False
-    Public Shared alFolderList As New ArrayList
-    Public Shared alFileList As New ArrayList
+    Public Shared MediaList As New List(Of FileAndSource)
     Public Shared eLog As New ErrorLogger
     Public Shared isFile As Boolean = False
+    Public Shared SQLcn As New SQLite.SQLiteConnection()
 
     'Global Enums
     Public Enum PosterSize As Integer
@@ -77,6 +76,67 @@ Public Class Master
         Posters = 0
         Fanart = 1
     End Enum
+
+    Public Class FileAndSource
+        Dim _filename As String
+        Dim _source As String
+        Dim _isfile As Boolean
+
+        Public Property Filename() As String
+            Get
+                Return _filename
+            End Get
+            Set(ByVal value As String)
+                _filename = value
+            End Set
+        End Property
+
+        Public Property Source() As String
+            Get
+                Return _source
+            End Get
+            Set(ByVal value As String)
+                _source = value
+            End Set
+        End Property
+
+        Public Property isFile() As Boolean
+            Get
+                Return _isfile
+            End Get
+            Set(ByVal value As Boolean)
+                _isfile = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+        Public Sub Clear()
+            _filename = String.Empty
+            _source = String.Empty
+            _isfile = False
+        End Sub
+    End Class
+
+    Public Shared Sub ConnectDB()
+
+        'create database if it doesn't exist
+        If Not File.Exists("media.emm") Then
+            SQLcn.ConnectionString = "Data Source=media.emm;Compress=True"
+            SQLcn.Open()
+            Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT, type BOOL, Title TEXT, poster BOOL, fanart BOOL, info BOOL, trailer BOOL, new BOOL, mark BOOL, source TEXT, imdb TEXT);"
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
+                SQLcommand.ExecuteNonQuery()
+            End Using
+        Else
+            SQLcn.ConnectionString = "Data Source=media.emm;Compress=True"
+            SQLcn.Open()
+        End If
+    End Sub
 
     Public Shared Sub ResizePB(ByRef pbResize As PictureBox, ByRef pbCache As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)
 
@@ -259,7 +319,7 @@ Public Class Master
 
                 For Each inDir As String In Dirs
                     If isValidDir(inDir) Then
-                        alFolderList.Add(inDir)
+                        MediaList.Add(New FileAndSource With {.Filename = Master.GetMoviePath(inDir), .Source = sPath, .isFile = False})
                     End If
 
                     If eSettings.ScanRecursive Then
@@ -326,8 +386,10 @@ Public Class Master
                                       AndAlso Not f.Name.ToLower.Contains("-trailer") _
                                       AndAlso Not f.Name.ToLower.Contains("[trailer"))
 
+                For Each lFile As FileInfo In lFi
+                    MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sPath, .isFile = True})
+                Next
 
-                alFileList.AddRange(lFi)
             End If
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -407,24 +469,21 @@ Public Class Master
                 End If
 
                 If File.Exists(vsourceImage) Then
-                    Dim fsImage As New FileStream(vsourceImage, FileMode.Open, FileAccess.Read)
-                    frmMain.pbVideo.Image = Image.FromStream(fsImage)
-                    fsImage.Close()
-                    fsImage = Nothing
+                    Using fsImage As New FileStream(vsourceImage, FileMode.Open, FileAccess.Read)
+                        frmMain.pbVideo.Image = Image.FromStream(fsImage)
+                    End Using
                 End If
 
                 If File.Exists(atypeImage) Then
-                    Dim fsImage As New FileStream(atypeImage, FileMode.Open, FileAccess.Read)
-                    frmMain.pbAudio.Image = Image.FromStream(fsImage)
-                    fsImage.Close()
-                    fsImage = Nothing
+                    Using fsImage As New FileStream(atypeImage, FileMode.Open, FileAccess.Read)
+                        frmMain.pbAudio.Image = Image.FromStream(fsImage)
+                    End Using
                 End If
 
                 If File.Exists(achanImage) Then
-                    Dim fsImage As New FileStream(achanImage, FileMode.Open, FileAccess.Read)
-                    frmMain.pbChannels.Image = Image.FromStream(fsImage)
-                    fsImage.Close()
-                    fsImage = Nothing
+                    Using fsImage As New FileStream(achanImage, FileMode.Open, FileAccess.Read)
+                        frmMain.pbChannels.Image = Image.FromStream(fsImage)
+                    End Using
                 End If
             Catch ex As Exception
                 eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -459,10 +518,9 @@ Public Class Master
                 End If
 
                 If Not String.IsNullOrEmpty(imgStudioStr) AndAlso File.Exists(imgStudioStr) Then
-                    Dim fsImage As New FileStream(imgStudioStr, FileMode.Open, FileAccess.Read)
-                    imgStudio = Image.FromStream(fsImage)
-                    fsImage.Close()
-                    fsImage = Nothing
+                    Using fsImage As New FileStream(imgStudioStr, FileMode.Open, FileAccess.Read)
+                        imgStudio = Image.FromStream(fsImage)
+                    End Using
                 End If
 
             Catch ex As Exception
@@ -502,10 +560,9 @@ Public Class Master
                 End If
 
                 If Not String.IsNullOrEmpty(imgGenreStr) AndAlso File.Exists(imgGenreStr) Then
-                    Dim fsImage As New FileStream(imgGenreStr, FileMode.Open, FileAccess.Read)
-                    imgGenre = Image.FromStream(fsImage)
-                    fsImage.Close()
-                    fsImage = Nothing
+                    Using fsImage As New FileStream(imgGenreStr, FileMode.Open, FileAccess.Read)
+                        imgGenre = Image.FromStream(fsImage)
+                    End Using
                 End If
 
             Catch ex As Exception
@@ -547,10 +604,9 @@ Public Class Master
                 End If
 
                 If Not String.IsNullOrEmpty(imgRatingStr) AndAlso File.Exists(imgRatingStr) Then
-                    Dim fsImage As New FileStream(imgRatingStr, FileMode.Open, FileAccess.Read)
-                    imgRating = Image.FromStream(fsImage)
-                    fsImage.Close()
-                    fsImage = Nothing
+                    Using fsImage As New FileStream(imgRatingStr, FileMode.Open, FileAccess.Read)
+                        imgRating = Image.FromStream(fsImage)
+                    End Using
                 End If
 
             Catch ex As Exception
@@ -646,17 +702,14 @@ Public Class Master
         ' Deserialze the NFO to pass all the data to a Media.Movie
         '\\
 
-        Dim xmlSR As StreamReader = Nothing
         Dim xmlSer As XmlSerializer = Nothing
+        Dim xmlMov As New Media.Movie
         Try
             If File.Exists(sPath) Then
-                xmlSer = New XmlSerializer(GetType(Media.Movie))
-                xmlSR = New StreamReader(sPath)
-                Dim xmlMov As Media.Movie = CType(xmlSer.Deserialize(xmlSR), Media.Movie)
-
-                xmlSR.Close()
-                xmlSR = Nothing
-                xmlSer = Nothing
+                Using xmlSR As StreamReader = New StreamReader(sPath)
+                    xmlSer = New XmlSerializer(GetType(Media.Movie))
+                    xmlMov = CType(xmlSer.Deserialize(xmlSR), Media.Movie)
+                End Using
 
                 Return xmlMov
             Else
@@ -664,29 +717,23 @@ Public Class Master
             End If
         Catch
 
-            Dim newMovie As New Media.Movie
-
-            If Not IsNothing(xmlSR) Then
-                xmlSR.Close()
-                xmlSR = Nothing
-            End If
+            xmlMov = New Media.Movie
 
             If Not IsNothing(xmlSer) Then
                 xmlSer = Nothing
             End If
 
-            Dim srInfo As New StreamReader(sPath)
-            Dim sInfo As String = srInfo.ReadToEnd
-            Dim sIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
+            Using srInfo As New StreamReader(sPath)
+                Dim sInfo As String = srInfo.ReadToEnd
+                Dim sIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
 
-            If Not String.IsNullOrEmpty(sIMDBID) Then
-                newMovie.IMDBID = sIMDBID
-            End If
+                If Not String.IsNullOrEmpty(sIMDBID) Then
+                    xmlMov.IMDBID = sIMDBID
+                End If
 
-            srInfo.Close()
-            srInfo.Dispose()
+            End Using
 
-            Return newMovie
+            Return xmlMov
         End Try
 
     End Function
@@ -1051,10 +1098,9 @@ Public Class Master
                 End If
 
                 If Not File.Exists(nPath) OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
-                    Dim xmlSW As New StreamWriter(nPath)
-                    xmlSer.Serialize(xmlSW, movieToSave)
-                    xmlSW.Close()
-                    xmlSW.Dispose()
+                    Using xmlSW As New StreamWriter(nPath)
+                        xmlSer.Serialize(xmlSW, movieToSave)
+                    End Using
                 End If
             Else
                 Dim tmpName As String = Path.GetFileNameWithoutExtension(sPath)
@@ -1072,10 +1118,9 @@ Public Class Master
                     End If
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-                        Dim xmlSW As New StreamWriter(tPath)
-                        xmlSer.Serialize(xmlSW, movieToSave)
-                        xmlSW.Close()
-                        xmlSW.Dispose()
+                        Using xmlSW As New StreamWriter(tPath)
+                            xmlSer.Serialize(xmlSW, movieToSave)
+                        End Using
                     End If
                 End If
 
@@ -1087,10 +1132,9 @@ Public Class Master
                     End If
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-                        Dim xmlSW As New StreamWriter(tPath)
-                        xmlSer.Serialize(xmlSW, movieToSave)
-                        xmlSW.Close()
-                        xmlSW.Dispose()
+                        Using xmlSW As New StreamWriter(tPath)
+                            xmlSer.Serialize(xmlSW, movieToSave)
+                        End Using
                     End If
                 End If
             End If
@@ -1125,29 +1169,21 @@ Public Class Master
     End Sub
 
     Public Shared Function IsConformingNfo(ByVal sPath As String) As Boolean
-        Dim testSR As StreamReader = Nothing
         Dim testSer As XmlSerializer = Nothing
 
         Try
             If File.Exists(sPath) Then
-                testSer = New XmlSerializer(GetType(Media.Movie))
-                testSR = New StreamReader(sPath)
-                Dim testMovie As Media.Movie = CType(testSer.Deserialize(testSR), Media.Movie)
-                testMovie = Nothing
-                testSR.Close()
-                testSR = Nothing
-                testSer = Nothing
-
+                Using testSR As StreamReader = New StreamReader(sPath)
+                    testSer = New XmlSerializer(GetType(Media.Movie))
+                    Dim testMovie As Media.Movie = CType(testSer.Deserialize(testSR), Media.Movie)
+                    testMovie = Nothing
+                    testSer = Nothing
+                End Using
                 Return True
             Else
                 Return False
             End If
         Catch
-            If Not IsNothing(testSR) Then
-                testSR.Close()
-                testSR = Nothing
-            End If
-
             If Not IsNothing(testSer) Then
                 testSer = Nothing
             End If
@@ -1341,18 +1377,16 @@ Public Class Master
         '\\
 
         Try
-            Dim SourceStream As FileStream = New FileStream(sPathFrom, FileMode.Open, FileAccess.Read)
-            Dim DestinationStream As FileStream = New FileStream(sPathTo, FileMode.OpenOrCreate, FileAccess.Write)
-            Dim StreamBuffer(SourceStream.Length - 1) As Byte
+            Using SourceStream As FileStream = New FileStream(sPathFrom, FileMode.Open, FileAccess.Read)
+                Using DestinationStream As FileStream = New FileStream(sPathTo, FileMode.OpenOrCreate, FileAccess.Write)
+                    Dim StreamBuffer(SourceStream.Length - 1) As Byte
 
-            SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
-            DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
+                    SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
+                    DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
 
-            StreamBuffer = Nothing
-            DestinationStream.Close()
-            DestinationStream.Dispose()
-            SourceStream.Close()
-            SourceStream.Dispose()
+                    StreamBuffer = Nothing
+                End Using
+            End Using
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

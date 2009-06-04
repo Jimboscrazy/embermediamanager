@@ -31,6 +31,18 @@ Public Class dlgEditMovie
     Private Fanart As New Images With {.IsEdit = True}
     Private Thumbs As New List(Of ExtraThumbs)
     Private DeleteList As New ArrayList
+    Private _id As Integer
+
+    Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
+
+        '//
+        ' Overload to pass data
+        '\\
+
+        Me._id = id
+
+        Return MyBase.ShowDialog()
+    End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
@@ -77,11 +89,11 @@ Public Class dlgEditMovie
             Me.lvActors.ListViewItemSorter = Me.lvwColumnSorter
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
-            Dim g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, 20), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
-            g.Dispose()
-
+            Using g As Graphics = Graphics.FromImage(iBackground)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, 20), pnlTop.ClientRectangle)
+                Me.pnlTop.BackgroundImage = iBackground
+            End Using
+            
             Me.LoadGenres()
             Me.LoadRatings()
 
@@ -282,9 +294,9 @@ Public Class dlgEditMovie
     Private Sub btnAddActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddActor.Click
         Try
             Dim eActor As New Media.Person
-            Dim dAddEditActor As New dlgAddEditActor
-            eActor = dAddEditActor.ShowDialog(True)
-            dAddEditActor.Dispose()
+            Using dAddEditActor As New dlgAddEditActor
+                eActor = dAddEditActor.ShowDialog(True)
+            End Using
             If Not IsNothing(eActor) Then
                 Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
@@ -299,9 +311,9 @@ Public Class dlgEditMovie
         Try
             Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
             Dim eActor As New Media.Person With {.Name = lvwItem.Text, .Role = lvwItem.SubItems(1).Text, .Thumb = lvwItem.SubItems(2).Text}
-            Dim dAddEditActor As New dlgAddEditActor
-            eActor = dAddEditActor.ShowDialog(False, eActor)
-            dAddEditActor.Dispose()
+            Using dAddEditActor As New dlgAddEditActor
+                eActor = dAddEditActor.ShowDialog(False, eActor)
+            End Using
             If Not IsNothing(eActor) Then
                 lvwItem.Text = eActor.Name
                 lvwItem.SubItems(1).Text = eActor.Role
@@ -460,7 +472,11 @@ Public Class dlgEditMovie
                     End If
                 End If
 
-                .chkMark.Checked = Master.currMark
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", Me._id, ";")
+                    Dim SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    .chkMark.Checked = SQLreader(0)
+                End Using
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -470,7 +486,20 @@ Public Class dlgEditMovie
     Private Sub SetInfo()
         Try
             With Me
-                Master.currMovie.Title = .txtTitle.Text
+                Master.currMovie.Title = .txtTitle.Text.Trim
+
+                'reset title in list just in case user changed it (only if Use Title From NFO is selected)
+                If Master.eSettings.UseNameFromNfo Then
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                        Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.Boolean, 1, "title")
+                        Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
+                        SQLcommand.CommandText = "UPDATE movies SET title = (?) WHERE id = (?);"
+                        parTitle.Value = .txtTitle.Text.Trim
+                        parID.Value = Me._id
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                End If
+
                 Master.currMovie.Tagline = .txtTagline.Text
                 Master.currMovie.Year = .mtxtYear.Text
                 Master.currMovie.Votes = .txtVotes.Text
@@ -561,7 +590,14 @@ Public Class dlgEditMovie
                     Directory.Delete(Path.Combine(Application.StartupPath, "Temp"), True)
                 End If
 
-                Master.currMark = chkMark.Checked
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
+                    parMark.Value = Me.chkMark.Checked
+                    parID.Value = Me._id
+                    SQLcommand.ExecuteNonQuery()
+                End Using
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -684,16 +720,16 @@ Public Class dlgEditMovie
 
             sPath = Path.Combine(sPath, "poster.jpg")
 
-            Dim dImgSelect As New dlgImgSelect
-            If dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters, True) = Windows.Forms.DialogResult.OK Then
+            Using dImgSelect As New dlgImgSelect
+                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters, True) = Windows.Forms.DialogResult.OK Then
 
-                Poster.FromFile(sPath)
-                pbPoster.Image = Poster.Image
+                    Poster.FromFile(sPath)
+                    pbPoster.Image = Poster.Image
 
-                Me.lblPosterSize.Text = String.Format("Size: {0}x{1}", Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                Me.lblPosterSize.Visible = True
-            End If
-            dImgSelect.Dispose()
+                    Me.lblPosterSize.Text = String.Format("Size: {0}x{1}", Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                    Me.lblPosterSize.Visible = True
+                End If
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -710,17 +746,17 @@ Public Class dlgEditMovie
 
             sPath = Path.Combine(sPath, "fanart.jpg")
 
-            Dim dImgSelect As New dlgImgSelect
-            If dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart, True) = Windows.Forms.DialogResult.OK Then
+            Using dImgSelect As New dlgImgSelect
+                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart, True) = Windows.Forms.DialogResult.OK Then
 
-                Fanart.FromFile(sPath)
-                pbFanart.Image = Fanart.Image
+                    Fanart.FromFile(sPath)
+                    pbFanart.Image = Fanart.Image
 
-                Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                Me.lblFanartSize.Visible = True
+                    Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Visible = True
 
-            End If
-            dImgSelect.Dispose()
+                End If
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -728,43 +764,43 @@ Public Class dlgEditMovie
 
     Private Sub btnFrameLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameLoad.Click
         Try
-            Dim ffmpeg As New Process()
             Dim tPath As String = Path.Combine(Application.StartupPath, "Temp")
+            Using ffmpeg As New Process()
 
-            If Not Directory.Exists(tPath) Then
-                Directory.CreateDirectory(tPath)
-            End If
-
-            ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-            ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currPath, Path.Combine(tPath, "frame.jpg"))
-            ffmpeg.EnableRaisingEvents = False
-            ffmpeg.StartInfo.UseShellExecute = False
-            ffmpeg.StartInfo.CreateNoWindow = True
-            ffmpeg.StartInfo.RedirectStandardOutput = True
-            ffmpeg.StartInfo.RedirectStandardError = True
-            ffmpeg.Start()
-            Dim d As StreamReader = ffmpeg.StandardError
-            Do
-                Dim s As String = d.ReadLine()
-                If s.Contains("Duration: ") Then
-                    Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-                    Dim ts As TimeSpan = CDate(CDate(DateTime.Today & " " & sTime)).Subtract(CDate(DateTime.Today))
-                    Dim intSeconds As Integer = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
-                    tbFrame.Maximum = intSeconds
-                    tbFrame.Value = 0
-                    tbFrame.Enabled = True
+                If Not Directory.Exists(tPath) Then
+                    Directory.CreateDirectory(tPath)
                 End If
-            Loop While Not d.EndOfStream
 
-            ffmpeg.WaitForExit()
-            ffmpeg.Close()
-            ffmpeg.Dispose()
+                ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currPath, Path.Combine(tPath, "frame.jpg"))
+                ffmpeg.EnableRaisingEvents = False
+                ffmpeg.StartInfo.UseShellExecute = False
+                ffmpeg.StartInfo.CreateNoWindow = True
+                ffmpeg.StartInfo.RedirectStandardOutput = True
+                ffmpeg.StartInfo.RedirectStandardError = True
+                ffmpeg.Start()
+                Using d As StreamReader = ffmpeg.StandardError
+
+                    Do
+                        Dim s As String = d.ReadLine()
+                        If s.Contains("Duration: ") Then
+                            Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
+                            Dim ts As TimeSpan = CDate(CDate(DateTime.Today & " " & sTime)).Subtract(CDate(DateTime.Today))
+                            Dim intSeconds As Integer = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
+                            tbFrame.Maximum = intSeconds
+                            tbFrame.Value = 0
+                            tbFrame.Enabled = True
+                        End If
+                    Loop While Not d.EndOfStream
+                End Using
+                ffmpeg.WaitForExit()
+                ffmpeg.Close()
+            End Using
 
             If File.Exists(Path.Combine(tPath, "frame.jpg")) Then
-                Dim fsFImage As New FileStream(Path.Combine(tPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
-                pbFrame.Image = Image.FromStream(fsFImage)
-                fsFImage.Close()
-                fsFImage.Dispose()
+                Using fsFImage As New FileStream(Path.Combine(tPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
+                    pbFrame.Image = Image.FromStream(fsFImage)
+                End Using
                 btnFrameLoad.Enabled = False
                 btnFrameSave.Enabled = True
             Else
@@ -796,35 +832,34 @@ Public Class dlgEditMovie
     Private Sub btnGrab_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGrab.Click
         Try
             btnGrab.Enabled = False
-
-            Dim ffmpeg As New Process()
             Dim tPath As String = Path.Combine(Application.StartupPath, "Temp")
 
-            If Not Directory.Exists(tPath) Then
-                Directory.CreateDirectory(tPath)
-            End If
+            Using ffmpeg As New Process()
 
-            ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-            ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currPath, Path.Combine(tPath, "frame.jpg"))
-            ffmpeg.EnableRaisingEvents = False
-            ffmpeg.StartInfo.UseShellExecute = False
-            ffmpeg.StartInfo.CreateNoWindow = True
-            ffmpeg.StartInfo.RedirectStandardOutput = True
-            ffmpeg.StartInfo.RedirectStandardError = True
+                If Not Directory.Exists(tPath) Then
+                    Directory.CreateDirectory(tPath)
+                End If
 
-            pnlFrameProgress.Visible = True
-            btnFrameSave.Enabled = False
+                ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currPath, Path.Combine(tPath, "frame.jpg"))
+                ffmpeg.EnableRaisingEvents = False
+                ffmpeg.StartInfo.UseShellExecute = False
+                ffmpeg.StartInfo.CreateNoWindow = True
+                ffmpeg.StartInfo.RedirectStandardOutput = True
+                ffmpeg.StartInfo.RedirectStandardError = True
 
-            ffmpeg.Start()
-            ffmpeg.WaitForExit()
-            ffmpeg.Close()
-            ffmpeg.Dispose()
+                pnlFrameProgress.Visible = True
+                btnFrameSave.Enabled = False
+
+                ffmpeg.Start()
+                ffmpeg.WaitForExit()
+                ffmpeg.Close()
+            End Using
 
             If File.Exists(Path.Combine(tPath, "frame.jpg")) Then
-                Dim fsFImage As FileStream = New FileStream(Path.Combine(tPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
-                pbFrame.Image = Image.FromStream(fsFImage)
-                fsFImage.Close()
-                fsFImage.Dispose()
+                Using fsFImage As FileStream = New FileStream(Path.Combine(tPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
+                    pbFrame.Image = Image.FromStream(fsFImage)
+                End Using
                 btnFrameSave.Enabled = True
             Else
                 tbFrame.Maximum = 0
