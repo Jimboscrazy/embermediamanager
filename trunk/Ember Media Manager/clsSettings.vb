@@ -59,6 +59,7 @@ Public Class emmSettings
     Private _cleanmovieJpg As Boolean
     Private _cleandotfanartJpg As Boolean
     Private _cleanmovienameJpg As Boolean
+    Private _cleanextrathumbs As Boolean
     Private _useTMDB As Boolean
     Private _useIMPA As Boolean
     Private _useMPDB As Boolean
@@ -405,6 +406,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._cleandotfanartJpg = value
+        End Set
+    End Property
+
+    Public Property CleanExtraThumbs() As Boolean
+        Get
+            Return Me._cleanextrathumbs
+        End Get
+        Set(ByVal value As Boolean)
+            Me._cleanextrathumbs = value
         End Set
     End Property
 
@@ -834,6 +844,7 @@ Public Class emmSettings
         Me._cleanmovieJpg = False
         Me._cleandotfanartJpg = False
         Me._cleanmovienameJpg = False
+        Me._cleanextrathumbs = False
         Me._useTMDB = False
         Me._useIMPA = False
         Me._useMPDB = False

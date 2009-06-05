@@ -154,6 +154,8 @@ Partial Class dlgSettings
         Me.lblPosterSize = New System.Windows.Forms.Label
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.Label18 = New System.Windows.Forms.Label
+        Me.txtIMDBURL = New System.Windows.Forms.TextBox
         Me.chkCastWithImg = New System.Windows.Forms.CheckBox
         Me.chkUseCertForMPAA = New System.Windows.Forms.CheckBox
         Me.chkFullCast = New System.Windows.Forms.CheckBox
@@ -180,8 +182,7 @@ Partial Class dlgSettings
         Me.lblCurrent = New System.Windows.Forms.Label
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.Panel1 = New System.Windows.Forms.Panel
-        Me.txtIMDBURL = New System.Windows.Forms.TextBox
-        Me.Label18 = New System.Windows.Forms.Label
+        Me.chkCleanExtrathumbs = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -345,7 +346,7 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.chkLogErrors)
-        Me.GroupBox4.Location = New System.Drawing.Point(397, 213)
+        Me.GroupBox4.Location = New System.Drawing.Point(400, 218)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(189, 78)
         Me.GroupBox4.TabIndex = 3
@@ -384,6 +385,7 @@ Partial Class dlgSettings
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.chkCleanExtrathumbs)
         Me.GroupBox3.Controls.Add(Me.chkCleanMovieNameJPG)
         Me.GroupBox3.Controls.Add(Me.chkCleanMovieJPG)
         Me.GroupBox3.Controls.Add(Me.chkCleanPosterJPG)
@@ -406,7 +408,7 @@ Partial Class dlgSettings
         'chkCleanMovieNameJPG
         '
         Me.chkCleanMovieNameJPG.AutoSize = True
-        Me.chkCleanMovieNameJPG.Location = New System.Drawing.Point(13, 155)
+        Me.chkCleanMovieNameJPG.Location = New System.Drawing.Point(13, 129)
         Me.chkCleanMovieNameJPG.Name = "chkCleanMovieNameJPG"
         Me.chkCleanMovieNameJPG.Size = New System.Drawing.Size(88, 17)
         Me.chkCleanMovieNameJPG.TabIndex = 17
@@ -416,7 +418,7 @@ Partial Class dlgSettings
         'chkCleanMovieJPG
         '
         Me.chkCleanMovieJPG.AutoSize = True
-        Me.chkCleanMovieJPG.Location = New System.Drawing.Point(13, 132)
+        Me.chkCleanMovieJPG.Location = New System.Drawing.Point(13, 111)
         Me.chkCleanMovieJPG.Name = "chkCleanMovieJPG"
         Me.chkCleanMovieJPG.Size = New System.Drawing.Size(76, 17)
         Me.chkCleanMovieJPG.TabIndex = 16
@@ -426,7 +428,7 @@ Partial Class dlgSettings
         'chkCleanPosterJPG
         '
         Me.chkCleanPosterJPG.AutoSize = True
-        Me.chkCleanPosterJPG.Location = New System.Drawing.Point(13, 110)
+        Me.chkCleanPosterJPG.Location = New System.Drawing.Point(13, 93)
         Me.chkCleanPosterJPG.Name = "chkCleanPosterJPG"
         Me.chkCleanPosterJPG.Size = New System.Drawing.Size(77, 17)
         Me.chkCleanPosterJPG.TabIndex = 15
@@ -436,7 +438,7 @@ Partial Class dlgSettings
         'chkCleanPosterTBN
         '
         Me.chkCleanPosterTBN.AutoSize = True
-        Me.chkCleanPosterTBN.Location = New System.Drawing.Point(13, 88)
+        Me.chkCleanPosterTBN.Location = New System.Drawing.Point(13, 75)
         Me.chkCleanPosterTBN.Name = "chkCleanPosterTBN"
         Me.chkCleanPosterTBN.Size = New System.Drawing.Size(78, 17)
         Me.chkCleanPosterTBN.TabIndex = 14
@@ -446,7 +448,7 @@ Partial Class dlgSettings
         'chkCleanDotFanartJPG
         '
         Me.chkCleanDotFanartJPG.AutoSize = True
-        Me.chkCleanDotFanartJPG.Location = New System.Drawing.Point(13, 223)
+        Me.chkCleanDotFanartJPG.Location = New System.Drawing.Point(13, 183)
         Me.chkCleanDotFanartJPG.Name = "chkCleanDotFanartJPG"
         Me.chkCleanDotFanartJPG.Size = New System.Drawing.Size(118, 17)
         Me.chkCleanDotFanartJPG.TabIndex = 13
@@ -456,7 +458,7 @@ Partial Class dlgSettings
         'chkCleanMovieNFOb
         '
         Me.chkCleanMovieNFOb.AutoSize = True
-        Me.chkCleanMovieNFOb.Location = New System.Drawing.Point(13, 267)
+        Me.chkCleanMovieNFOb.Location = New System.Drawing.Point(13, 219)
         Me.chkCleanMovieNFOb.Name = "chkCleanMovieNFOb"
         Me.chkCleanMovieNFOb.Size = New System.Drawing.Size(89, 17)
         Me.chkCleanMovieNFOb.TabIndex = 12
@@ -466,7 +468,7 @@ Partial Class dlgSettings
         'chkCleanMovieNFO
         '
         Me.chkCleanMovieNFO.AutoSize = True
-        Me.chkCleanMovieNFO.Location = New System.Drawing.Point(13, 245)
+        Me.chkCleanMovieNFO.Location = New System.Drawing.Point(13, 201)
         Me.chkCleanMovieNFO.Name = "chkCleanMovieNFO"
         Me.chkCleanMovieNFO.Size = New System.Drawing.Size(77, 17)
         Me.chkCleanMovieNFO.TabIndex = 11
@@ -476,7 +478,7 @@ Partial Class dlgSettings
         'chkCleanMovieFanartJPG
         '
         Me.chkCleanMovieFanartJPG.AutoSize = True
-        Me.chkCleanMovieFanartJPG.Location = New System.Drawing.Point(13, 200)
+        Me.chkCleanMovieFanartJPG.Location = New System.Drawing.Point(13, 165)
         Me.chkCleanMovieFanartJPG.Name = "chkCleanMovieFanartJPG"
         Me.chkCleanMovieFanartJPG.Size = New System.Drawing.Size(118, 17)
         Me.chkCleanMovieFanartJPG.TabIndex = 10
@@ -486,7 +488,7 @@ Partial Class dlgSettings
         'chkCleanFanartJPG
         '
         Me.chkCleanFanartJPG.AutoSize = True
-        Me.chkCleanFanartJPG.Location = New System.Drawing.Point(13, 178)
+        Me.chkCleanFanartJPG.Location = New System.Drawing.Point(13, 147)
         Me.chkCleanFanartJPG.Name = "chkCleanFanartJPG"
         Me.chkCleanFanartJPG.Size = New System.Drawing.Size(75, 17)
         Me.chkCleanFanartJPG.TabIndex = 9
@@ -496,7 +498,7 @@ Partial Class dlgSettings
         'chkCleanMovieTBNb
         '
         Me.chkCleanMovieTBNb.AutoSize = True
-        Me.chkCleanMovieTBNb.Location = New System.Drawing.Point(13, 65)
+        Me.chkCleanMovieTBNb.Location = New System.Drawing.Point(13, 57)
         Me.chkCleanMovieTBNb.Name = "chkCleanMovieTBNb"
         Me.chkCleanMovieTBNb.Size = New System.Drawing.Size(89, 17)
         Me.chkCleanMovieTBNb.TabIndex = 8
@@ -506,7 +508,7 @@ Partial Class dlgSettings
         'chkCleanMovieTBN
         '
         Me.chkCleanMovieTBN.AutoSize = True
-        Me.chkCleanMovieTBN.Location = New System.Drawing.Point(13, 43)
+        Me.chkCleanMovieTBN.Location = New System.Drawing.Point(13, 39)
         Me.chkCleanMovieTBN.Name = "chkCleanMovieTBN"
         Me.chkCleanMovieTBN.Size = New System.Drawing.Size(77, 17)
         Me.chkCleanMovieTBN.TabIndex = 7
@@ -1516,6 +1518,23 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
         '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(4, 145)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(66, 13)
+        Me.Label18.TabIndex = 62
+        Me.Label18.Text = "IMDB Mirror:"
+        '
+        'txtIMDBURL
+        '
+        Me.txtIMDBURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtIMDBURL.Location = New System.Drawing.Point(6, 158)
+        Me.txtIMDBURL.Name = "txtIMDBURL"
+        Me.txtIMDBURL.Size = New System.Drawing.Size(192, 20)
+        Me.txtIMDBURL.TabIndex = 46
+        '
         'chkCastWithImg
         '
         Me.chkCastWithImg.AutoSize = True
@@ -1823,22 +1842,15 @@ Partial Class dlgSettings
         Me.Panel1.Size = New System.Drawing.Size(221, 25)
         Me.Panel1.TabIndex = 65
         '
-        'txtIMDBURL
+        'chkCleanExtrathumbs
         '
-        Me.txtIMDBURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIMDBURL.Location = New System.Drawing.Point(6, 158)
-        Me.txtIMDBURL.Name = "txtIMDBURL"
-        Me.txtIMDBURL.Size = New System.Drawing.Size(192, 20)
-        Me.txtIMDBURL.TabIndex = 46
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(4, 145)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(66, 13)
-        Me.Label18.TabIndex = 62
-        Me.Label18.Text = "IMDB Mirror:"
+        Me.chkCleanExtrathumbs.AutoSize = True
+        Me.chkCleanExtrathumbs.Location = New System.Drawing.Point(13, 237)
+        Me.chkCleanExtrathumbs.Name = "chkCleanExtrathumbs"
+        Me.chkCleanExtrathumbs.Size = New System.Drawing.Size(93, 17)
+        Me.chkCleanExtrathumbs.TabIndex = 18
+        Me.chkCleanExtrathumbs.Text = "/extrathumbs/"
+        Me.chkCleanExtrathumbs.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -1854,10 +1866,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2064,4 +2076,5 @@ Partial Class dlgSettings
     Friend WithEvents Label17 As System.Windows.Forms.Label
     Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents txtIMDBURL As System.Windows.Forms.TextBox
+    Friend WithEvents chkCleanExtrathumbs As System.Windows.Forms.CheckBox
 End Class
