@@ -1989,8 +1989,13 @@ Public Class frmMain
 
                             Case Master.ScrapeType.UpdateAuto
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
+                                    parID.Value = drvRow.Item(0)
+                                    parPoster.Value = drvRow.Item(4)
+                                    parFanart.Value = drvRow.Item(5)
+                                    parInfo.Value = drvRow.Item(6)
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6) Then
+                                    If (Not drvRow.Item(4) AndAlso Args.scrapeMod = ScrapeModifier.Poster) OrElse (Not drvRow.Item(5) AndAlso Args.scrapeMod = ScrapeModifier.Fanart) OrElse (Not drvRow.Item(6) AndAlso Args.scrapeMod = ScrapeModifier.NFO) OrElse _
+                                    ((Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6)) AndAlso Args.scrapeMod = ScrapeModifier.All) Then
                                         Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                         iCount += 1
 
@@ -1998,11 +2003,6 @@ Public Class frmMain
 
                                         nfoPath = Master.GetNfoPath(sPath, drvRow.Item(2))
                                         Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
-
-                                        parID.Value = drvRow.Item(0)
-                                        parPoster.Value = drvRow.Item(4)
-                                        parFanart.Value = drvRow.Item(5)
-                                        parInfo.Value = drvRow.Item(6)
 
                                         If String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.scrapeMovie.IMDBID, Master.scrapeMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
                                             Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType)
@@ -2073,20 +2073,20 @@ Public Class frmMain
                                 Next
                             Case Master.ScrapeType.UpdateAsk
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
+                                    parID.Value = drvRow.Item(0)
+                                    parPoster.Value = drvRow.Item(4)
+                                    parFanart.Value = drvRow.Item(5)
+                                    parInfo.Value = drvRow.Item(6)
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6) Then
+                                    If (Not drvRow.Item(4) AndAlso Args.scrapeMod = ScrapeModifier.Poster) OrElse (Not drvRow.Item(5) AndAlso Args.scrapeMod = ScrapeModifier.Fanart) OrElse (Not drvRow.Item(6) AndAlso Args.scrapeMod = ScrapeModifier.NFO) OrElse _
+                                    ((Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6)) AndAlso Args.scrapeMod = ScrapeModifier.All) Then
 
                                         sPath = drvRow.Item(1).ToString
 
                                         nfoPath = Master.GetNfoPath(sPath, drvRow.Item(2))
                                         Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
-
-                                        parID.Value = drvRow.Item(0)
-                                        parPoster.Value = drvRow.Item(4)
-                                        parFanart.Value = drvRow.Item(5)
-                                        parInfo.Value = drvRow.Item(6)
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.scrapeMovie.IMDBID, Master.scrapeMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
@@ -2264,17 +2264,16 @@ doCancel:
         Dim nfoPath As String = String.Empty
         Dim Args As Arguments = e.Argument
 
-        'first count all the items in the list with no info just for the purpose of having a progress bar
-        For i As Integer = 0 To Me.dtMedia.Rows.Count - 1
-            If bwValidateNfo.CancellationPending Then Return
-            If Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO Then
+        If Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO Then
+            For i As Integer = 0 To Me.dtMedia.Rows.Count - 1
+                If bwValidateNfo.CancellationPending Then Return
                 nfoPath = Master.GetNfoPath(Me.dtMedia.Rows(i).Item(1), Me.dtMedia.Rows(i).Item(2))
                 Me.bwValidateNfo.ReportProgress(i, nfoPath)
                 If Not Master.IsConformingNfo(nfoPath) Then
                     Me.dtMedia.Rows(i).Item(6) = False
                 End If
-            End If
-        Next
+            Next
+        End If
 
         e.Result = New Results With {.scrapeType = Args.scrapeType, .scrapeMod = Args.scrapeMod}
 
@@ -2293,7 +2292,7 @@ doCancel:
 
         Dim Res As Results = e.Result
 
-        If Not bwScraper.CancellationPending Then
+        If Not bwScraper.CancellationPending AndAlso Not bwValidateNfo.CancellationPending Then
             Me.tspbLoading.Value = 0
             Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
             If Res.scrapeType = Master.ScrapeType.UpdateAuto Then
@@ -2872,10 +2871,12 @@ doCancel:
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.EnableFilters(False)
 
-            btnCancel.Visible = True
-            lblCanceling.Visible = False
-            pbCanceling.Visible = False
-            Me.pnlCancel.Visible = True
+            If Not sType = Master.ScrapeType.SingleScrape Then
+                btnCancel.Visible = True
+                lblCanceling.Visible = False
+                pbCanceling.Visible = False
+                Me.pnlCancel.Visible = True
+            End If
 
             Select Case sType
                 Case Master.ScrapeType.FullAsk
@@ -3414,6 +3415,8 @@ doCancel:
         Me.ClearFilters()
         Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
             SQLcommand.CommandText = "UPDATE movies SET new = 0;"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "VACUUM;"
             SQLcommand.ExecuteNonQuery()
         End Using
         Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
