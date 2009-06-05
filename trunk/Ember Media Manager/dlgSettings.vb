@@ -160,7 +160,7 @@ Public Class dlgSettings
     Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
         Try
             If Me.lvMovies.SelectedItems.Count > 0 Then
-                If MsgBox("Are you sure you want to remove the selected sources? This will remove the movies remove the movies from these sources from the Ember database.", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
+                If MsgBox("Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database.", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
                     Me.lvMovies.BeginUpdate()
 
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction

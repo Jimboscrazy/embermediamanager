@@ -325,7 +325,7 @@ Public Class Images
         Return tmpImage
     End Function
 
-    Public Function GetPreferredImage(ByVal iType As Master.ImageType, ByRef fArt As Media.Fanart, ByRef pThumbs As Media.Poster, Optional ByVal doAsk As Boolean = False) As Boolean
+    Public Function GetPreferredImage(ByVal IMDBID As String, ByVal iType As Master.ImageType, ByRef fArt As Media.Fanart, ByRef pThumbs As Media.Poster, Optional ByVal doAsk As Boolean = False) As Boolean
 
         '//
         ' Try to get the best match between what the user selected in settings and the actual posters downloaded
@@ -358,7 +358,7 @@ Public Class Images
                 pThumbs = New Media.Poster
                 If Master.eSettings.UseTMDB Then
                     'download all TMBD images
-                    tmpListTMDB = TMDB.GetTMDBImages(Master.currMovie.IMDBID, "poster")
+                    tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "poster")
 
                     'check each one for it's size to see if it matched the preferred size
                     If tmpListTMDB.Count > 0 Then
@@ -400,7 +400,7 @@ Public Class Images
                     If IsNothing(tmpImage) Then
                         'no poster of the proper size from TMDB found... try IMPA
 
-                        tmpListIMPA = IMPA.GetIMPAPosters(Master.currMovie.IMDBID)
+                        tmpListIMPA = IMPA.GetIMPAPosters(IMDBID)
 
                         If tmpListIMPA.Count > 0 Then
                             hasImages = True
@@ -448,7 +448,7 @@ Public Class Images
                     If IsNothing(tmpImage) Then
                         'no poster of the proper size from TMDB or IMPA found... try MPDB
 
-                        tmpListMPDB = MPDB.GetMPDBPosters(Master.currMovie.IMDBID)
+                        tmpListMPDB = MPDB.GetMPDBPosters(IMDBID)
 
                         If tmpListMPDB.Count > 0 Then
                             hasImages = True
@@ -582,7 +582,7 @@ Public Class Images
                 If Master.eSettings.UseTMDB Then
 
                     'download all the fanart from TMDB
-                    tmpListTMDB = TMDB.GetTMDBImages(Master.currMovie.IMDBID, "backdrop")
+                    tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "backdrop")
 
                     If tmpListTMDB.Count > 0 Then
                         hasImages = True

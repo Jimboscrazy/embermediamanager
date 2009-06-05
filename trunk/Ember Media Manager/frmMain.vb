@@ -1333,7 +1333,15 @@ Public Class frmMain
                                 parFanart.Value = aContents(1)
                                 parInfo.Value = aContents(2)
                                 parTrailer.Value = aContents(3)
-                                parNew.Value = True
+                                Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                    SQLNewcommand.CommandText = String.Concat("SELECT id FROM movies WHERE path = """, sFile.Filename, """;")
+                                    Dim SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                                    If SQLreader.HasRows Then
+                                        parNew.Value = False
+                                    Else
+                                        parNew.Value = True
+                                    End If
+                                End Using
                                 parMark.Value = If(Master.eSettings.MarkNew, True, False)
                                 parSource.Value = sFile.Source
                                 parIMDB.Value = mIMDB
@@ -1650,7 +1658,7 @@ Public Class frmMain
                                         If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
 
                                             If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
-                                                If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs, True) Then
+                                                If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, True) Then
                                                     If Not IsNothing(Poster.Image) Then
                                                         Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                         parPoster.Value = True
@@ -1673,7 +1681,7 @@ Public Class frmMain
                                         If Master.eSettings.UseTMDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
 
                                             If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
-                                                If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing, True) Then
+                                                If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, True) Then
 
                                                     If Not IsNothing(Fanart.Image) Then
                                                         Fanart.SaveAsFanart(sPath, drvRow.Item(2))
@@ -1759,7 +1767,7 @@ Public Class frmMain
                                         If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
 
                                             If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
-                                                If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs) Then
+                                                If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs) Then
                                                     If Not IsNothing(Poster.Image) Then
                                                         Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                         Master.scrapeMovie.Thumbs = pThumbs
@@ -1773,7 +1781,7 @@ Public Class frmMain
                                         If Me.bwScraper.CancellationPending Then Return
                                         If Master.eSettings.UseTMDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
                                             If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
-                                                If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing) Then
+                                                If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing) Then
                                                     If Not IsNothing(Fanart.Image) Then
                                                         Fanart.SaveAsFanart(sPath, drvRow.Item(2))
                                                         Master.scrapeMovie.Fanart = fArt
@@ -1988,7 +1996,7 @@ Public Class frmMain
                                         If Not drvRow.Item(4) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
                                             If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
                                                 If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
-                                                    If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs) Then
+                                                    If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs) Then
                                                         If Not IsNothing(Poster.Image) Then
                                                             Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                             parPoster.Value = True
@@ -2009,7 +2017,7 @@ Public Class frmMain
                                         If Not drvRow.Item(5) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
                                             If Master.eSettings.UseTMDB Then
                                                 If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
-                                                    If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing) Then
+                                                    If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing) Then
                                                         If Not IsNothing(Fanart.Image) Then
                                                             Fanart.SaveAsFanart(sPath, drvRow.Item(2))
                                                             parFanart.Value = True
@@ -2075,7 +2083,7 @@ Public Class frmMain
                                             If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB Then
 
                                                 If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
-                                                    If Poster.GetPreferredImage(Master.ImageType.Posters, Nothing, pThumbs, True) Then
+                                                    If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, True) Then
                                                         If Not IsNothing(Poster.Image) Then
                                                             Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                             parPoster.Value = True
@@ -2112,7 +2120,7 @@ Public Class frmMain
                                             If Master.eSettings.UseTMDB Then
 
                                                 If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
-                                                    If Fanart.GetPreferredImage(Master.ImageType.Fanart, fArt, Nothing, True) Then
+                                                    If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, True) Then
 
                                                         If Not IsNothing(Fanart.Image) Then
                                                             Fanart.SaveAsFanart(sPath, drvRow.Item(2))
