@@ -114,6 +114,8 @@ Partial Class dlgEditMovie
         Me.chkMark = New System.Windows.Forms.CheckBox
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
+        Me.btnRemovePoster = New System.Windows.Forms.Button
+        Me.btnRemoveFanart = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -707,6 +709,7 @@ Partial Class dlgEditMovie
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.btnRemovePoster)
         Me.TabPage2.Controls.Add(Me.lblPosterSize)
         Me.TabPage2.Controls.Add(Me.btnSetPosterScrape)
         Me.TabPage2.Controls.Add(Me.btnSetPoster)
@@ -765,6 +768,7 @@ Partial Class dlgEditMovie
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.btnRemoveFanart)
         Me.TabPage3.Controls.Add(Me.lblFanartSize)
         Me.TabPage3.Controls.Add(Me.btnSetFanartScrape)
         Me.TabPage3.Controls.Add(Me.btnSetFanart)
@@ -1036,6 +1040,30 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnChangeMovie.UseVisualStyleBackColor = True
         '
+        'btnRemovePoster
+        '
+        Me.btnRemovePoster.Image = CType(resources.GetObject("btnRemovePoster.Image"), System.Drawing.Image)
+        Me.btnRemovePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemovePoster.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemovePoster.Name = "btnRemovePoster"
+        Me.btnRemovePoster.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemovePoster.TabIndex = 26
+        Me.btnRemovePoster.Text = "Remove Poster"
+        Me.btnRemovePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemovePoster.UseVisualStyleBackColor = True
+        '
+        'btnRemoveFanart
+        '
+        Me.btnRemoveFanart.Image = CType(resources.GetObject("btnRemoveFanart.Image"), System.Drawing.Image)
+        Me.btnRemoveFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveFanart.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveFanart.Name = "btnRemoveFanart"
+        Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveFanart.TabIndex = 28
+        Me.btnRemoveFanart.Text = "Remove Fanart"
+        Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveFanart.UseVisualStyleBackColor = True
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1175,5 +1203,7 @@ Partial Class dlgEditMovie
     Friend WithEvents txtStudioTag As System.Windows.Forms.TextBox
     Friend WithEvents btnRescrape As System.Windows.Forms.Button
     Friend WithEvents btnChangeMovie As System.Windows.Forms.Button
+    Friend WithEvents btnRemovePoster As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button
 
 End Class
