@@ -42,29 +42,22 @@ Namespace IMPA
             Dim Result As Object
         End Structure
 
+        Public Sub Cancel()
+            If Me.bwIMPA.IsBusy Then Me.bwIMPA.CancelAsync()
+
+            Do While Me.bwIMPA.IsBusy
+                Application.DoEvents()
+            Loop
+
+        End Sub
 
         Private Function GetLink(ByVal IMDBID As String) As String
 
             Try
-                Dim Url As String = String.Concat("http://www.imdb.com/title/tt", _
-                                          IMDBID, "/posters")
 
-                Dim Html As String
-
-                Dim Wc As New WebClient
-                Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
-                Wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 3.5;)")
-
-                Dim Ms As New MemoryStream(Wc.DownloadData(Url))
-
-                If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                    Html = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
-                Else
-                    Html = New StreamReader(Ms).ReadToEnd
-                End If
-
-                Ms.Close()
-                Ms = Nothing
+                Dim sHTTP As New HTTP(String.Concat("http://www.imdb.com/title/tt", IMDBID, "/posters"))
+                Dim HTML As String = sHTTP.Response
+                sHTTP = Nothing
 
                 Dim mcIMPA As MatchCollection = Regex.Matches(Html, "http://([^""]*)impawards.com/([^""]*)")
                 If mcIMPA.Count > 0 Then
@@ -82,6 +75,7 @@ Namespace IMPA
         Public Sub GetImagesAsync(ByVal sURL As String)
             Try
                 If Not bwIMPA.IsBusy Then
+                    bwIMPA.WorkerSupportsCancellation = True
                     bwIMPA.WorkerReportsProgress = True
                     bwIMPA.RunWorkerAsync(New Arguments With {.Parameter = sURL})
                 End If
@@ -91,33 +85,26 @@ Namespace IMPA
         End Sub
 
         Public Function GetIMPAPosters(ByVal imdbID As String) As List(Of Media.Image)
-            Dim Html As String
             Dim alPoster As New List(Of Media.Image)
 
             Try
+                If bwIMPA.CancellationPending Then Return Nothing
                 Dim sURL As String = GetLink(imdbID)
 
                 If Not String.IsNullOrEmpty(sURL) Then
-                    Dim Wc As New WebClient
-                    Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
-                    Wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 3.5;)")
 
-                    Dim Ms As New MemoryStream(Wc.DownloadData(sURL))
+                    Dim sHTTP As New HTTP(sURL)
+                    Dim HTML As String = sHTTP.Response
+                    sHTTP = Nothing
 
-                    If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                        Html = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
-                    Else
-                        Html = New StreamReader(Ms).ReadToEnd
-                    End If
-
-                    Ms.Close()
-                    Ms = Nothing
+                    If bwIMPA.CancellationPending Then Return Nothing
 
                     Dim mcPoster As MatchCollection = Regex.Matches(Html, "(thumbs/imp_([^>]*ver[^>]*.jpg))|(thumbs/imp_([^>]*.jpg))")
 
                     Dim PosterURL As String
 
                     For Each mPoster As Match In mcPoster
+                        If bwIMPA.CancellationPending Then Return Nothing
                         PosterURL = Strings.Replace(String.Format("{0}/{1}", sURL.Substring(0, sURL.LastIndexOf("/")), mPoster.Value.ToString()).Replace("thumbs", "posters"), "imp_", String.Empty)
 
                         alPoster.Add(New Media.Image With {.Description = "poster", .URL = PosterURL})
@@ -144,11 +131,15 @@ Namespace IMPA
         End Sub
 
         Private Sub bwIMPA_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwIMPA.ProgressChanged
-            RaiseEvent ProgressUpdated(e.ProgressPercentage)
+            If Not bwIMPA.CancellationPending Then
+                RaiseEvent ProgressUpdated(e.ProgressPercentage)
+            End If
         End Sub
 
         Private Sub bwIMPA_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwIMPA.RunWorkerCompleted
-            RaiseEvent PostersDownloaded(e.Result)
+            If Not bwIMPA.CancellationPending Then
+                RaiseEvent PostersDownloaded(e.Result)
+            End If
         End Sub
 
     End Class

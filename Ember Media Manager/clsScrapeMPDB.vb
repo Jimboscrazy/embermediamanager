@@ -23,7 +23,6 @@ Option Explicit On
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Text
-Imports System.IO.Compression
 Imports System.Xml
 
 Namespace MPDB
@@ -42,11 +41,21 @@ Namespace MPDB
             Dim Result As Object
         End Structure
 
+        Public Sub Cancel()
+            If Me.bwMPDB.IsBusy Then Me.bwMPDB.CancelAsync()
+
+            Do While Me.bwMPDB.IsBusy
+                Application.DoEvents()
+            Loop
+
+        End Sub
+
         Public Sub GetImagesAsync(ByVal imdbID As String)
             Try
-                If Not bwMPDB.IsBusy Then
-                    bwMPDB.WorkerReportsProgress = True
-                    bwMPDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID})
+                If Not Me.bwMPDB.IsBusy Then
+                    Me.bwMPDB.WorkerSupportsCancellation = True
+                    Me.bwMPDB.WorkerReportsProgress = True
+                    Me.bwMPDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID})
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -54,36 +63,28 @@ Namespace MPDB
         End Sub
 
         Public Function GetMPDBPosters(ByVal imdbID As String) As List(Of Media.Image)
-            Dim Html As String
             Dim alPosters As New List(Of Media.Image)
-            Dim sUrl As String = String.Concat("http://www.movieposterdb.com/movie/", imdbID)
-            Dim Wc As New WebClient
+
+            If Me.bwMPDB.CancellationPending Then Return Nothing
 
             Try
-                Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
-                Wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 3.5;)")
+                Dim sHTTP As New HTTP(String.Concat("http://www.movieposterdb.com/movie/", imdbID))
+                Dim HTML As String = sHTTP.Response
+                sHTTP = Nothing
 
-                Dim Ms As New MemoryStream(Wc.DownloadData(sUrl))
-
-                If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                    Html = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
-                Else
-                    Html = New StreamReader(Ms).ReadToEnd
-                End If
-
-                Ms.Close()
-                Ms = Nothing
+                If Me.bwMPDB.CancellationPending Then Return Nothing
 
                 If bwMPDB.WorkerReportsProgress Then
                     bwMPDB.ReportProgress(1)
                 End If
 
-                If Regex.IsMatch(Html, String.Concat("http://www.imdb.com/title/tt", imdbID), RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline) Then
-                    Dim mcPoster As MatchCollection = Regex.Matches(Html, "http://www.movieposterdb.com/posters/[0-9_](.*?)/[0-9](.*?)/[0-9](.*?)/[a-z0-9_](.*?).jpg")
+                If Regex.IsMatch(HTML, String.Concat("http://www.imdb.com/title/tt", imdbID), RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline) Then
+                    Dim mcPoster As MatchCollection = Regex.Matches(HTML, "http://www.movieposterdb.com/posters/[0-9_](.*?)/[0-9](.*?)/[0-9](.*?)/[a-z0-9_](.*?).jpg")
 
                     Dim PosterURL As String = String.Empty
 
                     For Each mPoster As Match In mcPoster
+                        If Me.bwMPDB.CancellationPending Then Return Nothing
                         PosterURL = mPoster.Value.Remove(mPoster.Value.LastIndexOf("/") + 1, 1)
                         PosterURL = PosterURL.Insert(mPoster.Value.LastIndexOf("/") + 1, "l")
                         alPosters.Add(New Media.Image With {.Description = "poster", .URL = PosterURL})
@@ -110,11 +111,15 @@ Namespace MPDB
         End Sub
 
         Private Sub bwMPDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMPDB.ProgressChanged
-            RaiseEvent ProgressUpdated(e.ProgressPercentage)
+            If Not bwMPDB.CancellationPending Then
+                RaiseEvent ProgressUpdated(e.ProgressPercentage)
+            End If
         End Sub
 
         Private Sub bwMPDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMPDB.RunWorkerCompleted
-            RaiseEvent PostersDownloaded(e.Result)
+            If Not bwMPDB.CancellationPending Then
+                RaiseEvent PostersDownloaded(e.Result)
+            End If
         End Sub
     End Class
 End Namespace
