@@ -1586,4 +1586,78 @@ Public Class Master
             End If
         End If
     End Sub
+
+    Public Shared Sub CreateRandomThumbs(ByVal sPath As String, ByVal ThumbCount As Integer)
+
+        Try
+            Dim pExt As String = Path.GetExtension(sPath).ToLower
+            If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso _
+            Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
+
+                Using ffmpeg As New Process()
+                    Dim intSeconds As Integer = 0
+                    Dim intAdd As Integer = 0
+                    Dim tPath As String = String.Empty
+
+                    If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
+                    Else
+                        tPath = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
+                    End If
+
+                    If Not Directory.Exists(tPath) Then
+                        Directory.CreateDirectory(tPath)
+                    End If
+                    ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                    ffmpeg.EnableRaisingEvents = False
+                    ffmpeg.StartInfo.UseShellExecute = False
+                    ffmpeg.StartInfo.CreateNoWindow = True
+                    ffmpeg.StartInfo.RedirectStandardOutput = True
+                    ffmpeg.StartInfo.RedirectStandardError = True
+
+                    'first get the duration
+                    ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", sPath)
+                    ffmpeg.Start()
+                    Dim d As StreamReader = ffmpeg.StandardError
+                    Do
+                        Dim s As String = d.ReadLine()
+                        If s.Contains("Duration: ") Then
+                            Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
+                            Dim ts As TimeSpan = CDate(CDate(DateTime.Today & " " & sTime)).Subtract(CDate(DateTime.Today))
+                            intSeconds = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
+                        End If
+                    Loop While Not d.EndOfStream
+
+                    ffmpeg.WaitForExit()
+                    ffmpeg.Close()
+
+                    If intSeconds > 0 AndAlso ((Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds / 2 > ThumbCount + 300) OrElse (Not Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds > ThumbCount + 2)) Then
+                        If Master.eSettings.AutoThumbsNoSpoilers Then
+                            intSeconds = ((intSeconds / 2) - 300) / ThumbCount
+                            intAdd = intSeconds + 300
+                        Else
+                            intSeconds = intSeconds / (ThumbCount + 2)
+                            intAdd = intSeconds
+                        End If
+                        intSeconds += intAdd
+
+                        For i = 0 To (ThumbCount - 1)
+                            'check to see if file already exists... if so, don't bother running ffmpeg since we're not
+                            'overwriting current thumbs anyway
+                            If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg"))) Then
+                                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg ""{2}""", intSeconds, sPath, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
+                                ffmpeg.Start()
+                                ffmpeg.WaitForExit()
+                                ffmpeg.Close()
+                            End If
+                            intSeconds += intAdd
+                        Next
+                    End If
+                End Using
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class
