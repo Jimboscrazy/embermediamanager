@@ -71,6 +71,7 @@ Public Class frmMain
 
     Private Structure Results
         Dim scrapeType As Master.ScrapeType
+        Dim scrapeMod As ScrapeModifier
         Dim Count As Integer
         Dim fileInfo As String
         Dim setEnabled As Boolean
@@ -1342,7 +1343,19 @@ Public Class frmMain
                                         parNew.Value = True
                                     End If
                                 End Using
-                                parMark.Value = If(Master.eSettings.MarkNew, True, False)
+                                If parNew.Value Then
+                                    If Master.eSettings.MarkNew Then
+                                        parMark.Value = True
+                                    Else
+                                        parMark.Value = False
+                                    End If
+                                Else
+                                    Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                        SQLNewcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE path = """, sFile.Filename, """;")
+                                        Dim SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                                        parMark.Value = SQLreader(0)
+                                    End Using
+                                End If
                                 parSource.Value = sFile.Source
                                 parIMDB.Value = mIMDB
                                 SQLcommand.ExecuteNonQuery()
@@ -1352,7 +1365,7 @@ Public Class frmMain
                                 mIMDB = String.Empty
                                 currentIndex += 1
                             End If
-                        End If
+                            End If
                     Next
                 End Using
                 SQLtransaction.Commit()
@@ -1634,9 +1647,7 @@ Public Class frmMain
                                     If File.Exists(nfoPath) Then
                                         tmpMovie = Master.LoadMovieFromNFO(nfoPath)
                                         If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
-                                            If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
-                                                IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
-                                            End If
+                                            IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                                             Master.scrapeMovie = tmpMovie
                                         Else
                                             Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, tmpMovie, Args.scrapeType)
@@ -1645,6 +1656,7 @@ Public Class frmMain
                                     Else
                                         Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType)
                                     End If
+
 
                                     If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
                                         If Me.bwScraper.CancellationPending Then Return
@@ -1655,7 +1667,7 @@ Public Class frmMain
                                         End If
 
                                         If Me.bwScraper.CancellationPending Then Return
-                                        If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
+                                        If (Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
 
                                             If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
                                                 If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, True) Then
@@ -1709,13 +1721,13 @@ Public Class frmMain
                                         End If
                                     End If
 
-                                    If Me.bwScraper.CancellationPending Then Return
-                                    If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
-                                        If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) Then
-                                            Me.CreateRandomThumbs(sPath)
-                                        End If
-                                    End If
-                                    SQLcommand.ExecuteNonQuery()
+                    If Me.bwScraper.CancellationPending Then Return
+                    If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
+                        If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) Then
+                            Me.CreateRandomThumbs(sPath)
+                        End If
+                    End If
+                    SQLcommand.ExecuteNonQuery()
                                 Next
 
                             Case Master.ScrapeType.FullAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto
@@ -1743,9 +1755,7 @@ Public Class frmMain
                                     If File.Exists(nfoPath) Then
                                         tmpMovie = Master.LoadMovieFromNFO(nfoPath)
                                         If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
-                                            If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
-                                                IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
-                                            End If
+                                            IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
                                             Master.scrapeMovie = tmpMovie
                                         Else
                                             Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, tmpMovie, Args.scrapeType)
@@ -1755,16 +1765,16 @@ Public Class frmMain
                                         Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString(), New Media.Movie, Args.scrapeType)
                                     End If
 
-                                    If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
-                                        If Me.bwScraper.CancellationPending Then Return
-                                        If Master.eSettings.UseStudioTags AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
-                                            If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
-                                                Master.scrapeMovie.Studio = String.Format("{0}{1}", Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
+                                        If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
+                                            If Me.bwScraper.CancellationPending Then Return
+                                            If Master.eSettings.UseStudioTags AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
+                                                If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
+                                                    Master.scrapeMovie.Studio = String.Format("{0}{1}", Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
+                                                End If
                                             End If
-                                        End If
 
-                                        If Me.bwScraper.CancellationPending Then Return
-                                        If Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
+                                            If Me.bwScraper.CancellationPending Then Return
+                                        If (Master.eSettings.UseIMPA OrElse Master.eSettings.UseTMDB OrElse Master.eSettings.UseMPDB) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
 
                                             If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
                                                 If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs) Then
@@ -1776,37 +1786,37 @@ Public Class frmMain
                                                 End If
                                             End If
                                         End If
-                                        pThumbs = Nothing
+                                            pThumbs = Nothing
 
-                                        If Me.bwScraper.CancellationPending Then Return
-                                        If Master.eSettings.UseTMDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
-                                            If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
-                                                If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing) Then
-                                                    If Not IsNothing(Fanart.Image) Then
-                                                        Fanart.SaveAsFanart(sPath, drvRow.Item(2))
-                                                        Master.scrapeMovie.Fanart = fArt
-                                                        parFanart.Value = True
+                                            If Me.bwScraper.CancellationPending Then Return
+                                            If Master.eSettings.UseTMDB AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
+                                                If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
+                                                    If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing) Then
+                                                        If Not IsNothing(Fanart.Image) Then
+                                                            Fanart.SaveAsFanart(sPath, drvRow.Item(2))
+                                                            Master.scrapeMovie.Fanart = fArt
+                                                            parFanart.Value = True
+                                                        End If
                                                     End If
                                                 End If
                                             End If
+                                            fArt = Nothing
+
+                                            If Me.bwScraper.CancellationPending Then Return
+                                            If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
+                                                Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
+                                                parInfo.Value = True
+                                            End If
                                         End If
-                                        fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then Return
-                                        If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
-                                            Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
-                                            parInfo.Value = True
+                                        If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
+                                            If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) Then
+                                                Me.CreateRandomThumbs(sPath)
+                                            End If
                                         End If
-                                    End If
 
-                                    If Me.bwScraper.CancellationPending Then Return
-                                    If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
-                                        If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) Then
-                                            Me.CreateRandomThumbs(sPath)
-                                        End If
-                                    End If
-
-                                    SQLcommand.ExecuteNonQuery()
+                                        SQLcommand.ExecuteNonQuery()
                                 Next
                             Case Master.ScrapeType.MIOnly
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -1976,17 +1986,16 @@ Public Class frmMain
                                         parFanart.Value = drvRow.Item(5)
                                         parInfo.Value = drvRow.Item(6)
 
-                                        If Not drvRow.Item(6) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
-                                            If String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.scrapeMovie.IMDBID, Master.scrapeMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
-                                                Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType)
-                                            End If
-                                            If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
+                                        If String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.scrapeMovie.IMDBID, Master.scrapeMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
+                                            Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType)
+                                        End If
+                                        If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
+                                            If Not drvRow.Item(6) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                                 If Master.eSettings.UseStudioTags Then
                                                     If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
                                                         Master.scrapeMovie.Studio = String.Format("{0}{1}", Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
                                                     End If
                                                 End If
-
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(6))
                                                 parInfo.Value = True
                                             End If
@@ -2000,7 +2009,7 @@ Public Class frmMain
                                                         If Not IsNothing(Poster.Image) Then
                                                             Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                             parPoster.Value = True
-                                                            If File.Exists(nfoPath) Then
+                                                            If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                                 'need to load movie from nfo here in case the movie already had
                                                                 'an nfo.... scrapeMovie would not be set to the proper movie
                                                                 Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
@@ -2021,7 +2030,7 @@ Public Class frmMain
                                                         If Not IsNothing(Fanart.Image) Then
                                                             Fanart.SaveAsFanart(sPath, drvRow.Item(2))
                                                             parFanart.Value = True
-                                                            If File.Exists(nfoPath) Then
+                                                            If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                                 'need to load movie from nfo here in case the movie already had
                                                                 'an nfo.... scrapeMovie would not be set to the proper movie
                                                                 Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
@@ -2062,11 +2071,11 @@ Public Class frmMain
                                         parInfo.Value = drvRow.Item(6)
 
                                         If Me.bwScraper.CancellationPending Then Return
-                                        If Not drvRow.Item(6) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
-                                            If String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.scrapeMovie.IMDBID, Master.scrapeMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
-                                                Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType)
-                                            End If
-                                            If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
+                                        If String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) OrElse Not IMDB.GetMovieInfo(Master.scrapeMovie.IMDBID, Master.scrapeMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False) Then
+                                            Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType)
+                                        End If
+                                        If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
+                                            If Not drvRow.Item(6) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                                 If Master.eSettings.UseStudioTags Then
                                                     If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
                                                         Master.scrapeMovie.Studio = String.Concat(Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
@@ -2087,7 +2096,7 @@ Public Class frmMain
                                                         If Not IsNothing(Poster.Image) Then
                                                             Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                             parPoster.Value = True
-                                                            If File.Exists(nfoPath) Then
+                                                            If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                                 'need to load movie from nfo here in case the movie already had
                                                                 'an nfo.... scrapeMovie would not be set to the proper movie
                                                                 Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
@@ -2098,8 +2107,8 @@ Public Class frmMain
                                                             MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
                                                             Using dImgSelect As New dlgImgSelect
                                                                 If dImgSelect.ShowDialog(Master.scrapeMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
-                                                                    drvRow.Item(4) = True
-                                                                    If File.Exists(nfoPath) Then
+                                                                    parPoster.Value = True
+                                                                    If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                                         'need to load movie from nfo here in case the movie already had
                                                                         'an nfo.... scrapeMovie would not be set to the proper movie
                                                                         Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
@@ -2125,7 +2134,7 @@ Public Class frmMain
                                                         If Not IsNothing(Fanart.Image) Then
                                                             Fanart.SaveAsFanart(sPath, drvRow.Item(2))
                                                             parFanart.Value = True
-                                                            If File.Exists(nfoPath) Then
+                                                            If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                                 'need to load movie from nfo here in case the movie already had
                                                                 'an nfo.... scrapeMovie would not be set to the proper movie
                                                                 Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
@@ -2138,7 +2147,7 @@ Public Class frmMain
                                                                 If dImgSelect.ShowDialog(Master.scrapeMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
                                                                     parFanart.Value = True
 
-                                                                    If File.Exists(nfoPath) Then
+                                                                    If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                                         'need to load movie from nfo here in case the movie already had
                                                                         'an nfo.... scrapeMovie would not be set to the proper movie
                                                                         Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
@@ -2246,7 +2255,7 @@ Public Class frmMain
             chkCount += If(Not Me.dtMedia.Rows(i).Item(4) OrElse Not Me.dtMedia.Rows(i).Item(5) OrElse Not Me.dtMedia.Rows(i).Item(6), 1, 0)
         Next
 
-        e.Result = New Results With {.Count = chkCount, .scrapeType = Args.scrapeType}
+        e.Result = New Results With {.Count = chkCount, .scrapeType = Args.scrapeType, .scrapeMod = Args.scrapeMod}
 
     End Sub
 
@@ -2278,7 +2287,7 @@ Public Class frmMain
                 If Not bwScraper.IsBusy Then
                     bwScraper.WorkerSupportsCancellation = True
                     bwScraper.WorkerReportsProgress = True
-                    bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = Res.scrapeType})
+                    bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = Res.scrapeType, .scrapeMod = Res.scrapeMod})
                 End If
             Else
                 Me.tslLoading.Visible = False
