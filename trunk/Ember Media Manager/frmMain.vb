@@ -207,8 +207,6 @@ Public Class frmMain
         '\\
 
         Try
-            Master.ConnectDB()
-
             'setup some dummies so we don't get exceptions when resizing form/info panel
             ReDim Preserve Me.pnlGenre(0)
             ReDim Preserve Me.pbGenre(0)
@@ -236,10 +234,19 @@ Public Class frmMain
             Me.pnlInfoPanel.Height = 25
             Me.ClearInfo()
 
+            'Ability to force users to reset the database (if schema changes are made)
+            'Uncomment following line and remove other calls to connectdb when not necessary
+            'Master.ConnectDB(False)
+
             If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
+                Master.ConnectDB(False)
                 Me.FillList(0)
             Else
                 If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    Master.ConnectDB(True)
+                    Me.LoadMedia(1)
+                Else
+                    Master.ConnectDB(True)
                     Me.FillList(0)
                 End If
             End If
@@ -870,6 +877,34 @@ Public Class frmMain
         Me.SetFilterColors()
     End Sub
 
+    Private Sub cmnuLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLock.Click
+        Select Case cmnuLock.Text
+            Case "Unlock"
+                Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 1, "lock")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
+                    parLock.Value = False
+                    parID.Value = indX(0).Item(0)
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                indX(0).Item(12) = False
+            Case Else
+                Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 1, "lock")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
+                    parLock.Value = True
+                    parID.Value = indX(0).Item(0)
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                indX(0).Item(12) = True
+        End Select
+        Me.SetFilterColors()
+    End Sub
+
     Private Sub cmnuRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrape.Click
 
         '//
@@ -926,6 +961,7 @@ Public Class frmMain
                     Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
                 End If
                 cmnuMark.Text = If(Me.dgvMediaList.Item(9, dgvHTI.RowIndex).Value, "Unmark", "Mark")
+                cmnuLock.Text = If(Me.dgvMediaList.Item(12, dgvHTI.RowIndex).Value, "Unlock", "Lock")
             End If
         End If
     End Sub
@@ -1307,7 +1343,7 @@ Public Class frmMain
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (path, type, title, poster, fanart, info, trailer, new, mark, source, imdb) VALUES (?,?,?,?,?,?,?,?,?,?,?);")
+                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (path, type, title, poster, fanart, info, trailer, new, mark, source, imdb, lock) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 512, "path")
                     Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 1, "type")
                     Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 255, "title")
@@ -1319,6 +1355,7 @@ Public Class frmMain
                     Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
                     Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 512, "source")
                     Dim parIMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parIMDB", DbType.String, 512, "imdb")
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 1, "lock")
 
                     'process the folder type media
                     For Each sFile As Master.FileAndSource In Master.MediaList
@@ -1378,6 +1415,7 @@ Public Class frmMain
                                     End If
                                 End Using
                                 If parNew.Value Then
+                                    parLock.Value = False
                                     If Master.eSettings.MarkNew Then
                                         parMark.Value = True
                                     Else
@@ -1385,9 +1423,18 @@ Public Class frmMain
                                     End If
                                 Else
                                     Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                                        SQLNewcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE path = """, sFile.Filename, """;")
+                                        SQLNewcommand.CommandText = String.Concat("SELECT mark, lock FROM movies WHERE path = """, sFile.Filename, """;")
                                         Dim SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                                        parMark.Value = SQLreader(0)
+                                        If Not IsDBNull(SQLreader("mark")) Then
+                                            parMark.Value = SQLreader("mark")
+                                        Else
+                                            parMark.Value = False
+                                        End If
+                                        If Not IsDBNull(SQLreader("lock")) Then
+                                            parLock.Value = SQLreader("lock")
+                                        Else
+                                            parLock.Value = False
+                                        End If
                                     End Using
                                 End If
                                 parSource.Value = sFile.Source
@@ -1663,8 +1710,11 @@ Public Class frmMain
                                     End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
+
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
+
+                                    If drvRow.Item(12) Then Continue For
 
                                     sPath = drvRow.Item(1).ToString
 
@@ -1763,6 +1813,7 @@ Public Class frmMain
 
                             Case Master.ScrapeType.FullAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
+
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
 
                                     If Args.scrapeType = Master.ScrapeType.NewAuto Then
@@ -1773,6 +1824,8 @@ Public Class frmMain
 
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
+
+                                    If drvRow.Item(12) Then Continue For
 
                                     sPath = drvRow.Item(1).ToString
 
@@ -1852,8 +1905,11 @@ Public Class frmMain
                             Case Master.ScrapeType.MIOnly
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
+
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
+
+                                    If drvRow.Item(12) Then Continue For
 
                                     sPath = drvRow.Item(1).ToString
 
@@ -1875,20 +1931,28 @@ Public Class frmMain
 
                             Case Master.ScrapeType.CleanFolders
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
+
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
+
+                                    If drvRow.Item(12) Then Continue For
+
+                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     Master.DeleteFiles(True, drvRow.Item(1).ToString)
                                 Next
 
                             Case Master.ScrapeType.UpdateAuto
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
+
+                                    Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                    iCount += 1
+
+                                    If drvRow.Item(12) Then Continue For
+
                                     parID.Value = drvRow.Item(0)
                                     parPoster.Value = drvRow.Item(4)
                                     parFanart.Value = drvRow.Item(5)
                                     parInfo.Value = drvRow.Item(6)
-                                    Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
-                                    iCount += 1
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Not drvRow.Item(4) AndAlso Args.scrapeMod = ScrapeModifier.Poster) OrElse (Not drvRow.Item(5) AndAlso Args.scrapeMod = ScrapeModifier.Fanart) OrElse (Not drvRow.Item(6) AndAlso Args.scrapeMod = ScrapeModifier.NFO) OrElse _
                                     ((Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6)) AndAlso Args.scrapeMod = ScrapeModifier.All) Then
@@ -1967,12 +2031,15 @@ Public Class frmMain
                                 Next
                             Case Master.ScrapeType.UpdateAsk
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
+                                    Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                    iCount += 1
+
+                                    If drvRow.Item(12) Then Continue For
+
                                     parID.Value = drvRow.Item(0)
                                     parPoster.Value = drvRow.Item(4)
                                     parFanart.Value = drvRow.Item(5)
                                     parInfo.Value = drvRow.Item(6)
-                                    Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
-                                    iCount += 1
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Not drvRow.Item(4) AndAlso Args.scrapeMod = ScrapeModifier.Poster) OrElse (Not drvRow.Item(5) AndAlso Args.scrapeMod = ScrapeModifier.Fanart) OrElse (Not drvRow.Item(6) AndAlso Args.scrapeMod = ScrapeModifier.NFO) OrElse _
                                     ((Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6)) AndAlso Args.scrapeMod = ScrapeModifier.All) Then
@@ -3217,7 +3284,33 @@ doCancel:
             Else
                 drvRow.Cells(3).Style.ForeColor = Color.Black
                 drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
-                drvRow.Cells(3).Style.SelectionForeColor = Color.White
+                drvRow.Cells(3).Style.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            End If
+
+            If Not IsDBNull(drvRow.Cells(12).Value) Then
+                If drvRow.Cells(12).Value Then
+                    drvRow.Cells(3).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(4).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(5).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(6).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(7).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(3).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(4).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(5).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(6).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(7).Style.SelectionBackColor = Color.DarkMagenta
+                Else
+                    drvRow.Cells(3).Style.BackColor = Color.White
+                    drvRow.Cells(4).Style.BackColor = Color.White
+                    drvRow.Cells(5).Style.BackColor = Color.White
+                    drvRow.Cells(6).Style.BackColor = Color.White
+                    drvRow.Cells(7).Style.BackColor = Color.White
+                    drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                End If
             End If
         Next
     End Sub
@@ -3426,5 +3519,6 @@ doCancel:
         Me.loadType = 0
     End Sub
 #End Region '*** Routines/Functions
+
 
 End Class

@@ -198,6 +198,7 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.cmnuLock = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -569,9 +570,9 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuMark, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.ToolStripMenuItem2, Me.cmnuRescrape, Me.cmnuSearchNew, Me.ToolStripSeparator1, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.ToolStripMenuItem2, Me.cmnuRescrape, Me.cmnuSearchNew, Me.ToolStripSeparator1, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(202, 188)
+        Me.mnuMediaList.Size = New System.Drawing.Size(202, 232)
         '
         'cmnuTitle
         '
@@ -1823,6 +1824,13 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
+        'cmnuLock
+        '
+        Me.cmnuLock.Image = CType(resources.GetObject("cmnuLock.Image"), System.Drawing.Image)
+        Me.cmnuLock.Name = "cmnuLock"
+        Me.cmnuLock.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuLock.Text = "Lock"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2068,4 +2076,5 @@ Partial Class frmMain
     Friend WithEvents OpenContainingFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents DeleteMovieToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuLock As System.Windows.Forms.ToolStripMenuItem
 End Class
