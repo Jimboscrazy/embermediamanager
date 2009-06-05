@@ -612,12 +612,12 @@ Public Class dlgImgSelect
             Try
                 Me.bwIMPADownload.ReportProgress(i + 1, Me.IMPAPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.IMPAPosters.Item(i).URL)
-                Dim wrResponse As WebResponse = wrRequest.GetResponse()
-                If wrResponse.ContentType.Contains("image") Then
-                    Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
-                End If
-                wrResponse.Close()
-                wrResponse = Nothing
+                wrRequest.Timeout = 10000
+                Using wrResponse As WebResponse = wrRequest.GetResponse()
+                    If wrResponse.ContentType.Contains("image") Then
+                        Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                    End If
+                End Using
                 wrRequest = Nothing
             Catch
             End Try
@@ -663,12 +663,12 @@ Public Class dlgImgSelect
                 If Me.DLType = Master.ImageType.Fanart OrElse (Me.DLType = Master.ImageType.Posters AndAlso Me.TMDBPosters.Item(i).Description.ToLower = "cover") Then
                     Me.bwTMDBDownload.ReportProgress(i + 1, Me.TMDBPosters.Item(i).URL)
                     Dim wrRequest As WebRequest = WebRequest.Create(Me.TMDBPosters.Item(i).URL)
-                    Dim wrResponse As WebResponse = wrRequest.GetResponse()
-                    If wrResponse.ContentType.Contains("image") Then
-                        Me.TMDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
-                    End If
-                    wrResponse.Close()
-                    wrResponse = Nothing
+                    wrRequest.Timeout = 10000
+                    Using wrResponse As WebResponse = wrRequest.GetResponse()
+                        If wrResponse.ContentType.Contains("image") Then
+                            Me.TMDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                        End If
+                    End Using
                     wrRequest = Nothing
                 End If
             Catch
@@ -713,12 +713,12 @@ Public Class dlgImgSelect
             Try
                 Me.bwMPDBDownload.ReportProgress(i + 1, Me.MPDBPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.MPDBPosters.Item(i).URL)
-                Dim wrResponse As WebResponse = wrRequest.GetResponse()
-                If wrResponse.ContentType.Contains("image") Then
-                    Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
-                End If
-                wrResponse.Close()
-                wrResponse = Nothing
+                wrRequest.Timeout = 10000
+                Using wrResponse As WebResponse = wrRequest.GetResponse()
+                    If wrResponse.ContentType.Contains("image") Then
+                        Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                    End If
+                End Using
                 wrRequest = Nothing
             Catch
             End Try

@@ -68,11 +68,11 @@ Public Class Images
 
     Public Sub FromFile(ByVal sPath As String)
         Try
-            Dim fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
-            ms.SetLength(fsImage.Length)
-            fsImage.Read(ms.GetBuffer(), 0, CInt(fsImage.Length))
-            ms.Flush()
-            fsImage.Close()
+            Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
+                ms.SetLength(fsImage.Length)
+                fsImage.Read(ms.GetBuffer(), 0, CInt(fsImage.Length))
+                ms.Flush()
+            End Using
             _image = Image.FromStream(ms)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -82,10 +82,11 @@ Public Class Images
     Public Sub FromWeb(ByVal sURL As String)
         Try
             Dim wrRequest As WebRequest = WebRequest.Create(sURL)
-            Dim wrResponse As WebResponse = wrRequest.GetResponse()
-            _image = Image.FromStream(wrResponse.GetResponseStream)
-            wrResponse.Close()
-            wrResponse = Nothing
+            wrRequest.Timeout = 10000
+            Using wrResponse As WebResponse = wrRequest.GetResponse()
+                _image = Image.FromStream(wrResponse.GetResponseStream)
+                wrResponse.Close()
+            End Using
             wrRequest = Nothing
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -314,6 +315,7 @@ Public Class Images
         Try
             If Regex.IsMatch(sURL, "^(https?://)?(([\w!~*'().&=+$%-]+: )?[\w!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([\w!~*'()-]+\.)*([\w^-][\w-]{0,61})?[\w]\.[a-z]{2,6})(:[0-9]{1,4})?((/*)|(/+[\w!~*'().;?:@&=+$,%#-]+)+/*)$", RegexOptions.IgnoreCase) Then
                 Dim wrRequest As WebRequest = WebRequest.Create(sURL)
+                wrRequest.Timeout = 10000
                 Using wrResponse As WebResponse = wrRequest.GetResponse()
                     If wrResponse.ContentType.Contains("image") Then
                         tmpImage = Image.FromStream(wrResponse.GetResponseStream)
@@ -350,8 +352,6 @@ Public Class Images
         Dim tmpMPDBM As Image = Nothing
         Dim tmpMPDBS As Image = Nothing
         Dim tmpMPDBW As Image = Nothing
-        Dim wrRequest As WebRequest
-        Dim wrResponse As WebResponse
 
         Try
 
@@ -653,8 +653,6 @@ Public Class Images
 
 foundIT:
 
-        wrResponse = Nothing
-        wrRequest = Nothing
         _image = tmpImage
 
         Return hasImages

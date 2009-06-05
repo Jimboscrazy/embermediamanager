@@ -1489,14 +1489,14 @@ Public Class frmMain
         '\\
 
         Dim Args As Arguments = e.Argument
+        Dim tImage As Image = Nothing
+
         Dim wrRequest As WebRequest = WebRequest.Create(Args.pURL)
-        wrRequest.Timeout = 5000 'give it 5 seconds
-        Try
-            Dim wrResponse As WebResponse = wrRequest.GetResponse()
-            e.Result = New Results With {.ResultType = Args.pType, .Result = Image.FromStream(wrResponse.GetResponseStream())}
-        Catch
-            e.Result = New Results With {.ResultType = Args.pType, .Result = Nothing}
-        End Try
+        wrRequest.Timeout = 10000
+        Using wrResponse As WebResponse = wrRequest.GetResponse()
+            Image.FromStream(wrResponse.GetResponseStream())
+        End Using
+        e.Result = New Results With {.ResultType = Args.pType, .Result = tImage}
 
     End Sub
 
@@ -1993,11 +1993,11 @@ Public Class frmMain
                                     parPoster.Value = drvRow.Item(4)
                                     parFanart.Value = drvRow.Item(5)
                                     parInfo.Value = drvRow.Item(6)
+                                    Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                    iCount += 1
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Not drvRow.Item(4) AndAlso Args.scrapeMod = ScrapeModifier.Poster) OrElse (Not drvRow.Item(5) AndAlso Args.scrapeMod = ScrapeModifier.Fanart) OrElse (Not drvRow.Item(6) AndAlso Args.scrapeMod = ScrapeModifier.NFO) OrElse _
                                     ((Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6)) AndAlso Args.scrapeMod = ScrapeModifier.All) Then
-                                        Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
-                                        iCount += 1
 
                                         sPath = drvRow.Item(1).ToString
 
@@ -3403,7 +3403,6 @@ doCancel:
                 If Not Sr.Contains("OK") Then
                     MsgBox(String.Concat("There was a problem communicating with ", xCom.Name, vbNewLine, "Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), MsgBoxStyle.Exclamation, String.Concat("Unable to Start XBMC Update for ", xCom.Name))
                 End If
-                Wres.Close()
             End Using
             Wr = Nothing
         Catch
@@ -3483,6 +3482,7 @@ doCancel:
                     .dgvMediaList.Columns(9).Visible = False
                     .dgvMediaList.Columns(10).Visible = False
                     .dgvMediaList.Columns(11).Visible = False
+                    .dgvMediaList.Columns(12).Visible = False
 
                     'Trick to autosize the first column, but still allow resizing by user
                     .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill

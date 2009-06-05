@@ -101,7 +101,6 @@ Public Class emmSettings
     Private _autothumbs As Integer
     Private _autothumbnospoilers As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
-    Private _movielist As New ArrayList
 
     Public Property Version() As String
         Get
@@ -786,15 +785,6 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property MovieList() As ArrayList
-        Get
-            Return Me._movielist
-        End Get
-        Set(ByVal value As ArrayList)
-            Me._movielist = value
-        End Set
-    End Property
-
     Public Sub New()
         Me.Clear()
     End Sub
@@ -876,7 +866,6 @@ Public Class emmSettings
         Me._autothumbs = 0
         Me._autothumbnospoilers = False
         Me._xbmccoms.Clear()
-        Me._movielist.Clear()
     End Sub
 
     Public Sub Save()
