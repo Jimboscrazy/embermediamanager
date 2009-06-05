@@ -476,7 +476,11 @@ Public Class dlgEditMovie
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                     SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", Me._id, ";")
                     Dim SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    .chkMark.Checked = SQLreader(0)
+                    If Not IsDBNull(SQLreader("mark")) Then
+                        .chkMark.Checked = SQLreader("mark")
+                    Else
+                        .chkMark.Checked = False
+                    End If
                 End Using
             End With
         Catch ex As Exception

@@ -121,14 +121,18 @@ Public Class Master
         End Sub
     End Class
 
-    Public Shared Sub ConnectDB()
+    Public Shared Sub ConnectDB(ByVal Reset As Boolean)
+
+        If Reset Then
+            File.Delete("Media.emm")
+        End If
 
         'create database if it doesn't exist
         If Not File.Exists("Media.emm") Then
             SQLcn.ConnectionString = "Data Source=Media.emm;Compress=True"
             SQLcn.Open()
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT, type BOOL, Title TEXT, poster BOOL, fanart BOOL, info BOOL, trailer BOOL, new BOOL, mark BOOL, source TEXT, imdb TEXT, lock BOOL);"
+                SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False NOT NULL, fanart BOOL DEFAULT FALSE NOT NULL, info BOOL DEFAULT False NOT NULL, trailer BOOL DEFAULT FALSE NOT NULL, new BOOL DEFAULT False NOT NULL, mark BOOL DEFAULT False NOT NULL, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False NOT NULL);"
                 SQLcommand.ExecuteNonQuery()
                 SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
                 SQLcommand.ExecuteNonQuery()
