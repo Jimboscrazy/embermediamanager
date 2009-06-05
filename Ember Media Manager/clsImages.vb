@@ -93,6 +93,22 @@ Public Class Images
         End Try
     End Sub
 
+    Public Sub Delete(ByVal sPath As String, ByVal isFile As Boolean, ByVal fType As Master.ImageType)
+        Dim tPath As String = String.Empty
+
+        If fType = Master.ImageType.Fanart Then
+            tPath = GetFanartPath(sPath, isFile)
+            If Not String.IsNullOrEmpty(tPath) Then
+                File.Delete(tPath)
+            End If
+        Else
+            tPath = GetPosterPath(sPath, isFile)
+            If Not String.IsNullOrEmpty(tPath) Then
+                File.Delete(tPath)
+            End If
+        End If
+    End Sub
+
     Public Sub Load(ByVal sPath As String, ByVal isFile As Boolean, ByVal fType As Master.ImageType)
         Try
             Dim tPath As String = String.Empty

@@ -556,12 +556,16 @@ Public Class dlgEditMovie
                     Next
                 End If
 
-                If Not IsNothing(Fanart.Image) Then
+                If Not IsNothing(.Fanart.Image) Then
                     .Fanart.SaveAsFanart(Master.currPath, Master.isFile)
+                Else
+                    .Fanart.Delete(Master.currPath, Master.isFile, Master.ImageType.Fanart)
                 End If
 
-                If Not IsNothing(Poster.Image) Then
+                If Not IsNothing(.Poster.Image) Then
                     .Poster.SaveAsPoster(Master.currPath, Master.isFile)
+                Else
+                    .Poster.Delete(Master.currPath, Master.isFile, Master.ImageType.Posters)
                 End If
 
                 .SaveExtraThumbsList()
@@ -1192,4 +1196,14 @@ Public Class dlgEditMovie
             _index = Nothing
         End Sub
     End Class
+
+    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
+        Me.pbPoster.Image = Nothing
+        Me.Poster.Image = Nothing
+    End Sub
+
+    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
+        Me.pbFanart.Image = Nothing
+        Me.Fanart.Image = Nothing
+    End Sub
 End Class
