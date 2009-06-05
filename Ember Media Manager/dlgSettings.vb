@@ -748,6 +748,10 @@ Public Class dlgSettings
     Private Sub txtIMDBURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBURL.TextChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkCleanExtrathumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanExtrathumbs.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -841,6 +845,7 @@ Public Class dlgSettings
             Master.eSettings.CleanMovieJPG = Me.chkCleanMovieJPG.Checked
             Master.eSettings.CleanMovieNameJPG = Me.chkCleanMovieNameJPG.Checked
             Master.eSettings.CleanDotFanartJPG = Me.chkCleanDotFanartJPG.Checked
+            Master.eSettings.CleanExtraThumbs = Me.chkCleanExtrathumbs.Checked
             Master.eSettings.LogErrors = Me.chkLogErrors.Checked
             Master.eSettings.ProperCase = Me.chkProperCase.Checked
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
@@ -952,6 +957,7 @@ Public Class dlgSettings
             Me.chkCleanMovieJPG.Checked = Master.eSettings.CleanMovieJPG
             Me.chkCleanMovieNameJPG.Checked = Master.eSettings.CleanMovieNameJPG
             Me.chkCleanDotFanartJPG.Checked = Master.eSettings.CleanDotFanartJPG
+            Me.chkCleanExtrathumbs.Checked = Master.eSettings.CleanExtraThumbs
             Me.chkOverwriteNfo.Checked = Master.eSettings.OverwriteNfo
 
             Me.XComs = Master.eSettings.XBMCComs

@@ -342,6 +342,7 @@ Public Class Master
         Try
 
             If Directory.Exists(sPath) Then
+                Dim tmpList As New ArrayList
                 Dim di As New DirectoryInfo(sPath)
                 Dim lFi As New List(Of FileInfo)
 
@@ -387,8 +388,12 @@ Public Class Master
                                       AndAlso Not f.Name.ToLower.Contains("-trailer") _
                                       AndAlso Not f.Name.ToLower.Contains("[trailer"))
 
+                lFi.Sort(AddressOf SortFileNames)
                 For Each lFile As FileInfo In lFi
-                    MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sPath, .isFile = True})
+                    If Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) Then
+                        tmpList.Add(CleanStackingMarkers(lFile.FullName))
+                        MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sPath, .isFile = True})
+                    End If
                 Next
 
             End If
@@ -1339,17 +1344,16 @@ Public Class Master
         Dim alThumbs As New ArrayList
 
         Try
-            Dim d As New DirectoryInfo(sPath)
-            Dim extraPath As String = Path.Combine(d.Parent.FullName, "extrathumbs")
+            Dim extraPath As String = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
 
             If Not Directory.Exists(extraPath) Then
                 iMod = -1
             Else
                 Dim dirInfo As New DirectoryInfo(extraPath)
 
-                Dim ioFi As IO.FileInfo() = dirInfo.GetFiles("thumb*.jpg")
+                Dim ioFi As FileInfo() = dirInfo.GetFiles("thumb*.jpg")
 
-                For Each sFile As IO.FileInfo In ioFi
+                For Each sFile As FileInfo In ioFi
                     alThumbs.Add(sFile.Name)
                 Next
 
@@ -1431,9 +1435,17 @@ Public Class Master
     End Function
 
     Public Shared Sub DeleteFiles(ByVal isCleaner As Boolean, ByVal sPath As String, Optional ByVal isFile As Boolean = False)
-        Dim sOrName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
-        Dim sPathShort As String = Directory.GetParent(sPath).FullName
-        Dim sPathNoExt As String = RemoveExtFromPath(sPath)
+        Dim dPath As String = String.Empty
+
+        If eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+            dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".ext")
+        Else
+            dPath = sPath
+        End If
+
+        Dim sOrName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
+        Dim sPathShort As String = Directory.GetParent(dPath).FullName
+        Dim sPathNoExt As String = RemoveExtFromPath(dPath)
 
         If Not isCleaner AndAlso Not isFile Then
             If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
@@ -1481,6 +1493,12 @@ Public Class Master
             If (Master.eSettings.CleanMovieJPG AndAlso isCleaner) Then
                 If File.Exists(Path.Combine(sPathShort, "movie.jpg")) Then
                     File.Delete(Path.Combine(sPathShort, "movie.jpg"))
+                End If
+            End If
+
+            If (Master.eSettings.CleanExtraThumbs AndAlso isCleaner) Then
+                If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
+                    Directory.Delete(Path.Combine(sPathShort, "extrathumbs"), True)
                 End If
             End If
 
@@ -1542,6 +1560,25 @@ Public Class Master
                 If File.Exists(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg")) Then
                     File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg"))
                 End If
+            End If
+
+            If Not isCleaner Then
+                Dim dirInfo As New DirectoryInfo(sPathShort)
+
+                Dim ioFi As FileInfo() = dirInfo.GetFiles(String.Concat(sOrName, "*.*"))
+
+                For Each sFile As FileInfo In ioFi
+                    File.Delete(sFile.FullName)
+                Next
+
+                ioFi = dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(sPath), ".*"))
+
+                For Each sFile As FileInfo In ioFi
+                    File.Delete(sFile.FullName)
+                Next
+
+                ioFi = Nothing
+                dirInfo = Nothing
             End If
         End If
     End Sub
