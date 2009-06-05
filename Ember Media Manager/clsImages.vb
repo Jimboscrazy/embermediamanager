@@ -314,10 +314,11 @@ Public Class Images
         Try
             If Regex.IsMatch(sURL, "^(https?://)?(([\w!~*'().&=+$%-]+: )?[\w!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([\w!~*'()-]+\.)*([\w^-][\w-]{0,61})?[\w]\.[a-z]{2,6})(:[0-9]{1,4})?((/*)|(/+[\w!~*'().;?:@&=+$,%#-]+)+/*)$", RegexOptions.IgnoreCase) Then
                 Dim wrRequest As WebRequest = WebRequest.Create(sURL)
-                Dim wrResponse As WebResponse = wrRequest.GetResponse()
-                tmpImage = Image.FromStream(wrResponse.GetResponseStream)
-                wrResponse.Close()
-                wrResponse = Nothing
+                Using wrResponse As WebResponse = wrRequest.GetResponse()
+                    If wrResponse.ContentType.Contains("image") Then
+                        tmpImage = Image.FromStream(wrResponse.GetResponseStream)
+                    End If
+                End Using
                 wrRequest = Nothing
             End If
         Catch
