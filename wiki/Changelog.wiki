@@ -4,6 +4,19 @@
 *Changes in Upcoming Release:*
  * None yet
 
+*Changes in r227:*
+ * Fix: Data collisions when viewing movies while scraping
+ * Fix/Change: Improvement/tweaks to all updaters
+ * Change: Remove Shows and Music tabs temporarily
+ * Change: Movies now stored in database instead of settings file
+ * Change: Improved filtering
+ * Change: Improved movie loading
+ * Change: TONS of tweaks/improvements to code
+ * Change: Updater cancel button
+ * Change: Display cancellation status when closing Ember while running updater
+ * Change: Improved web downloading
+ * Change: Properly cancel image selection dialog
+
 *Changes in r214:*
  * Fix: File-type sources not loading files
  * Fix: New-Auto updater not working
