@@ -744,6 +744,10 @@ Public Class dlgSettings
     Private Sub chkNoSpoilers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoSpoilers.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub txtIMDBURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBURL.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -841,6 +845,7 @@ Public Class dlgSettings
             Master.eSettings.ProperCase = Me.chkProperCase.Checked
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
             Master.eSettings.XBMCComs = Me.XComs
+            Master.eSettings.ScanRecursive = Me.chkScanRecursive.Checked
 
             '######## MOVIES TAB ########
             Master.eSettings.MovieFolders.Clear()
@@ -906,8 +911,11 @@ Public Class dlgSettings
                 Master.eSettings.AutoThumbs = 0
                 Master.eSettings.AutoThumbsNoSpoilers = False
             End If
-            Master.eSettings.ScanRecursive = Me.chkScanRecursive.Checked
-
+            If Not String.IsNullOrEmpty(Me.txtIMDBURL.Text) Then
+                Master.eSettings.IMDBURL = Strings.Replace(Me.txtIMDBURL.Text, "http://", String.Empty)
+            Else
+                Master.eSettings.IMDBURL = "akas.imdb.com"
+            End If
             Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -951,6 +959,7 @@ Public Class dlgSettings
 
             Me.chkLogErrors.Checked = Master.eSettings.LogErrors
             Me.chkProperCase.Checked = Master.eSettings.ProperCase
+            Me.chkScanRecursive.Checked = Master.eSettings.ScanRecursive
 
             '######## MOVIES TAB ########
             For Each strFolders As String In Master.eSettings.MovieFolders
@@ -1022,7 +1031,7 @@ Public Class dlgSettings
                 Me.chkNoSpoilers.Enabled = True
                 Me.chkNoSpoilers.Checked = Master.eSettings.AutoThumbsNoSpoilers
             End If
-            Me.chkScanRecursive.Checked = Master.eSettings.ScanRecursive
+            Me.txtIMDBURL.Text = Master.eSettings.IMDBURL
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74

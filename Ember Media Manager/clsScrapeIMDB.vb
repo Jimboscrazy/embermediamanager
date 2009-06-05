@@ -199,7 +199,7 @@ Namespace IMDB
                 Dim D, W As Integer
                 Dim R As New MovieSearchResults
 
-                Dim sHTTP As New HTTP(String.Concat("http://www.imdb.com/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1"))))
+                Dim sHTTP As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1"))))
                 Dim HTML As String = sHTTP.Response
                 Dim rUri As String = sHTTP.ResponseUri
                 sHTTP = Nothing
@@ -301,11 +301,11 @@ mResult:
                     If Master.eSettings.UseOFDBGenre Then ofdbGenre = OFDBScrape.Genre
                 End If
 
-                Dim sHTTP As New HTTP(String.Concat("http://www.imdb.com/title/tt", strID, If(FullCrew OrElse FullCast, "/combined", String.Empty)))
+                Dim sHTTP As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, If(FullCrew OrElse FullCast, "/combined", String.Empty)))
                 Dim HTML As String = sHTTP.Response
                 sHTTP = Nothing
 
-                Dim sPlot As New HTTP(String.Concat("http://www.imdb.com/title/tt", strID, "/plotsummary"))
+                Dim sPlot As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/plotsummary"))
                 Dim PlotHtml As String = sPlot.Response
                 sPlot = Nothing
 
@@ -385,7 +385,7 @@ mResult:
                 Dim sTrailerUrl As String = Regex.Match(Html, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim
                 If Not sTrailerUrl = String.Empty Then
                     Dim sTrailerURL2 As String = String.Empty
-                    sTrailerUrl = String.Concat("http://www.imdb.com", sTrailerUrl, "player")
+                    sTrailerUrl = String.Concat("http://", Master.eSettings.IMDBURL, sTrailerUrl, "player")
                     Dim HTTPTrailer As New HTTP(sTrailerUrl)
                     Dim HtmlTrailer As String = HTTPTrailer.Response
                     HTTPTrailer = Nothing
@@ -613,7 +613,7 @@ mPlot:
                             'Producers
                             If M.ToString.Contains("Produced by</a></h5>") Then
                                 Dim Pr = From Po In Regex.Matches(M.ToString, "<td\svalign=""top"">(.*?)</td>") _
-                                Where Not Po.ToString.Contains("http://www.imdb.com/Glossary/") _
+                                Where Not Po.ToString.Contains(String.Concat("http://", Master.eSettings.IMDBURL, "/Glossary/")) _
                                 Let P1 = Regex.Match(Po.ToString, HREF_PATTERN_2) _
                                 Where Not P1.Groups("name").ToString = String.Empty _
                                 Select Producer = P1.Groups("name").ToString & " (producer)"

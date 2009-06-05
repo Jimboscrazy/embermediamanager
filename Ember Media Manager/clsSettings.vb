@@ -39,6 +39,7 @@ Public Class emmSettings
     Private _certificationLang As String
     Private _usecertformpaa As Boolean
     Private _studiotags As Boolean
+    Private _imdburl As String
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
     Private _castimagesonly As Boolean
@@ -225,6 +226,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As String)
             Me._studiotags = value
+        End Set
+    End Property
+
+    Public Property IMDBURL() As String
+        Get
+            Return Me._imdburl
+        End Get
+        Set(ByVal value As String)
+            Me._imdburl = value
         End Set
     End Property
 
@@ -804,6 +814,7 @@ Public Class emmSettings
         Me._certificationLang = String.Empty
         Me._usecertformpaa = False
         Me._studiotags = False
+        Me._imdburl = "akas.imdb.com"
         Me._fullcast = False
         Me._fullcrew = False
         Me._castimagesonly = False
