@@ -203,7 +203,7 @@ Namespace IMDB
                 Dim Html As String
 
                 Dim Wr As WebRequest = WebRequest.Create(Url)
-
+                Wr.Timeout = 10000
                 Wr.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
 
                 Dim Response As WebResponse = Wr.GetResponse

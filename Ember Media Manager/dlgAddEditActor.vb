@@ -115,21 +115,17 @@ Public Class dlgAddEditActor
         ' the web server is slow to respond or not reachable, hanging the GUI)
         '\\
 
+        Dim dlImage As Image = Nothing
         Dim wrRequest As WebRequest = WebRequest.Create(Me.txtThumb.Text)
-        wrRequest.Timeout = 5000 'give it 5 seconds
-        Try
-            Dim wrResponse As WebResponse = wrRequest.GetResponse()
-            Dim dlImage As Image = Image.FromStream(wrResponse.GetResponseStream())
-            If Not IsNothing(dlImage) Then
-                e.Result = dlImage
-            Else
-                e.Result = "Nothing"
-            End If
-        Catch
-            Debug.Print("DownloadPic - Timeout")
-            e.Result = "Nothing"
-        End Try
 
+        wrRequest.Timeout = 10000
+        Using wrResponse As WebResponse = wrRequest.GetResponse()
+            If wrResponse.ContentType.Contains("image") Then
+                dlImage = Image.FromStream(wrResponse.GetResponseStream())
+            End If
+        End Using
+
+        e.Result = dlImage
     End Sub
 
     Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
@@ -140,9 +136,7 @@ Public Class dlgAddEditActor
 
         Me.pbActLoad.Visible = False
 
-        If Not e.Result.ToString = "Nothing" Then
-            Me.pbActors.Image = e.Result
-        End If
+        Me.pbActors.Image = e.Result
 
     End Sub
 

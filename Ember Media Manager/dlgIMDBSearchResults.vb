@@ -151,15 +151,16 @@ Public Class dlgIMDBSearchResults
         '\\
 
         Dim Args As Arguments = e.Argument
+        Dim tImage As Image = Nothing
 
         Dim wrRequest As System.Net.WebRequest = System.Net.WebRequest.Create(Args.pURL)
-        wrRequest.Timeout = 5000 'give it 5 seconds
-        Try
-            Dim wrResponse As System.Net.WebResponse = wrRequest.GetResponse()
-            e.Result = New Results With {.Result = System.Drawing.Image.FromStream(wrResponse.GetResponseStream())}
-        Catch
-            e.Result = New Results With {.Result = Nothing}
-        End Try
+        wrRequest.Timeout = 10000
+        Using wrResponse As System.Net.WebResponse = wrRequest.GetResponse()
+            If wrResponse.ContentType.Contains("image") Then
+                tImage = Image.FromStream(wrResponse.GetResponseStream())
+            End If
+        End Using
+        e.Result = New Results With {.Result = tImage}
 
     End Sub
 
