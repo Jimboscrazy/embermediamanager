@@ -84,11 +84,13 @@ Partial Class dlgEditMovie
         Me.lblTitle = New System.Windows.Forms.Label
         Me.txtTitle = New System.Windows.Forms.TextBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.btnRemovePoster = New System.Windows.Forms.Button
         Me.lblPosterSize = New System.Windows.Forms.Label
         Me.btnSetPosterScrape = New System.Windows.Forms.Button
         Me.btnSetPoster = New System.Windows.Forms.Button
         Me.pbPoster = New System.Windows.Forms.PictureBox
         Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.btnRemoveFanart = New System.Windows.Forms.Button
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.btnSetFanartScrape = New System.Windows.Forms.Button
         Me.btnSetFanart = New System.Windows.Forms.Button
@@ -101,6 +103,10 @@ Partial Class dlgEditMovie
         Me.ilThumbs = New System.Windows.Forms.ImageList(Me.components)
         Me.pbExtraThumbs = New System.Windows.Forms.PictureBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.txtThumbCount = New System.Windows.Forms.TextBox
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.btnAutoGen = New System.Windows.Forms.Button
         Me.btnFrameSave = New System.Windows.Forms.Button
         Me.pnlFrameProgress = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
@@ -114,8 +120,7 @@ Partial Class dlgEditMovie
         Me.chkMark = New System.Windows.Forms.CheckBox
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
-        Me.btnRemovePoster = New System.Windows.Forms.Button
-        Me.btnRemoveFanart = New System.Windows.Forms.Button
+        Me.btnThumbsRefresh = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -132,6 +137,7 @@ Partial Class dlgEditMovie
         Me.TabPage5.SuspendLayout()
         CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.pnlFrameProgress.SuspendLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -722,6 +728,18 @@ Partial Class dlgEditMovie
         Me.TabPage2.Text = "Poster"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'btnRemovePoster
+        '
+        Me.btnRemovePoster.Image = CType(resources.GetObject("btnRemovePoster.Image"), System.Drawing.Image)
+        Me.btnRemovePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemovePoster.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemovePoster.Name = "btnRemovePoster"
+        Me.btnRemovePoster.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemovePoster.TabIndex = 26
+        Me.btnRemovePoster.Text = "Remove Poster"
+        Me.btnRemovePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemovePoster.UseVisualStyleBackColor = True
+        '
         'lblPosterSize
         '
         Me.lblPosterSize.Location = New System.Drawing.Point(8, 8)
@@ -780,6 +798,18 @@ Partial Class dlgEditMovie
         Me.TabPage3.Text = "Fanart"
         Me.TabPage3.UseVisualStyleBackColor = True
         '
+        'btnRemoveFanart
+        '
+        Me.btnRemoveFanart.Image = CType(resources.GetObject("btnRemoveFanart.Image"), System.Drawing.Image)
+        Me.btnRemoveFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveFanart.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveFanart.Name = "btnRemoveFanart"
+        Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveFanart.TabIndex = 28
+        Me.btnRemoveFanart.Text = "Remove Fanart"
+        Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveFanart.UseVisualStyleBackColor = True
+        '
         'lblFanartSize
         '
         Me.lblFanartSize.Location = New System.Drawing.Point(8, 8)
@@ -826,6 +856,7 @@ Partial Class dlgEditMovie
         '
         'TabPage5
         '
+        Me.TabPage5.Controls.Add(Me.btnThumbsRefresh)
         Me.TabPage5.Controls.Add(Me.btnRemoveThumb)
         Me.TabPage5.Controls.Add(Me.btnDown)
         Me.TabPage5.Controls.Add(Me.btnUp)
@@ -899,6 +930,7 @@ Partial Class dlgEditMovie
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.GroupBox1)
         Me.TabPage4.Controls.Add(Me.btnFrameSave)
         Me.TabPage4.Controls.Add(Me.pnlFrameProgress)
         Me.TabPage4.Controls.Add(Me.btnGrab)
@@ -913,6 +945,48 @@ Partial Class dlgEditMovie
         Me.TabPage4.TabIndex = 3
         Me.TabPage4.Text = "Frame Extraction"
         Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.txtThumbCount)
+        Me.GroupBox1.Controls.Add(Me.Label5)
+        Me.GroupBox1.Controls.Add(Me.btnAutoGen)
+        Me.GroupBox1.Location = New System.Drawing.Point(733, 175)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(99, 100)
+        Me.GroupBox1.TabIndex = 10
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Auto-Generate"
+        '
+        'txtThumbCount
+        '
+        Me.txtThumbCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtThumbCount.Location = New System.Drawing.Point(68, 18)
+        Me.txtThumbCount.Name = "txtThumbCount"
+        Me.txtThumbCount.Size = New System.Drawing.Size(25, 20)
+        Me.txtThumbCount.TabIndex = 11
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(2, 20)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(63, 13)
+        Me.Label5.TabIndex = 10
+        Me.Label5.Text = "# to Create:"
+        '
+        'btnAutoGen
+        '
+        Me.btnAutoGen.Enabled = False
+        Me.btnAutoGen.Image = CType(resources.GetObject("btnAutoGen.Image"), System.Drawing.Image)
+        Me.btnAutoGen.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAutoGen.Location = New System.Drawing.Point(5, 49)
+        Me.btnAutoGen.Name = "btnAutoGen"
+        Me.btnAutoGen.Size = New System.Drawing.Size(89, 45)
+        Me.btnAutoGen.TabIndex = 9
+        Me.btnAutoGen.Text = "Auto-Gen"
+        Me.btnAutoGen.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnAutoGen.UseVisualStyleBackColor = True
         '
         'btnFrameSave
         '
@@ -1040,29 +1114,14 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnChangeMovie.UseVisualStyleBackColor = True
         '
-        'btnRemovePoster
+        'btnThumbsRefresh
         '
-        Me.btnRemovePoster.Image = CType(resources.GetObject("btnRemovePoster.Image"), System.Drawing.Image)
-        Me.btnRemovePoster.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemovePoster.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemovePoster.Name = "btnRemovePoster"
-        Me.btnRemovePoster.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemovePoster.TabIndex = 26
-        Me.btnRemovePoster.Text = "Remove Poster"
-        Me.btnRemovePoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemovePoster.UseVisualStyleBackColor = True
-        '
-        'btnRemoveFanart
-        '
-        Me.btnRemoveFanart.Image = CType(resources.GetObject("btnRemoveFanart.Image"), System.Drawing.Image)
-        Me.btnRemoveFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnRemoveFanart.Location = New System.Drawing.Point(735, 363)
-        Me.btnRemoveFanart.Name = "btnRemoveFanart"
-        Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
-        Me.btnRemoveFanart.TabIndex = 28
-        Me.btnRemoveFanart.Text = "Remove Fanart"
-        Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnRemoveFanart.UseVisualStyleBackColor = True
+        Me.btnThumbsRefresh.Image = CType(resources.GetObject("btnThumbsRefresh.Image"), System.Drawing.Image)
+        Me.btnThumbsRefresh.Location = New System.Drawing.Point(87, 422)
+        Me.btnThumbsRefresh.Name = "btnThumbsRefresh"
+        Me.btnThumbsRefresh.Size = New System.Drawing.Size(23, 23)
+        Me.btnThumbsRefresh.TabIndex = 14
+        Me.btnThumbsRefresh.UseVisualStyleBackColor = True
         '
         'dlgEditMovie
         '
@@ -1105,6 +1164,8 @@ Partial Class dlgEditMovie
         CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage4.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.pnlFrameProgress.ResumeLayout(False)
         Me.pnlFrameProgress.PerformLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1205,5 +1266,10 @@ Partial Class dlgEditMovie
     Friend WithEvents btnChangeMovie As System.Windows.Forms.Button
     Friend WithEvents btnRemovePoster As System.Windows.Forms.Button
     Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button
+    Friend WithEvents btnAutoGen As System.Windows.Forms.Button
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents txtThumbCount As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents btnThumbsRefresh As System.Windows.Forms.Button
 
 End Class

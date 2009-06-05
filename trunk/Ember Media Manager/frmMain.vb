@@ -56,7 +56,7 @@ Public Class frmMain
     Private tmpTitle As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
     Private IMDB As New IMDB.Scraper
-    Private dtMedia As DataTable
+    Private dtMedia As New DataTable
     Private currRow As Integer = -1
     Private prevRow As Integer = -1
     Private currText As String = String.Empty
@@ -119,7 +119,11 @@ Public Class frmMain
         ' Do some stuff before closing
         '\\
 
-        'save the list of movies to settings so we know which ones are new
+        Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
+        Master.eSettings.WindowLoc = Me.Location
+        Master.eSettings.WindowSize = Me.Size
+        Master.eSettings.WindowState = Me.WindowState
+        Master.eSettings.Save()
 
         If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy Then
             Me.SaveMovieList()
@@ -208,6 +212,7 @@ Public Class frmMain
 
         Try
             'setup some dummies so we don't get exceptions when resizing form/info panel
+            Me.Visible = False
             ReDim Preserve Me.pnlGenre(0)
             ReDim Preserve Me.pbGenre(0)
             Me.pnlGenre(0) = New Panel()
@@ -216,8 +221,6 @@ Public Class frmMain
             AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
             AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
 
-            Me.Activate()
-
             Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
             If File.Exists(sPath) Then
                 Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
@@ -225,6 +228,10 @@ Public Class frmMain
             End If
 
             Master.eSettings.Load()
+
+            Me.Location = Master.eSettings.WindowLoc
+            Me.Size = Master.eSettings.WindowSize
+            Me.WindowState = Master.eSettings.WindowState
 
             Me.SetColors()
             Me.SetCleanFolders()
@@ -250,6 +257,8 @@ Public Class frmMain
                     Me.FillList(0)
                 End If
             End If
+
+            Me.Visible = True
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -730,6 +739,7 @@ Public Class frmMain
             If .CleanMovieTBNB Then sWarning += String.Concat("<movie>.tbn", vbNewLine)
             If .CleanPosterJPG Then sWarning += String.Concat("poster.jpg", vbNewLine)
             If .CleanPosterTBN Then sWarning += String.Concat("poster.tbn", vbNewLine)
+            If .CleanExtraThumbs Then sWarning += String.Concat("/extrathumbs/", vbNewLine)
         End With
         If MsgBox(String.Concat("WARNING: If you continue, all files of the following types will be permanently deleted:", vbNewLine, vbNewLine, sWarning, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
             Me.ScrapeData(Master.ScrapeType.CleanFolders, Nothing)
@@ -1805,7 +1815,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) Then
-                                            Me.CreateRandomThumbs(sPath)
+                                            Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs)
                                         End If
                                     End If
                                     SQLcommand.ExecuteNonQuery()
@@ -1896,7 +1906,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) Then
-                                            Me.CreateRandomThumbs(sPath)
+                                            Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs)
                                         End If
                                     End If
 
@@ -2023,7 +2033,7 @@ Public Class frmMain
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
                                         (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
-                                            Me.CreateRandomThumbs(sPath)
+                                            Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs)
                                         End If
                                     End If
 
@@ -2145,7 +2155,7 @@ Public Class frmMain
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
                                         (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
-                                            Me.CreateRandomThumbs(sPath)
+                                            Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs)
                                         End If
                                     End If
 
@@ -3158,7 +3168,7 @@ doCancel:
         With Master.eSettings
             If .CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
             .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
-            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN Then
+            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs Then
                 Me.CleanFoldersToolStripMenuItem.Enabled = True
             Else
                 Me.CleanFoldersToolStripMenuItem.Enabled = False
@@ -3190,82 +3200,6 @@ doCancel:
                     File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
                 Next
             End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub CreateRandomThumbs(ByVal sPath As String)
-
-        Try
-            Dim pExt As String = Path.GetExtension(sPath).ToLower
-            If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso _
-            Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
-
-                Using ffmpeg As New Process()
-                    Dim intSeconds As Integer = 0
-                    Dim intAdd As Integer = 0
-                    Dim ThumbCount As Integer = Master.eSettings.AutoThumbs
-                    Dim tPath As String = String.Empty
-
-                    If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
-                    Else
-                        tPath = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
-                    End If
-
-                    If Not Directory.Exists(tPath) Then
-                        Directory.CreateDirectory(tPath)
-                    End If
-                    ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-                    ffmpeg.EnableRaisingEvents = False
-                    ffmpeg.StartInfo.UseShellExecute = False
-                    ffmpeg.StartInfo.CreateNoWindow = True
-                    ffmpeg.StartInfo.RedirectStandardOutput = True
-                    ffmpeg.StartInfo.RedirectStandardError = True
-
-                    'first get the duration
-                    ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", sPath)
-                    ffmpeg.Start()
-                    Dim d As StreamReader = ffmpeg.StandardError
-                    Do
-                        Dim s As String = d.ReadLine()
-                        If s.Contains("Duration: ") Then
-                            Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-                            Dim ts As TimeSpan = CDate(CDate(DateTime.Today & " " & sTime)).Subtract(CDate(DateTime.Today))
-                            intSeconds = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
-                        End If
-                    Loop While Not d.EndOfStream
-
-                    ffmpeg.WaitForExit()
-                    ffmpeg.Close()
-
-                    If intSeconds > 0 AndAlso ((Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds / 2 > ThumbCount + 300) OrElse (Not Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds > ThumbCount + 2)) Then
-                        If Master.eSettings.AutoThumbsNoSpoilers Then
-                            intSeconds = ((intSeconds / 2) - 300) / ThumbCount
-                            intAdd = intSeconds + 300
-                        Else
-                            intSeconds = intSeconds / (ThumbCount + 2)
-                            intAdd = intSeconds
-                        End If
-                        intSeconds += intAdd
-
-                        For i = 0 To (ThumbCount - 1)
-                            If Me.bwScraper.CancellationPending Then Exit For
-                            'check to see if file already exists... if so, don't bother running ffmpeg since we're not
-                            'overwriting current thumbs anyway
-                            If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg"))) Then
-                                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg ""{2}""", intSeconds, sPath, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
-                                ffmpeg.Start()
-                                ffmpeg.WaitForExit()
-                                ffmpeg.Close()
-                            End If
-                            intSeconds += intAdd
-                        Next
-                    End If
-                End Using
-            End If
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -3408,8 +3342,6 @@ doCancel:
             SQLcommand.CommandText = "VACUUM;"
             SQLcommand.ExecuteNonQuery()
         End Using
-        Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
-        Master.eSettings.Save()
     End Sub
 
     Private Sub FillList(ByVal iIndex As Integer, Optional ByVal DupesOnly As Boolean = False)

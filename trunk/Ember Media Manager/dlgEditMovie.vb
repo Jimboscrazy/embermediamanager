@@ -1158,6 +1158,40 @@ Public Class dlgEditMovie
         End If
     End Sub
 
+    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
+        Me.pbPoster.Image = Nothing
+        Me.Poster.Image = Nothing
+    End Sub
+
+    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
+        Me.pbFanart.Image = Nothing
+        Me.Fanart.Image = Nothing
+    End Sub
+
+    Private Sub btnAutoGen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAutoGen.Click
+        If CInt(txtThumbCount.Text) > 0 Then
+            pnlFrameProgress.Visible = True
+            Me.Refresh()
+            Master.CreateRandomThumbs(Master.currPath, CInt(txtThumbCount.Text))
+            pnlFrameProgress.Visible = False
+        End If
+    End Sub
+
+    Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtThumbCount.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
+    Private Sub txtThumbCount_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtThumbCount.TextChanged
+        btnAutoGen.Enabled = Not String.IsNullOrEmpty(txtThumbCount.Text)
+    End Sub
+
+    Private Sub btnThumbsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnThumbsRefresh.Click
+        Thumbs.Clear()
+        lvThumbs.Clear()
+        ilThumbs.Images.Clear()
+        Me.bwThumbs.RunWorkerAsync()
+    End Sub
+
     Friend Class ExtraThumbs
         Private _image As Image
         Private _name As String
@@ -1201,13 +1235,4 @@ Public Class dlgEditMovie
         End Sub
     End Class
 
-    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
-        Me.pbPoster.Image = Nothing
-        Me.Poster.Image = Nothing
-    End Sub
-
-    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
-        Me.pbFanart.Image = Nothing
-        Me.Fanart.Image = Nothing
-    End Sub
 End Class

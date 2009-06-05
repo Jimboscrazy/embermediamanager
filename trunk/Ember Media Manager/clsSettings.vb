@@ -102,6 +102,9 @@ Public Class emmSettings
     Private _useofdbgenre As Boolean
     Private _autothumbs As Integer
     Private _autothumbnospoilers As Boolean
+    Private _windowloc As New Point
+    Private _windowsize As New Size
+    Private _windowstate As FormWindowState
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -796,6 +799,33 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property WindowLoc() As Point
+        Get
+            Return Me._windowloc
+        End Get
+        Set(ByVal value As Point)
+            Me._windowloc = value
+        End Set
+    End Property
+
+    Public Property WindowSize() As Size
+        Get
+            Return Me._windowsize
+        End Get
+        Set(ByVal value As Size)
+            Me._windowsize = value
+        End Set
+    End Property
+
+    Public Property WindowState() As FormWindowState
+        Get
+            Return Me._windowstate
+        End Get
+        Set(ByVal value As FormWindowState)
+            Me._windowstate = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -887,6 +917,9 @@ Public Class emmSettings
         Me._useofdbgenre = False
         Me._autothumbs = 0
         Me._autothumbnospoilers = False
+        Me._windowloc = New Point(0, 0)
+        Me._windowsize = New Size(1024, 768)
+        Me._windowstate = FormWindowState.Normal
         Me._xbmccoms.Clear()
     End Sub
 
