@@ -45,11 +45,20 @@ Namespace TMDB
             Dim Result As Object
         End Structure
 
+        Public Sub Cancel()
+            If Me.bwTMDB.IsBusy Then Me.bwTMDB.CancelAsync()
+
+            Do While Me.bwTMDB.IsBusy
+                Application.DoEvents()
+            Loop
+        End Sub
+
         Public Sub GetImagesAsync(ByVal imdbID As String, ByVal sType As String)
             Try
-                If Not bwTMDB.IsBusy Then
-                    bwTMDB.WorkerReportsProgress = True
-                    bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .sType = sType})
+                If Not Me.bwTMDB.IsBusy Then
+                    Me.bwTMDB.WorkerSupportsCancellation = True
+                    Me.bwTMDB.WorkerReportsProgress = True
+                    Me.bwTMDB.RunWorkerAsync(New Arguments With {.Parameter = imdbID, .sType = sType})
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -59,31 +68,12 @@ Namespace TMDB
         Public Function GetTMDBImages(ByVal imdbID As String, ByVal sType As String) As List(Of Media.Image)
             Dim alPosters As New List(Of Media.Image)
             Dim xmlTMDB As New XmlDocument
-            Dim Url As String = String.Format("http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=tt{0}&api_key={1}", imdbID, APIKey)
-            Dim ApiXML As String
-            Dim Wc As New WebClient
 
+            If Me.bwTMDB.CancellationPending Then Return Nothing
             Try
-                Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
-                Wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 3.5;)")
-
-                Dim Ms As New MemoryStream(Wc.DownloadData(Url))
-
-                If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                    Try
-                        ApiXML = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
-                    Catch
-                        'sometimes TMDB returns invalid compression. In that case, download uncompressed
-                        Wc.Headers.Clear()
-                        Ms = New MemoryStream(Wc.DownloadData(Url))
-                        ApiXML = New StreamReader(Ms).ReadToEnd
-                    End Try
-                Else
-                    ApiXML = New StreamReader(Ms).ReadToEnd
-                End If
-
-                Ms.Close()
-                Ms = Nothing
+                Dim sHTTP As New HTTP(String.Format("http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=tt{0}&api_key={1}", imdbID, APIKey))
+                Dim ApiXML As String = sHTTP.Response
+                sHTTP = Nothing
 
                 Try
                     xmlTMDB.LoadXml(ApiXML)
@@ -94,6 +84,7 @@ Namespace TMDB
                 If bwTMDB.WorkerReportsProgress Then
                     bwTMDB.ReportProgress(1)
                 End If
+                If Me.bwTMDB.CancellationPending Then Return Nothing
 
                 Dim tmdbNode As XmlNodeList = xmlTMDB.SelectNodes("//results/moviematches/movie")
 
@@ -110,8 +101,10 @@ Namespace TMDB
                         Dim resultsNode As XmlNodeList = xmlTMDB.SelectNodes("//results/moviematches/movie")
 
                         Dim xmlPosters As XmlNode = resultsNode(0)
+                        If Me.bwTMDB.CancellationPending Then Return Nothing
 
                         For i As Integer = 17 To (xmlPosters.ChildNodes.Count - 3)
+                            If Me.bwTMDB.CancellationPending Then Return Nothing
                             If xmlPosters.ChildNodes(i).Name = sType Then
                                 Dim tmpPoster As New Media.Image With {.URL = xmlPosters.ChildNodes(i).InnerText, .Description = xmlPosters.ChildNodes(i).Attributes(0).InnerText}
                                 alPosters.Add(tmpPoster)
@@ -140,11 +133,15 @@ Namespace TMDB
         End Sub
 
         Private Sub bwTMDB_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTMDB.ProgressChanged
-            RaiseEvent ProgressUpdated(e.ProgressPercentage)
+            If Not Me.bwTMDB.CancellationPending Then
+                RaiseEvent ProgressUpdated(e.ProgressPercentage)
+            End If
         End Sub
 
         Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
-            RaiseEvent PostersDownloaded(e.Result)
+            If Not Me.bwTMDB.CancellationPending Then
+                RaiseEvent PostersDownloaded(e.Result)
+            End If
         End Sub
     End Class
 End Namespace

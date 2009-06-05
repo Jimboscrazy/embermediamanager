@@ -86,26 +86,14 @@ Public Class OFDB
 
     Private Function GetOFDBUrlFromIMDBID() As String
         Dim ofdbURL As String = String.Empty
-        Dim Html As String = String.Empty
-        Dim sURL = String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search")
         Try
-            Dim Wc As New WebClient
-            Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
-            Wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 3.5;)")
 
-            Dim MS As New MemoryStream(Wc.DownloadData(sURL))
+            Dim sHTTP As New HTTP(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
+            Dim HTML As String = sHTTP.Response
+            sHTTP = Nothing
 
-            If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                Html = New StreamReader(New GZipStream(MS, CompressionMode.Decompress)).ReadToEnd
-            Else
-                Html = New StreamReader(MS).ReadToEnd
-            End If
-
-            MS.Close()
-            MS = Nothing
-
-            If Not String.IsNullOrEmpty(Html) Then
-                Dim mcOFDBURL As MatchCollection = Regex.Matches(Html, "<a href=""film/([^<]+)"" onmouseover")
+            If Not String.IsNullOrEmpty(HTML) Then
+                Dim mcOFDBURL As MatchCollection = Regex.Matches(HTML, "<a href=""film/([^<]+)"" onmouseover")
                 If mcOFDBURL.Count > 0 Then
                     'just use the first one if more are found
                     ofdbURL = String.Concat("http://www.ofdb.de/", Regex.Match(mcOFDBURL(0).Value.ToString, """(film/([^<]+))""").Groups(1).Value.ToString)
@@ -119,25 +107,13 @@ Public Class OFDB
     End Function
 
     Private Sub GetOFDBDetails()
-        Dim Html As String = String.Empty
         Dim sURL As String = GetOFDBUrlFromIMDBID()
 
         Try
             If Not String.IsNullOrEmpty(sURL) Then
-                Dim Wc As New WebClient
-                Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
-                Wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 3.5;)")
-
-                Dim MS As New MemoryStream(Wc.DownloadData(sURL))
-
-                If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                    Html = New StreamReader(New GZipStream(MS, CompressionMode.Decompress)).ReadToEnd
-                Else
-                    Html = New StreamReader(MS).ReadToEnd
-                End If
-
-                MS.Close()
-                MS = Nothing
+                Dim sHTTP As New HTTP(sURL)
+                Dim HTML As String = sHTTP.Response
+                sHTTP = Nothing
 
                 If Not String.IsNullOrEmpty(Html) Then
                     'title
@@ -204,25 +180,13 @@ Public Class OFDB
     End Sub
 
     Private Function GetFullPlot(ByVal sURL As String) As String
-        Dim Html As String = String.Empty
         Dim FullPlot As String = String.Empty
 
         Try
             If Not String.IsNullOrEmpty(sURL) Then
-                Dim Wc As New WebClient
-                Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
-                Wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 3.5;)")
-
-                Dim MS As New MemoryStream(Wc.DownloadData(sURL))
-
-                If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                    Html = New StreamReader(New GZipStream(MS, CompressionMode.Decompress)).ReadToEnd
-                Else
-                    Html = New StreamReader(MS).ReadToEnd
-                End If
-
-                MS.Close()
-                MS = Nothing
+                Dim sHTTP As New HTTP(sURL)
+                Dim HTML As String = sHTTP.Response
+                sHTTP = Nothing
 
                 Dim D, W, B As Integer
                 Dim tmpHTML As String

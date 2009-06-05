@@ -175,11 +175,39 @@ Public Class dlgImgSelect
 
         Me.tmpImage.Dispose()
 
+        IMPA = Nothing
+        MPDB = Nothing
+        TMDB = Nothing
+
+        IMPAPosters = Nothing
+        MPDBPosters = Nothing
+        TMDBPosters = Nothing
+
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        IMPA.Cancel()
+        MPDB.Cancel()
+        TMDB.Cancel()
+
+        If bwIMPADownload.IsBusy Then bwIMPADownload.CancelAsync()
+        If bwMPDBDownload.IsBusy Then bwMPDBDownload.CancelAsync()
+        If bwTMDBDownload.IsBusy Then bwTMDBDownload.CancelAsync()
+
+        Do While bwIMPADownload.IsBusy OrElse bwMPDBDownload.IsBusy OrElse bwTMDBDownload.IsBusy
+            Application.DoEvents()
+        Loop
+
+        IMPA = Nothing
+        MPDB = Nothing
+        TMDB = Nothing
+
+        IMPAPosters = Nothing
+        MPDBPosters = Nothing
+        TMDBPosters = Nothing
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -299,6 +327,7 @@ Public Class dlgImgSelect
 
             Me.MPDBPosters = Posters
 
+            Me.bwMPDBDownload.WorkerSupportsCancellation = True
             Me.bwMPDBDownload.WorkerReportsProgress = True
             Me.bwMPDBDownload.RunWorkerAsync()
         Catch ex As Exception
@@ -322,6 +351,7 @@ Public Class dlgImgSelect
 
             Me.TMDBPosters = Posters
 
+            Me.bwTMDBDownload.WorkerSupportsCancellation = True
             Me.bwTMDBDownload.WorkerReportsProgress = True
             Me.bwTMDBDownload.RunWorkerAsync()
         Catch ex As Exception
@@ -345,6 +375,7 @@ Public Class dlgImgSelect
 
             Me.IMPAPosters = Posters
 
+            Me.bwIMPADownload.WorkerSupportsCancellation = True
             Me.bwIMPADownload.WorkerReportsProgress = True
             Me.bwIMPADownload.RunWorkerAsync()
         Catch ex As Exception
@@ -385,7 +416,7 @@ Public Class dlgImgSelect
             End If
 
             If Master.eSettings.UseMPDB Then
-                Me.lblDL3.Text = "Retrieving data from MoviePostersDB.com..."
+                Me.lblDL3.Text = "Retrieving data from MoviePosterDB.com..."
                 Me.lblDL3Status.Text = String.Empty
                 Me.pbDL3.Maximum = 3
                 Me.pnlDLStatus.Visible = True
@@ -610,6 +641,7 @@ Public Class dlgImgSelect
         '\\
         For i As Integer = 0 To Me.IMPAPosters.Count - 1
             Try
+                If bwIMPADownload.CancellationPending Then Return
                 Me.bwIMPADownload.ReportProgress(i + 1, Me.IMPAPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.IMPAPosters.Item(i).URL)
                 wrRequest.Timeout = 10000
@@ -646,8 +678,10 @@ Public Class dlgImgSelect
         ' Thread finished: process the pics
         '\\
 
-        Me._impaDone = True
-        RaiseEvent IMPADone()
+        If Not bwIMPADownload.CancellationPending Then
+            Me._impaDone = True
+            RaiseEvent IMPADone()
+        End If
 
     End Sub
 
@@ -660,6 +694,7 @@ Public Class dlgImgSelect
 
         For i As Integer = 0 To Me.TMDBPosters.Count - 1
             Try
+                If Me.bwTMDBDownload.CancellationPending Then Return
                 If Me.DLType = Master.ImageType.Fanart OrElse (Me.DLType = Master.ImageType.Posters AndAlso Me.TMDBPosters.Item(i).Description.ToLower = "cover") Then
                     Me.bwTMDBDownload.ReportProgress(i + 1, Me.TMDBPosters.Item(i).URL)
                     Dim wrRequest As WebRequest = WebRequest.Create(Me.TMDBPosters.Item(i).URL)
@@ -698,8 +733,10 @@ Public Class dlgImgSelect
         ' Thread finished: process the pics
         '\\
 
-        Me._tmdbDone = True
-        RaiseEvent TMDBDone()
+        If Not bwTMDBDownload.CancellationPending Then
+            Me._tmdbDone = True
+            RaiseEvent TMDBDone()
+        End If
 
     End Sub
 
@@ -711,6 +748,7 @@ Public Class dlgImgSelect
         '\\
         For i As Integer = 0 To Me.MPDBPosters.Count - 1
             Try
+                If Me.bwMPDBDownload.CancellationPending Then Return
                 Me.bwMPDBDownload.ReportProgress(i + 1, Me.MPDBPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.MPDBPosters.Item(i).URL)
                 wrRequest.Timeout = 10000
@@ -747,8 +785,10 @@ Public Class dlgImgSelect
         ' Thread finished: process the pics
         '\\
 
-        Me._mpdbDone = True
-        RaiseEvent MPDBDone()
+        If Not bwMPDBDownload.CancellationPending Then
+            Me._mpdbDone = True
+            RaiseEvent MPDBDone()
+        End If
 
     End Sub
 

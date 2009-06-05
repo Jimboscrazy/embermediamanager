@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsErrorLog.vb" />
+    <Compile Include="clsHTTP.vb" />
     <Compile Include="clsImages.vb" />
     <Compile Include="clsScrapeIMDB.vb" />
     <Compile Include="clsScrapeIMPA.vb" />

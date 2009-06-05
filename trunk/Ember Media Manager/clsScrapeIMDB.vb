@@ -197,26 +197,13 @@ Namespace IMDB
             Try
 
                 Dim D, W As Integer
-                Dim Url As String = String.Concat("http://www.imdb.com/find?s=all&q=", _
-                                                  Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1")))
                 Dim R As New MovieSearchResults
-                Dim Html As String
 
-                Dim Wr As WebRequest = WebRequest.Create(Url)
-                Wr.Timeout = 10000
-                Wr.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
+                Dim sHTTP As New HTTP(String.Concat("http://www.imdb.com/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1"))))
+                Dim HTML As String = sHTTP.Response
+                Dim rUri As String = sHTTP.ResponseUri
+                sHTTP = Nothing
 
-                Dim Response As WebResponse = Wr.GetResponse
-
-                If Response.Headers(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                    Html = New StreamReader(New GZipStream(Response.GetResponseStream(), CompressionMode.Decompress)).ReadToEnd
-                Else
-                    Html = New StreamReader(Response.GetResponseStream()).ReadToEnd
-                End If
-
-                Dim rUri As String = Response.ResponseUri.ToString
-                Response.Close()
-                Response = Nothing
 
                 'Check if we've been redirected straight to the movie page
                 If Regex.Match(rUri, IMDB_ID_REGEX).Success Then
@@ -314,32 +301,13 @@ mResult:
                     If Master.eSettings.UseOFDBGenre Then ofdbGenre = OFDBScrape.Genre
                 End If
 
-                Dim Url As String = String.Concat("http://www.imdb.com/title/tt", strID, _
-                                                  If(FullCrew OrElse FullCast, "/combined", String.Empty))
-                Dim PlotUrl As String = String.Concat("http://www.imdb.com/title/tt", strID, "/plotsummary")
+                Dim sHTTP As New HTTP(String.Concat("http://www.imdb.com/title/tt", strID, If(FullCrew OrElse FullCast, "/combined", String.Empty)))
+                Dim HTML As String = sHTTP.Response
+                sHTTP = Nothing
 
-                Dim Html As String
-                Dim PlotHtml As String
-
-                Dim Wc As New WebClient
-                Wc.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate")
-                Wc.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 3.5;)")
-
-                Dim MS As New MemoryStream(Wc.DownloadData(Url))
-                Dim MsPlot As New MemoryStream(Wc.DownloadData(PlotUrl))
-
-                If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                    Html = New StreamReader(New GZipStream(MS, CompressionMode.Decompress)).ReadToEnd
-                    PlotHtml = New StreamReader(New GZipStream(MsPlot, CompressionMode.Decompress)).ReadToEnd
-                Else
-                    Html = New StreamReader(MS).ReadToEnd
-                    PlotHtml = New StreamReader(MsPlot).ReadToEnd
-                End If
-
-                MS.Close()
-                MS = Nothing
-                MsPlot.Close()
-                MsPlot = Nothing
+                Dim sPlot As New HTTP(String.Concat("http://www.imdb.com/title/tt", strID, "/plotsummary"))
+                Dim PlotHtml As String = sPlot.Response
+                sPlot = Nothing
 
                 If bwIMDB.WorkerReportsProgress Then
                     bwIMDB.ReportProgress(1)
@@ -416,16 +384,12 @@ mResult:
                 'trailer
                 Dim sTrailerUrl As String = Regex.Match(Html, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim
                 If Not sTrailerUrl = String.Empty Then
+                    Dim sTrailerURL2 As String = String.Empty
                     sTrailerUrl = String.Concat("http://www.imdb.com", sTrailerUrl, "player")
-                    Dim HtmlTrailer As String
-                    Dim sTrailerURL2 As String
-                    Dim MsTrailer As New MemoryStream(Wc.DownloadData(sTrailerUrl))
+                    Dim HTTPTrailer As New HTTP(sTrailerUrl)
+                    Dim HtmlTrailer As String = HTTPTrailer.Response
+                    HTTPTrailer = Nothing
 
-                    If Wc.ResponseHeaders(HttpResponseHeader.ContentEncoding) = "gzip" Then
-                        HtmlTrailer = New StreamReader(New GZipStream(MsTrailer, CompressionMode.Decompress)).ReadToEnd
-                    Else
-                        HtmlTrailer = New StreamReader(MsTrailer).ReadToEnd
-                    End If
                     sTrailerUrl = Regex.Match(HtmlTrailer, "so.addVariable\(""id"", ""(.*?)""\);").Groups(1).Value.Trim
                     If sTrailerUrl = String.Empty Then
                         sTrailerURL2 = Regex.Match(HtmlTrailer, "so.addVariable\(""file"", ""(.*?)""\);").Groups(1).Value.Trim
