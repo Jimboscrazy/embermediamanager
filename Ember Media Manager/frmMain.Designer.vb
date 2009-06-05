@@ -68,6 +68,10 @@ Partial Class frmMain
         Me.cmnuSearchNew = New System.Windows.Forms.ToolStripMenuItem
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
+        Me.pnlCancel = New System.Windows.Forms.Panel
+        Me.pbCanceling = New System.Windows.Forms.ProgressBar
+        Me.lblCanceling = New System.Windows.Forms.Label
+        Me.btnCancel = New System.Windows.Forms.Button
         Me.pnlNoInfo = New System.Windows.Forms.Panel
         Me.Panel2 = New System.Windows.Forms.Panel
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
@@ -201,6 +205,7 @@ Partial Class frmMain
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.mnuMediaList.SuspendLayout()
         Me.tabsMain.SuspendLayout()
+        Me.pnlCancel.SuspendLayout()
         Me.pnlNoInfo.SuspendLayout()
         Me.Panel2.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -401,6 +406,7 @@ Partial Class frmMain
         'scMain.Panel2
         '
         Me.scMain.Panel2.BackColor = System.Drawing.Color.Gainsboro
+        Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
         Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
         Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
         Me.scMain.Panel2.Controls.Add(Me.pnlPoster)
@@ -634,6 +640,53 @@ Partial Class frmMain
         Me.tabMovies.TabIndex = 0
         Me.tabMovies.Text = "Movies"
         Me.tabMovies.UseVisualStyleBackColor = True
+        '
+        'pnlCancel
+        '
+        Me.pnlCancel.BackColor = System.Drawing.Color.LightGray
+        Me.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlCancel.Controls.Add(Me.pbCanceling)
+        Me.pnlCancel.Controls.Add(Me.lblCanceling)
+        Me.pnlCancel.Controls.Add(Me.btnCancel)
+        Me.pnlCancel.Location = New System.Drawing.Point(273, 100)
+        Me.pnlCancel.Name = "pnlCancel"
+        Me.pnlCancel.Size = New System.Drawing.Size(214, 63)
+        Me.pnlCancel.TabIndex = 8
+        Me.pnlCancel.Visible = False
+        '
+        'pbCanceling
+        '
+        Me.pbCanceling.Location = New System.Drawing.Point(5, 32)
+        Me.pbCanceling.MarqueeAnimationSpeed = 25
+        Me.pbCanceling.Name = "pbCanceling"
+        Me.pbCanceling.Size = New System.Drawing.Size(203, 20)
+        Me.pbCanceling.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.pbCanceling.TabIndex = 2
+        Me.pbCanceling.Visible = False
+        '
+        'lblCanceling
+        '
+        Me.lblCanceling.AutoSize = True
+        Me.lblCanceling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCanceling.Location = New System.Drawing.Point(4, 12)
+        Me.lblCanceling.Name = "lblCanceling"
+        Me.lblCanceling.Size = New System.Drawing.Size(149, 16)
+        Me.lblCanceling.TabIndex = 1
+        Me.lblCanceling.Text = "Canceling Updater..."
+        Me.lblCanceling.Visible = False
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
+        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnCancel.Location = New System.Drawing.Point(4, 4)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(205, 55)
+        Me.btnCancel.TabIndex = 0
+        Me.btnCancel.Text = "Cancel Updater"
+        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnCancel.UseVisualStyleBackColor = True
         '
         'pnlNoInfo
         '
@@ -1772,6 +1825,8 @@ Partial Class frmMain
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.mnuMediaList.ResumeLayout(False)
         Me.tabsMain.ResumeLayout(False)
+        Me.pnlCancel.ResumeLayout(False)
+        Me.pnlCancel.PerformLayout()
         Me.pnlNoInfo.ResumeLayout(False)
         Me.Panel2.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1906,7 +1961,6 @@ Partial Class frmMain
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents tmrSearchWait As System.Windows.Forms.Timer
     Friend WithEvents tmrSearch As System.Windows.Forms.Timer
-    Friend WithEvents pnlNoInfo As System.Windows.Forms.Panel
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
@@ -1977,4 +2031,9 @@ Partial Class frmMain
     Friend WithEvents mnuMarkAskFanart As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMarkAskExtra As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tabMovies As System.Windows.Forms.TabPage
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents pbCanceling As System.Windows.Forms.ProgressBar
+    Friend WithEvents lblCanceling As System.Windows.Forms.Label
+    Private WithEvents pnlNoInfo As System.Windows.Forms.Panel
+    Friend WithEvents pnlCancel As System.Windows.Forms.Panel
 End Class
