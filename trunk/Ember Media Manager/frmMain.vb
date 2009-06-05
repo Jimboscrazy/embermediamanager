@@ -1175,6 +1175,22 @@ Public Class frmMain
             Application.DoEvents()
         Loop
     End Sub
+
+    Private Sub OpenContainingFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenContainingFolderToolStripMenuItem.Click
+        Process.Start("explorer.exe", Directory.GetParent(Me.dgvMediaList.SelectedRows(0).Cells(1).Value).FullName)
+    End Sub
+
+    Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
+        If MsgBox(String.Concat("WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE FROM THE HARD DRIVE", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
+            Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
+            Master.DeleteFiles(False, Me.dgvMediaList.Rows(indX).Cells(1).Value, Me.dgvMediaList.Rows(indX).Cells(2).Value)
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE id = ", Me.dgvMediaList.Rows(indX).Cells(0).Value, ";")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            Me.FillList(indX)
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1620,9 +1636,6 @@ Public Class frmMain
         Dim IMPA As New IMPA.Scraper
         Dim iCount As Integer = 0
         Dim sPath As String = String.Empty
-        Dim sPathShort As String = String.Empty
-        Dim sPathNoExt As String = String.Empty
-        Dim sOrName As String = String.Empty
         Dim nfoPath As String = String.Empty
         Dim fArt As New Media.Fanart
         Dim pThumbs As New Media.Poster
@@ -1865,126 +1878,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
-
-                                    sPath = drvRow.Item(1).ToString
-                                    sOrName = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
-                                    sPathShort = Directory.GetParent(sPath).FullName
-                                    sPathNoExt = Master.RemoveExtFromPath(sPath)
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanFolderJPG Then
-                                        If File.Exists(Path.Combine(sPathShort, "folder.jpg")) Then
-                                            File.Delete(Path.Combine(sPathShort, "folder.jpg"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanFanartJPG Then
-                                        If File.Exists(Path.Combine(sPathShort, "fanart.jpg")) Then
-                                            File.Delete(Path.Combine(sPathShort, "fanart.jpg"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanMovieTBN Then
-                                        If File.Exists(Path.Combine(sPathShort, "movie.tbn")) Then
-                                            File.Delete(Path.Combine(sPathShort, "movie.tbn"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanMovieNFO Then
-                                        If File.Exists(Path.Combine(sPathShort, "movie.nfo")) Then
-                                            File.Delete(Path.Combine(sPathShort, "movie.nfo"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanPosterTBN Then
-                                        If File.Exists(Path.Combine(sPathShort, "poster.tbn")) Then
-                                            File.Delete(Path.Combine(sPathShort, "poster.tbn"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanPosterJPG Then
-                                        If File.Exists(Path.Combine(sPathShort, "poster.jpg")) Then
-                                            File.Delete(Path.Combine(sPathShort, "poster.jpg"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanMovieJPG Then
-                                        If File.Exists(Path.Combine(sPathShort, "movie.jpg")) Then
-                                            File.Delete(Path.Combine(sPathShort, "movie.jpg"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanMovieTBNB Then
-                                        If File.Exists(String.Concat(sPathNoExt, ".tbn")) Then
-                                            File.Delete(String.Concat(sPathNoExt, ".tbn"))
-                                        End If
-                                        If File.Exists(Path.Combine(sPathShort, "video_ts.tbn")) Then
-                                            File.Delete(Path.Combine(sPathShort, "video_ts.tbn"))
-                                        End If
-                                        If File.Exists(String.Concat(Path.Combine(sPathShort, sOrName), ".tbn")) Then
-                                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".tbn"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanMovieFanartJPG Then
-                                        If File.Exists(String.Concat(sPathNoExt, "-fanart.jpg")) Then
-                                            File.Delete(String.Concat(sPathNoExt, "-fanart.jpg"))
-                                        End If
-                                        If File.Exists(Path.Combine(sPathShort, "video_ts-fanart.jpg")) Then
-                                            File.Delete(Path.Combine(sPathShort, "video_ts-fanart.jpg"))
-                                        End If
-                                        If File.Exists(String.Concat(Path.Combine(sPathShort, sOrName), "-fanart.jpg")) Then
-                                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), "-fanart.jpg"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanMovieNFOB Then
-                                        If File.Exists(String.Concat(sPathNoExt, ".nfo")) Then
-                                            File.Delete(String.Concat(sPathNoExt, ".nfo"))
-                                        End If
-                                        If File.Exists(Path.Combine(sPathShort, "video_ts.nfo")) Then
-                                            File.Delete(Path.Combine(sPathShort, "video_ts.nfo"))
-                                        End If
-                                        If File.Exists(String.Concat(Path.Combine(sPathShort, sOrName), ".nfo")) Then
-                                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".nfo"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanDotFanartJPG Then
-                                        If File.Exists(String.Concat(sPathNoExt, ".fanart.jpg")) Then
-                                            File.Delete(String.Concat(sPathNoExt, ".fanart.jpg"))
-                                        End If
-                                        If File.Exists(Path.Combine(sPathShort, "video_ts.fanart.jpg")) Then
-                                            File.Delete(Path.Combine(sPathShort, "video_ts.fanart.jpg"))
-                                        End If
-                                        If File.Exists(String.Concat(Path.Combine(sPathShort, sOrName), ".fanart.jpg")) Then
-                                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".fanart.jpg"))
-                                        End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.CleanMovieNameJPG Then
-                                        If File.Exists(String.Concat(sPathNoExt, ".jpg")) Then
-                                            File.Delete(String.Concat(sPathNoExt, ".jpg"))
-                                        End If
-                                        If File.Exists(Path.Combine(sPathShort, "video_ts.jpg")) Then
-                                            File.Delete(Path.Combine(sPathShort, "video_ts.jpg"))
-                                        End If
-                                        If File.Exists(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg")) Then
-                                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg"))
-                                        End If
-                                    End If
-
+                                    Master.DeleteFiles(True, drvRow.Item(1).ToString)
                                 Next
 
                             Case Master.ScrapeType.UpdateAuto

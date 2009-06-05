@@ -194,6 +194,10 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.OpenContainingFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
+        Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -286,7 +290,7 @@ Partial Class frmMain
         '
         Me.ExitToolStripMenuItem.Image = CType(resources.GetObject("ExitToolStripMenuItem.Image"), System.Drawing.Image)
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(92, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'EditToolStripMenuItem
@@ -565,59 +569,59 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuMark, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.ToolStripMenuItem2, Me.cmnuRescrape, Me.cmnuSearchNew})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuMark, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.ToolStripMenuItem2, Me.cmnuRescrape, Me.cmnuSearchNew, Me.ToolStripSeparator1, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(159, 132)
+        Me.mnuMediaList.Size = New System.Drawing.Size(202, 210)
         '
         'cmnuTitle
         '
         Me.cmnuTitle.Enabled = False
         Me.cmnuTitle.Image = CType(resources.GetObject("cmnuTitle.Image"), System.Drawing.Image)
         Me.cmnuTitle.Name = "cmnuTitle"
-        Me.cmnuTitle.Size = New System.Drawing.Size(158, 22)
+        Me.cmnuTitle.Size = New System.Drawing.Size(201, 22)
         Me.cmnuTitle.Text = "Title"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(155, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuMark
         '
         Me.cmnuMark.Image = CType(resources.GetObject("cmnuMark.Image"), System.Drawing.Image)
         Me.cmnuMark.Name = "cmnuMark"
-        Me.cmnuMark.Size = New System.Drawing.Size(158, 22)
+        Me.cmnuMark.Size = New System.Drawing.Size(201, 22)
         Me.cmnuMark.Text = "Mark"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(155, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuEditMovie
         '
         Me.cmnuEditMovie.Image = CType(resources.GetObject("cmnuEditMovie.Image"), System.Drawing.Image)
         Me.cmnuEditMovie.Name = "cmnuEditMovie"
-        Me.cmnuEditMovie.Size = New System.Drawing.Size(158, 22)
+        Me.cmnuEditMovie.Size = New System.Drawing.Size(201, 22)
         Me.cmnuEditMovie.Text = "Edit Movie"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(155, 6)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuRescrape
         '
         Me.cmnuRescrape.Image = CType(resources.GetObject("cmnuRescrape.Image"), System.Drawing.Image)
         Me.cmnuRescrape.Name = "cmnuRescrape"
-        Me.cmnuRescrape.Size = New System.Drawing.Size(158, 22)
+        Me.cmnuRescrape.Size = New System.Drawing.Size(201, 22)
         Me.cmnuRescrape.Text = "Re-scrape IMDB"
         '
         'cmnuSearchNew
         '
         Me.cmnuSearchNew.Image = CType(resources.GetObject("cmnuSearchNew.Image"), System.Drawing.Image)
         Me.cmnuSearchNew.Name = "cmnuSearchNew"
-        Me.cmnuSearchNew.Size = New System.Drawing.Size(158, 22)
+        Me.cmnuSearchNew.Size = New System.Drawing.Size(201, 22)
         Me.cmnuSearchNew.Text = "Change Movie"
         '
         'tabsMain
@@ -1795,6 +1799,30 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(198, 6)
+        '
+        'OpenContainingFolderToolStripMenuItem
+        '
+        Me.OpenContainingFolderToolStripMenuItem.Image = CType(resources.GetObject("OpenContainingFolderToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.OpenContainingFolderToolStripMenuItem.Name = "OpenContainingFolderToolStripMenuItem"
+        Me.OpenContainingFolderToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
+        Me.OpenContainingFolderToolStripMenuItem.Text = "Open Containing Folder"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(198, 6)
+        '
+        'DeleteMovieToolStripMenuItem
+        '
+        Me.DeleteMovieToolStripMenuItem.Image = CType(resources.GetObject("DeleteMovieToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.DeleteMovieToolStripMenuItem.Name = "DeleteMovieToolStripMenuItem"
+        Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
+        Me.DeleteMovieToolStripMenuItem.Text = "Delete Movie"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2036,4 +2064,8 @@ Partial Class frmMain
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
     Private WithEvents pnlNoInfo As System.Windows.Forms.Panel
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents OpenContainingFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents DeleteMovieToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
