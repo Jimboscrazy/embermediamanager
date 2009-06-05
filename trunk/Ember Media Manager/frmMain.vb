@@ -3315,12 +3315,15 @@ doCancel:
             If drvRow.Cells(9).Value Then
                 drvRow.Cells(3).Style.ForeColor = Color.Crimson
                 drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                drvRow.Cells(3).Style.SelectionForeColor = Color.Crimson
             ElseIf drvRow.Cells(8).Value Then
                 drvRow.Cells(3).Style.ForeColor = Color.Green
                 drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                drvRow.Cells(3).Style.SelectionForeColor = Color.Green
             Else
                 drvRow.Cells(3).Style.ForeColor = Color.Black
                 drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                drvRow.Cells(3).Style.SelectionForeColor = Color.White
             End If
         Next
     End Sub

@@ -55,7 +55,7 @@ Namespace IMPA
 
             Try
 
-                Dim sHTTP As New HTTP(String.Concat("http://www.imdb.com/title/tt", IMDBID, "/posters"))
+                Dim sHTTP As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", IMDBID, "/posters"))
                 Dim HTML As String = sHTTP.Response
                 sHTTP = Nothing
 
