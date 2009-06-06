@@ -438,7 +438,7 @@ Public Class frmMain
                     Case Windows.Forms.DialogResult.Retry
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
                     Case Windows.Forms.DialogResult.Abort
-                        Me.ScrapeData(Master.ScrapeType.SingleScrape, True)
+                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, True)
                 End Select
 
             End Using
@@ -3060,10 +3060,15 @@ doCancel:
                 Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
 
                 Using dEditMovie As New dlgEditMovie
-                    If dEditMovie.ShowDialog(ID) = Windows.Forms.DialogResult.OK Then
-                        Me.ReCheckItems(ID)
-                        Me.FillList(indX)
-                    End If
+                    Select Case dEditMovie.ShowDialog(ID)
+                        Case Windows.Forms.DialogResult.OK
+                            Me.ReCheckItems(ID)
+                            Me.FillList(indX)
+                        Case Windows.Forms.DialogResult.Retry
+                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
+                        Case Windows.Forms.DialogResult.Abort
+                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, True)
+                    End Select
                 End Using
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
