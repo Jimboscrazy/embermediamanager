@@ -2,7 +2,27 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Feature: Configurable IMDB mirror
+ * Feature: Delete Movie
+ * Feature: Open containing folder
+ * Feature: Delete Poster/Fanart from movie editor
+ * Feature: Lock individual movies (updaters will skip these movies)
+ * Feature: Auto-generate multiple extrathumbs from movie editor
+ * Feature: Option to clean extrathumbs folder
+ * Feature: Support for custom extensions for movie files
+ * Feature: Optional check for new version
+ * Feature: When proper nfo is not found or is non-conforming and does not contain IMDB ID, look for any other nfo in the folder and try to get IMDB from them.
+ * Feature: More global locks (tagline, rating, genres, studio)
+ * Feature: Studio selection dialog from movie editor
+ * Feature: New tool and option to automatically copy fanart to a selectable backdrops folder
+ * Feature: Option to use media info duration as runtime
+ * Fix: File-type sources not stacking properly
+ * Fix: File cleaner did not remove YAMJ compatible files
+ * Change: Special cell coloring persistent through selection
+ * Change: Ability to refresh extrathumbs list in movie editor
+ * Change: Tweaks to certification handling
+ * Change: Always save rating with "." instead of ","
+ * Change: Misc tweaks to the code
 
 *Changes in r227:*
  * Fix: Data collisions when viewing movies while scraping
