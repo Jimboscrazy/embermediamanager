@@ -682,32 +682,43 @@ Public Class Master
                     xmlSer = New XmlSerializer(GetType(Media.Movie))
                     xmlMov = CType(xmlSer.Deserialize(xmlSR), Media.Movie)
                 End Using
-
-                Return xmlMov
             Else
-                Return New Media.Movie
+                xmlMov.IMDBID = GetIMDBFromNonConf(sPath)
             End If
         Catch
-
             xmlMov = New Media.Movie
-
             If Not IsNothing(xmlSer) Then
                 xmlSer = Nothing
             End If
+            xmlMov.IMDBID = GetIMDBFromNonConf(sPath)
+        End Try
 
-            Using srInfo As New StreamReader(sPath)
+        Return xmlMov
+
+    End Function
+
+    Public Shared Function GetIMDBFromNonConf(ByVal sPath As String) As String
+        Dim tIMDBID As String = String.Empty
+        Dim dirInfo As New DirectoryInfo(Directory.GetParent(sPath).FullName)
+
+        Dim ioFi As FileInfo() = dirInfo.GetFiles("*.nfo")
+
+        For Each sFile As FileInfo In ioFi
+            Using srInfo As New StreamReader(sFile.FullName)
                 Dim sInfo As String = srInfo.ReadToEnd
                 Dim sIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
 
                 If Not String.IsNullOrEmpty(sIMDBID) Then
-                    xmlMov.IMDBID = sIMDBID
+                    tIMDBID = sIMDBID
+                    Exit For
                 End If
 
             End Using
+        Next
 
-            Return xmlMov
-        End Try
+        ioFi = Nothing
 
+        Return tIMDBID
     End Function
 
     Public Shared Function GetFolderContents(ByVal sPath As String, ByVal isFile As Boolean)
@@ -1029,7 +1040,12 @@ Public Class Master
             If File.Exists(npath) Then
                 Return nPath
             Else
-                Return String.Empty
+                If isFile Then
+                    Return String.Empty
+                Else
+                    'return movie path so we can use it for looking for non-conforming nfos
+                    Return sPath
+                End If
             End If
         Else
             Dim tmpName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
@@ -1043,7 +1059,12 @@ Public Class Master
             ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
                 Return Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
             Else
-                Return String.Empty
+                If isFile Then
+                    Return String.Empty
+                Else
+                    'return movie path so we can use it for looking for non-conforming nfos
+                    Return sPath
+                End If
             End If
         End If
 
