@@ -231,11 +231,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnRemoveFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFilter.Click
-        If Me.lstFilters.Items.Count > 0 Then
-            For i As Integer = Me.lstFilters.SelectedItems.Count - 1 To 0 Step -1
-                Me.lstFilters.Items.Remove(Me.lstFilters.SelectedItems(i))
-                Me.btnApply.Enabled = True
+        If Me.lstFilters.Items.Count > 0 AndAlso Me.lstFilters.SelectedItems.Count > 0 Then
+            For Each i As Integer In lstFilters.SelectedIndices
+                lstFilters.Items.RemoveAt(i)
             Next
+            Me.btnApply.Enabled = True
         End If
     End Sub
 
@@ -620,6 +620,7 @@ Public Class dlgSettings
         pnlXBMCCom.Visible = False
         pnlMovies.Visible = False
         pnlScraper.Visible = False
+        pnlExtensions.Visible = False
         Select Case tvSettings.SelectedNode.Name
             Case "nGeneral"
                 pnlGeneral.Visible = True
@@ -629,6 +630,8 @@ Public Class dlgSettings
                 pnlMovies.Visible = True
             Case "nScraper"
                 pnlScraper.Visible = True
+            Case "nExts"
+                pnlExtensions.Visible = True
         End Select
     End Sub
 
@@ -752,6 +755,27 @@ Public Class dlgSettings
     Private Sub chkCleanExtrathumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanExtrathumbs.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub btnAddMovieExt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddMovieExt.Click
+        If Not String.IsNullOrEmpty(txtMovieExt.Text) Then
+            If Not Strings.Left(txtMovieExt.Text, 1) = "." Then txtMovieExt.Text = String.Concat(".", txtMovieExt.Text)
+            If Not lstMovieExts.Items.Contains(txtMovieExt.Text) Then
+                lstMovieExts.Items.Add(txtMovieExt.Text)
+                Me.btnApply.Enabled = True
+                txtMovieExt.Text = String.Empty
+                txtMovieExt.Focus()
+            End If
+        End If
+    End Sub
+
+    Private Sub btnRemMovieExt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemMovieExt.Click
+        If lstMovieExts.Items.Count > 0 And lstMovieExts.SelectedItems.Count > 0 Then
+            For Each i As Integer In lstMovieExts.SelectedIndices
+                lstMovieExts.Items.RemoveAt(i)
+            Next
+            Me.btnApply.Enabled = True
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -851,6 +875,9 @@ Public Class dlgSettings
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
             Master.eSettings.XBMCComs = Me.XComs
             Master.eSettings.ScanRecursive = Me.chkScanRecursive.Checked
+            Dim tmpExts As New ArrayList
+            tmpExts.AddRange(lstMovieExts.Items)
+            Master.eSettings.ValidExts = tmpExts
 
             '######## MOVIES TAB ########
             Master.eSettings.MovieFolders.Clear()
@@ -921,6 +948,7 @@ Public Class dlgSettings
             Else
                 Master.eSettings.IMDBURL = "akas.imdb.com"
             End If
+
             Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -966,6 +994,7 @@ Public Class dlgSettings
             Me.chkLogErrors.Checked = Master.eSettings.LogErrors
             Me.chkProperCase.Checked = Master.eSettings.ProperCase
             Me.chkScanRecursive.Checked = Master.eSettings.ScanRecursive
+            Me.lstMovieExts.Items.AddRange(Master.eSettings.ValidExts.ToArray)
 
             '######## MOVIES TAB ########
             For Each strFolders As String In Master.eSettings.MovieFolders

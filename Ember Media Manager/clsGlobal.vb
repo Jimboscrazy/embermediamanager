@@ -352,49 +352,11 @@ Public Class Master
 
                 lFi.AddRange(di.GetFiles())
 
-                'only process proper file types
-                lFi = lFi.FindAll(Function(f As FileInfo) (f.Extension.ToLower() = ".avi" _
-                                      OrElse f.Extension.ToLower() = ".divx" _
-                                      OrElse f.Extension.ToLower() = ".mkv" _
-                                      OrElse f.Extension.ToLower() = ".iso" _
-                                      OrElse f.Extension.ToLower() = ".mpg" _
-                                      OrElse f.Extension.ToLower() = ".mp4" _
-                                      OrElse f.Extension.ToLower() = ".wmv" _
-                                      OrElse f.Extension.ToLower() = ".wma" _
-                                      OrElse f.Extension.ToLower() = ".mov" _
-                                      OrElse f.Extension.ToLower() = ".mts" _
-                                      OrElse f.Extension.ToLower() = ".m2t" _
-                                      OrElse f.Extension.ToLower() = ".img" _
-                                      OrElse f.Extension.ToLower() = ".dat" _
-                                      OrElse f.Extension.ToLower() = ".bin" _
-                                      OrElse f.Extension.ToLower() = ".cue" _
-                                      OrElse f.Extension.ToLower() = ".vob" _
-                                      OrElse f.Extension.ToLower() = ".dvb" _
-                                      OrElse f.Extension.ToLower() = ".evo" _
-                                      OrElse f.Extension.ToLower() = ".asf" _
-                                      OrElse f.Extension.ToLower() = ".asx" _
-                                      OrElse f.Extension.ToLower() = ".avs" _
-                                      OrElse f.Extension.ToLower() = ".nsv" _
-                                      OrElse f.Extension.ToLower() = ".ram" _
-                                      OrElse f.Extension.ToLower() = ".ogg" _
-                                      OrElse f.Extension.ToLower() = ".ogm" _
-                                      OrElse f.Extension.ToLower() = ".ogv" _
-                                      OrElse f.Extension.ToLower() = ".flv" _
-                                      OrElse f.Extension.ToLower() = ".swf" _
-                                      OrElse f.Extension.ToLower() = ".nut" _
-                                      OrElse f.Extension.ToLower() = ".viv" _
-                                      OrElse f.Extension.ToLower() = ".rar" _
-                                      OrElse f.Extension.ToLower() = ".m2ts" _
-                                      OrElse f.Extension.ToLower() = ".dvr-ms" _
-                                      OrElse f.Extension.ToLower() = ".ts" _
-                                      OrElse f.Extension.ToLower() = ".m4v") _
-                                      AndAlso Not f.Name.ToLower.Contains("sample") _
-                                      AndAlso Not f.Name.ToLower.Contains("-trailer") _
-                                      AndAlso Not f.Name.ToLower.Contains("[trailer"))
-
                 lFi.Sort(AddressOf SortFileNames)
+
                 For Each lFile As FileInfo In lFi
-                    If Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) Then
+                    If Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
+                    Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") Then
                         tmpList.Add(CleanStackingMarkers(lFile.FullName))
                         MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sPath, .isFile = True})
                     End If
@@ -792,9 +754,7 @@ Public Class Master
                     hasNfo = True
                 End If
 
-                Dim sExt() As String = Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v")
-
-                For Each t As String In sExt
+                For Each t As String In Master.eSettings.ValidExts
                     If File.Exists(String.Concat(tmpName, "-trailer", t)) OrElse File.Exists(String.Concat(tmpName, "[trailer]", t)) OrElse _
                         File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) OrElse File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
                         hasTrailer = True
@@ -844,11 +804,13 @@ Public Class Master
                             If currname = String.Concat(tmpName, ".nfo") OrElse currname = String.Concat(tmpNameNoStack, ".nfo") OrElse currname = "movie.nfo" OrElse currname = "video_ts.nfo" Then
                                 hasNfo = True
                             End If
-                        Case ".avi", ".divx", ".mkv", ".iso", ".mpg", ".mp4", ".wmv", ".wma", ".mov", ".mts", ".m2t", ".img", ".dat", ".bin", ".cue", ".vob", ".dvb", ".evo", ".asf", ".asx", ".avs", ".nsv", ".ram", ".ogg", ".ogm", ".ogv", ".flv", ".swf", ".nut", ".viv", ".rar", ".m2ts", ".dvr-ms", ".ts", ".m4v"
-                            If sfile.Name.ToLower.Contains("-trailer") OrElse sfile.Name.ToLower.Contains("[trailer") Then
-                                hasTrailer = True
-                            End If
                     End Select
+
+                    If Master.eSettings.ValidExts.Contains(sfile.Extension.ToLower) Then
+                        If sfile.Name.ToLower.Contains("-trailer") OrElse sfile.Name.ToLower.Contains("[trailer") Then
+                            hasTrailer = True
+                        End If
+                    End If
 
                 Next
             End If
@@ -1210,52 +1172,20 @@ Public Class Master
 
         Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
         Dim lFi As New List(Of FileInfo)()
+        Dim tFile As String = String.Empty
 
         lFi.AddRange(di.GetFiles())
 
-        lFi = lFi.FindAll(Function(f As FileInfo) (f.Extension.ToLower() = ".avi" _
-                              OrElse f.Extension.ToLower() = ".divx" _
-                              OrElse f.Extension.ToLower() = ".mkv" _
-                              OrElse f.Extension.ToLower() = ".iso" _
-                              OrElse f.Extension.ToLower() = ".mpg" _
-                              OrElse f.Extension.ToLower() = ".mp4" _
-                              OrElse f.Extension.ToLower() = ".wmv" _
-                              OrElse f.Extension.ToLower() = ".wma" _
-                              OrElse f.Extension.ToLower() = ".mov" _
-                              OrElse f.Extension.ToLower() = ".mts" _
-                              OrElse f.Extension.ToLower() = ".m2t" _
-                              OrElse f.Extension.ToLower() = ".img" _
-                              OrElse f.Extension.ToLower() = ".dat" _
-                              OrElse f.Extension.ToLower() = ".bin" _
-                              OrElse f.Extension.ToLower() = ".cue" _
-                              OrElse f.Extension.ToLower() = ".vob" _
-                              OrElse f.Extension.ToLower() = ".dvb" _
-                              OrElse f.Extension.ToLower() = ".evo" _
-                              OrElse f.Extension.ToLower() = ".asf" _
-                              OrElse f.Extension.ToLower() = ".asx" _
-                              OrElse f.Extension.ToLower() = ".avs" _
-                              OrElse f.Extension.ToLower() = ".nsv" _
-                              OrElse f.Extension.ToLower() = ".ram" _
-                              OrElse f.Extension.ToLower() = ".ogg" _
-                              OrElse f.Extension.ToLower() = ".ogm" _
-                              OrElse f.Extension.ToLower() = ".ogv" _
-                              OrElse f.Extension.ToLower() = ".flv" _
-                              OrElse f.Extension.ToLower() = ".swf" _
-                              OrElse f.Extension.ToLower() = ".nut" _
-                              OrElse f.Extension.ToLower() = ".viv" _
-                              OrElse f.Extension.ToLower() = ".rar" _
-                              OrElse f.Extension.ToLower() = ".m2ts" _
-                              OrElse f.Extension.ToLower() = ".dvr-ms" _
-                              OrElse f.Extension.ToLower() = ".ts" _
-                              OrElse f.Extension.ToLower() = ".m4v") _
-                              AndAlso (f.Name.ToLower.Contains("-trailer") _
-                              OrElse f.Name.ToLower.Contains("[trailer")))
+        For Each sFile As FileInfo In lFi
+            If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
+                (sFile.Name.ToLower.Contains("-trailer") OrElse sFile.Name.ToLower.Contains("[trailer")) Then
+                tFile = sFile.FullName
+                Exit For
+            End If
+        Next
 
-        If lFi.Count > 0 Then
-            Return lFi(0).FullName
-        Else
-            Return String.Empty
-        End If
+        Return tFile
+
     End Function
 
     Private Shared Function SortFileNames(ByVal x As FileInfo, ByVal y As FileInfo) As Integer
@@ -1279,6 +1209,7 @@ Public Class Master
 
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
+        Dim tFile As String = String.Empty
 
         If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
             di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
@@ -1291,50 +1222,15 @@ Public Class Master
         'sort first so we're sure to get the first file in case of stacking
         lFi.Sort(AddressOf SortFileNames)
 
-        lFi = lFi.FindAll(Function(f As FileInfo) (f.Extension.ToLower() = ".avi" _
-                              OrElse f.Extension.ToLower() = ".divx" _
-                              OrElse f.Extension.ToLower() = ".mkv" _
-                              OrElse f.Extension.ToLower() = ".iso" _
-                              OrElse f.Extension.ToLower() = ".mpg" _
-                              OrElse f.Extension.ToLower() = ".mp4" _
-                              OrElse f.Extension.ToLower() = ".wmv" _
-                              OrElse f.Extension.ToLower() = ".wma" _
-                              OrElse f.Extension.ToLower() = ".mov" _
-                              OrElse f.Extension.ToLower() = ".mts" _
-                              OrElse f.Extension.ToLower() = ".m2t" _
-                              OrElse f.Extension.ToLower() = ".img" _
-                              OrElse f.Extension.ToLower() = ".dat" _
-                              OrElse f.Extension.ToLower() = ".bin" _
-                              OrElse f.Extension.ToLower() = ".cue" _
-                              OrElse f.Extension.ToLower() = ".vob" _
-                              OrElse f.Extension.ToLower() = ".dvb" _
-                              OrElse f.Extension.ToLower() = ".evo" _
-                              OrElse f.Extension.ToLower() = ".asf" _
-                              OrElse f.Extension.ToLower() = ".asx" _
-                              OrElse f.Extension.ToLower() = ".avs" _
-                              OrElse f.Extension.ToLower() = ".nsv" _
-                              OrElse f.Extension.ToLower() = ".ram" _
-                              OrElse f.Extension.ToLower() = ".ogg" _
-                              OrElse f.Extension.ToLower() = ".ogm" _
-                              OrElse f.Extension.ToLower() = ".ogv" _
-                              OrElse f.Extension.ToLower() = ".flv" _
-                              OrElse f.Extension.ToLower() = ".swf" _
-                              OrElse f.Extension.ToLower() = ".nut" _
-                              OrElse f.Extension.ToLower() = ".viv" _
-                              OrElse f.Extension.ToLower() = ".rar" _
-                              OrElse f.Extension.ToLower() = ".m2ts" _
-                              OrElse f.Extension.ToLower() = ".dvr-ms" _
-                              OrElse f.Extension.ToLower() = ".ts" _
-                              OrElse f.Extension.ToLower() = ".m4v") _
-                              AndAlso Not f.Name.ToLower.Contains("sample") _
-                              AndAlso Not f.Name.ToLower.Contains("-trailer") _
-                              AndAlso Not f.Name.ToLower.Contains("[trailer"))
+        For Each sFile As FileInfo In lFi
+            If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
+                Not sFile.Name.ToLower.Contains("-trailer") AndAlso Not sFile.Name.ToLower.Contains("[trailer") Then
+                tFile = sFile.FullName
+                Exit For
+            End If
+        Next
 
-        If lFi.Count > 0 Then
-            Return lFi(0).FullName
-        Else
-            Return String.Empty
-        End If
+        Return tFile
     End Function
 
 
