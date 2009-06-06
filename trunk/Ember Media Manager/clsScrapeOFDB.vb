@@ -157,19 +157,20 @@ Public Class OFDB
 
                     'genre
                     D = 0 : W = 0
-                    D = Html.IndexOf("class=""Normal"">Genre(s):</font></td>")
-                    If D > 0 Then
-                        W = Html.IndexOf("</table>", D)
-                        If W > 0 Then
-                            Dim rGenres As MatchCollection = Regex.Matches(Html.Substring(D, W - D), "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>")
-                            Dim Gen = From M As Match In rGenres _
-                                  Select N = M.Groups("name").ToString
-                            If Gen.Count > 0 Then
-                                _Genre = Strings.Join(Gen.ToArray, " / ").Trim
+                    If String.IsNullOrEmpty(OFDBMovie.Genre) OrElse Not Master.eSettings.LockGenre Then
+                        D = HTML.IndexOf("class=""Normal"">Genre(s):</font></td>")
+                        If D > 0 Then
+                            W = HTML.IndexOf("</table>", D)
+                            If W > 0 Then
+                                Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>")
+                                Dim Gen = From M As Match In rGenres _
+                                      Select N = M.Groups("name").ToString
+                                If Gen.Count > 0 Then
+                                    _genre = Strings.Join(Gen.ToArray, " / ").Trim
+                                End If
                             End If
                         End If
                     End If
-
 
                 End If
             End If

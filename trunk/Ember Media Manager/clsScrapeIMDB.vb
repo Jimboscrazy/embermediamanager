@@ -374,15 +374,17 @@ mResult:
                     bwIMDB.ReportProgress(3)
                 End If
 
-                Dim RegexRating As String = Regex.Match(Html, "\b\d\W\d/\d\d").ToString
-                If String.IsNullOrEmpty(RegexRating) Then
-                    IMDBMovie.Rating = String.Empty
-                Else
-                    IMDBMovie.Rating = RegexRating.Split("/".ToCharArray)(0).Trim
+                If String.IsNullOrEmpty(IMDBMovie.Rating) OrElse Not Master.eSettings.LockRating Then
+                    Dim RegexRating As String = Regex.Match(HTML, "\b\d\W\d/\d\d").ToString
+                    If String.IsNullOrEmpty(RegexRating) Then
+                        IMDBMovie.Rating = String.Empty
+                    Else
+                        IMDBMovie.Rating = RegexRating.Split("/".ToCharArray)(0).Trim
+                    End If
                 End If
 
                 'trailer
-                Dim sTrailerUrl As String = Regex.Match(Html, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim
+                Dim sTrailerUrl As String = Regex.Match(HTML, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim
                 If Not sTrailerUrl = String.Empty Then
                     Dim sTrailerURL2 As String = String.Empty
                     sTrailerUrl = String.Concat("http://", Master.eSettings.IMDBURL, sTrailerUrl, "player")
@@ -399,7 +401,7 @@ mResult:
                     IMDBMovie.Trailer = Web.HttpUtility.UrlDecode(sTrailerURL2)
                 End If
 
-                IMDBMovie.Votes = Regex.Match(Html, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
+                IMDBMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
 
                 If bwIMDB.WorkerReportsProgress Then
                     bwIMDB.ReportProgress(4)
@@ -407,7 +409,7 @@ mResult:
 
                 'Find all cast of the movie  
                 'Match the table only 1 time
-                Dim ActorsTable As String = Regex.Match(Html, TABLE_PATTERN).ToString
+                Dim ActorsTable As String = Regex.Match(HTML, TABLE_PATTERN).ToString
 
                 Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
@@ -440,22 +442,24 @@ mResult:
 
                 D = 0 : W = 0
 
-                'get tagline
-                D = Html.IndexOf("<h5>Tagline:</h5>")
+                If Not String.IsNullOrEmpty(IMDBMovie.Tagline) OrElse Not Master.eSettings.LockTagline Then
+                    'get tagline
+                    D = HTML.IndexOf("<h5>Tagline:</h5>")
 
-                Dim lHtmlIndexOf As Integer = If(D > 0, Html.IndexOf("<a class=""tn15more inline""", D), 0)
-                Dim TagLineEnd As Integer = If(lHtmlIndexOf > 0, lHtmlIndexOf, 0)
-                If D > 0 Then W = If(TagLineEnd > 0, TagLineEnd, Html.IndexOf("</div>", D))
+                    Dim lHtmlIndexOf As Integer = If(D > 0, HTML.IndexOf("<a class=""tn15more inline""", D), 0)
+                    Dim TagLineEnd As Integer = If(lHtmlIndexOf > 0, lHtmlIndexOf, 0)
+                    If D > 0 Then W = If(TagLineEnd > 0, TagLineEnd, HTML.IndexOf("</div>", D))
 
-                IMDBMovie.Tagline = (If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(Html.Substring(D, W - D).Replace("<h5>Tagline:</h5>", String.Empty).Split(vbCrLf.ToCharArray)(1)).Trim, String.Empty))
+                    IMDBMovie.Tagline = (If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Replace("<h5>Tagline:</h5>", String.Empty).Split(vbCrLf.ToCharArray)(1)).Trim, String.Empty))
+                End If
 
                 'Get the directors
-                D = If(Html.IndexOf("<h5>Director:</h5>") > 0, Html.IndexOf("<h5>Director:</h5>"), Html.IndexOf("<h5>Directors:</h5>"))
-                W = If(D > 0, Html.IndexOf("</div>", D), 0)
+                D = If(HTML.IndexOf("<h5>Director:</h5>") > 0, HTML.IndexOf("<h5>Director:</h5>"), HTML.IndexOf("<h5>Directors:</h5>"))
+                W = If(D > 0, HTML.IndexOf("</div>", D), 0)
                 'got any director(s) ?
                 If D > 0 AndAlso Not W <= 0 Then
                     'get only the first director's name
-                    Dim rDir As MatchCollection = Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN)
+                    Dim rDir As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
                     Dim Dir = From M As Match In rDir Where Not M.Groups("name").ToString.Contains("more") _
                               Select Web.HttpUtility.HtmlDecode(M.Groups("name").ToString)
 
@@ -470,22 +474,24 @@ mResult:
 
 
                 'Get genres of the movie
-                If Not String.IsNullOrEmpty(ofdbGenre) Then
-                    IMDBMovie.Genre = ofdbGenre
-                Else
-                    D = 0 : W = 0
-                    D = Html.IndexOf("<h5>Genre:</h5>")
-                    'Check if doesnt find genres
-                    If D > 0 Then
-                        W = Html.IndexOf("</div>", D)
+                If String.IsNullOrEmpty(IMDBMovie.Genre) OrElse Not Master.eSettings.LockGenre Then
+                    If Not String.IsNullOrEmpty(ofdbGenre) Then
+                        IMDBMovie.Genre = ofdbGenre
+                    Else
+                        D = 0 : W = 0
+                        D = HTML.IndexOf("<h5>Genre:</h5>")
+                        'Check if doesnt find genres
+                        If D > 0 Then
+                            W = HTML.IndexOf("</div>", D)
 
-                        If W > 0 Then
-                            Dim rGenres As MatchCollection = Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN)
+                            If W > 0 Then
+                                Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
 
-                            Dim Gen = From M As Match In rGenres _
-                                      Select N = M.Groups("name").ToString Where Not N.Contains("more")
-                            If Gen.Count > 0 Then
-                                IMDBMovie.Genre = Strings.Join(Gen.ToArray, " / ").Trim
+                                Dim Gen = From M As Match In rGenres _
+                                          Select N = M.Groups("name").ToString Where Not N.Contains("more")
+                                If Gen.Count > 0 Then
+                                    IMDBMovie.Genre = Strings.Join(Gen.ToArray, " / ").Trim
+                                End If
                             End If
                         End If
                     End If
@@ -506,15 +512,15 @@ mResult:
                         'Check if is a VideoGame
                         Try
                             If IMDBMovie.Title.Contains("(VG)") Then
-                                D = If(Html.IndexOf("<h5>Plot Summary:</h5>") > 0, Html.IndexOf("<h5>Plot Summary:</h5>"), Html.IndexOf("<h5>Tagline:</h5>"))
-                                If D > 0 Then W = Html.IndexOf("</div>", D)
+                                D = If(HTML.IndexOf("<h5>Plot Summary:</h5>") > 0, HTML.IndexOf("<h5>Plot Summary:</h5>"), HTML.IndexOf("<h5>Tagline:</h5>"))
+                                If D > 0 Then W = HTML.IndexOf("</div>", D)
                             Else
-                                D = If(Html.IndexOf("<h5>Plot:</h5>") > 0, Html.IndexOf("<h5>Plot:</h5>"), Html.IndexOf("<h5>Plot Summary:</h5>"))
-                                If D <= 0 Then D = Html.IndexOf("<h5>Plot Synopsis:</h5>")
+                                D = If(HTML.IndexOf("<h5>Plot:</h5>") > 0, HTML.IndexOf("<h5>Plot:</h5>"), HTML.IndexOf("<h5>Plot Summary:</h5>"))
+                                If D <= 0 Then D = HTML.IndexOf("<h5>Plot Synopsis:</h5>")
                                 If D > 0 Then
-                                    W = Html.IndexOf("<a class=", D)
+                                    W = HTML.IndexOf("<a class=", D)
                                     If W > 0 Then
-                                        W = Html.IndexOf("</div>", D)
+                                        W = HTML.IndexOf("</div>", D)
                                     Else
                                         IMDBMovie.Outline = String.Empty
                                         GoTo mplot
@@ -524,7 +530,7 @@ mResult:
                                     GoTo mPlot 'This plot synopsis is empty
                                 End If
                             End If
-                            Dim PlotOutline As String = Html.Substring(D, W - D).Remove(0, "<h5>Plot:</h5> ".Length)
+                            Dim PlotOutline As String = HTML.Substring(D, W - D).Remove(0, "<h5>Plot:</h5> ".Length)
 
                             PlotOutline = Web.HttpUtility.HtmlDecode(PlotOutline.Replace("|", String.Empty)).Trim
                             IMDBMovie.Outline = Regex.Replace(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
@@ -556,25 +562,27 @@ mPlot:
 
 
                 'Get the movie duration
-                IMDBMovie.Runtime = Regex.Match(Html, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim
+                IMDBMovie.Runtime = Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim
 
                 'Get Production Studio
-                D = 0 : W = 0
-                If FullCrew Then
-                    D = Html.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
-                    If D > 0 Then W = Html.IndexOf("</ul>", D)
-                    If D > 0 AndAlso W > 0 Then
-                        'only get the first one
-                        Dim Ps = From P1 As Match In Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN) _
-                                 Where Not P1.Groups("name").ToString = String.Empty _
-                                 Select Studio = P1.Groups("name").ToString Take 1
-                        IMDBMovie.StudioReal = Ps(0).ToString.Trim
-                    End If
-                Else
-                    D = Html.IndexOf("<h5>Company:</h5>")
-                    If D > 0 Then W = Html.IndexOf("</div>", D)
-                    If D > 0 AndAlso W > 0 Then
-                        IMDBMovie.StudioReal = Regex.Match(Html.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim
+                If String.IsNullOrEmpty(IMDBMovie.StudioReal) OrElse Not Master.eSettings.LockGenre Then
+                    D = 0 : W = 0
+                    If FullCrew Then
+                        D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
+                        If D > 0 Then W = HTML.IndexOf("</ul>", D)
+                        If D > 0 AndAlso W > 0 Then
+                            'only get the first one
+                            Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
+                                     Where Not P1.Groups("name").ToString = String.Empty _
+                                     Select Studio = P1.Groups("name").ToString Take 1
+                            IMDBMovie.StudioReal = Ps(0).ToString.Trim
+                        End If
+                    Else
+                        D = HTML.IndexOf("<h5>Company:</h5>")
+                        If D > 0 Then W = HTML.IndexOf("</div>", D)
+                        If D > 0 AndAlso W > 0 Then
+                            IMDBMovie.StudioReal = Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim
+                        End If
                     End If
                 End If
 
@@ -584,10 +592,10 @@ mPlot:
 
                 'Get Writers
                 D = 0 : W = 0
-                D = Html.IndexOf("<h5>Writer")
-                If D > 0 Then W = Html.IndexOf("</div>", D)
+                D = HTML.IndexOf("<h5>Writer")
+                If D > 0 Then W = HTML.IndexOf("</div>", D)
                 If D > 0 AndAlso W > 0 Then
-                    Dim q = From M As Match In Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN) _
+                    Dim q = From M As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                             Where Not M.Groups("name").ToString = "more" _
                             AndAlso Not M.Groups("name").ToString = "(more)" _
                             AndAlso Not M.Groups("name").ToString = "(WGA)" _
@@ -604,10 +612,10 @@ mPlot:
                 If FullCrew Then
 
                     D = 0 : W = 0
-                    D = Html.IndexOf("Directed by</a></h5>")
-                    If D > 0 Then W = Html.IndexOf("</body>", D)
+                    D = HTML.IndexOf("Directed by</a></h5>")
+                    If D > 0 Then W = HTML.IndexOf("</body>", D)
                     If D > 0 AndAlso W > 0 Then
-                        Dim qTables As MatchCollection = Regex.Matches(Html.Substring(D, W - D), TABLE_PATTERN)
+                        Dim qTables As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TABLE_PATTERN)
 
                         For Each M As Match In qTables
                             'Producers
@@ -643,10 +651,10 @@ mPlot:
                     End If
 
                     'Special Effects
-                    D = Html.IndexOf("<b class=""blackcatheader"">Special Effects</b>")
-                    If D > 0 Then W = Html.IndexOf("</ul>", D)
+                    D = HTML.IndexOf("<b class=""blackcatheader"">Special Effects</b>")
+                    If D > 0 Then W = HTML.IndexOf("</ul>", D)
                     If D > 0 AndAlso W > 0 Then
-                        Dim Ps = From P1 As Match In Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN) _
+                        Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                                  Where Not P1.Groups("name").ToString = String.Empty _
                                  Select Studio = P1.Groups("name").ToString
                         If Ps.Count > 0 Then

@@ -89,6 +89,10 @@ Public Class emmSettings
     Private _lockplot As Boolean
     Private _lockoutline As Boolean
     Private _locktitle As Boolean
+    Private _locktagline As Boolean
+    Private _lockrating As Boolean
+    Private _lockstudio As Boolean
+    Private _lockgenre As Boolean
     Private _singlescrapeimages As Boolean
     Private _marknew As Boolean
     Private _resizefanart As Boolean
@@ -690,6 +694,42 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property LockTagline() As Boolean
+        Get
+            Return Me._locktagline
+        End Get
+        Set(ByVal value As Boolean)
+            Me._locktagline = value
+        End Set
+    End Property
+
+    Public Property LockRating() As Boolean
+        Get
+            Return Me._lockrating
+        End Get
+        Set(ByVal value As Boolean)
+            Me._lockrating = value
+        End Set
+    End Property
+
+    Public Property LockStudio() As Boolean
+        Get
+            Return Me._lockstudio
+        End Get
+        Set(ByVal value As Boolean)
+            Me._lockstudio = value
+        End Set
+    End Property
+
+    Public Property LockGenre() As Boolean
+        Get
+            Return Me._lockgenre
+        End Get
+        Set(ByVal value As Boolean)
+            Me._lockgenre = value
+        End Set
+    End Property
+
     Public Property SingleScrapeImages() As Boolean
         Get
             Return Me._singlescrapeimages
@@ -930,6 +970,10 @@ Public Class emmSettings
         Me._lockplot = False
         Me._lockoutline = False
         Me._locktitle = False
+        Me._locktagline = False
+        Me._lockrating = False
+        Me._lockstudio = False
+        Me._lockrating = False
         Me._singlescrapeimages = False
         Me._marknew = False
         Me._resizefanart = False

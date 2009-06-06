@@ -780,6 +780,22 @@ Public Class dlgSettings
     Private Sub chkUpdates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUpdates.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkLockGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockGenre.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkLockRealStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockRealStudio.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkLockRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockRating.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkLockTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockTagline.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -929,6 +945,10 @@ Public Class dlgSettings
             Master.eSettings.LockPlot = Me.chkLockPlot.Checked
             Master.eSettings.LockOutline = Me.chkLockOutline.Checked
             Master.eSettings.LockTitle = Me.chkLockTitle.Checked
+            Master.eSettings.LockTagline = Me.chkLockTagline.Checked
+            Master.eSettings.LockRating = Me.chkLockRating.Checked
+            Master.eSettings.LockStudio = Me.chkLockRealStudio.Checked
+            Master.eSettings.LockGenre = Me.chkLockGenre.Checked
             Master.eSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
             Master.eSettings.MarkNew = Me.chkMarkNew.Checked
             Master.eSettings.ResizeFanart = Me.chkResizeFanart.Checked
@@ -1049,6 +1069,10 @@ Public Class dlgSettings
             Me.chkLockPlot.Checked = Master.eSettings.LockPlot
             Me.chkLockOutline.Checked = Master.eSettings.LockOutline
             Me.chkLockTitle.Checked = Master.eSettings.LockTitle
+            Me.chkLockTagline.Checked = Master.eSettings.LockTagline
+            Me.chkLockRating.Checked = Master.eSettings.LockRating
+            Me.chkLockRealStudio.Checked = Master.eSettings.LockStudio
+            Me.chkLockGenre.Checked = Master.eSettings.LockGenre
             Me.chkSingleScrapeImages.Checked = Master.eSettings.SingleScrapeImages
             Me.chkMarkNew.Checked = Master.eSettings.MarkNew
             Me.chkResizeFanart.Checked = Master.eSettings.ResizeFanart
