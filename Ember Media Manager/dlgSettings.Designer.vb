@@ -24,11 +24,11 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Supported Extensions", 4, 4)
-        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7})
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper", 3, 3)
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode9})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Supported Extensions", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper", 3, 3)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4})
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
@@ -161,6 +161,7 @@ Partial Class dlgSettings
         Me.lblPosterSize = New System.Windows.Forms.Label
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.chkUseMIDuration = New System.Windows.Forms.CheckBox
         Me.Label18 = New System.Windows.Forms.Label
         Me.txtIMDBURL = New System.Windows.Forms.TextBox
         Me.chkCastWithImg = New System.Windows.Forms.CheckBox
@@ -185,6 +186,10 @@ Partial Class dlgSettings
         Me.btnRemoveCom = New System.Windows.Forms.Button
         Me.lbXBMCCom = New System.Windows.Forms.ListBox
         Me.pnlMovies = New System.Windows.Forms.Panel
+        Me.GroupBox16 = New System.Windows.Forms.GroupBox
+        Me.chkAutoBD = New System.Windows.Forms.CheckBox
+        Me.btnBrowse = New System.Windows.Forms.Button
+        Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.pnlScraper = New System.Windows.Forms.Panel
         Me.lblCurrent = New System.Windows.Forms.Label
         Me.pnlCurrent = New System.Windows.Forms.Panel
@@ -195,11 +200,8 @@ Partial Class dlgSettings
         Me.btnAddMovieExt = New System.Windows.Forms.Button
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
-        Me.GroupBox16 = New System.Windows.Forms.GroupBox
-        Me.txtBDPath = New System.Windows.Forms.TextBox
-        Me.btnBrowse = New System.Windows.Forms.Button
-        Me.chkAutoBD = New System.Windows.Forms.CheckBox
-        Me.chkUseMIDuration = New System.Windows.Forms.CheckBox
+        Me.chkMovieSubCol = New System.Windows.Forms.CheckBox
+        Me.chkMovieExtraCol = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -222,11 +224,11 @@ Partial Class dlgSettings
         Me.pnlGeneral.SuspendLayout()
         Me.pnlXBMCCom.SuspendLayout()
         Me.pnlMovies.SuspendLayout()
+        Me.GroupBox16.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlExtensions.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
-        Me.GroupBox16.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -817,9 +819,9 @@ Partial Class dlgSettings
         Me.GroupBox12.Controls.Add(Me.Label8)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
         Me.GroupBox12.Controls.Add(Me.GroupBox2)
-        Me.GroupBox12.Location = New System.Drawing.Point(388, 140)
+        Me.GroupBox12.Location = New System.Drawing.Point(388, 131)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(200, 158)
+        Me.GroupBox12.Size = New System.Drawing.Size(200, 173)
         Me.GroupBox12.TabIndex = 65
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
@@ -827,7 +829,7 @@ Partial Class dlgSettings
         'Label8
         '
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(9, 34)
+        Me.Label8.Location = New System.Drawing.Point(9, 29)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(179, 27)
         Me.Label8.TabIndex = 56
@@ -837,7 +839,7 @@ Partial Class dlgSettings
         'chkMarkNew
         '
         Me.chkMarkNew.AutoSize = True
-        Me.chkMarkNew.Location = New System.Drawing.Point(12, 19)
+        Me.chkMarkNew.Location = New System.Drawing.Point(12, 14)
         Me.chkMarkNew.Name = "chkMarkNew"
         Me.chkMarkNew.Size = New System.Drawing.Size(112, 17)
         Me.chkMarkNew.TabIndex = 55
@@ -846,13 +848,15 @@ Partial Class dlgSettings
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.chkMovieExtraCol)
+        Me.GroupBox2.Controls.Add(Me.chkMovieSubCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieTrailerCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 64)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 55)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(188, 87)
+        Me.GroupBox2.Size = New System.Drawing.Size(188, 114)
         Me.GroupBox2.TabIndex = 54
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Media List Options"
@@ -860,7 +864,7 @@ Partial Class dlgSettings
         'chkMovieTrailerCol
         '
         Me.chkMovieTrailerCol.AutoSize = True
-        Me.chkMovieTrailerCol.Location = New System.Drawing.Point(6, 67)
+        Me.chkMovieTrailerCol.Location = New System.Drawing.Point(6, 63)
         Me.chkMovieTrailerCol.Name = "chkMovieTrailerCol"
         Me.chkMovieTrailerCol.Size = New System.Drawing.Size(118, 17)
         Me.chkMovieTrailerCol.TabIndex = 31
@@ -870,7 +874,7 @@ Partial Class dlgSettings
         'chkMovieInfoCol
         '
         Me.chkMovieInfoCol.AutoSize = True
-        Me.chkMovieInfoCol.Location = New System.Drawing.Point(6, 51)
+        Me.chkMovieInfoCol.Location = New System.Drawing.Point(6, 47)
         Me.chkMovieInfoCol.Name = "chkMovieInfoCol"
         Me.chkMovieInfoCol.Size = New System.Drawing.Size(107, 17)
         Me.chkMovieInfoCol.TabIndex = 30
@@ -880,7 +884,7 @@ Partial Class dlgSettings
         'chkMovieFanartCol
         '
         Me.chkMovieFanartCol.AutoSize = True
-        Me.chkMovieFanartCol.Location = New System.Drawing.Point(6, 35)
+        Me.chkMovieFanartCol.Location = New System.Drawing.Point(6, 31)
         Me.chkMovieFanartCol.Name = "chkMovieFanartCol"
         Me.chkMovieFanartCol.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieFanartCol.TabIndex = 29
@@ -890,7 +894,7 @@ Partial Class dlgSettings
         'chkMoviePosterCol
         '
         Me.chkMoviePosterCol.AutoSize = True
-        Me.chkMoviePosterCol.Location = New System.Drawing.Point(6, 19)
+        Me.chkMoviePosterCol.Location = New System.Drawing.Point(6, 15)
         Me.chkMoviePosterCol.Name = "chkMoviePosterCol"
         Me.chkMoviePosterCol.Size = New System.Drawing.Size(119, 17)
         Me.chkMoviePosterCol.TabIndex = 28
@@ -1604,6 +1608,17 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
         '
+        'chkUseMIDuration
+        '
+        Me.chkUseMIDuration.AutoSize = True
+        Me.chkUseMIDuration.Enabled = False
+        Me.chkUseMIDuration.Location = New System.Drawing.Point(34, 137)
+        Me.chkUseMIDuration.Name = "chkUseMIDuration"
+        Me.chkUseMIDuration.Size = New System.Drawing.Size(160, 17)
+        Me.chkUseMIDuration.TabIndex = 63
+        Me.chkUseMIDuration.Text = "Use MI Duration for Runtime"
+        Me.chkUseMIDuration.UseVisualStyleBackColor = True
+        '
         'Label18
         '
         Me.Label18.AutoSize = True
@@ -1789,32 +1804,32 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode6.ImageIndex = 4
-        TreeNode6.Name = "nExts"
-        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode6.SelectedImageIndex = 4
-        TreeNode6.Text = "Supported Extensions"
-        TreeNode7.ImageIndex = 1
-        TreeNode7.Name = "nXBMCCom"
-        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode7.SelectedImageIndex = 1
-        TreeNode7.Text = "XBMC Communication"
-        TreeNode8.ImageIndex = 0
-        TreeNode8.Name = "nGeneral"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 0
-        TreeNode8.Text = "General"
-        TreeNode9.ImageIndex = 3
-        TreeNode9.Name = "nScraper"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 3
-        TreeNode9.Text = "Scraper"
-        TreeNode10.ImageIndex = 2
-        TreeNode10.Name = "nMovies"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 2
-        TreeNode10.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode10})
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "Supported Extensions"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "XBMC Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 3
+        TreeNode4.Name = "nScraper"
+        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode4.SelectedImageIndex = 3
+        TreeNode4.Text = "Scraper"
+        TreeNode5.ImageIndex = 2
+        TreeNode5.Name = "nMovies"
+        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.SelectedImageIndex = 2
+        TreeNode5.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode5})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -1889,6 +1904,45 @@ Partial Class dlgSettings
         Me.pnlMovies.Size = New System.Drawing.Size(597, 353)
         Me.pnlMovies.TabIndex = 61
         Me.pnlMovies.Visible = False
+        '
+        'GroupBox16
+        '
+        Me.GroupBox16.Controls.Add(Me.chkAutoBD)
+        Me.GroupBox16.Controls.Add(Me.btnBrowse)
+        Me.GroupBox16.Controls.Add(Me.txtBDPath)
+        Me.GroupBox16.Location = New System.Drawing.Point(6, 303)
+        Me.GroupBox16.Name = "GroupBox16"
+        Me.GroupBox16.Size = New System.Drawing.Size(583, 43)
+        Me.GroupBox16.TabIndex = 67
+        Me.GroupBox16.TabStop = False
+        Me.GroupBox16.Text = "Backdrops Folder"
+        '
+        'chkAutoBD
+        '
+        Me.chkAutoBD.AutoSize = True
+        Me.chkAutoBD.Location = New System.Drawing.Point(326, 18)
+        Me.chkAutoBD.Name = "chkAutoBD"
+        Me.chkAutoBD.Size = New System.Drawing.Size(251, 17)
+        Me.chkAutoBD.TabIndex = 2
+        Me.chkAutoBD.Text = "Automatically Save Fanart To Backdrops Folder"
+        Me.chkAutoBD.UseVisualStyleBackColor = True
+        '
+        'btnBrowse
+        '
+        Me.btnBrowse.Location = New System.Drawing.Point(290, 14)
+        Me.btnBrowse.Name = "btnBrowse"
+        Me.btnBrowse.Size = New System.Drawing.Size(23, 23)
+        Me.btnBrowse.TabIndex = 1
+        Me.btnBrowse.Text = "..."
+        Me.btnBrowse.UseVisualStyleBackColor = True
+        '
+        'txtBDPath
+        '
+        Me.txtBDPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtBDPath.Location = New System.Drawing.Point(7, 16)
+        Me.txtBDPath.Name = "txtBDPath"
+        Me.txtBDPath.Size = New System.Drawing.Size(281, 20)
+        Me.txtBDPath.TabIndex = 0
         '
         'pnlScraper
         '
@@ -1995,55 +2049,25 @@ Partial Class dlgSettings
         Me.lstMovieExts.Sorted = True
         Me.lstMovieExts.TabIndex = 2
         '
-        'GroupBox16
+        'chkMovieSubCol
         '
-        Me.GroupBox16.Controls.Add(Me.chkAutoBD)
-        Me.GroupBox16.Controls.Add(Me.btnBrowse)
-        Me.GroupBox16.Controls.Add(Me.txtBDPath)
-        Me.GroupBox16.Location = New System.Drawing.Point(6, 303)
-        Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(583, 43)
-        Me.GroupBox16.TabIndex = 67
-        Me.GroupBox16.TabStop = False
-        Me.GroupBox16.Text = "Backdrops Folder"
+        Me.chkMovieSubCol.AutoSize = True
+        Me.chkMovieSubCol.Location = New System.Drawing.Point(6, 79)
+        Me.chkMovieSubCol.Name = "chkMovieSubCol"
+        Me.chkMovieSubCol.Size = New System.Drawing.Size(108, 17)
+        Me.chkMovieSubCol.TabIndex = 32
+        Me.chkMovieSubCol.Text = "Hide Sub Column"
+        Me.chkMovieSubCol.UseVisualStyleBackColor = True
         '
-        'txtBDPath
+        'chkMovieExtraCol
         '
-        Me.txtBDPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtBDPath.Location = New System.Drawing.Point(7, 16)
-        Me.txtBDPath.Name = "txtBDPath"
-        Me.txtBDPath.Size = New System.Drawing.Size(281, 20)
-        Me.txtBDPath.TabIndex = 0
-        '
-        'btnBrowse
-        '
-        Me.btnBrowse.Location = New System.Drawing.Point(290, 14)
-        Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(23, 23)
-        Me.btnBrowse.TabIndex = 1
-        Me.btnBrowse.Text = "..."
-        Me.btnBrowse.UseVisualStyleBackColor = True
-        '
-        'chkAutoBD
-        '
-        Me.chkAutoBD.AutoSize = True
-        Me.chkAutoBD.Location = New System.Drawing.Point(326, 18)
-        Me.chkAutoBD.Name = "chkAutoBD"
-        Me.chkAutoBD.Size = New System.Drawing.Size(251, 17)
-        Me.chkAutoBD.TabIndex = 2
-        Me.chkAutoBD.Text = "Automatically Save Fanart To Backdrops Folder"
-        Me.chkAutoBD.UseVisualStyleBackColor = True
-        '
-        'chkUseMIDuration
-        '
-        Me.chkUseMIDuration.AutoSize = True
-        Me.chkUseMIDuration.Enabled = False
-        Me.chkUseMIDuration.Location = New System.Drawing.Point(34, 137)
-        Me.chkUseMIDuration.Name = "chkUseMIDuration"
-        Me.chkUseMIDuration.Size = New System.Drawing.Size(160, 17)
-        Me.chkUseMIDuration.TabIndex = 63
-        Me.chkUseMIDuration.Text = "Use MI Duration for Runtime"
-        Me.chkUseMIDuration.UseVisualStyleBackColor = True
+        Me.chkMovieExtraCol.AutoSize = True
+        Me.chkMovieExtraCol.Location = New System.Drawing.Point(6, 95)
+        Me.chkMovieExtraCol.Name = "chkMovieExtraCol"
+        Me.chkMovieExtraCol.Size = New System.Drawing.Size(142, 17)
+        Me.chkMovieExtraCol.TabIndex = 33
+        Me.chkMovieExtraCol.Text = "Hide Extrathumb Column"
+        Me.chkMovieExtraCol.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -2059,11 +2083,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2110,14 +2134,14 @@ Partial Class dlgSettings
         Me.pnlXBMCCom.ResumeLayout(False)
         Me.pnlMovies.ResumeLayout(False)
         Me.pnlMovies.PerformLayout()
+        Me.GroupBox16.ResumeLayout(False)
+        Me.GroupBox16.PerformLayout()
         Me.pnlScraper.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlExtensions.ResumeLayout(False)
         Me.GroupBox18.ResumeLayout(False)
         Me.GroupBox18.PerformLayout()
-        Me.GroupBox16.ResumeLayout(False)
-        Me.GroupBox16.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2292,4 +2316,6 @@ Partial Class dlgSettings
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
     Friend WithEvents chkAutoBD As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseMIDuration As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieExtraCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieSubCol As System.Windows.Forms.CheckBox
 End Class

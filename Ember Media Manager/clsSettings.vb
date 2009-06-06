@@ -47,6 +47,8 @@ Public Class emmSettings
     Private _moviefanartCol As Boolean
     Private _movieinfoCol As Boolean
     Private _movietrailerCol As Boolean
+    Private _moviesubCol As Boolean
+    Private _movieextraCol As Boolean
     Private _cleanfolderJpg As Boolean
     Private _cleanmovieTbn As Boolean
     Private _cleanmovieTbnB As Boolean
@@ -312,6 +314,24 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movietrailerCol = value
+        End Set
+    End Property
+
+    Public Property MovieSubCol() As Boolean
+        Get
+            Return Me._moviesubCol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesubCol = value
+        End Set
+    End Property
+
+    Public Property MovieExtraCol() As Boolean
+        Get
+            Return Me._movieextraCol
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextraCol = value
         End Set
     End Property
 
@@ -968,6 +988,8 @@ Public Class emmSettings
         Me._moviefanartCol = False
         Me._movieinfoCol = False
         Me._movietrailerCol = False
+        Me._moviesubCol = False
+        Me._movieextraCol = False
         Me._cleanfolderJpg = False
         Me._cleanmovieTbn = False
         Me._cleanmovieTbnB = False
