@@ -228,6 +228,8 @@ Public Class frmMain
 
             Master.eSettings.Load()
 
+            Me.btnMarkAll.Text = If(Master.eSettings.MarkAll, "Mark All", "Unmark All")
+
             Dim tmpVer As String = Master.eSettings.Version
 
             If Master.eSettings.CheckUpdates Then
@@ -870,58 +872,30 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
-        Select Case cmnuMark.Text
-            Case "Unmark"
-                Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
-                    parMark.Value = False
-                    parID.Value = indX(0).Item(0)
-                    SQLcommand.ExecuteNonQuery()
-                End Using
-                indX(0).Item(9) = False
-            Case Else
-                Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
-                    parMark.Value = True
-                    parID.Value = indX(0).Item(0)
-                    SQLcommand.ExecuteNonQuery()
-                End Using
-                indX(0).Item(9) = True
-        End Select
+        Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
+        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
+            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
+            SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
+            parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
+            parID.Value = indX(0).Item(0)
+            SQLcommand.ExecuteNonQuery()
+        End Using
+        indX(0).Item(9) = If(cmnuMark.Text = "Unmark", False, True)
         Me.SetFilterColors()
     End Sub
 
     Private Sub cmnuLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLock.Click
-        Select Case cmnuLock.Text
-            Case "Unlock"
-                Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 1, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
-                    parLock.Value = False
-                    parID.Value = indX(0).Item(0)
-                    SQLcommand.ExecuteNonQuery()
-                End Using
-                indX(0).Item(12) = False
-            Case Else
-                Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 1, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
-                    parLock.Value = True
-                    parID.Value = indX(0).Item(0)
-                    SQLcommand.ExecuteNonQuery()
-                End Using
-                indX(0).Item(12) = True
-        End Select
+        Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
+        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 1, "lock")
+            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
+            SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
+            parLock.Value = If(cmnuMark.Text = "Unlock", False, True)
+            parID.Value = indX(0).Item(0)
+            SQLcommand.ExecuteNonQuery()
+        End Using
+        indX(0).Item(12) = If(cmnuMark.Text = "Unlock", False, True)
         Me.SetFilterColors()
     End Sub
 
@@ -1254,6 +1228,21 @@ Public Class frmMain
         '\\
 
         Me.ScrapeData(Master.ScrapeType.CopyBD, Nothing)
+    End Sub
+
+    Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
+        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
+            SQLcommand.CommandText = "UPDATE movies SET mark = (?);"
+            parMark.Value = If(btnMarkAll.Text = "Unmark All", False, True)
+            SQLcommand.ExecuteNonQuery()
+        End Using
+        For Each drvRow As DataRow In dtMedia.Rows
+            drvRow.Item(9) = If(btnMarkAll.Text = "Unmark All", False, True)
+        Next
+        Me.SetFilterColors()
+        btnMarkAll.Text = If(btnMarkAll.Text = "Unmark All", "Mark All", "Unmark All")
+        Master.eSettings.MarkAll = If(btnMarkAll.Text = "Unmark All", False, True)
     End Sub
 #End Region '*** Form/Controls
 
