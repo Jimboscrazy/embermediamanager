@@ -124,16 +124,14 @@ Public Class Master
 
     Public Shared Sub ConnectDB(ByVal Reset As Boolean)
 
-        If Reset Then
-            File.Delete("Media.emm")
-        End If
+
 
         'create database if it doesn't exist
         If Not File.Exists("Media.emm") Then
             SQLcn.ConnectionString = "Data Source=Media.emm;Compress=True"
             SQLcn.Open()
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False NOT NULL, fanart BOOL DEFAULT FALSE NOT NULL, info BOOL DEFAULT False NOT NULL, trailer BOOL DEFAULT FALSE NOT NULL, new BOOL DEFAULT False NOT NULL, mark BOOL DEFAULT False NOT NULL, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False NOT NULL);"
+                SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False NOT NULL, fanart BOOL DEFAULT FALSE NOT NULL, info BOOL DEFAULT False NOT NULL, trailer BOOL DEFAULT False NOT NULL, sub BOOL DEFAULT False NOT NULL, extra BOOL DEFAULT False NOT NULL, new BOOL DEFAULT False NOT NULL, mark BOOL DEFAULT False NOT NULL, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False NOT NULL);"
                 SQLcommand.ExecuteNonQuery()
                 SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
                 SQLcommand.ExecuteNonQuery()
@@ -141,6 +139,32 @@ Public Class Master
         Else
             SQLcn.ConnectionString = "Data Source=Media.emm;Compress=True"
             SQLcn.Open()
+            If Reset Then
+                Dim tColumns As New DataTable
+                Dim tRestrict() As String = New String(2) {Nothing, Nothing, "movies"}
+
+                Dim aCol As New ArrayList
+                Dim cQuery As String = String.Empty
+                tColumns = SQLcn.GetSchema("Columns", tRestrict)
+                For Each col As DataRow In tColumns.Rows
+                    aCol.Add(col("column_name").ToString)
+                Next
+                cQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
+                Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                    SQLcommand.CommandText = "DROP INDEX UniquePath;"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "ALTER TABLE movies RENAME TO tmp_movies;"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False NOT NULL, fanart BOOL DEFAULT FALSE NOT NULL, info BOOL DEFAULT False NOT NULL, trailer BOOL DEFAULT False NOT NULL, sub BOOL DEFAULT False NOT NULL, extra BOOL DEFAULT False NOT NULL, new BOOL DEFAULT False NOT NULL, mark BOOL DEFAULT False NOT NULL, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False NOT NULL);"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = String.Concat("INSERT INTO movies ", cQuery, " SELECT * FROM tmp_movies;")
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "DROP TABLE tmp_movies;"
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+            End If
         End If
     End Sub
 
@@ -734,7 +758,9 @@ Public Class Master
         Dim hasPoster As Boolean = False
         Dim hasFanart As Boolean = False
         Dim hasTrailer As Boolean = False
-        Dim aResults(3) As Boolean
+        Dim hasSub As Boolean = False
+        Dim hasExtra As Boolean = False
+        Dim aResults(6) As Boolean
         Dim tmpName As String = String.Empty
         Dim tmpNameNoStack As String = String.Empty
         Dim currname As String = String.Empty
@@ -766,6 +792,17 @@ Public Class Master
                     hasNfo = True
                 End If
 
+                'sub
+                Dim sExt() As String = Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ",")
+
+                For Each t As String In sExt
+                    If File.Exists(String.Concat(tmpName, t)) OrElse File.Exists(String.Concat(tmpName, t)) OrElse _
+                        File.Exists(String.Concat(tmpNameNoStack, t)) OrElse File.Exists(String.Concat(tmpNameNoStack, t)) Then
+                        hasSub = True
+                        Exit For
+                    End If
+                Next
+
                 For Each t As String In Master.eSettings.ValidExts
                     If File.Exists(String.Concat(tmpName, "-trailer", t)) OrElse File.Exists(String.Concat(tmpName, "[trailer]", t)) OrElse _
                         File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) OrElse File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
@@ -778,8 +815,14 @@ Public Class Master
                 Dim di As DirectoryInfo
                 If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                     di = New DirectoryInfo(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName)
+                    If Directory.Exists(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")) Then
+                        hasExtra = True
+                    End If
                 Else
                     di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
+                    If Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                        hasExtra = True
+                    End If
                 End If
 
                 Dim lFi As New List(Of FileInfo)()
@@ -816,6 +859,8 @@ Public Class Master
                             If currname = String.Concat(tmpName, ".nfo") OrElse currname = String.Concat(tmpNameNoStack, ".nfo") OrElse currname = "movie.nfo" OrElse currname = "video_ts.nfo" Then
                                 hasNfo = True
                             End If
+                        Case ".sst", ".srt", ".sub", ".ssa", ".aqt", ".smi", ".sami", ".jss", ".mpl", ".rt", ".idx", ".ass"
+                            hasSub = True
                     End Select
 
                     If Master.eSettings.ValidExts.Contains(sfile.Extension.ToLower) Then
@@ -830,6 +875,8 @@ Public Class Master
             aResults(1) = hasFanart
             aResults(2) = hasNfo
             aResults(3) = hasTrailer
+            aResults(4) = hasSub
+            aResults(5) = hasExtra
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

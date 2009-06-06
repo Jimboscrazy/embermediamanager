@@ -820,6 +820,14 @@ Public Class dlgSettings
     Private Sub chkUseMIDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMIDuration.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkMovieSubCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSubCol.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMovieExtraCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtraCol.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -944,6 +952,8 @@ Public Class dlgSettings
             Master.eSettings.MovieFanartCol = Me.chkMovieFanartCol.Checked
             Master.eSettings.MovieInfoCol = Me.chkMovieInfoCol.Checked
             Master.eSettings.MovieTrailerCol = Me.chkMovieTrailerCol.Checked
+            Master.eSettings.MovieSubCol = Me.chkMovieSubCol.Checked
+            Master.eSettings.MovieExtraCol = Me.chkMovieExtraCol.Checked
             Master.eSettings.UseTMDB = Me.chkUseTMDB.Checked
             Master.eSettings.UseIMPA = Me.chkUseIMPA.Checked
             Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
@@ -1071,6 +1081,8 @@ Public Class dlgSettings
             Me.chkMovieFanartCol.Checked = Master.eSettings.MovieFanartCol
             Me.chkMovieInfoCol.Checked = Master.eSettings.MovieInfoCol
             Me.chkMovieTrailerCol.Checked = Master.eSettings.MovieTrailerCol
+            Me.chkMovieSubCol.Checked = Master.eSettings.MovieSubCol
+            Me.chkMovieExtraCol.Checked = Master.eSettings.MovieExtraCol
             Me.chkUseTMDB.Checked = Master.eSettings.UseTMDB
             Me.chkUseIMPA.Checked = Master.eSettings.UseIMPA
             Me.chkUseMPDB.Checked = Master.eSettings.UseMPDB

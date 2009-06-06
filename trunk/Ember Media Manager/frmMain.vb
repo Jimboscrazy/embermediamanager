@@ -179,7 +179,10 @@ Public Class frmMain
             Using dSettings As New dlgSettings
 
                 If dSettings.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    Me.FillList(0)
+                    If Not bwPrelim.IsBusy AndAlso Not bwFolderData.IsBusy Then
+                        Me.FillList(0)
+                    End If
+
                     Me.SetColors()
 
                     If Me.dgvMediaList.RowCount > 0 Then
@@ -187,6 +190,8 @@ Public Class frmMain
                         Me.dgvMediaList.Columns(5).Visible = Not Master.eSettings.MovieFanartCol
                         Me.dgvMediaList.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
                         Me.dgvMediaList.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
+                        Me.dgvMediaList.Columns(8).Visible = Not Master.eSettings.MovieSubCol
+                        Me.dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
 
                         'Trick to autosize the first column, but still allow resizing by user
                         Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
@@ -252,10 +257,6 @@ Public Class frmMain
 
             Me.pnlInfoPanel.Height = 25
             Me.ClearInfo()
-
-            'Ability to force users to reset the database (if schema changes are made)
-            'Uncomment following line and remove other calls to connectdb when not necessary
-            'Master.ConnectDB(False)
 
             If tmpVer = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                 Master.ConnectDB(False)
@@ -611,7 +612,7 @@ Public Class frmMain
         '\\
 
         Try
-            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 7 AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -881,7 +882,7 @@ Public Class frmMain
             parID.Value = indX(0).Item(0)
             SQLcommand.ExecuteNonQuery()
         End Using
-        indX(0).Item(9) = If(cmnuMark.Text = "Unmark", False, True)
+        indX(0).Item(11) = If(cmnuMark.Text = "Unmark", False, True)
         Me.SetFilterColors()
     End Sub
 
@@ -895,7 +896,7 @@ Public Class frmMain
             parID.Value = indX(0).Item(0)
             SQLcommand.ExecuteNonQuery()
         End Using
-        indX(0).Item(12) = If(cmnuMark.Text = "Unlock", False, True)
+        indX(0).Item(14) = If(cmnuMark.Text = "Unlock", False, True)
         Me.SetFilterColors()
     End Sub
 
@@ -954,8 +955,8 @@ Public Class frmMain
                     Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
                     Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
                 End If
-                cmnuMark.Text = If(Me.dgvMediaList.Item(9, dgvHTI.RowIndex).Value, "Unmark", "Mark")
-                cmnuLock.Text = If(Me.dgvMediaList.Item(12, dgvHTI.RowIndex).Value, "Unlock", "Lock")
+                cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
+                cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
             End If
         End If
     End Sub
@@ -1238,7 +1239,7 @@ Public Class frmMain
             SQLcommand.ExecuteNonQuery()
         End Using
         For Each drvRow As DataRow In dtMedia.Rows
-            drvRow.Item(9) = If(btnMarkAll.Text = "Unmark All", False, True)
+            drvRow.Item(11) = If(btnMarkAll.Text = "Unmark All", False, True)
         Next
         Me.SetFilterColors()
         btnMarkAll.Text = If(btnMarkAll.Text = "Unmark All", "Mark All", "Unmark All")
@@ -1354,13 +1355,13 @@ Public Class frmMain
         Dim cleanName As String = String.Empty
         Dim mName As String = String.Empty
         Dim mIMDB As String = String.Empty
-        Dim aContents(4) As Boolean
+        Dim aContents(6) As Boolean
         Dim tmpMovie As New Media.Movie
 
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (path, type, title, poster, fanart, info, trailer, new, mark, source, imdb, lock) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);")
+                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 512, "path")
                     Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 1, "type")
                     Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 255, "title")
@@ -1368,6 +1369,8 @@ Public Class frmMain
                     Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 1, "fanart")
                     Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 1, "info")
                     Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 1, "trailer")
+                    Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 1, "sub")
+                    Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 1, "extra")
                     Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 1, "new")
                     Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
                     Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 512, "source")
@@ -1422,6 +1425,8 @@ Public Class frmMain
                                 parFanart.Value = aContents(1)
                                 parInfo.Value = aContents(2)
                                 parTrailer.Value = aContents(3)
+                                parSub.Value = aContents(4)
+                                parExtra.Value = aContents(5)
                                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                                     SQLNewcommand.CommandText = String.Concat("SELECT id FROM movies WHERE path = """, sFile.Filename, """;")
                                     Dim SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
@@ -1442,16 +1447,8 @@ Public Class frmMain
                                     Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                                         SQLNewcommand.CommandText = String.Concat("SELECT mark, lock FROM movies WHERE path = """, sFile.Filename, """;")
                                         Dim SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                                        If Not IsDBNull(SQLreader("mark")) Then
-                                            parMark.Value = SQLreader("mark")
-                                        Else
-                                            parMark.Value = False
-                                        End If
-                                        If Not IsDBNull(SQLreader("lock")) Then
-                                            parLock.Value = SQLreader("lock")
-                                        Else
-                                            parLock.Value = False
-                                        End If
+                                        parMark.Value = SQLreader("mark")
+                                        parLock.Value = SQLreader("lock")
                                     End Using
                                 End If
                                 parSource.Value = sFile.Source
@@ -1720,9 +1717,9 @@ Public Class frmMain
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
 
                                     If Args.scrapeType = Master.ScrapeType.NewAsk Then
-                                        If Not drvRow.Item(8) Then Continue For
+                                        If Not drvRow.Item(10) Then Continue For
                                     ElseIf Args.scrapeType = Master.ScrapeType.MarkAsk Then
-                                        If Not drvRow.Item(9) Then Continue For
+                                        If Not drvRow.Item(11) Then Continue For
                                     End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -1730,7 +1727,7 @@ Public Class frmMain
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
 
-                                    If drvRow.Item(12) Then Continue For
+                                    If drvRow.Item(14) Then Continue For
 
                                     sPath = drvRow.Item(1).ToString
 
@@ -1828,15 +1825,15 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
 
                                     If Args.scrapeType = Master.ScrapeType.NewAuto Then
-                                        If Not drvRow.Item(8) Then Continue For
+                                        If Not drvRow.Item(10) Then Continue For
                                     ElseIf Args.scrapeType = Master.ScrapeType.MarkAuto Then
-                                        If Not drvRow.Item(9) Then Continue For
+                                        If Not drvRow.Item(11) Then Continue For
                                     End If
 
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
 
-                                    If drvRow.Item(12) Then Continue For
+                                    If drvRow.Item(14) Then Continue For
 
                                     sPath = drvRow.Item(1).ToString
 
@@ -1916,7 +1913,7 @@ Public Class frmMain
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
 
-                                    If drvRow.Item(12) Then Continue For
+                                    If drvRow.Item(14) Then Continue For
 
                                     sPath = drvRow.Item(1).ToString
 
@@ -1938,7 +1935,7 @@ Public Class frmMain
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
 
-                                    If drvRow.Item(12) Then Continue For
+                                    If drvRow.Item(14) Then Continue For
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2))
@@ -1977,7 +1974,7 @@ Public Class frmMain
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
 
-                                    If drvRow.Item(12) Then Continue For
+                                    If drvRow.Item(14) Then Continue For
 
                                     parID.Value = drvRow.Item(0)
                                     parPoster.Value = drvRow.Item(4)
@@ -2064,7 +2061,7 @@ Public Class frmMain
                                     Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
                                     iCount += 1
 
-                                    If drvRow.Item(12) Then Continue For
+                                    If drvRow.Item(14) Then Continue For
 
                                     parID.Value = drvRow.Item(0)
                                     parPoster.Value = drvRow.Item(4)
@@ -2908,10 +2905,10 @@ doCancel:
 
                 Case Master.ScrapeType.NewAsk, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAsk, Master.ScrapeType.MarkAuto
                     For Each drvRow As DataRow In Me.dtMedia.Rows
-                        If drvRow.Item(8) AndAlso (sType = Master.ScrapeType.NewAsk OrElse sType = Master.ScrapeType.NewAuto) Then
+                        If drvRow.Item(10) AndAlso (sType = Master.ScrapeType.NewAsk OrElse sType = Master.ScrapeType.NewAuto) Then
                             chkCount += 1
                         End If
-                        If drvRow.Item(9) AndAlso (sType = Master.ScrapeType.MarkAsk OrElse sType = Master.ScrapeType.MarkAuto) Then
+                        If drvRow.Item(11) AndAlso (sType = Master.ScrapeType.MarkAsk OrElse sType = Master.ScrapeType.MarkAuto) Then
                             chkCount += 1
                         End If
                     Next
@@ -3091,7 +3088,6 @@ doCancel:
     Private Sub ReCheckItems(ByVal ID As Integer)
         Dim tPath = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow.Item(1)
         Dim sPath As String = tPath(0)
-        Dim aResults(3) As Boolean
         Try
             Dim parPath As String = Directory.GetParent(sPath).FullName
             Dim tmpName As String = String.Empty
@@ -3100,12 +3096,20 @@ doCancel:
             Dim hasPoster As Boolean = False
             Dim hasFanart As Boolean = False
             Dim hasTrailer As Boolean = False
+            Dim hasSub As Boolean = False
+            Dim hasExtra As Boolean = False
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                 tmpName = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name)
+                If Directory.Exists(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")) Then
+                    hasExtra = True
+                End If
             Else
                 tmpName = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
                 tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+                If Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) Then
+                    hasExtra = True
+                End If
             End If
 
             'fanart
@@ -3132,6 +3136,17 @@ doCancel:
                 hasNfo = True
             End If
 
+            'sub
+            Dim sExt() As String = Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ",")
+
+            For Each t As String In sExt
+                If File.Exists(String.Concat(tmpName, t)) OrElse File.Exists(String.Concat(tmpName, t)) OrElse _
+                    File.Exists(String.Concat(tmpNameNoStack, t)) OrElse File.Exists(String.Concat(tmpNameNoStack, t)) Then
+                    hasSub = True
+                    Exit For
+                End If
+            Next
+
             For Each t As String In Master.eSettings.ValidExts
                 If File.Exists(String.Concat(tmpName, "-trailer", t)) OrElse File.Exists(String.Concat(tmpName, "[trailer]", t)) OrElse _
                 File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) OrElse File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
@@ -3141,17 +3156,21 @@ doCancel:
             Next
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?) WHERE ID = (?);"
+                SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?) WHERE ID = (?);"
                 Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 1, "poster")
                 Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 1, "fanart")
                 Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 1, "info")
                 Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 1, "trailer")
+                Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 1, "sub")
+                Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 1, "extra")
                 Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int16, 16, "id")
 
                 parPoster.Value = hasPoster
                 parFanart.Value = hasFanart
                 parInfo.Value = hasNfo
                 parTrailer.Value = hasTrailer
+                parSub.Value = hasSub
+                parExtra.Value = hasExtra
                 parID.Value = ID
 
                 SQLcommand.ExecuteNonQuery()
@@ -3222,11 +3241,11 @@ doCancel:
 
     Private Sub SetFilterColors()
         For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-            If drvRow.Cells(9).Value Then
+            If drvRow.Cells(11).Value Then
                 drvRow.Cells(3).Style.ForeColor = Color.Crimson
                 drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
                 drvRow.Cells(3).Style.SelectionForeColor = Color.Crimson
-            ElseIf drvRow.Cells(8).Value Then
+            ElseIf drvRow.Cells(10).Value Then
                 drvRow.Cells(3).Style.ForeColor = Color.Green
                 drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
                 drvRow.Cells(3).Style.SelectionForeColor = Color.Green
@@ -3236,30 +3255,36 @@ doCancel:
                 drvRow.Cells(3).Style.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
             End If
 
-            If Not IsDBNull(drvRow.Cells(12).Value) Then
-                If drvRow.Cells(12).Value Then
-                    drvRow.Cells(3).Style.BackColor = Color.MistyRose
-                    drvRow.Cells(4).Style.BackColor = Color.MistyRose
-                    drvRow.Cells(5).Style.BackColor = Color.MistyRose
-                    drvRow.Cells(6).Style.BackColor = Color.MistyRose
-                    drvRow.Cells(7).Style.BackColor = Color.MistyRose
-                    drvRow.Cells(3).Style.SelectionBackColor = Color.DarkMagenta
-                    drvRow.Cells(4).Style.SelectionBackColor = Color.DarkMagenta
-                    drvRow.Cells(5).Style.SelectionBackColor = Color.DarkMagenta
-                    drvRow.Cells(6).Style.SelectionBackColor = Color.DarkMagenta
-                    drvRow.Cells(7).Style.SelectionBackColor = Color.DarkMagenta
-                Else
-                    drvRow.Cells(3).Style.BackColor = Color.White
-                    drvRow.Cells(4).Style.BackColor = Color.White
-                    drvRow.Cells(5).Style.BackColor = Color.White
-                    drvRow.Cells(6).Style.BackColor = Color.White
-                    drvRow.Cells(7).Style.BackColor = Color.White
-                    drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                End If
+            If drvRow.Cells(14).Value Then
+                drvRow.Cells(3).Style.BackColor = Color.MistyRose
+                drvRow.Cells(4).Style.BackColor = Color.MistyRose
+                drvRow.Cells(5).Style.BackColor = Color.MistyRose
+                drvRow.Cells(6).Style.BackColor = Color.MistyRose
+                drvRow.Cells(7).Style.BackColor = Color.MistyRose
+                drvRow.Cells(8).Style.BackColor = Color.MistyRose
+                drvRow.Cells(9).Style.BackColor = Color.MistyRose
+                drvRow.Cells(3).Style.SelectionBackColor = Color.DarkMagenta
+                drvRow.Cells(4).Style.SelectionBackColor = Color.DarkMagenta
+                drvRow.Cells(5).Style.SelectionBackColor = Color.DarkMagenta
+                drvRow.Cells(6).Style.SelectionBackColor = Color.DarkMagenta
+                drvRow.Cells(7).Style.SelectionBackColor = Color.DarkMagenta
+                drvRow.Cells(8).Style.SelectionBackColor = Color.DarkMagenta
+                drvRow.Cells(9).Style.SelectionBackColor = Color.DarkMagenta
+            Else
+                drvRow.Cells(3).Style.BackColor = Color.White
+                drvRow.Cells(4).Style.BackColor = Color.White
+                drvRow.Cells(5).Style.BackColor = Color.White
+                drvRow.Cells(6).Style.BackColor = Color.White
+                drvRow.Cells(7).Style.BackColor = Color.White
+                drvRow.Cells(8).Style.BackColor = Color.White
+                drvRow.Cells(9).Style.BackColor = Color.White
+                drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                drvRow.Cells(8).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
             End If
         Next
     End Sub
@@ -3403,11 +3428,22 @@ doCancel:
                     .dgvMediaList.Columns(7).ReadOnly = True
                     .dgvMediaList.Columns(7).SortMode = DataGridViewColumnSortMode.Automatic
                     .dgvMediaList.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
-                    .dgvMediaList.Columns(8).Visible = False
-                    .dgvMediaList.Columns(9).Visible = False
+                    .dgvMediaList.Columns(8).Width = 20
+                    .dgvMediaList.Columns(8).Resizable = True
+                    .dgvMediaList.Columns(8).ReadOnly = True
+                    .dgvMediaList.Columns(8).SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvMediaList.Columns(8).Visible = Not Master.eSettings.MovieSubCol
+                    .dgvMediaList.Columns(9).Width = 20
+                    .dgvMediaList.Columns(9).Resizable = True
+                    .dgvMediaList.Columns(9).ReadOnly = True
+                    .dgvMediaList.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
                     .dgvMediaList.Columns(10).Visible = False
                     .dgvMediaList.Columns(11).Visible = False
                     .dgvMediaList.Columns(12).Visible = False
+                    .dgvMediaList.Columns(13).Visible = False
+                    .dgvMediaList.Columns(14).Visible = False
+
 
                     'Trick to autosize the first column, but still allow resizing by user
                     .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
