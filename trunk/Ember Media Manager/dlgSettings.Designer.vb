@@ -24,10 +24,11 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1})
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper", 3, 3)
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode3})
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Supported Extensions", 4, 4)
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7})
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper", 3, 3)
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode9})
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
@@ -47,6 +48,7 @@ Partial Class dlgSettings
         Me.Label5 = New System.Windows.Forms.Label
         Me.chkLogErrors = New System.Windows.Forms.CheckBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.chkCleanExtrathumbs = New System.Windows.Forms.CheckBox
         Me.chkCleanMovieNameJPG = New System.Windows.Forms.CheckBox
         Me.chkCleanMovieJPG = New System.Windows.Forms.CheckBox
         Me.chkCleanPosterJPG = New System.Windows.Forms.CheckBox
@@ -182,7 +184,12 @@ Partial Class dlgSettings
         Me.lblCurrent = New System.Windows.Forms.Label
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.Panel1 = New System.Windows.Forms.Panel
-        Me.chkCleanExtrathumbs = New System.Windows.Forms.CheckBox
+        Me.pnlExtensions = New System.Windows.Forms.Panel
+        Me.GroupBox18 = New System.Windows.Forms.GroupBox
+        Me.btnRemMovieExt = New System.Windows.Forms.Button
+        Me.btnAddMovieExt = New System.Windows.Forms.Button
+        Me.txtMovieExt = New System.Windows.Forms.TextBox
+        Me.lstMovieExts = New System.Windows.Forms.ListBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -207,6 +214,8 @@ Partial Class dlgSettings
         Me.pnlMovies.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.pnlExtensions.SuspendLayout()
+        Me.GroupBox18.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -404,6 +413,16 @@ Partial Class dlgSettings
         Me.GroupBox3.TabIndex = 1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Clean Files"
+        '
+        'chkCleanExtrathumbs
+        '
+        Me.chkCleanExtrathumbs.AutoSize = True
+        Me.chkCleanExtrathumbs.Location = New System.Drawing.Point(13, 237)
+        Me.chkCleanExtrathumbs.Name = "chkCleanExtrathumbs"
+        Me.chkCleanExtrathumbs.Size = New System.Drawing.Size(93, 17)
+        Me.chkCleanExtrathumbs.TabIndex = 18
+        Me.chkCleanExtrathumbs.Text = "/extrathumbs/"
+        Me.chkCleanExtrathumbs.UseVisualStyleBackColor = True
         '
         'chkCleanMovieNameJPG
         '
@@ -756,8 +775,9 @@ Partial Class dlgSettings
         Me.lstFilters.FormattingEnabled = True
         Me.lstFilters.Location = New System.Drawing.Point(6, 42)
         Me.lstFilters.Name = "lstFilters"
-        Me.lstFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple
+        Me.lstFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lstFilters.Size = New System.Drawing.Size(180, 212)
+        Me.lstFilters.Sorted = True
         Me.lstFilters.TabIndex = 2
         '
         'chkScanRecursive
@@ -1692,6 +1712,7 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(1, "comments.png")
         Me.ilSettings.Images.SetKeyName(2, "film.png")
         Me.ilSettings.Images.SetKeyName(3, "copy_paste.png")
+        Me.ilSettings.Images.SetKeyName(4, "attachment.png")
         '
         'tvSettings
         '
@@ -1702,27 +1723,32 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode1.ImageIndex = 1
-        TreeNode1.Name = "nXBMCCom"
-        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode1.SelectedImageIndex = 1
-        TreeNode1.Text = "XBMC Communication"
-        TreeNode2.ImageIndex = 0
-        TreeNode2.Name = "nGeneral"
-        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode2.SelectedImageIndex = 0
-        TreeNode2.Text = "General"
-        TreeNode3.ImageIndex = 3
-        TreeNode3.Name = "nScraper"
-        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode3.SelectedImageIndex = 3
-        TreeNode3.Text = "Scraper"
-        TreeNode4.ImageIndex = 2
-        TreeNode4.Name = "nMovies"
-        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode4.SelectedImageIndex = 2
-        TreeNode4.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode2, TreeNode4})
+        TreeNode6.ImageIndex = 4
+        TreeNode6.Name = "nExts"
+        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode6.SelectedImageIndex = 4
+        TreeNode6.Text = "Supported Extensions"
+        TreeNode7.ImageIndex = 1
+        TreeNode7.Name = "nXBMCCom"
+        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode7.SelectedImageIndex = 1
+        TreeNode7.Text = "XBMC Communication"
+        TreeNode8.ImageIndex = 0
+        TreeNode8.Name = "nGeneral"
+        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 0
+        TreeNode8.Text = "General"
+        TreeNode9.ImageIndex = 3
+        TreeNode9.Name = "nScraper"
+        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode9.SelectedImageIndex = 3
+        TreeNode9.Text = "Scraper"
+        TreeNode10.ImageIndex = 2
+        TreeNode10.Name = "nMovies"
+        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode10.SelectedImageIndex = 2
+        TreeNode10.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode10})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -1842,15 +1868,65 @@ Partial Class dlgSettings
         Me.Panel1.Size = New System.Drawing.Size(221, 25)
         Me.Panel1.TabIndex = 65
         '
-        'chkCleanExtrathumbs
+        'pnlExtensions
         '
-        Me.chkCleanExtrathumbs.AutoSize = True
-        Me.chkCleanExtrathumbs.Location = New System.Drawing.Point(13, 237)
-        Me.chkCleanExtrathumbs.Name = "chkCleanExtrathumbs"
-        Me.chkCleanExtrathumbs.Size = New System.Drawing.Size(93, 17)
-        Me.chkCleanExtrathumbs.TabIndex = 18
-        Me.chkCleanExtrathumbs.Text = "/extrathumbs/"
-        Me.chkCleanExtrathumbs.UseVisualStyleBackColor = True
+        Me.pnlExtensions.BackColor = System.Drawing.Color.White
+        Me.pnlExtensions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlExtensions.Controls.Add(Me.GroupBox18)
+        Me.pnlExtensions.Location = New System.Drawing.Point(208, 96)
+        Me.pnlExtensions.Name = "pnlExtensions"
+        Me.pnlExtensions.Size = New System.Drawing.Size(597, 353)
+        Me.pnlExtensions.TabIndex = 66
+        Me.pnlExtensions.Visible = False
+        '
+        'GroupBox18
+        '
+        Me.GroupBox18.Controls.Add(Me.btnRemMovieExt)
+        Me.GroupBox18.Controls.Add(Me.btnAddMovieExt)
+        Me.GroupBox18.Controls.Add(Me.txtMovieExt)
+        Me.GroupBox18.Controls.Add(Me.lstMovieExts)
+        Me.GroupBox18.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox18.Name = "GroupBox18"
+        Me.GroupBox18.Size = New System.Drawing.Size(192, 342)
+        Me.GroupBox18.TabIndex = 0
+        Me.GroupBox18.TabStop = False
+        Me.GroupBox18.Text = "Valid Movie Extensions"
+        '
+        'btnRemMovieExt
+        '
+        Me.btnRemMovieExt.Image = CType(resources.GetObject("btnRemMovieExt.Image"), System.Drawing.Image)
+        Me.btnRemMovieExt.Location = New System.Drawing.Point(163, 313)
+        Me.btnRemMovieExt.Name = "btnRemMovieExt"
+        Me.btnRemMovieExt.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemMovieExt.TabIndex = 5
+        Me.btnRemMovieExt.UseVisualStyleBackColor = True
+        '
+        'btnAddMovieExt
+        '
+        Me.btnAddMovieExt.Image = CType(resources.GetObject("btnAddMovieExt.Image"), System.Drawing.Image)
+        Me.btnAddMovieExt.Location = New System.Drawing.Point(68, 313)
+        Me.btnAddMovieExt.Name = "btnAddMovieExt"
+        Me.btnAddMovieExt.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddMovieExt.TabIndex = 4
+        Me.btnAddMovieExt.UseVisualStyleBackColor = True
+        '
+        'txtMovieExt
+        '
+        Me.txtMovieExt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtMovieExt.Location = New System.Drawing.Point(6, 314)
+        Me.txtMovieExt.Name = "txtMovieExt"
+        Me.txtMovieExt.Size = New System.Drawing.Size(61, 20)
+        Me.txtMovieExt.TabIndex = 3
+        '
+        'lstMovieExts
+        '
+        Me.lstMovieExts.FormattingEnabled = True
+        Me.lstMovieExts.Location = New System.Drawing.Point(6, 16)
+        Me.lstMovieExts.Name = "lstMovieExts"
+        Me.lstMovieExts.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstMovieExts.Size = New System.Drawing.Size(180, 290)
+        Me.lstMovieExts.Sorted = True
+        Me.lstMovieExts.TabIndex = 2
         '
         'dlgSettings
         '
@@ -1866,10 +1942,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -1919,6 +1996,9 @@ Partial Class dlgSettings
         Me.pnlScraper.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.pnlExtensions.ResumeLayout(False)
+        Me.GroupBox18.ResumeLayout(False)
+        Me.GroupBox18.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2077,4 +2157,10 @@ Partial Class dlgSettings
     Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents txtIMDBURL As System.Windows.Forms.TextBox
     Friend WithEvents chkCleanExtrathumbs As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlExtensions As System.Windows.Forms.Panel
+    Friend WithEvents GroupBox18 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnRemMovieExt As System.Windows.Forms.Button
+    Friend WithEvents btnAddMovieExt As System.Windows.Forms.Button
+    Friend WithEvents txtMovieExt As System.Windows.Forms.TextBox
+    Friend WithEvents lstMovieExts As System.Windows.Forms.ListBox
 End Class

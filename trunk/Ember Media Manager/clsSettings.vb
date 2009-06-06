@@ -72,6 +72,7 @@ Public Class emmSettings
     Private _properCase As Boolean
     Private _overwritenfo As Boolean
     Private _usenamefromNfo As Boolean
+    Private _validexts As New ArrayList
     Private _movietbn As Boolean
     Private _movienametbn As Boolean
     Private _moviejpg As Boolean
@@ -268,6 +269,7 @@ Public Class emmSettings
             Me._castimagesonly = value
         End Set
     End Property
+
     Public Property MoviePosterCol() As Boolean
         Get
             Return Me._movieposterCol
@@ -529,6 +531,20 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property ValidExts() As ArrayList
+        Get
+            Return Me._validexts
+        End Get
+        Set(ByVal value As ArrayList)
+            If value.Count <= 0 Then
+                Dim tmpExts As New ArrayList
+                tmpExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v", ","))
+                Me._validexts = tmpExts
+            Else
+                Me._validexts = value
+            End If
+        End Set
+    End Property
     Public Property MovieTBN() As Boolean
         Get
             Return Me._movietbn
@@ -887,6 +903,7 @@ Public Class emmSettings
         Me._properCase = False
         Me._overwritenfo = False
         Me._usenamefromNfo = False
+        Me._validexts.Clear()
         Me._movietbn = False
         Me._movienametbn = False
         Me._moviejpg = False
