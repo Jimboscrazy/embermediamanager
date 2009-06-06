@@ -89,6 +89,7 @@ Public Class dlgEditMovie
 
             Me.lvwColumnSorter = New ListViewColumnSorter()
             Me.lvActors.ListViewItemSorter = Me.lvwColumnSorter
+            Me.lvThumbs.ListViewItemSorter = Me.lvwColumnSorter
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -497,7 +498,7 @@ Public Class dlgEditMovie
                 'reset title in list just in case user changed it (only if Use Title From NFO is selected)
                 If Master.eSettings.UseNameFromNfo Then
                     Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                        Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.Boolean, 1, "title")
+                        Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 255, "title")
                         Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
                         SQLcommand.CommandText = "UPDATE movies SET title = (?) WHERE id = (?);"
                         parTitle.Value = .txtTitle.Text.Trim
