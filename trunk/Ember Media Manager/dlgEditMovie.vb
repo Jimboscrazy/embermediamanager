@@ -25,7 +25,8 @@ Imports System.Text.RegularExpressions
 
 Public Class dlgEditMovie
     Friend WithEvents bwThumbs As New System.ComponentModel.BackgroundWorker
-    Private lvwColumnSorter As ListViewColumnSorter
+    Private lvwActorSorter As ListViewColumnSorter
+    Private lvwThumbSorter As ListViewColumnSorter
     Private tmpRating As String = String.Empty
     Private Poster As New Images With {.IsEdit = True}
     Private Fanart As New Images With {.IsEdit = True}
@@ -87,9 +88,10 @@ Public Class dlgEditMovie
 
             Me.Activate()
 
-            Me.lvwColumnSorter = New ListViewColumnSorter()
-            Me.lvActors.ListViewItemSorter = Me.lvwColumnSorter
-            Me.lvThumbs.ListViewItemSorter = Me.lvwColumnSorter
+            Me.lvwActorSorter = New ListViewColumnSorter()
+            Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
+            Me.lvwThumbSorter = New ListViewColumnSorter()
+            Me.lvThumbs.ListViewItemSorter = Me.lvwThumbSorter
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -264,17 +266,17 @@ Public Class dlgEditMovie
         ' Determine if the clicked column is already the column that is 
         ' being sorted.
         Try
-            If (e.Column = Me.lvwColumnSorter.SortColumn) Then
+            If (e.Column = Me.lvwActorSorter.SortColumn) Then
                 ' Reverse the current sort direction for this column.
-                If (Me.lvwColumnSorter.Order = SortOrder.Ascending) Then
-                    Me.lvwColumnSorter.Order = SortOrder.Descending
+                If (Me.lvwActorSorter.Order = SortOrder.Ascending) Then
+                    Me.lvwActorSorter.Order = SortOrder.Descending
                 Else
-                    Me.lvwColumnSorter.Order = SortOrder.Ascending
+                    Me.lvwActorSorter.Order = SortOrder.Ascending
                 End If
             Else
                 ' Set the column number that is to be sorted; default to ascending.
-                Me.lvwColumnSorter.SortColumn = e.Column
-                Me.lvwColumnSorter.Order = SortOrder.Ascending
+                Me.lvwActorSorter.SortColumn = e.Column
+                Me.lvwActorSorter.Order = SortOrder.Ascending
             End If
 
             ' Perform the sort with these new sort options.
