@@ -1385,7 +1385,7 @@ Public Class frmMain
 
                         If Not String.IsNullOrEmpty(sFile.Filename) Then
                             If Master.eSettings.UseNameFromNfo Then
-                                tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, False))
+                                tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isFile))
                                 mName = tmpMovie.Title
                                 mIMDB = tmpMovie.IMDBID
                                 tmpMovie = Nothing
@@ -1418,7 +1418,7 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(cleanName) Then
 
-                                aContents = Master.GetFolderContents(sFile.Filename, False)
+                                aContents = Master.GetFolderContents(sFile.Filename, sFile.isFile)
 
                                 parPath.Value = sFile.Filename
                                 parType.Value = sFile.isFile
@@ -1628,9 +1628,7 @@ Public Class frmMain
             If bwLoadInfo.CancellationPending Then Return
             'read nfo if it's there
             Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
-            If Not String.IsNullOrEmpty(Master.currNFO) Then
-                Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
-            End If
+            Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1747,19 +1745,14 @@ Public Class frmMain
                                     parFanart.Value = drvRow.Item(5)
                                     parInfo.Value = drvRow.Item(6)
 
-                                    If File.Exists(nfoPath) Then
-                                        tmpMovie = Master.LoadMovieFromNFO(nfoPath)
-                                        If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
-                                            IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
-                                            Master.scrapeMovie = tmpMovie
-                                        Else
-                                            Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, tmpMovie, Args.scrapeType)
-                                        End If
-                                        tmpMovie = Nothing
+                                    tmpMovie = Master.LoadMovieFromNFO(nfoPath)
+                                    If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
+                                        IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                                        Master.scrapeMovie = tmpMovie
                                     Else
-                                        Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType)
+                                        Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, tmpMovie, Args.scrapeType)
                                     End If
-
+                                    tmpMovie = Nothing
 
                                     If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -1858,18 +1851,14 @@ Public Class frmMain
                                     parFanart.Value = drvRow.Item(5)
                                     parInfo.Value = drvRow.Item(6)
 
-                                    If File.Exists(nfoPath) Then
-                                        tmpMovie = Master.LoadMovieFromNFO(nfoPath)
-                                        If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
-                                            IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
-                                            Master.scrapeMovie = tmpMovie
-                                        Else
-                                            Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, tmpMovie, Args.scrapeType)
-                                        End If
-                                        tmpMovie = Nothing
+                                    tmpMovie = Master.LoadMovieFromNFO(nfoPath)
+                                    If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
+                                        IMDB.GetMovieInfo(tmpMovie.IMDBID, tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                                        Master.scrapeMovie = tmpMovie
                                     Else
-                                        Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString(), New Media.Movie, Args.scrapeType)
+                                        Master.scrapeMovie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, tmpMovie, Args.scrapeType)
                                     End If
+                                    tmpMovie = Nothing
 
                                     If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -1937,11 +1926,7 @@ Public Class frmMain
 
                                     nfoPath = Master.GetNfoPath(sPath, drvRow.Item(2))
 
-                                    If Not String.IsNullOrEmpty(nfoPath) Then
-                                        Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
-                                    Else
-                                        Master.scrapeMovie = New Media.Movie
-                                    End If
+                                    Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
 
                                     If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
                                         Master.scrapeMovie.Studio = String.Format("{0}{1}", Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
@@ -2526,7 +2511,6 @@ doCancel:
 
             If doInfo Then
                 Me.ClearInfo()
-                Master.currMovie.Clear()
                 Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwLoadInfo.WorkerSupportsCancellation = True
                 Me.bwLoadInfo.RunWorkerAsync()
