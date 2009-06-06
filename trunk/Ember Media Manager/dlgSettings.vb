@@ -776,6 +776,10 @@ Public Class dlgSettings
             Me.btnApply.Enabled = True
         End If
     End Sub
+
+    Private Sub chkUpdates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUpdates.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -878,6 +882,7 @@ Public Class dlgSettings
             Dim tmpExts As New ArrayList
             tmpExts.AddRange(lstMovieExts.Items)
             Master.eSettings.ValidExts = tmpExts
+            Master.eSettings.CheckUpdates = chkUpdates.Checked
 
             '######## MOVIES TAB ########
             Master.eSettings.MovieFolders.Clear()
@@ -995,6 +1000,7 @@ Public Class dlgSettings
             Me.chkProperCase.Checked = Master.eSettings.ProperCase
             Me.chkScanRecursive.Checked = Master.eSettings.ScanRecursive
             Me.lstMovieExts.Items.AddRange(Master.eSettings.ValidExts.ToArray)
+            Me.chkUpdates.Checked = Master.eSettings.CheckUpdates
 
             '######## MOVIES TAB ########
             For Each strFolders As String In Master.eSettings.MovieFolders

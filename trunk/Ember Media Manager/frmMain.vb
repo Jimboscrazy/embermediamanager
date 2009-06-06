@@ -229,6 +229,18 @@ Public Class frmMain
 
             Master.eSettings.Load()
 
+            Dim tmpVer As String = Master.eSettings.Version
+
+            If Master.eSettings.CheckUpdates Then
+                Dim tmpNew As Integer = Master.CheckUpdate
+                If tmpNew > CInt(tmpVer.Replace("r", String.Empty)) Then
+                    If MsgBox(String.Concat("A new version is available.", vbNewLine, vbNewLine, "Version r", tmpNew, " is available via Ember Media Manager's Google Code page.", vbNewLine, vbNewLine, _
+                                            "Would you like to visit the Google Code page to download the newest version?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "A New Version Is Available") = MsgBoxResult.Yes Then
+                        Process.Start("http://code.google.com/p/embermediamanager/downloads/list")
+                    End If
+                End If
+            End If
+
             Me.Location = Master.eSettings.WindowLoc
             Me.Size = Master.eSettings.WindowSize
             Me.WindowState = Master.eSettings.WindowState
@@ -245,7 +257,7 @@ Public Class frmMain
             'Uncomment following line and remove other calls to connectdb when not necessary
             'Master.ConnectDB(False)
 
-            If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
+            If tmpVer = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                 Master.ConnectDB(False)
                 Me.FillList(0)
             Else
