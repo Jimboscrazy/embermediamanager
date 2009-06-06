@@ -195,6 +195,10 @@ Partial Class dlgSettings
         Me.btnAddMovieExt = New System.Windows.Forms.Button
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
+        Me.GroupBox16 = New System.Windows.Forms.GroupBox
+        Me.txtBDPath = New System.Windows.Forms.TextBox
+        Me.btnBrowse = New System.Windows.Forms.Button
+        Me.chkAutoBD = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -221,6 +225,7 @@ Partial Class dlgSettings
         Me.Panel1.SuspendLayout()
         Me.pnlExtensions.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
+        Me.GroupBox16.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -811,9 +816,9 @@ Partial Class dlgSettings
         Me.GroupBox12.Controls.Add(Me.Label8)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
         Me.GroupBox12.Controls.Add(Me.GroupBox2)
-        Me.GroupBox12.Location = New System.Drawing.Point(388, 138)
+        Me.GroupBox12.Location = New System.Drawing.Point(388, 140)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(200, 177)
+        Me.GroupBox12.Size = New System.Drawing.Size(200, 158)
         Me.GroupBox12.TabIndex = 65
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
@@ -844,9 +849,9 @@ Partial Class dlgSettings
         Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 60)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 64)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(188, 112)
+        Me.GroupBox2.Size = New System.Drawing.Size(188, 87)
         Me.GroupBox2.TabIndex = 54
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Media List Options"
@@ -854,7 +859,7 @@ Partial Class dlgSettings
         'chkMovieTrailerCol
         '
         Me.chkMovieTrailerCol.AutoSize = True
-        Me.chkMovieTrailerCol.Location = New System.Drawing.Point(6, 88)
+        Me.chkMovieTrailerCol.Location = New System.Drawing.Point(6, 67)
         Me.chkMovieTrailerCol.Name = "chkMovieTrailerCol"
         Me.chkMovieTrailerCol.Size = New System.Drawing.Size(118, 17)
         Me.chkMovieTrailerCol.TabIndex = 31
@@ -864,7 +869,7 @@ Partial Class dlgSettings
         'chkMovieInfoCol
         '
         Me.chkMovieInfoCol.AutoSize = True
-        Me.chkMovieInfoCol.Location = New System.Drawing.Point(6, 65)
+        Me.chkMovieInfoCol.Location = New System.Drawing.Point(6, 51)
         Me.chkMovieInfoCol.Name = "chkMovieInfoCol"
         Me.chkMovieInfoCol.Size = New System.Drawing.Size(107, 17)
         Me.chkMovieInfoCol.TabIndex = 30
@@ -874,7 +879,7 @@ Partial Class dlgSettings
         'chkMovieFanartCol
         '
         Me.chkMovieFanartCol.AutoSize = True
-        Me.chkMovieFanartCol.Location = New System.Drawing.Point(6, 42)
+        Me.chkMovieFanartCol.Location = New System.Drawing.Point(6, 35)
         Me.chkMovieFanartCol.Name = "chkMovieFanartCol"
         Me.chkMovieFanartCol.Size = New System.Drawing.Size(119, 17)
         Me.chkMovieFanartCol.TabIndex = 29
@@ -897,7 +902,7 @@ Partial Class dlgSettings
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
-        Me.GroupBox8.Location = New System.Drawing.Point(6, 169)
+        Me.GroupBox8.Location = New System.Drawing.Point(6, 152)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(356, 146)
         Me.GroupBox8.TabIndex = 64
@@ -1867,6 +1872,7 @@ Partial Class dlgSettings
         '
         Me.pnlMovies.BackColor = System.Drawing.Color.White
         Me.pnlMovies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovies.Controls.Add(Me.GroupBox16)
         Me.pnlMovies.Controls.Add(Me.chkScanRecursive)
         Me.pnlMovies.Controls.Add(Me.lvMovies)
         Me.pnlMovies.Controls.Add(Me.GroupBox12)
@@ -1987,6 +1993,45 @@ Partial Class dlgSettings
         Me.lstMovieExts.Sorted = True
         Me.lstMovieExts.TabIndex = 2
         '
+        'GroupBox16
+        '
+        Me.GroupBox16.Controls.Add(Me.chkAutoBD)
+        Me.GroupBox16.Controls.Add(Me.btnBrowse)
+        Me.GroupBox16.Controls.Add(Me.txtBDPath)
+        Me.GroupBox16.Location = New System.Drawing.Point(6, 303)
+        Me.GroupBox16.Name = "GroupBox16"
+        Me.GroupBox16.Size = New System.Drawing.Size(583, 43)
+        Me.GroupBox16.TabIndex = 67
+        Me.GroupBox16.TabStop = False
+        Me.GroupBox16.Text = "Backdrops Folder"
+        '
+        'txtBDPath
+        '
+        Me.txtBDPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtBDPath.Location = New System.Drawing.Point(7, 16)
+        Me.txtBDPath.Name = "txtBDPath"
+        Me.txtBDPath.Size = New System.Drawing.Size(281, 20)
+        Me.txtBDPath.TabIndex = 0
+        '
+        'btnBrowse
+        '
+        Me.btnBrowse.Location = New System.Drawing.Point(290, 14)
+        Me.btnBrowse.Name = "btnBrowse"
+        Me.btnBrowse.Size = New System.Drawing.Size(23, 23)
+        Me.btnBrowse.TabIndex = 1
+        Me.btnBrowse.Text = "..."
+        Me.btnBrowse.UseVisualStyleBackColor = True
+        '
+        'chkAutoBD
+        '
+        Me.chkAutoBD.AutoSize = True
+        Me.chkAutoBD.Location = New System.Drawing.Point(326, 18)
+        Me.chkAutoBD.Name = "chkAutoBD"
+        Me.chkAutoBD.Size = New System.Drawing.Size(251, 17)
+        Me.chkAutoBD.TabIndex = 2
+        Me.chkAutoBD.Text = "Automatically Save Fanart To Backdrops Folder"
+        Me.chkAutoBD.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -2001,11 +2046,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2058,6 +2103,8 @@ Partial Class dlgSettings
         Me.pnlExtensions.ResumeLayout(False)
         Me.GroupBox18.ResumeLayout(False)
         Me.GroupBox18.PerformLayout()
+        Me.GroupBox16.ResumeLayout(False)
+        Me.GroupBox16.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2227,4 +2274,8 @@ Partial Class dlgSettings
     Friend WithEvents chkLockRating As System.Windows.Forms.CheckBox
     Friend WithEvents chkLockRealStudio As System.Windows.Forms.CheckBox
     Friend WithEvents chkLockGenre As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox16 As System.Windows.Forms.GroupBox
+    Friend WithEvents txtBDPath As System.Windows.Forms.TextBox
+    Friend WithEvents btnBrowse As System.Windows.Forms.Button
+    Friend WithEvents chkAutoBD As System.Windows.Forms.CheckBox
 End Class

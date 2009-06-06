@@ -71,6 +71,7 @@ Public Class Master
         NewAsk = 8
         MarkAuto = 9
         MarkAsk = 10
+        CopyBD = 11
     End Enum
 
     Public Enum ImageType As Integer
@@ -1354,7 +1355,7 @@ Public Class Master
         Return Double.Parse(sNumber.Replace(",", "."), NumberStyles.AllowDecimalPoint, numFormat)
     End Function
 
-    Public Shared Sub DeleteFiles(ByVal isCleaner As Boolean, ByVal sPath As String, Optional ByVal isFile As Boolean = False)
+    Public Shared Sub DeleteFiles(ByVal isCleaner As Boolean, ByVal sPath As String, ByVal isFile As Boolean)
         Dim dPath As String = String.Empty
 
         If eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
@@ -1366,6 +1367,35 @@ Public Class Master
         Dim sOrName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
         Dim sPathShort As String = Directory.GetParent(dPath).FullName
         Dim sPathNoExt As String = RemoveExtFromPath(dPath)
+
+        If Not isCleaner Then
+            Dim Fanart As New Images
+            Dim fPath As String = Fanart.GetFanartPath(sPath, isFile)
+            Dim tPath As String = String.Empty
+            If Not String.IsNullOrEmpty(fPath) Then
+                If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
+                    If Master.eSettings.VideoTSParent Then
+                        tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fPath).FullName).Name), "-fanart.jpg"))
+                    Else
+                        If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
+                            tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
+                        Else
+                            tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
+                        End If
+                    End If
+                Else
+                    If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
+                        tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(sPath), "-fanart.jpg"))
+                    Else
+                        tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
+                    End If
+                End If
+            End If
+            If Not String.IsNullOrEmpty(tPath) AndAlso File.Exists(tPath) Then
+                File.Delete(tPath)
+            End If
+            Fanart = Nothing
+        End If
 
         If Not isCleaner AndAlso Not isFile Then
             If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then

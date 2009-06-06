@@ -250,6 +250,9 @@ Public Class Images
                 fPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".fanart.jpg")
                 If Not File.Exists(fPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                     Save(fPath)
+                    If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
+                        Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath)))
+                    End If
                 End If
             Else
                 Dim tmpName As String = Path.GetFileNameWithoutExtension(sPath)
@@ -259,6 +262,13 @@ Public Class Images
                     tPath = Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                         Save(tPath)
+                        If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
+                            If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                                Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                            Else
+                                Save(Path.Combine(Master.eSettings.BDPath, String.Concat(tmpName, "-fanart.jpg")))
+                            End If
+                        End If
                     End If
                 End If
 
@@ -270,6 +280,13 @@ Public Class Images
                     End If
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                         Save(tPath)
+                        If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
+                            If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                                Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                            Else
+                                Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(tPath)))
+                            End If
+                        End If
                     End If
                 End If
 
@@ -281,8 +298,16 @@ Public Class Images
                     End If
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                         Save(tPath)
+                        If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
+                            If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                                Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                            Else
+                                Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(tPath)))
+                            End If
+                        End If
                     End If
                 End If
+
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -674,7 +699,7 @@ foundIT:
         Return hasImages
     End Function
 
-    Public Shared Function GetFanartPath(ByVal sPath As String, ByVal isFile As Boolean) As String
+    Public Function GetFanartPath(ByVal sPath As String, ByVal isFile As Boolean) As String
 
         '//
         ' Get the proper path to fanart
