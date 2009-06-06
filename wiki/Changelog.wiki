@@ -16,13 +16,18 @@
  * Feature: Studio selection dialog from movie editor
  * Feature: New tool and option to automatically copy fanart to a selectable backdrops folder
  * Feature: Option to use media info duration as runtime
+ * Feature: Mark All/Unmark All button
  * Fix: File-type sources not stacking properly
  * Fix: File cleaner did not remove YAMJ compatible files
+ * Fix: Sorting of extrathumbs in extrathumbs manager
+ * Fix: "Change Movie" not working properly from movie editor
  * Change: Special cell coloring persistent through selection
  * Change: Ability to refresh extrathumbs list in movie editor
  * Change: Tweaks to certification handling
  * Change: Always save rating with "." instead of ","
  * Change: Misc tweaks to the code
+ * Change: Show more dialogs in the task bar
+ * Change: Do not return video games as search results
 
 *Changes in r227:*
  * Fix: Data collisions when viewing movies while scraping
