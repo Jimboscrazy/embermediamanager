@@ -96,6 +96,7 @@ Partial Class dlgEditMovie
         Me.btnSetFanart = New System.Windows.Forms.Button
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.btnThumbsRefresh = New System.Windows.Forms.Button
         Me.btnRemoveThumb = New System.Windows.Forms.Button
         Me.btnDown = New System.Windows.Forms.Button
         Me.btnUp = New System.Windows.Forms.Button
@@ -120,7 +121,6 @@ Partial Class dlgEditMovie
         Me.chkMark = New System.Windows.Forms.CheckBox
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
-        Me.btnThumbsRefresh = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -561,7 +561,7 @@ Partial Class dlgEditMovie
         'lblPlot
         '
         Me.lblPlot.AutoSize = True
-        Me.lblPlot.Location = New System.Drawing.Point(467, 7)
+        Me.lblPlot.Location = New System.Drawing.Point(440, 7)
         Me.lblPlot.Name = "lblPlot"
         Me.lblPlot.Size = New System.Drawing.Size(28, 13)
         Me.lblPlot.TabIndex = 73
@@ -869,6 +869,15 @@ Partial Class dlgEditMovie
         Me.TabPage5.Text = "Extrathumbs"
         Me.TabPage5.UseVisualStyleBackColor = True
         '
+        'btnThumbsRefresh
+        '
+        Me.btnThumbsRefresh.Image = CType(resources.GetObject("btnThumbsRefresh.Image"), System.Drawing.Image)
+        Me.btnThumbsRefresh.Location = New System.Drawing.Point(87, 422)
+        Me.btnThumbsRefresh.Name = "btnThumbsRefresh"
+        Me.btnThumbsRefresh.Size = New System.Drawing.Size(23, 23)
+        Me.btnThumbsRefresh.TabIndex = 14
+        Me.btnThumbsRefresh.UseVisualStyleBackColor = True
+        '
         'btnRemoveThumb
         '
         Me.btnRemoveThumb.Image = CType(resources.GetObject("btnRemoveThumb.Image"), System.Drawing.Image)
@@ -1113,15 +1122,6 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.Text = "Change Movie"
         Me.btnChangeMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnChangeMovie.UseVisualStyleBackColor = True
-        '
-        'btnThumbsRefresh
-        '
-        Me.btnThumbsRefresh.Image = CType(resources.GetObject("btnThumbsRefresh.Image"), System.Drawing.Image)
-        Me.btnThumbsRefresh.Location = New System.Drawing.Point(87, 422)
-        Me.btnThumbsRefresh.Name = "btnThumbsRefresh"
-        Me.btnThumbsRefresh.Size = New System.Drawing.Size(23, 23)
-        Me.btnThumbsRefresh.TabIndex = 14
-        Me.btnThumbsRefresh.UseVisualStyleBackColor = True
         '
         'dlgEditMovie
         '

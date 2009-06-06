@@ -44,6 +44,7 @@ Partial Class dlgSettings
         Me.txtPort = New System.Windows.Forms.TextBox
         Me.txtIP = New System.Windows.Forms.TextBox
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.chkUpdates = New System.Windows.Forms.CheckBox
         Me.chkOverwriteNfo = New System.Windows.Forms.CheckBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.chkLogErrors = New System.Windows.Forms.CheckBox
@@ -136,6 +137,10 @@ Partial Class dlgSettings
         Me.txtFanartWidth = New System.Windows.Forms.TextBox
         Me.txtFanartHeight = New System.Windows.Forms.TextBox
         Me.GroupBox10 = New System.Windows.Forms.GroupBox
+        Me.chkLockGenre = New System.Windows.Forms.CheckBox
+        Me.chkLockRealStudio = New System.Windows.Forms.CheckBox
+        Me.chkLockRating = New System.Windows.Forms.CheckBox
+        Me.chkLockTagline = New System.Windows.Forms.CheckBox
         Me.chkLockTitle = New System.Windows.Forms.CheckBox
         Me.chkLockOutline = New System.Windows.Forms.CheckBox
         Me.chkLockPlot = New System.Windows.Forms.CheckBox
@@ -190,7 +195,6 @@ Partial Class dlgSettings
         Me.btnAddMovieExt = New System.Windows.Forms.Button
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
-        Me.chkUpdates = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -363,6 +367,16 @@ Partial Class dlgSettings
         Me.GroupBox4.TabIndex = 3
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
+        '
+        'chkUpdates
+        '
+        Me.chkUpdates.AutoSize = True
+        Me.chkUpdates.Location = New System.Drawing.Point(10, 16)
+        Me.chkUpdates.Name = "chkUpdates"
+        Me.chkUpdates.Size = New System.Drawing.Size(115, 17)
+        Me.chkUpdates.TabIndex = 16
+        Me.chkUpdates.Text = "Check for Updates"
+        Me.chkUpdates.UseVisualStyleBackColor = True
         '
         'chkOverwriteNfo
         '
@@ -1143,9 +1157,9 @@ Partial Class dlgSettings
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Location = New System.Drawing.Point(418, 92)
+        Me.GroupBox15.Location = New System.Drawing.Point(463, 203)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(156, 85)
+        Me.GroupBox15.Size = New System.Drawing.Size(125, 85)
         Me.GroupBox15.TabIndex = 60
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "OFDB"
@@ -1172,7 +1186,6 @@ Partial Class dlgSettings
         '
         'chkOFDBOutline
         '
-        Me.chkOFDBOutline.AutoSize = True
         Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 34)
         Me.chkOFDBOutline.Name = "chkOFDBOutline"
         Me.chkOFDBOutline.Size = New System.Drawing.Size(113, 17)
@@ -1197,7 +1210,7 @@ Partial Class dlgSettings
         Me.GroupBox14.Controls.Add(Me.chkResizePoster)
         Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
         Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
-        Me.GroupBox14.Location = New System.Drawing.Point(325, 203)
+        Me.GroupBox14.Location = New System.Drawing.Point(207, 203)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox14.TabIndex = 59
@@ -1257,7 +1270,7 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.chkResizeFanart)
         Me.GroupBox13.Controls.Add(Me.txtFanartWidth)
         Me.GroupBox13.Controls.Add(Me.txtFanartHeight)
-        Me.GroupBox13.Location = New System.Drawing.Point(327, 273)
+        Me.GroupBox13.Location = New System.Drawing.Point(207, 273)
         Me.GroupBox13.Name = "GroupBox13"
         Me.GroupBox13.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox13.TabIndex = 58
@@ -1312,15 +1325,59 @@ Partial Class dlgSettings
         '
         'GroupBox10
         '
+        Me.GroupBox10.Controls.Add(Me.chkLockGenre)
+        Me.GroupBox10.Controls.Add(Me.chkLockRealStudio)
+        Me.GroupBox10.Controls.Add(Me.chkLockRating)
+        Me.GroupBox10.Controls.Add(Me.chkLockTagline)
         Me.GroupBox10.Controls.Add(Me.chkLockTitle)
         Me.GroupBox10.Controls.Add(Me.chkLockOutline)
         Me.GroupBox10.Controls.Add(Me.chkLockPlot)
         Me.GroupBox10.Location = New System.Drawing.Point(418, 6)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(156, 82)
+        Me.GroupBox10.Size = New System.Drawing.Size(170, 146)
         Me.GroupBox10.TabIndex = 57
         Me.GroupBox10.TabStop = False
-        Me.GroupBox10.Text = "Locks (Do not allow updates during scraping)"
+        Me.GroupBox10.Text = "Global Locks (Do not allow updates during scraping)"
+        '
+        'chkLockGenre
+        '
+        Me.chkLockGenre.AutoSize = True
+        Me.chkLockGenre.Location = New System.Drawing.Point(6, 127)
+        Me.chkLockGenre.Name = "chkLockGenre"
+        Me.chkLockGenre.Size = New System.Drawing.Size(82, 17)
+        Me.chkLockGenre.TabIndex = 45
+        Me.chkLockGenre.Text = "Lock Genre"
+        Me.chkLockGenre.UseVisualStyleBackColor = True
+        '
+        'chkLockRealStudio
+        '
+        Me.chkLockRealStudio.AutoSize = True
+        Me.chkLockRealStudio.Location = New System.Drawing.Point(6, 111)
+        Me.chkLockRealStudio.Name = "chkLockRealStudio"
+        Me.chkLockRealStudio.Size = New System.Drawing.Size(108, 17)
+        Me.chkLockRealStudio.TabIndex = 44
+        Me.chkLockRealStudio.Text = "Lock Real Studio"
+        Me.chkLockRealStudio.UseVisualStyleBackColor = True
+        '
+        'chkLockRating
+        '
+        Me.chkLockRating.AutoSize = True
+        Me.chkLockRating.Location = New System.Drawing.Point(6, 95)
+        Me.chkLockRating.Name = "chkLockRating"
+        Me.chkLockRating.Size = New System.Drawing.Size(84, 17)
+        Me.chkLockRating.TabIndex = 43
+        Me.chkLockRating.Text = "Lock Rating"
+        Me.chkLockRating.UseVisualStyleBackColor = True
+        '
+        'chkLockTagline
+        '
+        Me.chkLockTagline.AutoSize = True
+        Me.chkLockTagline.Location = New System.Drawing.Point(6, 79)
+        Me.chkLockTagline.Name = "chkLockTagline"
+        Me.chkLockTagline.Size = New System.Drawing.Size(88, 17)
+        Me.chkLockTagline.TabIndex = 42
+        Me.chkLockTagline.Text = "Lock Tagline"
+        Me.chkLockTagline.UseVisualStyleBackColor = True
         '
         'chkLockTitle
         '
@@ -1535,7 +1592,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkStudio)
         Me.GroupBox1.Location = New System.Drawing.Point(207, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(204, 185)
+        Me.GroupBox1.Size = New System.Drawing.Size(204, 191)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -1543,7 +1600,7 @@ Partial Class dlgSettings
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(4, 145)
+        Me.Label18.Location = New System.Drawing.Point(4, 151)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(66, 13)
         Me.Label18.TabIndex = 62
@@ -1552,7 +1609,7 @@ Partial Class dlgSettings
         'txtIMDBURL
         '
         Me.txtIMDBURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIMDBURL.Location = New System.Drawing.Point(6, 158)
+        Me.txtIMDBURL.Location = New System.Drawing.Point(6, 164)
         Me.txtIMDBURL.Name = "txtIMDBURL"
         Me.txtIMDBURL.Size = New System.Drawing.Size(192, 20)
         Me.txtIMDBURL.TabIndex = 46
@@ -1930,16 +1987,6 @@ Partial Class dlgSettings
         Me.lstMovieExts.Sorted = True
         Me.lstMovieExts.TabIndex = 2
         '
-        'chkUpdates
-        '
-        Me.chkUpdates.AutoSize = True
-        Me.chkUpdates.Location = New System.Drawing.Point(10, 16)
-        Me.chkUpdates.Name = "chkUpdates"
-        Me.chkUpdates.Size = New System.Drawing.Size(115, 17)
-        Me.chkUpdates.TabIndex = 16
-        Me.chkUpdates.Text = "Check for Updates"
-        Me.chkUpdates.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -1954,11 +2001,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2176,4 +2223,8 @@ Partial Class dlgSettings
     Friend WithEvents txtMovieExt As System.Windows.Forms.TextBox
     Friend WithEvents lstMovieExts As System.Windows.Forms.ListBox
     Friend WithEvents chkUpdates As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockTagline As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockRating As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockRealStudio As System.Windows.Forms.CheckBox
+    Friend WithEvents chkLockGenre As System.Windows.Forms.CheckBox
 End Class

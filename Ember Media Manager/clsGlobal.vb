@@ -1068,7 +1068,6 @@ Public Class Master
             End If
         End If
 
-
     End Function
 
     Public Shared Sub SaveMovieToNFO(ByVal movieToSave As Media.Movie, ByVal sPath As String, ByVal isFile As Boolean)
