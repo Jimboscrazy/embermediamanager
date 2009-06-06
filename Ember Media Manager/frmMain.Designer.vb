@@ -47,6 +47,7 @@ Partial Class frmMain
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
+        Me.btnMarkAll = New System.Windows.Forms.Button
         Me.pnlFilter = New System.Windows.Forms.Panel
         Me.chkFilterDupe = New System.Windows.Forms.CheckBox
         Me.rbFilterOr = New System.Windows.Forms.RadioButton
@@ -200,7 +201,6 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
-        Me.btnMarkAll = New System.Windows.Forms.Button
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -436,6 +436,18 @@ Partial Class frmMain
         Me.scMain.SplitterDistance = 308
         Me.scMain.TabIndex = 7
         '
+        'btnMarkAll
+        '
+        Me.btnMarkAll.Image = CType(resources.GetObject("btnMarkAll.Image"), System.Drawing.Image)
+        Me.btnMarkAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMarkAll.Location = New System.Drawing.Point(223, 2)
+        Me.btnMarkAll.Name = "btnMarkAll"
+        Me.btnMarkAll.Size = New System.Drawing.Size(81, 21)
+        Me.btnMarkAll.TabIndex = 13
+        Me.btnMarkAll.Text = "Mark All"
+        Me.btnMarkAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMarkAll.UseVisualStyleBackColor = True
+        '
         'pnlFilter
         '
         Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -582,7 +594,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.ToolStripMenuItem2, Me.cmnuRescrape, Me.cmnuSearchNew, Me.ToolStripSeparator1, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(202, 210)
+        Me.mnuMediaList.Size = New System.Drawing.Size(202, 232)
         '
         'cmnuTitle
         '
@@ -1351,6 +1363,7 @@ Partial Class frmMain
         Me.lblTagline.TabIndex = 26
         Me.lblTagline.Text = """Just some tagline"""
         Me.lblTagline.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblTagline.UseMnemonic = False
         '
         'lblTitle
         '
@@ -1362,6 +1375,7 @@ Partial Class frmMain
         Me.lblTitle.Size = New System.Drawing.Size(151, 20)
         Me.lblTitle.TabIndex = 25
         Me.lblTitle.Text = "Movie Title (2009)"
+        Me.lblTitle.UseMnemonic = False
         '
         'pnlRating
         '
@@ -1840,18 +1854,6 @@ Partial Class frmMain
         'tmrSearch
         '
         Me.tmrSearch.Interval = 250
-        '
-        'btnMarkAll
-        '
-        Me.btnMarkAll.Image = CType(resources.GetObject("btnMarkAll.Image"), System.Drawing.Image)
-        Me.btnMarkAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMarkAll.Location = New System.Drawing.Point(223, 2)
-        Me.btnMarkAll.Name = "btnMarkAll"
-        Me.btnMarkAll.Size = New System.Drawing.Size(81, 21)
-        Me.btnMarkAll.TabIndex = 13
-        Me.btnMarkAll.Text = "Mark All"
-        Me.btnMarkAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMarkAll.UseVisualStyleBackColor = True
         '
         'frmMain
         '
