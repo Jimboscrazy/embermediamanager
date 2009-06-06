@@ -75,6 +75,7 @@ Namespace IMDB
         Private Const TABLE_PATTERN As String = "<table.*?>(.*?)</table>"
         Private Const HREF_PATTERN As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_2 As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>"
+        Private Const TITLE_PATTERN As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>((\s)+?(\(\d{4}\)))?((\s)+?(\((?<type>.*?)\)))?"
         Private Const HREF_PATTERN_3 As String = "<a href=""/List\?certificates=[^""]*"">([^<]*):([^<]*)</a>[^<]*(<i>([^<]*)</i>)?"
         Private Const IMG_PATTERN As String = "<img src=""(?<thumb>.*?)"" width=""\d{1,3}"" height=""\d{1,3}"" border="".{1,3}"">"
         Private Const TR_PATTERN As String = "<tr\sclass="".*?"">(.*?)</tr>"
@@ -220,8 +221,8 @@ Namespace IMDB
 
                 Dim Table As String = Regex.Match(Html.Substring(D, W - D), TABLE_PATTERN).ToString
 
-                Dim qPopular = From Mtr As Match In Regex.Matches(Table, HREF_PATTERN_2) _
-                               Where Not Mtr.Groups("name").ToString.Contains("<img") _
+                Dim qPopular = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
+                               Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                                Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
                                                 Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString))
 
@@ -234,8 +235,8 @@ mPartial:
                 W = Html.IndexOf("</p>", D)
 
                 Table = Regex.Match(Html.Substring(D, W - D), TABLE_PATTERN).ToString
-                Dim qpartial = From Mtr As Match In Regex.Matches(Table, HREF_PATTERN_2) _
-                    Where Not Mtr.Groups("name").ToString.Contains("<img") _
+                Dim qpartial = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
+                    Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
                                      Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString))
 
@@ -250,8 +251,8 @@ mApprox:
 
                 Table = Regex.Match(Html.Substring(D, W - D), TABLE_PATTERN).ToString
 
-                Dim qApprox = From Mtr As Match In Regex.Matches(Table, HREF_PATTERN_2) _
-                    Where Not Mtr.Groups("name").ToString.Contains("<img") _
+                Dim qApprox = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
+                    Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
                                      Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString))
 
@@ -271,8 +272,8 @@ mExact:
                 Table = String.Empty
                 Table = Regex.Match(Html.Substring(D, W - D), TABLE_PATTERN).ToString
 
-                Dim qExact = From Mtr As Match In Regex.Matches(Table, HREF_PATTERN_2) _
-                               Where Not Mtr.Groups("name").ToString.Contains("<img") _
+                Dim qExact = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
+                               Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                                Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
                             Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString.ToString))
 
@@ -530,7 +531,6 @@ mResult:
                         'Get the Plot Outline
                         D = 0 : W = 0
 
-                        'Check if is a VideoGame
                         Try
                             If IMDBMovie.Title.Contains("(VG)") Then
                                 D = If(HTML.IndexOf("<h5>Plot Summary:</h5>") > 0, HTML.IndexOf("<h5>Plot Summary:</h5>"), HTML.IndexOf("<h5>Tagline:</h5>"))

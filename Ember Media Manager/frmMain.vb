@@ -3425,7 +3425,6 @@ doCancel:
                     .mnuMediaList.Enabled = True
                 End With
             Else
-                Me.tsbRefreshMedia.Enabled = True
                 Me.tsbAutoPilot.Enabled = False
                 Me.mnuMediaList.Enabled = False
                 Me.tslStatus.Text = String.Empty
@@ -3439,6 +3438,7 @@ doCancel:
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
+        Me.tsbRefreshMedia.Enabled = True
         Me.tslLoading.Visible = False
         Me.tspbLoading.Visible = False
         Me.tspbLoading.Value = 0
