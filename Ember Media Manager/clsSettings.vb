@@ -106,6 +106,7 @@ Public Class emmSettings
     Private _windowloc As New Point
     Private _windowsize As New Size
     Private _windowstate As FormWindowState
+    Private _checkupdates As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -842,6 +843,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property CheckUpdates() As Boolean
+        Get
+            Return Me._checkupdates
+        End Get
+        Set(ByVal value As Boolean)
+            Me._checkupdates = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -937,6 +947,7 @@ Public Class emmSettings
         Me._windowloc = New Point(0, 0)
         Me._windowsize = New Size(1024, 768)
         Me._windowstate = FormWindowState.Normal
+        Me._checkupdates = True
         Me._xbmccoms.Clear()
     End Sub
 

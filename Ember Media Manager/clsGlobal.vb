@@ -1556,4 +1556,25 @@ Public Class Master
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Public Shared Function CheckUpdate() As Integer
+        Dim sHTTP As New HTTP("http://www.cube3studios.com/EMM/Update.xml")
+        Dim updateXML As String = sHTTP.Response
+        sHTTP = Nothing
+
+        Dim xmlUpdate As XDocument
+        Try
+            xmlUpdate = XDocument.Parse(updateXML)
+        Catch
+            Return 0
+        End Try
+
+        Dim xUdpate = From xUp In xmlUpdate...<version> Select xUp.@current
+        If xUdpate.Count > 0 Then
+            Return CInt(xUdpate(0))
+        Else
+            Return 0
+        End If
+
+    End Function
 End Class

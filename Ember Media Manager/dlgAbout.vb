@@ -42,30 +42,30 @@ Public NotInheritable Class dlgAbout
     End Sub
 
     Private Sub pbTMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbTMDB.Click
-        System.Diagnostics.Process.Start("http://www.themoviedb.org/")
+        Process.Start("http://www.themoviedb.org/")
     End Sub
 
     Private Sub pbIMPA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMPA.Click
-        System.Diagnostics.Process.Start("http://www.impawards.com/")
+        Process.Start("http://www.impawards.com/")
     End Sub
 
     Private Sub pbIMDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbIMDB.Click
-        System.Diagnostics.Process.Start("http://www.imdb.com/")
+        Process.Start("http://www.imdb.com/")
     End Sub
 
     Private Sub pbMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMI.Click
-        System.Diagnostics.Process.Start("http://mediainfo.sourceforge.net")
+        Process.Start("http://mediainfo.sourceforge.net")
     End Sub
 
     Private Sub pbFFMPEG_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbFFMPEG.Click
-        System.Diagnostics.Process.Start("http://www.ffmpeg.org/")
+        Process.Start("http://www.ffmpeg.org/")
     End Sub
 
     Private Sub pbMPDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMPDB.Click
-        System.Diagnostics.Process.Start("http://www.moviepostersdb.com/")
+        Process.Start("http://www.moviepostersdb.com/")
     End Sub
 
     Private Sub pbXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbXBMC.Click
-        System.Diagnostics.Process.Start("http://www.xbmc.org/")
+        Process.Start("http://www.xbmc.org/")
     End Sub
 End Class

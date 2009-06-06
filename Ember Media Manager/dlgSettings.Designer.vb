@@ -190,6 +190,7 @@ Partial Class dlgSettings
         Me.btnAddMovieExt = New System.Windows.Forms.Button
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
+        Me.chkUpdates = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -352,12 +353,13 @@ Partial Class dlgSettings
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.chkUpdates)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.chkLogErrors)
         Me.GroupBox4.Location = New System.Drawing.Point(400, 218)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(189, 78)
+        Me.GroupBox4.Size = New System.Drawing.Size(189, 114)
         Me.GroupBox4.TabIndex = 3
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
@@ -365,7 +367,7 @@ Partial Class dlgSettings
         'chkOverwriteNfo
         '
         Me.chkOverwriteNfo.AutoSize = True
-        Me.chkOverwriteNfo.Location = New System.Drawing.Point(13, 34)
+        Me.chkOverwriteNfo.Location = New System.Drawing.Point(10, 53)
         Me.chkOverwriteNfo.Name = "chkOverwriteNfo"
         Me.chkOverwriteNfo.Size = New System.Drawing.Size(172, 17)
         Me.chkOverwriteNfo.TabIndex = 14
@@ -375,7 +377,7 @@ Partial Class dlgSettings
         'Label5
         '
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(13, 49)
+        Me.Label5.Location = New System.Drawing.Point(10, 68)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(165, 24)
         Me.Label5.TabIndex = 15
@@ -385,7 +387,7 @@ Partial Class dlgSettings
         'chkLogErrors
         '
         Me.chkLogErrors.AutoSize = True
-        Me.chkLogErrors.Location = New System.Drawing.Point(13, 14)
+        Me.chkLogErrors.Location = New System.Drawing.Point(10, 34)
         Me.chkLogErrors.Name = "chkLogErrors"
         Me.chkLogErrors.Size = New System.Drawing.Size(105, 17)
         Me.chkLogErrors.TabIndex = 13
@@ -1928,6 +1930,16 @@ Partial Class dlgSettings
         Me.lstMovieExts.Sorted = True
         Me.lstMovieExts.TabIndex = 2
         '
+        'chkUpdates
+        '
+        Me.chkUpdates.AutoSize = True
+        Me.chkUpdates.Location = New System.Drawing.Point(10, 16)
+        Me.chkUpdates.Name = "chkUpdates"
+        Me.chkUpdates.Size = New System.Drawing.Size(115, 17)
+        Me.chkUpdates.TabIndex = 16
+        Me.chkUpdates.Text = "Check for Updates"
+        Me.chkUpdates.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -1942,11 +1954,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2163,4 +2175,5 @@ Partial Class dlgSettings
     Friend WithEvents btnAddMovieExt As System.Windows.Forms.Button
     Friend WithEvents txtMovieExt As System.Windows.Forms.TextBox
     Friend WithEvents lstMovieExts As System.Windows.Forms.ListBox
+    Friend WithEvents chkUpdates As System.Windows.Forms.CheckBox
 End Class
