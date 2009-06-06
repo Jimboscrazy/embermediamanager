@@ -181,7 +181,6 @@ Public Class frmMain
                 If dSettings.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     Me.FillList(0)
                     Me.SetColors()
-                    Me.SetCleanFolders()
 
                     If Me.dgvMediaList.RowCount > 0 Then
                         Me.dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
@@ -197,7 +196,7 @@ Public Class frmMain
 
             End Using
 
-            Me.SetupXComMenu()
+            Me.SetMenus()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -246,9 +245,8 @@ Public Class frmMain
             Me.WindowState = Master.eSettings.WindowState
 
             Me.SetColors()
-            Me.SetCleanFolders()
 
-            Me.SetupXComMenu()
+            Me.SetMenus()
 
             Me.pnlInfoPanel.Height = 25
             Me.ClearInfo()
@@ -1249,6 +1247,14 @@ Public Class frmMain
             Me.FillList(indX)
         End If
     End Sub
+
+    Private Sub CopyExistingFanartToBackdropsFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CopyExistingFanartToBackdropsFolderToolStripMenuItem.Click
+        '//
+        ' Copy all existing fanart to the backdrops folder
+        '\\
+
+        Me.ScrapeData(Master.ScrapeType.CopyBD, Nothing)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1709,6 +1715,7 @@ Public Class frmMain
         Dim Poster As New Images
         Dim Fanart As New Images
         Dim tmpMovie As New Media.Movie
+
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                 SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?) WHERE ID = (?);"
@@ -1945,9 +1952,36 @@ Public Class frmMain
                                     If drvRow.Item(12) Then Continue For
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    Master.DeleteFiles(True, drvRow.Item(1).ToString)
+                                    Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2))
                                 Next
+                            Case Master.ScrapeType.CopyBD
+                                For Each drvRow As DataRow In Me.dtMedia.Rows
 
+                                    Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                    iCount += 1
+
+                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                    sPath = Fanart.GetFanartPath(drvRow.Item(1).ToString, drvRow.Item(2))
+                                    If Not String.IsNullOrEmpty(sPath) Then
+                                        If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                                            If Master.eSettings.VideoTSParent Then
+                                                File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")), True)
+                                            Else
+                                                If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                                                    File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")), True)
+                                                Else
+                                                    File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)), True)
+                                                End If
+                                            End If
+                                        Else
+                                            If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
+                                                File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")), True)
+                                            Else
+                                                File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)), True)
+                                            End If
+                                        End If
+                                    End If
+                                Next
                             Case Master.ScrapeType.UpdateAuto
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
 
@@ -2846,10 +2880,21 @@ doCancel:
             End If
 
             Select Case sType
-                Case Master.ScrapeType.FullAsk
+                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.MIOnly, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD
                     Me.tspbLoading.Style = ProgressBarStyle.Continuous
                     Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
-                    Me.tslLoading.Text = "Updating Media (All Movies - Ask):"
+                    Select Case sType
+                        Case Master.ScrapeType.FullAsk
+                            Me.tslLoading.Text = "Updating Media (All Movies - Ask):"
+                        Case Master.ScrapeType.FullAuto
+                            Me.tslLoading.Text = "Updating Media (All Movies - Auto):"
+                        Case Master.ScrapeType.MIOnly
+                            Me.tslLoading.Text = "Updating Media (All Movies - MI Only):"
+                        Case Master.ScrapeType.CleanFolders
+                            Me.tslLoading.Text = "Cleaning Files:"
+                        Case Master.ScrapeType.CopyBD
+                            Me.tslLoading.Text = "Copying Fanart to Backdrops Folder:"
+                    End Select
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
@@ -2858,17 +2903,7 @@ doCancel:
                         bwScraper.WorkerSupportsCancellation = True
                         bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod})
                     End If
-                Case Master.ScrapeType.FullAuto
-                    Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
-                    Me.tslLoading.Text = "Updating Media (All Movies - Auto):"
-                    Me.tslLoading.Visible = True
-                    Me.tspbLoading.Visible = True
 
-                    If Not bwScraper.IsBusy Then
-                        bwScraper.WorkerSupportsCancellation = True
-                        bwScraper.WorkerReportsProgress = True
-                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod})
-                    End If
                 Case Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
 
                     Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
@@ -2921,28 +2956,6 @@ doCancel:
                         Me.mnuMediaList.Enabled = True
                         Me.tabsMain.Enabled = True
                         Me.EnableFilters(True)
-                    End If
-                Case Master.ScrapeType.MIOnly
-                    Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
-                    Me.tslLoading.Text = "Updating Media (All Movies - MI Only):"
-                    Me.tslLoading.Visible = True
-                    Me.tspbLoading.Visible = True
-
-                    If Not bwScraper.IsBusy Then
-                        bwScraper.WorkerSupportsCancellation = True
-                        bwScraper.WorkerReportsProgress = True
-                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType})
-                    End If
-                Case Master.ScrapeType.CleanFolders
-                    Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
-                    Me.tslLoading.Text = "Cleaning Files:"
-                    Me.tslLoading.Visible = True
-                    Me.tspbLoading.Visible = True
-
-                    If Not bwScraper.IsBusy Then
-                        bwScraper.WorkerSupportsCancellation = True
-                        bwScraper.WorkerReportsProgress = True
-                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType})
                     End If
                 Case Master.ScrapeType.SingleScrape
                     Me.ClearInfo(True)
@@ -3153,11 +3166,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub SetCleanFolders()
-
-        '//
-        ' Set the Clean Folders menu item enabled/disabled depending on if clean folder options are set
-        '\\
+    Private Sub SetMenus()
 
         With Master.eSettings
             If .CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
@@ -3166,6 +3175,22 @@ doCancel:
                 Me.CleanFoldersToolStripMenuItem.Enabled = True
             Else
                 Me.CleanFoldersToolStripMenuItem.Enabled = False
+            End If
+
+            If .XBMCComs.Count > 0 Then
+                Me.tsbUpdateXBMC.Enabled = True
+                tsbUpdateXBMC.DropDownItems.Clear()
+                For Each xCom As emmSettings.XBMCCom In .XBMCComs
+                    tsbUpdateXBMC.DropDownItems.Add(String.Concat("Update ", xCom.Name, " Only"), Nothing, New System.EventHandler(AddressOf XComSubClick))
+                Next
+            Else
+                Me.tsbUpdateXBMC.Enabled = False
+            End If
+
+            If Directory.Exists(.BDPath) Then
+                Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = True
+            Else
+                Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = False
             End If
         End With
     End Sub
@@ -3285,18 +3310,6 @@ doCancel:
                 End If
                 Me.FillList(0)
             End If
-        End If
-    End Sub
-
-    Private Sub SetupXComMenu()
-        If Master.eSettings.XBMCComs.Count > 0 Then
-            Me.tsbUpdateXBMC.Enabled = True
-            tsbUpdateXBMC.DropDownItems.Clear()
-            For Each xCom As emmSettings.XBMCCom In Master.eSettings.XBMCComs
-                tsbUpdateXBMC.DropDownItems.Add(String.Concat("Update ", xCom.Name, " Only"), Nothing, New System.EventHandler(AddressOf XComSubClick))
-            Next
-        Else
-            Me.tsbUpdateXBMC.Enabled = False
         End If
     End Sub
 
@@ -3445,6 +3458,5 @@ doCancel:
         Me.loadType = 0
     End Sub
 #End Region '*** Routines/Functions
-
 
 End Class

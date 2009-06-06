@@ -796,6 +796,24 @@ Public Class dlgSettings
     Private Sub chkLockTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockTagline.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
+        With Me.fbdBrowse
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
+                    Me.txtBDPath.Text = .SelectedPath.ToString
+                End If
+            End If
+        End With
+    End Sub
+
+    Private Sub chkAutoBD_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoBD.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtBDPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBDPath.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -973,6 +991,8 @@ Public Class dlgSettings
             Else
                 Master.eSettings.IMDBURL = "akas.imdb.com"
             End If
+            Master.eSettings.BDPath = Me.txtBDPath.Text
+            Master.eSettings.AutoBD = Me.chkAutoBD.Checked
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -1097,6 +1117,8 @@ Public Class dlgSettings
                 Me.chkNoSpoilers.Checked = Master.eSettings.AutoThumbsNoSpoilers
             End If
             Me.txtIMDBURL.Text = Master.eSettings.IMDBURL
+            Me.txtBDPath.Text = Master.eSettings.BDPath
+            Me.chkAutoBD.Checked = Master.eSettings.AutoBD
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
