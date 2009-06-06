@@ -345,11 +345,11 @@ mResult:
                     W = Html.IndexOf("</div>", D)
                     Dim rCert As MatchCollection = Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN_3)
 
-                    Dim Cert = From M As Match In rCert Select N = String.Format("{0}:{1}", M.Groups(1).ToString.Trim, M.Groups(2).ToString.Trim) Where N.Contains(Master.eSettings.CertificationLang)
+                    Dim Cert = From M As Match In rCert Select N = String.Format("{0}:{1}", M.Groups(1).ToString.Trim, M.Groups(2).ToString.Trim) Order By N Descending Where N.Contains(Master.eSettings.CertificationLang)
 
                     If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                         If Cert.Count > 0 Then
-                            IMDBMovie.Certification = Cert(0).ToString
+                            IMDBMovie.Certification = Cert(0).ToString.Replace("West", String.Empty).Trim
                             If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" Then
                                 IMDBMovie.MPAA = IMDBMovie.Certification
                             End If
