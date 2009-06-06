@@ -114,6 +114,7 @@ Public Class emmSettings
     Private _bdpath As String
     Private _autobd As Boolean
     Private _usemiduration As Boolean
+    Private _markall As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -922,6 +923,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property MarkAll() As Boolean
+        Get
+            Return Me._markall
+        End Get
+        Set(ByVal value As Boolean)
+            Me._markall = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -1025,6 +1035,7 @@ Public Class emmSettings
         Me._bdpath = String.Empty
         Me._autobd = False
         Me._usemiduration = False
+        Me._markall = True
         Me._xbmccoms.Clear()
     End Sub
 

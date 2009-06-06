@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -45,6 +45,7 @@ Partial Class frmMain
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.pnlFilter = New System.Windows.Forms.Panel
         Me.chkFilterDupe = New System.Windows.Forms.CheckBox
@@ -199,7 +200,7 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
-        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.btnMarkAll = New System.Windows.Forms.Button
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -306,7 +307,7 @@ Partial Class frmMain
         '
         Me.SettingsToolStripMenuItem.Image = CType(resources.GetObject("SettingsToolStripMenuItem.Image"), System.Drawing.Image)
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
         Me.SettingsToolStripMenuItem.Text = "Settings..."
         '
         'HelpToolStripMenuItem
@@ -393,6 +394,13 @@ Partial Class frmMain
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Text = "Sort Files Into Folders"
         '
+        'CopyExistingFanartToBackdropsFolderToolStripMenuItem
+        '
+        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Image = CType(resources.GetObject("CopyExistingFanartToBackdropsFolderToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Name = "CopyExistingFanartToBackdropsFolderToolStripMenuItem"
+        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
+        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = "Copy Existing Fanart To Backdrops Folder"
+        '
         'scMain
         '
         Me.scMain.Dock = System.Windows.Forms.DockStyle.Fill
@@ -403,6 +411,7 @@ Partial Class frmMain
         'scMain.Panel1
         '
         Me.scMain.Panel1.BackColor = System.Drawing.Color.Gainsboro
+        Me.scMain.Panel1.Controls.Add(Me.btnMarkAll)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
         Me.scMain.Panel1.Controls.Add(Me.pnlSearch)
         Me.scMain.Panel1.Controls.Add(Me.dgvMediaList)
@@ -547,8 +556,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -1832,12 +1841,17 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
-        'CopyExistingFanartToBackdropsFolderToolStripMenuItem
+        'btnMarkAll
         '
-        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Image = CType(resources.GetObject("CopyExistingFanartToBackdropsFolderToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Name = "CopyExistingFanartToBackdropsFolderToolStripMenuItem"
-        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = "Copy Existing Fanart To Backdrops Folder"
+        Me.btnMarkAll.Image = CType(resources.GetObject("btnMarkAll.Image"), System.Drawing.Image)
+        Me.btnMarkAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMarkAll.Location = New System.Drawing.Point(223, 2)
+        Me.btnMarkAll.Name = "btnMarkAll"
+        Me.btnMarkAll.Size = New System.Drawing.Size(81, 21)
+        Me.btnMarkAll.TabIndex = 13
+        Me.btnMarkAll.Text = "Mark All"
+        Me.btnMarkAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMarkAll.UseVisualStyleBackColor = True
         '
         'frmMain
         '
@@ -2086,4 +2100,5 @@ Partial Class frmMain
     Friend WithEvents DeleteMovieToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuLock As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents CopyExistingFanartToBackdropsFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents btnMarkAll As System.Windows.Forms.Button
 End Class
