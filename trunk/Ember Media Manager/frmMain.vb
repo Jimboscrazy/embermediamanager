@@ -3014,7 +3014,9 @@ doCancel:
                 Dim miFileInfo = New MediaInfo.Fileinfo
                 MI.GetMovieMIFromPath(miFileInfo, sPath)
                 miMovie.FileInfo = miFileInfo
-
+                If Master.eSettings.UseMIDuration AndAlso miMovie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Not String.IsNullOrEmpty(miMovie.FileInfo.StreamDetails.Video.Item(0).Duration) Then
+                    miMovie.Runtime = Regex.Replace(miMovie.FileInfo.StreamDetails.Video.Item(0).Duration, "(([0-9]+s)?([0-9]+ms)?)", String.Empty).Trim
+                End If
                 MI = Nothing
                 Return True
             Else
