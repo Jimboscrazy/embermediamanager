@@ -121,6 +121,7 @@ Partial Class dlgEditMovie
         Me.chkMark = New System.Windows.Forms.CheckBox
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
+        Me.btnStudio = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -224,6 +225,7 @@ Partial Class dlgEditMovie
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnStudio)
         Me.TabPage1.Controls.Add(Me.Label4)
         Me.TabPage1.Controls.Add(Me.txtStudioTag)
         Me.TabPage1.Controls.Add(Me.lblStudio)
@@ -311,7 +313,7 @@ Partial Class dlgEditMovie
         Me.txtStudio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtStudio.Location = New System.Drawing.Point(635, 355)
         Me.txtStudio.Name = "txtStudio"
-        Me.txtStudio.Size = New System.Drawing.Size(193, 20)
+        Me.txtStudio.Size = New System.Drawing.Size(167, 20)
         Me.txtStudio.TabIndex = 100
         '
         'lblTrailer
@@ -1123,6 +1125,15 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnChangeMovie.UseVisualStyleBackColor = True
         '
+        'btnStudio
+        '
+        Me.btnStudio.Image = CType(resources.GetObject("btnStudio.Image"), System.Drawing.Image)
+        Me.btnStudio.Location = New System.Drawing.Point(805, 353)
+        Me.btnStudio.Name = "btnStudio"
+        Me.btnStudio.Size = New System.Drawing.Size(23, 23)
+        Me.btnStudio.TabIndex = 104
+        Me.btnStudio.UseVisualStyleBackColor = True
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1271,5 +1282,6 @@ Partial Class dlgEditMovie
     Friend WithEvents txtThumbCount As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents btnThumbsRefresh As System.Windows.Forms.Button
+    Friend WithEvents btnStudio As System.Windows.Forms.Button
 
 End Class
