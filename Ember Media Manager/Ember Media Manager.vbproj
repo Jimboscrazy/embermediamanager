@@ -156,6 +156,12 @@
     <Compile Include="clsSettings.vb" />
     <Compile Include="clsSorter.vb" />
     <Compile Include="clsScrapeTMDB.vb" />
+    <Compile Include="dlgStudioSelect.Designer.vb">
+      <DependentUpon>dlgStudioSelect.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgStudioSelect.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgWizard.Designer.vb">
       <DependentUpon>dlgWizard.vb</DependentUpon>
     </Compile>
@@ -243,6 +249,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="dlgStudioSelect.resx">
+      <DependentUpon>dlgStudioSelect.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgWizard.resx">
       <DependentUpon>dlgWizard.vb</DependentUpon>
     </EmbeddedResource>

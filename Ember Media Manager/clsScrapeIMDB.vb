@@ -286,6 +286,27 @@ mResult:
             End Try
         End Function
 
+        Public Function GetMovieStudios(ByVal strID As String) As ArrayList
+            Dim alStudio As New ArrayList
+
+            Dim sHTTP As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/combined"))
+            Dim HTML As String = sHTTP.Response
+            sHTTP = Nothing
+
+            Dim D, W As Integer
+
+            D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
+            If D > 0 Then W = HTML.IndexOf("</ul>", D)
+            If D > 0 AndAlso W > 0 Then
+                Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
+                         Where Not P1.Groups("name").ToString = String.Empty _
+                         Select Studio = P1.Groups("name").ToString
+                alStudio.AddRange(Ps.ToArray)
+            End If
+
+            Return alStudio
+        End Function
+
         Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As Media.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean) As Boolean
             Try
                 Dim ofdbTitle As String = String.Empty
