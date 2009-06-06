@@ -101,7 +101,6 @@ Partial Class dlgImgView
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgImgView"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Image Viewer"
         Me.pnlBG.ResumeLayout(False)

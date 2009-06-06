@@ -32,6 +32,7 @@ Partial Class dlgEditMovie
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.btnStudio = New System.Windows.Forms.Button
         Me.Label4 = New System.Windows.Forms.Label
         Me.txtStudioTag = New System.Windows.Forms.TextBox
         Me.lblStudio = New System.Windows.Forms.Label
@@ -121,7 +122,6 @@ Partial Class dlgEditMovie
         Me.chkMark = New System.Windows.Forms.CheckBox
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
-        Me.btnStudio = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -281,6 +281,15 @@ Partial Class dlgEditMovie
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnStudio
+        '
+        Me.btnStudio.Image = CType(resources.GetObject("btnStudio.Image"), System.Drawing.Image)
+        Me.btnStudio.Location = New System.Drawing.Point(805, 353)
+        Me.btnStudio.Name = "btnStudio"
+        Me.btnStudio.Size = New System.Drawing.Size(23, 23)
+        Me.btnStudio.TabIndex = 104
+        Me.btnStudio.UseVisualStyleBackColor = True
         '
         'Label4
         '
@@ -1125,15 +1134,6 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnChangeMovie.UseVisualStyleBackColor = True
         '
-        'btnStudio
-        '
-        Me.btnStudio.Image = CType(resources.GetObject("btnStudio.Image"), System.Drawing.Image)
-        Me.btnStudio.Location = New System.Drawing.Point(805, 353)
-        Me.btnStudio.Name = "btnStudio"
-        Me.btnStudio.Size = New System.Drawing.Size(23, 23)
-        Me.btnStudio.TabIndex = 104
-        Me.btnStudio.UseVisualStyleBackColor = True
-        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1153,7 +1153,6 @@ Partial Class dlgEditMovie
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgEditMovie"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Edit Movie"
         Me.pnlTop.ResumeLayout(False)
