@@ -241,6 +241,8 @@ Public Class dlgSettings
 
     Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStudio.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.chkUseMIDuration.Enabled = Me.chkStudio.Checked
+        If Not Me.chkStudio.Checked Then Me.chkUseMIDuration.Checked = False
     End Sub
 
     Private Sub cbCert_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCert.SelectedIndexChanged
@@ -814,6 +816,10 @@ Public Class dlgSettings
     Private Sub txtBDPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBDPath.TextChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkUseMIDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMIDuration.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -993,6 +999,7 @@ Public Class dlgSettings
             End If
             Master.eSettings.BDPath = Me.txtBDPath.Text
             Master.eSettings.AutoBD = Me.chkAutoBD.Checked
+            Master.eSettings.UseMIDuration = Me.chkUseMIDuration.Checked
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -1119,6 +1126,7 @@ Public Class dlgSettings
             Me.txtIMDBURL.Text = Master.eSettings.IMDBURL
             Me.txtBDPath.Text = Master.eSettings.BDPath
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
+            Me.chkUseMIDuration.Checked = Master.eSettings.UseMIDuration
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74

@@ -113,6 +113,7 @@ Public Class emmSettings
     Private _checkupdates As Boolean
     Private _bdpath As String
     Private _autobd As Boolean
+    Private _usemiduration As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -912,6 +913,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property UseMIDuration() As Boolean
+        Get
+            Return Me._usemiduration
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usemiduration = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -1014,6 +1024,7 @@ Public Class emmSettings
         Me._checkupdates = True
         Me._bdpath = String.Empty
         Me._autobd = False
+        Me._usemiduration = False
         Me._xbmccoms.Clear()
     End Sub
 

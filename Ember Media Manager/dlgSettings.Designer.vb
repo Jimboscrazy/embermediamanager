@@ -199,6 +199,7 @@ Partial Class dlgSettings
         Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.btnBrowse = New System.Windows.Forms.Button
         Me.chkAutoBD = New System.Windows.Forms.CheckBox
+        Me.chkUseMIDuration = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -1215,7 +1216,7 @@ Partial Class dlgSettings
         Me.GroupBox14.Controls.Add(Me.chkResizePoster)
         Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
         Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
-        Me.GroupBox14.Location = New System.Drawing.Point(207, 203)
+        Me.GroupBox14.Location = New System.Drawing.Point(207, 213)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox14.TabIndex = 59
@@ -1275,7 +1276,7 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.chkResizeFanart)
         Me.GroupBox13.Controls.Add(Me.txtFanartWidth)
         Me.GroupBox13.Controls.Add(Me.txtFanartHeight)
-        Me.GroupBox13.Location = New System.Drawing.Point(207, 273)
+        Me.GroupBox13.Location = New System.Drawing.Point(207, 283)
         Me.GroupBox13.Name = "GroupBox13"
         Me.GroupBox13.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox13.TabIndex = 58
@@ -1586,6 +1587,7 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkUseMIDuration)
         Me.GroupBox1.Controls.Add(Me.Label18)
         Me.GroupBox1.Controls.Add(Me.txtIMDBURL)
         Me.GroupBox1.Controls.Add(Me.chkCastWithImg)
@@ -1595,9 +1597,9 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Controls.Add(Me.chkStudio)
-        Me.GroupBox1.Location = New System.Drawing.Point(207, 6)
+        Me.GroupBox1.Location = New System.Drawing.Point(204, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(204, 191)
+        Me.GroupBox1.Size = New System.Drawing.Size(211, 200)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -1605,7 +1607,7 @@ Partial Class dlgSettings
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(4, 151)
+        Me.Label18.Location = New System.Drawing.Point(4, 160)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(66, 13)
         Me.Label18.TabIndex = 62
@@ -1614,7 +1616,7 @@ Partial Class dlgSettings
         'txtIMDBURL
         '
         Me.txtIMDBURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIMDBURL.Location = New System.Drawing.Point(6, 164)
+        Me.txtIMDBURL.Location = New System.Drawing.Point(6, 173)
         Me.txtIMDBURL.Name = "txtIMDBURL"
         Me.txtIMDBURL.Size = New System.Drawing.Size(192, 20)
         Me.txtIMDBURL.TabIndex = 46
@@ -2032,6 +2034,17 @@ Partial Class dlgSettings
         Me.chkAutoBD.Text = "Automatically Save Fanart To Backdrops Folder"
         Me.chkAutoBD.UseVisualStyleBackColor = True
         '
+        'chkUseMIDuration
+        '
+        Me.chkUseMIDuration.AutoSize = True
+        Me.chkUseMIDuration.Enabled = False
+        Me.chkUseMIDuration.Location = New System.Drawing.Point(34, 137)
+        Me.chkUseMIDuration.Name = "chkUseMIDuration"
+        Me.chkUseMIDuration.Size = New System.Drawing.Size(160, 17)
+        Me.chkUseMIDuration.TabIndex = 63
+        Me.chkUseMIDuration.Text = "Use MI Duration for Runtime"
+        Me.chkUseMIDuration.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -2046,11 +2059,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2278,4 +2291,5 @@ Partial Class dlgSettings
     Friend WithEvents txtBDPath As System.Windows.Forms.TextBox
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
     Friend WithEvents chkAutoBD As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseMIDuration As System.Windows.Forms.CheckBox
 End Class
