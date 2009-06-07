@@ -491,33 +491,35 @@ Public Class dlgEditMovie
         Try
             With Me
 
-                Master.currMovie.Title = .txtTitle.Text.Trim
+                If Not String.IsNullOrEmpty(.txtTitle.Text) Then
+                    Master.currMovie.Title = .txtTitle.Text.Trim
 
-                'reset title in list just in case user changed it (only if Use Title From NFO is selected)
-                If Master.eSettings.UseNameFromNfo Then
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                        Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
-                        Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                        SQLcommand.CommandText = "UPDATE movies SET title = (?) WHERE id = (?);"
-                        parTitle.Value = .txtTitle.Text.Trim
-                        parID.Value = Me._id
-                        SQLcommand.ExecuteNonQuery()
-                    End Using
+                    'reset title in list just in case user changed it (only if Use Title From NFO is selected)
+                    If Master.eSettings.UseNameFromNfo Then
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                            Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
+                            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                            SQLcommand.CommandText = "UPDATE movies SET title = (?) WHERE id = (?);"
+                            parTitle.Value = .txtTitle.Text.Trim
+                            parID.Value = Me._id
+                            SQLcommand.ExecuteNonQuery()
+                        End Using
+                    End If
                 End If
 
-                Master.currMovie.Tagline = .txtTagline.Text
-                Master.currMovie.Year = .mtxtYear.Text
-                Master.currMovie.Votes = .txtVotes.Text
-                Master.currMovie.Outline = .txtOutline.Text
-                Master.currMovie.Plot = .txtPlot.Text
-                Master.currMovie.Top250 = .txtTop250.Text
-                Master.currMovie.Director = .txtDirector.Text
+                Master.currMovie.Tagline = .txtTagline.Text.Trim
+                Master.currMovie.Year = .mtxtYear.Text.Trim
+                Master.currMovie.Votes = .txtVotes.Text.Trim
+                Master.currMovie.Outline = .txtOutline.Text.Trim
+                Master.currMovie.Plot = .txtPlot.Text.Trim
+                Master.currMovie.Top250 = .txtTop250.Text.Trim
+                Master.currMovie.Director = .txtDirector.Text.Trim
 
                 If .lbMPAA.SelectedIndices.Count > 0 Then
                     If .lbMPAA.SelectedIndex = 0 Then
                         Master.currMovie.MPAA = String.Empty
                     Else
-                        Master.currMovie.MPAA = Strings.Trim(.lbMPAA.SelectedItem.ToString & " " & .txtMPAADesc.Text)
+                        Master.currMovie.MPAA = String.Concat(.lbMPAA.SelectedItem.ToString, " ", .txtMPAADesc.Text).Trim
                     End If
                 Else
                     Master.currMovie.MPAA = String.Empty
@@ -525,13 +527,13 @@ Public Class dlgEditMovie
 
                 Master.currMovie.Rating = .tmpRating
 
-                Master.currMovie.Runtime = .txtRuntime.Text
-                Master.currMovie.Certification = .txtCerts.Text
-                Master.currMovie.ReleaseDate = .txtReleaseDate.Text
-                Master.currMovie.Credits = .txtCredits.Text
-                Master.currMovie.Trailer = .txtTrailer.Text
-                Master.currMovie.StudioReal = .txtStudio.Text
-                Master.currMovie.Studio = String.Format("{0} / {1}", .txtStudio.Text.Trim, .txtStudioTag.Text.Trim)
+                Master.currMovie.Runtime = .txtRuntime.Text.Trim
+                Master.currMovie.Certification = .txtCerts.Text.Trim
+                Master.currMovie.ReleaseDate = .txtReleaseDate.Text.Trim
+                Master.currMovie.Credits = .txtCredits.Text.Trim
+                Master.currMovie.Trailer = .txtTrailer.Text.Trim
+                Master.currMovie.StudioReal = .txtStudio.Text.Trim
+                Master.currMovie.Studio = String.Format("{0} / {1}", .txtStudio.Text.Trim, .txtStudioTag.Text.Trim).Trim
 
                 If .lbGenre.SelectedIndices.Count > 0 Then
 
@@ -542,7 +544,7 @@ Public Class dlgEditMovie
                         Dim isFirst As Boolean = True
                         Dim Selected = From Sel In .lbGenre.SelectedItems
                         strGenre = Strings.Join(Selected.ToArray, " / ")
-                        Master.currMovie.Genre = strGenre
+                        Master.currMovie.Genre = strGenre.Trim
                     End If
                 End If
 
@@ -551,9 +553,9 @@ Public Class dlgEditMovie
                 If .lvActors.Items.Count > 0 Then
                     For Each lviActor As ListViewItem In .lvActors.Items
                         Dim addActor As New Media.Person
-                        addActor.Name = lviActor.Text
-                        addActor.Role = lviActor.SubItems(1).Text
-                        addActor.Thumb = lviActor.SubItems(2).Text
+                        addActor.Name = lviActor.Text.Trim
+                        addActor.Role = lviActor.SubItems(1).Text.Trim
+                        addActor.Thumb = lviActor.SubItems(2).Text.Trim
 
                         Master.currMovie.Actors.Add(addActor)
                     Next
