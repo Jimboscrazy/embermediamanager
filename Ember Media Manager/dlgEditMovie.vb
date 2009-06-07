@@ -925,9 +925,12 @@ Public Class dlgEditMovie
         Dim tPath As String = Path.Combine(Directory.GetParent(Master.currPath).FullName, "extrathumbs")
         If Directory.Exists(tPath) Then
             Dim di As New DirectoryInfo(tPath)
+            Dim lFI As New List(Of FileInfo)
             Dim i As Integer = 0
             Try
-                For Each thumb As FileInfo In di.GetFiles("thumb*.jpg")
+                lFI.AddRange(di.GetFiles("thumb*.jpg"))
+                lFI.Sort(AddressOf Master.SortThumbFileNames)
+                For Each thumb As FileInfo In lFI
                     Dim fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
                     Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i})
                     ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
