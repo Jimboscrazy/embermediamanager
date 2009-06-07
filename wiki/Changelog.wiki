@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r257:*
  * Feature: Configurable IMDB mirror
  * Feature: Delete Movie
  * Feature: Open containing folder
@@ -17,10 +20,12 @@
  * Feature: New tool and option to automatically copy fanart to a selectable backdrops folder
  * Feature: Option to use media info duration as runtime
  * Feature: Mark All/Unmark All button
+ * Feature: More optional columns: subtitles and extrathumbs
  * Fix: File-type sources not stacking properly
  * Fix: File cleaner did not remove YAMJ compatible files
  * Fix: Sorting of extrathumbs in extrathumbs manager
  * Fix: "Change Movie" not working properly from movie editor
+ * Fix: Disable media list double click when background workers are busy
  * Change: Special cell coloring persistent through selection
  * Change: Ability to refresh extrathumbs list in movie editor
  * Change: Tweaks to certification handling
