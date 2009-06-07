@@ -402,6 +402,9 @@ Public Class frmMain
                     Me.btnMid.Enabled = True
                 End If
             End If
+
+            'move focus somewhere to stop highlighting some info boxes
+            Me.txtSearch.Focus()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -423,6 +426,11 @@ Public Class frmMain
         '\\
 
         Try
+
+            If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse _
+            Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse _
+            Me.bwValidateNfo.IsBusy Then Return
+
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
             Master.currPath = Me.dgvMediaList.Rows(indX).Cells(1).Value
@@ -1529,7 +1537,6 @@ Public Class frmMain
         Try
             If Not Res.fileInfo = "error" Then
                 Me.pbMILoading.Visible = False
-                Me.txtMediaInfo.SelectionLength = 0
                 Me.txtMediaInfo.Text = Res.fileInfo
                 If Master.eSettings.UseStudioTags = True Then
                     If Not String.IsNullOrEmpty(Res.Movie.Studio) Then
@@ -1543,7 +1550,7 @@ Public Class frmMain
                     Me.pnlInfoIcons.Width = 70
                     Me.pbStudio.Left = 0
                 End If
-
+                Me.btnMIRefresh.Focus()
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
