@@ -131,7 +131,7 @@ Public Class OFDB
 
                         If D > 0 Then
                             W = Html.IndexOf("<a href=""", D + 14)
-                            _outline = Html.Substring(D + 14, W - (D + 14)).Trim
+                            _outline = Web.HttpUtility.HtmlDecode(HTML.Substring(D + 14, W - (D + 14)).Trim)
                         End If
                     End If
 
@@ -164,7 +164,7 @@ Public Class OFDB
                             If W > 0 Then
                                 Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>")
                                 Dim Gen = From M As Match In rGenres _
-                                      Select N = M.Groups("name").ToString
+                                      Select N = Web.HttpUtility.HtmlDecode(M.Groups("name").ToString)
                                 If Gen.Count > 0 Then
                                     _genre = Strings.Join(Gen.ToArray, " / ").Trim
                                 End If
@@ -199,7 +199,7 @@ Public Class OFDB
                     W = tmpHTML.IndexOf("</b></b><br><br>")
                     If W > 0 Then
                         B = tmpHTML.IndexOf("</font></p>", W + 16)
-                        FullPlot = tmpHTML.Substring(W + 16, B - (W + 16)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim
+                        FullPlot = Web.HttpUtility.HtmlDecode(tmpHTML.Substring(W + 16, B - (W + 16)).Replace("<br />", String.Empty).Replace(vbCrLf, " ").Trim)
                     End If
                 End If
             End If
