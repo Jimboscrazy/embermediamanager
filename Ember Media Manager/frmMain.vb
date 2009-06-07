@@ -259,7 +259,7 @@ Public Class frmMain
             Me.ClearInfo()
 
             If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                Master.ConnectDB(True)
+                Master.ConnectDB(False)
                 Me.FillList(0)
             Else
                 If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -3385,16 +3385,25 @@ doCancel:
     End Sub
 
     Private Sub SaveMovieList()
-        Me.ClearFilters()
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+        Try
+            Me.ClearFilters()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    SQLcommand.CommandText = "UPDATE movies SET new = (?);"
+                    Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
+                    parNew.Value = False
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
+            End Using
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = "UPDATE movies SET new = 0;"
-                SQLcommand.ExecuteNonQuery()
                 SQLcommand.CommandText = "VACUUM;"
                 SQLcommand.ExecuteNonQuery()
             End Using
-            SQLtransaction.Commit()
-        End Using
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub FillList(ByVal iIndex As Integer, Optional ByVal DupesOnly As Boolean = False)
