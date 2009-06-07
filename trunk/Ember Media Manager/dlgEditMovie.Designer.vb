@@ -32,6 +32,7 @@ Partial Class dlgEditMovie
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.lbGenre = New System.Windows.Forms.CheckedListBox
         Me.btnStudio = New System.Windows.Forms.Button
         Me.Label4 = New System.Windows.Forms.Label
         Me.txtStudioTag = New System.Windows.Forms.TextBox
@@ -60,7 +61,6 @@ Partial Class dlgEditMovie
         Me.colThumb = New System.Windows.Forms.ColumnHeader
         Me.lbMPAA = New System.Windows.Forms.ListBox
         Me.lblGenre = New System.Windows.Forms.Label
-        Me.lbGenre = New System.Windows.Forms.ListBox
         Me.lblMPAA = New System.Windows.Forms.Label
         Me.lblDirector = New System.Windows.Forms.Label
         Me.txtDirector = New System.Windows.Forms.TextBox
@@ -225,6 +225,7 @@ Partial Class dlgEditMovie
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.lbGenre)
         Me.TabPage1.Controls.Add(Me.btnStudio)
         Me.TabPage1.Controls.Add(Me.Label4)
         Me.TabPage1.Controls.Add(Me.txtStudioTag)
@@ -250,7 +251,6 @@ Partial Class dlgEditMovie
         Me.TabPage1.Controls.Add(Me.lvActors)
         Me.TabPage1.Controls.Add(Me.lbMPAA)
         Me.TabPage1.Controls.Add(Me.lblGenre)
-        Me.TabPage1.Controls.Add(Me.lbGenre)
         Me.TabPage1.Controls.Add(Me.lblMPAA)
         Me.TabPage1.Controls.Add(Me.lblDirector)
         Me.TabPage1.Controls.Add(Me.txtDirector)
@@ -281,6 +281,16 @@ Partial Class dlgEditMovie
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'lbGenre
+        '
+        Me.lbGenre.CheckOnClick = True
+        Me.lbGenre.FormattingEnabled = True
+        Me.lbGenre.IntegralHeight = False
+        Me.lbGenre.Location = New System.Drawing.Point(7, 285)
+        Me.lbGenre.Name = "lbGenre"
+        Me.lbGenre.Size = New System.Drawing.Size(192, 159)
+        Me.lbGenre.TabIndex = 105
         '
         'btnStudio
         '
@@ -516,15 +526,6 @@ Partial Class dlgEditMovie
         Me.lblGenre.Size = New System.Drawing.Size(39, 13)
         Me.lblGenre.TabIndex = 80
         Me.lblGenre.Text = "Genre:"
-        '
-        'lbGenre
-        '
-        Me.lbGenre.FormattingEnabled = True
-        Me.lbGenre.Location = New System.Drawing.Point(6, 284)
-        Me.lbGenre.Name = "lbGenre"
-        Me.lbGenre.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lbGenre.Size = New System.Drawing.Size(193, 160)
-        Me.lbGenre.TabIndex = 8
         '
         'lblMPAA
         '
@@ -1205,7 +1206,6 @@ Partial Class dlgEditMovie
     Friend WithEvents colThumb As System.Windows.Forms.ColumnHeader
     Friend WithEvents lbMPAA As System.Windows.Forms.ListBox
     Friend WithEvents lblGenre As System.Windows.Forms.Label
-    Friend WithEvents lbGenre As System.Windows.Forms.ListBox
     Friend WithEvents lblMPAA As System.Windows.Forms.Label
     Friend WithEvents lblDirector As System.Windows.Forms.Label
     Friend WithEvents txtDirector As System.Windows.Forms.TextBox
@@ -1282,5 +1282,6 @@ Partial Class dlgEditMovie
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents btnThumbsRefresh As System.Windows.Forms.Button
     Friend WithEvents btnStudio As System.Windows.Forms.Button
+    Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
 
 End Class

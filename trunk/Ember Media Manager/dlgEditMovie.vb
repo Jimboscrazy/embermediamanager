@@ -419,21 +419,16 @@ Public Class dlgEditMovie
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Genre) Then
                     Dim genreArray() As String
-
                     genreArray = Strings.Split(Master.currMovie.Genre, " / ")
                     For g As Integer = 0 To UBound(genreArray)
-                        Dim l As Integer = .lbGenre.FindString(Strings.Trim(genreArray(g)))
-                        .lbGenre.SelectedIndex = l
+                        .lbGenre.SetItemChecked(.lbGenre.FindString(Strings.Trim(genreArray(g))), True)
                     Next
 
-                    If .lbGenre.SelectedItems.Count = 0 Then
-                        .lbGenre.SelectedIndex = 0
+                    If .lbGenre.CheckedItems.Count = 0 Then
+                        .lbGenre.SetItemChecked(0, True)
                     End If
-
-                    .lbGenre.TopIndex = 0
                 Else
-                    .lbGenre.SelectedIndex = 0
-                    .lbGenre.TopIndex = 0
+                    .lbGenre.SetItemChecked(0, True)
                 End If
 
 
@@ -535,15 +530,15 @@ Public Class dlgEditMovie
                 Master.currMovie.StudioReal = .txtStudio.Text.Trim
                 Master.currMovie.Studio = String.Format("{0} / {1}", .txtStudio.Text.Trim, .txtStudioTag.Text.Trim).Trim
 
-                If .lbGenre.SelectedIndices.Count > 0 Then
+                If .lbGenre.CheckedItems.Count > 0 Then
 
-                    If .lbGenre.SelectedIndices.Contains(0) Then
+                    If .lbGenre.CheckedIndices.Contains(0) Then
                         Master.currMovie.Genre = String.Empty
                     Else
                         Dim strGenre As String = String.Empty
                         Dim isFirst As Boolean = True
-                        Dim Selected = From Sel In .lbGenre.SelectedItems
-                        strGenre = Strings.Join(Selected.ToArray, " / ")
+                        Dim iChecked = From iCheck In .lbGenre.CheckedItems
+                        strGenre = Strings.Join(iChecked.ToArray, " / ")
                         Master.currMovie.Genre = strGenre.Trim
                     End If
                 End If
@@ -1244,4 +1239,15 @@ Public Class dlgEditMovie
             End If
         End Using
     End Sub
+
+    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
+        If e.Index = 0 Then
+            For i As Integer = 1 To lbGenre.Items.Count - 1
+                Me.lbGenre.SetItemChecked(i, False)
+            Next
+        Else
+            Me.lbGenre.SetItemChecked(0, False)
+        End If
+    End Sub
+
 End Class
