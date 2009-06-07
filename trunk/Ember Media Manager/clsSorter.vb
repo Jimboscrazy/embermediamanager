@@ -25,12 +25,16 @@ Public Class ListViewColumnSorter
 
     Private ColumnToSort As Integer
     Private OrderOfSort As SortOrder
+    Private ByText As Boolean
+    Private IsNumeric As Boolean
     Private ObjectCompare As CaseInsensitiveComparer
 
     Public Sub New()
         ColumnToSort = 0
         OrderOfSort = SortOrder.None
         ObjectCompare = New CaseInsensitiveComparer()
+        ByText = False
+        IsNumeric = False
     End Sub
 
     Public Function Compare(ByVal x As Object, ByVal y As Object) As Integer Implements IComparer.Compare
@@ -44,7 +48,19 @@ Public Class ListViewColumnSorter
             listviewY = CType(y, ListViewItem)
 
             ' Compare the two items.
-            compareResult = ObjectCompare.Compare(listviewX.SubItems(ColumnToSort).Text, listviewY.SubItems(ColumnToSort).Text)
+            If ByText Then
+                If IsNumeric Then
+                    compareResult = ObjectCompare.Compare(CInt(listviewX.Text.Trim), CInt(listviewY.Text.Trim))
+                Else
+                    compareResult = ObjectCompare.Compare(listviewX.Text.Trim, listviewY.Text.Trim)
+                End If
+            Else
+                If IsNumeric Then
+                    compareResult = ObjectCompare.Compare(CInt(listviewX.SubItems(ColumnToSort).Text.Trim), CInt(listviewY.SubItems(ColumnToSort).Text.Trim))
+                Else
+                    compareResult = ObjectCompare.Compare(listviewX.SubItems(ColumnToSort).Text.Trim, listviewY.SubItems(ColumnToSort).Text.Trim)
+                End If
+            End If
 
             ' Calculate the correct return value based on the object 
             ' comparison.
@@ -67,20 +83,38 @@ Public Class ListViewColumnSorter
     End Function
 
     Public Property SortColumn() As Integer
-        Set(ByVal Value As Integer)
-            ColumnToSort = Value
-        End Set
         Get
             Return ColumnToSort
         End Get
+        Set(ByVal value As Integer)
+            ColumnToSort = value
+        End Set
     End Property
 
     Public Property Order() As SortOrder
-        Set(ByVal Value As SortOrder)
-            OrderOfSort = Value
-        End Set
         Get
             Return OrderOfSort
         End Get
+        Set(ByVal value As SortOrder)
+            OrderOfSort = value
+        End Set
+    End Property
+
+    Public Property SortByText() As Boolean
+        Get
+            Return ByText
+        End Get
+        Set(ByVal value As Boolean)
+            ByText = value
+        End Set
+    End Property
+
+    Public Property NumericSort() As Boolean
+        Get
+            Return IsNumeric
+        End Get
+        Set(ByVal value As Boolean)
+            IsNumeric = value
+        End Set
     End Property
 End Class

@@ -131,7 +131,7 @@ Public Class Master
             SQLcn.ConnectionString = "Data Source=Media.emm;Compress=True"
             SQLcn.Open()
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False NOT NULL, fanart BOOL DEFAULT FALSE NOT NULL, info BOOL DEFAULT False NOT NULL, trailer BOOL DEFAULT False NOT NULL, sub BOOL DEFAULT False NOT NULL, extra BOOL DEFAULT False NOT NULL, new BOOL DEFAULT False NOT NULL, mark BOOL DEFAULT False NOT NULL, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False NOT NULL);"
+                SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False, fanart BOOL DEFAULT False, info BOOL DEFAULT False, trailer BOOL DEFAULT False, sub BOOL DEFAULT False, extra BOOL DEFAULT False, new BOOL DEFAULT False, mark BOOL DEFAULT False, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False);"
                 SQLcommand.ExecuteNonQuery()
                 SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
                 SQLcommand.ExecuteNonQuery()
@@ -155,7 +155,7 @@ Public Class Master
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "ALTER TABLE movies RENAME TO tmp_movies;"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False NOT NULL, fanart BOOL DEFAULT FALSE NOT NULL, info BOOL DEFAULT False NOT NULL, trailer BOOL DEFAULT False NOT NULL, sub BOOL DEFAULT False NOT NULL, extra BOOL DEFAULT False NOT NULL, new BOOL DEFAULT False NOT NULL, mark BOOL DEFAULT False NOT NULL, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False NOT NULL);"
+                    SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False, fanart BOOL DEFAULT False, info BOOL DEFAULT False, trailer BOOL DEFAULT False, sub BOOL DEFAULT False, extra BOOL DEFAULT False, new BOOL DEFAULT False, mark BOOL DEFAULT False, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False);"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
                     SQLcommand.ExecuteNonQuery()

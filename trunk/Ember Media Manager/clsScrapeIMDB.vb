@@ -510,7 +510,7 @@ mResult:
                                 Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
 
                                 Dim Gen = From M As Match In rGenres _
-                                          Select N = M.Groups("name").ToString Where Not N.Contains("more")
+                                          Select N = Web.HttpUtility.HtmlDecode(M.Groups("name").ToString) Where Not N.Contains("more")
                                 If Gen.Count > 0 Then
                                     IMDBMovie.Genre = Strings.Join(Gen.ToArray, " / ").Trim
                                 End If
@@ -595,14 +595,14 @@ mPlot:
                             'only get the first one
                             Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                                      Where Not P1.Groups("name").ToString = String.Empty _
-                                     Select Studio = P1.Groups("name").ToString Take 1
+                                     Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString) Take 1
                             IMDBMovie.StudioReal = Ps(0).ToString.Trim
                         End If
                     Else
                         D = HTML.IndexOf("<h5>Company:</h5>")
                         If D > 0 Then W = HTML.IndexOf("</div>", D)
                         If D > 0 AndAlso W > 0 Then
-                            IMDBMovie.StudioReal = Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim
+                            IMDBMovie.StudioReal = Web.HttpUtility.HtmlDecode(Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim)
                         End If
                     End If
                 End If
@@ -620,7 +620,7 @@ mPlot:
                             Where Not M.Groups("name").ToString = "more" _
                             AndAlso Not M.Groups("name").ToString = "(more)" _
                             AndAlso Not M.Groups("name").ToString = "(WGA)" _
-                            Select Writer = M.Groups("name").ToString & If(FullCrew, " (writer)", String.Empty)
+                            Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(M.Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
 
                     IMDBMovie.Credits = Strings.Join(q.ToArray, " / ").Trim
                 End If
@@ -645,10 +645,10 @@ mPlot:
                                 Where Not Po.ToString.Contains(String.Concat("http://", Master.eSettings.IMDBURL, "/Glossary/")) _
                                 Let P1 = Regex.Match(Po.ToString, HREF_PATTERN_2) _
                                 Where Not P1.Groups("name").ToString = String.Empty _
-                                Select Producer = P1.Groups("name").ToString & " (producer)"
+                                Select Producer = Web.HttpUtility.HtmlDecode(String.Concat(P1.Groups("name").ToString & " (producer)"))
 
                                 If Pr.Count > 0 Then
-                                    IMDBMovie.Credits = IMDBMovie.Credits & " / " & Strings.Join(Pr.ToArray, " / ").Trim
+                                    IMDBMovie.Credits = String.Concat(IMDBMovie.Credits, " / ", Strings.Join(Pr.ToArray, " / ").Trim)
                                 End If
                             End If
 
@@ -657,10 +657,10 @@ mPlot:
                                 Dim Mu = From Mo In Regex.Matches(M.ToString, "<td\svalign=""top"">(.*?)</td>") _
                                 Let M1 = Regex.Match(Mo.ToString, HREF_PATTERN) _
                                 Where Not M1.Groups("name").ToString = String.Empty _
-                                Select Musician = M1.Groups("name").ToString & " (music by)"
+                                Select Musician = Web.HttpUtility.HtmlDecode(String.Concat(M1.Groups("name").ToString, " (music by)"))
 
                                 If Mu.Count > 0 Then
-                                    IMDBMovie.Credits = IMDBMovie.Credits & " / " & Strings.Join(Mu.ToArray, " / ").Trim
+                                    IMDBMovie.Credits = String.Concat(IMDBMovie.Credits, " / ", Strings.Join(Mu.ToArray, " / ").Trim)
                                 End If
                             End If
 
@@ -677,9 +677,9 @@ mPlot:
                     If D > 0 AndAlso W > 0 Then
                         Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                                  Where Not P1.Groups("name").ToString = String.Empty _
-                                 Select Studio = P1.Groups("name").ToString
+                                 Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString)
                         If Ps.Count > 0 Then
-                            IMDBMovie.Credits = IMDBMovie.Credits & " / " & Strings.Join(Ps.ToArray, " / ").Trim
+                            IMDBMovie.Credits = String.Concat(IMDBMovie.Credits, " / ", Strings.Join(Ps.ToArray, " / ").Trim)
                         End If
                     End If
                 End If

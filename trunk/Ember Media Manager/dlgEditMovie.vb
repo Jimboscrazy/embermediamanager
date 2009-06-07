@@ -90,7 +90,7 @@ Public Class dlgEditMovie
 
             Me.lvwActorSorter = New ListViewColumnSorter()
             Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
-            Me.lvwThumbSorter = New ListViewColumnSorter()
+            Me.lvwThumbSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
             Me.lvThumbs.ListViewItemSorter = Me.lvwThumbSorter
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -421,7 +421,7 @@ Public Class dlgEditMovie
                     Dim genreArray() As String
                     genreArray = Strings.Split(Master.currMovie.Genre, " / ")
                     For g As Integer = 0 To UBound(genreArray)
-                        .lbGenre.SetItemChecked(.lbGenre.FindString(Strings.Trim(genreArray(g))), True)
+                        If .lbGenre.FindString(Strings.Trim(genreArray(g))) > 0 Then .lbGenre.SetItemChecked(.lbGenre.FindString(Strings.Trim(genreArray(g))), True)
                     Next
 
                     If .lbGenre.CheckedItems.Count = 0 Then
@@ -1188,6 +1188,25 @@ Public Class dlgEditMovie
         Me.bwThumbs.RunWorkerAsync()
     End Sub
 
+    Private Sub btnStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStudio.Click
+        Using dStudio As New dlgStudioSelect
+            Dim tStudio As String = dStudio.ShowDialog(Master.currMovie.IMDBID)
+            If Not String.IsNullOrEmpty(tStudio) Then
+                Me.txtStudio.Text = tStudio
+            End If
+        End Using
+    End Sub
+
+    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
+        If e.Index = 0 Then
+            For i As Integer = 1 To lbGenre.Items.Count - 1
+                Me.lbGenre.SetItemChecked(i, False)
+            Next
+        Else
+            Me.lbGenre.SetItemChecked(0, False)
+        End If
+    End Sub
+
     Friend Class ExtraThumbs
         Private _image As Image
         Private _name As String
@@ -1230,24 +1249,4 @@ Public Class dlgEditMovie
             _index = Nothing
         End Sub
     End Class
-
-    Private Sub btnStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStudio.Click
-        Using dStudio As New dlgStudioSelect
-            Dim tStudio As String = dStudio.ShowDialog(Master.currMovie.IMDBID)
-            If Not String.IsNullOrEmpty(tStudio) Then
-                Me.txtStudio.Text = tStudio
-            End If
-        End Using
-    End Sub
-
-    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
-        If e.Index = 0 Then
-            For i As Integer = 1 To lbGenre.Items.Count - 1
-                Me.lbGenre.SetItemChecked(i, False)
-            Next
-        Else
-            Me.lbGenre.SetItemChecked(0, False)
-        End If
-    End Sub
-
 End Class
