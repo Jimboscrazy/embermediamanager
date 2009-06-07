@@ -179,11 +179,6 @@ Public Class frmMain
             Using dSettings As New dlgSettings
 
                 If dSettings.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    If Not bwPrelim.IsBusy AndAlso Not bwFolderData.IsBusy Then
-                        Me.FillList(0)
-                    End If
-
-                    Me.SetColors()
 
                     If Me.dgvMediaList.RowCount > 0 Then
                         Me.dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
@@ -198,6 +193,13 @@ Public Class frmMain
                         Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                     End If
                 End If
+
+                Me.SetColors()
+
+                If Not bwPrelim.IsBusy AndAlso Not bwFolderData.IsBusy Then
+                    Me.FillList(0)
+                End If
+
 
             End Using
 
@@ -875,8 +877,8 @@ Public Class frmMain
     Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
         Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
         Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
-            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
+            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
             SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
             parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
             parID.Value = indX(0).Item(0)
@@ -889,14 +891,14 @@ Public Class frmMain
     Private Sub cmnuLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLock.Click
         Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
         Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-            Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 1, "lock")
-            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 1, "id")
+            Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
             SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
-            parLock.Value = If(cmnuMark.Text = "Unlock", False, True)
+            parLock.Value = If(cmnuLock.Text = "Unlock", False, True)
             parID.Value = indX(0).Item(0)
             SQLcommand.ExecuteNonQuery()
         End Using
-        indX(0).Item(14) = If(cmnuMark.Text = "Unlock", False, True)
+        indX(0).Item(14) = If(cmnuLock.Text = "Unlock", False, True)
         Me.SetFilterColors()
     End Sub
 
@@ -1233,7 +1235,7 @@ Public Class frmMain
 
     Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
         Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
+            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
             SQLcommand.CommandText = "UPDATE movies SET mark = (?);"
             parMark.Value = If(btnMarkAll.Text = "Unmark All", False, True)
             SQLcommand.ExecuteNonQuery()
@@ -1265,7 +1267,7 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                 SQLcommand.CommandText = "DELETE FROM movies WHERE id = (?);"
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int16, 16, "id")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                 If Me.dtMedia.Rows.Count > 0 Then
                     For Each drvRow As DataRow In Me.dtMedia.Rows
                         If Not File.Exists(drvRow.Item(1)) Then
@@ -1362,20 +1364,20 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
-                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 512, "path")
-                    Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 1, "type")
-                    Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 255, "title")
-                    Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 1, "poster")
-                    Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 1, "fanart")
-                    Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 1, "info")
-                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 1, "trailer")
-                    Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 1, "sub")
-                    Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 1, "extra")
-                    Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 1, "new")
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 1, "mark")
-                    Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 512, "source")
-                    Dim parIMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parIMDB", DbType.String, 512, "imdb")
-                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 1, "lock")
+                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
+                    Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 0, "type")
+                    Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
+                    Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
+                    Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
+                    Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
+                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
+                    Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
+                    Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+                    Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                    Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                    Dim parIMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parIMDB", DbType.String, 0, "imdb")
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
 
                     'process the folder type media
                     For Each sFile As Master.FileAndSource In Master.MediaList
@@ -1460,7 +1462,7 @@ Public Class frmMain
                                 mIMDB = String.Empty
                                 currentIndex += 1
                             End If
-                            End If
+                        End If
                     Next
                 End Using
                 SQLtransaction.Commit()
@@ -1705,10 +1707,10 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                 SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?) WHERE ID = (?);"
-                Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 1, "poster")
-                Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 1, "fanart")
-                Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 1, "info")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int16, 16, "id")
+                Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
+                Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
+                Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
 
                 Try
                     If Me.dtMedia.Rows.Count > 0 Then
@@ -3157,13 +3159,13 @@ doCancel:
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                 SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?) WHERE ID = (?);"
-                Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 1, "poster")
-                Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 1, "fanart")
-                Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 1, "info")
-                Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 1, "trailer")
-                Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 1, "sub")
-                Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 1, "extra")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int16, 16, "id")
+                Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
+                Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
+                Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
+                Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
+                Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
+                Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
 
                 parPoster.Value = hasPoster
                 parFanart.Value = hasFanart
