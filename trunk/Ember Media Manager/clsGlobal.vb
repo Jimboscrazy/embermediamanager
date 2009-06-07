@@ -702,7 +702,7 @@ Public Class Master
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlMov As New Media.Movie
         Try
-            If File.Exists(sPath) Then
+            If File.Exists(sPath) AndAlso Not Master.eSettings.ValidExts.Contains(Path.GetExtension(sPath)) Then
                 Using xmlSR As StreamReader = New StreamReader(sPath)
                     xmlSer = New XmlSerializer(GetType(Media.Movie))
                     xmlMov = CType(xmlSer.Deserialize(xmlSR), Media.Movie)
