@@ -78,7 +78,7 @@ Namespace MPDB
                     bwMPDB.ReportProgress(1)
                 End If
 
-                If Regex.IsMatch(HTML, String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", imdbID), RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline) Then
+                If Regex.IsMatch(HTML, String.Concat("http://www.imdb.com/title/tt", imdbID), RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline) Then
                     Dim mcPoster As MatchCollection = Regex.Matches(HTML, "http://www.movieposterdb.com/posters/[0-9_](.*?)/[0-9](.*?)/[0-9](.*?)/[a-z0-9_](.*?).jpg")
 
                     Dim PosterURL As String = String.Empty
