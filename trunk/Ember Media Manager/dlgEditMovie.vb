@@ -491,13 +491,16 @@ Public Class dlgEditMovie
 
                     'reset title in list just in case user changed it (only if Use Title From NFO is selected)
                     If Master.eSettings.UseNameFromNfo Then
-                        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                            Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
-                            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                            SQLcommand.CommandText = "UPDATE movies SET title = (?) WHERE id = (?);"
-                            parTitle.Value = .txtTitle.Text.Trim
-                            parID.Value = Me._id
-                            SQLcommand.ExecuteNonQuery()
+                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
+                                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                                SQLcommand.CommandText = "UPDATE movies SET title = (?) WHERE id = (?);"
+                                parTitle.Value = .txtTitle.Text.Trim
+                                parID.Value = Me._id
+                                SQLcommand.ExecuteNonQuery()
+                            End Using
+                            SQLtransaction.Commit()
                         End Using
                     End If
                 End If
@@ -596,13 +599,16 @@ Public Class dlgEditMovie
                     Directory.Delete(Path.Combine(Application.StartupPath, "Temp"), True)
                 End If
 
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
-                    parMark.Value = Me.chkMark.Checked
-                    parID.Value = Me._id
-                    SQLcommand.ExecuteNonQuery()
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                        Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                        Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                        SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
+                        parMark.Value = Me.chkMark.Checked
+                        parID.Value = Me._id
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                    SQLtransaction.Commit()
                 End Using
             End With
         Catch ex As Exception

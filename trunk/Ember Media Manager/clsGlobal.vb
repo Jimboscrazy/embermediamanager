@@ -130,11 +130,14 @@ Public Class Master
         If Not File.Exists("Media.emm") Then
             SQLcn.ConnectionString = "Data Source=Media.emm;Compress=True"
             SQLcn.Open()
-            Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False, fanart BOOL DEFAULT False, info BOOL DEFAULT False, trailer BOOL DEFAULT False, sub BOOL DEFAULT False, extra BOOL DEFAULT False, new BOOL DEFAULT False, mark BOOL DEFAULT False, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False);"
-                SQLcommand.ExecuteNonQuery()
-                SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
-                SQLcommand.ExecuteNonQuery()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                    SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False, fanart BOOL DEFAULT False, info BOOL DEFAULT False, trailer BOOL DEFAULT False, sub BOOL DEFAULT False, extra BOOL DEFAULT False, new BOOL DEFAULT False, mark BOOL DEFAULT False, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False);"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
             End Using
         Else
             SQLcn.ConnectionString = "Data Source=Media.emm;Compress=True"
@@ -150,19 +153,22 @@ Public Class Master
                     aCol.Add(col("column_name").ToString)
                 Next
                 cQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
-                Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                    SQLcommand.CommandText = "DROP INDEX UniquePath;"
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "ALTER TABLE movies RENAME TO tmp_movies;"
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False, fanart BOOL DEFAULT False, info BOOL DEFAULT False, trailer BOOL DEFAULT False, sub BOOL DEFAULT False, extra BOOL DEFAULT False, new BOOL DEFAULT False, mark BOOL DEFAULT False, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False);"
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = String.Concat("INSERT INTO movies ", cQuery, " SELECT * FROM tmp_movies;")
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "DROP TABLE tmp_movies;"
-                    SQLcommand.ExecuteNonQuery()
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                    Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommand.CommandText = "DROP INDEX UniquePath;"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "ALTER TABLE movies RENAME TO tmp_movies;"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL DEFAULT False NOT NULL, Title TEXT NOT NULL, poster BOOL DEFAULT False, fanart BOOL DEFAULT False, info BOOL DEFAULT False, trailer BOOL DEFAULT False, sub BOOL DEFAULT False, extra BOOL DEFAULT False, new BOOL DEFAULT False, mark BOOL DEFAULT False, source TEXT NOT NULL, imdb TEXT, lock BOOL DEFAULT False);"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = String.Concat("INSERT INTO movies ", cQuery, " SELECT * FROM tmp_movies;")
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "DROP TABLE tmp_movies;"
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                    SQLtransaction.Commit()
                 End Using
             End If
         End If

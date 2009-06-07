@@ -259,7 +259,7 @@ Public Class frmMain
             Me.ClearInfo()
 
             If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                Master.ConnectDB(False)
+                Master.ConnectDB(True)
                 Me.FillList(0)
             Else
                 If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -882,13 +882,16 @@ Public Class frmMain
 
     Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
         Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
-        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
-            SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
-            parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
-            parID.Value = indX(0).Item(0)
-            SQLcommand.ExecuteNonQuery()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
+                SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
+                parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
+                parID.Value = indX(0).Item(0)
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
         End Using
         indX(0).Item(11) = If(cmnuMark.Text = "Unmark", False, True)
         Me.SetFilterColors()
@@ -896,13 +899,16 @@ Public Class frmMain
 
     Private Sub cmnuLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLock.Click
         Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
-        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-            Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
-            SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
-            parLock.Value = If(cmnuLock.Text = "Unlock", False, True)
-            parID.Value = indX(0).Item(0)
-            SQLcommand.ExecuteNonQuery()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
+                SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
+                parLock.Value = If(cmnuLock.Text = "Unlock", False, True)
+                parID.Value = indX(0).Item(0)
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
         End Using
         indX(0).Item(14) = If(cmnuLock.Text = "Unlock", False, True)
         Me.SetFilterColors()
@@ -1223,9 +1229,12 @@ Public Class frmMain
         If MsgBox(String.Concat("WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE FROM THE HARD DRIVE", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Master.DeleteFiles(False, Me.dgvMediaList.Rows(indX).Cells(1).Value, Me.dgvMediaList.Rows(indX).Cells(2).Value)
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE id = ", Me.dgvMediaList.Rows(indX).Cells(0).Value, ";")
-                SQLcommand.ExecuteNonQuery()
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE id = ", Me.dgvMediaList.Rows(indX).Cells(0).Value, ";")
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
             End Using
             Me.FillList(indX)
         End If
@@ -1240,11 +1249,14 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
-        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-            Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-            SQLcommand.CommandText = "UPDATE movies SET mark = (?);"
-            parMark.Value = If(btnMarkAll.Text = "Unmark All", False, True)
-            SQLcommand.ExecuteNonQuery()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                SQLcommand.CommandText = "UPDATE movies SET mark = (?);"
+                parMark.Value = If(btnMarkAll.Text = "Unmark All", False, True)
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
         End Using
         For Each drvRow As DataRow In dtMedia.Rows
             drvRow.Item(11) = If(btnMarkAll.Text = "Unmark All", False, True)
@@ -3162,25 +3174,28 @@ doCancel:
                 End If
             Next
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?) WHERE ID = (?);"
-                Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
-                Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
-                Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
-                Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
-                Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
-                Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?) WHERE ID = (?);"
+                    Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
+                    Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
+                    Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
+                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
+                    Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
+                    Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
 
-                parPoster.Value = hasPoster
-                parFanart.Value = hasFanart
-                parInfo.Value = hasNfo
-                parTrailer.Value = hasTrailer
-                parSub.Value = hasSub
-                parExtra.Value = hasExtra
-                parID.Value = ID
+                    parPoster.Value = hasPoster
+                    parFanart.Value = hasFanart
+                    parInfo.Value = hasNfo
+                    parTrailer.Value = hasTrailer
+                    parSub.Value = hasSub
+                    parExtra.Value = hasExtra
+                    parID.Value = ID
 
-                SQLcommand.ExecuteNonQuery()
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
             End Using
 
         Catch ex As Exception
@@ -3371,11 +3386,14 @@ doCancel:
 
     Private Sub SaveMovieList()
         Me.ClearFilters()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-            SQLcommand.CommandText = "UPDATE movies SET new = 0;"
-            SQLcommand.ExecuteNonQuery()
-            SQLcommand.CommandText = "VACUUM;"
-            SQLcommand.ExecuteNonQuery()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = "UPDATE movies SET new = 0;"
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = "VACUUM;"
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            SQLtransaction.Commit()
         End Using
     End Sub
 
