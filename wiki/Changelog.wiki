@@ -4,6 +4,12 @@
 *Changes in Upcoming Release:*
  * None yet
 
+*Changes in r263:*
+ * Fix: Error in movie editor when movie's genre does not exist in genre list
+ * Fix: Sorting/Reordering of extrathumbs
+ * Change: Tweaks to IMDB and OFDB scrapers
+ * Change: Always use transactions for database non-queries
+
 *Changes in r257:*
  * Feature: Configurable IMDB mirror
  * Feature: Delete Movie
