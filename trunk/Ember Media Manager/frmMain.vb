@@ -271,11 +271,12 @@ Public Class frmMain
                 End If
             End If
 
-            Me.Visible = True
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+
+        Me.Visible = True
     End Sub
 
     Private Sub lstActors_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstActors.SelectedIndexChanged

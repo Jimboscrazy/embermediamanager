@@ -290,6 +290,7 @@ Partial Class dlgEditMovie
         Me.lbGenre.Location = New System.Drawing.Point(7, 285)
         Me.lbGenre.Name = "lbGenre"
         Me.lbGenre.Size = New System.Drawing.Size(192, 159)
+        Me.lbGenre.Sorted = True
         Me.lbGenre.TabIndex = 105
         '
         'btnStudio
