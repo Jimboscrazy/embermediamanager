@@ -90,6 +90,8 @@ Partial Class dlgSettings
         Me.Label8 = New System.Windows.Forms.Label
         Me.chkMarkNew = New System.Windows.Forms.CheckBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.chkMovieExtraCol = New System.Windows.Forms.CheckBox
+        Me.chkMovieSubCol = New System.Windows.Forms.CheckBox
         Me.chkMovieTrailerCol = New System.Windows.Forms.CheckBox
         Me.chkMovieInfoCol = New System.Windows.Forms.CheckBox
         Me.chkMovieFanartCol = New System.Windows.Forms.CheckBox
@@ -200,8 +202,6 @@ Partial Class dlgSettings
         Me.btnAddMovieExt = New System.Windows.Forms.Button
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
-        Me.chkMovieSubCol = New System.Windows.Forms.CheckBox
-        Me.chkMovieExtraCol = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -801,7 +801,6 @@ Partial Class dlgSettings
         Me.lstFilters.Name = "lstFilters"
         Me.lstFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lstFilters.Size = New System.Drawing.Size(180, 212)
-        Me.lstFilters.Sorted = True
         Me.lstFilters.TabIndex = 2
         '
         'chkScanRecursive
@@ -860,6 +859,26 @@ Partial Class dlgSettings
         Me.GroupBox2.TabIndex = 54
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Media List Options"
+        '
+        'chkMovieExtraCol
+        '
+        Me.chkMovieExtraCol.AutoSize = True
+        Me.chkMovieExtraCol.Location = New System.Drawing.Point(6, 95)
+        Me.chkMovieExtraCol.Name = "chkMovieExtraCol"
+        Me.chkMovieExtraCol.Size = New System.Drawing.Size(142, 17)
+        Me.chkMovieExtraCol.TabIndex = 33
+        Me.chkMovieExtraCol.Text = "Hide Extrathumb Column"
+        Me.chkMovieExtraCol.UseVisualStyleBackColor = True
+        '
+        'chkMovieSubCol
+        '
+        Me.chkMovieSubCol.AutoSize = True
+        Me.chkMovieSubCol.Location = New System.Drawing.Point(6, 79)
+        Me.chkMovieSubCol.Name = "chkMovieSubCol"
+        Me.chkMovieSubCol.Size = New System.Drawing.Size(108, 17)
+        Me.chkMovieSubCol.TabIndex = 32
+        Me.chkMovieSubCol.Text = "Hide Sub Column"
+        Me.chkMovieSubCol.UseVisualStyleBackColor = True
         '
         'chkMovieTrailerCol
         '
@@ -2049,26 +2068,6 @@ Partial Class dlgSettings
         Me.lstMovieExts.Sorted = True
         Me.lstMovieExts.TabIndex = 2
         '
-        'chkMovieSubCol
-        '
-        Me.chkMovieSubCol.AutoSize = True
-        Me.chkMovieSubCol.Location = New System.Drawing.Point(6, 79)
-        Me.chkMovieSubCol.Name = "chkMovieSubCol"
-        Me.chkMovieSubCol.Size = New System.Drawing.Size(108, 17)
-        Me.chkMovieSubCol.TabIndex = 32
-        Me.chkMovieSubCol.Text = "Hide Sub Column"
-        Me.chkMovieSubCol.UseVisualStyleBackColor = True
-        '
-        'chkMovieExtraCol
-        '
-        Me.chkMovieExtraCol.AutoSize = True
-        Me.chkMovieExtraCol.Location = New System.Drawing.Point(6, 95)
-        Me.chkMovieExtraCol.Name = "chkMovieExtraCol"
-        Me.chkMovieExtraCol.Size = New System.Drawing.Size(142, 17)
-        Me.chkMovieExtraCol.TabIndex = 33
-        Me.chkMovieExtraCol.Text = "Hide Extrathumb Column"
-        Me.chkMovieExtraCol.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -2083,11 +2082,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

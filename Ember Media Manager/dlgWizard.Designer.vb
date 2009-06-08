@@ -28,21 +28,9 @@ Partial Class dlgWizard
         Me.btnBack = New System.Windows.Forms.Button
         Me.btnNext = New System.Windows.Forms.Button
         Me.Panel1 = New System.Windows.Forms.Panel
-        Me.Panel3 = New System.Windows.Forms.Panel
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label1 = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.lvMovies = New System.Windows.Forms.ListView
-        Me.colPath = New System.Windows.Forms.ColumnHeader
-        Me.colType = New System.Windows.Forms.ColumnHeader
-        Me.btnMovieAddFiles = New System.Windows.Forms.Button
-        Me.btnMovieRem = New System.Windows.Forms.Button
-        Me.btnMovieAddFolder = New System.Windows.Forms.Button
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.Label5 = New System.Windows.Forms.Label
+        Me.Panel3 = New System.Windows.Forms.Panel
         Me.GroupBox7 = New System.Windows.Forms.GroupBox
         Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
         Me.chkMovieNFO = New System.Windows.Forms.CheckBox
@@ -58,17 +46,29 @@ Partial Class dlgWizard
         Me.chkMovieJPG = New System.Windows.Forms.CheckBox
         Me.chkMovieNameTBN = New System.Windows.Forms.CheckBox
         Me.chkMovieTBN = New System.Windows.Forms.CheckBox
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.Panel2 = New System.Windows.Forms.Panel
+        Me.lvMovies = New System.Windows.Forms.ListView
+        Me.colPath = New System.Windows.Forms.ColumnHeader
+        Me.colType = New System.Windows.Forms.ColumnHeader
+        Me.btnMovieAddFiles = New System.Windows.Forms.Button
+        Me.btnMovieRem = New System.Windows.Forms.Button
+        Me.btnMovieAddFolder = New System.Windows.Forms.Button
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.Panel4 = New System.Windows.Forms.Panel
+        Me.Label8 = New System.Windows.Forms.Label
         Me.Label6 = New System.Windows.Forms.Label
         Me.Label7 = New System.Windows.Forms.Label
-        Me.Label8 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
         Me.Panel3.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Panel2.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel2.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -123,21 +123,6 @@ Partial Class dlgWizard
         Me.Panel1.Size = New System.Drawing.Size(372, 323)
         Me.Panel1.TabIndex = 4
         '
-        'Panel3
-        '
-        Me.Panel3.BackColor = System.Drawing.Color.White
-        Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel3.Controls.Add(Me.GroupBox7)
-        Me.Panel3.Controls.Add(Me.GroupBox6)
-        Me.Panel3.Controls.Add(Me.GroupBox5)
-        Me.Panel3.Controls.Add(Me.Label5)
-        Me.Panel3.Controls.Add(Me.Label4)
-        Me.Panel3.Location = New System.Drawing.Point(164, 7)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(372, 323)
-        Me.Panel3.TabIndex = 6
-        Me.Panel3.Visible = False
-        '
         'Label2
         '
         Me.Label2.Location = New System.Drawing.Point(18, 80)
@@ -157,120 +142,20 @@ Partial Class dlgWizard
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Welcome to Ember Media Manager"
         '
-        'PictureBox1
+        'Panel3
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.White
-        Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.PictureBox1.Image = Global.Ember_Media_Manager.My.Resources.Resources.Wizard
-        Me.PictureBox1.Location = New System.Drawing.Point(3, 7)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(157, 353)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
-        '
-        'Panel2
-        '
-        Me.Panel2.BackColor = System.Drawing.Color.White
-        Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel2.Controls.Add(Me.lvMovies)
-        Me.Panel2.Controls.Add(Me.btnMovieAddFiles)
-        Me.Panel2.Controls.Add(Me.btnMovieRem)
-        Me.Panel2.Controls.Add(Me.btnMovieAddFolder)
-        Me.Panel2.Controls.Add(Me.Label3)
-        Me.Panel2.Location = New System.Drawing.Point(164, 7)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(372, 323)
-        Me.Panel2.TabIndex = 5
-        Me.Panel2.Visible = False
-        '
-        'lvMovies
-        '
-        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colPath, Me.colType})
-        Me.lvMovies.FullRowSelect = True
-        Me.lvMovies.HideSelection = False
-        Me.lvMovies.Location = New System.Drawing.Point(3, 125)
-        Me.lvMovies.Name = "lvMovies"
-        Me.lvMovies.Size = New System.Drawing.Size(364, 105)
-        Me.lvMovies.Sorting = System.Windows.Forms.SortOrder.Ascending
-        Me.lvMovies.TabIndex = 53
-        Me.lvMovies.UseCompatibleStateImageBehavior = False
-        Me.lvMovies.View = System.Windows.Forms.View.Details
-        '
-        'colPath
-        '
-        Me.colPath.Text = "Path"
-        Me.colPath.Width = 286
-        '
-        'colType
-        '
-        Me.colType.Text = "Folders/Files"
-        Me.colType.Width = 74
-        '
-        'btnMovieAddFiles
-        '
-        Me.btnMovieAddFiles.Image = CType(resources.GetObject("btnMovieAddFiles.Image"), System.Drawing.Image)
-        Me.btnMovieAddFiles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieAddFiles.Location = New System.Drawing.Point(3, 262)
-        Me.btnMovieAddFiles.Name = "btnMovieAddFiles"
-        Me.btnMovieAddFiles.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieAddFiles.TabIndex = 55
-        Me.btnMovieAddFiles.Text = "Files Path"
-        Me.btnMovieAddFiles.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieAddFiles.UseVisualStyleBackColor = True
-        '
-        'btnMovieRem
-        '
-        Me.btnMovieRem.Image = CType(resources.GetObject("btnMovieRem.Image"), System.Drawing.Image)
-        Me.btnMovieRem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieRem.Location = New System.Drawing.Point(263, 236)
-        Me.btnMovieRem.Name = "btnMovieRem"
-        Me.btnMovieRem.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieRem.TabIndex = 56
-        Me.btnMovieRem.Text = "Remove"
-        Me.btnMovieRem.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieRem.UseVisualStyleBackColor = True
-        '
-        'btnMovieAddFolder
-        '
-        Me.btnMovieAddFolder.Image = CType(resources.GetObject("btnMovieAddFolder.Image"), System.Drawing.Image)
-        Me.btnMovieAddFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieAddFolder.Location = New System.Drawing.Point(3, 236)
-        Me.btnMovieAddFolder.Name = "btnMovieAddFolder"
-        Me.btnMovieAddFolder.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieAddFolder.TabIndex = 54
-        Me.btnMovieAddFolder.Text = "Folders Path"
-        Me.btnMovieAddFolder.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieAddFolder.UseVisualStyleBackColor = True
-        '
-        'Label3
-        '
-        Me.Label3.Location = New System.Drawing.Point(18, 15)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(332, 93)
-        Me.Label3.TabIndex = 0
-        Me.Label3.Text = resources.GetString("Label3.Text")
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Label4
-        '
-        Me.Label4.Location = New System.Drawing.Point(13, 15)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(341, 93)
-        Me.Label4.TabIndex = 1
-        Me.Label4.Text = resources.GetString("Label4.Text")
-        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Label5
-        '
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(45, 277)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(286, 30)
-        Me.Label5.TabIndex = 2
-        Me.Label5.Text = "TIP: Selections containing the text <movie> means that Ember Media Manager will u" & _
-            "se the filename of the movie."
-        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.Panel3.BackColor = System.Drawing.Color.White
+        Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel3.Controls.Add(Me.GroupBox7)
+        Me.Panel3.Controls.Add(Me.GroupBox6)
+        Me.Panel3.Controls.Add(Me.GroupBox5)
+        Me.Panel3.Controls.Add(Me.Label5)
+        Me.Panel3.Controls.Add(Me.Label4)
+        Me.Panel3.Location = New System.Drawing.Point(164, 7)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(372, 323)
+        Me.Panel3.TabIndex = 6
+        Me.Panel3.Visible = False
         '
         'GroupBox7
         '
@@ -431,6 +316,121 @@ Partial Class dlgWizard
         Me.chkMovieTBN.Text = "movie.tbn"
         Me.chkMovieTBN.UseVisualStyleBackColor = True
         '
+        'Label5
+        '
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(45, 277)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(286, 30)
+        Me.Label5.TabIndex = 2
+        Me.Label5.Text = "TIP: Selections containing the text <movie> means that Ember Media Manager will u" & _
+            "se the filename of the movie."
+        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label4
+        '
+        Me.Label4.Location = New System.Drawing.Point(13, 15)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(341, 93)
+        Me.Label4.TabIndex = 1
+        Me.Label4.Text = resources.GetString("Label4.Text")
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackColor = System.Drawing.Color.White
+        Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PictureBox1.Image = Global.Ember_Media_Manager.My.Resources.Resources.Wizard
+        Me.PictureBox1.Location = New System.Drawing.Point(3, 7)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(157, 353)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox1.TabIndex = 0
+        Me.PictureBox1.TabStop = False
+        '
+        'Panel2
+        '
+        Me.Panel2.BackColor = System.Drawing.Color.White
+        Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel2.Controls.Add(Me.lvMovies)
+        Me.Panel2.Controls.Add(Me.btnMovieAddFiles)
+        Me.Panel2.Controls.Add(Me.btnMovieRem)
+        Me.Panel2.Controls.Add(Me.btnMovieAddFolder)
+        Me.Panel2.Controls.Add(Me.Label3)
+        Me.Panel2.Location = New System.Drawing.Point(164, 7)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(372, 323)
+        Me.Panel2.TabIndex = 5
+        Me.Panel2.Visible = False
+        '
+        'lvMovies
+        '
+        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colPath, Me.colType})
+        Me.lvMovies.FullRowSelect = True
+        Me.lvMovies.HideSelection = False
+        Me.lvMovies.Location = New System.Drawing.Point(3, 125)
+        Me.lvMovies.Name = "lvMovies"
+        Me.lvMovies.Size = New System.Drawing.Size(364, 105)
+        Me.lvMovies.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvMovies.TabIndex = 53
+        Me.lvMovies.UseCompatibleStateImageBehavior = False
+        Me.lvMovies.View = System.Windows.Forms.View.Details
+        '
+        'colPath
+        '
+        Me.colPath.Text = "Path"
+        Me.colPath.Width = 286
+        '
+        'colType
+        '
+        Me.colType.Text = "Folders/Files"
+        Me.colType.Width = 74
+        '
+        'btnMovieAddFiles
+        '
+        Me.btnMovieAddFiles.Image = CType(resources.GetObject("btnMovieAddFiles.Image"), System.Drawing.Image)
+        Me.btnMovieAddFiles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieAddFiles.Location = New System.Drawing.Point(3, 262)
+        Me.btnMovieAddFiles.Name = "btnMovieAddFiles"
+        Me.btnMovieAddFiles.Size = New System.Drawing.Size(104, 23)
+        Me.btnMovieAddFiles.TabIndex = 55
+        Me.btnMovieAddFiles.Text = "Files Path"
+        Me.btnMovieAddFiles.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieAddFiles.UseVisualStyleBackColor = True
+        '
+        'btnMovieRem
+        '
+        Me.btnMovieRem.Image = CType(resources.GetObject("btnMovieRem.Image"), System.Drawing.Image)
+        Me.btnMovieRem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieRem.Location = New System.Drawing.Point(263, 236)
+        Me.btnMovieRem.Name = "btnMovieRem"
+        Me.btnMovieRem.Size = New System.Drawing.Size(104, 23)
+        Me.btnMovieRem.TabIndex = 56
+        Me.btnMovieRem.Text = "Remove"
+        Me.btnMovieRem.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieRem.UseVisualStyleBackColor = True
+        '
+        'btnMovieAddFolder
+        '
+        Me.btnMovieAddFolder.Image = CType(resources.GetObject("btnMovieAddFolder.Image"), System.Drawing.Image)
+        Me.btnMovieAddFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieAddFolder.Location = New System.Drawing.Point(3, 236)
+        Me.btnMovieAddFolder.Name = "btnMovieAddFolder"
+        Me.btnMovieAddFolder.Size = New System.Drawing.Size(104, 23)
+        Me.btnMovieAddFolder.TabIndex = 54
+        Me.btnMovieAddFolder.Text = "Folders Path"
+        Me.btnMovieAddFolder.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieAddFolder.UseVisualStyleBackColor = True
+        '
+        'Label3
+        '
+        Me.Label3.Location = New System.Drawing.Point(18, 15)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(332, 93)
+        Me.Label3.TabIndex = 0
+        Me.Label3.Text = resources.GetString("Label3.Text")
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'Panel4
         '
         Me.Panel4.BackColor = System.Drawing.Color.White
@@ -443,6 +443,14 @@ Partial Class dlgWizard
         Me.Panel4.Size = New System.Drawing.Size(372, 323)
         Me.Panel4.TabIndex = 7
         Me.Panel4.Visible = False
+        '
+        'Label8
+        '
+        Me.Label8.Location = New System.Drawing.Point(3, 124)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(364, 189)
+        Me.Label8.TabIndex = 2
+        Me.Label8.Text = resources.GetString("Label8.Text")
         '
         'Label6
         '
@@ -465,14 +473,6 @@ Partial Class dlgWizard
         Me.Label7.Text = "That's it!" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Ember Media Manager is Ready!"
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'Label8
-        '
-        Me.Label8.Location = New System.Drawing.Point(3, 124)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(364, 189)
-        Me.Label8.TabIndex = 2
-        Me.Label8.Text = resources.GetString("Label8.Text")
-        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -480,15 +480,15 @@ Partial Class dlgWizard
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(540, 368)
-        Me.Controls.Add(Me.Panel4)
-        Me.Controls.Add(Me.Panel3)
-        Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.PictureBox1)
-        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.btnBack)
         Me.Controls.Add(Me.btnNext)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
+        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.Panel4)
+        Me.Controls.Add(Me.Panel3)
+        Me.Controls.Add(Me.Panel2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -499,14 +499,14 @@ Partial Class dlgWizard
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.Panel3.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Panel2.ResumeLayout(False)
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel2.ResumeLayout(False)
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
         Me.ResumeLayout(False)
