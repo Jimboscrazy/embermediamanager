@@ -622,7 +622,9 @@ mPlot:
                             AndAlso Not M.Groups("name").ToString = "(WGA)" _
                             Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(M.Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
 
-                    IMDBMovie.Credits = Strings.Join(q.ToArray, " / ").Trim
+                    If q.Count > 0 Then
+                        IMDBMovie.Credits = Strings.Join(q.ToArray, " / ").Trim
+                    End If
                 End If
 
                 If bwIMDB.WorkerReportsProgress Then

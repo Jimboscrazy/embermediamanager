@@ -1047,11 +1047,11 @@ Public Class Master
         Try
             If sinWidth >= 1600 AndAlso sinHeight >= 800 Then Return "1080"
             If sinWidth >= 1350 AndAlso sinHeight >= 750 Then Return "768"
-            If sinWidth >= 960 AndAlso sinHeight >= 500 Then Return "720"
+            If sinWidth >= 960 AndAlso sinHeight >= 600 Then Return "720"
             If sinWidth >= 720 AndAlso sinHeight >= 500 Then Return "576"
-            If sinWidth <= 960 AndAlso sinHeight >= 500 Then Return "540"
+            If sinWidth < 720 AndAlso sinHeight >= 500 Then Return "540"
             If sinWidth < 640 Then Return "SD"
-            If sinWidth <= 960 AndAlso sinHeight <= 500 Then Return "480"
+            If sinWidth < 960 AndAlso sinHeight < 500 Then Return "480"
 
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1648,12 +1648,13 @@ Public Class Master
                     If intSeconds > 0 AndAlso ((Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds / 2 > ThumbCount + 300) OrElse (Not Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds > ThumbCount + 2)) Then
                         If Master.eSettings.AutoThumbsNoSpoilers Then
                             intSeconds = ((intSeconds / 2) - 300) / ThumbCount
-                            intAdd = intSeconds + 300
+                            intAdd = intSeconds
+                            intSeconds += intAdd + 300
                         Else
                             intSeconds = intSeconds / (ThumbCount + 2)
                             intAdd = intSeconds
+                            intSeconds += intAdd
                         End If
-                        intSeconds += intAdd
 
                         For i = 0 To (ThumbCount - 1)
                             'check to see if file already exists... if so, don't bother running ffmpeg since we're not

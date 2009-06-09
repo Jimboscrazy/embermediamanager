@@ -3071,6 +3071,9 @@ doCancel:
                     End If
                     tmpImages.Dispose()
                     tmpImages = Nothing
+                    If Master.eSettings.AutoThumbs > 0 AndAlso Not Master.isFile Then
+                        Master.CreateRandomThumbs(Master.currPath, Master.eSettings.AutoThumbs)
+                    End If
                 End If
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
