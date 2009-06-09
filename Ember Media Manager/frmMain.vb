@@ -737,8 +737,8 @@ Public Class frmMain
                     Me.pnlNoInfo.Visible = True
                     Master.currPath = Me.dgvMediaList.Item(1, Me.currRow).Value.ToString
                     Master.isFile = Me.dgvMediaList.Item(2, Me.currRow).Value.ToString
-                    Master.currMovie = New Media.Movie
                     Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
+                    Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
                     Me.tslStatus.Text = Master.currPath
                     Me.mnuMediaList.Enabled = True
                 Else
