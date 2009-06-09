@@ -1668,7 +1668,12 @@ Public Class Master
                             intSeconds += intAdd
                         Next
                     End If
+
+                    Dim fThumbs() As String = Directory.GetFiles(tPath, "thumb*.jpg")
+                    If fThumbs.Count <= 0 Then Directory.Delete(tPath)
+
                 End Using
+
             End If
 
         Catch ex As Exception
