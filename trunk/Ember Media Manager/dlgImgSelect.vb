@@ -607,15 +607,15 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub pbImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DoSelect(CInt(sender.Name), sender.Tag)
+        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag)
     End Sub
 
     Private Sub pnlImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DoSelect(CInt(sender.Name), sender.Tag)
+        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag)
     End Sub
 
     Private Sub lblImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DoSelect(CInt(sender.Name), sender.Tag)
+        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag)
     End Sub
 
     Private Sub dlgImgSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown

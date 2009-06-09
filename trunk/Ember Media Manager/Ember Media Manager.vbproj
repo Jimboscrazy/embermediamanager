@@ -156,6 +156,12 @@
     <Compile Include="clsSettings.vb" />
     <Compile Include="clsSorter.vb" />
     <Compile Include="clsScrapeTMDB.vb" />
+    <Compile Include="dlgExportMovies.designer.vb">
+      <DependentUpon>dlgExportMovies.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgExportMovies.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgStudioSelect.Designer.vb">
       <DependentUpon>dlgStudioSelect.vb</DependentUpon>
     </Compile>
@@ -249,6 +255,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="dlgExportMovies.resx">
+      <DependentUpon>dlgExportMovies.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgStudioSelect.resx">
       <DependentUpon>dlgStudioSelect.vb</DependentUpon>
     </EmbeddedResource>

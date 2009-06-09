@@ -206,8 +206,8 @@ Public Class Master
                 Dim bmSource As New Bitmap(pbCache.Image)
                 ' Make a bitmap for the result.
                 Dim bmDest As New Bitmap( _
-                CInt(bmSource.Width * sPropPerc), _
-                CInt(bmSource.Height * sPropPerc))
+                Convert.ToInt32(bmSource.Width * sPropPerc), _
+                Convert.ToInt32(bmSource.Height * sPropPerc))
                 ' Make a Graphics object for the result Bitmap.
                 Dim grDest As Graphics = Graphics.FromImage(bmDest)
                 ' Copy the source image into the destination bitmap.
@@ -1051,7 +1051,7 @@ Public Class Master
             If sinWidth >= 720 AndAlso sinHeight >= 500 Then Return "576"
             If sinWidth < 720 AndAlso sinHeight >= 500 Then Return "540"
             If sinWidth < 640 Then Return "SD"
-            If sinWidth < 960 AndAlso sinHeight < 500 Then Return "480"
+            Return "480"
 
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1090,8 +1090,8 @@ Public Class Master
         Dim nPath As String = String.Empty
 
         If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-            npath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
-            If File.Exists(npath) Then
+            nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
+            If File.Exists(nPath) Then
                 Return nPath
             Else
                 If isFile Then
@@ -1286,7 +1286,7 @@ Public Class Master
             Return 1
         End If
 
-        Return ObjectCompare.Compare(CInt(Regex.Match(x.Name, "(\d+)").Groups(0).ToString), CInt(Regex.Match(y.Name, "(\d+)").Groups(0).ToString))
+        Return ObjectCompare.Compare(Convert.ToInt32(Regex.Match(x.Name, "(\d+)").Groups(0).ToString), Convert.ToInt32(Regex.Match(y.Name, "(\d+)").Groups(0).ToString))
 
     End Function
 
@@ -1350,7 +1350,7 @@ Public Class Master
 
                 If alThumbs.Count > 0 Then
                     alThumbs.Sort()
-                    iMod = CInt(Regex.Match(alThumbs.Item(alThumbs.Count - 1), "\d+").ToString)
+                    iMod = Convert.ToInt32(Regex.Match(alThumbs.Item(alThumbs.Count - 1), "\d+").ToString)
                 Else
                     iMod = -1
                 End If
@@ -1690,7 +1690,7 @@ Public Class Master
 
         Dim xUdpate = From xUp In xmlUpdate...<version> Select xUp.@current
         If xUdpate.Count > 0 Then
-            Return CInt(xUdpate(0))
+            Return Convert.ToInt32(xUdpate(0))
         Else
             Return 0
         End If

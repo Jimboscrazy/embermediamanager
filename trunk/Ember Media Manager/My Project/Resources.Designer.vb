@@ -74,6 +74,84 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to &lt;center&gt;&lt;b&gt;Movie List&lt;/b&gt;&lt;/center&gt;&lt;/br&gt;.
+        '''</summary>
+        Friend ReadOnly Property MediaListLogo() As String
+            Get
+                Return ResourceManager.GetString("MediaListLogo", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to 
+        '''&lt;/body&gt;
+        '''&lt;/html&gt;.
+        '''</summary>
+        Friend ReadOnly Property MovieListFooter() As String
+            Get
+                Return ResourceManager.GetString("MovieListFooter", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &lt;html&gt;
+        '''&lt;head&gt;
+        '''&lt;style type=&quot;text/css&quot;&gt;
+        '''&lt;!--
+        '''body {background: #FFFFFF; /* The background of the page will be colored white */}
+        '''a:link {color: #000000; /* All unvisited links will be colored black */ }
+        '''a:visited {color: #FF9900; /* All visited links will be colored tan */ }
+        '''a:active {color: #FF0000; /* All active links will be colored red */}
+        '''a:hover {color: #0000FF; background: #FFFF00;}
+        '''/* When the mouse pointer is over the link the link will be colored blue
+        '''and the background color of the link wi [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property MovieListHeader() As String
+            Get
+                Return ResourceManager.GetString("MovieListHeader", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &lt;/table&gt;
+        '''&lt;/center&gt;.
+        '''</summary>
+        Friend ReadOnly Property MovieListTableEnd() As String
+            Get
+                Return ResourceManager.GetString("MovieListTableEnd", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &lt;tr&gt;
+        '''&lt;td&gt;&lt;span style=&quot;color:darkblue;&quot;&gt;[TITLE]&lt;/span&gt;&lt;/td&gt;
+        '''&lt;td style=&quot;text-align:center; width:50px;&quot;&gt;[YEAR]&lt;/td&gt;
+        '''&lt;td style=&quot;text-align:center; width:150px;&quot;&gt;[VIDEO]&lt;/td&gt;
+        '''&lt;td style=&quot;text-align:center; width:150px;&quot;&gt;[AUDIO]&lt;/td&gt;
+        '''&lt;/tr&gt;.
+        '''</summary>
+        Friend ReadOnly Property MovieListTableRow() As String
+            Get
+                Return ResourceManager.GetString("MovieListTableRow", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &lt;center&gt;
+        '''&lt;table class=&quot;emm_table&quot;&gt;
+        '''&lt;tr&gt;
+        '''&lt;th style=&quot;text-align:left; &quot;&gt;Title&lt;/th&gt;
+        '''&lt;th style=&quot;text-align:center;&quot;&gt;Year&lt;/th&gt;
+        '''&lt;th style=&quot;text-align:center;&quot;&gt;Video&lt;/th&gt;
+        '''&lt;th style=&quot;text-align:center;&quot;&gt;Audio&lt;/th&gt;&lt;/tr&gt;.
+        '''</summary>
+        Friend ReadOnly Property MovieListTableStart() As String
+            Get
+                Return ResourceManager.GetString("MovieListTableStart", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property overlay() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("overlay", resourceCulture)

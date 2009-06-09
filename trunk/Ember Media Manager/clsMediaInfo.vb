@@ -129,7 +129,7 @@ Namespace MediaInfo
         Private Function Open(ByVal FileName As String) As Integer
             If UseAnsi Then
                 Dim FileName_Ptr As IntPtr = Marshal.StringToHGlobalAnsi(FileName)
-                Dim ToReturn As Integer = CInt(MediaInfoA_Open(Handle, FileName_Ptr))
+                Dim ToReturn As Integer = Convert.ToInt32(MediaInfoA_Open(Handle, FileName_Ptr))
                 Marshal.FreeHGlobal(FileName_Ptr)
                 Return ToReturn
             Else

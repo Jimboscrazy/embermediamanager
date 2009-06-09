@@ -403,15 +403,15 @@ Public Class dlgEditMovie
                 If Not String.IsNullOrEmpty(Master.currMovie.StudioReal) Then
                     .txtStudio.Text = Master.currMovie.StudioReal
                 ElseIf Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
-                    If Strings.InStr(Master.currMovie.Studio, "/") Then
-                        Master.currMovie.StudioReal = Strings.Left(Master.currMovie.Studio, Strings.InStr(Master.currMovie.Studio, "/") - 1).Trim
+                    If Strings.InStr(Master.currMovie.Studio, " / ") Then
+                        Master.currMovie.StudioReal = Strings.Left(Master.currMovie.Studio, Strings.InStr(Master.currMovie.Studio, " / ") - 1).Trim
                         .txtStudio.Text = Master.currMovie.StudioReal
                     End If
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
-                    If Strings.InStr(Master.currMovie.Studio, "/") Then
-                        .txtStudioTag.Text = Strings.Right(Master.currMovie.Studio, Master.currMovie.Studio.Length - Strings.InStr(Master.currMovie.Studio, "/")).Trim
+                    If Strings.InStr(Master.currMovie.Studio, " / ") Then
+                        .txtStudioTag.Text = Strings.Right(Master.currMovie.Studio, Master.currMovie.Studio.Length - (Strings.InStr(Master.currMovie.Studio, " / ") + 2)).Trim
                     End If
                 End If
 
@@ -473,8 +473,9 @@ Public Class dlgEditMovie
 
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                     SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", Me._id, ";")
-                    Dim SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    .chkMark.Checked = SQLreader("mark")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        .chkMark.Checked = SQLreader("mark")
+                    End Using
                 End Using
 
                 If Master.eSettings.AutoThumbs > 0 Then
@@ -963,8 +964,8 @@ Public Class dlgEditMovie
         Try
             If lvThumbs.Items.Count > 0 AndAlso lvThumbs.SelectedIndices(0) > 0 Then
                 Dim iIndex As Integer = lvThumbs.SelectedIndices(0)
-                lvThumbs.Items(iIndex).Text = String.Concat("  ", CStr(CInt(lvThumbs.Items(iIndex).Text.Trim) - 1))
-                lvThumbs.Items(iIndex - 1).Text = String.Concat("  ", CStr(CInt(lvThumbs.Items(iIndex - 1).Text.Trim) + 1))
+                lvThumbs.Items(iIndex).Text = String.Concat("  ", CStr(Convert.ToInt32(lvThumbs.Items(iIndex).Text.Trim) - 1))
+                lvThumbs.Items(iIndex - 1).Text = String.Concat("  ", CStr(Convert.ToInt32(lvThumbs.Items(iIndex - 1).Text.Trim) + 1))
                 lvThumbs.Sort()
             End If
         Catch ex As Exception
@@ -976,8 +977,8 @@ Public Class dlgEditMovie
         Try
             If lvThumbs.Items.Count > 0 AndAlso lvThumbs.SelectedIndices(0) < (lvThumbs.Items.Count - 1) Then
                 Dim iIndex As Integer = lvThumbs.SelectedIndices(0)
-                lvThumbs.Items(iIndex).Text = String.Concat("  ", CStr(CInt(lvThumbs.Items(iIndex).Text.Trim) + 1))
-                lvThumbs.Items(iIndex + 1).Text = String.Concat("  ", CStr(CInt(lvThumbs.Items(iIndex + 1).Text.Trim) - 1))
+                lvThumbs.Items(iIndex).Text = String.Concat("  ", CStr(Convert.ToInt32(lvThumbs.Items(iIndex).Text.Trim) + 1))
+                lvThumbs.Items(iIndex + 1).Text = String.Concat("  ", CStr(Convert.ToInt32(lvThumbs.Items(iIndex + 1).Text.Trim) - 1))
                 lvThumbs.Sort()
             End If
         Catch ex As Exception
@@ -1178,10 +1179,10 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnAutoGen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAutoGen.Click
-        If CInt(txtThumbCount.Text) > 0 Then
+        If Convert.ToInt32(txtThumbCount.Text) > 0 Then
             pnlFrameProgress.Visible = True
             Me.Refresh()
-            Master.CreateRandomThumbs(Master.currPath, CInt(txtThumbCount.Text))
+            Master.CreateRandomThumbs(Master.currPath, Convert.ToInt32(txtThumbCount.Text))
             pnlFrameProgress.Visible = False
         End If
     End Sub

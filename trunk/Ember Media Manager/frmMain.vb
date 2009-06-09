@@ -239,7 +239,7 @@ Public Class frmMain
 
             If Master.eSettings.CheckUpdates Then
                 Dim tmpNew As Integer = Master.CheckUpdate
-                If tmpNew > CInt(My.Application.Info.Version.Revision) Then
+                If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
                     If MsgBox(String.Concat("A new version is available.", vbNewLine, vbNewLine, "Version r", tmpNew, " is available via Ember Media Manager's Google Code page.", vbNewLine, vbNewLine, _
                                             "Would you like to visit the Google Code page to download the newest version?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "A New Version Is Available") = MsgBoxResult.Yes Then
                         Process.Start("http://code.google.com/p/embermediamanager/downloads/list")
@@ -2652,11 +2652,11 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            If Not String.IsNullOrEmpty(Master.currMovie.Title) AndAlso (Not String.IsNullOrEmpty(Master.currMovie.Year) AndAlso CInt(Master.currMovie.Year) > 0) Then
+            If Not String.IsNullOrEmpty(Master.currMovie.Title) AndAlso (Not String.IsNullOrEmpty(Master.currMovie.Year) AndAlso Convert.ToInt32(Master.currMovie.Year) > 0) Then
                 Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovie.Title, Master.currMovie.Year)
-            ElseIf Not String.IsNullOrEmpty(Master.currMovie.Title) AndAlso (String.IsNullOrEmpty(Master.currMovie.Year) OrElse CInt(Master.currMovie.Year) = 0) Then
+            ElseIf Not String.IsNullOrEmpty(Master.currMovie.Title) AndAlso (String.IsNullOrEmpty(Master.currMovie.Year) OrElse Convert.ToInt32(Master.currMovie.Year) = 0) Then
                 Me.lblTitle.Text = Master.currMovie.Title
-            ElseIf String.IsNullOrEmpty(Master.currMovie.Title) AndAlso (Not String.IsNullOrEmpty(Master.currMovie.Year) AndAlso CInt(Master.currMovie.Year) > 0) Then
+            ElseIf String.IsNullOrEmpty(Master.currMovie.Title) AndAlso (Not String.IsNullOrEmpty(Master.currMovie.Year) AndAlso Convert.ToInt32(Master.currMovie.Year) > 0) Then
                 Me.lblTitle.Text = String.Format("Unknown Movie ({0})", Master.currMovie.Year)
             End If
 
@@ -2668,7 +2668,7 @@ doCancel:
                 Me.lblRuntime.Text = String.Format("Runtime: {0}", Master.currMovie.Runtime)
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.Top250) AndAlso IsNumeric(Master.currMovie.Top250) AndAlso CInt(Master.currMovie.Top250) > 0 Then
+            If Not String.IsNullOrEmpty(Master.currMovie.Top250) AndAlso IsNumeric(Master.currMovie.Top250) AndAlso Convert.ToInt32(Master.currMovie.Top250) > 0 Then
                 Me.pnlTop250.Visible = True
                 Me.lblTop250.Text = Master.currMovie.Top250
             Else
@@ -3529,4 +3529,9 @@ doCancel:
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub ExportMoviesListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportMoviesListToolStripMenuItem.Click
+        Using dExportMovies As New dlgExportMovies
+            dExportMovies.ShowDialog()
+        End Using
+    End Sub
 End Class

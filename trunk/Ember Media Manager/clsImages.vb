@@ -70,7 +70,7 @@ Public Class Images
         Try
             Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
                 ms.SetLength(fsImage.Length)
-                fsImage.Read(ms.GetBuffer(), 0, CInt(fsImage.Length))
+                fsImage.Read(ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
                 ms.Flush()
             End Using
             _image = Image.FromStream(ms)
@@ -844,15 +844,15 @@ foundIT:
                 If theImage.Width > theImage.Height Then
                     sPropPerc = CSng(maxWidth / theImage.Width)
                 Else
-                    sPropPerc = CSng(maxheight / theImage.Height)
+                    sPropPerc = CSng(maxHeight / theImage.Height)
                 End If
 
                 ' Get the source bitmap.
                 Using bmSource As New Bitmap(theImage)
                     ' Make a bitmap for the result.
                     Using bmDest As New Bitmap( _
-                    CInt(bmSource.Width * sPropPerc), _
-                    CInt(bmSource.Height * sPropPerc))
+                    Convert.ToInt32(bmSource.Width * sPropPerc), _
+                    Convert.ToInt32(bmSource.Height * sPropPerc))
                         ' Make a Graphics object for the result Bitmap.
                         Using grDest As Graphics = Graphics.FromImage(bmDest)
                             grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
