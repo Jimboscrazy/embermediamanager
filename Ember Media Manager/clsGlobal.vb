@@ -1601,7 +1601,9 @@ Public Class Master
         End If
     End Sub
 
-    Public Shared Sub CreateRandomThumbs(ByVal sPath As String, ByVal ThumbCount As Integer)
+    Public Shared Function CreateRandomThumbs(ByVal sPath As String, ByVal ThumbCount As Integer) As Boolean
+
+        Dim didSetFA As Boolean = False
 
         Try
             Dim pExt As String = Path.GetExtension(sPath).ToLower
@@ -1623,6 +1625,7 @@ Public Class Master
                     If Not Directory.Exists(tPath) Then
                         Directory.CreateDirectory(tPath)
                     End If
+
                     ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
                     ffmpeg.EnableRaisingEvents = False
                     ffmpeg.StartInfo.UseShellExecute = False
@@ -1677,7 +1680,18 @@ Public Class Master
                     End If
 
                     Dim fThumbs() As String = Directory.GetFiles(tPath, "thumb*.jpg")
-                    If fThumbs.Count <= 0 Then Directory.Delete(tPath)
+                    If fThumbs.Count <= 0 Then
+                        Directory.Delete(tPath)
+                    Else
+                        Dim exFanart As New Images
+                        If Master.eSettings.UseETasFA AndAlso Not File.Exists(exFanart.GetFanartPath(sPath, False)) Then
+                            exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
+                            exFanart.SaveAsFanart(sPath, False)
+                            didSetFA = True
+                        End If
+                        exFanart.Dispose()
+                        exFanart = Nothing
+                    End If
 
                 End Using
 
@@ -1686,7 +1700,9 @@ Public Class Master
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
+
+        Return didsetfa
+    End Function
 
     Public Shared Function CheckUpdate() As Integer
         Dim sHTTP As New HTTP("http://www.cube3studios.com/EMM/Update.xml")
@@ -1707,5 +1723,17 @@ Public Class Master
             Return 0
         End If
 
+    End Function
+
+    Public Shared Function GetChangelog() As String
+        Dim sHTTP As New HTTP("http://www.cube3studios.com/EMM/Changelog.txt")
+        Dim strChangelog As String = sHTTP.Response
+        sHTTP = Nothing
+
+        If strChangelog.Length > 0 Then
+            Return strChangelog
+        Else
+            Return "Unavailable"
+        End If
     End Function
 End Class

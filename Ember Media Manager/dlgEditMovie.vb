@@ -32,6 +32,7 @@ Public Class dlgEditMovie
     Private Fanart As New Images With {.IsEdit = True}
     Private Thumbs As New List(Of ExtraThumbs)
     Private DeleteList As New ArrayList
+    Private ExtraIndex As Integer = 0
     Private _id As Integer
 
     Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
@@ -921,8 +922,6 @@ Public Class dlgEditMovie
             exImage.Dispose()
             exImage = Nothing
 
-            'Master.MoveFileWithStream(tPath, Path.Combine(sPath, String.Concat("thumb", (iMod + 1), ".jpg")))
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -941,7 +940,7 @@ Public Class dlgEditMovie
                 lFI.Sort(AddressOf Master.SortThumbFileNames)
                 For Each thumb As FileInfo In lFI
                     Dim fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
-                    Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i})
+                    Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})
                     ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
                     fsImage.Close()
                     fsImage = Nothing
@@ -954,9 +953,11 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub lvThumbs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThumbs.SelectedIndexChanged
-        If lvThumbs.SelectedIndices.Count > 0 Then
+        If Me.lvThumbs.SelectedIndices.Count > 0 Then
             Try
-                pbExtraThumbs.Image = Thumbs.Item(lvThumbs.SelectedItems(0).Tag).Image
+                Me.pbExtraThumbs.Image = Me.Thumbs.Item(Me.lvThumbs.SelectedItems(0).Tag).Image
+                Me.ExtraIndex = Me.lvThumbs.SelectedItems(0).Tag
+                Me.btnSetAsFanart.Enabled = True
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
@@ -1016,9 +1017,12 @@ Public Class dlgEditMovie
 
     Private Sub btnRemoveThumb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveThumb.Click
         Try
-            DeleteList.Add(lvThumbs.SelectedItems(0).Name)
-            lvThumbs.Items.Remove(lvThumbs.SelectedItems(0))
-            pbExtraThumbs.Image = Nothing
+            For i As Integer = (lvThumbs.SelectedItems.Count - 1) To 0 Step -1
+                DeleteList.Add(lvThumbs.Items(i).Name)
+                lvThumbs.Items.Remove(lvThumbs.Items(i))
+                pbExtraThumbs.Image = Nothing
+                btnSetAsFanart.Enabled = False
+            Next
             RenumberThumbs()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1227,10 +1231,17 @@ Public Class dlgEditMovie
         End If
     End Sub
 
+    Private Sub btnSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetAsFanart.Click
+        Me.Fanart.FromFile(Me.Thumbs.Item(Me.ExtraIndex).Path)
+        Me.pbFanart.Image = pbExtraThumbs.Image
+        Me.btnSetAsFanart.Enabled = False
+    End Sub
+
     Friend Class ExtraThumbs
         Private _image As Image
         Private _name As String
         Private _index As Integer
+        Private _path As String
 
         Friend Property Image() As Image
             Get
@@ -1259,6 +1270,15 @@ Public Class dlgEditMovie
             End Set
         End Property
 
+        Friend Property Path() As String
+            Get
+                Return _path
+            End Get
+            Set(ByVal value As String)
+                _path = value
+            End Set
+        End Property
+
         Friend Sub New()
             Clear()
         End Sub
@@ -1267,6 +1287,7 @@ Public Class dlgEditMovie
             _image = Nothing
             _name = String.Empty
             _index = Nothing
+            _path = String.Empty
         End Sub
     End Class
 

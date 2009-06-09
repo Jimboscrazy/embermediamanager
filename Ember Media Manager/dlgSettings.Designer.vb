@@ -148,6 +148,7 @@ Partial Class dlgSettings
         Me.chkLockOutline = New System.Windows.Forms.CheckBox
         Me.chkLockPlot = New System.Windows.Forms.CheckBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
+        Me.chkUseETasFA = New System.Windows.Forms.CheckBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.chkNoSpoilers = New System.Windows.Forms.CheckBox
         Me.Label15 = New System.Windows.Forms.Label
@@ -1445,6 +1446,7 @@ Partial Class dlgSettings
         '
         'GroupBox9
         '
+        Me.GroupBox9.Controls.Add(Me.chkUseETasFA)
         Me.GroupBox9.Controls.Add(Me.Label17)
         Me.GroupBox9.Controls.Add(Me.chkNoSpoilers)
         Me.GroupBox9.Controls.Add(Me.Label15)
@@ -1462,15 +1464,25 @@ Partial Class dlgSettings
         Me.GroupBox9.Controls.Add(Me.lblFanartSize)
         Me.GroupBox9.Location = New System.Drawing.Point(6, 6)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(195, 308)
+        Me.GroupBox9.Size = New System.Drawing.Size(195, 336)
         Me.GroupBox9.TabIndex = 56
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
         '
+        'chkUseETasFA
+        '
+        Me.chkUseETasFA.Enabled = False
+        Me.chkUseETasFA.Location = New System.Drawing.Point(26, 302)
+        Me.chkUseETasFA.Name = "chkUseETasFA"
+        Me.chkUseETasFA.Size = New System.Drawing.Size(156, 30)
+        Me.chkUseETasFA.TabIndex = 64
+        Me.chkUseETasFA.Text = "Use Extrathumb if no Fanart Found"
+        Me.chkUseETasFA.UseVisualStyleBackColor = True
+        '
         'Label17
         '
         Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(24, 279)
+        Me.Label17.Location = New System.Drawing.Point(24, 275)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(168, 24)
         Me.Label17.TabIndex = 63
@@ -1481,7 +1493,7 @@ Partial Class dlgSettings
         '
         Me.chkNoSpoilers.AutoSize = True
         Me.chkNoSpoilers.Enabled = False
-        Me.chkNoSpoilers.Location = New System.Drawing.Point(27, 263)
+        Me.chkNoSpoilers.Location = New System.Drawing.Point(27, 259)
         Me.chkNoSpoilers.Name = "chkNoSpoilers"
         Me.chkNoSpoilers.Size = New System.Drawing.Size(80, 17)
         Me.chkNoSpoilers.TabIndex = 62
@@ -1491,7 +1503,7 @@ Partial Class dlgSettings
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(24, 245)
+        Me.Label15.Location = New System.Drawing.Point(24, 241)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(97, 13)
         Me.Label15.TabIndex = 61
@@ -1501,14 +1513,14 @@ Partial Class dlgSettings
         '
         Me.txtAutoThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtAutoThumbs.Enabled = False
-        Me.txtAutoThumbs.Location = New System.Drawing.Point(124, 242)
+        Me.txtAutoThumbs.Location = New System.Drawing.Point(124, 238)
         Me.txtAutoThumbs.Name = "txtAutoThumbs"
         Me.txtAutoThumbs.Size = New System.Drawing.Size(53, 20)
         Me.txtAutoThumbs.TabIndex = 45
         '
         'chkAutoThumbs
         '
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 212)
+        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 208)
         Me.chkAutoThumbs.Name = "chkAutoThumbs"
         Me.chkAutoThumbs.Size = New System.Drawing.Size(179, 31)
         Me.chkAutoThumbs.TabIndex = 44
@@ -2125,12 +2137,12 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2366,4 +2378,5 @@ Partial Class dlgSettings
     Friend WithEvents pnlSources As System.Windows.Forms.Panel
     Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
     Friend WithEvents lblGenre As System.Windows.Forms.Label
+    Friend WithEvents chkUseETasFA As System.Windows.Forms.CheckBox
 End Class

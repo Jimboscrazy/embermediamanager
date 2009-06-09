@@ -618,9 +618,11 @@ Public Class dlgSettings
     Private Sub chkAutoThumbs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoThumbs.CheckedChanged
         Me.txtAutoThumbs.Enabled = Me.chkAutoThumbs.Checked
         Me.chkNoSpoilers.Enabled = Me.chkAutoThumbs.Checked
+        Me.chkUseETasFA.Enabled = Me.chkAutoThumbs.Checked
         If Not chkAutoThumbs.Checked Then
             Me.txtAutoThumbs.Text = String.Empty
             Me.chkNoSpoilers.Checked = False
+            Me.chkUseETasFA.Enabled = False
         End If
         Me.btnApply.Enabled = True
     End Sub
@@ -1028,9 +1030,11 @@ Public Class dlgSettings
             If Not String.IsNullOrEmpty(txtAutoThumbs.Text) AndAlso Convert.ToInt32(txtAutoThumbs.Text) > 0 Then
                 Master.eSettings.AutoThumbs = Convert.ToInt32(txtAutoThumbs.Text)
                 Master.eSettings.AutoThumbsNoSpoilers = Me.chkNoSpoilers.Checked
+                Master.eSettings.UseETasFA = Me.chkUseETasFA.Checked
             Else
                 Master.eSettings.AutoThumbs = 0
                 Master.eSettings.AutoThumbsNoSpoilers = False
+                Master.eSettings.UseETasFA = False
             End If
             If Not String.IsNullOrEmpty(Me.txtIMDBURL.Text) Then
                 Master.eSettings.IMDBURL = Strings.Replace(Me.txtIMDBURL.Text, "http://", String.Empty)
@@ -1176,6 +1180,8 @@ Public Class dlgSettings
                 Me.txtAutoThumbs.Text = Master.eSettings.AutoThumbs.ToString
                 Me.chkNoSpoilers.Enabled = True
                 Me.chkNoSpoilers.Checked = Master.eSettings.AutoThumbsNoSpoilers
+                Me.chkUseETasFA.Enabled = True
+                Me.chkUseETasFA.Checked = Master.eSettings.UseETasFA
             End If
             Me.txtIMDBURL.Text = Master.eSettings.IMDBURL
             Me.txtBDPath.Text = Master.eSettings.BDPath

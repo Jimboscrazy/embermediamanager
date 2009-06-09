@@ -46,6 +46,8 @@ Partial Class frmMain
         Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
+        Me.ExportMoviesListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.btnMarkAll = New System.Windows.Forms.Button
         Me.pnlFilter = New System.Windows.Forms.Panel
@@ -201,8 +203,6 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
-        Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
-        Me.ExportMoviesListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -402,6 +402,18 @@ Partial Class frmMain
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Name = "CopyExistingFanartToBackdropsFolderToolStripMenuItem"
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = "Copy Existing Fanart To Backdrops Folder"
+        '
+        'ToolStripSeparator4
+        '
+        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(289, 6)
+        '
+        'ExportMoviesListToolStripMenuItem
+        '
+        Me.ExportMoviesListToolStripMenuItem.Image = CType(resources.GetObject("ExportMoviesListToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.ExportMoviesListToolStripMenuItem.Name = "ExportMoviesListToolStripMenuItem"
+        Me.ExportMoviesListToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
+        Me.ExportMoviesListToolStripMenuItem.Text = "Export Movies List"
         '
         'scMain
         '
@@ -1858,18 +1870,6 @@ Partial Class frmMain
         'tmrSearch
         '
         Me.tmrSearch.Interval = 250
-        '
-        'ToolStripSeparator4
-        '
-        Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(289, 6)
-        '
-        'ExportMoviesListToolStripMenuItem
-        '
-        Me.ExportMoviesListToolStripMenuItem.Image = CType(resources.GetObject("ExportMoviesListToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.ExportMoviesListToolStripMenuItem.Name = "ExportMoviesListToolStripMenuItem"
-        Me.ExportMoviesListToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.ExportMoviesListToolStripMenuItem.Text = "Export Movies List"
         '
         'frmMain
         '
