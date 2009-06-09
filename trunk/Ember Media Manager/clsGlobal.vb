@@ -1612,6 +1612,7 @@ Public Class Master
                     Dim intSeconds As Integer = 0
                     Dim intAdd As Integer = 0
                     Dim tPath As String = String.Empty
+                    Dim exImage As New Images
 
                     If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                         tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
@@ -1660,10 +1661,16 @@ Public Class Master
                             'check to see if file already exists... if so, don't bother running ffmpeg since we're not
                             'overwriting current thumbs anyway
                             If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg"))) Then
-                                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg ""{2}""", intSeconds, sPath, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
+                                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg ""{2}""", intSeconds, sPath, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
                                 ffmpeg.Start()
                                 ffmpeg.WaitForExit()
                                 ffmpeg.Close()
+
+                                exImage = New Images
+                                exImage.ResizeExtraThumb(Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")), Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
+                                exImage.Dispose()
+                                exImage = Nothing
+
                             End If
                             intSeconds += intAdd
                         Next
