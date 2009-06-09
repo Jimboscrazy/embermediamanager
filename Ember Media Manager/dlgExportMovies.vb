@@ -17,6 +17,7 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+' Slightly modified version of the code written by Nuno "Zordor" Novais
 
 Imports System.Windows.Forms
 Imports System.IO
@@ -112,7 +113,7 @@ Public Class dlgExportMovies
                     If Not _flags(2).Contains("/") Then
                         _vidDetails &= _flags(2).Trim
                     Else
-                        Dim _vidParts() As String = _flags(2).Trim.Split(New [Char]() {"/"})
+                        Dim _vidParts() As String = _flags(2).Trim.Split(New Char() {"/"})
                         _vidDetails &= _vidParts(_vidParts.Length - 1)
                     End If
                     _vidDetails &= " " & _flags(1).Trim

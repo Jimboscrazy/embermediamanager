@@ -220,9 +220,12 @@ Public Class dlgSettings
                 Me.pnlCurrent.BackgroundImage = iBackground
             End Using
 
+            Me.LoadGenreLangs()
             Me.FillSettings()
 
             Me.btnApply.Enabled = False
+            Me.doRefresh = False
+            Me.didApply = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -642,6 +645,7 @@ Public Class dlgSettings
         pnlGeneral.Visible = False
         pnlXBMCCom.Visible = False
         pnlMovies.Visible = False
+        pnlSources.Visible = False
         pnlScraper.Visible = False
         pnlExtensions.Visible = False
         Select Case tvSettings.SelectedNode.Name
@@ -651,6 +655,8 @@ Public Class dlgSettings
                 pnlXBMCCom.Visible = True
             Case "nMovies"
                 pnlMovies.Visible = True
+            Case "nSources"
+                pnlSources.Visible = True
             Case "nScraper"
                 pnlScraper.Visible = True
             Case "nExts"
@@ -1035,6 +1041,18 @@ Public Class dlgSettings
             Master.eSettings.AutoBD = Me.chkAutoBD.Checked
             Master.eSettings.UseMIDuration = Me.chkUseMIDuration.Checked
 
+            If Me.lbGenre.CheckedItems.Count > 0 Then
+
+                If Me.lbGenre.CheckedIndices.Contains(0) Then
+                    Master.eSettings.GenreFilter = "[All]"
+                Else
+                    Dim strGenre As String = String.Empty
+                    Dim iChecked = From iCheck In Me.lbGenre.CheckedItems
+                    strGenre = Strings.Join(iChecked.ToArray, ",")
+                    Master.eSettings.GenreFilter = strGenre.Trim
+                End If
+            End If
+
             Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1164,6 +1182,20 @@ Public Class dlgSettings
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
             Me.chkUseMIDuration.Checked = Master.eSettings.UseMIDuration
 
+            If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
+                Dim genreArray() As String
+                genreArray = Strings.Split(Master.eSettings.GenreFilter, ",")
+                For g As Integer = 0 To UBound(genreArray)
+                    If Me.lbGenre.FindString(Strings.Trim(genreArray(g))) > 0 Then Me.lbGenre.SetItemChecked(Me.lbGenre.FindString(Strings.Trim(genreArray(g))), True)
+                Next
+
+                If Me.lbGenre.CheckedItems.Count = 0 Then
+                    Me.lbGenre.SetItemChecked(0, True)
+                End If
+            Else
+                Me.lbGenre.SetItemChecked(0, True)
+            End If
+
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
         Catch ex As Exception
@@ -1177,6 +1209,48 @@ Public Class dlgSettings
             Me.lbXBMCCom.Items.Add(x.Name)
         Next
     End Sub
+
+    Private Sub LoadGenreLangs()
+
+        '//
+        ' Read all the genre languages from the xml and load into the list
+        '\\
+
+        Me.lbGenre.Items.Add("[All]")
+
+        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres")
+
+        If File.Exists(Path.Combine(mePath, "Genres.xml")) Then
+            Try
+                Dim xmlGenre As XDocument = XDocument.Load(Path.Combine(mePath, "Genres.xml"))
+
+                Dim xGenre = From xGen In xmlGenre...<supported>.Descendants Select xGen.Value
+                If xGenre.Count > 0 Then
+                    For Each sGenre As String In xGenre
+                        Me.lbGenre.Items.Add(sGenre)
+                    Next
+                End If
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        Else
+            MsgBox("Cannot find Genres.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Genres.xml"), MsgBoxStyle.Critical, "File Not Found")
+        End If
+
+    End Sub
+
+    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
+        If e.Index = 0 Then
+            For i As Integer = 1 To lbGenre.Items.Count - 1
+                Me.lbGenre.SetItemChecked(i, False)
+            Next
+        Else
+            Me.lbGenre.SetItemChecked(0, False)
+        End If
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Routines/Functions
 
 End Class

@@ -1064,10 +1064,12 @@ Public Class dlgEditMovie
             Try
                 Dim xmlGenre As XDocument = XDocument.Load(Path.Combine(mePath, "Genres.xml"))
 
-                Dim xGenre = From xGen In xmlGenre...<name> Select xGen.@searchstring
+                Dim xGenre = From xGen In xmlGenre...<name> Select xGen.@searchstring, xGen.@language
                 If xGenre.Count > 0 Then
-                    For Each strGenre As String In xGenre
-                        Me.lbGenre.Items.Add(strGenre)
+                    For i As Integer = 0 To xGenre.Count - 1
+                        If Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(xGenre(i).language) Then
+                            Me.lbGenre.Items.Add(xGenre(i).searchstring)
+                        End If
                     Next
                 End If
 
@@ -1267,4 +1269,5 @@ Public Class dlgEditMovie
             _index = Nothing
         End Sub
     End Class
+
 End Class
