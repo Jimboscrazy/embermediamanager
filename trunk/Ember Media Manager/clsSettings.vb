@@ -117,6 +117,7 @@ Public Class emmSettings
     Private _autobd As Boolean
     Private _usemiduration As Boolean
     Private _markall As Boolean
+    Private _genrefilter As String
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -952,6 +953,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property GenreFilter() As String
+        Get
+            Return Me._genrefilter
+        End Get
+        Set(ByVal value As String)
+            Me._genrefilter = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -1058,6 +1068,7 @@ Public Class emmSettings
         Me._autobd = False
         Me._usemiduration = False
         Me._markall = True
+        Me._genrefilter = "[All]"
         Me._xbmccoms.Clear()
     End Sub
 

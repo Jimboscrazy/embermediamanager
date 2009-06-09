@@ -24,11 +24,12 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Supported Extensions", 4, 4)
-        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode6, TreeNode7})
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper", 3, 3)
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode9})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Supported Extensions", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper", 3, 3)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5})
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
@@ -188,6 +189,8 @@ Partial Class dlgSettings
         Me.btnRemoveCom = New System.Windows.Forms.Button
         Me.lbXBMCCom = New System.Windows.Forms.ListBox
         Me.pnlMovies = New System.Windows.Forms.Panel
+        Me.lbGenre = New System.Windows.Forms.CheckedListBox
+        Me.lblGenre = New System.Windows.Forms.Label
         Me.GroupBox16 = New System.Windows.Forms.GroupBox
         Me.chkAutoBD = New System.Windows.Forms.CheckBox
         Me.btnBrowse = New System.Windows.Forms.Button
@@ -202,6 +205,7 @@ Partial Class dlgSettings
         Me.btnAddMovieExt = New System.Windows.Forms.Button
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
+        Me.pnlSources = New System.Windows.Forms.Panel
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -229,6 +233,7 @@ Partial Class dlgSettings
         Me.Panel1.SuspendLayout()
         Me.pnlExtensions.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
+        Me.pnlSources.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -806,7 +811,7 @@ Partial Class dlgSettings
         'chkScanRecursive
         '
         Me.chkScanRecursive.AutoSize = True
-        Me.chkScanRecursive.Location = New System.Drawing.Point(6, 133)
+        Me.chkScanRecursive.Location = New System.Drawing.Point(5, 133)
         Me.chkScanRecursive.Name = "chkScanRecursive"
         Me.chkScanRecursive.Size = New System.Drawing.Size(305, 17)
         Me.chkScanRecursive.TabIndex = 66
@@ -818,7 +823,7 @@ Partial Class dlgSettings
         Me.GroupBox12.Controls.Add(Me.Label8)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
         Me.GroupBox12.Controls.Add(Me.GroupBox2)
-        Me.GroupBox12.Location = New System.Drawing.Point(388, 131)
+        Me.GroupBox12.Location = New System.Drawing.Point(209, 10)
         Me.GroupBox12.Name = "GroupBox12"
         Me.GroupBox12.Size = New System.Drawing.Size(200, 173)
         Me.GroupBox12.TabIndex = 65
@@ -926,7 +931,7 @@ Partial Class dlgSettings
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
-        Me.GroupBox8.Location = New System.Drawing.Point(6, 152)
+        Me.GroupBox8.Location = New System.Drawing.Point(5, 152)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(356, 146)
         Me.GroupBox8.TabIndex = 64
@@ -1104,7 +1109,7 @@ Partial Class dlgSettings
         'chkTitleFromNfo
         '
         Me.chkTitleFromNfo.AutoSize = True
-        Me.chkTitleFromNfo.Location = New System.Drawing.Point(177, 115)
+        Me.chkTitleFromNfo.Location = New System.Drawing.Point(176, 115)
         Me.chkTitleFromNfo.Name = "chkTitleFromNfo"
         Me.chkTitleFromNfo.Size = New System.Drawing.Size(295, 17)
         Me.chkTitleFromNfo.TabIndex = 53
@@ -1116,7 +1121,7 @@ Partial Class dlgSettings
         Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colPath, Me.colType})
         Me.lvMovies.FullRowSelect = True
         Me.lvMovies.HideSelection = False
-        Me.lvMovies.Location = New System.Drawing.Point(6, 6)
+        Me.lvMovies.Location = New System.Drawing.Point(5, 6)
         Me.lvMovies.Name = "lvMovies"
         Me.lvMovies.Size = New System.Drawing.Size(466, 105)
         Me.lvMovies.Sorting = System.Windows.Forms.SortOrder.Ascending
@@ -1138,7 +1143,7 @@ Partial Class dlgSettings
         '
         Me.btnMovieAddFiles.Image = CType(resources.GetObject("btnMovieAddFiles.Image"), System.Drawing.Image)
         Me.btnMovieAddFiles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieAddFiles.Location = New System.Drawing.Point(482, 35)
+        Me.btnMovieAddFiles.Location = New System.Drawing.Point(481, 35)
         Me.btnMovieAddFiles.Name = "btnMovieAddFiles"
         Me.btnMovieAddFiles.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieAddFiles.TabIndex = 51
@@ -1150,7 +1155,7 @@ Partial Class dlgSettings
         '
         Me.btnMovieRem.Image = CType(resources.GetObject("btnMovieRem.Image"), System.Drawing.Image)
         Me.btnMovieRem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieRem.Location = New System.Drawing.Point(482, 88)
+        Me.btnMovieRem.Location = New System.Drawing.Point(481, 88)
         Me.btnMovieRem.Name = "btnMovieRem"
         Me.btnMovieRem.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieRem.TabIndex = 52
@@ -1162,7 +1167,7 @@ Partial Class dlgSettings
         '
         Me.btnMovieAddFolder.Image = CType(resources.GetObject("btnMovieAddFolder.Image"), System.Drawing.Image)
         Me.btnMovieAddFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieAddFolder.Location = New System.Drawing.Point(482, 6)
+        Me.btnMovieAddFolder.Location = New System.Drawing.Point(481, 6)
         Me.btnMovieAddFolder.Name = "btnMovieAddFolder"
         Me.btnMovieAddFolder.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieAddFolder.TabIndex = 50
@@ -1173,7 +1178,7 @@ Partial Class dlgSettings
         'chkUseFolderNames
         '
         Me.chkUseFolderNames.AutoSize = True
-        Me.chkUseFolderNames.Location = New System.Drawing.Point(6, 115)
+        Me.chkUseFolderNames.Location = New System.Drawing.Point(5, 115)
         Me.chkUseFolderNames.Name = "chkUseFolderNames"
         Me.chkUseFolderNames.Size = New System.Drawing.Size(146, 17)
         Me.chkUseFolderNames.TabIndex = 56
@@ -1813,6 +1818,7 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(2, "film.png")
         Me.ilSettings.Images.SetKeyName(3, "copy_paste.png")
         Me.ilSettings.Images.SetKeyName(4, "attachment.png")
+        Me.ilSettings.Images.SetKeyName(5, "folder_full.png")
         '
         'tvSettings
         '
@@ -1823,32 +1829,37 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode6.ImageIndex = 4
-        TreeNode6.Name = "nExts"
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "Supported Extensions"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "XBMC Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 5
+        TreeNode4.Name = "nSources"
+        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode4.SelectedImageIndex = 5
+        TreeNode4.Text = "Files and Sources"
+        TreeNode5.ImageIndex = 3
+        TreeNode5.Name = "nScraper"
+        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.SelectedImageIndex = 3
+        TreeNode5.Text = "Scraper"
+        TreeNode6.ImageIndex = 2
+        TreeNode6.Name = "nMovies"
         TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode6.SelectedImageIndex = 4
-        TreeNode6.Text = "Supported Extensions"
-        TreeNode7.ImageIndex = 1
-        TreeNode7.Name = "nXBMCCom"
-        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode7.SelectedImageIndex = 1
-        TreeNode7.Text = "XBMC Communication"
-        TreeNode8.ImageIndex = 0
-        TreeNode8.Name = "nGeneral"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 0
-        TreeNode8.Text = "General"
-        TreeNode9.ImageIndex = 3
-        TreeNode9.Name = "nScraper"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 3
-        TreeNode9.Text = "Scraper"
-        TreeNode10.ImageIndex = 2
-        TreeNode10.Name = "nMovies"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 2
-        TreeNode10.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode10})
+        TreeNode6.SelectedImageIndex = 2
+        TreeNode6.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode6})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -1908,28 +1919,41 @@ Partial Class dlgSettings
         '
         Me.pnlMovies.BackColor = System.Drawing.Color.White
         Me.pnlMovies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlMovies.Controls.Add(Me.GroupBox16)
-        Me.pnlMovies.Controls.Add(Me.chkScanRecursive)
-        Me.pnlMovies.Controls.Add(Me.lvMovies)
+        Me.pnlMovies.Controls.Add(Me.lbGenre)
+        Me.pnlMovies.Controls.Add(Me.lblGenre)
         Me.pnlMovies.Controls.Add(Me.GroupBox12)
-        Me.pnlMovies.Controls.Add(Me.chkUseFolderNames)
-        Me.pnlMovies.Controls.Add(Me.GroupBox8)
-        Me.pnlMovies.Controls.Add(Me.btnMovieAddFolder)
-        Me.pnlMovies.Controls.Add(Me.chkTitleFromNfo)
-        Me.pnlMovies.Controls.Add(Me.btnMovieRem)
-        Me.pnlMovies.Controls.Add(Me.btnMovieAddFiles)
         Me.pnlMovies.Location = New System.Drawing.Point(208, 96)
         Me.pnlMovies.Name = "pnlMovies"
         Me.pnlMovies.Size = New System.Drawing.Size(597, 353)
         Me.pnlMovies.TabIndex = 61
         Me.pnlMovies.Visible = False
         '
+        'lbGenre
+        '
+        Me.lbGenre.CheckOnClick = True
+        Me.lbGenre.FormattingEnabled = True
+        Me.lbGenre.IntegralHeight = False
+        Me.lbGenre.Location = New System.Drawing.Point(6, 23)
+        Me.lbGenre.Name = "lbGenre"
+        Me.lbGenre.Size = New System.Drawing.Size(192, 159)
+        Me.lbGenre.Sorted = True
+        Me.lbGenre.TabIndex = 107
+        '
+        'lblGenre
+        '
+        Me.lblGenre.AutoSize = True
+        Me.lblGenre.Location = New System.Drawing.Point(6, 6)
+        Me.lblGenre.Name = "lblGenre"
+        Me.lblGenre.Size = New System.Drawing.Size(115, 13)
+        Me.lblGenre.TabIndex = 106
+        Me.lblGenre.Text = "Genre Language Filter:"
+        '
         'GroupBox16
         '
         Me.GroupBox16.Controls.Add(Me.chkAutoBD)
         Me.GroupBox16.Controls.Add(Me.btnBrowse)
         Me.GroupBox16.Controls.Add(Me.txtBDPath)
-        Me.GroupBox16.Location = New System.Drawing.Point(6, 303)
+        Me.GroupBox16.Location = New System.Drawing.Point(5, 303)
         Me.GroupBox16.Name = "GroupBox16"
         Me.GroupBox16.Size = New System.Drawing.Size(583, 43)
         Me.GroupBox16.TabIndex = 67
@@ -2068,6 +2092,25 @@ Partial Class dlgSettings
         Me.lstMovieExts.Sorted = True
         Me.lstMovieExts.TabIndex = 2
         '
+        'pnlSources
+        '
+        Me.pnlSources.BackColor = System.Drawing.Color.White
+        Me.pnlSources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlSources.Controls.Add(Me.GroupBox16)
+        Me.pnlSources.Controls.Add(Me.lvMovies)
+        Me.pnlSources.Controls.Add(Me.chkScanRecursive)
+        Me.pnlSources.Controls.Add(Me.btnMovieAddFiles)
+        Me.pnlSources.Controls.Add(Me.btnMovieRem)
+        Me.pnlSources.Controls.Add(Me.chkTitleFromNfo)
+        Me.pnlSources.Controls.Add(Me.chkUseFolderNames)
+        Me.pnlSources.Controls.Add(Me.btnMovieAddFolder)
+        Me.pnlSources.Controls.Add(Me.GroupBox8)
+        Me.pnlSources.Location = New System.Drawing.Point(208, 96)
+        Me.pnlSources.Name = "pnlSources"
+        Me.pnlSources.Size = New System.Drawing.Size(597, 353)
+        Me.pnlSources.TabIndex = 67
+        Me.pnlSources.Visible = False
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -2082,11 +2125,12 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2141,6 +2185,8 @@ Partial Class dlgSettings
         Me.pnlExtensions.ResumeLayout(False)
         Me.GroupBox18.ResumeLayout(False)
         Me.GroupBox18.PerformLayout()
+        Me.pnlSources.ResumeLayout(False)
+        Me.pnlSources.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2317,4 +2363,7 @@ Partial Class dlgSettings
     Friend WithEvents chkUseMIDuration As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieExtraCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSubCol As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlSources As System.Windows.Forms.Panel
+    Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
+    Friend WithEvents lblGenre As System.Windows.Forms.Label
 End Class
