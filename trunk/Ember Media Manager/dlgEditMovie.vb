@@ -85,7 +85,6 @@ Public Class dlgEditMovie
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-
             Me.Activate()
 
             Me.lvwActorSorter = New ListViewColumnSorter()

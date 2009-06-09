@@ -62,6 +62,8 @@ Public Class frmMain
     Private currText As String = String.Empty
     Private prevText As String = String.Empty
     Private FilterArray As New ArrayList
+    Private SingelScrapeDone As Boolean = False
+    Private isCL As Boolean = False
 
     Private Enum PicType As Integer
         Actor = 0
@@ -125,7 +127,7 @@ Public Class frmMain
         Master.eSettings.WindowState = Me.WindowState
         Master.eSettings.Save()
 
-        If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy Then
+        If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy AndAlso Not isCL Then
             Me.SaveMovieList()
         End If
 
@@ -145,7 +147,7 @@ Public Class frmMain
             Application.DoEvents()
         Loop
 
-        Master.SQLcn.Close()
+        If Not isCL Then Master.SQLcn.Close()
 
     End Sub
 
@@ -216,67 +218,108 @@ Public Class frmMain
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
 
-        Try
-            'setup some dummies so we don't get exceptions when resizing form/info panel
-            Me.Visible = False
-            ReDim Preserve Me.pnlGenre(0)
-            ReDim Preserve Me.pbGenre(0)
-            Me.pnlGenre(0) = New Panel()
-            Me.pbGenre(0) = New PictureBox()
+        'setup some dummies so we don't get exceptions when resizing form/info panel
+        Me.Visible = False
+        ReDim Preserve Me.pnlGenre(0)
+        ReDim Preserve Me.pbGenre(0)
+        Me.pnlGenre(0) = New Panel()
+        Me.pbGenre(0) = New PictureBox()
 
-            AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
-            AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
+        AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
+        AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
 
-            Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
-            If File.Exists(sPath) Then
-                Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
-                File.Delete(sPath)
+        Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
+        If File.Exists(sPath) Then
+            Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
+            File.Delete(sPath)
+        End If
+
+        Master.eSettings.Load()
+
+        Dim MoviePath As String = String.Empty
+        Dim isFile As Boolean = False
+        Dim hasSpec As Boolean = True
+        Dim Args() As String = Environment.GetCommandLineArgs
+        If Args.Count = 3 Then
+
+            isCL = True
+
+            Select Case Args(1)
+                Case "-file"
+                    isFile = True
+                    hasSpec = True
+                Case "-folder"
+                    isFile = False
+                    hasSpec = True
+            End Select
+
+            If File.Exists(Args(2).Replace("""", String.Empty)) Then
+                MoviePath = Args(2).Replace("""", String.Empty)
             End If
+            Try
+                If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
+                    Master.currPath = MoviePath
+                    Master.isFile = isFile
+                    Master.currNFO = Master.GetNfoPath(MoviePath, isFile)
+                    Master.currMovie = If(Not String.IsNullOrEmpty(Master.currNFO), Master.LoadMovieFromNFO(Master.currNFO), New Media.Movie)
+                    Me.tmpTitle = Master.FilterName(If(isFile, Path.GetFileNameWithoutExtension(MoviePath), Directory.GetParent(MoviePath).Name))
+                    Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
+                    While Not Me.SingelScrapeDone
+                        Application.DoEvents()
+                    End While
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
 
-            Master.eSettings.Load()
+            Me.Close()
+        Else
+            Try
+                Me.btnMarkAll.Text = If(Master.eSettings.MarkAll, "Mark All", "Unmark All")
 
-            Me.btnMarkAll.Text = If(Master.eSettings.MarkAll, "Mark All", "Unmark All")
-
-            If Master.eSettings.CheckUpdates Then
-                Dim tmpNew As Integer = Master.CheckUpdate
-                If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
-                    If MsgBox(String.Concat("A new version is available.", vbNewLine, vbNewLine, "Version r", tmpNew, " is available via Ember Media Manager's Google Code page.", vbNewLine, vbNewLine, _
-                                            "Would you like to visit the Google Code page to download the newest version?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "A New Version Is Available") = MsgBoxResult.Yes Then
-                        Process.Start("http://code.google.com/p/embermediamanager/downloads/list")
+                If Master.eSettings.CheckUpdates Then
+                    Dim tmpNew As Integer = Master.CheckUpdate
+                    If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
+                        If MsgBox(String.Concat("A new version is available.", vbNewLine, vbNewLine, "Version r", tmpNew, " is available via Ember Media Manager's Google Code page.", vbNewLine, vbNewLine, _
+                                                "Would you like to visit the Google Code page to download the newest version?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "A New Version Is Available") = MsgBoxResult.Yes Then
+                            Process.Start("http://code.google.com/p/embermediamanager/downloads/list")
+                        End If
                     End If
                 End If
-            End If
 
-            Me.Location = Master.eSettings.WindowLoc
-            Me.Size = Master.eSettings.WindowSize
-            Me.WindowState = Master.eSettings.WindowState
+                Me.Location = Master.eSettings.WindowLoc
+                Me.Size = Master.eSettings.WindowSize
+                Me.WindowState = Master.eSettings.WindowState
 
-            Me.SetColors()
+                Me.SetColors()
 
-            Me.SetMenus()
+                Me.SetMenus()
 
-            Me.pnlInfoPanel.Height = 25
-            Me.ClearInfo()
+                Me.pnlInfoPanel.Height = 25
+                Me.ClearInfo()
 
-            If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                Master.ConnectDB(False)
-                Me.FillList(0)
-            Else
-                If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
-                    Master.ConnectDB(True)
-                    Me.LoadMedia(1)
-                Else
-                    Master.ConnectDB(True)
+                If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
+                    Master.ConnectDB(False)
                     Me.FillList(0)
+                Else
+                    If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
+                        Master.ConnectDB(True)
+                        Me.LoadMedia(1)
+                    Else
+                        Master.ConnectDB(True)
+                        Me.FillList(0)
+                    End If
                 End If
-            End If
 
 
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
 
-        Me.Visible = True
+            Me.Visible = True
+            Me.Activate()
+        End If
+
     End Sub
 
     Private Sub lstActors_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstActors.SelectedIndexChanged
@@ -2991,16 +3034,20 @@ doCancel:
                                     IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.currMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                                 End If
                             Else
-                                Me.dgvMediaList.Enabled = True
-                                Me.tslLoading.Visible = False
-                                Me.tspbLoading.Visible = False
-                                Me.tslStatus.Text = String.Empty
-                                Me.tsbAutoPilot.Enabled = True
-                                Me.tsbRefreshMedia.Enabled = True
-                                Me.mnuMediaList.Enabled = True
-                                Me.tabsMain.Enabled = True
-                                Me.EnableFilters(True)
-                                Me.LoadInfo(Master.currPath, True, False, Master.isFile)
+                                If isCL Then
+                                    Me.SingelScrapeDone = True
+                                Else
+                                    Me.dgvMediaList.Enabled = True
+                                    Me.tslLoading.Visible = False
+                                    Me.tspbLoading.Visible = False
+                                    Me.tslStatus.Text = String.Empty
+                                    Me.tsbAutoPilot.Enabled = True
+                                    Me.tsbRefreshMedia.Enabled = True
+                                    Me.mnuMediaList.Enabled = True
+                                    Me.tabsMain.Enabled = True
+                                    Me.EnableFilters(True)
+                                    Me.LoadInfo(Master.currPath, True, False, Master.isFile)
+                                End If
                             End If
                         End Using
                     End If
@@ -3075,21 +3122,24 @@ doCancel:
                         Master.CreateRandomThumbs(Master.currPath, Master.eSettings.AutoThumbs)
                     End If
                 End If
+                If Not isCL Then
+                    Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
+                    Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
 
-                Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-                Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
-
-                Using dEditMovie As New dlgEditMovie
-                    Select Case dEditMovie.ShowDialog(ID)
-                        Case Windows.Forms.DialogResult.OK
-                            Me.ReCheckItems(ID)
-                            Me.FillList(indX)
-                        Case Windows.Forms.DialogResult.Retry
-                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
-                        Case Windows.Forms.DialogResult.Abort
-                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, True)
-                    End Select
-                End Using
+                    Using dEditMovie As New dlgEditMovie
+                        Select Case dEditMovie.ShowDialog(ID)
+                            Case Windows.Forms.DialogResult.OK
+                                Me.ReCheckItems(ID)
+                                Me.FillList(indX)
+                            Case Windows.Forms.DialogResult.Retry
+                                Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
+                            Case Windows.Forms.DialogResult.Abort
+                                Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, True)
+                        End Select
+                    End Using
+                Else
+                    Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.isFile)
+                End If
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
             End If
@@ -3097,15 +3147,18 @@ doCancel:
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        Me.dgvMediaList.Enabled = True
-        Me.tslLoading.Visible = False
-        Me.tspbLoading.Visible = False
-        Me.tslStatus.Text = String.Empty
-        Me.tsbAutoPilot.Enabled = True
-        Me.tsbRefreshMedia.Enabled = True
-        Me.mnuMediaList.Enabled = True
-        Me.tabsMain.Enabled = True
-
+        If isCL Then
+            Me.SingelScrapeDone = True
+        Else
+            Me.dgvMediaList.Enabled = True
+            Me.tslLoading.Visible = False
+            Me.tspbLoading.Visible = False
+            Me.tslStatus.Text = String.Empty
+            Me.tsbAutoPilot.Enabled = True
+            Me.tsbRefreshMedia.Enabled = True
+            Me.mnuMediaList.Enabled = True
+            Me.tabsMain.Enabled = True
+        End If
     End Sub
 
     Private Sub ReCheckItems(ByVal ID As Integer)
