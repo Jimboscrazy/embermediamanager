@@ -476,6 +476,10 @@ Public Class dlgEditMovie
                     Dim SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     .chkMark.Checked = SQLreader("mark")
                 End Using
+
+                If Master.eSettings.AutoThumbs > 0 Then
+                    .txtThumbCount.Text = Master.eSettings.AutoThumbs
+                End If
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
