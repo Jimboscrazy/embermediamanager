@@ -24,6 +24,9 @@ Imports System.IO
 
 Public Class dlgSettings
 
+    Private doRefresh As Boolean = False
+    Private didApply As Boolean = False
+
 #Region "Form/Controls"
 
     Private XComs As List(Of emmSettings.XBMCCom)
@@ -144,6 +147,7 @@ Public Class dlgSettings
         Try
             Me.SaveSettings()
             Me.btnApply.Enabled = False
+            If doRefresh Then didApply = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -178,6 +182,7 @@ Public Class dlgSettings
                     Me.lvMovies.EndUpdate()
                     Me.lvMovies.Refresh()
                     Me.btnApply.Enabled = True
+                    Me.doRefresh = True
                 End If
             End If
         Catch ex As Exception
@@ -186,12 +191,13 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = If(doRefresh, Windows.Forms.DialogResult.Retry, Windows.Forms.DialogResult.OK)
         Me.SaveSettings()
         Me.Close()
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        Me.DialogResult = If(didApply, Windows.Forms.DialogResult.Retry, Windows.Forms.DialogResult.Cancel)
         Me.Close()
     End Sub
 
@@ -215,6 +221,8 @@ Public Class dlgSettings
             End Using
 
             Me.FillSettings()
+
+            Me.btnApply.Enabled = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -225,6 +233,7 @@ Public Class dlgSettings
             Me.lstFilters.Items.Add(Me.txtFilter.Text)
             Me.txtFilter.Text = String.Empty
             Me.btnApply.Enabled = True
+            Me.doRefresh = True
         End If
 
         Me.txtFilter.Focus()
@@ -236,6 +245,7 @@ Public Class dlgSettings
                 lstFilters.Items.RemoveAt(i)
             Next
             Me.btnApply.Enabled = True
+            Me.doRefresh = True
         End If
     End Sub
 
@@ -345,21 +355,24 @@ Public Class dlgSettings
 
     Private Sub chkUseFolderNames_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFolderNames.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProperCase.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
         Try
-            If lstFilters.Items.Count > 0 AndAlso Not IsNothing(lstFilters.SelectedItem) AndAlso lstFilters.SelectedIndex > 0 Then
-                Dim iIndex As Integer = lstFilters.SelectedIndices(0)
-                lstFilters.Items.Insert(iIndex - 1, lstFilters.SelectedItems(0))
-                lstFilters.Items.RemoveAt(iIndex + 1)
-                lstFilters.SelectedIndex = iIndex - 1
-                btnApply.Enabled = True
-                lstFilters.Focus()
+            If Me.lstFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstFilters.SelectedItem) AndAlso Me.lstFilters.SelectedIndex > 0 Then
+                Dim iIndex As Integer = Me.lstFilters.SelectedIndices(0)
+                Me.lstFilters.Items.Insert(iIndex - 1, Me.lstFilters.SelectedItems(0))
+                Me.lstFilters.Items.RemoveAt(iIndex + 1)
+                Me.lstFilters.SelectedIndex = iIndex - 1
+                Me.btnApply.Enabled = True
+                Me.doRefresh = True
+                Me.lstFilters.Focus()
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -368,81 +381,87 @@ Public Class dlgSettings
 
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
         Try
-            If lstFilters.Items.Count > 0 AndAlso Not IsNothing(lstFilters.SelectedItem) AndAlso lstFilters.SelectedIndex < (lstFilters.Items.Count - 1) Then
-                Dim iIndex As Integer = lstFilters.SelectedIndices(0)
-                lstFilters.Items.Insert(iIndex + 2, lstFilters.SelectedItems(0))
-                lstFilters.Items.RemoveAt(iIndex)
-                lstFilters.SelectedIndex = iIndex + 1
-                btnApply.Enabled = True
-                lstFilters.Focus()
+            If Me.lstFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstFilters.SelectedItem) AndAlso Me.lstFilters.SelectedIndex < (Me.lstFilters.Items.Count - 1) Then
+                Dim iIndex As Integer = Me.lstFilters.SelectedIndices(0)
+                Me.lstFilters.Items.Insert(iIndex + 2, Me.lstFilters.SelectedItems(0))
+                Me.lstFilters.Items.RemoveAt(iIndex)
+                Me.lstFilters.SelectedIndex = iIndex + 1
+                Me.btnApply.Enabled = True
+                Me.doRefresh = True
+                Me.lstFilters.Focus()
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Private Sub rbMovieName_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitleFromNfo.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
-    Private Sub rbMovie_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.btnApply.Enabled = True
-    End Sub
-
-    Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.btnApply.Enabled = True
-    End Sub
-
-    Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMPDB.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
 
     Private Sub chkMovieTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieTBN.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameTBN.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieJPG.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameJPG.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterTBN.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterJPG.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFolderJPG.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFanartJPG.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameFanartJPG.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNFO.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameNFO.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameDotFanartJPG.CheckedChanged
         btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkLockPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockPlot.CheckedChanged
@@ -605,6 +624,7 @@ Public Class dlgSettings
 
     Private Sub chkScanRecursive_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanRecursive.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub chkCastWithImg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCastWithImg.CheckedChanged
@@ -613,6 +633,7 @@ Public Class dlgSettings
 
     Private Sub chkVideoTSParent_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVideoTSParent.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.doRefresh = True
     End Sub
 
     Private Sub tvSettings_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvSettings.AfterSelect
@@ -764,6 +785,7 @@ Public Class dlgSettings
             If Not lstMovieExts.Items.Contains(txtMovieExt.Text) Then
                 lstMovieExts.Items.Add(txtMovieExt.Text)
                 Me.btnApply.Enabled = True
+                Me.doRefresh = True
                 txtMovieExt.Text = String.Empty
                 txtMovieExt.Focus()
             End If
@@ -776,6 +798,7 @@ Public Class dlgSettings
                 lstMovieExts.Items.RemoveAt(i)
             Next
             Me.btnApply.Enabled = True
+            Me.doRefresh = True
         End If
     End Sub
 
@@ -883,6 +906,7 @@ Public Class dlgSettings
                             Me.lvMovies.Columns(1).Width = 74
                             Me.lvMovies.Refresh()
                             Me.btnApply.Enabled = True
+                            Me.doRefresh = True
                         End If
 
                     End If

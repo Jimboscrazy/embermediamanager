@@ -179,8 +179,10 @@ Public Class frmMain
 
         Try
             Using dSettings As New dlgSettings
+                Dim dResult As Windows.Forms.DialogResult = dSettings.ShowDialog
+                If dResult = Windows.Forms.DialogResult.OK OrElse dResult = Windows.Forms.DialogResult.Retry Then
 
-                If dSettings.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    Me.SetColors()
 
                     If Me.dgvMediaList.RowCount > 0 Then
                         Me.dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
@@ -194,13 +196,19 @@ Public Class frmMain
                         Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         Me.dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                     End If
+
+                    If dResult = Windows.Forms.DialogResult.Retry Then
+                        Me.LoadMedia(1)
+                    Else
+                        If Not bwPrelim.IsBusy AndAlso Not bwFolderData.IsBusy Then
+                            Me.FillList(0)
+                        End If
+                    End If
+
+
+
                 End If
 
-                Me.SetColors()
-
-                If Not bwPrelim.IsBusy AndAlso Not bwFolderData.IsBusy Then
-                    Me.FillList(0)
-                End If
 
 
             End Using
