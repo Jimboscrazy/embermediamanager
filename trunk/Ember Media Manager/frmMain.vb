@@ -288,10 +288,9 @@ Public Class frmMain
                 If Master.eSettings.CheckUpdates Then
                     Dim tmpNew As Integer = Master.CheckUpdate
                     If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
-                        If MsgBox(String.Concat("A new version is available.", vbNewLine, vbNewLine, "Version r", tmpNew, " is available via Ember Media Manager's Google Code page.", vbNewLine, vbNewLine, _
-                                                "Would you like to visit the Google Code page to download the newest version?"), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "A New Version Is Available") = MsgBoxResult.Yes Then
-                            Process.Start("http://code.google.com/p/embermediamanager/downloads/list")
-                        End If
+                        Using dNewVer As New dlgNewVersion
+                            dNewVer.ShowDialog(tmpNew)
+                        End Using
                     End If
                 End If
 
@@ -1884,7 +1883,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) Then
-                                            Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs)
+                                            If Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs) Then parFanart.Value = True
                                         End If
                                     End If
                                     SQLcommand.ExecuteNonQuery()
@@ -1971,7 +1970,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) Then
-                                            Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs)
+                                            If Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs) Then parFanart.Value = True
                                         End If
                                     End If
 
@@ -2121,7 +2120,7 @@ Public Class frmMain
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
                                         (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
-                                            Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs)
+                                            If Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs) Then parFanart.Value = True
                                         End If
                                     End If
 
@@ -2243,7 +2242,7 @@ Public Class frmMain
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
                                         (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
-                                            Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs)
+                                            If Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs) Then parFanart.Value = True
                                         End If
                                     End If
 

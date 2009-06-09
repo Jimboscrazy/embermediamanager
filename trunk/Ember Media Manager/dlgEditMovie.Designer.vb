@@ -97,6 +97,8 @@ Partial Class dlgEditMovie
         Me.btnSetFanart = New System.Windows.Forms.Button
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.Panel1 = New System.Windows.Forms.Panel
+        Me.btnSetAsFanart = New System.Windows.Forms.Button
         Me.btnThumbsRefresh = New System.Windows.Forms.Button
         Me.btnRemoveThumb = New System.Windows.Forms.Button
         Me.btnDown = New System.Windows.Forms.Button
@@ -136,6 +138,7 @@ Partial Class dlgEditMovie
         Me.TabPage3.SuspendLayout()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage5.SuspendLayout()
+        Me.Panel1.SuspendLayout()
         CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -869,6 +872,7 @@ Partial Class dlgEditMovie
         '
         'TabPage5
         '
+        Me.TabPage5.Controls.Add(Me.Panel1)
         Me.TabPage5.Controls.Add(Me.btnThumbsRefresh)
         Me.TabPage5.Controls.Add(Me.btnRemoveThumb)
         Me.TabPage5.Controls.Add(Me.btnDown)
@@ -881,6 +885,28 @@ Partial Class dlgEditMovie
         Me.TabPage5.TabIndex = 4
         Me.TabPage5.Text = "Extrathumbs"
         Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.LightGray
+        Me.Panel1.Controls.Add(Me.btnSetAsFanart)
+        Me.Panel1.Location = New System.Drawing.Point(716, 402)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(109, 39)
+        Me.Panel1.TabIndex = 15
+        '
+        'btnSetAsFanart
+        '
+        Me.btnSetAsFanart.Enabled = False
+        Me.btnSetAsFanart.Image = CType(resources.GetObject("btnSetAsFanart.Image"), System.Drawing.Image)
+        Me.btnSetAsFanart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSetAsFanart.Location = New System.Drawing.Point(3, 4)
+        Me.btnSetAsFanart.Name = "btnSetAsFanart"
+        Me.btnSetAsFanart.Size = New System.Drawing.Size(103, 32)
+        Me.btnSetAsFanart.TabIndex = 0
+        Me.btnSetAsFanart.Text = "Set As Fanart"
+        Me.btnSetAsFanart.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSetAsFanart.UseVisualStyleBackColor = True
         '
         'btnThumbsRefresh
         '
@@ -1173,6 +1199,7 @@ Partial Class dlgEditMovie
         Me.TabPage3.ResumeLayout(False)
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage5.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
         CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage4.PerformLayout()
@@ -1284,5 +1311,7 @@ Partial Class dlgEditMovie
     Friend WithEvents btnThumbsRefresh As System.Windows.Forms.Button
     Friend WithEvents btnStudio As System.Windows.Forms.Button
     Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents btnSetAsFanart As System.Windows.Forms.Button
 
 End Class
