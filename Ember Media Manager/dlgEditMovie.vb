@@ -857,7 +857,7 @@ Public Class dlgEditMovie
                 End If
 
                 ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currPath, Path.Combine(tPath, "frame.jpg"))
+                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currPath, Path.Combine(tPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
                 ffmpeg.StartInfo.CreateNoWindow = True
@@ -916,7 +916,12 @@ Public Class dlgEditMovie
 
             Dim iMod As Integer = Master.GetExtraModifier(Master.currPath)
 
-            Master.MoveFileWithStream(tPath, Path.Combine(sPath, String.Concat("thumb", (iMod + 1), ".jpg")))
+            Dim exImage As New Images
+            exImage.ResizeExtraThumb(tPath, Path.Combine(sPath, String.Concat("thumb", (iMod + 1), ".jpg")))
+            exImage.Dispose()
+            exImage = Nothing
+
+            'Master.MoveFileWithStream(tPath, Path.Combine(sPath, String.Concat("thumb", (iMod + 1), ".jpg")))
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

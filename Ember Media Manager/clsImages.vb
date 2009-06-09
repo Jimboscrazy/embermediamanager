@@ -151,7 +151,7 @@ Public Class Images
             Dim pPath As String = String.Empty
 
             If Master.eSettings.ResizePoster AndAlso (_image.Width > Master.eSettings.PosterWidth OrElse _image.Height > Master.eSettings.PosterHeight) Then
-                _image = ResizeImage(_image, Master.ImageType.Posters)
+                ResizeImage(Master.eSettings.PosterWidth, Master.eSettings.PosterHeight)
             End If
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
@@ -237,13 +237,29 @@ Public Class Images
         End Try
     End Sub
 
+    Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
+        'there has to be a better way to do this. lol
+        Me.FromFile(fromPath)
+        Dim int As Integer = _image.Width
+        Me.ResizeImage(1280, 720)
+        Dim bgBMP As Bitmap = New Bitmap(1280, 720, Imaging.PixelFormat.Format32bppRgb)
+        Dim grOverlay As Graphics = Graphics.FromImage(bgBMP)
+        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+        grOverlay.FillRectangle(New SolidBrush(Color.Black), New RectangleF(0, 0, 1280, 720))
+        Dim iLeft As Integer = If(_image.Width = 1280, 0, (1280 - _image.Width) / 2)
+        Dim iTop As Integer = If(_image.Height = 720, 0, (720 - _image.Height) / 2)
+        grOverlay.DrawImage(_image, iLeft, iTop, _image.Width, _image.Height)
+        _image = bgBMP
+        Me.Save(toPath)
+    End Sub
+
     Public Sub SaveAsFanart(ByVal sPath As String, ByVal isFile As Boolean)
         Try
             Dim fPath As String = String.Empty
             Dim tPath As String = String.Empty
 
             If Master.eSettings.ResizeFanart AndAlso (_image.Width > Master.eSettings.FanartWidth OrElse _image.Height > Master.eSettings.FanartHeight) Then
-                _image = ResizeImage(_image, Master.ImageType.Fanart)
+                ResizeImage(Master.eSettings.FanartWidth, Master.eSettings.FanartHeight)
             End If
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
@@ -832,45 +848,41 @@ foundIT:
 
     End Function
 
-    Private Function ResizeImage(ByVal theImage As Image, ByVal imgType As Master.ImageType) As Image
+    Public Sub ResizeImage(ByVal maxWidth As Integer, ByVal maxHeight As Integer)
 
-        Dim imgOut As Image = Nothing
-        Dim maxHeight = If(imgType = Master.ImageType.Fanart, Master.eSettings.FanartHeight, Master.eSettings.PosterHeight)
-        Dim maxWidth = If(imgType = Master.ImageType.Fanart, Master.eSettings.FanartWidth, Master.eSettings.PosterHeight)
         Try
-            If Not IsNothing(theImage) Then
+            If Not IsNothing(_image) Then
                 Dim sPropPerc As Single = 1.0 'no default scaling
 
-                If theImage.Width > theImage.Height Then
-                    sPropPerc = CSng(maxWidth / theImage.Width)
+                If _image.Width > _image.Height Then
+                    sPropPerc = CSng(maxWidth / _image.Width)
                 Else
-                    sPropPerc = CSng(maxHeight / theImage.Height)
+                    sPropPerc = CSng(maxHeight / _image.Height)
                 End If
 
                 ' Get the source bitmap.
-                Using bmSource As New Bitmap(theImage)
+                Using bmSource As New Bitmap(_image)
                     ' Make a bitmap for the result.
-                    Using bmDest As New Bitmap( _
+                    Dim bmDest As New Bitmap( _
                     Convert.ToInt32(bmSource.Width * sPropPerc), _
                     Convert.ToInt32(bmSource.Height * sPropPerc))
-                        ' Make a Graphics object for the result Bitmap.
-                        Using grDest As Graphics = Graphics.FromImage(bmDest)
-                            grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                            ' Copy the source image into the destination bitmap.
-                            grDest.DrawImage(bmSource, New Rectangle(0, 0, _
-                            bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
-                            bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
-                        End Using
-
-                        imgOut = bmDest
-
+                    ' Make a Graphics object for the result Bitmap.
+                    Using grDest As Graphics = Graphics.FromImage(bmDest)
+                        grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                        ' Copy the source image into the destination bitmap.
+                        grDest.DrawImage(bmSource, New Rectangle(0, 0, _
+                        bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
+                        bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
                     End Using
+
+                    _image = bmDest
+
                 End Using
+
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        Return imgOut
-    End Function
+    End Sub
 End Class
