@@ -995,8 +995,8 @@ Public Class dlgSettings
             Master.eSettings.UseOFDBOutline = Me.chkOFDBOutline.Checked
             Master.eSettings.UseOFDBPlot = Me.chkOFDBPlot.Checked
             Master.eSettings.UseOFDBGenre = Me.chkOFDBGenre.Checked
-            If Not String.IsNullOrEmpty(txtAutoThumbs.Text) AndAlso CInt(txtAutoThumbs.Text) > 0 Then
-                Master.eSettings.AutoThumbs = CInt(txtAutoThumbs.Text)
+            If Not String.IsNullOrEmpty(txtAutoThumbs.Text) AndAlso Convert.ToInt32(txtAutoThumbs.Text) > 0 Then
+                Master.eSettings.AutoThumbs = Convert.ToInt32(txtAutoThumbs.Text)
                 Master.eSettings.AutoThumbsNoSpoilers = Me.chkNoSpoilers.Checked
             Else
                 Master.eSettings.AutoThumbs = 0

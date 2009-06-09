@@ -50,13 +50,13 @@ Public Class ListViewColumnSorter
             ' Compare the two items.
             If ByText Then
                 If IsNumeric Then
-                    compareResult = ObjectCompare.Compare(CInt(listviewX.Text.Trim), CInt(listviewY.Text.Trim))
+                    compareResult = ObjectCompare.Compare(Convert.ToInt32(listviewX.Text.Trim), Convert.ToInt32(listviewY.Text.Trim))
                 Else
                     compareResult = ObjectCompare.Compare(listviewX.Text.Trim, listviewY.Text.Trim)
                 End If
             Else
                 If IsNumeric Then
-                    compareResult = ObjectCompare.Compare(CInt(listviewX.SubItems(ColumnToSort).Text.Trim), CInt(listviewY.SubItems(ColumnToSort).Text.Trim))
+                    compareResult = ObjectCompare.Compare(Convert.ToInt32(listviewX.SubItems(ColumnToSort).Text.Trim), Convert.ToInt32(listviewY.SubItems(ColumnToSort).Text.Trim))
                 Else
                     compareResult = ObjectCompare.Compare(listviewX.SubItems(ColumnToSort).Text.Trim, listviewY.SubItems(ColumnToSort).Text.Trim)
                 End If

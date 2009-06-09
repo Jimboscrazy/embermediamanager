@@ -349,7 +349,7 @@ mResult:
                     sPoster = Regex.Match(Regex.Match(Html, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
                 End If
 
-                IMDBMovie.Year = CInt(Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))").ToString)
+                IMDBMovie.Year = Convert.ToInt32(Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))").ToString)
 
                 Dim sRated As String = Regex.Match(Html, "MPAA</a>:</h5>(.[^<]*)", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value
                 IMDBMovie.MPAA = Web.HttpUtility.HtmlDecode(sRated).Trim()
