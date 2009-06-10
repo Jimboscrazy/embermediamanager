@@ -1812,7 +1812,7 @@ Public Class Master
                 sVersion = tempKey.GetValue("Version")
                 If Not String.IsNullOrEmpty(sVersion) Then
                     Dim tVersion() As String = sVersion.Split(New Char() {"."})
-                    If Convert.ToDouble(String.Concat(tVersion(0), ".", tVersion(1))) >= 3.5 Then
+                    If tVersion(0) >= 3 AndAlso tVersion(1) >= 5 Then
                         Return True
                     End If
                 End If
