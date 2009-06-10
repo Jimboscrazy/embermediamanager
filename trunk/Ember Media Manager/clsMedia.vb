@@ -42,7 +42,6 @@ Namespace Media
         Private _genre As String
         Private _runtime As String
         Private _releaseDate As String
-        Private _premiered As String
         Private _studio As String
         Private _studioreal As String
         Private _director As String
@@ -57,6 +56,7 @@ Namespace Media
         Private _fanart As New Fanart
         Private _actors As New List(Of Person)
         Private _fileInfo As New MediaInfo.Fileinfo
+        Private _sets As New List(Of [Set])
 
         <XmlIgnore()> _
         Public Property IMDBID() As String
@@ -78,6 +78,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._imdbid)
+            End Get
+        End Property
+
         <XmlElement("title")> _
         Public Property Title() As String
             Get
@@ -86,6 +93,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._title = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._title)
+            End Get
         End Property
 
         <XmlElement("originaltitle")> _
@@ -98,6 +112,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property OriginalTitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._originaltitle)
+            End Get
+        End Property
+
         <XmlElement("year")> _
         Public Property Year() As String
             Get
@@ -106,6 +127,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._year = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property YearSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._year)
+            End Get
         End Property
 
         <XmlElement("rating")> _
@@ -118,6 +146,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property RatingSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._rating)
+            End Get
+        End Property
+
         <XmlElement("votes")> _
         Public Property Votes() As String
             Get
@@ -126,6 +161,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._votes = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property VotesSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._votes)
+            End Get
         End Property
 
         <XmlElement("mpaa")> _
@@ -138,6 +180,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property MPAASpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._mpaa)
+            End Get
+        End Property
+
         <XmlElement("top250")> _
         Public Property Top250() As String
             Get
@@ -146,6 +195,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._top250 = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property Top250Specified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._top250)
+            End Get
         End Property
 
         <XmlElement("outline")> _
@@ -158,6 +214,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property OutlineSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._outline)
+            End Get
+        End Property
+
         <XmlElement("plot")> _
         Public Property Plot() As String
             Get
@@ -166,6 +229,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._plot = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property PlotSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._plot)
+            End Get
         End Property
 
         <XmlElement("tagline")> _
@@ -178,6 +248,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property TaglineSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tagline)
+            End Get
+        End Property
+
         <XmlElement("trailer")> _
         Public Property Trailer() As String
             Get
@@ -186,6 +263,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._trailer = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TrailerSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._trailer)
+            End Get
         End Property
 
         <XmlElement("certification")> _
@@ -198,6 +282,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property CertificationSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._certification)
+            End Get
+        End Property
+
         <XmlElement("genre")> _
         Public Property Genre() As String
             Get
@@ -206,6 +297,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._genre = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property GenreSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._genre)
+            End Get
         End Property
 
         <XmlElement("studio")> _
@@ -218,6 +316,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property StudioSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._studio)
+            End Get
+        End Property
+
         <XmlElement("studioreal")> _
         Public Property StudioReal() As String
             Get
@@ -226,6 +331,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._studioreal = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property StudioRealSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._studioreal)
+            End Get
         End Property
 
         <XmlElement("runtime")> _
@@ -238,6 +350,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property RuntimeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._runtime)
+            End Get
+        End Property
+
         <XmlElement("releasedate")> _
         Public Property ReleaseDate() As String
             Get
@@ -248,14 +367,11 @@ Namespace Media
             End Set
         End Property
 
-        <XmlElement("premiered")> _
-        Public Property Premiered() As String
+        <XmlIgnore()> _
+        Public ReadOnly Property ReleaseDateSpecified() As Boolean
             Get
-                Return Me._premiered
+                Return Not String.IsNullOrEmpty(Me._releaseDate)
             End Get
-            Set(ByVal value As String)
-                Me._premiered = value
-            End Set
         End Property
 
         <XmlElement("director")> _
@@ -268,6 +384,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property DirectorSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._director)
+            End Get
+        End Property
+
         <XmlElement("credits")> _
         Public Property Credits() As String
             Get
@@ -276,6 +399,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._credits = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property CreditsSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._credits)
+            End Get
         End Property
 
         <XmlElement("playcount")> _
@@ -288,6 +418,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property PlayCountSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._playcount)
+            End Get
+        End Property
+
         <XmlElement("watched")> _
         Public Property Watched() As String
             Get
@@ -296,6 +433,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._watched = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property WatchedSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._watched)
+            End Get
         End Property
 
         <XmlElement("file")> _
@@ -308,6 +452,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property FileSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._file)
+            End Get
+        End Property
+
         <XmlElement("path")> _
         Public Property Path() As String
             Get
@@ -316,6 +467,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._path = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property PathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._path)
+            End Get
         End Property
 
         <XmlElement("filenameandpath")> _
@@ -328,6 +486,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property FileNameAndPathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._filenameandpath)
+            End Get
+        End Property
+
         <XmlElement("status")> _
         Public Property Status() As String
             Get
@@ -336,6 +501,13 @@ Namespace Media
             Set(ByVal value As String)
                 Me._status = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property StatusSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._status)
+            End Get
         End Property
 
         <XmlElement("thumbs")> _
@@ -348,6 +520,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property ThumbsSpecified() As Boolean
+            Get
+                Return Me._thumbs.Thumb.Count > 0
+            End Get
+        End Property
+
         <XmlElement("fanart")> _
         Public Property Fanart() As Fanart
             Get
@@ -356,6 +535,13 @@ Namespace Media
             Set(ByVal value As Fanart)
                 Me._fanart = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property FanartSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._fanart.URL)
+            End Get
         End Property
 
         <XmlElement("actor")> _
@@ -368,6 +554,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property ActorsSpecified() As Boolean
+            Get
+                Return Me._actors.Count > 0
+            End Get
+        End Property
+
         <XmlElement("fileinfo")> _
         Public Property FileInfo() As MediaInfo.Fileinfo
             Get
@@ -377,6 +570,52 @@ Namespace Media
                 Me._fileInfo = value
             End Set
         End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property FileInfoSpecified() As Boolean
+            Get
+                If Me._fileInfo.StreamDetails.Video.Count > 0 OrElse _
+                Me._fileInfo.StreamDetails.Audio.Count > 0 OrElse _
+                 Me._fileInfo.StreamDetails.Subtitle.Count > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End Get
+        End Property
+
+        <XmlElement("sets")> _
+        Public Property Sets() As List(Of [Set])
+            Get
+                Return _sets
+            End Get
+            Set(ByVal value As List(Of [Set]))
+                _sets = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SetsSpecified() As Boolean
+            Get
+                Return Me._sets.Count > 0
+            End Get
+        End Property
+
+        Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
+            Dim tSet = From bSet As [Set] In _sets Where bSet.SetContainer.Set = SetName
+            If tSet.Count > 0 Then
+                If Order > 0 Then tSet(0).SetContainer.Order = Order.ToString
+            Else
+                Me._sets.Add(New [Set] With {.SetContainer = New SetContainer With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)}})
+            End If
+        End Sub
+
+        Public Sub RemoveSet(ByVal SetName As String)
+            Dim tSet = From bSet As [Set] In _sets Where bSet.SetContainer.Set = SetName
+            If tSet.Count > 0 Then
+                _sets.Remove(tSet(0))
+            End If
+        End Sub
 
         Sub New()
             Me.Clear()
@@ -405,7 +644,6 @@ Namespace Media
             Me._genre = String.Empty
             Me._runtime = String.Empty
             Me._releaseDate = String.Empty
-            Me._premiered = String.Empty
             Me._studio = String.Empty
             Me._studioreal = String.Empty
             Me._director = String.Empty
@@ -419,7 +657,8 @@ Namespace Media
             Me._thumbs = New Poster
             Me._fanart = New Fanart
             Me._actors.Clear()
-            Me._fileInfo = Nothing
+            Me._fileInfo = New MediaInfo.Fileinfo
+            Me._sets.Clear()
         End Sub
     End Class
 
@@ -627,5 +866,60 @@ Namespace Media
             Me._webimage = Nothing
         End Sub
 
+    End Class
+
+    Public Class [Set]
+        Private _set As New SetContainer
+
+        <XmlElement("set")> _
+        Public Property SetContainer() As SetContainer
+            Get
+                Return Me._set
+            End Get
+            Set(ByVal value As SetContainer)
+                Me._set = value
+            End Set
+        End Property
+    End Class
+
+    Public Class SetContainer
+        Private _set As String
+        Private _order As String
+
+        <XmlText()> _
+        Public Property [Set]() As String
+            Get
+                Return _set
+            End Get
+            Set(ByVal value As String)
+                _set = value
+            End Set
+        End Property
+
+        <XmlAttribute("order")> _
+        Public Property Order() As String
+            Get
+                Return _order
+            End Get
+            Set(ByVal value As String)
+                _order = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property OrderSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._order)
+            End Get
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            _set = String.Empty
+            _order = String.Empty
+        End Sub
     End Class
 End Namespace

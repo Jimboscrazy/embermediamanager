@@ -708,20 +708,20 @@ Public Class Master
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlMov As New Media.Movie
         Try
-            If File.Exists(sPath) AndAlso Not Master.eSettings.ValidExts.Contains(Path.GetExtension(sPath)) Then
+            If File.Exists(sPath) AndAlso Not Master.eSettings.ValidExts.Contains(Path.GetExtension(sPath).ToLower) Then
                 Using xmlSR As StreamReader = New StreamReader(sPath)
                     xmlSer = New XmlSerializer(GetType(Media.Movie))
                     xmlMov = CType(xmlSer.Deserialize(xmlSR), Media.Movie)
                 End Using
             Else
-                xmlMov.IMDBID = GetIMDBFromNonConf(sPath)
+                If Not String.IsNullOrEmpty(sPath) Then xmlMov.IMDBID = GetIMDBFromNonConf(sPath)
             End If
         Catch
             xmlMov = New Media.Movie
             If Not IsNothing(xmlSer) Then
                 xmlSer = Nothing
             End If
-            xmlMov.IMDBID = GetIMDBFromNonConf(sPath)
+            If Not String.IsNullOrEmpty(sPath) Then xmlMov.IMDBID = GetIMDBFromNonConf(sPath)
         End Try
 
         Return xmlMov
@@ -1218,7 +1218,7 @@ Public Class Master
         Dim testSer As XmlSerializer = Nothing
 
         Try
-            If File.Exists(sPath) AndAlso Not Master.eSettings.ValidExts.Contains(Path.GetExtension(sPath)) Then
+            If File.Exists(sPath) AndAlso Not Master.eSettings.ValidExts.Contains(Path.GetExtension(sPath).ToLower) Then
                 Using testSR As StreamReader = New StreamReader(sPath)
                     testSer = New XmlSerializer(GetType(Media.Movie))
                     Dim testMovie As Media.Movie = CType(testSer.Deserialize(testSR), Media.Movie)
