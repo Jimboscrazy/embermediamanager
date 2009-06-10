@@ -119,6 +119,7 @@ Public Class emmSettings
     Private _markall As Boolean
     Private _genrefilter As String
     Private _useetasfa As Boolean
+    Private _sets As New ArrayList
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -971,6 +972,16 @@ Public Class emmSettings
             Me._useetasfa = value
         End Set
     End Property
+
+    Public Property Sets() As ArrayList
+        Get
+            Return Me._sets
+        End Get
+        Set(ByVal value As ArrayList)
+            Me._sets = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -1079,6 +1090,7 @@ Public Class emmSettings
         Me._markall = True
         Me._genrefilter = "[All]"
         Me._useetasfa = False
+        Me._sets.Clear()
         Me._xbmccoms.Clear()
     End Sub
 

@@ -1316,6 +1316,18 @@ Public Class frmMain
         btnMarkAll.Text = If(btnMarkAll.Text = "Unmark All", "Mark All", "Unmark All")
         Master.eSettings.MarkAll = If(btnMarkAll.Text = "Unmark All", False, True)
     End Sub
+
+    Private Sub ExportMoviesListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportMoviesListToolStripMenuItem.Click
+        Using dExportMovies As New dlgExportMovies
+            dExportMovies.ShowDialog()
+        End Using
+    End Sub
+
+    Private Sub SetsManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetsManagerToolStripMenuItem.Click
+        Using dSetsManager As New dlgSetsManager
+            dSetsManager.ShowDialog()
+        End Using
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -3589,9 +3601,5 @@ doCancel:
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub ExportMoviesListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportMoviesListToolStripMenuItem.Click
-        Using dExportMovies As New dlgExportMovies
-            dExportMovies.ShowDialog()
-        End Using
-    End Sub
+
 End Class

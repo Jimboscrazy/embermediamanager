@@ -40,14 +40,6 @@ Public Class dlgExportMovies
         End If
     End Sub
 
-    Private Sub dlgMoviesReport_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Try
-            Me.Activate()
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         '//
         ' Thread to load movieinformation (from nfo)
@@ -69,7 +61,7 @@ Public Class dlgExportMovies
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             _tmpPath = Master.GetNfoPath(SQLreader("path").ToString, SQLreader("type"))
-                            If _tmpPath <> "" Then
+                            If Not String.IsNullOrEmpty(_tmpPath) Then
                                 _tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
                                 _movies.Add(_tmpMovie)
                             End If
@@ -242,6 +234,9 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub dlgMoviesReport_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+
+        Me.Activate()
+
         ' Show Cancel Panel
         btnCancel.Visible = True
         lblCompiling.Visible = True
