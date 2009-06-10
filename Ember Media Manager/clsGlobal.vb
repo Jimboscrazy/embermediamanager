@@ -662,23 +662,22 @@ Public Class Master
         '\\
 
         Try
-            If Strings.Right(sPath.ToLower, 11) = "extrathumbs" OrElse _
-            Strings.Right(sPath.ToLower, 3) = "cd1" OrElse _
-            Strings.Right(sPath.ToLower, 3) = "cd2" OrElse _
-            Strings.Right(sPath.ToLower, 3) = "cd3" OrElse _
-            Strings.Right(sPath.ToLower, 4) = "subs" OrElse _
-            Strings.Right(sPath.ToLower, 9) = "subtitles" OrElse _
-            Strings.Right(sPath.ToLower, 6) = "extras" OrElse _
-            Strings.Right(sPath.ToLower, 8) = "video_ts" OrElse _
-            Strings.Right(sPath.ToLower, 8) = "audio_ts" OrElse _
-            Strings.Right(sPath.ToLower, 7) = "trailer" OrElse _
-            Strings.Right(sPath.ToLower, 15) = "temporary files" OrElse _
-            Strings.Right(sPath.ToLower, 8) = "(noscan)" OrElse _
-            Strings.Right(sPath.ToLower, 6) = "sample" OrElse _
-            Strings.Right(sPath.ToLower, 8) = "recycler" OrElse _
-            Strings.Right(sPath.ToLower, 12) = "$recycle.bin" OrElse _
-            Strings.Right(sPath.ToLower, 10) = "lost+found" OrElse _
-            sPath.ToLower.Contains("system volume information") Then
+            If Path.GetDirectoryName(sPath).ToLower = "extrathumbs" OrElse _
+            Path.GetDirectoryName(sPath).ToLower = "extras" OrElse _
+            Path.GetDirectoryName(sPath).ToLower = "video_ts" OrElse _
+            Path.GetDirectoryName(sPath).ToLower = "audio_ts" OrElse _
+            Path.GetDirectoryName(sPath).ToLower = "recycler" OrElse _
+            sPath.ToLower.Contains("-trailer") OrElse _
+            sPath.ToLower.Contains("subs") OrElse _
+            sPath.ToLower.Contains("subtitles") OrElse _
+            sPath.ToLower.Contains("[trailer") OrElse _
+            sPath.ToLower.Contains("temporary files") OrElse _
+            sPath.ToLower.Contains("(noscan)") OrElse _
+            sPath.ToLower.Contains("sample") OrElse _
+            sPath.ToLower.Contains("$recycle.bin") OrElse _
+            sPath.ToLower.Contains("lost+found") OrElse _
+            sPath.ToLower.Contains("system volume information") OrElse _
+            sPath.Contains(":") Then
                 Return False
             Else
                 Return True

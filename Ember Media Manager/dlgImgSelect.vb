@@ -605,13 +605,17 @@ Public Class dlgImgSelect
 
         Select Case Master.eSettings.PreferredPosterSize
             Case Master.PosterSize.Small
-                rbSmall.Checked = rbSmall.Enabled
+                Me.rbSmall.Checked = Me.rbSmall.Enabled
+                Me.OK_Button.Enabled = Me.rbSmall.Checked
             Case Master.PosterSize.Mid
-                rbMedium.Checked = rbMedium.Enabled
+                Me.rbMedium.Checked = Me.rbMedium.Enabled
+                Me.OK_Button.Enabled = Me.rbMedium.Checked
             Case Master.PosterSize.Lrg
-                rbLarge.Checked = rbLarge.Enabled
+                Me.rbLarge.Checked = Me.rbLarge.Enabled
+                Me.OK_Button.Enabled = Me.rbLarge.Checked
             Case Master.PosterSize.Xlrg
-                rbXLarge.Checked = rbXLarge.Enabled
+                Me.rbXLarge.Checked = Me.rbXLarge.Enabled
+                Me.OK_Button.Enabled = Me.rbXLarge.Checked
         End Select
 
         pnlSize.Visible = True
