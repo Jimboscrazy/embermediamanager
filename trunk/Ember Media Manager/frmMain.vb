@@ -226,8 +226,9 @@ Public Class frmMain
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
 
-        'setup some dummies so we don't get exceptions when resizing form/info panel
         Me.Visible = False
+
+        'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)
         Me.pnlGenre(0) = New Panel()

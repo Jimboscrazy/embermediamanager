@@ -568,13 +568,7 @@ Public Class emmSettings
             Return Me._validexts
         End Get
         Set(ByVal value As ArrayList)
-            If value.Count <= 0 Then
-                Dim tmpExts As New ArrayList
-                tmpExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v", ","))
-                Me._validexts = tmpExts
-            Else
-                Me._validexts = value
-            End If
+            Me._validexts = value
         End Set
     End Property
     Public Property MovieTBN() As Boolean
@@ -1009,7 +1003,7 @@ Public Class emmSettings
         Me._paneltextColor = Color.Black.ToArgb
         Me._certificationLang = String.Empty
         Me._usecertformpaa = False
-        Me._studiotags = False
+        Me._studiotags = True
         Me._imdburl = "akas.imdb.com"
         Me._fullcast = False
         Me._fullcrew = False
@@ -1033,16 +1027,16 @@ Public Class emmSettings
         Me._cleandotfanartJpg = False
         Me._cleanmovienameJpg = False
         Me._cleanextrathumbs = False
-        Me._useTMDB = False
+        Me._useTMDB = True
         Me._useIMPA = False
         Me._useMPDB = False
         Me._postersize = Master.PosterSize.Xlrg
         Me._fanartsize = Master.FanartSize.Lrg
         Me._overwritePoster = False
         Me._overwriteFanart = False
-        Me._logerrors = False
+        Me._logerrors = True
         Me._usefolderName = True
-        Me._properCase = False
+        Me._properCase = True
         Me._overwritenfo = False
         Me._usenamefromNfo = False
         Me._validexts.Clear()
@@ -1066,7 +1060,7 @@ Public Class emmSettings
         Me._lockrating = False
         Me._lockstudio = False
         Me._lockrating = False
-        Me._singlescrapeimages = False
+        Me._singlescrapeimages = True
         Me._marknew = False
         Me._resizefanart = False
         Me._fanartheight = 0
@@ -1108,13 +1102,21 @@ Public Class emmSettings
     Public Sub Load()
         Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
         Try
-            Dim strmReader As New StreamReader(Path.Combine(Application.StartupPath, "settings.xml"))
-            Master.eSettings = CType(xmlSerial.Deserialize(strmReader), emmSettings)
-            strmReader.Close()
+            If File.Exists("settings.xml") Then
+                Dim strmReader As New StreamReader("settings.xml")
+                Master.eSettings = CType(xmlSerial.Deserialize(strmReader), emmSettings)
+                strmReader.Close()
+            Else
+                Master.eSettings = New emmSettings
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Master.eSettings = New emmSettings
         End Try
+
+        If Master.eSettings.ValidExts.Count <= 0 Then
+            Master.eSettings.ValidExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v", ","))
+        End If
     End Sub
 
     Public Class XBMCCom
