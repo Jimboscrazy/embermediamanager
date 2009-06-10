@@ -18,6 +18,7 @@
  * Change: Automatically rescan media after closing settings if changed items require a refresh
  * Change: Improvements to new version check
  * Change: Reduce some bloat in the resources
+ * Change: Verify .NET framework version
 
 *Changes in r263:*
  * Fix: Error in movie editor when movie's genre does not exist in genre list
