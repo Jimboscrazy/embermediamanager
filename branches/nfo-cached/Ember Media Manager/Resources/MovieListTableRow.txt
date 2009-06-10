@@ -1,6 +1,0 @@
-<tr>
-<td><span style="color:darkblue;">[TITLE]</span></td>
-<td style="text-align:center; width:50px;">[YEAR]</td>
-<td style="text-align:center; width:150px;">[VIDEO]</td>
-<td style="text-align:center; width:150px;">[AUDIO]</td>
-</tr>
