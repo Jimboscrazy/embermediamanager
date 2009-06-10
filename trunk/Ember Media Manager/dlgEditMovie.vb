@@ -1197,8 +1197,16 @@ Public Class dlgEditMovie
         End If
     End Sub
 
+    Private Sub txtThumbCount_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.GotFocus
+        Me.AcceptButton = Me.btnAutoGen
+    End Sub
+
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtThumbCount.KeyPress
         e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
+    Private Sub txtThumbCount_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.LostFocus
+        Me.AcceptButton = Me.OK_Button
     End Sub
 
     Private Sub txtThumbCount_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtThumbCount.TextChanged

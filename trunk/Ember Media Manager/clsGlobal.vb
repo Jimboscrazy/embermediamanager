@@ -122,6 +122,38 @@ Public Class Master
         End Sub
     End Class
 
+    Public Class NonConf
+        Private _imdbid As String
+        Private _text As String
+
+        Public Property IMDBID() As String
+            Get
+                Return Me._imdbid
+            End Get
+            Set(ByVal value As String)
+                Me._imdbid = value
+            End Set
+        End Property
+
+        Public Property Text() As String
+            Get
+                Return Me._text
+            End Get
+            Set(ByVal value As String)
+                Me._text = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._imdbid = String.Empty
+            Me._text = String.Empty
+        End Sub
+    End Class
+
     Public Shared Sub ConnectDB(ByVal Reset As Boolean)
 
 
@@ -714,25 +746,50 @@ Public Class Master
                     xmlMov = CType(xmlSer.Deserialize(xmlSR), Media.Movie)
                 End Using
             Else
-                If Not String.IsNullOrEmpty(sPath) Then xmlMov.IMDBID = GetIMDBFromNonConf(sPath)
+                If Not String.IsNullOrEmpty(sPath) Then
+                    Dim sReturn As New NonConf
+                    sReturn = GetIMDBFromNonConf(sPath)
+                    xmlMov.IMDBID = sReturn.IMDBID
+                    If Not String.IsNullOrEmpty(sReturn.Text) Then
+                        Using xmlSTR As StringReader = New StringReader(sReturn.Text)
+                            xmlSer = New XmlSerializer(GetType(Media.Movie))
+                            xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
+                            xmlMov.IMDBID = sReturn.IMDBID
+                        End Using
+                    End If
+                End If
             End If
+
         Catch
             xmlMov = New Media.Movie
             If Not IsNothing(xmlSer) Then
                 xmlSer = Nothing
             End If
-            If Not String.IsNullOrEmpty(sPath) Then xmlMov.IMDBID = GetIMDBFromNonConf(sPath)
+            If Not String.IsNullOrEmpty(sPath) Then
+                Dim sReturn As New NonConf
+                sReturn = GetIMDBFromNonConf(sPath)
+                xmlMov.IMDBID = sReturn.IMDBID
+                If Not String.IsNullOrEmpty(sReturn.Text) Then
+                    Using xmlSTR As StringReader = New StringReader(sReturn.Text)
+                        xmlSer = New XmlSerializer(GetType(Media.Movie))
+                        xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
+                        xmlMov.IMDBID = sReturn.IMDBID
+                    End Using
+                End If
+            End If
         End Try
 
         Return xmlMov
 
     End Function
 
-    Public Shared Function GetIMDBFromNonConf(ByVal sPath As String) As String
-        Dim tIMDBID As String = String.Empty
+    Public Shared Function GetIMDBFromNonConf(ByVal sPath As String) As NonConf
+        Dim tNonConf As New NonConf
         Dim dirInfo As New DirectoryInfo(Directory.GetParent(sPath).FullName)
+        Dim ioFi As New List(Of FileInfo)
 
-        Dim ioFi As FileInfo() = dirInfo.GetFiles("*.nfo")
+        ioFi.AddRange(dirInfo.GetFiles("*.nfo"))
+        ioFi.AddRange(dirInfo.GetFiles("*.info"))
 
         For Each sFile As FileInfo In ioFi
             Using srInfo As New StreamReader(sFile.FullName)
@@ -740,7 +797,11 @@ Public Class Master
                 Dim sIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
 
                 If Not String.IsNullOrEmpty(sIMDBID) Then
-                    tIMDBID = sIMDBID
+                    tNonConf.IMDBID = sIMDBID
+                    'now lets try to see if the rest of the file is a proper nfo
+                    If sInfo.Contains("</movie>") Then
+                        tNonConf.Text = sInfo.Substring(0, sInfo.IndexOf("</movie>") + 8)
+                    End If
                     Exit For
                 End If
 
@@ -749,7 +810,7 @@ Public Class Master
 
         ioFi = Nothing
 
-        Return tIMDBID
+        Return tNonConf
     End Function
 
     Public Shared Function GetFolderContents(ByVal sPath As String, ByVal isFile As Boolean)
