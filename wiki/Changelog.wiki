@@ -4,7 +4,7 @@
 *Changes in Upcoming Release:*
  * None yet
 
-*Changes in r279:*
+*Changes in r282:*
  * Feature: Export Movie List (Thanks Nuno "Zordor" Novais)
  * Feature: First iteration of commandline operation
  * Feature: Filter genres by language
