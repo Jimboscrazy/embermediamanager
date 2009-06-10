@@ -2,6 +2,9 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
+ * None yet
+
+*Changes in r279:*
  * Feature: Export Movie List (Thanks Nuno "Zordor" Novais)
  * Feature: First iteration of commandline operation
  * Feature: Filter genres by language
