@@ -585,8 +585,9 @@ Public Class frmMain
         '//
         ' Give credit where credit is due
         '\\
-
-        dlgAbout.ShowDialog()
+        Using dAbout As New dlgAbout
+            dAbout.ShowDialog()
+        End Using
 
     End Sub
 
