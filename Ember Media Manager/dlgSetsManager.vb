@@ -180,7 +180,7 @@ Public Class dlgSetsManager
                     End If
 
                     Me.currSet.AddMovie(tMovie)
-                    Me.LoadSet()
+                    Me.LoadCurrSet()
                 End If
             Next
         Next
@@ -215,11 +215,11 @@ Public Class dlgSetsManager
         If Not Me.lbMoviesInSet.Items.Contains(Me.lbMovies.SelectedItem) Then
             Me.lMovies(Me.lbMovies.SelectedIndex).Order = Me.lbMoviesInSet.Items.Count + 1
             Me.currSet.AddMovie(lMovies(Me.lbMovies.SelectedIndex))
-            Me.LoadSet()
+            Me.LoadCurrSet()
         End If
     End Sub
 
-    Private Sub LoadSet()
+    Private Sub LoadCurrSet()
         Me.lbMoviesInSet.Items.Clear()
         Me.currSet.Movies.Sort(AddressOf SortMovies)
         For Each tMovie As Movies In Me.currSet.Movies
@@ -244,7 +244,7 @@ Public Class dlgSetsManager
         Me.currSet.Movies(i).Movie.RemoveSet(Me.currSet.Set)
         Master.SaveMovieToNFO(Me.currSet.Movies(i).Movie, Me.currSet.Movies(i).Path, Me.currSet.Movies(i).isFile)
         Me.currSet.Movies.RemoveAt(i)
-        Me.LoadSet()
+        Me.LoadCurrSet()
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
@@ -253,7 +253,7 @@ Public Class dlgSetsManager
                 Dim iIndex As Integer = Me.lbMoviesInSet.SelectedIndex
                 Me.currSet.Movies(iIndex).Order -= 1
                 Me.currSet.Movies(iIndex - 1).Order += 1
-                Me.LoadSet()
+                Me.LoadCurrSet()
                 Me.lbMoviesInSet.SelectedIndex = iIndex - 1
                 Me.lbMoviesInSet.Focus()
             End If
@@ -268,7 +268,7 @@ Public Class dlgSetsManager
                 Dim iIndex As Integer = Me.lbMoviesInSet.SelectedIndex
                 Me.currSet.Movies(iIndex).Order += 1
                 Me.currSet.Movies(iIndex + 1).Order -= 1
-                Me.LoadSet()
+                Me.LoadCurrSet()
                 Me.lbMoviesInSet.SelectedIndex = iIndex + 1
                 Me.lbMoviesInSet.Focus()
             End If
