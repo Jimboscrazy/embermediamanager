@@ -48,6 +48,7 @@ Partial Class dlgNewVersion
         Me.txtChangelog.AcceptsTab = True
         Me.txtChangelog.BackColor = System.Drawing.Color.White
         Me.txtChangelog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtChangelog.Font = New System.Drawing.Font("Courier New", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtChangelog.Location = New System.Drawing.Point(9, 96)
         Me.txtChangelog.Multiline = True
         Me.txtChangelog.Name = "txtChangelog"

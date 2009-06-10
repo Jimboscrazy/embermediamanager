@@ -29,6 +29,7 @@ Imports System.Xml
 Imports System.Xml.Serialization
 Imports System.Net
 Imports System.Globalization
+Imports Microsoft.Win32
 
 Public Class Master
 
@@ -1797,4 +1798,28 @@ Public Class Master
             Return "Unavailable"
         End If
     End Function
+
+    Public Shared Function GetNETVersion() As Boolean
+        Const regLocation As String = "SOFTWARE\\Microsoft\\NET Framework Setup\\NDP"
+        Dim masterKey As RegistryKey = Registry.LocalMachine.OpenSubKey(regLocation)
+        Dim tempKey As RegistryKey
+        Dim sVersion As String = String.Empty
+
+        If Not IsNothing(masterKey) Then
+            Dim SubKeyNames As String() = masterKey.GetSubKeyNames()
+            For i As Integer = 0 To SubKeyNames.Count - 1
+                tempKey = Registry.LocalMachine.OpenSubKey(String.Concat(regLocation, "\\", SubKeyNames(i)))
+                sVersion = tempKey.GetValue("Version")
+                If Not String.IsNullOrEmpty(sVersion) Then
+                    Dim tVersion() As String = sVersion.Split(New Char() {"."})
+                    If Convert.ToDouble(String.Concat(tVersion(0), ".", tVersion(1))) >= 3.5 Then
+                        Return True
+                    End If
+                End If
+            Next
+        End If
+
+        Return False
+    End Function
+
 End Class

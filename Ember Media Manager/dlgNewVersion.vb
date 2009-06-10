@@ -33,8 +33,12 @@ Public Class dlgNewVersion
         '\\
 
         Me.lblNew.Text = String.Format(Me.lblNew.Text, iNew)
-        Me.txtChangelog.Text = Master.GetChangelog
+        Me.txtChangelog.Text = Master.GetChangelog.Replace("\n", vbNewLine)
 
         Return MyBase.ShowDialog()
     End Function
+
+    Private Sub dlgNewVersion_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 End Class
