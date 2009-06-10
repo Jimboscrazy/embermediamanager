@@ -2,7 +2,22 @@
 #labels Featured
 
 *Changes in Upcoming Release:*
- * None yet
+ * Feature: Export Movie List (Thanks Nuno "Zordor" Novais)
+ * Feature: First iteration of commandline operation
+ * Feature: Filter genres by language
+ * Feature: Very rough draft of the Sets manager
+ * Fix: Error during scraping if no writers exist
+ * Fix: Do not split studios with "/"
+ * Fix: Check for non-conforming nfo when no usable data is present
+ * Change: More tweaks to resolution to descriptor logic
+ * Change: Tweaks to extrathumb auto generation
+ * Change: Delete extrathumb folder if no thumbs are generated
+ * Change: When checking folder contents check if thumb1.jpg exists instead of just the extrathumbs folder
+ * Change: Lots of small tweaks and fixes throughout the code
+ * Change: Improved resizing of extrathumbs
+ * Change: Automatically rescan media after closing settings if changed items require a refresh
+ * Change: Improvements to new version check
+ * Change: Reduce some bloat in the resources
 
 *Changes in r263:*
  * Fix: Error in movie editor when movie's genre does not exist in genre list
