@@ -662,6 +662,7 @@ Public Class Master
         '\\
 
         Try
+            sPath = sPath.Remove(0, sPath.IndexOf("\"))
             If Path.GetDirectoryName(sPath).ToLower = "extrathumbs" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "extras" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "video_ts" OrElse _
@@ -882,7 +883,7 @@ Public Class Master
                 Dim di As DirectoryInfo
                 If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                     di = New DirectoryInfo(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName)
-                    If Directory.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.PathSeparator, "extrathumbs", Path.PathSeparator, "thumb1.jpg")) Then
+                    If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.PathSeparator, "extrathumbs", Path.PathSeparator, "thumb1.jpg")) Then
                         hasExtra = True
                     End If
                 Else

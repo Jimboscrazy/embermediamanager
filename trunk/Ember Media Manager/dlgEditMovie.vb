@@ -1017,9 +1017,11 @@ Public Class dlgEditMovie
 
     Private Sub btnRemoveThumb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveThumb.Click
         Try
+            Dim iIndex As Integer = 0
             For i As Integer = (lvThumbs.SelectedItems.Count - 1) To 0 Step -1
-                DeleteList.Add(lvThumbs.Items(i).Name)
-                lvThumbs.Items.Remove(lvThumbs.Items(i))
+                iIndex = lvThumbs.SelectedItems(i).Index
+                DeleteList.Add(lvThumbs.Items(iIndex).Name)
+                lvThumbs.Items.Remove(lvThumbs.Items(iIndex))
                 pbExtraThumbs.Image = Nothing
                 btnSetAsFanart.Enabled = False
             Next
