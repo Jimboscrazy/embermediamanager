@@ -43,16 +43,21 @@ Partial Class dlgSetsManager
         Me.lblFile = New System.Windows.Forms.Label
         Me.lblCanceling = New System.Windows.Forms.Label
         Me.btnCancel = New System.Windows.Forms.Button
+        Me.pnlTop = New System.Windows.Forms.Panel
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
+        Me.pnlTop.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Location = New System.Drawing.Point(629, 403)
+        Me.OK_Button.Location = New System.Drawing.Point(628, 455)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -62,7 +67,7 @@ Partial Class dlgSetsManager
         '
         Me.GroupBox1.Controls.Add(Me.lbMovies)
         Me.GroupBox1.Controls.Add(Me.btnAdd)
-        Me.GroupBox1.Location = New System.Drawing.Point(470, 7)
+        Me.GroupBox1.Location = New System.Drawing.Point(469, 69)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(226, 382)
         Me.GroupBox1.TabIndex = 1
@@ -97,7 +102,7 @@ Partial Class dlgSetsManager
         Me.GroupBox2.Controls.Add(Me.btnEditSet)
         Me.GroupBox2.Controls.Add(Me.btnNewSet)
         Me.GroupBox2.Controls.Add(Me.lbSets)
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 7)
+        Me.GroupBox2.Location = New System.Drawing.Point(5, 69)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(226, 382)
         Me.GroupBox2.TabIndex = 2
@@ -154,7 +159,7 @@ Partial Class dlgSetsManager
         Me.GroupBox3.Controls.Add(Me.btnUp)
         Me.GroupBox3.Controls.Add(Me.btnRemove)
         Me.GroupBox3.Controls.Add(Me.lbMoviesInSet)
-        Me.GroupBox3.Location = New System.Drawing.Point(238, 7)
+        Me.GroupBox3.Location = New System.Drawing.Point(237, 69)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(226, 382)
         Me.GroupBox3.TabIndex = 3
@@ -209,7 +214,7 @@ Partial Class dlgSetsManager
         Me.pnlCancel.Controls.Add(Me.lblFile)
         Me.pnlCancel.Controls.Add(Me.lblCanceling)
         Me.pnlCancel.Controls.Add(Me.btnCancel)
-        Me.pnlCancel.Location = New System.Drawing.Point(150, 181)
+        Me.pnlCancel.Location = New System.Drawing.Point(150, 209)
         Me.pnlCancel.Name = "pnlCancel"
         Me.pnlCancel.Size = New System.Drawing.Size(403, 76)
         Me.pnlCancel.TabIndex = 10
@@ -267,12 +272,60 @@ Partial Class dlgSetsManager
         Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnCancel.UseVisualStyleBackColor = True
         '
+        'pnlTop
+        '
+        Me.pnlTop.BackColor = System.Drawing.Color.SteelBlue
+        Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTop.Controls.Add(Me.Label2)
+        Me.pnlTop.Controls.Add(Me.Label4)
+        Me.pnlTop.Controls.Add(Me.PictureBox1)
+        Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlTop.Location = New System.Drawing.Point(0, 0)
+        Me.pnlTop.Name = "pnlTop"
+        Me.pnlTop.Size = New System.Drawing.Size(702, 64)
+        Me.pnlTop.TabIndex = 58
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.ForeColor = System.Drawing.Color.White
+        Me.Label2.Location = New System.Drawing.Point(61, 38)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(182, 13)
+        Me.Label2.TabIndex = 2
+        Me.Label2.Text = "Add and configure movie boxed sets."
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.BackColor = System.Drawing.Color.Transparent
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.White
+        Me.Label4.Location = New System.Drawing.Point(58, 3)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(174, 29)
+        Me.Label4.TabIndex = 1
+        Me.Label4.Text = "Sets Manager"
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(12, 7)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(36, 48)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.PictureBox1.TabIndex = 0
+        Me.PictureBox1.TabStop = False
+        '
         'dlgSetsManager
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(702, 438)
+        Me.ClientSize = New System.Drawing.Size(702, 482)
+        Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.pnlCancel)
         Me.Controls.Add(Me.GroupBox3)
@@ -290,6 +343,9 @@ Partial Class dlgSetsManager
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
         Me.pnlCancel.ResumeLayout(False)
+        Me.pnlTop.ResumeLayout(False)
+        Me.pnlTop.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -313,5 +369,9 @@ Partial Class dlgSetsManager
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnEditSet As System.Windows.Forms.Button
     Friend WithEvents btnRemoveSet As System.Windows.Forms.Button
+    Friend WithEvents pnlTop As System.Windows.Forms.Panel
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 
 End Class

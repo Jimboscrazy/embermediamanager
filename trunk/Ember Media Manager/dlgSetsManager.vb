@@ -320,12 +320,14 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
-        For i As Integer = 0 To lbMovies.SelectedItems.Count - 1
-            If Not Me.lbMoviesInSet.Items.Contains(Me.lbMovies.SelectedItems(i)) Then
-                Me.currSet.AddMovie(lMovies(Me.lbMovies.SelectedIndices(i)), Me.lbMoviesInSet.Items.Count + i)
-            End If
-        Next
-        Me.LoadCurrSet()
+        If Me.lbSets.SelectedItems.Count > 0 Then
+            For i As Integer = 0 To lbMovies.SelectedItems.Count - 1
+                If Not Me.lbMoviesInSet.Items.Contains(Me.lbMovies.SelectedItems(i)) Then
+                    Me.currSet.AddMovie(lMovies(Me.lbMovies.SelectedIndices(i)), Me.lbMoviesInSet.Items.Count + i)
+                End If
+            Next
+            Me.LoadCurrSet()
+        End If
     End Sub
 
     Private Sub LoadCurrSet()
@@ -424,5 +426,13 @@ Public Class dlgSetsManager
         Next
 
         Me.LoadSets()
+    End Sub
+
+    Private Sub dlgSetsManager_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+        Using g As Graphics = Graphics.FromImage(iBackground)
+            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+            Me.pnlTop.BackgroundImage = iBackground
+        End Using
     End Sub
 End Class
