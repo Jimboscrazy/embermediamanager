@@ -137,7 +137,7 @@ Namespace IMPA
         End Sub
 
         Private Sub bwIMPA_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwIMPA.RunWorkerCompleted
-            If Not bwIMPA.CancellationPending Then
+            If Not IsNothing(e.Result) Then
                 RaiseEvent PostersDownloaded(e.Result)
             End If
         End Sub

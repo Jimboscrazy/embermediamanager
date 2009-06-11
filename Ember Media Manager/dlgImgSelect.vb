@@ -766,7 +766,10 @@ Public Class dlgImgSelect
 
         For i As Integer = 0 To Me.IMPAPosters.Count - 1
             Try
-                If bwIMPADownload.CancellationPending Then Return
+                If bwIMPADownload.CancellationPending Then
+                    e.Cancel = True
+                    Return
+                End If
                 Me.bwIMPADownload.ReportProgress(i + 1, Me.IMPAPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.IMPAPosters.Item(i).URL)
                 wrRequest.Timeout = 10000
@@ -806,7 +809,7 @@ Public Class dlgImgSelect
         ' Thread finished: process the pics
         '\\
 
-        If Not bwIMPADownload.CancellationPending Then
+        If Not e.Cancelled Then
             Me._impaDone = True
             RaiseEvent IMPADone()
         End If
@@ -823,7 +826,10 @@ Public Class dlgImgSelect
         For i As Integer = 0 To Me.TMDBPosters.Count - 1
             Try
                 If Me.DLType = Master.ImageType.Fanart OrElse (Master.eSettings.UseImgCache OrElse Me.TMDBPosters.Item(i).Description = "cover") Then
-                    If Me.bwTMDBDownload.CancellationPending Then Return
+                    If Me.bwTMDBDownload.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
                     Me.bwTMDBDownload.ReportProgress(i + 1, Me.TMDBPosters.Item(i).URL)
                     Dim wrRequest As WebRequest = WebRequest.Create(Me.TMDBPosters.Item(i).URL)
                     wrRequest.Timeout = 10000
@@ -864,7 +870,7 @@ Public Class dlgImgSelect
         ' Thread finished: process the pics
         '\\
 
-        If Not bwTMDBDownload.CancellationPending Then
+        If Not e.Cancelled Then
             Me._tmdbDone = True
             RaiseEvent TMDBDone()
         End If
@@ -879,7 +885,10 @@ Public Class dlgImgSelect
         '\\
         For i As Integer = 0 To Me.MPDBPosters.Count - 1
             Try
-                If Me.bwMPDBDownload.CancellationPending Then Return
+                If Me.bwMPDBDownload.CancellationPending Then
+                    e.Cancel = True
+                    Return
+                End If
                 Me.bwMPDBDownload.ReportProgress(i + 1, Me.MPDBPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.MPDBPosters.Item(i).URL)
                 wrRequest.Timeout = 10000
@@ -919,7 +928,7 @@ Public Class dlgImgSelect
         ' Thread finished: process the pics
         '\\
 
-        If Not bwMPDBDownload.CancellationPending Then
+        If Not e.Cancelled Then
             Me._mpdbDone = True
             RaiseEvent MPDBDone()
         End If

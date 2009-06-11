@@ -139,7 +139,7 @@ Namespace TMDB
         End Sub
 
         Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
-            If Not Me.bwTMDB.CancellationPending Then
+            If Not IsNothing(e.Result) Then
                 RaiseEvent PostersDownloaded(e.Result)
             End If
         End Sub
