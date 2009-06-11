@@ -114,7 +114,7 @@ Public Class dlgExportMovies
                     _audDetails = _flags(3).Trim & " " & _flags(4).Trim
                 End If
                 Dim row As String = My.Resources.MovieListTableRow
-                row = row.Replace("[TITLE]", _curMovie.Title)
+                row = row.Replace("[TITLE]", Web.HttpUtility.HtmlEncode(_curMovie.Title))
                 row = row.Replace("[YEAR]", _curMovie.Year)
                 row = row.Replace("[VIDEO]", _vidDetails)
                 row = row.Replace("[AUDIO]", _audDetails)
