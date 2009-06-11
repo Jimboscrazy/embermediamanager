@@ -64,6 +64,8 @@ Public Class dlgWizard
             Case Me.Panel4.Visible
                 Me.Panel4.Visible = False
                 Me.Panel3.Visible = True
+                Me.btnNext.Enabled = True
+                Me.OK_Button.Enabled = False
         End Select
     End Sub
 
