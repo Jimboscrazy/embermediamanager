@@ -883,12 +883,12 @@ Public Class Master
                 Dim di As DirectoryInfo
                 If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                     di = New DirectoryInfo(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName)
-                    If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.PathSeparator, "extrathumbs", Path.PathSeparator, "thumb1.jpg")) Then
+                    If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                         hasExtra = True
                     End If
                 Else
                     di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
-                    If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.PathSeparator, "extrathumbs", Path.PathSeparator, "thumb1.jpg")) Then
+                    If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                         hasExtra = True
                     End If
                 End If

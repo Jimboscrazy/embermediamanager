@@ -3198,13 +3198,13 @@ doCancel:
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                 tmpName = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name)
-                If Directory.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.PathSeparator, "extrathumbs", Path.PathSeparator, "thumb1.jpg")) Then
+                If Directory.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     hasExtra = True
                 End If
             Else
                 tmpName = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
                 tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
-                If Directory.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.PathSeparator, "extrathumbs", Path.PathSeparator, "thumb1.jpg")) Then
+                If Directory.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     hasExtra = True
                 End If
             End If
