@@ -902,11 +902,11 @@ Public Class frmMain
     End Sub
 
     Private Sub rbFilterAnd_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd.CheckedChanged
-        Me.RunFilter()
+        If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked Then Me.RunFilter()
     End Sub
 
     Private Sub rbFilterOr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.CheckedChanged
-        Me.RunFilter()
+        If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked Then Me.RunFilter()
     End Sub
 
     Private Sub chkFilterDupe_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.CheckedChanged
@@ -3489,6 +3489,12 @@ doCancel:
             Dim sqlDA As New SQLite.SQLiteDataAdapter
             Me.bsMedia.DataSource = Nothing
             Me.dgvMediaList.DataSource = Nothing
+            Me.ClearInfo()
+            Me.pnlInfoPanel.Height = 25
+            Me.btnDown.Enabled = False
+            Me.btnMid.Enabled = True
+            Me.btnUp.Enabled = True
+            Application.DoEvents()
 
             Me.dtMedia = New DataTable
             If DupesOnly Then
