@@ -96,12 +96,19 @@ Public Class dlgExportMovies
             Else
                 bFiltered = False
             End If
+            ' For now fixed Cols
+            Dim rowHeader As String = My.Resources.MovieListTableRowStart
+            rowHeader &= String.Format(My.Resources.MovieListTableHeader, "Title")
+            rowHeader &= String.Format(My.Resources.MovieListTableHeader, "Year")
+            rowHeader &= String.Format(My.Resources.MovieListTableHeader, "Video")
+            rowHeader &= String.Format(My.Resources.MovieListTableHeader, "Audio")
+            rowHeader &= My.Resources.MovieListTableRowEnd
+            HTMLBody &= rowHeader
             For Each _curMovie As Media.Movie In _movies
                 Dim _vidDetails As String = ""
                 Dim _audDetails As String = ""
                 Dim _flags() As String = _curMovie.Studio.Split(New String() {" /"}, StringSplitOptions.None)
                 If _flags.Length >= 3 Then
-
                     If Not _flags(2).Contains("/") Then
                         _vidDetails &= _flags(2).Trim
                     Else
@@ -113,19 +120,21 @@ Public Class dlgExportMovies
                 If _flags.Length >= 4 Then
                     _audDetails = _flags(3).Trim & " " & _flags(4).Trim
                 End If
-                Dim row As String = My.Resources.MovieListTableRow
-                row = row.Replace("[TITLE]", Web.HttpUtility.HtmlEncode(_curMovie.Title))
-                row = row.Replace("[YEAR]", _curMovie.Year)
-                row = row.Replace("[VIDEO]", _vidDetails)
-                row = row.Replace("[AUDIO]", _audDetails)
+                Dim row As String = My.Resources.MovieListTableRowStart
+                row &= String.Format(My.Resources.MovieListTableCol, Web.HttpUtility.HtmlEncode(_curMovie.Title))
+                row &= String.Format(My.Resources.MovieListTableCol, _curMovie.Year)
+                row &= String.Format(My.Resources.MovieListTableCol, _vidDetails)
+                row &= String.Format(My.Resources.MovieListTableCol, _audDetails)
                 If bSearch Then
                     If (strIn = "Video Flag" And _vidDetails.Contains(strFilter)) Or _
                        (strIn = "Audio Flag" And _audDetails.Contains(strFilter)) Or _
                        (strIn = "Title" And _curMovie.Title.Contains(strFilter)) Or _
                        (strIn = "Year" And _curMovie.Year.Contains(strFilter)) Then
+                        row &= My.Resources.MovieListTableRowEnd
                         HTMLBody &= row
                     End If
                 Else
+                    row &= My.Resources.MovieListTableRowEnd
                     HTMLBody &= row
                 End If
             Next
@@ -138,7 +147,6 @@ Public Class dlgExportMovies
 
 
     Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
-
         '//
         ' Thread finished: display it if not cancelled
         '\\
@@ -153,7 +161,6 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub bwLoadInfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadInfo.ProgressChanged
-
         If e.ProgressPercentage >= 0 Then
             Me.pbCompile.Value = e.ProgressPercentage
             Me.lblFile.Text = e.UserState
