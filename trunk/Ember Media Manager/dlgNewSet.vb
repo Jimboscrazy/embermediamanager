@@ -21,7 +21,10 @@ Public Class dlgNewSet
         Me.Close()
     End Sub
 
-    Public Overloads Function ShowDialog() As String
+    Public Overloads Function ShowDialog(Optional ByVal SetName As String = "") As String
+
+        If Not String.IsNullOrEmpty(SetName) Then txtSetName.Text = SetName
+
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Return txtSetName.Text
         Else
