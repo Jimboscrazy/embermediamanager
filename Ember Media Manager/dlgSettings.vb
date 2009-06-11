@@ -870,7 +870,15 @@ Public Class dlgSettings
 
     Private Sub chkUseImgCache_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseImgCache.CheckedChanged
         Me.chkPersistImgCache.Enabled = Me.chkUseImgCache.Checked
-        If Not Me.chkUseImgCache.Checked Then Me.chkPersistImgCache.Checked = False
+        Me.chkUseImgCacheUpdaters.Enabled = Me.chkUseImgCache.Checked
+        If Not Me.chkUseImgCache.Checked Then
+            Me.chkPersistImgCache.Checked = False
+            Me.chkUseImgCacheUpdaters.Checked = False
+        End If
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkUseImgCacheUpdaters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseImgCacheUpdaters.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -1059,6 +1067,7 @@ Public Class dlgSettings
             Master.eSettings.AutoBD = Me.chkAutoBD.Checked
             Master.eSettings.UseMIDuration = Me.chkUseMIDuration.Checked
             Master.eSettings.UseImgCache = Me.chkUseImgCache.Checked
+            Master.eSettings.UseImgCacheUpdaters = Me.chkUseImgCacheUpdaters.Checked
             Master.eSettings.PersistImgCache = Me.chkPersistImgCache.Checked
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
@@ -1204,6 +1213,7 @@ Public Class dlgSettings
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
             Me.chkUseMIDuration.Checked = Master.eSettings.UseMIDuration
             Me.chkUseImgCache.Checked = Master.eSettings.UseImgCache
+            Me.chkUseImgCacheUpdaters.Checked = Master.eSettings.UseImgCacheUpdaters
             Me.chkPersistImgCache.Checked = Master.eSettings.PersistImgCache
 
             If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then

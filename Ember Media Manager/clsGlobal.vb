@@ -1827,4 +1827,11 @@ Public Class Master
         Return False
     End Function
 
+    Public Shared Function CleanURL(ByVal sURL As String, Optional ByVal unClean As Boolean = False)
+        If unClean Then
+            Return sURL.Replace("$c$", ":").Replace("$s$", "/")
+        Else
+            Return sURL.Replace(":", "$c$").Replace("/", "$s$")
+        End If
+    End Function
 End Class
