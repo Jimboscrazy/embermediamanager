@@ -27,15 +27,21 @@ Partial Class dlgImgSelect
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.pnlBottomMain = New System.Windows.Forms.Panel
+        Me.pnlFanart = New System.Windows.Forms.Panel
+        Me.chkThumb = New System.Windows.Forms.CheckBox
+        Me.chkMid = New System.Windows.Forms.CheckBox
+        Me.chkOriginal = New System.Windows.Forms.CheckBox
+        Me.lblInfo = New System.Windows.Forms.Label
         Me.pnlSize = New System.Windows.Forms.Panel
         Me.rbSmall = New System.Windows.Forms.RadioButton
         Me.rbMedium = New System.Windows.Forms.RadioButton
         Me.rbLarge = New System.Windows.Forms.RadioButton
         Me.rbXLarge = New System.Windows.Forms.RadioButton
-        Me.lblInfo = New System.Windows.Forms.Label
-        Me.btnCheckNone = New System.Windows.Forms.Button
-        Me.btnCheckAll = New System.Windows.Forms.Button
         Me.pnlDLStatus = New System.Windows.Forms.Panel
+        Me.pnlMPDB = New System.Windows.Forms.Panel
+        Me.lblDL3Status = New System.Windows.Forms.Label
+        Me.lblDL3 = New System.Windows.Forms.Label
+        Me.pbDL3 = New System.Windows.Forms.ProgressBar
         Me.pnlIMPA = New System.Windows.Forms.Panel
         Me.lblDL2Status = New System.Windows.Forms.Label
         Me.lblDL2 = New System.Windows.Forms.Label
@@ -46,17 +52,14 @@ Partial Class dlgImgSelect
         Me.pnlSinglePic = New System.Windows.Forms.Panel
         Me.Label2 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.pnlMPDB = New System.Windows.Forms.Panel
-        Me.lblDL3Status = New System.Windows.Forms.Label
-        Me.lblDL3 = New System.Windows.Forms.Label
-        Me.pbDL3 = New System.Windows.Forms.ProgressBar
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
+        Me.pnlFanart.SuspendLayout()
         Me.pnlSize.SuspendLayout()
         Me.pnlDLStatus.SuspendLayout()
+        Me.pnlMPDB.SuspendLayout()
         Me.pnlIMPA.SuspendLayout()
         Me.pnlSinglePic.SuspendLayout()
-        Me.pnlMPDB.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -67,7 +70,7 @@ Partial Class dlgImgSelect
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(687, 8)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(687, 11)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -107,15 +110,68 @@ Partial Class dlgImgSelect
         'pnlBottomMain
         '
         Me.pnlBottomMain.Controls.Add(Me.pnlSize)
+        Me.pnlBottomMain.Controls.Add(Me.pnlFanart)
         Me.pnlBottomMain.Controls.Add(Me.lblInfo)
-        Me.pnlBottomMain.Controls.Add(Me.btnCheckNone)
-        Me.pnlBottomMain.Controls.Add(Me.btnCheckAll)
         Me.pnlBottomMain.Controls.Add(Me.TableLayoutPanel1)
         Me.pnlBottomMain.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlBottomMain.Location = New System.Drawing.Point(0, 495)
         Me.pnlBottomMain.Name = "pnlBottomMain"
         Me.pnlBottomMain.Size = New System.Drawing.Size(836, 50)
         Me.pnlBottomMain.TabIndex = 5
+        '
+        'pnlFanart
+        '
+        Me.pnlFanart.BackColor = System.Drawing.Color.White
+        Me.pnlFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFanart.Controls.Add(Me.chkThumb)
+        Me.pnlFanart.Controls.Add(Me.chkMid)
+        Me.pnlFanart.Controls.Add(Me.chkOriginal)
+        Me.pnlFanart.Location = New System.Drawing.Point(8, 8)
+        Me.pnlFanart.Name = "pnlFanart"
+        Me.pnlFanart.Size = New System.Drawing.Size(339, 34)
+        Me.pnlFanart.TabIndex = 5
+        Me.pnlFanart.Visible = False
+        '
+        'chkThumb
+        '
+        Me.chkThumb.AutoSize = True
+        Me.chkThumb.Location = New System.Drawing.Point(231, 8)
+        Me.chkThumb.Name = "chkThumb"
+        Me.chkThumb.Size = New System.Drawing.Size(107, 17)
+        Me.chkThumb.TabIndex = 2
+        Me.chkThumb.Text = "Check All Thumb"
+        Me.chkThumb.UseVisualStyleBackColor = True
+        '
+        'chkMid
+        '
+        Me.chkMid.AutoSize = True
+        Me.chkMid.Location = New System.Drawing.Point(131, 8)
+        Me.chkMid.Name = "chkMid"
+        Me.chkMid.Size = New System.Drawing.Size(91, 17)
+        Me.chkMid.TabIndex = 1
+        Me.chkMid.Text = "Check All Mid"
+        Me.chkMid.UseVisualStyleBackColor = True
+        '
+        'chkOriginal
+        '
+        Me.chkOriginal.AutoSize = True
+        Me.chkOriginal.Location = New System.Drawing.Point(7, 8)
+        Me.chkOriginal.Name = "chkOriginal"
+        Me.chkOriginal.Size = New System.Drawing.Size(109, 17)
+        Me.chkOriginal.TabIndex = 0
+        Me.chkOriginal.Text = "Check All Original"
+        Me.chkOriginal.UseVisualStyleBackColor = True
+        '
+        'lblInfo
+        '
+        Me.lblInfo.Location = New System.Drawing.Point(402, 10)
+        Me.lblInfo.Name = "lblInfo"
+        Me.lblInfo.Size = New System.Drawing.Size(240, 31)
+        Me.lblInfo.TabIndex = 3
+        Me.lblInfo.Text = "Selected item will be set as fanart. All checked items will be saved to \extrathu" & _
+            "mbs."
+        Me.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblInfo.Visible = False
         '
         'pnlSize
         '
@@ -127,7 +183,7 @@ Partial Class dlgImgSelect
         Me.pnlSize.Controls.Add(Me.rbXLarge)
         Me.pnlSize.Location = New System.Drawing.Point(8, 8)
         Me.pnlSize.Name = "pnlSize"
-        Me.pnlSize.Size = New System.Drawing.Size(477, 34)
+        Me.pnlSize.Size = New System.Drawing.Size(673, 34)
         Me.pnlSize.TabIndex = 4
         Me.pnlSize.Visible = False
         '
@@ -135,7 +191,7 @@ Partial Class dlgImgSelect
         '
         Me.rbSmall.AutoSize = True
         Me.rbSmall.Enabled = False
-        Me.rbSmall.Location = New System.Drawing.Point(406, 8)
+        Me.rbSmall.Location = New System.Drawing.Point(505, 8)
         Me.rbSmall.Name = "rbSmall"
         Me.rbSmall.Size = New System.Drawing.Size(50, 17)
         Me.rbSmall.TabIndex = 3
@@ -146,7 +202,7 @@ Partial Class dlgImgSelect
         'rbMedium
         '
         Me.rbMedium.AutoSize = True
-        Me.rbMedium.Location = New System.Drawing.Point(276, 8)
+        Me.rbMedium.Location = New System.Drawing.Point(342, 8)
         Me.rbMedium.Name = "rbMedium"
         Me.rbMedium.Size = New System.Drawing.Size(62, 17)
         Me.rbMedium.TabIndex = 2
@@ -158,7 +214,7 @@ Partial Class dlgImgSelect
         '
         Me.rbLarge.AutoSize = True
         Me.rbLarge.Enabled = False
-        Me.rbLarge.Location = New System.Drawing.Point(156, 8)
+        Me.rbLarge.Location = New System.Drawing.Point(189, 8)
         Me.rbLarge.Name = "rbLarge"
         Me.rbLarge.Size = New System.Drawing.Size(52, 17)
         Me.rbLarge.TabIndex = 1
@@ -178,37 +234,6 @@ Partial Class dlgImgSelect
         Me.rbXLarge.Text = "X-Large"
         Me.rbXLarge.UseVisualStyleBackColor = True
         '
-        'lblInfo
-        '
-        Me.lblInfo.AutoSize = True
-        Me.lblInfo.Location = New System.Drawing.Point(225, 11)
-        Me.lblInfo.Name = "lblInfo"
-        Me.lblInfo.Size = New System.Drawing.Size(397, 13)
-        Me.lblInfo.TabIndex = 3
-        Me.lblInfo.Text = "Selected item will be set as fanart. All checked items will be saved to \extrathu" & _
-            "mbs."
-        Me.lblInfo.Visible = False
-        '
-        'btnCheckNone
-        '
-        Me.btnCheckNone.Location = New System.Drawing.Point(90, 11)
-        Me.btnCheckNone.Name = "btnCheckNone"
-        Me.btnCheckNone.Size = New System.Drawing.Size(76, 23)
-        Me.btnCheckNone.TabIndex = 2
-        Me.btnCheckNone.Text = "Check None"
-        Me.btnCheckNone.UseVisualStyleBackColor = True
-        Me.btnCheckNone.Visible = False
-        '
-        'btnCheckAll
-        '
-        Me.btnCheckAll.Location = New System.Drawing.Point(8, 11)
-        Me.btnCheckAll.Name = "btnCheckAll"
-        Me.btnCheckAll.Size = New System.Drawing.Size(76, 23)
-        Me.btnCheckAll.TabIndex = 1
-        Me.btnCheckAll.Text = "Check All"
-        Me.btnCheckAll.UseVisualStyleBackColor = True
-        Me.btnCheckAll.Visible = False
-        '
         'pnlDLStatus
         '
         Me.pnlDLStatus.BackColor = System.Drawing.Color.White
@@ -222,6 +247,39 @@ Partial Class dlgImgSelect
         Me.pnlDLStatus.Name = "pnlDLStatus"
         Me.pnlDLStatus.Size = New System.Drawing.Size(323, 223)
         Me.pnlDLStatus.TabIndex = 0
+        '
+        'pnlMPDB
+        '
+        Me.pnlMPDB.Controls.Add(Me.lblDL3Status)
+        Me.pnlMPDB.Controls.Add(Me.lblDL3)
+        Me.pnlMPDB.Controls.Add(Me.pbDL3)
+        Me.pnlMPDB.Location = New System.Drawing.Point(0, 147)
+        Me.pnlMPDB.Name = "pnlMPDB"
+        Me.pnlMPDB.Size = New System.Drawing.Size(321, 75)
+        Me.pnlMPDB.TabIndex = 9
+        '
+        'lblDL3Status
+        '
+        Me.lblDL3Status.Location = New System.Drawing.Point(5, 36)
+        Me.lblDL3Status.Name = "lblDL3Status"
+        Me.lblDL3Status.Size = New System.Drawing.Size(310, 13)
+        Me.lblDL3Status.TabIndex = 8
+        '
+        'lblDL3
+        '
+        Me.lblDL3.Location = New System.Drawing.Point(5, 10)
+        Me.lblDL3.Name = "lblDL3"
+        Me.lblDL3.Size = New System.Drawing.Size(310, 13)
+        Me.lblDL3.TabIndex = 7
+        Me.lblDL3.Text = "Performing Preliminary Tasks..."
+        '
+        'pbDL3
+        '
+        Me.pbDL3.Location = New System.Drawing.Point(6, 52)
+        Me.pbDL3.Name = "pbDL3"
+        Me.pbDL3.Size = New System.Drawing.Size(309, 19)
+        Me.pbDL3.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.pbDL3.TabIndex = 6
         '
         'pnlIMPA
         '
@@ -308,39 +366,6 @@ Partial Class dlgImgSelect
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.ProgressBar1.TabIndex = 6
         '
-        'pnlMPDB
-        '
-        Me.pnlMPDB.Controls.Add(Me.lblDL3Status)
-        Me.pnlMPDB.Controls.Add(Me.lblDL3)
-        Me.pnlMPDB.Controls.Add(Me.pbDL3)
-        Me.pnlMPDB.Location = New System.Drawing.Point(0, 147)
-        Me.pnlMPDB.Name = "pnlMPDB"
-        Me.pnlMPDB.Size = New System.Drawing.Size(321, 75)
-        Me.pnlMPDB.TabIndex = 9
-        '
-        'lblDL3Status
-        '
-        Me.lblDL3Status.Location = New System.Drawing.Point(5, 36)
-        Me.lblDL3Status.Name = "lblDL3Status"
-        Me.lblDL3Status.Size = New System.Drawing.Size(310, 13)
-        Me.lblDL3Status.TabIndex = 8
-        '
-        'lblDL3
-        '
-        Me.lblDL3.Location = New System.Drawing.Point(5, 10)
-        Me.lblDL3.Name = "lblDL3"
-        Me.lblDL3.Size = New System.Drawing.Size(310, 13)
-        Me.lblDL3.TabIndex = 7
-        Me.lblDL3.Text = "Performing Preliminary Tasks..."
-        '
-        'pbDL3
-        '
-        Me.pbDL3.Location = New System.Drawing.Point(6, 52)
-        Me.pbDL3.Name = "pbDL3"
-        Me.pbDL3.Size = New System.Drawing.Size(309, 19)
-        Me.pbDL3.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.pbDL3.TabIndex = 6
-        '
         'dlgImgSelect
         '
         Me.AcceptButton = Me.OK_Button
@@ -363,13 +388,14 @@ Partial Class dlgImgSelect
         Me.Text = "Select Poster"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.pnlBottomMain.ResumeLayout(False)
-        Me.pnlBottomMain.PerformLayout()
+        Me.pnlFanart.ResumeLayout(False)
+        Me.pnlFanart.PerformLayout()
         Me.pnlSize.ResumeLayout(False)
         Me.pnlSize.PerformLayout()
         Me.pnlDLStatus.ResumeLayout(False)
+        Me.pnlMPDB.ResumeLayout(False)
         Me.pnlIMPA.ResumeLayout(False)
         Me.pnlSinglePic.ResumeLayout(False)
-        Me.pnlMPDB.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -386,8 +412,6 @@ Partial Class dlgImgSelect
     Friend WithEvents lblDL2Status As System.Windows.Forms.Label
     Friend WithEvents lblDL2 As System.Windows.Forms.Label
     Friend WithEvents pbDL2 As System.Windows.Forms.ProgressBar
-    Friend WithEvents btnCheckAll As System.Windows.Forms.Button
-    Friend WithEvents btnCheckNone As System.Windows.Forms.Button
     Friend WithEvents lblInfo As System.Windows.Forms.Label
     Friend WithEvents pnlSize As System.Windows.Forms.Panel
     Friend WithEvents rbSmall As System.Windows.Forms.RadioButton
@@ -401,5 +425,9 @@ Partial Class dlgImgSelect
     Friend WithEvents lblDL3Status As System.Windows.Forms.Label
     Friend WithEvents lblDL3 As System.Windows.Forms.Label
     Friend WithEvents pbDL3 As System.Windows.Forms.ProgressBar
+    Friend WithEvents pnlFanart As System.Windows.Forms.Panel
+    Friend WithEvents chkThumb As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMid As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOriginal As System.Windows.Forms.CheckBox
 
 End Class

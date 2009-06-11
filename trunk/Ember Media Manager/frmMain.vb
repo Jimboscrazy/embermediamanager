@@ -149,6 +149,12 @@ Public Class frmMain
 
         If Not isCL Then Master.SQLcn.Close()
 
+        If Not Master.eSettings.PersistImgCache Then
+            If Directory.Exists(Master.TempPath) Then
+                Directory.Delete(Master.TempPath, True)
+            End If
+        End If
+
     End Sub
 
     Private Sub frmMain_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
@@ -241,6 +247,10 @@ Public Class frmMain
         If File.Exists(sPath) Then
             Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
             File.Delete(sPath)
+        End If
+
+        If Not Directory.Exists(Master.TempPath) Then
+            Directory.CreateDirectory(Master.TempPath)
         End If
 
         Master.eSettings.Load()
@@ -3198,13 +3208,13 @@ doCancel:
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                 tmpName = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name)
-                If Directory.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     hasExtra = True
                 End If
             Else
                 tmpName = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
                 tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
-                If Directory.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     hasExtra = True
                 End If
             End If
