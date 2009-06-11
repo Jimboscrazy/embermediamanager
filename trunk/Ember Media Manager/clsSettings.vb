@@ -121,6 +121,7 @@ Public Class emmSettings
     Private _useetasfa As Boolean
     Private _sets As New ArrayList
     Private _useimgcache As Boolean
+    Private _useimgcacheupdater As Boolean
     Private _persistimagecache As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
 
@@ -987,6 +988,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property UseImgCacheUpdaters() As Boolean
+        Get
+            Return Me._useimgcacheupdater
+        End Get
+        Set(ByVal value As Boolean)
+            Me._useimgcacheupdater = value
+        End Set
+    End Property
+
     Public Property PersistImgCache() As Boolean
         Get
             Return Me._persistimagecache
@@ -1105,6 +1115,7 @@ Public Class emmSettings
         Me._genrefilter = "[All]"
         Me._useetasfa = False
         Me._useimgcache = True
+        Me._useimgcacheupdater = False
         Me._persistimagecache = False
         Me._sets.Clear()
         Me._xbmccoms.Clear()
