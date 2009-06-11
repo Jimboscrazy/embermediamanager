@@ -121,39 +121,44 @@ Public Class frmMain
         ' Do some stuff before closing
         '\\
 
-        Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
-        Master.eSettings.WindowLoc = Me.Location
-        Master.eSettings.WindowSize = Me.Size
-        Master.eSettings.WindowState = Me.WindowState
-        Master.eSettings.Save()
+        Try
+            Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
+            Master.eSettings.WindowLoc = Me.Location
+            Master.eSettings.WindowSize = Me.Size
+            Master.eSettings.WindowState = Me.WindowState
+            Master.eSettings.Save()
 
-        If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy AndAlso Not isCL Then
-            Me.SaveMovieList()
-        End If
-
-        If Me.bwFolderData.IsBusy Then Me.bwFolderData.CancelAsync()
-        If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
-        If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
-        If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-        If Me.bwPrelim.IsBusy Then Me.bwPrelim.CancelAsync()
-        If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
-        If Me.bwValidateNfo.IsBusy Then Me.bwValidateNfo.CancelAsync()
-
-        Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwValidateNfo.IsBusy
-            btnCancel.Visible = False
-            lblCanceling.Visible = True
-            pbCanceling.Visible = True
-            pnlCancel.Visible = True
-            Application.DoEvents()
-        Loop
-
-        If Not isCL Then Master.SQLcn.Close()
-
-        If Not Master.eSettings.PersistImgCache Then
-            If Directory.Exists(Master.TempPath) Then
-                Directory.Delete(Master.TempPath, True)
+            If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy AndAlso Not isCL Then
+                Me.SaveMovieList()
             End If
-        End If
+
+            If Me.bwFolderData.IsBusy Then Me.bwFolderData.CancelAsync()
+            If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
+            If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
+            If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+            If Me.bwPrelim.IsBusy Then Me.bwPrelim.CancelAsync()
+            If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
+            If Me.bwValidateNfo.IsBusy Then Me.bwValidateNfo.CancelAsync()
+
+            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwValidateNfo.IsBusy
+                btnCancel.Visible = False
+                lblCanceling.Visible = True
+                pbCanceling.Visible = True
+                pnlCancel.Visible = True
+                Application.DoEvents()
+            Loop
+
+            If Not isCL Then Master.SQLcn.Close()
+
+            If Not Master.eSettings.PersistImgCache Then
+                If Directory.Exists(Master.TempPath) Then
+                    Directory.Delete(Master.TempPath, True)
+                End If
+            End If
+        Catch
+            'force close
+            Application.Exit()
+        End Try
 
     End Sub
 
@@ -1394,7 +1399,10 @@ Public Class frmMain
                     Master.EnumerateFiles(dirArray(0).ToString)
                 End If
 
-                If Me.bwPrelim.CancellationPending Then Return
+                If Me.bwPrelim.CancellationPending Then
+                    e.Cancel = True
+                    Return
+                End If
             Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1410,7 +1418,7 @@ Public Class frmMain
         '//
         ' Thread finished: set up progress bar, display count, and begin thread to load data
         '\\
-        If Not bwPrelim.CancellationPending Then
+        If Not e.Cancelled Then
             Try
                 If Master.MediaList.Count = 0 Then
                     Me.tslStatus.Text = "Unable to load directories. Please check settings."
@@ -1474,7 +1482,10 @@ Public Class frmMain
 
                     'process the folder type media
                     For Each sFile As Master.FileAndSource In Master.MediaList
-                        If Me.bwFolderData.CancellationPending Then Return
+                        If Me.bwFolderData.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
 
                         If Not String.IsNullOrEmpty(sFile.Filename) Then
                             If Master.eSettings.UseNameFromNfo Then
@@ -1563,6 +1574,12 @@ Public Class frmMain
 
             tmpMovie = Nothing
             aContents = Nothing
+
+            If Me.bwFolderData.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1585,7 +1602,9 @@ Public Class frmMain
         ' Thread finished: fill datagrid with info and configure columns
         '\\
 
-        Me.FillList(0)
+        If Not e.Cancelled Then
+            Me.FillList(0)
+        End If
 
     End Sub
 
@@ -1602,6 +1621,12 @@ Public Class frmMain
                     Args.Movie.Studio = Args.Movie.StudioReal & Master.FITagData(Args.Movie.FileInfo)
                 End If
                 Master.SaveMovieToNFO(Args.Movie, Args.Path, Args.isFile)
+
+                If Me.bwMediaInfo.CancellationPending Then
+                    e.Cancel = True
+                    Return
+                End If
+
                 e.Result = New Results With {.fileinfo = Master.FIToString(Args.Movie.FileInfo, Args.Movie.Studio), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
 
             Else
@@ -1617,39 +1642,41 @@ Public Class frmMain
         '//
         ' Thread finished: fill textbox with result
         '\\
-        Dim Res As Results = e.Result
 
-        Try
-            If Not Res.fileInfo = "error" Then
-                Me.pbMILoading.Visible = False
-                Me.txtMediaInfo.Text = Res.fileInfo
-                If Master.eSettings.UseStudioTags = True Then
-                    If Not String.IsNullOrEmpty(Res.Movie.Studio) Then
-                        Master.GetAVImages(Res.Movie.Studio, Res.Path)
-                        Me.pnlInfoIcons.Width = 346
-                        Me.pbStudio.Left = 277
+        If Not e.Cancelled Then
+            Dim Res As Results = e.Result
+
+            Try
+                If Not Res.fileInfo = "error" Then
+                    Me.pbMILoading.Visible = False
+                    Me.txtMediaInfo.Text = Res.fileInfo
+                    If Master.eSettings.UseStudioTags = True Then
+                        If Not String.IsNullOrEmpty(Res.Movie.Studio) Then
+                            Master.GetAVImages(Res.Movie.Studio, Res.Path)
+                            Me.pnlInfoIcons.Width = 346
+                            Me.pbStudio.Left = 277
+                        Else
+                            Master.GetAVImages("", Res.Path)
+                        End If
                     Else
-                        Master.GetAVImages("", Res.Path)
+                        Me.pnlInfoIcons.Width = 70
+                        Me.pbStudio.Left = 0
                     End If
-                Else
-                    Me.pnlInfoIcons.Width = 70
-                    Me.pbStudio.Left = 0
+                    Me.btnMIRefresh.Focus()
                 End If
-                Me.btnMIRefresh.Focus()
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
 
-        If Res.setEnabled Then
-            Me.tabsMain.Enabled = True
-            Me.tsbRefreshMedia.Enabled = True
-            If Me.dgvMediaList.RowCount > 0 Then
-                Me.tsbAutoPilot.Enabled = True
-                Me.mnuMediaList.Enabled = True
+            If Res.setEnabled Then
+                Me.tabsMain.Enabled = True
+                Me.tsbRefreshMedia.Enabled = True
+                If Me.dgvMediaList.RowCount > 0 Then
+                    Me.tsbAutoPilot.Enabled = True
+                    Me.mnuMediaList.Enabled = True
+                End If
             End If
         End If
-
     End Sub
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
@@ -1700,10 +1727,16 @@ Public Class frmMain
 
             Me.MainPoster.Clear()
 
-            If bwLoadInfo.CancellationPending Then Return
+            If Me.bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
             Me.MainFanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
 
-            If bwLoadInfo.CancellationPending Then Return
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
             Me.MainPoster.Load(Master.currPath, Master.isFile, Master.ImageType.Posters)
 
             'wait for mediainfo to update the nfo
@@ -1711,10 +1744,18 @@ Public Class frmMain
                 Application.DoEvents()
             Loop
 
-            If bwLoadInfo.CancellationPending Then Return
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
             'read nfo if it's there
             Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
             Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1729,7 +1770,7 @@ Public Class frmMain
         '\\
 
         Try
-            If Not bwLoadInfo.CancellationPending Then
+            If Not e.Cancelled Then
                 Me.fillScreenInfo()
 
                 If Not IsNothing(Me.MainFanart.Image) Then
@@ -2282,6 +2323,7 @@ Public Class frmMain
             End Using
 doCancel:
             SQLtransaction.Commit()
+
         End Using
 
         e.Result = Args.scrapeType
@@ -2348,13 +2390,22 @@ doCancel:
 
         If Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO Then
             For i As Integer = 0 To Me.dtMedia.Rows.Count - 1
-                If bwValidateNfo.CancellationPending Then Return
+                If bwValidateNfo.CancellationPending Then
+                    e.Cancel = True
+                    Return
+                End If
+
                 nfoPath = Master.GetNfoPath(Me.dtMedia.Rows(i).Item(1), Me.dtMedia.Rows(i).Item(2))
                 Me.bwValidateNfo.ReportProgress(i, nfoPath)
                 If Not Master.IsConformingNfo(nfoPath) Then
                     Me.dtMedia.Rows(i).Item(6) = False
                 End If
             Next
+        End If
+
+        If bwValidateNfo.CancellationPending Then
+            e.Cancel = True
+            Return
         End If
 
         e.Result = New Results With {.scrapeType = Args.scrapeType, .scrapeMod = Args.scrapeMod}
@@ -2374,7 +2425,7 @@ doCancel:
 
         Dim Res As Results = e.Result
 
-        If Not bwScraper.CancellationPending AndAlso Not bwValidateNfo.CancellationPending Then
+        If Not bwScraper.CancellationPending AndAlso Not e.Cancelled Then
             Me.tspbLoading.Value = 0
             Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
             If Res.scrapeType = Master.ScrapeType.UpdateAuto Then

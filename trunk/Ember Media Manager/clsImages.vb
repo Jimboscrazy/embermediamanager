@@ -421,20 +421,46 @@ Public Class Images
                 pThumbs = New Media.Poster
 
                 If Master.eSettings.UseImgCacheUpdaters Then
-                    If Master.eSettings.UseTMDB Then
-                        tmpListTMDB.AddRange(TMDB.GetTMDBImages(IMDBID, "poster"))
-                    End If
 
-                    If Master.eSettings.UseIMPA Then
-                        tmpListTMDB.AddRange(IMPA.GetIMPAPosters(IMDBID))
-                    End If
+                    Dim di As New DirectoryInfo(CachePath)
+                    Dim lFi As New List(Of FileInfo)
 
-                    If Master.eSettings.UseMPDB Then
-                        tmpListTMDB.AddRange(MPDB.GetMPDBPosters(IMDBID))
-                    End If
+                    lFi.AddRange(di.GetFiles("*.jpg"))
 
-                    If tmpListTMDB.Count > 0 Then
-                        hasImages = True
+                    If lFi.Count > 0 Then
+                        Dim tImage As Media.Image
+                        For Each sFile As FileInfo In lFi
+                            tImage = New Media.Image
+                            tImage.WebImage = Image.FromFile(sFile.FullName)
+                            Select Case True
+                                Case sFile.Name.Contains("(original)")
+                                    tImage.Description = "original"
+                                Case sFile.Name.Contains("(mid)")
+                                    tImage.Description = "mid"
+                                Case sFile.Name.Contains("(cover)")
+                                    tImage.Description = "cover"
+                                Case sFile.Name.Contains("(thumb)")
+                                    tImage.Description = "thumb"
+                                Case sFile.Name.Contains("(poster)")
+                                    tImage.Description = "poster"
+                            End Select
+                            tImage.URL = Master.CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
+                            pThumbs.Thumb.Add(New Media.Posters With {.URL = tImage.URL})
+                            tmpListTMDB.Add(tImage)
+                        Next
+                    Else
+                        If Master.eSettings.UseTMDB Then
+                            tmpListTMDB.AddRange(TMDB.GetTMDBImages(IMDBID, "poster"))
+                        End If
+
+                        If Master.eSettings.UseIMPA Then
+                            tmpListTMDB.AddRange(IMPA.GetIMPAPosters(IMDBID))
+                        End If
+
+                        If Master.eSettings.UseMPDB Then
+                            tmpListTMDB.AddRange(MPDB.GetMPDBPosters(IMDBID))
+                        End If
+
                         For Each tmdbThumb As Media.Image In tmpListTMDB
                             tmdbThumb.WebImage = GenericFromWeb(tmdbThumb.URL)
                             If Not IsNothing(tmdbThumb.WebImage) Then
@@ -442,6 +468,12 @@ Public Class Images
                                 tmdbThumb.WebImage.Save(Path.Combine(CachePath, String.Concat("poster_(", tmdbThumb.Description, ")_(url=", Master.CleanURL(tmdbThumb.URL), ").jpg")))
                             End If
                         Next
+                    End If
+
+
+
+                    If tmpListTMDB.Count > 0 Then
+                        hasImages = True
 
                         'remove all entries without images
                         For i As Integer = tmpListTMDB.Count - 1 To 0 Step -1
@@ -687,34 +719,54 @@ Public Class Images
             Else 'fanart
 
                 If Master.eSettings.UseTMDB Then
+                    If Master.eSettings.UseImgCache Then
+                        Dim di As New DirectoryInfo(CachePath)
+                        Dim lFi As New List(Of FileInfo)
 
-                    'download all the fanart from TMDB
-                    tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "backdrop")
+                        lFi.AddRange(di.GetFiles("*.jpg"))
 
-                    If tmpListTMDB.Count > 0 Then
-                        hasImages = True
+                        If lFi.Count > 0 Then
+                            Dim tImage As Media.Image
+                            For Each sFile As FileInfo In lFi
+                                tImage = New Media.Image
+                                tImage.WebImage = Image.FromFile(sFile.FullName)
+                                Select Case True
+                                    Case sFile.Name.Contains("(original)")
+                                        tImage.Description = "original"
+                                    Case sFile.Name.Contains("(mid)")
+                                        tImage.Description = "mid"
+                                    Case sFile.Name.Contains("(thumb)")
+                                        tImage.Description = "thumb"
+                                End Select
+                                tImage.URL = Master.CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
+                                tmpListTMDB.Add(tImage)
+                            Next
+                        Else
+                            'download all the fanart from TMDB
+                            tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "backdrop")
 
-                        'setup fanart for nfo
-                        Dim thumbLink As String = String.Empty
-                        fArt = New Media.Fanart
-                        For Each miFanart As Media.Image In tmpListTMDB
-                            fArt.URL = "http://www.themoviedb.org"
-                            thumbLink = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)
-                            If Not Strings.InStr(miFanart.URL, "_thumb") > 0 Then
-                                thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
+                            If tmpListTMDB.Count > 0 Then
+
+                                'setup fanart for nfo
+                                Dim thumbLink As String = String.Empty
+                                fArt = New Media.Fanart
+                                For Each miFanart As Media.Image In tmpListTMDB
+                                    fArt.URL = "http://www.themoviedb.org"
+                                    thumbLink = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)
+                                    If Not Strings.InStr(miFanart.URL, "_thumb") > 0 Then
+                                        thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
+                                    End If
+                                    miFanart.WebImage = GenericFromWeb(miFanart.URL)
+                                    If Not IsNothing(miFanart.WebImage) Then
+                                        miFanart.WebImage.Save(Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", Master.CleanURL(miFanart.URL), ").jpg")))
+                                        fArt.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)})
+                                    End If
+                                Next
                             End If
-                            If Master.eSettings.UseImgCacheUpdaters Then
-                                miFanart.WebImage = GenericFromWeb(miFanart.URL)
-                                If Not IsNothing(miFanart.WebImage) Then
-                                    miFanart.WebImage.Save(Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", Master.CleanURL(miFanart.URL), ").jpg")))
-                                    fArt.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)})
-                                End If
-                            Else
-                                fArt.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)})
-                            End If
-                        Next
+                        End If
 
-                        If Master.eSettings.UseImgCacheUpdaters Then
+                        If tmpListTMDB.Count > 0 Then
+                            hasImages = True
                             'remove all entries without images
                             For i As Integer = tmpListTMDB.Count - 1 To 0 Step -1
                                 If IsNothing(tmpListTMDB(i).WebImage) Then
@@ -732,7 +784,27 @@ Public Class Images
                             'image not found sort by size then pick the first one
                             tmpListTMDB.Sort(AddressOf SortImages)
                             tmpImage = tmpListTMDB(0).WebImage
-                        Else
+                        End If
+                    Else
+                        'download all the fanart from TMDB
+                        tmpListTMDB = TMDB.GetTMDBImages(IMDBID, "backdrop")
+
+                        If tmpListTMDB.Count > 0 Then
+                            hasImages = True
+
+                            'setup fanart for nfo
+                            Dim thumbLink As String = String.Empty
+                            fArt = New Media.Fanart
+                            For Each miFanart As Media.Image In tmpListTMDB
+                                fArt.URL = "http://www.themoviedb.org"
+                                thumbLink = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)
+                                If Not Strings.InStr(miFanart.URL, "_thumb") > 0 Then
+                                    thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
+                                End If
+                                fArt.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)})
+                            Next
+
+
                             For Each iMovie As Media.Image In tmpListTMDB
                                 Select Case Master.eSettings.PreferredPosterSize
                                     Case Master.FanartSize.Lrg

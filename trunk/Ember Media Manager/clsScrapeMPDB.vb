@@ -117,7 +117,7 @@ Namespace MPDB
         End Sub
 
         Private Sub bwMPDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMPDB.RunWorkerCompleted
-            If Not bwMPDB.CancellationPending Then
+            If Not IsNothing(e.Result) Then
                 RaiseEvent PostersDownloaded(e.Result)
             End If
         End Sub
