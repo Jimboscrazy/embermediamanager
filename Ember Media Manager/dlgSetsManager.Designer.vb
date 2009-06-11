@@ -28,6 +28,8 @@ Partial Class dlgSetsManager
         Me.lbMovies = New System.Windows.Forms.ListBox
         Me.btnAdd = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.btnRemoveSet = New System.Windows.Forms.Button
+        Me.btnEditSet = New System.Windows.Forms.Button
         Me.btnNewSet = New System.Windows.Forms.Button
         Me.lbSets = New System.Windows.Forms.ListBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
@@ -73,6 +75,7 @@ Partial Class dlgSetsManager
         Me.lbMovies.FormattingEnabled = True
         Me.lbMovies.Location = New System.Drawing.Point(8, 19)
         Me.lbMovies.Name = "lbMovies"
+        Me.lbMovies.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lbMovies.Size = New System.Drawing.Size(209, 329)
         Me.lbMovies.TabIndex = 1
         '
@@ -83,14 +86,15 @@ Partial Class dlgSetsManager
         Me.btnAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnAdd.Location = New System.Drawing.Point(8, 351)
         Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Size = New System.Drawing.Size(82, 23)
+        Me.btnAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnAdd.TabIndex = 10
-        Me.btnAdd.Text = "Add to Set"
         Me.btnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAdd.UseVisualStyleBackColor = True
         '
         'GroupBox2
         '
+        Me.GroupBox2.Controls.Add(Me.btnRemoveSet)
+        Me.GroupBox2.Controls.Add(Me.btnEditSet)
         Me.GroupBox2.Controls.Add(Me.btnNewSet)
         Me.GroupBox2.Controls.Add(Me.lbSets)
         Me.GroupBox2.Location = New System.Drawing.Point(6, 7)
@@ -100,16 +104,37 @@ Partial Class dlgSetsManager
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Sets"
         '
+        'btnRemoveSet
+        '
+        Me.btnRemoveSet.Enabled = False
+        Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
+        Me.btnRemoveSet.Location = New System.Drawing.Point(194, 351)
+        Me.btnRemoveSet.Name = "btnRemoveSet"
+        Me.btnRemoveSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveSet.TabIndex = 12
+        Me.btnRemoveSet.UseVisualStyleBackColor = True
+        '
+        'btnEditSet
+        '
+        Me.btnEditSet.Enabled = False
+        Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
+        Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditSet.Location = New System.Drawing.Point(37, 351)
+        Me.btnEditSet.Name = "btnEditSet"
+        Me.btnEditSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnEditSet.TabIndex = 5
+        Me.btnEditSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditSet.UseVisualStyleBackColor = True
+        '
         'btnNewSet
         '
         Me.btnNewSet.Enabled = False
         Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
         Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewSet.Location = New System.Drawing.Point(136, 351)
+        Me.btnNewSet.Location = New System.Drawing.Point(8, 351)
         Me.btnNewSet.Name = "btnNewSet"
-        Me.btnNewSet.Size = New System.Drawing.Size(81, 23)
+        Me.btnNewSet.Size = New System.Drawing.Size(23, 23)
         Me.btnNewSet.TabIndex = 4
-        Me.btnNewSet.Text = "New Set..."
         Me.btnNewSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnNewSet.UseVisualStyleBackColor = True
         '
@@ -140,7 +165,7 @@ Partial Class dlgSetsManager
         '
         Me.btnDown.Enabled = False
         Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
-        Me.btnDown.Location = New System.Drawing.Point(33, 351)
+        Me.btnDown.Location = New System.Drawing.Point(38, 351)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(23, 23)
         Me.btnDown.TabIndex = 13
@@ -286,5 +311,7 @@ Partial Class dlgSetsManager
     Friend WithEvents lblFile As System.Windows.Forms.Label
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
     Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents btnEditSet As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveSet As System.Windows.Forms.Button
 
 End Class
