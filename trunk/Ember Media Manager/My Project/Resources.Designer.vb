@@ -114,6 +114,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Friend ReadOnly Property MovieListTableCol() As String
+            Get
+                Return ResourceManager.GetString("MovieListTableCol", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &lt;/table&gt;
         '''&lt;/center&gt;.
         '''</summary>
@@ -124,16 +133,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &lt;tr&gt;
-        '''&lt;td&gt;&lt;span style=&quot;color:darkblue;&quot;&gt;[TITLE]&lt;/span&gt;&lt;/td&gt;
-        '''&lt;td style=&quot;text-align:center; width:50px;&quot;&gt;[YEAR]&lt;/td&gt;
-        '''&lt;td style=&quot;text-align:center; width:150px;&quot;&gt;[VIDEO]&lt;/td&gt;
-        '''&lt;td style=&quot;text-align:center; width:150px;&quot;&gt;[AUDIO]&lt;/td&gt;
-        '''&lt;/tr&gt;.
+        '''  Looks up a localized string similar to .
         '''</summary>
-        Friend ReadOnly Property MovieListTableRow() As String
+        Friend ReadOnly Property MovieListTableHeader() As String
             Get
-                Return ResourceManager.GetString("MovieListTableRow", resourceCulture)
+                Return ResourceManager.GetString("MovieListTableHeader", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Friend ReadOnly Property MovieListTableRowEnd() As String
+            Get
+                Return ResourceManager.GetString("MovieListTableRowEnd", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Friend ReadOnly Property MovieListTableRowStart() As String
+            Get
+                Return ResourceManager.GetString("MovieListTableRowStart", resourceCulture)
             End Get
         End Property
         
