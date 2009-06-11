@@ -54,9 +54,7 @@ Public Class Images
 
     Public Sub Clear()
         _isedit = False
-        If Not IsNothing(_image) Then
-            _image = Nothing
-        End If
+        _image = Nothing
     End Sub
 
     Public Sub Dispose()

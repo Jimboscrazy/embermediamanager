@@ -45,6 +45,8 @@ Public Class Master
     Public Shared isFile As Boolean = False
     Public Shared SQLcn As New SQLite.SQLiteConnection()
 
+    Public Shared TempPath As String = Path.Combine(Application.StartupPath, "Temp")
+
     'Global Enums
     Public Enum PosterSize As Integer
         Xlrg = 0
@@ -1133,9 +1135,12 @@ Public Class Master
             If ((MaxLength - sEnd.Length) - 3) > 0 Then
                 Return String.Format("{0}...{1}", Strings.Left(sString, (MaxLength - sEnd.Length) - 3), sEnd)
             Else
-                Return sEnd
+                If sEnd.Length >= MaxLength Then
+                    Return String.Format("...{0}", Strings.Right(sEnd, MaxLength - 3))
+                Else
+                    Return sEnd
+                End If
             End If
-
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

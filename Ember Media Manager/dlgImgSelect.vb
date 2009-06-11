@@ -61,24 +61,17 @@ Public Class dlgImgSelect
     Private Event TMDBDone()
     Private Event MPDBDone()
 
+    Private CachePath As String = String.Empty
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         Try
-
-            Dim tmpPath As String = String.Empty
             Dim tmpPathPlus As String = String.Empty
 
-            tmpPath = Path.Combine(Application.StartupPath, "Temp")
-
-            If Not Directory.Exists(tmpPath) Then
-                Directory.CreateDirectory(tmpPath)
-            End If
-
             If DLType = Master.ImageType.Fanart Then
-                tmpPathPlus = Path.Combine(tmpPath, "fanart.jpg")
+                tmpPathPlus = Path.Combine(Master.TempPath, "fanart.jpg")
             Else
-                tmpPathPlus = Path.Combine(tmpPath, "poster.jpg")
+                tmpPathPlus = Path.Combine(Master.TempPath, "poster.jpg")
             End If
 
             If Not IsNothing(Me.tmpImage.Image) Then
@@ -98,13 +91,21 @@ Public Class dlgImgSelect
                         Me.pnlSinglePic.Visible = True
                         Me.Refresh()
                         Application.DoEvents()
-                        Me.tmpImage.FromWeb(Me.rbXLarge.Tag)
+                        If Master.eSettings.UseImgCache Then
+                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(original)_(url=", CleanURL(Me.rbXLarge.Tag), ").jpg")))
+                        Else
+                            Me.tmpImage.FromWeb(Me.rbXLarge.Tag)
+                        End If
                     Case Me.rbLarge.Checked
                         Me.pnlBG.Visible = False
                         Me.pnlSinglePic.Visible = True
                         Me.Refresh()
                         Application.DoEvents()
-                        Me.tmpImage.FromWeb(Me.rbLarge.Tag)
+                        If Master.eSettings.UseImgCache Then
+                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(mid)_(url=", CleanURL(Me.rbLarge.Tag), ").jpg")))
+                        Else
+                            Me.tmpImage.FromWeb(Me.rbLarge.Tag)
+                        End If
                     Case Me.rbMedium.Checked
                         Me.pnlBG.Visible = False
                         Me.pnlSinglePic.Visible = True
@@ -116,8 +117,13 @@ Public Class dlgImgSelect
                         Me.pnlSinglePic.Visible = True
                         Me.Refresh()
                         Application.DoEvents()
-                        Me.tmpImage.FromWeb(Me.rbSmall.Tag)
+                        If Master.eSettings.UseImgCache Then
+                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(thumb)_(url=", CleanURL(Me.rbSmall.Tag), ").jpg")))
+                        Else
+                            Me.tmpImage.FromWeb(Me.rbSmall.Tag)
+                        End If
                 End Select
+
                 If Not IsNothing(Me.tmpImage.Image) Then
                     If isEdit Then
                         Me.tmpImage.Save(tmpPathPlus)
@@ -150,10 +156,11 @@ Public Class dlgImgSelect
                 If isChecked Then
 
                     If isEdit Then
-                        extraPath = Path.Combine(tmpPath, "extrathumbs")
+                        extraPath = Path.Combine(Master.TempPath, "extrathumbs")
                     Else
                         extraPath = Path.Combine(Directory.GetParent(Me.sPath).FullName, "extrathumbs")
                     End If
+
                     If Not Directory.Exists(extraPath) Then
                         Directory.CreateDirectory(extraPath)
                     End If
@@ -229,11 +236,18 @@ Public Class dlgImgSelect
 
             If Me.DLType = Master.ImageType.Posters Then
                 Me.pnlDLStatus.Visible = True
+                CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, imdbID, Path.DirectorySeparatorChar, "posters")
             Else
                 Me.pnlDLStatus.Visible = False
                 Me.pnlDLStatus.Height = 75
                 Me.pnlDLStatus.Top = 207
+                CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, imdbID, Path.DirectorySeparatorChar, "fanart")
             End If
+
+            If Master.eSettings.UseImgCache AndAlso Not Directory.Exists(CachePath) Then
+                Directory.CreateDirectory(CachePath)
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -259,8 +273,7 @@ Public Class dlgImgSelect
                 Me.pnlDLStatus.Visible = False
                 Me.ProcessPics(Me.TMDBPosters)
                 Me.pnlBG.Visible = True
-                Me.btnCheckAll.Visible = True
-                Me.btnCheckNone.Visible = True
+                Me.pnlFanart.Visible = True
                 Me.lblInfo.Visible = True
             End If
 
@@ -292,8 +305,10 @@ Public Class dlgImgSelect
         Try
             Dim iIndex As Integer = 0
             If posters.Count > 0 Then
+                posters.Sort(AddressOf SortImages)
+
                 For i As Integer = 0 To posters.Count - 1
-                    If Not IsNothing(posters.Item(i).WebImage) Then
+                    If Not IsNothing(posters.Item(i).WebImage) AndAlso (Me.DLType = Master.ImageType.Fanart OrElse Not (posters.Item(i).URL.ToLower.Contains("themoviedb.org") AndAlso Not posters.Item(i).Description = "cover")) Then
                         Me.AddImage(posters.Item(i).WebImage, posters.Item(i).Description, iIndex, posters.Item(i).URL)
                         iIndex += 1
                     End If
@@ -387,46 +402,85 @@ Public Class dlgImgSelect
     Private Sub GetPosters()
 
         Try
-            If Master.eSettings.UseTMDB Then
-                Me.lblDL1.Text = "Retrieving data from TheMovieDB.com..."
-                Me.lblDL1Status.Text = String.Empty
-                Me.pbDL1.Maximum = 3
-                Me.pnlDLStatus.Visible = True
-                Me.Refresh()
 
-                Me._tmdbDone = False
+            Dim NoneFound As Boolean = True
 
-                Me.TMDB.GetImagesAsync(imdbID, "poster")
-            Else
-                Me.lblDL1.Text = "TheMovieDB.com is not enabled"
+            If Master.eSettings.UseImgCache Then
+                Dim di As New DirectoryInfo(CachePath)
+                Dim lFi As New List(Of FileInfo)
+
+                lFi.AddRange(di.GetFiles("*.jpg"))
+
+                If lFi.Count > 0 Then
+                    NoneFound = False
+                    Me.pnlDLStatus.Visible = False
+                    Dim tImage As Media.Image
+                    For Each sFile As FileInfo In lFi
+                        tImage = New Media.Image
+                        tImage.WebImage = Image.FromFile(sFile.FullName)
+                        Select Case True
+                            Case sFile.Name.Contains("(original)")
+                                tImage.Description = "original"
+                            Case sFile.Name.Contains("(mid)")
+                                tImage.Description = "mid"
+                            Case sFile.Name.Contains("(cover)")
+                                tImage.Description = "cover"
+                            Case sFile.Name.Contains("(thumb)")
+                                tImage.Description = "thumb"
+                            Case sFile.Name.Contains("(poster)")
+                                tImage.Description = "poster"
+                        End Select
+                        tImage.URL = CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
+                        Me.TMDBPosters.Add(tImage)
+                    Next
+
+                    ProcessPics(TMDBPosters)
+                    Me.pnlBG.Visible = True
+                End If
             End If
 
-            If Master.eSettings.UseIMPA Then
-                Me.lblDL2.Text = "Retrieving data from IMPAwards.com..."
-                Me.lblDL2Status.Text = String.Empty
-                Me.pbDL2.Maximum = 3
-                Me.pnlDLStatus.Visible = True
-                Me.Refresh()
+            If NoneFound Then
+                If Master.eSettings.UseTMDB Then
+                    Me.lblDL1.Text = "Retrieving data from TheMovieDB.com..."
+                    Me.lblDL1Status.Text = String.Empty
+                    Me.pbDL1.Maximum = 3
+                    Me.pnlDLStatus.Visible = True
+                    Me.Refresh()
 
-                Me._impaDone = False
+                    Me._tmdbDone = False
 
-                Me.IMPA.GetImagesAsync(imdbID)
-            Else
-                Me.lblDL2.Text = "IMPAwards.com is not enabled"
-            End If
+                    Me.TMDB.GetImagesAsync(imdbID, "poster")
+                Else
+                    Me.lblDL1.Text = "TheMovieDB.com is not enabled"
+                End If
 
-            If Master.eSettings.UseMPDB Then
-                Me.lblDL3.Text = "Retrieving data from MoviePosterDB.com..."
-                Me.lblDL3Status.Text = String.Empty
-                Me.pbDL3.Maximum = 3
-                Me.pnlDLStatus.Visible = True
-                Me.Refresh()
+                If Master.eSettings.UseIMPA Then
+                    Me.lblDL2.Text = "Retrieving data from IMPAwards.com..."
+                    Me.lblDL2Status.Text = String.Empty
+                    Me.pbDL2.Maximum = 3
+                    Me.pnlDLStatus.Visible = True
+                    Me.Refresh()
 
-                Me._mpdbDone = False
+                    Me._impaDone = False
 
-                Me.MPDB.GetImagesAsync(imdbID)
-            Else
-                Me.lblDL3.Text = "MoviePostersDB.com is not enabled"
+                    Me.IMPA.GetImagesAsync(imdbID)
+                Else
+                    Me.lblDL2.Text = "IMPAwards.com is not enabled"
+                End If
+
+                If Master.eSettings.UseMPDB Then
+                    Me.lblDL3.Text = "Retrieving data from MoviePosterDB.com..."
+                    Me.lblDL3Status.Text = String.Empty
+                    Me.pbDL3.Maximum = 3
+                    Me.pnlDLStatus.Visible = True
+                    Me.Refresh()
+
+                    Me._mpdbDone = False
+
+                    Me.MPDB.GetImagesAsync(imdbID)
+                Else
+                    Me.lblDL3.Text = "MoviePostersDB.com is not enabled"
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -436,19 +490,66 @@ Public Class dlgImgSelect
 
     Private Sub GetFanart()
         Try
-            If Master.eSettings.UseTMDB Then
-                Me.lblDL1.Text = "Retrieving data from TheMovieDB.com..."
-                Me.lblDL1Status.Text = String.Empty
-                Me.pbDL1.Maximum = 3
-                Me.pnlDLStatus.Visible = True
-                Me.Refresh()
+            Dim NoneFound As Boolean = True
 
-                Me.TMDB.GetImagesAsync(imdbID, "backdrop")
+            If Master.eSettings.UseImgCache Then
+                Dim di As New DirectoryInfo(CachePath)
+                Dim lFi As New List(Of FileInfo)
+
+                lFi.AddRange(di.GetFiles("*.jpg"))
+
+                If lFi.Count > 0 Then
+                    NoneFound = False
+                    Me.pnlDLStatus.Visible = False
+                    Dim tImage As Media.Image
+                    For Each sFile As FileInfo In lFi
+                        tImage = New Media.Image
+                        tImage.WebImage = Image.FromFile(sFile.FullName)
+                        Select Case True
+                            Case sFile.Name.Contains("(original)")
+                                tImage.Description = "original"
+                            Case sFile.Name.Contains("(mid)")
+                                tImage.Description = "mid"
+                            Case sFile.Name.Contains("(thumb)")
+                                tImage.Description = "thumb"
+                        End Select
+                        tImage.URL = CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
+                        Me.TMDBPosters.Add(tImage)
+                    Next
+
+                    ProcessPics(TMDBPosters)
+                    Me.pnlBG.Visible = True
+                    Me.pnlFanart.Visible = True
+                    Me.lblInfo.Visible = True
+                End If
+            End If
+
+            If NoneFound Then
+                If Master.eSettings.UseTMDB Then
+                    Me.lblDL1.Text = "Retrieving data from TheMovieDB.com..."
+                    Me.lblDL1Status.Text = String.Empty
+                    Me.pbDL1.Maximum = 3
+                    Me.pnlDLStatus.Visible = True
+                    Me.Refresh()
+
+                    Me.TMDB.GetImagesAsync(imdbID, "backdrop")
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Private Function SortImages(ByVal x As Media.Image, ByVal y As Media.Image) As Integer
+        If String.IsNullOrEmpty(x.URL) Then
+            Return -1
+        End If
+        If String.IsNullOrEmpty(y.URL) Then
+            Return 1
+        End If
+
+        Return x.URL.CompareTo(y.URL)
+    End Function
 
     Private Sub AddImage(ByVal iImage As Image, ByVal sDescription As String, ByVal iIndex As Integer, ByVal sURL As String)
 
@@ -540,6 +641,7 @@ Public Class dlgImgSelect
                     Me.lblImage(i).ForeColor = Color.Black
                 End If
             Next
+
             'set selected pnl color to blue
             Me.pnlImage(iIndex).BackColor = Color.Blue
 
@@ -553,12 +655,15 @@ Public Class dlgImgSelect
 
             Me.selIndex = iIndex
 
+            Me.pnlSize.Visible = False
+
             If Not Me.DLType = Master.ImageType.Fanart AndAlso sURL.ToLower.Contains("themoviedb.org") Then
                 Me.SetupSizes(sURL)
-                Me.OK_Button.Enabled = False
+                If Not rbLarge.Checked AndAlso Not rbMedium.Checked AndAlso Not rbSmall.Checked AndAlso Not rbXLarge.Checked Then
+                    Me.OK_Button.Enabled = False
+                End If
                 Me.tmpImage.Image = Nothing
             Else
-                Me.pnlSize.Visible = False
                 Me.rbXLarge.Checked = False
                 Me.rbLarge.Checked = False
                 Me.rbMedium.Checked = False
@@ -577,45 +682,49 @@ Public Class dlgImgSelect
 
         Me.rbXLarge.Checked = False
         Me.rbXLarge.Enabled = False
+        Me.rbXLarge.Text = "X-Large"
         Me.rbLarge.Checked = False
         Me.rbLarge.Enabled = False
+        Me.rbLarge.Text = "Large"
         Me.rbMedium.Checked = False
+        Me.rbMedium.Text = "Medium"
         Me.rbSmall.Checked = False
         Me.rbSmall.Enabled = False
+        Me.rbSmall.Text = "Small"
 
         Me.rbMedium.Tag = sURL
 
         For i As Integer = 0 To Me.TMDBPosters.Count - 1
-            ' medium - - already downloaded as "cover" so we know it's there
             Select Case True
                 Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, ".jpg")
                     ' xlarge
                     Me.rbXLarge.Enabled = True
                     Me.rbXLarge.Tag = Me.TMDBPosters.Item(i).URL
+                    If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format("X-Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
                 Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_mid.jpg")
                     ' large 
                     Me.rbLarge.Enabled = True
                     Me.rbLarge.Tag = Me.TMDBPosters.Item(i).URL
+                    If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format("Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
                 Case TMDBPosters.Item(i).URL = String.Concat(sLeft, "_thumb.jpg")
                     ' small
                     Me.rbSmall.Enabled = True
                     Me.rbSmall.Tag = Me.TMDBPosters.Item(i).URL
+                    If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format("Small ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                Case Me.TMDBPosters.Item(i).URL = sURL
+                    If Master.eSettings.UseImgCache Then Me.rbMedium.Text = String.Format("Medium ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
             End Select
         Next
 
         Select Case Master.eSettings.PreferredPosterSize
             Case Master.PosterSize.Small
                 Me.rbSmall.Checked = Me.rbSmall.Enabled
-                Me.OK_Button.Enabled = Me.rbSmall.Checked
             Case Master.PosterSize.Mid
                 Me.rbMedium.Checked = Me.rbMedium.Enabled
-                Me.OK_Button.Enabled = Me.rbMedium.Checked
             Case Master.PosterSize.Lrg
                 Me.rbLarge.Checked = Me.rbLarge.Enabled
-                Me.OK_Button.Enabled = Me.rbLarge.Checked
             Case Master.PosterSize.Xlrg
                 Me.rbXLarge.Checked = Me.rbXLarge.Enabled
-                Me.OK_Button.Enabled = Me.rbXLarge.Checked
         End Select
 
         pnlSize.Visible = True
@@ -654,6 +763,7 @@ Public Class dlgImgSelect
         ' Thread to download impa posters from the internet (multi-threaded because sometimes
         ' the web server is slow to respond or not reachable, hanging the GUI)
         '\\
+
         For i As Integer = 0 To Me.IMPAPosters.Count - 1
             Try
                 If bwIMPADownload.CancellationPending Then Return
@@ -663,6 +773,9 @@ Public Class dlgImgSelect
                 Using wrResponse As WebResponse = wrRequest.GetResponse()
                     If wrResponse.ContentType.Contains("image") Then
                         Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                        If Master.eSettings.UseImgCache Then
+                            Me.IMPAPosters.Item(i).WebImage.Save(Path.Combine(CachePath, String.Concat("poster_(", Me.IMPAPosters.Item(i).Description, ")_(url=", CleanURL(Me.IMPAPosters.Item(i).URL), ").jpg")))
+                        End If
                     End If
                 End Using
                 wrRequest = Nothing
@@ -709,14 +822,17 @@ Public Class dlgImgSelect
 
         For i As Integer = 0 To Me.TMDBPosters.Count - 1
             Try
-                If Me.bwTMDBDownload.CancellationPending Then Return
-                If Me.DLType = Master.ImageType.Fanart OrElse (Me.DLType = Master.ImageType.Posters AndAlso Me.TMDBPosters.Item(i).Description.ToLower = "cover") Then
+                If Me.DLType = Master.ImageType.Fanart OrElse (Master.eSettings.UseImgCache OrElse Me.TMDBPosters.Item(i).Description = "cover") Then
+                    If Me.bwTMDBDownload.CancellationPending Then Return
                     Me.bwTMDBDownload.ReportProgress(i + 1, Me.TMDBPosters.Item(i).URL)
                     Dim wrRequest As WebRequest = WebRequest.Create(Me.TMDBPosters.Item(i).URL)
                     wrRequest.Timeout = 10000
                     Using wrResponse As WebResponse = wrRequest.GetResponse()
                         If wrResponse.ContentType.Contains("image") Then
                             Me.TMDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                            If Master.eSettings.UseImgCache Then
+                                Me.TMDBPosters.Item(i).WebImage.Save(Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", CleanURL(Me.TMDBPosters.Item(i).URL), ").jpg")))
+                            End If
                         End If
                     End Using
                     wrRequest = Nothing
@@ -770,6 +886,9 @@ Public Class dlgImgSelect
                 Using wrResponse As WebResponse = wrRequest.GetResponse()
                     If wrResponse.ContentType.Contains("image") Then
                         Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                        If Master.eSettings.UseImgCache Then
+                            Me.MPDBPosters.Item(i).WebImage.Save(Path.Combine(CachePath, String.Concat("poster_(", Me.MPDBPosters.Item(i).Description, ")_(url=", CleanURL(Me.MPDBPosters.Item(i).URL), ").jpg")))
+                        End If
                     End If
                 End Using
                 wrRequest = Nothing
@@ -807,22 +926,6 @@ Public Class dlgImgSelect
 
     End Sub
 
-    Private Sub btnCheckAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCheckAll.Click
-
-        For i As Integer = 0 To UBound(Me.chkImage)
-            Me.chkImage(i).Checked = True
-        Next
-
-    End Sub
-
-    Private Sub btnCheckNone_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCheckNone.Click
-
-        For i As Integer = 0 To UBound(Me.chkImage)
-            Me.chkImage(i).Checked = False
-        Next
-
-    End Sub
-
     Private Sub rbXLarge_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbXLarge.CheckedChanged
         Me.OK_Button.Enabled = True
     End Sub
@@ -853,6 +956,35 @@ Public Class dlgImgSelect
         Return MyBase.ShowDialog()
     End Function
 
+    Private Sub chkOriginal_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOriginal.CheckedChanged
+        Me.CheckAll("(original)", chkOriginal.Checked)
+    End Sub
+
+    Private Sub chkMid_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMid.CheckedChanged
+        Me.CheckAll("(mid)", chkMid.Checked)
+    End Sub
+
+    Private Sub chkThumb_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkThumb.CheckedChanged
+        Me.CheckAll("(thumb)", chkThumb.Checked)
+    End Sub
+
+    Private Sub CheckAll(ByVal sType As String, ByVal Checked As Boolean)
+
+        For i As Integer = 0 To UBound(Me.chkImage)
+            If Me.chkImage(i).Text.ToLower.Contains(sType) Then
+                Me.chkImage(i).Checked = Checked
+            End If
+        Next
+
+    End Sub
+
+    Private Function CleanURL(ByVal sURL As String, Optional ByVal unClean As Boolean = False)
+        If unClean Then
+            Return sURL.Replace("$c$", ":").Replace("$s$", "/")
+        Else
+            Return sURL.Replace(":", "$c$").Replace("/", "$s$")
+        End If
+    End Function
 End Class
 
 

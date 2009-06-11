@@ -24,12 +24,13 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Supported Extensions", 4, 4)
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper", 3, 3)
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5})
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9})
+        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13})
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
@@ -207,6 +208,11 @@ Partial Class dlgSettings
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
         Me.pnlSources = New System.Windows.Forms.Panel
+        Me.pnlImages = New System.Windows.Forms.Panel
+        Me.GroupBox17 = New System.Windows.Forms.GroupBox
+        Me.chkUseImgCache = New System.Windows.Forms.CheckBox
+        Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
+        Me.Label19 = New System.Windows.Forms.Label
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -235,6 +241,8 @@ Partial Class dlgSettings
         Me.pnlExtensions.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
         Me.pnlSources.SuspendLayout()
+        Me.pnlImages.SuspendLayout()
+        Me.GroupBox17.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -1192,9 +1200,9 @@ Partial Class dlgSettings
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Location = New System.Drawing.Point(463, 203)
+        Me.GroupBox15.Location = New System.Drawing.Point(398, 6)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(125, 85)
+        Me.GroupBox15.Size = New System.Drawing.Size(125, 89)
         Me.GroupBox15.TabIndex = 60
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "OFDB"
@@ -1245,7 +1253,7 @@ Partial Class dlgSettings
         Me.GroupBox14.Controls.Add(Me.chkResizePoster)
         Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
         Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
-        Me.GroupBox14.Location = New System.Drawing.Point(207, 213)
+        Me.GroupBox14.Location = New System.Drawing.Point(204, 3)
         Me.GroupBox14.Name = "GroupBox14"
         Me.GroupBox14.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox14.TabIndex = 59
@@ -1305,7 +1313,7 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.chkResizeFanart)
         Me.GroupBox13.Controls.Add(Me.txtFanartWidth)
         Me.GroupBox13.Controls.Add(Me.txtFanartHeight)
-        Me.GroupBox13.Location = New System.Drawing.Point(207, 283)
+        Me.GroupBox13.Location = New System.Drawing.Point(204, 73)
         Me.GroupBox13.Name = "GroupBox13"
         Me.GroupBox13.Size = New System.Drawing.Size(249, 59)
         Me.GroupBox13.TabIndex = 58
@@ -1367,7 +1375,7 @@ Partial Class dlgSettings
         Me.GroupBox10.Controls.Add(Me.chkLockTitle)
         Me.GroupBox10.Controls.Add(Me.chkLockOutline)
         Me.GroupBox10.Controls.Add(Me.chkLockPlot)
-        Me.GroupBox10.Location = New System.Drawing.Point(418, 6)
+        Me.GroupBox10.Location = New System.Drawing.Point(222, 6)
         Me.GroupBox10.Name = "GroupBox10"
         Me.GroupBox10.Size = New System.Drawing.Size(170, 146)
         Me.GroupBox10.TabIndex = 57
@@ -1462,7 +1470,7 @@ Partial Class dlgSettings
         Me.GroupBox9.Controls.Add(Me.cbFanartSize)
         Me.GroupBox9.Controls.Add(Me.lblPosterSize)
         Me.GroupBox9.Controls.Add(Me.lblFanartSize)
-        Me.GroupBox9.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox9.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox9.Name = "GroupBox9"
         Me.GroupBox9.Size = New System.Drawing.Size(195, 336)
         Me.GroupBox9.TabIndex = 56
@@ -1637,7 +1645,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Controls.Add(Me.chkStudio)
-        Me.GroupBox1.Location = New System.Drawing.Point(204, 6)
+        Me.GroupBox1.Location = New System.Drawing.Point(5, 6)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(211, 200)
         Me.GroupBox1.TabIndex = 55
@@ -1831,6 +1839,7 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(3, "copy_paste.png")
         Me.ilSettings.Images.SetKeyName(4, "attachment.png")
         Me.ilSettings.Images.SetKeyName(5, "folder_full.png")
+        Me.ilSettings.Images.SetKeyName(6, "image.png")
         '
         'tvSettings
         '
@@ -1841,37 +1850,42 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode1.ImageIndex = 4
-        TreeNode1.Name = "nExts"
-        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode1.SelectedImageIndex = 4
-        TreeNode1.Text = "Supported Extensions"
-        TreeNode2.ImageIndex = 1
-        TreeNode2.Name = "nXBMCCom"
-        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode2.SelectedImageIndex = 1
-        TreeNode2.Text = "XBMC Communication"
-        TreeNode3.ImageIndex = 0
-        TreeNode3.Name = "nGeneral"
-        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode3.SelectedImageIndex = 0
-        TreeNode3.Text = "General"
-        TreeNode4.ImageIndex = 5
-        TreeNode4.Name = "nSources"
-        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode4.SelectedImageIndex = 5
-        TreeNode4.Text = "Files and Sources"
-        TreeNode5.ImageIndex = 3
-        TreeNode5.Name = "nScraper"
-        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode5.SelectedImageIndex = 3
-        TreeNode5.Text = "Scraper"
-        TreeNode6.ImageIndex = 2
-        TreeNode6.Name = "nMovies"
-        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode6.SelectedImageIndex = 2
-        TreeNode6.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode6})
+        TreeNode8.ImageIndex = 4
+        TreeNode8.Name = "nExts"
+        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 4
+        TreeNode8.Text = "File System"
+        TreeNode9.ImageIndex = 1
+        TreeNode9.Name = "nXBMCCom"
+        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode9.SelectedImageIndex = 1
+        TreeNode9.Text = "XBMC Communication"
+        TreeNode10.ImageIndex = 0
+        TreeNode10.Name = "nGeneral"
+        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode10.SelectedImageIndex = 0
+        TreeNode10.Text = "General"
+        TreeNode11.ImageIndex = 5
+        TreeNode11.Name = "nSources"
+        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode11.SelectedImageIndex = 5
+        TreeNode11.Text = "Files and Sources"
+        TreeNode12.ImageIndex = 3
+        TreeNode12.Name = "nScraper"
+        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode12.SelectedImageIndex = 3
+        TreeNode12.Text = "Scraper - Data"
+        TreeNode13.ImageIndex = 6
+        TreeNode13.Name = "nImages"
+        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode13.SelectedImageIndex = 6
+        TreeNode13.Text = "Scraper - Images"
+        TreeNode14.ImageIndex = 2
+        TreeNode14.Name = "nMovies"
+        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode14.SelectedImageIndex = 2
+        TreeNode14.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode14})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2004,10 +2018,7 @@ Partial Class dlgSettings
         Me.pnlScraper.BackColor = System.Drawing.Color.White
         Me.pnlScraper.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlScraper.Controls.Add(Me.GroupBox15)
-        Me.pnlScraper.Controls.Add(Me.GroupBox9)
-        Me.pnlScraper.Controls.Add(Me.GroupBox14)
         Me.pnlScraper.Controls.Add(Me.GroupBox1)
-        Me.pnlScraper.Controls.Add(Me.GroupBox13)
         Me.pnlScraper.Controls.Add(Me.GroupBox10)
         Me.pnlScraper.Location = New System.Drawing.Point(208, 96)
         Me.pnlScraper.Name = "pnlScraper"
@@ -2123,6 +2134,62 @@ Partial Class dlgSettings
         Me.pnlSources.TabIndex = 67
         Me.pnlSources.Visible = False
         '
+        'pnlImages
+        '
+        Me.pnlImages.BackColor = System.Drawing.Color.White
+        Me.pnlImages.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlImages.Controls.Add(Me.GroupBox17)
+        Me.pnlImages.Controls.Add(Me.GroupBox9)
+        Me.pnlImages.Controls.Add(Me.GroupBox13)
+        Me.pnlImages.Controls.Add(Me.GroupBox14)
+        Me.pnlImages.Location = New System.Drawing.Point(208, 96)
+        Me.pnlImages.Name = "pnlImages"
+        Me.pnlImages.Size = New System.Drawing.Size(597, 353)
+        Me.pnlImages.TabIndex = 68
+        Me.pnlImages.Visible = False
+        '
+        'GroupBox17
+        '
+        Me.GroupBox17.Controls.Add(Me.Label19)
+        Me.GroupBox17.Controls.Add(Me.chkPersistImgCache)
+        Me.GroupBox17.Controls.Add(Me.chkUseImgCache)
+        Me.GroupBox17.Location = New System.Drawing.Point(204, 135)
+        Me.GroupBox17.Name = "GroupBox17"
+        Me.GroupBox17.Size = New System.Drawing.Size(249, 86)
+        Me.GroupBox17.TabIndex = 60
+        Me.GroupBox17.TabStop = False
+        Me.GroupBox17.Text = "Caching"
+        '
+        'chkUseImgCache
+        '
+        Me.chkUseImgCache.AutoSize = True
+        Me.chkUseImgCache.Location = New System.Drawing.Point(7, 16)
+        Me.chkUseImgCache.Name = "chkUseImgCache"
+        Me.chkUseImgCache.Size = New System.Drawing.Size(111, 17)
+        Me.chkUseImgCache.TabIndex = 0
+        Me.chkUseImgCache.Text = "Use Image Cache"
+        Me.chkUseImgCache.UseVisualStyleBackColor = True
+        '
+        'chkPersistImgCache
+        '
+        Me.chkPersistImgCache.AutoSize = True
+        Me.chkPersistImgCache.Location = New System.Drawing.Point(25, 39)
+        Me.chkPersistImgCache.Name = "chkPersistImgCache"
+        Me.chkPersistImgCache.Size = New System.Drawing.Size(138, 17)
+        Me.chkPersistImgCache.TabIndex = 1
+        Me.chkPersistImgCache.Text = "Persistent Image Cache"
+        Me.chkPersistImgCache.UseVisualStyleBackColor = True
+        '
+        'Label19
+        '
+        Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(37, 56)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(190, 24)
+        Me.Label19.TabIndex = 2
+        Me.Label19.Text = "(When enabled, the cache will be available between sessions)"
+        Me.Label19.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -2130,6 +2197,8 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -2137,12 +2206,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2199,6 +2267,9 @@ Partial Class dlgSettings
         Me.GroupBox18.PerformLayout()
         Me.pnlSources.ResumeLayout(False)
         Me.pnlSources.PerformLayout()
+        Me.pnlImages.ResumeLayout(False)
+        Me.GroupBox17.ResumeLayout(False)
+        Me.GroupBox17.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2379,4 +2450,9 @@ Partial Class dlgSettings
     Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
     Friend WithEvents lblGenre As System.Windows.Forms.Label
     Friend WithEvents chkUseETasFA As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlImages As System.Windows.Forms.Panel
+    Friend WithEvents GroupBox17 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label19 As System.Windows.Forms.Label
+    Friend WithEvents chkPersistImgCache As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUseImgCache As System.Windows.Forms.CheckBox
 End Class

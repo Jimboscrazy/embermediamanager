@@ -650,6 +650,8 @@ Public Class dlgSettings
         pnlSources.Visible = False
         pnlScraper.Visible = False
         pnlExtensions.Visible = False
+        pnlImages.Visible = False
+
         Select Case tvSettings.SelectedNode.Name
             Case "nGeneral"
                 pnlGeneral.Visible = True
@@ -663,6 +665,8 @@ Public Class dlgSettings
                 pnlScraper.Visible = True
             Case "nExts"
                 pnlExtensions.Visible = True
+            Case "nImages"
+                pnlImages.Visible = True
         End Select
     End Sub
 
@@ -859,6 +863,16 @@ Public Class dlgSettings
     Private Sub chkMovieExtraCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtraCol.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkPersistImgCache_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPersistImgCache.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkUseImgCache_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseImgCache.CheckedChanged
+        Me.chkPersistImgCache.Enabled = Me.chkUseImgCache.Checked
+        If Not Me.chkUseImgCache.Checked Then Me.chkPersistImgCache.Checked = False
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1044,6 +1058,8 @@ Public Class dlgSettings
             Master.eSettings.BDPath = Me.txtBDPath.Text
             Master.eSettings.AutoBD = Me.chkAutoBD.Checked
             Master.eSettings.UseMIDuration = Me.chkUseMIDuration.Checked
+            Master.eSettings.UseImgCache = Me.chkUseImgCache.Checked
+            Master.eSettings.PersistImgCache = Me.chkPersistImgCache.Checked
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
 
@@ -1187,6 +1203,8 @@ Public Class dlgSettings
             Me.txtBDPath.Text = Master.eSettings.BDPath
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
             Me.chkUseMIDuration.Checked = Master.eSettings.UseMIDuration
+            Me.chkUseImgCache.Checked = Master.eSettings.UseImgCache
+            Me.chkPersistImgCache.Checked = Master.eSettings.PersistImgCache
 
             If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
                 Dim genreArray() As String
