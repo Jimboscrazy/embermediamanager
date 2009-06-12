@@ -46,6 +46,7 @@ Partial Class frmMain
         Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
         Me.SetsManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator
@@ -205,7 +206,6 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
-        Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -405,6 +405,13 @@ Partial Class frmMain
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Name = "CopyExistingFanartToBackdropsFolderToolStripMenuItem"
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = "Copy Existing Fanart To Backdrops Folder"
+        '
+        'ToolStripMenuItem4
+        '
+        Me.ToolStripMenuItem4.Image = CType(resources.GetObject("ToolStripMenuItem4.Image"), System.Drawing.Image)
+        Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(292, 22)
+        Me.ToolStripMenuItem4.Text = "Clear All Caches"
         '
         'ToolStripSeparator4
         '
@@ -1886,13 +1893,6 @@ Partial Class frmMain
         'tmrSearch
         '
         Me.tmrSearch.Interval = 250
-        '
-        'ToolStripMenuItem4
-        '
-        Me.ToolStripMenuItem4.Image = CType(resources.GetObject("ToolStripMenuItem4.Image"), System.Drawing.Image)
-        Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
-        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(292, 22)
-        Me.ToolStripMenuItem4.Text = "Clear All Caches"
         '
         'frmMain
         '

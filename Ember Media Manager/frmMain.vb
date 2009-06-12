@@ -1658,7 +1658,7 @@ Public Class frmMain
                 If Not Res.fileInfo = "error" Then
                     Me.pbMILoading.Visible = False
                     Me.txtMediaInfo.Text = Res.fileInfo
-                    If Master.eSettings.UseStudioTags = True Then
+                    If Master.eSettings.UseStudioTags Then
                         If Not String.IsNullOrEmpty(Res.Movie.Studio) Then
                             Master.GetAVImages(Res.Movie.Studio, Res.Path)
                             Me.pnlInfoIcons.Width = 346
@@ -1669,6 +1669,11 @@ Public Class frmMain
                     Else
                         Me.pnlInfoIcons.Width = 70
                         Me.pbStudio.Left = 0
+                    End If
+                    If Master.eSettings.UseMIDuration Then
+                        If Not String.IsNullOrEmpty(Master.currMovie.Runtime) Then
+                            Me.lblRuntime.Text = String.Format("Runtime: {0}", Master.currMovie.Runtime)
+                        End If
                     End If
                     Me.btnMIRefresh.Focus()
                 End If
@@ -2798,7 +2803,7 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Runtime) Then
-                Me.lblRuntime.Text = String.Format("Runtime: {0}", Master.currMovie.Runtime)
+                Me.lblRuntime.Text = String.Format("Runtime: {0}", If(Master.currMovie.Runtime.Contains("|"), Strings.Left(Master.currMovie.Runtime, Master.currMovie.Runtime.IndexOf("|")), Master.currMovie.Runtime)).Trim
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Top250) AndAlso IsNumeric(Master.currMovie.Top250) AndAlso Convert.ToInt32(Master.currMovie.Top250) > 0 Then
@@ -3158,7 +3163,10 @@ doCancel:
                 MI.GetMovieMIFromPath(miFileInfo, sPath)
                 miMovie.FileInfo = miFileInfo
                 If Master.eSettings.UseMIDuration AndAlso miMovie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Not String.IsNullOrEmpty(miMovie.FileInfo.StreamDetails.Video.Item(0).Duration) Then
-                    miMovie.Runtime = Regex.Replace(miMovie.FileInfo.StreamDetails.Video.Item(0).Duration, "(([0-9]+s)?([0-9]+ms)?)", String.Empty).Trim
+                    Dim sDuration As Match = Regex.Match(miMovie.FileInfo.StreamDetails.Video.Item(0).Duration, "([0-9]+)?h\s?([0-9]+)?mn")
+                    Dim sHour As Integer = Convert.ToInt32(sDuration.Groups(1).Value) * 60
+                    Dim sMin As Integer = Convert.ToInt32(sDuration.Groups(2).Value)
+                    miMovie.Runtime = String.Format("{0} min", sHour + sMin)
                 End If
                 MI = Nothing
                 Return True
