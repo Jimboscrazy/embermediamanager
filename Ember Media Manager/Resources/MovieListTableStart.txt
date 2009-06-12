@@ -1,7 +1,2 @@
 <center>
 <table class="emm_table">
-<tr>
-<th style="text-align:left; ">Title</th>
-<th style="text-align:center;">Year</th>
-<th style="text-align:center;">Video</th>
-<th style="text-align:center;">Audio</th></tr>
