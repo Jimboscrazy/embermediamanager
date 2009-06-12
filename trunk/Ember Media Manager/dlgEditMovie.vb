@@ -34,6 +34,7 @@ Public Class dlgEditMovie
     Private DeleteList As New ArrayList
     Private ExtraIndex As Integer = 0
     Private _id As Integer
+    Private CachePath As String = String.Empty
 
     Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
 
@@ -70,7 +71,7 @@ Public Class dlgEditMovie
             End If
 
             If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-                Directory.Delete(Path.Combine(Master.TempPath, "extrathumbs"))
+                Directory.Delete(Path.Combine(Master.TempPath, "extrathumbs"), True)
             End If
 
         Catch ex As Exception
@@ -345,6 +346,14 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
+    Private Sub btnClearCache_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearCache.Click
+        If Directory.Exists(CachePath) Then
+            Directory.Delete(CachePath, True)
+        End If
+
+        btnClearCache.Visible = False
+    End Sub
+
     Private Sub FillInfo()
         Try
             With Me
@@ -492,6 +501,13 @@ Public Class dlgEditMovie
 
                 If Master.eSettings.AutoThumbs > 0 Then
                     .txtThumbCount.Text = Master.eSettings.AutoThumbs
+                End If
+
+                If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
+                    CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, Master.currMovie.IMDBID.Replace("tt", String.Empty))
+                    If Directory.Exists(CachePath) Then
+                        Me.btnClearCache.Visible = True
+                    End If
                 End If
             End With
         Catch ex As Exception
@@ -749,6 +765,10 @@ Public Class dlgEditMovie
                     Me.lblPosterSize.Visible = True
                 End If
             End Using
+
+            If Directory.Exists(CachePath) Then
+                Me.btnClearCache.Visible = True
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -769,6 +789,10 @@ Public Class dlgEditMovie
 
                 End If
             End Using
+
+            If Directory.Exists(CachePath) Then
+                Me.btnClearCache.Visible = True
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
