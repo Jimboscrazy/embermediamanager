@@ -60,6 +60,7 @@ Public Class Images
     Public Sub Dispose()
         ms.Flush()
         ms.Close()
+        ms.Dispose()
         ms = Nothing
         Clear()
     End Sub
@@ -130,14 +131,17 @@ Public Class Images
     Public Sub Save(ByVal sPath As String)
         Try
             If Not File.Exists(sPath) OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly)) Then
-                ms.Position = 0
-                _image.Save(ms, Imaging.ImageFormat.Jpeg)
-                Ret = ms.ToArray
+                Using msSave As New MemoryStream
+                    Dim retSave() As Byte
+                    _image.Save(msSave, Imaging.ImageFormat.Jpeg)
+                    retSave = msSave.ToArray
 
-                Dim fs As New FileStream(sPath, FileMode.OpenOrCreate, FileAccess.Write)
-                fs.Write(Ret, 0, Ret.Length)
-                fs.Flush()
-                fs.Close()
+                    Using fs As New FileStream(sPath, FileMode.OpenOrCreate, FileAccess.Write)
+                        fs.Write(retSave, 0, retSave.Length)
+                        fs.Flush()
+                    End Using
+                    msSave.Flush()
+                End Using
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
