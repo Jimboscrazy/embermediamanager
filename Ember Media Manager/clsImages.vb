@@ -493,9 +493,11 @@ Public Class Images
                             End If
                         Next
 
-                        'image not found sort by size then pick the first one
-                        tmpListTMDB.Sort(AddressOf SortImages)
-                        tmpImage = tmpListTMDB(0).WebImage
+                        If Not doAsk Then
+                            'image not found sort by size then pick the first one
+                            tmpListTMDB.Sort(AddressOf SortImages)
+                            tmpImage = tmpListTMDB(0).WebImage
+                        End If
                     End If
                 Else
                     If Master.eSettings.UseTMDB Then
@@ -785,9 +787,11 @@ Public Class Images
                                 End If
                             Next
 
-                            'image not found sort by size then pick the first one
-                            tmpListTMDB.Sort(AddressOf SortImages)
-                            tmpImage = tmpListTMDB(0).WebImage
+                            If Not doAsk Then
+                                'image not found sort by size then pick the first one
+                                tmpListTMDB.Sort(AddressOf SortImages)
+                                tmpImage = tmpListTMDB(0).WebImage
+                            End If
                         End If
                     Else
                         'download all the fanart from TMDB
@@ -856,7 +860,7 @@ Public Class Images
                         End If
                     End If
                 End If
-            End If
+                End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
