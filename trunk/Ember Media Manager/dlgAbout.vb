@@ -162,7 +162,7 @@ Public NotInheritable Class dlgAbout
 
         PicY -= 1
 
-        System.Threading.Thread.Sleep(12)
+        System.Threading.Thread.Sleep(30)
 
         Me.picDisplay.Invalidate()
 

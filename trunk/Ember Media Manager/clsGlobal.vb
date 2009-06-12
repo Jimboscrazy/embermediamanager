@@ -753,13 +753,16 @@ Public Class Master
                     Dim sReturn As New NonConf
                     sReturn = GetIMDBFromNonConf(sPath)
                     xmlMov.IMDBID = sReturn.IMDBID
-                    If Not String.IsNullOrEmpty(sReturn.Text) Then
-                        Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                            xmlSer = New XmlSerializer(GetType(Media.Movie))
-                            xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
-                            xmlMov.IMDBID = sReturn.IMDBID
-                        End Using
-                    End If
+                    Try
+                        If Not String.IsNullOrEmpty(sReturn.Text) Then
+                            Using xmlSTR As StringReader = New StringReader(sReturn.Text)
+                                xmlSer = New XmlSerializer(GetType(Media.Movie))
+                                xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
+                                xmlMov.IMDBID = sReturn.IMDBID
+                            End Using
+                        End If
+                    Catch
+                    End Try
                 End If
             End If
 
@@ -772,18 +775,29 @@ Public Class Master
                 Dim sReturn As New NonConf
                 sReturn = GetIMDBFromNonConf(sPath)
                 xmlMov.IMDBID = sReturn.IMDBID
-                If Not String.IsNullOrEmpty(sReturn.Text) Then
-                    Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                        xmlSer = New XmlSerializer(GetType(Media.Movie))
-                        xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
-                        xmlMov.IMDBID = sReturn.IMDBID
-                    End Using
-                End If
+                Try
+                    If Not String.IsNullOrEmpty(sReturn.Text) Then
+                        Using xmlSTR As StringReader = New StringReader(sReturn.Text)
+                            xmlSer = New XmlSerializer(GetType(Media.Movie))
+                            xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
+                            xmlMov.IMDBID = sReturn.IMDBID
+                        End Using
+                    End If
+                Catch
+                End Try
             End If
         End Try
 
         Return xmlMov
 
+    End Function
+
+    Public Shared Function XMLToLowerCase(ByVal sXML As String) As String
+        Dim sMatches As MatchCollection = Regex.Matches(sXML, "(?i)\<(.*?)\>")
+        For Each sMatch As Match In sMatches
+            sXML = sXML.Replace(sMatch.Groups(1).Value, sMatch.Groups(1).Value.ToLower)
+        Next
+        Return sXML
     End Function
 
     Public Shared Function GetIMDBFromNonConf(ByVal sPath As String) As NonConf
@@ -802,8 +816,8 @@ Public Class Master
                 If Not String.IsNullOrEmpty(sIMDBID) Then
                     tNonConf.IMDBID = sIMDBID
                     'now lets try to see if the rest of the file is a proper nfo
-                    If sInfo.Contains("</movie>") Then
-                        tNonConf.Text = sInfo.Substring(0, sInfo.IndexOf("</movie>") + 8)
+                    If sInfo.ToLower.Contains("</movie>") Then
+                        tNonConf.Text = XMLToLowerCase(sInfo.Substring(0, sInfo.ToLower.IndexOf("</movie>") + 8))
                     End If
                     Exit For
                 End If
