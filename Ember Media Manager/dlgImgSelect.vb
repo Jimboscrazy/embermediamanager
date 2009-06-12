@@ -244,10 +244,6 @@ Public Class dlgImgSelect
 
             CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, imdbID, Path.DirectorySeparatorChar, If(Me.DLType = Master.ImageType.Posters, "posters", "fanart"))
 
-            If Master.eSettings.UseImgCache AndAlso Not Directory.Exists(CachePath) Then
-                Directory.CreateDirectory(CachePath)
-            End If
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -406,6 +402,10 @@ Public Class dlgImgSelect
             Dim NoneFound As Boolean = True
 
             If Master.eSettings.UseImgCache Then
+                If Master.eSettings.UseImgCache AndAlso Not Directory.Exists(CachePath) Then
+                    Directory.CreateDirectory(CachePath)
+                End If
+
                 Dim di As New DirectoryInfo(CachePath)
                 Dim lFi As New List(Of FileInfo)
 
@@ -493,6 +493,11 @@ Public Class dlgImgSelect
             Dim NoneFound As Boolean = True
 
             If Master.eSettings.UseImgCache Then
+
+                If Master.eSettings.UseImgCache AndAlso Not Directory.Exists(CachePath) Then
+                    Directory.CreateDirectory(CachePath)
+                End If
+
                 Dim di As New DirectoryInfo(CachePath)
                 Dim lFi As New List(Of FileInfo)
 

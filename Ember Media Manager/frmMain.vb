@@ -1345,6 +1345,14 @@ Public Class frmMain
             dSetsManager.ShowDialog()
         End Using
     End Sub
+
+    Private Sub ToolStripMenuItem4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripMenuItem4.Click
+        If Directory.Exists(Master.TempPath) Then
+            Directory.Delete(Master.TempPath, True)
+        End If
+
+        Directory.CreateDirectory(Master.TempPath)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -3669,6 +3677,5 @@ doCancel:
         Me.loadType = 0
     End Sub
 #End Region '*** Routines/Functions
-
 
 End Class

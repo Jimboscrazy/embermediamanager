@@ -124,6 +124,7 @@ Partial Class dlgEditMovie
         Me.chkMark = New System.Windows.Forms.CheckBox
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
+        Me.btnClearCache = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -1162,6 +1163,19 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnChangeMovie.UseVisualStyleBackColor = True
         '
+        'btnClearCache
+        '
+        Me.btnClearCache.Image = CType(resources.GetObject("btnClearCache.Image"), System.Drawing.Image)
+        Me.btnClearCache.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnClearCache.Location = New System.Drawing.Point(751, 66)
+        Me.btnClearCache.Name = "btnClearCache"
+        Me.btnClearCache.Size = New System.Drawing.Size(96, 23)
+        Me.btnClearCache.TabIndex = 106
+        Me.btnClearCache.Text = "Clear Cache"
+        Me.btnClearCache.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnClearCache.UseVisualStyleBackColor = True
+        Me.btnClearCache.Visible = False
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1169,6 +1183,7 @@ Partial Class dlgEditMovie
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(854, 582)
+        Me.Controls.Add(Me.btnClearCache)
         Me.Controls.Add(Me.btnChangeMovie)
         Me.Controls.Add(Me.btnRescrape)
         Me.Controls.Add(Me.chkMark)
@@ -1313,5 +1328,6 @@ Partial Class dlgEditMovie
     Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents btnSetAsFanart As System.Windows.Forms.Button
+    Friend WithEvents btnClearCache As System.Windows.Forms.Button
 
 End Class

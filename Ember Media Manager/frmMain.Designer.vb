@@ -205,6 +205,7 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -379,7 +380,7 @@ Partial Class frmMain
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.ToolStripMenuItem4, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.ToolsToolStripMenuItem.Text = "Tools"
@@ -1886,6 +1887,13 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
+        'ToolStripMenuItem4
+        '
+        Me.ToolStripMenuItem4.Image = CType(resources.GetObject("ToolStripMenuItem4.Image"), System.Drawing.Image)
+        Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(292, 22)
+        Me.ToolStripMenuItem4.Text = "Clear All Caches"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2138,4 +2146,5 @@ Partial Class frmMain
     Friend WithEvents ExportMoviesListToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SetsManagerToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem3 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ToolStripMenuItem4 As System.Windows.Forms.ToolStripMenuItem
 End Class

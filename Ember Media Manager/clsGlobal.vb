@@ -1748,7 +1748,7 @@ Public Class Master
 
                     Dim fThumbs() As String = Directory.GetFiles(tPath, "thumb*.jpg")
                     If fThumbs.Count <= 0 Then
-                        Directory.Delete(tPath)
+                        Directory.Delete(tPath, True)
                     Else
                         Dim exFanart As New Images
                         If Master.eSettings.UseETasFA AndAlso Not File.Exists(exFanart.GetFanartPath(sPath, False)) Then
