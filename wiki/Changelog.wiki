@@ -1,8 +1,20 @@
 #summary Ember Media Manager Changelog
 #labels Featured
 
-*Changes in Upcoming Release:*
- * None yet
+*Changelog for version r303:*
+ * Feature: Optional image cache
+ * Fix: HTML encoding when saving file
+ * Fix: Ok button not enabling automatically in poster selection
+ * Fix: Skip paths with ":" in them
+ * Fix: Extrathumbs not being detected in list
+ * Fix: Deleting extrathumbs always deleted the first one in the list
+ * Fix: Images doubling size when loaded from disk
+ * Fix: Default supported extensions not loading in some cases
+ * Change: Improvements, additions, and fixes to Sets Manager
+ * Change: New About dialog
+ * Change: Support "mfsav2" style nfos (non-conforming and malformed)
+ * Change: Improvements to using mi duration as runtime
+ * Change: Lots of tweaks and small fixes
 
 *Changes in r282:*
  * Feature: Export Movie List (Thanks Nuno "Zordor" Novais)
