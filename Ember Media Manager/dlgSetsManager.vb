@@ -275,6 +275,8 @@ Public Class dlgSetsManager
 
         If Me.lbSets.SelectedItems.Count > 0 Then
 
+            Me.lblCurrentSet.Text = Me.lbSets.SelectedItem.ToString
+
             Me.currSet.Set = Me.lbSets.SelectedItem.ToString
 
             For Each tMovie As Movies In lMovies
@@ -290,6 +292,8 @@ Public Class dlgSetsManager
 
             If Me.currSet.Movies.Count > 0 Then Me.LoadCurrSet()
 
+        Else
+            Me.lblCurrentSet.Text = "None Selected"
         End If
     End Sub
 
@@ -306,6 +310,7 @@ Public Class dlgSetsManager
     Private Sub LoadSets()
         Me.lbSets.Items.Clear()
         Me.lbMoviesInSet.Items.Clear()
+        Me.lblCurrentSet.Text = "None Selected"
 
         For Each mSet As String In alSets
             Me.lbSets.Items.Add(mSet)
@@ -350,14 +355,14 @@ Public Class dlgSetsManager
         Return x.Order.CompareTo(y.Order)
     End Function
 
-    Private Sub RemoveFromSet(ByVal iIndex As Integer)
+    Private Sub RemoveFromSet(ByVal iIndex As Integer, ByVal isEdit As Boolean)
         Me.currSet.Movies(iIndex).Movie.RemoveSet(Me.currSet.Set)
         Master.SaveMovieToNFO(Me.currSet.Movies(iIndex).Movie, Me.currSet.Movies(iIndex).Path, Me.currSet.Movies(iIndex).isFile)
-        Me.currSet.Movies.RemoveAt(iIndex)
+        If Not isEdit Then Me.currSet.Movies.RemoveAt(iIndex)
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
-        Me.RemoveFromSet(Me.lbMoviesInSet.SelectedIndex)
+        Me.RemoveFromSet(Me.lbMoviesInSet.SelectedIndex, False)
         Me.LoadCurrSet()
     End Sub
 
@@ -402,7 +407,19 @@ Public Class dlgSetsManager
                 If Not String.IsNullOrEmpty(strSet) AndAlso Not Me.alSets.Contains(strSet) Then
                     For i As Integer = 0 To Me.alSets.Count - 1
                         If Me.alSets(i) = Me.lbSets.SelectedItem.ToString Then
+                            'remove the old set from each movie.
+                            If lbMoviesInSet.Items.Count > 0 Then
+                                For b As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
+                                    Me.RemoveFromSet(b, True)
+                                Next
+                            End If
+                            'set the currset to have the updated title
+                            currSet.Set = strSet
+                            'save the set to update each movie with the new set name
+                            Me.SaveSet(currSet)
+                            'change the name in alSets
                             Me.alSets(i) = strSet
+                            Exit For
                         End If
                     Next
                     Me.LoadSets()
@@ -414,7 +431,7 @@ Public Class dlgSetsManager
     Private Sub btnRemoveSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSet.Click
         If lbMoviesInSet.Items.Count > 0 Then
             For i As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
-                Me.RemoveFromSet(i)
+                Me.RemoveFromSet(i, False)
             Next
         End If
 

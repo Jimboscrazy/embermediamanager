@@ -114,7 +114,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to .
+        '''  Looks up a localized string similar to &lt;td&gt;&lt;span style=&quot;color:darkblue;&quot;&gt;{0}&lt;/span&gt;&lt;/td&gt;.
         '''</summary>
         Friend ReadOnly Property MovieListTableCol() As String
             Get
@@ -133,7 +133,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to .
+        '''  Looks up a localized string similar to &lt;th style=&quot;text-align:left; &quot;&gt;{0}&lt;/th&gt;.
         '''</summary>
         Friend ReadOnly Property MovieListTableHeader() As String
             Get
@@ -142,7 +142,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to .
+        '''  Looks up a localized string similar to &lt;/tr&gt;.
         '''</summary>
         Friend ReadOnly Property MovieListTableRowEnd() As String
             Get
@@ -151,7 +151,8 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to .
+        '''  Looks up a localized string similar to 
+        '''&lt;tr&gt;.
         '''</summary>
         Friend ReadOnly Property MovieListTableRowStart() As String
             Get
@@ -162,11 +163,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to &lt;center&gt;
         '''&lt;table class=&quot;emm_table&quot;&gt;
-        '''&lt;tr&gt;
-        '''&lt;th style=&quot;text-align:left; &quot;&gt;Title&lt;/th&gt;
-        '''&lt;th style=&quot;text-align:center;&quot;&gt;Year&lt;/th&gt;
-        '''&lt;th style=&quot;text-align:center;&quot;&gt;Video&lt;/th&gt;
-        '''&lt;th style=&quot;text-align:center;&quot;&gt;Audio&lt;/th&gt;&lt;/tr&gt;.
+        '''.
         '''</summary>
         Friend ReadOnly Property MovieListTableStart() As String
             Get

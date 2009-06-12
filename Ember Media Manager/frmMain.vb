@@ -1705,7 +1705,7 @@ Public Class frmMain
         Dim wrRequest As WebRequest = WebRequest.Create(Args.pURL)
         wrRequest.Timeout = 10000
         Using wrResponse As WebResponse = wrRequest.GetResponse()
-            Image.FromStream(wrResponse.GetResponseStream())
+            tImage = Image.FromStream(wrResponse.GetResponseStream())
         End Using
         e.Result = New Results With {.ResultType = Args.pType, .Result = tImage}
 

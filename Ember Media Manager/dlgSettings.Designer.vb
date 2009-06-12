@@ -134,12 +134,18 @@ Partial Class dlgSettings
         Me.chkResizePoster = New System.Windows.Forms.CheckBox
         Me.txtPosterWidth = New System.Windows.Forms.TextBox
         Me.txtPosterHeight = New System.Windows.Forms.TextBox
+        Me.lblPosterSize = New System.Windows.Forms.Label
+        Me.cbPosterSize = New System.Windows.Forms.ComboBox
+        Me.chkOverwritePoster = New System.Windows.Forms.CheckBox
         Me.GroupBox13 = New System.Windows.Forms.GroupBox
         Me.Label9 = New System.Windows.Forms.Label
         Me.Label10 = New System.Windows.Forms.Label
         Me.chkResizeFanart = New System.Windows.Forms.CheckBox
         Me.txtFanartWidth = New System.Windows.Forms.TextBox
         Me.txtFanartHeight = New System.Windows.Forms.TextBox
+        Me.cbFanartSize = New System.Windows.Forms.ComboBox
+        Me.lblFanartSize = New System.Windows.Forms.Label
+        Me.chkOverwriteFanart = New System.Windows.Forms.CheckBox
         Me.GroupBox10 = New System.Windows.Forms.GroupBox
         Me.chkLockGenre = New System.Windows.Forms.CheckBox
         Me.chkLockRealStudio = New System.Windows.Forms.CheckBox
@@ -156,15 +162,9 @@ Partial Class dlgSettings
         Me.txtAutoThumbs = New System.Windows.Forms.TextBox
         Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
         Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
-        Me.chkOverwriteFanart = New System.Windows.Forms.CheckBox
         Me.chkUseMPDB = New System.Windows.Forms.CheckBox
-        Me.chkOverwritePoster = New System.Windows.Forms.CheckBox
         Me.chkUseTMDB = New System.Windows.Forms.CheckBox
         Me.chkUseIMPA = New System.Windows.Forms.CheckBox
-        Me.cbPosterSize = New System.Windows.Forms.ComboBox
-        Me.cbFanartSize = New System.Windows.Forms.ComboBox
-        Me.lblPosterSize = New System.Windows.Forms.Label
-        Me.lblFanartSize = New System.Windows.Forms.Label
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.chkUseMIDuration = New System.Windows.Forms.CheckBox
         Me.Label18 = New System.Windows.Forms.Label
@@ -1310,6 +1310,35 @@ Partial Class dlgSettings
         Me.txtPosterHeight.Size = New System.Drawing.Size(53, 20)
         Me.txtPosterHeight.TabIndex = 41
         '
+        'lblPosterSize
+        '
+        Me.lblPosterSize.AutoSize = True
+        Me.lblPosterSize.Location = New System.Drawing.Point(3, 16)
+        Me.lblPosterSize.Name = "lblPosterSize"
+        Me.lblPosterSize.Size = New System.Drawing.Size(106, 13)
+        Me.lblPosterSize.TabIndex = 14
+        Me.lblPosterSize.Text = "Preferred Poster Size"
+        '
+        'cbPosterSize
+        '
+        Me.cbPosterSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbPosterSize.FormattingEnabled = True
+        Me.cbPosterSize.Items.AddRange(New Object() {"X-Large", "Large", "Medium", "Small", "Wide"})
+        Me.cbPosterSize.Location = New System.Drawing.Point(6, 33)
+        Me.cbPosterSize.Name = "cbPosterSize"
+        Me.cbPosterSize.Size = New System.Drawing.Size(179, 21)
+        Me.cbPosterSize.TabIndex = 41
+        '
+        'chkOverwritePoster
+        '
+        Me.chkOverwritePoster.AutoSize = True
+        Me.chkOverwritePoster.Location = New System.Drawing.Point(6, 57)
+        Me.chkOverwritePoster.Name = "chkOverwritePoster"
+        Me.chkOverwritePoster.Size = New System.Drawing.Size(143, 17)
+        Me.chkOverwritePoster.TabIndex = 37
+        Me.chkOverwritePoster.Text = "Overwrite Existing Poster"
+        Me.chkOverwritePoster.UseVisualStyleBackColor = True
+        '
         'GroupBox13
         '
         Me.GroupBox13.Controls.Add(Me.Label9)
@@ -1372,6 +1401,35 @@ Partial Class dlgSettings
         Me.txtFanartHeight.Name = "txtFanartHeight"
         Me.txtFanartHeight.Size = New System.Drawing.Size(53, 20)
         Me.txtFanartHeight.TabIndex = 41
+        '
+        'cbFanartSize
+        '
+        Me.cbFanartSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFanartSize.FormattingEnabled = True
+        Me.cbFanartSize.Items.AddRange(New Object() {"Large", "Medium", "Small"})
+        Me.cbFanartSize.Location = New System.Drawing.Point(6, 30)
+        Me.cbFanartSize.Name = "cbFanartSize"
+        Me.cbFanartSize.Size = New System.Drawing.Size(179, 21)
+        Me.cbFanartSize.TabIndex = 42
+        '
+        'lblFanartSize
+        '
+        Me.lblFanartSize.AutoSize = True
+        Me.lblFanartSize.Location = New System.Drawing.Point(3, 14)
+        Me.lblFanartSize.Name = "lblFanartSize"
+        Me.lblFanartSize.Size = New System.Drawing.Size(106, 13)
+        Me.lblFanartSize.TabIndex = 15
+        Me.lblFanartSize.Text = "Preferred Fanart Size"
+        '
+        'chkOverwriteFanart
+        '
+        Me.chkOverwriteFanart.AutoSize = True
+        Me.chkOverwriteFanart.Location = New System.Drawing.Point(6, 56)
+        Me.chkOverwriteFanart.Name = "chkOverwriteFanart"
+        Me.chkOverwriteFanart.Size = New System.Drawing.Size(143, 17)
+        Me.chkOverwriteFanart.TabIndex = 38
+        Me.chkOverwriteFanart.Text = "Overwrite Existing Fanart"
+        Me.chkOverwriteFanart.UseVisualStyleBackColor = True
         '
         'GroupBox10
         '
@@ -1539,22 +1597,12 @@ Partial Class dlgSettings
         'chkSingleScrapeImages
         '
         Me.chkSingleScrapeImages.AutoSize = True
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 68)
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 67)
         Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
         Me.chkSingleScrapeImages.Size = New System.Drawing.Size(181, 17)
         Me.chkSingleScrapeImages.TabIndex = 37
         Me.chkSingleScrapeImages.Text = "Scrape Images on Single Scrape"
         Me.chkSingleScrapeImages.UseVisualStyleBackColor = True
-        '
-        'chkOverwriteFanart
-        '
-        Me.chkOverwriteFanart.AutoSize = True
-        Me.chkOverwriteFanart.Location = New System.Drawing.Point(6, 56)
-        Me.chkOverwriteFanart.Name = "chkOverwriteFanart"
-        Me.chkOverwriteFanart.Size = New System.Drawing.Size(143, 17)
-        Me.chkOverwriteFanart.TabIndex = 38
-        Me.chkOverwriteFanart.Text = "Overwrite Existing Fanart"
-        Me.chkOverwriteFanart.UseVisualStyleBackColor = True
         '
         'chkUseMPDB
         '
@@ -1565,16 +1613,6 @@ Partial Class dlgSettings
         Me.chkUseMPDB.TabIndex = 43
         Me.chkUseMPDB.Text = "Get Images From MoviePostersDB"
         Me.chkUseMPDB.UseVisualStyleBackColor = True
-        '
-        'chkOverwritePoster
-        '
-        Me.chkOverwritePoster.AutoSize = True
-        Me.chkOverwritePoster.Location = New System.Drawing.Point(6, 57)
-        Me.chkOverwritePoster.Name = "chkOverwritePoster"
-        Me.chkOverwritePoster.Size = New System.Drawing.Size(143, 17)
-        Me.chkOverwritePoster.TabIndex = 37
-        Me.chkOverwritePoster.Text = "Overwrite Existing Poster"
-        Me.chkOverwritePoster.UseVisualStyleBackColor = True
         '
         'chkUseTMDB
         '
@@ -1595,44 +1633,6 @@ Partial Class dlgSettings
         Me.chkUseIMPA.TabIndex = 40
         Me.chkUseIMPA.Text = "Get Images From IMPAwards"
         Me.chkUseIMPA.UseVisualStyleBackColor = True
-        '
-        'cbPosterSize
-        '
-        Me.cbPosterSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbPosterSize.FormattingEnabled = True
-        Me.cbPosterSize.Items.AddRange(New Object() {"X-Large", "Large", "Medium", "Small", "Wide"})
-        Me.cbPosterSize.Location = New System.Drawing.Point(6, 33)
-        Me.cbPosterSize.Name = "cbPosterSize"
-        Me.cbPosterSize.Size = New System.Drawing.Size(179, 21)
-        Me.cbPosterSize.TabIndex = 41
-        '
-        'cbFanartSize
-        '
-        Me.cbFanartSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFanartSize.FormattingEnabled = True
-        Me.cbFanartSize.Items.AddRange(New Object() {"Large", "Medium", "Small"})
-        Me.cbFanartSize.Location = New System.Drawing.Point(6, 30)
-        Me.cbFanartSize.Name = "cbFanartSize"
-        Me.cbFanartSize.Size = New System.Drawing.Size(179, 21)
-        Me.cbFanartSize.TabIndex = 42
-        '
-        'lblPosterSize
-        '
-        Me.lblPosterSize.AutoSize = True
-        Me.lblPosterSize.Location = New System.Drawing.Point(3, 16)
-        Me.lblPosterSize.Name = "lblPosterSize"
-        Me.lblPosterSize.Size = New System.Drawing.Size(106, 13)
-        Me.lblPosterSize.TabIndex = 14
-        Me.lblPosterSize.Text = "Preferred Poster Size"
-        '
-        'lblFanartSize
-        '
-        Me.lblFanartSize.AutoSize = True
-        Me.lblFanartSize.Location = New System.Drawing.Point(3, 14)
-        Me.lblFanartSize.Name = "lblFanartSize"
-        Me.lblFanartSize.Size = New System.Drawing.Size(106, 13)
-        Me.lblFanartSize.TabIndex = 15
-        Me.lblFanartSize.Text = "Preferred Fanart Size"
         '
         'GroupBox1
         '

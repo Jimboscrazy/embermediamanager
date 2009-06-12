@@ -47,6 +47,7 @@ Partial Class dlgSetsManager
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.lblCurrentSet = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -155,6 +156,7 @@ Partial Class dlgSetsManager
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.lblCurrentSet)
         Me.GroupBox3.Controls.Add(Me.btnDown)
         Me.GroupBox3.Controls.Add(Me.btnUp)
         Me.GroupBox3.Controls.Add(Me.btnRemove)
@@ -200,9 +202,9 @@ Partial Class dlgSetsManager
         '
         Me.lbMoviesInSet.Enabled = False
         Me.lbMoviesInSet.FormattingEnabled = True
-        Me.lbMoviesInSet.Location = New System.Drawing.Point(9, 20)
+        Me.lbMoviesInSet.Location = New System.Drawing.Point(9, 46)
         Me.lbMoviesInSet.Name = "lbMoviesInSet"
-        Me.lbMoviesInSet.Size = New System.Drawing.Size(209, 329)
+        Me.lbMoviesInSet.Size = New System.Drawing.Size(209, 303)
         Me.lbMoviesInSet.TabIndex = 0
         '
         'pnlCancel
@@ -319,6 +321,16 @@ Partial Class dlgSetsManager
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
+        'lblCurrentSet
+        '
+        Me.lblCurrentSet.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCurrentSet.Location = New System.Drawing.Point(6, 20)
+        Me.lblCurrentSet.Name = "lblCurrentSet"
+        Me.lblCurrentSet.Size = New System.Drawing.Size(214, 23)
+        Me.lblCurrentSet.TabIndex = 14
+        Me.lblCurrentSet.Text = "None Selected"
+        Me.lblCurrentSet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'dlgSetsManager
         '
         Me.AcceptButton = Me.OK_Button
@@ -373,5 +385,6 @@ Partial Class dlgSetsManager
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents lblCurrentSet As System.Windows.Forms.Label
 
 End Class
