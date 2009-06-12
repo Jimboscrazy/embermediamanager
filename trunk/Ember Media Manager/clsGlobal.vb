@@ -500,10 +500,9 @@ Public Class Master
                 End If
 
                 If File.Exists(vresImage) Then
-                    Dim fsImage As New FileStream(vresImage, FileMode.Open, FileAccess.Read)
-                    frmMain.pbResolution.Image = Image.FromStream(fsImage)
-                    fsImage.Close()
-                    fsImage = Nothing
+                    Using fsImage As New FileStream(vresImage, FileMode.Open, FileAccess.Read)
+                        frmMain.pbResolution.Image = Image.FromStream(fsImage)
+                    End Using
                 End If
 
                 If File.Exists(vsourceImage) Then
