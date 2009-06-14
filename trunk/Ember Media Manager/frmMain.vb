@@ -1346,7 +1346,7 @@ Public Class frmMain
         End Using
     End Sub
 
-    Private Sub ToolStripMenuItem4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripMenuItem4.Click
+    Private Sub ClearAllCachesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearAllCachesToolStripMenuItem.Click
         If Directory.Exists(Master.TempPath) Then
             Directory.Delete(Master.TempPath, True)
         End If
@@ -3379,11 +3379,9 @@ doCancel:
                 Me.tsbUpdateXBMC.Enabled = False
             End If
 
-            If Directory.Exists(.BDPath) Then
-                Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = True
-            Else
-                Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = False
-            End If
+            Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = Directory.Exists(.BDPath)
+
+            Me.ClearAllCachesToolStripMenuItem.Enabled = Master.eSettings.UseImgCache
         End With
     End Sub
 
