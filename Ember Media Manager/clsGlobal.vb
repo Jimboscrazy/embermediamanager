@@ -1127,15 +1127,29 @@ Public Class Master
                 'exact
                 Case iWidth = 1920 AndAlso iHeight = 1080
                     Return "1080"
+                Case iWidth = 1440 AndAlso iHeight = 1080
+                    Return "1080"
+                Case iWidth = 1280 AndAlso iHeight = 1080
+                    Return "1080"
                 Case iWidth = 1366 AndAlso iHeight = 768
+                    Return "768"
+                Case iWidth = 1024 AndAlso iHeight = 768
                     Return "768"
                 Case iWidth = 1280 AndAlso iHeight = 720
                     Return "720"
+                Case iWidth = 960 AndAlso iHeight = 720
+                    Return "720"
                 Case iWidth = 1024 AndAlso iHeight = 576
                     Return "576"
-                Case iWidth = 960 AndAlso iHeight = 540
+                Case iWidth = 720 AndAlso iHeight = 576
+                    Return "576"
+                Case iWidth = 720 AndAlso iHeight = 540
                     Return "540"
+                Case iWidth = 852 AndAlso iHeight = 480
+                    Return "480"
                 Case iWidth = 720 AndAlso iHeight = 480
+                    Return "480"
+                Case iWidth = 704 AndAlso iHeight = 480
                     Return "480"
                 Case iWidth = 640 AndAlso iHeight = 480
                     Return "480"
@@ -1153,15 +1167,15 @@ Public Class Master
                 Case sinADR >= 1.33 AndAlso iHeight > 450
                     Return "480"
                     'loose
-                Case iWidth >= 1600 AndAlso iHeight >= 800
+                Case iWidth >= 1200 AndAlso iHeight >= 800
                     Return "1080"
-                Case iWidth >= 1350 AndAlso iHeight >= 740
+                Case iWidth >= 1000 AndAlso iHeight >= 740
                     Return "768"
-                Case iWidth >= 1200 AndAlso iHeight >= 400
+                Case iWidth >= 950 AndAlso iHeight >= 600
                     Return "720"
-                Case iWidth >= 1000 AndAlso iHeight >= 400
+                Case iWidth >= 700 AndAlso iHeight >= 540
                     Return "576"
-                Case iWidth >= 800 AndAlso iHeight >= 400
+                Case iWidth >= 700 AndAlso iHeight >= 480
                     Return "540"
                 Case iWidth < 640
                     Return "SD"
