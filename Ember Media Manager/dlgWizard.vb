@@ -80,13 +80,26 @@ Public Class dlgWizard
     Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
         Try
             If Me.lvMovies.SelectedItems.Count > 0 Then
-                Me.lvMovies.BeginUpdate()
-                For Each lvItem As ListViewItem In Me.lvMovies.SelectedItems
-                    lvItem.Remove()
-                Next
-                Me.lvMovies.Sort()
-                Me.lvMovies.EndUpdate()
-                Me.lvMovies.Refresh()
+                If MsgBox("Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database.", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
+                    Me.lvMovies.BeginUpdate()
+
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                            For i As Integer = lvMovies.SelectedItems.Count - 1 To 0 Step -1
+                                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
+                                parSource.Value = lvMovies.Items(i).Text
+                                SQLcommand.ExecuteNonQuery()
+                                lvMovies.Items.RemoveAt(i)
+                            Next
+                        End Using
+                        SQLtransaction.Commit()
+                    End Using
+
+                    Me.lvMovies.Sort()
+                    Me.lvMovies.EndUpdate()
+                    Me.lvMovies.Refresh()
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

@@ -1350,21 +1350,21 @@ Public Class frmMain
         '\\
 
         'remove files from the db that have been deleted from the hd
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = "DELETE FROM movies WHERE id = (?);"
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                If Me.dtMedia.Rows.Count > 0 Then
+        If Me.dtMedia.Rows.Count > 0 Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    SQLcommand.CommandText = "DELETE FROM movies WHERE id = (?);"
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                     For Each drvRow As DataRow In Me.dtMedia.Rows
                         If Not File.Exists(drvRow.Item(1)) Then
                             parID.Value = drvRow.Item(0)
                             SQLcommand.ExecuteNonQuery()
                         End If
                     Next
-                End If
+                End Using
+                SQLtransaction.Commit()
             End Using
-            SQLtransaction.Commit()
-        End Using
+        End If
 
         Dim dirArray() As String
         Dim alMedia As New ArrayList
