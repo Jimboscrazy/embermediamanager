@@ -503,7 +503,7 @@ Public Class dlgEditMovie
                     .txtThumbCount.Text = Master.eSettings.AutoThumbs
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
+                If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) AndAlso Master.eSettings.UseImgCache Then
                     CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, Master.currMovie.IMDBID.Replace("tt", String.Empty))
                     If Directory.Exists(CachePath) Then
                         Me.btnClearCache.Visible = True
@@ -766,7 +766,7 @@ Public Class dlgEditMovie
                 End If
             End Using
 
-            If Directory.Exists(CachePath) Then
+            If Master.eSettings.UseImgCache AndAlso Directory.Exists(CachePath) Then
                 Me.btnClearCache.Visible = True
             End If
         Catch ex As Exception
@@ -790,7 +790,7 @@ Public Class dlgEditMovie
                 End If
             End Using
 
-            If Directory.Exists(CachePath) Then
+            If Master.eSettings.UseImgCache AndAlso Directory.Exists(CachePath) Then
                 Me.btnClearCache.Visible = True
             End If
         Catch ex As Exception
