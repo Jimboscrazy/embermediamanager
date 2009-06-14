@@ -409,62 +409,50 @@ Public Class dlgSettings
 
     Private Sub chkMovieTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieTBN.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameTBN.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieJPG.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameJPG.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterTBN.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPosterJPG.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFolderJPG.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFanartJPG.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameFanartJPG.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNFO.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameNFO.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkMovieNameDotFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameDotFanartJPG.CheckedChanged
         btnApply.Enabled = True
-        Me.doRefresh = True
     End Sub
 
     Private Sub chkLockPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockPlot.CheckedChanged
