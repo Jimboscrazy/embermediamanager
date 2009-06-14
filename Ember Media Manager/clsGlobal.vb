@@ -1124,7 +1124,9 @@ Public Class Master
         Try
 
             Select Case True
-                'exact
+                Case iWidth < 640
+                    Return "SD"
+                    'exact
                 Case iWidth = 1920 AndAlso iHeight = 1080
                     Return "1080"
                 Case iWidth = 1440 AndAlso iHeight = 1080
@@ -1177,8 +1179,6 @@ Public Class Master
                     Return "576"
                 Case iWidth >= 700 AndAlso iHeight >= 480
                     Return "540"
-                Case iWidth < 640
-                    Return "SD"
                 Case Else
                     Return "480"
             End Select
