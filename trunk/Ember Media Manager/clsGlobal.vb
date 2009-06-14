@@ -1074,10 +1074,10 @@ Public Class Master
 
                 For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
                     hasVS = True
-                    Convert.ToInt32(miVideo.Width, iWidth)
+                    iWidth = Convert.ToInt32(miVideo.Width)
                     If iWidth > iWidest Then
                         iWidest = iWidth
-                        Convert.ToInt32(miVideo.Height, iHeight)
+                        iHeight = Convert.ToInt32(miVideo.Height)
                         Single.TryParse(miVideo.AspectDisplayRatio, sinADR)
                         sScanType = If(miVideo.ScanType.ToLower.Contains("progressive"), "p", "i")
                         sCodec = miVideo.CodecID
