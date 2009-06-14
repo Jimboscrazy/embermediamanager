@@ -1,6 +1,17 @@
 #summary Ember Media Manager Changelog
 #labels Featured
 
+*Changelog for version r312:*
+ * Fix: Forgot to add "Ask" support to updater caching
+ * Fix: Export movie list not operating properly
+ * Fix: Old set name still in nfo after editing
+ * Fix: Actor pictures not displaying
+ * Fix/Change: Complete rewrite of resolution to descriptor
+ * Change: Don't display "Clear Cache" and disable "Clear All Caches" menu item if caching is not enabled
+ * Change: Don't refresh entire list after editing movie
+ * Change: Improved grouping of some items in settings
+ * Change: Don't force refresh after changing file type settings
+
 *Changelog for version r303:*
  * Feature: Optional image cache
  * Fix: HTML encoding when saving file
