@@ -823,9 +823,9 @@ Partial Class dlgSettings
         Me.chkScanRecursive.AutoSize = True
         Me.chkScanRecursive.Location = New System.Drawing.Point(5, 133)
         Me.chkScanRecursive.Name = "chkScanRecursive"
-        Me.chkScanRecursive.Size = New System.Drawing.Size(305, 17)
+        Me.chkScanRecursive.Size = New System.Drawing.Size(312, 17)
         Me.chkScanRecursive.TabIndex = 66
-        Me.chkScanRecursive.Text = "Scan Folder Sources Recursively (Increases Loading Time)"
+        Me.chkScanRecursive.Text = "Scan Folder Sources Recursively (Increases Scanning Time)"
         Me.chkScanRecursive.UseVisualStyleBackColor = True
         '
         'GroupBox12
@@ -1121,9 +1121,9 @@ Partial Class dlgSettings
         Me.chkTitleFromNfo.AutoSize = True
         Me.chkTitleFromNfo.Location = New System.Drawing.Point(176, 115)
         Me.chkTitleFromNfo.Name = "chkTitleFromNfo"
-        Me.chkTitleFromNfo.Size = New System.Drawing.Size(295, 17)
+        Me.chkTitleFromNfo.Size = New System.Drawing.Size(302, 17)
         Me.chkTitleFromNfo.TabIndex = 53
-        Me.chkTitleFromNfo.Text = "Use Title From NFO if Available (Increases Loading Time)"
+        Me.chkTitleFromNfo.Text = "Use Title From NFO if Available (Increases Scanning Time)"
         Me.chkTitleFromNfo.UseVisualStyleBackColor = True
         '
         'lvMovies
@@ -2209,8 +2209,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -2223,6 +2221,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

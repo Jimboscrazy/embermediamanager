@@ -982,7 +982,7 @@ Public Class Master
         Try
             If Not IsNothing(miFI) Then
                 If strAV.Contains("/") Then
-                    strWithoutFirst = Strings.Right(strAV, strAV.Length - Strings.InStr(strAV, "/")).Trim()
+                    strWithoutFirst = Strings.Right(strAV, strAV.Length - strAV.IndexOf("/")).Trim()
                 End If
                 If Not String.IsNullOrEmpty(strWithoutFirst) Then
                     strOutput = String.Format("Tag: {0}{1}{1}", strWithoutFirst, vbNewLine)
@@ -1124,7 +1124,7 @@ Public Class Master
         Try
             If sinWidth >= 1600 AndAlso sinHeight >= 800 Then Return "1080"
             If sinWidth >= 1350 AndAlso sinHeight >= 750 Then Return "768"
-            If sinWidth >= 960 AndAlso sinHeight >= 600 Then Return "720"
+            If sinWidth >= 960 AndAlso sinHeight >= 500 Then Return "720"
             If sinWidth >= 720 AndAlso sinHeight >= 500 Then Return "576"
             If sinWidth < 720 AndAlso sinHeight >= 500 Then Return "540"
             If sinWidth < 640 Then Return "SD"

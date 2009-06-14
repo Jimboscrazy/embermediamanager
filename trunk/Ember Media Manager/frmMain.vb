@@ -510,7 +510,7 @@ Public Class frmMain
                 Select Case dEditMovie.ShowDialog(ID)
                     Case Windows.Forms.DialogResult.OK
                         Me.ReCheckItems(ID)
-                        Me.FillList(indX)
+                        Me.SetListItemAfterEdit(ID, indX)
                     Case Windows.Forms.DialogResult.Retry
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
                     Case Windows.Forms.DialogResult.Abort
@@ -1014,7 +1014,7 @@ Public Class frmMain
                 Select Case dEditMovie.ShowDialog(ID)
                     Case Windows.Forms.DialogResult.OK
                         Me.ReCheckItems(ID)
-                        Me.FillList(indX)
+                        Me.SetListItemAfterEdit(ID, indX)
                     Case Windows.Forms.DialogResult.Retry
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
                     Case Windows.Forms.DialogResult.Abort
@@ -1626,7 +1626,7 @@ Public Class frmMain
             Dim Args As Arguments = e.Argument
             If Me.UpdateMediaInfo(Args.Path, Args.Movie) Then
                 If Master.eSettings.UseStudioTags = True Then
-                    Args.Movie.Studio = Args.Movie.StudioReal & Master.FITagData(Args.Movie.FileInfo)
+                    Args.Movie.Studio = String.Concat(Args.Movie.StudioReal, Master.FITagData(Args.Movie.FileInfo))
                 End If
                 Master.SaveMovieToNFO(Args.Movie, Args.Path, Args.isFile)
 
@@ -1899,7 +1899,7 @@ Public Class frmMain
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.UseStudioTags AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                             If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
-                                                Master.scrapeMovie.Studio = String.Format("{0}{1}", Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
+                                                Master.scrapeMovie.Studio = String.Concat(Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
                                             End If
                                         End If
 
@@ -2005,7 +2005,7 @@ Public Class frmMain
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.UseStudioTags AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                             If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
-                                                Master.scrapeMovie.Studio = String.Format("{0}{1}", Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
+                                                Master.scrapeMovie.Studio = String.Concat(Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
                                             End If
                                         End If
 
@@ -2070,7 +2070,7 @@ Public Class frmMain
                                     Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
 
                                     If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
-                                        Master.scrapeMovie.Studio = String.Format("{0}{1}", Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
+                                        Master.scrapeMovie.Studio = String.Concat(Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
                                     End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -2144,7 +2144,7 @@ Public Class frmMain
                                             If Not drvRow.Item(6) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                                 If Master.eSettings.UseStudioTags Then
                                                     If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
-                                                        Master.scrapeMovie.Studio = String.Format("{0}{1}", Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
+                                                        Master.scrapeMovie.Studio = String.Concat(Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
                                                     End If
                                                 End If
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(6))
@@ -3199,7 +3199,7 @@ doCancel:
                     Me.tspbLoading.MarqueeAnimationSpeed = 25
                     Me.Refresh()
                     If Me.UpdateMediaInfo(Master.currPath, Master.currMovie) Then
-                        Master.currMovie.Studio = String.Format("{0}{1}", Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
+                        Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
                     End If
                 End If
                 If Master.eSettings.SingleScrapeImages Then
@@ -3228,7 +3228,7 @@ doCancel:
                         Select Case dEditMovie.ShowDialog(ID)
                             Case Windows.Forms.DialogResult.OK
                                 Me.ReCheckItems(ID)
-                                Me.FillList(indX)
+                                Me.SetListItemAfterEdit(ID, indX)
                             Case Windows.Forms.DialogResult.Retry
                                 Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
                             Case Windows.Forms.DialogResult.Abort
@@ -3683,6 +3683,19 @@ doCancel:
         Me.EnableFilters(True)
 
         Me.loadType = 0
+    End Sub
+
+    Public Sub SetListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
+        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            SQLcommand.CommandText = String.Concat("SELECT title, mark FROM movies WHERE id = ", iID, ";")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                Me.SetFilterColors()
+                Me.dgvMediaList.Item(3, iRow).Value = SQLreader("title")
+                Me.dgvMediaList.Item(11, iRow).Value = SQLreader("mark")
+            End Using
+        End Using
+
+        Me.SetFilterColors()
     End Sub
 #End Region '*** Routines/Functions
 
