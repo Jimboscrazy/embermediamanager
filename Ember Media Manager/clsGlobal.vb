@@ -1060,9 +1060,9 @@ Public Class Master
         Try
             If Not IsNothing(miFI.StreamDetails) Then
                 Dim hasVS As Boolean = False
-                Dim sinWidest As Single = 0
-                Dim sinWidth As Single = 0
-                Dim sinHeight As Single = 0
+                Dim iWidest As Integer = 0
+                Dim iWidth As Integer = 0
+                Dim iHeight As Integer = 0
                 Dim sinADR As Single = 0
                 Dim sScanType As String = String.Empty
                 Dim sCodec As String = String.Empty
@@ -1074,10 +1074,10 @@ Public Class Master
 
                 For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
                     hasVS = True
-                    Single.TryParse(miVideo.Width, sinWidth)
-                    If sinWidth > sinWidest Then
-                        sinWidest = sinWidth
-                        Single.TryParse(miVideo.Height, sinHeight)
+                    Single.TryParse(miVideo.Width, iWidth)
+                    If iWidth > iWidest Then
+                        iWidest = iWidth
+                        Single.TryParse(miVideo.Height, iHeight)
                         Single.TryParse(miVideo.AspectDisplayRatio, sinADR)
                         sScanType = If(miVideo.ScanType.ToLower.Contains("progressive"), "p", "i")
                         sCodec = miVideo.CodecID
@@ -1103,7 +1103,7 @@ Public Class Master
                 Next
 
                 If hasVS Then
-                    statusStr = String.Format(" / {0}{1} / {2} / {3} / {4}ch / {5}{6}", GetResFromDimensions(sinWidest, sinHeight), sScanType, sCodec, sACodec, sinMostChannels, sLang, sSubLang)
+                    statusStr = String.Format(" / {0}{1} / {2} / {3} / {4}ch / {5}{6}", GetResFromDimensions(iWidest, iHeight, sinADR), sScanType, sCodec, sACodec, sinMostChannels, sLang, sSubLang)
                 Else
                     Return String.Empty
                 End If
@@ -1115,20 +1115,61 @@ Public Class Master
         Return statusStr
     End Function
 
-    Private Shared Function GetResFromDimensions(ByVal sinWidth As Single, ByVal sinHeight As Single) As String
+    Private Shared Function GetResFromDimensions(ByVal iWidth As Integer, ByVal iHeight As Integer, ByVal sinADR As Single) As String
 
         '//
         ' Get the resolution of the video from the dimensions provided by MediaInfo.dll
         '\\
 
         Try
-            If sinWidth >= 1600 AndAlso sinHeight >= 800 Then Return "1080"
-            If sinWidth >= 1350 AndAlso sinHeight >= 750 Then Return "768"
-            If sinWidth >= 960 AndAlso sinHeight >= 500 Then Return "720"
-            If sinWidth >= 720 AndAlso sinHeight >= 500 Then Return "576"
-            If sinWidth < 720 AndAlso sinHeight >= 500 Then Return "540"
-            If sinWidth < 640 Then Return "SD"
-            Return "480"
+
+            Select Case True
+                'exact
+                Case iWidth = 1920 AndAlso iHeight = 1080
+                    Return "1080"
+                Case iWidth = 1366 AndAlso iHeight = 768
+                    Return "768"
+                Case iWidth = 1280 AndAlso iHeight = 720
+                    Return "720"
+                Case iWidth = 960 AndAlso iHeight = 720
+                    Return "720"
+                Case iWidth = 720 AndAlso iHeight = 576
+                    Return "576"
+                Case iWidth = 720 AndAlso iHeight = 540
+                    Return "540"
+                Case iWidth = 720 AndAlso iHeight = 480
+                    Return "480"
+                Case iWidth = 640 AndAlso iHeight = 480
+                    Return "480"
+                    'by ADR
+                Case sinADR >= 1.33 AndAlso iHeight > 1000
+                    Return "1080"
+                Case sinADR >= 1.33 AndAlso iHeight > 740
+                    Return "768"
+                Case sinADR >= 1.33 AndAlso iHeight > 680
+                    Return "720"
+                Case sinADR >= 1.33 AndAlso iHeight > 540
+                    Return "576"
+                Case sinADR >= 1.33 AndAlso iHeight > 500
+                    Return "540"
+                Case sinADR >= 1.33 AndAlso iHeight > 450
+                    Return "480"
+                    'loose
+                Case iWidth >= 1600 AndAlso iHeight >= 800
+                    Return "1080"
+                Case iWidth >= 1350 AndAlso iHeight >= 740
+                    Return "768"
+                Case iWidth >= 800 AndAlso iHeight >= 400
+                    Return "720"
+                Case iWidth >= 680 AndAlso iHeight >= 540
+                    Return "576"
+                Case iWidth >= 680 AndAlso iHeight >= 480
+                    Return "540"
+                Case iWidth < 640
+                    Return "SD"
+                Case Else
+                    Return "480"
+            End Select
 
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
