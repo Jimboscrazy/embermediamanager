@@ -169,10 +169,12 @@ Public Class dlgSettings
 
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                         Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                            For Each lvItem As ListViewItem In Me.lvMovies.SelectedItems
-                                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = """, lvItem.Text, """;")
+                            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                            For i As Integer = lvMovies.SelectedItems.Count - 1 To 0 Step -1
+                                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
+                                parSource.Value = lvMovies.Items(i).Text
                                 SQLcommand.ExecuteNonQuery()
-                                lvItem.Remove()
+                                lvMovies.Items.RemoveAt(i)
                             Next
                         End Using
                         SQLtransaction.Commit()
