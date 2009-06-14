@@ -1074,10 +1074,10 @@ Public Class Master
 
                 For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
                     hasVS = True
-                    Single.TryParse(miVideo.Width, iWidth)
+                    Convert.ToInt32(miVideo.Width, iWidth)
                     If iWidth > iWidest Then
                         iWidest = iWidth
-                        Single.TryParse(miVideo.Height, iHeight)
+                        Convert.ToInt32(miVideo.Height, iHeight)
                         Single.TryParse(miVideo.AspectDisplayRatio, sinADR)
                         sScanType = If(miVideo.ScanType.ToLower.Contains("progressive"), "p", "i")
                         sCodec = miVideo.CodecID
@@ -1131,11 +1131,9 @@ Public Class Master
                     Return "768"
                 Case iWidth = 1280 AndAlso iHeight = 720
                     Return "720"
-                Case iWidth = 960 AndAlso iHeight = 720
-                    Return "720"
-                Case iWidth = 720 AndAlso iHeight = 576
+                Case iWidth = 1024 AndAlso iHeight = 576
                     Return "576"
-                Case iWidth = 720 AndAlso iHeight = 540
+                Case iWidth = 960 AndAlso iHeight = 540
                     Return "540"
                 Case iWidth = 720 AndAlso iHeight = 480
                     Return "480"
@@ -1159,11 +1157,11 @@ Public Class Master
                     Return "1080"
                 Case iWidth >= 1350 AndAlso iHeight >= 740
                     Return "768"
-                Case iWidth >= 800 AndAlso iHeight >= 400
+                Case iWidth >= 1200 AndAlso iHeight >= 400
                     Return "720"
-                Case iWidth >= 680 AndAlso iHeight >= 540
+                Case iWidth >= 1000 AndAlso iHeight >= 400
                     Return "576"
-                Case iWidth >= 680 AndAlso iHeight >= 480
+                Case iWidth >= 800 AndAlso iHeight >= 400
                     Return "540"
                 Case iWidth < 640
                     Return "SD"

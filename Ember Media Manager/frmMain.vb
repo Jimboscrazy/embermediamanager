@@ -747,27 +747,7 @@ Public Class frmMain
         Me.tmrLoad.Enabled = False
         Try
             If Me.dgvMediaList.SelectedRows.Count > 0 Then
-                'set tmpTitle to title in list - used for searching IMDB
-                Me.tmpTitle = Me.dgvMediaList.Item(3, Me.currRow).Value.ToString
-                If Not Me.dgvMediaList.Item(4, Me.currRow).Value AndAlso Not Me.dgvMediaList.Item(5, Me.currRow).Value AndAlso Not Me.dgvMediaList.Item(6, Me.currRow).Value Then
-                    Me.ClearInfo()
-                    Me.pnlNoInfo.Visible = True
-                    Master.currPath = Me.dgvMediaList.Item(1, Me.currRow).Value.ToString
-                    Master.isFile = Me.dgvMediaList.Item(2, Me.currRow).Value.ToString
-                    Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
-                    Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
-                    Me.tslStatus.Text = Master.currPath
-                    Me.mnuMediaList.Enabled = True
-                Else
-                    Me.pnlNoInfo.Visible = False
-
-                    If Me.bwLoadInfo.IsBusy Then
-                        Me.bwLoadInfo.CancelAsync()
-                        Application.DoEvents()
-                    End If
-                    'try to load the info from the NFO
-                    Me.LoadInfo(Me.dgvMediaList.Item(1, Me.currRow).Value.ToString, True, False, Me.dgvMediaList.Item(2, Me.currRow).Value)
-                End If
+                Me.SelectRow(Me.currRow)
             End If
         Catch
         End Try
@@ -3260,8 +3240,8 @@ doCancel:
     End Sub
 
     Private Sub ReCheckItems(ByVal ID As Integer)
-        Dim tPath = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow.Item(1)
-        Dim sPath As String = tPath(0)
+        Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow
+        Dim sPath As String = dRow(0).Item(1)
         Try
             Dim parPath As String = Directory.GetParent(sPath).FullName
             Dim tmpName As String = String.Empty
@@ -3340,6 +3320,12 @@ doCancel:
                     Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
 
+                    dRow(0).Item(4) = hasPoster
+                    dRow(0).Item(5) = hasFanart
+                    dRow(0).Item(6) = hasNfo
+                    dRow(0).Item(7) = hasTrailer
+                    dRow(0).Item(8) = hasSub
+                    dRow(0).Item(9) = hasExtra
                     parPoster.Value = hasPoster
                     parFanart.Value = hasFanart
                     parInfo.Value = hasNfo
@@ -3693,7 +3679,32 @@ doCancel:
             End Using
         End Using
 
+        Me.SelectRow(iRow)
+
         Me.SetFilterColors()
+    End Sub
+
+    Private Sub SelectRow(ByVal iRow As Integer)
+        Me.tmpTitle = Me.dgvMediaList.Item(3, iRow).Value.ToString
+        If Not Me.dgvMediaList.Item(4, iRow).Value AndAlso Not Me.dgvMediaList.Item(5, iRow).Value AndAlso Not Me.dgvMediaList.Item(6, iRow).Value Then
+            Me.ClearInfo()
+            Me.pnlNoInfo.Visible = True
+            Master.currPath = Me.dgvMediaList.Item(1, iRow).Value.ToString
+            Master.isFile = Me.dgvMediaList.Item(2, iRow).Value.ToString
+            Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
+            Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
+            Me.tslStatus.Text = Master.currPath
+            Me.mnuMediaList.Enabled = True
+        Else
+            Me.pnlNoInfo.Visible = False
+
+            If Me.bwLoadInfo.IsBusy Then
+                Me.bwLoadInfo.CancelAsync()
+                Application.DoEvents()
+            End If
+            'try to load the info from the NFO
+            Me.LoadInfo(Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False, Me.dgvMediaList.Item(2, iRow).Value)
+        End If
     End Sub
 #End Region '*** Routines/Functions
 
