@@ -301,7 +301,7 @@ mResult:
             If D > 0 AndAlso W > 0 Then
                 Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                          Where Not P1.Groups("name").ToString = String.Empty _
-                         Select Studio = P1.Groups("name").ToString
+                         Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString)
                 alStudio.AddRange(Ps.ToArray)
             End If
 
