@@ -123,7 +123,12 @@ Namespace MediaInfo
         End Sub
 
         Protected Overrides Sub Finalize()
-            MediaInfo_Delete(Handle)
+            Try
+                MediaInfo_Delete(Handle)
+                Handle = Nothing
+            Finally
+                MyBase.Finalize()
+            End Try
         End Sub
 
         Private Function Open(ByVal FileName As String) As Integer
