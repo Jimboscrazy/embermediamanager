@@ -46,8 +46,8 @@ Public NotInheritable Class dlgAbout
             g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.FromArgb(255, 200, 200, 255), Color.FromArgb(255, 250, 250, 250), Drawing2D.LinearGradientMode.Vertical), DrawRect)
             DrawRect = New Rectangle(0, picDisplay.ClientSize.Height * 0.735, picDisplay.ClientSize.Width, picDisplay.ClientSize.Height * 0.265)
             g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.White, Color.FromArgb(255, 230, 230, 230), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-            Dim x As Integer = (picDisplay.Width / 2) - (My.Resources.Logo.Width / 2)
-            Dim y As Integer = (picDisplay.Height / 2) - (My.Resources.Logo.Height / 2)
+            Dim x As Integer = (picDisplay.Width - My.Resources.Logo.Width) / 2
+            Dim y As Integer = (picDisplay.Height - My.Resources.Logo.Height) / 2
             g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
             Me.picDisplay.BackgroundImage = iBackground
         End Using
@@ -152,7 +152,7 @@ Public NotInheritable Class dlgAbout
             CurrentY = PicY + FontMod
             FontMod += CredList(i).Font.Size + 5
 
-            CurrentX = (Me.picDisplay.ClientSize.Width / 2) - (e.Graphics.MeasureString(CredList(i).Text, CredList(i).Font).Width / 2)
+            CurrentX = (Me.picDisplay.ClientSize.Width - e.Graphics.MeasureString(CredList(i).Text, CredList(i).Font).Width) / 2
 
             If i = CredList.Count - 1 And CurrentY < -25 Then PicY = Me.picDisplay.ClientSize.Height
 

@@ -64,6 +64,7 @@ Public Class frmMain
     Private FilterArray As New ArrayList
     Private SingelScrapeDone As Boolean = False
     Private isCL As Boolean = False
+    Private GenreImage As Image
 
     Private Enum PicType As Integer
         Actor = 0
@@ -173,9 +174,9 @@ Public Class frmMain
                 Me.MoveMPAA()
                 Me.MoveGenres()
                 Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = (Me.scMain.Panel2.Width / 2) - (Me.pbFanart.Width / 2)
-                Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width / 2) - (Me.pnlNoInfo.Width / 2), (Me.scMain.Panel2.Height / 2) - (Me.pnlNoInfo.Height / 2))
-                Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width / 2) - (Me.pnlNoInfo.Width / 2), 100)
+                Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
+                Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
+                Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -537,7 +538,7 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub pbGenre_MouseHover(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub pbGenre_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs)
 
         '//
         ' Draw genre text over the image when mouse hovers
@@ -545,26 +546,18 @@ Public Class frmMain
 
         Try
             Dim iLeft As Integer = 0
-            Dim myBitMap As Image = sender.image
-            Dim myGR As Graphics = Graphics.FromImage(myBitMap)
-            ' Create string to draw.
+            Me.GenreImage = sender.image
+            Dim bmGenre As New Bitmap(Me.GenreImage)
+            Dim grGenre As Graphics = Graphics.FromImage(bmGenre)
             Dim drawString As String = sender.Name
-            ' Create font and brush.
-            Dim drawFont As New Font("Courier New", 20 - drawString.Length, FontStyle.Bold)
+            Dim drawFont As New Font("Microsoft Sans Serif", 20, FontStyle.Bold, GraphicsUnit.Pixel)
             Dim drawBrush As New SolidBrush(Color.White)
-
-            ' Create point for psuedo-centered text
-            Select Case drawString.Length
-                Case Is >= 12
-                    iLeft = 0
-                Case Else
-                    iLeft = 11 - drawString.Length
-            End Select
-
-            Dim drawPoint As New Point(iLeft, 85)
-            ' Draw string to screen.
-            myGR.DrawString(drawString, drawFont, drawBrush, drawPoint)
-            sender.Image = myBitMap
+            Dim drawWidth As Single = grGenre.MeasureString(drawString, drawFont).Width
+            drawFont = New Font("Microsoft Sans Serif", (20 * (bmGenre.Width / drawWidth)) - 0.5, FontStyle.Bold, GraphicsUnit.Pixel)
+            Dim drawHeight As Single = grGenre.MeasureString(drawString, drawFont).Height
+            iLeft = (bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2
+            grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
+            sender.Image = bmGenre
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -578,7 +571,7 @@ Public Class frmMain
         '\\
 
         Try
-            sender.image = Master.GetGenreImage(Trim(sender.name))
+            sender.image = GenreImage
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -641,9 +634,9 @@ Public Class frmMain
                 Me.MoveGenres()
 
                 Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = (Me.scMain.Panel2.Width / 2) - (Me.pbFanart.Width / 2)
-                Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width / 2) - (Me.pnlNoInfo.Width / 2), (Me.scMain.Panel2.Height / 2) - (Me.pnlNoInfo.Height / 2))
-                Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width / 2) - (Me.pnlNoInfo.Width / 2), 100)
+                Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
+                Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
+                Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1795,7 +1788,7 @@ Public Class frmMain
                 End If
 
                 Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = (Me.scMain.Panel2.Width / 2) - (Me.pbFanart.Width / 2)
+                Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
 
                 If Not bwScraper.IsBusy Then
                     Me.tsbAutoPilot.Enabled = True
@@ -2960,13 +2953,13 @@ doCancel:
                 ReDim Preserve Me.pbGenre(i)
                 Me.pnlGenre(i) = New Panel()
                 Me.pbGenre(i) = New PictureBox()
-                Me.pbGenre(i).Name = Trim(genreArray(i)).ToUpper
+                Me.pbGenre(i).Name = genreArray(i).Trim.ToUpper
                 Me.pnlGenre(i).Size = New Size(68, 100)
                 Me.pbGenre(i).Size = New Size(62, 94)
                 Me.pnlGenre(i).BackColor = Color.Gainsboro
                 Me.pnlGenre(i).BorderStyle = BorderStyle.FixedSingle
                 Me.pbGenre(i).SizeMode = PictureBoxSizeMode.StretchImage
-                Me.pbGenre(i).Image = Master.GetGenreImage(Trim(genreArray(i)))
+                Me.pbGenre(i).Image = Master.GetGenreImage(genreArray(i).Trim)
                 Me.pnlGenre(i).Left = ((Me.pnlInfoPanel.Right) - (i * 73)) - 73
                 Me.pbGenre(i).Left = 2
                 Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
@@ -2974,7 +2967,7 @@ doCancel:
                 Me.scMain.Panel2.Controls.Add(Me.pnlGenre(i))
                 Me.pnlGenre(i).Controls.Add(Me.pbGenre(i))
                 Me.pnlGenre(i).BringToFront()
-                AddHandler Me.pbGenre(i).MouseHover, AddressOf pbGenre_MouseHover
+                AddHandler Me.pbGenre(i).MouseEnter, AddressOf pbGenre_MouseEnter
                 AddHandler Me.pbGenre(i).MouseLeave, AddressOf pbGenre_MouseLeave
             Next
         Catch ex As Exception
