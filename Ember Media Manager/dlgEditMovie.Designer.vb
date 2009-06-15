@@ -586,6 +586,7 @@ Partial Class dlgEditMovie
         '
         'txtPlot
         '
+        Me.txtPlot.AcceptsReturn = True
         Me.txtPlot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPlot.Location = New System.Drawing.Point(443, 26)
         Me.txtPlot.Multiline = True
@@ -604,6 +605,7 @@ Partial Class dlgEditMovie
         '
         'txtOutline
         '
+        Me.txtOutline.AcceptsReturn = True
         Me.txtOutline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtOutline.Location = New System.Drawing.Point(217, 26)
         Me.txtOutline.Multiline = True
