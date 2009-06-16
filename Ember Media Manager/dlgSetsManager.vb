@@ -265,46 +265,53 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub lbSets_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbSets.SelectedIndexChanged
+        Try
+            Dim tOrder As Integer = 0
 
-        Dim tOrder As Integer = 0
+            If Me.currSet.Movies.Count > 0 Then SaveSet(currSet)
 
-        If Me.currSet.Movies.Count > 0 Then SaveSet(currSet)
+            Me.currSet.Clear()
+            Me.lbMoviesInSet.Items.Clear()
 
-        Me.currSet.Clear()
-        Me.lbMoviesInSet.Items.Clear()
+            If Me.lbSets.SelectedItems.Count > 0 Then
 
-        If Me.lbSets.SelectedItems.Count > 0 Then
+                Me.lblCurrentSet.Text = Me.lbSets.SelectedItem.ToString
 
-            Me.lblCurrentSet.Text = Me.lbSets.SelectedItem.ToString
+                Me.currSet.Set = Me.lbSets.SelectedItem.ToString
 
-            Me.currSet.Set = Me.lbSets.SelectedItem.ToString
-
-            For Each tMovie As Movies In lMovies
-                For Each mSet As Media.Set In tMovie.Movie.Sets
-                    If mSet.SetContainer.Set = Me.currSet.Set Then
-                        If Not String.IsNullOrEmpty(mSet.SetContainer.Order) Then
-                            tOrder = Convert.ToInt32(mSet.SetContainer.Order)
+                For Each tMovie As Movies In lMovies
+                    For Each mSet As Media.Set In tMovie.Movie.Sets
+                        If mSet.SetContainer.Set = Me.currSet.Set Then
+                            If Not String.IsNullOrEmpty(mSet.SetContainer.Order) Then
+                                tOrder = Convert.ToInt32(mSet.SetContainer.Order)
+                            End If
+                            Me.currSet.AddMovie(tMovie, tOrder)
                         End If
-                        Me.currSet.AddMovie(tMovie, tOrder)
-                    End If
+                    Next
                 Next
-            Next
 
-            If Me.currSet.Movies.Count > 0 Then Me.LoadCurrSet()
+                If Me.currSet.Movies.Count > 0 Then Me.LoadCurrSet()
 
-        Else
-            Me.lblCurrentSet.Text = "None Selected"
-        End If
+            Else
+                Me.lblCurrentSet.Text = "None Selected"
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub btnNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewSet.Click
-        Using dNewSet As New dlgNewSet
-            Dim strSet As String = dNewSet.ShowDialog
-            If Not String.IsNullOrEmpty(strSet) AndAlso Not Me.alSets.Contains(strSet) Then
-                Me.alSets.Add(strSet)
-                Me.LoadSets()
-            End If
-        End Using
+        Try
+            Using dNewSet As New dlgNewSet
+                Dim strSet As String = dNewSet.ShowDialog
+                If Not String.IsNullOrEmpty(strSet) AndAlso Not Me.alSets.Contains(strSet) Then
+                    Me.alSets.Add(strSet)
+                    Me.LoadSets()
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub LoadSets()
@@ -318,47 +325,67 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub SaveSet(ByVal mSet As Sets)
-        For Each tMovie As Movies In mSet.Movies
-            tMovie.Movie.AddSet(mSet.Set, tMovie.Order)
-            Master.SaveMovieToNFO(tMovie.Movie, tMovie.Path, tMovie.isFile)
-        Next
+        Try
+            For Each tMovie As Movies In mSet.Movies
+                tMovie.Movie.AddSet(mSet.Set, tMovie.Order)
+                Master.SaveMovieToNFO(tMovie.Movie, tMovie.Path, tMovie.isFile)
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
-        If Me.lbSets.SelectedItems.Count > 0 Then
-            For i As Integer = 0 To lbMovies.SelectedItems.Count - 1
-                If Not Me.lbMoviesInSet.Items.Contains(Me.lbMovies.SelectedItems(i)) Then
-                    Me.currSet.AddMovie(lMovies(Me.lbMovies.SelectedIndices(i)), Me.lbMoviesInSet.Items.Count + i)
-                End If
-            Next
-            Me.LoadCurrSet()
-        End If
+        Try
+            If Me.lbSets.SelectedItems.Count > 0 Then
+                For i As Integer = 0 To lbMovies.SelectedItems.Count - 1
+                    If Not Me.lbMoviesInSet.Items.Contains(Me.lbMovies.SelectedItems(i)) Then
+                        Me.currSet.AddMovie(lMovies(Me.lbMovies.SelectedIndices(i)), Me.lbMoviesInSet.Items.Count + i)
+                    End If
+                Next
+                Me.LoadCurrSet()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub LoadCurrSet()
-        Me.lbMoviesInSet.Items.Clear()
-        Me.currSet.Movies.Sort(AddressOf SortMovies)
-        For Each tMovie As Movies In Me.currSet.Movies
-            Me.lbMoviesInSet.Items.Add(tMovie.Movie.Title)
-            tMovie.Order = Me.lbMoviesInSet.Items.Count
-        Next
+        Try
+            Me.lbMoviesInSet.Items.Clear()
+            Me.currSet.Movies.Sort(AddressOf SortMovies)
+            For Each tMovie As Movies In Me.currSet.Movies
+                Me.lbMoviesInSet.Items.Add(tMovie.Movie.Title)
+                tMovie.Order = Me.lbMoviesInSet.Items.Count
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Function SortMovies(ByVal x As Movies, ByVal y As Movies) As Integer
-        If x.Order <= 0 Then
-            Return -1
-        End If
-        If y.Order <= 0 Then
-            Return 1
-        End If
+        Try
+            If IsNothing(x.Order) OrElse x.Order <= 0 Then
+                Return -1
+            End If
+            If IsNothing(y.Order) OrElse y.Order <= 0 Then
+                Return 1
+            End If
 
-        Return x.Order.CompareTo(y.Order)
+            Return x.Order.CompareTo(y.Order)
+        Catch
+            Return -1
+        End Try
     End Function
 
     Private Sub RemoveFromSet(ByVal iIndex As Integer, ByVal isEdit As Boolean)
-        Me.currSet.Movies(iIndex).Movie.RemoveSet(Me.currSet.Set)
-        Master.SaveMovieToNFO(Me.currSet.Movies(iIndex).Movie, Me.currSet.Movies(iIndex).Path, Me.currSet.Movies(iIndex).isFile)
-        If Not isEdit Then Me.currSet.Movies.RemoveAt(iIndex)
+        Try
+            Me.currSet.Movies(iIndex).Movie.RemoveSet(Me.currSet.Set)
+            Master.SaveMovieToNFO(Me.currSet.Movies(iIndex).Movie, Me.currSet.Movies(iIndex).Path, Me.currSet.Movies(iIndex).isFile)
+            If Not isEdit Then Me.currSet.Movies.RemoveAt(iIndex)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
@@ -401,48 +428,56 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub EditSet()
-        If Me.lbSets.SelectedItems.Count > 0 Then
-            Using dNewSet As New dlgNewSet
-                Dim strSet As String = dNewSet.ShowDialog(Me.lbSets.SelectedItem.ToString)
-                If Not String.IsNullOrEmpty(strSet) AndAlso Not Me.alSets.Contains(strSet) Then
-                    For i As Integer = 0 To Me.alSets.Count - 1
-                        If Me.alSets(i) = Me.lbSets.SelectedItem.ToString Then
-                            'remove the old set from each movie.
-                            If lbMoviesInSet.Items.Count > 0 Then
-                                For b As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
-                                    Me.RemoveFromSet(b, True)
-                                Next
+        Try
+            If Me.lbSets.SelectedItems.Count > 0 Then
+                Using dNewSet As New dlgNewSet
+                    Dim strSet As String = dNewSet.ShowDialog(Me.lbSets.SelectedItem.ToString)
+                    If Not String.IsNullOrEmpty(strSet) AndAlso Not Me.alSets.Contains(strSet) Then
+                        For i As Integer = 0 To Me.alSets.Count - 1
+                            If Me.alSets(i) = Me.lbSets.SelectedItem.ToString Then
+                                'remove the old set from each movie.
+                                If lbMoviesInSet.Items.Count > 0 Then
+                                    For b As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
+                                        Me.RemoveFromSet(b, True)
+                                    Next
+                                End If
+                                'set the currset to have the updated title
+                                currSet.Set = strSet
+                                'save the set to update each movie with the new set name
+                                Me.SaveSet(currSet)
+                                'change the name in alSets
+                                Me.alSets(i) = strSet
+                                Exit For
                             End If
-                            'set the currset to have the updated title
-                            currSet.Set = strSet
-                            'save the set to update each movie with the new set name
-                            Me.SaveSet(currSet)
-                            'change the name in alSets
-                            Me.alSets(i) = strSet
-                            Exit For
-                        End If
-                    Next
-                    Me.LoadSets()
-                End If
-            End Using
-        End If
+                        Next
+                        Me.LoadSets()
+                    End If
+                End Using
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub btnRemoveSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSet.Click
-        If lbMoviesInSet.Items.Count > 0 Then
-            For i As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
-                Me.RemoveFromSet(i, False)
-            Next
-        End If
-
-        For i As Integer = 0 To Me.alSets.Count - 1
-            If Me.alSets(i) = Me.lbSets.SelectedItem.ToString Then
-                Me.alSets.RemoveAt(i)
-                Exit For
+        Try
+            If lbMoviesInSet.Items.Count > 0 Then
+                For i As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
+                    Me.RemoveFromSet(i, False)
+                Next
             End If
-        Next
 
-        Me.LoadSets()
+            For i As Integer = 0 To Me.alSets.Count - 1
+                If Me.alSets(i) = Me.lbSets.SelectedItem.ToString Then
+                    Me.alSets.RemoveAt(i)
+                    Exit For
+                End If
+            Next
+
+            Me.LoadSets()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub dlgSetsManager_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
