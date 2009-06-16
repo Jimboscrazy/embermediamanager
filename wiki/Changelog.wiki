@@ -1,6 +1,18 @@
 #summary Ember Media Manager Changelog
 #labels Featured
 
+*Changelog for version r324:*
+ * Fix: Movies not loading new info properly after editing/scraping
+ * Fix: Decode html for studio selector in movie editor
+ * Fix: Deleting sources not deleting from db in some cases
+ * Fix: Media Info scanning skips some files in some cases
+ * Change: Add .rvmb to default list of valid extensions
+ * Change: More tweaks to resolution to descriptor logic
+ * Change: Delete sources from db when removing from sources list in wizard
+ * Change: Improvements to genre labeling (on mouse over)
+ * Change: Allow enter key to create new line in plot and outline text boxes in the movie editor
+ * Change: Some small tweaks
+
 *Changelog for version r312:*
  * Fix: Forgot to add "Ask" support to updater caching
  * Fix: Export movie list not operating properly
