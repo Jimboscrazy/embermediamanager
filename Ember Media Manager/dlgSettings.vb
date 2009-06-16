@@ -612,7 +612,7 @@ Public Class dlgSettings
         If Not chkAutoThumbs.Checked Then
             Me.txtAutoThumbs.Text = String.Empty
             Me.chkNoSpoilers.Checked = False
-            Me.chkUseETasFA.Enabled = False
+            Me.chkUseETasFA.Checked = False
         End If
         Me.btnApply.Enabled = True
     End Sub

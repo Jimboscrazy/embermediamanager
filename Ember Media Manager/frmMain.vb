@@ -3360,7 +3360,58 @@ doCancel:
 
             Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = Directory.Exists(.BDPath)
 
-            Me.ClearAllCachesToolStripMenuItem.Enabled = Master.eSettings.UseImgCache
+            Me.ClearAllCachesToolStripMenuItem.Enabled = .UseImgCache
+
+            Me.mnuAllAutoExtra.Enabled = .AutoThumbs > 0
+            Me.mnuAllAskExtra.Enabled = .AutoThumbs > 0
+            Me.mnuMissAutoExtra.Enabled = .AutoThumbs > 0
+            Me.mnuMissAskExtra.Enabled = .AutoThumbs > 0
+            Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0
+            Me.mnuMarkAskExtra.Enabled = .AutoThumbs > 0
+            Me.mnuNewAutoExtra.Enabled = .AutoThumbs > 0
+            Me.mnuNewAskExtra.Enabled = .AutoThumbs > 0
+            Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0
+
+            If .UseTMDB OrElse .UseIMPA OrElse .UseMPDB Then
+                Me.mnuAllAutoPoster.Enabled = True
+                Me.mnuAllAskPoster.Enabled = True
+                Me.mnuMissAutoPoster.Enabled = True
+                Me.mnuMissAskPoster.Enabled = True
+                Me.mnuMarkAutoPoster.Enabled = True
+                Me.mnuMarkAskPoster.Enabled = True
+                Me.mnuNewAutoPoster.Enabled = True
+                Me.mnuNewAskPoster.Enabled = True
+            Else
+                Me.mnuAllAutoPoster.Enabled = False
+                Me.mnuAllAskPoster.Enabled = False
+                Me.mnuMissAutoPoster.Enabled = False
+                Me.mnuMissAskPoster.Enabled = False
+                Me.mnuMarkAutoPoster.Enabled = False
+                Me.mnuMarkAskPoster.Enabled = False
+                Me.mnuNewAutoPoster.Enabled = False
+                Me.mnuNewAskPoster.Enabled = False
+            End If
+
+            If .UseTMDB Then
+                Me.mnuAllAutoFanart.Enabled = True
+                Me.mnuAllAskFanart.Enabled = True
+                Me.mnuMissAutoFanart.Enabled = True
+                Me.mnuMissAskFanart.Enabled = True
+                Me.mnuMarkAutoFanart.Enabled = True
+                Me.mnuMarkAskFanart.Enabled = True
+                Me.mnuNewAutoFanart.Enabled = True
+                Me.mnuNewAskFanart.Enabled = True
+            Else
+                Me.mnuAllAutoFanart.Enabled = False
+                Me.mnuAllAskFanart.Enabled = False
+                Me.mnuMissAutoFanart.Enabled = False
+                Me.mnuMissAskFanart.Enabled = False
+                Me.mnuMarkAutoFanart.Enabled = False
+                Me.mnuMarkAskFanart.Enabled = False
+                Me.mnuNewAutoFanart.Enabled = False
+                Me.mnuNewAskFanart.Enabled = False
+            End If
+
         End With
     End Sub
 
