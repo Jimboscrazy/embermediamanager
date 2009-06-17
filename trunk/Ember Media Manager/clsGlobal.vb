@@ -162,8 +162,8 @@ Public Class Master
 
 
         'create database if it doesn't exist
-        If Not File.Exists("Media.emm") Then
-            SQLcn.ConnectionString = "Data Source=Media.emm;Compress=True"
+        If Not File.Exists(Path.Combine(Application.StartupPath, "Media.emm")) Then
+            SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
             SQLcn.Open()
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
@@ -175,7 +175,7 @@ Public Class Master
                 SQLtransaction.Commit()
             End Using
         Else
-            SQLcn.ConnectionString = "Data Source=Media.emm;Compress=True"
+            SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
             SQLcn.Open()
             If Reset Then
                 Dim tColumns As New DataTable
