@@ -136,7 +136,7 @@ Namespace IMDB
                                 End If
                             End Using
                         End If
-                    Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto
+                    Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto, Master.ScrapeType.SingleScrape
                         'it seems "popular matches" is a better result than "exact matches"
                         If r.PopularTitles.Count > 0 Then
                             b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
