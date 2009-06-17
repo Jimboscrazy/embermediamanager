@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -206,6 +206,12 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
+        Me.btnFilterDown = New System.Windows.Forms.Button
+        Me.btnFilterUp = New System.Windows.Forms.Button
+        Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.cbFilterSource = New System.Windows.Forms.ComboBox
+        Me.Panel1 = New System.Windows.Forms.Panel
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -249,6 +255,7 @@ Partial Class frmMain
         Me.tsMain.SuspendLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -447,12 +454,11 @@ Partial Class frmMain
         'scMain.Panel1
         '
         Me.scMain.Panel1.BackColor = System.Drawing.Color.Gainsboro
-        Me.scMain.Panel1.Controls.Add(Me.btnMarkAll)
-        Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
-        Me.scMain.Panel1.Controls.Add(Me.pnlSearch)
         Me.scMain.Panel1.Controls.Add(Me.dgvMediaList)
-        Me.scMain.Panel1.Controls.Add(Me.tabsMain)
+        Me.scMain.Panel1.Controls.Add(Me.Panel1)
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
         Me.scMain.Panel1.Margin = New System.Windows.Forms.Padding(3)
+        Me.scMain.Panel1MinSize = 165
         '
         'scMain.Panel2
         '
@@ -474,9 +480,10 @@ Partial Class frmMain
         '
         'btnMarkAll
         '
+        Me.btnMarkAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMarkAll.Image = CType(resources.GetObject("btnMarkAll.Image"), System.Drawing.Image)
         Me.btnMarkAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMarkAll.Location = New System.Drawing.Point(223, 2)
+        Me.btnMarkAll.Location = New System.Drawing.Point(226, 1)
         Me.btnMarkAll.Name = "btnMarkAll"
         Me.btnMarkAll.Size = New System.Drawing.Size(81, 21)
         Me.btnMarkAll.TabIndex = 13
@@ -487,6 +494,10 @@ Partial Class frmMain
         'pnlFilter
         '
         Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilter.Controls.Add(Me.cbFilterSource)
+        Me.pnlFilter.Controls.Add(Me.Label2)
+        Me.pnlFilter.Controls.Add(Me.btnFilterDown)
+        Me.pnlFilter.Controls.Add(Me.btnFilterUp)
         Me.pnlFilter.Controls.Add(Me.chkFilterDupe)
         Me.pnlFilter.Controls.Add(Me.rbFilterOr)
         Me.pnlFilter.Controls.Add(Me.rbFilterAnd)
@@ -494,9 +505,9 @@ Partial Class frmMain
         Me.pnlFilter.Controls.Add(Me.lblFilter)
         Me.pnlFilter.Controls.Add(Me.chkFilterNew)
         Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter.Location = New System.Drawing.Point(0, 625)
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 601)
         Me.pnlFilter.Name = "pnlFilter"
-        Me.pnlFilter.Size = New System.Drawing.Size(308, 61)
+        Me.pnlFilter.Size = New System.Drawing.Size(308, 85)
         Me.pnlFilter.TabIndex = 12
         '
         'chkFilterDupe
@@ -549,7 +560,7 @@ Partial Class frmMain
         Me.lblFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblFilter.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilter.Location = New System.Drawing.Point(4, 4)
+        Me.lblFilter.Location = New System.Drawing.Point(4, 3)
         Me.lblFilter.Name = "lblFilter"
         Me.lblFilter.Size = New System.Drawing.Size(298, 17)
         Me.lblFilter.TabIndex = 22
@@ -573,7 +584,7 @@ Partial Class frmMain
         Me.pnlSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlSearch.Controls.Add(Me.picSearch)
         Me.pnlSearch.Controls.Add(Me.txtSearch)
-        Me.pnlSearch.Location = New System.Drawing.Point(0, 26)
+        Me.pnlSearch.Location = New System.Drawing.Point(0, 23)
         Me.pnlSearch.Name = "pnlSearch"
         Me.pnlSearch.Size = New System.Drawing.Size(308, 33)
         Me.pnlSearch.TabIndex = 11
@@ -604,18 +615,17 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
-        Me.dgvMediaList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
+        Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.dgvMediaList.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvMediaList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvMediaList.ContextMenuStrip = Me.mnuMediaList
+        Me.dgvMediaList.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMediaList.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.dgvMediaList.Location = New System.Drawing.Point(0, 58)
+        Me.dgvMediaList.Location = New System.Drawing.Point(0, 56)
         Me.dgvMediaList.MultiSelect = False
         Me.dgvMediaList.Name = "dgvMediaList"
         Me.dgvMediaList.ReadOnly = True
@@ -623,7 +633,7 @@ Partial Class frmMain
         Me.dgvMediaList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMediaList.ShowCellErrors = False
         Me.dgvMediaList.ShowRowErrors = False
-        Me.dgvMediaList.Size = New System.Drawing.Size(308, 568)
+        Me.dgvMediaList.Size = New System.Drawing.Size(308, 545)
         Me.dgvMediaList.TabIndex = 10
         '
         'mnuMediaList
@@ -719,10 +729,10 @@ Partial Class frmMain
         Me.tabsMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tabsMain.Controls.Add(Me.tabMovies)
-        Me.tabsMain.Location = New System.Drawing.Point(1, 4)
+        Me.tabsMain.Location = New System.Drawing.Point(3, 3)
         Me.tabsMain.Name = "tabsMain"
         Me.tabsMain.SelectedIndex = 0
-        Me.tabsMain.Size = New System.Drawing.Size(309, 35)
+        Me.tabsMain.Size = New System.Drawing.Size(306, 35)
         Me.tabsMain.TabIndex = 8
         '
         'tabMovies
@@ -730,7 +740,7 @@ Partial Class frmMain
         Me.tabMovies.Location = New System.Drawing.Point(4, 22)
         Me.tabMovies.Name = "tabMovies"
         Me.tabMovies.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabMovies.Size = New System.Drawing.Size(301, 9)
+        Me.tabMovies.Size = New System.Drawing.Size(298, 9)
         Me.tabMovies.TabIndex = 0
         Me.tabMovies.Text = "Movies"
         Me.tabMovies.UseVisualStyleBackColor = True
@@ -1894,6 +1904,65 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
+        'btnFilterDown
+        '
+        Me.btnFilterDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterDown.BackColor = System.Drawing.SystemColors.Control
+        Me.btnFilterDown.Enabled = False
+        Me.btnFilterDown.Location = New System.Drawing.Point(268, 1)
+        Me.btnFilterDown.Name = "btnFilterDown"
+        Me.btnFilterDown.Size = New System.Drawing.Size(30, 22)
+        Me.btnFilterDown.TabIndex = 28
+        Me.btnFilterDown.Text = "v"
+        Me.btnFilterDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFilterDown.UseVisualStyleBackColor = False
+        '
+        'btnFilterUp
+        '
+        Me.btnFilterUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterUp.BackColor = System.Drawing.SystemColors.Control
+        Me.btnFilterUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterUp.Location = New System.Drawing.Point(236, 1)
+        Me.btnFilterUp.Name = "btnFilterUp"
+        Me.btnFilterUp.Size = New System.Drawing.Size(30, 22)
+        Me.btnFilterUp.TabIndex = 27
+        Me.btnFilterUp.Text = "^"
+        Me.btnFilterUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFilterUp.UseVisualStyleBackColor = False
+        '
+        'tmrFilterAni
+        '
+        Me.tmrFilterAni.Interval = 1
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(92, 64)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(44, 13)
+        Me.Label2.TabIndex = 29
+        Me.Label2.Text = "Source:"
+        '
+        'cbFilterSource
+        '
+        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterSource.FormattingEnabled = True
+        Me.cbFilterSource.Location = New System.Drawing.Point(136, 60)
+        Me.cbFilterSource.Name = "cbFilterSource"
+        Me.cbFilterSource.Size = New System.Drawing.Size(166, 21)
+        Me.cbFilterSource.TabIndex = 30
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.pnlSearch)
+        Me.Panel1.Controls.Add(Me.btnMarkAll)
+        Me.Panel1.Controls.Add(Me.tabsMain)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(308, 56)
+        Me.Panel1.TabIndex = 14
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1962,6 +2031,7 @@ Partial Class frmMain
         Me.tsMain.PerformLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2147,4 +2217,10 @@ Partial Class frmMain
     Friend WithEvents SetsManagerToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents ClearAllCachesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents btnFilterDown As System.Windows.Forms.Button
+    Friend WithEvents btnFilterUp As System.Windows.Forms.Button
+    Friend WithEvents tmrFilterAni As System.Windows.Forms.Timer
+    Friend WithEvents cbFilterSource As System.Windows.Forms.ComboBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
 End Class
