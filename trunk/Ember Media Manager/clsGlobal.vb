@@ -346,6 +346,15 @@ Public Class Master
         Return sReturn
     End Function
 
+    Public Shared Function IsStacked(ByVal sName As String) As Boolean
+        If Regex.IsMatch(sName, "(?i)[ _\.-]+cd[ _\.-]*([0-9a-d]+)") OrElse Regex.IsMatch(sName, "(?i)[ _\.-]+dvd[ _\.-]*([0-9a-d]+)") OrElse _
+        Regex.IsMatch(sName, "(?i)[ _\.-]+part[ _\.-]*([0-9a-d]+)") OrElse Regex.IsMatch(sName, "(?i)[ _\.-]+dis[ck][ _\.-]*([0-9a-d]+)") Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     Public Shared Function CleanStackingMarkers(ByVal sPath As String) As String
 
         '//
@@ -385,12 +394,16 @@ Public Class Master
         '\\
 
         Try
+            Dim sMoviePath As String = String.Empty
             If Directory.Exists(sPath) Then
                 Dim Dirs As String() = Directory.GetDirectories(sPath)
 
                 For Each inDir As String In Dirs
                     If isValidDir(inDir) Then
-                        MediaList.Add(New FileAndSource With {.Filename = Master.GetMoviePath(inDir), .Source = sPath, .isFile = False})
+                        sMoviePath = Master.GetMoviePath(inDir)
+                        If Not String.IsNullOrEmpty(sMoviePath) Then
+                            MediaList.Add(New FileAndSource With {.Filename = sMoviePath, .Source = sPath, .isFile = False})
+                        End If
                     End If
 
                     If eSettings.ScanRecursive Then
@@ -422,7 +435,8 @@ Public Class Master
 
                 For Each lFile As FileInfo In lFi
                     If Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
-                    Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") Then
+                    Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
+                    ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length > Master.eSettings.SkipLessThan * 1048576) Then
                         tmpList.Add(CleanStackingMarkers(lFile.FullName))
                         MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sPath, .isFile = True})
                     End If
@@ -1446,7 +1460,8 @@ Public Class Master
 
         For Each sFile As FileInfo In lFi
             If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
-                Not sFile.Name.ToLower.Contains("-trailer") AndAlso Not sFile.Name.ToLower.Contains("[trailer") Then
+                Not sFile.Name.ToLower.Contains("-trailer") AndAlso Not sFile.Name.ToLower.Contains("[trailer") AndAlso _
+                ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(sFile.Name)) OrElse sFile.Length > Master.eSettings.SkipLessThan * 1048576) Then
                 tFile = sFile.FullName
                 Exit For
             End If

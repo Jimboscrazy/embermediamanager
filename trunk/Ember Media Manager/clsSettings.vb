@@ -123,6 +123,8 @@ Public Class emmSettings
     Private _useimgcache As Boolean
     Private _useimgcacheupdater As Boolean
     Private _persistimagecache As Boolean
+    Private _skiplessthan As Integer
+    Private _skipstacksizecheck As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -1006,6 +1008,24 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property SkipLessThan() As Integer
+        Get
+            Return Me._skiplessthan
+        End Get
+        Set(ByVal value As Integer)
+            Me._skiplessthan = value
+        End Set
+    End Property
+
+    Public Property SkipStackSizeCheck() As Boolean
+        Get
+            Return Me._skipstacksizecheck
+        End Get
+        Set(ByVal value As Boolean)
+            Me._skipstacksizecheck = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -1117,6 +1137,8 @@ Public Class emmSettings
         Me._useimgcache = True
         Me._useimgcacheupdater = False
         Me._persistimagecache = False
+        Me._skiplessthan = 300
+        Me._skipstacksizecheck = False
         Me._sets.Clear()
         Me._xbmccoms.Clear()
     End Sub

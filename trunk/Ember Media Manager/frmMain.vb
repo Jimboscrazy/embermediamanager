@@ -1342,35 +1342,37 @@ Public Class frmMain
         ' Thread to count directories to prepare for loading media
         '\\
 
-        'remove files from the db that have been deleted from the hd
-        If Me.dtMedia.Rows.Count > 0 Then
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    SQLcommand.CommandText = "DELETE FROM movies WHERE id = (?);"
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    For Each drvRow As DataRow In Me.dtMedia.Rows
-                        If Not File.Exists(drvRow.Item(1)) Then
-                            parID.Value = drvRow.Item(0)
-                            SQLcommand.ExecuteNonQuery()
-                        End If
-                    Next
-                End Using
-                SQLtransaction.Commit()
-            End Using
-        End If
-
         Dim dirArray() As String
         Dim alMedia As New ArrayList
 
-        Select Case Me.loadType
-            Case 2 'shows
-            Case 3 'music
-            Case Else 'default to movies
-                'load all the movie folders from settings
-                alMedia = Master.eSettings.MovieFolders
-        End Select
-
         Try
+            'remove files from the db that have been deleted from the hd
+            If Me.dtMedia.Rows.Count > 0 Then
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                        SQLcommand.CommandText = "DELETE FROM movies WHERE id = (?);"
+                        Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                        For Each drvRow As DataRow In Me.dtMedia.Rows
+                            If Not File.Exists(drvRow.Item(1)) Then
+                                parID.Value = drvRow.Item(0)
+                                SQLcommand.ExecuteNonQuery()
+                            End If
+                        Next
+                    End Using
+                    SQLtransaction.Commit()
+                End Using
+            End If
+
+            Master.MediaList.Clear()
+
+            Select Case Me.loadType
+                Case 2 'shows
+                Case 3 'music
+                Case Else 'default to movies
+                    'load all the movie folders from settings
+                    alMedia = Master.eSettings.MovieFolders
+            End Select
+
             For Each movieSource As String In alMedia
 
                 dirArray = Split(movieSource, "|")
@@ -1385,6 +1387,33 @@ Public Class frmMain
                     Return
                 End If
             Next
+
+            'remove any db entries that are not in the media list
+            Dim dtMediaList As New DataTable
+            Dim sqlDA As New SQLite.SQLiteDataAdapter
+            Dim MLFind As New MovieListFind
+            Dim MLFound As New Master.FileAndSource
+            sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies ORDER BY title", Master.SQLcn)
+            Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
+            sqlDA.Fill(dtMediaList)
+            If dtMediaList.Rows.Count > 0 Then
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                        SQLcommand.CommandText = "DELETE FROM movies WHERE path = (?);"
+                        Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
+                        For Each mRow As DataRow In dtMediaList.Rows
+                            MLFind.SearchString = mRow.Item(1)
+                            MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
+                            If IsNothing(MLFound) Then
+                                parPath.Value = mRow.Item(1)
+                                SQLcommand.ExecuteNonQuery()
+                            End If
+                        Next
+                    End Using
+                    SQLtransaction.Commit()
+                End Using
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -3750,6 +3779,28 @@ doCancel:
             Me.LoadInfo(Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False, Me.dgvMediaList.Item(2, iRow).Value)
         End If
     End Sub
+
+    Friend Class MovieListFind
+
+        Private _searchstring As String = String.Empty
+
+        Public WriteOnly Property SearchString() As String
+            Set(ByVal value As String)
+                _searchstring = value
+            End Set
+        End Property
+
+        Public Function Find(ByVal FAS As Master.FileAndSource) As Boolean
+            If Not IsNothing(FAS) AndAlso FAS.Filename = _searchstring Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
+
+    End Class
+
+
 #End Region '*** Routines/Functions
 
 End Class
