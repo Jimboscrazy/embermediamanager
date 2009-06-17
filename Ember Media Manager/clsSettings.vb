@@ -1146,7 +1146,7 @@ Public Class emmSettings
     Public Sub Save()
         Try
             Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
-            Dim xmlWriter As New StreamWriter(Path.Combine(Application.StartupPath, "settings.xml"))
+            Dim xmlWriter As New StreamWriter(Path.Combine(Application.StartupPath, "Settings.xml"))
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
@@ -1157,8 +1157,8 @@ Public Class emmSettings
     Public Sub Load()
         Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
         Try
-            If File.Exists("settings.xml") Then
-                Dim strmReader As New StreamReader("settings.xml")
+            If File.Exists(Path.Combine(Application.StartupPath, "Settings.xml")) Then
+                Dim strmReader As New StreamReader(Path.Combine(Application.StartupPath, "Settings.xml"))
                 Master.eSettings = CType(xmlSerial.Deserialize(strmReader), emmSettings)
                 strmReader.Close()
             Else
