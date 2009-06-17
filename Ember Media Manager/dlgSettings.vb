@@ -871,6 +871,15 @@ Public Class dlgSettings
     Private Sub chkUseImgCacheUpdaters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseImgCacheUpdaters.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub txtSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSkipLessThan.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
+    Private Sub txtSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSkipLessThan.TextChanged
+        Me.btnApply.Enabled = True
+        Me.doRefresh = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1059,6 +1068,8 @@ Public Class dlgSettings
             Master.eSettings.UseImgCache = Me.chkUseImgCache.Checked
             Master.eSettings.UseImgCacheUpdaters = Me.chkUseImgCacheUpdaters.Checked
             Master.eSettings.PersistImgCache = Me.chkPersistImgCache.Checked
+            Master.eSettings.SkipLessThan = Convert.ToInt32(Me.txtSkipLessThan.Text)
+            Master.eSettings.SkipStackSizeCheck = Me.chkSkipStackedSizeCheck.Checked
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
 
@@ -1205,6 +1216,8 @@ Public Class dlgSettings
             Me.chkUseImgCache.Checked = Master.eSettings.UseImgCache
             Me.chkUseImgCacheUpdaters.Checked = Master.eSettings.UseImgCacheUpdaters
             Me.chkPersistImgCache.Checked = Master.eSettings.PersistImgCache
+            Me.txtSkipLessThan.Text = Master.eSettings.SkipLessThan.ToString
+            Me.chkSkipStackedSizeCheck.Checked = Master.eSettings.SkipStackSizeCheck
 
             If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
                 Dim genreArray() As String
@@ -1276,5 +1289,6 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
+
 
 End Class

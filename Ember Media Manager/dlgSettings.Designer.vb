@@ -24,13 +24,13 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9})
+        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13})
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
@@ -208,12 +208,17 @@ Partial Class dlgSettings
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
         Me.pnlSources = New System.Windows.Forms.Panel
+        Me.GroupBox19 = New System.Windows.Forms.GroupBox
+        Me.Label21 = New System.Windows.Forms.Label
+        Me.txtSkipLessThan = New System.Windows.Forms.TextBox
+        Me.Label20 = New System.Windows.Forms.Label
         Me.pnlImages = New System.Windows.Forms.Panel
         Me.GroupBox17 = New System.Windows.Forms.GroupBox
         Me.chkUseImgCacheUpdaters = New System.Windows.Forms.CheckBox
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
+        Me.chkSkipStackedSizeCheck = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -242,6 +247,7 @@ Partial Class dlgSettings
         Me.pnlExtensions.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
         Me.pnlSources.SuspendLayout()
+        Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
         Me.SuspendLayout()
@@ -820,10 +826,9 @@ Partial Class dlgSettings
         '
         'chkScanRecursive
         '
-        Me.chkScanRecursive.AutoSize = True
-        Me.chkScanRecursive.Location = New System.Drawing.Point(5, 133)
+        Me.chkScanRecursive.Location = New System.Drawing.Point(6, 59)
         Me.chkScanRecursive.Name = "chkScanRecursive"
-        Me.chkScanRecursive.Size = New System.Drawing.Size(312, 17)
+        Me.chkScanRecursive.Size = New System.Drawing.Size(187, 37)
         Me.chkScanRecursive.TabIndex = 66
         Me.chkScanRecursive.Text = "Scan Folder Sources Recursively (Increases Scanning Time)"
         Me.chkScanRecursive.UseVisualStyleBackColor = True
@@ -941,7 +946,7 @@ Partial Class dlgSettings
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
-        Me.GroupBox8.Location = New System.Drawing.Point(5, 152)
+        Me.GroupBox8.Location = New System.Drawing.Point(229, 121)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(356, 146)
         Me.GroupBox8.TabIndex = 64
@@ -1118,10 +1123,9 @@ Partial Class dlgSettings
         '
         'chkTitleFromNfo
         '
-        Me.chkTitleFromNfo.AutoSize = True
-        Me.chkTitleFromNfo.Location = New System.Drawing.Point(176, 115)
+        Me.chkTitleFromNfo.Location = New System.Drawing.Point(6, 34)
         Me.chkTitleFromNfo.Name = "chkTitleFromNfo"
-        Me.chkTitleFromNfo.Size = New System.Drawing.Size(302, 17)
+        Me.chkTitleFromNfo.Size = New System.Drawing.Size(187, 31)
         Me.chkTitleFromNfo.TabIndex = 53
         Me.chkTitleFromNfo.Text = "Use Title From NFO if Available (Increases Scanning Time)"
         Me.chkTitleFromNfo.UseVisualStyleBackColor = True
@@ -1188,7 +1192,7 @@ Partial Class dlgSettings
         'chkUseFolderNames
         '
         Me.chkUseFolderNames.AutoSize = True
-        Me.chkUseFolderNames.Location = New System.Drawing.Point(5, 115)
+        Me.chkUseFolderNames.Location = New System.Drawing.Point(6, 16)
         Me.chkUseFolderNames.Name = "chkUseFolderNames"
         Me.chkUseFolderNames.Size = New System.Drawing.Size(146, 17)
         Me.chkUseFolderNames.TabIndex = 56
@@ -1851,42 +1855,42 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode1.ImageIndex = 4
-        TreeNode1.Name = "nExts"
-        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode1.SelectedImageIndex = 4
-        TreeNode1.Text = "File System"
-        TreeNode2.ImageIndex = 1
-        TreeNode2.Name = "nXBMCCom"
-        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode2.SelectedImageIndex = 1
-        TreeNode2.Text = "XBMC Communication"
-        TreeNode3.ImageIndex = 0
-        TreeNode3.Name = "nGeneral"
-        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode3.SelectedImageIndex = 0
-        TreeNode3.Text = "General"
-        TreeNode4.ImageIndex = 5
-        TreeNode4.Name = "nSources"
-        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode4.SelectedImageIndex = 5
-        TreeNode4.Text = "Files and Sources"
-        TreeNode5.ImageIndex = 3
-        TreeNode5.Name = "nScraper"
-        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode5.SelectedImageIndex = 3
-        TreeNode5.Text = "Scraper - Data"
-        TreeNode6.ImageIndex = 6
-        TreeNode6.Name = "nImages"
-        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode6.SelectedImageIndex = 6
-        TreeNode6.Text = "Scraper - Images"
-        TreeNode7.ImageIndex = 2
-        TreeNode7.Name = "nMovies"
-        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode7.SelectedImageIndex = 2
-        TreeNode7.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
+        TreeNode8.ImageIndex = 4
+        TreeNode8.Name = "nExts"
+        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 4
+        TreeNode8.Text = "File System"
+        TreeNode9.ImageIndex = 1
+        TreeNode9.Name = "nXBMCCom"
+        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode9.SelectedImageIndex = 1
+        TreeNode9.Text = "XBMC Communication"
+        TreeNode10.ImageIndex = 0
+        TreeNode10.Name = "nGeneral"
+        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode10.SelectedImageIndex = 0
+        TreeNode10.Text = "General"
+        TreeNode11.ImageIndex = 5
+        TreeNode11.Name = "nSources"
+        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode11.SelectedImageIndex = 5
+        TreeNode11.Text = "Files and Sources"
+        TreeNode12.ImageIndex = 3
+        TreeNode12.Name = "nScraper"
+        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode12.SelectedImageIndex = 3
+        TreeNode12.Text = "Scraper - Data"
+        TreeNode13.ImageIndex = 6
+        TreeNode13.Name = "nImages"
+        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode13.SelectedImageIndex = 6
+        TreeNode13.Text = "Scraper - Images"
+        TreeNode14.ImageIndex = 2
+        TreeNode14.Name = "nMovies"
+        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode14.SelectedImageIndex = 2
+        TreeNode14.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode14})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2120,13 +2124,11 @@ Partial Class dlgSettings
         '
         Me.pnlSources.BackColor = System.Drawing.Color.White
         Me.pnlSources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlSources.Controls.Add(Me.GroupBox19)
         Me.pnlSources.Controls.Add(Me.GroupBox16)
         Me.pnlSources.Controls.Add(Me.lvMovies)
-        Me.pnlSources.Controls.Add(Me.chkScanRecursive)
         Me.pnlSources.Controls.Add(Me.btnMovieAddFiles)
         Me.pnlSources.Controls.Add(Me.btnMovieRem)
-        Me.pnlSources.Controls.Add(Me.chkTitleFromNfo)
-        Me.pnlSources.Controls.Add(Me.chkUseFolderNames)
         Me.pnlSources.Controls.Add(Me.btnMovieAddFolder)
         Me.pnlSources.Controls.Add(Me.GroupBox8)
         Me.pnlSources.Location = New System.Drawing.Point(208, 96)
@@ -2134,6 +2136,48 @@ Partial Class dlgSettings
         Me.pnlSources.Size = New System.Drawing.Size(597, 353)
         Me.pnlSources.TabIndex = 67
         Me.pnlSources.Visible = False
+        '
+        'GroupBox19
+        '
+        Me.GroupBox19.Controls.Add(Me.chkSkipStackedSizeCheck)
+        Me.GroupBox19.Controls.Add(Me.Label21)
+        Me.GroupBox19.Controls.Add(Me.txtSkipLessThan)
+        Me.GroupBox19.Controls.Add(Me.Label20)
+        Me.GroupBox19.Controls.Add(Me.chkUseFolderNames)
+        Me.GroupBox19.Controls.Add(Me.chkTitleFromNfo)
+        Me.GroupBox19.Controls.Add(Me.chkScanRecursive)
+        Me.GroupBox19.Location = New System.Drawing.Point(9, 121)
+        Me.GroupBox19.Name = "GroupBox19"
+        Me.GroupBox19.Size = New System.Drawing.Size(211, 172)
+        Me.GroupBox19.TabIndex = 68
+        Me.GroupBox19.TabStop = False
+        Me.GroupBox19.Text = "Movie Naming/Detection"
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(132, 119)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(59, 13)
+        Me.Label21.TabIndex = 69
+        Me.Label21.Text = "Megabytes"
+        '
+        'txtSkipLessThan
+        '
+        Me.txtSkipLessThan.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSkipLessThan.Location = New System.Drawing.Point(26, 115)
+        Me.txtSkipLessThan.Name = "txtSkipLessThan"
+        Me.txtSkipLessThan.Size = New System.Drawing.Size(100, 20)
+        Me.txtSkipLessThan.TabIndex = 68
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(3, 97)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(97, 13)
+        Me.Label20.TabIndex = 67
+        Me.Label20.Text = "Skip files less than:"
         '
         'pnlImages
         '
@@ -2202,6 +2246,15 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
+        'chkSkipStackedSizeCheck
+        '
+        Me.chkSkipStackedSizeCheck.Location = New System.Drawing.Point(26, 141)
+        Me.chkSkipStackedSizeCheck.Name = "chkSkipStackedSizeCheck"
+        Me.chkSkipStackedSizeCheck.Size = New System.Drawing.Size(183, 19)
+        Me.chkSkipStackedSizeCheck.TabIndex = 70
+        Me.chkSkipStackedSizeCheck.Text = "Skip Size Check of Stacked Files"
+        Me.chkSkipStackedSizeCheck.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -2216,13 +2269,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2278,7 +2331,8 @@ Partial Class dlgSettings
         Me.GroupBox18.ResumeLayout(False)
         Me.GroupBox18.PerformLayout()
         Me.pnlSources.ResumeLayout(False)
-        Me.pnlSources.PerformLayout()
+        Me.GroupBox19.ResumeLayout(False)
+        Me.GroupBox19.PerformLayout()
         Me.pnlImages.ResumeLayout(False)
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
@@ -2468,4 +2522,9 @@ Partial Class dlgSettings
     Friend WithEvents chkPersistImgCache As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseImgCache As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseImgCacheUpdaters As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox19 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label21 As System.Windows.Forms.Label
+    Friend WithEvents txtSkipLessThan As System.Windows.Forms.TextBox
+    Friend WithEvents Label20 As System.Windows.Forms.Label
+    Friend WithEvents chkSkipStackedSizeCheck As System.Windows.Forms.CheckBox
 End Class
