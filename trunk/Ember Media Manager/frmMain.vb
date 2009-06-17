@@ -343,7 +343,6 @@ Public Class frmMain
                     End Try
                 Else
                     Try
-                        MsgBox("blah") 'deleteme
 
                         If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
                             Master.currPath = MoviePath
@@ -351,7 +350,6 @@ Public Class frmMain
                             Master.currNFO = Master.GetNfoPath(MoviePath, isFile)
                             Master.currMovie = If(Not String.IsNullOrEmpty(Master.currNFO), Master.LoadMovieFromNFO(Master.currNFO), New Media.Movie)
                             Me.tmpTitle = Master.FilterName(If(isFile, Path.GetFileNameWithoutExtension(MoviePath), Directory.GetParent(MoviePath).Name))
-                            MsgBox("blah2") 'deleteme
                             Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, clAsk)
                         Else
                             Me.ScraperDone = True
