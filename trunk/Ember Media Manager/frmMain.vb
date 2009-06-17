@@ -48,6 +48,7 @@ Public Class frmMain
     Private loadType As Integer = 0
     Private aniType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private aniRaise As Boolean = False
+    Private aniFilterRaise As Boolean = False
     Private MainPoster As New Images
     Private MainFanart As New Images
     Private pbGenre() As PictureBox = Nothing
@@ -320,6 +321,7 @@ Public Class frmMain
                 Me.SetMenus()
 
                 Me.pnlInfoPanel.Height = 25
+                Me.pnlFilter.Height = 25
                 Me.ClearInfo()
 
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
@@ -890,11 +892,11 @@ Public Class frmMain
     End Sub
 
     Private Sub rbFilterAnd_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd.CheckedChanged
-        If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked Then Me.RunFilter()
+        If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
     End Sub
 
     Private Sub rbFilterOr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.CheckedChanged
-        If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked Then Me.RunFilter()
+        If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
     End Sub
 
     Private Sub chkFilterDupe_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.CheckedChanged
@@ -902,9 +904,11 @@ Public Class frmMain
         Me.chkFilterNew.Enabled = Not chkFilterDupe.Checked
         Me.rbFilterAnd.Enabled = Not chkFilterDupe.Checked
         Me.rbFilterOr.Enabled = Not chkFilterDupe.Checked
+        Me.cbFilterSource.Enabled = Not chkFilterDupe.Checked
         If Me.chkFilterDupe.Checked Then
             Me.chkFilterMark.Checked = False
             Me.chkFilterNew.Checked = False
+            Me.cbFilterSource.Text = "All"
         End If
         Me.RunFilter()
     End Sub
@@ -1391,6 +1395,10 @@ Public Class frmMain
                             If IsNothing(MLFound) Then
                                 parPath.Value = mRow.Item(1)
                                 SQLcommand.ExecuteNonQuery()
+                            End If
+                            If Me.bwPrelim.CancellationPending Then
+                                e.Cancel = True
+                                Return
                             End If
                         Next
                     End Using
@@ -3425,6 +3433,13 @@ doCancel:
                 Me.mnuNewAskFanart.Enabled = False
             End If
 
+            'not technically a menu, but it's a good place to put it
+            cbFilterSource.Items.Clear()
+            cbFilterSource.Items.Add("All")
+            For Each movieSource As String In Master.eSettings.MovieFolders
+                cbFilterSource.Items.Add(Split(movieSource, "|").First)
+            Next
+            cbFilterSource.Text = "All"
         End With
     End Sub
 
@@ -3508,11 +3523,37 @@ doCancel:
     End Sub
 
     Private Sub EnableFilters(ByVal isEnabled As Boolean)
-        Me.chkFilterDupe.Enabled = isEnabled
-        Me.chkFilterMark.Enabled = isEnabled
-        Me.chkFilterNew.Enabled = isEnabled
-        Me.rbFilterOr.Enabled = isEnabled
-        Me.rbFilterAnd.Enabled = isEnabled
+        If isEnabled Then
+            If Me.chkFilterDupe.Checked Then
+                Me.chkFilterDupe.Enabled = True
+                Me.chkFilterMark.Enabled = False
+                Me.chkFilterNew.Enabled = False
+                Me.rbFilterOr.Enabled = False
+                Me.rbFilterAnd.Enabled = False
+                Me.cbFilterSource.Enabled = False
+            ElseIf Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then
+                Me.chkFilterDupe.Enabled = False
+                Me.chkFilterMark.Enabled = True
+                Me.chkFilterNew.Enabled = True
+                Me.rbFilterOr.Enabled = True
+                Me.rbFilterAnd.Enabled = True
+                Me.cbFilterSource.Enabled = True
+            Else
+                Me.chkFilterDupe.Enabled = True
+                Me.chkFilterMark.Enabled = True
+                Me.chkFilterNew.Enabled = True
+                Me.rbFilterOr.Enabled = True
+                Me.rbFilterAnd.Enabled = True
+                Me.cbFilterSource.Enabled = True
+            End If
+        Else
+            Me.chkFilterDupe.Enabled = False
+            Me.chkFilterMark.Enabled = False
+            Me.chkFilterNew.Enabled = False
+            Me.rbFilterOr.Enabled = False
+            Me.rbFilterAnd.Enabled = False
+            Me.cbFilterSource.Enabled = False
+        End If
     End Sub
 
     Private Sub ClearFilters()
@@ -3526,6 +3567,8 @@ doCancel:
         Me.rbFilterOr.Checked = False
         Me.rbFilterAnd.Enabled = True
         Me.rbFilterAnd.Checked = True
+        Me.cbFilterSource.Enabled = True
+        Me.cbFilterSource.Text = "All"
     End Sub
 
     Private Sub RunFilter()
@@ -3689,12 +3732,13 @@ doCancel:
                     .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Descending)
                     .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
-                    .SetFilterColors()
+                    If .dgvMediaList.RowCount > 0 Then
+                        .SetFilterColors()
 
-                    'Set current cell and automatically load the info for the first movie in the list
-                    .dgvMediaList.Rows(iIndex).Cells(3).Selected = True
-                    .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
-
+                        'Set current cell and automatically load the info for the first movie in the list
+                        .dgvMediaList.Rows(iIndex).Cells(3).Selected = True
+                        .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
+                    End If
                     .btnUp.Enabled = True
                     .btnMid.Enabled = True
 
@@ -3787,4 +3831,66 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
+    Private Sub btnFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp.Click
+        '//
+        ' Begin animation to raise panel all the way up
+        '\\
+
+        Me.aniFilterRaise = True
+        Me.tmrFilterAni.Start()
+    End Sub
+
+    Private Sub btnFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown.Click
+        '//
+        ' Begin animation to lower panel all the way down
+        '\\
+
+        Me.aniFilterRaise = False
+        Me.tmrFilterAni.Start()
+    End Sub
+
+    Private Sub tmrFilterAni_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrFilterAni.Tick
+        '//
+        ' Just some crappy animation to make the GUI slightly more interesting
+        '\\
+
+        Try
+            If Me.aniFilterRaise Then
+                Me.pnlFilter.Height += 5
+            Else
+                Me.pnlFilter.Height -= 5
+            End If
+
+            If Me.pnlFilter.Height = 25 Then
+                Me.tmrFilterAni.Stop()
+                Me.btnFilterUp.Enabled = True
+                Me.btnFilterDown.Enabled = False
+            ElseIf Me.pnlFilter.Height = 85 Then
+                Me.tmrFilterAni.Stop()
+                Me.btnFilterUp.Enabled = False
+                Me.btnFilterDown.Enabled = True
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterSource.SelectedIndexChanged
+        Try
+            Me.chkFilterDupe.Enabled = cbFilterSource.Text = "All"
+            For i As Integer = Me.FilterArray.Count - 1 To 0 Step -1
+                If Strings.Left(Me.FilterArray(i), 8) = "source =" Then
+                    Me.FilterArray.RemoveAt(i)
+                End If
+            Next
+
+            If Not cbFilterSource.Text = "All" Then
+                Me.FilterArray.Add(String.Format("source = '{0}'", cbFilterSource.Text))
+                Me.chkFilterDupe.Checked = False
+            End If
+            Me.RunFilter()
+        Catch ex As Exception
+        End Try
+    End Sub
 End Class
