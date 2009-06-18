@@ -597,12 +597,14 @@ mPlot:
                                      Where Not P1.Groups("name").ToString = String.Empty _
                                      Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString) Take 1
                             IMDBMovie.StudioReal = Ps(0).ToString.Trim
+                            If Not Master.eSettings.UseStudioTags Then IMDBMovie.Studio = IMDBMovie.StudioReal
                         End If
                     Else
                         D = HTML.IndexOf("<h5>Company:</h5>")
                         If D > 0 Then W = HTML.IndexOf("</div>", D)
                         If D > 0 AndAlso W > 0 Then
                             IMDBMovie.StudioReal = Web.HttpUtility.HtmlDecode(Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim)
+                            If Not Master.eSettings.UseStudioTags Then IMDBMovie.Studio = IMDBMovie.StudioReal
                         End If
                     End If
                 End If
