@@ -244,11 +244,11 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property UseStudioTags() As String
+    Public Property UseStudioTags() As Boolean
         Get
             Return Me._studiotags
         End Get
-        Set(ByVal value As String)
+        Set(ByVal value As Boolean)
             Me._studiotags = value
         End Set
     End Property
