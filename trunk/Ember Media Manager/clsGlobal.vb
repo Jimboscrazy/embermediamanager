@@ -30,6 +30,7 @@ Imports System.Xml.Serialization
 Imports System.Net
 Imports System.Globalization
 Imports Microsoft.Win32
+Imports System.Runtime.InteropServices
 
 Public Class Master
 
@@ -1915,4 +1916,50 @@ Public Class Master
             Return sURL.Replace(":", "$c$").Replace("/", "$s$")
         End If
     End Function
+
+    Class hashFile
+        'Note: you must remove integer overflow checking.
+        Shared Function ComputeMovieHash(ByVal filename As String) As Byte()
+            Dim result As Byte()
+            Using input As Stream = File.OpenRead(filename)
+                result = ComputeMovieHash(input)
+            End Using
+            Return result
+        End Function
+
+        Shared Function ComputeMovieHash(ByVal input As Stream) As Byte()
+            Dim lhash As System.Int64, streamsize As Long
+            streamsize = input.Length
+            lhash = streamsize
+
+            Dim i As Long = 0
+            Dim buffer As Byte() = New Byte(Marshal.SizeOf(GetType(Long)) - 1) {}
+            While i < 65536 / Marshal.SizeOf(GetType(Long)) AndAlso (input.Read(buffer, 0, Marshal.SizeOf(GetType(Long))) > 0)
+                i += 1
+
+                lhash += BitConverter.ToInt64(buffer, 0)
+            End While
+
+            input.Position = Math.Max(0, streamsize - 65536)
+            i = 0
+            While i < 65536 / Marshal.SizeOf(GetType(Long)) AndAlso (input.Read(buffer, 0, Marshal.SizeOf(GetType(Long))) > 0)
+                i += 1
+                lhash += BitConverter.ToInt64(buffer, 0)
+            End While
+            input.Close()
+            Dim result As Byte() = BitConverter.GetBytes(lhash)
+            Array.Reverse(result)
+            Return result
+        End Function
+
+        Shared Function ToHexadecimal(ByVal bytes As Byte()) As String
+            Dim hexBuilder As New StringBuilder()
+            For i As Integer = 0 To bytes.Length - 1
+                hexBuilder.Append(bytes(i).ToString("x2"))
+            Next
+            Return hexBuilder.ToString()
+        End Function
+
+    End Class
+
 End Class
