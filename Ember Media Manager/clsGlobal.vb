@@ -677,7 +677,7 @@ Public Class Master
         '\\
 
         Try
-            sPath = sPath.Remove(0, sPath.IndexOf("\"))
+            sPath = sPath.Remove(0, sPath.LastIndexOf("\"))
             If Path.GetDirectoryName(sPath).ToLower = "extrathumbs" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "extras" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "video_ts" OrElse _
