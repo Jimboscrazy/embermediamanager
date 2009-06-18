@@ -2924,8 +2924,8 @@ doCancel:
             If Not String.IsNullOrEmpty(Master.currMovie.StudioReal) Then
                 Me.pbStudio.Image = Master.GetStudioImage(Strings.Trim(Master.currMovie.StudioReal))
             ElseIf Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
-                If Strings.InStr(Master.currMovie.Studio, "/") Then
-                    Master.currMovie.StudioReal = Strings.Trim(Strings.Left(Master.currMovie.Studio, Strings.InStr(Master.currMovie.Studio, "/") - 1))
+                If Strings.InStr(Master.currMovie.Studio, " / ") Then
+                    Master.currMovie.StudioReal = Strings.Trim(Strings.Left(Master.currMovie.Studio, Strings.InStr(Master.currMovie.Studio, " / ") - 1))
                     Me.pbStudio.Image = Master.GetStudioImage(Master.currMovie.StudioReal)
                 Else
                     Me.pbStudio.Image = Master.GetStudioImage("####")
@@ -4027,4 +4027,30 @@ doCancel:
         Catch ex As Exception
         End Try
     End Sub
+
+    Private Sub mnuRevertStudioTags_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRevertStudioTags.Click
+        Dim StudioMovie As New Media.Movie
+        Dim StudioNfoPath As String = String.Empty
+
+        For Each drvRow As DataRow In Me.dtMedia.Rows
+            StudioMovie.Clear()
+
+            StudioNfoPath = Master.GetNfoPath(drvRow.Item(1), drvRow.Item(2))
+
+            If Not String.IsNullOrEmpty(StudioNfoPath) Then
+                StudioMovie = Master.LoadMovieFromNFO(StudioNfoPath)
+
+                If Not String.IsNullOrEmpty(StudioMovie.StudioReal) Then
+                    StudioMovie.Studio = StudioMovie.StudioReal
+                ElseIf Not String.IsNullOrEmpty(StudioMovie.Studio) AndAlso StudioMovie.Studio.Contains(" / ") Then
+                    StudioMovie.Studio = Strings.Trim(Strings.Left(StudioMovie.Studio, Strings.InStr(StudioMovie.Studio, " / ") - 1))
+                Else
+                    StudioMovie.Studio = String.Empty
+                End If
+
+                Master.SaveMovieToNFO(StudioMovie, drvRow.Item(1), drvRow.Item(2))
+            End If
+        Next
+    End Sub
+
 End Class
