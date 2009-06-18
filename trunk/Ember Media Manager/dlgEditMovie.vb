@@ -564,7 +564,11 @@ Public Class dlgEditMovie
                 Master.currMovie.Credits = .txtCredits.Text.Trim
                 Master.currMovie.Trailer = .txtTrailer.Text.Trim
                 Master.currMovie.StudioReal = .txtStudio.Text.Trim
-                Master.currMovie.Studio = String.Format("{0} / {1}", .txtStudio.Text.Trim, .txtStudioTag.Text.Trim).Trim
+                If Not String.IsNullOrEmpty(.txtStudioTag.Text) Then
+                    Master.currMovie.Studio = String.Format("{0} / {1}", .txtStudio.Text.Trim, .txtStudioTag.Text.Trim).Trim
+                Else
+                    Master.currMovie.Studio = .txtStudio.Text.Trim
+                End If
 
                 If .lbGenre.CheckedItems.Count > 0 Then
 
