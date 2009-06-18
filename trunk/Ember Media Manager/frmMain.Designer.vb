@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -52,17 +52,6 @@ Partial Class frmMain
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator
         Me.ExportMoviesListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
-        Me.btnMarkAll = New System.Windows.Forms.Button
-        Me.pnlFilter = New System.Windows.Forms.Panel
-        Me.chkFilterDupe = New System.Windows.Forms.CheckBox
-        Me.rbFilterOr = New System.Windows.Forms.RadioButton
-        Me.rbFilterAnd = New System.Windows.Forms.RadioButton
-        Me.chkFilterMark = New System.Windows.Forms.CheckBox
-        Me.lblFilter = New System.Windows.Forms.Label
-        Me.chkFilterNew = New System.Windows.Forms.CheckBox
-        Me.pnlSearch = New System.Windows.Forms.Panel
-        Me.picSearch = New System.Windows.Forms.PictureBox
-        Me.txtSearch = New System.Windows.Forms.TextBox
         Me.dgvMediaList = New System.Windows.Forms.DataGridView
         Me.mnuMediaList = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuTitle = New System.Windows.Forms.ToolStripMenuItem
@@ -78,8 +67,24 @@ Partial Class frmMain
         Me.OpenContainingFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.Panel1 = New System.Windows.Forms.Panel
+        Me.pnlSearch = New System.Windows.Forms.Panel
+        Me.picSearch = New System.Windows.Forms.PictureBox
+        Me.txtSearch = New System.Windows.Forms.TextBox
+        Me.btnMarkAll = New System.Windows.Forms.Button
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
+        Me.pnlFilter = New System.Windows.Forms.Panel
+        Me.cbFilterSource = New System.Windows.Forms.ComboBox
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.btnFilterDown = New System.Windows.Forms.Button
+        Me.btnFilterUp = New System.Windows.Forms.Button
+        Me.chkFilterDupe = New System.Windows.Forms.CheckBox
+        Me.rbFilterOr = New System.Windows.Forms.RadioButton
+        Me.rbFilterAnd = New System.Windows.Forms.RadioButton
+        Me.chkFilterMark = New System.Windows.Forms.CheckBox
+        Me.lblFilter = New System.Windows.Forms.Label
+        Me.chkFilterNew = New System.Windows.Forms.CheckBox
         Me.pnlCancel = New System.Windows.Forms.Panel
         Me.pbCanceling = New System.Windows.Forms.ProgressBar
         Me.lblCanceling = New System.Windows.Forms.Label
@@ -206,23 +211,20 @@ Partial Class frmMain
         Me.tmrLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
-        Me.btnFilterDown = New System.Windows.Forms.Button
-        Me.btnFilterUp = New System.Windows.Forms.Button
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.cbFilterSource = New System.Windows.Forms.ComboBox
-        Me.Panel1 = New System.Windows.Forms.Panel
+        Me.mnuRevertStudioTags = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
         Me.scMain.Panel2.SuspendLayout()
         Me.scMain.SuspendLayout()
-        Me.pnlFilter.SuspendLayout()
-        Me.pnlSearch.SuspendLayout()
-        CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.mnuMediaList.SuspendLayout()
+        Me.Panel1.SuspendLayout()
+        Me.pnlSearch.SuspendLayout()
+        CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabsMain.SuspendLayout()
+        Me.pnlFilter.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlNoInfo.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -255,7 +257,6 @@ Partial Class frmMain
         Me.tsMain.SuspendLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -387,7 +388,7 @@ Partial Class frmMain
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.ClearAllCachesToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.ClearAllCachesToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.ToolsToolStripMenuItem.Text = "Tools"
@@ -478,145 +479,13 @@ Partial Class frmMain
         Me.scMain.SplitterDistance = 308
         Me.scMain.TabIndex = 7
         '
-        'btnMarkAll
-        '
-        Me.btnMarkAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnMarkAll.Image = CType(resources.GetObject("btnMarkAll.Image"), System.Drawing.Image)
-        Me.btnMarkAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMarkAll.Location = New System.Drawing.Point(226, 1)
-        Me.btnMarkAll.Name = "btnMarkAll"
-        Me.btnMarkAll.Size = New System.Drawing.Size(81, 21)
-        Me.btnMarkAll.TabIndex = 13
-        Me.btnMarkAll.Text = "Mark All"
-        Me.btnMarkAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMarkAll.UseVisualStyleBackColor = True
-        '
-        'pnlFilter
-        '
-        Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilter.Controls.Add(Me.cbFilterSource)
-        Me.pnlFilter.Controls.Add(Me.Label2)
-        Me.pnlFilter.Controls.Add(Me.btnFilterDown)
-        Me.pnlFilter.Controls.Add(Me.btnFilterUp)
-        Me.pnlFilter.Controls.Add(Me.chkFilterDupe)
-        Me.pnlFilter.Controls.Add(Me.rbFilterOr)
-        Me.pnlFilter.Controls.Add(Me.rbFilterAnd)
-        Me.pnlFilter.Controls.Add(Me.chkFilterMark)
-        Me.pnlFilter.Controls.Add(Me.lblFilter)
-        Me.pnlFilter.Controls.Add(Me.chkFilterNew)
-        Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter.Location = New System.Drawing.Point(0, 601)
-        Me.pnlFilter.Name = "pnlFilter"
-        Me.pnlFilter.Size = New System.Drawing.Size(308, 85)
-        Me.pnlFilter.TabIndex = 12
-        '
-        'chkFilterDupe
-        '
-        Me.chkFilterDupe.AutoSize = True
-        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 23)
-        Me.chkFilterDupe.Name = "chkFilterDupe"
-        Me.chkFilterDupe.Size = New System.Drawing.Size(108, 17)
-        Me.chkFilterDupe.TabIndex = 26
-        Me.chkFilterDupe.Text = "Duplicate Movies"
-        Me.chkFilterDupe.UseVisualStyleBackColor = True
-        '
-        'rbFilterOr
-        '
-        Me.rbFilterOr.AutoSize = True
-        Me.rbFilterOr.Location = New System.Drawing.Point(258, 40)
-        Me.rbFilterOr.Name = "rbFilterOr"
-        Me.rbFilterOr.Size = New System.Drawing.Size(36, 17)
-        Me.rbFilterOr.TabIndex = 25
-        Me.rbFilterOr.Text = "Or"
-        Me.rbFilterOr.UseVisualStyleBackColor = True
-        '
-        'rbFilterAnd
-        '
-        Me.rbFilterAnd.AutoSize = True
-        Me.rbFilterAnd.Checked = True
-        Me.rbFilterAnd.Location = New System.Drawing.Point(258, 22)
-        Me.rbFilterAnd.Name = "rbFilterAnd"
-        Me.rbFilterAnd.Size = New System.Drawing.Size(44, 17)
-        Me.rbFilterAnd.TabIndex = 24
-        Me.rbFilterAnd.TabStop = True
-        Me.rbFilterAnd.Text = "And"
-        Me.rbFilterAnd.UseVisualStyleBackColor = True
-        '
-        'chkFilterMark
-        '
-        Me.chkFilterMark.AutoSize = True
-        Me.chkFilterMark.Location = New System.Drawing.Point(136, 41)
-        Me.chkFilterMark.Name = "chkFilterMark"
-        Me.chkFilterMark.Size = New System.Drawing.Size(99, 17)
-        Me.chkFilterMark.TabIndex = 23
-        Me.chkFilterMark.Text = "Marked Movies"
-        Me.chkFilterMark.UseVisualStyleBackColor = True
-        '
-        'lblFilter
-        '
-        Me.lblFilter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblFilter.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFilter.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblFilter.Location = New System.Drawing.Point(4, 3)
-        Me.lblFilter.Name = "lblFilter"
-        Me.lblFilter.Size = New System.Drawing.Size(298, 17)
-        Me.lblFilter.TabIndex = 22
-        Me.lblFilter.Text = "Filters"
-        Me.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'chkFilterNew
-        '
-        Me.chkFilterNew.AutoSize = True
-        Me.chkFilterNew.Location = New System.Drawing.Point(136, 23)
-        Me.chkFilterNew.Name = "chkFilterNew"
-        Me.chkFilterNew.Size = New System.Drawing.Size(85, 17)
-        Me.chkFilterNew.TabIndex = 1
-        Me.chkFilterNew.Text = "New Movies"
-        Me.chkFilterNew.UseVisualStyleBackColor = True
-        '
-        'pnlSearch
-        '
-        Me.pnlSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pnlSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlSearch.Controls.Add(Me.picSearch)
-        Me.pnlSearch.Controls.Add(Me.txtSearch)
-        Me.pnlSearch.Location = New System.Drawing.Point(0, 23)
-        Me.pnlSearch.Name = "pnlSearch"
-        Me.pnlSearch.Size = New System.Drawing.Size(308, 33)
-        Me.pnlSearch.TabIndex = 11
-        '
-        'picSearch
-        '
-        Me.picSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.picSearch.Image = CType(resources.GetObject("picSearch.Image"), System.Drawing.Image)
-        Me.picSearch.Location = New System.Drawing.Point(284, 8)
-        Me.picSearch.Name = "picSearch"
-        Me.picSearch.Size = New System.Drawing.Size(16, 16)
-        Me.picSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.picSearch.TabIndex = 1
-        Me.picSearch.TabStop = False
-        '
-        'txtSearch
-        '
-        Me.txtSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSearch.Location = New System.Drawing.Point(7, 6)
-        Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(270, 20)
-        Me.txtSearch.TabIndex = 0
-        '
         'dgvMediaList
         '
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -724,6 +593,63 @@ Partial Class frmMain
         Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
         Me.DeleteMovieToolStripMenuItem.Text = "Delete Movie"
         '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.pnlSearch)
+        Me.Panel1.Controls.Add(Me.btnMarkAll)
+        Me.Panel1.Controls.Add(Me.tabsMain)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(308, 56)
+        Me.Panel1.TabIndex = 14
+        '
+        'pnlSearch
+        '
+        Me.pnlSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pnlSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlSearch.Controls.Add(Me.picSearch)
+        Me.pnlSearch.Controls.Add(Me.txtSearch)
+        Me.pnlSearch.Location = New System.Drawing.Point(0, 23)
+        Me.pnlSearch.Name = "pnlSearch"
+        Me.pnlSearch.Size = New System.Drawing.Size(308, 33)
+        Me.pnlSearch.TabIndex = 11
+        '
+        'picSearch
+        '
+        Me.picSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.picSearch.Image = CType(resources.GetObject("picSearch.Image"), System.Drawing.Image)
+        Me.picSearch.Location = New System.Drawing.Point(284, 8)
+        Me.picSearch.Name = "picSearch"
+        Me.picSearch.Size = New System.Drawing.Size(16, 16)
+        Me.picSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.picSearch.TabIndex = 1
+        Me.picSearch.TabStop = False
+        '
+        'txtSearch
+        '
+        Me.txtSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSearch.Location = New System.Drawing.Point(7, 6)
+        Me.txtSearch.Name = "txtSearch"
+        Me.txtSearch.Size = New System.Drawing.Size(270, 20)
+        Me.txtSearch.TabIndex = 0
+        '
+        'btnMarkAll
+        '
+        Me.btnMarkAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnMarkAll.Image = CType(resources.GetObject("btnMarkAll.Image"), System.Drawing.Image)
+        Me.btnMarkAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMarkAll.Location = New System.Drawing.Point(226, 1)
+        Me.btnMarkAll.Name = "btnMarkAll"
+        Me.btnMarkAll.Size = New System.Drawing.Size(81, 21)
+        Me.btnMarkAll.TabIndex = 13
+        Me.btnMarkAll.Text = "Mark All"
+        Me.btnMarkAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMarkAll.UseVisualStyleBackColor = True
+        '
         'tabsMain
         '
         Me.tabsMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -744,6 +670,136 @@ Partial Class frmMain
         Me.tabMovies.TabIndex = 0
         Me.tabMovies.Text = "Movies"
         Me.tabMovies.UseVisualStyleBackColor = True
+        '
+        'pnlFilter
+        '
+        Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilter.Controls.Add(Me.cbFilterSource)
+        Me.pnlFilter.Controls.Add(Me.Label2)
+        Me.pnlFilter.Controls.Add(Me.btnFilterDown)
+        Me.pnlFilter.Controls.Add(Me.btnFilterUp)
+        Me.pnlFilter.Controls.Add(Me.chkFilterDupe)
+        Me.pnlFilter.Controls.Add(Me.rbFilterOr)
+        Me.pnlFilter.Controls.Add(Me.rbFilterAnd)
+        Me.pnlFilter.Controls.Add(Me.chkFilterMark)
+        Me.pnlFilter.Controls.Add(Me.lblFilter)
+        Me.pnlFilter.Controls.Add(Me.chkFilterNew)
+        Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 601)
+        Me.pnlFilter.Name = "pnlFilter"
+        Me.pnlFilter.Size = New System.Drawing.Size(308, 85)
+        Me.pnlFilter.TabIndex = 12
+        '
+        'cbFilterSource
+        '
+        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterSource.FormattingEnabled = True
+        Me.cbFilterSource.Location = New System.Drawing.Point(136, 60)
+        Me.cbFilterSource.Name = "cbFilterSource"
+        Me.cbFilterSource.Size = New System.Drawing.Size(166, 21)
+        Me.cbFilterSource.TabIndex = 30
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(92, 64)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(44, 13)
+        Me.Label2.TabIndex = 29
+        Me.Label2.Text = "Source:"
+        '
+        'btnFilterDown
+        '
+        Me.btnFilterDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterDown.BackColor = System.Drawing.SystemColors.Control
+        Me.btnFilterDown.Enabled = False
+        Me.btnFilterDown.Location = New System.Drawing.Point(268, 1)
+        Me.btnFilterDown.Name = "btnFilterDown"
+        Me.btnFilterDown.Size = New System.Drawing.Size(30, 22)
+        Me.btnFilterDown.TabIndex = 28
+        Me.btnFilterDown.Text = "v"
+        Me.btnFilterDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFilterDown.UseVisualStyleBackColor = False
+        '
+        'btnFilterUp
+        '
+        Me.btnFilterUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnFilterUp.BackColor = System.Drawing.SystemColors.Control
+        Me.btnFilterUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnFilterUp.Location = New System.Drawing.Point(236, 1)
+        Me.btnFilterUp.Name = "btnFilterUp"
+        Me.btnFilterUp.Size = New System.Drawing.Size(30, 22)
+        Me.btnFilterUp.TabIndex = 27
+        Me.btnFilterUp.Text = "^"
+        Me.btnFilterUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnFilterUp.UseVisualStyleBackColor = False
+        '
+        'chkFilterDupe
+        '
+        Me.chkFilterDupe.AutoSize = True
+        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 23)
+        Me.chkFilterDupe.Name = "chkFilterDupe"
+        Me.chkFilterDupe.Size = New System.Drawing.Size(108, 17)
+        Me.chkFilterDupe.TabIndex = 26
+        Me.chkFilterDupe.Text = "Duplicate Movies"
+        Me.chkFilterDupe.UseVisualStyleBackColor = True
+        '
+        'rbFilterOr
+        '
+        Me.rbFilterOr.AutoSize = True
+        Me.rbFilterOr.Location = New System.Drawing.Point(258, 40)
+        Me.rbFilterOr.Name = "rbFilterOr"
+        Me.rbFilterOr.Size = New System.Drawing.Size(36, 17)
+        Me.rbFilterOr.TabIndex = 25
+        Me.rbFilterOr.Text = "Or"
+        Me.rbFilterOr.UseVisualStyleBackColor = True
+        '
+        'rbFilterAnd
+        '
+        Me.rbFilterAnd.AutoSize = True
+        Me.rbFilterAnd.Checked = True
+        Me.rbFilterAnd.Location = New System.Drawing.Point(258, 22)
+        Me.rbFilterAnd.Name = "rbFilterAnd"
+        Me.rbFilterAnd.Size = New System.Drawing.Size(44, 17)
+        Me.rbFilterAnd.TabIndex = 24
+        Me.rbFilterAnd.TabStop = True
+        Me.rbFilterAnd.Text = "And"
+        Me.rbFilterAnd.UseVisualStyleBackColor = True
+        '
+        'chkFilterMark
+        '
+        Me.chkFilterMark.AutoSize = True
+        Me.chkFilterMark.Location = New System.Drawing.Point(136, 41)
+        Me.chkFilterMark.Name = "chkFilterMark"
+        Me.chkFilterMark.Size = New System.Drawing.Size(99, 17)
+        Me.chkFilterMark.TabIndex = 23
+        Me.chkFilterMark.Text = "Marked Movies"
+        Me.chkFilterMark.UseVisualStyleBackColor = True
+        '
+        'lblFilter
+        '
+        Me.lblFilter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblFilter.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFilter.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFilter.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblFilter.Location = New System.Drawing.Point(4, 3)
+        Me.lblFilter.Name = "lblFilter"
+        Me.lblFilter.Size = New System.Drawing.Size(298, 17)
+        Me.lblFilter.TabIndex = 22
+        Me.lblFilter.Text = "Filters"
+        Me.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'chkFilterNew
+        '
+        Me.chkFilterNew.AutoSize = True
+        Me.chkFilterNew.Location = New System.Drawing.Point(136, 23)
+        Me.chkFilterNew.Name = "chkFilterNew"
+        Me.chkFilterNew.Size = New System.Drawing.Size(85, 17)
+        Me.chkFilterNew.TabIndex = 1
+        Me.chkFilterNew.Text = "New Movies"
+        Me.chkFilterNew.UseVisualStyleBackColor = True
         '
         'pnlCancel
         '
@@ -1904,64 +1960,16 @@ Partial Class frmMain
         '
         Me.tmrSearch.Interval = 250
         '
-        'btnFilterDown
-        '
-        Me.btnFilterDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnFilterDown.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterDown.Enabled = False
-        Me.btnFilterDown.Location = New System.Drawing.Point(268, 1)
-        Me.btnFilterDown.Name = "btnFilterDown"
-        Me.btnFilterDown.Size = New System.Drawing.Size(30, 22)
-        Me.btnFilterDown.TabIndex = 28
-        Me.btnFilterDown.Text = "v"
-        Me.btnFilterDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterDown.UseVisualStyleBackColor = False
-        '
-        'btnFilterUp
-        '
-        Me.btnFilterUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnFilterUp.BackColor = System.Drawing.SystemColors.Control
-        Me.btnFilterUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnFilterUp.Location = New System.Drawing.Point(236, 1)
-        Me.btnFilterUp.Name = "btnFilterUp"
-        Me.btnFilterUp.Size = New System.Drawing.Size(30, 22)
-        Me.btnFilterUp.TabIndex = 27
-        Me.btnFilterUp.Text = "^"
-        Me.btnFilterUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFilterUp.UseVisualStyleBackColor = False
-        '
         'tmrFilterAni
         '
         Me.tmrFilterAni.Interval = 1
         '
-        'Label2
+        'mnuRevertStudioTags
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(92, 64)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(44, 13)
-        Me.Label2.TabIndex = 29
-        Me.Label2.Text = "Source:"
-        '
-        'cbFilterSource
-        '
-        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterSource.FormattingEnabled = True
-        Me.cbFilterSource.Location = New System.Drawing.Point(136, 60)
-        Me.cbFilterSource.Name = "cbFilterSource"
-        Me.cbFilterSource.Size = New System.Drawing.Size(166, 21)
-        Me.cbFilterSource.TabIndex = 30
-        '
-        'Panel1
-        '
-        Me.Panel1.Controls.Add(Me.pnlSearch)
-        Me.Panel1.Controls.Add(Me.btnMarkAll)
-        Me.Panel1.Controls.Add(Me.tabsMain)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel1.Location = New System.Drawing.Point(0, 0)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(308, 56)
-        Me.Panel1.TabIndex = 14
+        Me.mnuRevertStudioTags.Image = CType(resources.GetObject("mnuRevertStudioTags.Image"), System.Drawing.Image)
+        Me.mnuRevertStudioTags.Name = "mnuRevertStudioTags"
+        Me.mnuRevertStudioTags.Size = New System.Drawing.Size(292, 22)
+        Me.mnuRevertStudioTags.Text = "Revert Media Info Studio Tags"
         '
         'frmMain
         '
@@ -1985,14 +1993,15 @@ Partial Class frmMain
         Me.scMain.Panel2.ResumeLayout(False)
         Me.scMain.Panel2.PerformLayout()
         Me.scMain.ResumeLayout(False)
-        Me.pnlFilter.ResumeLayout(False)
-        Me.pnlFilter.PerformLayout()
+        CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuMediaList.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
         Me.pnlSearch.ResumeLayout(False)
         Me.pnlSearch.PerformLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.mnuMediaList.ResumeLayout(False)
         Me.tabsMain.ResumeLayout(False)
+        Me.pnlFilter.ResumeLayout(False)
+        Me.pnlFilter.PerformLayout()
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlCancel.PerformLayout()
         Me.pnlNoInfo.ResumeLayout(False)
@@ -2031,7 +2040,6 @@ Partial Class frmMain
         Me.tsMain.PerformLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2223,4 +2231,5 @@ Partial Class frmMain
     Friend WithEvents cbFilterSource As System.Windows.Forms.ComboBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents mnuRevertStudioTags As System.Windows.Forms.ToolStripMenuItem
 End Class
