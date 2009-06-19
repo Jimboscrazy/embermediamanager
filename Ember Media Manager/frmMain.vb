@@ -370,6 +370,9 @@ Public Class frmMain
 
         Else
             Try
+                ' Check if is allready running
+                CheckInstanceOfApp()
+
                 Me.btnMarkAll.Text = If(Master.eSettings.MarkAll, "Mark All", "Unmark All")
 
                 If Master.eSettings.CheckUpdates Then
@@ -416,7 +419,17 @@ Public Class frmMain
         End If
 
     End Sub
-
+    Private Sub CheckInstanceOfApp()
+        Dim appProc() As Process
+        Dim strModName, strProcName As String
+        strModName = Process.GetCurrentProcess.MainModule.ModuleName
+        strProcName = System.IO.Path.GetFileNameWithoutExtension(strModName)
+        appProc = Process.GetProcessesByName(strProcName)
+        If appProc.Length > 1 Then
+            MessageBox.Show("There is an instance of this application running.")
+            Application.Exit()
+        End If
+    End Sub
     Private Sub lstActors_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstActors.SelectedIndexChanged
 
         '//
