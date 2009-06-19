@@ -26,12 +26,20 @@ Imports System.Drawing.Drawing2D
 Public Class dlgOfflineHolder
     Private alMedia As New ArrayList
     Private IMDB As New IMDB.Scraper
-    Private tmpTitle As String = String.Empty
     Private WorkingPath As String = Path.Combine(Master.TempPath, "OfflineHolder")
     Private destPath As String
     Private idxStsSource As Integer = -1
     Private idxStsMovie As Integer = -1
     Private idxStsImage As Integer = -1
+    Private Preview As New Images
+    Private PreviewPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "OfflineDefault.jpg")
+    Private currText As String = "Insert DVD"
+    Private prevText As String = String.Empty
+    Private currNameText As String = String.Empty
+    Private prevNameText As String = String.Empty
+    Private currTopText As String = String.Empty
+    Private prevTopText As String = String.Empty
+    Private drawFont As New Font("Arial", 22, FontStyle.Bold)
     Friend WithEvents bwCreateHolder As New System.ComponentModel.BackgroundWorker
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         If bwCreateHolder.IsBusy Then
@@ -52,6 +60,12 @@ Public Class dlgOfflineHolder
         Dim dirArray() As String
         Try
 
+            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+            Using g As Graphics = Graphics.FromImage(iBackground)
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                Me.pnlTop.BackgroundImage = iBackground
+            End Using
+
             'load all the movie folders from settings
             alMedia = Master.eSettings.MovieFolders
             For Each strFolders As String In Master.eSettings.MovieFolders
@@ -66,6 +80,11 @@ Public Class dlgOfflineHolder
                 Directory.Delete(WorkingPath, True)
             End If
             Directory.CreateDirectory(WorkingPath)
+
+            If File.Exists(PreviewPath) Then
+                Preview.FromFile(PreviewPath)
+                CreatePreview()
+            End If
 
             Master.currPath = Path.Combine(WorkingPath, "PlaceHolder.avi")
             idxStsSource = lvStatus.Items.Add("Source Folder").Index
@@ -90,7 +109,7 @@ Public Class dlgOfflineHolder
             Master.tmpMovie = New Media.Movie
 
             Using dSearch As New dlgIMDBSearchResults
-                If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
+                If dSearch.ShowDialog(txtMovieName) = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                         Me.pbProgress.Value = 100
                         Me.pbProgress.Style = ProgressBarStyle.Marquee
@@ -122,9 +141,6 @@ Public Class dlgOfflineHolder
                     End If
                     tmpImages.Dispose()
                     tmpImages = Nothing
-                    If Master.eSettings.AutoThumbs > 0 AndAlso Not Master.isFile Then
-                        Master.CreateRandomThumbs(Master.currPath, Master.eSettings.AutoThumbs)
-                    End If
                 End If
 
                 Master.SaveMovieToNFO(Master.tmpMovie, Master.currPath, False)
@@ -146,13 +162,22 @@ Public Class dlgOfflineHolder
 
     Private Sub cbSources_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSources.SelectedIndexChanged
         CheckConditions()
-
     End Sub
+
     Sub CheckConditions()
+        Dim Fanart As New Images
+        Dim MovieName As String = String.Empty
         Try
 
+            If txtMovieName.Text.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
+                MovieName = txtMovieName.Text
+            Else
+                For Each Invalid As Char In Path.GetInvalidPathChars
+                    MovieName = txtMovieName.Text.Replace(Invalid, String.Empty)
+                Next
+            End If
             If cbSources.SelectedIndex >= 0 Then
-                destPath = Path.Combine(cbSources.Items(cbSources.SelectedIndex), txtMovieName.Text)
+                destPath = Path.Combine(cbSources.SelectedItem.ToString, MovieName)
                 lvStatus.Items(idxStsSource).SubItems(1).Text = "Valid"
                 lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Green
             Else
@@ -171,8 +196,19 @@ Public Class dlgOfflineHolder
                 lvStatus.Items(idxStsMovie).SubItems(1).Text = "Invalid"
                 lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
             End If
-            If cbUseFanart.Checked Then
-                If File.Exists(Path.Combine(WorkingPath, "PlaceHolder-fanart.jpg")) OrElse File.Exists(Path.Combine(WorkingPath, "PlaceHolder.fanart.jpg")) Then
+
+            Dim fPath As String = Fanart.GetFanartPath(Master.currPath, False)
+
+            If Not String.IsNullOrEmpty(fPath) Then
+                chkUseFanart.Enabled = True
+            Else
+                chkUseFanart.Checked = False
+                chkUseFanart.Enabled = False
+            End If
+
+            If chkUseFanart.Checked Then
+                If Not String.IsNullOrEmpty(fPath) Then
+                    Preview.FromFile(fPath)
                     lvStatus.Items(idxStsImage).SubItems(1).Text = "Valid"
                     lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
                 Else
@@ -180,9 +216,16 @@ Public Class dlgOfflineHolder
                     lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Red
                 End If
             Else
+                If File.Exists(PreviewPath) Then
+                    Preview.FromFile(PreviewPath)
+                End If
+
                 lvStatus.Items(idxStsImage).SubItems(1).Text = "Valid"
                 lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
             End If
+
+            Me.CreatePreview()
+
             For Each i As ListViewItem In lvStatus.Items
                 If Not i.SubItems(1).ForeColor = Color.Green Then
                     Create_Button.Enabled = False
@@ -193,6 +236,8 @@ Public Class dlgOfflineHolder
         Catch ex As Exception
         End Try
 
+        Fanart.Dispose()
+        Fanart = Nothing
     End Sub
 
     Private Sub lvStatus_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvStatus.SelectedIndexChanged
@@ -201,15 +246,32 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub txtMovieName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieName.TextChanged
-        CheckConditions()
+        Me.currNameText = Me.txtMovieName.Text
+
+        Me.tmrNameWait.Enabled = False
+        Me.tmrNameWait.Enabled = True
     End Sub
 
-    Private Sub cbUseFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbUseFanart.CheckedChanged
+    Private Sub tmrNameWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrNameWait.Tick
+        If Me.prevNameText = Me.currNameText Then
+            Me.tmrName.Enabled = True
+        Else
+            Me.prevNameText = Me.currNameText
+        End If
+    End Sub
+
+    Private Sub tmrName_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrName.Tick
+        Me.tmrNameWait.Enabled = False
+        Me.CheckConditions()
+        Me.tmrName.Enabled = False
+    End Sub
+
+    Private Sub cbUseFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFanart.CheckedChanged
         CheckConditions()
     End Sub
 
     Private Sub bwCreateHolder_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCreateHolder.DoWork
-        Dim buildPath As String = Path.Combine(WorkingPath, "temp")
+        Dim buildPath As String = Path.Combine(WorkingPath, "Temp")
         Dim imgTemp As Bitmap
         Dim imgFinal As Bitmap
         Dim newGraphics As Graphics
@@ -218,16 +280,13 @@ Public Class dlgOfflineHolder
             Directory.Delete(buildPath, True)
         End If
         Directory.CreateDirectory(buildPath)
-        If cbUseFanart.Checked Then
-            If File.Exists(Path.Combine(WorkingPath, "PlaceHolder-fanart.jpg")) Then
-                imgTemp = Image.FromFile(Path.Combine(WorkingPath, "PlaceHolder-fanart.jpg"))
-            Else
-                imgTemp = Image.FromFile(Path.Combine(WorkingPath, "PlaceHolder.fanart.jpg"))
-            End If
+
+        If Not IsNothing(Preview.Image) Then
+            imgTemp = Preview.Image
         Else
-            'Default Image .. just hack this until i get a image
             imgTemp = New Bitmap(720, 576)
         End If
+
         'First let's resize it
         imgFinal = New Bitmap(720, 576)
         newGraphics = Graphics.FromImage(imgFinal)
@@ -238,10 +297,9 @@ Public Class dlgOfflineHolder
         'Save Master Image
         imgFinal.Save(Path.Combine(buildPath, "master.jpg"), System.Drawing.Imaging.ImageFormat.Jpeg)
         ' Create string to draw.
-        Dim drawString As [String] = txtTagline.Text
-        Dim drawFont As New Font("Arial", 22, FontStyle.Bold)
-        Dim drawBrush As New SolidBrush(Color.White)
-        Dim drawPoint As New PointF(0.0F, 500.0F)
+        Dim drawString As String = txtTagline.Text
+        Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
+        Dim drawPoint As New PointF(0.0F, 470.0F)
         Dim stringSize As New SizeF
         stringSize = newGraphics.MeasureString(drawString, drawFont)
         newGraphics.Dispose()
@@ -272,7 +330,6 @@ Public Class dlgOfflineHolder
             ffmpeg.StartInfo.CreateNoWindow = True
             ffmpeg.StartInfo.RedirectStandardOutput = True
             ffmpeg.StartInfo.RedirectStandardError = True
-            'first get the duration
             ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -i ""{0}\image%d.jpg"" ""{1}""", buildPath, Master.currPath)
             ffmpeg.Start()
             ffmpeg.WaitForExit()
@@ -293,23 +350,26 @@ Public Class dlgOfflineHolder
         If Directory.Exists(buildPath) Then
             Directory.Delete(buildPath, True)
         End If
-        myDirectoryCopy(Path.Combine(WorkingPath, "."), destPath, True)
+
+        DirectoryCopy(WorkingPath, destPath)
 
         If Me.bwCreateHolder.CancellationPending Then
             e.Cancel = True
             Return
         End If
     End Sub
+
     Private Sub bwCreateHolder_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCreateHolder.ProgressChanged
         If lvStatus.Items.Count > 0 Then
             lvStatus.Items(lvStatus.Items.Count - 1).SubItems.Add("Done")
         End If
         lvStatus.Items.Add(e.UserState)
     End Sub
+
     Private Sub bwCreateHolder_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCreateHolder.RunWorkerCompleted
         If Not e.Cancelled Then
+            MsgBox("Offline movie place holder created!", MsgBoxStyle.OkOnly, "Offline Movie")
         End If
-        MessageBox.Show("Place Hodler Created", "Offline Movie", MessageBoxButtons.OK)
         Me.Close()
     End Sub
 
@@ -318,7 +378,7 @@ Public Class dlgOfflineHolder
         Create_Button.Enabled = False
         txtMovieName.Enabled = False
         txtTagline.Enabled = False
-        cbUseFanart.Enabled = False
+        chkUseFanart.Enabled = False
         Me.pbProgress.Value = 100
         Me.pbProgress.Style = ProgressBarStyle.Marquee
         Me.pbProgress.MarqueeAnimationSpeed = 25
@@ -331,12 +391,19 @@ Public Class dlgOfflineHolder
         Me.bwCreateHolder.RunWorkerAsync()
     End Sub
 
-    Private Shared Sub myDirectoryCopy( _
-    ByVal sourceDirName As String, _
-    ByVal destDirName As String, _
-    ByVal copySubDirs As Boolean)
+    Private Sub btnTextColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTextColor.Click
+        With Me.cdColor
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not .Color = Nothing Then
+                    Me.btnTextColor.BackColor = .Color
+                    Me.CreatePreview()
+                End If
+            End If
+        End With
+    End Sub
+
+    Private Sub DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)
         Dim dir As DirectoryInfo = New DirectoryInfo(sourceDirName)
-        Dim dirs As DirectoryInfo() = dir.GetDirectories()
         ' If the source directory does not exist, throw an exception.
         If Not dir.Exists Then
             Throw New DirectoryNotFoundException( _
@@ -350,21 +417,76 @@ Public Class dlgOfflineHolder
         ' Get the file contents of the directory to copy.
         Dim files As FileInfo() = dir.GetFiles()
         For Each file In files
-            ' Create the path to the new copy of the file.
-            Dim temppath As String = Path.Combine(destDirName, file.Name)
-            ' Copy the file.
-            file.CopyTo(temppath, False)
+            Master.MoveFileWithStream(file.FullName, Path.Combine(destDirName, file.Name))
         Next file
-        ' If copySubDirs is true, copy the subdirectories.
-        If copySubDirs Then
-            For Each subdir In dirs
-                ' Create the subdirectory.
-                Dim temppath As String = _
-                    Path.Combine(destDirName, subdir.Name)
-                ' Copy the subdirectories.
-                myDirectoryCopy(subdir.FullName, temppath, copySubDirs)
-            Next subdir
+    End Sub
+
+    Private Sub CreatePreview()
+        Dim bmPreview As New Bitmap(Me.Preview.Image)
+        Dim grPreview As Graphics = Graphics.FromImage(bmPreview)
+        Dim drawString As String = txtTagline.Text
+        Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
+        Dim drawPoint As New PointF(0.0F, 470.0F)
+        Dim iLeft As Integer = (bmPreview.Width - grPreview.MeasureString(drawString, drawFont).Width) / 2
+        grPreview.DrawString(drawString, drawFont, drawBrush, iLeft, Convert.ToInt32(txtTop.Text))
+        pbPreview.Image = bmPreview
+    End Sub
+
+    Private Sub txtTagline_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTagline.TextChanged
+        Me.currText = Me.txtTagline.Text
+
+        Me.tmrWait.Enabled = False
+        Me.tmrWait.Enabled = True
+    End Sub
+
+    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
+        If Me.prevText = Me.currText Then
+            Me.tmrPreview.Enabled = True
+        Else
+            Me.prevText = Me.currText
         End If
     End Sub
 
+    Private Sub tmrPreview_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPreview.Tick
+        Me.tmrWait.Enabled = False
+        Me.CheckConditions()
+        Me.tmrPreview.Enabled = False
+    End Sub
+
+    Private Sub btnFont_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFont.Click
+        With Me.cdFont
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not IsNothing(.Font) Then
+                    Me.drawFont = .Font
+                    Me.CreatePreview()
+                End If
+            End If
+        End With
+    End Sub
+
+    Private Sub txtTop_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTop.KeyPress
+        If Master.NumericOnly(Asc(e.KeyChar)) Then
+            e.Handled = True
+        Else
+            e.Handled = False
+            Me.currTopText = Me.txtTop.Text
+
+            Me.tmrTopWait.Enabled = False
+            Me.tmrTopWait.Enabled = True
+        End If
+    End Sub
+
+    Private Sub tmrTopWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrTopWait.Tick
+        If Me.prevTopText = Me.currTopText Then
+            Me.tmrTop.Enabled = True
+        Else
+            Me.prevTopText = Me.currTopText
+        End If
+    End Sub
+
+    Private Sub tmrTop_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrTop.Tick
+        Me.tmrTopWait.Enabled = False
+        Me.CheckConditions()
+        Me.tmrTop.Enabled = False
+    End Sub
 End Class

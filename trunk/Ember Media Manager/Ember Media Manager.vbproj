@@ -176,6 +176,12 @@
     <Compile Include="dlgExportMovies.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgOfflineHolder.designer.vb">
+      <DependentUpon>dlgOfflineHolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgOfflineHolder.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgSetsManager.Designer.vb">
       <DependentUpon>dlgSetsManager.vb</DependentUpon>
     </Compile>
@@ -283,6 +289,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgExportMovies.resx">
       <DependentUpon>dlgExportMovies.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgOfflineHolder.resx">
+      <DependentUpon>dlgOfflineHolder.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgSetsManager.resx">
       <DependentUpon>dlgSetsManager.vb</DependentUpon>
