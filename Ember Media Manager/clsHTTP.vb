@@ -107,6 +107,22 @@ Public Class HTTP
 
     End Sub
 
+    Public Function IsValidURL(ByVal URL As String) As Boolean
+        Dim wrRequest As HttpWebRequest
+        Dim wrResponse As HttpWebResponse
+        Try
+            wrRequest = HttpWebRequest.Create(URL)
+            wrRequest.Timeout = 2000
+            wrResponse = wrRequest.GetResponse()
+        Catch ex As Exception
+            Return False
+        End Try
+        wrResponse.Close()
+        wrResponse = Nothing
+        wrRequest = Nothing
+        Return True
+    End Function
+
     Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String) As String
         Dim outFile As String = String.Empty
 
