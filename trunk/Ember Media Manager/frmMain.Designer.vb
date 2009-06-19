@@ -46,6 +46,7 @@ Partial Class frmMain
         Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuRevertStudioTags = New System.Windows.Forms.ToolStripMenuItem
         Me.ClearAllCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
         Me.SetsManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -212,7 +213,7 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.mnuRevertStudioTags = New System.Windows.Forms.ToolStripMenuItem
+        Me.OfflineMediaManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -388,7 +389,7 @@ Partial Class frmMain
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.ClearAllCachesToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.ClearAllCachesToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.ToolsToolStripMenuItem.Text = "Tools"
@@ -413,6 +414,13 @@ Partial Class frmMain
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Name = "CopyExistingFanartToBackdropsFolderToolStripMenuItem"
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = "Copy Existing Fanart To Backdrops Folder"
+        '
+        'mnuRevertStudioTags
+        '
+        Me.mnuRevertStudioTags.Image = CType(resources.GetObject("mnuRevertStudioTags.Image"), System.Drawing.Image)
+        Me.mnuRevertStudioTags.Name = "mnuRevertStudioTags"
+        Me.mnuRevertStudioTags.Size = New System.Drawing.Size(292, 22)
+        Me.mnuRevertStudioTags.Text = "Revert Media Info Studio Tags"
         '
         'ClearAllCachesToolStripMenuItem
         '
@@ -1964,12 +1972,11 @@ Partial Class frmMain
         '
         Me.tmrFilterAni.Interval = 1
         '
-        'mnuRevertStudioTags
+        'OfflineMediaManagerToolStripMenuItem
         '
-        Me.mnuRevertStudioTags.Image = CType(resources.GetObject("mnuRevertStudioTags.Image"), System.Drawing.Image)
-        Me.mnuRevertStudioTags.Name = "mnuRevertStudioTags"
-        Me.mnuRevertStudioTags.Size = New System.Drawing.Size(292, 22)
-        Me.mnuRevertStudioTags.Text = "Revert Media Info Studio Tags"
+        Me.OfflineMediaManagerToolStripMenuItem.Name = "OfflineMediaManagerToolStripMenuItem"
+        Me.OfflineMediaManagerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
+        Me.OfflineMediaManagerToolStripMenuItem.Text = "Offline Media Manager"
         '
         'frmMain
         '
@@ -2232,4 +2239,5 @@ Partial Class frmMain
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents mnuRevertStudioTags As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents OfflineMediaManagerToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
