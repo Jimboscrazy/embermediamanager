@@ -48,27 +48,29 @@ Partial Class dlgOfflineHolder
         Me.cdColor = New System.Windows.Forms.ColorDialog
         Me.pbPreview = New System.Windows.Forms.PictureBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnFont = New System.Windows.Forms.Button
+        Me.txtTop = New System.Windows.Forms.TextBox
+        Me.Label3 = New System.Windows.Forms.Label
         Me.tmrWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPreview = New System.Windows.Forms.Timer(Me.components)
         Me.tmrNameWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrName = New System.Windows.Forms.Timer(Me.components)
         Me.cdFont = New System.Windows.Forms.FontDialog
-        Me.btnFont = New System.Windows.Forms.Button
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.txtTop = New System.Windows.Forms.TextBox
         Me.tmrTopWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrTop = New System.Windows.Forms.Timer(Me.components)
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.OK_Button.Location = New System.Drawing.Point(615, 427)
+        Me.OK_Button.Location = New System.Drawing.Point(585, 427)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(80, 23)
         Me.OK_Button.TabIndex = 0
@@ -84,7 +86,7 @@ Partial Class dlgOfflineHolder
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(698, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(673, 64)
         Me.pnlTop.TabIndex = 58
         '
         'Label2
@@ -125,15 +127,15 @@ Partial Class dlgOfflineHolder
         '
         Me.cbSources.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSources.FormattingEnabled = True
-        Me.cbSources.Location = New System.Drawing.Point(21, 87)
+        Me.cbSources.Location = New System.Drawing.Point(9, 87)
         Me.cbSources.Name = "cbSources"
-        Me.cbSources.Size = New System.Drawing.Size(303, 21)
+        Me.cbSources.Size = New System.Drawing.Size(313, 21)
         Me.cbSources.TabIndex = 59
         '
         'lblSources
         '
         Me.lblSources.AutoSize = True
-        Me.lblSources.Location = New System.Drawing.Point(20, 71)
+        Me.lblSources.Location = New System.Drawing.Point(8, 71)
         Me.lblSources.Name = "lblSources"
         Me.lblSources.Size = New System.Drawing.Size(78, 13)
         Me.lblSources.TabIndex = 60
@@ -142,15 +144,15 @@ Partial Class dlgOfflineHolder
         'txtMovieName
         '
         Me.txtMovieName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtMovieName.Location = New System.Drawing.Point(21, 133)
+        Me.txtMovieName.Location = New System.Drawing.Point(9, 133)
         Me.txtMovieName.Name = "txtMovieName"
-        Me.txtMovieName.Size = New System.Drawing.Size(303, 20)
+        Me.txtMovieName.Size = New System.Drawing.Size(313, 20)
         Me.txtMovieName.TabIndex = 61
         '
         'lblMovie
         '
         Me.lblMovie.AutoSize = True
-        Me.lblMovie.Location = New System.Drawing.Point(18, 116)
+        Me.lblMovie.Location = New System.Drawing.Point(6, 116)
         Me.lblMovie.Name = "lblMovie"
         Me.lblMovie.Size = New System.Drawing.Size(168, 13)
         Me.lblMovie.TabIndex = 62
@@ -158,7 +160,7 @@ Partial Class dlgOfflineHolder
         '
         'GetIMDB_Button
         '
-        Me.GetIMDB_Button.Location = New System.Drawing.Point(21, 158)
+        Me.GetIMDB_Button.Location = New System.Drawing.Point(9, 158)
         Me.GetIMDB_Button.Name = "GetIMDB_Button"
         Me.GetIMDB_Button.Size = New System.Drawing.Size(80, 21)
         Me.GetIMDB_Button.TabIndex = 63
@@ -167,7 +169,7 @@ Partial Class dlgOfflineHolder
         'EditMovie_Button
         '
         Me.EditMovie_Button.Enabled = False
-        Me.EditMovie_Button.Location = New System.Drawing.Point(107, 158)
+        Me.EditMovie_Button.Location = New System.Drawing.Point(95, 158)
         Me.EditMovie_Button.Name = "EditMovie_Button"
         Me.EditMovie_Button.Size = New System.Drawing.Size(80, 21)
         Me.EditMovie_Button.TabIndex = 64
@@ -176,7 +178,7 @@ Partial Class dlgOfflineHolder
         '
         'pbProgress
         '
-        Me.pbProgress.Location = New System.Drawing.Point(22, 254)
+        Me.pbProgress.Location = New System.Drawing.Point(6, 19)
         Me.pbProgress.MarqueeAnimationSpeed = 25
         Me.pbProgress.Name = "pbProgress"
         Me.pbProgress.Size = New System.Drawing.Size(301, 20)
@@ -189,7 +191,7 @@ Partial Class dlgOfflineHolder
         Me.lvStatus.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colCondition, Me.colStatus})
         Me.lvStatus.FullRowSelect = True
         Me.lvStatus.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
-        Me.lvStatus.Location = New System.Drawing.Point(21, 279)
+        Me.lvStatus.Location = New System.Drawing.Point(5, 44)
         Me.lvStatus.MultiSelect = False
         Me.lvStatus.Name = "lvStatus"
         Me.lvStatus.Size = New System.Drawing.Size(303, 142)
@@ -211,7 +213,7 @@ Partial Class dlgOfflineHolder
         '
         Me.Create_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Create_Button.Enabled = False
-        Me.Create_Button.Location = New System.Drawing.Point(529, 427)
+        Me.Create_Button.Location = New System.Drawing.Point(499, 427)
         Me.Create_Button.Name = "Create_Button"
         Me.Create_Button.Size = New System.Drawing.Size(80, 23)
         Me.Create_Button.TabIndex = 67
@@ -220,9 +222,9 @@ Partial Class dlgOfflineHolder
         'chkUseFanart
         '
         Me.chkUseFanart.Enabled = False
-        Me.chkUseFanart.Location = New System.Drawing.Point(212, 313)
+        Me.chkUseFanart.Location = New System.Drawing.Point(213, 315)
         Me.chkUseFanart.Name = "chkUseFanart"
-        Me.chkUseFanart.Size = New System.Drawing.Size(117, 36)
+        Me.chkUseFanart.Size = New System.Drawing.Size(117, 30)
         Me.chkUseFanart.TabIndex = 68
         Me.chkUseFanart.Text = "Use Fanart for Place Holder Video"
         Me.chkUseFanart.UseVisualStyleBackColor = True
@@ -250,7 +252,7 @@ Partial Class dlgOfflineHolder
         Me.btnTextColor.BackColor = System.Drawing.Color.White
         Me.btnTextColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnTextColor.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnTextColor.Location = New System.Drawing.Point(212, 277)
+        Me.btnTextColor.Location = New System.Drawing.Point(203, 277)
         Me.btnTextColor.Name = "btnTextColor"
         Me.btnTextColor.Size = New System.Drawing.Size(24, 22)
         Me.btnTextColor.TabIndex = 71
@@ -259,7 +261,7 @@ Partial Class dlgOfflineHolder
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(158, 282)
+        Me.Label1.Location = New System.Drawing.Point(143, 282)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(58, 13)
         Me.Label1.TabIndex = 72
@@ -285,12 +287,39 @@ Partial Class dlgOfflineHolder
         Me.GroupBox1.Controls.Add(Me.txtTop)
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.pbPreview)
-        Me.GroupBox1.Location = New System.Drawing.Point(344, 71)
+        Me.GroupBox1.Location = New System.Drawing.Point(332, 71)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(333, 350)
         Me.GroupBox1.TabIndex = 74
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Preview"
+        '
+        'btnFont
+        '
+        Me.btnFont.Location = New System.Drawing.Point(246, 277)
+        Me.btnFont.Name = "btnFont"
+        Me.btnFont.Size = New System.Drawing.Size(82, 23)
+        Me.btnFont.TabIndex = 75
+        Me.btnFont.Text = "Select Font..."
+        Me.btnFont.UseVisualStyleBackColor = True
+        '
+        'txtTop
+        '
+        Me.txtTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTop.Location = New System.Drawing.Point(76, 278)
+        Me.txtTop.Name = "txtTop"
+        Me.txtTop.Size = New System.Drawing.Size(52, 20)
+        Me.txtTop.TabIndex = 76
+        Me.txtTop.Text = "470"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(6, 282)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(67, 13)
+        Me.Label3.TabIndex = 77
+        Me.Label3.Text = "Tagline Top:"
         '
         'tmrWait
         '
@@ -312,33 +341,6 @@ Partial Class dlgOfflineHolder
         '
         Me.cdFont.Font = New System.Drawing.Font("Arial", 21.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         '
-        'btnFont
-        '
-        Me.btnFont.Location = New System.Drawing.Point(242, 277)
-        Me.btnFont.Name = "btnFont"
-        Me.btnFont.Size = New System.Drawing.Size(85, 23)
-        Me.btnFont.TabIndex = 75
-        Me.btnFont.Text = "Select Font..."
-        Me.btnFont.UseVisualStyleBackColor = True
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(6, 282)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(67, 13)
-        Me.Label3.TabIndex = 77
-        Me.Label3.Text = "Tagline Top:"
-        '
-        'txtTop
-        '
-        Me.txtTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTop.Location = New System.Drawing.Point(73, 280)
-        Me.txtTop.Name = "txtTop"
-        Me.txtTop.Size = New System.Drawing.Size(83, 20)
-        Me.txtTop.TabIndex = 76
-        Me.txtTop.Text = "470"
-        '
         'tmrTopWait
         '
         Me.tmrTopWait.Interval = 250
@@ -347,16 +349,26 @@ Partial Class dlgOfflineHolder
         '
         Me.tmrTop.Interval = 250
         '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.pbProgress)
+        Me.GroupBox2.Controls.Add(Me.lvStatus)
+        Me.GroupBox2.Location = New System.Drawing.Point(9, 229)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(313, 192)
+        Me.GroupBox2.TabIndex = 75
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Information"
+        '
         'dlgOfflineHolder
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(698, 453)
+        Me.ClientSize = New System.Drawing.Size(673, 453)
+        Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Create_Button)
-        Me.Controls.Add(Me.lvStatus)
-        Me.Controls.Add(Me.pbProgress)
         Me.Controls.Add(Me.EditMovie_Button)
         Me.Controls.Add(Me.GetIMDB_Button)
         Me.Controls.Add(Me.lblMovie)
@@ -378,6 +390,7 @@ Partial Class dlgOfflineHolder
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -417,5 +430,6 @@ Partial Class dlgOfflineHolder
     Friend WithEvents tmrTopWait As System.Windows.Forms.Timer
     Friend WithEvents tmrTop As System.Windows.Forms.Timer
     Friend WithEvents FolderBrowserDialog1 As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
 
 End Class
