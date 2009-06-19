@@ -83,6 +83,13 @@ Public Class Master
         Fanart = 1
     End Enum
 
+    Public Enum TrailerPages As Integer
+        Imdb = 0
+        MattTrailer = 1
+        AZMovies = 2
+        YouTube = 3
+    End Enum
+
     Public Class FileAndSource
         Dim _filename As String
         Dim _source As String
