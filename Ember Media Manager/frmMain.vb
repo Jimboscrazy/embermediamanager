@@ -41,6 +41,7 @@ Public Class frmMain
     Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwValidateNfo As New System.ComponentModel.BackgroundWorker
+
     Friend WithEvents bsMedia As New BindingSource
 
     Public alActors As New ArrayList
@@ -1398,6 +1399,75 @@ Public Class frmMain
 
         Directory.CreateDirectory(Master.TempPath)
     End Sub
+
+    Private Sub btnFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp.Click
+        '//
+        ' Begin animation to raise panel all the way up
+        '\\
+
+        Me.aniFilterRaise = True
+        Me.tmrFilterAni.Start()
+    End Sub
+
+    Private Sub btnFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown.Click
+        '//
+        ' Begin animation to lower panel all the way down
+        '\\
+
+        Me.aniFilterRaise = False
+        Me.tmrFilterAni.Start()
+    End Sub
+
+    Private Sub tmrFilterAni_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrFilterAni.Tick
+        '//
+        ' Just some crappy animation to make the GUI slightly more interesting
+        '\\
+
+        Try
+            If Me.aniFilterRaise Then
+                Me.pnlFilter.Height += 5
+            Else
+                Me.pnlFilter.Height -= 5
+            End If
+
+            If Me.pnlFilter.Height = 25 Then
+                Me.tmrFilterAni.Stop()
+                Me.btnFilterUp.Enabled = True
+                Me.btnFilterDown.Enabled = False
+            ElseIf Me.pnlFilter.Height = 85 Then
+                Me.tmrFilterAni.Stop()
+                Me.btnFilterUp.Enabled = False
+                Me.btnFilterDown.Enabled = True
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterSource.SelectedIndexChanged
+        Try
+            Me.chkFilterDupe.Enabled = cbFilterSource.Text = "All"
+            For i As Integer = Me.FilterArray.Count - 1 To 0 Step -1
+                If Strings.Left(Me.FilterArray(i), 8) = "source =" Then
+                    Me.FilterArray.RemoveAt(i)
+                End If
+            Next
+
+            If Not cbFilterSource.Text = "All" Then
+                Me.FilterArray.Add(String.Format("source = '{0}'", cbFilterSource.Text))
+                Me.chkFilterDupe.Checked = False
+            End If
+            Me.RunFilter()
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Private Sub mnuRevertStudioTags_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRevertStudioTags.Click
+
+        Me.ScrapeData(Master.ScrapeType.RevertStudios, Nothing)
+
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2182,6 +2252,29 @@ Public Class frmMain
                                                 File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)), True)
                                             End If
                                         End If
+                                    End If
+                                Next
+                            Case Master.ScrapeType.RevertStudios
+                                For Each drvRow As DataRow In Me.dtMedia.Rows
+                                    Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                    iCount += 1
+
+                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
+
+                                    nfoPath = Master.GetNfoPath(drvRow.Item(1), drvRow.Item(2))
+
+                                    If Not String.IsNullOrEmpty(nfoPath) Then
+                                        Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
+
+                                        If Not String.IsNullOrEmpty(Master.scrapeMovie.StudioReal) Then
+                                            Master.scrapeMovie.Studio = Master.scrapeMovie.StudioReal
+                                        ElseIf Not String.IsNullOrEmpty(Master.scrapeMovie.Studio) AndAlso Master.scrapeMovie.Studio.Contains(" / ") Then
+                                            Master.scrapeMovie.Studio = Strings.Trim(Strings.Left(Master.scrapeMovie.Studio, Strings.InStr(Master.scrapeMovie.Studio, " / ") - 1))
+                                        Else
+                                            Master.scrapeMovie.Studio = String.Empty
+                                        End If
+
+                                        Master.SaveMovieToNFO(Master.scrapeMovie, drvRow.Item(1), drvRow.Item(2))
                                     End If
                                 Next
                             Case Master.ScrapeType.UpdateAuto
@@ -3090,7 +3183,7 @@ doCancel:
             End If
 
             Select Case sType
-                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.MIOnly, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD
+                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.MIOnly, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD, Master.ScrapeType.RevertStudios
                     Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
                     Select Case sType
                         Case Master.ScrapeType.FullAsk
@@ -3103,6 +3196,8 @@ doCancel:
                             Me.tslLoading.Text = "Cleaning Files:"
                         Case Master.ScrapeType.CopyBD
                             Me.tslLoading.Text = "Copying Fanart to Backdrops Folder:"
+                        Case Master.ScrapeType.RevertStudios
+                            Me.tslLoading.Text = "Reverting Media Info Studio Tags:"
                     End Select
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
@@ -3964,93 +4059,5 @@ doCancel:
 
 
 #End Region '*** Routines/Functions
-
-    Private Sub btnFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp.Click
-        '//
-        ' Begin animation to raise panel all the way up
-        '\\
-
-        Me.aniFilterRaise = True
-        Me.tmrFilterAni.Start()
-    End Sub
-
-    Private Sub btnFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown.Click
-        '//
-        ' Begin animation to lower panel all the way down
-        '\\
-
-        Me.aniFilterRaise = False
-        Me.tmrFilterAni.Start()
-    End Sub
-
-    Private Sub tmrFilterAni_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrFilterAni.Tick
-        '//
-        ' Just some crappy animation to make the GUI slightly more interesting
-        '\\
-
-        Try
-            If Me.aniFilterRaise Then
-                Me.pnlFilter.Height += 5
-            Else
-                Me.pnlFilter.Height -= 5
-            End If
-
-            If Me.pnlFilter.Height = 25 Then
-                Me.tmrFilterAni.Stop()
-                Me.btnFilterUp.Enabled = True
-                Me.btnFilterDown.Enabled = False
-            ElseIf Me.pnlFilter.Height = 85 Then
-                Me.tmrFilterAni.Stop()
-                Me.btnFilterUp.Enabled = False
-                Me.btnFilterDown.Enabled = True
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterSource.SelectedIndexChanged
-        Try
-            Me.chkFilterDupe.Enabled = cbFilterSource.Text = "All"
-            For i As Integer = Me.FilterArray.Count - 1 To 0 Step -1
-                If Strings.Left(Me.FilterArray(i), 8) = "source =" Then
-                    Me.FilterArray.RemoveAt(i)
-                End If
-            Next
-
-            If Not cbFilterSource.Text = "All" Then
-                Me.FilterArray.Add(String.Format("source = '{0}'", cbFilterSource.Text))
-                Me.chkFilterDupe.Checked = False
-            End If
-            Me.RunFilter()
-        Catch ex As Exception
-        End Try
-    End Sub
-
-    Private Sub mnuRevertStudioTags_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRevertStudioTags.Click
-        Dim StudioMovie As New Media.Movie
-        Dim StudioNfoPath As String = String.Empty
-
-        For Each drvRow As DataRow In Me.dtMedia.Rows
-            StudioMovie.Clear()
-
-            StudioNfoPath = Master.GetNfoPath(drvRow.Item(1), drvRow.Item(2))
-
-            If Not String.IsNullOrEmpty(StudioNfoPath) Then
-                StudioMovie = Master.LoadMovieFromNFO(StudioNfoPath)
-
-                If Not String.IsNullOrEmpty(StudioMovie.StudioReal) Then
-                    StudioMovie.Studio = StudioMovie.StudioReal
-                ElseIf Not String.IsNullOrEmpty(StudioMovie.Studio) AndAlso StudioMovie.Studio.Contains(" / ") Then
-                    StudioMovie.Studio = Strings.Trim(Strings.Left(StudioMovie.Studio, Strings.InStr(StudioMovie.Studio, " / ") - 1))
-                Else
-                    StudioMovie.Studio = String.Empty
-                End If
-
-                Master.SaveMovieToNFO(StudioMovie, drvRow.Item(1), drvRow.Item(2))
-            End If
-        Next
-    End Sub
 
 End Class

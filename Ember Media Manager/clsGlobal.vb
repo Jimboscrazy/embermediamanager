@@ -75,6 +75,7 @@ Public Class Master
         MarkAuto = 9
         MarkAsk = 10
         CopyBD = 11
+        RevertStudios = 12
     End Enum
 
     Public Enum ImageType As Integer
