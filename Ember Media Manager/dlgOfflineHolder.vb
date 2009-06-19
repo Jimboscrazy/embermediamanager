@@ -96,7 +96,6 @@ Public Class dlgOfflineHolder
                         Me.pbProgress.Style = ProgressBarStyle.Marquee
                         Me.pbProgress.MarqueeAnimationSpeed = 25
                         Me.pbProgress.Visible = True
-                        'Me.Refresh()
                         Me.txtMovieName.Text = String.Format("{0}", Master.tmpMovie.Title)
                         IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                     End If
@@ -109,12 +108,6 @@ Public Class dlgOfflineHolder
     Private Sub MovieInfoDownloaded(ByVal bSuccess As Boolean)
         Try
             If bSuccess Then
-                If Master.eSettings.UseStudioTags Then
-                    'If Me.UpdateMediaInfo(Master.currPath, Master.currMovie) Then
-                    'Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
-                    'End If
-                    Me.pbProgress.Visible = True
-                End If
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
                     If tmpImages.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Posters) Then
@@ -135,20 +128,7 @@ Public Class dlgOfflineHolder
                 End If
 
                 Master.SaveMovieToNFO(Master.tmpMovie, Master.currPath, False)
-                'Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-                'Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
 
-                Using dEditMovie As New dlgEditMovie
-                    'Select Case dEditMovie.ShowDialog(ID)
-                    '   Case Windows.Forms.DialogResult.OK
-                    'Me.ReCheckItems(ID)
-                    'Me.SetListItemAfterEdit(ID, indX)
-                    '  Case Windows.Forms.DialogResult.Retry
-                    'Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing)
-                    ' Case Windows.Forms.DialogResult.Abort
-                    'Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, True)
-                    ' End Select
-                End Using
                 Me.txtMovieName.Text = Master.tmpMovie.Title
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
