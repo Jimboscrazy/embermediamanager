@@ -172,8 +172,9 @@ Public Class dlgOfflineHolder
             If txtMovieName.Text.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
                 MovieName = txtMovieName.Text
             Else
+                MovieName = txtMovieName.Text
                 For Each Invalid As Char In Path.GetInvalidPathChars
-                    MovieName = txtMovieName.Text.Replace(Invalid, String.Empty)
+                    MovieName = MovieName.Replace(Invalid, String.Empty)
                 Next
             End If
             If cbSources.SelectedIndex >= 0 Then
