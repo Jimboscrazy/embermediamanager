@@ -371,7 +371,7 @@ Partial Class dlgOfflineHolder
         Me.Name = "dlgOfflineHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "OfflienMedia Manager"
+        Me.Text = "Offline Media Manager"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
