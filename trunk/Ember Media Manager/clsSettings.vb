@@ -96,6 +96,7 @@ Public Class emmSettings
     Private _lockrating As Boolean
     Private _lockstudio As Boolean
     Private _lockgenre As Boolean
+    Private _locktrailer As Boolean
     Private _singlescrapeimages As Boolean
     Private _marknew As Boolean
     Private _resizefanart As Boolean
@@ -126,6 +127,8 @@ Public Class emmSettings
     Private _persistimagecache As Boolean
     Private _skiplessthan As Integer
     Private _skipstacksizecheck As Boolean
+    Private _downloadtrailers As Boolean
+    Private _trailersites As New List(Of Master.TrailerPages)
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -766,6 +769,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property LockTrailer() As Boolean
+        Get
+            Return Me._locktrailer
+        End Get
+        Set(ByVal value As Boolean)
+            Me._locktrailer = value
+        End Set
+    End Property
+
     Public Property SingleScrapeImages() As Boolean
         Get
             Return Me._singlescrapeimages
@@ -1036,6 +1048,24 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property DownloadTrailers() As Boolean
+        Get
+            Return Me._downloadtrailers
+        End Get
+        Set(ByVal value As Boolean)
+            Me._downloadtrailers = value
+        End Set
+    End Property
+
+    Public Property TrailerSites() As List(Of Master.TrailerPages)
+        Get
+            Return Me._trailersites
+        End Get
+        Set(ByVal value As List(Of Master.TrailerPages))
+            Me._trailersites = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -1121,6 +1151,7 @@ Public Class emmSettings
         Me._lockrating = False
         Me._lockstudio = False
         Me._lockrating = False
+        Me._locktrailer = False
         Me._singlescrapeimages = True
         Me._marknew = False
         Me._resizefanart = False
@@ -1150,6 +1181,8 @@ Public Class emmSettings
         Me._persistimagecache = False
         Me._skiplessthan = 300
         Me._skipstacksizecheck = False
+        Me._downloadtrailers = False
+        Me._trailersites.Clear()
         Me._sets.Clear()
         Me._xbmccoms.Clear()
     End Sub

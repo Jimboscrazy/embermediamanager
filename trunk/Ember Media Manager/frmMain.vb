@@ -704,7 +704,7 @@ Public Class frmMain
         Try
             If Not String.IsNullOrEmpty(Me.txtFilePath.Text) Then
                 If File.Exists(Me.txtFilePath.Text) Then
-                    System.Diagnostics.Process.Start("""" & Me.txtFilePath.Text & """")
+                    System.Diagnostics.Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
                 End If
             End If
         Catch ex As Exception
@@ -4081,6 +4081,5 @@ doCancel:
 
 
 #End Region '*** Routines/Functions
-
 
 End Class

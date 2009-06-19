@@ -32,6 +32,8 @@ Partial Class dlgEditMovie
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.btnPlayTrailer = New System.Windows.Forms.Button
+        Me.btnDLTrailer = New System.Windows.Forms.Button
         Me.lbGenre = New System.Windows.Forms.CheckedListBox
         Me.btnStudio = New System.Windows.Forms.Button
         Me.Label4 = New System.Windows.Forms.Label
@@ -229,6 +231,8 @@ Partial Class dlgEditMovie
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnPlayTrailer)
+        Me.TabPage1.Controls.Add(Me.btnDLTrailer)
         Me.TabPage1.Controls.Add(Me.lbGenre)
         Me.TabPage1.Controls.Add(Me.btnStudio)
         Me.TabPage1.Controls.Add(Me.Label4)
@@ -285,6 +289,25 @@ Partial Class dlgEditMovie
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnPlayTrailer
+        '
+        Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(576, 422)
+        Me.btnPlayTrailer.Name = "btnPlayTrailer"
+        Me.btnPlayTrailer.Size = New System.Drawing.Size(23, 23)
+        Me.btnPlayTrailer.TabIndex = 108
+        Me.btnPlayTrailer.UseVisualStyleBackColor = True
+        '
+        'btnDLTrailer
+        '
+        Me.btnDLTrailer.Image = CType(resources.GetObject("btnDLTrailer.Image"), System.Drawing.Image)
+        Me.btnDLTrailer.Location = New System.Drawing.Point(602, 422)
+        Me.btnDLTrailer.Name = "btnDLTrailer"
+        Me.btnDLTrailer.Size = New System.Drawing.Size(23, 23)
+        Me.btnDLTrailer.TabIndex = 107
+        Me.btnDLTrailer.UseVisualStyleBackColor = True
         '
         'lbGenre
         '
@@ -345,16 +368,16 @@ Partial Class dlgEditMovie
         Me.lblTrailer.AutoSize = True
         Me.lblTrailer.Location = New System.Drawing.Point(217, 408)
         Me.lblTrailer.Name = "lblTrailer"
-        Me.lblTrailer.Size = New System.Drawing.Size(64, 13)
+        Me.lblTrailer.Size = New System.Drawing.Size(61, 13)
         Me.lblTrailer.TabIndex = 99
-        Me.lblTrailer.Text = "Trailer URL:"
+        Me.lblTrailer.Text = "Trailer URI:"
         '
         'txtTrailer
         '
         Me.txtTrailer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTrailer.Location = New System.Drawing.Point(217, 424)
         Me.txtTrailer.Name = "txtTrailer"
-        Me.txtTrailer.Size = New System.Drawing.Size(408, 20)
+        Me.txtTrailer.Size = New System.Drawing.Size(353, 20)
         Me.txtTrailer.TabIndex = 17
         '
         'txtReleaseDate
@@ -1331,5 +1354,7 @@ Partial Class dlgEditMovie
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents btnSetAsFanart As System.Windows.Forms.Button
     Friend WithEvents btnClearCache As System.Windows.Forms.Button
+    Friend WithEvents btnDLTrailer As System.Windows.Forms.Button
+    Friend WithEvents btnPlayTrailer As System.Windows.Forms.Button
 
 End Class
