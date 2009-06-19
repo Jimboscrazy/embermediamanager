@@ -419,7 +419,11 @@ Public Class dlgEditMovie
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Trailer) Then
                     .txtTrailer.Text = Master.currMovie.Trailer
+                Else
+                    .btnPlayTrailer.Enabled = False
                 End If
+
+                .btnDLTrailer.Enabled = Master.eSettings.DownloadTrailers
 
                 If Not String.IsNullOrEmpty(Master.currMovie.StudioReal) Then
                     .txtStudio.Text = Master.currMovie.StudioReal
@@ -1322,4 +1326,28 @@ Public Class dlgEditMovie
         End Sub
     End Class
 
+    Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
+        Try
+            System.Diagnostics.Process.Start(String.Concat("""", Me.txtTrailer.Text, """"))
+        Catch
+            MsgBox("The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.", MsgBoxStyle.Critical, "Error Playing Trailer")
+        End Try
+    End Sub
+
+    Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
+        Using dTrailer As New dlgTrailer
+            Dim tPath As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
+            If Not String.IsNullOrEmpty(tPath) Then
+                Me.txtTrailer.Text = String.Concat("file://", tPath)
+            End If
+        End Using
+    End Sub
+
+    Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
+        If String.IsNullOrEmpty(txtTrailer.Text) Then
+            Me.btnPlayTrailer.Enabled = False
+        Else
+            Me.btnPlayTrailer.Enabled = True
+        End If
+    End Sub
 End Class

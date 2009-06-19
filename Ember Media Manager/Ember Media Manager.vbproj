@@ -182,6 +182,12 @@
     <Compile Include="dlgOfflineHolder.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgTrailer.Designer.vb">
+      <DependentUpon>dlgTrailer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgTrailer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgSetsManager.Designer.vb">
       <DependentUpon>dlgSetsManager.vb</DependentUpon>
     </Compile>
@@ -298,6 +304,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgStudioSelect.resx">
       <DependentUpon>dlgStudioSelect.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgTrailer.resx">
+      <DependentUpon>dlgTrailer.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgWizard.resx">
       <DependentUpon>dlgWizard.vb</DependentUpon>

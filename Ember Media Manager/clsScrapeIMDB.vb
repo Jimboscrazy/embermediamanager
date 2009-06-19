@@ -406,21 +406,23 @@ mResult:
                 End If
 
                 'trailer
-                Dim sTrailerUrl As String = Regex.Match(HTML, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim
-                If Not sTrailerUrl = String.Empty Then
-                    Dim sTrailerURL2 As String = String.Empty
-                    sTrailerUrl = String.Concat("http://", Master.eSettings.IMDBURL, sTrailerUrl, "player")
-                    Dim HTTPTrailer As New HTTP(sTrailerUrl)
-                    Dim HtmlTrailer As String = HTTPTrailer.Response
-                    HTTPTrailer = Nothing
+                If String.IsNullOrEmpty(IMDBMovie.Trailer) OrElse Not Master.eSettings.LockTrailer Then
+                    Dim sTrailerUrl As String = Regex.Match(HTML, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim
+                    If Not sTrailerUrl = String.Empty Then
+                        Dim sTrailerURL2 As String = String.Empty
+                        sTrailerUrl = String.Concat("http://", Master.eSettings.IMDBURL, sTrailerUrl, "player")
+                        Dim HTTPTrailer As New HTTP(sTrailerUrl)
+                        Dim HtmlTrailer As String = HTTPTrailer.Response
+                        HTTPTrailer = Nothing
 
-                    sTrailerUrl = Regex.Match(HtmlTrailer, "so.addVariable\(""id"", ""(.*?)""\);").Groups(1).Value.Trim
-                    If sTrailerUrl = String.Empty Then
-                        sTrailerURL2 = Regex.Match(HtmlTrailer, "so.addVariable\(""file"", ""(.*?)""\);").Groups(1).Value.Trim
-                    Else
-                        sTrailerURL2 = String.Concat(Regex.Match(HtmlTrailer, "so.addVariable\(""file"", ""(.*?)""\);").Groups(1).Value.Trim, sTrailerUrl)
+                        sTrailerUrl = Regex.Match(HtmlTrailer, "so.addVariable\(""id"", ""(.*?)""\);").Groups(1).Value.Trim
+                        If sTrailerUrl = String.Empty Then
+                            sTrailerURL2 = Regex.Match(HtmlTrailer, "so.addVariable\(""file"", ""(.*?)""\);").Groups(1).Value.Trim
+                        Else
+                            sTrailerURL2 = String.Concat(Regex.Match(HtmlTrailer, "so.addVariable\(""file"", ""(.*?)""\);").Groups(1).Value.Trim, sTrailerUrl)
+                        End If
+                        IMDBMovie.Trailer = Web.HttpUtility.UrlDecode(sTrailerURL2)
                     End If
-                    IMDBMovie.Trailer = Web.HttpUtility.UrlDecode(sTrailerURL2)
                 End If
 
                 IMDBMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim

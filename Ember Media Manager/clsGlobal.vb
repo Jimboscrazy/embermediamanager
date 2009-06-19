@@ -84,10 +84,10 @@ Public Class Master
     End Enum
 
     Public Enum TrailerPages As Integer
-        Imdb = 0
+        YouTube = 0
         MattTrailer = 1
         AZMovies = 2
-        YouTube = 3
+        Imdb = 3
     End Enum
 
     Public Class FileAndSource

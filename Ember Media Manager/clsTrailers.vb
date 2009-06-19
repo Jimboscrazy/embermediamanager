@@ -43,11 +43,11 @@ Public Class Trailers
         Me._ImdbTrailerPage = String.Empty
     End Sub
 
-    Public Function GetTrailers(ByVal ImdbID As String, ByVal TrailerPageSelection As List(Of Master.TrailerPages), Optional ByVal BreakAfterFound As Boolean = True) As ArrayList
+    Public Function GetTrailers(ByVal ImdbID As String, Optional ByVal BreakAfterFound As Boolean = True) As ArrayList
         Me._ImdbID = ImdbID
 
         If Me.GetImdbTrailerPage() Then
-            For Each TP As Master.TrailerPages In TrailerPageSelection
+            For Each TP As Master.TrailerPages In Master.eSettings.TrailerSites
                 If BreakAfterFound AndAlso Me._TrailerList.Count > 0 Then
                     Exit For
                 End If
@@ -220,4 +220,20 @@ Public Class Trailers
         End If
     End Function
 
+    Public Sub DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String)
+        Me.GetTrailers(ImdbID, True)
+
+        If Me._TrailerList.Count > 0 Then
+            Dim sHTTP As New HTTP(Me._TrailerList.Item(0), sPath)
+            sHTTP = Nothing
+        End If
+    End Sub
+
+    Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
+        Dim sHTTP As New HTTP(Me._TrailerList.Item(sIndex), sPath)
+        Dim tPath As String = sHTTP.SavePath
+        sHTTP = Nothing
+
+        Return tPath
+    End Function
 End Class

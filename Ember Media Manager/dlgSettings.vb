@@ -889,6 +889,17 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub chkLockTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockTrailer.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub lbTrailerSites_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbTrailerSites.ItemCheck
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1046,6 +1057,7 @@ Public Class dlgSettings
             Master.eSettings.LockRating = Me.chkLockRating.Checked
             Master.eSettings.LockStudio = Me.chkLockRealStudio.Checked
             Master.eSettings.LockGenre = Me.chkLockGenre.Checked
+            Master.eSettings.LockTrailer = Me.chkLockTrailer.Checked
             Master.eSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
             Master.eSettings.MarkNew = Me.chkMarkNew.Checked
             Master.eSettings.ResizeFanart = Me.chkResizeFanart.Checked
@@ -1080,6 +1092,17 @@ Public Class dlgSettings
             Master.eSettings.PersistImgCache = Me.chkPersistImgCache.Checked
             Master.eSettings.SkipLessThan = Convert.ToInt32(Me.txtSkipLessThan.Text)
             Master.eSettings.SkipStackSizeCheck = Me.chkSkipStackedSizeCheck.Checked
+
+            Master.eSettings.TrailerSites.Clear()
+            If Me.lbTrailerSites.CheckedItems.Count > 0 Then
+                For Each iTrailer As Integer In Me.lbTrailerSites.CheckedIndices
+                    Master.eSettings.TrailerSites.Add(iTrailer)
+                Next
+
+                Master.eSettings.DownloadTrailers = Me.chkDownloadTrailer.Checked
+            Else
+                Master.eSettings.DownloadTrailers = False
+            End If
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
 
@@ -1195,6 +1218,7 @@ Public Class dlgSettings
             Me.chkLockRating.Checked = Master.eSettings.LockRating
             Me.chkLockRealStudio.Checked = Master.eSettings.LockStudio
             Me.chkLockGenre.Checked = Master.eSettings.LockGenre
+            Me.chkLockTrailer.Checked = Master.eSettings.LockTrailer
             Me.chkSingleScrapeImages.Checked = Master.eSettings.SingleScrapeImages
             Me.chkMarkNew.Checked = Master.eSettings.MarkNew
             Me.chkResizeFanart.Checked = Master.eSettings.ResizeFanart
@@ -1229,6 +1253,13 @@ Public Class dlgSettings
             Me.chkPersistImgCache.Checked = Master.eSettings.PersistImgCache
             Me.txtSkipLessThan.Text = Master.eSettings.SkipLessThan.ToString
             Me.chkSkipStackedSizeCheck.Checked = Master.eSettings.SkipStackSizeCheck
+            Me.chkDownloadTrailer.Checked = Master.eSettings.DownloadTrailers
+
+            If Master.eSettings.TrailerSites.Count > 0 Then
+                For Each iTrailer As Integer In Master.eSettings.TrailerSites
+                    Me.lbTrailerSites.SetItemChecked(iTrailer, True)
+                Next
+            End If
 
             If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
                 Dim genreArray() As String
