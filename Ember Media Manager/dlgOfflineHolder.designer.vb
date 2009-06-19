@@ -58,6 +58,7 @@ Partial Class dlgOfflineHolder
         Me.txtTop = New System.Windows.Forms.TextBox
         Me.tmrTopWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrTop = New System.Windows.Forms.Timer(Me.components)
+        Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -218,11 +219,10 @@ Partial Class dlgOfflineHolder
         '
         'chkUseFanart
         '
-        Me.chkUseFanart.AutoSize = True
         Me.chkUseFanart.Enabled = False
-        Me.chkUseFanart.Location = New System.Drawing.Point(21, 185)
+        Me.chkUseFanart.Location = New System.Drawing.Point(212, 313)
         Me.chkUseFanart.Name = "chkUseFanart"
-        Me.chkUseFanart.Size = New System.Drawing.Size(187, 17)
+        Me.chkUseFanart.Size = New System.Drawing.Size(117, 36)
         Me.chkUseFanart.TabIndex = 68
         Me.chkUseFanart.Text = "Use Fanart for Place Holder Video"
         Me.chkUseFanart.UseVisualStyleBackColor = True
@@ -230,7 +230,7 @@ Partial Class dlgOfflineHolder
         'lblTagline
         '
         Me.lblTagline.AutoSize = True
-        Me.lblTagline.Location = New System.Drawing.Point(17, 210)
+        Me.lblTagline.Location = New System.Drawing.Point(6, 305)
         Me.lblTagline.Name = "lblTagline"
         Me.lblTagline.Size = New System.Drawing.Size(139, 13)
         Me.lblTagline.TabIndex = 70
@@ -239,7 +239,7 @@ Partial Class dlgOfflineHolder
         'txtTagline
         '
         Me.txtTagline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTagline.Location = New System.Drawing.Point(20, 227)
+        Me.txtTagline.Location = New System.Drawing.Point(9, 322)
         Me.txtTagline.Name = "txtTagline"
         Me.txtTagline.Size = New System.Drawing.Size(200, 20)
         Me.txtTagline.TabIndex = 69
@@ -250,16 +250,16 @@ Partial Class dlgOfflineHolder
         Me.btnTextColor.BackColor = System.Drawing.Color.White
         Me.btnTextColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.btnTextColor.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnTextColor.Location = New System.Drawing.Point(302, 225)
+        Me.btnTextColor.Location = New System.Drawing.Point(212, 277)
         Me.btnTextColor.Name = "btnTextColor"
-        Me.btnTextColor.Size = New System.Drawing.Size(22, 22)
+        Me.btnTextColor.Size = New System.Drawing.Size(24, 22)
         Me.btnTextColor.TabIndex = 71
         Me.btnTextColor.UseVisualStyleBackColor = False
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(238, 230)
+        Me.Label1.Location = New System.Drawing.Point(158, 282)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(58, 13)
         Me.Label1.TabIndex = 72
@@ -267,7 +267,7 @@ Partial Class dlgOfflineHolder
         '
         'pbPreview
         '
-        Me.pbPreview.Location = New System.Drawing.Point(6, 45)
+        Me.pbPreview.Location = New System.Drawing.Point(6, 17)
         Me.pbPreview.Name = "pbPreview"
         Me.pbPreview.Size = New System.Drawing.Size(321, 257)
         Me.pbPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -276,6 +276,14 @@ Partial Class dlgOfflineHolder
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btnFont)
+        Me.GroupBox1.Controls.Add(Me.chkUseFanart)
+        Me.GroupBox1.Controls.Add(Me.lblTagline)
+        Me.GroupBox1.Controls.Add(Me.btnTextColor)
+        Me.GroupBox1.Controls.Add(Me.txtTagline)
+        Me.GroupBox1.Controls.Add(Me.Label1)
+        Me.GroupBox1.Controls.Add(Me.txtTop)
+        Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.pbPreview)
         Me.GroupBox1.Location = New System.Drawing.Point(344, 71)
         Me.GroupBox1.Name = "GroupBox1"
@@ -306,9 +314,9 @@ Partial Class dlgOfflineHolder
         '
         'btnFont
         '
-        Me.btnFont.Location = New System.Drawing.Point(241, 199)
+        Me.btnFont.Location = New System.Drawing.Point(242, 277)
         Me.btnFont.Name = "btnFont"
-        Me.btnFont.Size = New System.Drawing.Size(83, 23)
+        Me.btnFont.Size = New System.Drawing.Size(85, 23)
         Me.btnFont.TabIndex = 75
         Me.btnFont.Text = "Select Font..."
         Me.btnFont.UseVisualStyleBackColor = True
@@ -316,7 +324,7 @@ Partial Class dlgOfflineHolder
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(238, 156)
+        Me.Label3.Location = New System.Drawing.Point(6, 282)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(67, 13)
         Me.Label3.TabIndex = 77
@@ -325,7 +333,7 @@ Partial Class dlgOfflineHolder
         'txtTop
         '
         Me.txtTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTop.Location = New System.Drawing.Point(241, 173)
+        Me.txtTop.Location = New System.Drawing.Point(73, 280)
         Me.txtTop.Name = "txtTop"
         Me.txtTop.Size = New System.Drawing.Size(83, 20)
         Me.txtTop.TabIndex = 76
@@ -345,15 +353,7 @@ Partial Class dlgOfflineHolder
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(698, 453)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.txtTop)
-        Me.Controls.Add(Me.btnFont)
         Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.btnTextColor)
-        Me.Controls.Add(Me.lblTagline)
-        Me.Controls.Add(Me.txtTagline)
-        Me.Controls.Add(Me.chkUseFanart)
         Me.Controls.Add(Me.Create_Button)
         Me.Controls.Add(Me.lvStatus)
         Me.Controls.Add(Me.pbProgress)
@@ -377,6 +377,7 @@ Partial Class dlgOfflineHolder
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -415,5 +416,6 @@ Partial Class dlgOfflineHolder
     Friend WithEvents txtTop As System.Windows.Forms.TextBox
     Friend WithEvents tmrTopWait As System.Windows.Forms.Timer
     Friend WithEvents tmrTop As System.Windows.Forms.Timer
+    Friend WithEvents FolderBrowserDialog1 As System.Windows.Forms.FolderBrowserDialog
 
 End Class
