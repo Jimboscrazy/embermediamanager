@@ -150,8 +150,9 @@ Public Class dlgOfflineHolder
     End Sub
     Sub CheckConditions()
         Try
-            destPath = Path.Combine(cbSources.Items(cbSources.SelectedIndex), txtMovieName.Text)
+
             If cbSources.SelectedIndex >= 0 Then
+                destPath = Path.Combine(cbSources.Items(cbSources.SelectedIndex), txtMovieName.Text)
                 lvStatus.Items(idxStsSource).SubItems(1).Text = "Valid"
                 lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Green
             Else
@@ -247,7 +248,7 @@ Public Class dlgOfflineHolder
         Me.bwCreateHolder.ReportProgress(1, "Creating Movie")
         'Let cycle
         Dim f As Integer = 1
-        For c As Integer = 756 To -stringSize.Width Step -2
+        For c As Integer = 720 To -stringSize.Width Step -2
             imgTemp = imgFinal.Clone
             newGraphics = Graphics.FromImage(imgTemp)
             drawPoint.X = c
