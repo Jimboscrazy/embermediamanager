@@ -300,7 +300,7 @@ Public Class dlgOfflineHolder
         ' Create string to draw.
         Dim drawString As String = txtTagline.Text
         Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
-        Dim drawPoint As New PointF(0.0F, 470.0F)
+        Dim drawPoint As New PointF(0.0F, Convert.ToSingle(txtTop.Text))
         Dim stringSize As New SizeF
         stringSize = newGraphics.MeasureString(drawString, drawFont)
         newGraphics.Dispose()
