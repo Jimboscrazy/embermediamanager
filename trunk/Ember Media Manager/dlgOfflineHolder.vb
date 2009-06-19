@@ -40,6 +40,7 @@ Public Class dlgOfflineHolder
     Private currTopText As String = String.Empty
     Private prevTopText As String = String.Empty
     Private drawFont As New Font("Arial", 22, FontStyle.Bold)
+    Private txtTopPos As Integer
     Friend WithEvents bwCreateHolder As New System.ComponentModel.BackgroundWorker
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         If bwCreateHolder.IsBusy Then
@@ -218,6 +219,7 @@ Public Class dlgOfflineHolder
                 End If
             Else
                 If File.Exists(PreviewPath) Then
+                    txtTop.Text = "470"
                     Preview.FromFile(PreviewPath)
                 End If
 
@@ -288,11 +290,11 @@ Public Class dlgOfflineHolder
             imgTemp = New Bitmap(720, 576)
         End If
 
-        'First let's resize it
-        imgFinal = New Bitmap(720, 576)
+        'First let's resize it (Mantain aspect ratio)
+        imgFinal = New Bitmap(720, Convert.ToInt32(720 / (imgTemp.Width / imgTemp.Height)))
         newGraphics = Graphics.FromImage(imgFinal)
         newGraphics.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-        newGraphics.DrawImage(imgTemp, New Rectangle(0, 0, 720, 576), New Rectangle(0, 0, imgTemp.Width, imgTemp.Height), GraphicsUnit.Pixel)
+        newGraphics.DrawImage(imgTemp, New Rectangle(0, 0, 720, 720 / (imgTemp.Width / imgTemp.Height)), New Rectangle(0, 0, imgTemp.Width, imgTemp.Height), GraphicsUnit.Pixel)
         'Dont need this one anymore
         imgTemp.Dispose()
         'Save Master Image
@@ -300,7 +302,7 @@ Public Class dlgOfflineHolder
         ' Create string to draw.
         Dim drawString As String = txtTagline.Text
         Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
-        Dim drawPoint As New PointF(0.0F, Convert.ToSingle(txtTop.Text))
+        Dim drawPoint As New PointF(0.0F, txtTopPos)
         Dim stringSize As New SizeF
         stringSize = newGraphics.MeasureString(drawString, drawFont)
         newGraphics.Dispose()
@@ -380,6 +382,8 @@ Public Class dlgOfflineHolder
         txtMovieName.Enabled = False
         txtTagline.Enabled = False
         chkUseFanart.Enabled = False
+        txtTopPos = 720 / (pbPreview.Image.Width / Convert.ToSingle(txtTop.Text)) ' Scale it
+        'Need to avoid cross thread in BackgroundWorker
         Me.pbProgress.Value = 100
         Me.pbProgress.Style = ProgressBarStyle.Marquee
         Me.pbProgress.MarqueeAnimationSpeed = 25
@@ -427,7 +431,10 @@ Public Class dlgOfflineHolder
         Dim grPreview As Graphics = Graphics.FromImage(bmPreview)
         Dim drawString As String = txtTagline.Text
         Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
-        Dim drawPoint As New PointF(0.0F, 470.0F)
+        'Dim drawPoint As New PointF(0.0F, 470.0F)
+        If Convert.ToInt32(txtTop.Text) > bmPreview.Height - grPreview.MeasureString(drawString, drawFont).Height Then
+            txtTop.Text = Convert.ToInt32(bmPreview.Height - grPreview.MeasureString(drawString, drawFont).Height - 10).ToString
+        End If
         Dim iLeft As Integer = (bmPreview.Width - grPreview.MeasureString(drawString, drawFont).Width) / 2
         grPreview.DrawString(drawString, drawFont, drawBrush, iLeft, Convert.ToInt32(txtTop.Text))
         pbPreview.Image = bmPreview
