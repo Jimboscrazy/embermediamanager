@@ -371,7 +371,7 @@ Public Class frmMain
         Else
             Try
                 ' Check if is allready running
-                CheckInstanceOfApp()
+
 
                 Me.btnMarkAll.Text = If(Master.eSettings.MarkAll, "Mark All", "Unmark All")
 
@@ -416,6 +416,7 @@ Public Class frmMain
 
             Me.Visible = True
             Me.Activate()
+            CheckInstanceOfApp()
         End If
 
     End Sub
