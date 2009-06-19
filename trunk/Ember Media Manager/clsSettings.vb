@@ -38,7 +38,8 @@ Public Class emmSettings
     Private _paneltextColor As String
     Private _certificationLang As String
     Private _usecertformpaa As Boolean
-    Private _studiotags As Boolean
+    Private _scanmediainfo As Boolean
+    Private _usestudiotags As Boolean
     Private _imdburl As String
     Private _fullcast As Boolean
     Private _fullcrew As Boolean
@@ -244,12 +245,21 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property UseStudioTags() As Boolean
+    Public Property ScanMediaInfo() As Boolean
         Get
-            Return Me._studiotags
+            Return Me._scanmediainfo
         End Get
         Set(ByVal value As Boolean)
-            Me._studiotags = value
+            Me._scanmediainfo = value
+        End Set
+    End Property
+
+    Public Property UseStudioTags() As Boolean
+        Get
+            Return Me._usestudiotags
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usestudiotags = value
         End Set
     End Property
 
@@ -1053,7 +1063,8 @@ Public Class emmSettings
         Me._paneltextColor = Color.Black.ToArgb
         Me._certificationLang = String.Empty
         Me._usecertformpaa = False
-        Me._studiotags = True
+        Me._scanmediainfo = True
+        Me._usestudiotags = True
         Me._imdburl = "akas.imdb.com"
         Me._fullcast = False
         Me._fullcrew = False

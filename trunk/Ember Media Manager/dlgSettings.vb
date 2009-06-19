@@ -254,10 +254,14 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStudio.CheckedChanged
+    Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanMediaInfo.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.chkUseMIDuration.Enabled = Me.chkStudio.Checked
-        If Not Me.chkStudio.Checked Then Me.chkUseMIDuration.Checked = False
+        Me.chkUseMIDuration.Enabled = Me.chkScanMediaInfo.Checked
+        Me.chkUseMIStudioTag.Enabled = Me.chkScanMediaInfo.Checked
+        If Not Me.chkScanMediaInfo.Checked Then
+            Me.chkUseMIDuration.Checked = False
+            Me.chkUseMIStudioTag.Checked = False
+        End If
     End Sub
 
     Private Sub cbCert_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbCert.SelectedIndexChanged
@@ -880,6 +884,11 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
         Me.doRefresh = True
     End Sub
+
+    Private Sub chkUseMIStudioTag_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMIStudioTag.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -997,7 +1006,8 @@ Public Class dlgSettings
             Else
                 Master.eSettings.UseCertForMPAA = False
             End If
-            Master.eSettings.UseStudioTags = Me.chkStudio.Checked
+            Master.eSettings.ScanMediaInfo = Me.chkScanMediaInfo.Checked
+            Master.eSettings.UseStudioTags = Me.chkUseMIStudioTag.Checked
             Master.eSettings.FullCast = Me.chkFullCast.Checked
             Master.eSettings.FullCrew = Me.chkFullCrew.Checked
             Master.eSettings.CastImagesOnly = Me.chkCastWithImg.Checked
@@ -1145,7 +1155,8 @@ Public Class dlgSettings
                 Me.chkUseCertForMPAA.Enabled = True
                 Me.chkUseCertForMPAA.Checked = Master.eSettings.UseCertForMPAA
             End If
-            Me.chkStudio.Checked = Master.eSettings.UseStudioTags
+            Me.chkScanMediaInfo.Checked = Master.eSettings.ScanMediaInfo
+            Me.chkUseMIStudioTag.Checked = Master.eSettings.UseStudioTags
             Me.chkFullCast.Checked = Master.eSettings.FullCast
             Me.chkFullCrew.Checked = Master.eSettings.FullCrew
             Me.chkCastWithImg.Checked = Master.eSettings.CastImagesOnly
@@ -1289,6 +1300,5 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
-
 
 End Class
