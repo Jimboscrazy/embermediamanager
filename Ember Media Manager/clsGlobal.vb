@@ -456,7 +456,7 @@ Public Class Master
         End Try
     End Sub
 
-    Public Shared Sub GetAVImages(ByVal strAV As String, ByVal strPath As String)
+    Public Shared Sub GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal strPath As String)
 
         '//
         ' Parse the Flags XML and set the proper images
@@ -465,12 +465,16 @@ Public Class Master
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
         If File.Exists(Path.Combine(mePath, "Flags.xml")) Then
             Try
-                Dim strWithoutFirst As String = String.Format("{0} {1}", Strings.Trim(Strings.Right(strAV, strAV.Length - Strings.InStr(strAV, "/"))).ToLower, Path.GetFileName(strPath).ToLower)
+                Dim strTag As String = String.Empty
                 Dim atypeRef As String = String.Empty
                 Dim vresImage As String = String.Empty
                 Dim vsourceImage As String = String.Empty
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
+
+                If Not IsNothing(fiAV) Then
+                    strTag = FITagData(fiAV)
+                End If
 
                 Dim xmlFlags As XDocument = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
 
@@ -480,7 +484,7 @@ Public Class Master
                     vresImage = Path.Combine(mePath, xVResDefault(0).ToString)
                 End If
 
-                Dim xVResFlag = From xVRes In xmlFlags...<vres>...<name> Where Regex.IsMatch(strWithoutFirst, xVRes.@searchstring) Select xVRes.<icon>.Value
+                Dim xVResFlag = From xVRes In xmlFlags...<vres>...<name> Where Regex.IsMatch(strTag, xVRes.@searchstring) Select xVRes.<icon>.Value
                 If xVResFlag.Count > 0 Then
                     vresImage = Path.Combine(mePath, xVResFlag(0).ToString)
                 End If
@@ -491,7 +495,7 @@ Public Class Master
                     vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
                 End If
 
-                Dim xVSourceFlag = From xVSource In xmlFlags...<vtype>...<name> Where Regex.IsMatch(strWithoutFirst, xVSource.@searchstring) Select xVSource.<icon>.Value
+                Dim xVSourceFlag = From xVSource In xmlFlags...<vtype>...<name> Where Regex.IsMatch(Path.GetFileName(strPath).ToLower, xVSource.@searchstring) Select xVSource.<icon>.Value
                 If xVSourceFlag.Count > 0 Then
                     vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
                 End If
@@ -502,7 +506,7 @@ Public Class Master
                     atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
                 End If
 
-                Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(strWithoutFirst, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
+                Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(strTag, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
                 If xATypeFlag.Count > 0 Then
                     atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
                     If Not IsNothing(xATypeFlag(0).ref) Then
@@ -516,7 +520,7 @@ Public Class Master
                     achanImage = Path.Combine(mePath, xAChanDefault(0).ToString)
                 End If
 
-                Dim xAChanFlag = From xAChan In xmlFlags...<achan>...<name> Where Regex.IsMatch(strWithoutFirst, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
+                Dim xAChanFlag = From xAChan In xmlFlags...<achan>...<name> Where Regex.IsMatch(strTag, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
                 If xAChanFlag.Count > 0 Then
                     achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
                 End If
