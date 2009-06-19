@@ -78,6 +78,7 @@ Public Class Trailers
         Dim trailerUrl As String
         Dim WebPage As HTTP
         Dim Link As Match
+        Dim currPage As Integer
 
         Link = Regex.Match(_ImdbTrailerPage, "of [0-9]{1,3}")
 
@@ -85,7 +86,10 @@ Public Class Trailers
             TrailerNumber = Convert.ToInt32(Link.Value.Substring(3))
 
             If TrailerNumber > 0 Then
-                For i As Integer = 1 To TrailerNumber
+
+                currPage = (TrailerNumber / 10)
+
+                For i As Integer = 1 To currPage
                     If Not i = 1 Then
                         WebPage = New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/trailers?pg=", i))
                         _ImdbTrailerPage = WebPage.Response
@@ -99,7 +103,7 @@ Public Class Trailers
 
                         trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+flv").Value)
 
-                        If WebPage.IsValidURL(trailerUrl) Then
+                        If Not String.IsNullOrEmpty(trailerUrl) AndAlso WebPage.IsValidURL(trailerUrl) Then
                             Me._TrailerList.Add(trailerUrl)
                         End If
                     Next
@@ -221,7 +225,7 @@ Public Class Trailers
     Private Function GetImdbTrailerPage() As Boolean
         Dim WebPage As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/trailers"))
         _ImdbTrailerPage = WebPage.Response
-        If _ImdbTrailerPage.ToLower.Contains("page not found") OrElse _ImdbTrailerPage.ToLower.Contains("there are no related videos available") Then
+        If _ImdbTrailerPage.ToLower.Contains("page not found") Then
             _ImdbTrailerPage = String.Empty
         End If
     End Function
