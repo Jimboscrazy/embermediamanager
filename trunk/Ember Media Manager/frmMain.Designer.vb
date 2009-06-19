@@ -50,9 +50,9 @@ Partial Class frmMain
         Me.ClearAllCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
         Me.SetsManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.OfflineMediaManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator
         Me.ExportMoviesListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.OfflineMediaManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.dgvMediaList = New System.Windows.Forms.DataGridView
         Me.mnuMediaList = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -441,6 +441,13 @@ Partial Class frmMain
         Me.SetsManagerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
         Me.SetsManagerToolStripMenuItem.Text = "Sets Manager"
         '
+        'OfflineMediaManagerToolStripMenuItem
+        '
+        Me.OfflineMediaManagerToolStripMenuItem.Image = CType(resources.GetObject("OfflineMediaManagerToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.OfflineMediaManagerToolStripMenuItem.Name = "OfflineMediaManagerToolStripMenuItem"
+        Me.OfflineMediaManagerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
+        Me.OfflineMediaManagerToolStripMenuItem.Text = "Offline Media Manager"
+        '
         'ToolStripMenuItem3
         '
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
@@ -452,13 +459,6 @@ Partial Class frmMain
         Me.ExportMoviesListToolStripMenuItem.Name = "ExportMoviesListToolStripMenuItem"
         Me.ExportMoviesListToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
         Me.ExportMoviesListToolStripMenuItem.Text = "Export Movies List"
-        '
-        'OfflineMediaManagerToolStripMenuItem
-        '
-        Me.OfflineMediaManagerToolStripMenuItem.Image = CType(resources.GetObject("OfflineMediaManagerToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.OfflineMediaManagerToolStripMenuItem.Name = "OfflineMediaManagerToolStripMenuItem"
-        Me.OfflineMediaManagerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.OfflineMediaManagerToolStripMenuItem.Text = "Offline Media Manager"
         '
         'scMain
         '
