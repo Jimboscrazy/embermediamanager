@@ -4060,4 +4060,9 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
+    Private Sub OfflineMediaManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OfflineMediaManagerToolStripMenuItem.Click
+        Using dOfflineHolder As New dlgOfflineHolder
+            dOfflineHolder.ShowDialog()
+        End Using
+    End Sub
 End Class
