@@ -232,13 +232,19 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
         '//
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
 
         Me.Visible = False
-
+        Dim Args() As String = Environment.GetCommandLineArgs
+        ' Check if is allready running
+        If Args.Count = 1 Then
+            If CheckInstanceOfApp() Then
+                Application.Exit()
+                Return
+            End If
+        End If
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)
@@ -265,7 +271,7 @@ Public Class frmMain
         Dim hasSpec As Boolean = True
         Dim clScrapeType As Master.ScrapeType = Nothing
         Dim clScrapeMod As ScrapeModifier = Nothing
-        Dim Args() As String = Environment.GetCommandLineArgs
+
         If Args.Count > 1 Then
             isCL = True
             Dim clAsk As Boolean = False
@@ -370,7 +376,6 @@ Public Class frmMain
 
         Else
             Try
-                ' Check if is allready running
 
 
                 Me.btnMarkAll.Text = If(Master.eSettings.MarkAll, "Mark All", "Unmark All")
@@ -416,23 +421,28 @@ Public Class frmMain
 
             Me.Visible = True
             Me.Activate()
-            CheckInstanceOfApp()
+
         End If
 
     End Sub
-    Private Sub CheckInstanceOfApp()
+    Private Function CheckInstanceOfApp() As Boolean
         Dim appProc() As Process
         Dim strModName, strProcName As String
         strModName = Process.GetCurrentProcess.MainModule.ModuleName
         strProcName = System.IO.Path.GetFileNameWithoutExtension(strModName)
         appProc = Process.GetProcessesByName(strProcName)
         If appProc.Length > 1 Then
-            MessageBox.Show("There is an instance of this application running.")
-            Application.Exit()
+            CType(My.Application.SplashScreen, frmSplash).CloseForm()
+            Dim f = New Form()
+            f.TopMost = True
+            MessageBox.Show(f, "There is an instance of this Ember Media Manager running.")
+            f.Close()
+            f = Nothing
+            Return True
         End If
-    End Sub
+        Return False
+    End Function
     Private Sub lstActors_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstActors.SelectedIndexChanged
-
         '//
         ' Begin thread to download actor image if one exists
         '\\
