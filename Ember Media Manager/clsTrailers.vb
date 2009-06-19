@@ -46,30 +46,29 @@ Public Class Trailers
     Public Function GetTrailers(ByVal ImdbID As String, Optional ByVal BreakAfterFound As Boolean = True) As ArrayList
         Me._ImdbID = ImdbID
 
-        If Me.GetImdbTrailerPage() Then
-            For Each TP As Master.TrailerPages In Master.eSettings.TrailerSites
-                If BreakAfterFound AndAlso Me._TrailerList.Count > 0 Then
-                    Exit For
-                End If
-                Try
-                    Select Case TP
-                        Case Master.TrailerPages.Imdb
-                            Me.GetImdbTrailer()
-                        Case Master.TrailerPages.MattTrailer
-                            Me.GetMattTrailer()
-                        Case Master.TrailerPages.AZMovies
-                            Me.GetAZMoviesTrailer()
-                        Case Master.TrailerPages.YouTube
-                            Me.GetYouTubeTrailer()
-                    End Select
-                Catch
-                End Try
-            Next
+        Me.GetImdbTrailerPage()
 
-            Return Me._TrailerList
-        End If
+        For Each TP As Master.TrailerPages In Master.eSettings.TrailerSites
+            If BreakAfterFound AndAlso Me._TrailerList.Count > 0 Then
+                Exit For
+            End If
+            Try
+                Select Case TP
+                    Case Master.TrailerPages.Imdb
+                        If Not String.IsNullOrEmpty(Me._ImdbTrailerPage) Then Me.GetImdbTrailer()
+                    Case Master.TrailerPages.MattTrailer
+                        If Not String.IsNullOrEmpty(Me._ImdbTrailerPage) Then Me.GetMattTrailer()
+                    Case Master.TrailerPages.AZMovies
+                        If Not String.IsNullOrEmpty(Me._ImdbTrailerPage) Then Me.GetAZMoviesTrailer()
+                    Case Master.TrailerPages.YouTube
+                        Me.GetYouTubeTrailer()
+                End Select
+            Catch
+            End Try
+        Next
 
-        Return New ArrayList
+        Return Me._TrailerList
+
     End Function
 
     Private Sub GetImdbTrailer()
@@ -88,14 +87,14 @@ Public Class Trailers
             If TrailerNumber > 0 Then
                 For i As Integer = 1 To TrailerNumber
                     If Not i = 1 Then
-                        WebPage = New HTTP(String.Concat("http://www.imdb.com/title/tt", _ImdbID, "/trailers?pg=", i))
+                        WebPage = New HTTP(String.Concat("http://akas.imdb.com/title/tt", _ImdbID, "/trailers?pg=", i))
                         _ImdbTrailerPage = WebPage.Response
                     End If
 
                     Links = Regex.Matches(_ImdbTrailerPage, "/vi[0-9]+/")
 
                     For Each m As Match In Links
-                        WebPage = New HTTP(String.Concat("http://www.imdb.com/video/screenplay", m.Value, "player"))
+                        WebPage = New HTTP(String.Concat("http://akas.imdb.com/video/screenplay", m.Value, "player"))
                         trailerPage = WebPage.Response
 
                         trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+flv").Value)
@@ -213,13 +212,11 @@ Public Class Trailers
     End Sub
 
     Private Function GetImdbTrailerPage() As Boolean
-        Dim WebPage As New HTTP(String.Concat("http://www.imdb.com/title/tt", _ImdbID, "/trailers"))
+        Dim WebPage As New HTTP(String.Concat("http://akas.imdb.com/title/tt", _ImdbID, "/trailers"))
         _ImdbTrailerPage = WebPage.Response
-        If Not String.IsNullOrEmpty(_ImdbTrailerPage) AndAlso Not _ImdbTrailerPage.ToLower.Contains("page not found") AndAlso _
-        Not _ImdbTrailerPage.ToLower.Contains("there are no related videos available") Then
-            Return True
-        Else
-            Return False
+        If String.IsNullOrEmpty(_ImdbTrailerPage) OrElse _ImdbTrailerPage.ToLower.Contains("page not found") OrElse _
+         _ImdbTrailerPage.ToLower.Contains("there are no related videos available") Then
+            _ImdbTrailerPage = String.Empty
         End If
     End Function
 
