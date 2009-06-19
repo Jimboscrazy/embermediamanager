@@ -157,6 +157,7 @@
     <Compile Include="clsSettings.vb" />
     <Compile Include="clsSorter.vb" />
     <Compile Include="clsScrapeTMDB.vb" />
+    <Compile Include="clsTrailers.vb" />
     <Compile Include="dlgNewSet.Designer.vb">
       <DependentUpon>dlgNewSet.vb</DependentUpon>
     </Compile>
