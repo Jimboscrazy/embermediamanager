@@ -51,22 +51,25 @@ Public Class Trailers
                 If BreakAfterFound AndAlso Me._TrailerList.Count > 0 Then
                     Exit For
                 End If
-                Select Case TP
-                    Case Master.TrailerPages.Imdb
-                        Me.GetImdbTrailer()
-                    Case Master.TrailerPages.MattTrailer
-                        Me.GetMattTrailer()
-                    Case Master.TrailerPages.AZMovies
-                        Me.GetAZMoviesTrailer()
-                    Case Master.TrailerPages.YouTube
-                        Me.GetYouTubeTrailer()
-                End Select
+                Try
+                    Select Case TP
+                        Case Master.TrailerPages.Imdb
+                            Me.GetImdbTrailer()
+                        Case Master.TrailerPages.MattTrailer
+                            Me.GetMattTrailer()
+                        Case Master.TrailerPages.AZMovies
+                            Me.GetAZMoviesTrailer()
+                        Case Master.TrailerPages.YouTube
+                            Me.GetYouTubeTrailer()
+                    End Select
+                Catch
+                End Try
             Next
 
             Return Me._TrailerList
         End If
 
-        Return Nothing
+        Return New ArrayList
     End Function
 
     Private Sub GetImdbTrailer()

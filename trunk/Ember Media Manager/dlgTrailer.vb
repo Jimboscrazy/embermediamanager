@@ -26,7 +26,6 @@ Public Class dlgTrailer
 
     Private cTrailer As New Trailers
     Dim tArray As New ArrayList
-    Dim tpTrailers As New List(Of Master.TrailerPages)
     Dim imdbID As String = String.Empty
     Dim sPath As String = String.Empty
     Dim tPath As String = String.Empty
@@ -59,16 +58,12 @@ Public Class dlgTrailer
         Me.Close()
     End Sub
 
-    Private Sub dlgTrailer_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        tpTrailers.Add(Master.TrailerPages.Imdb)
-        tpTrailers.Add(Master.TrailerPages.YouTube)
-        tpTrailers.Add(Master.TrailerPages.MattTrailer)
-        tpTrailers.Add(Master.TrailerPages.AZMovies)
-    End Sub
-
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
 
-        tArray = cTrailer.GetTrailers(Me.imdbID, False)
+        Try
+            tArray = cTrailer.GetTrailers(Me.imdbID, False)
+        Catch
+        End Try
 
     End Sub
 
@@ -103,11 +98,12 @@ Public Class dlgTrailer
         Me.imdbID = _imdbID
         Me.sPath = _sPath
 
-        If MyBase.ShowDialog = Windows.Forms.DialogResult.OK Then
+        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Return Me.tPath
         Else
             Return String.Empty
         End If
+
     End Function
 
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
