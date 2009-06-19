@@ -99,7 +99,7 @@ Public Class Trailers
 
                         trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+flv").Value)
 
-                        If Not String.IsNullOrEmpty(trailerUrl) Then
+                        If WebPage.IsValidURL(trailerUrl) Then
                             Me._TrailerList.Add(trailerUrl)
                         End If
                     Next
@@ -121,9 +121,11 @@ Public Class Trailers
             Link = Regex.Match(MattPage, "trailer=.+flv")
 
             If Link.Success Then
-                Dim TrailerUrl As String = Link.Value.Substring(8)
+                Dim TrailerUrl As String = String.Concat("http://mattfind.com/", Link.Value.Substring(8))
 
-                Me._TrailerList.Add(String.Concat("http://mattfind.com/", TrailerUrl))
+                If WebPage.IsValidURL(TrailerUrl) Then
+                    Me._TrailerList.Add(TrailerUrl)
+                End If
             End If
         End If
     End Sub
@@ -142,7 +144,9 @@ Public Class Trailers
                 Link = Regex.Match(AZPage, "http://proxy.+h264.+[0-9A-Za-z]+")
 
                 If Link.Success Then
-                    Me._TrailerList.Add(Link.Value)
+                    If WebPage.IsValidURL(Link.Value) Then
+                        Me._TrailerList.Add(Link.Value)
+                    End If
                 End If
 
             End If
@@ -192,7 +196,10 @@ Public Class Trailers
                                                             L = tLink.Substring(StartIndex, EndIndex - StartIndex)
 
                                                             If Not String.IsNullOrEmpty(L) Then
-                                                                Me._TrailerList.Add(String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T))
+                                                                Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
+                                                                If WebPage.IsValidURL(YTURL) Then
+                                                                    Me._TrailerList.Add(YTURL)
+                                                                End If
                                                             End If
                                                         End If
                                                     End If
@@ -214,8 +221,7 @@ Public Class Trailers
     Private Function GetImdbTrailerPage() As Boolean
         Dim WebPage As New HTTP(String.Concat("http://akas.imdb.com/title/tt", _ImdbID, "/trailers"))
         _ImdbTrailerPage = WebPage.Response
-        If String.IsNullOrEmpty(_ImdbTrailerPage) OrElse _ImdbTrailerPage.ToLower.Contains("page not found") OrElse _
-         _ImdbTrailerPage.ToLower.Contains("there are no related videos available") Then
+        If _ImdbTrailerPage.ToLower.Contains("page not found") OrElse _ImdbTrailerPage.ToLower.Contains("there are no related videos available") Then
             _ImdbTrailerPage = String.Empty
         End If
     End Function
