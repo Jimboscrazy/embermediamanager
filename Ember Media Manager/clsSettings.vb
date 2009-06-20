@@ -128,6 +128,9 @@ Public Class emmSettings
     Private _skiplessthan As Integer
     Private _skipstacksizecheck As Boolean
     Private _downloadtrailers As Boolean
+    Private _updatertrailers As Boolean
+    Private _singlescrapetrailer As Boolean
+    Private _trailertimeout As Integer
     Private _trailersites As New List(Of Master.TrailerPages)
     Private _xbmccoms As New List(Of XBMCCom)
 
@@ -1057,6 +1060,33 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property UpdaterTrailers() As Boolean
+        Get
+            Return Me._updatertrailers
+        End Get
+        Set(ByVal value As Boolean)
+            Me._updatertrailers = value
+        End Set
+    End Property
+
+    Public Property SingleScrapeTrailer() As Boolean
+        Get
+            Return Me._singlescrapetrailer
+        End Get
+        Set(ByVal value As Boolean)
+            Me._singlescrapetrailer = value
+        End Set
+    End Property
+
+    Public Property TrailerTimeout() As Integer
+        Get
+            Return Me._trailertimeout
+        End Get
+        Set(ByVal value As Integer)
+            Me._trailertimeout = value
+        End Set
+    End Property
+
     Public Property TrailerSites() As List(Of Master.TrailerPages)
         Get
             Return Me._trailersites
@@ -1182,6 +1212,9 @@ Public Class emmSettings
         Me._skiplessthan = 300
         Me._skipstacksizecheck = False
         Me._downloadtrailers = False
+        Me._updatertrailers = False
+        Me._singlescrapetrailer = False
+        Me._trailertimeout = 2
         Me._trailersites.Clear()
         Me._sets.Clear()
         Me._xbmccoms.Clear()

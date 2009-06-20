@@ -254,14 +254,21 @@ Public Class Trailers
         End If
     End Function
 
-    Public Sub DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String)
+    Public Function DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String) As String
+        Dim tPath As String = String.Empty
+
+        Me._TrailerList.Clear()
+
         Me.GetTrailers(ImdbID, True)
 
         If Me._TrailerList.Count > 0 Then
             Dim sHTTP As New HTTP(Me._TrailerList.Item(0), sPath)
+            tPath = sHTTP.SavePath
             sHTTP = Nothing
         End If
-    End Sub
+
+        Return tPath
+    End Function
 
     Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
         Dim sHTTP As New HTTP(Me._TrailerList.Item(sIndex), sPath)
