@@ -77,6 +77,7 @@ Public Class HTTP
     Private Sub DownloadData(ByVal URL As String)
         Try
             Dim wrRequest As HttpWebRequest = HttpWebRequest.Create(URL)
+            wrRequest.Method = "GET"
             wrRequest.Timeout = 10000
             wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
             Dim wrResponse As HttpWebResponse = wrRequest.GetResponse()
@@ -112,6 +113,7 @@ Public Class HTTP
         Dim wrResponse As HttpWebResponse
         Try
             wrRequest = HttpWebRequest.Create(URL)
+            wrRequest.Method = "GET"
             wrRequest.Timeout = 2000
             wrResponse = wrRequest.GetResponse()
         Catch ex As Exception
@@ -128,14 +130,18 @@ Public Class HTTP
 
         Try
             Dim wrRequest As HttpWebRequest = HttpWebRequest.Create(URL)
+            wrRequest.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022)"
+            wrRequest.Method = "GET"
             wrRequest.Timeout = 10000
             Dim wrResponse As HttpWebResponse = wrRequest.GetResponse()
 
             Select Case True
                 Case wrResponse.ContentType.Contains("mp4")
                     outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), "-trailer.mp4"))
-                Case wrResponse.ContentType.Contains("flv")
+                Case wrResponse.ContentType.Contains("flv"), URL.ToLower.Contains("mattfind.com") AndAlso wrResponse.ContentType.Contains("plain") 'matttrailer reports "text/plain" for flv files
                     outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), "-trailer.flv"))
+                Case wrResponse.ContentType.Contains("shockwave"), wrResponse.ContentType.Contains("flash")
+                    outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), "-trailer.swf"))
             End Select
 
             If Not String.IsNullOrEmpty(outFile) Then
