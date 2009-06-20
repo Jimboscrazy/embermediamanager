@@ -201,6 +201,9 @@ Partial Class dlgSettings
         Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.pnlScraper = New System.Windows.Forms.Panel
         Me.GroupBox20 = New System.Windows.Forms.GroupBox
+        Me.Label23 = New System.Windows.Forms.Label
+        Me.txtTimeout = New System.Windows.Forms.TextBox
+        Me.chkUpdaterTrailer = New System.Windows.Forms.CheckBox
         Me.Label22 = New System.Windows.Forms.Label
         Me.lbTrailerSites = New System.Windows.Forms.CheckedListBox
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
@@ -225,6 +228,7 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
+        Me.chkSingleScrapeTrailer = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -2064,20 +2068,50 @@ Partial Class dlgSettings
         '
         'GroupBox20
         '
+        Me.GroupBox20.Controls.Add(Me.chkSingleScrapeTrailer)
+        Me.GroupBox20.Controls.Add(Me.Label23)
+        Me.GroupBox20.Controls.Add(Me.txtTimeout)
+        Me.GroupBox20.Controls.Add(Me.chkUpdaterTrailer)
         Me.GroupBox20.Controls.Add(Me.Label22)
         Me.GroupBox20.Controls.Add(Me.lbTrailerSites)
         Me.GroupBox20.Controls.Add(Me.chkDownloadTrailer)
         Me.GroupBox20.Location = New System.Drawing.Point(222, 176)
         Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Size = New System.Drawing.Size(170, 170)
+        Me.GroupBox20.Size = New System.Drawing.Size(299, 124)
         Me.GroupBox20.TabIndex = 61
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
         '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(16, 99)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(48, 13)
+        Me.Label23.TabIndex = 64
+        Me.Label23.Text = "Timeout:"
+        '
+        'txtTimeout
+        '
+        Me.txtTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTimeout.Location = New System.Drawing.Point(70, 97)
+        Me.txtTimeout.Name = "txtTimeout"
+        Me.txtTimeout.Size = New System.Drawing.Size(66, 20)
+        Me.txtTimeout.TabIndex = 63
+        '
+        'chkUpdaterTrailer
+        '
+        Me.chkUpdaterTrailer.Location = New System.Drawing.Point(19, 34)
+        Me.chkUpdaterTrailer.Name = "chkUpdaterTrailer"
+        Me.chkUpdaterTrailer.Size = New System.Drawing.Size(148, 31)
+        Me.chkUpdaterTrailer.TabIndex = 3
+        Me.chkUpdaterTrailer.Text = "Download Trailers During ""All Items"" Updaters"
+        Me.chkUpdaterTrailer.UseVisualStyleBackColor = True
+        '
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(24, 35)
+        Me.Label22.Location = New System.Drawing.Point(172, 17)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(117, 13)
         Me.Label22.TabIndex = 2
@@ -2088,7 +2122,7 @@ Partial Class dlgSettings
         Me.lbTrailerSites.CheckOnClick = True
         Me.lbTrailerSites.FormattingEnabled = True
         Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/TMDB", "AllTrailers", "MattTrailer", "AZMovies", "IMDB"})
-        Me.lbTrailerSites.Location = New System.Drawing.Point(25, 52)
+        Me.lbTrailerSites.Location = New System.Drawing.Point(173, 34)
         Me.lbTrailerSites.Name = "lbTrailerSites"
         Me.lbTrailerSites.Size = New System.Drawing.Size(120, 79)
         Me.lbTrailerSites.TabIndex = 1
@@ -2326,6 +2360,15 @@ Partial Class dlgSettings
         Me.chkUseImgCache.TabIndex = 0
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
+        '
+        'chkSingleScrapeTrailer
+        '
+        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(19, 63)
+        Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
+        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(148, 31)
+        Me.chkSingleScrapeTrailer.TabIndex = 65
+        Me.chkSingleScrapeTrailer.Text = "Download Trailers During Single-Scrape"
+        Me.chkSingleScrapeTrailer.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -2607,4 +2650,8 @@ Partial Class dlgSettings
     Friend WithEvents Label22 As System.Windows.Forms.Label
     Friend WithEvents lbTrailerSites As System.Windows.Forms.CheckedListBox
     Friend WithEvents chkDownloadTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents chkUpdaterTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents txtTimeout As System.Windows.Forms.TextBox
+    Friend WithEvents chkSingleScrapeTrailer As System.Windows.Forms.CheckBox
 End Class

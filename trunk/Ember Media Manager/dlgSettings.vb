@@ -895,9 +895,49 @@ Public Class dlgSettings
 
     Private Sub chkDownloadTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDownloadTrailer.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.chkUpdaterTrailer.Enabled = Me.chkDownloadTrailer.Checked
+        Me.txtTimeout.Enabled = Me.chkDownloadTrailer.Checked
+        Me.lbTrailerSites.Enabled = Me.chkDownloadTrailer.Checked
+        Me.chkSingleScrapeTrailer.Enabled = Me.chkDownloadTrailer.Checked
+
+        If Not Me.chkDownloadTrailer.Checked Then
+            Me.chkUpdaterTrailer.Checked = False
+            Me.chkSingleScrapeTrailer.Checked = False
+            Me.txtTimeout.Text = "2"
+            For i As Integer = 0 To lbTrailerSites.Items.Count - 1
+                lbTrailerSites.SetItemChecked(i, False)
+            Next
+        End If
     End Sub
 
     Private Sub lbTrailerSites_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbTrailerSites.ItemCheck
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
+        If e.Index = 0 Then
+            For i As Integer = 1 To lbGenre.Items.Count - 1
+                Me.lbGenre.SetItemChecked(i, False)
+            Next
+        Else
+            Me.lbGenre.SetItemChecked(0, False)
+        End If
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkUpdaterTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUpdaterTrailer.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtTimeout_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTimeout.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
+    Private Sub txtTimeout_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTimeout.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkSingleScrapeTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingleScrapeTrailer.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -1100,8 +1140,14 @@ Public Class dlgSettings
                 Next
 
                 Master.eSettings.DownloadTrailers = Me.chkDownloadTrailer.Checked
+                Master.eSettings.UpdaterTrailers = Me.chkUpdaterTrailer.Checked
+                Master.eSettings.TrailerTimeout = Convert.ToInt32(Me.txtTimeout.Text)
+                Master.eSettings.SingleScrapeTrailer = Me.chkSingleScrapeTrailer.Checked
             Else
                 Master.eSettings.DownloadTrailers = False
+                Master.eSettings.UpdaterTrailers = False
+                Master.eSettings.SingleScrapeTrailer = False
+                Master.eSettings.TrailerTimeout = 2
             End If
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
@@ -1254,6 +1300,9 @@ Public Class dlgSettings
             Me.txtSkipLessThan.Text = Master.eSettings.SkipLessThan.ToString
             Me.chkSkipStackedSizeCheck.Checked = Master.eSettings.SkipStackSizeCheck
             Me.chkDownloadTrailer.Checked = Master.eSettings.DownloadTrailers
+            Me.chkUpdaterTrailer.Checked = Master.eSettings.UpdaterTrailers
+            Me.chkSingleScrapeTrailer.Checked = Master.eSettings.SingleScrapeTrailer
+            Me.txtTimeout.Text = Master.eSettings.TrailerTimeout.ToString
 
             If Master.eSettings.TrailerSites.Count > 0 Then
                 For Each iTrailer As Integer In Master.eSettings.TrailerSites
@@ -1318,18 +1367,6 @@ Public Class dlgSettings
         End If
 
     End Sub
-
-    Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
-        If e.Index = 0 Then
-            For i As Integer = 1 To lbGenre.Items.Count - 1
-                Me.lbGenre.SetItemChecked(i, False)
-            Next
-        Else
-            Me.lbGenre.SetItemChecked(0, False)
-        End If
-        Me.btnApply.Enabled = True
-    End Sub
-
 #End Region '*** Routines/Functions
 
 End Class

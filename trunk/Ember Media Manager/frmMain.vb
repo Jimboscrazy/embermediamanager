@@ -103,6 +103,7 @@ Public Class frmMain
         Poster = 2
         Fanart = 3
         Extra = 4
+        Trailer = 5
     End Enum
 
 #End Region '*** Declarations
@@ -126,14 +127,17 @@ Public Class frmMain
         '\\
 
         Try
+
+            Dim doSave As Boolean = True
+
             Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
             Master.eSettings.WindowLoc = Me.Location
             Master.eSettings.WindowSize = Me.Size
             Master.eSettings.WindowState = Me.WindowState
             Master.eSettings.Save()
 
-            If Not Me.bwPrelim.IsBusy AndAlso Not Me.bwFolderData.IsBusy AndAlso Not isCL Then
-                Me.SaveMovieList()
+            If Me.bwPrelim.IsBusy OrElse Me.bwFolderData.IsBusy OrElse isCL Then
+                doSave = False
             End If
 
             If Me.bwFolderData.IsBusy Then Me.bwFolderData.CancelAsync()
@@ -151,6 +155,8 @@ Public Class frmMain
                 pnlCancel.Visible = True
                 Application.DoEvents()
             Loop
+
+            If doSave Then Me.SaveMovieList()
 
             If Not isCL Then Master.SQLcn.Close()
 
@@ -1498,6 +1504,38 @@ Public Class frmMain
             dOfflineHolder.ShowDialog()
         End Using
     End Sub
+
+    Private Sub mnuAllAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTrailer.Click
+        Me.ScrapeData(Master.ScrapeType.FullAuto, ScrapeModifier.Trailer)
+    End Sub
+
+    Private Sub mnuAllAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskTrailer.Click
+        Me.ScrapeData(Master.ScrapeType.FullAsk, ScrapeModifier.Trailer)
+    End Sub
+
+    Private Sub mnuMissAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoTrailer.Click
+        Me.ScrapeData(Master.ScrapeType.UpdateAuto, ScrapeModifier.Trailer)
+    End Sub
+
+    Private Sub mnuMissAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskTrailer.Click
+        Me.ScrapeData(Master.ScrapeType.UpdateAsk, ScrapeModifier.Trailer)
+    End Sub
+
+    Private Sub mnuNewAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoTrailer.Click
+        Me.ScrapeData(Master.ScrapeType.NewAuto, ScrapeModifier.Trailer)
+    End Sub
+
+    Private Sub mnuNewAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskTrailer.Click
+        Me.ScrapeData(Master.ScrapeType.NewAsk, ScrapeModifier.Trailer)
+    End Sub
+
+    Private Sub mnuMarkAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoTrailer.Click
+        Me.ScrapeData(Master.ScrapeType.MarkAuto, ScrapeModifier.Trailer)
+    End Sub
+
+    Private Sub mnuMarkAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskTrailer.Click
+        Me.ScrapeData(Master.ScrapeType.MarkAsk, ScrapeModifier.Trailer)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2005,8 +2043,10 @@ Public Class frmMain
         Dim Args As Arguments = e.Argument
         Dim TMDB As New TMDB.Scraper
         Dim IMPA As New IMPA.Scraper
+        Dim Trailer As New Trailers
         Dim iCount As Integer = 0
         Dim sPath As String = String.Empty
+        Dim tPath As String = String.Empty
         Dim nfoPath As String = String.Empty
         Dim fArt As New Media.Fanart
         Dim pThumbs As New Media.Poster
@@ -2021,7 +2061,7 @@ Public Class frmMain
                 Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
                 Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
                 Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-
+                Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
                 Try
                     If Me.dtMedia.Rows.Count > 0 Then
                         Select Case Args.scrapeType
@@ -2049,6 +2089,7 @@ Public Class frmMain
                                     parPoster.Value = drvRow.Item(4)
                                     parFanart.Value = drvRow.Item(5)
                                     parInfo.Value = drvRow.Item(6)
+                                    parTrailer.Value = drvRow.Item(7)
 
                                     tmpMovie = Master.LoadMovieFromNFO(nfoPath)
                                     If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
@@ -2116,6 +2157,15 @@ Public Class frmMain
                                         fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                        If (Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer Then
+                                            tPath = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
+                                            If Not String.IsNullOrEmpty(tPath) Then
+                                                Master.scrapeMovie.Trailer = String.Concat("file://", tPath)
+                                                parTrailer.Value = True
+                                            End If
+                                        End If
+
+                                        If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                             Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                             parInfo.Value = True
@@ -2155,6 +2205,7 @@ Public Class frmMain
                                     parPoster.Value = drvRow.Item(4)
                                     parFanart.Value = drvRow.Item(5)
                                     parInfo.Value = drvRow.Item(6)
+                                    parTrailer.Value = drvRow.Item(7)
 
                                     tmpMovie = Master.LoadMovieFromNFO(nfoPath)
                                     If Not String.IsNullOrEmpty(tmpMovie.IMDBID) Then
@@ -2201,6 +2252,15 @@ Public Class frmMain
                                             End If
                                         End If
                                         fArt = Nothing
+
+                                        If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                        If (Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer Then
+                                            tPath = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
+                                            If Not String.IsNullOrEmpty(tPath) Then
+                                                Master.scrapeMovie.Trailer = String.Concat("file://", tPath)
+                                                parTrailer.Value = True
+                                            End If
+                                        End If
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
@@ -2315,9 +2375,12 @@ Public Class frmMain
                                     parPoster.Value = drvRow.Item(4)
                                     parFanart.Value = drvRow.Item(5)
                                     parInfo.Value = drvRow.Item(6)
+                                    parTrailer.Value = drvRow.Item(7)
+
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If (Not drvRow.Item(4) AndAlso Args.scrapeMod = ScrapeModifier.Poster) OrElse (Not drvRow.Item(5) AndAlso Args.scrapeMod = ScrapeModifier.Fanart) OrElse (Not drvRow.Item(6) AndAlso Args.scrapeMod = ScrapeModifier.NFO) OrElse _
-                                    ((Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6)) AndAlso Args.scrapeMod = ScrapeModifier.All) Then
+                                    If (Not drvRow.Item(4) AndAlso Args.scrapeMod = ScrapeModifier.Poster) OrElse (Not drvRow.Item(5) AndAlso Args.scrapeMod = ScrapeModifier.Fanart) OrElse _
+                                    (Not drvRow.Item(6) AndAlso Args.scrapeMod = ScrapeModifier.NFO) OrElse (Not drvRow.Item(7) AndAlso Args.scrapeMod = ScrapeModifier.Trailer) OrElse _
+                                    ((Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6) OrElse Not drvRow.Item(7)) AndAlso Args.scrapeMod = ScrapeModifier.All) Then
 
                                         sPath = drvRow.Item(1).ToString
 
@@ -2379,6 +2442,16 @@ Public Class frmMain
                                         fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) Then
+                                            tPath = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
+                                            If Not String.IsNullOrEmpty(tPath) Then
+                                                Master.scrapeMovie.Trailer = String.Concat("file://", tPath)
+                                                parTrailer.Value = True
+                                                Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
+                                            End If
+                                        End If
+
+                                        If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
                                         (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Extra) Then
                                             If Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs) Then parFanart.Value = True
@@ -2398,9 +2471,12 @@ Public Class frmMain
                                     parPoster.Value = drvRow.Item(4)
                                     parFanart.Value = drvRow.Item(5)
                                     parInfo.Value = drvRow.Item(6)
+                                    parTrailer.Value = drvRow.Item(7)
+
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If (Not drvRow.Item(4) AndAlso Args.scrapeMod = ScrapeModifier.Poster) OrElse (Not drvRow.Item(5) AndAlso Args.scrapeMod = ScrapeModifier.Fanart) OrElse (Not drvRow.Item(6) AndAlso Args.scrapeMod = ScrapeModifier.NFO) OrElse _
-                                    ((Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6)) AndAlso Args.scrapeMod = ScrapeModifier.All) Then
+                                    If (Not drvRow.Item(4) AndAlso Args.scrapeMod = ScrapeModifier.Poster) OrElse (Not drvRow.Item(5) AndAlso Args.scrapeMod = ScrapeModifier.Fanart) OrElse _
+                                    (Not drvRow.Item(6) AndAlso Args.scrapeMod = ScrapeModifier.NFO) OrElse (Not drvRow.Item(7) AndAlso Args.scrapeMod = ScrapeModifier.Trailer) OrElse _
+                                    ((Not drvRow.Item(4) OrElse Not drvRow.Item(5) OrElse Not drvRow.Item(6) OrElse Not drvRow.Item(7)) AndAlso Args.scrapeMod = ScrapeModifier.All) Then
 
                                         sPath = drvRow.Item(1).ToString
 
@@ -2495,6 +2571,16 @@ Public Class frmMain
                                             End If
                                         End If
                                         fArt = Nothing
+
+                                        If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) Then
+                                            tPath = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
+                                            If Not String.IsNullOrEmpty(tPath) Then
+                                                Master.scrapeMovie.Trailer = String.Concat("file://", tPath)
+                                                parTrailer.Value = True
+                                                Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
+                                            End If
+                                        End If
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
@@ -3455,6 +3541,16 @@ doCancel:
                     End If
                     tmpImages.Dispose()
                     tmpImages = Nothing
+
+                    If Master.eSettings.SingleScrapeTrailer Then
+                        Using dTrailer As New dlgTrailer
+                            Dim tPath As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
+                            If Not String.IsNullOrEmpty(tPath) Then
+                                Master.currMovie.Trailer = String.Concat("file://", tPath)
+                            End If
+                        End Using
+                    End If
+
                     If Master.eSettings.AutoThumbs > 0 AndAlso Not Master.isFile Then
                         Master.CreateRandomThumbs(Master.currPath, Master.eSettings.AutoThumbs)
                     End If

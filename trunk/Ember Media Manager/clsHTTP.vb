@@ -114,7 +114,7 @@ Public Class HTTP
         Try
             wrRequest = HttpWebRequest.Create(URL)
             wrRequest.Method = "GET"
-            wrRequest.Timeout = 2000
+            wrRequest.Timeout = Master.eSettings.TrailerTimeout * 1000
             wrResponse = wrRequest.GetResponse()
         Catch ex As Exception
             Return False
@@ -145,6 +145,9 @@ Public Class HTTP
             End Select
 
             If Not String.IsNullOrEmpty(outFile) Then
+
+                If File.Exists(outFile) Then File.Delete(outFile)
+
                 Using Ms As Stream = wrResponse.GetResponseStream
                     Using mStream As New FileStream(outFile, FileMode.OpenOrCreate, FileAccess.Write)
                         Dim StreamBuffer(4096) As Byte
@@ -152,7 +155,6 @@ Public Class HTTP
                         Do
                             BlockSize = Ms.Read(StreamBuffer, 0, 4096)
                             If BlockSize > 0 Then mStream.Write(StreamBuffer, 0, BlockSize)
-                            Application.DoEvents() 'make sure progress bars are refreshed
                         Loop While BlockSize > 0
                         StreamBuffer = Nothing
                     End Using
