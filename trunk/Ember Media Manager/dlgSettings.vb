@@ -950,6 +950,10 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
         Me.lblFanartQual.Text = tbFanartQual.Value.ToString
     End Sub
+
+    Private Sub chkFanartOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFanartOnly.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1083,6 +1087,7 @@ Public Class dlgSettings
             Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
             Master.eSettings.PreferredPosterSize = Me.cbPosterSize.SelectedIndex
             Master.eSettings.PreferredFanartSize = Me.cbFanartSize.SelectedIndex
+            Master.eSettings.FanartPrefSizeOnly = Me.chkFanartOnly.Checked
             Master.eSettings.PosterQuality = Me.tbPosterQual.Value
             Master.eSettings.FanartQuality = Me.tbFanartQual.Value
             Master.eSettings.OverwritePoster = Me.chkOverwritePoster.Checked
@@ -1252,6 +1257,7 @@ Public Class dlgSettings
             Me.chkUseMPDB.Checked = Master.eSettings.UseMPDB
             Me.cbPosterSize.SelectedIndex = Master.eSettings.PreferredPosterSize
             Me.cbFanartSize.SelectedIndex = Master.eSettings.PreferredFanartSize
+            Me.chkFanartOnly.Checked = Master.eSettings.FanartPrefSizeOnly
             Me.tbPosterQual.Value = Master.eSettings.PosterQuality
             Me.tbFanartQual.Value = Master.eSettings.FanartQuality
             Me.chkOverwritePoster.Checked = Master.eSettings.OverwritePoster
