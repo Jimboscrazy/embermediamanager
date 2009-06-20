@@ -54,14 +54,16 @@ Public Class Trailers
             End If
             Try
                 Select Case TP
-                    Case Master.TrailerPages.Imdb
-                        If Not String.IsNullOrEmpty(Me._ImdbTrailerPage) Then Me.GetImdbTrailer()
+                    Case Master.TrailerPages.YouTube
+                        Me.GetYouTubeTrailer()
+                    Case Master.TrailerPages.AllTrailers
+                        If Not String.IsNullOrEmpty(Me._ImdbTrailerPage) Then Me.GetATTrailer()
                     Case Master.TrailerPages.MattTrailer
                         If Not String.IsNullOrEmpty(Me._ImdbTrailerPage) Then Me.GetMattTrailer()
                     Case Master.TrailerPages.AZMovies
                         If Not String.IsNullOrEmpty(Me._ImdbTrailerPage) Then Me.GetAZMoviesTrailer()
-                    Case Master.TrailerPages.YouTube
-                        Me.GetYouTubeTrailer()
+                    Case Master.TrailerPages.Imdb
+                        If Not String.IsNullOrEmpty(Me._ImdbTrailerPage) Then Me.GetImdbTrailer()
                 End Select
             Catch
             End Try
@@ -111,6 +113,25 @@ Public Class Trailers
             End If
         End If
 
+    End Sub
+
+    Private Sub GetATTrailer()
+        Dim Link As Match = Regex.Match(_ImdbTrailerPage, "http://alltrailers.net/.+""")
+
+        If Link.Success Then
+
+            Dim WebPage As New HTTP(Link.Value.Substring(0, Link.Value.Length - 1))
+
+            Dim ATPage As String = WebPage.Response
+
+            Link = Regex.Match(ATPage, "file=(http.+flv)")
+
+            If Link.Success Then
+                If WebPage.IsValidURL(Link.Groups(1).Value) Then
+                    Me._TrailerList.Add(Link.Groups(1).Value)
+                End If
+            End If
+        End If
     End Sub
 
     Private Sub GetMattTrailer()
@@ -203,6 +224,9 @@ Public Class Trailers
                                                                 Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
                                                                 If WebPage.IsValidURL(YTURL) Then
                                                                     Me._TrailerList.Add(YTURL)
+                                                                ElseIf WebPage.IsValidURL(YTURL.Replace("&fmt=18", String.Empty)) Then
+                                                                    'try the flv version
+                                                                    Me._TrailerList.Add(YTURL.Replace("&fmt=18", String.Empty))
                                                                 End If
                                                             End If
                                                         End If
