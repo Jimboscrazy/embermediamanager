@@ -201,6 +201,7 @@ Partial Class dlgSettings
         Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.pnlScraper = New System.Windows.Forms.Panel
         Me.GroupBox20 = New System.Windows.Forms.GroupBox
+        Me.chkSingleScrapeTrailer = New System.Windows.Forms.CheckBox
         Me.Label23 = New System.Windows.Forms.Label
         Me.txtTimeout = New System.Windows.Forms.TextBox
         Me.chkUpdaterTrailer = New System.Windows.Forms.CheckBox
@@ -228,7 +229,12 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.chkSingleScrapeTrailer = New System.Windows.Forms.CheckBox
+        Me.Label24 = New System.Windows.Forms.Label
+        Me.tbPosterQual = New System.Windows.Forms.TrackBar
+        Me.lblPosterQual = New System.Windows.Forms.Label
+        Me.lblFanartQual = New System.Windows.Forms.Label
+        Me.tbFanartQual = New System.Windows.Forms.TrackBar
+        Me.Label26 = New System.Windows.Forms.Label
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -261,6 +267,8 @@ Partial Class dlgSettings
         Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
+        CType(Me.tbPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.tbFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -1264,6 +1272,9 @@ Partial Class dlgSettings
         '
         'GroupBox14
         '
+        Me.GroupBox14.Controls.Add(Me.lblPosterQual)
+        Me.GroupBox14.Controls.Add(Me.tbPosterQual)
+        Me.GroupBox14.Controls.Add(Me.Label24)
         Me.GroupBox14.Controls.Add(Me.Label11)
         Me.GroupBox14.Controls.Add(Me.Label12)
         Me.GroupBox14.Controls.Add(Me.chkResizePoster)
@@ -1272,9 +1283,9 @@ Partial Class dlgSettings
         Me.GroupBox14.Controls.Add(Me.lblPosterSize)
         Me.GroupBox14.Controls.Add(Me.cbPosterSize)
         Me.GroupBox14.Controls.Add(Me.chkOverwritePoster)
-        Me.GroupBox14.Location = New System.Drawing.Point(214, 3)
+        Me.GroupBox14.Location = New System.Drawing.Point(215, 3)
         Me.GroupBox14.Name = "GroupBox14"
-        Me.GroupBox14.Size = New System.Drawing.Size(249, 124)
+        Me.GroupBox14.Size = New System.Drawing.Size(249, 170)
         Me.GroupBox14.TabIndex = 59
         Me.GroupBox14.TabStop = False
         Me.GroupBox14.Text = "Poster"
@@ -1302,9 +1313,9 @@ Partial Class dlgSettings
         Me.chkResizePoster.AutoSize = True
         Me.chkResizePoster.Location = New System.Drawing.Point(6, 76)
         Me.chkResizePoster.Name = "chkResizePoster"
-        Me.chkResizePoster.Size = New System.Drawing.Size(156, 17)
+        Me.chkResizePoster.Size = New System.Drawing.Size(159, 17)
         Me.chkResizePoster.TabIndex = 39
-        Me.chkResizePoster.Text = "Automatically Resize Poster"
+        Me.chkResizePoster.Text = "Automatically Resize Poster:"
         Me.chkResizePoster.UseVisualStyleBackColor = True
         '
         'txtPosterWidth
@@ -1356,6 +1367,9 @@ Partial Class dlgSettings
         '
         'GroupBox13
         '
+        Me.GroupBox13.Controls.Add(Me.lblFanartQual)
+        Me.GroupBox13.Controls.Add(Me.tbFanartQual)
+        Me.GroupBox13.Controls.Add(Me.Label26)
         Me.GroupBox13.Controls.Add(Me.Label9)
         Me.GroupBox13.Controls.Add(Me.Label10)
         Me.GroupBox13.Controls.Add(Me.chkResizeFanart)
@@ -1364,9 +1378,9 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.cbFanartSize)
         Me.GroupBox13.Controls.Add(Me.lblFanartSize)
         Me.GroupBox13.Controls.Add(Me.chkOverwriteFanart)
-        Me.GroupBox13.Location = New System.Drawing.Point(214, 131)
+        Me.GroupBox13.Location = New System.Drawing.Point(216, 175)
         Me.GroupBox13.Name = "GroupBox13"
-        Me.GroupBox13.Size = New System.Drawing.Size(249, 125)
+        Me.GroupBox13.Size = New System.Drawing.Size(249, 170)
         Me.GroupBox13.TabIndex = 58
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Fanart"
@@ -1394,9 +1408,9 @@ Partial Class dlgSettings
         Me.chkResizeFanart.AutoSize = True
         Me.chkResizeFanart.Location = New System.Drawing.Point(6, 76)
         Me.chkResizeFanart.Name = "chkResizeFanart"
-        Me.chkResizeFanart.Size = New System.Drawing.Size(156, 17)
+        Me.chkResizeFanart.Size = New System.Drawing.Size(159, 17)
         Me.chkResizeFanart.TabIndex = 39
-        Me.chkResizeFanart.Text = "Automatically Resize Fanart"
+        Me.chkResizeFanart.Text = "Automatically Resize Fanart:"
         Me.chkResizeFanart.UseVisualStyleBackColor = True
         '
         'txtFanartWidth
@@ -2082,6 +2096,15 @@ Partial Class dlgSettings
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
         '
+        'chkSingleScrapeTrailer
+        '
+        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(19, 63)
+        Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
+        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(148, 31)
+        Me.chkSingleScrapeTrailer.TabIndex = 65
+        Me.chkSingleScrapeTrailer.Text = "Download Trailers During Single-Scrape"
+        Me.chkSingleScrapeTrailer.UseVisualStyleBackColor = True
+        '
         'Label23
         '
         Me.Label23.AutoSize = True
@@ -2361,14 +2384,65 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
-        'chkSingleScrapeTrailer
+        'Label24
         '
-        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(19, 63)
-        Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
-        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(148, 31)
-        Me.chkSingleScrapeTrailer.TabIndex = 65
-        Me.chkSingleScrapeTrailer.Text = "Download Trailers During Single-Scrape"
-        Me.chkSingleScrapeTrailer.UseVisualStyleBackColor = True
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(3, 119)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(75, 13)
+        Me.Label24.TabIndex = 44
+        Me.Label24.Text = "Poster Quality:"
+        '
+        'tbPosterQual
+        '
+        Me.tbPosterQual.AutoSize = False
+        Me.tbPosterQual.LargeChange = 10
+        Me.tbPosterQual.Location = New System.Drawing.Point(7, 136)
+        Me.tbPosterQual.Maximum = 100
+        Me.tbPosterQual.Name = "tbPosterQual"
+        Me.tbPosterQual.Size = New System.Drawing.Size(200, 27)
+        Me.tbPosterQual.TabIndex = 45
+        Me.tbPosterQual.TickFrequency = 10
+        Me.tbPosterQual.Value = 100
+        '
+        'lblPosterQual
+        '
+        Me.lblPosterQual.AutoSize = True
+        Me.lblPosterQual.Location = New System.Drawing.Point(212, 142)
+        Me.lblPosterQual.Name = "lblPosterQual"
+        Me.lblPosterQual.Size = New System.Drawing.Size(25, 13)
+        Me.lblPosterQual.TabIndex = 46
+        Me.lblPosterQual.Text = "100"
+        '
+        'lblFanartQual
+        '
+        Me.lblFanartQual.AutoSize = True
+        Me.lblFanartQual.Location = New System.Drawing.Point(211, 142)
+        Me.lblFanartQual.Name = "lblFanartQual"
+        Me.lblFanartQual.Size = New System.Drawing.Size(25, 13)
+        Me.lblFanartQual.TabIndex = 49
+        Me.lblFanartQual.Text = "100"
+        '
+        'tbFanartQual
+        '
+        Me.tbFanartQual.AutoSize = False
+        Me.tbFanartQual.LargeChange = 10
+        Me.tbFanartQual.Location = New System.Drawing.Point(6, 136)
+        Me.tbFanartQual.Maximum = 100
+        Me.tbFanartQual.Name = "tbFanartQual"
+        Me.tbFanartQual.Size = New System.Drawing.Size(200, 27)
+        Me.tbFanartQual.TabIndex = 48
+        Me.tbFanartQual.TickFrequency = 10
+        Me.tbFanartQual.Value = 100
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(2, 119)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(75, 13)
+        Me.Label26.TabIndex = 47
+        Me.Label26.Text = "Fanart Quality:"
         '
         'dlgSettings
         '
@@ -2384,13 +2458,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2453,6 +2527,8 @@ Partial Class dlgSettings
         Me.pnlImages.ResumeLayout(False)
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
+        CType(Me.tbPosterQual, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.tbFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2654,4 +2730,10 @@ Partial Class dlgSettings
     Friend WithEvents Label23 As System.Windows.Forms.Label
     Friend WithEvents txtTimeout As System.Windows.Forms.TextBox
     Friend WithEvents chkSingleScrapeTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents lblPosterQual As System.Windows.Forms.Label
+    Friend WithEvents tbPosterQual As System.Windows.Forms.TrackBar
+    Friend WithEvents Label24 As System.Windows.Forms.Label
+    Friend WithEvents lblFanartQual As System.Windows.Forms.Label
+    Friend WithEvents tbFanartQual As System.Windows.Forms.TrackBar
+    Friend WithEvents Label26 As System.Windows.Forms.Label
 End Class

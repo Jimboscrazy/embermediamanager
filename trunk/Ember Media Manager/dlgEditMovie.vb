@@ -347,11 +347,15 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnClearCache_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearCache.Click
-        If Directory.Exists(CachePath) Then
-            Directory.Delete(CachePath, True)
-        End If
+        Try
+            If Directory.Exists(CachePath) Then
+                Directory.Delete(CachePath, True)
+            End If
 
-        btnClearCache.Visible = False
+            btnClearCache.Visible = False
+        Catch
+            MsgBox("One or more cache resources is currently in use and cannot be deleted at the moment.", MsgBoxStyle.Information, "Cannot Clear Cache")
+        End Try
     End Sub
 
     Private Sub FillInfo()
