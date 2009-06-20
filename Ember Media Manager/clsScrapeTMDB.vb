@@ -160,6 +160,16 @@ Namespace TMDB
                         If tmdbImages.Count > 0 Then
                             For Each tmdbI As XElement In tmdbImages
                                 If Me.bwTMDB.CancellationPending Then Return Nothing
+                                If sType = "backdrop" AndAlso Master.eSettings.FanartPrefSizeOnly Then
+                                    Select Case Master.eSettings.PreferredFanartSize
+                                        Case Master.FanartSize.Lrg
+                                            If Not tmdbI.@size.ToLower = "original" Then Continue For
+                                        Case Master.FanartSize.Mid
+                                            If Not tmdbI.@size.ToLower = "mid" Then Continue For
+                                        Case Master.FanartSize.Small
+                                            If Not tmdbI.@size.ToLower = "thumb" Then Continue For
+                                    End Select
+                                End If
                                 Dim tmpPoster As New Media.Image With {.URL = tmdbI.Value, .Description = tmdbI.@size}
                                 alPosters.Add(tmpPoster)
                             Next
