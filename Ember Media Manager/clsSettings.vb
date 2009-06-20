@@ -68,6 +68,8 @@ Public Class emmSettings
     Private _useMPDB As Boolean
     Private _postersize As Master.PosterSize
     Private _fanartsize As Master.FanartSize
+    Private _posterQuality As Long
+    Private _fanartQuality As Long
     Private _overwritePoster As Boolean
     Private _overwriteFanart As Boolean
     Private _logerrors As Boolean
@@ -518,6 +520,24 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Master.FanartSize)
             Me._fanartsize = value
+        End Set
+    End Property
+
+    Public Property PosterQuality() As Long
+        Get
+            Return Me._posterQuality
+        End Get
+        Set(ByVal value As Long)
+            Me._posterQuality = value
+        End Set
+    End Property
+
+    Public Property FanartQuality() As Long
+        Get
+            Return Me._fanartQuality
+        End Get
+        Set(ByVal value As Long)
+            Me._fanartQuality = value
         End Set
     End Property
 
@@ -1153,6 +1173,8 @@ Public Class emmSettings
         Me._useMPDB = False
         Me._postersize = Master.PosterSize.Xlrg
         Me._fanartsize = Master.FanartSize.Lrg
+        Me._posterQuality = 100
+        Me._fanartQuality = 100
         Me._overwritePoster = False
         Me._overwriteFanart = False
         Me._logerrors = True

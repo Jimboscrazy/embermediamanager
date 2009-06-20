@@ -940,6 +940,16 @@ Public Class dlgSettings
     Private Sub chkSingleScrapeTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingleScrapeTrailer.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub tbPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbPosterQual.ValueChanged
+        Me.btnApply.Enabled = True
+        Me.lblPosterQual.Text = tbPosterQual.Value.ToString
+    End Sub
+
+    Private Sub tbFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbFanartQual.ValueChanged
+        Me.btnApply.Enabled = True
+        Me.lblFanartQual.Text = tbFanartQual.Value.ToString
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1073,6 +1083,8 @@ Public Class dlgSettings
             Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
             Master.eSettings.PreferredPosterSize = Me.cbPosterSize.SelectedIndex
             Master.eSettings.PreferredFanartSize = Me.cbFanartSize.SelectedIndex
+            Master.eSettings.PosterQuality = Me.tbPosterQual.Value
+            Master.eSettings.FanartQuality = Me.tbFanartQual.Value
             Master.eSettings.OverwritePoster = Me.chkOverwritePoster.Checked
             Master.eSettings.OverwriteFanart = Me.chkOverwriteFanart.Checked
             Master.eSettings.UseFolderName = Me.chkUseFolderNames.Checked
@@ -1240,6 +1252,8 @@ Public Class dlgSettings
             Me.chkUseMPDB.Checked = Master.eSettings.UseMPDB
             Me.cbPosterSize.SelectedIndex = Master.eSettings.PreferredPosterSize
             Me.cbFanartSize.SelectedIndex = Master.eSettings.PreferredFanartSize
+            Me.tbPosterQual.Value = Master.eSettings.PosterQuality
+            Me.tbFanartQual.Value = Master.eSettings.FanartQuality
             Me.chkOverwritePoster.Checked = Master.eSettings.OverwritePoster
             Me.chkOverwriteFanart.Checked = Master.eSettings.OverwriteFanart
             Me.chkUseFolderNames.Checked = Master.eSettings.UseFolderName
