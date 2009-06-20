@@ -1342,7 +1342,7 @@ Public Class dlgEditMovie
         Using dTrailer As New dlgTrailer
             Dim tPath As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
             If Not String.IsNullOrEmpty(tPath) Then
-                Me.txtTrailer.Text = String.Concat("file://", tPath)
+                Me.txtTrailer.Text = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
             End If
         End Using
     End Sub

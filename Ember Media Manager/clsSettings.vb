@@ -132,6 +132,7 @@ Public Class emmSettings
     Private _skipstacksizecheck As Boolean
     Private _downloadtrailers As Boolean
     Private _updatertrailers As Boolean
+    Private _updatertrailersnodownload As Boolean
     Private _singlescrapetrailer As Boolean
     Private _trailertimeout As Integer
     Private _trailersites As New List(Of Master.TrailerPages)
@@ -1099,6 +1100,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property UpdaterTrailersNoDownload() As Boolean
+        Get
+            Return Me._updatertrailersnodownload
+        End Get
+        Set(ByVal value As Boolean)
+            Me._updatertrailersnodownload = value
+        End Set
+    End Property
+
     Public Property SingleScrapeTrailer() As Boolean
         Get
             Return Me._singlescrapetrailer
@@ -1246,6 +1256,7 @@ Public Class emmSettings
         Me._skipstacksizecheck = False
         Me._downloadtrailers = False
         Me._updatertrailers = False
+        Me._updatertrailersnodownload = False
         Me._singlescrapetrailer = False
         Me._trailertimeout = 2
         Me._trailersites.Clear()

@@ -2157,10 +2157,11 @@ Public Class frmMain
                                         fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                        If (Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer Then
+                                        If ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) AndAlso _
+                                           (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
                                             tPath = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
                                             If Not String.IsNullOrEmpty(tPath) Then
-                                                Master.scrapeMovie.Trailer = String.Concat("file://", tPath)
+                                                Master.scrapeMovie.Trailer = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
                                                 parTrailer.Value = True
                                             End If
                                         End If
@@ -2254,10 +2255,11 @@ Public Class frmMain
                                         fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                        If (Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer Then
+                                        If ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) AndAlso _
+                                           (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
                                             tPath = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
                                             If Not String.IsNullOrEmpty(tPath) Then
-                                                Master.scrapeMovie.Trailer = String.Concat("file://", tPath)
+                                                Master.scrapeMovie.Trailer = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
                                                 parTrailer.Value = True
                                             End If
                                         End If
@@ -2442,10 +2444,11 @@ Public Class frmMain
                                         fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) Then
+                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) AndAlso _
+                                        (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
                                             tPath = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
                                             If Not String.IsNullOrEmpty(tPath) Then
-                                                Master.scrapeMovie.Trailer = String.Concat("file://", tPath)
+                                                Master.scrapeMovie.Trailer = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
                                                 parTrailer.Value = True
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                             End If
@@ -2573,10 +2576,11 @@ Public Class frmMain
                                         fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) Then
+                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) AndAlso _
+                                        (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
                                             tPath = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
                                             If Not String.IsNullOrEmpty(tPath) Then
-                                                Master.scrapeMovie.Trailer = String.Concat("file://", tPath)
+                                                Master.scrapeMovie.Trailer = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
                                                 parTrailer.Value = True
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                             End If
@@ -3542,11 +3546,12 @@ doCancel:
                     tmpImages.Dispose()
                     tmpImages = Nothing
 
-                    If Master.eSettings.SingleScrapeTrailer Then
+
+                    If Master.eSettings.SingleScrapeTrailer AndAlso (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
                         Using dTrailer As New dlgTrailer
                             Dim tPath As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
                             If Not String.IsNullOrEmpty(tPath) Then
-                                Master.currMovie.Trailer = String.Concat("file://", tPath)
+                                Master.currMovie.Trailer = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
                             End If
                         End Using
                     End If

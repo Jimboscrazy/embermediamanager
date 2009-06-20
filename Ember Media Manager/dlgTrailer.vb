@@ -32,9 +32,17 @@ Public Class dlgTrailer
     Dim prePath As String = String.Empty
     Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
 
+    Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
+        tPath = lbTrailers.SelectedItem.ToString
+
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.OK_Button.Enabled = False
         Me.Cancel_Button.Enabled = False
+        Me.btnSetNfo.Enabled = False
 
         Me.lblStatus.Text = "Downloading selected trailer..."
         Me.pnlStatus.Visible = True
@@ -81,6 +89,7 @@ Public Class dlgTrailer
 
     Private Sub lbTrailers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailers.SelectedIndexChanged
         Me.OK_Button.Enabled = True
+        Me.btnSetNfo.Enabled = True
         Me.btnPlayTrailer.Enabled = True
 
         If File.Exists(Me.prePath) Then
@@ -117,6 +126,7 @@ Public Class dlgTrailer
         Try
             Me.btnPlayTrailer.Enabled = False
             Me.OK_Button.Enabled = False
+            Me.btnSetNfo.Enabled = False
             Me.Cancel_Button.Enabled = False
 
             Me.lblStatus.Text = "Downloading preview..."
@@ -128,6 +138,7 @@ Public Class dlgTrailer
             Me.pnlStatus.Visible = False
             Me.btnPlayTrailer.Enabled = True
             Me.OK_Button.Enabled = True
+            Me.btnSetNfo.Enabled = True
             Me.Cancel_Button.Enabled = True
 
             Me.prePath = sHTTP.SavePath
@@ -139,4 +150,5 @@ Public Class dlgTrailer
             MsgBox("The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.", MsgBoxStyle.Critical, "Error Playing Trailer")
         End Try
     End Sub
+
 End Class
