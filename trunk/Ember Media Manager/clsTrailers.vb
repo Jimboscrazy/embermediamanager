@@ -262,9 +262,13 @@ Public Class Trailers
         Me.GetTrailers(ImdbID, True)
 
         If Me._TrailerList.Count > 0 Then
-            Dim sHTTP As New HTTP(Me._TrailerList.Item(0), sPath)
-            tPath = sHTTP.SavePath
-            sHTTP = Nothing
+            If Master.eSettings.UpdaterTrailersNoDownload Then
+                tPath = Me._TrailerList.Item(0)
+            Else
+                Dim sHTTP As New HTTP(Me._TrailerList.Item(0), sPath)
+                tPath = sHTTP.SavePath
+                sHTTP = Nothing
+            End If
         End If
 
         Return tPath

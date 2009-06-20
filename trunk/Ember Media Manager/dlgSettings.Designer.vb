@@ -141,6 +141,7 @@ Partial Class dlgSettings
         Me.cbPosterSize = New System.Windows.Forms.ComboBox
         Me.chkOverwritePoster = New System.Windows.Forms.CheckBox
         Me.GroupBox13 = New System.Windows.Forms.GroupBox
+        Me.chkFanartOnly = New System.Windows.Forms.CheckBox
         Me.lblFanartQual = New System.Windows.Forms.Label
         Me.tbFanartQual = New System.Windows.Forms.TrackBar
         Me.Label26 = New System.Windows.Forms.Label
@@ -235,7 +236,7 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.chkFanartOnly = New System.Windows.Forms.CheckBox
+        Me.chkNoDLTrailer = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -1417,6 +1418,16 @@ Partial Class dlgSettings
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Fanart"
         '
+        'chkFanartOnly
+        '
+        Me.chkFanartOnly.AutoSize = True
+        Me.chkFanartOnly.Location = New System.Drawing.Point(191, 32)
+        Me.chkFanartOnly.Name = "chkFanartOnly"
+        Me.chkFanartOnly.Size = New System.Drawing.Size(47, 17)
+        Me.chkFanartOnly.TabIndex = 50
+        Me.chkFanartOnly.Text = "Only"
+        Me.chkFanartOnly.UseVisualStyleBackColor = True
+        '
         'lblFanartQual
         '
         Me.lblFanartQual.AutoSize = True
@@ -2144,6 +2155,7 @@ Partial Class dlgSettings
         '
         'GroupBox20
         '
+        Me.GroupBox20.Controls.Add(Me.chkNoDLTrailer)
         Me.GroupBox20.Controls.Add(Me.chkSingleScrapeTrailer)
         Me.GroupBox20.Controls.Add(Me.Label23)
         Me.GroupBox20.Controls.Add(Me.txtTimeout)
@@ -2153,24 +2165,24 @@ Partial Class dlgSettings
         Me.GroupBox20.Controls.Add(Me.chkDownloadTrailer)
         Me.GroupBox20.Location = New System.Drawing.Point(222, 176)
         Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Size = New System.Drawing.Size(299, 124)
+        Me.GroupBox20.Size = New System.Drawing.Size(299, 154)
         Me.GroupBox20.TabIndex = 61
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
         '
         'chkSingleScrapeTrailer
         '
-        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(19, 63)
+        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(19, 88)
         Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
         Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(148, 31)
         Me.chkSingleScrapeTrailer.TabIndex = 65
-        Me.chkSingleScrapeTrailer.Text = "Download Trailers During Single-Scrape"
+        Me.chkSingleScrapeTrailer.Text = "Get Trailers During Single-Scrape"
         Me.chkSingleScrapeTrailer.UseVisualStyleBackColor = True
         '
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(16, 99)
+        Me.Label23.Location = New System.Drawing.Point(16, 126)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(48, 13)
         Me.Label23.TabIndex = 64
@@ -2179,24 +2191,24 @@ Partial Class dlgSettings
         'txtTimeout
         '
         Me.txtTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTimeout.Location = New System.Drawing.Point(70, 97)
+        Me.txtTimeout.Location = New System.Drawing.Point(70, 124)
         Me.txtTimeout.Name = "txtTimeout"
         Me.txtTimeout.Size = New System.Drawing.Size(66, 20)
         Me.txtTimeout.TabIndex = 63
         '
         'chkUpdaterTrailer
         '
-        Me.chkUpdaterTrailer.Location = New System.Drawing.Point(19, 34)
+        Me.chkUpdaterTrailer.Location = New System.Drawing.Point(19, 33)
         Me.chkUpdaterTrailer.Name = "chkUpdaterTrailer"
         Me.chkUpdaterTrailer.Size = New System.Drawing.Size(148, 31)
         Me.chkUpdaterTrailer.TabIndex = 3
-        Me.chkUpdaterTrailer.Text = "Download Trailers During ""All Items"" Updaters"
+        Me.chkUpdaterTrailer.Text = "Get Trailers During ""All Items"" Updaters"
         Me.chkUpdaterTrailer.UseVisualStyleBackColor = True
         '
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(172, 17)
+        Me.Label22.Location = New System.Drawing.Point(172, 34)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(117, 13)
         Me.Label22.TabIndex = 2
@@ -2207,7 +2219,7 @@ Partial Class dlgSettings
         Me.lbTrailerSites.CheckOnClick = True
         Me.lbTrailerSites.FormattingEnabled = True
         Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/TMDB", "AllTrailers", "MattTrailer", "AZMovies", "IMDB"})
-        Me.lbTrailerSites.Location = New System.Drawing.Point(173, 34)
+        Me.lbTrailerSites.Location = New System.Drawing.Point(173, 51)
         Me.lbTrailerSites.Name = "lbTrailerSites"
         Me.lbTrailerSites.Size = New System.Drawing.Size(120, 79)
         Me.lbTrailerSites.TabIndex = 1
@@ -2446,15 +2458,15 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
-        'chkFanartOnly
+        'chkNoDLTrailer
         '
-        Me.chkFanartOnly.AutoSize = True
-        Me.chkFanartOnly.Location = New System.Drawing.Point(191, 32)
-        Me.chkFanartOnly.Name = "chkFanartOnly"
-        Me.chkFanartOnly.Size = New System.Drawing.Size(47, 17)
-        Me.chkFanartOnly.TabIndex = 50
-        Me.chkFanartOnly.Text = "Only"
-        Me.chkFanartOnly.UseVisualStyleBackColor = True
+        Me.chkNoDLTrailer.AutoSize = True
+        Me.chkNoDLTrailer.Location = New System.Drawing.Point(31, 63)
+        Me.chkNoDLTrailer.Name = "chkNoDLTrailer"
+        Me.chkNoDLTrailer.Size = New System.Drawing.Size(111, 17)
+        Me.chkNoDLTrailer.TabIndex = 66
+        Me.chkNoDLTrailer.Text = "Do Not Download"
+        Me.chkNoDLTrailer.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -2470,13 +2482,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2749,4 +2761,5 @@ Partial Class dlgSettings
     Friend WithEvents tbFanartQual As System.Windows.Forms.TrackBar
     Friend WithEvents Label26 As System.Windows.Forms.Label
     Friend WithEvents chkFanartOnly As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNoDLTrailer As System.Windows.Forms.CheckBox
 End Class

@@ -899,10 +899,12 @@ Public Class dlgSettings
         Me.txtTimeout.Enabled = Me.chkDownloadTrailer.Checked
         Me.lbTrailerSites.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkSingleScrapeTrailer.Enabled = Me.chkDownloadTrailer.Checked
+        Me.chkNoDLTrailer.Enabled = Me.chkDownloadTrailer.Checked
 
         If Not Me.chkDownloadTrailer.Checked Then
             Me.chkUpdaterTrailer.Checked = False
             Me.chkSingleScrapeTrailer.Checked = False
+            Me.chkNoDLTrailer.Checked = False
             Me.txtTimeout.Text = "2"
             For i As Integer = 0 To lbTrailerSites.Items.Count - 1
                 lbTrailerSites.SetItemChecked(i, False)
@@ -927,6 +929,8 @@ Public Class dlgSettings
 
     Private Sub chkUpdaterTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUpdaterTrailer.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.chkNoDLTrailer.Enabled = Me.chkUpdaterTrailer.Checked
+        If Not Me.chkUpdaterTrailer.Checked Then Me.chkNoDLTrailer.Checked = False
     End Sub
 
     Private Sub txtTimeout_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTimeout.KeyPress
@@ -952,6 +956,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkFanartOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFanartOnly.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkNoDLTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDLTrailer.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -1160,11 +1168,13 @@ Public Class dlgSettings
                 Master.eSettings.UpdaterTrailers = Me.chkUpdaterTrailer.Checked
                 Master.eSettings.TrailerTimeout = Convert.ToInt32(Me.txtTimeout.Text)
                 Master.eSettings.SingleScrapeTrailer = Me.chkSingleScrapeTrailer.Checked
+                Master.eSettings.UpdaterTrailersNoDownload = Me.chkNoDLTrailer.Checked
             Else
                 Master.eSettings.DownloadTrailers = False
                 Master.eSettings.UpdaterTrailers = False
                 Master.eSettings.SingleScrapeTrailer = False
                 Master.eSettings.TrailerTimeout = 2
+                Master.eSettings.UpdaterTrailersNoDownload = False
             End If
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
@@ -1321,6 +1331,7 @@ Public Class dlgSettings
             Me.chkSkipStackedSizeCheck.Checked = Master.eSettings.SkipStackSizeCheck
             Me.chkDownloadTrailer.Checked = Master.eSettings.DownloadTrailers
             Me.chkUpdaterTrailer.Checked = Master.eSettings.UpdaterTrailers
+            Me.chkNoDLTrailer.Checked = Master.eSettings.UpdaterTrailersNoDownload
             Me.chkSingleScrapeTrailer.Checked = Master.eSettings.SingleScrapeTrailer
             Me.txtTimeout.Text = Master.eSettings.TrailerTimeout.ToString
 
@@ -1388,5 +1399,6 @@ Public Class dlgSettings
 
     End Sub
 #End Region '*** Routines/Functions
+
 
 End Class
