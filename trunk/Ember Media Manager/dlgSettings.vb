@@ -899,11 +899,11 @@ Public Class dlgSettings
         Me.txtTimeout.Enabled = Me.chkDownloadTrailer.Checked
         Me.lbTrailerSites.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkSingleScrapeTrailer.Enabled = Me.chkDownloadTrailer.Checked
-        Me.chkNoDLTrailer.Enabled = Me.chkDownloadTrailer.Checked
 
         If Not Me.chkDownloadTrailer.Checked Then
             Me.chkUpdaterTrailer.Checked = False
             Me.chkSingleScrapeTrailer.Checked = False
+            Me.chkNoDLTrailer.Enabled = False
             Me.chkNoDLTrailer.Checked = False
             Me.txtTimeout.Text = "2"
             For i As Integer = 0 To lbTrailerSites.Items.Count - 1
