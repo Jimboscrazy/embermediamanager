@@ -89,7 +89,7 @@ Partial Class dlgUpdateMedia
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.OK_Button.Location = New System.Drawing.Point(657, 328)
+        Me.OK_Button.Location = New System.Drawing.Point(648, 330)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(80, 23)
         Me.OK_Button.TabIndex = 0
@@ -105,7 +105,7 @@ Partial Class dlgUpdateMedia
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(746, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(735, 64)
         Me.pnlTop.TabIndex = 58
         '
         'Label2
@@ -190,7 +190,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_All)
         Me.gbUpdateModifier.Location = New System.Drawing.Point(6, 70)
         Me.gbUpdateModifier.Name = "gbUpdateModifier"
-        Me.gbUpdateModifier.Size = New System.Drawing.Size(402, 48)
+        Me.gbUpdateModifier.Size = New System.Drawing.Size(390, 48)
         Me.gbUpdateModifier.TabIndex = 60
         Me.gbUpdateModifier.TabStop = False
         Me.gbUpdateModifier.Text = "Selection Filter"
@@ -198,6 +198,7 @@ Partial Class dlgUpdateMedia
         'rbUpdate_Marked
         '
         Me.rbUpdate_Marked.AutoSize = True
+        Me.rbUpdate_Marked.Enabled = False
         Me.rbUpdate_Marked.Location = New System.Drawing.Point(291, 19)
         Me.rbUpdate_Marked.Name = "rbUpdate_Marked"
         Me.rbUpdate_Marked.Size = New System.Drawing.Size(98, 17)
@@ -208,6 +209,7 @@ Partial Class dlgUpdateMedia
         'rbUpdateModifier_New
         '
         Me.rbUpdateModifier_New.AutoSize = True
+        Me.rbUpdateModifier_New.Enabled = False
         Me.rbUpdateModifier_New.Location = New System.Drawing.Point(194, 19)
         Me.rbUpdateModifier_New.Name = "rbUpdateModifier_New"
         Me.rbUpdateModifier_New.Size = New System.Drawing.Size(84, 17)
@@ -231,7 +233,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Auto)
         Me.gbUpdateType.Location = New System.Drawing.Point(6, 124)
         Me.gbUpdateType.Name = "gbUpdateType"
-        Me.gbUpdateType.Size = New System.Drawing.Size(402, 49)
+        Me.gbUpdateType.Size = New System.Drawing.Size(390, 49)
         Me.gbUpdateType.TabIndex = 61
         Me.gbUpdateType.TabStop = False
         Me.gbUpdateType.Text = "Update Mode"
@@ -240,7 +242,7 @@ Partial Class dlgUpdateMedia
         '
         Me.rbUpdate_Ask.AutoSize = True
         Me.rbUpdate_Ask.Checked = True
-        Me.rbUpdate_Ask.Location = New System.Drawing.Point(185, 18)
+        Me.rbUpdate_Ask.Location = New System.Drawing.Point(178, 18)
         Me.rbUpdate_Ask.Name = "rbUpdate_Ask"
         Me.rbUpdate_Ask.Size = New System.Drawing.Size(205, 17)
         Me.rbUpdate_Ask.TabIndex = 64
@@ -293,7 +295,7 @@ Partial Class dlgUpdateMedia
         '
         Me.Update_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Update_Button.Enabled = False
-        Me.Update_Button.Location = New System.Drawing.Point(566, 328)
+        Me.Update_Button.Location = New System.Drawing.Point(557, 330)
         Me.Update_Button.Name = "Update_Button"
         Me.Update_Button.Size = New System.Drawing.Size(80, 23)
         Me.Update_Button.TabIndex = 63
@@ -310,7 +312,7 @@ Partial Class dlgUpdateMedia
         Me.gbSettingsModifier.Controls.Add(Me.GroupBox20)
         Me.gbSettingsModifier.Controls.Add(Me.gbMediaInfo)
         Me.gbSettingsModifier.Controls.Add(Me.GroupBox10)
-        Me.gbSettingsModifier.Location = New System.Drawing.Point(414, 70)
+        Me.gbSettingsModifier.Location = New System.Drawing.Point(405, 70)
         Me.gbSettingsModifier.Name = "gbSettingsModifier"
         Me.gbSettingsModifier.Size = New System.Drawing.Size(324, 254)
         Me.gbSettingsModifier.TabIndex = 64
@@ -537,7 +539,7 @@ Partial Class dlgUpdateMedia
         Me.gbInfoBox.Controls.Add(Me.lblInfoBox)
         Me.gbInfoBox.Location = New System.Drawing.Point(160, 179)
         Me.gbInfoBox.Name = "gbInfoBox"
-        Me.gbInfoBox.Size = New System.Drawing.Size(248, 145)
+        Me.gbInfoBox.Size = New System.Drawing.Size(236, 145)
         Me.gbInfoBox.TabIndex = 65
         Me.gbInfoBox.TabStop = False
         Me.gbInfoBox.Text = "Info"
@@ -546,7 +548,7 @@ Partial Class dlgUpdateMedia
         '
         Me.lblInfoBox.Location = New System.Drawing.Point(6, 16)
         Me.lblInfoBox.Name = "lblInfoBox"
-        Me.lblInfoBox.Size = New System.Drawing.Size(236, 120)
+        Me.lblInfoBox.Size = New System.Drawing.Size(224, 120)
         Me.lblInfoBox.TabIndex = 0
         Me.lblInfoBox.Text = "Some Messages Here about selection"
         '
@@ -555,7 +557,7 @@ Partial Class dlgUpdateMedia
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(746, 354)
+        Me.ClientSize = New System.Drawing.Size(735, 354)
         Me.Controls.Add(Me.gbInfoBox)
         Me.Controls.Add(Me.gbSettingsModifier)
         Me.Controls.Add(Me.Update_Button)
