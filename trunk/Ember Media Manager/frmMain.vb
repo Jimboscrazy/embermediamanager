@@ -2625,6 +2625,9 @@ doCancel:
 
         e.Result = Args.scrapeType
 
+        pThumbs = Nothing
+        fArt = Nothing
+
         TMDB = Nothing
         IMPA = Nothing
         Poster.Dispose()
