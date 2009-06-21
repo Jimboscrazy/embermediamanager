@@ -31,12 +31,32 @@ Public Class dlgUpdateMedia
     Private bMediaInfo As Boolean
     Private bTrailers As Boolean
 
+
     Private Sub dlgUpdateMedia_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
 
     End Sub
 
     Private Sub dlgUpdateMedia_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
         Try
+            Dim newCount As Integer = 0
+            Dim markCount As Integer = 0
+            For Each drvRow As DataRow In frmMain.GetMediaTable().Rows
+                If drvRow.Item(10) Then 'New
+                    newCount += 1
+                End If
+                If drvRow.Item(11) Then 'Marked
+                    markCount += 1
+                End If
+            Next
+            If newCount Then
+                rbUpdateModifier_New.Enabled = True
+                rbUpdateModifier_New.Checked = True
+            End If
+            If markCount Then
+                rbUpdate_Marked.Enabled = True
+                rbUpdate_Marked.Checked = True
+            End If
             ValidateOptions()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
