@@ -225,11 +225,11 @@ Public Class dlgUpdateMedia
         '\\
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Return Me.CustomUpdater
+            Me.CustomUpdater.Canceled = False
         Else
-            Return Nothing
+            Me.CustomUpdater.Canceled = True
         End If
-
+        Return Me.CustomUpdater
     End Function
 
     Private Sub Update_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Update_Button.Click
