@@ -55,12 +55,11 @@ Namespace TMDB
 
         Public Function GetTrailers(ByVal imdbID As String) As String
             Dim xmlTMDB As XDocument
+            Dim sHTTP As New HTTP
 
             If Me.bwTMDB.CancellationPending Then Return Nothing
             Try
-                Dim sHTTP As New HTTP(String.Format("http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=tt{0}&api_key={1}", imdbID, APIKey))
-                Dim ApiXML As String = sHTTP.Response
-                sHTTP = Nothing
+                Dim ApiXML As String = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=tt{0}&api_key={1}", imdbID, APIKey))
 
                 Try
                     xmlTMDB = XDocument.Parse(ApiXML)
@@ -79,8 +78,7 @@ Namespace TMDB
                     If Not tmdbNode(0).Value = "Your query didn't return any results." Then
                         Dim movieID As String = xmlTMDB...<results>...<moviematches>...<movie>...<id>.Value
 
-                        sHTTP = New HTTP(String.Format("http://api.themoviedb.org/2.0/Movie.getInfo?id={0}&api_key={1}", movieID, APIKey))
-                        ApiXML = sHTTP.Response
+                        ApiXML = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.0/Movie.getInfo?id={0}&api_key={1}", movieID, APIKey))
                         xmlTMDB = XDocument.Parse(ApiXML)
 
                         If bwTMDB.WorkerReportsProgress Then
@@ -90,7 +88,7 @@ Namespace TMDB
                         If Me.bwTMDB.CancellationPending Then Return Nothing
 
                         Dim Trailers = From tNode In xmlTMDB...<results>...<moviematches>...<movie> Select tNode.<trailer>
-                        If Trailers.Count > 0 Then
+                        If Trailers.Count > 0 AndAlso Not String.IsNullOrEmpty(Trailers(0).Value) Then
                             If Trailers(0).@source.ToLower = "youtube" Then
                                 Return Trailers(0).Value
                             End If
@@ -103,6 +101,8 @@ Namespace TMDB
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
+
+            sHTTP = Nothing
 
             Return String.Empty
 
@@ -123,12 +123,11 @@ Namespace TMDB
         Public Function GetTMDBImages(ByVal imdbID As String, ByVal sType As String) As List(Of Media.Image)
             Dim alPosters As New List(Of Media.Image)
             Dim xmlTMDB As XDocument
+            Dim sHTTP As New HTTP
 
             If Me.bwTMDB.CancellationPending Then Return Nothing
             Try
-                Dim sHTTP As New HTTP(String.Format("http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=tt{0}&api_key={1}", imdbID, APIKey))
-                Dim ApiXML As String = sHTTP.Response
-                sHTTP = Nothing
+                Dim ApiXML As String = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=tt{0}&api_key={1}", imdbID, APIKey))
 
                 Try
                     xmlTMDB = XDocument.Parse(ApiXML)
@@ -147,8 +146,7 @@ Namespace TMDB
                     If Not tmdbNode(0).Value = "Your query didn't return any results." Then
                         Dim movieID As String = xmlTMDB...<results>...<moviematches>...<movie>...<id>.Value
 
-                        sHTTP = New HTTP(String.Format("http://api.themoviedb.org/2.0/Movie.getInfo?id={0}&api_key={1}", movieID, APIKey))
-                        ApiXML = sHTTP.Response
+                        ApiXML = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.0/Movie.getInfo?id={0}&api_key={1}", movieID, APIKey))
                         xmlTMDB = XDocument.Parse(ApiXML)
 
                         If bwTMDB.WorkerReportsProgress Then
@@ -182,6 +180,8 @@ Namespace TMDB
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
+
+            sHTTP = Nothing
 
             Return alPosters
         End Function

@@ -55,8 +55,8 @@ Namespace IMPA
 
             Try
 
-                Dim sHTTP As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", IMDBID, "/posters"))
-                Dim HTML As String = sHTTP.Response
+                Dim sHTTP As New HTTP
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", IMDBID, "/posters"))
                 sHTTP = Nothing
 
                 Dim mcIMPA As MatchCollection = Regex.Matches(Html, "http://([^""]*)impawards.com/([^""]*)")
@@ -93,8 +93,8 @@ Namespace IMPA
 
                 If Not String.IsNullOrEmpty(sURL) Then
 
-                    Dim sHTTP As New HTTP(sURL)
-                    Dim HTML As String = sHTTP.Response
+                    Dim sHTTP As New HTTP
+                    Dim HTML As String = sHTTP.DownloadData(sURL)
                     sHTTP = Nothing
 
                     If bwIMPA.CancellationPending Then Return Nothing

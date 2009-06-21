@@ -32,9 +32,15 @@ Public Class Trailers
     Private _ImdbID As String = String.Empty
     Private _ImdbTrailerPage As String = String.Empty
     Private _TrailerList As New ArrayList
+    Private WebPage As New HTTP
+
+    Public Event ProgressUpdated(ByVal iPercent As Integer)
 
     Public Sub New()
         Me.Clear()
+
+        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+
     End Sub
 
     Public Sub Clear()
@@ -78,7 +84,6 @@ Public Class Trailers
         Dim Links As MatchCollection
         Dim trailerPage As String
         Dim trailerUrl As String
-        Dim WebPage As HTTP
         Dim Link As Match
         Dim currPage As Integer
 
@@ -93,15 +98,13 @@ Public Class Trailers
 
                 For i As Integer = 1 To currPage
                     If Not i = 1 Then
-                        WebPage = New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/trailers?pg=", i))
-                        _ImdbTrailerPage = WebPage.Response
+                        _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/trailers?pg=", i))
                     End If
 
                     Links = Regex.Matches(_ImdbTrailerPage, "/vi[0-9]+/")
 
                     For Each m As Match In Links
-                        WebPage = New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/video/screenplay", m.Value, "player"))
-                        trailerPage = WebPage.Response
+                        trailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/video/screenplay", m.Value, "player"))
 
                         trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+flv").Value)
 
@@ -120,9 +123,7 @@ Public Class Trailers
 
         If Link.Success Then
 
-            Dim WebPage As New HTTP(Link.Value.Substring(0, Link.Value.Length - 1))
-
-            Dim ATPage As String = WebPage.Response
+            Dim ATPage As String = WebPage.DownloadData(Link.Value.Substring(0, Link.Value.Length - 1))
 
             Link = Regex.Match(ATPage, "file=(http.+flv)")
 
@@ -139,9 +140,7 @@ Public Class Trailers
 
         If Link.Success Then
 
-            Dim WebPage As New HTTP(Link.Value.Substring(0, Link.Value.Length - 1))
-
-            Dim MattPage As String = WebPage.Response
+            Dim MattPage As String = WebPage.DownloadData(Link.Value.Substring(0, Link.Value.Length - 1))
 
             Link = Regex.Match(MattPage, "trailer=.+flv")
 
@@ -159,12 +158,10 @@ Public Class Trailers
         Dim Link As Match = Regex.Match(_ImdbTrailerPage, "http://AZmovies.net/.+html")
 
         If Link.Success Then
-            Dim WebPage As New HTTP(Link.Value)
-            Dim AZPage As String = WebPage.Response
+            Dim AZPage As String = WebPage.DownloadData(Link.Value)
             Link = Regex.Match(AZPage, "http://www.dailymotion.com/swf/[0-9A-Za-z]+")
             If Link.Success Then
-                WebPage = New HTTP(String.Concat("http://keepvid.com/?url=", Link.Value))
-                AZPage = WebPage.Response
+                AZPage = WebPage.DownloadData(String.Concat("http://keepvid.com/?url=", Link.Value))
 
                 Link = Regex.Match(AZPage, "http://proxy.+h264.+[0-9A-Za-z]+")
 
@@ -189,8 +186,7 @@ Public Class Trailers
         Dim L As String = String.Empty
 
         If Not String.IsNullOrEmpty(YT) Then
-            Dim WebPage As New HTTP(YT)
-            Dim YTPage As String = WebPage.Response
+            Dim YTPage As String = WebPage.DownloadData(YT)
 
             If Not String.IsNullOrEmpty(YTPage) Then
                 StartIndex = YTPage.IndexOf("/watch_fullscreen?") + 18
@@ -247,8 +243,7 @@ Public Class Trailers
     End Sub
 
     Private Function GetImdbTrailerPage() As Boolean
-        Dim WebPage As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/trailers"))
-        _ImdbTrailerPage = WebPage.Response
+        _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/trailers"))
         If _ImdbTrailerPage.ToLower.Contains("page not found") Then
             _ImdbTrailerPage = String.Empty
         End If
@@ -265,9 +260,7 @@ Public Class Trailers
             If Master.eSettings.UpdaterTrailersNoDownload Then
                 tPath = Me._TrailerList.Item(0)
             Else
-                Dim sHTTP As New HTTP(Me._TrailerList.Item(0), sPath)
-                tPath = sHTTP.SavePath
-                sHTTP = Nothing
+                tPath = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False)
             End If
         End If
 
@@ -275,10 +268,11 @@ Public Class Trailers
     End Function
 
     Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
-        Dim sHTTP As New HTTP(Me._TrailerList.Item(sIndex), sPath)
-        Dim tPath As String = sHTTP.SavePath
-        sHTTP = Nothing
-
+        Dim tPath As String = WebPage.DownloadFile(Me._TrailerList.Item(sIndex), sPath, True)
         Return tPath
     End Function
+
+    Public Sub DownloadProgressUpdated(ByVal iProgress As Integer)
+        RaiseEvent ProgressUpdated(iProgress)
+    End Sub
 End Class

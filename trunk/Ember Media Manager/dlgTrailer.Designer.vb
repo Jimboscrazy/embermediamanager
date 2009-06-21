@@ -28,7 +28,7 @@ Partial Class dlgTrailer
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.pnlStatus = New System.Windows.Forms.Panel
         Me.lblStatus = New System.Windows.Forms.Label
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.pbStatus = New System.Windows.Forms.ProgressBar
         Me.btnPlayTrailer = New System.Windows.Forms.Button
         Me.btnSetNfo = New System.Windows.Forms.Button
         Me.GroupBox1.SuspendLayout()
@@ -81,7 +81,7 @@ Partial Class dlgTrailer
         Me.pnlStatus.BackColor = System.Drawing.Color.White
         Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlStatus.Controls.Add(Me.lblStatus)
-        Me.pnlStatus.Controls.Add(Me.ProgressBar1)
+        Me.pnlStatus.Controls.Add(Me.pbStatus)
         Me.pnlStatus.Location = New System.Drawing.Point(112, 112)
         Me.pnlStatus.Name = "pnlStatus"
         Me.pnlStatus.Size = New System.Drawing.Size(200, 54)
@@ -98,14 +98,14 @@ Partial Class dlgTrailer
         Me.lblStatus.Text = "Compiling trailer list..."
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'ProgressBar1
+        'pbStatus
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(3, 32)
-        Me.ProgressBar1.MarqueeAnimationSpeed = 25
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(192, 17)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar1.TabIndex = 0
+        Me.pbStatus.Location = New System.Drawing.Point(3, 32)
+        Me.pbStatus.MarqueeAnimationSpeed = 25
+        Me.pbStatus.Name = "pbStatus"
+        Me.pbStatus.Size = New System.Drawing.Size(192, 17)
+        Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.pbStatus.TabIndex = 0
         '
         'btnPlayTrailer
         '
@@ -163,7 +163,7 @@ Partial Class dlgTrailer
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
     Friend WithEvents btnPlayTrailer As System.Windows.Forms.Button
     Friend WithEvents btnSetNfo As System.Windows.Forms.Button
 
