@@ -88,8 +88,8 @@ Public Class OFDB
         Dim ofdbURL As String = String.Empty
         Try
 
-            Dim sHTTP As New HTTP(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
-            Dim HTML As String = sHTTP.Response
+            Dim sHTTP As New HTTP
+            Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.ofdb.de/view.php?SText=", imdbID, "&Kat=IMDb&page=suchergebnis&sourceid=mozilla-search"))
             sHTTP = Nothing
 
             If Not String.IsNullOrEmpty(HTML) Then
@@ -111,8 +111,8 @@ Public Class OFDB
 
         Try
             If Not String.IsNullOrEmpty(sURL) Then
-                Dim sHTTP As New HTTP(sURL)
-                Dim HTML As String = sHTTP.Response
+                Dim sHTTP As New HTTP
+                Dim HTML As String = sHTTP.DownloadData(sURL)
                 sHTTP = Nothing
 
                 If Not String.IsNullOrEmpty(Html) Then
@@ -185,8 +185,8 @@ Public Class OFDB
 
         Try
             If Not String.IsNullOrEmpty(sURL) Then
-                Dim sHTTP As New HTTP(sURL)
-                Dim HTML As String = sHTTP.Response
+                Dim sHTTP As New HTTP
+                Dim HTML As String = sHTTP.DownloadData(sURL)
                 sHTTP = Nothing
 
                 Dim D, W, B As Integer

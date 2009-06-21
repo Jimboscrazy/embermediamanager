@@ -68,8 +68,8 @@ Namespace MPDB
             If Me.bwMPDB.CancellationPending Then Return Nothing
 
             Try
-                Dim sHTTP As New HTTP(String.Concat("http://www.movieposterdb.com/movie/", imdbID))
-                Dim HTML As String = sHTTP.Response
+                Dim sHTTP As New HTTP
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://www.movieposterdb.com/movie/", imdbID))
                 sHTTP = Nothing
 
                 If Me.bwMPDB.CancellationPending Then Return Nothing

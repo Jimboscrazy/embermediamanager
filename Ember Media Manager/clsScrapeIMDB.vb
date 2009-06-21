@@ -200,8 +200,8 @@ Namespace IMDB
                 Dim D, W As Integer
                 Dim R As New MovieSearchResults
 
-                Dim sHTTP As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1"))))
-                Dim HTML As String = sHTTP.Response
+                Dim sHTTP As New HTTP
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1"))))
                 Dim rUri As String = sHTTP.ResponseUri
                 sHTTP = Nothing
 
@@ -290,8 +290,8 @@ mResult:
         Public Function GetMovieStudios(ByVal strID As String) As ArrayList
             Dim alStudio As New ArrayList
 
-            Dim sHTTP As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/combined"))
-            Dim HTML As String = sHTTP.Response
+            Dim sHTTP As New HTTP
+            Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/combined"))
             sHTTP = Nothing
 
             Dim D, W As Integer
@@ -323,12 +323,12 @@ mResult:
                     If Master.eSettings.UseOFDBGenre Then ofdbGenre = OFDBScrape.Genre
                 End If
 
-                Dim sHTTP As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, If(FullCrew OrElse FullCast, "/combined", String.Empty)))
-                Dim HTML As String = sHTTP.Response
+                Dim sHTTP As New HTTP
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, If(FullCrew OrElse FullCast, "/combined", String.Empty)))
                 sHTTP = Nothing
 
-                Dim sPlot As New HTTP(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/plotsummary"))
-                Dim PlotHtml As String = sPlot.Response
+                Dim sPlot As New HTTP
+                Dim PlotHtml As String = sPlot.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/plotsummary"))
                 sPlot = Nothing
 
                 If bwIMDB.WorkerReportsProgress Then
@@ -411,8 +411,8 @@ mResult:
                     If Not sTrailerUrl = String.Empty Then
                         Dim sTrailerURL2 As String = String.Empty
                         sTrailerUrl = String.Concat("http://", Master.eSettings.IMDBURL, sTrailerUrl, "player")
-                        Dim HTTPTrailer As New HTTP(sTrailerUrl)
-                        Dim HtmlTrailer As String = HTTPTrailer.Response
+                        Dim HTTPTrailer As New HTTP
+                        Dim HtmlTrailer As String = HTTPTrailer.DownloadData(sTrailerUrl)
                         HTTPTrailer = Nothing
 
                         sTrailerUrl = Regex.Match(HtmlTrailer, "so.addVariable\(""id"", ""(.*?)""\);").Groups(1).Value.Trim

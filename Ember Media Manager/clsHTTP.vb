@@ -25,18 +25,9 @@ Imports System.IO.Compression
 
 Public Class HTTP
 
-    Dim _response As String
     Dim _responseuri As String
-    Dim _savepath As String
 
-    Public Property Response() As String
-        Get
-            Return Me._response
-        End Get
-        Set(ByVal value As String)
-            Me._response = value
-        End Set
-    End Property
+    Public Event ProgressUpdated(ByVal iPercent As Integer)
 
     Public Property ResponseUri() As String
         Get
@@ -47,35 +38,20 @@ Public Class HTTP
         End Set
     End Property
 
-    Public Property SavePath() As String
-        Get
-            Return Me._savepath
-        End Get
-        Set(ByVal value As String)
-            Me._savepath = value
-        End Set
-    End Property
-
-    Public Sub New(ByVal URL As String)
+    Public Sub New()
         Me.Clear()
-
-        Me.DownloadData(URL)
-    End Sub
-
-    Public Sub New(ByVal URL As String, ByVal LocalFile As String)
-        Me.Clear()
-
-        Me.SavePath = Me.DownloadFile(URL, LocalFile)
     End Sub
 
     Public Sub Clear()
-        Me._response = String.Empty
         Me._responseuri = String.Empty
-        Me._savepath = String.Empty
     End Sub
 
-    Private Sub DownloadData(ByVal URL As String)
+    Public Function DownloadData(ByVal URL As String) As String
+        Dim sResponse As String = String.Empty
+        Me.Clear()
+
         Try
+
             Dim wrRequest As HttpWebRequest = HttpWebRequest.Create(URL)
             wrRequest.Method = "GET"
             wrRequest.Timeout = 10000
@@ -92,11 +68,11 @@ Public Class HTTP
             Next
             Using Ms As Stream = wrResponse.GetResponseStream
                 If contentEncoding.ToLower = "gzip" Then
-                    Me._response = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
+                    sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
                 ElseIf contentEncoding.ToLower = "deflate" Then
-                    Me._response = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress)).ReadToEnd
+                    sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress)).ReadToEnd
                 Else
-                    Me._response = New StreamReader(Ms).ReadToEnd
+                    sResponse = New StreamReader(Ms).ReadToEnd
                 End If
             End Using
             Me._responseuri = wrResponse.ResponseUri.ToString
@@ -106,7 +82,8 @@ Public Class HTTP
         Catch
         End Try
 
-    End Sub
+        Return sResponse
+    End Function
 
     Public Function IsValidURL(ByVal URL As String) As Boolean
         Dim wrRequest As HttpWebRequest
@@ -125,7 +102,7 @@ Public Class HTTP
         Return True
     End Function
 
-    Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String) As String
+    Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean) As String
         Dim outFile As String = String.Empty
 
         Try
@@ -144,7 +121,7 @@ Public Class HTTP
                     outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), "-trailer.swf"))
             End Select
 
-            If Not String.IsNullOrEmpty(outFile) Then
+            If Not String.IsNullOrEmpty(outFile) AndAlso wrResponse.ContentLength > 0 Then
 
                 If File.Exists(outFile) Then File.Delete(outFile)
 
@@ -152,9 +129,18 @@ Public Class HTTP
                     Using mStream As New FileStream(outFile, FileMode.OpenOrCreate, FileAccess.Write)
                         Dim StreamBuffer(4096) As Byte
                         Dim BlockSize As Integer
+                        Dim iProgress As Integer
+                        Dim iCurrent As Integer
                         Do
                             BlockSize = Ms.Read(StreamBuffer, 0, 4096)
-                            If BlockSize > 0 Then mStream.Write(StreamBuffer, 0, BlockSize)
+                            iCurrent += BlockSize
+                            If BlockSize > 0 Then
+                                mStream.Write(StreamBuffer, 0, BlockSize)
+                                If ReportUpdate Then
+                                    iProgress = (iCurrent / wrResponse.ContentLength) * 100
+                                    RaiseEvent ProgressUpdated(iProgress)
+                                End If
+                            End If
                         Loop While BlockSize > 0
                         StreamBuffer = Nothing
                     End Using

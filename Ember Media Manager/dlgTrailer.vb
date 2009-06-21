@@ -30,7 +30,14 @@ Public Class dlgTrailer
     Dim sPath As String = String.Empty
     Dim tPath As String = String.Empty
     Dim prePath As String = String.Empty
+    Friend WithEvents bwCompileList As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
+
+    Private Structure Arguments
+        Dim Parameter As String
+        Dim iIndex As Integer
+        Dim bType As Boolean
+    End Structure
 
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
         tPath = lbTrailers.SelectedItem.ToString
@@ -43,8 +50,11 @@ Public Class dlgTrailer
         Me.OK_Button.Enabled = False
         Me.Cancel_Button.Enabled = False
         Me.btnSetNfo.Enabled = False
+        Me.btnPlayTrailer.Enabled = False
 
         Me.lblStatus.Text = "Downloading selected trailer..."
+        Me.pbStatus.Style = ProgressBarStyle.Continuous
+        Me.pbStatus.Value = 0
         Me.pnlStatus.Visible = True
         Application.DoEvents()
 
@@ -54,11 +64,11 @@ Public Class dlgTrailer
 
             File.Delete(Me.prePath)
         Else
-            tPath = cTrailer.DownloadSelectedTrailer(Me.sPath, lbTrailers.SelectedIndex)
+            Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+            Me.bwDownloadTrailer.WorkerReportsProgress = True
+            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.iIndex = lbTrailers.SelectedIndex, .bType = True})
         End If
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -66,7 +76,7 @@ Public Class dlgTrailer
         Me.Close()
     End Sub
 
-    Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
+    Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
 
         Try
             tArray = cTrailer.GetTrailers(Me.imdbID, False)
@@ -75,7 +85,7 @@ Public Class dlgTrailer
 
     End Sub
 
-    Private Sub bwDownloadTrailer_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadTrailer.RunWorkerCompleted
+    Private Sub bwCompileList_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCompileList.RunWorkerCompleted
 
         If Me.tArray.Count > 0 Then
             For Each tTrail As String In Me.tArray
@@ -85,6 +95,47 @@ Public Class dlgTrailer
 
         Me.pnlStatus.Visible = False
         Me.Cancel_Button.Enabled = True
+    End Sub
+
+    Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
+
+        Dim Args As Arguments = e.Argument
+        Try
+            If Args.bType Then
+                tPath = cTrailer.DownloadSelectedTrailer(Me.sPath, Args.iIndex)
+            Else
+                Dim sHTTP As New HTTP
+                Me.prePath = sHTTP.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True)
+                sHTTP = Nothing
+            End If
+        Catch
+        End Try
+
+        e.Result = Args.bType
+    End Sub
+
+    Private Sub bwDownloadTrailer_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownloadTrailer.ProgressChanged
+        pbStatus.Value = e.ProgressPercentage
+    End Sub
+
+    Private Sub bwDownloadTrailer_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadTrailer.RunWorkerCompleted
+
+        If e.Result Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+        Else
+            Me.pnlStatus.Visible = False
+            Me.btnPlayTrailer.Enabled = True
+            Me.OK_Button.Enabled = True
+            Me.btnSetNfo.Enabled = True
+            Me.Cancel_Button.Enabled = True
+
+            If Not String.IsNullOrEmpty(prePath) Then System.Diagnostics.Process.Start(String.Concat("""", prePath, """"))
+        End If
+    End Sub
+
+    Private Sub DownloadProgressUpdated(ByVal iProgress As Integer)
+        bwDownloadTrailer.ReportProgress(iProgress)
     End Sub
 
     Private Sub lbTrailers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailers.SelectedIndexChanged
@@ -115,11 +166,15 @@ Public Class dlgTrailer
 
     End Function
 
+    Private Sub dlgTrailer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        AddHandler cTrailer.ProgressUpdated, AddressOf DownloadProgressUpdated
+    End Sub
+
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.pnlStatus.Visible = True
-        Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-        Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-        Me.bwDownloadTrailer.RunWorkerAsync()
+        Me.bwCompileList = New System.ComponentModel.BackgroundWorker
+        Me.bwCompileList.WorkerSupportsCancellation = True
+        Me.bwCompileList.RunWorkerAsync()
     End Sub
 
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
@@ -130,22 +185,14 @@ Public Class dlgTrailer
             Me.Cancel_Button.Enabled = False
 
             Me.lblStatus.Text = "Downloading preview..."
+            Me.pbStatus.Style = ProgressBarStyle.Continuous
+            Me.pbStatus.Value = 0
             Me.pnlStatus.Visible = True
             Application.DoEvents()
 
-            Dim sHTTP As New HTTP(Me.lbTrailers.SelectedItem.ToString, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)))
-
-            Me.pnlStatus.Visible = False
-            Me.btnPlayTrailer.Enabled = True
-            Me.OK_Button.Enabled = True
-            Me.btnSetNfo.Enabled = True
-            Me.Cancel_Button.Enabled = True
-
-            Me.prePath = sHTTP.SavePath
-
-            If Not String.IsNullOrEmpty(prePath) Then System.Diagnostics.Process.Start(String.Concat("""", prePath, """"))
-
-            sHTTP = Nothing
+            Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+            Me.bwDownloadTrailer.WorkerReportsProgress = True
+            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = Me.lbTrailers.SelectedItem.ToString, .iIndex = lbTrailers.SelectedIndex, .bType = False})
         Catch
             MsgBox("The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.", MsgBoxStyle.Critical, "Error Playing Trailer")
         End Try

@@ -1866,8 +1866,8 @@ Public Class Master
     End Function
 
     Public Shared Function CheckUpdate() As Integer
-        Dim sHTTP As New HTTP("http://www.cube3studios.com/EMM/Update.xml")
-        Dim updateXML As String = sHTTP.Response
+        Dim sHTTP As New HTTP
+        Dim updateXML As String = sHTTP.DownloadData("http://www.cube3studios.com/EMM/Update.xml")
         sHTTP = Nothing
 
         Dim xmlUpdate As XDocument
@@ -1887,8 +1887,8 @@ Public Class Master
     End Function
 
     Public Shared Function GetChangelog() As String
-        Dim sHTTP As New HTTP("http://www.cube3studios.com/EMM/Changelog.txt")
-        Dim strChangelog As String = sHTTP.Response
+        Dim sHTTP As New HTTP
+        Dim strChangelog As String = sHTTP.DownloadData("http://www.cube3studios.com/EMM/Changelog.txt")
         sHTTP = Nothing
 
         If strChangelog.Length > 0 Then
