@@ -44,6 +44,7 @@ Public Class Master
     Public Shared eLog As New ErrorLogger
     Public Shared isFile As Boolean = False
     Public Shared SQLcn As New SQLite.SQLiteConnection()
+    Public Shared DefaultOptions As New ScrapeOptions
 
     Public Shared TempPath As String = Path.Combine(Application.StartupPath, "Temp")
 
@@ -68,7 +69,6 @@ Public Class Master
         FullAsk = 2
         UpdateAuto = 3
         UpdateAsk = 4
-        MIOnly = 5
         CleanFolders = 6
         NewAuto = 7
         NewAsk = 8
@@ -90,6 +90,44 @@ Public Class Master
         AZMovies = 3
         Imdb = 4
     End Enum
+
+    Public Enum ScrapeModifier As Integer
+        All = 0
+        NFO = 1
+        Poster = 2
+        Fanart = 3
+        Extra = 4
+        Trailer = 5
+        MI = 6
+    End Enum
+
+    Public Structure ScrapeOptions
+        Dim bTitle As Boolean
+        Dim bYear As Boolean
+        Dim bMPAA As Boolean
+        Dim bRelease As Boolean
+        Dim bRating As Boolean
+        Dim bTrailer As Boolean
+        Dim bVotes As Boolean
+        Dim bCast As Boolean
+        Dim bTagline As Boolean
+        Dim bDirector As Boolean
+        Dim bGenre As Boolean
+        Dim bOutline As Boolean
+        Dim bPlot As Boolean
+        Dim bRuntime As Boolean
+        Dim bStudio As Boolean
+        Dim bWriters As Boolean
+        Dim bProducers As Boolean
+        Dim bMusicBy As Boolean
+        Dim bOtherCrew As Boolean
+    End Structure
+
+    Public Structure CustomUpdaterStruct
+        Dim ScrapeType As ScrapeType
+        Dim Modifier As ScrapeModifier
+        Dim Options As ScrapeOptions
+    End Structure
 
     Public Class FileAndSource
         Dim _filename As String
@@ -216,6 +254,30 @@ Public Class Master
                 End Using
             End If
         End If
+    End Sub
+
+    Public Shared Sub CreateDefaultOptions()
+        With DefaultOptions
+            .bCast = True
+            .bDirector = True
+            .bGenre = True
+            .bMPAA = True
+            .bMusicBy = True
+            .bOtherCrew = True
+            .bOutline = True
+            .bPlot = True
+            .bProducers = True
+            .bRating = True
+            .bRelease = True
+            .bRuntime = True
+            .bStudio = True
+            .bTagline = True
+            .bTitle = True
+            .bTrailer = True
+            .bVotes = True
+            .bWriters = True
+            .bYear = True
+        End With
     End Sub
 
     Public Shared Sub ResizePB(ByRef pbResize As PictureBox, ByRef pbCache As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)

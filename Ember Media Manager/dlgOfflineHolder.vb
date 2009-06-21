@@ -117,7 +117,7 @@ Public Class dlgOfflineHolder
                         Me.pbProgress.MarqueeAnimationSpeed = 25
                         Me.pbProgress.Visible = True
                         Me.txtMovieName.Text = String.Format("{0}", Master.tmpMovie.Title)
-                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast)
+                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                     End If
                 End If
             End Using

@@ -136,7 +136,7 @@ Public Class dlgIMDBSearchResults
             Me.OK_Button.Enabled = False
             If Not String.IsNullOrEmpty(e.Node.Tag) Then
                 Me.pnlLoading.Visible = True
-                IMDB.GetSearchMovieInfoAsync(e.Node.Tag, Master.tmpMovie)
+                IMDB.GetSearchMovieInfoAsync(e.Node.Tag, Master.tmpMovie, Master.DefaultOptions)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -224,7 +224,7 @@ Public Class dlgIMDBSearchResults
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
-            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie)
+            IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie, Master.DefaultOptions)
         Else
             MsgBox("The ID you entered is not a valid IMDB ID", MsgBoxStyle.Exclamation, "Invalid Entry")
         End If
