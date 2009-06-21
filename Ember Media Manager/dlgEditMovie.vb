@@ -1088,6 +1088,8 @@ Public Class dlgEditMovie
 
         Me.lbGenre.Items.Add("[none]")
 
+        Dim splitLang() As String
+
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres")
 
         If File.Exists(Path.Combine(mePath, "Genres.xml")) Then
@@ -1097,9 +1099,12 @@ Public Class dlgEditMovie
                 Dim xGenre = From xGen In xmlGenre...<name> Select xGen.@searchstring, xGen.@language
                 If xGenre.Count > 0 Then
                     For i As Integer = 0 To xGenre.Count - 1
-                        If Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(xGenre(i).language) Then
-                            Me.lbGenre.Items.Add(xGenre(i).searchstring)
-                        End If
+                        splitLang = xGenre(i).language.Split(New Char() {"|"})
+                        For Each strGen As String In splitLang
+                            If Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen) Then
+                                Me.lbGenre.Items.Add(xGenre(i).searchstring)
+                            End If
+                        Next
                     Next
                 End If
 
