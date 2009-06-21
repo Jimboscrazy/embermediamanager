@@ -2110,7 +2110,7 @@ Public Class frmMain
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
-
+                                            pThumbs.Clear()
                                             If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
                                                 If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, True) Then
                                                     If Not IsNothing(Poster.Image) Then
@@ -2131,11 +2131,10 @@ Public Class frmMain
                                                 End If
                                             End If
                                         End If
-                                        pThumbs = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
-
+                                            fArt.Clear()
                                             If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
                                                 If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, True) Then
 
@@ -2158,7 +2157,6 @@ Public Class frmMain
                                                 End If
                                             End If
                                         End If
-                                        fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) AndAlso _
@@ -2233,7 +2231,7 @@ Public Class frmMain
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
-
+                                            pThumbs.Clear()
                                             If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
                                                 If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs) Then
                                                     If Not IsNothing(Poster.Image) Then
@@ -2245,10 +2243,10 @@ Public Class frmMain
                                                 End If
                                             End If
                                         End If
-                                        pThumbs = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
+                                            fArt.Clear()
                                             If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
                                                 If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing) Then
                                                     If Not IsNothing(Fanart.Image) Then
@@ -2260,7 +2258,6 @@ Public Class frmMain
                                                 End If
                                             End If
                                         End If
-                                        fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) AndAlso _
@@ -2417,6 +2414,7 @@ Public Class frmMain
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Not drvRow.Item(4) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
+                                            pThumbs.Clear()
                                             If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
                                                 If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs) Then
                                                     If Not IsNothing(Poster.Image) Then
@@ -2437,6 +2435,7 @@ Public Class frmMain
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Not drvRow.Item(5) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
+                                            fArt.Clear()
                                             If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
                                                 If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing) Then
                                                     If Not IsNothing(Fanart.Image) Then
@@ -2454,7 +2453,6 @@ Public Class frmMain
                                                 End If
                                             End If
                                         End If
-                                        fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) AndAlso _
@@ -2520,7 +2518,7 @@ Public Class frmMain
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Not drvRow.Item(4) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Poster) Then
-
+                                            pThumbs.Clear()
                                             If Poster.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Posters) Then
                                                 If Poster.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, True) Then
                                                     If Not IsNothing(Poster.Image) Then
@@ -2553,11 +2551,10 @@ Public Class frmMain
                                                 End If
                                             End If
                                         End If
-                                        pThumbs = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Not drvRow.Item(5) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.Fanart) Then
-
+                                            fArt.Clear()
                                             If Fanart.IsAllowedToDownload(sPath, drvRow.Item(2), Master.ImageType.Fanart) Then
                                                 If Fanart.GetPreferredImage(Master.scrapeMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, True) Then
 
@@ -2591,7 +2588,6 @@ Public Class frmMain
                                                 End If
                                             End If
                                         End If
-                                        fArt = Nothing
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = ScrapeModifier.Trailer) AndAlso _

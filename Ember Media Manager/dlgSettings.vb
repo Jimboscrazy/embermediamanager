@@ -962,6 +962,10 @@ Public Class dlgSettings
     Private Sub chkNoDLTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDLTrailer.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoSaveImagesToNfo.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1157,6 +1161,7 @@ Public Class dlgSettings
             Master.eSettings.PersistImgCache = Me.chkPersistImgCache.Checked
             Master.eSettings.SkipLessThan = Convert.ToInt32(Me.txtSkipLessThan.Text)
             Master.eSettings.SkipStackSizeCheck = Me.chkSkipStackedSizeCheck.Checked
+            Master.eSettings.NoSaveImagesToNfo = Me.chkNoSaveImagesToNfo.Checked
 
             Master.eSettings.TrailerSites.Clear()
             If Me.lbTrailerSites.CheckedItems.Count > 0 Then
@@ -1329,6 +1334,7 @@ Public Class dlgSettings
             Me.chkPersistImgCache.Checked = Master.eSettings.PersistImgCache
             Me.txtSkipLessThan.Text = Master.eSettings.SkipLessThan.ToString
             Me.chkSkipStackedSizeCheck.Checked = Master.eSettings.SkipStackSizeCheck
+            Me.chkNoSaveImagesToNfo.Checked = Master.eSettings.NoSaveImagesToNfo
             Me.chkDownloadTrailer.Checked = Master.eSettings.DownloadTrailers
             Me.chkUpdaterTrailer.Checked = Master.eSettings.UpdaterTrailers
             Me.chkNoDLTrailer.Checked = Master.eSettings.UpdaterTrailersNoDownload
@@ -1399,6 +1405,5 @@ Public Class dlgSettings
 
     End Sub
 #End Region '*** Routines/Functions
-
 
 End Class

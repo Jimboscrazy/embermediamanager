@@ -136,6 +136,7 @@ Public Class emmSettings
     Private _singlescrapetrailer As Boolean
     Private _trailertimeout As Integer
     Private _trailersites As New List(Of Master.TrailerPages)
+    Private _nosaveimagestonfo As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -1136,6 +1137,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property NoSaveImagesToNfo() As Boolean
+        Get
+            Return Me._nosaveimagestonfo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._nosaveimagestonfo = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -1261,6 +1271,7 @@ Public Class emmSettings
         Me._trailertimeout = 2
         Me._trailersites.Clear()
         Me._sets.Clear()
+        Me._nosaveimagestonfo = False
         Me._xbmccoms.Clear()
     End Sub
 
