@@ -1360,10 +1360,10 @@ Public Class Master
                     Dim strNewName As String = RemoveExtFromPath(sPath) & ".info"
                     'in case there is already a .info file
                     If File.Exists(strNewName) Then
-                        Do While File.Exists(strNewName)
+                        Do
                             strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
                             i += 1
-                        Loop
+                        Loop While File.Exists(strNewName)
                         strNewName = String.Format("{0}({1}).info", RemoveExtFromPath(sPath), i)
                     End If
                     My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))

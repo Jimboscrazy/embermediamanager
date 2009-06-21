@@ -743,10 +743,10 @@ Namespace Media
         End Property
 
         Public Sub New()
-            Me.Clean()
+            Me.Clear()
         End Sub
 
-        Public Sub Clean()
+        Public Sub Clear()
             Me._thumb.Clear()
             Me._url = String.Empty
         End Sub
@@ -792,10 +792,10 @@ Namespace Media
         End Property
 
         Public Sub New()
-            Me.Clean()
+            Me.Clear()
         End Sub
 
-        Public Sub Clean()
+        Public Sub Clear()
             Me._thumb.Clear()
         End Sub
 
