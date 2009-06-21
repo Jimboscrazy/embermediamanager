@@ -101,6 +101,7 @@ Namespace IMDB
 
         Private Structure Arguments
             Dim Search As SearchType
+            Dim Options As Master.ScrapeOptions
             Dim IMDBMovie As Media.Movie
             Dim FullCrew As Boolean
             Dim FullCast As Boolean
@@ -111,7 +112,7 @@ Namespace IMDB
             Return Regex.Match(strObj, IMDB_ID_REGEX).ToString.Replace("tt", String.Empty)
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef imdbMovie As Media.Movie, ByVal iType As Master.ScrapeType) As Media.Movie
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef imdbMovie As Media.Movie, ByVal iType As Master.ScrapeType, ByVal Options As Master.ScrapeOptions) As Media.Movie
             Dim r As MovieSearchResults = SearchMovie(sMovieName)
             Dim b As Boolean = False
 
@@ -119,9 +120,9 @@ Namespace IMDB
                 Select Case iType
                     Case Master.ScrapeType.FullAsk, Master.ScrapeType.UpdateAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk
                         If r.PopularTitles.Count = 1 Then
-                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                         ElseIf r.ExactMatches.Count > 0 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                         Else
                             Master.tmpMovie = New Media.Movie
                             Using dIMDB As New dlgIMDBSearchResults
@@ -129,7 +130,7 @@ Namespace IMDB
                                     If String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                         b = False
                                     Else
-                                        b = GetMovieInfo(Master.tmpMovie.IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                                        b = GetMovieInfo(Master.tmpMovie.IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                                     End If
                                 Else
                                     b = False
@@ -139,13 +140,13 @@ Namespace IMDB
                     Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto, Master.ScrapeType.SingleScrape
                         'it seems "popular matches" is a better result than "exact matches"
                         If r.PopularTitles.Count > 0 Then
-                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                            b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                             'no popular matches, try exact matches
                         ElseIf r.ExactMatches.Count > 0 Then
-                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                             'no populartitles, get partial matches
                         ElseIf r.PartialMatches.Count > 0 Then
-                            b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False)
+                            b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                         End If
                 End Select
 
@@ -160,24 +161,24 @@ Namespace IMDB
             End Try
         End Function
 
-        Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As Media.Movie)
+        Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As Media.Movie, ByVal Options As Master.ScrapeOptions)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = False
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails, _
-                                           .Parameter = imdbID, .IMDBMovie = IMDBMovie})
+                                           .Parameter = imdbID, .IMDBMovie = IMDBMovie, .Options = Options})
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
-        Public Sub GetMovieInfoAsync(ByVal imdbID As String, ByRef IMDBMovie As Media.Movie, Optional ByVal FullCrew As Boolean = False, Optional ByVal FullCast As Boolean = False)
+        Public Sub GetMovieInfoAsync(ByVal imdbID As String, ByRef IMDBMovie As Media.Movie, ByVal Options As Master.ScrapeOptions, Optional ByVal FullCrew As Boolean = False, Optional ByVal FullCast As Boolean = False)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = True
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Details, _
-                                           .Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = FullCrew, .FullCast = FullCast})
+                                           .Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = FullCrew, .FullCast = FullCast, .Options = options})
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -308,19 +309,20 @@ mResult:
             Return alStudio
         End Function
 
-        Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As Media.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean) As Boolean
+        Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As Media.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Master.ScrapeOptions) As Boolean
             Try
                 Dim ofdbTitle As String = String.Empty
                 Dim ofdbOutline As String = String.Empty
                 Dim ofdbPlot As String = String.Empty
                 Dim ofdbGenre As String = String.Empty
 
-                If Master.eSettings.UseOFDBTitle OrElse Master.eSettings.UseOFDBOutline OrElse Master.eSettings.UseOFDBPlot OrElse Master.eSettings.UseOFDBGenre Then
+                If (Master.eSettings.UseOFDBTitle AndAlso Options.bTitle) OrElse (Master.eSettings.UseOFDBOutline AndAlso Options.bOutline) OrElse _
+                (Master.eSettings.UseOFDBPlot AndAlso Options.bPlot) OrElse (Master.eSettings.UseOFDBGenre AndAlso Options.bGenre) Then
                     Dim OFDBScrape As New OFDB(strID, IMDBMovie)
-                    If Master.eSettings.UseOFDBTitle Then ofdbTitle = OFDBScrape.Title
-                    If Master.eSettings.UseOFDBOutline Then ofdbOutline = OFDBScrape.Outline
-                    If Master.eSettings.UseOFDBPlot Then ofdbPlot = OFDBScrape.Plot
-                    If Master.eSettings.UseOFDBGenre Then ofdbGenre = OFDBScrape.Genre
+                    If Master.eSettings.UseOFDBTitle AndAlso Options.bTitle Then ofdbTitle = OFDBScrape.Title
+                    If Master.eSettings.UseOFDBOutline AndAlso Options.bOutline Then ofdbOutline = OFDBScrape.Outline
+                    If Master.eSettings.UseOFDBPlot AndAlso Options.bPlot Then ofdbPlot = OFDBScrape.Plot
+                    If Master.eSettings.UseOFDBGenre AndAlso Options.bGenre Then ofdbGenre = OFDBScrape.Genre
                 End If
 
                 Dim sHTTP As New HTTP
@@ -336,23 +338,28 @@ mResult:
                 End If
                 IMDBMovie.IMDBID = strID
 
-                Dim OriginalTitle As String = Regex.Match(Html, MOVIE_TITLE_PATTERN).ToString
-                IMDBMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString)).Trim
-                If String.IsNullOrEmpty(IMDBMovie.Title) OrElse Not Master.eSettings.LockTitle Then
-                    If Not String.IsNullOrEmpty(ofdbTitle) Then
-                        IMDBMovie.Title = ofdbTitle.Trim
-                    Else
-                        IMDBMovie.Title = IMDBMovie.OriginalTitle.Trim
+                Dim OriginalTitle As String = Regex.Match(HTML, MOVIE_TITLE_PATTERN).ToString
+                If Options.bTitle Then
+                    IMDBMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString)).Trim
+                    If String.IsNullOrEmpty(IMDBMovie.Title) OrElse Not Master.eSettings.LockTitle Then
+                        If Not String.IsNullOrEmpty(ofdbTitle) Then
+                            IMDBMovie.Title = ofdbTitle.Trim
+                        Else
+                            IMDBMovie.Title = IMDBMovie.OriginalTitle.Trim
+                        End If
                     End If
                 End If
+
                 If GetPoster Then
-                    sPoster = Regex.Match(Regex.Match(Html, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
+                    sPoster = Regex.Match(Regex.Match(HTML, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
                 End If
 
-                IMDBMovie.Year = Convert.ToInt32(Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))").ToString)
+                If Options.bYear Then IMDBMovie.Year = Convert.ToInt32(Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))").ToString)
 
-                Dim sRated As String = Regex.Match(Html, "MPAA</a>:</h5>(.[^<]*)", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value
-                IMDBMovie.MPAA = Web.HttpUtility.HtmlDecode(sRated).Trim()
+                If Options.bMPAA Then
+                    Dim sRated As String = Regex.Match(HTML, "MPAA</a>:</h5>(.[^<]*)", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value
+                    IMDBMovie.MPAA = Web.HttpUtility.HtmlDecode(sRated).Trim()
+                End If
 
                 If bwIMDB.WorkerReportsProgress Then
                     bwIMDB.ReportProgress(2)
@@ -360,43 +367,47 @@ mResult:
 
                 Dim D, W As Integer
 
-                'get certifications
-                D = Html.IndexOf("<h5>Certification:</h5>")
+                If Options.bMPAA Then
+                    'get certifications
+                    D = HTML.IndexOf("<h5>Certification:</h5>")
 
-                If D > 0 Then
-                    W = Html.IndexOf("</div>", D)
-                    Dim rCert As MatchCollection = Regex.Matches(Html.Substring(D, W - D), HREF_PATTERN_3)
+                    If D > 0 Then
+                        W = HTML.IndexOf("</div>", D)
+                        Dim rCert As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN_3)
 
-                    Dim Cert = From M As Match In rCert Select N = String.Format("{0}:{1}", M.Groups(1).ToString.Trim, M.Groups(2).ToString.Trim) Order By N Descending Where N.Contains(Master.eSettings.CertificationLang)
+                        Dim Cert = From M As Match In rCert Select N = String.Format("{0}:{1}", M.Groups(1).ToString.Trim, M.Groups(2).ToString.Trim) Order By N Descending Where N.Contains(Master.eSettings.CertificationLang)
 
-                    If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
-                        If Cert.Count > 0 Then
-                            IMDBMovie.Certification = Cert(0).ToString.Replace("West", String.Empty).Trim
-                            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" Then
-                                IMDBMovie.MPAA = IMDBMovie.Certification
+                        If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
+                            If Cert.Count > 0 Then
+                                IMDBMovie.Certification = Cert(0).ToString.Replace("West", String.Empty).Trim
+                                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" Then
+                                    IMDBMovie.MPAA = IMDBMovie.Certification
+                                End If
                             End If
+                        Else
+                            IMDBMovie.Certification = Strings.Join(Cert.ToArray, " / ").Trim
                         End If
-                    Else
-                        IMDBMovie.Certification = Strings.Join(Cert.ToArray, " / ").Trim
                     End If
                 End If
 
-                'Get Release Date ( According to your country )
-                Dim RelDate As Date
-                Dim sRelDate As String = Regex.Match(Html, "\d+\s\w+\s\d\d\d\d\s").ToString.Trim
-                If Not sRelDate = String.Empty Then
-                    If Date.TryParse(sRelDate, RelDate) Then
-                        IMDBMovie.ReleaseDate = Strings.FormatDateTime(RelDate, DateFormat.ShortDate).ToString
+                If Options.bRelease Then
+                    'Get Release Date ( According to your country )
+                    Dim RelDate As Date
+                    Dim sRelDate As String = Regex.Match(HTML, "\d+\s\w+\s\d\d\d\d\s").ToString.Trim
+                    If Not sRelDate = String.Empty Then
+                        If Date.TryParse(sRelDate, RelDate) Then
+                            IMDBMovie.ReleaseDate = Strings.FormatDateTime(RelDate, DateFormat.ShortDate).ToString
+                        End If
+                    Else
+                        IMDBMovie.ReleaseDate = Nothing
                     End If
-                Else
-                    IMDBMovie.ReleaseDate = Nothing
                 End If
 
                 If bwIMDB.WorkerReportsProgress Then
                     bwIMDB.ReportProgress(3)
                 End If
 
-                If String.IsNullOrEmpty(IMDBMovie.Rating) OrElse Not Master.eSettings.LockRating Then
+                If Options.bRating AndAlso (String.IsNullOrEmpty(IMDBMovie.Rating) OrElse Not Master.eSettings.LockRating) Then
                     Dim RegexRating As String = Regex.Match(HTML, "\b\d\W\d/\d\d").ToString
                     If String.IsNullOrEmpty(RegexRating) Then
                         IMDBMovie.Rating = String.Empty
@@ -406,7 +417,7 @@ mResult:
                 End If
 
                 'trailer
-                If String.IsNullOrEmpty(IMDBMovie.Trailer) OrElse Not Master.eSettings.LockTrailer Then
+                If Options.bTrailer AndAlso (String.IsNullOrEmpty(IMDBMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
                     Dim sTrailerUrl As String = Regex.Match(HTML, "href=""(.*?/video/imdb/vi.*?)""").Groups(1).Value.Trim
                     If Not sTrailerUrl = String.Empty Then
                         Dim sTrailerURL2 As String = String.Empty
@@ -425,40 +436,42 @@ mResult:
                     End If
                 End If
 
-                IMDBMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
+                If Options.bVotes Then IMDBMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
 
                 If bwIMDB.WorkerReportsProgress Then
                     bwIMDB.ReportProgress(4)
                 End If
 
-                'Find all cast of the movie  
-                'Match the table only 1 time
-                Dim ActorsTable As String = Regex.Match(HTML, TABLE_PATTERN).ToString
+                If Options.bCast Then
+                    'Find all cast of the movie  
+                    'Match the table only 1 time
+                    Dim ActorsTable As String = Regex.Match(HTML, TABLE_PATTERN).ToString
 
-                Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
+                    Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
-                Dim Cast1 = From M As Match In rCast _
-                            Let m1 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_1).ToString, HREF_PATTERN) _
-                            Let m2 = Regex.Match(M.ToString, TD_PATTERN_2).ToString _
-                            Let m3 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_3).ToString, IMG_PATTERN) _
-                            Select New Media.Person(Web.HttpUtility.HtmlDecode(m1.Groups("name").ToString.Trim), _
-                            Web.HttpUtility.HtmlDecode(m2.ToString.Trim), _
-                            If(Strings.InStr(m3.Groups("thumb").ToString, "addtiny") > 0, String.Empty, Strings.Replace(Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim), _
-                            "._SY30_SX23_.jpg", "._SY275_SX400_.jpg")))
+                    Dim Cast1 = From M As Match In rCast _
+                                Let m1 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_1).ToString, HREF_PATTERN) _
+                                Let m2 = Regex.Match(M.ToString, TD_PATTERN_2).ToString _
+                                Let m3 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_3).ToString, IMG_PATTERN) _
+                                Select New Media.Person(Web.HttpUtility.HtmlDecode(m1.Groups("name").ToString.Trim), _
+                                Web.HttpUtility.HtmlDecode(m2.ToString.Trim), _
+                                If(Strings.InStr(m3.Groups("thumb").ToString, "addtiny") > 0, String.Empty, Strings.Replace(Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim), _
+                                "._SY30_SX23_.jpg", "._SY275_SX400_.jpg")))
 
-                If Master.eSettings.CastImagesOnly Then
-                    Cast1 = Cast1.Where(Function(p As Media.Person) (Not String.IsNullOrEmpty(p.Thumb)))
+                    If Master.eSettings.CastImagesOnly Then
+                        Cast1 = Cast1.Where(Function(p As Media.Person) (Not String.IsNullOrEmpty(p.Thumb)))
+                    End If
+
+                    Dim Cast As List(Of Media.Person) = Cast1.ToList
+
+                    'Clean up the actors list
+                    For Each Ps As Media.Person In Cast
+                        Dim a_patterRegex = Regex.Match(Ps.Role, HREF_PATTERN)
+                        If a_patterRegex.Success Then Ps.Role = a_patterRegex.Groups("name").ToString.Trim
+                    Next
+
+                    IMDBMovie.Actors = Cast
                 End If
-
-                Dim Cast As List(Of Media.Person) = Cast1.ToList
-
-                'Clean up the actors list
-                For Each Ps As Media.Person In Cast
-                    Dim a_patterRegex = Regex.Match(Ps.Role, HREF_PATTERN)
-                    If a_patterRegex.Success Then Ps.Role = a_patterRegex.Groups("name").ToString.Trim
-                Next
-
-                IMDBMovie.Actors = Cast
 
                 If bwIMDB.WorkerReportsProgress Then
                     bwIMDB.ReportProgress(5)
@@ -466,7 +479,7 @@ mResult:
 
                 D = 0 : W = 0
 
-                If Not String.IsNullOrEmpty(IMDBMovie.Tagline) OrElse Not Master.eSettings.LockTagline Then
+                If Options.bTagline AndAlso (String.IsNullOrEmpty(IMDBMovie.Tagline) OrElse Not Master.eSettings.LockTagline) Then
                     'get tagline
                     D = HTML.IndexOf("<h5>Tagline:</h5>")
 
@@ -477,18 +490,20 @@ mResult:
                     IMDBMovie.Tagline = (If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Replace("<h5>Tagline:</h5>", String.Empty).Split(vbCrLf.ToCharArray)(1)).Trim, String.Empty))
                 End If
 
-                'Get the directors
-                D = If(HTML.IndexOf("<h5>Director:</h5>") > 0, HTML.IndexOf("<h5>Director:</h5>"), HTML.IndexOf("<h5>Directors:</h5>"))
-                W = If(D > 0, HTML.IndexOf("</div>", D), 0)
-                'got any director(s) ?
-                If D > 0 AndAlso Not W <= 0 Then
-                    'get only the first director's name
-                    Dim rDir As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
-                    Dim Dir = From M As Match In rDir Where Not M.Groups("name").ToString.Contains("more") _
-                              Select Web.HttpUtility.HtmlDecode(M.Groups("name").ToString)
+                If Options.bDirector Then
+                    'Get the directors
+                    D = If(HTML.IndexOf("<h5>Director:</h5>") > 0, HTML.IndexOf("<h5>Director:</h5>"), HTML.IndexOf("<h5>Directors:</h5>"))
+                    W = If(D > 0, HTML.IndexOf("</div>", D), 0)
+                    'got any director(s) ?
+                    If D > 0 AndAlso Not W <= 0 Then
+                        'get only the first director's name
+                        Dim rDir As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
+                        Dim Dir = From M As Match In rDir Where Not M.Groups("name").ToString.Contains("more") _
+                                  Select Web.HttpUtility.HtmlDecode(M.Groups("name").ToString)
 
-                    If Dir.Count > 0 Then
-                        IMDBMovie.Director = Strings.Join(Dir.ToArray, " / ").Trim
+                        If Dir.Count > 0 Then
+                            IMDBMovie.Director = Strings.Join(Dir.ToArray, " / ").Trim
+                        End If
                     End If
                 End If
 
@@ -498,7 +513,7 @@ mResult:
 
 
                 'Get genres of the movie
-                If String.IsNullOrEmpty(IMDBMovie.Genre) OrElse Not Master.eSettings.LockGenre Then
+                If Options.bGenre AndAlso (String.IsNullOrEmpty(IMDBMovie.Genre) OrElse Not Master.eSettings.LockGenre) Then
                     If Not String.IsNullOrEmpty(ofdbGenre) Then
                         IMDBMovie.Genre = ofdbGenre
                     Else
@@ -525,7 +540,7 @@ mResult:
                     bwIMDB.ReportProgress(7)
                 End If
 
-                If String.IsNullOrEmpty(IMDBMovie.Outline) OrElse Not Master.eSettings.LockOutline Then
+                If Options.bOutline AndAlso (String.IsNullOrEmpty(IMDBMovie.Outline) OrElse Not Master.eSettings.LockOutline) Then
 
                     If Not String.IsNullOrEmpty(ofdbOutline) Then
                         IMDBMovie.Outline = ofdbOutline
@@ -570,7 +585,7 @@ mResult:
 
 mPlot:
                 'Get the full Plot
-                If String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.eSettings.LockPlot Then
+                If Options.bPlot AndAlso (String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.eSettings.LockPlot) Then
                     If Not String.IsNullOrEmpty(ofdbPlot) Then
                         IMDBMovie.Plot = ofdbPlot
                     Else
@@ -585,10 +600,10 @@ mPlot:
 
 
                 'Get the movie duration
-                IMDBMovie.Runtime = Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim
+                If Options.bRuntime Then IMDBMovie.Runtime = Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim
 
                 'Get Production Studio
-                If String.IsNullOrEmpty(IMDBMovie.StudioReal) OrElse Not Master.eSettings.LockGenre Then
+                If Options.bStudio AndAlso (String.IsNullOrEmpty(IMDBMovie.StudioReal) OrElse Not Master.eSettings.LockGenre) Then
                     D = 0 : W = 0
                     If FullCrew Then
                         D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
@@ -616,18 +631,20 @@ mPlot:
                 End If
 
                 'Get Writers
-                D = 0 : W = 0
-                D = HTML.IndexOf("<h5>Writer")
-                If D > 0 Then W = HTML.IndexOf("</div>", D)
-                If D > 0 AndAlso W > 0 Then
-                    Dim q = From M As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
-                            Where Not M.Groups("name").ToString = "more" _
-                            AndAlso Not M.Groups("name").ToString = "(more)" _
-                            AndAlso Not M.Groups("name").ToString = "(WGA)" _
-                            Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(M.Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
+                If Options.bWriters Then
+                    D = 0 : W = 0
+                    D = HTML.IndexOf("<h5>Writer")
+                    If D > 0 Then W = HTML.IndexOf("</div>", D)
+                    If D > 0 AndAlso W > 0 Then
+                        Dim q = From M As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
+                                Where Not M.Groups("name").ToString = "more" _
+                                AndAlso Not M.Groups("name").ToString = "(more)" _
+                                AndAlso Not M.Groups("name").ToString = "(WGA)" _
+                                Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(M.Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
 
-                    If q.Count > 0 Then
-                        IMDBMovie.Credits = Strings.Join(q.ToArray, " / ").Trim
+                        If q.Count > 0 Then
+                            IMDBMovie.Credits = Strings.Join(q.ToArray, " / ").Trim
+                        End If
                     End If
                 End If
 
@@ -646,7 +663,7 @@ mPlot:
 
                         For Each M As Match In qTables
                             'Producers
-                            If M.ToString.Contains("Produced by</a></h5>") Then
+                            If Options.bProducers AndAlso M.ToString.Contains("Produced by</a></h5>") Then
                                 Dim Pr = From Po In Regex.Matches(M.ToString, "<td\svalign=""top"">(.*?)</td>") _
                                 Where Not Po.ToString.Contains(String.Concat("http://", Master.eSettings.IMDBURL, "/Glossary/")) _
                                 Let P1 = Regex.Match(Po.ToString, HREF_PATTERN_2) _
@@ -659,7 +676,7 @@ mPlot:
                             End If
 
                             'Music by
-                            If M.ToString.Contains("Original Music by</a></h5>") Then
+                            If Options.bMusicBy AndAlso M.ToString.Contains("Original Music by</a></h5>") Then
                                 Dim Mu = From Mo In Regex.Matches(M.ToString, "<td\svalign=""top"">(.*?)</td>") _
                                 Let M1 = Regex.Match(Mo.ToString, HREF_PATTERN) _
                                 Where Not M1.Groups("name").ToString = String.Empty _
@@ -678,14 +695,16 @@ mPlot:
                     End If
 
                     'Special Effects
-                    D = HTML.IndexOf("<b class=""blackcatheader"">Special Effects</b>")
-                    If D > 0 Then W = HTML.IndexOf("</ul>", D)
-                    If D > 0 AndAlso W > 0 Then
-                        Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
-                                 Where Not P1.Groups("name").ToString = String.Empty _
-                                 Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString)
-                        If Ps.Count > 0 Then
-                            IMDBMovie.Credits = String.Concat(IMDBMovie.Credits, " / ", Strings.Join(Ps.ToArray, " / ").Trim)
+                    If Options.bOtherCrew Then
+                        D = HTML.IndexOf("<b class=""blackcatheader"">Special Effects</b>")
+                        If D > 0 Then W = HTML.IndexOf("</ul>", D)
+                        If D > 0 AndAlso W > 0 Then
+                            Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
+                                     Where Not P1.Groups("name").ToString = String.Empty _
+                                     Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString)
+                            If Ps.Count > 0 Then
+                                IMDBMovie.Credits = String.Concat(IMDBMovie.Credits, " / ", Strings.Join(Ps.ToArray, " / ").Trim)
+                            End If
                         End If
                     End If
                 End If
@@ -701,7 +720,7 @@ mPlot:
             End Try
         End Function
 
-        Private Sub BW_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwIMDB.DoWork
+        Private Sub bwIMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwIMDB.DoWork
             Dim Args As Arguments = e.Argument
 
             Try
@@ -710,10 +729,10 @@ mPlot:
                         Dim r As MovieSearchResults = SearchMovie(Args.Parameter)
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
                     Case SearchType.Details
-                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, Args.FullCrew, Args.FullCast, False)
+                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, Args.FullCrew, Args.FullCast, False, Args.Options)
                         e.Result = New Results With {.ResultType = SearchType.Details, .Success = s}
                     Case SearchType.SearchDetails
-                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, False, True)
+                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, False, True, Args.Options)
                         e.Result = New Results With {.ResultType = SearchType.SearchDetails, .Success = s}
                 End Select
             Catch ex As Exception
