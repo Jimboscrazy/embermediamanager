@@ -2116,12 +2116,14 @@ Public Class frmMain
                                                     If Not IsNothing(Poster.Image) Then
                                                         Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                         parPoster.Value = True
+                                                        drvRow.Item(4) = True
                                                         Master.scrapeMovie.Thumbs = pThumbs
                                                     Else
                                                         MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
                                                         Dim dImgSelect As New dlgImgSelect
                                                         If dImgSelect.ShowDialog(Master.scrapeMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
                                                             parPoster.Value = True
+                                                            drvRow.Item(4) = True
                                                             Master.scrapeMovie.Thumbs = pThumbs
                                                         End If
                                                         dImgSelect = Nothing
@@ -2140,6 +2142,7 @@ Public Class frmMain
                                                     If Not IsNothing(Fanart.Image) Then
                                                         Fanart.SaveAsFanart(sPath, drvRow.Item(2))
                                                         parFanart.Value = True
+                                                        drvRow.Item(5) = True
                                                         Master.scrapeMovie.Fanart = fArt
                                                     Else
                                                         MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
@@ -2147,6 +2150,7 @@ Public Class frmMain
                                                         Using dImgSelect As New dlgImgSelect
                                                             If dImgSelect.ShowDialog(Master.scrapeMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
                                                                 parFanart.Value = True
+                                                                drvRow.Item(5) = True
                                                                 Master.scrapeMovie.Fanart = fArt
                                                             End If
                                                         End Using
@@ -2163,6 +2167,7 @@ Public Class frmMain
                                             If Not String.IsNullOrEmpty(tPath) Then
                                                 Master.scrapeMovie.Trailer = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
                                                 parTrailer.Value = True
+                                                drvRow.Item(7) = True
                                             End If
                                         End If
 
@@ -2170,6 +2175,7 @@ Public Class frmMain
                                         If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                             Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                             parInfo.Value = True
+                                            drvRow.Item(6) = True
                                         End If
                                     End If
 
@@ -2234,6 +2240,7 @@ Public Class frmMain
                                                         Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                         Master.scrapeMovie.Thumbs = pThumbs
                                                         parPoster.Value = True
+                                                        drvRow.Item(4) = True
                                                     End If
                                                 End If
                                             End If
@@ -2248,6 +2255,7 @@ Public Class frmMain
                                                         Fanart.SaveAsFanart(sPath, drvRow.Item(2))
                                                         Master.scrapeMovie.Fanart = fArt
                                                         parFanart.Value = True
+                                                        drvRow.Item(5) = True
                                                     End If
                                                 End If
                                             End If
@@ -2261,6 +2269,7 @@ Public Class frmMain
                                             If Not String.IsNullOrEmpty(tPath) Then
                                                 Master.scrapeMovie.Trailer = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
                                                 parTrailer.Value = True
+                                                drvRow.Item(7) = True
                                             End If
                                         End If
 
@@ -2268,6 +2277,7 @@ Public Class frmMain
                                         If (Args.scrapeMod = ScrapeModifier.All OrElse Args.scrapeMod = ScrapeModifier.NFO) Then
                                             Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                             parInfo.Value = True
+                                            drvRow.Item(6) = True
                                         End If
                                     End If
 
@@ -2401,6 +2411,7 @@ Public Class frmMain
                                                 End If
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(6))
                                                 parInfo.Value = True
+                                                drvRow.Item(6) = True
                                             End If
                                         End If
 
@@ -2411,6 +2422,7 @@ Public Class frmMain
                                                     If Not IsNothing(Poster.Image) Then
                                                         Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                         parPoster.Value = True
+                                                        drvRow.Item(4) = True
                                                         If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                             'need to load movie from nfo here in case the movie already had
                                                             'an nfo.... scrapeMovie would not be set to the proper movie
@@ -2430,6 +2442,7 @@ Public Class frmMain
                                                     If Not IsNothing(Fanart.Image) Then
                                                         Fanart.SaveAsFanart(sPath, drvRow.Item(2))
                                                         parFanart.Value = True
+                                                        drvRow.Item(5) = True
                                                         If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                             'need to load movie from nfo here in case the movie already had
                                                             'an nfo.... scrapeMovie would not be set to the proper movie
@@ -2450,6 +2463,7 @@ Public Class frmMain
                                             If Not String.IsNullOrEmpty(tPath) Then
                                                 Master.scrapeMovie.Trailer = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
                                                 parTrailer.Value = True
+                                                drvRow.Item(7) = True
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                             End If
                                         End If
@@ -2500,6 +2514,7 @@ Public Class frmMain
 
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                                 parInfo.Value = True
+                                                drvRow.Item(6) = True
                                             End If
                                         End If
 
@@ -2511,6 +2526,7 @@ Public Class frmMain
                                                     If Not IsNothing(Poster.Image) Then
                                                         Poster.SaveAsPoster(sPath, drvRow.Item(2))
                                                         parPoster.Value = True
+                                                        drvRow.Item(4) = True
                                                         If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                             'need to load movie from nfo here in case the movie already had
                                                             'an nfo.... scrapeMovie would not be set to the proper movie
@@ -2523,6 +2539,7 @@ Public Class frmMain
                                                         Using dImgSelect As New dlgImgSelect
                                                             If dImgSelect.ShowDialog(Master.scrapeMovie.IMDBID, sPath, Master.ImageType.Posters) = Windows.Forms.DialogResult.OK Then
                                                                 parPoster.Value = True
+                                                                drvRow.Item(4) = True
                                                                 If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                                     'need to load movie from nfo here in case the movie already had
                                                                     'an nfo.... scrapeMovie would not be set to the proper movie
@@ -2547,6 +2564,7 @@ Public Class frmMain
                                                     If Not IsNothing(Fanart.Image) Then
                                                         Fanart.SaveAsFanart(sPath, drvRow.Item(2))
                                                         parFanart.Value = True
+                                                        drvRow.Item(5) = True
                                                         If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                             'need to load movie from nfo here in case the movie already had
                                                             'an nfo.... scrapeMovie would not be set to the proper movie
@@ -2559,7 +2577,7 @@ Public Class frmMain
                                                         Using dImgSelect As New dlgImgSelect
                                                             If dImgSelect.ShowDialog(Master.scrapeMovie.IMDBID, sPath, Master.ImageType.Fanart) = Windows.Forms.DialogResult.OK Then
                                                                 parFanart.Value = True
-
+                                                                drvRow.Item(5) = True
                                                                 If File.Exists(nfoPath) AndAlso Args.scrapeMod = ScrapeModifier.All Then
                                                                     'need to load movie from nfo here in case the movie already had
                                                                     'an nfo.... scrapeMovie would not be set to the proper movie
@@ -2582,6 +2600,7 @@ Public Class frmMain
                                             If Not String.IsNullOrEmpty(tPath) Then
                                                 Master.scrapeMovie.Trailer = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
                                                 parTrailer.Value = True
+                                                drvRow.Item(7) = True
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                             End If
                                         End If
