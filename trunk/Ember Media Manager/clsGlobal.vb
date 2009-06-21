@@ -124,6 +124,7 @@ Public Class Master
     End Structure
 
     Public Structure CustomUpdaterStruct
+        Dim Canceled As Boolean
         Dim ScrapeType As ScrapeType
         Dim Modifier As ScrapeModifier
         Dim Options As ScrapeOptions

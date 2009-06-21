@@ -1523,9 +1523,9 @@ Public Class frmMain
 
     Private Sub CustomUpdaterToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CustomUpdaterToolStripMenuItem.Click
         Using dUpdate As New dlgUpdateMedia
-            Dim CustomUpdater As New Master.CustomUpdaterStruct
+            Dim CustomUpdater As Master.CustomUpdaterStruct = Nothing
             CustomUpdater = dUpdate.ShowDialog()
-            If Not IsNothing(CustomUpdater) Then
+            If Not CustomUpdater.Canceled Then
                 Me.ScrapeData(CustomUpdater.ScrapeType, CustomUpdater.Modifier, CustomUpdater.Options)
             End If
         End Using
