@@ -243,7 +243,7 @@ Partial Class dlgOfflineHolder
         Me.txtTagline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTagline.Location = New System.Drawing.Point(9, 322)
         Me.txtTagline.Name = "txtTagline"
-        Me.txtTagline.Size = New System.Drawing.Size(200, 20)
+        Me.txtTagline.Size = New System.Drawing.Size(192, 20)
         Me.txtTagline.TabIndex = 69
         Me.txtTagline.Text = "Insert DVD"
         '
@@ -308,9 +308,10 @@ Partial Class dlgOfflineHolder
         Me.txtTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTop.Location = New System.Drawing.Point(76, 278)
         Me.txtTop.Name = "txtTop"
-        Me.txtTop.Size = New System.Drawing.Size(52, 20)
+        Me.txtTop.Size = New System.Drawing.Size(39, 20)
         Me.txtTop.TabIndex = 76
         Me.txtTop.Text = "470"
+        Me.txtTop.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label3
         '

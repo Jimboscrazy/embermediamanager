@@ -229,13 +229,14 @@ Public Class dlgOfflineHolder
 
             Me.CreatePreview()
 
+            Create_Button.Enabled = True
             For Each i As ListViewItem In lvStatus.Items
                 If Not i.SubItems(1).ForeColor = Color.Green Then
                     Create_Button.Enabled = False
-                    Return
+                    Exit For
                 End If
             Next
-            Create_Button.Enabled = True
+
         Catch ex As Exception
         End Try
 
@@ -360,6 +361,7 @@ Public Class dlgOfflineHolder
             e.Cancel = True
             Return
         End If
+        Me.bwCreateHolder.ReportProgress(5, "Finished")
     End Sub
 
     Private Sub bwCreateHolder_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCreateHolder.ProgressChanged
@@ -370,6 +372,7 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub bwCreateHolder_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCreateHolder.RunWorkerCompleted
+        Me.pbProgress.Visible = False
         If Not e.Cancelled Then
             MsgBox("Offline movie place holder created!", MsgBoxStyle.OkOnly, "Offline Movie")
         End If
@@ -382,8 +385,8 @@ Public Class dlgOfflineHolder
         txtMovieName.Enabled = False
         txtTagline.Enabled = False
         chkUseFanart.Enabled = False
-        txtTopPos = 720 / (pbPreview.Image.Width / Convert.ToSingle(txtTop.Text)) ' Scale it
         'Need to avoid cross thread in BackgroundWorker
+        txtTopPos = 720 / (pbPreview.Image.Width / Convert.ToSingle(txtTop.Text)) ' ... and Scale it
         Me.pbProgress.Value = 100
         Me.pbProgress.Style = ProgressBarStyle.Marquee
         Me.pbProgress.MarqueeAnimationSpeed = 25
