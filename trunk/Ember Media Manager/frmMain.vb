@@ -873,22 +873,28 @@ Public Class frmMain
         '\\
 
         Dim sWarning As String = String.Empty
+        Dim sWarningFile As String = String.Empty
         With Master.eSettings
-            If .CleanDotFanartJPG Then sWarning += String.Concat("<movie>.fanart.jpg", vbNewLine)
-            If .CleanFanartJPG Then sWarning += String.Concat("<movie>.jpg", vbNewLine)
-            If .CleanFolderJPG Then sWarning += String.Concat("folder.jpg", vbNewLine)
-            If .CleanMovieFanartJPG Then sWarning += String.Concat("<movie>-fanart.jpg", vbNewLine)
-            If .CleanMovieJPG Then sWarning += String.Concat("movie.jpg", vbNewLine)
-            If .CleanMovieNameJPG Then sWarning += String.Concat("<movie>.jpg", vbNewLine)
-            If .CleanMovieNFO Then sWarning += String.Concat("movie.nfo", vbNewLine)
-            If .CleanMovieNFOB Then sWarning += String.Concat("<movie>.nfo", vbNewLine)
-            If .CleanMovieTBN Then sWarning += String.Concat("movie.tbn", vbNewLine)
-            If .CleanMovieTBNB Then sWarning += String.Concat("<movie>.tbn", vbNewLine)
-            If .CleanPosterJPG Then sWarning += String.Concat("poster.jpg", vbNewLine)
-            If .CleanPosterTBN Then sWarning += String.Concat("poster.tbn", vbNewLine)
-            If .CleanExtraThumbs Then sWarning += String.Concat("/extrathumbs/", vbNewLine)
+            If .ExpertCleaner Then
+                sWarning = String.Concat("WARNING: If you continue, all non-whitelisted file types will be deleted!", vbNewLine, vbNewLine, "Are you sure you want to continue?")
+            Else
+                If .CleanDotFanartJPG Then sWarningFile += String.Concat("<movie>.fanart.jpg", vbNewLine)
+                If .CleanFanartJPG Then sWarningFile += String.Concat("<movie>.jpg", vbNewLine)
+                If .CleanFolderJPG Then sWarningFile += String.Concat("folder.jpg", vbNewLine)
+                If .CleanMovieFanartJPG Then sWarningFile += String.Concat("<movie>-fanart.jpg", vbNewLine)
+                If .CleanMovieJPG Then sWarningFile += String.Concat("movie.jpg", vbNewLine)
+                If .CleanMovieNameJPG Then sWarningFile += String.Concat("<movie>.jpg", vbNewLine)
+                If .CleanMovieNFO Then sWarningFile += String.Concat("movie.nfo", vbNewLine)
+                If .CleanMovieNFOB Then sWarningFile += String.Concat("<movie>.nfo", vbNewLine)
+                If .CleanMovieTBN Then sWarningFile += String.Concat("movie.tbn", vbNewLine)
+                If .CleanMovieTBNB Then sWarningFile += String.Concat("<movie>.tbn", vbNewLine)
+                If .CleanPosterJPG Then sWarningFile += String.Concat("poster.jpg", vbNewLine)
+                If .CleanPosterTBN Then sWarningFile += String.Concat("poster.tbn", vbNewLine)
+                If .CleanExtraThumbs Then sWarningFile += String.Concat("/extrathumbs/", vbNewLine)
+                sWarning = String.Concat("WARNING: If you continue, all files of the following types will be permanently deleted:", vbNewLine, vbNewLine, sWarningFile, vbNewLine, "Are you sure you want to continue?")
+            End If
         End With
-        If MsgBox(String.Concat("WARNING: If you continue, all files of the following types will be permanently deleted:", vbNewLine, vbNewLine, sWarning, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
+        If MsgBox(sWarning, MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
             Me.ScrapeData(Master.ScrapeType.CleanFolders, Nothing, Nothing)
         End If
     End Sub
