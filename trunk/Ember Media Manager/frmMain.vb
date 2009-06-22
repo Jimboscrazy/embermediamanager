@@ -410,20 +410,35 @@ Public Class frmMain
 
                 Me.SetMenus()
 
-                Me.pnlInfoPanel.Height = 25
-                Me.aniType = Master.eSettings.InfoPanelState
-                If Not Me.aniType = 0 Then
-                    Me.aniRaise = True
-                    tmrAni.Start()
-                End If
-                Me.pnlFilter.Height = 25
-                Me.aniFilterRaise = Master.eSettings.FilterPanelState
-                If Me.aniFilterRaise Then
-                    Me.tmrFilterAni.Start()
+                Select Case Master.eSettings.InfoPanelState
+                    Case 0
+                        Me.pnlInfoPanel.Height = 25
+                        Me.btnDown.Enabled = False
+                        Me.btnMid.Enabled = True
+                        Me.btnUp.Enabled = True
+                    Case 1
+                        Me.pnlInfoPanel.Height = 280
+                        Me.btnMid.Enabled = False
+                        Me.btnDown.Enabled = True
+                        Me.btnUp.Enabled = True
+                    Case 2
+                        Me.pnlInfoPanel.Height = 500
+                        Me.btnUp.Enabled = False
+                        Me.btnDown.Enabled = True
+                        Me.btnMid.Enabled = True
+                End Select
+
+                If Master.eSettings.FilterPanelState Then
+                    Me.pnlFilter.Height = 85
+                    Me.btnFilterDown.Enabled = True
+                    Me.btnFilterUp.Enabled = False
+                Else
+                    Me.pnlFilter.Height = 25
+                    Me.btnFilterDown.Enabled = False
+                    Me.btnFilterUp.Enabled = True
                 End If
 
                 Me.scMain.SplitterDistance = Master.eSettings.SpliterPanelState
-                'Me.Refresh()
 
                 Me.ClearInfo()
 
