@@ -1144,10 +1144,20 @@ Public Class frmMain
         If e.Button = Windows.Forms.MouseButtons.Right Then
             Dim dgvHTI As DataGridView.HitTestInfo = sender.HitTest(e.X, e.Y)
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
-                cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
+
                 If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                     Me.mnuMediaList.Enabled = False
                 End If
+
+                cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
+
+                If Me.bwLoadInfo.IsBusy Then
+                    Me.bwLoadInfo.CancelAsync()
+                    Do While Me.bwLoadInfo.IsBusy
+                        Application.DoEvents()
+                    Loop
+                End If
+
                 Me.dgvMediaList.ClearSelection()
                 Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
                 Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
