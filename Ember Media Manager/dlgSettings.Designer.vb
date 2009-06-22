@@ -1905,9 +1905,9 @@ Partial Class dlgSettings
         Me.chkUseMIStudioTag.Enabled = False
         Me.chkUseMIStudioTag.Location = New System.Drawing.Point(34, 153)
         Me.chkUseMIStudioTag.Name = "chkUseMIStudioTag"
-        Me.chkUseMIStudioTag.Size = New System.Drawing.Size(153, 17)
+        Me.chkUseMIStudioTag.Size = New System.Drawing.Size(170, 17)
         Me.chkUseMIStudioTag.TabIndex = 64
-        Me.chkUseMIStudioTag.Text = "Use Media Info Studio Tag"
+        Me.chkUseMIStudioTag.Text = "Store Media Info in Studio Tag"
         Me.chkUseMIStudioTag.UseVisualStyleBackColor = True
         '
         'chkUseMIDuration

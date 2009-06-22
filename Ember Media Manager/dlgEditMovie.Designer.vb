@@ -37,7 +37,7 @@ Partial Class dlgEditMovie
         Me.btnDLTrailer = New System.Windows.Forms.Button
         Me.lbGenre = New System.Windows.Forms.CheckedListBox
         Me.btnStudio = New System.Windows.Forms.Button
-        Me.Label4 = New System.Windows.Forms.Label
+        Me.lblStudioTag = New System.Windows.Forms.Label
         Me.txtStudioTag = New System.Windows.Forms.TextBox
         Me.lblStudio = New System.Windows.Forms.Label
         Me.txtStudio = New System.Windows.Forms.TextBox
@@ -237,7 +237,7 @@ Partial Class dlgEditMovie
         Me.TabPage1.Controls.Add(Me.btnDLTrailer)
         Me.TabPage1.Controls.Add(Me.lbGenre)
         Me.TabPage1.Controls.Add(Me.btnStudio)
-        Me.TabPage1.Controls.Add(Me.Label4)
+        Me.TabPage1.Controls.Add(Me.lblStudioTag)
         Me.TabPage1.Controls.Add(Me.txtStudioTag)
         Me.TabPage1.Controls.Add(Me.lblStudio)
         Me.TabPage1.Controls.Add(Me.txtStudio)
@@ -343,14 +343,14 @@ Partial Class dlgEditMovie
         Me.btnStudio.TabIndex = 104
         Me.btnStudio.UseVisualStyleBackColor = True
         '
-        'Label4
+        'lblStudioTag
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(635, 381)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(67, 13)
-        Me.Label4.TabIndex = 103
-        Me.Label4.Text = "Studio Tags:"
+        Me.lblStudioTag.AutoSize = True
+        Me.lblStudioTag.Location = New System.Drawing.Point(635, 381)
+        Me.lblStudioTag.Name = "lblStudioTag"
+        Me.lblStudioTag.Size = New System.Drawing.Size(67, 13)
+        Me.lblStudioTag.TabIndex = 103
+        Me.lblStudioTag.Text = "Studio Tags:"
         '
         'txtStudioTag
         '
@@ -1352,7 +1352,7 @@ Partial Class dlgEditMovie
     Friend WithEvents btnDown As System.Windows.Forms.Button
     Friend WithEvents btnUp As System.Windows.Forms.Button
     Friend WithEvents btnRemoveThumb As System.Windows.Forms.Button
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents lblStudioTag As System.Windows.Forms.Label
     Friend WithEvents txtStudioTag As System.Windows.Forms.TextBox
     Friend WithEvents btnRescrape As System.Windows.Forms.Button
     Friend WithEvents btnChangeMovie As System.Windows.Forms.Button
