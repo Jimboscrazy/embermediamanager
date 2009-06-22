@@ -39,9 +39,26 @@ Public Class dlgUpdateMedia
             CustomUpdater.ScrapeType = Master.ScrapeType.FullAuto
             CustomUpdater.Modifier = Master.ScrapeModifier.All
 
+            'check if there are new or marked movies
+            Me.CheckNewAndMark()
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub CheckNewAndMark()
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS ncount FROM movies WHERE new = 1;")
+            Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                rbUpdateModifier_New.Enabled = SQLcount("ncount") > 0
+            End Using
+
+            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
+            Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                rbUpdateModifier_Marked.Enabled = SQLcount("mcount") > 0
+            End Using
+        End Using
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
