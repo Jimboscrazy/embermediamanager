@@ -35,6 +35,8 @@ Public Class dlgEditMovie
     Private ExtraIndex As Integer = 0
     Private _id As Integer
     Private CachePath As String = String.Empty
+    Private tPath As String = String.Empty
+
 
     Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
 
@@ -421,10 +423,14 @@ Public Class dlgEditMovie
                     .txtCerts.Text = Master.currMovie.Certification
                 End If
 
+                tPath = Master.GetTrailerPath(Master.currPath, Master.isFile)
+                Me.lblLocalTrailer.Visible = Not String.IsNullOrEmpty(tPath)
                 If Not String.IsNullOrEmpty(Master.currMovie.Trailer) Then
                     .txtTrailer.Text = Master.currMovie.Trailer
                 Else
-                    .btnPlayTrailer.Enabled = False
+                    If String.IsNullOrEmpty(tPath) Then
+                        .btnPlayTrailer.Enabled = False
+                    End If
                 End If
 
                 .btnDLTrailer.Enabled = Master.eSettings.DownloadTrailers
@@ -1281,6 +1287,41 @@ Public Class dlgEditMovie
         Me.btnSetAsFanart.Enabled = False
     End Sub
 
+    Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
+        Try
+            If Not String.IsNullOrEmpty(tPath) Then
+                System.Diagnostics.Process.Start(String.Concat("""", tPath, """"))
+            ElseIf Not String.IsNullOrEmpty(Me.txtTrailer.Text) Then
+                System.Diagnostics.Process.Start(String.Concat("""", Me.txtTrailer.Text, """"))
+            End If
+        Catch
+            MsgBox("The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.", MsgBoxStyle.Critical, "Error Playing Trailer")
+        End Try
+    End Sub
+
+    Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
+        Using dTrailer As New dlgTrailer
+            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
+            If Not String.IsNullOrEmpty(tURL) Then
+                Me.btnPlayTrailer.Enabled = True
+                If tURL.Substring(0, 7) = "http://" Then
+                    Me.txtTrailer.Text = tURL
+                Else
+                    tPath = tURL
+                    Me.lblLocalTrailer.Visible = True
+                End If
+            End If
+        End Using
+    End Sub
+
+    Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
+        If String.IsNullOrEmpty(txtTrailer.Text) Then
+            Me.btnPlayTrailer.Enabled = False
+        Else
+            Me.btnPlayTrailer.Enabled = True
+        End If
+    End Sub
+
     Friend Class ExtraThumbs
         Private _image As Image
         Private _name As String
@@ -1334,29 +1375,4 @@ Public Class dlgEditMovie
             _path = String.Empty
         End Sub
     End Class
-
-    Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
-        Try
-            System.Diagnostics.Process.Start(String.Concat("""", Me.txtTrailer.Text, """"))
-        Catch
-            MsgBox("The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.", MsgBoxStyle.Critical, "Error Playing Trailer")
-        End Try
-    End Sub
-
-    Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
-        Using dTrailer As New dlgTrailer
-            Dim tPath As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
-            If Not String.IsNullOrEmpty(tPath) Then
-                Me.txtTrailer.Text = If(tPath.Substring(0, 7) = "http://", tPath, String.Concat("file://", tPath))
-            End If
-        End Using
-    End Sub
-
-    Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
-        If String.IsNullOrEmpty(txtTrailer.Text) Then
-            Me.btnPlayTrailer.Enabled = False
-        Else
-            Me.btnPlayTrailer.Enabled = True
-        End If
-    End Sub
 End Class
