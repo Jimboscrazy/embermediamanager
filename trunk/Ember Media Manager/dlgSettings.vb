@@ -929,8 +929,6 @@ Public Class dlgSettings
 
     Private Sub chkUpdaterTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUpdaterTrailer.CheckedChanged
         Me.btnApply.Enabled = True
-        Me.chkNoDLTrailer.Enabled = Me.chkUpdaterTrailer.Checked
-        If Not Me.chkUpdaterTrailer.Checked Then Me.chkNoDLTrailer.Checked = False
     End Sub
 
     Private Sub txtTimeout_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTimeout.KeyPress

@@ -28,7 +28,7 @@ Public Class dlgTrailer
     Dim tArray As New ArrayList
     Dim imdbID As String = String.Empty
     Dim sPath As String = String.Empty
-    Dim tPath As String = String.Empty
+    Dim tURL As String = String.Empty
     Dim prePath As String = String.Empty
     Friend WithEvents bwCompileList As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
@@ -40,7 +40,7 @@ Public Class dlgTrailer
     End Structure
 
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
-        tPath = lbTrailers.SelectedItem.ToString
+        tURL = lbTrailers.SelectedItem.ToString
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
@@ -59,8 +59,8 @@ Public Class dlgTrailer
         Application.DoEvents()
 
         If Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
-            tPath = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
-            Master.MoveFileWithStream(Me.prePath, tPath)
+            tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
+            Master.MoveFileWithStream(Me.prePath, tURL)
 
             File.Delete(Me.prePath)
         Else
@@ -102,7 +102,7 @@ Public Class dlgTrailer
         Dim Args As Arguments = e.Argument
         Try
             If Args.bType Then
-                tPath = cTrailer.DownloadSelectedTrailer(Me.sPath, Args.iIndex)
+                tURL = cTrailer.DownloadSelectedTrailer(Me.sPath, Args.iIndex)
             Else
                 Dim sHTTP As New HTTP
                 Me.prePath = sHTTP.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True)
@@ -159,7 +159,7 @@ Public Class dlgTrailer
         Me.sPath = _sPath
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Return Me.tPath
+            Return Me.tURL
         Else
             Return String.Empty
         End If

@@ -250,7 +250,7 @@ Public Class Trailers
     End Function
 
     Public Function DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String) As String
-        Dim tPath As String = String.Empty
+        Dim tURL As String = String.Empty
 
         Me._TrailerList.Clear()
 
@@ -258,18 +258,18 @@ Public Class Trailers
 
         If Me._TrailerList.Count > 0 Then
             If Master.eSettings.UpdaterTrailersNoDownload Then
-                tPath = Me._TrailerList.Item(0)
+                tURL = Me._TrailerList.Item(0)
             Else
-                tPath = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False)
+                tURL = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False)
             End If
         End If
 
-        Return tPath
+        Return tURL
     End Function
 
     Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
-        Dim tPath As String = WebPage.DownloadFile(Me._TrailerList.Item(sIndex), sPath, True)
-        Return tPath
+        Dim tURL As String = WebPage.DownloadFile(Me._TrailerList.Item(sIndex), sPath, True)
+        Return tURL
     End Function
 
     Public Sub DownloadProgressUpdated(ByVal iProgress As Integer)

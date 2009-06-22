@@ -1463,25 +1463,47 @@ Public Class Master
         End Try
     End Function
 
-    Public Shared Function GetTrailerPath(ByVal sPath As String) As String
+    Public Shared Function GetTrailerPath(ByVal sPath As String, ByVal isFile As Boolean) As String
 
         '//
         ' Get the proper path to trailer
         '\\
 
-        Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
-        Dim lFi As New List(Of FileInfo)()
         Dim tFile As String = String.Empty
 
-        lFi.AddRange(di.GetFiles())
+        If isFile Then
+            Dim parPath As String = Directory.GetParent(sPath).FullName
+            Dim tmpName As String = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+            Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+            For Each t As String In Master.eSettings.ValidExts
+                If File.Exists(String.Concat(tmpName, "-trailer", t)) Then
+                    tFile = String.Concat(tmpName, "-trailer", t)
+                    Exit For
+                ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) Then
+                    tFile = String.Concat(tmpName, "[trailer]", t)
+                    Exit For
+                ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) Then
+                    tFile = String.Concat(tmpNameNoStack, "-trailer", t)
+                    Exit For
+                ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
+                    tFile = String.Concat(tmpNameNoStack, "[trailer]", t)
+                    Exit For
+                End If
+            Next
+        Else
+            Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
+            Dim lFi As New List(Of FileInfo)()
 
-        For Each sFile As FileInfo In lFi
-            If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
-                (sFile.Name.ToLower.Contains("-trailer") OrElse sFile.Name.ToLower.Contains("[trailer")) Then
-                tFile = sFile.FullName
-                Exit For
-            End If
-        Next
+            lFi.AddRange(di.GetFiles())
+
+            For Each sFile As FileInfo In lFi
+                If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
+                    (sFile.Name.ToLower.Contains("-trailer") OrElse sFile.Name.ToLower.Contains("[trailer")) Then
+                    tFile = sFile.FullName
+                    Exit For
+                End If
+            Next
+        End If
 
         Return tFile
 
