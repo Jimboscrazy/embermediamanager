@@ -444,9 +444,15 @@ Public Class dlgEditMovie
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
-                    If Strings.InStr(Master.currMovie.Studio, " / ") Then
-                        .txtStudioTag.Text = Strings.Right(Master.currMovie.Studio, Master.currMovie.Studio.Length - (Strings.InStr(Master.currMovie.Studio, " / ") + 2)).Trim
+                If Not Master.eSettings.UseStudioTags Then
+                    .lblStudio.Text = "Studio"
+                    .lblStudioTag.Visible = False
+                    .txtStudioTag.Visible = False
+                Else
+                    If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
+                        If Strings.InStr(Master.currMovie.Studio, " / ") Then
+                            .txtStudioTag.Text = Strings.Right(Master.currMovie.Studio, Master.currMovie.Studio.Length - (Strings.InStr(Master.currMovie.Studio, " / ") + 2)).Trim
+                        End If
                     End If
                 End If
 
