@@ -1311,6 +1311,9 @@ Public Class emmSettings
         Me._windowloc = New Point(0, 0)
         Me._windowsize = New Size(1024, 768)
         Me._windowstate = FormWindowState.Normal
+        Me._infopanelstate = 0
+        Me._filterPanelState = False
+        Me._scmainstate = 305
         Me._checkupdates = True
         Me._bdpath = String.Empty
         Me._autobd = False
