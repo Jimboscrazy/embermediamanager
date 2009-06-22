@@ -842,6 +842,7 @@ Public Class frmMain
         '\\
 
         Try
+
             Me.currRow = e.RowIndex
             Me.tmrWait.Enabled = False
             Me.tmrLoad.Enabled = False
@@ -866,6 +867,12 @@ Public Class frmMain
         Me.tmrLoad.Enabled = False
         Try
             If Me.dgvMediaList.SelectedRows.Count > 0 Then
+                If Me.bwLoadInfo.IsBusy Then
+                    Me.bwLoadInfo.CancelAsync()
+                    Do While Me.bwLoadInfo.IsBusy
+                        Application.DoEvents()
+                    Loop
+                End If
                 Me.SelectRow(Me.currRow)
             End If
         Catch
@@ -1140,10 +1147,10 @@ Public Class frmMain
                 cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
                 If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                     Me.mnuMediaList.Enabled = False
-                    Me.dgvMediaList.ClearSelection()
-                    Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
-                    Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
                 End If
+                Me.dgvMediaList.ClearSelection()
+                Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
+                Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
                 cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
                 cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
             End If
@@ -3003,14 +3010,6 @@ doCancel:
             'set status bar text to movie path
             Me.tslStatus.Text = sPath
 
-            Master.currPath = sPath
-            Master.isFile = isFile
-
-            If doMI Then
-                Me.txtMediaInfo.Clear()
-                Me.pbMILoading.Visible = True
-            End If
-
             If Me.bwDownloadPic.IsBusy Then
                 Me.bwDownloadPic.CancelAsync()
                 While Me.bwDownloadPic.IsBusy
@@ -3030,6 +3029,14 @@ doCancel:
                 While Me.bwLoadInfo.IsBusy
                     Application.DoEvents()
                 End While
+            End If
+
+            Master.currPath = sPath
+            Master.isFile = isFile
+
+            If doMI Then
+                Me.txtMediaInfo.Clear()
+                Me.pbMILoading.Visible = True
             End If
 
             If doMI Then
