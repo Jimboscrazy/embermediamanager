@@ -3518,7 +3518,7 @@ doCancel:
                                         IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.currMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                                     End If
                                 Else
-                                    If Not isCL Then
+                                    If isCL Then
                                         Me.ScraperDone = True
                                     Else
                                         Me.dgvMediaList.Enabled = True
