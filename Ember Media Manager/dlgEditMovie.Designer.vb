@@ -32,6 +32,7 @@ Partial Class dlgEditMovie
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.lblLocalTrailer = New System.Windows.Forms.Label
         Me.btnPlayTrailer = New System.Windows.Forms.Button
         Me.btnDLTrailer = New System.Windows.Forms.Button
         Me.lbGenre = New System.Windows.Forms.CheckedListBox
@@ -127,7 +128,6 @@ Partial Class dlgEditMovie
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
-        Me.lblLocalTrailer = New System.Windows.Forms.Label
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -292,6 +292,18 @@ Partial Class dlgEditMovie
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'lblLocalTrailer
+        '
+        Me.lblLocalTrailer.AutoSize = True
+        Me.lblLocalTrailer.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLocalTrailer.ForeColor = System.Drawing.Color.Green
+        Me.lblLocalTrailer.Location = New System.Drawing.Point(480, 412)
+        Me.lblLocalTrailer.Name = "lblLocalTrailer"
+        Me.lblLocalTrailer.Size = New System.Drawing.Size(90, 9)
+        Me.lblLocalTrailer.TabIndex = 109
+        Me.lblLocalTrailer.Text = "Local Trailer Found"
+        Me.lblLocalTrailer.Visible = False
+        '
         'btnPlayTrailer
         '
         Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -370,9 +382,9 @@ Partial Class dlgEditMovie
         Me.lblTrailer.AutoSize = True
         Me.lblTrailer.Location = New System.Drawing.Point(217, 408)
         Me.lblTrailer.Name = "lblTrailer"
-        Me.lblTrailer.Size = New System.Drawing.Size(61, 13)
+        Me.lblTrailer.Size = New System.Drawing.Size(64, 13)
         Me.lblTrailer.TabIndex = 99
-        Me.lblTrailer.Text = "Trailer URI:"
+        Me.lblTrailer.Text = "Trailer URL:"
         '
         'txtTrailer
         '
@@ -1202,18 +1214,6 @@ Partial Class dlgEditMovie
         Me.btnClearCache.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnClearCache.UseVisualStyleBackColor = True
         Me.btnClearCache.Visible = False
-        '
-        'lblLocalTrailer
-        '
-        Me.lblLocalTrailer.AutoSize = True
-        Me.lblLocalTrailer.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLocalTrailer.ForeColor = System.Drawing.Color.Green
-        Me.lblLocalTrailer.Location = New System.Drawing.Point(480, 412)
-        Me.lblLocalTrailer.Name = "lblLocalTrailer"
-        Me.lblLocalTrailer.Size = New System.Drawing.Size(90, 9)
-        Me.lblLocalTrailer.TabIndex = 109
-        Me.lblLocalTrailer.Text = "Local Trailer Found"
-        Me.lblLocalTrailer.Visible = False
         '
         'dlgEditMovie
         '
