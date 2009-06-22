@@ -551,7 +551,6 @@ Partial Class dlgUpdateMedia
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgUpdateMedia"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Custom Updater"
         Me.pnlTop.ResumeLayout(False)

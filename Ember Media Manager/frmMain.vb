@@ -4186,6 +4186,14 @@ doCancel:
     End Sub
 
     Private Sub SelectRow(ByVal iRow As Integer)
+
+        If Me.bwLoadInfo.IsBusy Then
+            Me.bwLoadInfo.CancelAsync()
+            Do While Me.bwLoadInfo.IsBusy
+                Application.DoEvents()
+            Loop
+        End If
+
         Me.tmpTitle = Me.dgvMediaList.Item(3, iRow).Value.ToString
         If Not Me.dgvMediaList.Item(4, iRow).Value AndAlso Not Me.dgvMediaList.Item(5, iRow).Value AndAlso Not Me.dgvMediaList.Item(6, iRow).Value Then
             Me.ClearInfo()
@@ -4199,10 +4207,6 @@ doCancel:
         Else
             Me.pnlNoInfo.Visible = False
 
-            If Me.bwLoadInfo.IsBusy Then
-                Me.bwLoadInfo.CancelAsync()
-                Application.DoEvents()
-            End If
             'try to load the info from the NFO
             Me.LoadInfo(Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False, Me.dgvMediaList.Item(2, iRow).Value)
         End If

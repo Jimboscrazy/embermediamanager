@@ -500,4 +500,8 @@ Public Class dlgOfflineHolder
         Me.CheckConditions()
         Me.tmrTop.Enabled = False
     End Sub
+
+    Private Sub dlgOfflineHolder_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 End Class

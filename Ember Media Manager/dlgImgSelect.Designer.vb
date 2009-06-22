@@ -27,16 +27,16 @@ Partial Class dlgImgSelect
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.pnlBottomMain = New System.Windows.Forms.Panel
-        Me.pnlFanart = New System.Windows.Forms.Panel
-        Me.chkThumb = New System.Windows.Forms.CheckBox
-        Me.chkMid = New System.Windows.Forms.CheckBox
-        Me.chkOriginal = New System.Windows.Forms.CheckBox
-        Me.lblInfo = New System.Windows.Forms.Label
         Me.pnlSize = New System.Windows.Forms.Panel
         Me.rbSmall = New System.Windows.Forms.RadioButton
         Me.rbMedium = New System.Windows.Forms.RadioButton
         Me.rbLarge = New System.Windows.Forms.RadioButton
         Me.rbXLarge = New System.Windows.Forms.RadioButton
+        Me.pnlFanart = New System.Windows.Forms.Panel
+        Me.chkThumb = New System.Windows.Forms.CheckBox
+        Me.chkMid = New System.Windows.Forms.CheckBox
+        Me.chkOriginal = New System.Windows.Forms.CheckBox
+        Me.lblInfo = New System.Windows.Forms.Label
         Me.pnlDLStatus = New System.Windows.Forms.Panel
         Me.pnlMPDB = New System.Windows.Forms.Panel
         Me.lblDL3Status = New System.Windows.Forms.Label
@@ -54,8 +54,8 @@ Partial Class dlgImgSelect
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
-        Me.pnlFanart.SuspendLayout()
         Me.pnlSize.SuspendLayout()
+        Me.pnlFanart.SuspendLayout()
         Me.pnlDLStatus.SuspendLayout()
         Me.pnlMPDB.SuspendLayout()
         Me.pnlIMPA.SuspendLayout()
@@ -119,60 +119,6 @@ Partial Class dlgImgSelect
         Me.pnlBottomMain.Size = New System.Drawing.Size(836, 50)
         Me.pnlBottomMain.TabIndex = 5
         '
-        'pnlFanart
-        '
-        Me.pnlFanart.BackColor = System.Drawing.Color.White
-        Me.pnlFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFanart.Controls.Add(Me.chkThumb)
-        Me.pnlFanart.Controls.Add(Me.chkMid)
-        Me.pnlFanart.Controls.Add(Me.chkOriginal)
-        Me.pnlFanart.Location = New System.Drawing.Point(8, 8)
-        Me.pnlFanart.Name = "pnlFanart"
-        Me.pnlFanart.Size = New System.Drawing.Size(339, 34)
-        Me.pnlFanart.TabIndex = 5
-        Me.pnlFanart.Visible = False
-        '
-        'chkThumb
-        '
-        Me.chkThumb.AutoSize = True
-        Me.chkThumb.Location = New System.Drawing.Point(231, 8)
-        Me.chkThumb.Name = "chkThumb"
-        Me.chkThumb.Size = New System.Drawing.Size(107, 17)
-        Me.chkThumb.TabIndex = 2
-        Me.chkThumb.Text = "Check All Thumb"
-        Me.chkThumb.UseVisualStyleBackColor = True
-        '
-        'chkMid
-        '
-        Me.chkMid.AutoSize = True
-        Me.chkMid.Location = New System.Drawing.Point(131, 8)
-        Me.chkMid.Name = "chkMid"
-        Me.chkMid.Size = New System.Drawing.Size(91, 17)
-        Me.chkMid.TabIndex = 1
-        Me.chkMid.Text = "Check All Mid"
-        Me.chkMid.UseVisualStyleBackColor = True
-        '
-        'chkOriginal
-        '
-        Me.chkOriginal.AutoSize = True
-        Me.chkOriginal.Location = New System.Drawing.Point(7, 8)
-        Me.chkOriginal.Name = "chkOriginal"
-        Me.chkOriginal.Size = New System.Drawing.Size(109, 17)
-        Me.chkOriginal.TabIndex = 0
-        Me.chkOriginal.Text = "Check All Original"
-        Me.chkOriginal.UseVisualStyleBackColor = True
-        '
-        'lblInfo
-        '
-        Me.lblInfo.Location = New System.Drawing.Point(402, 10)
-        Me.lblInfo.Name = "lblInfo"
-        Me.lblInfo.Size = New System.Drawing.Size(240, 31)
-        Me.lblInfo.TabIndex = 3
-        Me.lblInfo.Text = "Selected item will be set as fanart. All checked items will be saved to \extrathu" & _
-            "mbs."
-        Me.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblInfo.Visible = False
-        '
         'pnlSize
         '
         Me.pnlSize.BackColor = System.Drawing.Color.White
@@ -233,6 +179,60 @@ Partial Class dlgImgSelect
         Me.rbXLarge.TabStop = True
         Me.rbXLarge.Text = "X-Large"
         Me.rbXLarge.UseVisualStyleBackColor = True
+        '
+        'pnlFanart
+        '
+        Me.pnlFanart.BackColor = System.Drawing.Color.White
+        Me.pnlFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFanart.Controls.Add(Me.chkThumb)
+        Me.pnlFanart.Controls.Add(Me.chkMid)
+        Me.pnlFanart.Controls.Add(Me.chkOriginal)
+        Me.pnlFanart.Location = New System.Drawing.Point(8, 8)
+        Me.pnlFanart.Name = "pnlFanart"
+        Me.pnlFanart.Size = New System.Drawing.Size(339, 34)
+        Me.pnlFanart.TabIndex = 5
+        Me.pnlFanart.Visible = False
+        '
+        'chkThumb
+        '
+        Me.chkThumb.AutoSize = True
+        Me.chkThumb.Location = New System.Drawing.Point(231, 8)
+        Me.chkThumb.Name = "chkThumb"
+        Me.chkThumb.Size = New System.Drawing.Size(107, 17)
+        Me.chkThumb.TabIndex = 2
+        Me.chkThumb.Text = "Check All Thumb"
+        Me.chkThumb.UseVisualStyleBackColor = True
+        '
+        'chkMid
+        '
+        Me.chkMid.AutoSize = True
+        Me.chkMid.Location = New System.Drawing.Point(131, 8)
+        Me.chkMid.Name = "chkMid"
+        Me.chkMid.Size = New System.Drawing.Size(91, 17)
+        Me.chkMid.TabIndex = 1
+        Me.chkMid.Text = "Check All Mid"
+        Me.chkMid.UseVisualStyleBackColor = True
+        '
+        'chkOriginal
+        '
+        Me.chkOriginal.AutoSize = True
+        Me.chkOriginal.Location = New System.Drawing.Point(7, 8)
+        Me.chkOriginal.Name = "chkOriginal"
+        Me.chkOriginal.Size = New System.Drawing.Size(109, 17)
+        Me.chkOriginal.TabIndex = 0
+        Me.chkOriginal.Text = "Check All Original"
+        Me.chkOriginal.UseVisualStyleBackColor = True
+        '
+        'lblInfo
+        '
+        Me.lblInfo.Location = New System.Drawing.Point(402, 10)
+        Me.lblInfo.Name = "lblInfo"
+        Me.lblInfo.Size = New System.Drawing.Size(240, 31)
+        Me.lblInfo.TabIndex = 3
+        Me.lblInfo.Text = "Selected item will be set as fanart. All checked items will be saved to \extrathu" & _
+            "mbs."
+        Me.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblInfo.Visible = False
         '
         'pnlDLStatus
         '
@@ -383,15 +383,14 @@ Partial Class dlgImgSelect
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgImgSelect"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Poster"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.pnlBottomMain.ResumeLayout(False)
-        Me.pnlFanart.ResumeLayout(False)
-        Me.pnlFanart.PerformLayout()
         Me.pnlSize.ResumeLayout(False)
         Me.pnlSize.PerformLayout()
+        Me.pnlFanart.ResumeLayout(False)
+        Me.pnlFanart.PerformLayout()
         Me.pnlDLStatus.ResumeLayout(False)
         Me.pnlMPDB.ResumeLayout(False)
         Me.pnlIMPA.ResumeLayout(False)

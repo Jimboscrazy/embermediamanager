@@ -17,9 +17,9 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
-'  Slightly modified version of the code written by Nuno "Zordor" Novais
 
-Imports System.Windows.Forms
+Option Explicit On
+
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions

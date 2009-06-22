@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
 Imports System.Text.RegularExpressions
 
 Public Class dlgIMDBSearchResults
@@ -67,8 +66,6 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-        Me.Activate()
 
         AddHandler IMDB.SearchMovieInfoDownloaded, AddressOf SearchMovieInfoDownloaded
         AddHandler IMDB.SearchResultsDownloaded, AddressOf SearchResultsDownloaded
@@ -127,6 +124,7 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub dlgIMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
         Me.tvResults.Focus()
     End Sub
 

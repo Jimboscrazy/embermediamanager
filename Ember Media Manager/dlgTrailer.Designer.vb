@@ -148,7 +148,6 @@ Partial Class dlgTrailer
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgTrailer"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Trailer"
         Me.GroupBox1.ResumeLayout(False)

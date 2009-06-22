@@ -50,8 +50,8 @@ Partial Class dlgIMDBSearchResults
         Me.btnSearch = New System.Windows.Forms.Button
         Me.txtSearch = New System.Windows.Forms.TextBox
         Me.pnlLoading = New System.Windows.Forms.Panel
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.Label3 = New System.Windows.Forms.Label
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTop.SuspendLayout()
@@ -340,15 +340,6 @@ Partial Class dlgIMDBSearchResults
         Me.pnlLoading.TabIndex = 68
         Me.pnlLoading.Visible = False
         '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Location = New System.Drawing.Point(3, 32)
-        Me.ProgressBar1.MarqueeAnimationSpeed = 25
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(192, 17)
-        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.ProgressBar1.TabIndex = 0
-        '
         'Label3
         '
         Me.Label3.AutoSize = True
@@ -358,6 +349,15 @@ Partial Class dlgIMDBSearchResults
         Me.Label3.TabIndex = 1
         Me.Label3.Text = "Downloading details..."
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(3, 32)
+        Me.ProgressBar1.MarqueeAnimationSpeed = 25
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(192, 17)
+        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.ProgressBar1.TabIndex = 0
         '
         'dlgIMDBSearchResults
         '
@@ -393,7 +393,6 @@ Partial Class dlgIMDBSearchResults
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgIMDBSearchResults"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Search Results"
         Me.TableLayoutPanel1.ResumeLayout(False)

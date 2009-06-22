@@ -171,6 +171,8 @@ Public Class dlgTrailer
     End Sub
 
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+
         Me.pnlStatus.Visible = True
         Me.bwCompileList = New System.ComponentModel.BackgroundWorker
         Me.bwCompileList.WorkerSupportsCancellation = True
