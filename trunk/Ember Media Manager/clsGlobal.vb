@@ -530,6 +530,7 @@ Public Class Master
         If File.Exists(Path.Combine(mePath, "Flags.xml")) Then
             Try
                 Dim strTag As String = String.Empty
+                Dim strFileAndTag As String = String.Empty
                 Dim atypeRef As String = String.Empty
                 Dim vresImage As String = String.Empty
                 Dim vsourceImage As String = String.Empty
@@ -538,6 +539,9 @@ Public Class Master
 
                 If Not IsNothing(fiAV) Then
                     strTag = FITagData(fiAV)
+                    strFileAndTag = String.Format("{0} {1}", Path.GetFileName(strPath).ToLower, strTag)
+                Else
+                    strFileAndTag = Path.GetFileName(strPath).ToLower
                 End If
 
                 Dim xmlFlags As XDocument = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
@@ -559,7 +563,7 @@ Public Class Master
                     vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
                 End If
 
-                Dim xVSourceFlag = From xVSource In xmlFlags...<vtype>...<name> Where Regex.IsMatch(Path.GetFileName(strPath).ToLower, xVSource.@searchstring) Select xVSource.<icon>.Value
+                Dim xVSourceFlag = From xVSource In xmlFlags...<vtype>...<name> Where Regex.IsMatch(strFileAndTag, xVSource.@searchstring) Select xVSource.<icon>.Value
                 If xVSourceFlag.Count > 0 Then
                     vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
                 End If
