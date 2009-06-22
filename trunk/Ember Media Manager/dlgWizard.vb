@@ -162,7 +162,6 @@ Public Class dlgWizard
     End Sub
 
     Private Sub dlgWizard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.Activate()
         Me.FillSettings()
     End Sub
 
@@ -207,5 +206,9 @@ Public Class dlgWizard
         Master.eSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
         Master.eSettings.MovieNFO = Me.chkMovieNFO.Checked
         Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
+    End Sub
+
+    Private Sub dlgWizard_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
     End Sub
 End Class

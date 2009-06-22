@@ -180,7 +180,6 @@ Partial Class dlgAbout
         Me.MinimizeBox = False
         Me.Name = "dlgAbout"
         Me.Padding = New System.Windows.Forms.Padding(11, 9, 11, 9)
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "About Ember Media Manager"
         Me.Panel1.ResumeLayout(False)

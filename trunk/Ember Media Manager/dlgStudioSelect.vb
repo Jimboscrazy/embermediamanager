@@ -66,4 +66,8 @@ Public Class dlgStudioSelect
             Me._studio = lvStudios.SelectedItems(0).Text
         End If
     End Sub
+
+    Private Sub dlgStudioSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 End Class

@@ -33,6 +33,7 @@ Partial Class dlgSetsManager
         Me.btnNewSet = New System.Windows.Forms.Button
         Me.lbSets = New System.Windows.Forms.ListBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.lblCurrentSet = New System.Windows.Forms.Label
         Me.btnDown = New System.Windows.Forms.Button
         Me.btnUp = New System.Windows.Forms.Button
         Me.btnRemove = New System.Windows.Forms.Button
@@ -47,7 +48,6 @@ Partial Class dlgSetsManager
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.lblCurrentSet = New System.Windows.Forms.Label
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -167,6 +167,16 @@ Partial Class dlgSetsManager
         Me.GroupBox3.TabIndex = 3
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Movies In Set"
+        '
+        'lblCurrentSet
+        '
+        Me.lblCurrentSet.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCurrentSet.Location = New System.Drawing.Point(6, 20)
+        Me.lblCurrentSet.Name = "lblCurrentSet"
+        Me.lblCurrentSet.Size = New System.Drawing.Size(214, 23)
+        Me.lblCurrentSet.TabIndex = 14
+        Me.lblCurrentSet.Text = "None Selected"
+        Me.lblCurrentSet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'btnDown
         '
@@ -321,16 +331,6 @@ Partial Class dlgSetsManager
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'lblCurrentSet
-        '
-        Me.lblCurrentSet.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCurrentSet.Location = New System.Drawing.Point(6, 20)
-        Me.lblCurrentSet.Name = "lblCurrentSet"
-        Me.lblCurrentSet.Size = New System.Drawing.Size(214, 23)
-        Me.lblCurrentSet.TabIndex = 14
-        Me.lblCurrentSet.Text = "None Selected"
-        Me.lblCurrentSet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
         'dlgSetsManager
         '
         Me.AcceptButton = Me.OK_Button
@@ -348,7 +348,6 @@ Partial Class dlgSetsManager
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgSetsManager"
-        Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Sets Manager"
         Me.GroupBox1.ResumeLayout(False)

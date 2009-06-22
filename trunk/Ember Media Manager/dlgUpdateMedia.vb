@@ -253,4 +253,8 @@ Public Class dlgUpdateMedia
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
+
+    Private Sub dlgUpdateMedia_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 End Class
