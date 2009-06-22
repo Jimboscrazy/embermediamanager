@@ -128,6 +128,8 @@ Public Class frmMain
             Master.eSettings.WindowSize = Me.Size
             Master.eSettings.WindowState = Me.WindowState
             Master.eSettings.InfoPanelState = Me.aniType
+            Master.eSettings.FilterPanelState = Me.aniFilterRaise
+            Master.eSettings.SpliterPanelState = Me.scMain.SplitterDistance
             Master.eSettings.Save()
 
             If Me.bwPrelim.IsBusy OrElse Me.bwFolderData.IsBusy OrElse isCL Then
@@ -408,8 +410,6 @@ Public Class frmMain
 
                 Me.SetMenus()
 
-                Me.MoveGenres()
-                Me.MoveMPAA()
                 Me.pnlInfoPanel.Height = 25
                 Me.aniType = Master.eSettings.InfoPanelState
                 If Not Me.aniType = 0 Then
@@ -417,6 +417,14 @@ Public Class frmMain
                     tmrAni.Start()
                 End If
                 Me.pnlFilter.Height = 25
+                Me.aniFilterRaise = Master.eSettings.FilterPanelState
+                If Me.aniFilterRaise Then
+                    Me.tmrFilterAni.Start()
+                End If
+
+                Me.scMain.SplitterDistance = Master.eSettings.SpliterPanelState
+                'Me.Refresh()
+
                 Me.ClearInfo()
 
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
