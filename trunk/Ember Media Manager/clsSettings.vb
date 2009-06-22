@@ -120,6 +120,7 @@ Public Class emmSettings
     Private _windowloc As New Point
     Private _windowsize As New Size
     Private _windowstate As FormWindowState
+    Private _InfoPanelState As Integer
     Private _checkupdates As Boolean
     Private _bdpath As String
     Private _autobd As Boolean
@@ -993,6 +994,14 @@ Public Class emmSettings
         End Get
         Set(ByVal value As FormWindowState)
             Me._windowstate = value
+        End Set
+    End Property
+    Public Property InfoPanelState() As Integer
+        Get
+            Return Me._InfoPanelState
+        End Get
+        Set(ByVal value As Integer)
+            Me._InfoPanelState = value
         End Set
     End Property
 
