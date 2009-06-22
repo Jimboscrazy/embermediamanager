@@ -723,12 +723,12 @@ Partial Class dlgSettings
         '
         Me.Label25.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label25.ForeColor = System.Drawing.Color.Red
-        Me.Label25.Location = New System.Drawing.Point(3, 3)
+        Me.Label25.Location = New System.Drawing.Point(10, 3)
         Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(170, 58)
+        Me.Label25.Size = New System.Drawing.Size(155, 68)
         Me.Label25.TabIndex = 0
-        Me.Label25.Text = "Warning: Using the Power Cleaner could potentially delete wanted files. Take care" & _
-            " when using this tool."
+        Me.Label25.Text = "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Tak" & _
+            "e care when using this tool."
         Me.Label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'gbColors
