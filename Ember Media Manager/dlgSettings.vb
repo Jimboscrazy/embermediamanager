@@ -966,6 +966,35 @@ Public Class dlgSettings
     Private Sub chkNoSaveImagesToNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoSaveImagesToNfo.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub tcCleaner_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcCleaner.SelectedIndexChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkWhitelistVideo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkWhitelistVideo.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub btnAddWhitelist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddWhitelist.Click
+        If Not String.IsNullOrEmpty(Me.txtWhitelist.Text) Then
+            If Not Strings.Left(txtWhitelist.Text, 1) = "." Then txtWhitelist.Text = String.Concat(".", txtWhitelist.Text)
+            If Not lstWhitelist.Items.Contains(txtWhitelist.Text) Then
+                lstWhitelist.Items.Add(txtWhitelist.Text)
+                Me.btnApply.Enabled = True
+                txtWhitelist.Text = String.Empty
+                txtWhitelist.Focus()
+            End If
+        End If
+    End Sub
+
+    Private Sub btnRemoveWhitelist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveWhitelist.Click
+        If lstWhitelist.Items.Count > 0 And lstWhitelist.SelectedItems.Count > 0 Then
+            For Each i As Integer In lstWhitelist.SelectedIndices
+                lstWhitelist.Items.RemoveAt(i)
+            Next
+            Me.btnApply.Enabled = True
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1037,10 +1066,7 @@ Public Class dlgSettings
         Try
             '######## GENERAL TAB ########
             Master.eSettings.FilterCustom.Clear()
-            For Each str As String In Me.lstFilters.Items
-                Master.eSettings.FilterCustom.Add(str)
-            Next
-
+            Master.eSettings.FilterCustom.AddRange(Me.lstFilters.Items)
             Master.eSettings.HeaderColor = Me.btnHeaders.BackColor.ToArgb
             Master.eSettings.BackgroundColor = Me.btnBackground.BackColor.ToArgb
             Master.eSettings.InfoPanelColor = Me.btnInfoPanel.BackColor.ToArgb
@@ -1048,27 +1074,49 @@ Public Class dlgSettings
             Master.eSettings.PanelTextColor = Me.btnInfoPanelText.BackColor.ToArgb()
             Master.eSettings.TopPanelTextColor = Me.btnTopPanelText.BackColor.ToArgb
             Master.eSettings.HeaderTextColor = Me.btnHeaderText.BackColor.ToArgb
-            Master.eSettings.CleanFolderJPG = Me.chkCleanFolderJPG.Checked
-            Master.eSettings.CleanMovieTBN = Me.chkCleanMovieTBN.Checked
-            Master.eSettings.CleanMovieTBNB = Me.chkCleanMovieTBNb.Checked
-            Master.eSettings.CleanFanartJPG = Me.chkCleanFanartJPG.Checked
-            Master.eSettings.CleanMovieFanartJPG = Me.chkCleanMovieFanartJPG.Checked
-            Master.eSettings.CleanMovieNFO = Me.chkCleanMovieNFO.Checked
-            Master.eSettings.CleanMovieNFOB = Me.chkCleanMovieNFOb.Checked
-            Master.eSettings.CleanPosterTBN = Me.chkCleanPosterTBN.Checked
-            Master.eSettings.CleanPosterJPG = Me.chkCleanPosterJPG.Checked
-            Master.eSettings.CleanMovieJPG = Me.chkCleanMovieJPG.Checked
-            Master.eSettings.CleanMovieNameJPG = Me.chkCleanMovieNameJPG.Checked
-            Master.eSettings.CleanDotFanartJPG = Me.chkCleanDotFanartJPG.Checked
-            Master.eSettings.CleanExtraThumbs = Me.chkCleanExtrathumbs.Checked
+            If Me.tcCleaner.SelectedTab.Name = "tpExpert" Then
+                Master.eSettings.ExpertCleaner = True
+                Master.eSettings.CleanFolderJPG = False
+                Master.eSettings.CleanMovieTBN = False
+                Master.eSettings.CleanMovieTBNB = False
+                Master.eSettings.CleanFanartJPG = False
+                Master.eSettings.CleanMovieFanartJPG = False
+                Master.eSettings.CleanMovieNFO = False
+                Master.eSettings.CleanMovieNFOB = False
+                Master.eSettings.CleanPosterTBN = False
+                Master.eSettings.CleanPosterJPG = False
+                Master.eSettings.CleanMovieJPG = False
+                Master.eSettings.CleanMovieNameJPG = False
+                Master.eSettings.CleanDotFanartJPG = False
+                Master.eSettings.CleanExtraThumbs = False
+                Master.eSettings.CleanWhitelistVideo = Me.chkWhitelistVideo.Checked
+                Master.eSettings.CleanWhitelistExts.Clear()
+                Master.eSettings.CleanWhitelistExts.AddRange(Me.lstWhitelist.Items)
+            Else
+                Master.eSettings.ExpertCleaner = False
+                Master.eSettings.CleanFolderJPG = Me.chkCleanFolderJPG.Checked
+                Master.eSettings.CleanMovieTBN = Me.chkCleanMovieTBN.Checked
+                Master.eSettings.CleanMovieTBNB = Me.chkCleanMovieTBNb.Checked
+                Master.eSettings.CleanFanartJPG = Me.chkCleanFanartJPG.Checked
+                Master.eSettings.CleanMovieFanartJPG = Me.chkCleanMovieFanartJPG.Checked
+                Master.eSettings.CleanMovieNFO = Me.chkCleanMovieNFO.Checked
+                Master.eSettings.CleanMovieNFOB = Me.chkCleanMovieNFOb.Checked
+                Master.eSettings.CleanPosterTBN = Me.chkCleanPosterTBN.Checked
+                Master.eSettings.CleanPosterJPG = Me.chkCleanPosterJPG.Checked
+                Master.eSettings.CleanMovieJPG = Me.chkCleanMovieJPG.Checked
+                Master.eSettings.CleanMovieNameJPG = Me.chkCleanMovieNameJPG.Checked
+                Master.eSettings.CleanDotFanartJPG = Me.chkCleanDotFanartJPG.Checked
+                Master.eSettings.CleanExtraThumbs = Me.chkCleanExtrathumbs.Checked
+                Master.eSettings.CleanWhitelistVideo = False
+                Master.eSettings.CleanWhitelistExts.Clear()
+            End If
             Master.eSettings.LogErrors = Me.chkLogErrors.Checked
             Master.eSettings.ProperCase = Me.chkProperCase.Checked
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
             Master.eSettings.XBMCComs = Me.XComs
             Master.eSettings.ScanRecursive = Me.chkScanRecursive.Checked
-            Dim tmpExts As New ArrayList
-            tmpExts.AddRange(lstMovieExts.Items)
-            Master.eSettings.ValidExts = tmpExts
+            Master.eSettings.ValidExts.Clear()
+            Master.eSettings.ValidExts.AddRange(lstMovieExts.Items)
             Master.eSettings.CheckUpdates = chkUpdates.Checked
 
             '######## MOVIES TAB ########
@@ -1168,7 +1216,6 @@ Public Class dlgSettings
                 For Each iTrailer As Integer In Me.lbTrailerSites.CheckedIndices
                     Master.eSettings.TrailerSites.Add(iTrailer)
                 Next
-
                 Master.eSettings.DownloadTrailers = Me.chkDownloadTrailer.Checked
                 Master.eSettings.UpdaterTrailers = Me.chkUpdaterTrailer.Checked
                 Master.eSettings.TrailerTimeout = Convert.ToInt32(Me.txtTimeout.Text)
@@ -1207,10 +1254,7 @@ Public Class dlgSettings
 
         Try
             '######## GENERAL TAB ########
-            For Each strFilter As String In Master.eSettings.FilterCustom
-                Me.lstFilters.Items.Add(strFilter)
-            Next
-
+            Me.lstFilters.Items.AddRange(Master.eSettings.FilterCustom.ToArray)
             Me.btnHeaders.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
             Me.btnBackground.BackColor = Color.FromArgb(Master.eSettings.BackgroundColor)
             Me.btnInfoPanel.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
@@ -1231,6 +1275,9 @@ Public Class dlgSettings
             Me.chkCleanMovieNameJPG.Checked = Master.eSettings.CleanMovieNameJPG
             Me.chkCleanDotFanartJPG.Checked = Master.eSettings.CleanDotFanartJPG
             Me.chkCleanExtrathumbs.Checked = Master.eSettings.CleanExtraThumbs
+            tcCleaner.SelectedTab = If(Master.eSettings.ExpertCleaner, tpExpert, tpStandard)
+            Me.chkWhitelistVideo.Checked = Master.eSettings.CleanWhitelistVideo
+            Me.lstWhitelist.Items.AddRange(Master.eSettings.CleanWhitelistExts.ToArray)
             Me.chkOverwriteNfo.Checked = Master.eSettings.OverwriteNfo
 
             Me.XComs = Master.eSettings.XBMCComs

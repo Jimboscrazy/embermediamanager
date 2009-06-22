@@ -63,6 +63,9 @@ Public Class emmSettings
     Private _cleandotfanartJpg As Boolean
     Private _cleanmovienameJpg As Boolean
     Private _cleanextrathumbs As Boolean
+    Private _expertcleaner As Boolean
+    Private _cleanwhitelistvideo As Boolean
+    Private _cleanwhitelistexts As New ArrayList
     Private _useTMDB As Boolean
     Private _useIMPA As Boolean
     Private _useMPDB As Boolean
@@ -478,6 +481,33 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._cleanextrathumbs = value
+        End Set
+    End Property
+
+    Public Property ExpertCleaner() As Boolean
+        Get
+            Return Me._expertcleaner
+        End Get
+        Set(ByVal value As Boolean)
+            Me._expertcleaner = value
+        End Set
+    End Property
+
+    Public Property CleanWhitelistVideo() As Boolean
+        Get
+            Return Me._cleanwhitelistvideo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._cleanwhitelistvideo = value
+        End Set
+    End Property
+
+    Public Property CleanWhitelistExts() As ArrayList
+        Get
+            Return Me._cleanwhitelistexts
+        End Get
+        Set(ByVal value As ArrayList)
+            Me._cleanwhitelistexts = value
         End Set
     End Property
 
@@ -1198,6 +1228,9 @@ Public Class emmSettings
         Me._cleandotfanartJpg = False
         Me._cleanmovienameJpg = False
         Me._cleanextrathumbs = False
+        Me._expertcleaner = False
+        Me._cleanwhitelistvideo = False
+        Me._cleanwhitelistexts.Clear()
         Me._useTMDB = True
         Me._useIMPA = False
         Me._useMPDB = False

@@ -24,13 +24,13 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9})
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
@@ -51,19 +51,29 @@ Partial Class dlgSettings
         Me.Label5 = New System.Windows.Forms.Label
         Me.chkLogErrors = New System.Windows.Forms.CheckBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.tcCleaner = New System.Windows.Forms.TabControl
+        Me.tpStandard = New System.Windows.Forms.TabPage
+        Me.chkCleanFolderJPG = New System.Windows.Forms.CheckBox
         Me.chkCleanExtrathumbs = New System.Windows.Forms.CheckBox
+        Me.chkCleanMovieTBN = New System.Windows.Forms.CheckBox
         Me.chkCleanMovieNameJPG = New System.Windows.Forms.CheckBox
+        Me.chkCleanMovieTBNb = New System.Windows.Forms.CheckBox
         Me.chkCleanMovieJPG = New System.Windows.Forms.CheckBox
+        Me.chkCleanFanartJPG = New System.Windows.Forms.CheckBox
         Me.chkCleanPosterJPG = New System.Windows.Forms.CheckBox
+        Me.chkCleanMovieFanartJPG = New System.Windows.Forms.CheckBox
         Me.chkCleanPosterTBN = New System.Windows.Forms.CheckBox
+        Me.chkCleanMovieNFO = New System.Windows.Forms.CheckBox
         Me.chkCleanDotFanartJPG = New System.Windows.Forms.CheckBox
         Me.chkCleanMovieNFOb = New System.Windows.Forms.CheckBox
-        Me.chkCleanMovieNFO = New System.Windows.Forms.CheckBox
-        Me.chkCleanMovieFanartJPG = New System.Windows.Forms.CheckBox
-        Me.chkCleanFanartJPG = New System.Windows.Forms.CheckBox
-        Me.chkCleanMovieTBNb = New System.Windows.Forms.CheckBox
-        Me.chkCleanMovieTBN = New System.Windows.Forms.CheckBox
-        Me.chkCleanFolderJPG = New System.Windows.Forms.CheckBox
+        Me.tpExpert = New System.Windows.Forms.TabPage
+        Me.chkWhitelistVideo = New System.Windows.Forms.CheckBox
+        Me.Label27 = New System.Windows.Forms.Label
+        Me.btnRemoveWhitelist = New System.Windows.Forms.Button
+        Me.btnAddWhitelist = New System.Windows.Forms.Button
+        Me.txtWhitelist = New System.Windows.Forms.TextBox
+        Me.lstWhitelist = New System.Windows.Forms.ListBox
+        Me.Label25 = New System.Windows.Forms.Label
         Me.gbColors = New System.Windows.Forms.GroupBox
         Me.Label3 = New System.Windows.Forms.Label
         Me.lblTopPanelText = New System.Windows.Forms.Label
@@ -163,6 +173,7 @@ Partial Class dlgSettings
         Me.chkLockOutline = New System.Windows.Forms.CheckBox
         Me.chkLockPlot = New System.Windows.Forms.CheckBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
+        Me.chkNoSaveImagesToNfo = New System.Windows.Forms.CheckBox
         Me.chkUseETasFA = New System.Windows.Forms.CheckBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.chkNoSpoilers = New System.Windows.Forms.CheckBox
@@ -237,10 +248,12 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.chkNoSaveImagesToNfo = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.tcCleaner.SuspendLayout()
+        Me.tpStandard.SuspendLayout()
+        Me.tpExpert.SuspendLayout()
         Me.gbColors.SuspendLayout()
         Me.gbFilters.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
@@ -412,9 +425,9 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.chkLogErrors)
-        Me.GroupBox4.Location = New System.Drawing.Point(400, 218)
+        Me.GroupBox4.Location = New System.Drawing.Point(204, 216)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(189, 114)
+        Me.GroupBox4.Size = New System.Drawing.Size(185, 123)
         Me.GroupBox4.TabIndex = 3
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
@@ -461,80 +474,163 @@ Partial Class dlgSettings
         '
         'GroupBox3
         '
-        Me.GroupBox3.Controls.Add(Me.chkCleanExtrathumbs)
-        Me.GroupBox3.Controls.Add(Me.chkCleanMovieNameJPG)
-        Me.GroupBox3.Controls.Add(Me.chkCleanMovieJPG)
-        Me.GroupBox3.Controls.Add(Me.chkCleanPosterJPG)
-        Me.GroupBox3.Controls.Add(Me.chkCleanPosterTBN)
-        Me.GroupBox3.Controls.Add(Me.chkCleanDotFanartJPG)
-        Me.GroupBox3.Controls.Add(Me.chkCleanMovieNFOb)
-        Me.GroupBox3.Controls.Add(Me.chkCleanMovieNFO)
-        Me.GroupBox3.Controls.Add(Me.chkCleanMovieFanartJPG)
-        Me.GroupBox3.Controls.Add(Me.chkCleanFanartJPG)
-        Me.GroupBox3.Controls.Add(Me.chkCleanMovieTBNb)
-        Me.GroupBox3.Controls.Add(Me.chkCleanMovieTBN)
-        Me.GroupBox3.Controls.Add(Me.chkCleanFolderJPG)
-        Me.GroupBox3.Location = New System.Drawing.Point(207, 6)
+        Me.GroupBox3.Controls.Add(Me.tcCleaner)
+        Me.GroupBox3.Location = New System.Drawing.Point(393, 3)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(184, 289)
+        Me.GroupBox3.Size = New System.Drawing.Size(196, 336)
         Me.GroupBox3.TabIndex = 1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Clean Files"
         '
+        'tcCleaner
+        '
+        Me.tcCleaner.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
+        Me.tcCleaner.Controls.Add(Me.tpStandard)
+        Me.tcCleaner.Controls.Add(Me.tpExpert)
+        Me.tcCleaner.Location = New System.Drawing.Point(6, 19)
+        Me.tcCleaner.Name = "tcCleaner"
+        Me.tcCleaner.SelectedIndex = 0
+        Me.tcCleaner.Size = New System.Drawing.Size(184, 309)
+        Me.tcCleaner.TabIndex = 19
+        '
+        'tpStandard
+        '
+        Me.tpStandard.BackColor = System.Drawing.Color.White
+        Me.tpStandard.Controls.Add(Me.chkCleanFolderJPG)
+        Me.tpStandard.Controls.Add(Me.chkCleanExtrathumbs)
+        Me.tpStandard.Controls.Add(Me.chkCleanMovieTBN)
+        Me.tpStandard.Controls.Add(Me.chkCleanMovieNameJPG)
+        Me.tpStandard.Controls.Add(Me.chkCleanMovieTBNb)
+        Me.tpStandard.Controls.Add(Me.chkCleanMovieJPG)
+        Me.tpStandard.Controls.Add(Me.chkCleanFanartJPG)
+        Me.tpStandard.Controls.Add(Me.chkCleanPosterJPG)
+        Me.tpStandard.Controls.Add(Me.chkCleanMovieFanartJPG)
+        Me.tpStandard.Controls.Add(Me.chkCleanPosterTBN)
+        Me.tpStandard.Controls.Add(Me.chkCleanMovieNFO)
+        Me.tpStandard.Controls.Add(Me.chkCleanDotFanartJPG)
+        Me.tpStandard.Controls.Add(Me.chkCleanMovieNFOb)
+        Me.tpStandard.Location = New System.Drawing.Point(4, 25)
+        Me.tpStandard.Name = "tpStandard"
+        Me.tpStandard.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpStandard.Size = New System.Drawing.Size(176, 280)
+        Me.tpStandard.TabIndex = 0
+        Me.tpStandard.Text = "Standard"
+        Me.tpStandard.UseVisualStyleBackColor = True
+        '
+        'chkCleanFolderJPG
+        '
+        Me.chkCleanFolderJPG.AutoSize = True
+        Me.chkCleanFolderJPG.Location = New System.Drawing.Point(7, 10)
+        Me.chkCleanFolderJPG.Name = "chkCleanFolderJPG"
+        Me.chkCleanFolderJPG.Size = New System.Drawing.Size(74, 17)
+        Me.chkCleanFolderJPG.TabIndex = 6
+        Me.chkCleanFolderJPG.Text = "/folder.jpg"
+        Me.chkCleanFolderJPG.UseVisualStyleBackColor = True
+        '
         'chkCleanExtrathumbs
         '
         Me.chkCleanExtrathumbs.AutoSize = True
-        Me.chkCleanExtrathumbs.Location = New System.Drawing.Point(13, 237)
+        Me.chkCleanExtrathumbs.Location = New System.Drawing.Point(7, 235)
         Me.chkCleanExtrathumbs.Name = "chkCleanExtrathumbs"
         Me.chkCleanExtrathumbs.Size = New System.Drawing.Size(93, 17)
         Me.chkCleanExtrathumbs.TabIndex = 18
         Me.chkCleanExtrathumbs.Text = "/extrathumbs/"
         Me.chkCleanExtrathumbs.UseVisualStyleBackColor = True
         '
+        'chkCleanMovieTBN
+        '
+        Me.chkCleanMovieTBN.AutoSize = True
+        Me.chkCleanMovieTBN.Location = New System.Drawing.Point(7, 29)
+        Me.chkCleanMovieTBN.Name = "chkCleanMovieTBN"
+        Me.chkCleanMovieTBN.Size = New System.Drawing.Size(77, 17)
+        Me.chkCleanMovieTBN.TabIndex = 7
+        Me.chkCleanMovieTBN.Text = "/movie.tbn"
+        Me.chkCleanMovieTBN.UseVisualStyleBackColor = True
+        '
         'chkCleanMovieNameJPG
         '
         Me.chkCleanMovieNameJPG.AutoSize = True
-        Me.chkCleanMovieNameJPG.Location = New System.Drawing.Point(13, 129)
+        Me.chkCleanMovieNameJPG.Location = New System.Drawing.Point(7, 123)
         Me.chkCleanMovieNameJPG.Name = "chkCleanMovieNameJPG"
         Me.chkCleanMovieNameJPG.Size = New System.Drawing.Size(88, 17)
         Me.chkCleanMovieNameJPG.TabIndex = 17
         Me.chkCleanMovieNameJPG.Text = "/<movie>.jpg"
         Me.chkCleanMovieNameJPG.UseVisualStyleBackColor = True
         '
+        'chkCleanMovieTBNb
+        '
+        Me.chkCleanMovieTBNb.AutoSize = True
+        Me.chkCleanMovieTBNb.Location = New System.Drawing.Point(7, 48)
+        Me.chkCleanMovieTBNb.Name = "chkCleanMovieTBNb"
+        Me.chkCleanMovieTBNb.Size = New System.Drawing.Size(89, 17)
+        Me.chkCleanMovieTBNb.TabIndex = 8
+        Me.chkCleanMovieTBNb.Text = "/<movie>.tbn"
+        Me.chkCleanMovieTBNb.UseVisualStyleBackColor = True
+        '
         'chkCleanMovieJPG
         '
         Me.chkCleanMovieJPG.AutoSize = True
-        Me.chkCleanMovieJPG.Location = New System.Drawing.Point(13, 111)
+        Me.chkCleanMovieJPG.Location = New System.Drawing.Point(7, 104)
         Me.chkCleanMovieJPG.Name = "chkCleanMovieJPG"
         Me.chkCleanMovieJPG.Size = New System.Drawing.Size(76, 17)
         Me.chkCleanMovieJPG.TabIndex = 16
         Me.chkCleanMovieJPG.Text = "/movie.jpg"
         Me.chkCleanMovieJPG.UseVisualStyleBackColor = True
         '
+        'chkCleanFanartJPG
+        '
+        Me.chkCleanFanartJPG.AutoSize = True
+        Me.chkCleanFanartJPG.Location = New System.Drawing.Point(7, 141)
+        Me.chkCleanFanartJPG.Name = "chkCleanFanartJPG"
+        Me.chkCleanFanartJPG.Size = New System.Drawing.Size(75, 17)
+        Me.chkCleanFanartJPG.TabIndex = 9
+        Me.chkCleanFanartJPG.Text = "/fanart.jpg"
+        Me.chkCleanFanartJPG.UseVisualStyleBackColor = True
+        '
         'chkCleanPosterJPG
         '
         Me.chkCleanPosterJPG.AutoSize = True
-        Me.chkCleanPosterJPG.Location = New System.Drawing.Point(13, 93)
+        Me.chkCleanPosterJPG.Location = New System.Drawing.Point(7, 86)
         Me.chkCleanPosterJPG.Name = "chkCleanPosterJPG"
         Me.chkCleanPosterJPG.Size = New System.Drawing.Size(77, 17)
         Me.chkCleanPosterJPG.TabIndex = 15
         Me.chkCleanPosterJPG.Text = "/poster.jpg"
         Me.chkCleanPosterJPG.UseVisualStyleBackColor = True
         '
+        'chkCleanMovieFanartJPG
+        '
+        Me.chkCleanMovieFanartJPG.AutoSize = True
+        Me.chkCleanMovieFanartJPG.Location = New System.Drawing.Point(7, 160)
+        Me.chkCleanMovieFanartJPG.Name = "chkCleanMovieFanartJPG"
+        Me.chkCleanMovieFanartJPG.Size = New System.Drawing.Size(118, 17)
+        Me.chkCleanMovieFanartJPG.TabIndex = 10
+        Me.chkCleanMovieFanartJPG.Text = "/<movie>-fanart.jpg"
+        Me.chkCleanMovieFanartJPG.UseVisualStyleBackColor = True
+        '
         'chkCleanPosterTBN
         '
         Me.chkCleanPosterTBN.AutoSize = True
-        Me.chkCleanPosterTBN.Location = New System.Drawing.Point(13, 75)
+        Me.chkCleanPosterTBN.Location = New System.Drawing.Point(7, 67)
         Me.chkCleanPosterTBN.Name = "chkCleanPosterTBN"
         Me.chkCleanPosterTBN.Size = New System.Drawing.Size(78, 17)
         Me.chkCleanPosterTBN.TabIndex = 14
         Me.chkCleanPosterTBN.Text = "/poster.tbn"
         Me.chkCleanPosterTBN.UseVisualStyleBackColor = True
         '
+        'chkCleanMovieNFO
+        '
+        Me.chkCleanMovieNFO.AutoSize = True
+        Me.chkCleanMovieNFO.Location = New System.Drawing.Point(7, 198)
+        Me.chkCleanMovieNFO.Name = "chkCleanMovieNFO"
+        Me.chkCleanMovieNFO.Size = New System.Drawing.Size(77, 17)
+        Me.chkCleanMovieNFO.TabIndex = 11
+        Me.chkCleanMovieNFO.Text = "/movie.nfo"
+        Me.chkCleanMovieNFO.UseVisualStyleBackColor = True
+        '
         'chkCleanDotFanartJPG
         '
         Me.chkCleanDotFanartJPG.AutoSize = True
-        Me.chkCleanDotFanartJPG.Location = New System.Drawing.Point(13, 183)
+        Me.chkCleanDotFanartJPG.Location = New System.Drawing.Point(7, 179)
         Me.chkCleanDotFanartJPG.Name = "chkCleanDotFanartJPG"
         Me.chkCleanDotFanartJPG.Size = New System.Drawing.Size(118, 17)
         Me.chkCleanDotFanartJPG.TabIndex = 13
@@ -544,72 +640,96 @@ Partial Class dlgSettings
         'chkCleanMovieNFOb
         '
         Me.chkCleanMovieNFOb.AutoSize = True
-        Me.chkCleanMovieNFOb.Location = New System.Drawing.Point(13, 219)
+        Me.chkCleanMovieNFOb.Location = New System.Drawing.Point(7, 217)
         Me.chkCleanMovieNFOb.Name = "chkCleanMovieNFOb"
         Me.chkCleanMovieNFOb.Size = New System.Drawing.Size(89, 17)
         Me.chkCleanMovieNFOb.TabIndex = 12
         Me.chkCleanMovieNFOb.Text = "/<movie>.nfo"
         Me.chkCleanMovieNFOb.UseVisualStyleBackColor = True
         '
-        'chkCleanMovieNFO
+        'tpExpert
         '
-        Me.chkCleanMovieNFO.AutoSize = True
-        Me.chkCleanMovieNFO.Location = New System.Drawing.Point(13, 201)
-        Me.chkCleanMovieNFO.Name = "chkCleanMovieNFO"
-        Me.chkCleanMovieNFO.Size = New System.Drawing.Size(77, 17)
-        Me.chkCleanMovieNFO.TabIndex = 11
-        Me.chkCleanMovieNFO.Text = "/movie.nfo"
-        Me.chkCleanMovieNFO.UseVisualStyleBackColor = True
+        Me.tpExpert.BackColor = System.Drawing.Color.White
+        Me.tpExpert.Controls.Add(Me.chkWhitelistVideo)
+        Me.tpExpert.Controls.Add(Me.Label27)
+        Me.tpExpert.Controls.Add(Me.btnRemoveWhitelist)
+        Me.tpExpert.Controls.Add(Me.btnAddWhitelist)
+        Me.tpExpert.Controls.Add(Me.txtWhitelist)
+        Me.tpExpert.Controls.Add(Me.lstWhitelist)
+        Me.tpExpert.Controls.Add(Me.Label25)
+        Me.tpExpert.Location = New System.Drawing.Point(4, 25)
+        Me.tpExpert.Name = "tpExpert"
+        Me.tpExpert.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpExpert.Size = New System.Drawing.Size(176, 280)
+        Me.tpExpert.TabIndex = 1
+        Me.tpExpert.Text = "Expert"
+        Me.tpExpert.UseVisualStyleBackColor = True
         '
-        'chkCleanMovieFanartJPG
+        'chkWhitelistVideo
         '
-        Me.chkCleanMovieFanartJPG.AutoSize = True
-        Me.chkCleanMovieFanartJPG.Location = New System.Drawing.Point(13, 165)
-        Me.chkCleanMovieFanartJPG.Name = "chkCleanMovieFanartJPG"
-        Me.chkCleanMovieFanartJPG.Size = New System.Drawing.Size(118, 17)
-        Me.chkCleanMovieFanartJPG.TabIndex = 10
-        Me.chkCleanMovieFanartJPG.Text = "/<movie>-fanart.jpg"
-        Me.chkCleanMovieFanartJPG.UseVisualStyleBackColor = True
+        Me.chkWhitelistVideo.AutoSize = True
+        Me.chkWhitelistVideo.Location = New System.Drawing.Point(12, 86)
+        Me.chkWhitelistVideo.Name = "chkWhitelistVideo"
+        Me.chkWhitelistVideo.Size = New System.Drawing.Size(150, 17)
+        Me.chkWhitelistVideo.TabIndex = 11
+        Me.chkWhitelistVideo.Text = "Whitelist Video Extensions"
+        Me.chkWhitelistVideo.UseVisualStyleBackColor = True
         '
-        'chkCleanFanartJPG
+        'Label27
         '
-        Me.chkCleanFanartJPG.AutoSize = True
-        Me.chkCleanFanartJPG.Location = New System.Drawing.Point(13, 147)
-        Me.chkCleanFanartJPG.Name = "chkCleanFanartJPG"
-        Me.chkCleanFanartJPG.Size = New System.Drawing.Size(75, 17)
-        Me.chkCleanFanartJPG.TabIndex = 9
-        Me.chkCleanFanartJPG.Text = "/fanart.jpg"
-        Me.chkCleanFanartJPG.UseVisualStyleBackColor = True
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(19, 107)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(116, 13)
+        Me.Label27.TabIndex = 10
+        Me.Label27.Text = "Whitelisted Extensions:"
         '
-        'chkCleanMovieTBNb
+        'btnRemoveWhitelist
         '
-        Me.chkCleanMovieTBNb.AutoSize = True
-        Me.chkCleanMovieTBNb.Location = New System.Drawing.Point(13, 57)
-        Me.chkCleanMovieTBNb.Name = "chkCleanMovieTBNb"
-        Me.chkCleanMovieTBNb.Size = New System.Drawing.Size(89, 17)
-        Me.chkCleanMovieTBNb.TabIndex = 8
-        Me.chkCleanMovieTBNb.Text = "/<movie>.tbn"
-        Me.chkCleanMovieTBNb.UseVisualStyleBackColor = True
+        Me.btnRemoveWhitelist.Image = CType(resources.GetObject("btnRemoveWhitelist.Image"), System.Drawing.Image)
+        Me.btnRemoveWhitelist.Location = New System.Drawing.Point(134, 252)
+        Me.btnRemoveWhitelist.Name = "btnRemoveWhitelist"
+        Me.btnRemoveWhitelist.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveWhitelist.TabIndex = 9
+        Me.btnRemoveWhitelist.UseVisualStyleBackColor = True
         '
-        'chkCleanMovieTBN
+        'btnAddWhitelist
         '
-        Me.chkCleanMovieTBN.AutoSize = True
-        Me.chkCleanMovieTBN.Location = New System.Drawing.Point(13, 39)
-        Me.chkCleanMovieTBN.Name = "chkCleanMovieTBN"
-        Me.chkCleanMovieTBN.Size = New System.Drawing.Size(77, 17)
-        Me.chkCleanMovieTBN.TabIndex = 7
-        Me.chkCleanMovieTBN.Text = "/movie.tbn"
-        Me.chkCleanMovieTBN.UseVisualStyleBackColor = True
+        Me.btnAddWhitelist.Image = CType(resources.GetObject("btnAddWhitelist.Image"), System.Drawing.Image)
+        Me.btnAddWhitelist.Location = New System.Drawing.Point(82, 251)
+        Me.btnAddWhitelist.Name = "btnAddWhitelist"
+        Me.btnAddWhitelist.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddWhitelist.TabIndex = 8
+        Me.btnAddWhitelist.UseVisualStyleBackColor = True
         '
-        'chkCleanFolderJPG
+        'txtWhitelist
         '
-        Me.chkCleanFolderJPG.AutoSize = True
-        Me.chkCleanFolderJPG.Location = New System.Drawing.Point(13, 21)
-        Me.chkCleanFolderJPG.Name = "chkCleanFolderJPG"
-        Me.chkCleanFolderJPG.Size = New System.Drawing.Size(74, 17)
-        Me.chkCleanFolderJPG.TabIndex = 6
-        Me.chkCleanFolderJPG.Text = "/folder.jpg"
-        Me.chkCleanFolderJPG.UseVisualStyleBackColor = True
+        Me.txtWhitelist.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtWhitelist.Location = New System.Drawing.Point(20, 252)
+        Me.txtWhitelist.Name = "txtWhitelist"
+        Me.txtWhitelist.Size = New System.Drawing.Size(61, 20)
+        Me.txtWhitelist.TabIndex = 7
+        '
+        'lstWhitelist
+        '
+        Me.lstWhitelist.FormattingEnabled = True
+        Me.lstWhitelist.Location = New System.Drawing.Point(19, 126)
+        Me.lstWhitelist.Name = "lstWhitelist"
+        Me.lstWhitelist.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstWhitelist.Size = New System.Drawing.Size(138, 121)
+        Me.lstWhitelist.TabIndex = 6
+        '
+        'Label25
+        '
+        Me.Label25.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label25.ForeColor = System.Drawing.Color.Red
+        Me.Label25.Location = New System.Drawing.Point(3, 3)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(170, 58)
+        Me.Label25.TabIndex = 0
+        Me.Label25.Text = "Warning: Using the Power Cleaner could potentially delete wanted files. Take care" & _
+            " when using this tool."
+        Me.Label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'gbColors
         '
@@ -627,9 +747,9 @@ Partial Class dlgSettings
         Me.gbColors.Controls.Add(Me.btnBackground)
         Me.gbColors.Controls.Add(Me.btnInfoPanel)
         Me.gbColors.Controls.Add(Me.btnHeaders)
-        Me.gbColors.Location = New System.Drawing.Point(400, 6)
+        Me.gbColors.Location = New System.Drawing.Point(6, 186)
         Me.gbColors.Name = "gbColors"
-        Me.gbColors.Size = New System.Drawing.Size(188, 211)
+        Me.gbColors.Size = New System.Drawing.Size(193, 153)
         Me.gbColors.TabIndex = 2
         Me.gbColors.TabStop = False
         Me.gbColors.Text = "Colors"
@@ -637,37 +757,37 @@ Partial Class dlgSettings
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(6, 188)
+        Me.Label3.Location = New System.Drawing.Point(6, 133)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(92, 13)
+        Me.Label3.Size = New System.Drawing.Size(95, 13)
         Me.Label3.TabIndex = 20
-        Me.Label3.Text = "Background Color"
+        Me.Label3.Text = "Background Color:"
         '
         'lblTopPanelText
         '
         Me.lblTopPanelText.AutoSize = True
-        Me.lblTopPanelText.Location = New System.Drawing.Point(6, 160)
+        Me.lblTopPanelText.Location = New System.Drawing.Point(6, 114)
         Me.lblTopPanelText.Name = "lblTopPanelText"
-        Me.lblTopPanelText.Size = New System.Drawing.Size(107, 13)
+        Me.lblTopPanelText.Size = New System.Drawing.Size(110, 13)
         Me.lblTopPanelText.TabIndex = 19
-        Me.lblTopPanelText.Text = "Top Panel Text Color"
+        Me.lblTopPanelText.Text = "Top Panel Text Color:"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(6, 132)
+        Me.Label1.Location = New System.Drawing.Point(6, 95)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(144, 13)
+        Me.Label1.Size = New System.Drawing.Size(147, 13)
         Me.Label1.TabIndex = 18
-        Me.Label1.Text = "Top Panel Background Color"
+        Me.Label1.Text = "Top Panel Background Color:"
         '
         'btnHeaderText
         '
         Me.btnHeaderText.BackColor = System.Drawing.Color.White
         Me.btnHeaderText.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnHeaderText.Location = New System.Drawing.Point(157, 99)
+        Me.btnHeaderText.Location = New System.Drawing.Point(164, 74)
         Me.btnHeaderText.Name = "btnHeaderText"
-        Me.btnHeaderText.Size = New System.Drawing.Size(22, 22)
+        Me.btnHeaderText.Size = New System.Drawing.Size(16, 16)
         Me.btnHeaderText.TabIndex = 16
         Me.btnHeaderText.UseVisualStyleBackColor = False
         '
@@ -675,9 +795,9 @@ Partial Class dlgSettings
         '
         Me.btnTopPanelText.BackColor = System.Drawing.Color.DimGray
         Me.btnTopPanelText.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnTopPanelText.Location = New System.Drawing.Point(157, 155)
+        Me.btnTopPanelText.Location = New System.Drawing.Point(164, 112)
         Me.btnTopPanelText.Name = "btnTopPanelText"
-        Me.btnTopPanelText.Size = New System.Drawing.Size(22, 22)
+        Me.btnTopPanelText.Size = New System.Drawing.Size(16, 16)
         Me.btnTopPanelText.TabIndex = 18
         Me.btnTopPanelText.UseVisualStyleBackColor = False
         '
@@ -685,55 +805,55 @@ Partial Class dlgSettings
         '
         Me.btnInfoPanelText.BackColor = System.Drawing.Color.DimGray
         Me.btnInfoPanelText.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnInfoPanelText.Location = New System.Drawing.Point(157, 43)
+        Me.btnInfoPanelText.Location = New System.Drawing.Point(164, 36)
         Me.btnInfoPanelText.Name = "btnInfoPanelText"
-        Me.btnInfoPanelText.Size = New System.Drawing.Size(22, 22)
+        Me.btnInfoPanelText.Size = New System.Drawing.Size(16, 16)
         Me.btnInfoPanelText.TabIndex = 14
         Me.btnInfoPanelText.UseVisualStyleBackColor = False
         '
         'lblInfoPanelText
         '
         Me.lblInfoPanelText.AutoSize = True
-        Me.lblInfoPanelText.Location = New System.Drawing.Point(6, 48)
+        Me.lblInfoPanelText.Location = New System.Drawing.Point(6, 38)
         Me.lblInfoPanelText.Name = "lblInfoPanelText"
-        Me.lblInfoPanelText.Size = New System.Drawing.Size(106, 13)
+        Me.lblInfoPanelText.Size = New System.Drawing.Size(109, 13)
         Me.lblInfoPanelText.TabIndex = 14
-        Me.lblInfoPanelText.Text = "Info Panel Text Color"
+        Me.lblInfoPanelText.Text = "Info Panel Text Color:"
         '
         'lblPanel
         '
         Me.lblPanel.AutoSize = True
         Me.lblPanel.Location = New System.Drawing.Point(6, 19)
         Me.lblPanel.Name = "lblPanel"
-        Me.lblPanel.Size = New System.Drawing.Size(143, 13)
+        Me.lblPanel.Size = New System.Drawing.Size(146, 13)
         Me.lblPanel.TabIndex = 13
-        Me.lblPanel.Text = "Info Panel Background Color"
+        Me.lblPanel.Text = "Info Panel Background Color:"
         '
         'lblHeaderText
         '
         Me.lblHeaderText.AutoSize = True
-        Me.lblHeaderText.Location = New System.Drawing.Point(6, 104)
+        Me.lblHeaderText.Location = New System.Drawing.Point(6, 76)
         Me.lblHeaderText.Name = "lblHeaderText"
-        Me.lblHeaderText.Size = New System.Drawing.Size(144, 13)
+        Me.lblHeaderText.Size = New System.Drawing.Size(147, 13)
         Me.lblHeaderText.TabIndex = 12
-        Me.lblHeaderText.Text = "Info Panel Header Text Color"
+        Me.lblHeaderText.Text = "Info Panel Header Text Color:"
         '
         'lblHeader
         '
         Me.lblHeader.AutoSize = True
-        Me.lblHeader.Location = New System.Drawing.Point(6, 76)
+        Me.lblHeader.Location = New System.Drawing.Point(6, 57)
         Me.lblHeader.Name = "lblHeader"
-        Me.lblHeader.Size = New System.Drawing.Size(120, 13)
+        Me.lblHeader.Size = New System.Drawing.Size(123, 13)
         Me.lblHeader.TabIndex = 11
-        Me.lblHeader.Text = "Info Panel Header Color"
+        Me.lblHeader.Text = "Info Panel Header Color:"
         '
         'btnTopPanel
         '
         Me.btnTopPanel.BackColor = System.Drawing.Color.Gainsboro
         Me.btnTopPanel.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnTopPanel.Location = New System.Drawing.Point(157, 127)
+        Me.btnTopPanel.Location = New System.Drawing.Point(164, 93)
         Me.btnTopPanel.Name = "btnTopPanel"
-        Me.btnTopPanel.Size = New System.Drawing.Size(22, 22)
+        Me.btnTopPanel.Size = New System.Drawing.Size(16, 16)
         Me.btnTopPanel.TabIndex = 17
         Me.btnTopPanel.UseVisualStyleBackColor = False
         '
@@ -741,9 +861,9 @@ Partial Class dlgSettings
         '
         Me.btnBackground.BackColor = System.Drawing.Color.Gainsboro
         Me.btnBackground.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnBackground.Location = New System.Drawing.Point(157, 183)
+        Me.btnBackground.Location = New System.Drawing.Point(164, 131)
         Me.btnBackground.Name = "btnBackground"
-        Me.btnBackground.Size = New System.Drawing.Size(22, 22)
+        Me.btnBackground.Size = New System.Drawing.Size(16, 16)
         Me.btnBackground.TabIndex = 19
         Me.btnBackground.UseVisualStyleBackColor = False
         '
@@ -751,9 +871,9 @@ Partial Class dlgSettings
         '
         Me.btnInfoPanel.BackColor = System.Drawing.Color.Gainsboro
         Me.btnInfoPanel.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnInfoPanel.Location = New System.Drawing.Point(157, 15)
+        Me.btnInfoPanel.Location = New System.Drawing.Point(164, 17)
         Me.btnInfoPanel.Name = "btnInfoPanel"
-        Me.btnInfoPanel.Size = New System.Drawing.Size(22, 22)
+        Me.btnInfoPanel.Size = New System.Drawing.Size(16, 16)
         Me.btnInfoPanel.TabIndex = 13
         Me.btnInfoPanel.UseVisualStyleBackColor = False
         '
@@ -761,9 +881,9 @@ Partial Class dlgSettings
         '
         Me.btnHeaders.BackColor = System.Drawing.Color.DimGray
         Me.btnHeaders.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnHeaders.Location = New System.Drawing.Point(157, 71)
+        Me.btnHeaders.Location = New System.Drawing.Point(164, 55)
         Me.btnHeaders.Name = "btnHeaders"
-        Me.btnHeaders.Size = New System.Drawing.Size(22, 22)
+        Me.btnHeaders.Size = New System.Drawing.Size(16, 16)
         Me.btnHeaders.TabIndex = 15
         Me.btnHeaders.UseVisualStyleBackColor = False
         '
@@ -778,7 +898,7 @@ Partial Class dlgSettings
         Me.gbFilters.Controls.Add(Me.lstFilters)
         Me.gbFilters.Location = New System.Drawing.Point(6, 6)
         Me.gbFilters.Name = "gbFilters"
-        Me.gbFilters.Size = New System.Drawing.Size(192, 289)
+        Me.gbFilters.Size = New System.Drawing.Size(192, 175)
         Me.gbFilters.TabIndex = 0
         Me.gbFilters.TabStop = False
         Me.gbFilters.Text = "Folder/File Name Filters"
@@ -786,7 +906,7 @@ Partial Class dlgSettings
         'btnDown
         '
         Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
-        Me.btnDown.Location = New System.Drawing.Point(129, 259)
+        Me.btnDown.Location = New System.Drawing.Point(129, 146)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(23, 23)
         Me.btnDown.TabIndex = 9
@@ -795,7 +915,7 @@ Partial Class dlgSettings
         'btnUp
         '
         Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
-        Me.btnUp.Location = New System.Drawing.Point(105, 259)
+        Me.btnUp.Location = New System.Drawing.Point(105, 146)
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(23, 23)
         Me.btnUp.TabIndex = 8
@@ -804,7 +924,7 @@ Partial Class dlgSettings
         'chkProperCase
         '
         Me.chkProperCase.AutoSize = True
-        Me.chkProperCase.Location = New System.Drawing.Point(6, 20)
+        Me.chkProperCase.Location = New System.Drawing.Point(6, 16)
         Me.chkProperCase.Name = "chkProperCase"
         Me.chkProperCase.Size = New System.Drawing.Size(172, 17)
         Me.chkProperCase.TabIndex = 7
@@ -814,7 +934,7 @@ Partial Class dlgSettings
         'btnRemoveFilter
         '
         Me.btnRemoveFilter.Image = CType(resources.GetObject("btnRemoveFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveFilter.Location = New System.Drawing.Point(163, 259)
+        Me.btnRemoveFilter.Location = New System.Drawing.Point(163, 146)
         Me.btnRemoveFilter.Name = "btnRemoveFilter"
         Me.btnRemoveFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveFilter.TabIndex = 5
@@ -823,7 +943,7 @@ Partial Class dlgSettings
         'btnAddFilter
         '
         Me.btnAddFilter.Image = CType(resources.GetObject("btnAddFilter.Image"), System.Drawing.Image)
-        Me.btnAddFilter.Location = New System.Drawing.Point(68, 259)
+        Me.btnAddFilter.Location = New System.Drawing.Point(68, 146)
         Me.btnAddFilter.Name = "btnAddFilter"
         Me.btnAddFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddFilter.TabIndex = 4
@@ -832,7 +952,7 @@ Partial Class dlgSettings
         'txtFilter
         '
         Me.txtFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilter.Location = New System.Drawing.Point(6, 260)
+        Me.txtFilter.Location = New System.Drawing.Point(6, 147)
         Me.txtFilter.Name = "txtFilter"
         Me.txtFilter.Size = New System.Drawing.Size(61, 20)
         Me.txtFilter.TabIndex = 3
@@ -840,10 +960,10 @@ Partial Class dlgSettings
         'lstFilters
         '
         Me.lstFilters.FormattingEnabled = True
-        Me.lstFilters.Location = New System.Drawing.Point(6, 42)
+        Me.lstFilters.Location = New System.Drawing.Point(6, 34)
         Me.lstFilters.Name = "lstFilters"
         Me.lstFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstFilters.Size = New System.Drawing.Size(180, 212)
+        Me.lstFilters.Size = New System.Drawing.Size(180, 108)
         Me.lstFilters.TabIndex = 2
         '
         'chkScanRecursive
@@ -1651,6 +1771,16 @@ Partial Class dlgSettings
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
         '
+        'chkNoSaveImagesToNfo
+        '
+        Me.chkNoSaveImagesToNfo.AutoSize = True
+        Me.chkNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 83)
+        Me.chkNoSaveImagesToNfo.Name = "chkNoSaveImagesToNfo"
+        Me.chkNoSaveImagesToNfo.Size = New System.Drawing.Size(182, 17)
+        Me.chkNoSaveImagesToNfo.TabIndex = 65
+        Me.chkNoSaveImagesToNfo.Text = "Do Not Save Image URLs to Nfo"
+        Me.chkNoSaveImagesToNfo.UseVisualStyleBackColor = True
+        '
         'chkUseETasFA
         '
         Me.chkUseETasFA.Enabled = False
@@ -1978,42 +2108,42 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode8.ImageIndex = 4
-        TreeNode8.Name = "nExts"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 4
-        TreeNode8.Text = "File System"
-        TreeNode9.ImageIndex = 1
-        TreeNode9.Name = "nXBMCCom"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 1
-        TreeNode9.Text = "XBMC Communication"
-        TreeNode10.ImageIndex = 0
-        TreeNode10.Name = "nGeneral"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 0
-        TreeNode10.Text = "General"
-        TreeNode11.ImageIndex = 5
-        TreeNode11.Name = "nSources"
-        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode11.SelectedImageIndex = 5
-        TreeNode11.Text = "Files and Sources"
-        TreeNode12.ImageIndex = 3
-        TreeNode12.Name = "nScraper"
-        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode12.SelectedImageIndex = 3
-        TreeNode12.Text = "Scraper - Data"
-        TreeNode13.ImageIndex = 6
-        TreeNode13.Name = "nImages"
-        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode13.SelectedImageIndex = 6
-        TreeNode13.Text = "Scraper - Images"
-        TreeNode14.ImageIndex = 2
-        TreeNode14.Name = "nMovies"
-        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode14.SelectedImageIndex = 2
-        TreeNode14.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode14})
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "File System"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "XBMC Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 5
+        TreeNode4.Name = "nSources"
+        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode4.SelectedImageIndex = 5
+        TreeNode4.Text = "Files and Sources"
+        TreeNode5.ImageIndex = 3
+        TreeNode5.Name = "nScraper"
+        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.SelectedImageIndex = 3
+        TreeNode5.Text = "Scraper - Data"
+        TreeNode6.ImageIndex = 6
+        TreeNode6.Name = "nImages"
+        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode6.SelectedImageIndex = 6
+        TreeNode6.Text = "Scraper - Images"
+        TreeNode7.ImageIndex = 2
+        TreeNode7.Name = "nMovies"
+        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode7.SelectedImageIndex = 2
+        TreeNode7.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2470,16 +2600,6 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
-        'chkNoSaveImagesToNfo
-        '
-        Me.chkNoSaveImagesToNfo.AutoSize = True
-        Me.chkNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 83)
-        Me.chkNoSaveImagesToNfo.Name = "chkNoSaveImagesToNfo"
-        Me.chkNoSaveImagesToNfo.Size = New System.Drawing.Size(182, 17)
-        Me.chkNoSaveImagesToNfo.TabIndex = 65
-        Me.chkNoSaveImagesToNfo.Text = "Do Not Save Image URLs to Nfo"
-        Me.chkNoSaveImagesToNfo.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -2494,13 +2614,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2512,7 +2632,11 @@ Partial Class dlgSettings
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
+        Me.tcCleaner.ResumeLayout(False)
+        Me.tpStandard.ResumeLayout(False)
+        Me.tpStandard.PerformLayout()
+        Me.tpExpert.ResumeLayout(False)
+        Me.tpExpert.PerformLayout()
         Me.gbColors.ResumeLayout(False)
         Me.gbColors.PerformLayout()
         Me.gbFilters.ResumeLayout(False)
@@ -2775,4 +2899,14 @@ Partial Class dlgSettings
     Friend WithEvents chkFanartOnly As System.Windows.Forms.CheckBox
     Friend WithEvents chkNoDLTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkNoSaveImagesToNfo As System.Windows.Forms.CheckBox
+    Friend WithEvents tcCleaner As System.Windows.Forms.TabControl
+    Friend WithEvents tpStandard As System.Windows.Forms.TabPage
+    Friend WithEvents tpExpert As System.Windows.Forms.TabPage
+    Friend WithEvents Label25 As System.Windows.Forms.Label
+    Friend WithEvents btnRemoveWhitelist As System.Windows.Forms.Button
+    Friend WithEvents btnAddWhitelist As System.Windows.Forms.Button
+    Friend WithEvents txtWhitelist As System.Windows.Forms.TextBox
+    Friend WithEvents lstWhitelist As System.Windows.Forms.ListBox
+    Friend WithEvents Label27 As System.Windows.Forms.Label
+    Friend WithEvents chkWhitelistVideo As System.Windows.Forms.CheckBox
 End Class
