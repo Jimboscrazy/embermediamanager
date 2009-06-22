@@ -127,6 +127,7 @@ Public Class frmMain
             Master.eSettings.WindowLoc = Me.Location
             Master.eSettings.WindowSize = Me.Size
             Master.eSettings.WindowState = Me.WindowState
+            Master.eSettings.InfoPanelState = Me.aniType
             Master.eSettings.Save()
 
             If Me.bwPrelim.IsBusy OrElse Me.bwFolderData.IsBusy OrElse isCL Then
@@ -402,11 +403,19 @@ Public Class frmMain
                 Me.Size = Master.eSettings.WindowSize
                 Me.WindowState = Master.eSettings.WindowState
 
+
                 Me.SetColors()
 
                 Me.SetMenus()
 
+                Me.MoveGenres()
+                Me.MoveMPAA()
                 Me.pnlInfoPanel.Height = 25
+                Me.aniType = Master.eSettings.InfoPanelState
+                If Not Me.aniType = 0 Then
+                    Me.aniRaise = True
+                    tmrAni.Start()
+                End If
                 Me.pnlFilter.Height = 25
                 Me.ClearInfo()
 
@@ -4036,7 +4045,7 @@ doCancel:
             Me.bsMedia.DataSource = Nothing
             Me.dgvMediaList.DataSource = Nothing
             Me.ClearInfo()
-            Me.pnlInfoPanel.Height = 25
+            'Me.pnlInfoPanel.Height = 25
             Me.btnDown.Enabled = False
             Me.btnMid.Enabled = True
             Me.btnUp.Enabled = True
