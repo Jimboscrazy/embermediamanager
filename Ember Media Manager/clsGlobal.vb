@@ -1969,24 +1969,28 @@ Public Class Master
     End Function
 
     Public Shared Function CheckUpdate() As Integer
-        Dim sHTTP As New HTTP
-        Dim updateXML As String = sHTTP.DownloadData("http://www.cube3studios.com/EMM/Update.xml")
-        sHTTP = Nothing
-
-        Dim xmlUpdate As XDocument
         Try
-            xmlUpdate = XDocument.Parse(updateXML)
-        Catch
+            Dim sHTTP As New HTTP
+            Dim updateXML As String = sHTTP.DownloadData("http://www.cube3studios.com/EMM/Update.xml")
+            sHTTP = Nothing
+
+            Dim xmlUpdate As XDocument
+            Try
+                xmlUpdate = XDocument.Parse(updateXML)
+            Catch
+                Return 0
+            End Try
+
+            Dim xUdpate = From xUp In xmlUpdate...<version> Select xUp.@current
+            If xUdpate.Count > 0 Then
+                Return Convert.ToInt32(xUdpate(0))
+            Else
+                Return 0
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return 0
         End Try
-
-        Dim xUdpate = From xUp In xmlUpdate...<version> Select xUp.@current
-        If xUdpate.Count > 0 Then
-            Return Convert.ToInt32(xUdpate(0))
-        Else
-            Return 0
-        End If
-
     End Function
 
     Public Shared Function GetChangelog() As String
