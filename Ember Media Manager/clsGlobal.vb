@@ -530,18 +530,15 @@ Public Class Master
         If File.Exists(Path.Combine(mePath, "Flags.xml")) Then
             Try
                 Dim strTag As String = String.Empty
-                Dim strFileAndTag As String = String.Empty
                 Dim atypeRef As String = String.Empty
                 Dim vresImage As String = String.Empty
                 Dim vsourceImage As String = String.Empty
+                Dim vtypeImage As String = String.Empty
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
 
                 If Not IsNothing(fiAV) Then
                     strTag = FITagData(fiAV)
-                    strFileAndTag = String.Format("{0} {1}", Path.GetFileName(strPath).ToLower, strTag)
-                Else
-                    strFileAndTag = Path.GetFileName(strPath).ToLower
                 End If
 
                 Dim xmlFlags As XDocument = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
@@ -558,14 +555,25 @@ Public Class Master
                 End If
 
                 'video source
-                Dim xVSourceDefault = From xDef In xmlFlags...<vtype> Select xDef.Element("default").Element("icon").Value
+                Dim xVSourceDefault = From xDef In xmlFlags...<vsource> Select xDef.Element("default").Element("icon").Value
                 If xVSourceDefault.Count > 0 Then
                     vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
                 End If
 
-                Dim xVSourceFlag = From xVSource In xmlFlags...<vtype>...<name> Where Regex.IsMatch(strFileAndTag, xVSource.@searchstring) Select xVSource.<icon>.Value
+                Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Where Regex.IsMatch(Path.GetFileName(strPath).ToLower, xVSource.@searchstring) Select xVSource.<icon>.Value
                 If xVSourceFlag.Count > 0 Then
                     vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
+                End If
+
+                'video type
+                Dim xVTypeDefault = From xDef In xmlFlags...<vtype> Select xDef.Element("default").Element("icon").Value
+                If xVTypeDefault.Count > 0 Then
+                    vtypeImage = Path.Combine(mePath, xVTypeDefault(0).ToString)
+                End If
+
+                Dim xVTypeFlag = From xVType In xmlFlags...<vtype>...<name> Where Regex.IsMatch(Path.GetFileName(strPath).ToLower, xVType.@searchstring) Select xVType.<icon>.Value
+                If xVTypeFlag.Count > 0 Then
+                    vtypeImage = Path.Combine(mePath, xVTypeFlag(0).ToString)
                 End If
 
                 'audio type
@@ -602,6 +610,12 @@ Public Class Master
                 If File.Exists(vsourceImage) Then
                     Using fsImage As New FileStream(vsourceImage, FileMode.Open, FileAccess.Read)
                         frmMain.pbVideo.Image = Image.FromStream(fsImage)
+                    End Using
+                End If
+
+                If File.Exists(vtypeImage) Then
+                    Using fsImage As New FileStream(vtypeImage, FileMode.Open, FileAccess.Read)
+                        frmMain.pbVType.Image = Image.FromStream(fsImage)
                     End Using
                 End If
 
