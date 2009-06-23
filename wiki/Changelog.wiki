@@ -1,6 +1,13 @@
 #summary Ember Media Manager Changelog
 #labels Featured
 
+*Changelog for version r422:*
+    * Fix: Frame extraction not working
+    * Change/Fix: Improvements to saving panel/splitter positions
+    * Change/Fix: Misc changes for stability and usability
+    * Change: Slight tweaks to media flagging images size and placement
+    * Change: Save AR to media info studio tag
+
 *Changelog for version r411:*
     * Feature: Option to skip movie files if they are smaller than a configurable size
     * Feature: Source filter for media list
