@@ -176,31 +176,31 @@ Namespace MediaInfo
                 'find the longest stream in the file
                 'find the number of video streams in the video file
                 Dim VideoStreams As Integer = Me.Count_Get(StreamKind.Visual)
-                Dim mivideo As New MediaInfo.Video
+                Dim miVideo As New MediaInfo.Video
                 For v As Integer = 0 To VideoStreams - 1
-                    mivideo = New MediaInfo.Video
+                    miVideo = New MediaInfo.Video
                     'get video data
-                    mivideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
-                    mivideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
+                    miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
+                    miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
                     'switch avs to h264
                     Dim miFormat As String = Me.Get_(StreamKind.Visual, v, "Format")
-                    mivideo.Codec = If(miFormat.ToLower = "avc", "h264", miFormat)
-                    mivideo.FormatInfo = miFormat
-                    mivideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String1")
-                    mivideo.Bitrate = Me.Get_(StreamKind.Visual, v, "BitRate/String")
-                    mivideo.BitrateMode = Me.Get_(StreamKind.Visual, v, "BitRate_Mode/String")
-                    mivideo.BitrateMax = Me.Get_(StreamKind.Visual, v, "BitRate_Maximum/String")
-                    mivideo.CodecID = Me.Get_(StreamKind.Visual, v, "CodecID")
-                    mivideo.CodecidInfo = Me.Get_(StreamKind.Visual, v, "CodecID/Info")
-                    mivideo.ScanType = Me.Get_(StreamKind.Visual, v, "ScanType")
-                    mivideo.AspectDisplayRatio = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
+                    miVideo.Codec = If(miFormat.ToLower = "avc", "h264", miFormat)
+                    miVideo.FormatInfo = miFormat
+                    miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String1")
+                    miVideo.Bitrate = Me.Get_(StreamKind.Visual, v, "BitRate/String")
+                    miVideo.BitrateMode = Me.Get_(StreamKind.Visual, v, "BitRate_Mode/String")
+                    miVideo.BitrateMax = Me.Get_(StreamKind.Visual, v, "BitRate_Maximum/String")
+                    miVideo.CodecID = Me.Get_(StreamKind.Visual, v, "CodecID")
+                    miVideo.CodecidInfo = Me.Get_(StreamKind.Visual, v, "CodecID/Info")
+                    miVideo.ScanType = Me.Get_(StreamKind.Visual, v, "ScanType")
+                    miVideo.AspectDisplayRatio = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
 
-                    With mivideo
+                    With miVideo
                         If Not String.IsNullOrEmpty(.Bitrate) OrElse Not String.IsNullOrEmpty(.BitrateMax) OrElse Not String.IsNullOrEmpty(.BitrateMode) OrElse _
                                 Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.CodecID) OrElse Not String.IsNullOrEmpty(.CodecidInfo) OrElse _
                                 Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.FormatInfo) OrElse Not String.IsNullOrEmpty(.Height) OrElse _
                                 Not String.IsNullOrEmpty(.ScanType) OrElse Not String.IsNullOrEmpty(.Width) Then
-                            fiInfo.StreamDetails.Video.Add(mivideo)
+                            fiInfo.StreamDetails.Video.Add(miVideo)
                         End If
                     End With
                 Next
