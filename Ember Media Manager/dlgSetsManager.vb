@@ -374,7 +374,7 @@ Public Class dlgSetsManager
 
             Return x.Order.CompareTo(y.Order)
         Catch
-            Return -1
+            Return 0
         End Try
     End Function
 
