@@ -2129,4 +2129,19 @@ Public Class Master
         End If
     End Function
 
+    Public Shared Sub DrawGradEllipse(ByRef graphics As Graphics, ByVal bounds As Rectangle, ByVal color1 As Color, ByVal color2 As Color)
+        Dim rPoints() As Point = { _
+            New Point(bounds.X, bounds.Y), _
+            New Point(bounds.X + bounds.Width, bounds.Y), _
+            New Point(bounds.X + bounds.Width, bounds.Y + bounds.Height), _
+            New Point(bounds.X, bounds.Y + bounds.Height) _
+        }
+        Dim pgBrush As New Drawing2D.PathGradientBrush(rPoints)
+        Dim gPath As New Drawing2D.GraphicsPath
+        gPath.AddEllipse(bounds.X, bounds.Y, bounds.Width, bounds.Height)
+        pgBrush = New Drawing2D.PathGradientBrush(gPath)
+        pgBrush.CenterColor = color1
+        pgBrush.SurroundColors = New Color() {color2}
+        graphics.FillEllipse(pgBrush, bounds.X, bounds.Y, bounds.Width, bounds.Height)
+    End Sub
 End Class

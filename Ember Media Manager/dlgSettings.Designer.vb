@@ -220,6 +220,7 @@ Partial Class dlgSettings
         Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.pnlScraper = New System.Windows.Forms.Panel
         Me.GroupBox20 = New System.Windows.Forms.GroupBox
+        Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox
         Me.chkNoDLTrailer = New System.Windows.Forms.CheckBox
         Me.chkSingleScrapeTrailer = New System.Windows.Forms.CheckBox
         Me.Label23 = New System.Windows.Forms.Label
@@ -249,7 +250,7 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox
+        Me.chkShowDims = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -990,12 +991,13 @@ Partial Class dlgSettings
         '
         'GroupBox12
         '
+        Me.GroupBox12.Controls.Add(Me.chkShowDims)
         Me.GroupBox12.Controls.Add(Me.Label8)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
         Me.GroupBox12.Controls.Add(Me.GroupBox2)
         Me.GroupBox12.Location = New System.Drawing.Point(209, 10)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(200, 189)
+        Me.GroupBox12.Size = New System.Drawing.Size(200, 335)
         Me.GroupBox12.TabIndex = 65
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
@@ -1028,7 +1030,7 @@ Partial Class dlgSettings
         Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
-        Me.GroupBox2.Location = New System.Drawing.Point(6, 62)
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 108)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(188, 114)
         Me.GroupBox2.TabIndex = 54
@@ -2316,6 +2318,15 @@ Partial Class dlgSettings
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
         '
+        'chkOverwriteTrailer
+        '
+        Me.chkOverwriteTrailer.Location = New System.Drawing.Point(19, 122)
+        Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
+        Me.chkOverwriteTrailer.Size = New System.Drawing.Size(148, 15)
+        Me.chkOverwriteTrailer.TabIndex = 67
+        Me.chkOverwriteTrailer.Text = "Overwrite Trailer"
+        Me.chkOverwriteTrailer.UseVisualStyleBackColor = True
+        '
         'chkNoDLTrailer
         '
         Me.chkNoDLTrailer.Location = New System.Drawing.Point(19, 62)
@@ -2613,14 +2624,15 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
-        'chkOverwriteTrailer
+        'chkShowDims
         '
-        Me.chkOverwriteTrailer.Location = New System.Drawing.Point(19, 122)
-        Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
-        Me.chkOverwriteTrailer.Size = New System.Drawing.Size(148, 15)
-        Me.chkOverwriteTrailer.TabIndex = 67
-        Me.chkOverwriteTrailer.Text = "Overwrite Trailer"
-        Me.chkOverwriteTrailer.UseVisualStyleBackColor = True
+        Me.chkShowDims.AutoSize = True
+        Me.chkShowDims.Location = New System.Drawing.Point(12, 56)
+        Me.chkShowDims.Name = "chkShowDims"
+        Me.chkShowDims.Size = New System.Drawing.Size(149, 17)
+        Me.chkShowDims.TabIndex = 57
+        Me.chkShowDims.Text = "Display Image Dimensions"
+        Me.chkShowDims.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -2636,13 +2648,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2934,4 +2946,5 @@ Partial Class dlgSettings
     Friend WithEvents chkWhitelistVideo As System.Windows.Forms.CheckBox
     Friend WithEvents chkInfoPanelAnim As System.Windows.Forms.CheckBox
     Friend WithEvents chkOverwriteTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowDims As System.Windows.Forms.CheckBox
 End Class
