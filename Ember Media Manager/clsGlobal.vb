@@ -1574,29 +1574,37 @@ Public Class Master
 
     Public Shared Function SortFileNames(ByVal x As FileInfo, ByVal y As FileInfo) As Integer
 
-        If String.IsNullOrEmpty(x.Name) Then
-            Return -1
-        End If
-        If String.IsNullOrEmpty(y.Name) Then
-            Return 1
-        End If
+        Try
+            If String.IsNullOrEmpty(x.Name) Then
+                Return -1
+            End If
+            If String.IsNullOrEmpty(y.Name) Then
+                Return 1
+            End If
 
-        Return x.Name.CompareTo(y.Name)
+            Return x.Name.CompareTo(y.Name)
+        Catch
+            Return 0
+        End Try
 
     End Function
 
     Public Shared Function SortThumbFileNames(ByVal x As FileInfo, ByVal y As FileInfo) As Integer
 
-        Dim ObjectCompare As New CaseInsensitiveComparer
+        Try
+            Dim ObjectCompare As New CaseInsensitiveComparer
 
-        If String.IsNullOrEmpty(x.Name) Then
-            Return -1
-        End If
-        If String.IsNullOrEmpty(y.Name) Then
-            Return 1
-        End If
+            If String.IsNullOrEmpty(x.Name) Then
+                Return -1
+            End If
+            If String.IsNullOrEmpty(y.Name) Then
+                Return 1
+            End If
 
-        Return ObjectCompare.Compare(Convert.ToInt32(Regex.Match(x.Name, "(\d+)").Groups(0).ToString), Convert.ToInt32(Regex.Match(y.Name, "(\d+)").Groups(0).ToString))
+            Return ObjectCompare.Compare(Convert.ToInt32(Regex.Match(x.Name, "(\d+)").Groups(0).ToString), Convert.ToInt32(Regex.Match(y.Name, "(\d+)").Groups(0).ToString))
+        Catch
+            Return 0
+        End Try
 
     End Function
 
