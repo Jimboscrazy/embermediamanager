@@ -573,11 +573,27 @@ Public Class frmMain
         '\\
 
         Try
-            If Me.aniRaise Then
-                Me.pnlInfoPanel.Height += 5
+            If Master.eSettings.InfoPanelAnim Then
+                If Me.aniRaise Then
+                    Me.pnlInfoPanel.Height += 5
+                Else
+                    Me.pnlInfoPanel.Height -= 5
+                End If
             Else
-                Me.pnlInfoPanel.Height -= 5
+                Select Case Me.aniType
+                    Case 0
+                        Me.pnlInfoPanel.Height = 25
+     
+                    Case 1
+                        Me.pnlInfoPanel.Height = 280
+
+                    Case 2
+                        Me.pnlInfoPanel.Height = 500
+
+                End Select
+                Me.tmrAni.Stop()
             End If
+
 
             Me.MoveGenres()
             Me.MoveMPAA()
@@ -2978,10 +2994,10 @@ doCancel:
 
             Me.dgvMediaList.DataSource = Nothing
 
-            Me.pnlInfoPanel.Height = 25
-            Me.btnDown.Enabled = False
-            Me.btnMid.Enabled = False
-            Me.btnUp.Enabled = False
+            'Me.pnlInfoPanel.Height = 25
+            'Me.btnDown.Enabled = False
+            'Me.btnMid.Enabled = False
+            'Me.btnUp.Enabled = False
 
             Me.ClearInfo()
             Me.EnableFilters(False)
@@ -4087,9 +4103,9 @@ doCancel:
             Me.dgvMediaList.DataSource = Nothing
             Me.ClearInfo()
             'Me.pnlInfoPanel.Height = 25
-            Me.btnDown.Enabled = False
-            Me.btnMid.Enabled = True
-            Me.btnUp.Enabled = True
+            'Me.btnDown.Enabled = False
+            'Me.btnMid.Enabled = True
+            'Me.btnUp.Enabled = True
             Application.DoEvents()
 
             Me.dtMedia = New DataTable
@@ -4178,8 +4194,8 @@ doCancel:
                             .dgvMediaList.Rows(iIndex).Cells(3).Selected = True
                             .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
                         End If
-                        .btnUp.Enabled = True
-                        .btnMid.Enabled = True
+                        '.btnUp.Enabled = True
+                        '.btnMid.Enabled = True
 
                         .tsbAutoPilot.Enabled = True
                         .mnuMediaList.Enabled = True
@@ -4188,9 +4204,9 @@ doCancel:
                     Me.tsbAutoPilot.Enabled = False
                     Me.mnuMediaList.Enabled = False
                     Me.tslStatus.Text = String.Empty
-                    Me.btnUp.Enabled = False
-                    Me.btnDown.Enabled = False
-                    Me.btnMid.Enabled = False
+                    'Me.btnUp.Enabled = False
+                    'Me.btnDown.Enabled = False
+                    'Me.btnMid.Enabled = False
                     Me.ClearInfo()
                 End If
             End If

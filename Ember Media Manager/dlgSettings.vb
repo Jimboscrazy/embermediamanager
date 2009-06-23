@@ -1116,6 +1116,7 @@ Public Class dlgSettings
             Master.eSettings.ValidExts.Clear()
             Master.eSettings.ValidExts.AddRange(lstMovieExts.Items)
             Master.eSettings.CheckUpdates = chkUpdates.Checked
+            Master.eSettings.InfoPanelAnim = chkInfoPanelAnim.Checked
 
             '######## MOVIES TAB ########
             Master.eSettings.MovieFolders.Clear()
@@ -1286,7 +1287,7 @@ Public Class dlgSettings
             Me.chkScanRecursive.Checked = Master.eSettings.ScanRecursive
             Me.lstMovieExts.Items.AddRange(Master.eSettings.ValidExts.ToArray)
             Me.chkUpdates.Checked = Master.eSettings.CheckUpdates
-
+            Me.chkInfoPanelAnim.Checked = Master.eSettings.InfoPanelAnim
             '######## MOVIES TAB ########
             For Each strFolders As String In Master.eSettings.MovieFolders
                 dirArray = Split(strFolders, "|")
@@ -1451,4 +1452,11 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub GroupBox2_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox2.Enter
+
+    End Sub
+
+    Private Sub chkInfoPanelAnim_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkInfoPanelAnim.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 End Class

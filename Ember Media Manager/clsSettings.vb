@@ -123,6 +123,7 @@ Public Class emmSettings
     Private _infopanelstate As Integer
     Private _filterPanelState As Boolean
     Private _scmainstate As Integer
+    Private _infopanelanim As Boolean
     Private _checkupdates As Boolean
     Private _bdpath As String
     Private _autobd As Boolean
@@ -1022,6 +1023,14 @@ Public Class emmSettings
             Me._scmainstate = value
         End Set
     End Property
+    Public Property InfoPanelAnim() As Boolean
+        Get
+            Return Me._infopanelanim
+        End Get
+        Set(ByVal value As Boolean)
+            Me._infopanelanim = value
+        End Set
+    End Property
     Public Property CheckUpdates() As Boolean
         Get
             Return Me._checkupdates
@@ -1314,6 +1323,7 @@ Public Class emmSettings
         Me._infopanelstate = 0
         Me._filterPanelState = False
         Me._scmainstate = 305
+        Me._infopanelanim = True
         Me._checkupdates = True
         Me._bdpath = String.Empty
         Me._autobd = False
