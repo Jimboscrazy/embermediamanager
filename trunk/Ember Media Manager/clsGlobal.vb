@@ -1181,6 +1181,7 @@ Public Class Master
                 Dim iWidth As Integer = 0
                 Dim iHeight As Integer = 0
                 Dim sinADR As Single = 0
+                Dim sinADRTag As Single = 0
                 Dim sScanType As String = String.Empty
                 Dim sCodec As String = String.Empty
                 Dim sinMostChannels As Single = 0
@@ -1219,12 +1220,27 @@ Public Class Master
                         'audio
                         sSubLang.AppendFormat(" / sub{0}", curSS.Language)
                     Next
+
+                    Select Case True
+                        Case sinADR <= 1.38 AndAlso sinADR >= 1.28
+                            sinADRTag = 1.33
+                        Case sinADR <= 1.71 AndAlso sinADR >= 1.61
+                            sinADRTag = 1.66
+                        Case sinADR <= 1.83 AndAlso sinADR >= 1.73
+                            sinADRTag = 1.78
+                        Case sinADR <= 1.9 AndAlso sinADR >= 1.8
+                            sinADRTag = 1.85
+                        Case sinADR <= 2.38 AndAlso sinADR >= 2.3
+                            sinADRTag = 2.35
+                        Case sinADR <= 2.44 AndAlso sinADR >= 2.39
+                            sinADRTag = 2.39
+                    End Select
                 End If
                 If hasVS Then
                     If doShort Then
                         statusStr = String.Format("{0}{1}|{2}|{3}|{4}ch", GetResFromDimensions(iWidest, iHeight, sinADR), sScanType, sCodec, sACodec, sinMostChannels)
                     Else
-                        statusStr = String.Format(" / {0}{1} / {2} / {3} / {4}ch / {5}{6}", GetResFromDimensions(iWidest, iHeight, sinADR), sScanType, sCodec, sACodec, sinMostChannels, sLang, sSubLang.ToString)
+                        statusStr = String.Format(" / {0}{1} / {2} / {3} / {4} / {5}ch / {6}{7}", GetResFromDimensions(iWidest, iHeight, sinADR), sScanType, sinADRTag, sCodec, sACodec, sinMostChannels, sLang, sSubLang.ToString)
                     End If
                 Else
                     Return String.Empty
