@@ -668,7 +668,7 @@ mPlot:
                                 Where Not Po.ToString.Contains(String.Concat("http://", Master.eSettings.IMDBURL, "/Glossary/")) _
                                 Let P1 = Regex.Match(Po.ToString, HREF_PATTERN_2) _
                                 Where Not P1.Groups("name").ToString = String.Empty _
-                                Select Producer = Web.HttpUtility.HtmlDecode(String.Concat(P1.Groups("name").ToString & " (producer)"))
+                                Select Producer = Web.HttpUtility.HtmlDecode(String.Concat(P1.Groups("name").ToString, " (producer)"))
 
                                 If Pr.Count > 0 Then
                                     IMDBMovie.Credits = String.Concat(IMDBMovie.Credits, " / ", Strings.Join(Pr.ToArray, " / ").Trim)

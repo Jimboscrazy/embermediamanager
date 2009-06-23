@@ -153,7 +153,7 @@ Public Class dlgManualEdit
                     For j = 1 To LevelX
                         TabC += vbTab
                     Next
-                    StrW.WriteLine(TabC & TagS)
+                    StrW.WriteLine(String.Concat(TabC, TagS))
                 Else
                     m = Regex.Match(AllData, "^\<([^>/]+)\>([^<]+)\<\/([^>/]+)\>") 'Opening Tag
                     If m.Success Then
@@ -164,7 +164,7 @@ Public Class dlgManualEdit
                         For j = 1 To LevelX 'Calculating depth of tag
                             TabC += vbTab
                         Next
-                        StrW.WriteLine(TabC & TagS)
+                        StrW.WriteLine(String.Concat(TabC, TagS))
                     Else
                         m = Regex.Match(AllData, "^\<\/([^>]+)\>(.*)") 'Closing Tag
                         If m.Success Then
@@ -177,7 +177,7 @@ Public Class dlgManualEdit
                                 TabC += vbTab
                             Next
 
-                            StrW.WriteLine(TabC & TagS)
+                            StrW.WriteLine(String.Concat(TabC, TagS))
 
                         Else
                             m = Regex.Match(AllData, "^\<([^>]+)\>(.*)")
@@ -189,7 +189,7 @@ Public Class dlgManualEdit
                                     TabC += vbTab
                                 Next
 
-                                StrW.WriteLine(TabC & TagS)
+                                StrW.WriteLine(String.Concat(TabC, TagS))
 
                             Else
                                 m = Regex.Match(AllData, "^([^<]+)\<")
@@ -202,7 +202,7 @@ Public Class dlgManualEdit
                                         TabC += vbTab
                                     Next
 
-                                    StrW.WriteLine(TabC & TagS)
+                                    StrW.WriteLine(String.Concat(TabC, TagS))
 
                                 Else
                                     MsgBox("This is not a proper XML document", MsgBoxStyle.Information)

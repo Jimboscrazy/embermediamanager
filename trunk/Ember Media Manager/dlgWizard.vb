@@ -191,7 +191,7 @@ Public Class dlgWizard
     Private Sub SaveSettings()
         Master.eSettings.MovieFolders.Clear()
         For Each lvItem As ListViewItem In Me.lvMovies.Items
-            Master.eSettings.MovieFolders.Add(lvItem.Text & "|" & lvItem.SubItems(1).Text)
+            Master.eSettings.MovieFolders.Add(String.Concat(lvItem.Text, "|", lvItem.SubItems(1).Text))
         Next
 
         Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked

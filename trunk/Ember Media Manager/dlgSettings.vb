@@ -1131,7 +1131,7 @@ Public Class dlgSettings
             '######## MOVIES TAB ########
             Master.eSettings.MovieFolders.Clear()
             For Each lvItem As ListViewItem In Me.lvMovies.Items
-                Master.eSettings.MovieFolders.Add(lvItem.Text & "|" & lvItem.SubItems(1).Text)
+                Master.eSettings.MovieFolders.Add(String.Concat(lvItem.Text, "|", lvItem.SubItems(1).Text))
             Next
 
             Master.eSettings.CertificationLang = Me.cbCert.Text
@@ -1459,7 +1459,7 @@ Public Class dlgSettings
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
-            MsgBox("Cannot find Genres.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Genres.xml"), MsgBoxStyle.Critical, "File Not Found")
+            MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Genres.xml")), MsgBoxStyle.Critical, "File Not Found")
         End If
 
     End Sub

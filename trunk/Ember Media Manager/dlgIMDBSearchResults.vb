@@ -41,7 +41,7 @@ Public Class dlgIMDBSearchResults
                     MsgBox("The ID you entered is not a valid IMDB ID", MsgBoxStyle.Exclamation, "Invalid Entry")
                     Exit Sub
                 Else
-                    If MsgBox("You have manually entered an IMDB ID but have not verified it is correct." & vbNewLine & vbNewLine & "Are you sure you want to continue without verification?", MsgBoxStyle.YesNo, "Continue without verification?") = MsgBoxResult.No Then
+                    If MsgBox(String.Concat("You have manually entered an IMDB ID but have not verified it is correct.", vbNewLine, vbNewLine, "Are you sure you want to continue without verification?"), MsgBoxStyle.YesNo, "Continue without verification?") = MsgBoxResult.No Then
                         Exit Sub
                     Else
                         Master.tmpMovie.IMDBID = Me.txtIMDBID.Text.Replace("tt", String.Empty)

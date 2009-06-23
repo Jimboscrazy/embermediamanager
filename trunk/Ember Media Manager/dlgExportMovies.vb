@@ -25,7 +25,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 
 Public Class dlgExportMovies
-    Dim HTMLBody As String = ""
+    Dim HTMLBody As New StringBuilder
     Dim _movies As New List(Of Media.Movie)
     Dim bFiltered As Boolean = False
     Dim bCancelled As Boolean = False
@@ -87,59 +87,65 @@ Public Class dlgExportMovies
     Sub BuildHTML(Optional ByVal bSearch As Boolean = False, Optional ByVal strFilter As String = "", Optional ByVal strIn As String = "")
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
-            HTMLBody = "" 'blank it
-            HTMLBody &= My.Resources.MovieListHeader
-            HTMLBody &= My.Resources.MediaListLogo
-            HTMLBody &= My.Resources.MovieListTableStart
+            HTMLBody = New StringBuilder 'blank it
+            HTMLBody.Append(My.Resources.MovieListHeader)
+            HTMLBody.Append(My.Resources.MediaListLogo)
+            HTMLBody.Append(My.Resources.MovieListTableStart)
             If bSearch Then
                 bFiltered = True
             Else
                 bFiltered = False
             End If
             ' For now fixed Cols
-            Dim rowHeader As String = My.Resources.MovieListTableRowStart
-            rowHeader &= String.Format(My.Resources.MovieListTableHeader, "Title")
-            rowHeader &= String.Format(My.Resources.MovieListTableHeader, "Year")
-            rowHeader &= String.Format(My.Resources.MovieListTableHeader, "Video")
-            rowHeader &= String.Format(My.Resources.MovieListTableHeader, "Audio")
-            rowHeader &= My.Resources.MovieListTableRowEnd
-            HTMLBody &= rowHeader
+            Dim rowHeader As New StringBuilder
+            rowHeader.Append(My.Resources.MovieListTableRowStart)
+            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, "Title")
+            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, "Year")
+            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, "Video")
+            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, "Audio")
+            rowHeader.Append(My.Resources.MovieListTableRowEnd)
+            HTMLBody.Append(rowHeader)
             For Each _curMovie As Media.Movie In _movies
-                Dim _vidDetails As String = ""
-                Dim _audDetails As String = ""
-                Dim _flags() As String = _curMovie.Studio.Split(New String() {" /"}, StringSplitOptions.None)
-                If _flags.Length >= 3 Then
-                    If Not _flags(2).Contains("/") Then
-                        _vidDetails &= _flags(2).Trim
-                    Else
-                        Dim _vidParts() As String = _flags(2).Trim.Split(New Char() {"/"})
-                        _vidDetails &= _vidParts(_vidParts.Length - 1)
-                    End If
-                    _vidDetails &= " " & _flags(1).Trim
+                Dim _vidDetails As String = String.Empty
+                Dim _audDetails As String = String.Empty
+                Dim _flags(4) As String
+                If Not IsNothing(_curMovie.FileInfo) AndAlso (_curMovie.FileInfo.StreamDetails.Video.Count > 0 OrElse _curMovie.FileInfo.StreamDetails.Audio.Count > 0) Then
+                    _flags = Strings.Split(Master.FITagData(_curMovie.FileInfo, True).Trim, "|")
                 End If
-                If _flags.Length >= 4 Then
-                    _audDetails = _flags(3).Trim & " " & _flags(4).Trim
+
+                If Not IsNothing(_flags(1)) Then
+                    _vidDetails = String.Format("{0} / {1}", _flags(1).Trim, _flags(0).Trim)
+                ElseIf Not IsNothing(_flags(0)) Then
+                    _vidDetails = _flags(0).Trim
                 End If
-                Dim row As String = My.Resources.MovieListTableRowStart
-                row &= String.Format(My.Resources.MovieListTableCol, Web.HttpUtility.HtmlEncode(_curMovie.Title))
-                row &= String.Format(My.Resources.MovieListTableCol, _curMovie.Year)
-                row &= String.Format(My.Resources.MovieListTableCol, _vidDetails)
-                row &= String.Format(My.Resources.MovieListTableCol, _audDetails)
+
+                If Not IsNothing(_flags(3)) Then
+                    _audDetails = String.Format("{0} / {1}", _flags(2).Trim, _flags(3).Trim)
+                ElseIf Not IsNothing(_flags(2)) Then
+                    _audDetails = _flags(2).Trim
+                End If
+
+                Dim row As New StringBuilder
+                row.Append(My.Resources.MovieListTableRowStart)
+                row.AppendFormat(My.Resources.MovieListTableCol, Web.HttpUtility.HtmlEncode(_curMovie.Title))
+                row.AppendFormat(My.Resources.MovieListTableCol, _curMovie.Year)
+                row.AppendFormat(My.Resources.MovieListTableCol, _vidDetails)
+                row.AppendFormat(My.Resources.MovieListTableCol, _audDetails)
                 If bSearch Then
                     If (strIn = "Video Flag" And _vidDetails.Contains(strFilter)) Or _
                        (strIn = "Audio Flag" And _audDetails.Contains(strFilter)) Or _
                        (strIn = "Title" And _curMovie.Title.Contains(strFilter)) Or _
                        (strIn = "Year" And _curMovie.Year.Contains(strFilter)) Then
-                        row &= My.Resources.MovieListTableRowEnd
-                        HTMLBody &= row
+                        row.Append(My.Resources.MovieListTableRowEnd)
+                        HTMLBody.Append(row)
                     End If
                 Else
-                    row &= My.Resources.MovieListTableRowEnd
-                    HTMLBody &= row
+                    row.Append(My.Resources.MovieListTableRowEnd)
+                    HTMLBody.Append(row)
                 End If
             Next
-            HTMLBody &= My.Resources.MovieListTableEnd
-            HTMLBody &= My.Resources.MovieListFooter
+            HTMLBody.Append(My.Resources.MovieListTableEnd)
+            HTMLBody.Append(My.Resources.MovieListFooter)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -152,7 +158,7 @@ Public Class dlgExportMovies
         '\\
         bCancelled = e.Cancelled
         If Not e.Cancelled Then
-            wbMovieList.DocumentText = HTMLBody
+            wbMovieList.DocumentText = HTMLBody.ToString
         Else
             wbMovieList.DocumentText = "<center><h1 style=""color:Red;"">Cancelled</h1></center>"
         End If
@@ -215,7 +221,7 @@ Public Class dlgExportMovies
     Private Sub Search_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Search_Button.Click
         pnlSearch.Enabled = False
         BuildHTML(True, txtSearch.Text, cbSearch.Text)
-        wbMovieList.DocumentText = HTMLBody
+        wbMovieList.DocumentText = HTMLBody.ToString
     End Sub
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
@@ -237,7 +243,7 @@ Public Class dlgExportMovies
     Private Sub Reset_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Reset_Button.Click
         pnlSearch.Enabled = False
         BuildHTML(False)
-        wbMovieList.DocumentText = HTMLBody
+        wbMovieList.DocumentText = HTMLBody.ToString
     End Sub
 
     Private Sub dlgMoviesReport_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
