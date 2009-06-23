@@ -2115,23 +2115,27 @@ Public Class frmMain
                         Me.pbFanart.Image = Nothing
                     End If
                 End If
+
                 Dim g As Graphics
                 Dim strSize As String
                 Dim lenSize
                 Dim rect As Rectangle
+
                 If Not IsNothing(Me.MainPoster.Image) Then
                     Me.pbPosterCache.Image = Me.MainPoster.Image
                     Master.ResizePB(Me.pbPoster, Me.pbPosterCache, 160, 160)
                     Master.SetOverlay(Me.pbPoster)
                     Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
-                    g = Graphics.FromImage(pbPoster.Image)
-                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                    lenSize = g.MeasureString(strSize, New Font("Arial", 10, FontStyle.Bold)).Width
-                    g.FillEllipse(New SolidBrush(Color.FromArgb(128, 0, 0, 0)), (pbPoster.Image.Width - lenSize) / 2 - 10, Me.pbPoster.Height - 25, lenSize + 15, 25)
-                    g.DrawEllipse(New Pen(Color.FromArgb(128, 255, 255, 255)), (pbPoster.Image.Width - lenSize) / 2 - 10, Me.pbPoster.Height - 25, lenSize + 15, 25)
-                    g.DrawString(strSize, New Font("Arial", 10, FontStyle.Bold), New SolidBrush(Color.White), (pbPoster.Image.Width - lenSize) / 2, Me.pbPoster.Height - 20)
-
+                    If Master.eSettings.ShowDims Then
+                        g = Graphics.FromImage(pbPoster.Image)
+                        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                        strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
+                        lenSize = g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width
+                        rect = New Rectangle((pbPoster.Image.Width - lenSize) / 2 - 10, Me.pbPoster.Height - 25, lenSize + 15, 25)
+                        Master.DrawGradEllipse(g, rect, Color.FromArgb(250, 100, 100, 100), Color.FromArgb(0, 255, 255, 255))
+                        g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbPoster.Image.Width - lenSize) / 2, Me.pbPoster.Height - 20)
+                    End If
 
                     Me.pbPoster.Location = New Point(4, 4)
                     Me.pnlPoster.Visible = True
@@ -2146,19 +2150,15 @@ Public Class frmMain
                 Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
 
-                g = Graphics.FromImage(pbFanart.Image)
-                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                lenSize = g.MeasureString(strSize, New Font("Arial", 10, FontStyle.Bold)).Width
-                rect = New Rectangle((pbFanart.Image.Width - lenSize) - 30, 15, lenSize + 15, 25)
-                'g.FillEllipse(New SolidBrush(Color.FromArgb(128, 0, 0, 0)), (pbFanart.Image.Width - lenSize) - 30, 15, lenSize + 15, 25)
-
-                Draw3DBall(g, rect, Color.FromArgb(200, 0, 0, 50), Color.FromArgb(200, 200, 200, 200))
-                g.DrawEllipse(New Pen(Color.FromArgb(128, 150, 150, 150)), (pbFanart.Image.Width - lenSize) - 30, 15, lenSize + 15, 25)
-                g.DrawString(strSize, New Font("Arial", 10, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 20, 20)
-
-                'g.FillEllipse(New SolidBrush(Color.FromArgb(128, 30, 30, 30)), (pbFanart.Image.Width - lenSize) - 30, 15, lenSize + 15, 20)
-                'g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.FromArgb(180, 255, 255, 255)), (pbFanart.Image.Width - lenSize) - 20, 19)
-                'g.DrawEllipse(New Pen(Color.FromArgb(180, 90, 90, 90)), (pbFanart.Image.Width - lenSize) - 30, 15, lenSize + 15, 20)
+                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanart.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                    lenSize = g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width
+                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 30)
+                    Master.DrawGradEllipse(g, rect, Color.FromArgb(250, 100, 100, 100), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 18)
+                End If
 
                 If Not bwScraper.IsBusy Then
                     Me.ToolsToolStripMenuItem.Enabled = True
@@ -2173,29 +2173,6 @@ Public Class frmMain
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-    End Sub
-
-    Private Sub Draw3DBall(ByVal graphics As Graphics, ByVal bounds As Rectangle, ByVal color1 As Color, ByVal color2 As Color)
-        'Enforce anti-aliasing
-        Dim oldSmoothingMode As System.Drawing.Drawing2D.SmoothingMode = graphics.SmoothingMode
-        graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias
-
-        'Create the path used for drawing our ellipse
-        Dim path As System.Drawing.Drawing2D.GraphicsPath = New System.Drawing.Drawing2D.GraphicsPath
-        Dim ellipseBounds As Rectangle = bounds
-        ellipseBounds.Offset(-Convert.ToInt32(bounds.Width * 0.2), -Convert.ToInt32(bounds.Height * 0.2))
-        ellipseBounds.Inflate(Convert.ToInt32(bounds.Width * 0.3), Convert.ToInt32(bounds.Width * 0.3))
-        path.AddEllipse(ellipseBounds)
-
-        'Create our brush and fill ellipse
-        Dim brush As System.Drawing.Drawing2D.PathGradientBrush = New System.Drawing.Drawing2D.PathGradientBrush(path)
-        brush.CenterColor = color1
-        brush.SurroundColors = New Color() {color2}
-        graphics.FillEllipse(brush, bounds)
-        brush.Dispose()
-
-        'Restore old smoothing
-        graphics.SmoothingMode = oldSmoothingMode
     End Sub
 
     Private Sub bwScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwScraper.DoWork
@@ -2616,14 +2593,14 @@ Public Class frmMain
                                             End If
                                         End If
 
-                                            If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                            If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
-                                            (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
-                                                If Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs) Then parFanart.Value = True
-                                            End If
+                                        If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                        If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
+                                        (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
+                                            If Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs) Then parFanart.Value = True
                                         End If
+                                    End If
 
-                                        SQLcommand.ExecuteNonQuery()
+                                    SQLcommand.ExecuteNonQuery()
                                 Next
                             Case Master.ScrapeType.UpdateAsk
                                 For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -2753,14 +2730,14 @@ Public Class frmMain
                                             End If
                                         End If
 
-                                            If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                            If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
-                                            (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
-                                                If Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs) Then parFanart.Value = True
-                                            End If
+                                        If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                        If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")) AndAlso _
+                                        (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
+                                            If Master.CreateRandomThumbs(sPath, Master.eSettings.AutoThumbs) Then parFanart.Value = True
                                         End If
+                                    End If
 
-                                        SQLcommand.ExecuteNonQuery()
+                                    SQLcommand.ExecuteNonQuery()
                                 Next
 
                         End Select

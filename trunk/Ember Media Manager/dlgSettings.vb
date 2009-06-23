@@ -1003,6 +1003,10 @@ Public Class dlgSettings
     Private Sub chkOverwriteTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteTrailer.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkShowDims_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowDims.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1252,6 +1256,8 @@ Public Class dlgSettings
                 End If
             End If
 
+            Master.eSettings.ShowDims = Me.chkShowDims.Checked
+
             Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1419,6 +1425,8 @@ Public Class dlgSettings
             Else
                 Me.lbGenre.SetItemChecked(0, True)
             End If
+
+            Me.chkShowDims.Checked = Master.eSettings.ShowDims
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
