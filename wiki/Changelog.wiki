@@ -1,7 +1,7 @@
 #summary Ember Media Manager Changelog
 #labels Featured
 
-*Changelog for version r408:*
+*Changelog for version r411:*
     * Feature: Option to skip movie files if they are smaller than a configurable size
     * Feature: Source filter for media list
     * Feature: Enhanced commandline operation (now silent by default for single movie, able to utilize any of the other updaters/modifiers)
