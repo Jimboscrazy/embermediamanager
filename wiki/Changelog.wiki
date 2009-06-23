@@ -1,6 +1,34 @@
 #summary Ember Media Manager Changelog
 #labels Featured
 
+*Changelog for version r408:*
+    * Feature: Option to skip movie files if they are smaller than a configurable size
+    * Feature: Source filter for media list
+    * Feature: Enhanced commandline operation (now silent by default for single movie, able to utilize any of the other updaters/modifiers)
+    * Feature: Tool for reversion of studio tags
+    * Feature: Offline Media Manager (create "dummy" files, including customizable video, for physical dvd movies)
+    * Feature: Download trailers (supported sites: YouTube/TMDB, AllTrailers, MattTrailers, AZMovies, IMDB) - Thanks to mafis90 for the initial code
+    * Feature: Configurable poster and fanart image quality
+    * Feature: Option to download the preferred fanart size only
+    * Feature: Custom Updater
+    * Feature: Expert Mode cleaner tool
+    * Feature: Option to not save image urls to nfo (YAMJ compatibility)
+    * Fix: Check for null in Sets comparison
+    * Fix: Always use full path to settings and database for Windows 7 user folder compatibility
+    * Fix: Multi-language genres not loading properly
+    * Change/Fix: More error handling in Sets Manager
+    * Change/Fix: LOTS of code tweaks/improvements
+    * Change: Disable specific updaters depending on setting
+    * Change: Improved clean up of database on rescan
+    * Change: Tweaks to filters
+    * Change: Exclude parent folder when validating paths for media
+    * Change: Set studio tag to studioreal if Use MI Studio Tags is disabled
+    * Change: Only allow single instance except for commandline operation
+    * Change: Improved compatibility for XBMC native media flagging
+    * Change: Do not cut off long movie names
+    * Change: Real-time update of media list checkboxes during updaters
+    * Change: Remember panel and splitter positions
+
 *Changelog for version r324:*
  * Fix: Movies not loading new info properly after editing/scraping
  * Fix: Decode html for studio selector in movie editor
