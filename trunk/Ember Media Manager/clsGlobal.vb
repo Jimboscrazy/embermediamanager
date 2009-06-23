@@ -780,13 +780,14 @@ Public Class Master
         '\\
 
         Try
-            sPath = sPath.Remove(0, sPath.LastIndexOf("\")) ' Don't check parent folders
+
+            Dim tPath As String = Directory.GetParent(sPath).FullName 'don't check parent folder
             If sPath.ToLower.Contains("subs") OrElse _
             sPath.ToLower.Contains("subtitles") OrElse _
             sPath.ToLower.Contains("sample") Then
                 Return False
             End If
-            sPath = sPath.Remove(0, sPath.IndexOf("\")) ' Check everthing
+            tPath = sPath.Remove(0, sPath.IndexOf("\")) ' Check everthing
             If Path.GetDirectoryName(sPath).ToLower = "extrathumbs" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "extras" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "video_ts" OrElse _
