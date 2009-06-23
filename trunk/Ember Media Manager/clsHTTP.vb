@@ -79,7 +79,7 @@ Public Class HTTP
             wrResponse.Close()
             wrResponse = Nothing
             wrRequest = Nothing
-        Catch
+        Catch ex As Exception
         End Try
 
         Return sResponse
