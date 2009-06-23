@@ -1981,10 +1981,10 @@ Public Class frmMain
                     Me.txtMediaInfo.Text = Res.fileInfo
                     If Master.eSettings.ScanMediaInfo Then
                         Master.GetAVImages(Res.Movie.FileInfo, Res.Path)
-                        Me.pnlInfoIcons.Width = 417
-                        Me.pbStudio.Left = 346
+                        Me.pnlInfoIcons.Width = 390
+                        Me.pbStudio.Left = 325
                     Else
-                        Me.pnlInfoIcons.Width = 70
+                        Me.pnlInfoIcons.Width = 65
                         Me.pbStudio.Left = 0
                     End If
                     If Master.eSettings.UseMIDuration Then
@@ -3271,10 +3271,10 @@ doCancel:
 
             If Master.eSettings.ScanMediaInfo Then
                 Master.GetAVImages(Master.currMovie.FileInfo, Master.currPath)
-                Me.pnlInfoIcons.Width = 417
-                Me.pbStudio.Left = 346
+                Me.pnlInfoIcons.Width = 390
+                Me.pbStudio.Left = 325
             Else
-                Me.pnlInfoIcons.Width = 70
+                Me.pnlInfoIcons.Width = 65
                 Me.pbStudio.Left = 0
             End If
 
