@@ -1344,7 +1344,7 @@ Public Class emmSettings
         Me._useimgcache = True
         Me._useimgcacheupdater = False
         Me._persistimagecache = False
-        Me._skiplessthan = 300
+        Me._skiplessthan = 0
         Me._skipstacksizecheck = False
         Me._downloadtrailers = False
         Me._updatertrailers = False
