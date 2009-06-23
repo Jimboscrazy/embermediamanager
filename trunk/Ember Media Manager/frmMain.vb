@@ -269,20 +269,19 @@ Public Class frmMain
 
         Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
         If File.Exists(sPath) Then
+            If File.Exists(sPath.Insert(sPath.LastIndexOf("."), "-old")) Then File.Delete(sPath.Insert(sPath.LastIndexOf("."), "-old"))
             Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
             File.Delete(sPath)
         End If
 
-        If Not Directory.Exists(Master.TempPath) Then
-            Directory.CreateDirectory(Master.TempPath)
-        End If
+        If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
         Master.eSettings.Load()
         Master.CreateDefaultOptions()
 
         Dim MoviePath As String = String.Empty
         Dim isFile As Boolean = False
-        Dim hasSpec As Boolean = True
+        Dim hasSpec As Boolean = False
         Dim clScrapeType As Master.ScrapeType = Nothing
         Dim clScrapeMod As Master.ScrapeModifier = Nothing
 
@@ -3924,7 +3923,10 @@ doCancel:
                 Dim di As New DirectoryInfo(sPath)
                 Dim lFi As New List(Of FileInfo)
 
-                lFi.AddRange(di.GetFiles())
+                Try
+                    lFi.AddRange(di.GetFiles())
+                Catch
+                End Try
 
                 For Each sFile As FileInfo In lFi
                     tmpName = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sFile.Name))
@@ -3937,6 +3939,9 @@ doCancel:
 
                     File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
                 Next
+
+                lFi = Nothing
+                di = Nothing
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

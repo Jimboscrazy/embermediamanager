@@ -501,19 +501,23 @@ Public Class Master
                 Dim di As New DirectoryInfo(sPath)
                 Dim lFi As New List(Of FileInfo)
 
-                lFi.AddRange(di.GetFiles())
+                Try
+                    lFi.AddRange(di.GetFiles())
+                Catch
+                End Try
 
-                lFi.Sort(AddressOf SortFileNames)
+                If lFi.Count > 0 Then
+                    lFi.Sort(AddressOf SortFileNames)
 
-                For Each lFile As FileInfo In lFi
-                    If Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
-                    Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
-                    ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
-                        tmpList.Add(CleanStackingMarkers(lFile.FullName))
-                        MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sPath, .isFile = True})
-                    End If
-                Next
-
+                    For Each lFile As FileInfo In lFi
+                        If Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
+                        Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
+                        ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
+                            tmpList.Add(CleanStackingMarkers(lFile.FullName))
+                            MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sPath, .isFile = True})
+                        End If
+                    Next
+                End If
             End If
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -921,8 +925,15 @@ Public Class Master
         Dim dirInfo As New DirectoryInfo(Directory.GetParent(sPath).FullName)
         Dim ioFi As New List(Of FileInfo)
 
-        ioFi.AddRange(dirInfo.GetFiles("*.nfo"))
-        ioFi.AddRange(dirInfo.GetFiles("*.info"))
+        Try
+            ioFi.AddRange(dirInfo.GetFiles("*.nfo"))
+        Catch
+        End Try
+
+        Try
+            ioFi.AddRange(dirInfo.GetFiles("*.info"))
+        Catch
+        End Try
 
         For Each sFile As FileInfo In ioFi
             Using srInfo As New StreamReader(sFile.FullName)
@@ -1027,7 +1038,10 @@ Public Class Master
 
                 Dim lFi As New List(Of FileInfo)()
 
-                lFi.AddRange(di.GetFiles())
+                Try
+                    lFi.AddRange(di.GetFiles())
+                Catch
+                End Try
 
                 For Each sfile As FileInfo In lFi
                     If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
@@ -1540,7 +1554,10 @@ Public Class Master
             Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
             Dim lFi As New List(Of FileInfo)()
 
-            lFi.AddRange(di.GetFiles())
+            Try
+                lFi.AddRange(di.GetFiles())
+            Catch
+            End Try
 
             For Each sFile As FileInfo In lFi
                 If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
@@ -1599,20 +1616,24 @@ Public Class Master
             di = New DirectoryInfo(sPath)
         End If
 
-        lFi.AddRange(di.GetFiles())
+        Try
+            lFi.AddRange(di.GetFiles())
+        Catch
+        End Try
 
-        'sort first so we're sure to get the first file in case of stacking
-        lFi.Sort(AddressOf SortFileNames)
+        If lFi.Count > 0 Then
+            'sort first so we're sure to get the first file in case of stacking
+            lFi.Sort(AddressOf SortFileNames)
 
-        For Each sFile As FileInfo In lFi
-            If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
-                Not sFile.Name.ToLower.Contains("-trailer") AndAlso Not sFile.Name.ToLower.Contains("[trailer") AndAlso _
-                ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(sFile.Name)) OrElse sFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
-                tFile = sFile.FullName
-                Exit For
-            End If
-        Next
-
+            For Each sFile As FileInfo In lFi
+                If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
+                    Not sFile.Name.ToLower.Contains("-trailer") AndAlso Not sFile.Name.ToLower.Contains("[trailer") AndAlso _
+                    ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(sFile.Name)) OrElse sFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
+                    tFile = sFile.FullName
+                    Exit For
+                End If
+            Next
+        End If
         Return tFile
     End Function
 
@@ -1633,8 +1654,12 @@ Public Class Master
                 iMod = -1
             Else
                 Dim dirInfo As New DirectoryInfo(extraPath)
+                Dim ioFi As New List(Of FileInfo)
 
-                Dim ioFi As FileInfo() = dirInfo.GetFiles("thumb*.jpg")
+                Try
+                    ioFi.AddRange(dirInfo.GetFiles("thumb*.jpg"))
+                Catch
+                End Try
 
                 For Each sFile As FileInfo In ioFi
                     alThumbs.Add(sFile.Name)
@@ -1732,8 +1757,12 @@ Public Class Master
 
         If isCleaner And Master.eSettings.ExpertCleaner Then
             Dim dirInfo As New DirectoryInfo(sPathShort)
+            Dim ioFi As New List(Of FileInfo)
 
-            Dim ioFi As FileInfo() = dirInfo.GetFiles()
+            Try
+                ioFi.AddRange(dirInfo.GetFiles())
+            Catch
+            End Try
 
             For Each sFile As FileInfo In ioFi
                 Dim test As String = sFile.Extension
@@ -1892,13 +1921,17 @@ Public Class Master
                 If Not isCleaner Then
                     Dim dirInfo As New DirectoryInfo(sPathShort)
 
-                    Dim ioFi As FileInfo() = dirInfo.GetFiles(String.Concat(sOrName, "*.*"))
+                    Dim ioFi As New List(Of FileInfo)
 
-                    For Each sFile As FileInfo In ioFi
-                        File.Delete(sFile.FullName)
-                    Next
+                    Try
+                        ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
+                    Catch
+                    End Try
 
-                    ioFi = dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(sPath), ".*"))
+                    Try
+                        ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(sPath), ".*")))
+                    Catch
+                    End Try
 
                     For Each sFile As FileInfo In ioFi
                         File.Delete(sFile.FullName)
@@ -1989,7 +2022,13 @@ Public Class Master
                         Next
                     End If
 
-                    Dim fThumbs() As String = Directory.GetFiles(tPath, "thumb*.jpg")
+                    Dim fThumbs As New ArrayList
+
+                    Try
+                        fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
+                    Catch
+                    End Try
+
                     If fThumbs.Count <= 0 Then
                         Directory.Delete(tPath, True)
                     Else

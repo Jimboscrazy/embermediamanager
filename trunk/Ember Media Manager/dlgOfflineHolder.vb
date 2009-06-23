@@ -411,7 +411,7 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)
-        Dim dir As DirectoryInfo = New DirectoryInfo(sourceDirName)
+        Dim dir As New DirectoryInfo(sourceDirName)
         ' If the source directory does not exist, throw an exception.
         If Not dir.Exists Then
             Throw New DirectoryNotFoundException( _
@@ -423,10 +423,19 @@ Public Class dlgOfflineHolder
             Directory.CreateDirectory(destDirName)
         End If
         ' Get the file contents of the directory to copy.
-        Dim files As FileInfo() = dir.GetFiles()
-        For Each file In files
-            Master.MoveFileWithStream(file.FullName, Path.Combine(destDirName, file.Name))
-        Next file
+        Dim Files As New List(Of FileInfo)
+
+        Try
+            Files.AddRange(dir.GetFiles())
+        Catch
+        End Try
+
+        For Each sFile As FileInfo In Files
+            Master.MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name))
+        Next
+
+        Files = Nothing
+        dir = Nothing
     End Sub
 
     Private Sub CreatePreview()

@@ -645,12 +645,19 @@ Public Class dlgEditMovie
                     Dim iVal As Integer = 1
                     If iMod = -1 Then iMod = 0
                     Dim fList As New List(Of FileInfo)
-                    fList.AddRange(di.GetFiles("thumb*.jpg"))
 
-                    For i As Integer = 0 To fList.Count - 1
-                        Master.MoveFileWithStream(fList.Item(i).FullName, Path.Combine(ePath, String.Concat("thumb", iVal + iMod, ".jpg")))
+                    Try
+                        fList.AddRange(di.GetFiles("thumb*.jpg"))
+                    Catch
+                    End Try
+
+                    For Each sFile As FileInfo In fList
+                        Master.MoveFileWithStream(sFile.FullName, Path.Combine(ePath, String.Concat("thumb", iVal + iMod, ".jpg")))
                         iVal += 1
                     Next
+
+                    fList = Nothing
+                    di = Nothing
                 End If
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
@@ -970,21 +977,29 @@ Public Class dlgEditMovie
             Dim lFI As New List(Of FileInfo)
             Dim i As Integer = 0
             Try
-                lFI.AddRange(di.GetFiles("thumb*.jpg"))
-                lFI.Sort(AddressOf Master.SortThumbFileNames)
-                For Each thumb As FileInfo In lFI
-                    If Not Me.DeleteList.Contains(thumb.Name) Then
-                        Dim fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
-                        Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})
-                        ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
-                        fsImage.Close()
-                        fsImage = Nothing
-                        i += 1
-                    End If
-                Next
+                Try
+                    lFI.AddRange(di.GetFiles("thumb*.jpg"))
+                Catch
+                End Try
+
+                If lFI.Count > 0 Then
+                    lFI.Sort(AddressOf Master.SortThumbFileNames)
+                    For Each thumb As FileInfo In lFI
+                        If Not Me.DeleteList.Contains(thumb.Name) Then
+                            Dim fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
+                            Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})
+                            ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
+                            fsImage.Close()
+                            fsImage = Nothing
+                            i += 1
+                        End If
+                    Next
+                End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
+            lFI = Nothing
+            di = Nothing
         End If
     End Sub
 
