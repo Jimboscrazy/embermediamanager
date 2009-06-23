@@ -108,8 +108,6 @@ Public NotInheritable Class dlgAbout
 
         PicY = Me.picDisplay.ClientSize.Height
 
-        Me.Activate()
-
     End Sub
 
     Private Sub OKButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OKButton.Click
@@ -142,6 +140,22 @@ Public NotInheritable Class dlgAbout
 
     Private Sub pbXBMC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbXBMC.Click
         Process.Start("http://www.xbmc.org/")
+    End Sub
+
+    Private Sub pbYouTube_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbYouTube.Click
+        Process.Start("http://www.youtube.com/")
+    End Sub
+
+    Private Sub pbAllTrailers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbAllTrailers.Click
+        Process.Start("http://www.alltrailers.net/")
+    End Sub
+
+    Private Sub pbMattTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMattTrailer.Click
+        Process.Start("http://www.matttrailer.com/")
+    End Sub
+
+    Private Sub pbAZMovies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbAZMovies.Click
+        Process.Start("http://www.azmovies.net/")
     End Sub
 
     Private Sub picDisplay_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles picDisplay.Paint
@@ -201,22 +215,8 @@ Public NotInheritable Class dlgAbout
     End Class
 
     Private Sub dlgAbout_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
         Me.Refresh()
     End Sub
 
-    Private Sub pbYouTube_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbYouTube.Click
-        Process.Start("http://www.youtube.com/")
-    End Sub
-
-    Private Sub pbAllTrailers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbAllTrailers.Click
-        Process.Start("http://www.alltrailers.net/")
-    End Sub
-
-    Private Sub pbMattTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMattTrailer.Click
-        Process.Start("http://www.matttrailer.com/")
-    End Sub
-
-    Private Sub pbAZMovies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbAZMovies.Click
-        Process.Start("http://www.azmovies.net/")
-    End Sub
 End Class
