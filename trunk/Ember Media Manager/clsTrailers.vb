@@ -282,7 +282,7 @@ Public Class Trailers
 
     Public Function IsAllowedToDownload(ByVal sPath As String, ByVal isFile As Boolean, ByVal isDL As Boolean, ByVal currNfoTrailer As String) As Boolean
         If isDL Then
-            If Not File.Exists(Master.GetTrailerPath(sPath, isFile)) OrElse Master.eSettings.OverwriteTrailer Then
+            If String.IsNullOrEmpty(Master.GetTrailerPath(sPath, isFile)) OrElse Master.eSettings.OverwriteTrailer Then
                 Return True
             Else
                 Return False
