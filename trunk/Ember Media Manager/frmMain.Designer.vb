@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -135,6 +135,7 @@ Partial Class frmMain
         Me.pnlTop = New System.Windows.Forms.Panel
         Me.lblTitle = New System.Windows.Forms.Label
         Me.pnlInfoIcons = New System.Windows.Forms.Panel
+        Me.pbVType = New System.Windows.Forms.PictureBox
         Me.pbStudio = New System.Windows.Forms.PictureBox
         Me.pbVideo = New System.Windows.Forms.PictureBox
         Me.pbAudio = New System.Windows.Forms.PictureBox
@@ -228,7 +229,6 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.pbVType = New System.Windows.Forms.PictureBox
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -259,6 +259,7 @@ Partial Class frmMain
         CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTop.SuspendLayout()
         Me.pnlInfoIcons.SuspendLayout()
+        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbVideo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbAudio, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -273,7 +274,6 @@ Partial Class frmMain
         Me.tsMain.SuspendLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -515,8 +515,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1438,6 +1438,16 @@ Partial Class frmMain
         Me.pnlInfoIcons.Size = New System.Drawing.Size(417, 72)
         Me.pnlInfoIcons.TabIndex = 31
         '
+        'pbVType
+        '
+        Me.pbVType.BackColor = System.Drawing.Color.Gainsboro
+        Me.pbVType.Location = New System.Drawing.Point(70, 15)
+        Me.pbVType.Name = "pbVType"
+        Me.pbVType.Size = New System.Drawing.Size(68, 53)
+        Me.pbVType.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbVType.TabIndex = 36
+        Me.pbVType.TabStop = False
+        '
         'pbStudio
         '
         Me.pbStudio.BackColor = System.Drawing.Color.Gainsboro
@@ -2080,16 +2090,6 @@ Partial Class frmMain
         '
         Me.tmrFilterAni.Interval = 1
         '
-        'pbVType
-        '
-        Me.pbVType.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbVType.Location = New System.Drawing.Point(70, 15)
-        Me.pbVType.Name = "pbVType"
-        Me.pbVType.Size = New System.Drawing.Size(68, 53)
-        Me.pbVType.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbVType.TabIndex = 36
-        Me.pbVType.TabStop = False
-        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2143,6 +2143,7 @@ Partial Class frmMain
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         Me.pnlInfoIcons.ResumeLayout(False)
+        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbVideo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbAudio, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2159,7 +2160,6 @@ Partial Class frmMain
         Me.tsMain.PerformLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
