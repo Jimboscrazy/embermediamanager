@@ -591,7 +591,6 @@ Public Class frmMain
                         Me.pnlInfoPanel.Height = 500
 
                 End Select
-                Me.tmrAni.Stop()
             End If
 
 
@@ -1518,12 +1517,19 @@ Public Class frmMain
         '\\
 
         Try
-            If Me.aniFilterRaise Then
-                Me.pnlFilter.Height += 5
+            If Master.eSettings.InfoPanelAnim Then
+                If Me.aniFilterRaise Then
+                    Me.pnlFilter.Height += 5
+                Else
+                    Me.pnlFilter.Height -= 5
+                End If
             Else
-                Me.pnlFilter.Height -= 5
+                If Me.aniFilterRaise Then
+                    Me.pnlFilter.Height = 85
+                Else
+                    Me.pnlFilter.Height = 25
+                End If
             End If
-
             If Me.pnlFilter.Height = 25 Then
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = True
