@@ -701,10 +701,11 @@ Public Class frmMain
             Dim bmGenre As New Bitmap(Me.GenreImage)
             Dim grGenre As Graphics = Graphics.FromImage(bmGenre)
             Dim drawString As String = sender.Name
-            Dim drawFont As New Font("Microsoft Sans Serif", 20, FontStyle.Bold, GraphicsUnit.Pixel)
+            Dim drawFont As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
             Dim drawBrush As New SolidBrush(Color.White)
             Dim drawWidth As Single = grGenre.MeasureString(drawString, drawFont).Width
-            drawFont = New Font("Microsoft Sans Serif", (20 * (bmGenre.Width / drawWidth)) - 0.5, FontStyle.Bold, GraphicsUnit.Pixel)
+            Dim drawSize As Integer = (14 * (bmGenre.Width / drawWidth)) - 0.5
+            drawFont = New Font("Microsoft Sans Serif", If(drawSize > 14, 14, drawSize), FontStyle.Bold, GraphicsUnit.Pixel)
             Dim drawHeight As Single = grGenre.MeasureString(drawString, drawFont).Height
             iLeft = (bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2
             grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
@@ -974,6 +975,7 @@ Public Class frmMain
             Dim alMedia As New ArrayList
             Dim hasFileSource As Boolean = False
 
+            Me.ToolsToolStripMenuItem.Enabled = False
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.mnuMediaList.Enabled = False
@@ -1003,6 +1005,7 @@ Public Class frmMain
                 Me.LoadMedia(1)
             Else
                 MsgBox("You do not have any file-type sources to sort.", MsgBoxStyle.Information, "No Files To Sort")
+                Me.ToolsToolStripMenuItem.Enabled = True
                 Me.tsbAutoPilot.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
                 Me.mnuMediaList.Enabled = True
@@ -1746,6 +1749,7 @@ Public Class frmMain
                         Me.tslLoading.Visible = False
                         Me.tabsMain.Enabled = True
                         Me.tsbRefreshMedia.Enabled = True
+                        Me.ToolsToolStripMenuItem.Enabled = False
                         Me.tsbAutoPilot.Enabled = False
                         Me.mnuMediaList.Enabled = False
                     End If
@@ -1995,6 +1999,7 @@ Public Class frmMain
                 Me.tabsMain.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
                 If Me.dgvMediaList.RowCount > 0 Then
+                    Me.ToolsToolStripMenuItem.Enabled = True
                     Me.tsbAutoPilot.Enabled = True
                     Me.mnuMediaList.Enabled = True
                 End If
@@ -2128,6 +2133,7 @@ Public Class frmMain
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
 
                 If Not bwScraper.IsBusy Then
+                    Me.ToolsToolStripMenuItem.Enabled = True
                     Me.tsbAutoPilot.Enabled = True
                     Me.tsbRefreshMedia.Enabled = True
                     Me.mnuMediaList.Enabled = True
@@ -2774,6 +2780,7 @@ doCancel:
                     Me.tspbLoading.Visible = False
                     Me.tslStatus.Text = String.Empty
 
+                    Me.ToolsToolStripMenuItem.Enabled = True
                     Me.tsbAutoPilot.Enabled = True
                     Me.tsbRefreshMedia.Enabled = True
                     Me.mnuMediaList.Enabled = True
@@ -3008,6 +3015,7 @@ doCancel:
             Me.ClearInfo()
             Me.EnableFilters(False)
 
+            Me.ToolsToolStripMenuItem.Enabled = False
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.mnuMediaList.Enabled = False
@@ -3034,6 +3042,7 @@ doCancel:
         '\\
 
         Try
+            Me.ToolsToolStripMenuItem.Enabled = False
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.tabsMain.Enabled = False
@@ -3397,6 +3406,7 @@ doCancel:
             Dim nfoPath As String = String.Empty
 
             If Not isCL Then
+                Me.ToolsToolStripMenuItem.Enabled = False
                 Me.tsbAutoPilot.Enabled = False
                 Me.tsbRefreshMedia.Enabled = False
                 Me.mnuMediaList.Enabled = False
@@ -3486,6 +3496,7 @@ doCancel:
                             Me.tslLoading.Visible = False
                             Me.tspbLoading.Visible = False
                             Me.tslStatus.Text = String.Empty
+                            Me.ToolsToolStripMenuItem.Enabled = True
                             Me.tsbAutoPilot.Enabled = True
                             Me.tsbRefreshMedia.Enabled = True
                             Me.mnuMediaList.Enabled = True
@@ -3580,6 +3591,7 @@ doCancel:
                                         Me.tslLoading.Visible = False
                                         Me.tspbLoading.Visible = False
                                         Me.tslStatus.Text = String.Empty
+                                        Me.ToolsToolStripMenuItem.Enabled = True
                                         Me.tsbAutoPilot.Enabled = True
                                         Me.tsbRefreshMedia.Enabled = True
                                         Me.mnuMediaList.Enabled = True
@@ -3708,6 +3720,7 @@ doCancel:
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.tslStatus.Text = String.Empty
+            Me.ToolsToolStripMenuItem.Enabled = true
             Me.tsbAutoPilot.Enabled = True
             Me.tsbRefreshMedia.Enabled = True
             Me.mnuMediaList.Enabled = True
@@ -4203,10 +4216,12 @@ doCancel:
                         '.btnUp.Enabled = True
                         '.btnMid.Enabled = True
 
+                        .ToolsToolStripMenuItem.Enabled = True
                         .tsbAutoPilot.Enabled = True
                         .mnuMediaList.Enabled = True
                     End With
                 Else
+                    Me.ToolsToolStripMenuItem.Enabled = False
                     Me.tsbAutoPilot.Enabled = False
                     Me.mnuMediaList.Enabled = False
                     Me.tslStatus.Text = String.Empty

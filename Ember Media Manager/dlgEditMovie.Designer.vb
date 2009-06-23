@@ -798,9 +798,10 @@ Partial Class dlgEditMovie
         '
         'lblPosterSize
         '
+        Me.lblPosterSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblPosterSize.Location = New System.Drawing.Point(8, 8)
         Me.lblPosterSize.Name = "lblPosterSize"
-        Me.lblPosterSize.Size = New System.Drawing.Size(100, 23)
+        Me.lblPosterSize.Size = New System.Drawing.Size(104, 23)
         Me.lblPosterSize.TabIndex = 25
         Me.lblPosterSize.Text = "Size: (XXXXxXXXX)"
         Me.lblPosterSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -833,6 +834,7 @@ Partial Class dlgEditMovie
         'pbPoster
         '
         Me.pbPoster.BackColor = System.Drawing.Color.DimGray
+        Me.pbPoster.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbPoster.Location = New System.Drawing.Point(6, 6)
         Me.pbPoster.Name = "pbPoster"
         Me.pbPoster.Size = New System.Drawing.Size(724, 440)
@@ -868,9 +870,10 @@ Partial Class dlgEditMovie
         '
         'lblFanartSize
         '
+        Me.lblFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblFanartSize.Location = New System.Drawing.Point(8, 8)
         Me.lblFanartSize.Name = "lblFanartSize"
-        Me.lblFanartSize.Size = New System.Drawing.Size(100, 23)
+        Me.lblFanartSize.Size = New System.Drawing.Size(104, 23)
         Me.lblFanartSize.TabIndex = 27
         Me.lblFanartSize.Text = "Size: (XXXXxXXXX)"
         Me.lblFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -903,6 +906,7 @@ Partial Class dlgEditMovie
         'pbFanart
         '
         Me.pbFanart.BackColor = System.Drawing.Color.DimGray
+        Me.pbFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbFanart.Location = New System.Drawing.Point(6, 6)
         Me.pbFanart.Name = "pbFanart"
         Me.pbFanart.Size = New System.Drawing.Size(724, 440)
@@ -929,6 +933,7 @@ Partial Class dlgEditMovie
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.LightGray
+        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel1.Controls.Add(Me.btnSetAsFanart)
         Me.Panel1.Location = New System.Drawing.Point(716, 402)
         Me.Panel1.Name = "Panel1"
@@ -940,7 +945,7 @@ Partial Class dlgEditMovie
         Me.btnSetAsFanart.Enabled = False
         Me.btnSetAsFanart.Image = CType(resources.GetObject("btnSetAsFanart.Image"), System.Drawing.Image)
         Me.btnSetAsFanart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSetAsFanart.Location = New System.Drawing.Point(3, 4)
+        Me.btnSetAsFanart.Location = New System.Drawing.Point(2, 3)
         Me.btnSetAsFanart.Name = "btnSetAsFanart"
         Me.btnSetAsFanart.Size = New System.Drawing.Size(103, 32)
         Me.btnSetAsFanart.TabIndex = 0
@@ -1009,6 +1014,7 @@ Partial Class dlgEditMovie
         'pbExtraThumbs
         '
         Me.pbExtraThumbs.BackColor = System.Drawing.Color.DimGray
+        Me.pbExtraThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbExtraThumbs.Location = New System.Drawing.Point(176, 8)
         Me.pbExtraThumbs.Name = "pbExtraThumbs"
         Me.pbExtraThumbs.Size = New System.Drawing.Size(653, 437)
@@ -1092,6 +1098,7 @@ Partial Class dlgEditMovie
         'pnlFrameProgress
         '
         Me.pnlFrameProgress.BackColor = System.Drawing.Color.White
+        Me.pnlFrameProgress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlFrameProgress.Controls.Add(Me.Label3)
         Me.pnlFrameProgress.Controls.Add(Me.ProgressBar1)
         Me.pnlFrameProgress.Location = New System.Drawing.Point(241, 175)
@@ -1103,7 +1110,7 @@ Partial Class dlgEditMovie
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(3, 9)
+        Me.Label3.Location = New System.Drawing.Point(2, 7)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(95, 13)
         Me.Label3.TabIndex = 1
@@ -1111,7 +1118,7 @@ Partial Class dlgEditMovie
         '
         'ProgressBar1
         '
-        Me.ProgressBar1.Location = New System.Drawing.Point(5, 28)
+        Me.ProgressBar1.Location = New System.Drawing.Point(4, 26)
         Me.ProgressBar1.MarqueeAnimationSpeed = 25
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(242, 16)
@@ -1161,6 +1168,7 @@ Partial Class dlgEditMovie
         'pbFrame
         '
         Me.pbFrame.BackColor = System.Drawing.Color.DimGray
+        Me.pbFrame.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pbFrame.Location = New System.Drawing.Point(6, 6)
         Me.pbFrame.Name = "pbFrame"
         Me.pbFrame.Size = New System.Drawing.Size(724, 414)
