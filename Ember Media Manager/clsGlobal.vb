@@ -1280,11 +1280,11 @@ Public Class Master
                 Case iWidth = 640 AndAlso iHeight = 480
                     Return "480"
                     'by ADR
-                Case sinADR >= 1.33 AndAlso iHeight > 1000
+                Case sinADR >= 1.33 AndAlso iHeight > 768
                     Return "1080"
-                Case sinADR >= 1.33 AndAlso iHeight > 740
+                Case sinADR >= 1.33 AndAlso iHeight > 720
                     Return "768"
-                Case sinADR >= 1.33 AndAlso iHeight > 680
+                Case sinADR >= 1.33 AndAlso iHeight > 576
                     Return "720"
                 Case sinADR >= 1.33 AndAlso iHeight > 540
                     Return "576"
@@ -1293,11 +1293,11 @@ Public Class Master
                 Case sinADR >= 1.33 AndAlso iHeight > 450
                     Return "480"
                     'loose
-                Case iWidth >= 1200 AndAlso iHeight >= 800
+                Case iWidth >= 1200 AndAlso iHeight >= 768
                     Return "1080"
-                Case iWidth >= 1000 AndAlso iHeight >= 740
+                Case iWidth >= 1000 AndAlso iHeight >= 720
                     Return "768"
-                Case iWidth >= 950 AndAlso iHeight >= 600
+                Case iWidth >= 950 AndAlso iHeight >= 576
                     Return "720"
                 Case iWidth >= 700 AndAlso iHeight >= 540
                     Return "576"
