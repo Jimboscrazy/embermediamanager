@@ -2132,8 +2132,8 @@ Public Class frmMain
                         g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                         strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                         lenSize = g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width
-                        rect = New Rectangle((pbPoster.Image.Width - lenSize) / 2 - 10, Me.pbPoster.Height - 25, lenSize + 15, 25)
-                        Master.DrawGradEllipse(g, rect, Color.FromArgb(250, 100, 100, 100), Color.FromArgb(0, 255, 255, 255))
+                        rect = New Rectangle((pbPoster.Image.Width - lenSize) / 2 - 15, Me.pbPoster.Height - 25, lenSize + 30, 25)
+                        Master.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                         g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbPoster.Image.Width - lenSize) / 2, Me.pbPoster.Height - 20)
                     End If
 
@@ -2155,9 +2155,9 @@ Public Class frmMain
                     g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                     strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
                     lenSize = g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width
-                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 30)
-                    Master.DrawGradEllipse(g, rect, Color.FromArgb(250, 100, 100, 100), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 18)
+                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                    Master.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
                 End If
 
                 If Not bwScraper.IsBusy Then
