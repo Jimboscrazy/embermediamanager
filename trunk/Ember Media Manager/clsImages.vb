@@ -1068,9 +1068,13 @@ foundIT:
     End Sub
 
     Private Function SortImages(ByVal x As Media.Image, ByVal y As Media.Image) As Integer
-        Dim xS As Integer = x.WebImage.Width + x.WebImage.Height
-        Dim yS As Integer = y.WebImage.Width + y.WebImage.Height
-        'larger first
-        Return yS.CompareTo(xS)
+        Try
+            Dim xS As Integer = x.WebImage.Width + x.WebImage.Height
+            Dim yS As Integer = y.WebImage.Width + y.WebImage.Height
+            'larger first
+            Return yS.CompareTo(xS)
+        Catch
+            Return 0
+        End Try
     End Function
 End Class
