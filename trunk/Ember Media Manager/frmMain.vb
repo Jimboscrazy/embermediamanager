@@ -1952,8 +1952,8 @@ Public Class frmMain
                     Me.txtMediaInfo.Text = Res.fileInfo
                     If Master.eSettings.ScanMediaInfo Then
                         Master.GetAVImages(Res.Movie.FileInfo, Res.Path)
-                        Me.pnlInfoIcons.Width = 346
-                        Me.pbStudio.Left = 277
+                        Me.pnlInfoIcons.Width = 417
+                        Me.pbStudio.Left = 346
                     Else
                         Me.pnlInfoIcons.Width = 70
                         Me.pbStudio.Left = 0
@@ -3132,6 +3132,7 @@ doCancel:
                 End If
                 .pbStudio.Image = Nothing
                 .pbVideo.Image = Nothing
+                .pbVType.Image = Nothing
                 .pbAudio.Image = Nothing
                 .pbResolution.Image = Nothing
                 .pbChannels.Image = Nothing
@@ -3240,8 +3241,8 @@ doCancel:
 
             If Master.eSettings.ScanMediaInfo Then
                 Master.GetAVImages(Master.currMovie.FileInfo, Master.currPath)
-                Me.pnlInfoIcons.Width = 346
-                Me.pbStudio.Left = 277
+                Me.pnlInfoIcons.Width = 417
+                Me.pbStudio.Left = 346
             Else
                 Me.pnlInfoIcons.Width = 70
                 Me.pbStudio.Left = 0
@@ -3588,7 +3589,7 @@ doCancel:
                     Dim sDuration As Match = Regex.Match(miMovie.FileInfo.StreamDetails.Video.Item(0).Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
                     Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0) * 60
                     Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-                    miMovie.Runtime = String.Format("{0} min", sHour + sMin)
+                    miMovie.Runtime = String.Format("{0} mins", sHour + sMin)
                 End If
                 MI = Nothing
                 Return True

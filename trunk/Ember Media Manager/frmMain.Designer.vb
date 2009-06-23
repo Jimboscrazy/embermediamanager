@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -228,6 +228,7 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
+        Me.pbVType = New System.Windows.Forms.PictureBox
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -272,6 +273,7 @@ Partial Class frmMain
         Me.tsMain.SuspendLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -513,8 +515,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1424,21 +1426,22 @@ Partial Class frmMain
         '
         'pnlInfoIcons
         '
+        Me.pnlInfoIcons.Controls.Add(Me.pbVType)
         Me.pnlInfoIcons.Controls.Add(Me.pbStudio)
         Me.pnlInfoIcons.Controls.Add(Me.pbVideo)
         Me.pnlInfoIcons.Controls.Add(Me.pbAudio)
         Me.pnlInfoIcons.Controls.Add(Me.pbResolution)
         Me.pnlInfoIcons.Controls.Add(Me.pbChannels)
         Me.pnlInfoIcons.Dock = System.Windows.Forms.DockStyle.Right
-        Me.pnlInfoIcons.Location = New System.Drawing.Point(348, 0)
+        Me.pnlInfoIcons.Location = New System.Drawing.Point(277, 0)
         Me.pnlInfoIcons.Name = "pnlInfoIcons"
-        Me.pnlInfoIcons.Size = New System.Drawing.Size(346, 72)
+        Me.pnlInfoIcons.Size = New System.Drawing.Size(417, 72)
         Me.pnlInfoIcons.TabIndex = 31
         '
         'pbStudio
         '
         Me.pbStudio.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbStudio.Location = New System.Drawing.Point(277, 15)
+        Me.pbStudio.Location = New System.Drawing.Point(346, 15)
         Me.pbStudio.Name = "pbStudio"
         Me.pbStudio.Size = New System.Drawing.Size(68, 53)
         Me.pbStudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -1458,7 +1461,7 @@ Partial Class frmMain
         'pbAudio
         '
         Me.pbAudio.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbAudio.Location = New System.Drawing.Point(139, 15)
+        Me.pbAudio.Location = New System.Drawing.Point(208, 15)
         Me.pbAudio.Name = "pbAudio"
         Me.pbAudio.Size = New System.Drawing.Size(68, 53)
         Me.pbAudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -1468,7 +1471,7 @@ Partial Class frmMain
         'pbResolution
         '
         Me.pbResolution.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbResolution.Location = New System.Drawing.Point(70, 15)
+        Me.pbResolution.Location = New System.Drawing.Point(139, 15)
         Me.pbResolution.Name = "pbResolution"
         Me.pbResolution.Size = New System.Drawing.Size(68, 53)
         Me.pbResolution.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -1478,7 +1481,7 @@ Partial Class frmMain
         'pbChannels
         '
         Me.pbChannels.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbChannels.Location = New System.Drawing.Point(208, 15)
+        Me.pbChannels.Location = New System.Drawing.Point(277, 15)
         Me.pbChannels.Name = "pbChannels"
         Me.pbChannels.Size = New System.Drawing.Size(68, 53)
         Me.pbChannels.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -1489,12 +1492,12 @@ Partial Class frmMain
         '
         Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRuntime.ForeColor = System.Drawing.Color.Black
-        Me.lblRuntime.Location = New System.Drawing.Point(237, 32)
+        Me.lblRuntime.Location = New System.Drawing.Point(216, 32)
         Me.lblRuntime.Name = "lblRuntime"
         Me.lblRuntime.Size = New System.Drawing.Size(105, 13)
         Me.lblRuntime.TabIndex = 32
         Me.lblRuntime.Text = "###:###:## mins"
-        Me.lblRuntime.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblRuntime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblTagline
         '
@@ -1519,7 +1522,7 @@ Partial Class frmMain
         Me.pnlRating.Controls.Add(Me.lblVotes)
         Me.pnlRating.Location = New System.Drawing.Point(6, 24)
         Me.pnlRating.Name = "pnlRating"
-        Me.pnlRating.Size = New System.Drawing.Size(217, 27)
+        Me.pnlRating.Size = New System.Drawing.Size(206, 27)
         Me.pnlRating.TabIndex = 24
         '
         'pbStar5
@@ -2077,6 +2080,16 @@ Partial Class frmMain
         '
         Me.tmrFilterAni.Interval = 1
         '
+        'pbVType
+        '
+        Me.pbVType.BackColor = System.Drawing.Color.Gainsboro
+        Me.pbVType.Location = New System.Drawing.Point(70, 15)
+        Me.pbVType.Name = "pbVType"
+        Me.pbVType.Size = New System.Drawing.Size(68, 53)
+        Me.pbVType.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbVType.TabIndex = 36
+        Me.pbVType.TabStop = False
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2146,6 +2159,7 @@ Partial Class frmMain
         Me.tsMain.PerformLayout()
         CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2353,4 +2367,5 @@ Partial Class frmMain
     Friend WithEvents mnuNewAskMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMarkAutoMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMarkAskMI As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents pbVType As System.Windows.Forms.PictureBox
 End Class
