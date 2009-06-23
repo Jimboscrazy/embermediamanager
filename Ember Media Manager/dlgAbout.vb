@@ -219,4 +219,7 @@ Public NotInheritable Class dlgAbout
         Me.Refresh()
     End Sub
 
+    Private Sub picDisplay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles picDisplay.Click
+        Process.Start("http://code.google.com/p/embermediamanager/")
+    End Sub
 End Class
