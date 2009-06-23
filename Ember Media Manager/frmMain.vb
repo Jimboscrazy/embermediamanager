@@ -411,8 +411,8 @@ Public Class frmMain
                 Me.SetColors()
 
                 Me.SetMenus(True)
-
-                Select Case Master.eSettings.InfoPanelState
+                Me.aniType = Master.eSettings.InfoPanelState
+                Select Case Me.aniType
                     Case 0
                         Me.pnlInfoPanel.Height = 25
                         Me.btnDown.Enabled = False
@@ -430,7 +430,8 @@ Public Class frmMain
                         Me.btnMid.Enabled = True
                 End Select
 
-                If Master.eSettings.FilterPanelState Then
+                Me.aniFilterRaise = Master.eSettings.FilterPanelState
+                If Me.aniFilterRaise Then
                     Me.pnlFilter.Height = 85
                     Me.btnFilterDown.Enabled = True
                     Me.btnFilterUp.Enabled = False
