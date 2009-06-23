@@ -781,18 +781,14 @@ Public Class Master
 
         Try
 
-            Dim tPath As String = Directory.GetParent(sPath).FullName 'don't check parent folder
-            If sPath.ToLower.Contains("subs") OrElse _
-            sPath.ToLower.Contains("subtitles") OrElse _
-            sPath.ToLower.Contains("sample") Then
-                Return False
-            End If
-            tPath = sPath.Remove(0, sPath.IndexOf("\")) ' Check everthing
+            sPath = sPath.Remove(0, sPath.IndexOf("\"))
             If Path.GetDirectoryName(sPath).ToLower = "extrathumbs" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "extras" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "video_ts" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "audio_ts" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "recycler" OrElse _
+            Path.GetDirectoryName(sPath).ToLower = "subs" OrElse _
+            Path.GetDirectoryName(sPath).ToLower = "subtitles" OrElse _
             sPath.ToLower.Contains("-trailer") OrElse _
             sPath.ToLower.Contains("[trailer") OrElse _
             sPath.ToLower.Contains("temporary files") OrElse _
@@ -800,6 +796,7 @@ Public Class Master
             sPath.ToLower.Contains("$recycle.bin") OrElse _
             sPath.ToLower.Contains("lost+found") OrElse _
             sPath.ToLower.Contains("system volume information") OrElse _
+            sPath.ToLower.Contains("sample") OrElse _
             sPath.Contains(":") Then
                 Return False
             End If
