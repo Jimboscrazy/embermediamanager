@@ -49,11 +49,11 @@ Public Class ErrorLogger
                 'log it
                 Dim fs1 As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.Append, FileAccess.Write)
                 Dim s1 As StreamWriter = New StreamWriter(fs1)
-                s1.Write("Title: " & title & vbCrLf)
-                s1.Write("Message: " & msg & vbCrLf)
-                s1.Write("StackTrace: " & stkTrace & vbCrLf)
-                s1.Write("Date/Time: " & DateTime.Now.ToString() & vbCrLf)
-                s1.Write("===========================================================================================" & vbCrLf)
+                s1.Write(String.Concat("Title: ", title, vbNewLine))
+                s1.Write(String.Concat("Message: ", msg, vbNewLine))
+                s1.Write(String.Concat("StackTrace: ", stkTrace, vbNewLine))
+                s1.Write(String.Concat("Date/Time: ", DateTime.Now.ToString(), vbNewLine))
+                s1.Write(String.Concat("===========================================================================================", vbNewLine, vbNewLine))
                 s1.Close()
                 fs1.Close()
             End If

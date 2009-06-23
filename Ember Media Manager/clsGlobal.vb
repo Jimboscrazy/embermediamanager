@@ -538,7 +538,7 @@ Public Class Master
                 Dim achanImage As String = String.Empty
 
                 If Not IsNothing(fiAV) AndAlso (fiAV.StreamDetails.Video.Count > 0 OrElse fiAV.StreamDetails.Audio.Count > 0) Then
-                    strTag = Strings.Split(FITagData(fiAV).Trim.ToLower, " / ")
+                    strTag = Strings.Split(FITagData(fiAV, True).Trim.ToLower, "|")
                 End If
 
                 Dim xmlFlags As XDocument = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
@@ -643,7 +643,7 @@ Public Class Master
                 eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
-            MsgBox("Cannot find Flags.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Flags.xml"), MsgBoxStyle.Critical, "File Not Found")
+            MsgBox(String.Concat("Cannot find Flags.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Flags.xml")), MsgBoxStyle.Critical, "File Not Found")
         End If
     End Sub
 
@@ -681,7 +681,7 @@ Public Class Master
                 eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
-            MsgBox("Cannot find Studios.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Studios.xml"), MsgBoxStyle.Critical, "File Not Found")
+            MsgBox(String.Concat("Cannot find Studios.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Studios.xml")), MsgBoxStyle.Critical, "File Not Found")
         End If
 
         Return imgStudio
@@ -723,7 +723,7 @@ Public Class Master
                 eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
-            MsgBox("Cannot find Genres.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Genres.xml"), MsgBoxStyle.Critical, "File Not Found")
+            MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Genres.xml")), MsgBoxStyle.Critical, "File Not Found")
         End If
 
         Return imgGenre
@@ -767,7 +767,7 @@ Public Class Master
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         Else
-            MsgBox("Cannot find Ratings.xml." & vbNewLine & vbNewLine & "Expected path:" & vbNewLine & Path.Combine(mePath, "Ratings.xml"), MsgBoxStyle.Critical, "File Not Found")
+            MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Ratings.xml")), MsgBoxStyle.Critical, "File Not Found")
         End If
 
         Return imgRating
@@ -1169,7 +1169,7 @@ Public Class Master
         End If
     End Function
 
-    Public Shared Function FITagData(ByRef miFI As MediaInfo.Fileinfo) As String
+    Public Shared Function FITagData(ByRef miFI As MediaInfo.Fileinfo, Optional ByVal doShort As Boolean = False) As String
 
         '//
         ' Convert FileInfo into the studio tag
@@ -1216,18 +1216,23 @@ Public Class Master
 
                 Next
 
-                For Each curSS As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
-                    'audio
-                    sSubLang += String.Concat(" / sub", curSS.Language)
-                Next
-
+                If Not doShort Then
+                    For Each curSS As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
+                        'audio
+                        sSubLang += String.Concat(" / sub", curSS.Language)
+                    Next
+                End If
                 If hasVS Then
-                    statusStr = String.Format(" / {0}{1} / {2} / {3} / {4}ch / {5}{6}", GetResFromDimensions(iWidest, iHeight, sinADR), sScanType, sCodec, sACodec, sinMostChannels, sLang, sSubLang)
+                    If doShort Then
+                        statusStr = String.Format("{0}{1}|{2}|{3}|{4}ch", GetResFromDimensions(iWidest, iHeight, sinADR), sScanType, sCodec, sACodec, sinMostChannels)
+                    Else
+                        statusStr = String.Format(" / {0}{1} / {2} / {3} / {4}ch / {5}{6}", GetResFromDimensions(iWidest, iHeight, sinADR), sScanType, sCodec, sACodec, sinMostChannels, sLang, sSubLang)
+                    End If
                 Else
                     Return String.Empty
                 End If
 
-            End If
+                End If
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1449,7 +1454,7 @@ Public Class Master
             If Not IsConformingNfo(sPath) Then
                 If File.Exists(sPath) Then
                     Dim i As Integer = 1
-                    Dim strNewName As String = RemoveExtFromPath(sPath) & ".info"
+                    Dim strNewName As String = String.Concat(RemoveExtFromPath(sPath), ".info")
                     'in case there is already a .info file
                     If File.Exists(strNewName) Then
                         Do
@@ -1932,7 +1937,7 @@ Public Class Master
                         Dim s As String = d.ReadLine()
                         If s.Contains("Duration: ") Then
                             Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-                            Dim ts As TimeSpan = CDate(CDate(DateTime.Today & " " & sTime)).Subtract(CDate(DateTime.Today))
+                            Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today, sTime))).Subtract(CDate(DateTime.Today))
                             intSeconds = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
                         End If
                     Loop While Not d.EndOfStream

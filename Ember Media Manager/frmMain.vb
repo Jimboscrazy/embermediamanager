@@ -916,7 +916,7 @@ Public Class frmMain
         Me.tmrSearchWait.Enabled = False
         Try
             If Not String.IsNullOrEmpty(txtSearch.Text) Then
-                bsMedia.Filter = "title LIKE '%" & txtSearch.Text & "%'"
+                bsMedia.Filter = String.Concat("title LIKE '%", txtSearch.Text, "%'")
             Else
                 bsMedia.RemoveFilter()
             End If
