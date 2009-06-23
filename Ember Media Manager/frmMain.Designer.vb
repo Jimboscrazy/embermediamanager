@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -515,8 +515,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1433,17 +1433,17 @@ Partial Class frmMain
         Me.pnlInfoIcons.Controls.Add(Me.pbResolution)
         Me.pnlInfoIcons.Controls.Add(Me.pbChannels)
         Me.pnlInfoIcons.Dock = System.Windows.Forms.DockStyle.Right
-        Me.pnlInfoIcons.Location = New System.Drawing.Point(277, 0)
+        Me.pnlInfoIcons.Location = New System.Drawing.Point(304, 0)
         Me.pnlInfoIcons.Name = "pnlInfoIcons"
-        Me.pnlInfoIcons.Size = New System.Drawing.Size(417, 72)
+        Me.pnlInfoIcons.Size = New System.Drawing.Size(390, 72)
         Me.pnlInfoIcons.TabIndex = 31
         '
         'pbVType
         '
         Me.pbVType.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbVType.Location = New System.Drawing.Point(70, 15)
+        Me.pbVType.Location = New System.Drawing.Point(65, 15)
         Me.pbVType.Name = "pbVType"
-        Me.pbVType.Size = New System.Drawing.Size(68, 53)
+        Me.pbVType.Size = New System.Drawing.Size(64, 44)
         Me.pbVType.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbVType.TabIndex = 36
         Me.pbVType.TabStop = False
@@ -1451,9 +1451,9 @@ Partial Class frmMain
         'pbStudio
         '
         Me.pbStudio.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbStudio.Location = New System.Drawing.Point(346, 15)
+        Me.pbStudio.Location = New System.Drawing.Point(325, 15)
         Me.pbStudio.Name = "pbStudio"
-        Me.pbStudio.Size = New System.Drawing.Size(68, 53)
+        Me.pbStudio.Size = New System.Drawing.Size(64, 44)
         Me.pbStudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbStudio.TabIndex = 31
         Me.pbStudio.TabStop = False
@@ -1461,9 +1461,9 @@ Partial Class frmMain
         'pbVideo
         '
         Me.pbVideo.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbVideo.Location = New System.Drawing.Point(1, 15)
+        Me.pbVideo.Location = New System.Drawing.Point(0, 15)
         Me.pbVideo.Name = "pbVideo"
-        Me.pbVideo.Size = New System.Drawing.Size(68, 53)
+        Me.pbVideo.Size = New System.Drawing.Size(64, 44)
         Me.pbVideo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbVideo.TabIndex = 33
         Me.pbVideo.TabStop = False
@@ -1471,9 +1471,9 @@ Partial Class frmMain
         'pbAudio
         '
         Me.pbAudio.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbAudio.Location = New System.Drawing.Point(208, 15)
+        Me.pbAudio.Location = New System.Drawing.Point(195, 15)
         Me.pbAudio.Name = "pbAudio"
-        Me.pbAudio.Size = New System.Drawing.Size(68, 53)
+        Me.pbAudio.Size = New System.Drawing.Size(64, 44)
         Me.pbAudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbAudio.TabIndex = 35
         Me.pbAudio.TabStop = False
@@ -1481,9 +1481,9 @@ Partial Class frmMain
         'pbResolution
         '
         Me.pbResolution.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbResolution.Location = New System.Drawing.Point(139, 15)
+        Me.pbResolution.Location = New System.Drawing.Point(130, 15)
         Me.pbResolution.Name = "pbResolution"
-        Me.pbResolution.Size = New System.Drawing.Size(68, 53)
+        Me.pbResolution.Size = New System.Drawing.Size(64, 44)
         Me.pbResolution.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbResolution.TabIndex = 34
         Me.pbResolution.TabStop = False
@@ -1491,9 +1491,9 @@ Partial Class frmMain
         'pbChannels
         '
         Me.pbChannels.BackColor = System.Drawing.Color.Gainsboro
-        Me.pbChannels.Location = New System.Drawing.Point(277, 15)
+        Me.pbChannels.Location = New System.Drawing.Point(260, 15)
         Me.pbChannels.Name = "pbChannels"
-        Me.pbChannels.Size = New System.Drawing.Size(68, 53)
+        Me.pbChannels.Size = New System.Drawing.Size(64, 44)
         Me.pbChannels.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbChannels.TabIndex = 32
         Me.pbChannels.TabStop = False
@@ -1502,11 +1502,11 @@ Partial Class frmMain
         '
         Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRuntime.ForeColor = System.Drawing.Color.Black
-        Me.lblRuntime.Location = New System.Drawing.Point(216, 32)
+        Me.lblRuntime.Location = New System.Drawing.Point(213, 32)
         Me.lblRuntime.Name = "lblRuntime"
         Me.lblRuntime.Size = New System.Drawing.Size(105, 13)
         Me.lblRuntime.TabIndex = 32
-        Me.lblRuntime.Text = "###:###:## mins"
+        Me.lblRuntime.Text = "Runtime: ###mins"
         Me.lblRuntime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblTagline
