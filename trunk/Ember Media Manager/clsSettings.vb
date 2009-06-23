@@ -142,6 +142,7 @@ Public Class emmSettings
     Private _updatertrailersnodownload As Boolean
     Private _singlescrapetrailer As Boolean
     Private _trailertimeout As Integer
+    Private _overwritetrailer As Boolean
     Private _trailersites As New List(Of Master.TrailerPages)
     Private _nosaveimagestonfo As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
@@ -1193,6 +1194,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property OverwriteTrailer() As Boolean
+        Get
+            Return Me._overwritetrailer
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwritetrailer = value
+        End Set
+    End Property
+
     Public Property TrailerSites() As List(Of Master.TrailerPages)
         Get
             Return Me._trailersites
@@ -1341,6 +1351,7 @@ Public Class emmSettings
         Me._updatertrailersnodownload = False
         Me._singlescrapetrailer = False
         Me._trailertimeout = 2
+        Me._overwritetrailer = False
         Me._trailersites.Clear()
         Me._sets.Clear()
         Me._nosaveimagestonfo = False

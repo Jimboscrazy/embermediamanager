@@ -603,7 +603,7 @@ mPlot:
                 If Options.bRuntime Then IMDBMovie.Runtime = Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim
 
                 'Get Production Studio
-                If Options.bStudio AndAlso (String.IsNullOrEmpty(IMDBMovie.StudioReal) OrElse Not Master.eSettings.LockGenre) Then
+                If Options.bStudio AndAlso (String.IsNullOrEmpty(IMDBMovie.StudioReal) OrElse Not Master.eSettings.LockStudio) Then
                     D = 0 : W = 0
                     If FullCrew Then
                         D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")

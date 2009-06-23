@@ -899,12 +899,14 @@ Public Class dlgSettings
         Me.txtTimeout.Enabled = Me.chkDownloadTrailer.Checked
         Me.lbTrailerSites.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkSingleScrapeTrailer.Enabled = Me.chkDownloadTrailer.Checked
+        Me.chkOverwriteTrailer.Enabled = Me.chkDownloadTrailer.Checked
+        Me.chkNoDLTrailer.Enabled = Me.chkDownloadTrailer.Checked
 
         If Not Me.chkDownloadTrailer.Checked Then
             Me.chkUpdaterTrailer.Checked = False
             Me.chkSingleScrapeTrailer.Checked = False
-            Me.chkNoDLTrailer.Enabled = False
             Me.chkNoDLTrailer.Checked = False
+            Me.chkOverwriteTrailer.Checked = False
             Me.txtTimeout.Text = "2"
             For i As Integer = 0 To lbTrailerSites.Items.Count - 1
                 lbTrailerSites.SetItemChecked(i, False)
@@ -995,6 +997,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkInfoPanelAnim_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkInfoPanelAnim.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkOverwriteTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteTrailer.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -1224,12 +1230,14 @@ Public Class dlgSettings
                 Master.eSettings.TrailerTimeout = Convert.ToInt32(Me.txtTimeout.Text)
                 Master.eSettings.SingleScrapeTrailer = Me.chkSingleScrapeTrailer.Checked
                 Master.eSettings.UpdaterTrailersNoDownload = Me.chkNoDLTrailer.Checked
+                Master.eSettings.OverwriteTrailer = Me.chkOverwriteTrailer.Checked
             Else
                 Master.eSettings.DownloadTrailers = False
                 Master.eSettings.UpdaterTrailers = False
                 Master.eSettings.SingleScrapeTrailer = False
                 Master.eSettings.TrailerTimeout = 2
                 Master.eSettings.UpdaterTrailersNoDownload = False
+                Master.eSettings.OverwriteTrailer = False
             End If
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
@@ -1390,6 +1398,7 @@ Public Class dlgSettings
             Me.chkNoDLTrailer.Checked = Master.eSettings.UpdaterTrailersNoDownload
             Me.chkSingleScrapeTrailer.Checked = Master.eSettings.SingleScrapeTrailer
             Me.txtTimeout.Text = Master.eSettings.TrailerTimeout.ToString
+            Me.chkOverwriteTrailer.Checked = Master.eSettings.OverwriteTrailer
 
             If Master.eSettings.TrailerSites.Count > 0 Then
                 For Each iTrailer As Integer In Master.eSettings.TrailerSites

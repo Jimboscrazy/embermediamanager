@@ -249,6 +249,7 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
+        Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -2299,6 +2300,7 @@ Partial Class dlgSettings
         '
         'GroupBox20
         '
+        Me.GroupBox20.Controls.Add(Me.chkOverwriteTrailer)
         Me.GroupBox20.Controls.Add(Me.chkNoDLTrailer)
         Me.GroupBox20.Controls.Add(Me.chkSingleScrapeTrailer)
         Me.GroupBox20.Controls.Add(Me.Label23)
@@ -2309,7 +2311,7 @@ Partial Class dlgSettings
         Me.GroupBox20.Controls.Add(Me.chkDownloadTrailer)
         Me.GroupBox20.Location = New System.Drawing.Point(222, 176)
         Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Size = New System.Drawing.Size(299, 154)
+        Me.GroupBox20.Size = New System.Drawing.Size(299, 169)
         Me.GroupBox20.TabIndex = 61
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
@@ -2335,7 +2337,7 @@ Partial Class dlgSettings
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(16, 126)
+        Me.Label23.Location = New System.Drawing.Point(16, 144)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(48, 13)
         Me.Label23.TabIndex = 64
@@ -2344,7 +2346,7 @@ Partial Class dlgSettings
         'txtTimeout
         '
         Me.txtTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTimeout.Location = New System.Drawing.Point(70, 124)
+        Me.txtTimeout.Location = New System.Drawing.Point(70, 142)
         Me.txtTimeout.Name = "txtTimeout"
         Me.txtTimeout.Size = New System.Drawing.Size(66, 20)
         Me.txtTimeout.TabIndex = 63
@@ -2611,6 +2613,15 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
+        'chkOverwriteTrailer
+        '
+        Me.chkOverwriteTrailer.Location = New System.Drawing.Point(19, 122)
+        Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
+        Me.chkOverwriteTrailer.Size = New System.Drawing.Size(148, 15)
+        Me.chkOverwriteTrailer.TabIndex = 67
+        Me.chkOverwriteTrailer.Text = "Overwrite Trailer"
+        Me.chkOverwriteTrailer.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -2625,13 +2636,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2922,4 +2933,5 @@ Partial Class dlgSettings
     Friend WithEvents Label27 As System.Windows.Forms.Label
     Friend WithEvents chkWhitelistVideo As System.Windows.Forms.CheckBox
     Friend WithEvents chkInfoPanelAnim As System.Windows.Forms.CheckBox
+    Friend WithEvents chkOverwriteTrailer As System.Windows.Forms.CheckBox
 End Class

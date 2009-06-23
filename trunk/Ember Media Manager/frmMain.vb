@@ -231,14 +231,16 @@ Public Class frmMain
                             Me.FillList(0)
                         End If
                     End If
+
+                    Me.SetMenus(True)
+                Else
+                    Me.SetMenus(False)
                 End If
             End Using
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-
-        Me.SetMenus()
 
     End Sub
 
@@ -408,7 +410,7 @@ Public Class frmMain
 
                 Me.SetColors()
 
-                Me.SetMenus()
+                Me.SetMenus(True)
 
                 Select Case Master.eSettings.InfoPanelState
                     Case 0
@@ -1943,7 +1945,7 @@ Public Class frmMain
         Try
             Dim Args As Arguments = e.Argument
             If Me.UpdateMediaInfo(Args.Path, Args.Movie) Then
-                If Master.eSettings.usestudiotags Then
+                If Master.eSettings.UseStudioTags Then
                     Args.Movie.Studio = String.Concat(Args.Movie.StudioReal, Master.FITagData(Args.Movie.FileInfo))
                 End If
                 Master.SaveMovieToNFO(Args.Movie, Args.Path, Args.isFile)
@@ -2273,9 +2275,8 @@ Public Class frmMain
                                         End If
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                        If ((Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer) AndAlso _
-                                           (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
-                                            tURL = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
+                                        If (Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer Then
+                                            tURL = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID, drvRow.Item(2), Master.scrapeMovie.Trailer)
                                             If Not String.IsNullOrEmpty(tURL) Then
                                                 If tURL.Substring(0, 7) = "http://" Then
                                                     Master.scrapeMovie.Trailer = tURL
@@ -2378,9 +2379,8 @@ Public Class frmMain
                                         End If
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                        If ((Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer) AndAlso _
-                                           (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
-                                            tURL = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
+                                        If (Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer Then
+                                            tURL = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID, drvRow.Item(2), Master.scrapeMovie.Trailer)
                                             If Not String.IsNullOrEmpty(tURL) Then
                                                 If tURL.Substring(0, 7) = "http://" Then
                                                     Master.scrapeMovie.Trailer = tURL
@@ -2554,9 +2554,8 @@ Public Class frmMain
                                         End If
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer) AndAlso _
-                                        (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
-                                            tURL = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
+                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer) Then
+                                            tURL = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID, drvRow.Item(2), Master.scrapeMovie.Trailer)
                                             If Not String.IsNullOrEmpty(tURL) Then
                                                 If tURL.Substring(0, 7) = "http://" Then
                                                     Master.scrapeMovie.Trailer = tURL
@@ -2692,9 +2691,8 @@ Public Class frmMain
                                         End If
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer) AndAlso _
-                                        (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
-                                            tURL = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID)
+                                        If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) AndAlso ((Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer) Then
+                                            tURL = Trailer.DownloadSingleTrailer(sPath, Master.scrapeMovie.IMDBID, drvRow.Item(2), Master.scrapeMovie.Trailer)
                                             If Not String.IsNullOrEmpty(tURL) Then
                                                 If tURL.Substring(0, 7) = "http://" Then
                                                     Master.scrapeMovie.Trailer = tURL
@@ -3675,7 +3673,7 @@ doCancel:
                     tmpImages = Nothing
 
 
-                    If Master.eSettings.SingleScrapeTrailer AndAlso (String.IsNullOrEmpty(Master.scrapeMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
+                    If Master.eSettings.SingleScrapeTrailer Then
                         Using dTrailer As New dlgTrailer
                             Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
                             If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
@@ -3833,7 +3831,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub SetMenus()
+    Private Sub SetMenus(ByVal ReloadFilters As Boolean)
 
         With Master.eSettings
             If (Not .ExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
@@ -3904,12 +3902,14 @@ doCancel:
             Me.mnuMarkAskTrailer.Enabled = .DownloadTrailers
 
             'not technically a menu, but it's a good place to put it
-            cbFilterSource.Items.Clear()
-            cbFilterSource.Items.Add("All")
-            For Each movieSource As String In Master.eSettings.MovieFolders
-                cbFilterSource.Items.Add(Split(movieSource, "|").First)
-            Next
-            cbFilterSource.Text = "All"
+            If ReloadFilters Then
+                cbFilterSource.Items.Clear()
+                cbFilterSource.Items.Add("All")
+                For Each movieSource As String In Master.eSettings.MovieFolders
+                    cbFilterSource.Items.Add(Split(movieSource, "|").First)
+                Next
+                cbFilterSource.Text = "All"
+            End If
         End With
     End Sub
 

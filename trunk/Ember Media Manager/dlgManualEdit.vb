@@ -350,6 +350,7 @@ Public Class dlgManualEdit
         RichTextBox1.LoadFile(Master.currNFO, RichTextBoxStreamType.PlainText)
         Me.Text = "Manual NFO Editor | " + Master.currNFO.Substring(currFile.LastIndexOf("\") + 1)
 
+        Changed = False
     End Sub
 
     Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click

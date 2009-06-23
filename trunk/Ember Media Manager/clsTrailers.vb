@@ -22,7 +22,7 @@
 Option Explicit On
 
 Imports System
-Imports System.Collections.Generic
+Imports System.IO
 Imports System.Net
 Imports System.Text
 Imports System.Text.RegularExpressions
@@ -249,18 +249,22 @@ Public Class Trailers
         End If
     End Function
 
-    Public Function DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String) As String
+    Public Function DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String, ByVal isFile As Boolean, ByVal currNfoTrailer As String) As String
         Dim tURL As String = String.Empty
 
         Me._TrailerList.Clear()
 
-        Me.GetTrailers(ImdbID, True)
+        If Not Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isFile, True, currNfoTrailer) Then
+            Me.GetTrailers(ImdbID, True)
 
-        If Me._TrailerList.Count > 0 Then
-            If Master.eSettings.UpdaterTrailersNoDownload Then
-                tURL = Me._TrailerList.Item(0)
-            Else
+            If Me._TrailerList.Count > 0 Then
                 tURL = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False)
+            End If
+        ElseIf Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isFile, False, currNfoTrailer) Then
+            Me.GetTrailers(ImdbID, True)
+
+            If Me._TrailerList.Count > 0 Then
+                tURL = Me._TrailerList.Item(0)
             End If
         End If
 
@@ -275,4 +279,20 @@ Public Class Trailers
     Public Sub DownloadProgressUpdated(ByVal iProgress As Integer)
         RaiseEvent ProgressUpdated(iProgress)
     End Sub
+
+    Public Function IsAllowedToDownload(ByVal sPath As String, ByVal isFile As Boolean, ByVal isDL As Boolean, ByVal currNfoTrailer As String) As Boolean
+        If isDL Then
+            If Not File.Exists(Master.GetTrailerPath(sPath, isFile)) OrElse Master.eSettings.OverwriteTrailer Then
+                Return True
+            Else
+                Return False
+            End If
+        Else
+            If String.IsNullOrEmpty(currNfoTrailer) OrElse Not Master.eSettings.LockTrailer Then
+                Return True
+            Else
+                Return False
+            End If
+        End If
+    End Function
 End Class
