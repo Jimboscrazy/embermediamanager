@@ -840,7 +840,7 @@ Public Class dlgEditMovie
                         Dim s As String = d.ReadLine()
                         If s.Contains("Duration: ") Then
                             Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-                            Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today, sTime))).Subtract(CDate(DateTime.Today))
+                            Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
                             Dim intSeconds As Integer = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
                             tbFrame.Maximum = intSeconds
                             tbFrame.Value = 0
