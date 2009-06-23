@@ -447,7 +447,10 @@ Public Class Images
                     Dim di As New DirectoryInfo(CachePath)
                     Dim lFi As New List(Of FileInfo)
 
-                    lFi.AddRange(di.GetFiles("*.jpg"))
+                    Try
+                        lFi.AddRange(di.GetFiles("*.jpg"))
+                    Catch
+                    End Try
 
                     If lFi.Count > 0 Then
                         Dim tImage As Media.Image
@@ -749,7 +752,10 @@ Public Class Images
                         Dim di As New DirectoryInfo(CachePath)
                         Dim lFi As New List(Of FileInfo)
 
-                        lFi.AddRange(di.GetFiles("*.jpg"))
+                        Try
+                            lFi.AddRange(di.GetFiles("*.jpg"))
+                        Catch
+                        End Try
 
                         If lFi.Count > 0 Then
                             Dim tImage As Media.Image

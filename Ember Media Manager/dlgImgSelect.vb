@@ -410,7 +410,10 @@ Public Class dlgImgSelect
                 Dim di As New DirectoryInfo(CachePath)
                 Dim lFi As New List(Of FileInfo)
 
-                lFi.AddRange(di.GetFiles("*.jpg"))
+                Try
+                    lFi.AddRange(di.GetFiles("*.jpg"))
+                Catch
+                End Try
 
                 If lFi.Count > 0 Then
                     NoneFound = False
@@ -438,6 +441,9 @@ Public Class dlgImgSelect
                     ProcessPics(TMDBPosters)
                     Me.pnlBG.Visible = True
                 End If
+
+                lFi = Nothing
+                di = Nothing
             End If
 
             If NoneFound Then
@@ -502,7 +508,10 @@ Public Class dlgImgSelect
                 Dim di As New DirectoryInfo(CachePath)
                 Dim lFi As New List(Of FileInfo)
 
-                lFi.AddRange(di.GetFiles("*.jpg"))
+                Try
+                    lFi.AddRange(di.GetFiles("*.jpg"))
+                Catch
+                End Try
 
                 If lFi.Count > 0 Then
                     NoneFound = False
@@ -528,6 +537,9 @@ Public Class dlgImgSelect
                     Me.pnlFanart.Visible = True
                     Me.lblInfo.Visible = True
                 End If
+
+                lFi = Nothing
+                di = Nothing
             End If
 
             If NoneFound Then
