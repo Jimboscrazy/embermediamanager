@@ -18,16 +18,14 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+
+
 Option Explicit On
 Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
-<<<<<<< .mine
 Public Class dlgBulkRenamer
-=======
-Public Class dlgBulkRename
->>>>>>> .r431
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Private bindingSource1 As New BindingSource()
     Private isLoaded As Boolean = False
@@ -80,15 +78,10 @@ Public Class dlgBulkRename
                                 _tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
                                 MovieFile.Title = _tmpMovie.Title
                                 MovieFile.Year = _tmpMovie.Year
-<<<<<<< .mine
                                 If Not IsNothing(_tmpMovie.FileInfo) AndAlso (Not IsNothing(_tmpMovie.FileInfo.StreamDetails.Video) OrElse _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0) Then
                                     MovieFile.Resolution = Master.GetResFromDimensions(_tmpMovie.FileInfo)
                                     MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
                                 End If
-=======
-                                MovieFile.Resolution = Master.GetResFromDimensions(_tmpMovie.FileInfo)
-                                MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
->>>>>>> .r431
                                 MovieFile.BasePath = Path.GetDirectoryName(SQLreader("path").ToString)
                                 MovieFile.Path = Path.GetDirectoryName(SQLreader("path").ToString)
                                 For Each i As String In ffrenamer.MovieFolders
@@ -278,33 +271,5 @@ Public Class dlgBulkRename
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-<<<<<<< .mine
-=======
-    Public Shared Function RenameSingle(ByVal _tmpPath As String, ByVal _tmpMovie As Media.Movie, ByVal folderPattern As String, ByVal filePattern As String) As Boolean
-        Dim bulkRename As New dlgBulkRename
-        Dim MovieFile As FileRename = New FileRename
-        Dim dirArray() As String
-        For Each strFolders As String In Master.eSettings.MovieFolders
-            dirArray = Split(strFolders, "|")
-            bulkRename.allMedia.Add(dirArray(0).ToString)
-        Next
-        bulkRename._movies.Clear()
-        MovieFile.Title = _tmpMovie.Title
-        MovieFile.Year = _tmpMovie.Year
-        MovieFile.Resolution = Master.GetResFromDimensions(_tmpMovie.FileInfo)
-        MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
-        MovieFile.BasePath = Path.GetDirectoryName(_tmpPath)
-        MovieFile.Path = Path.GetDirectoryName(_tmpPath)
-        MovieFile.NewFileName = bulkRename.ProccessPattern(MovieFile, folderPattern)
-        MovieFile.NewPath = bulkRename.ProccessPattern(MovieFile, filePattern)
-        For Each i As String In bulkRename.allMedia
-            If i = MovieFile.Path.Substring(0, i.Length) Then
-                MovieFile.Path = MovieFile.Path.Substring(String.Concat(i, Path.DirectorySeparatorChar).Length)
-                MovieFile.BasePath = i
-                Exit For
-            End If
-        Next
-        MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(_tmpPath))
->>>>>>> .r431
 
 End Class
