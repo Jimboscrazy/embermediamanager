@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -47,13 +47,14 @@ Partial Class frmMain
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuRevertStudioTags = New System.Windows.Forms.ToolStripMenuItem
-        Me.ClearAllCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.RenamerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
         Me.SetsManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.OfflineMediaManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator
         Me.ExportMoviesListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.RenamerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
+        Me.ClearAllCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.dgvMediaList = New System.Windows.Forms.DataGridView
         Me.mnuMediaList = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -230,7 +231,6 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -440,12 +440,12 @@ Partial Class frmMain
         Me.mnuRevertStudioTags.Size = New System.Drawing.Size(292, 22)
         Me.mnuRevertStudioTags.Text = "Revert Media Info Studio Tags"
         '
-        'ClearAllCachesToolStripMenuItem
+        'RenamerToolStripMenuItem
         '
-        Me.ClearAllCachesToolStripMenuItem.Image = CType(resources.GetObject("ClearAllCachesToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.ClearAllCachesToolStripMenuItem.Name = "ClearAllCachesToolStripMenuItem"
-        Me.ClearAllCachesToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.ClearAllCachesToolStripMenuItem.Text = "Clear All Caches"
+        Me.RenamerToolStripMenuItem.Image = CType(resources.GetObject("RenamerToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RenamerToolStripMenuItem.Name = "RenamerToolStripMenuItem"
+        Me.RenamerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
+        Me.RenamerToolStripMenuItem.Text = "Bulk Renamer"
         '
         'ToolStripSeparator4
         '
@@ -478,12 +478,17 @@ Partial Class frmMain
         Me.ExportMoviesListToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
         Me.ExportMoviesListToolStripMenuItem.Text = "Export Movies List"
         '
-        'RenamerToolStripMenuItem
+        'ToolStripSeparator5
         '
-        Me.RenamerToolStripMenuItem.Image = CType(resources.GetObject("RenamerToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.RenamerToolStripMenuItem.Name = "RenamerToolStripMenuItem"
-        Me.RenamerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.RenamerToolStripMenuItem.Text = "Bulk Renamer"
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(289, 6)
+        '
+        'ClearAllCachesToolStripMenuItem
+        '
+        Me.ClearAllCachesToolStripMenuItem.Image = CType(resources.GetObject("ClearAllCachesToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.ClearAllCachesToolStripMenuItem.Name = "ClearAllCachesToolStripMenuItem"
+        Me.ClearAllCachesToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
+        Me.ClearAllCachesToolStripMenuItem.Text = "Clear All Caches"
         '
         'scMain
         '
@@ -524,8 +529,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2098,11 +2103,6 @@ Partial Class frmMain
         'tmrFilterAni
         '
         Me.tmrFilterAni.Interval = 1
-        '
-        'ToolStripSeparator5
-        '
-        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(289, 6)
         '
         'frmMain
         '
