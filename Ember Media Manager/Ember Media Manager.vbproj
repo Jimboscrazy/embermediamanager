@@ -150,6 +150,7 @@
     <Compile Include="clsHashing.vb" />
     <Compile Include="clsHTTP.vb" />
     <Compile Include="clsImages.vb" />
+    <Compile Include="clsRenamer.vb" />
     <Compile Include="clsScrapeIMDB.vb" />
     <Compile Include="clsScrapeIMPA.vb" />
     <Compile Include="clsScrapeMPDB.vb" />
