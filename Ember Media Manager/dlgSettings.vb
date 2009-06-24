@@ -172,9 +172,9 @@ Public Class dlgSettings
                             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                             SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
                             For i As Integer = lvMovies.SelectedItems.Count - 1 To 0 Step -1
-                                parSource.Value = lvMovies.Items(i).Text
+                                parSource.Value = lvMovies.SelectedItems(i).Text
                                 SQLcommand.ExecuteNonQuery()
-                                lvMovies.Items.RemoveAt(i)
+                                lvMovies.Items.RemoveAt(lvMovies.SelectedItems(i).Index)
                             Next
                         End Using
                         SQLtransaction.Commit()
