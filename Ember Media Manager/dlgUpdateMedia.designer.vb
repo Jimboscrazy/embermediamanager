@@ -76,7 +76,7 @@ Partial Class dlgUpdateMedia
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.OK_Button.Location = New System.Drawing.Point(360, 330)
+        Me.OK_Button.Location = New System.Drawing.Point(366, 330)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(80, 23)
         Me.OK_Button.TabIndex = 0
@@ -92,7 +92,7 @@ Partial Class dlgUpdateMedia
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(448, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(453, 64)
         Me.pnlTop.TabIndex = 58
         '
         'Label2
@@ -135,10 +135,10 @@ Partial Class dlgUpdateMedia
         Me.rbUpdateModifier_All.Checked = True
         Me.rbUpdateModifier_All.Location = New System.Drawing.Point(6, 19)
         Me.rbUpdateModifier_All.Name = "rbUpdateModifier_All"
-        Me.rbUpdateModifier_All.Size = New System.Drawing.Size(74, 17)
+        Me.rbUpdateModifier_All.Size = New System.Drawing.Size(73, 17)
         Me.rbUpdateModifier_All.TabIndex = 59
         Me.rbUpdateModifier_All.TabStop = True
-        Me.rbUpdateModifier_All.Text = "Update All"
+        Me.rbUpdateModifier_All.Text = "All Movies"
         Me.rbUpdateModifier_All.UseVisualStyleBackColor = True
         '
         'gbUpdateModifier
@@ -149,7 +149,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_All)
         Me.gbUpdateModifier.Location = New System.Drawing.Point(6, 70)
         Me.gbUpdateModifier.Name = "gbUpdateModifier"
-        Me.gbUpdateModifier.Size = New System.Drawing.Size(215, 68)
+        Me.gbUpdateModifier.Size = New System.Drawing.Size(220, 68)
         Me.gbUpdateModifier.TabIndex = 60
         Me.gbUpdateModifier.TabStop = False
         Me.gbUpdateModifier.Text = "Selection Filter"
@@ -158,7 +158,7 @@ Partial Class dlgUpdateMedia
         '
         Me.rbUpdateModifier_Marked.AutoSize = True
         Me.rbUpdateModifier_Marked.Enabled = False
-        Me.rbUpdateModifier_Marked.Location = New System.Drawing.Point(103, 42)
+        Me.rbUpdateModifier_Marked.Location = New System.Drawing.Point(91, 42)
         Me.rbUpdateModifier_Marked.Name = "rbUpdateModifier_Marked"
         Me.rbUpdateModifier_Marked.Size = New System.Drawing.Size(98, 17)
         Me.rbUpdateModifier_Marked.TabIndex = 62
@@ -179,11 +179,11 @@ Partial Class dlgUpdateMedia
         'rbUpdateModifier_Missing
         '
         Me.rbUpdateModifier_Missing.AutoSize = True
-        Me.rbUpdateModifier_Missing.Location = New System.Drawing.Point(103, 19)
+        Me.rbUpdateModifier_Missing.Location = New System.Drawing.Point(91, 20)
         Me.rbUpdateModifier_Missing.Name = "rbUpdateModifier_Missing"
-        Me.rbUpdateModifier_Missing.Size = New System.Drawing.Size(88, 17)
+        Me.rbUpdateModifier_Missing.Size = New System.Drawing.Size(125, 17)
         Me.rbUpdateModifier_Missing.TabIndex = 60
-        Me.rbUpdateModifier_Missing.Text = "Missing Items"
+        Me.rbUpdateModifier_Missing.Text = "Movies Missing Items"
         Me.rbUpdateModifier_Missing.UseVisualStyleBackColor = True
         '
         'gbUpdateType
@@ -192,7 +192,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Auto)
         Me.gbUpdateType.Location = New System.Drawing.Point(6, 147)
         Me.gbUpdateType.Name = "gbUpdateType"
-        Me.gbUpdateType.Size = New System.Drawing.Size(215, 75)
+        Me.gbUpdateType.Size = New System.Drawing.Size(220, 75)
         Me.gbUpdateType.TabIndex = 61
         Me.gbUpdateType.TabStop = False
         Me.gbUpdateType.Text = "Update Mode"
@@ -230,7 +230,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.Controls.Add(Me.rbAll)
         Me.gbUpdateItems.Location = New System.Drawing.Point(6, 228)
         Me.gbUpdateItems.Name = "gbUpdateItems"
-        Me.gbUpdateItems.Size = New System.Drawing.Size(215, 96)
+        Me.gbUpdateItems.Size = New System.Drawing.Size(220, 96)
         Me.gbUpdateItems.TabIndex = 62
         Me.gbUpdateItems.TabStop = False
         Me.gbUpdateItems.Text = "Modifiers"
@@ -310,7 +310,7 @@ Partial Class dlgUpdateMedia
         'Update_Button
         '
         Me.Update_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.Update_Button.Location = New System.Drawing.Point(269, 330)
+        Me.Update_Button.Location = New System.Drawing.Point(278, 330)
         Me.Update_Button.Name = "Update_Button"
         Me.Update_Button.Size = New System.Drawing.Size(80, 23)
         Me.Update_Button.TabIndex = 63
@@ -337,7 +337,7 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.Controls.Add(Me.chkMPAA)
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
-        Me.gbOptions.Location = New System.Drawing.Point(227, 70)
+        Me.gbOptions.Location = New System.Drawing.Point(233, 70)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(213, 254)
         Me.gbOptions.TabIndex = 66
@@ -539,7 +539,7 @@ Partial Class dlgUpdateMedia
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(448, 358)
+        Me.ClientSize = New System.Drawing.Size(453, 358)
         Me.Controls.Add(Me.gbOptions)
         Me.Controls.Add(Me.Update_Button)
         Me.Controls.Add(Me.gbUpdateItems)

@@ -435,25 +435,8 @@ Public Class dlgEditMovie
 
                 .btnDLTrailer.Enabled = Master.eSettings.DownloadTrailers
 
-                If Not String.IsNullOrEmpty(Master.currMovie.StudioReal) Then
-                    .txtStudio.Text = Master.currMovie.StudioReal
-                ElseIf Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
-                    If Strings.InStr(Master.currMovie.Studio, " / ") Then
-                        Master.currMovie.StudioReal = Strings.Left(Master.currMovie.Studio, Strings.InStr(Master.currMovie.Studio, " / ") - 1).Trim
-                        .txtStudio.Text = Master.currMovie.StudioReal
-                    End If
-                End If
-
-                If Not Master.eSettings.UseStudioTags Then
-                    .lblStudio.Text = "Studio"
-                    .lblStudioTag.Visible = False
-                    .txtStudioTag.Visible = False
-                Else
-                    If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
-                        If Strings.InStr(Master.currMovie.Studio, " / ") Then
-                            .txtStudioTag.Text = Strings.Right(Master.currMovie.Studio, Master.currMovie.Studio.Length - (Strings.InStr(Master.currMovie.Studio, " / ") + 2)).Trim
-                        End If
-                    End If
+                If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
+                    .txtStudio.Text = Master.currMovie.Studio
                 End If
 
                 Me.SelectMPAA()
@@ -583,12 +566,7 @@ Public Class dlgEditMovie
                 Master.currMovie.ReleaseDate = .txtReleaseDate.Text.Trim
                 Master.currMovie.Credits = .txtCredits.Text.Trim
                 Master.currMovie.Trailer = .txtTrailer.Text.Trim
-                Master.currMovie.StudioReal = .txtStudio.Text.Trim
-                If Not String.IsNullOrEmpty(.txtStudioTag.Text) AndAlso Master.eSettings.UseStudioTags Then
-                    Master.currMovie.Studio = String.Format("{0} / {1}", .txtStudio.Text.Trim, .txtStudioTag.Text.Trim).Trim
-                Else
-                    Master.currMovie.Studio = .txtStudio.Text.Trim
-                End If
+                Master.currMovie.Studio = .txtStudio.Text.Trim
 
                 If .lbGenre.CheckedItems.Count > 0 Then
 

@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -230,6 +230,7 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -406,7 +407,7 @@ Partial Class frmMain
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.ClearAllCachesToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem, Me.RenamerToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.RenamerToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem, Me.ToolStripSeparator5, Me.ClearAllCachesToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.ToolsToolStripMenuItem.Text = "Tools"
@@ -479,9 +480,10 @@ Partial Class frmMain
         '
         'RenamerToolStripMenuItem
         '
+        Me.RenamerToolStripMenuItem.Image = CType(resources.GetObject("RenamerToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RenamerToolStripMenuItem.Name = "RenamerToolStripMenuItem"
         Me.RenamerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.RenamerToolStripMenuItem.Text = "Renamer"
+        Me.RenamerToolStripMenuItem.Text = "Bulk Renamer"
         '
         'scMain
         '
@@ -522,8 +524,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2097,6 +2099,11 @@ Partial Class frmMain
         '
         Me.tmrFilterAni.Interval = 1
         '
+        'ToolStripSeparator5
+        '
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(289, 6)
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2376,4 +2383,5 @@ Partial Class frmMain
     Friend WithEvents mnuMarkAskMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents pbVType As System.Windows.Forms.PictureBox
     Friend WithEvents RenamerToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
 End Class

@@ -43,7 +43,6 @@ Namespace Media
         Private _runtime As String
         Private _releaseDate As String
         Private _studio As String
-        Private _studioreal As String
         Private _director As String
         Private _credits As String
         Private _playcount As String
@@ -323,23 +322,6 @@ Namespace Media
             End Get
         End Property
 
-        <XmlElement("studioreal")> _
-        Public Property StudioReal() As String
-            Get
-                Return Me._studioreal
-            End Get
-            Set(ByVal value As String)
-                Me._studioreal = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property StudioRealSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._studioreal)
-            End Get
-        End Property
-
         <XmlElement("runtime")> _
         Public Property Runtime() As String
             Get
@@ -574,7 +556,7 @@ Namespace Media
         <XmlIgnore()> _
         Public ReadOnly Property FileInfoSpecified() As Boolean
             Get
-                If Me._fileInfo.StreamDetails.Video.Count > 0 OrElse _
+                If Not IsNothing(Me._fileInfo.StreamDetails.Video) OrElse _
                 Me._fileInfo.StreamDetails.Audio.Count > 0 OrElse _
                  Me._fileInfo.StreamDetails.Subtitle.Count > 0 Then
                     Return True
@@ -645,7 +627,6 @@ Namespace Media
             Me._runtime = String.Empty
             Me._releaseDate = String.Empty
             Me._studio = String.Empty
-            Me._studioreal = String.Empty
             Me._director = String.Empty
             Me._credits = String.Empty
             Me._playcount = String.Empty

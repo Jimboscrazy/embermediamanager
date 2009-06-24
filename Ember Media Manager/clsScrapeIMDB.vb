@@ -603,7 +603,7 @@ mPlot:
                 If Options.bRuntime Then IMDBMovie.Runtime = Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim
 
                 'Get Production Studio
-                If Options.bStudio AndAlso (String.IsNullOrEmpty(IMDBMovie.StudioReal) OrElse Not Master.eSettings.LockStudio) Then
+                If Options.bStudio AndAlso (String.IsNullOrEmpty(IMDBMovie.Studio) OrElse Not Master.eSettings.LockStudio) Then
                     D = 0 : W = 0
                     If FullCrew Then
                         D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
@@ -613,15 +613,13 @@ mPlot:
                             Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                                      Where Not P1.Groups("name").ToString = String.Empty _
                                      Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString) Take 1
-                            IMDBMovie.StudioReal = Ps(0).ToString.Trim
-                            If Not Master.eSettings.UseStudioTags Then IMDBMovie.Studio = IMDBMovie.StudioReal
+                            IMDBMovie.Studio = Ps(0).ToString.Trim
                         End If
                     Else
                         D = HTML.IndexOf("<h5>Company:</h5>")
                         If D > 0 Then W = HTML.IndexOf("</div>", D)
                         If D > 0 AndAlso W > 0 Then
-                            IMDBMovie.StudioReal = Web.HttpUtility.HtmlDecode(Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim)
-                            If Not Master.eSettings.UseStudioTags Then IMDBMovie.Studio = IMDBMovie.StudioReal
+                            IMDBMovie.Studio = Web.HttpUtility.HtmlDecode(Regex.Match(HTML.Substring(D, W - D), HREF_PATTERN).Groups("name").ToString.Trim)
                         End If
                     End If
                 End If
