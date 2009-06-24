@@ -4317,7 +4317,7 @@ doCancel:
         Using dBulkRename As New dlgBulkRenamer
             Try
                 dBulkRename.ShowDialog()
-                'dlgBulkRename.RenameSingle(Master.currPath, Master.currMovie, "$T", "$T")
+                Me.LoadMedia(1)
             Catch ex As Exception
             End Try
         End Using
