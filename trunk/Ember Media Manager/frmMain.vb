@@ -1582,6 +1582,7 @@ Public Class frmMain
         Using dOfflineHolder As New dlgOfflineHolder
             dOfflineHolder.ShowDialog()
         End Using
+        Me.LoadMedia(1)
     End Sub
 
     Private Sub mnuAllAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTrailer.Click
@@ -4313,7 +4314,7 @@ doCancel:
 #End Region '*** Routines/Functions
 
     Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
-        Using dBulkRename As New dlgBulkRename
+        Using dBulkRename As New dlgBulkRenamer
             Try
                 dBulkRename.ShowDialog()
                 'dlgBulkRename.RenameSingle(Master.currPath, Master.currMovie, "$T", "$T")
