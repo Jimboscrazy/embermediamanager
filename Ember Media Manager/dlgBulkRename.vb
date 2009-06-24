@@ -23,7 +23,7 @@ Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
-Public Class FileForderRenamer
+Public Class dlgBulkRename
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Class FileRename
         Private _title As String
@@ -157,12 +157,8 @@ Public Class FileForderRenamer
                                 _tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
                                 MovieFile.Title = _tmpMovie.Title
                                 MovieFile.Year = _tmpMovie.Year
-                                Dim tagData As String = Master.FITagData(_tmpMovie.FileInfo, True)
-                                If tagData.Split("|").Count >= 3 Then
-                                    MovieFile.Resolution = tagData.Split("|")(0)
-                                    MovieFile.Audio = tagData.Split("|")(2)
-
-                                End If
+                                MovieFile.Resolution = Master.GetResFromDimensions(_tmpMovie.FileInfo)
+                                MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
                                 MovieFile.BasePath = Path.GetDirectoryName(SQLreader("path").ToString)
                                 MovieFile.Path = Path.GetDirectoryName(SQLreader("path").ToString)
                                 For Each i As String In allMedia
@@ -393,7 +389,7 @@ Public Class FileForderRenamer
         End Try
     End Sub
     Public Shared Function RenameSingle(ByVal _tmpPath As String, ByVal _tmpMovie As Media.Movie, ByVal folderPattern As String, ByVal filePattern As String) As Boolean
-        Dim bulkRename As New FileForderRenamer
+        Dim bulkRename As New dlgBulkRename
         Dim MovieFile As FileRename = New FileRename
         Dim dirArray() As String
         For Each strFolders As String In Master.eSettings.MovieFolders
@@ -403,8 +399,8 @@ Public Class FileForderRenamer
         bulkRename._movies.Clear()
         MovieFile.Title = _tmpMovie.Title
         MovieFile.Year = _tmpMovie.Year
-        MovieFile.Resolution = Master.FITagData(_tmpMovie.FileInfo, True).Split("|")(0)
-        MovieFile.Audio = Master.FITagData(_tmpMovie.FileInfo, True).Split("|")(2)
+        MovieFile.Resolution = Master.GetResFromDimensions(_tmpMovie.FileInfo)
+        MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
         MovieFile.BasePath = Path.GetDirectoryName(_tmpPath)
         MovieFile.Path = Path.GetDirectoryName(_tmpPath)
         MovieFile.NewFileName = bulkRename.ProccessPattern(MovieFile, folderPattern)
