@@ -1941,27 +1941,21 @@ Public Class frmMain
         '//
         ' Thread to procure technical and tag information about media via MediaInfo.dll
         '\\
+        Dim Args As Arguments = e.Argument
 
         Try
-            Dim Args As Arguments = e.Argument
-            If Me.UpdateMediaInfo(Args.Path, Args.Movie) Then
-                If Master.eSettings.UseStudioTags Then
-                    Args.Movie.Studio = String.Concat(Args.Movie.StudioReal, Master.FITagData(Args.Movie.FileInfo))
-                End If
-                Master.SaveMovieToNFO(Args.Movie, Args.Path, Args.isFile)
+            Me.UpdateMediaInfo(Args.Path, Args.Movie)
+            Master.SaveMovieToNFO(Args.Movie, Args.Path, Args.isFile)
 
-                If Me.bwMediaInfo.CancellationPending Then
-                    e.Cancel = True
-                    Return
-                End If
-
-                e.Result = New Results With {.fileinfo = Master.FIToString(Args.Movie.FileInfo, Args.Movie.Studio), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
-
-            Else
-                e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
+            If Me.bwMediaInfo.CancellationPending Then
+                e.Cancel = True
+                Return
             End If
+
+            e.Result = New Results With {.fileinfo = Master.FIToString(Args.Movie.FileInfo), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
         End Try
     End Sub
 
@@ -2245,9 +2239,7 @@ Public Class frmMain
                                     If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.ScanMediaInfo AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.MI) Then
-                                            If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
-                                                If Master.eSettings.UseStudioTags Then Master.scrapeMovie.Studio = String.Concat(Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
-                                            End If
+                                            UpdateMediaInfo(sPath, Master.scrapeMovie) 
                                         End If
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -2369,9 +2361,7 @@ Public Class frmMain
                                     If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Master.eSettings.ScanMediaInfo AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.MI) Then
-                                            If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
-                                                If Master.eSettings.UseStudioTags Then Master.scrapeMovie.Studio = String.Concat(Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
-                                            End If
+                                            UpdateMediaInfo(sPath, Master.scrapeMovie)
                                         End If
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -2486,9 +2476,7 @@ Public Class frmMain
                                     If Not String.IsNullOrEmpty(nfoPath) Then
                                         Master.scrapeMovie = Master.LoadMovieFromNFO(nfoPath)
 
-                                        If Not String.IsNullOrEmpty(Master.scrapeMovie.StudioReal) Then
-                                            Master.scrapeMovie.Studio = Master.scrapeMovie.StudioReal
-                                        ElseIf Not String.IsNullOrEmpty(Master.scrapeMovie.Studio) AndAlso Master.scrapeMovie.Studio.Contains(" / ") Then
+                                        If Not String.IsNullOrEmpty(Master.scrapeMovie.Studio) AndAlso Master.scrapeMovie.Studio.Contains(" / ") Then
                                             Master.scrapeMovie.Studio = Strings.Trim(Strings.Left(Master.scrapeMovie.Studio, Strings.InStr(Master.scrapeMovie.Studio, " / ") - 1))
                                         Else
                                             Master.scrapeMovie.Studio = String.Empty
@@ -2527,9 +2515,7 @@ Public Class frmMain
                                         If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
                                             If Not drvRow.Item(6) AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.NFO) Then
                                                 If Master.eSettings.ScanMediaInfo Then
-                                                    If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
-                                                        If Master.eSettings.UseStudioTags Then Master.scrapeMovie.Studio = String.Concat(Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
-                                                    End If
+                                                    UpdateMediaInfo(sPath, Master.scrapeMovie)
                                                 End If
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(6))
                                                 parInfo.Value = True
@@ -2632,9 +2618,7 @@ Public Class frmMain
                                         If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
                                             If Not drvRow.Item(6) AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.NFO) Then
                                                 If Master.eSettings.ScanMediaInfo Then
-                                                    If UpdateMediaInfo(sPath, Master.scrapeMovie) Then
-                                                        If Master.eSettings.UseStudioTags Then Master.scrapeMovie.Studio = String.Concat(Master.scrapeMovie.StudioReal, Master.FITagData(Master.scrapeMovie.FileInfo))
-                                                    End If
+                                                    UpdateMediaInfo(sPath, Master.scrapeMovie)
                                                 End If
 
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
@@ -3281,15 +3265,8 @@ doCancel:
                 Me.createGenreThumbs(Master.currMovie.Genre)
             End If
 
-            If Not String.IsNullOrEmpty(Master.currMovie.StudioReal) Then
-                Me.pbStudio.Image = Master.GetStudioImage(Strings.Trim(Master.currMovie.StudioReal))
-            ElseIf Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
-                If Strings.InStr(Master.currMovie.Studio, " / ") Then
-                    Master.currMovie.StudioReal = Strings.Trim(Strings.Left(Master.currMovie.Studio, Strings.InStr(Master.currMovie.Studio, " / ") - 1))
-                    Me.pbStudio.Image = Master.GetStudioImage(Master.currMovie.StudioReal)
-                Else
-                    Me.pbStudio.Image = Master.GetStudioImage("####")
-                End If
+            If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
+                Me.pbStudio.Image = Master.GetStudioImage(Master.currMovie.Studio)
             Else
                 Me.pbStudio.Image = Master.GetStudioImage("####")
             End If
@@ -3312,7 +3289,7 @@ doCancel:
             Me.lblReleaseDate.Text = Master.currMovie.ReleaseDate
             Me.txtCerts.Text = Master.currMovie.Certification
 
-            Me.txtMediaInfo.Text = Master.FIToString(Master.currMovie.FileInfo, Master.currMovie.Studio)
+            Me.txtMediaInfo.Text = Master.FIToString(Master.currMovie.FileInfo)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3554,9 +3531,7 @@ doCancel:
 
                             If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) Then
                                 If Master.eSettings.ScanMediaInfo Then
-                                    If UpdateMediaInfo(Master.currPath, Master.currMovie) Then
-                                        If Master.eSettings.UseStudioTags Then Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
-                                    End If
+                                    UpdateMediaInfo(Master.currPath, Master.currMovie)
                                 End If
 
                                 If Poster.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Posters) Then
@@ -3634,33 +3609,27 @@ doCancel:
 
     End Sub
 
-    Private Function UpdateMediaInfo(ByVal sPath As String, ByRef miMovie As Media.Movie) As Boolean
+    Private Sub UpdateMediaInfo(ByVal sPath As String, ByRef miMovie As Media.Movie)
         Try
 
             Dim pExt As String = Path.GetExtension(sPath).ToLower
-            If Not pExt = ".rar" Then
-                Dim MI As New MediaInfo.MInfo
-                Dim miFileInfo = New MediaInfo.Fileinfo
-                MI.GetMovieMIFromPath(miFileInfo, sPath)
-                miMovie.FileInfo = miFileInfo
-                If Master.eSettings.UseMIDuration AndAlso miMovie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Not String.IsNullOrEmpty(miMovie.FileInfo.StreamDetails.Video.Item(0).Duration) Then
-                    Dim sDuration As Match = Regex.Match(miMovie.FileInfo.StreamDetails.Video.Item(0).Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
-                    Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0) * 60
-                    Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-                    miMovie.Runtime = String.Format("{0} mins", sHour + sMin)
+            If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso Not pExt = ".dat" AndAlso _
+            Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
+                Dim MI As New MediaInfo
+                MI.GetMovieMIFromPath(miMovie.FileInfo, sPath)
+                If Master.eSettings.UseMIDuration AndAlso Not String.IsNullOrEmpty(miMovie.FileInfo.StreamDetails.Video.Duration) Then
+                    Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), miMovie.FileInfo.StreamDetails.Video.Duration))).Subtract(CDate(DateTime.Today))
+                    Dim intMinutes As Integer = ((ts.Hours * 60) + ts.Minutes) + If(ts.Seconds > 30, 1, 0)
+                    miMovie.Runtime = String.Format("{0} mins", intMinutes)
                 End If
                 MI = Nothing
-                Return True
-            Else
-                Return False
             End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Return False
         End Try
 
-    End Function
+    End Sub
 
     Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
         If Me.ReportDownloadPercent = True Then
@@ -3679,9 +3648,7 @@ doCancel:
                     Me.tspbLoading.Style = ProgressBarStyle.Marquee
                     Me.tspbLoading.MarqueeAnimationSpeed = 25
                     Me.Refresh()
-                    If Me.UpdateMediaInfo(Master.currPath, Master.currMovie) Then
-                        If Master.eSettings.UseStudioTags Then Master.currMovie.Studio = String.Concat(Master.currMovie.StudioReal, Master.FITagData(Master.currMovie.FileInfo))
-                    End If
+                    Me.UpdateMediaInfo(Master.currPath, Master.currMovie)
                 End If
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
@@ -4348,10 +4315,11 @@ doCancel:
     Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
         Using dBulkRename As New dlgBulkRename
             Try
-                'dBulkRename.ShowDialog()
-                dlgBulkRename.RenameSingle(Master.currPath, Master.currMovie, "$T", "$T")
+                dBulkRename.ShowDialog()
+                'dlgBulkRename.RenameSingle(Master.currPath, Master.currMovie, "$T", "$T")
             Catch ex As Exception
             End Try
         End Using
     End Sub
+
 End Class

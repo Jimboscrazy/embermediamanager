@@ -533,17 +533,13 @@ Public Class Master
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
         If File.Exists(Path.Combine(mePath, "Flags.xml")) Then
             Try
-                Dim strTag(4) As String
                 Dim atypeRef As String = String.Empty
                 Dim vresImage As String = String.Empty
                 Dim vsourceImage As String = String.Empty
                 Dim vtypeImage As String = String.Empty
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
-
-                If Not IsNothing(fiAV) AndAlso (fiAV.StreamDetails.Video.Count > 0 OrElse fiAV.StreamDetails.Audio.Count > 0) Then
-                    strTag = Strings.Split(FITagData(fiAV, True).Trim.ToLower, "|")
-                End If
+                Dim tAudio As MediaInfo.Audio = GetBestAudio(fiAV)
 
                 Dim xmlFlags As XDocument = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
 
@@ -553,8 +549,9 @@ Public Class Master
                     vresImage = Path.Combine(mePath, xVResDefault(0).ToString)
                 End If
 
-                If Not IsNothing(strTag(0)) Then
-                    Dim xVResFlag = From xVRes In xmlFlags...<vres>...<name> Where Regex.IsMatch(strTag(0).Trim, xVRes.@searchstring) Select xVRes.<icon>.Value
+                If Not IsNothing(fiAV.StreamDetails.Video) Then
+                    Dim strRes As String = GetResFromDimensions(fiAV).ToLower
+                    Dim xVResFlag = From xVRes In xmlFlags...<vres>...<name> Where Regex.IsMatch(strRes, xVRes.@searchstring) Select xVRes.<icon>.Value
                     If xVResFlag.Count > 0 Then
                         vresImage = Path.Combine(mePath, xVResFlag(0).ToString)
                     End If
@@ -565,7 +562,6 @@ Public Class Master
                 If xVSourceDefault.Count > 0 Then
                     vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
                 End If
-
 
                 Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Where Regex.IsMatch(String.Concat(Directory.GetParent(strPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(strPath).ToLower), xVSource.@searchstring) Select xVSource.<icon>.Value
                 If xVSourceFlag.Count > 0 Then
@@ -578,8 +574,8 @@ Public Class Master
                     vtypeImage = Path.Combine(mePath, xVTypeDefault(0).ToString)
                 End If
 
-                If Not IsNothing(strTag(1)) Then
-                    Dim xVTypeFlag = From xVType In xmlFlags...<vtype>...<name> Where Regex.IsMatch(strTag(1).Trim, xVType.@searchstring) Select xVType.<icon>.Value
+                If Not IsNothing(fiAV.StreamDetails.Video) Then
+                    Dim xVTypeFlag = From xVType In xmlFlags...<vtype>...<name> Where Regex.IsMatch(fiAV.StreamDetails.Video.Codec, xVType.@searchstring) Select xVType.<icon>.Value
                     If xVTypeFlag.Count > 0 Then
                         vtypeImage = Path.Combine(mePath, xVTypeFlag(0).ToString)
                     End If
@@ -591,13 +587,11 @@ Public Class Master
                     atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
                 End If
 
-                If Not IsNothing(strTag(2)) Then
-                    Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(strTag(2).Trim, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
-                    If xATypeFlag.Count > 0 Then
-                        atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
-                        If Not IsNothing(xATypeFlag(0).ref) Then
-                            atypeRef = xATypeFlag(0).ref.ToString
-                        End If
+                Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(tAudio.Codec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
+                If xATypeFlag.Count > 0 Then
+                    atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
+                    If Not IsNothing(xATypeFlag(0).ref) Then
+                        atypeRef = xATypeFlag(0).ref.ToString
                     End If
                 End If
 
@@ -607,11 +601,9 @@ Public Class Master
                     achanImage = Path.Combine(mePath, xAChanDefault(0).ToString)
                 End If
 
-                If Not IsNothing(strTag(3)) Then
-                    Dim xAChanFlag = From xAChan In xmlFlags...<achan>...<name> Where Regex.IsMatch(strTag(3).Trim, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
-                    If xAChanFlag.Count > 0 Then
-                        achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
-                    End If
+                Dim xAChanFlag = From xAChan In xmlFlags...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
+                If xAChanFlag.Count > 0 Then
+                    achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
                 End If
 
                 If File.Exists(vresImage) Then
@@ -1098,34 +1090,22 @@ Public Class Master
         Return aResults
     End Function
 
-    Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal strAV As String) As String
+    Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo) As String
 
         '//
         ' Convert Fileinfo into a string to be displayed in the GUI
         '\\
 
-        Dim strWithoutFirst As String = String.Empty
         Dim strOutput As New StringBuilder
-        Dim iVS As Integer = 1
         Dim iAS As Integer = 1
         Dim iSS As Integer = 1
 
         Try
             If Not IsNothing(miFI) Then
-                If strAV.Contains("/") Then
-                    strWithoutFirst = Strings.Right(strAV, strAV.Length - strAV.IndexOf("/")).Trim()
-                End If
-                If Not String.IsNullOrEmpty(strWithoutFirst) Then
-                    strOutput.AppendFormat("Tag: {0}{1}{1}", strWithoutFirst, vbNewLine)
-                Else
-                    Dim strTag As String = FITagData(miFI)
-                    If Not String.IsNullOrEmpty(strTag) Then
-                        strOutput.AppendFormat("Tag: {0}{1}{1}", strTag, vbNewLine)
-                    End If
-                End If
+
                 If Not miFI.StreamDetails Is Nothing Then
-                    If miFI.StreamDetails.Video.Count > 0 Then
-                        strOutput.AppendFormat("Video Streams: {0}{1}", miFI.StreamDetails.Video.Count.ToString, vbNewLine)
+                    If Not IsNothing(miFI.StreamDetails.Video) Then
+                        strOutput.AppendFormat("Video Streams: 1{0}", vbNewLine)
                     End If
 
                     If miFI.StreamDetails.Audio.Count > 0 Then
@@ -1136,28 +1116,19 @@ Public Class Master
                         strOutput.AppendFormat("Subtitle Streams: {0}{1}", miFI.StreamDetails.Subtitle.Count.ToString, vbNewLine)
                     End If
 
-                    For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
-                        strOutput.AppendFormat("{0}Video Stream {1}{0}", vbNewLine, iVS.ToString)
-                        strOutput.AppendFormat("- Size: {0}x{1}{2}", miVideo.Width, miVideo.Height, vbNewLine)
-                        strOutput.AppendFormat("- Display Aspect Ratio: {0}{1}", miVideo.AspectDisplayRatio, vbNewLine)
-                        strOutput.AppendFormat("- Codec: {0}{1}", miVideo.Codec, vbNewLine)
-                        strOutput.AppendFormat("- Format Info: {0}{1}", miVideo.FormatInfo, vbNewLine)
-                        strOutput.AppendFormat("- Duration: {0}{1}", miVideo.Duration, vbNewLine)
-                        strOutput.AppendFormat("- BitRate: {0}{1}", miVideo.Bitrate, vbNewLine)
-                        strOutput.AppendFormat("- BitRate_Mode: {0}{1}", miVideo.BitrateMode, vbNewLine)
-                        strOutput.AppendFormat("- BitRate_Maximum: {0}{1}", miVideo.BitrateMax, vbNewLine)
-                        strOutput.AppendFormat("- CodecID: {0}{1}", miVideo.CodecID, vbNewLine)
-                        strOutput.AppendFormat("- CodecID Info: {0}{1}", miVideo.CodecidInfo, vbNewLine)
-                        strOutput.AppendFormat("- Scan type: {0}{1}", miVideo.ScanType, vbNewLine)
-                        iVS += 1
-                    Next
+                    If Not IsNothing(miFI.StreamDetails.Video) Then
+                        strOutput.AppendFormat("{0}Video Stream 1{0}", vbNewLine)
+                        strOutput.AppendFormat("- Size: {0}x{1}{2}", miFI.StreamDetails.Video.Width, miFI.StreamDetails.Video.Height, vbNewLine)
+                        strOutput.AppendFormat("- Display Aspect Ratio: {0}{1}", miFI.StreamDetails.Video.Aspect, vbNewLine)
+                        strOutput.AppendFormat("- Codec: {0}{1}", miFI.StreamDetails.Video.Codec, vbNewLine)
+                        strOutput.AppendFormat("- Duration: {0}{1}", miFI.StreamDetails.Video.Duration, vbNewLine)
+                    End If
 
                     For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
                         'audio
                         strOutput.AppendFormat("{0}Audio Stream {1}{0}", vbNewLine, iAS.ToString)
                         strOutput.AppendFormat("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
                         strOutput.AppendFormat("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
-                        strOutput.AppendFormat("- BitRate: {0}{1}", miAudio.Bitrate, vbNewLine)
                         strOutput.AppendFormat("- Language: {0}{1}", miAudio.Language, vbNewLine)
                         iAS += 1
                     Next
@@ -1181,99 +1152,47 @@ Public Class Master
         End If
     End Function
 
-    Public Shared Function FITagData(ByRef miFI As MediaInfo.Fileinfo, Optional ByVal doShort As Boolean = False) As String
+    Public Shared Function GetBestAudio(ByRef miFIA As MediaInfo.Fileinfo) As MediaInfo.Audio
 
         '//
-        ' Convert FileInfo into the studio tag
+        ' Get the highest values from file info
         '\\
 
-        Dim statusStr As String = String.Empty
+        Dim fiaOut As New MediaInfo.Audio
         Try
-            If Not IsNothing(miFI.StreamDetails) Then
-                Dim hasVS As Boolean = False
-                Dim iWidest As Integer = 0
-                Dim iWidth As Integer = 0
-                Dim iHeight As Integer = 0
-                Dim sinADR As Single = 0
-                Dim sinADRTag As Single = 0
-                Dim sScanType As String = String.Empty
-                Dim sCodec As String = String.Empty
-                Dim sinMostChannels As Single = 0
-                Dim sinChans As Single = 0
-                Dim sACodec As String = String.Empty
-                Dim sLang As String = String.Empty
-                Dim sSubLang As New StringBuilder
+            Dim sinMostChannels As Single = 0
+            Dim sinChans As Single = 0
 
-                For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
-                    hasVS = True
-                    iWidth = Convert.ToInt32(miVideo.Width)
-                    If iWidth > iWidest Then
-                        iWidest = iWidth
-                        iHeight = Convert.ToInt32(miVideo.Height)
-                        Single.TryParse(miVideo.AspectDisplayRatio, sinADR)
-                        sScanType = If(miVideo.ScanType.ToLower.Contains("progressive"), "p", "i")
-                        sCodec = miVideo.CodecID
+            For Each miAudio As MediaInfo.Audio In miFIA.StreamDetails.Audio
+                'audio
+                If Not String.IsNullOrEmpty(miAudio.Channels) Then
+                    Single.TryParse(miAudio.Channels, sinChans)
+                    If sinChans > sinMostChannels Then
+                        sinMostChannels = sinChans
+                        fiaOut.Codec = miAudio.Codec
+                        fiaOut.Channels = sinChans
+                        fiaOut.Language = miAudio.Language
                     End If
-                Next
-
-                For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
-                    'audio
-                    If Not String.IsNullOrEmpty(miAudio.Channels) Then
-                        Single.TryParse(miAudio.Channels, sinChans)
-                        If sinChans > sinMostChannels Then
-                            sACodec = miAudio.Codec
-                            sinMostChannels = sinChans
-                            sLang = miAudio.Language
-                        End If
-                    End If
-
-                Next
-
-                If Not doShort Then
-                    For Each curSS As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
-                        'audio
-                        sSubLang.AppendFormat(" / sub{0}", curSS.Language)
-                    Next
-
-                    Select Case True
-                        Case sinADR <= 1.38 AndAlso sinADR >= 1.28
-                            sinADRTag = 1.33
-                        Case sinADR <= 1.71 AndAlso sinADR >= 1.61
-                            sinADRTag = 1.66
-                        Case sinADR <= 1.83 AndAlso sinADR >= 1.73
-                            sinADRTag = 1.78
-                        Case sinADR <= 1.9 AndAlso sinADR >= 1.8
-                            sinADRTag = 1.85
-                        Case sinADR <= 2.38 AndAlso sinADR >= 2.3
-                            sinADRTag = 2.35
-                        Case sinADR <= 2.44 AndAlso sinADR >= 2.39
-                            sinADRTag = 2.39
-                    End Select
                 End If
-                If hasVS Then
-                    If doShort Then
-                        statusStr = String.Format("{0}{1}|{2}|{3}|{4}ch", GetResFromDimensions(iWidest, iHeight, sinADR), sScanType, sCodec, sACodec, sinMostChannels)
-                    Else
-                        statusStr = String.Format(" / {0}{1} / {2} / {3} / {4} / {5}ch / {6}{7}", GetResFromDimensions(iWidest, iHeight, sinADR), sScanType, sinADRTag, sCodec, sACodec, sinMostChannels, sLang, sSubLang.ToString)
-                    End If
-                Else
-                    Return String.Empty
-                End If
-            End If
+
+            Next
 
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-        Return statusStr
+        Return fiaOut
     End Function
 
-    Private Shared Function GetResFromDimensions(ByVal iWidth As Integer, ByVal iHeight As Integer, ByVal sinADR As Single) As String
+    Public Shared Function GetResFromDimensions(ByVal fiRes As MediaInfo.Fileinfo) As String
 
         '//
         ' Get the resolution of the video from the dimensions provided by MediaInfo.dll
         '\\
 
         Try
+            Dim iWidth As Integer = fiRes.StreamDetails.Video.Width
+            Dim iHeight As Integer = fiRes.StreamDetails.Video.Height
+            Dim sinADR As Single = fiRes.StreamDetails.Video.Aspect
 
             Select Case True
                 Case iWidth < 640

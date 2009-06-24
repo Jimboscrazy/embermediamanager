@@ -100,6 +100,7 @@ Partial Class dlgSettings
         Me.lstFilters = New System.Windows.Forms.ListBox
         Me.chkScanRecursive = New System.Windows.Forms.CheckBox
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
+        Me.chkShowDims = New System.Windows.Forms.CheckBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.chkMarkNew = New System.Windows.Forms.CheckBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
@@ -250,7 +251,6 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.chkShowDims = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -1002,6 +1002,16 @@ Partial Class dlgSettings
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
         '
+        'chkShowDims
+        '
+        Me.chkShowDims.AutoSize = True
+        Me.chkShowDims.Location = New System.Drawing.Point(12, 56)
+        Me.chkShowDims.Name = "chkShowDims"
+        Me.chkShowDims.Size = New System.Drawing.Size(149, 17)
+        Me.chkShowDims.TabIndex = 57
+        Me.chkShowDims.Text = "Display Image Dimensions"
+        Me.chkShowDims.UseVisualStyleBackColor = True
+        '
         'Label8
         '
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1711,9 +1721,9 @@ Partial Class dlgSettings
         Me.chkLockRealStudio.AutoSize = True
         Me.chkLockRealStudio.Location = New System.Drawing.Point(6, 111)
         Me.chkLockRealStudio.Name = "chkLockRealStudio"
-        Me.chkLockRealStudio.Size = New System.Drawing.Size(108, 17)
+        Me.chkLockRealStudio.Size = New System.Drawing.Size(83, 17)
         Me.chkLockRealStudio.TabIndex = 44
-        Me.chkLockRealStudio.Text = "Lock Real Studio"
+        Me.chkLockRealStudio.Text = "Lock Studio"
         Me.chkLockRealStudio.UseVisualStyleBackColor = True
         '
         'chkLockRating
@@ -2624,16 +2634,6 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
-        'chkShowDims
-        '
-        Me.chkShowDims.AutoSize = True
-        Me.chkShowDims.Location = New System.Drawing.Point(12, 56)
-        Me.chkShowDims.Name = "chkShowDims"
-        Me.chkShowDims.Size = New System.Drawing.Size(149, 17)
-        Me.chkShowDims.TabIndex = 57
-        Me.chkShowDims.Text = "Display Image Dimensions"
-        Me.chkShowDims.UseVisualStyleBackColor = True
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -2648,13 +2648,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
