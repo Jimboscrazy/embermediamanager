@@ -880,9 +880,6 @@ Public Class Master
 
         Catch
             xmlMov = New Media.Movie
-            If Not IsNothing(xmlSer) Then
-                xmlSer = Nothing
-            End If
             If Not String.IsNullOrEmpty(sPath) Then
                 Dim sReturn As New NonConf
                 sReturn = GetIMDBFromNonConf(sPath)
@@ -899,6 +896,10 @@ Public Class Master
                 End Try
             End If
         End Try
+
+        If Not IsNothing(xmlSer) Then
+            xmlSer = Nothing
+        End If
 
         Return xmlMov
 
