@@ -309,7 +309,7 @@ mResult:
             Return alStudio
         End Function
 
-        Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As Media.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Master.ScrapeOptions) As Boolean
+        Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As Media.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Master.ScrapeOptions, Optional ByVal doProgress As Boolean = False) As Boolean
             Try
                 Dim ofdbTitle As String = String.Empty
                 Dim ofdbOutline As String = String.Empty
@@ -333,7 +333,7 @@ mResult:
                 Dim PlotHtml As String = sPlot.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/plotsummary"))
                 sPlot = Nothing
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(1)
                 End If
                 IMDBMovie.IMDBID = strID
@@ -354,14 +354,14 @@ mResult:
                     sPoster = Regex.Match(Regex.Match(HTML, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
                 End If
 
-                If Options.bYear Then IMDBMovie.Year = Convert.ToInt32(Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))").ToString)
+                If Options.bYear Then IMDBMovie.Year = Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))").ToString
 
                 If Options.bMPAA Then
                     Dim sRated As String = Regex.Match(HTML, "MPAA</a>:</h5>(.[^<]*)", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value
                     IMDBMovie.MPAA = Web.HttpUtility.HtmlDecode(sRated).Trim()
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(2)
                 End If
 
@@ -403,7 +403,7 @@ mResult:
                     End If
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(3)
                 End If
 
@@ -438,7 +438,7 @@ mResult:
 
                 If Options.bVotes Then IMDBMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(4)
                 End If
 
@@ -473,7 +473,7 @@ mResult:
                     IMDBMovie.Actors = Cast
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(5)
                 End If
 
@@ -507,7 +507,7 @@ mResult:
                     End If
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(6)
                 End If
 
@@ -536,7 +536,7 @@ mResult:
                     End If
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(7)
                 End If
 
@@ -579,7 +579,7 @@ mResult:
                     End If
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(8)
                 End If
 
@@ -594,7 +594,7 @@ mPlot:
                     End If
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(9)
                 End If
 
@@ -624,7 +624,7 @@ mPlot:
                     End If
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(10)
                 End If
 
@@ -646,7 +646,7 @@ mPlot:
                     End If
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(11)
                 End If
 
@@ -688,7 +688,7 @@ mPlot:
                         Next
                     End If
 
-                    If bwIMDB.WorkerReportsProgress Then
+                    If doProgress Then
                         bwIMDB.ReportProgress(12)
                     End If
 
@@ -707,7 +707,7 @@ mPlot:
                     End If
                 End If
 
-                If bwIMDB.WorkerReportsProgress Then
+                If doProgress Then
                     bwIMDB.ReportProgress(13)
                 End If
 
@@ -727,7 +727,7 @@ mPlot:
                         Dim r As MovieSearchResults = SearchMovie(Args.Parameter)
                         e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
                     Case SearchType.Details
-                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, Args.FullCrew, Args.FullCast, False, Args.Options)
+                        Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, Args.FullCrew, Args.FullCast, False, Args.Options, True)
                         e.Result = New Results With {.ResultType = SearchType.Details, .Success = s}
                     Case SearchType.SearchDetails
                         Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.IMDBMovie, False, False, True, Args.Options)
