@@ -23,7 +23,7 @@ Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
-Public Class dlgBulkRename
+Public Class FileForderRenamer
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Class FileRename
         Private _title As String
@@ -157,8 +157,12 @@ Public Class dlgBulkRename
                                 _tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
                                 MovieFile.Title = _tmpMovie.Title
                                 MovieFile.Year = _tmpMovie.Year
-                                MovieFile.Resolution = Master.FITagData(_tmpMovie.FileInfo, True).Split("|")(0)
-                                MovieFile.Audio = Master.FITagData(_tmpMovie.FileInfo, True).Split("|")(2)
+                                Dim tagData As String = Master.FITagData(_tmpMovie.FileInfo, True)
+                                If tagData.Split("|").Count >= 3 Then
+                                    MovieFile.Resolution = tagData.Split("|")(0)
+                                    MovieFile.Audio = tagData.Split("|")(2)
+
+                                End If
                                 MovieFile.BasePath = Path.GetDirectoryName(SQLreader("path").ToString)
                                 MovieFile.Path = Path.GetDirectoryName(SQLreader("path").ToString)
                                 For Each i As String In allMedia
@@ -389,7 +393,7 @@ Public Class dlgBulkRename
         End Try
     End Sub
     Public Shared Function RenameSingle(ByVal _tmpPath As String, ByVal _tmpMovie As Media.Movie, ByVal folderPattern As String, ByVal filePattern As String) As Boolean
-        Dim bulkRename As New dlgBulkRename
+        Dim bulkRename As New FileForderRenamer
         Dim MovieFile As FileRename = New FileRename
         Dim dirArray() As String
         For Each strFolders As String In Master.eSettings.MovieFolders
