@@ -23,106 +23,29 @@ Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
+<<<<<<< .mine
+Public Class dlgBulkRenamer
+=======
 Public Class dlgBulkRename
+>>>>>>> .r431
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
-    Class FileRename
-        Private _title As String
-        Public Year As String
-        Public BasePath As String
-        Private _path As String
-        Private _fileName As String
-        Private _newPath As String
-        Private _newFileName As String
-        Public fType As Integer
-        Public Resolution As String
-        Public Audio As String
-        Public Property Title() As String
-            Get
-                Return Me._title
-            End Get
-            Set(ByVal value As String)
-                Me._title = value
-            End Set
-        End Property
-
-        Public Property Path() As String
-            Get
-                Return Me._path
-            End Get
-            Set(ByVal value As String)
-                Me._path = value
-            End Set
-        End Property
-        Public Property FileName() As String
-            Get
-                Return Me._fileName
-            End Get
-            Set(ByVal value As String)
-                Me._fileName = value
-            End Set
-        End Property
-        Public Property NewPath() As String
-            Get
-                Return Me._newPath
-            End Get
-            Set(ByVal value As String)
-                Me._newPath = value
-            End Set
-        End Property
-        Public Property NewFileName() As String
-            Get
-                Return Me._newFileName
-            End Get
-            Set(ByVal value As String)
-                Me._newFileName = value
-            End Set
-        End Property
-
-    End Class
-    Dim _movies As New List(Of FileRename)
     Private bindingSource1 As New BindingSource()
-    Dim allMedia As New ArrayList
     Private isLoaded As Boolean = False
+    Private FFRenamer As New FileFolderRenamer
+
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
-    Public Sub ProccessFiles()
-        Try
-            For Each f As FileRename In _movies
-                f.NewFileName = ProccessPattern(f, txtFile.Text.ToString)
-                f.NewPath = ProccessPattern(f, txtFolder.Text.ToString)
-            Next
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-    Private Function ProccessPattern(ByVal f As FileRename, ByVal pattern As String) As String
-        Try
-            pattern = pattern.Replace("$D", f.Path)
-            pattern = pattern.Replace("$F", f.FileName)
-            pattern = pattern.Replace("$T", f.Title)
-            pattern = pattern.Replace("$Y", f.Year)
-            pattern = pattern.Replace("$R", f.Resolution)
-            pattern = pattern.Replace("$A", f.Audio)
-            pattern = pattern.Replace("$t", f.Title.Replace(" ", "."))
-            For Each Invalid As Char In Path.GetInvalidPathChars
-                pattern = pattern.Replace(Invalid, String.Empty)
-            Next
-            pattern = pattern.Replace(":", "-")
-            Return pattern
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Return vbNullString
-        End Try
-    End Function
+
+
     Public Sub Simulate()
         Try
             With Me.dgvMoviesList
                 .DataSource = Nothing
                 .Rows.Clear()
                 .AutoGenerateColumns = True
-                bindingSource1.DataSource = _movies
+                bindingSource1.DataSource = FFRenamer.GetMovies
                 .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 .DataSource = bindingSource1
             End With
@@ -135,9 +58,9 @@ Public Class dlgBulkRename
         ' Thread to load movieinformation (from nfo)
         '\\
         Try
-            Dim MovieFile As FileRename
+            Dim MovieFile As FileFolderRenamer.FileRename
             ' Clean up Movies List if any
-            _movies.Clear()
+            'FFRemamer._movies.Clear()
             ' Load nfo movies using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                 Dim _tmpMovie As New Media.Movie
@@ -153,15 +76,22 @@ Public Class dlgBulkRename
                         While SQLreader.Read()
                             _tmpPath = Master.GetNfoPath(SQLreader("path").ToString, SQLreader("type"))
                             If Not String.IsNullOrEmpty(_tmpPath) Then
-                                MovieFile = New FileRename
+                                MovieFile = New FileFolderRenamer.FileRename
                                 _tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
                                 MovieFile.Title = _tmpMovie.Title
                                 MovieFile.Year = _tmpMovie.Year
+<<<<<<< .mine
+                                If Not IsNothing(_tmpMovie.FileInfo) AndAlso (Not IsNothing(_tmpMovie.FileInfo.StreamDetails.Video) OrElse _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0) Then
+                                    MovieFile.Resolution = Master.GetResFromDimensions(_tmpMovie.FileInfo)
+                                    MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
+                                End If
+=======
                                 MovieFile.Resolution = Master.GetResFromDimensions(_tmpMovie.FileInfo)
                                 MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
+>>>>>>> .r431
                                 MovieFile.BasePath = Path.GetDirectoryName(SQLreader("path").ToString)
                                 MovieFile.Path = Path.GetDirectoryName(SQLreader("path").ToString)
-                                For Each i As String In allMedia
+                                For Each i As String In ffrenamer.MovieFolders
                                     If i = MovieFile.Path.Substring(0, i.Length) Then
                                         MovieFile.Path = MovieFile.Path.Substring(String.Concat(i, Path.DirectorySeparatorChar).Length)
                                         MovieFile.BasePath = i
@@ -170,7 +100,7 @@ Public Class dlgBulkRename
                                 Next
                                 MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(SQLreader("path").ToString))
 
-                                _movies.Add(MovieFile)
+                                FFRenamer.AddMovie(MovieFile)
                             End If
                             Me.bwLoadInfo.ReportProgress(iProg, _tmpMovie.Title)
                             iProg += 1
@@ -239,7 +169,7 @@ Public Class dlgBulkRename
     End Sub
     Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
-        Dim dirArray() As String
+
         Try
             ' Show Cancel Panel
             btnCancel.Visible = True
@@ -249,10 +179,7 @@ Public Class dlgBulkRename
             lblCanceling.Visible = False
             pnlCancel.Visible = True
             Application.DoEvents()
-            For Each strFolders As String In Master.eSettings.MovieFolders
-                dirArray = Split(strFolders, "|")
-                allMedia.Add(dirArray(0).ToString)
-            Next
+
             'Start worker
             Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadInfo.WorkerSupportsCancellation = True
@@ -319,7 +246,7 @@ Public Class dlgBulkRename
             'Need to make simulate thread safe
             tmrSimul.Enabled = False
             If isLoaded Then
-                ProccessFiles()
+                FFRenamer.ProccessFiles(txtFolder.Text, txtFile.Text)
                 Simulate()
             End If
         Catch ex As Exception
@@ -338,47 +265,10 @@ Public Class dlgBulkRename
         lblLabel.Text = s.Replace(vbCrLf, "    ")
         frmToolTip.SetToolTip(txtFolder, s)
     End Sub
-    Public Sub DoRename()
-        Try
-            For Each f As FileRename In _movies
-                'Rename Directory
-                If Not f.NewPath = f.Path Then
-                    Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
-                    Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
-                    System.IO.Directory.Move(srcDir, destDir)
-                End If
-                'Rename Files
-                If Not f.NewFileName = f.FileName Then
-                    Dim tmpList As New ArrayList
 
-                    Dim di As New DirectoryInfo(Path.Combine(f.BasePath, f.NewPath))
-                    Dim lFi As New List(Of FileInfo)
-                    Try
-                        lFi.AddRange(di.GetFiles())
-                    Catch
-                    End Try
-                    If lFi.Count > 0 Then
-                        lFi.Sort(AddressOf Master.SortFileNames)
-                        Dim srcFile As String
-                        Dim dstFile As String
-                        For Each lFile As FileInfo In lFi
-                            srcFile = lFile.FullName
-                            dstFile = Path.Combine(Path.GetDirectoryName(lFile.FullName), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
-                            If Not srcFile = dstFile Then
-                                Dim fr = New System.IO.FileInfo(srcFile)
-                                fr.MoveTo(dstFile)
-                            End If
-                        Next
-                    End If
-                End If
-            Next
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
 
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
-        DoRename()
+        FFRenamer.DoRename()
     End Sub
 
     Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
@@ -388,6 +278,8 @@ Public Class dlgBulkRename
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+<<<<<<< .mine
+=======
     Public Shared Function RenameSingle(ByVal _tmpPath As String, ByVal _tmpMovie As Media.Movie, ByVal folderPattern As String, ByVal filePattern As String) As Boolean
         Dim bulkRename As New dlgBulkRename
         Dim MovieFile As FileRename = New FileRename
@@ -413,9 +305,6 @@ Public Class dlgBulkRename
             End If
         Next
         MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(_tmpPath))
+>>>>>>> .r431
 
-        bulkRename._movies.Add(MovieFile)
-        bulkRename.DoRename()
-        Return True
-    End Function
 End Class

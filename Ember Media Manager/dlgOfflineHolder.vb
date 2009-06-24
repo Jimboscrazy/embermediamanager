@@ -356,6 +356,14 @@ Public Class dlgOfflineHolder
         End If
 
         DirectoryCopy(WorkingPath, destPath)
+        Me.bwCreateHolder.ReportProgress(4, "Renaming Files")
+        If Directory.Exists(buildPath) Then
+            Directory.Delete(buildPath, True)
+        End If
+        Try
+            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(Master.currPath)), Master.tmpMovie, "$T", "$T")
+        Catch ex As Exception
+        End Try
 
         If Me.bwCreateHolder.CancellationPending Then
             e.Cancel = True
