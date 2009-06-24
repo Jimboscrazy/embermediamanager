@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -53,6 +53,7 @@ Partial Class frmMain
         Me.OfflineMediaManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripSeparator
         Me.ExportMoviesListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.RenamerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.dgvMediaList = New System.Windows.Forms.DataGridView
         Me.mnuMediaList = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -405,7 +406,7 @@ Partial Class frmMain
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.ClearAllCachesToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.ClearAllCachesToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem, Me.RenamerToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.ToolsToolStripMenuItem.Text = "Tools"
@@ -476,6 +477,12 @@ Partial Class frmMain
         Me.ExportMoviesListToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
         Me.ExportMoviesListToolStripMenuItem.Text = "Export Movies List"
         '
+        'RenamerToolStripMenuItem
+        '
+        Me.RenamerToolStripMenuItem.Name = "RenamerToolStripMenuItem"
+        Me.RenamerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
+        Me.RenamerToolStripMenuItem.Text = "Renamer"
+        '
         'scMain
         '
         Me.scMain.Dock = System.Windows.Forms.DockStyle.Fill
@@ -515,8 +522,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2368,4 +2375,5 @@ Partial Class frmMain
     Friend WithEvents mnuMarkAutoMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuMarkAskMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents pbVType As System.Windows.Forms.PictureBox
+    Friend WithEvents RenamerToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

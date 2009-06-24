@@ -4345,4 +4345,13 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
+    Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
+        Using dBulkRename As New dlgBulkRename
+            Try
+                'dBulkRename.ShowDialog()
+                dlgBulkRename.RenameSingle(Master.currPath, Master.currMovie, "$T", "$T")
+            Catch ex As Exception
+            End Try
+        End Using
+    End Sub
 End Class
