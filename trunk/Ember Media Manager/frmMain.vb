@@ -3271,7 +3271,7 @@ doCancel:
                 End If
             End If
 
-            Dim tmpRating As Double = Master.ConvertToDouble(Master.currMovie.Rating)
+            Dim tmpRating As Double = Master.ConvertToSingle(Master.currMovie.Rating)
             If tmpRating > 0 Then Me.BuildStars(tmpRating)
 
             If Not String.IsNullOrEmpty(Master.currMovie.Genre) Then

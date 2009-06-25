@@ -463,7 +463,7 @@ Public Class dlgEditMovie
                     lvItem.SubItems.Add(imdbAct.Thumb)
                 Next
 
-                Dim tRating As Double = Master.ConvertToDouble(Master.currMovie.Rating)
+                Dim tRating As Double = Master.ConvertToSingle(Master.currMovie.Rating)
                 .tmpRating = tRating
                 .pbStar1.Tag = tRating
                 .pbStar2.Tag = tRating
