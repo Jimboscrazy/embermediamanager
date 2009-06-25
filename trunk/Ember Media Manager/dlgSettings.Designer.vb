@@ -226,6 +226,7 @@ Partial Class dlgSettings
         Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.pnlScraper = New System.Windows.Forms.Panel
         Me.GroupBox20 = New System.Windows.Forms.GroupBox
+        Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox
         Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox
         Me.chkNoDLTrailer = New System.Windows.Forms.CheckBox
         Me.chkSingleScrapeTrailer = New System.Windows.Forms.CheckBox
@@ -256,7 +257,6 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -2391,8 +2391,20 @@ Partial Class dlgSettings
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
         '
+        'chkDeleteAllTrailers
+        '
+        Me.chkDeleteAllTrailers.AutoSize = True
+        Me.chkDeleteAllTrailers.Enabled = False
+        Me.chkDeleteAllTrailers.Location = New System.Drawing.Point(19, 140)
+        Me.chkDeleteAllTrailers.Name = "chkDeleteAllTrailers"
+        Me.chkDeleteAllTrailers.Size = New System.Drawing.Size(147, 17)
+        Me.chkDeleteAllTrailers.TabIndex = 68
+        Me.chkDeleteAllTrailers.Text = "Delete All Existing Trailers"
+        Me.chkDeleteAllTrailers.UseVisualStyleBackColor = True
+        '
         'chkOverwriteTrailer
         '
+        Me.chkOverwriteTrailer.Enabled = False
         Me.chkOverwriteTrailer.Location = New System.Drawing.Point(19, 122)
         Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
         Me.chkOverwriteTrailer.Size = New System.Drawing.Size(148, 15)
@@ -2402,6 +2414,7 @@ Partial Class dlgSettings
         '
         'chkNoDLTrailer
         '
+        Me.chkNoDLTrailer.Enabled = False
         Me.chkNoDLTrailer.Location = New System.Drawing.Point(19, 62)
         Me.chkNoDLTrailer.Name = "chkNoDLTrailer"
         Me.chkNoDLTrailer.Size = New System.Drawing.Size(145, 30)
@@ -2411,6 +2424,7 @@ Partial Class dlgSettings
         '
         'chkSingleScrapeTrailer
         '
+        Me.chkSingleScrapeTrailer.Enabled = False
         Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(19, 92)
         Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
         Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(148, 31)
@@ -2430,6 +2444,7 @@ Partial Class dlgSettings
         'txtTimeout
         '
         Me.txtTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTimeout.Enabled = False
         Me.txtTimeout.Location = New System.Drawing.Point(227, 133)
         Me.txtTimeout.Name = "txtTimeout"
         Me.txtTimeout.Size = New System.Drawing.Size(66, 20)
@@ -2437,6 +2452,7 @@ Partial Class dlgSettings
         '
         'chkUpdaterTrailer
         '
+        Me.chkUpdaterTrailer.Enabled = False
         Me.chkUpdaterTrailer.Location = New System.Drawing.Point(19, 33)
         Me.chkUpdaterTrailer.Name = "chkUpdaterTrailer"
         Me.chkUpdaterTrailer.Size = New System.Drawing.Size(148, 31)
@@ -2456,6 +2472,7 @@ Partial Class dlgSettings
         'lbTrailerSites
         '
         Me.lbTrailerSites.CheckOnClick = True
+        Me.lbTrailerSites.Enabled = False
         Me.lbTrailerSites.FormattingEnabled = True
         Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/TMDB", "AllTrailers", "MattTrailer", "AZMovies", "IMDB"})
         Me.lbTrailerSites.Location = New System.Drawing.Point(173, 45)
@@ -2696,16 +2713,6 @@ Partial Class dlgSettings
         Me.chkUseImgCache.TabIndex = 0
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
-        '
-        'chkDeleteAllTrailers
-        '
-        Me.chkDeleteAllTrailers.AutoSize = True
-        Me.chkDeleteAllTrailers.Location = New System.Drawing.Point(19, 140)
-        Me.chkDeleteAllTrailers.Name = "chkDeleteAllTrailers"
-        Me.chkDeleteAllTrailers.Size = New System.Drawing.Size(147, 17)
-        Me.chkDeleteAllTrailers.TabIndex = 68
-        Me.chkDeleteAllTrailers.Text = "Delete All Existing Trailers"
-        Me.chkDeleteAllTrailers.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '

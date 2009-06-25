@@ -313,7 +313,7 @@ Public Class Trailers
     Public Function ShowTDialog(ByVal IMDBID As String, ByVal sPath As String, ByVal isFile As String, ByVal currNfoTrailer As String) As String
         If IsAllowedToDownload(sPath, isFile, True, String.Empty) OrElse IsAllowedToDownload(sPath, isFile, False, currNfoTrailer) Then
             Using dTrailer As New dlgTrailer
-                Dim tURL As String = dTrailer.ShowDialog(IMDBID, sPath)
+                Dim tURL As String = dTrailer.ShowDialog(IMDBID, sPath, isFile)
                 Return tURL
             End Using
         Else
@@ -349,7 +349,7 @@ Public Class Trailers
             For Each sFile As FileInfo In lFi
                 If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
                     (sFile.Name.ToLower.Contains("-trailer") OrElse sFile.Name.ToLower.Contains("[trailer")) AndAlso _
-                    Not sFile.Name.ToLower = NewTrailer.ToLower Then
+                    Not sFile.FullName.ToLower = NewTrailer.ToLower Then
                     File.Delete(sFile.FullName)
                 End If
             Next
