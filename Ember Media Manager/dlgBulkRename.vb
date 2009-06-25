@@ -46,6 +46,7 @@ Public Class dlgBulkRenamer
                 bindingSource1.DataSource = FFRenamer.GetMovies
                 .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 .DataSource = bindingSource1
+                .Columns(5).Visible = False
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -68,7 +69,7 @@ Public Class dlgBulkRenamer
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT path, type FROM movies ORDER BY title ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT path, type , lock FROM movies ORDER BY title ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
@@ -78,6 +79,7 @@ Public Class dlgBulkRenamer
                                 _tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
                                 MovieFile.Title = _tmpMovie.Title
                                 MovieFile.Year = _tmpMovie.Year
+                                MovieFile.IsLocked = SQLreader("lock")
                                 If Not IsNothing(_tmpMovie.FileInfo) AndAlso (Not IsNothing(_tmpMovie.FileInfo.StreamDetails.Video) OrElse _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0) Then
                                     MovieFile.Resolution = Master.GetResFromDimensions(_tmpMovie.FileInfo)
                                     MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
@@ -185,8 +187,50 @@ Public Class dlgBulkRenamer
     End Sub
     Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
         Try
-            If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0 Then
-                If e.Value IsNot Nothing AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value = e.Value Then
+            If dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then ' Locked
+                Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
+                    e.CellBounds.Width - 4, e.CellBounds.Height - 4)
+                Dim backColorBrush As New SolidBrush(e.CellStyle.BackColor)
+                Dim gridBrush As New SolidBrush(Me.dgvMoviesList.GridColor)
+                Dim gridLinePen As New Pen(gridBrush)
+                Try
+                    ' Erase the cell.
+                    If e.State And DataGridViewElementStates.Selected Then
+                        e.Graphics.FillRectangle(New SolidBrush(e.CellStyle.SelectionBackColor), e.CellBounds)
+                    Else
+                        e.Graphics.FillRectangle(backColorBrush, e.CellBounds)
+                    End If
+                    ' Draw the grid lines (only the right and bottom lines;
+                    ' DataGridView takes care of the others).
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, _
+                        e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, _
+                        e.CellBounds.Bottom - 1)
+                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, _
+                        e.CellBounds.Top, e.CellBounds.Right - 1, _
+                        e.CellBounds.Bottom)
+                    ' Draw the inset highlight box.
+                    If (e.Value IsNot Nothing) Then
+                        'Dim f As New Font(e.CellStyle.Font, FontStyle.Strikeout)
+                        e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
+                        Brushes.Gray, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
+                        StringFormat.GenericDefault)
+                        Dim pointS As New Point(e.CellBounds.Left, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
+                        Dim pointE As New Point(e.CellBounds.Right, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
+                        If e.ColumnIndex = 0 Then pointS.X += 4
+                        If e.ColumnIndex = 4 Then pointE.X -= 4
+                        e.Graphics.DrawLine(New Pen(Color.DarkGray), pointS, pointE)
+                        e.Handled = True
+                    End If
+
+                Finally
+                    gridLinePen.Dispose()
+                    gridBrush.Dispose()
+                    backColorBrush.Dispose()
+                End Try
+            End If
+
+            If ((e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then
+                If (e.Value IsNot Nothing AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value = e.Value) Then
                     Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
                         e.CellBounds.Width - 4, e.CellBounds.Height - 4)
                     Dim backColorBrush As New SolidBrush(e.CellStyle.BackColor)
@@ -208,12 +252,14 @@ Public Class dlgBulkRenamer
                             e.CellBounds.Top, e.CellBounds.Right - 1, _
                             e.CellBounds.Bottom)
                         ' Draw the inset highlight box.
+
                         If (e.Value IsNot Nothing) Then
                             e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
                             Brushes.Red, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
                             StringFormat.GenericDefault)
+                            e.Handled = True
                         End If
-                        e.Handled = True
+
                     Finally
                         gridLinePen.Dispose()
                         gridBrush.Dispose()
