@@ -1620,9 +1620,10 @@ Public Class frmMain
 
     Private Sub OfflineMediaManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OfflineMediaManagerToolStripMenuItem.Click
         Using dOfflineHolder As New dlgOfflineHolder
-            dOfflineHolder.ShowDialog()
+            If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                Me.LoadMedia(1)
+            End If
         End Using
-        Me.LoadMedia(1)
     End Sub
 
     Private Sub mnuAllAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTrailer.Click
