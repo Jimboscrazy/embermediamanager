@@ -120,7 +120,12 @@ Public Class MediaInfo
         <XmlElement("video")> _
         Public Property Video() As Video
             Get
-                Return Me._video
+                If Not IsNothing(Me._video.Width) AndAlso Not IsNothing(Me._video.Height) AndAlso Not IsNothing(Me._video.Codec) AndAlso _
+                Not IsNothing(Me._video.Aspect) AndAlso Not IsNothing(Me._video.Duration) Then
+                    Return Me._video
+                Else
+                    Return Nothing
+                End If
             End Get
             Set(ByVal Value As Video)
                 Me._video = Value

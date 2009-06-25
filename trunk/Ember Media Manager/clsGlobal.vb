@@ -574,7 +574,7 @@ Public Class Master
                     vtypeImage = Path.Combine(mePath, xVTypeDefault(0).ToString)
                 End If
 
-                If Not IsNothing(fiAV.StreamDetails.Video) Then
+                If Not IsNothing(fiAV.StreamDetails.Video) AndAlso Not IsNothing(fiAV.StreamDetails.Video.Codec) Then
                     Dim xVTypeFlag = From xVType In xmlFlags...<vtype>...<name> Where Regex.IsMatch(fiAV.StreamDetails.Video.Codec, xVType.@searchstring) Select xVType.<icon>.Value
                     If xVTypeFlag.Count > 0 Then
                         vtypeImage = Path.Combine(mePath, xVTypeFlag(0).ToString)
@@ -587,11 +587,13 @@ Public Class Master
                     atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
                 End If
 
-                Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(tAudio.Codec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
-                If xATypeFlag.Count > 0 Then
-                    atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
-                    If Not IsNothing(xATypeFlag(0).ref) Then
-                        atypeRef = xATypeFlag(0).ref.ToString
+                If Not IsNothing(tAudio.Codec) Then
+                    Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(tAudio.Codec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
+                    If xATypeFlag.Count > 0 Then
+                        atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
+                        If Not IsNothing(xATypeFlag(0).ref) Then
+                            atypeRef = xATypeFlag(0).ref.ToString
+                        End If
                     End If
                 End If
 
@@ -601,9 +603,11 @@ Public Class Master
                     achanImage = Path.Combine(mePath, xAChanDefault(0).ToString)
                 End If
 
-                Dim xAChanFlag = From xAChan In xmlFlags...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
-                If xAChanFlag.Count > 0 Then
-                    achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
+                If Not IsNothing(tAudio.Channels) Then
+                    Dim xAChanFlag = From xAChan In xmlFlags...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
+                    If xAChanFlag.Count > 0 Then
+                        achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
+                    End If
                 End If
 
                 If File.Exists(vresImage) Then
@@ -1119,25 +1123,27 @@ Public Class Master
 
                     If Not IsNothing(miFI.StreamDetails.Video) Then
                         strOutput.AppendFormat("{0}Video Stream 1{0}", vbNewLine)
-                        strOutput.AppendFormat("- Size: {0}x{1}{2}", miFI.StreamDetails.Video.Width, miFI.StreamDetails.Video.Height, vbNewLine)
-                        strOutput.AppendFormat("- Display Aspect Ratio: {0}{1}", miFI.StreamDetails.Video.Aspect, vbNewLine)
-                        strOutput.AppendFormat("- Codec: {0}{1}", miFI.StreamDetails.Video.Codec, vbNewLine)
-                        strOutput.AppendFormat("- Duration: {0}{1}", miFI.StreamDetails.Video.Duration, vbNewLine)
+                        If Not IsNothing(miFI.StreamDetails.Video.Width) AndAlso Not IsNothing(miFI.StreamDetails.Video.Height) Then
+                            strOutput.AppendFormat("- Size: {0}x{1}{2}", miFI.StreamDetails.Video.Width, miFI.StreamDetails.Video.Height, vbNewLine)
+                        End If
+                        If Not IsNothing(miFI.StreamDetails.Video.Aspect) Then strOutput.AppendFormat("- Display Aspect Ratio: {0}{1}", miFI.StreamDetails.Video.Aspect, vbNewLine)
+                        If Not IsNothing(miFI.StreamDetails.Video.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miFI.StreamDetails.Video.Codec, vbNewLine)
+                        If Not IsNothing(miFI.StreamDetails.Video.Duration) Then strOutput.AppendFormat("- Duration: {0}{1}", miFI.StreamDetails.Video.Duration, vbNewLine)
                     End If
 
                     For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
                         'audio
                         strOutput.AppendFormat("{0}Audio Stream {1}{0}", vbNewLine, iAS.ToString)
-                        strOutput.AppendFormat("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
-                        strOutput.AppendFormat("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
-                        strOutput.AppendFormat("- Language: {0}{1}", miAudio.Language, vbNewLine)
+                        If Not IsNothing(miAudio.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
+                        If Not IsNothing(miAudio.Channels) Then strOutput.AppendFormat("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
+                        If Not IsNothing(miAudio.Language) Then strOutput.AppendFormat("- Language: {0}{1}", miAudio.Language, vbNewLine)
                         iAS += 1
                     Next
 
                     For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
                         'subtitles
                         strOutput.AppendFormat("{0}Subtitle {1}{0}", vbNewLine, iSS.ToString)
-                        strOutput.AppendFormat("- Language: {0}", miSub.Language)
+                        If Not IsNothing(miSub.Language) Then strOutput.AppendFormat("- Language: {0}", miSub.Language)
                         iSS += 1
                     Next
                 End If
