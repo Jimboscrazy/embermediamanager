@@ -148,6 +148,7 @@ Public Class emmSettings
     Private _showdims As Boolean
     Private _nodisplayposter As Boolean
     Private _nodisplayfanart As Boolean
+    Private _outlineforplot As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -1251,6 +1252,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property OutlineForPlot() As Boolean
+        Get
+            Return Me._outlineforplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._outlineforplot = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -1388,6 +1398,7 @@ Public Class emmSettings
         Me._showdims = False
         Me._nodisplayposter = False
         Me._nodisplayfanart = False
+        Me._outlineforplot = False
         Me._xbmccoms.Clear()
     End Sub
 

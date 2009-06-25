@@ -592,6 +592,10 @@ mPlot:
                         Dim FullPlot As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)<i>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value
                         IMDBMovie.Plot = Web.HttpUtility.HtmlDecode(FullPlot.Replace("|", String.Empty)).Trim
                     End If
+
+                    If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(IMDBMovie.Plot) AndAlso Not String.IsNullOrEmpty(IMDBMovie.Outline) Then
+                        IMDBMovie.Plot = IMDBMovie.Outline
+                    End If
                 End If
 
                 If doProgress Then
