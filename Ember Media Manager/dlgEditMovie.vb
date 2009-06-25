@@ -463,7 +463,7 @@ Public Class dlgEditMovie
                     lvItem.SubItems.Add(imdbAct.Thumb)
                 Next
 
-                Dim tRating As Double = Master.ConvertToSingle(Master.currMovie.Rating)
+                Dim tRating As Single = Master.ConvertToSingle(Master.currMovie.Rating)
                 .tmpRating = tRating
                 .pbStar1.Tag = tRating
                 .pbStar2.Tag = tRating
@@ -655,7 +655,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub BuildStars(ByVal dblRating As Double)
+    Private Sub BuildStars(ByVal sinRating As Single)
 
         '//
         ' Convert # rating to star images
@@ -670,8 +670,8 @@ Public Class dlgEditMovie
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
 
-                If dblRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
-                    Select Case (dblRating / 2)
+                If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
+                    Select Case (sinRating / 2)
                         Case Is <= 0.5
                             .pbStar1.Image = My.Resources.starhalf
                         Case Is <= 1
