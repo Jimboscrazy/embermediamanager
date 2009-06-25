@@ -397,25 +397,28 @@ Public Class dlgImgSelect
             Dim NoneFound As Boolean = True
 
             If Master.eSettings.UseImgCache Then
+                Dim lFi As New List(Of FileInfo)
+                Dim di As New DirectoryInfo(CachePath)
+
                 If Master.eSettings.UseImgCache AndAlso Not Directory.Exists(CachePath) Then
                     Directory.CreateDirectory(CachePath)
+                Else
+                    Try
+                        lFi.AddRange(di.GetFiles("*.jpg"))
+                    Catch
+                    End Try
                 End If
 
-                Dim di As New DirectoryInfo(CachePath)
-                Dim lFi As New List(Of FileInfo)
-
-                Try
-                    lFi.AddRange(di.GetFiles("*.jpg"))
-                Catch
-                End Try
 
                 If lFi.Count > 0 Then
                     NoneFound = False
                     Me.pnlDLStatus.Visible = False
                     Dim tImage As Media.Image
+                    Dim tmpImage As New Images
                     For Each sFile As FileInfo In lFi
                         tImage = New Media.Image
-                        tImage.WebImage = Image.FromFile(sFile.FullName)
+                        tmpImage.FromFile(sFile.FullName)
+                        tImage.WebImage = New Bitmap(tmpImage.Image)
                         Select Case True
                             Case sFile.Name.Contains("(original)")
                                 tImage.Description = "original"
@@ -430,8 +433,9 @@ Public Class dlgImgSelect
                         End Select
                         tImage.URL = Master.CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
                         Me.TMDBPosters.Add(tImage)
+                        tmpImage.Clear()
                     Next
-
+                    tmpImage.Dispose()
                     ProcessPics(TMDBPosters)
                     Me.pnlBG.Visible = True
                 End If
@@ -494,18 +498,17 @@ Public Class dlgImgSelect
             Dim NoneFound As Boolean = True
 
             If Master.eSettings.UseImgCache Then
-
-                If Master.eSettings.UseImgCache AndAlso Not Directory.Exists(CachePath) Then
-                    Directory.CreateDirectory(CachePath)
-                End If
-
                 Dim di As New DirectoryInfo(CachePath)
                 Dim lFi As New List(Of FileInfo)
 
-                Try
-                    lFi.AddRange(di.GetFiles("*.jpg"))
-                Catch
-                End Try
+                If Master.eSettings.UseImgCache AndAlso Not Directory.Exists(CachePath) Then
+                    Directory.CreateDirectory(CachePath)
+                Else
+                    Try
+                        lFi.AddRange(di.GetFiles("*.jpg"))
+                    Catch
+                    End Try
+                End If
 
                 If lFi.Count > 0 Then
                     NoneFound = False
@@ -513,7 +516,7 @@ Public Class dlgImgSelect
                     Dim tImage As Media.Image
                     For Each sFile As FileInfo In lFi
                         tImage = New Media.Image
-                        tImage.WebImage = Image.FromFile(sFile.FullName)
+                        tImage.WebImage = New Bitmap(sFile.FullName)
                         Select Case True
                             Case sFile.Name.Contains("(original)")
                                 tImage.Description = "original"
@@ -789,7 +792,9 @@ Public Class dlgImgSelect
                     If wrResponse.ContentType.Contains("image") Then
                         Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                         If Master.eSettings.UseImgCache Then
-                            Me.IMPAPosters.Item(i).WebImage.Save(Path.Combine(CachePath, String.Concat("poster_(", Me.IMPAPosters.Item(i).Description, ")_(url=", Master.CleanURL(Me.IMPAPosters.Item(i).URL), ").jpg")))
+                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.IMPAPosters.Item(i).Description, ")_(url=", Master.CleanURL(Me.IMPAPosters.Item(i).URL), ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
+                                Me.IMPAPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
+                            End Using
                         End If
                     End If
                 End Using
@@ -849,7 +854,9 @@ Public Class dlgImgSelect
                         If wrResponse.ContentType.Contains("image") Then
                             Me.TMDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                             If Master.eSettings.UseImgCache Then
-                                Me.TMDBPosters.Item(i).WebImage.Save(Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Master.CleanURL(Me.TMDBPosters.Item(i).URL), ").jpg")))
+                                Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Master.CleanURL(Me.TMDBPosters.Item(i).URL), ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
+                                    Me.TMDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
+                                End Using
                             End If
                         End If
                     End Using
@@ -908,7 +915,9 @@ Public Class dlgImgSelect
                     If wrResponse.ContentType.Contains("image") Then
                         Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                         If Master.eSettings.UseImgCache Then
-                            Me.MPDBPosters.Item(i).WebImage.Save(Path.Combine(CachePath, String.Concat("poster_(", Me.MPDBPosters.Item(i).Description, ")_(url=", Master.CleanURL(Me.MPDBPosters.Item(i).URL), ").jpg")))
+                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.MPDBPosters.Item(i).Description, ")_(url=", Master.CleanURL(Me.MPDBPosters.Item(i).URL), ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
+                                Me.MPDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
+                            End Using
                         End If
                     End If
                 End Using
