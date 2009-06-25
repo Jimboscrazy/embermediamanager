@@ -78,9 +78,9 @@ Partial Class dlgBulkRenamer
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(64, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(126, 13)
+        Me.Label2.Size = New System.Drawing.Size(125, 13)
         Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Rename Movies and files"
+        Me.Label2.Text = "Rename movies and files"
         '
         'Label4
         '
@@ -90,9 +90,9 @@ Partial Class dlgBulkRenamer
         Me.Label4.ForeColor = System.Drawing.Color.White
         Me.Label4.Location = New System.Drawing.Point(61, 3)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(196, 29)
+        Me.Label4.Size = New System.Drawing.Size(177, 29)
         Me.Label4.TabIndex = 1
-        Me.Label4.Text = "Movie Renamer"
+        Me.Label4.Text = "Bulk Renamer"
         '
         'PictureBox1
         '
@@ -114,7 +114,7 @@ Partial Class dlgBulkRenamer
         Me.pnlCancel.Controls.Add(Me.lblFile)
         Me.pnlCancel.Controls.Add(Me.lblCanceling)
         Me.pnlCancel.Controls.Add(Me.btnCancel)
-        Me.pnlCancel.Location = New System.Drawing.Point(259, 70)
+        Me.pnlCancel.Location = New System.Drawing.Point(295, 196)
         Me.pnlCancel.Name = "pnlCancel"
         Me.pnlCancel.Size = New System.Drawing.Size(403, 76)
         Me.pnlCancel.TabIndex = 68
@@ -247,7 +247,7 @@ Partial Class dlgBulkRenamer
         Me.lblLabel.Text = "Label"
         Me.lblLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'dlgBulkRename
+        'dlgBulkRenamer
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -264,13 +264,13 @@ Partial Class dlgBulkRenamer
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.OK_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgBulkRename"
-        Me.ShowIcon = False
+        Me.Name = "dlgBulkRenamer"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Movie Renamer"
+        Me.Text = "Bulk Renamer"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

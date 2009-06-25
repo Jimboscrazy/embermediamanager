@@ -379,6 +379,7 @@ Partial Class dlgOfflineHolder
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.OK_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgOfflineHolder"
