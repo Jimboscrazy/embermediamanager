@@ -24,7 +24,7 @@ Partial Class dlgOfflineHolder
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgOfflineHolder))
-        Me.OK_Button = New System.Windows.Forms.Button
+        Me.CLOSE_Button = New System.Windows.Forms.Button
         Me.pnlTop = New System.Windows.Forms.Panel
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
@@ -69,14 +69,15 @@ Partial Class dlgOfflineHolder
         CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'OK_Button
+        'CLOSE_Button
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.OK_Button.Location = New System.Drawing.Point(594, 427)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(80, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "Close"
+        Me.CLOSE_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.CLOSE_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.CLOSE_Button.Location = New System.Drawing.Point(594, 427)
+        Me.CLOSE_Button.Name = "CLOSE_Button"
+        Me.CLOSE_Button.Size = New System.Drawing.Size(80, 23)
+        Me.CLOSE_Button.TabIndex = 0
+        Me.CLOSE_Button.Text = "Close"
         '
         'pnlTop
         '
@@ -377,7 +378,7 @@ Partial Class dlgOfflineHolder
         '
         'dlgOfflineHolder
         '
-        Me.AcceptButton = Me.OK_Button
+        Me.AcceptButton = Me.CLOSE_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(691, 453)
@@ -392,7 +393,7 @@ Partial Class dlgOfflineHolder
         Me.Controls.Add(Me.cbSources)
         Me.Controls.Add(Me.tbTagLine)
         Me.Controls.Add(Me.pnlTop)
-        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.CLOSE_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -412,7 +413,7 @@ Partial Class dlgOfflineHolder
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents CLOSE_Button As System.Windows.Forms.Button
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label

@@ -1310,6 +1310,9 @@ Public Class dlgSettings
             Master.eSettings.NoDisplayPoster = Me.chkNoDisplayPoster.Checked
             Master.eSettings.OutlineForPlot = Me.chkOutlineForPlot.Checked
 
+            Master.eSettings.FoldersPattern = Me.txtFolderPattern.Text
+            Master.eSettings.FilesPattern = Me.txtFilePattern.Text
+
             Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1486,6 +1489,9 @@ Public Class dlgSettings
             Me.chkNoDisplayPoster.Checked = Master.eSettings.NoDisplayPoster
             Me.chkOutlineForPlot.Checked = Master.eSettings.OutlineForPlot
 
+            Me.txtFolderPattern.Text = Master.eSettings.FoldersPattern
+            Me.txtFilePattern.Text = Master.eSettings.FilesPattern
+
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
         Catch ex As Exception
@@ -1531,4 +1537,11 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPattern.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
 End Class

@@ -192,6 +192,9 @@ Partial Class dlgSettings
         Me.chkUseTMDB = New System.Windows.Forms.CheckBox
         Me.chkUseIMPA = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.gbRTFormat = New System.Windows.Forms.GroupBox
+        Me.rbHM = New System.Windows.Forms.RadioButton
+        Me.rbMins = New System.Windows.Forms.RadioButton
         Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox
         Me.chkUseMIDuration = New System.Windows.Forms.CheckBox
         Me.Label18 = New System.Windows.Forms.Label
@@ -257,9 +260,11 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.gbRTFormat = New System.Windows.Forms.GroupBox
-        Me.rbMins = New System.Windows.Forms.RadioButton
-        Me.rbHM = New System.Windows.Forms.RadioButton
+        Me.gbRenamerPatterns = New System.Windows.Forms.GroupBox
+        Me.txtFolderPattern = New System.Windows.Forms.TextBox
+        Me.txtFilePattern = New System.Windows.Forms.TextBox
+        Me.lblFolderPattern = New System.Windows.Forms.Label
+        Me.lblFilePattern = New System.Windows.Forms.Label
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -283,6 +288,7 @@ Partial Class dlgSettings
         Me.GroupBox10.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.gbRTFormat.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlGeneral.SuspendLayout()
@@ -298,7 +304,7 @@ Partial Class dlgSettings
         Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
-        Me.gbRTFormat.SuspendLayout()
+        Me.gbRenamerPatterns.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -1992,6 +1998,40 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
         '
+        'gbRTFormat
+        '
+        Me.gbRTFormat.Controls.Add(Me.rbHM)
+        Me.gbRTFormat.Controls.Add(Me.rbMins)
+        Me.gbRTFormat.Enabled = False
+        Me.gbRTFormat.Location = New System.Drawing.Point(34, 172)
+        Me.gbRTFormat.Name = "gbRTFormat"
+        Me.gbRTFormat.Size = New System.Drawing.Size(169, 39)
+        Me.gbRTFormat.TabIndex = 65
+        Me.gbRTFormat.TabStop = False
+        Me.gbRTFormat.Text = "Runtime Format"
+        '
+        'rbHM
+        '
+        Me.rbHM.AutoSize = True
+        Me.rbHM.Location = New System.Drawing.Point(75, 15)
+        Me.rbHM.Name = "rbHM"
+        Me.rbHM.Size = New System.Drawing.Size(83, 17)
+        Me.rbHM.TabIndex = 1
+        Me.rbHM.Text = "X hrs X mins"
+        Me.rbHM.UseVisualStyleBackColor = True
+        '
+        'rbMins
+        '
+        Me.rbMins.AutoSize = True
+        Me.rbMins.Checked = True
+        Me.rbMins.Location = New System.Drawing.Point(6, 15)
+        Me.rbMins.Name = "rbMins"
+        Me.rbMins.Size = New System.Drawing.Size(56, 17)
+        Me.rbMins.TabIndex = 0
+        Me.rbMins.TabStop = True
+        Me.rbMins.Text = "X mins"
+        Me.rbMins.UseVisualStyleBackColor = True
+        '
         'chkOutlineForPlot
         '
         Me.chkOutlineForPlot.AutoSize = True
@@ -2528,6 +2568,7 @@ Partial Class dlgSettings
         '
         Me.pnlExtensions.BackColor = System.Drawing.Color.White
         Me.pnlExtensions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlExtensions.Controls.Add(Me.gbRenamerPatterns)
         Me.pnlExtensions.Controls.Add(Me.GroupBox18)
         Me.pnlExtensions.Location = New System.Drawing.Point(208, 96)
         Me.pnlExtensions.Name = "pnlExtensions"
@@ -2721,39 +2762,50 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
-        'gbRTFormat
+        'gbRenamerPatterns
         '
-        Me.gbRTFormat.Controls.Add(Me.rbHM)
-        Me.gbRTFormat.Controls.Add(Me.rbMins)
-        Me.gbRTFormat.Enabled = False
-        Me.gbRTFormat.Location = New System.Drawing.Point(34, 172)
-        Me.gbRTFormat.Name = "gbRTFormat"
-        Me.gbRTFormat.Size = New System.Drawing.Size(169, 39)
-        Me.gbRTFormat.TabIndex = 65
-        Me.gbRTFormat.TabStop = False
-        Me.gbRTFormat.Text = "Runtime Format"
+        Me.gbRenamerPatterns.Controls.Add(Me.lblFilePattern)
+        Me.gbRenamerPatterns.Controls.Add(Me.lblFolderPattern)
+        Me.gbRenamerPatterns.Controls.Add(Me.txtFilePattern)
+        Me.gbRenamerPatterns.Controls.Add(Me.txtFolderPattern)
+        Me.gbRenamerPatterns.Location = New System.Drawing.Point(209, 6)
+        Me.gbRenamerPatterns.Name = "gbRenamerPatterns"
+        Me.gbRenamerPatterns.Size = New System.Drawing.Size(200, 118)
+        Me.gbRenamerPatterns.TabIndex = 1
+        Me.gbRenamerPatterns.TabStop = False
+        Me.gbRenamerPatterns.Text = "Default Patterns"
         '
-        'rbMins
+        'txtFolderPattern
         '
-        Me.rbMins.AutoSize = True
-        Me.rbMins.Checked = True
-        Me.rbMins.Location = New System.Drawing.Point(6, 15)
-        Me.rbMins.Name = "rbMins"
-        Me.rbMins.Size = New System.Drawing.Size(56, 17)
-        Me.rbMins.TabIndex = 0
-        Me.rbMins.TabStop = True
-        Me.rbMins.Text = "X mins"
-        Me.rbMins.UseVisualStyleBackColor = True
+        Me.txtFolderPattern.Location = New System.Drawing.Point(8, 39)
+        Me.txtFolderPattern.Name = "txtFolderPattern"
+        Me.txtFolderPattern.Size = New System.Drawing.Size(186, 20)
+        Me.txtFolderPattern.TabIndex = 0
         '
-        'rbHM
+        'txtFilePattern
         '
-        Me.rbHM.AutoSize = True
-        Me.rbHM.Location = New System.Drawing.Point(75, 15)
-        Me.rbHM.Name = "rbHM"
-        Me.rbHM.Size = New System.Drawing.Size(83, 17)
-        Me.rbHM.TabIndex = 1
-        Me.rbHM.Text = "X hrs X mins"
-        Me.rbHM.UseVisualStyleBackColor = True
+        Me.txtFilePattern.Location = New System.Drawing.Point(8, 87)
+        Me.txtFilePattern.Name = "txtFilePattern"
+        Me.txtFilePattern.Size = New System.Drawing.Size(186, 20)
+        Me.txtFilePattern.TabIndex = 1
+        '
+        'lblFolderPattern
+        '
+        Me.lblFolderPattern.AutoSize = True
+        Me.lblFolderPattern.Location = New System.Drawing.Point(11, 23)
+        Me.lblFolderPattern.Name = "lblFolderPattern"
+        Me.lblFolderPattern.Size = New System.Drawing.Size(78, 13)
+        Me.lblFolderPattern.TabIndex = 2
+        Me.lblFolderPattern.Text = "Folders Pattern"
+        '
+        'lblFilePattern
+        '
+        Me.lblFilePattern.AutoSize = True
+        Me.lblFilePattern.Location = New System.Drawing.Point(11, 69)
+        Me.lblFilePattern.Name = "lblFilePattern"
+        Me.lblFilePattern.Size = New System.Drawing.Size(65, 13)
+        Me.lblFilePattern.TabIndex = 3
+        Me.lblFilePattern.Text = "Files Pattern"
         '
         'dlgSettings
         '
@@ -2769,13 +2821,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2824,6 +2876,8 @@ Partial Class dlgSettings
         Me.GroupBox9.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.gbRTFormat.ResumeLayout(False)
+        Me.gbRTFormat.PerformLayout()
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2847,8 +2901,8 @@ Partial Class dlgSettings
         Me.pnlImages.ResumeLayout(False)
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
-        Me.gbRTFormat.ResumeLayout(False)
-        Me.gbRTFormat.PerformLayout()
+        Me.gbRenamerPatterns.ResumeLayout(False)
+        Me.gbRenamerPatterns.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3081,4 +3135,9 @@ Partial Class dlgSettings
     Friend WithEvents gbRTFormat As System.Windows.Forms.GroupBox
     Friend WithEvents rbHM As System.Windows.Forms.RadioButton
     Friend WithEvents rbMins As System.Windows.Forms.RadioButton
+    Friend WithEvents gbRenamerPatterns As System.Windows.Forms.GroupBox
+    Friend WithEvents lblFilePattern As System.Windows.Forms.Label
+    Friend WithEvents lblFolderPattern As System.Windows.Forms.Label
+    Friend WithEvents txtFilePattern As System.Windows.Forms.TextBox
+    Friend WithEvents txtFolderPattern As System.Windows.Forms.TextBox
 End Class

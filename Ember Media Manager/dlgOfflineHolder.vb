@@ -44,11 +44,11 @@ Public Class dlgOfflineHolder
     Private drawFont As New Font("Arial", 22, FontStyle.Bold)
     Private txtTopPos As Integer
     Friend WithEvents bwCreateHolder As New System.ComponentModel.BackgroundWorker
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CLOSE_Button.Click
         If bwCreateHolder.IsBusy Then
             bwCreateHolder.CancelAsync()
         Else
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End If
     End Sub
@@ -153,11 +153,11 @@ Public Class dlgOfflineHolder
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
             End If
-            CheckConditions()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Me.pbProgress.Visible = False
+        CheckConditions()
     End Sub
     Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
         Me.pbProgress.Value = iPercent
@@ -231,15 +231,15 @@ Public Class dlgOfflineHolder
             End If
 
             Me.CreatePreview()
-
-            Create_Button.Enabled = True
-            For Each i As ListViewItem In lvStatus.Items
-                If Not i.SubItems(1).ForeColor = Color.Green Then
-                    Create_Button.Enabled = False
-                    Exit For
-                End If
-            Next
-
+            If Not Me.pbProgress.Visible Then
+                Create_Button.Enabled = True
+                For Each i As ListViewItem In lvStatus.Items
+                    If Not i.SubItems(1).ForeColor = Color.Green Then
+                        Create_Button.Enabled = False
+                        Exit For
+                    End If
+                Next
+            End If
         Catch ex As Exception
         End Try
 
@@ -364,7 +364,7 @@ Public Class dlgOfflineHolder
             Directory.Delete(buildPath, True)
         End If
         Try
-            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(Master.currPath)), Master.tmpMovie, "$T", "$T")
+            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(Master.currPath)), Master.tmpMovie, "$D", "$D")
         Catch ex As Exception
         End Try
 
@@ -386,6 +386,7 @@ Public Class dlgOfflineHolder
         Me.pbProgress.Visible = False
         If Not e.Cancelled Then
             MsgBox("Offline movie place holder created!", MsgBoxStyle.OkOnly, "Offline Movie")
+            Me.DialogResult = Windows.Forms.DialogResult.OK
         End If
         Me.Close()
     End Sub
@@ -462,6 +463,14 @@ Public Class dlgOfflineHolder
         Dim iLeft As Integer = (bmPreview.Width - grPreview.MeasureString(drawString, drawFont).Width) / 2
         grPreview.DrawString(drawString, drawFont, drawBrush, iLeft, Convert.ToInt32(txtTop.Text))
         pbPreview.Image = bmPreview
+        If tbTagLine.Tag Is Nothing Then tbTagLine.Tag = 0
+        If Not tbTagLine.Tag = bmPreview.Height Then
+            tbTagLine.Top = GroupBox1.Top + 10 + (pbPreview.Height - (bmPreview.Height / (bmPreview.Width / pbPreview.Width))) / 2
+            tbTagLine.Height = (bmPreview.Height / (bmPreview.Width / pbPreview.Width)) + 16
+        End If
+        tbTagLine.Tag = bmPreview.Height
+        tbTagLine.Value = tbTagLine.Maximum - Convert.ToInt16(txtTop.Text)
+
     End Sub
 
     Private Sub txtTagline_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTagline.TextChanged
@@ -528,9 +537,9 @@ Public Class dlgOfflineHolder
     Private Sub TrackBar1_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbTagLine.Scroll
         txtTop.Text = sender.maximum - sender.value.ToString
         'Me.currTopText = sender.value.ToString
-
-        Me.tmrTopWait.Enabled = False
-        Me.tmrTopWait.Enabled = True
+        Me.prevTopText = Me.currTopText
+        Me.currTopText = Me.txtTop.Text
+        Me.CheckConditions()
     End Sub
 
 End Class

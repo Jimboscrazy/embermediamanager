@@ -152,6 +152,9 @@ Public Class emmSettings
     Private _nodisplayfanart As Boolean
     Private _outlineforplot As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
+    Private _defaultfolderspattern As String
+    Private _defaultfilespattern As String
+
 
     Public Property Version() As String
         Get
@@ -1290,6 +1293,23 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property FoldersPattern() As String
+        Get
+            Return Me._defaultfolderspattern
+        End Get
+        Set(ByVal value As String)
+            Me._defaultfolderspattern = value
+        End Set
+    End Property
+    Public Property FilesPattern() As String
+        Get
+            Return Me._defaultfilespattern
+        End Get
+        Set(ByVal value As String)
+            Me._defaultfilespattern = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1421,6 +1441,8 @@ Public Class emmSettings
         Me._nodisplayposter = False
         Me._nodisplayfanart = False
         Me._outlineforplot = False
+        Me._defaultfolderspattern = "$T ($Y)"
+        Me._defaultfilespattern = "$T"
         Me._xbmccoms.Clear()
     End Sub
 
