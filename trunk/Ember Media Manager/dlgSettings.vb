@@ -259,6 +259,8 @@ Public Class dlgSettings
         Me.chkUseMIDuration.Enabled = Me.chkScanMediaInfo.Checked
         If Not Me.chkScanMediaInfo.Checked Then
             Me.chkUseMIDuration.Checked = False
+            Me.gbRTFormat.Enabled = False
+            Me.rbMins.Checked = True
         End If
     End Sub
 
@@ -846,6 +848,10 @@ Public Class dlgSettings
 
     Private Sub chkUseMIDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMIDuration.CheckedChanged
         Me.btnApply.Enabled = True
+        Me.gbRTFormat.Enabled = Me.chkUseMIDuration.Checked
+        If Not chkUseMIDuration.Checked Then
+            Me.rbMins.Checked = True
+        End If
     End Sub
 
     Private Sub chkMovieSubCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSubCol.CheckedChanged
@@ -1037,6 +1043,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkDeleteAllTrailers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDeleteAllTrailers.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub rbMins_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbMins.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub rbHM_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbHM.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -1249,6 +1263,7 @@ Public Class dlgSettings
             Master.eSettings.BDPath = Me.txtBDPath.Text
             Master.eSettings.AutoBD = Me.chkAutoBD.Checked
             Master.eSettings.UseMIDuration = Me.chkUseMIDuration.Checked
+            Master.eSettings.UseHMForRuntime = Me.rbHM.Checked
             Master.eSettings.UseImgCache = Me.chkUseImgCache.Checked
             Master.eSettings.UseImgCacheUpdaters = Me.chkUseImgCacheUpdaters.Checked
             Master.eSettings.PersistImgCache = Me.chkPersistImgCache.Checked
@@ -1431,6 +1446,7 @@ Public Class dlgSettings
             Me.txtBDPath.Text = Master.eSettings.BDPath
             Me.chkAutoBD.Checked = Master.eSettings.AutoBD
             Me.chkUseMIDuration.Checked = Master.eSettings.UseMIDuration
+            Me.rbHM.Checked = Master.eSettings.UseHMForRuntime
             Me.chkUseImgCache.Checked = Master.eSettings.UseImgCache
             Me.chkUseImgCacheUpdaters.Checked = Master.eSettings.UseImgCacheUpdaters
             Me.chkPersistImgCache.Checked = Master.eSettings.PersistImgCache
@@ -1514,6 +1530,5 @@ Public Class dlgSettings
 
     End Sub
 #End Region '*** Routines/Functions
-
 
 End Class

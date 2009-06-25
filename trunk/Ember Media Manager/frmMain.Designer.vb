@@ -1514,11 +1514,12 @@ Partial Class frmMain
         '
         'lblRuntime
         '
+        Me.lblRuntime.AutoSize = True
         Me.lblRuntime.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblRuntime.ForeColor = System.Drawing.Color.Black
         Me.lblRuntime.Location = New System.Drawing.Point(213, 32)
         Me.lblRuntime.Name = "lblRuntime"
-        Me.lblRuntime.Size = New System.Drawing.Size(105, 13)
+        Me.lblRuntime.Size = New System.Drawing.Size(94, 13)
         Me.lblRuntime.TabIndex = 32
         Me.lblRuntime.Text = "Runtime: ###mins"
         Me.lblRuntime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
