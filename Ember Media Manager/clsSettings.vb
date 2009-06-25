@@ -143,6 +143,7 @@ Public Class emmSettings
     Private _singlescrapetrailer As Boolean
     Private _trailertimeout As Integer
     Private _overwritetrailer As Boolean
+    Private _deletealltrailers As Boolean
     Private _trailersites As New List(Of Master.TrailerPages)
     Private _nosaveimagestonfo As Boolean
     Private _showdims As Boolean
@@ -1207,6 +1208,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property DeleteAllTrailers() As Boolean
+        Get
+            Return Me._deletealltrailers
+        End Get
+        Set(ByVal value As Boolean)
+            Me._deletealltrailers = value
+        End Set
+    End Property
+
     Public Property TrailerSites() As List(Of Master.TrailerPages)
         Get
             Return Me._trailersites
@@ -1392,6 +1402,7 @@ Public Class emmSettings
         Me._singlescrapetrailer = False
         Me._trailertimeout = 2
         Me._overwritetrailer = False
+        Me._deletealltrailers = False
         Me._trailersites.Clear()
         Me._sets.Clear()
         Me._nosaveimagestonfo = False
