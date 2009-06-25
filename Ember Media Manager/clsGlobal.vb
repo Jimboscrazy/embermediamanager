@@ -1167,7 +1167,7 @@ Public Class Master
             For Each miAudio As MediaInfo.Audio In miFIA.StreamDetails.Audio
                 'audio
                 If Not String.IsNullOrEmpty(miAudio.Channels) Then
-                    Single.TryParse(miAudio.Channels, sinChans)
+                    sinChans = ConvertToSingle(miAudio.Channels)
                     If sinChans > sinMostChannels Then
                         sinMostChannels = sinChans
                         fiaOut.Codec = miAudio.Codec
@@ -1663,7 +1663,7 @@ Public Class Master
 
     End Function
 
-    Public Shared Function ConvertToDouble(ByVal sNumber As String) As Double
+    Public Shared Function ConvertToSingle(ByVal sNumber As String) As Single
         If String.IsNullOrEmpty(sNumber) Then Return 0
         Dim numFormat As NumberFormatInfo = New NumberFormatInfo()
         numFormat.NumberDecimalSeparator = "."
