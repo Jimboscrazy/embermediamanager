@@ -35,6 +35,16 @@ Public Class dlgUpdateMedia
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
 
+            'disable options that are locked
+            Me.chkPlot.Enabled = Not Master.eSettings.LockPlot
+            Me.chkOutline.Enabled = Not Master.eSettings.LockOutline
+            Me.chkTitle.Enabled = Not Master.eSettings.LockTitle
+            Me.chkTagline.Enabled = Not Master.eSettings.LockTagline
+            Me.chkRating.Enabled = Not Master.eSettings.LockRating
+            Me.chkStudio.Enabled = Not Master.eSettings.LockStudio
+            Me.chkGenre.Enabled = Not Master.eSettings.LockGenre
+            Me.chkTrailer.Enabled = Not Master.eSettings.LockTrailer
+
             'set defaults
             CustomUpdater.ScrapeType = Master.ScrapeType.FullAuto
             CustomUpdater.Modifier = Master.ScrapeModifier.All

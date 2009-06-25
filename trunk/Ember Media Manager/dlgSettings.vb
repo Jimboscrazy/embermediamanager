@@ -1030,6 +1030,9 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub chkOutlineForPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutlineForPlot.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1282,6 +1285,7 @@ Public Class dlgSettings
             Master.eSettings.ShowDims = Me.chkShowDims.Checked
             Master.eSettings.NoDisplayFanart = Me.chkNoDisplayFanart.Checked
             Master.eSettings.NoDisplayPoster = Me.chkNoDisplayPoster.Checked
+            Master.eSettings.OutlineForPlot = Me.chkOutlineForPlot.Checked
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -1455,6 +1459,7 @@ Public Class dlgSettings
             Me.chkShowDims.Checked = Master.eSettings.ShowDims
             Me.chkNoDisplayFanart.Checked = Master.eSettings.NoDisplayFanart
             Me.chkNoDisplayPoster.Checked = Master.eSettings.NoDisplayPoster
+            Me.chkOutlineForPlot.Checked = Master.eSettings.OutlineForPlot
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74

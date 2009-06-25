@@ -113,6 +113,9 @@ Partial Class dlgSettings
         Me.chkMovieFanartCol = New System.Windows.Forms.CheckBox
         Me.chkMoviePosterCol = New System.Windows.Forms.CheckBox
         Me.GroupBox8 = New System.Windows.Forms.GroupBox
+        Me.GroupBox21 = New System.Windows.Forms.GroupBox
+        Me.rbBracketTrailer = New System.Windows.Forms.RadioButton
+        Me.rbDashTrailer = New System.Windows.Forms.RadioButton
         Me.chkVideoTSParent = New System.Windows.Forms.CheckBox
         Me.GroupBox7 = New System.Windows.Forms.GroupBox
         Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
@@ -252,9 +255,7 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.GroupBox21 = New System.Windows.Forms.GroupBox
-        Me.rbDashTrailer = New System.Windows.Forms.RadioButton
-        Me.rbBracketTrailer = New System.Windows.Forms.RadioButton
+        Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -266,6 +267,7 @@ Partial Class dlgSettings
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
+        Me.GroupBox21.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -292,7 +294,6 @@ Partial Class dlgSettings
         Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
-        Me.GroupBox21.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -1148,6 +1149,39 @@ Partial Class dlgSettings
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
         '
+        'GroupBox21
+        '
+        Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
+        Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
+        Me.GroupBox21.Location = New System.Drawing.Point(137, 99)
+        Me.GroupBox21.Name = "GroupBox21"
+        Me.GroupBox21.Size = New System.Drawing.Size(68, 53)
+        Me.GroupBox21.TabIndex = 67
+        Me.GroupBox21.TabStop = False
+        Me.GroupBox21.Text = "Trailer"
+        '
+        'rbBracketTrailer
+        '
+        Me.rbBracketTrailer.AutoSize = True
+        Me.rbBracketTrailer.Location = New System.Drawing.Point(5, 33)
+        Me.rbBracketTrailer.Name = "rbBracketTrailer"
+        Me.rbBracketTrailer.Size = New System.Drawing.Size(56, 17)
+        Me.rbBracketTrailer.TabIndex = 1
+        Me.rbBracketTrailer.TabStop = True
+        Me.rbBracketTrailer.Text = "[trailer]"
+        Me.rbBracketTrailer.UseVisualStyleBackColor = True
+        '
+        'rbDashTrailer
+        '
+        Me.rbDashTrailer.AutoSize = True
+        Me.rbDashTrailer.Location = New System.Drawing.Point(5, 17)
+        Me.rbDashTrailer.Name = "rbDashTrailer"
+        Me.rbDashTrailer.Size = New System.Drawing.Size(53, 17)
+        Me.rbDashTrailer.TabIndex = 0
+        Me.rbDashTrailer.TabStop = True
+        Me.rbDashTrailer.Text = "-trailer"
+        Me.rbDashTrailer.UseVisualStyleBackColor = True
+        '
         'chkVideoTSParent
         '
         Me.chkVideoTSParent.Location = New System.Drawing.Point(211, 18)
@@ -1934,6 +1968,7 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkOutlineForPlot)
         Me.GroupBox1.Controls.Add(Me.chkUseMIDuration)
         Me.GroupBox1.Controls.Add(Me.Label18)
         Me.GroupBox1.Controls.Add(Me.txtIMDBURL)
@@ -1955,7 +1990,7 @@ Partial Class dlgSettings
         '
         Me.chkUseMIDuration.AutoSize = True
         Me.chkUseMIDuration.Enabled = False
-        Me.chkUseMIDuration.Location = New System.Drawing.Point(34, 137)
+        Me.chkUseMIDuration.Location = New System.Drawing.Point(34, 153)
         Me.chkUseMIDuration.Name = "chkUseMIDuration"
         Me.chkUseMIDuration.Size = New System.Drawing.Size(160, 17)
         Me.chkUseMIDuration.TabIndex = 63
@@ -1993,7 +2028,7 @@ Partial Class dlgSettings
         '
         Me.chkUseCertForMPAA.AutoSize = True
         Me.chkUseCertForMPAA.Enabled = False
-        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(34, 104)
+        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(34, 120)
         Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
         Me.chkUseCertForMPAA.Size = New System.Drawing.Size(151, 17)
         Me.chkUseCertForMPAA.TabIndex = 38
@@ -2026,7 +2061,7 @@ Partial Class dlgSettings
         Me.cbCert.Enabled = False
         Me.cbCert.FormattingEnabled = True
         Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbCert.Location = New System.Drawing.Point(6, 81)
+        Me.cbCert.Location = New System.Drawing.Point(6, 97)
         Me.cbCert.Name = "cbCert"
         Me.cbCert.Size = New System.Drawing.Size(179, 21)
         Me.cbCert.Sorted = True
@@ -2035,7 +2070,7 @@ Partial Class dlgSettings
         'chkCert
         '
         Me.chkCert.AutoSize = True
-        Me.chkCert.Location = New System.Drawing.Point(6, 63)
+        Me.chkCert.Location = New System.Drawing.Point(6, 79)
         Me.chkCert.Name = "chkCert"
         Me.chkCert.Size = New System.Drawing.Size(157, 17)
         Me.chkCert.TabIndex = 34
@@ -2045,7 +2080,7 @@ Partial Class dlgSettings
         'chkScanMediaInfo
         '
         Me.chkScanMediaInfo.AutoSize = True
-        Me.chkScanMediaInfo.Location = New System.Drawing.Point(6, 120)
+        Me.chkScanMediaInfo.Location = New System.Drawing.Point(6, 136)
         Me.chkScanMediaInfo.Name = "chkScanMediaInfo"
         Me.chkScanMediaInfo.Size = New System.Drawing.Size(104, 17)
         Me.chkScanMediaInfo.TabIndex = 36
@@ -2650,38 +2685,15 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
-        'GroupBox21
+        'chkOutlineForPlot
         '
-        Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
-        Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
-        Me.GroupBox21.Location = New System.Drawing.Point(137, 99)
-        Me.GroupBox21.Name = "GroupBox21"
-        Me.GroupBox21.Size = New System.Drawing.Size(68, 53)
-        Me.GroupBox21.TabIndex = 67
-        Me.GroupBox21.TabStop = False
-        Me.GroupBox21.Text = "Trailer"
-        '
-        'rbDashTrailer
-        '
-        Me.rbDashTrailer.AutoSize = True
-        Me.rbDashTrailer.Location = New System.Drawing.Point(5, 17)
-        Me.rbDashTrailer.Name = "rbDashTrailer"
-        Me.rbDashTrailer.Size = New System.Drawing.Size(53, 17)
-        Me.rbDashTrailer.TabIndex = 0
-        Me.rbDashTrailer.TabStop = True
-        Me.rbDashTrailer.Text = "-trailer"
-        Me.rbDashTrailer.UseVisualStyleBackColor = True
-        '
-        'rbBracketTrailer
-        '
-        Me.rbBracketTrailer.AutoSize = True
-        Me.rbBracketTrailer.Location = New System.Drawing.Point(5, 33)
-        Me.rbBracketTrailer.Name = "rbBracketTrailer"
-        Me.rbBracketTrailer.Size = New System.Drawing.Size(56, 17)
-        Me.rbBracketTrailer.TabIndex = 1
-        Me.rbBracketTrailer.TabStop = True
-        Me.rbBracketTrailer.Text = "[trailer]"
-        Me.rbBracketTrailer.UseVisualStyleBackColor = True
+        Me.chkOutlineForPlot.AutoSize = True
+        Me.chkOutlineForPlot.Location = New System.Drawing.Point(6, 63)
+        Me.chkOutlineForPlot.Name = "chkOutlineForPlot"
+        Me.chkOutlineForPlot.Size = New System.Drawing.Size(188, 17)
+        Me.chkOutlineForPlot.TabIndex = 64
+        Me.chkOutlineForPlot.Text = "Use Outline for Plot if Plot is Empty"
+        Me.chkOutlineForPlot.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -2697,13 +2709,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2730,6 +2742,8 @@ Partial Class dlgSettings
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
+        Me.GroupBox21.ResumeLayout(False)
+        Me.GroupBox21.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
@@ -2773,8 +2787,6 @@ Partial Class dlgSettings
         Me.pnlImages.ResumeLayout(False)
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
-        Me.GroupBox21.ResumeLayout(False)
-        Me.GroupBox21.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3002,4 +3014,5 @@ Partial Class dlgSettings
     Friend WithEvents GroupBox21 As System.Windows.Forms.GroupBox
     Friend WithEvents rbBracketTrailer As System.Windows.Forms.RadioButton
     Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
+    Friend WithEvents chkOutlineForPlot As System.Windows.Forms.CheckBox
 End Class
