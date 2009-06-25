@@ -32,6 +32,7 @@ Public Class FileFolderRenamer
         Private _fileName As String
         Private _newPath As String
         Private _newFileName As String
+        Private _islocked As Boolean ' support for bulkRenamer 
         Public fType As Integer
         Public Resolution As String
         Public Audio As String
@@ -76,7 +77,14 @@ Public Class FileFolderRenamer
                 Me._newFileName = value
             End Set
         End Property
-
+        Public Property IsLocked() As Boolean
+            Get
+                Return Me._islocked
+            End Get
+            Set(ByVal value As Boolean)
+                Me._islocked = value
+            End Set
+        End Property
     End Class
     Private _movies As New List(Of FileRename)
     Public MovieFolders As New ArrayList
@@ -132,34 +140,36 @@ Public Class FileFolderRenamer
     Public Sub DoRename()
         Try
             For Each f As FileFolderRenamer.FileRename In _movies
-                'Rename Directory
-                If Not f.NewPath = f.Path Then
-                    Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
-                    Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
-                    System.IO.Directory.Move(srcDir, destDir)
-                End If
-                'Rename Files
-                If Not f.NewFileName = f.FileName Then
-                    Dim tmpList As New ArrayList
+                If Not f.IsLocked Then
+                    'Rename Directory
+                    If Not f.NewPath = f.Path Then
+                        Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
+                        Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
+                        System.IO.Directory.Move(srcDir, destDir)
+                    End If
+                    'Rename Files
+                    If Not f.NewFileName = f.FileName Then
+                        Dim tmpList As New ArrayList
 
-                    Dim di As New DirectoryInfo(Path.Combine(f.BasePath, f.NewPath))
-                    Dim lFi As New List(Of FileInfo)
-                    Try
-                        lFi.AddRange(di.GetFiles())
-                    Catch
-                    End Try
-                    If lFi.Count > 0 Then
-                        lFi.Sort(AddressOf Master.SortFileNames)
-                        Dim srcFile As String
-                        Dim dstFile As String
-                        For Each lFile As FileInfo In lFi
-                            srcFile = lFile.FullName
-                            dstFile = Path.Combine(Path.GetDirectoryName(lFile.FullName), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
-                            If Not srcFile = dstFile Then
-                                Dim fr = New System.IO.FileInfo(srcFile)
-                                fr.MoveTo(dstFile)
-                            End If
-                        Next
+                        Dim di As New DirectoryInfo(Path.Combine(f.BasePath, f.NewPath))
+                        Dim lFi As New List(Of FileInfo)
+                        Try
+                            lFi.AddRange(di.GetFiles())
+                        Catch
+                        End Try
+                        If lFi.Count > 0 Then
+                            lFi.Sort(AddressOf Master.SortFileNames)
+                            Dim srcFile As String
+                            Dim dstFile As String
+                            For Each lFile As FileInfo In lFi
+                                srcFile = lFile.FullName
+                                dstFile = Path.Combine(Path.GetDirectoryName(lFile.FullName), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
+                                If Not srcFile = dstFile Then
+                                    Dim fr = New System.IO.FileInfo(srcFile)
+                                    fr.MoveTo(dstFile)
+                                End If
+                            Next
+                        End If
                     End If
                 End If
             Next
