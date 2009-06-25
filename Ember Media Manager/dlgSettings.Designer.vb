@@ -100,6 +100,8 @@ Partial Class dlgSettings
         Me.lstFilters = New System.Windows.Forms.ListBox
         Me.chkScanRecursive = New System.Windows.Forms.CheckBox
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
+        Me.chkNoDisplayFanart = New System.Windows.Forms.CheckBox
+        Me.chkNoDisplayPoster = New System.Windows.Forms.CheckBox
         Me.chkShowDims = New System.Windows.Forms.CheckBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.chkMarkNew = New System.Windows.Forms.CheckBox
@@ -250,8 +252,9 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.chkNoDisplayPoster = New System.Windows.Forms.CheckBox
-        Me.chkNoDisplayFanart = New System.Windows.Forms.CheckBox
+        Me.GroupBox21 = New System.Windows.Forms.GroupBox
+        Me.rbDashTrailer = New System.Windows.Forms.RadioButton
+        Me.rbBracketTrailer = New System.Windows.Forms.RadioButton
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -289,6 +292,7 @@ Partial Class dlgSettings
         Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
+        Me.GroupBox21.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -1005,6 +1009,26 @@ Partial Class dlgSettings
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
         '
+        'chkNoDisplayFanart
+        '
+        Me.chkNoDisplayFanart.AutoSize = True
+        Me.chkNoDisplayFanart.Location = New System.Drawing.Point(12, 76)
+        Me.chkNoDisplayFanart.Name = "chkNoDisplayFanart"
+        Me.chkNoDisplayFanart.Size = New System.Drawing.Size(130, 17)
+        Me.chkNoDisplayFanart.TabIndex = 59
+        Me.chkNoDisplayFanart.Text = "Do Not Display Fanart"
+        Me.chkNoDisplayFanart.UseVisualStyleBackColor = True
+        '
+        'chkNoDisplayPoster
+        '
+        Me.chkNoDisplayPoster.AutoSize = True
+        Me.chkNoDisplayPoster.Location = New System.Drawing.Point(12, 60)
+        Me.chkNoDisplayPoster.Name = "chkNoDisplayPoster"
+        Me.chkNoDisplayPoster.Size = New System.Drawing.Size(130, 17)
+        Me.chkNoDisplayPoster.TabIndex = 58
+        Me.chkNoDisplayPoster.Text = "Do Not Display Poster"
+        Me.chkNoDisplayPoster.UseVisualStyleBackColor = True
+        '
         'chkShowDims
         '
         Me.chkShowDims.AutoSize = True
@@ -1112,22 +1136,23 @@ Partial Class dlgSettings
         '
         'GroupBox8
         '
+        Me.GroupBox8.Controls.Add(Me.GroupBox21)
         Me.GroupBox8.Controls.Add(Me.chkVideoTSParent)
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
         Me.GroupBox8.Location = New System.Drawing.Point(229, 121)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(356, 146)
+        Me.GroupBox8.Size = New System.Drawing.Size(356, 172)
         Me.GroupBox8.TabIndex = 64
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
         '
         'chkVideoTSParent
         '
-        Me.chkVideoTSParent.Location = New System.Drawing.Point(16, 106)
+        Me.chkVideoTSParent.Location = New System.Drawing.Point(211, 18)
         Me.chkVideoTSParent.Name = "chkVideoTSParent"
-        Me.chkVideoTSParent.Size = New System.Drawing.Size(173, 33)
+        Me.chkVideoTSParent.Size = New System.Drawing.Size(142, 47)
         Me.chkVideoTSParent.TabIndex = 66
         Me.chkVideoTSParent.Text = "YAMJ Compatible VIDEO_TS File Placement/Naming"
         Me.chkVideoTSParent.UseVisualStyleBackColor = True
@@ -1136,9 +1161,9 @@ Partial Class dlgSettings
         '
         Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
         Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
-        Me.GroupBox7.Location = New System.Drawing.Point(229, 88)
+        Me.GroupBox7.Location = New System.Drawing.Point(211, 99)
         Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(120, 53)
+        Me.GroupBox7.Size = New System.Drawing.Size(92, 53)
         Me.GroupBox7.TabIndex = 65
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "NFO"
@@ -1168,9 +1193,9 @@ Partial Class dlgSettings
         Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
-        Me.GroupBox6.Location = New System.Drawing.Point(229, 14)
+        Me.GroupBox6.Location = New System.Drawing.Point(6, 99)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(120, 70)
+        Me.GroupBox6.Size = New System.Drawing.Size(125, 70)
         Me.GroupBox6.TabIndex = 64
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Fanart"
@@ -2625,25 +2650,38 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
-        'chkNoDisplayPoster
+        'GroupBox21
         '
-        Me.chkNoDisplayPoster.AutoSize = True
-        Me.chkNoDisplayPoster.Location = New System.Drawing.Point(12, 60)
-        Me.chkNoDisplayPoster.Name = "chkNoDisplayPoster"
-        Me.chkNoDisplayPoster.Size = New System.Drawing.Size(130, 17)
-        Me.chkNoDisplayPoster.TabIndex = 58
-        Me.chkNoDisplayPoster.Text = "Do Not Display Poster"
-        Me.chkNoDisplayPoster.UseVisualStyleBackColor = True
+        Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
+        Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
+        Me.GroupBox21.Location = New System.Drawing.Point(137, 99)
+        Me.GroupBox21.Name = "GroupBox21"
+        Me.GroupBox21.Size = New System.Drawing.Size(68, 53)
+        Me.GroupBox21.TabIndex = 67
+        Me.GroupBox21.TabStop = False
+        Me.GroupBox21.Text = "Trailer"
         '
-        'chkNoDisplayFanart
+        'rbDashTrailer
         '
-        Me.chkNoDisplayFanart.AutoSize = True
-        Me.chkNoDisplayFanart.Location = New System.Drawing.Point(12, 76)
-        Me.chkNoDisplayFanart.Name = "chkNoDisplayFanart"
-        Me.chkNoDisplayFanart.Size = New System.Drawing.Size(130, 17)
-        Me.chkNoDisplayFanart.TabIndex = 59
-        Me.chkNoDisplayFanart.Text = "Do Not Display Fanart"
-        Me.chkNoDisplayFanart.UseVisualStyleBackColor = True
+        Me.rbDashTrailer.AutoSize = True
+        Me.rbDashTrailer.Location = New System.Drawing.Point(5, 17)
+        Me.rbDashTrailer.Name = "rbDashTrailer"
+        Me.rbDashTrailer.Size = New System.Drawing.Size(53, 17)
+        Me.rbDashTrailer.TabIndex = 0
+        Me.rbDashTrailer.TabStop = True
+        Me.rbDashTrailer.Text = "-trailer"
+        Me.rbDashTrailer.UseVisualStyleBackColor = True
+        '
+        'rbBracketTrailer
+        '
+        Me.rbBracketTrailer.AutoSize = True
+        Me.rbBracketTrailer.Location = New System.Drawing.Point(5, 33)
+        Me.rbBracketTrailer.Name = "rbBracketTrailer"
+        Me.rbBracketTrailer.Size = New System.Drawing.Size(56, 17)
+        Me.rbBracketTrailer.TabIndex = 1
+        Me.rbBracketTrailer.TabStop = True
+        Me.rbBracketTrailer.Text = "[trailer]"
+        Me.rbBracketTrailer.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -2659,13 +2697,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2735,6 +2773,8 @@ Partial Class dlgSettings
         Me.pnlImages.ResumeLayout(False)
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
+        Me.GroupBox21.ResumeLayout(False)
+        Me.GroupBox21.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -2959,4 +2999,7 @@ Partial Class dlgSettings
     Friend WithEvents chkShowDims As System.Windows.Forms.CheckBox
     Friend WithEvents chkNoDisplayFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkNoDisplayPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox21 As System.Windows.Forms.GroupBox
+    Friend WithEvents rbBracketTrailer As System.Windows.Forms.RadioButton
+    Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
 End Class

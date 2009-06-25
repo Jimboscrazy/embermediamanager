@@ -1021,6 +1021,15 @@ Public Class dlgSettings
             Me.chkShowDims.Enabled = True
         End If
     End Sub
+
+    Private Sub rbDashTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbDashTrailer.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub rbBracketTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbBracketTrailer.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -1192,6 +1201,7 @@ Public Class dlgSettings
             Master.eSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
             Master.eSettings.MovieNFO = Me.chkMovieNFO.Checked
             Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
+            Master.eSettings.DashTrailer = Me.rbDashTrailer.Checked
             Master.eSettings.VideoTSParent = Me.chkVideoTSParent.Checked
             Master.eSettings.LockPlot = Me.chkLockPlot.Checked
             Master.eSettings.LockOutline = Me.chkLockOutline.Checked
@@ -1369,6 +1379,8 @@ Public Class dlgSettings
             Me.chkMovieNameDotFanartJPG.Checked = Master.eSettings.MovieNameDotFanartJPG
             Me.chkMovieNFO.Checked = Master.eSettings.MovieNFO
             Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
+            Me.rbDashTrailer.Checked = Master.eSettings.DashTrailer
+            Me.rbBracketTrailer.Checked = Not Master.eSettings.DashTrailer
             Me.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
             Me.chkLockPlot.Checked = Master.eSettings.LockPlot
             Me.chkLockOutline.Checked = Master.eSettings.LockOutline
@@ -1488,6 +1500,5 @@ Public Class dlgSettings
 
     End Sub
 #End Region '*** Routines/Functions
-
 
 End Class

@@ -114,11 +114,11 @@ Public Class HTTP
 
             Select Case True
                 Case wrResponse.ContentType.Contains("mp4")
-                    outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), "-trailer.mp4"))
+                    outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4")))
                 Case wrResponse.ContentType.Contains("flv"), URL.ToLower.Contains("mattfind.com") AndAlso wrResponse.ContentType.Contains("plain") 'matttrailer reports "text/plain" for flv files
-                    outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), "-trailer.flv"))
+                    outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
                 Case wrResponse.ContentType.Contains("shockwave"), wrResponse.ContentType.Contains("flash")
-                    outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), "-trailer.swf"))
+                    outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.swf", "[trailer].swf")))
             End Select
 
             If Not String.IsNullOrEmpty(outFile) AndAlso wrResponse.ContentLength > 0 Then

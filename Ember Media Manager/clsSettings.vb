@@ -93,6 +93,7 @@ Public Class emmSettings
     Private _movienamedotfanartjpg As Boolean
     Private _movienfo As Boolean
     Private _movienamenfo As Boolean
+    Private _dashtrailer As Boolean
     Private _videotsparent As Boolean
     Private _lockplot As Boolean
     Private _lockoutline As Boolean
@@ -760,6 +761,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property DashTrailer() As Boolean
+        Get
+            Return Me._dashtrailer
+        End Get
+        Set(ByVal value As Boolean)
+            Me._dashtrailer = value
+        End Set
+    End Property
+
     Public Property VideoTSParent() As Boolean
         Get
             Return Me._videotsparent
@@ -1323,6 +1333,7 @@ Public Class emmSettings
         Me._movienamedotfanartjpg = False
         Me._movienfo = False
         Me._movienamenfo = False
+        Me._dashtrailer = True
         Me._videotsparent = False
         Me._lockplot = False
         Me._lockoutline = False
