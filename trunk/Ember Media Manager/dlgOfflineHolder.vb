@@ -39,7 +39,7 @@ Public Class dlgOfflineHolder
     Private prevText As String = String.Empty
     Private currNameText As String = String.Empty
     Private prevNameText As String = String.Empty
-    Private currTopText As String = String.Empty
+    Private currTopText As String = "470"
     Private prevTopText As String = String.Empty
     Private drawFont As New Font("Arial", 22, FontStyle.Bold)
     Private txtTopPos As Integer
@@ -102,6 +102,7 @@ Public Class dlgOfflineHolder
             lvStatus.Items(idxStsImage).SubItems.Add("Valid")
             lvStatus.Items(idxStsImage).UseItemStyleForSubItems = False
             lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
+            tbTagLine.Value = tbTagLine.Maximum - 470
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -220,10 +221,10 @@ Public Class dlgOfflineHolder
                     lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Red
                 End If
             Else
-                If File.Exists(PreviewPath) Then
-                    txtTop.Text = "470"
-                    Preview.FromFile(PreviewPath)
-                End If
+                'If File.Exists(PreviewPath) Then
+                'txtTop.Text = "470"
+                'Preview.FromFile(PreviewPath)
+                'End If
 
                 lvStatus.Items(idxStsImage).SubItems(1).Text = "Valid"
                 lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
@@ -273,6 +274,12 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub cbUseFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFanart.CheckedChanged
+        If Not sender.checked Then
+            If File.Exists(PreviewPath) Then
+                txtTop.Text = "470"
+                Preview.FromFile(PreviewPath)
+            End If
+        End If
         CheckConditions()
     End Sub
 
@@ -341,12 +348,6 @@ Public Class dlgOfflineHolder
             ffmpeg.WaitForExit()
             ffmpeg.Close()
         End Using
-        If Me.bwCreateHolder.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-        Me.bwCreateHolder.ReportProgress(3, "Validating Files")
-
 
         If Me.bwCreateHolder.CancellationPending Then
             e.Cancel = True
@@ -396,7 +397,7 @@ Public Class dlgOfflineHolder
         txtTagline.Enabled = False
         chkUseFanart.Enabled = False
         'Need to avoid cross thread in BackgroundWorker
-        txtTopPos = 720 / (pbPreview.Image.Width / Convert.ToSingle(txtTop.Text)) ' ... and Scale it
+        txtTopPos = 720 / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
         Me.pbProgress.Value = 100
         Me.pbProgress.Style = ProgressBarStyle.Marquee
         Me.pbProgress.MarqueeAnimationSpeed = 25
@@ -454,6 +455,7 @@ Public Class dlgOfflineHolder
         Dim drawString As String = txtTagline.Text
         Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
         'Dim drawPoint As New PointF(0.0F, 470.0F)
+        tbTagLine.Maximum = bmPreview.Height - grPreview.MeasureString(drawString, drawFont).Height
         If Convert.ToInt32(txtTop.Text) > bmPreview.Height - grPreview.MeasureString(drawString, drawFont).Height Then
             txtTop.Text = Convert.ToInt32(bmPreview.Height - grPreview.MeasureString(drawString, drawFont).Height - 10).ToString
         End If
@@ -499,8 +501,6 @@ Public Class dlgOfflineHolder
             e.Handled = True
         Else
             e.Handled = False
-            Me.currTopText = Me.txtTop.Text
-
             Me.tmrTopWait.Enabled = False
             Me.tmrTopWait.Enabled = True
         End If
@@ -511,6 +511,7 @@ Public Class dlgOfflineHolder
             Me.tmrTop.Enabled = True
         Else
             Me.prevTopText = Me.currTopText
+            Me.currTopText = Me.txtTop.Text
         End If
     End Sub
 
@@ -523,4 +524,13 @@ Public Class dlgOfflineHolder
     Private Sub dlgOfflineHolder_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
+
+    Private Sub TrackBar1_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbTagLine.Scroll
+        txtTop.Text = sender.maximum - sender.value.ToString
+        'Me.currTopText = sender.value.ToString
+
+        Me.tmrTopWait.Enabled = False
+        Me.tmrTopWait.Enabled = True
+    End Sub
+
 End Class

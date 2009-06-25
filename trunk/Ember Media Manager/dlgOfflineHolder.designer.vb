@@ -60,17 +60,19 @@ Partial Class dlgOfflineHolder
         Me.tmrTop = New System.Windows.Forms.Timer(Me.components)
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.tbTagLine = New System.Windows.Forms.TrackBar
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
+        CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.OK_Button.Location = New System.Drawing.Point(585, 427)
+        Me.OK_Button.Location = New System.Drawing.Point(594, 427)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(80, 23)
         Me.OK_Button.TabIndex = 0
@@ -86,7 +88,7 @@ Partial Class dlgOfflineHolder
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(673, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(691, 64)
         Me.pnlTop.TabIndex = 58
         '
         'Label2
@@ -213,7 +215,7 @@ Partial Class dlgOfflineHolder
         '
         Me.Create_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Create_Button.Enabled = False
-        Me.Create_Button.Location = New System.Drawing.Point(499, 427)
+        Me.Create_Button.Location = New System.Drawing.Point(508, 427)
         Me.Create_Button.Name = "Create_Button"
         Me.Create_Button.Size = New System.Drawing.Size(80, 23)
         Me.Create_Button.TabIndex = 67
@@ -361,12 +363,24 @@ Partial Class dlgOfflineHolder
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Information"
         '
+        'tbTagLine
+        '
+        Me.tbTagLine.Location = New System.Drawing.Point(641, 81)
+        Me.tbTagLine.Maximum = 576
+        Me.tbTagLine.Name = "tbTagLine"
+        Me.tbTagLine.Orientation = System.Windows.Forms.Orientation.Vertical
+        Me.tbTagLine.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.tbTagLine.RightToLeftLayout = True
+        Me.tbTagLine.Size = New System.Drawing.Size(45, 273)
+        Me.tbTagLine.TabIndex = 76
+        Me.tbTagLine.TickStyle = System.Windows.Forms.TickStyle.None
+        '
         'dlgOfflineHolder
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(673, 453)
+        Me.ClientSize = New System.Drawing.Size(691, 453)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.Create_Button)
@@ -376,6 +390,7 @@ Partial Class dlgOfflineHolder
         Me.Controls.Add(Me.txtMovieName)
         Me.Controls.Add(Me.lblSources)
         Me.Controls.Add(Me.cbSources)
+        Me.Controls.Add(Me.tbTagLine)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.OK_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -392,6 +407,7 @@ Partial Class dlgOfflineHolder
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
+        CType(Me.tbTagLine, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -432,5 +448,6 @@ Partial Class dlgOfflineHolder
     Friend WithEvents tmrTop As System.Windows.Forms.Timer
     Friend WithEvents FolderBrowserDialog1 As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents tbTagLine As System.Windows.Forms.TrackBar
 
 End Class
