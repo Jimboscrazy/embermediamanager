@@ -253,6 +253,13 @@ Public Class dlgBulkRenamer
 
     Private Sub dlgBulkRename_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim frmToolTip As New ToolTip()
+
+        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+        Using g As Graphics = Graphics.FromImage(iBackground)
+            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+            Me.pnlTop.BackgroundImage = iBackground
+        End Using
+
         'testing proposes
         Dim s As String = String.Concat("$T = Title", vbCrLf, "$t = Title (Space = .)", vbCrLf, "$D = Directory", vbCrLf, "$F = File Name", vbCrLf, "$Y = Year", vbCrLf, "$R = Resolution", vbCrLf, "$A = Audio")
         lblLabel.Text = s.Replace(vbCrLf, "    ")

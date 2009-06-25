@@ -238,7 +238,7 @@ Partial Class dlgUpdateMedia
         'rbMediaInfo
         '
         Me.rbMediaInfo.AutoSize = True
-        Me.rbMediaInfo.Location = New System.Drawing.Point(94, 57)
+        Me.rbMediaInfo.Location = New System.Drawing.Point(91, 53)
         Me.rbMediaInfo.Name = "rbMediaInfo"
         Me.rbMediaInfo.Size = New System.Drawing.Size(99, 17)
         Me.rbMediaInfo.TabIndex = 73
@@ -248,7 +248,7 @@ Partial Class dlgUpdateMedia
         'rbTrailer
         '
         Me.rbTrailer.AutoSize = True
-        Me.rbTrailer.Location = New System.Drawing.Point(94, 40)
+        Me.rbTrailer.Location = New System.Drawing.Point(91, 36)
         Me.rbTrailer.Name = "rbTrailer"
         Me.rbTrailer.Size = New System.Drawing.Size(78, 17)
         Me.rbTrailer.TabIndex = 72
@@ -258,7 +258,7 @@ Partial Class dlgUpdateMedia
         'rbExtra
         '
         Me.rbExtra.AutoSize = True
-        Me.rbExtra.Location = New System.Drawing.Point(94, 23)
+        Me.rbExtra.Location = New System.Drawing.Point(91, 19)
         Me.rbExtra.Name = "rbExtra"
         Me.rbExtra.Size = New System.Drawing.Size(107, 17)
         Me.rbExtra.TabIndex = 71
