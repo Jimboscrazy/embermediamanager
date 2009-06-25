@@ -1083,36 +1083,38 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
-        Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
-                SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
-                parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
-                parID.Value = indX(0).Item(0)
-                SQLcommand.ExecuteNonQuery()
-            End Using
+            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
+                    parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
+                    parID.Value = sRow.Cells(0).Value
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                sRow.Cells(11).Value = If(cmnuMark.Text = "Unmark", False, True)
+            Next
             SQLtransaction.Commit()
         End Using
-        indX(0).Item(11) = If(cmnuMark.Text = "Unmark", False, True)
         Me.SetFilterColors()
     End Sub
 
     Private Sub cmnuLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLock.Click
-        Dim indX = From selX As DataRow In dtMedia.Rows Where selX.Item(0) = Me.dgvMediaList.SelectedRows(0).Cells(0).Value
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
-                SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
-                parLock.Value = If(cmnuLock.Text = "Unlock", False, True)
-                parID.Value = indX(0).Item(0)
-                SQLcommand.ExecuteNonQuery()
-            End Using
+            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
+                    parLock.Value = If(cmnuLock.Text = "Unlock", False, True)
+                    parID.Value = sRow.Cells(0).Value
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                sRow.Cells(14).Value = If(cmnuLock.Text = "Unlock", False, True)
+            Next
             SQLtransaction.Commit()
         End Using
-        indX(0).Item(14) = If(cmnuLock.Text = "Unlock", False, True)
         Me.SetFilterColors()
     End Sub
 
@@ -1165,24 +1167,59 @@ Public Class frmMain
             Dim dgvHTI As DataGridView.HitTestInfo = sender.HitTest(e.X, e.Y)
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
-                If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
-                    Me.mnuMediaList.Enabled = False
+                If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
+                    Dim setMark As Boolean = False
+                    Dim setLock As Boolean = False
+                    Me.cmnuTitle.Text = ">> Multiple <<"
+                    Me.cmnuEditMovie.Visible = False
+                    Me.cmnuRescrape.Visible = False
+                    Me.cmnuSearchNew.Visible = False
+                    Me.cmnuSep.Visible = False
+                    Me.cmnuSep2.Visible = False
+
+                    For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                        'if any one item is set as unmarked, set menu to mark
+                        'else they are all marked, so set menu to unmark
+                        If Not sRow.Cells(11).Value Then
+                            setMark = True
+                        End If
+                        'if any one item is set as unlocked, set menu to lock
+                        'else they are all locked so set menu to unlock
+                        If Not sRow.Cells(14).Value Then
+                            setLock = True
+                        End If
+                    Next
+
+                    cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
+                    cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
+                    cmnuMark.Text = If(setMark, "Mark", "Unmark")
+                    cmnuLock.Text = If(setLock, "Lock", "Unlock")
+                Else
+                    Me.cmnuEditMovie.Visible = True
+                    Me.cmnuRescrape.Visible = True
+                    Me.cmnuSearchNew.Visible = True
+                    Me.cmnuSep.Visible = True
+                    Me.cmnuSep2.Visible = True
+
+                    If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
+                        Me.mnuMediaList.Enabled = False
+                    End If
+
+                    cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
+
+                    If Me.bwLoadInfo.IsBusy Then
+                        Me.bwLoadInfo.CancelAsync()
+                        Do While Me.bwLoadInfo.IsBusy
+                            Application.DoEvents()
+                        Loop
+                    End If
+
+                    Me.dgvMediaList.ClearSelection()
+                    Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
+                    Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
+                    Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
+                    Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
                 End If
-
-                cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
-
-                If Me.bwLoadInfo.IsBusy Then
-                    Me.bwLoadInfo.CancelAsync()
-                    Do While Me.bwLoadInfo.IsBusy
-                        Application.DoEvents()
-                    Loop
-                End If
-
-                Me.dgvMediaList.ClearSelection()
-                Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
-                Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
-                cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
-                cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
             End If
         End If
     End Sub
@@ -1434,21 +1471,24 @@ Public Class frmMain
     End Sub
 
     Private Sub OpenContainingFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenContainingFolderToolStripMenuItem.Click
-        Process.Start("explorer.exe", Directory.GetParent(Me.dgvMediaList.SelectedRows(0).Cells(1).Value).FullName)
+        For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+            Process.Start("explorer.exe", Directory.GetParent(sRow.Cells(1).Value).FullName)
+        Next
     End Sub
 
     Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
-        If MsgBox(String.Concat("WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE FROM THE HARD DRIVE", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
-            Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-            Master.DeleteFiles(False, Me.dgvMediaList.Rows(indX).Cells(1).Value, Me.dgvMediaList.Rows(indX).Cells(2).Value)
+        If MsgBox(String.Concat("WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE(S) FROM THE HARD DRIVE", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE id = ", Me.dgvMediaList.Rows(indX).Cells(0).Value, ";")
-                    SQLcommand.ExecuteNonQuery()
-                End Using
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    Master.DeleteFiles(False, sRow.Cells(1).Value, sRow.Cells(2).Value)
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                        SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE id = ", sRow.Cells(0).Value, ";")
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                Next
                 SQLtransaction.Commit()
             End Using
-            Me.FillList(indX)
+            Me.FillList(0)
         End If
     End Sub
 
@@ -4330,4 +4370,7 @@ doCancel:
 
 
 
+    Private Sub dgvMediaList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellContentClick
+
+    End Sub
 End Class

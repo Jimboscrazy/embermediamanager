@@ -64,10 +64,10 @@ Partial Class frmMain
         Me.cmnuLock = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuEditMovie = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuSep = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuRescrape = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuSearchNew = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuSep2 = New System.Windows.Forms.ToolStripSeparator
         Me.OpenContainingFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -540,7 +540,6 @@ Partial Class frmMain
         Me.dgvMediaList.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMediaList.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.dgvMediaList.Location = New System.Drawing.Point(0, 56)
-        Me.dgvMediaList.MultiSelect = False
         Me.dgvMediaList.Name = "dgvMediaList"
         Me.dgvMediaList.ReadOnly = True
         Me.dgvMediaList.RowHeadersVisible = False
@@ -552,9 +551,9 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.ToolStripMenuItem2, Me.cmnuRescrape, Me.cmnuSearchNew, Me.ToolStripSeparator1, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(202, 210)
+        Me.mnuMediaList.Size = New System.Drawing.Size(202, 232)
         '
         'cmnuTitle
         '
@@ -595,10 +594,10 @@ Partial Class frmMain
         Me.cmnuEditMovie.Size = New System.Drawing.Size(201, 22)
         Me.cmnuEditMovie.Text = "Edit Movie"
         '
-        'ToolStripMenuItem2
+        'cmnuSep
         '
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(198, 6)
+        Me.cmnuSep.Name = "cmnuSep"
+        Me.cmnuSep.Size = New System.Drawing.Size(198, 6)
         '
         'cmnuRescrape
         '
@@ -614,10 +613,10 @@ Partial Class frmMain
         Me.cmnuSearchNew.Size = New System.Drawing.Size(201, 22)
         Me.cmnuSearchNew.Text = "Change Movie"
         '
-        'ToolStripSeparator1
+        'cmnuSep2
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(198, 6)
+        Me.cmnuSep2.Name = "cmnuSep2"
+        Me.cmnuSep2.Size = New System.Drawing.Size(198, 6)
         '
         'OpenContainingFolderToolStripMenuItem
         '
@@ -2293,7 +2292,7 @@ Partial Class frmMain
     Friend WithEvents cmnuSearchNew As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-    Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuSep As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuEditMovie As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuAllAutoAll As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuAllAutoNfo As System.Windows.Forms.ToolStripMenuItem
@@ -2347,7 +2346,7 @@ Partial Class frmMain
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
     Private WithEvents pnlNoInfo As System.Windows.Forms.Panel
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
-    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuSep2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents OpenContainingFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents DeleteMovieToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
