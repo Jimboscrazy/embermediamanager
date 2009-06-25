@@ -259,6 +259,12 @@ Public Class Trailers
 
             If Me._TrailerList.Count > 0 Then
                 tURL = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False)
+                If Not String.IsNullOrEmpty(tURL) Then
+                    'delete any other trailer if enabled in settings and download successful
+                    If Master.eSettings.DeleteAllTrailers Then
+                        Me.DeleteTrailers(sPath, isFile, tURL)
+                    End If
+                End If
             End If
         ElseIf Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isFile, False, currNfoTrailer) Then
             Me.GetTrailers(ImdbID, True)
@@ -271,8 +277,16 @@ Public Class Trailers
         Return tURL
     End Function
 
-    Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
+    Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer, ByVal isFile As Boolean) As String
         Dim tURL As String = WebPage.DownloadFile(Me._TrailerList.Item(sIndex), sPath, True)
+
+        If Not String.IsNullOrEmpty(tURL) Then
+            'delete any other trailer if enabled in settings and download successful
+            If Master.eSettings.DeleteAllTrailers Then
+                Me.DeleteTrailers(sPath, isFile, tURL)
+            End If
+        End If
+
         Return tURL
     End Function
 
@@ -295,4 +309,50 @@ Public Class Trailers
             End If
         End If
     End Function
+
+    Public Function ShowTDialog(ByVal IMDBID As String, ByVal sPath As String, ByVal isFile As String, ByVal currNfoTrailer As String) As String
+        If IsAllowedToDownload(sPath, isFile, True, String.Empty) OrElse IsAllowedToDownload(sPath, isFile, False, currNfoTrailer) Then
+            Using dTrailer As New dlgTrailer
+                Dim tURL As String = dTrailer.ShowDialog(IMDBID, sPath)
+                Return tURL
+            End Using
+        Else
+            Return String.Empty
+        End If
+    End Function
+
+    Public Sub DeleteTrailers(ByVal sPath As String, ByVal isFile As Boolean, ByVal NewTrailer As String)
+        If isFile Then
+            Dim parPath As String = Directory.GetParent(sPath).FullName
+            Dim tmpName As String = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+            Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+            For Each t As String In Master.eSettings.ValidExts
+                If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then
+                    File.Delete(String.Concat(tmpName, "-trailer", t))
+                ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) AndAlso Not String.Concat(tmpName, "[trailer]", t).ToLower = NewTrailer.ToLower Then
+                    File.Delete(String.Concat(tmpName, "[trailer]", t))
+                ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) AndAlso Not String.Concat(tmpNameNoStack, "-trailer", t).ToLower = NewTrailer.ToLower Then
+                    File.Delete(String.Concat(tmpNameNoStack, "-trailer", t))
+                ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) AndAlso Not String.Concat(tmpNameNoStack, "[trailer]", t).ToLower = NewTrailer.ToLower Then
+                    File.Delete(String.Concat(tmpNameNoStack, "[trailer]", t))
+                End If
+            Next
+        Else
+            Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
+            Dim lFi As New List(Of FileInfo)()
+
+            Try
+                lFi.AddRange(di.GetFiles())
+            Catch
+            End Try
+
+            For Each sFile As FileInfo In lFi
+                If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
+                    (sFile.Name.ToLower.Contains("-trailer") OrElse sFile.Name.ToLower.Contains("[trailer")) AndAlso _
+                    Not sFile.Name.ToLower = NewTrailer.ToLower Then
+                    File.Delete(sFile.FullName)
+                End If
+            Next
+        End If
+    End Sub
 End Class

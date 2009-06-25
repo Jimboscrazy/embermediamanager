@@ -3678,14 +3678,13 @@ doCancel:
                     tmpImages.Dispose()
                     tmpImages = Nothing
 
-
                     If Master.eSettings.SingleScrapeTrailer Then
-                        Using dTrailer As New dlgTrailer
-                            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
-                            If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
-                                Master.currMovie.Trailer = tURL
-                            End If
-                        End Using
+                        Dim cTrailer As New Trailers
+                        Dim tURL As String = cTrailer.ShowTDialog(Master.currMovie.IMDBID, Master.currPath, Master.isFile, Master.currMovie.Trailer)
+                        If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
+                            Master.currMovie.Trailer = tURL
+                        End If
+                        cTrailer = Nothing
                     End If
 
                     If Master.eSettings.AutoThumbs > 0 AndAlso Not Master.isFile Then
