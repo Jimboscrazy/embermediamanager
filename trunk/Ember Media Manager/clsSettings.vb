@@ -145,6 +145,8 @@ Public Class emmSettings
     Private _trailersites As New List(Of Master.TrailerPages)
     Private _nosaveimagestonfo As Boolean
     Private _showdims As Boolean
+    Private _nodisplayposter As Boolean
+    Private _nodisplayfanart As Boolean
     Private _xbmccoms As New List(Of XBMCCom)
 
     Public Property Version() As String
@@ -1221,6 +1223,24 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property NoDisplayPoster() As Boolean
+        Get
+            Return Me._nodisplayposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._nodisplayposter = value
+        End Set
+    End Property
+
+    Public Property NoDisplayFanart() As Boolean
+        Get
+            Return Me._nodisplayfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._nodisplayfanart = value
+        End Set
+    End Property
+
     Public Property XBMCComs() As List(Of XBMCCom)
         Get
             Return Me._xbmccoms
@@ -1355,6 +1375,8 @@ Public Class emmSettings
         Me._sets.Clear()
         Me._nosaveimagestonfo = False
         Me._showdims = False
+        Me._nodisplayposter = False
+        Me._nodisplayfanart = False
         Me._xbmccoms.Clear()
     End Sub
 

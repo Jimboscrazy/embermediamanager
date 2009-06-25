@@ -1650,6 +1650,16 @@ Public Class frmMain
     Private Sub mnuMarkAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskMI.Click
         Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.ScrapeModifier.MI, Master.DefaultOptions)
     End Sub
+
+    Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
+        Using dBulkRename As New dlgBulkRenamer
+            Try
+                dBulkRename.ShowDialog()
+                'dlgBulkRename.RenameSingle(Master.currPath, Master.currMovie, "$T", "$T")
+            Catch ex As Exception
+            End Try
+        End Using
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2056,13 +2066,15 @@ Public Class frmMain
                 e.Cancel = True
                 Return
             End If
-            Me.MainFanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
+
+            If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
 
             If bwLoadInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
-            Me.MainPoster.Load(Master.currPath, Master.isFile, Master.ImageType.Posters)
+
+            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.Load(Master.currPath, Master.isFile, Master.ImageType.Posters)
 
             'wait for mediainfo to update the nfo
             Do While bwMediaInfo.IsBusy
@@ -4313,14 +4325,6 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
-    Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
-        Using dBulkRename As New dlgBulkRenamer
-            Try
-                dBulkRename.ShowDialog()
-                Me.LoadMedia(1)
-            Catch ex As Exception
-            End Try
-        End Using
-    End Sub
+
 
 End Class

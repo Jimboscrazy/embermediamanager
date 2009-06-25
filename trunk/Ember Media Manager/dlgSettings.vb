@@ -1001,6 +1001,26 @@ Public Class dlgSettings
     Private Sub chkShowDims_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowDims.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkNoDisplayPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDisplayPoster.CheckedChanged
+        Me.btnApply.Enabled = True
+        If Me.chkNoDisplayFanart.Checked AndAlso Me.chkNoDisplayPoster.Checked Then
+            Me.chkShowDims.Enabled = False
+            Me.chkShowDims.Checked = False
+        Else
+            Me.chkShowDims.Enabled = True
+        End If
+    End Sub
+
+    Private Sub chkNoDisplayFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDisplayFanart.CheckedChanged
+        Me.btnApply.Enabled = True
+        If Me.chkNoDisplayFanart.Checked AndAlso Me.chkNoDisplayPoster.Checked Then
+            Me.chkShowDims.Enabled = False
+            Me.chkShowDims.Checked = False
+        Else
+            Me.chkShowDims.Enabled = True
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1250,6 +1270,8 @@ Public Class dlgSettings
             End If
 
             Master.eSettings.ShowDims = Me.chkShowDims.Checked
+            Master.eSettings.NoDisplayFanart = Me.chkNoDisplayFanart.Checked
+            Master.eSettings.NoDisplayPoster = Me.chkNoDisplayPoster.Checked
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -1419,6 +1441,8 @@ Public Class dlgSettings
             End If
 
             Me.chkShowDims.Checked = Master.eSettings.ShowDims
+            Me.chkNoDisplayFanart.Checked = Master.eSettings.NoDisplayFanart
+            Me.chkNoDisplayPoster.Checked = Master.eSettings.NoDisplayPoster
 
             Me.lvMovies.Columns(0).Width = 388
             Me.lvMovies.Columns(1).Width = 74
@@ -1464,5 +1488,6 @@ Public Class dlgSettings
 
     End Sub
 #End Region '*** Routines/Functions
+
 
 End Class
