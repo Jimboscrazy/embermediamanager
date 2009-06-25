@@ -3632,8 +3632,12 @@ doCancel:
                 MI.GetMovieMIFromPath(miMovie.FileInfo, sPath)
                 If Master.eSettings.UseMIDuration AndAlso Not String.IsNullOrEmpty(miMovie.FileInfo.StreamDetails.Video.Duration) Then
                     Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), miMovie.FileInfo.StreamDetails.Video.Duration))).Subtract(CDate(DateTime.Today))
-                    Dim intMinutes As Integer = ((ts.Hours * 60) + ts.Minutes) + If(ts.Seconds > 30, 1, 0)
-                    miMovie.Runtime = String.Format("{0} mins", intMinutes)
+                    If Master.eSettings.UseHMForRuntime Then
+                        miMovie.Runtime = String.Format("{0} hrs {1} mins", ts.Hours, ts.Minutes)
+                    Else
+                        Dim intMinutes As Integer = ((ts.Hours * 60) + ts.Minutes) + If(ts.Seconds > 30, 1, 0)
+                        miMovie.Runtime = String.Format("{0} mins", intMinutes)
+                    End If
                 End If
                 MI = Nothing
             End If

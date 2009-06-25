@@ -128,6 +128,7 @@ Public Class emmSettings
     Private _bdpath As String
     Private _autobd As Boolean
     Private _usemiduration As Boolean
+    Private _usehmforruntime As Boolean
     Private _markall As Boolean
     Private _genrefilter As String
     Private _useetasfa As Boolean
@@ -1073,6 +1074,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property UseHMForRuntime() As Boolean
+        Get
+            Return Me._usehmforruntime
+        End Get
+        Set(ByVal value As Boolean)
+            Me._usehmforruntime = value
+        End Set
+    End Property
+
     Public Property MarkAll() As Boolean
         Get
             Return Me._markall
@@ -1388,6 +1398,7 @@ Public Class emmSettings
         Me._bdpath = String.Empty
         Me._autobd = False
         Me._usemiduration = False
+        Me._usehmforruntime = False
         Me._markall = True
         Me._genrefilter = "[All]"
         Me._useetasfa = False

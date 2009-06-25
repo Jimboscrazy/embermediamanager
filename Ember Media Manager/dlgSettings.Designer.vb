@@ -257,6 +257,9 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
+        Me.gbRTFormat = New System.Windows.Forms.GroupBox
+        Me.rbMins = New System.Windows.Forms.RadioButton
+        Me.rbHM = New System.Windows.Forms.RadioButton
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -295,6 +298,7 @@ Partial Class dlgSettings
         Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
+        Me.gbRTFormat.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -1969,6 +1973,7 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.gbRTFormat)
         Me.GroupBox1.Controls.Add(Me.chkOutlineForPlot)
         Me.GroupBox1.Controls.Add(Me.chkUseMIDuration)
         Me.GroupBox1.Controls.Add(Me.Label18)
@@ -1982,7 +1987,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkScanMediaInfo)
         Me.GroupBox1.Location = New System.Drawing.Point(5, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(211, 235)
+        Me.GroupBox1.Size = New System.Drawing.Size(211, 277)
         Me.GroupBox1.TabIndex = 55
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -2011,7 +2016,7 @@ Partial Class dlgSettings
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(4, 180)
+        Me.Label18.Location = New System.Drawing.Point(4, 224)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(66, 13)
         Me.Label18.TabIndex = 62
@@ -2020,7 +2025,7 @@ Partial Class dlgSettings
         'txtIMDBURL
         '
         Me.txtIMDBURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIMDBURL.Location = New System.Drawing.Point(6, 193)
+        Me.txtIMDBURL.Location = New System.Drawing.Point(6, 237)
         Me.txtIMDBURL.Name = "txtIMDBURL"
         Me.txtIMDBURL.Size = New System.Drawing.Size(192, 20)
         Me.txtIMDBURL.TabIndex = 46
@@ -2677,6 +2682,7 @@ Partial Class dlgSettings
         'chkUseImgCacheUpdaters
         '
         Me.chkUseImgCacheUpdaters.AutoSize = True
+        Me.chkUseImgCacheUpdaters.Enabled = False
         Me.chkUseImgCacheUpdaters.Location = New System.Drawing.Point(24, 35)
         Me.chkUseImgCacheUpdaters.Name = "chkUseImgCacheUpdaters"
         Me.chkUseImgCacheUpdaters.Size = New System.Drawing.Size(172, 17)
@@ -2697,6 +2703,7 @@ Partial Class dlgSettings
         'chkPersistImgCache
         '
         Me.chkPersistImgCache.AutoSize = True
+        Me.chkPersistImgCache.Enabled = False
         Me.chkPersistImgCache.Location = New System.Drawing.Point(24, 53)
         Me.chkPersistImgCache.Name = "chkPersistImgCache"
         Me.chkPersistImgCache.Size = New System.Drawing.Size(138, 17)
@@ -2713,6 +2720,40 @@ Partial Class dlgSettings
         Me.chkUseImgCache.TabIndex = 0
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
+        '
+        'gbRTFormat
+        '
+        Me.gbRTFormat.Controls.Add(Me.rbHM)
+        Me.gbRTFormat.Controls.Add(Me.rbMins)
+        Me.gbRTFormat.Enabled = False
+        Me.gbRTFormat.Location = New System.Drawing.Point(34, 172)
+        Me.gbRTFormat.Name = "gbRTFormat"
+        Me.gbRTFormat.Size = New System.Drawing.Size(169, 39)
+        Me.gbRTFormat.TabIndex = 65
+        Me.gbRTFormat.TabStop = False
+        Me.gbRTFormat.Text = "Runtime Format"
+        '
+        'rbMins
+        '
+        Me.rbMins.AutoSize = True
+        Me.rbMins.Checked = True
+        Me.rbMins.Location = New System.Drawing.Point(6, 15)
+        Me.rbMins.Name = "rbMins"
+        Me.rbMins.Size = New System.Drawing.Size(56, 17)
+        Me.rbMins.TabIndex = 0
+        Me.rbMins.TabStop = True
+        Me.rbMins.Text = "X mins"
+        Me.rbMins.UseVisualStyleBackColor = True
+        '
+        'rbHM
+        '
+        Me.rbHM.AutoSize = True
+        Me.rbHM.Location = New System.Drawing.Point(75, 15)
+        Me.rbHM.Name = "rbHM"
+        Me.rbHM.Size = New System.Drawing.Size(83, 17)
+        Me.rbHM.TabIndex = 1
+        Me.rbHM.Text = "X hrs X mins"
+        Me.rbHM.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -2806,6 +2847,8 @@ Partial Class dlgSettings
         Me.pnlImages.ResumeLayout(False)
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
+        Me.gbRTFormat.ResumeLayout(False)
+        Me.gbRTFormat.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3035,4 +3078,7 @@ Partial Class dlgSettings
     Friend WithEvents rbDashTrailer As System.Windows.Forms.RadioButton
     Friend WithEvents chkOutlineForPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkDeleteAllTrailers As System.Windows.Forms.CheckBox
+    Friend WithEvents gbRTFormat As System.Windows.Forms.GroupBox
+    Friend WithEvents rbHM As System.Windows.Forms.RadioButton
+    Friend WithEvents rbMins As System.Windows.Forms.RadioButton
 End Class
