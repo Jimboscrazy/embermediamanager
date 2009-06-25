@@ -3271,7 +3271,7 @@ doCancel:
                 End If
             End If
 
-            Dim tmpRating As Double = Master.ConvertToSingle(Master.currMovie.Rating)
+            Dim tmpRating As Single = Master.ConvertToSingle(Master.currMovie.Rating)
             If tmpRating > 0 Then Me.BuildStars(tmpRating)
 
             If Not String.IsNullOrEmpty(Master.currMovie.Genre) Then
@@ -3310,7 +3310,7 @@ doCancel:
         Me.ResumeLayout()
     End Sub
 
-    Private Sub BuildStars(ByVal dblRating As Double)
+    Private Sub BuildStars(ByVal sinRating As Single)
 
         '//
         ' Convert # rating to star images
@@ -3324,8 +3324,8 @@ doCancel:
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
 
-                If dblRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
-                    Select Case (dblRating / 2)
+                If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
+                    Select Case (sinRating / 2)
                         Case Is <= 0.5
                             .pbStar1.Image = My.Resources.starhalf
                         Case Is <= 1
