@@ -3670,7 +3670,7 @@ doCancel:
             Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
                 Dim MI As New MediaInfo
                 MI.GetMovieMIFromPath(miMovie.FileInfo, sPath)
-                If Master.eSettings.UseMIDuration AndAlso Not String.IsNullOrEmpty(miMovie.FileInfo.StreamDetails.Video.Duration) Then
+                If Master.eSettings.UseMIDuration AndAlso Not IsNothing(miMovie.FileInfo.StreamDetails.Video) AndAlso Not String.IsNullOrEmpty(miMovie.FileInfo.StreamDetails.Video.Duration) Then
                     Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), miMovie.FileInfo.StreamDetails.Video.Duration))).Subtract(CDate(DateTime.Today))
                     If Master.eSettings.UseHMForRuntime Then
                         miMovie.Runtime = String.Format("{0} hrs {1} mins", ts.Hours, ts.Minutes)
