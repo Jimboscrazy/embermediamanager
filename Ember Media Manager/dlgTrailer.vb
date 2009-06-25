@@ -28,6 +28,7 @@ Public Class dlgTrailer
     Dim tArray As New ArrayList
     Dim imdbID As String = String.Empty
     Dim sPath As String = String.Empty
+    Dim isFile As Boolean = False
     Dim tURL As String = String.Empty
     Dim prePath As String = String.Empty
     Friend WithEvents bwCompileList As New System.ComponentModel.BackgroundWorker
@@ -102,7 +103,7 @@ Public Class dlgTrailer
         Dim Args As Arguments = e.Argument
         Try
             If Args.bType Then
-                tURL = cTrailer.DownloadSelectedTrailer(Me.sPath, Args.iIndex)
+                tURL = cTrailer.DownloadSelectedTrailer(Me.sPath, Args.iIndex, isFile)
             Else
                 Dim sHTTP As New HTTP
                 Me.prePath = sHTTP.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True)
@@ -149,7 +150,7 @@ Public Class dlgTrailer
         Me.prePath = String.Empty
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal _imdbID As String, ByVal _sPath As String) As String
+    Public Overloads Function ShowDialog(ByVal _imdbID As String, ByVal _sPath As String, ByVal _isFile As Boolean) As String
 
         '//
         ' Overload to pass data
@@ -157,6 +158,7 @@ Public Class dlgTrailer
 
         Me.imdbID = _imdbID
         Me.sPath = _sPath
+        Me.isFile = _isFile
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Return Me.tURL

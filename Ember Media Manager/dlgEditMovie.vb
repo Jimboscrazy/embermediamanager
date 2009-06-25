@@ -1300,7 +1300,7 @@ Public Class dlgEditMovie
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
         Using dTrailer As New dlgTrailer
-            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
+            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.isFile)
             If Not String.IsNullOrEmpty(tURL) Then
                 Me.btnPlayTrailer.Enabled = True
                 If tURL.Substring(0, 7) = "http://" Then
