@@ -436,6 +436,7 @@ Public Class dlgImgSelect
                         tmpImage.Clear()
                     Next
                     tmpImage.Dispose()
+                    tmpImage = Nothing
                     ProcessPics(TMDBPosters)
                     Me.pnlBG.Visible = True
                 End If
@@ -514,9 +515,11 @@ Public Class dlgImgSelect
                     NoneFound = False
                     Me.pnlDLStatus.Visible = False
                     Dim tImage As Media.Image
+                    Dim tmpImage As New Images
                     For Each sFile As FileInfo In lFi
                         tImage = New Media.Image
-                        tImage.WebImage = New Bitmap(sFile.FullName)
+                        tmpImage.FromFile(sFile.FullName)
+                        tImage.WebImage = New Bitmap(tmpImage.Image)
                         Select Case True
                             Case sFile.Name.Contains("(original)")
                                 tImage.Description = "original"
@@ -527,8 +530,10 @@ Public Class dlgImgSelect
                         End Select
                         tImage.URL = Master.CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
                         Me.TMDBPosters.Add(tImage)
+                        tmpImage.Clear()
                     Next
-
+                    tmpImage.Dispose()
+                    tmpImage = Nothing
                     ProcessPics(TMDBPosters)
                     Me.pnlBG.Visible = True
                     Me.pnlFanart.Visible = True
