@@ -188,6 +188,14 @@ Public Class dlgIMDBSearchResults
         Me.txtOutline.Text = String.Empty
         Me.lblIMDB.Text = String.Empty
         Me.pbPoster.Image = Nothing
+
+        Master.tmpMovie.Title = String.Empty
+        Master.tmpMovie.Tagline = String.Empty
+        Master.tmpMovie.Year = String.Empty
+        Master.tmpMovie.Director = String.Empty
+        Master.tmpMovie.Genre = String.Empty
+        Master.tmpMovie.Outline = String.Empty
+        Master.tmpMovie.IMDBID = String.Empty
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)

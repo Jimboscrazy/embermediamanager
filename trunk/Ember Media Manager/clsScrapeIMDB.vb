@@ -202,7 +202,7 @@ Namespace IMDB
                 Dim R As New MovieSearchResults
 
                 Dim sHTTP As New HTTP
-                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1"))))
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/find?s=all&q=", Web.HttpUtility.UrlEncode(sMovie, System.Text.Encoding.GetEncoding("ISO-8859-1")), "&x=0&y=0"))
                 Dim rUri As String = sHTTP.ResponseUri
                 sHTTP = Nothing
 
