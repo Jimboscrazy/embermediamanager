@@ -660,31 +660,37 @@ Public Class Master
         Dim imgStudio As Image = Nothing
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Studios")
 
-        If File.Exists(Path.Combine(mePath, "Studios.xml")) Then
-            Try
-                Dim xmlStudio As XDocument = XDocument.Load(Path.Combine(mePath, "Studios.xml"))
-
-                Dim xDefault = From xDef In xmlStudio...<default> Select xDef.<icon>.Value
-                If xDefault.Count > 0 Then
-                    imgStudioStr = Path.Combine(mePath, xDefault(0).ToString)
-                End If
-
-                Dim xStudio = From xStu In xmlStudio...<name> Where Regex.IsMatch(Strings.Trim(strStudio).ToLower, xStu.@searchstring) Select xStu.<icon>.Value
-                If xStudio.Count > 0 Then
-                    imgStudioStr = Path.Combine(mePath, xStudio(0).ToString)
-                End If
-
-                If Not String.IsNullOrEmpty(imgStudioStr) AndAlso File.Exists(imgStudioStr) Then
-                    Using fsImage As New FileStream(imgStudioStr, FileMode.Open, FileAccess.Read)
-                        imgStudio = Image.FromStream(fsImage)
-                    End Using
-                End If
-
-            Catch ex As Exception
-                eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
+        If File.Exists(Path.Combine(mePath, String.Concat(strStudio, ".png"))) Then
+            Using fsImage As New FileStream(Path.Combine(mePath, String.Concat(strStudio, ".png")), FileMode.Open, FileAccess.Read)
+                imgStudio = Image.FromStream(fsImage)
+            End Using
         Else
-            MsgBox(String.Concat("Cannot find Studios.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Studios.xml")), MsgBoxStyle.Critical, "File Not Found")
+            If File.Exists(Path.Combine(mePath, "Studios.xml")) Then
+                Try
+                    Dim xmlStudio As XDocument = XDocument.Load(Path.Combine(mePath, "Studios.xml"))
+
+                    Dim xDefault = From xDef In xmlStudio...<default> Select xDef.<icon>.Value
+                    If xDefault.Count > 0 Then
+                        imgStudioStr = Path.Combine(mePath, xDefault(0).ToString)
+                    End If
+
+                    Dim xStudio = From xStu In xmlStudio...<name> Where Regex.IsMatch(Strings.Trim(strStudio).ToLower, xStu.@searchstring) Select xStu.<icon>.Value
+                    If xStudio.Count > 0 Then
+                        imgStudioStr = Path.Combine(mePath, xStudio(0).ToString)
+                    End If
+
+                    If Not String.IsNullOrEmpty(imgStudioStr) AndAlso File.Exists(imgStudioStr) Then
+                        Using fsImage As New FileStream(imgStudioStr, FileMode.Open, FileAccess.Read)
+                            imgStudio = Image.FromStream(fsImage)
+                        End Using
+                    End If
+
+                Catch ex As Exception
+                    eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+            Else
+                MsgBox(String.Concat("Cannot find Studios.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Studios.xml")), MsgBoxStyle.Critical, "File Not Found")
+            End If
         End If
 
         Return imgStudio
