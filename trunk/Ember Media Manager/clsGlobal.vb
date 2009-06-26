@@ -1299,7 +1299,7 @@ Public Class Master
 
         If Not String.IsNullOrEmpty(resOut) Then
             If String.IsNullOrEmpty(fiRes.Scantype) Then
-                Return String.Concat(resOut, "i")
+                Return String.Concat(resOut)
             Else
                 Return String.Concat(resOut, If(fiRes.Scantype.ToLower = "progressive", "p", "i"))
             End If
