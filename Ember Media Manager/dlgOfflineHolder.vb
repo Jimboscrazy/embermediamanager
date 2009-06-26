@@ -119,7 +119,7 @@ Public Class dlgOfflineHolder
                         Me.pbProgress.Style = ProgressBarStyle.Marquee
                         Me.pbProgress.MarqueeAnimationSpeed = 25
                         Me.pbProgress.Visible = True
-                        Me.txtMovieName.Text = String.Format("{0}", Master.tmpMovie.Title)
+                        'Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
                         IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                     End If
                 End If
@@ -149,7 +149,7 @@ Public Class dlgOfflineHolder
 
                 Master.SaveMovieToNFO(Master.tmpMovie, Master.currPath, False)
 
-                Me.txtMovieName.Text = Master.tmpMovie.Title
+                Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
             End If
