@@ -85,10 +85,7 @@ Public Class Master
 
     Public Enum TrailerPages As Integer
         YouTube = 0
-        AllTrailers = 1
-        MattTrailer = 2
-        AZMovies = 3
-        Imdb = 4
+        Imdb = 1
     End Enum
 
     Public Enum ScrapeModifier As Integer
@@ -1258,46 +1255,30 @@ Public Class Master
                     Case iWidth < 640
                         resOut = "SD"
                         'exact
-                    Case iWidth = 1920 AndAlso iHeight = 1080
+                    Case (iWidth = 1920 AndAlso iHeight = 1080) OrElse (iWidth = 1440 AndAlso iHeight = 1080) OrElse (iWidth = 1280 AndAlso iHeight = 1080)
                         resOut = "1080"
-                    Case iWidth = 1440 AndAlso iHeight = 1080
-                        resOut = "1080"
-                    Case iWidth = 1280 AndAlso iHeight = 1080
-                        resOut = "1080"
-                    Case iWidth = 1366 AndAlso iHeight = 768
+                    Case (iWidth = 1366 AndAlso iHeight = 768) OrElse (iWidth = 1024 AndAlso iHeight = 768)
                         resOut = "768"
-                    Case iWidth = 1024 AndAlso iHeight = 768
-                        resOut = "768"
-                    Case iWidth = 1280 AndAlso iHeight = 720
+                    Case (iWidth = 960 AndAlso iHeight = 720) OrElse (iWidth = 1280 AndAlso (iHeight = 720 OrElse iHeight = 544))
                         resOut = "720"
-                    Case iWidth = 960 AndAlso iHeight = 720
-                        resOut = "720"
-                    Case iWidth = 1024 AndAlso iHeight = 576
-                        resOut = "576"
-                    Case iWidth = 720 AndAlso iHeight = 576
+                    Case (iWidth = 1024 AndAlso iHeight = 576) OrElse (iWidth = 720 AndAlso iHeight = 576)
                         resOut = "576"
                     Case iWidth = 720 AndAlso iHeight = 540
                         resOut = "540"
-                    Case iWidth = 852 AndAlso iHeight = 480
-                        resOut = "480"
-                    Case iWidth = 720 AndAlso iHeight = 480
-                        resOut = "480"
-                    Case iWidth = 704 AndAlso iHeight = 480
-                        resOut = "480"
-                    Case iWidth = 640 AndAlso iHeight = 480
+                    Case (iWidth = 852 AndAlso iHeight = 480) OrElse (iWidth = 720 AndAlso iHeight = 480) OrElse (iWidth = 704 AndAlso iHeight = 480) OrElse (iWidth = 640 AndAlso iHeight = 480)
                         resOut = "480"
                         'by ADR
-                    Case sinADR >= 1.33 AndAlso iHeight > 768
+                    Case sinADR >= 1.4 AndAlso iHeight > 768
                         resOut = "1080"
-                    Case sinADR >= 1.33 AndAlso iHeight > 720
+                    Case sinADR >= 1.4 AndAlso iHeight > 720
                         resOut = "768"
-                    Case sinADR >= 1.33 AndAlso iHeight > 576
+                    Case sinADR >= 1.4 AndAlso iHeight > 576
                         resOut = "720"
-                    Case sinADR >= 1.33 AndAlso iHeight > 540
+                    Case sinADR >= 1.4 AndAlso iHeight > 540
                         resOut = "576"
-                    Case sinADR >= 1.33 AndAlso iHeight > 500
+                    Case sinADR >= 1.4 AndAlso iHeight > 480
                         resOut = "540"
-                    Case sinADR >= 1.33 AndAlso iHeight > 450
+                    Case sinADR >= 1.4 AndAlso iHeight > 450
                         resOut = "480"
                         'loose
                     Case iWidth >= 1200 AndAlso iHeight >= 768
