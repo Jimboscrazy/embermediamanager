@@ -26,9 +26,6 @@ Partial Class dlgAbout
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgAbout))
         Me.OKButton = New System.Windows.Forms.Button
         Me.Panel1 = New System.Windows.Forms.Panel
-        Me.pbMattTrailer = New System.Windows.Forms.PictureBox
-        Me.pbAZMovies = New System.Windows.Forms.PictureBox
-        Me.pbAllTrailers = New System.Windows.Forms.PictureBox
         Me.pbYouTube = New System.Windows.Forms.PictureBox
         Me.pbXBMC = New System.Windows.Forms.PictureBox
         Me.pbMPDB = New System.Windows.Forms.PictureBox
@@ -39,9 +36,6 @@ Partial Class dlgAbout
         Me.pbTMDB = New System.Windows.Forms.PictureBox
         Me.picDisplay = New System.Windows.Forms.PictureBox
         Me.Panel1.SuspendLayout()
-        CType(Me.pbMattTrailer, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAZMovies, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAllTrailers, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbYouTube, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbXBMC, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbMPDB, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -68,9 +62,6 @@ Partial Class dlgAbout
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel1.Controls.Add(Me.pbMattTrailer)
-        Me.Panel1.Controls.Add(Me.pbAZMovies)
-        Me.Panel1.Controls.Add(Me.pbAllTrailers)
         Me.Panel1.Controls.Add(Me.pbYouTube)
         Me.Panel1.Controls.Add(Me.pbXBMC)
         Me.Panel1.Controls.Add(Me.pbMPDB)
@@ -84,44 +75,11 @@ Partial Class dlgAbout
         Me.Panel1.Size = New System.Drawing.Size(422, 114)
         Me.Panel1.TabIndex = 8
         '
-        'pbMattTrailer
-        '
-        Me.pbMattTrailer.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pbMattTrailer.Image = CType(resources.GetObject("pbMattTrailer.Image"), System.Drawing.Image)
-        Me.pbMattTrailer.Location = New System.Drawing.Point(218, 72)
-        Me.pbMattTrailer.Name = "pbMattTrailer"
-        Me.pbMattTrailer.Size = New System.Drawing.Size(91, 38)
-        Me.pbMattTrailer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbMattTrailer.TabIndex = 20
-        Me.pbMattTrailer.TabStop = False
-        '
-        'pbAZMovies
-        '
-        Me.pbAZMovies.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pbAZMovies.Image = CType(resources.GetObject("pbAZMovies.Image"), System.Drawing.Image)
-        Me.pbAZMovies.Location = New System.Drawing.Point(326, 72)
-        Me.pbAZMovies.Name = "pbAZMovies"
-        Me.pbAZMovies.Size = New System.Drawing.Size(91, 38)
-        Me.pbAZMovies.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAZMovies.TabIndex = 19
-        Me.pbAZMovies.TabStop = False
-        '
-        'pbAllTrailers
-        '
-        Me.pbAllTrailers.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pbAllTrailers.Image = CType(resources.GetObject("pbAllTrailers.Image"), System.Drawing.Image)
-        Me.pbAllTrailers.Location = New System.Drawing.Point(111, 72)
-        Me.pbAllTrailers.Name = "pbAllTrailers"
-        Me.pbAllTrailers.Size = New System.Drawing.Size(91, 38)
-        Me.pbAllTrailers.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAllTrailers.TabIndex = 18
-        Me.pbAllTrailers.TabStop = False
-        '
         'pbYouTube
         '
         Me.pbYouTube.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbYouTube.Image = CType(resources.GetObject("pbYouTube.Image"), System.Drawing.Image)
-        Me.pbYouTube.Location = New System.Drawing.Point(3, 72)
+        Me.pbYouTube.Location = New System.Drawing.Point(72, 71)
         Me.pbYouTube.Name = "pbYouTube"
         Me.pbYouTube.Size = New System.Drawing.Size(91, 38)
         Me.pbYouTube.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -143,7 +101,7 @@ Partial Class dlgAbout
         '
         Me.pbMPDB.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbMPDB.Image = CType(resources.GetObject("pbMPDB.Image"), System.Drawing.Image)
-        Me.pbMPDB.Location = New System.Drawing.Point(218, 31)
+        Me.pbMPDB.Location = New System.Drawing.Point(326, 31)
         Me.pbMPDB.Name = "pbMPDB"
         Me.pbMPDB.Size = New System.Drawing.Size(91, 38)
         Me.pbMPDB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -165,7 +123,7 @@ Partial Class dlgAbout
         '
         Me.pbMI.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbMI.Image = CType(resources.GetObject("pbMI.Image"), System.Drawing.Image)
-        Me.pbMI.Location = New System.Drawing.Point(326, 31)
+        Me.pbMI.Location = New System.Drawing.Point(248, 71)
         Me.pbMI.Name = "pbMI"
         Me.pbMI.Size = New System.Drawing.Size(91, 38)
         Me.pbMI.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -176,7 +134,7 @@ Partial Class dlgAbout
         '
         Me.pbIMDB.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbIMDB.Image = CType(resources.GetObject("pbIMDB.Image"), System.Drawing.Image)
-        Me.pbIMDB.Location = New System.Drawing.Point(111, 31)
+        Me.pbIMDB.Location = New System.Drawing.Point(159, 31)
         Me.pbIMDB.Name = "pbIMDB"
         Me.pbIMDB.Size = New System.Drawing.Size(91, 38)
         Me.pbIMDB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -240,9 +198,6 @@ Partial Class dlgAbout
         Me.Text = "About Ember Media Manager"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        CType(Me.pbMattTrailer, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAZMovies, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAllTrailers, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbYouTube, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbXBMC, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbMPDB, System.ComponentModel.ISupportInitialize).EndInit()
@@ -265,9 +220,6 @@ Partial Class dlgAbout
     Friend WithEvents pbMPDB As System.Windows.Forms.PictureBox
     Friend WithEvents pbXBMC As System.Windows.Forms.PictureBox
     Public WithEvents picDisplay As System.Windows.Forms.PictureBox
-    Friend WithEvents pbMattTrailer As System.Windows.Forms.PictureBox
-    Friend WithEvents pbAZMovies As System.Windows.Forms.PictureBox
-    Friend WithEvents pbAllTrailers As System.Windows.Forms.PictureBox
     Friend WithEvents pbYouTube As System.Windows.Forms.PictureBox
 
 End Class
