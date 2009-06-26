@@ -305,7 +305,7 @@ Public Class dlgEditMovie
         Try
             If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
-                Me.FillInfo()
+                Me.FillInfo(False)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -360,20 +360,9 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub FillInfo()
+    Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
         Try
             With Me
-                If Master.isFile Then
-                    TabControl1.TabPages.Remove(TabPage4)
-                    TabControl1.TabPages.Remove(TabPage5)
-                Else
-                    Dim pExt As String = Path.GetExtension(Master.currPath).ToLower
-                    If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
-                    pExt = ".bin" OrElse pExt = ".cue" Then
-                        TabControl1.TabPages.Remove(TabPage4)
-                    End If
-                    .bwThumbs.RunWorkerAsync()
-                End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Title) Then
                     .txtTitle.Text = Master.currMovie.Title
@@ -457,6 +446,7 @@ Public Class dlgEditMovie
 
 
                 Dim lvItem As ListViewItem
+                .lvActors.Items.Clear()
                 For Each imdbAct As Media.Person In Master.currMovie.Actors
                     lvItem = .lvActors.Items.Add(imdbAct.Name)
                     lvItem.SubItems.Add(imdbAct.Role)
@@ -472,38 +462,51 @@ Public Class dlgEditMovie
                 .pbStar5.Tag = tRating
                 If tRating > 0 Then .BuildStars(tRating)
 
-                Fanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
-                If Not IsNothing(Fanart.Image) Then
-                    .pbFanart.Image = Fanart.Image
-
-                    .lblFanartSize.Text = String.Format("Size: {0}x{1}", .pbFanart.Image.Width, .pbFanart.Image.Height)
-                    .lblFanartSize.Visible = True
-                End If
-
-                Poster.Load(Master.currPath, Master.isFile, Master.ImageType.Posters)
-                If Not IsNothing(Poster.Image) Then
-                    .pbPoster.Image = Poster.Image
-
-                    .lblPosterSize.Text = String.Format("Size: {0}x{1}", .pbPoster.Image.Width, .pbPoster.Image.Height)
-                    .lblPosterSize.Visible = True
-                End If
-
-                If Not Master.eSettings.UseTMDB Then
-                    .btnSetFanartScrape.Enabled = False
-                    If Not Master.eSettings.UseIMPA Then
-                        .btnSetPosterScrape.Enabled = False
+                If DoAll Then
+                    If Master.isFile Then
+                        TabControl1.TabPages.Remove(TabPage4)
+                        TabControl1.TabPages.Remove(TabPage5)
+                    Else
+                        Dim pExt As String = Path.GetExtension(Master.currPath).ToLower
+                        If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
+                        pExt = ".bin" OrElse pExt = ".cue" Then
+                            TabControl1.TabPages.Remove(TabPage4)
+                        End If
+                        .bwThumbs.RunWorkerAsync()
                     End If
-                End If
 
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", Me._id, ";")
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        .chkMark.Checked = SQLreader("mark")
+                    Fanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
+                    If Not IsNothing(Fanart.Image) Then
+                        .pbFanart.Image = Fanart.Image
+
+                        .lblFanartSize.Text = String.Format("Size: {0}x{1}", .pbFanart.Image.Width, .pbFanart.Image.Height)
+                        .lblFanartSize.Visible = True
+                    End If
+
+                    Poster.Load(Master.currPath, Master.isFile, Master.ImageType.Posters)
+                    If Not IsNothing(Poster.Image) Then
+                        .pbPoster.Image = Poster.Image
+
+                        .lblPosterSize.Text = String.Format("Size: {0}x{1}", .pbPoster.Image.Width, .pbPoster.Image.Height)
+                        .lblPosterSize.Visible = True
+                    End If
+
+                    If Not Master.eSettings.UseTMDB Then
+                        .btnSetFanartScrape.Enabled = False
+                        If Not Master.eSettings.UseIMPA Then
+                            .btnSetPosterScrape.Enabled = False
+                        End If
+                    End If
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                        SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", Me._id, ";")
+                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            .chkMark.Checked = SQLreader("mark")
+                        End Using
                     End Using
-                End Using
 
-                If Master.eSettings.AutoThumbs > 0 Then
-                    .txtThumbCount.Text = Master.eSettings.AutoThumbs
+                    If Master.eSettings.AutoThumbs > 0 Then
+                        .txtThumbCount.Text = Master.eSettings.AutoThumbs
+                    End If
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) AndAlso Master.eSettings.UseImgCache Then
