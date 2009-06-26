@@ -540,6 +540,7 @@ Public Class Master
                 Dim vtypeImage As String = String.Empty
                 Dim atypeImage As String = String.Empty
                 Dim achanImage As String = String.Empty
+                Dim tVideo As MediaInfo.Video = GetBestVideo(fiAV)
                 Dim tAudio As MediaInfo.Audio = GetBestAudio(fiAV)
 
                 Dim xmlFlags As XDocument = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
@@ -550,8 +551,8 @@ Public Class Master
                     vresImage = Path.Combine(mePath, xVResDefault(0).ToString)
                 End If
 
-                If Not IsNothing(fiAV.StreamDetails.Video) Then
-                    Dim strRes As String = GetResFromDimensions(fiAV).ToLower
+                Dim strRes As String = GetResFromDimensions(tVideo).ToLower
+                If Not String.IsNullOrEmpty(strRes) Then
                     Dim xVResFlag = From xVRes In xmlFlags...<vres>...<name> Where Regex.IsMatch(strRes, xVRes.@searchstring) Select xVRes.<icon>.Value
                     If xVResFlag.Count > 0 Then
                         vresImage = Path.Combine(mePath, xVResFlag(0).ToString)
@@ -575,8 +576,8 @@ Public Class Master
                     vtypeImage = Path.Combine(mePath, xVTypeDefault(0).ToString)
                 End If
 
-                If Not IsNothing(fiAV.StreamDetails.Video) AndAlso Not IsNothing(fiAV.StreamDetails.Video.Codec) Then
-                    Dim xVTypeFlag = From xVType In xmlFlags...<vtype>...<name> Where Regex.IsMatch(fiAV.StreamDetails.Video.Codec, xVType.@searchstring) Select xVType.<icon>.Value
+                If Not String.IsNullOrEmpty(tVideo.Codec) Then
+                    Dim xVTypeFlag = From xVType In xmlFlags...<vtype>...<name> Where Regex.IsMatch(tVideo.Codec, xVType.@searchstring) Select xVType.<icon>.Value
                     If xVTypeFlag.Count > 0 Then
                         vtypeImage = Path.Combine(mePath, xVTypeFlag(0).ToString)
                     End If
@@ -588,7 +589,7 @@ Public Class Master
                     atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
                 End If
 
-                If Not IsNothing(tAudio.Codec) Then
+                If Not String.IsNullOrEmpty(tAudio.Codec) Then
                     Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(tAudio.Codec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
                     If xATypeFlag.Count > 0 Then
                         atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
@@ -604,7 +605,7 @@ Public Class Master
                     achanImage = Path.Combine(mePath, xAChanDefault(0).ToString)
                 End If
 
-                If Not IsNothing(tAudio.Channels) Then
+                If Not String.IsNullOrEmpty(tAudio.Channels) Then
                     Dim xAChanFlag = From xAChan In xmlFlags...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
                     If xAChanFlag.Count > 0 Then
                         achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
@@ -1103,6 +1104,7 @@ Public Class Master
         '\\
 
         Dim strOutput As New StringBuilder
+        Dim iVS As Integer = 1
         Dim iAS As Integer = 1
         Dim iSS As Integer = 1
 
@@ -1110,8 +1112,8 @@ Public Class Master
             If Not IsNothing(miFI) Then
 
                 If Not miFI.StreamDetails Is Nothing Then
-                    If Not IsNothing(miFI.StreamDetails.Video) Then
-                        strOutput.AppendFormat("Video Streams: 1{0}", vbNewLine)
+                    If miFI.StreamDetails.Video.Count > 0 Then
+                        strOutput.AppendFormat("Video Streams: {0}{1}", miFI.StreamDetails.Video.Count.ToString, vbNewLine)
                     End If
 
                     If miFI.StreamDetails.Audio.Count > 0 Then
@@ -1122,29 +1124,31 @@ Public Class Master
                         strOutput.AppendFormat("Subtitle Streams: {0}{1}", miFI.StreamDetails.Subtitle.Count.ToString, vbNewLine)
                     End If
 
-                    If Not IsNothing(miFI.StreamDetails.Video) Then
-                        strOutput.AppendFormat("{0}Video Stream 1{0}", vbNewLine)
-                        If Not IsNothing(miFI.StreamDetails.Video.Width) AndAlso Not IsNothing(miFI.StreamDetails.Video.Height) Then
-                            strOutput.AppendFormat("- Size: {0}x{1}{2}", miFI.StreamDetails.Video.Width, miFI.StreamDetails.Video.Height, vbNewLine)
+                    For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
+                        strOutput.AppendFormat("{0}Video Stream {1}{0}", vbNewLine, iVS)
+                        If Not String.IsNullOrEmpty(miVideo.Width) AndAlso Not String.IsNullOrEmpty(miVideo.Height) Then
+                            strOutput.AppendFormat("- Size: {0}x{1}{2}", miVideo.Width, miVideo.Height, vbNewLine)
                         End If
-                        If Not IsNothing(miFI.StreamDetails.Video.Aspect) Then strOutput.AppendFormat("- Display Aspect Ratio: {0}{1}", miFI.StreamDetails.Video.Aspect, vbNewLine)
-                        If Not IsNothing(miFI.StreamDetails.Video.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miFI.StreamDetails.Video.Codec, vbNewLine)
-                        If Not IsNothing(miFI.StreamDetails.Video.Duration) Then strOutput.AppendFormat("- Duration: {0}{1}", miFI.StreamDetails.Video.Duration, vbNewLine)
-                    End If
+                        If Not String.IsNullOrEmpty(miVideo.Aspect) Then strOutput.AppendFormat("- Display Aspect Ratio: {0}{1}", miVideo.Aspect, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- Scan Type: {0}{1}", miVideo.Scantype, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miVideo.Codec, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- Duration: {0}{1}", miVideo.Duration, vbNewLine)
+                        iVS += 1
+                    Next
 
                     For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
                         'audio
                         strOutput.AppendFormat("{0}Audio Stream {1}{0}", vbNewLine, iAS.ToString)
-                        If Not IsNothing(miAudio.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
-                        If Not IsNothing(miAudio.Channels) Then strOutput.AppendFormat("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
-                        If Not IsNothing(miAudio.Language) Then strOutput.AppendFormat("- Language: {0}{1}", miAudio.Language, vbNewLine)
+                        If Not String.IsNullOrEmpty(miAudio.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
+                        If Not String.IsNullOrEmpty(miAudio.Channels) Then strOutput.AppendFormat("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
+                        If Not String.IsNullOrEmpty(miAudio.Language) Then strOutput.AppendFormat("- Language: {0}{1}", miAudio.Language, vbNewLine)
                         iAS += 1
                     Next
 
                     For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
                         'subtitles
                         strOutput.AppendFormat("{0}Subtitle {1}{0}", vbNewLine, iSS.ToString)
-                        If Not IsNothing(miSub.Language) Then strOutput.AppendFormat("- Language: {0}", miSub.Language)
+                        If Not String.IsNullOrEmpty(miSub.Language) Then strOutput.AppendFormat("- Language: {0}", miSub.Language)
                         iSS += 1
                     Next
                 End If
@@ -1160,6 +1164,48 @@ Public Class Master
         End If
     End Function
 
+    Public Shared Function GetBestVideo(ByRef miFIV As MediaInfo.Fileinfo) As MediaInfo.Video
+
+        '//
+        ' Get the highest values from file info
+        '\\
+
+        Dim fivOut As New MediaInfo.Video
+        Try
+            Dim iWidest As Integer = 0
+            Dim iWidth As Integer = 0
+            Dim iHeight As Integer = 0
+            Dim sinADR As Single = 0
+
+            'set some defaults to make it easy on ourselves
+            fivOut.Width = String.Empty
+            fivOut.Height = String.Empty
+            fivOut.Aspect = String.Empty
+            fivOut.Codec = String.Empty
+            fivOut.Duration = String.Empty
+            fivOut.Scantype = String.Empty
+
+            For Each miVideo As MediaInfo.Video In miFIV.StreamDetails.Video
+                If Not String.IsNullOrEmpty(miVideo.Width) Then
+                    iWidth = Convert.ToInt32(miVideo.Width)
+                    If iWidth > iWidest Then
+                        iWidest = iWidth
+                        fivOut.Width = miVideo.Width
+                        fivOut.Height = miVideo.Height
+                        fivOut.Aspect = miVideo.Aspect
+                        fivOut.Codec = miVideo.Codec
+                        fivOut.Duration = miVideo.Duration
+                        fivOut.Scantype = miVideo.Scantype
+                    End If
+                End If
+            Next
+
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return fivOut
+
+    End Function
     Public Shared Function GetBestAudio(ByRef miFIA As MediaInfo.Fileinfo) As MediaInfo.Audio
 
         '//
@@ -1170,6 +1216,10 @@ Public Class Master
         Try
             Dim sinMostChannels As Single = 0
             Dim sinChans As Single = 0
+
+            fiaOut.Codec = String.Empty
+            fiaOut.Channels = String.Empty
+            fiaOut.Language = String.Empty
 
             For Each miAudio As MediaInfo.Audio In miFIA.StreamDetails.Audio
                 'audio
@@ -1191,82 +1241,92 @@ Public Class Master
         Return fiaOut
     End Function
 
-    Public Shared Function GetResFromDimensions(ByVal fiRes As MediaInfo.Fileinfo) As String
+    Public Shared Function GetResFromDimensions(ByVal fiRes As MediaInfo.Video) As String
 
         '//
         ' Get the resolution of the video from the dimensions provided by MediaInfo.dll
         '\\
 
+        Dim resOut As String = String.Empty
         Try
-            Dim iWidth As Integer = fiRes.StreamDetails.Video.Width
-            Dim iHeight As Integer = fiRes.StreamDetails.Video.Height
-            Dim sinADR As Single = fiRes.StreamDetails.Video.Aspect
+            If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then
+                Dim iWidth As Integer = fiRes.Width
+                Dim iHeight As Integer = fiRes.Height
+                Dim sinADR As Single = fiRes.Aspect
 
-            Select Case True
-                Case iWidth < 640
-                    Return "SD"
-                    'exact
-                Case iWidth = 1920 AndAlso iHeight = 1080
-                    Return "1080"
-                Case iWidth = 1440 AndAlso iHeight = 1080
-                    Return "1080"
-                Case iWidth = 1280 AndAlso iHeight = 1080
-                    Return "1080"
-                Case iWidth = 1366 AndAlso iHeight = 768
-                    Return "768"
-                Case iWidth = 1024 AndAlso iHeight = 768
-                    Return "768"
-                Case iWidth = 1280 AndAlso iHeight = 720
-                    Return "720"
-                Case iWidth = 960 AndAlso iHeight = 720
-                    Return "720"
-                Case iWidth = 1024 AndAlso iHeight = 576
-                    Return "576"
-                Case iWidth = 720 AndAlso iHeight = 576
-                    Return "576"
-                Case iWidth = 720 AndAlso iHeight = 540
-                    Return "540"
-                Case iWidth = 852 AndAlso iHeight = 480
-                    Return "480"
-                Case iWidth = 720 AndAlso iHeight = 480
-                    Return "480"
-                Case iWidth = 704 AndAlso iHeight = 480
-                    Return "480"
-                Case iWidth = 640 AndAlso iHeight = 480
-                    Return "480"
-                    'by ADR
-                Case sinADR >= 1.33 AndAlso iHeight > 768
-                    Return "1080"
-                Case sinADR >= 1.33 AndAlso iHeight > 720
-                    Return "768"
-                Case sinADR >= 1.33 AndAlso iHeight > 576
-                    Return "720"
-                Case sinADR >= 1.33 AndAlso iHeight > 540
-                    Return "576"
-                Case sinADR >= 1.33 AndAlso iHeight > 500
-                    Return "540"
-                Case sinADR >= 1.33 AndAlso iHeight > 450
-                    Return "480"
-                    'loose
-                Case iWidth >= 1200 AndAlso iHeight >= 768
-                    Return "1080"
-                Case iWidth >= 1000 AndAlso iHeight >= 720
-                    Return "768"
-                Case iWidth >= 950 AndAlso iHeight >= 576
-                    Return "720"
-                Case iWidth >= 700 AndAlso iHeight >= 540
-                    Return "576"
-                Case iWidth >= 700 AndAlso iHeight >= 480
-                    Return "540"
-                Case Else
-                    Return "480"
-            End Select
-
+                Select Case True
+                    Case iWidth < 640
+                        resOut = "SD"
+                        'exact
+                    Case iWidth = 1920 AndAlso iHeight = 1080
+                        resOut = "1080"
+                    Case iWidth = 1440 AndAlso iHeight = 1080
+                        resOut = "1080"
+                    Case iWidth = 1280 AndAlso iHeight = 1080
+                        resOut = "1080"
+                    Case iWidth = 1366 AndAlso iHeight = 768
+                        resOut = "768"
+                    Case iWidth = 1024 AndAlso iHeight = 768
+                        resOut = "768"
+                    Case iWidth = 1280 AndAlso iHeight = 720
+                        resOut = "720"
+                    Case iWidth = 960 AndAlso iHeight = 720
+                        resOut = "720"
+                    Case iWidth = 1024 AndAlso iHeight = 576
+                        resOut = "576"
+                    Case iWidth = 720 AndAlso iHeight = 576
+                        resOut = "576"
+                    Case iWidth = 720 AndAlso iHeight = 540
+                        resOut = "540"
+                    Case iWidth = 852 AndAlso iHeight = 480
+                        resOut = "480"
+                    Case iWidth = 720 AndAlso iHeight = 480
+                        resOut = "480"
+                    Case iWidth = 704 AndAlso iHeight = 480
+                        resOut = "480"
+                    Case iWidth = 640 AndAlso iHeight = 480
+                        resOut = "480"
+                        'by ADR
+                    Case sinADR >= 1.33 AndAlso iHeight > 768
+                        resOut = "1080"
+                    Case sinADR >= 1.33 AndAlso iHeight > 720
+                        resOut = "768"
+                    Case sinADR >= 1.33 AndAlso iHeight > 576
+                        resOut = "720"
+                    Case sinADR >= 1.33 AndAlso iHeight > 540
+                        resOut = "576"
+                    Case sinADR >= 1.33 AndAlso iHeight > 500
+                        resOut = "540"
+                    Case sinADR >= 1.33 AndAlso iHeight > 450
+                        resOut = "480"
+                        'loose
+                    Case iWidth >= 1200 AndAlso iHeight >= 768
+                        resOut = "1080"
+                    Case iWidth >= 1000 AndAlso iHeight >= 720
+                        resOut = "768"
+                    Case iWidth >= 950 AndAlso iHeight >= 576
+                        resOut = "720"
+                    Case iWidth >= 700 AndAlso iHeight >= 540
+                        resOut = "576"
+                    Case iWidth >= 700 AndAlso iHeight >= 480
+                        resOut = "540"
+                    Case Else
+                        resOut = "480"
+                End Select
+            End If
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        Return String.Empty
+        If Not String.IsNullOrEmpty(resOut) Then
+            If String.IsNullOrEmpty(fiRes.Scantype) Then
+                Return String.Concat(resOut, "i")
+            Else
+                Return String.Concat(resOut, If(fiRes.Scantype.ToLower = "progressive", "p", "i"))
+            End If
+        Else
+            Return String.Empty
+        End If
     End Function
 
     Public Shared Function TruncateURL(ByVal sString As String, ByVal MaxLength As Integer) As String
