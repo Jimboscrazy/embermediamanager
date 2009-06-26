@@ -81,6 +81,7 @@ Public Class emmSettings
     Private _overwritenfo As Boolean
     Private _usenamefromNfo As Boolean
     Private _validexts As New ArrayList
+    Private _nostackexts As New ArrayList
     Private _movietbn As Boolean
     Private _movienametbn As Boolean
     Private _moviejpg As Boolean
@@ -659,6 +660,16 @@ Public Class emmSettings
             Me._validexts = value
         End Set
     End Property
+
+    Public Property NoStackExts() As ArrayList
+        Get
+            Return Me._nostackexts
+        End Get
+        Set(ByVal value As ArrayList)
+            Me._nostackexts = value
+        End Set
+    End Property
+
     Public Property MovieTBN() As Boolean
         Get
             Return Me._movietbn
@@ -1371,6 +1382,7 @@ Public Class emmSettings
         Me._overwritenfo = False
         Me._usenamefromNfo = False
         Me._validexts.Clear()
+        Me._nostackexts.Clear()
         Me._movietbn = False
         Me._movienametbn = False
         Me._moviejpg = False
@@ -1475,6 +1487,7 @@ Public Class emmSettings
         If Master.eSettings.ValidExts.Count <= 0 Then
             Master.eSettings.ValidExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb", ","))
         End If
+
     End Sub
 
     Public Class XBMCCom

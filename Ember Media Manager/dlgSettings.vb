@@ -1053,6 +1053,37 @@ Public Class dlgSettings
     Private Sub rbHM_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbHM.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPattern.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub btnRemoveNoStack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveNoStack.Click
+        If lstNoStack.Items.Count > 0 And lstNoStack.SelectedItems.Count > 0 Then
+            For Each i As Integer In lstNoStack.SelectedIndices
+                lstNoStack.Items.RemoveAt(i)
+            Next
+            Me.btnApply.Enabled = True
+            Me.doRefresh = True
+        End If
+    End Sub
+
+    Private Sub btnAddNoStack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddNoStack.Click
+        If Not String.IsNullOrEmpty(txtNoStack.Text) Then
+            If Not Strings.Left(txtNoStack.Text, 1) = "." Then txtNoStack.Text = String.Concat(".", txtNoStack.Text)
+            If Not lstNoStack.Items.Contains(txtNoStack.Text) Then
+                lstNoStack.Items.Add(txtNoStack.Text)
+                Me.btnApply.Enabled = True
+                Me.doRefresh = True
+                txtNoStack.Text = String.Empty
+                txtNoStack.Focus()
+            End If
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1175,6 +1206,8 @@ Public Class dlgSettings
             Master.eSettings.ScanRecursive = Me.chkScanRecursive.Checked
             Master.eSettings.ValidExts.Clear()
             Master.eSettings.ValidExts.AddRange(lstMovieExts.Items)
+            Master.eSettings.NoStackExts.Clear()
+            Master.eSettings.NoStackExts.AddRange(lstNoStack.Items)
             Master.eSettings.CheckUpdates = chkUpdates.Checked
             Master.eSettings.InfoPanelAnim = chkInfoPanelAnim.Checked
 
@@ -1359,6 +1392,7 @@ Public Class dlgSettings
             Me.chkProperCase.Checked = Master.eSettings.ProperCase
             Me.chkScanRecursive.Checked = Master.eSettings.ScanRecursive
             Me.lstMovieExts.Items.AddRange(Master.eSettings.ValidExts.ToArray)
+            Me.lstNoStack.Items.AddRange(Master.eSettings.NoStackExts.ToArray)
             Me.chkUpdates.Checked = Master.eSettings.CheckUpdates
             Me.chkInfoPanelAnim.Checked = Master.eSettings.InfoPanelAnim
             '######## MOVIES TAB ########
@@ -1537,11 +1571,5 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub txtFolderPattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPattern.TextChanged
-        Me.btnApply.Enabled = True
-    End Sub
 
-    Private Sub txtFilePattern_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged
-        Me.btnApply.Enabled = True
-    End Sub
 End Class
