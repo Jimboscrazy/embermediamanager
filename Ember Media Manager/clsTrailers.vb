@@ -230,12 +230,20 @@ Public Class Trailers
         RaiseEvent ProgressUpdated(iProgress)
     End Sub
 
-    Public Function IsAllowedToDownload(ByVal sPath As String, ByVal isFile As Boolean, ByVal isDL As Boolean, ByVal currNfoTrailer As String) As Boolean
+    Public Function IsAllowedToDownload(ByVal sPath As String, ByVal isFile As Boolean, ByVal isDL As Boolean, ByVal currNfoTrailer As String, Optional ByVal isSingle As Boolean = False) As Boolean
         If isDL Then
             If String.IsNullOrEmpty(Master.GetTrailerPath(sPath, isFile)) OrElse Master.eSettings.OverwriteTrailer Then
                 Return True
             Else
-                Return False
+                If isSingle Then
+                    If String.IsNullOrEmpty(currNfoTrailer) OrElse Not Master.eSettings.LockTrailer Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Else
+                    Return False
+                End If
             End If
         Else
             If String.IsNullOrEmpty(currNfoTrailer) OrElse Not Master.eSettings.LockTrailer Then
@@ -247,7 +255,7 @@ Public Class Trailers
     End Function
 
     Public Function ShowTDialog(ByVal IMDBID As String, ByVal sPath As String, ByVal isFile As String, ByVal currNfoTrailer As String) As String
-        If IsAllowedToDownload(sPath, isFile, True, String.Empty) OrElse IsAllowedToDownload(sPath, isFile, False, currNfoTrailer) Then
+        If IsAllowedToDownload(sPath, isFile, True, currNfoTrailer) Then
             Using dTrailer As New dlgTrailer
                 Dim tURL As String = dTrailer.ShowDialog(IMDBID, sPath, isFile)
                 Return tURL
