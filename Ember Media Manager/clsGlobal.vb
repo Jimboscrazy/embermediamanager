@@ -1283,7 +1283,7 @@ Public Class Master
                         resOut = "1080"
                     Case iWidth >= 1000 AndAlso iHeight >= 720
                         resOut = "768"
-                    Case iWidth >= 950 AndAlso iHeight >= 576
+                    Case iWidth >= 1024 AndAlso iHeight >= 500
                         resOut = "720"
                     Case iWidth >= 700 AndAlso iHeight >= 540
                         resOut = "576"
