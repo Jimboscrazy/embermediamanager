@@ -79,6 +79,7 @@ Public Class Trailers
         Dim trailerPage As String
         Dim trailerUrl As String
         Dim Link As Match
+        Dim currPage As Integer = 0
 
         Link = Regex.Match(_ImdbTrailerPage, "of [0-9]{1,3}")
 
@@ -86,19 +87,25 @@ Public Class Trailers
             TrailerNumber = Convert.ToInt32(Link.Value.Substring(3))
 
             If TrailerNumber > 0 Then
+                currPage = (TrailerNumber / 10)
 
-                Links = Regex.Matches(_ImdbTrailerPage, "/vi[0-9]+/")
-
-                For Each m As Match In Links
-                    trailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/video/screenplay", m.Value, "player"))
-
-                    trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+flv").Value)
-
-                    If Not String.IsNullOrEmpty(trailerUrl) AndAlso WebPage.IsValidURL(trailerUrl) Then
-                        Me._TrailerList.Add(trailerUrl)
+                For i As Integer = 1 To currPage
+                    If Not i = 1 Then
+                        _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer?page=", i))
                     End If
+
+                    Links = Regex.Matches(_ImdbTrailerPage, "/vi[0-9]+/")
+
+                    For Each m As Match In Links
+                        trailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/video/screenplay", m.Value, "player"))
+
+                        trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+flv").Value)
+
+                        If Not String.IsNullOrEmpty(trailerUrl) AndAlso WebPage.IsValidURL(trailerUrl) Then
+                            Me._TrailerList.Add(trailerUrl)
+                        End If
+                    Next
                 Next
-                ' Next
             End If
         End If
 
@@ -173,7 +180,6 @@ Public Class Trailers
 
     Private Function GetImdbTrailerPage() As Boolean
         _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer"))
-        '_ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/trailers"))
         If _ImdbTrailerPage.ToLower.Contains("page not found") Then
             _ImdbTrailerPage = String.Empty
         End If
