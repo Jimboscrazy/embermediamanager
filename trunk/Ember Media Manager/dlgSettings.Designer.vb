@@ -24,13 +24,13 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9})
+        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13})
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
@@ -243,6 +243,11 @@ Partial Class dlgSettings
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlExtensions = New System.Windows.Forms.Panel
+        Me.gbRenamerPatterns = New System.Windows.Forms.GroupBox
+        Me.lblFilePattern = New System.Windows.Forms.Label
+        Me.lblFolderPattern = New System.Windows.Forms.Label
+        Me.txtFilePattern = New System.Windows.Forms.TextBox
+        Me.txtFolderPattern = New System.Windows.Forms.TextBox
         Me.GroupBox18 = New System.Windows.Forms.GroupBox
         Me.btnRemMovieExt = New System.Windows.Forms.Button
         Me.btnAddMovieExt = New System.Windows.Forms.Button
@@ -260,11 +265,11 @@ Partial Class dlgSettings
         Me.Label19 = New System.Windows.Forms.Label
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
-        Me.gbRenamerPatterns = New System.Windows.Forms.GroupBox
-        Me.txtFolderPattern = New System.Windows.Forms.TextBox
-        Me.txtFilePattern = New System.Windows.Forms.TextBox
-        Me.lblFolderPattern = New System.Windows.Forms.Label
-        Me.lblFilePattern = New System.Windows.Forms.Label
+        Me.GroupBox22 = New System.Windows.Forms.GroupBox
+        Me.btnRemoveNoStack = New System.Windows.Forms.Button
+        Me.btnAddNoStack = New System.Windows.Forms.Button
+        Me.txtNoStack = New System.Windows.Forms.TextBox
+        Me.lstNoStack = New System.Windows.Forms.ListBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -299,12 +304,13 @@ Partial Class dlgSettings
         Me.GroupBox20.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlExtensions.SuspendLayout()
+        Me.gbRenamerPatterns.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
         Me.pnlSources.SuspendLayout()
         Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
-        Me.gbRenamerPatterns.SuspendLayout()
+        Me.GroupBox22.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -2240,42 +2246,42 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode1.ImageIndex = 4
-        TreeNode1.Name = "nExts"
-        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode1.SelectedImageIndex = 4
-        TreeNode1.Text = "File System"
-        TreeNode2.ImageIndex = 1
-        TreeNode2.Name = "nXBMCCom"
-        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode2.SelectedImageIndex = 1
-        TreeNode2.Text = "XBMC Communication"
-        TreeNode3.ImageIndex = 0
-        TreeNode3.Name = "nGeneral"
-        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode3.SelectedImageIndex = 0
-        TreeNode3.Text = "General"
-        TreeNode4.ImageIndex = 5
-        TreeNode4.Name = "nSources"
-        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode4.SelectedImageIndex = 5
-        TreeNode4.Text = "Files and Sources"
-        TreeNode5.ImageIndex = 3
-        TreeNode5.Name = "nScraper"
-        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode5.SelectedImageIndex = 3
-        TreeNode5.Text = "Scraper - Data"
-        TreeNode6.ImageIndex = 6
-        TreeNode6.Name = "nImages"
-        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode6.SelectedImageIndex = 6
-        TreeNode6.Text = "Scraper - Images"
-        TreeNode7.ImageIndex = 2
-        TreeNode7.Name = "nMovies"
-        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode7.SelectedImageIndex = 2
-        TreeNode7.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
+        TreeNode8.ImageIndex = 4
+        TreeNode8.Name = "nExts"
+        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 4
+        TreeNode8.Text = "File System"
+        TreeNode9.ImageIndex = 1
+        TreeNode9.Name = "nXBMCCom"
+        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode9.SelectedImageIndex = 1
+        TreeNode9.Text = "XBMC Communication"
+        TreeNode10.ImageIndex = 0
+        TreeNode10.Name = "nGeneral"
+        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode10.SelectedImageIndex = 0
+        TreeNode10.Text = "General"
+        TreeNode11.ImageIndex = 5
+        TreeNode11.Name = "nSources"
+        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode11.SelectedImageIndex = 5
+        TreeNode11.Text = "Files and Sources"
+        TreeNode12.ImageIndex = 3
+        TreeNode12.Name = "nScraper"
+        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode12.SelectedImageIndex = 3
+        TreeNode12.Text = "Scraper - Data"
+        TreeNode13.ImageIndex = 6
+        TreeNode13.Name = "nImages"
+        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode13.SelectedImageIndex = 6
+        TreeNode13.Text = "Scraper - Images"
+        TreeNode14.ImageIndex = 2
+        TreeNode14.Name = "nMovies"
+        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode14.SelectedImageIndex = 2
+        TreeNode14.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode14})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2568,6 +2574,7 @@ Partial Class dlgSettings
         '
         Me.pnlExtensions.BackColor = System.Drawing.Color.White
         Me.pnlExtensions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlExtensions.Controls.Add(Me.GroupBox22)
         Me.pnlExtensions.Controls.Add(Me.gbRenamerPatterns)
         Me.pnlExtensions.Controls.Add(Me.GroupBox18)
         Me.pnlExtensions.Location = New System.Drawing.Point(208, 96)
@@ -2575,6 +2582,51 @@ Partial Class dlgSettings
         Me.pnlExtensions.Size = New System.Drawing.Size(597, 353)
         Me.pnlExtensions.TabIndex = 66
         Me.pnlExtensions.Visible = False
+        '
+        'gbRenamerPatterns
+        '
+        Me.gbRenamerPatterns.Controls.Add(Me.lblFilePattern)
+        Me.gbRenamerPatterns.Controls.Add(Me.lblFolderPattern)
+        Me.gbRenamerPatterns.Controls.Add(Me.txtFilePattern)
+        Me.gbRenamerPatterns.Controls.Add(Me.txtFolderPattern)
+        Me.gbRenamerPatterns.Location = New System.Drawing.Point(209, 6)
+        Me.gbRenamerPatterns.Name = "gbRenamerPatterns"
+        Me.gbRenamerPatterns.Size = New System.Drawing.Size(200, 118)
+        Me.gbRenamerPatterns.TabIndex = 1
+        Me.gbRenamerPatterns.TabStop = False
+        Me.gbRenamerPatterns.Text = "Default Renaming Patterns"
+        '
+        'lblFilePattern
+        '
+        Me.lblFilePattern.AutoSize = True
+        Me.lblFilePattern.Location = New System.Drawing.Point(11, 69)
+        Me.lblFilePattern.Name = "lblFilePattern"
+        Me.lblFilePattern.Size = New System.Drawing.Size(65, 13)
+        Me.lblFilePattern.TabIndex = 3
+        Me.lblFilePattern.Text = "Files Pattern"
+        '
+        'lblFolderPattern
+        '
+        Me.lblFolderPattern.AutoSize = True
+        Me.lblFolderPattern.Location = New System.Drawing.Point(11, 23)
+        Me.lblFolderPattern.Name = "lblFolderPattern"
+        Me.lblFolderPattern.Size = New System.Drawing.Size(78, 13)
+        Me.lblFolderPattern.TabIndex = 2
+        Me.lblFolderPattern.Text = "Folders Pattern"
+        '
+        'txtFilePattern
+        '
+        Me.txtFilePattern.Location = New System.Drawing.Point(8, 87)
+        Me.txtFilePattern.Name = "txtFilePattern"
+        Me.txtFilePattern.Size = New System.Drawing.Size(186, 20)
+        Me.txtFilePattern.TabIndex = 1
+        '
+        'txtFolderPattern
+        '
+        Me.txtFolderPattern.Location = New System.Drawing.Point(8, 39)
+        Me.txtFolderPattern.Name = "txtFolderPattern"
+        Me.txtFolderPattern.Size = New System.Drawing.Size(186, 20)
+        Me.txtFolderPattern.TabIndex = 0
         '
         'GroupBox18
         '
@@ -2762,50 +2814,54 @@ Partial Class dlgSettings
         Me.chkUseImgCache.Text = "Use Image Cache"
         Me.chkUseImgCache.UseVisualStyleBackColor = True
         '
-        'gbRenamerPatterns
+        'GroupBox22
         '
-        Me.gbRenamerPatterns.Controls.Add(Me.lblFilePattern)
-        Me.gbRenamerPatterns.Controls.Add(Me.lblFolderPattern)
-        Me.gbRenamerPatterns.Controls.Add(Me.txtFilePattern)
-        Me.gbRenamerPatterns.Controls.Add(Me.txtFolderPattern)
-        Me.gbRenamerPatterns.Location = New System.Drawing.Point(209, 6)
-        Me.gbRenamerPatterns.Name = "gbRenamerPatterns"
-        Me.gbRenamerPatterns.Size = New System.Drawing.Size(200, 118)
-        Me.gbRenamerPatterns.TabIndex = 1
-        Me.gbRenamerPatterns.TabStop = False
-        Me.gbRenamerPatterns.Text = "Default Patterns"
+        Me.GroupBox22.Controls.Add(Me.btnRemoveNoStack)
+        Me.GroupBox22.Controls.Add(Me.btnAddNoStack)
+        Me.GroupBox22.Controls.Add(Me.txtNoStack)
+        Me.GroupBox22.Controls.Add(Me.lstNoStack)
+        Me.GroupBox22.Location = New System.Drawing.Point(209, 130)
+        Me.GroupBox22.Name = "GroupBox22"
+        Me.GroupBox22.Size = New System.Drawing.Size(200, 156)
+        Me.GroupBox22.TabIndex = 2
+        Me.GroupBox22.TabStop = False
+        Me.GroupBox22.Text = "No Stack Extensions"
         '
-        'txtFolderPattern
+        'btnRemoveNoStack
         '
-        Me.txtFolderPattern.Location = New System.Drawing.Point(8, 39)
-        Me.txtFolderPattern.Name = "txtFolderPattern"
-        Me.txtFolderPattern.Size = New System.Drawing.Size(186, 20)
-        Me.txtFolderPattern.TabIndex = 0
+        Me.btnRemoveNoStack.Image = CType(resources.GetObject("btnRemoveNoStack.Image"), System.Drawing.Image)
+        Me.btnRemoveNoStack.Location = New System.Drawing.Point(168, 127)
+        Me.btnRemoveNoStack.Name = "btnRemoveNoStack"
+        Me.btnRemoveNoStack.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveNoStack.TabIndex = 5
+        Me.btnRemoveNoStack.UseVisualStyleBackColor = True
         '
-        'txtFilePattern
+        'btnAddNoStack
         '
-        Me.txtFilePattern.Location = New System.Drawing.Point(8, 87)
-        Me.txtFilePattern.Name = "txtFilePattern"
-        Me.txtFilePattern.Size = New System.Drawing.Size(186, 20)
-        Me.txtFilePattern.TabIndex = 1
+        Me.btnAddNoStack.Image = CType(resources.GetObject("btnAddNoStack.Image"), System.Drawing.Image)
+        Me.btnAddNoStack.Location = New System.Drawing.Point(73, 127)
+        Me.btnAddNoStack.Name = "btnAddNoStack"
+        Me.btnAddNoStack.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddNoStack.TabIndex = 4
+        Me.btnAddNoStack.UseVisualStyleBackColor = True
         '
-        'lblFolderPattern
+        'txtNoStack
         '
-        Me.lblFolderPattern.AutoSize = True
-        Me.lblFolderPattern.Location = New System.Drawing.Point(11, 23)
-        Me.lblFolderPattern.Name = "lblFolderPattern"
-        Me.lblFolderPattern.Size = New System.Drawing.Size(78, 13)
-        Me.lblFolderPattern.TabIndex = 2
-        Me.lblFolderPattern.Text = "Folders Pattern"
+        Me.txtNoStack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtNoStack.Location = New System.Drawing.Point(11, 128)
+        Me.txtNoStack.Name = "txtNoStack"
+        Me.txtNoStack.Size = New System.Drawing.Size(61, 20)
+        Me.txtNoStack.TabIndex = 3
         '
-        'lblFilePattern
+        'lstNoStack
         '
-        Me.lblFilePattern.AutoSize = True
-        Me.lblFilePattern.Location = New System.Drawing.Point(11, 69)
-        Me.lblFilePattern.Name = "lblFilePattern"
-        Me.lblFilePattern.Size = New System.Drawing.Size(65, 13)
-        Me.lblFilePattern.TabIndex = 3
-        Me.lblFilePattern.Text = "Files Pattern"
+        Me.lstNoStack.FormattingEnabled = True
+        Me.lstNoStack.Location = New System.Drawing.Point(11, 15)
+        Me.lstNoStack.Name = "lstNoStack"
+        Me.lstNoStack.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstNoStack.Size = New System.Drawing.Size(180, 108)
+        Me.lstNoStack.Sorted = True
+        Me.lstNoStack.TabIndex = 2
         '
         'dlgSettings
         '
@@ -2893,6 +2949,8 @@ Partial Class dlgSettings
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlExtensions.ResumeLayout(False)
+        Me.gbRenamerPatterns.ResumeLayout(False)
+        Me.gbRenamerPatterns.PerformLayout()
         Me.GroupBox18.ResumeLayout(False)
         Me.GroupBox18.PerformLayout()
         Me.pnlSources.ResumeLayout(False)
@@ -2901,8 +2959,8 @@ Partial Class dlgSettings
         Me.pnlImages.ResumeLayout(False)
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
-        Me.gbRenamerPatterns.ResumeLayout(False)
-        Me.gbRenamerPatterns.PerformLayout()
+        Me.GroupBox22.ResumeLayout(False)
+        Me.GroupBox22.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3140,4 +3198,9 @@ Partial Class dlgSettings
     Friend WithEvents lblFolderPattern As System.Windows.Forms.Label
     Friend WithEvents txtFilePattern As System.Windows.Forms.TextBox
     Friend WithEvents txtFolderPattern As System.Windows.Forms.TextBox
+    Friend WithEvents GroupBox22 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnRemoveNoStack As System.Windows.Forms.Button
+    Friend WithEvents btnAddNoStack As System.Windows.Forms.Button
+    Friend WithEvents txtNoStack As System.Windows.Forms.TextBox
+    Friend WithEvents lstNoStack As System.Windows.Forms.ListBox
 End Class

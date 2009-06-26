@@ -472,10 +472,7 @@ Public Class Master
 
                 For Each inDir As String In Dirs
                     If isValidDir(inDir) Then
-                        sMoviePath = Master.GetMoviePath(inDir)
-                        If Not String.IsNullOrEmpty(sMoviePath) Then
-                            MediaList.Add(New FileAndSource With {.Filename = sMoviePath, .Source = sPath, .isFile = False})
-                        End If
+                        Master.GetMoviePaths(inDir, sPath)
                     End If
 
                     If eSettings.ScanRecursive Then
@@ -513,7 +510,11 @@ Public Class Master
                         If Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
                         Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                         ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
-                            tmpList.Add(CleanStackingMarkers(lFile.FullName))
+                            If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
+                                tmpList.Add(lFile.FullName)
+                            Else
+                                tmpList.Add(CleanStackingMarkers(lFile.FullName))
+                            End If
                             MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sPath, .isFile = True})
                         End If
                     Next
@@ -1534,7 +1535,7 @@ Public Class Master
 
     End Function
 
-    Public Shared Function GetMoviePath(ByVal sPath As String) As String
+    Public Shared Sub GetMoviePaths(ByVal sPath As String, ByVal sSource As String)
 
         '//
         ' Get the proper path to movie
@@ -1542,7 +1543,6 @@ Public Class Master
 
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
-        Dim tFile As String = String.Empty
 
         If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
             di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
@@ -1563,13 +1563,13 @@ Public Class Master
                 If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
                     Not sFile.Name.ToLower.Contains("-trailer") AndAlso Not sFile.Name.ToLower.Contains("[trailer") AndAlso _
                     ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(sFile.Name)) OrElse sFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
-                    tFile = sFile.FullName
-                    Exit For
+                    MediaList.Add(New FileAndSource With {.Filename = sFile.FullName, .Source = sSource, .isFile = False})
+                    'keep looking for other files if the file extension is on the no stack list
+                    If Not Master.eSettings.NoStackExts.Contains(sFile.Extension.ToLower) Then Exit For
                 End If
             Next
         End If
-        Return tFile
-    End Function
+    End Sub
 
 
     Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
