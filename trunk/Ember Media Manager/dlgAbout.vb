@@ -146,18 +146,6 @@ Public NotInheritable Class dlgAbout
         Process.Start("http://www.youtube.com/")
     End Sub
 
-    Private Sub pbAllTrailers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbAllTrailers.Click
-        Process.Start("http://www.alltrailers.net/")
-    End Sub
-
-    Private Sub pbMattTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbMattTrailer.Click
-        Process.Start("http://www.matttrailer.com/")
-    End Sub
-
-    Private Sub pbAZMovies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbAZMovies.Click
-        Process.Start("http://www.azmovies.net/")
-    End Sub
-
     Private Sub picDisplay_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles picDisplay.Paint
         Dim CurrentX As Single, CurrentY As Single, FontMod As Single = 0
 
