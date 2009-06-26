@@ -80,9 +80,9 @@ Public Class dlgBulkRenamer
                                 MovieFile.Title = _tmpMovie.Title
                                 MovieFile.Year = _tmpMovie.Year
                                 MovieFile.IsLocked = SQLreader("lock")
-                                If Not IsNothing(_tmpMovie.FileInfo) AndAlso (Not IsNothing(_tmpMovie.FileInfo.StreamDetails.Video) OrElse _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0) Then
-                                    MovieFile.Resolution = Master.GetResFromDimensions(_tmpMovie.FileInfo)
-                                    MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
+                                If Not IsNothing(_tmpMovie.FileInfo) Then
+                                    If _tmpMovie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = Master.GetResFromDimensions(Master.GetBestVideo(_tmpMovie.FileInfo))
+                                    If _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
                                 End If
                                 MovieFile.BasePath = Path.GetDirectoryName(SQLreader("path").ToString)
                                 MovieFile.Path = Path.GetDirectoryName(SQLreader("path").ToString)

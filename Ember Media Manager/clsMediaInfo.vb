@@ -20,78 +20,163 @@
 
 Option Explicit On
 
+Imports System.Runtime.InteropServices
 Imports System.IO
 Imports System.Xml.Serialization
 Imports System.Text
-Imports System.Text.RegularExpressions 
 
 Public Class MediaInfo
 
-    Public Sub GetMovieMIFromPath(ByRef fiInfo As FileInfo, ByVal sPath As String)
-        Dim miInfo As New Fileinfo
-        Dim miVideo As New Video
-        Dim miAudio As Audio
-        Dim miSub As Subtitle
-        Dim sbOutput As New StringBuilder
-        Using ffmpeg As New Process()
+    Public Enum StreamKind As UInteger
+        General
+        Visual
+        Audio
+        Text
+    End Enum
 
-            ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-            ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}""", Master.currPath)
-            ffmpeg.EnableRaisingEvents = False
-            ffmpeg.StartInfo.UseShellExecute = False
-            ffmpeg.StartInfo.CreateNoWindow = True
-            ffmpeg.StartInfo.RedirectStandardOutput = True
-            ffmpeg.StartInfo.RedirectStandardError = True
-            ffmpeg.Start()
-            Using d As StreamReader = ffmpeg.StandardError
+    Public Enum InfoKind As UInteger
+        Name
+        Text
+    End Enum
 
-                Do
-                    sbOutput.AppendLine(d.ReadLine())
+    Private Declare Unicode Function MediaInfo_New Lib "Bin\MediaInfo.DLL" () As IntPtr
+    Private Declare Unicode Sub MediaInfo_Delete Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr)
+    Private Declare Unicode Function MediaInfo_Open Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal FileName As String) As UIntPtr
+    Private Declare Unicode Sub MediaInfo_Close Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr)
+    Private Declare Unicode Function MediaInfo_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
+    Private Declare Unicode Function MediaInfo_Count_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As UIntPtr
 
-                Loop While Not d.EndOfStream
-            End Using
-            ffmpeg.WaitForExit()
-            ffmpeg.Close()
-        End Using
+    Private Handle As IntPtr
 
-        If sbOutput.ToString.Contains("Duration: ") Then
-            miVideo.Duration = Regex.Match(sbOutput.ToString, "Duration: (?<dur>.*?),").Groups("dur").ToString
-        End If
-
-        Dim vStream As Match = Regex.Match(sbOutput.ToString, "Stream #\d\.\d(\(.*?\))?: Video: (?<codec>.*?),(.*?)?(?<width>\d+?)x(?<height>\d+?)[,\s\b]", RegexOptions.IgnoreCase)
-        '"Stream #(?<stream>\d?)\.(?<num>\d?)(\((?<lang>.*?)\))?: Video: (?<codec>.*?),(.*?)?(?<width>\d+?)x(?<height>\d+?)[,\s\b]"
-        If vStream.Success Then
-            miVideo.Codec = vStream.Groups("codec").ToString.Trim
-            miVideo.Width = vStream.Groups("width").ToString.Trim
-            miVideo.Height = vStream.Groups("height").ToString.Trim
-            miVideo.Aspect = Convert.ToInt32(miVideo.Width) / Convert.ToInt32(miVideo.Height)
-        End If
-        miInfo.StreamDetails.Video = miVideo
-
-        Dim aMatches As MatchCollection = Regex.Matches(sbOutput.ToString, "Stream #\d\.\d(\((?<lang>.*?)\))?: Audio: (?<codec>.*?),(.*?),(?<channels>.*?),", RegexOptions.IgnoreCase)
-        For Each aStream As Match In aMatches
-            miAudio = New Audio
-            miAudio.Language = aStream.Groups("lang").ToString.Trim
-            miAudio.Codec = aStream.Groups("codec").ToString.Trim
-            Dim sChan As String = aStream.Groups("channels").ToString.Trim
-            miAudio.Channels = If(sChan.ToLower = "stereo", "2", If(sChan.ToLower = "mono", "1", sChan))
-            If Not String.IsNullOrEmpty(miAudio.Language) OrElse Not String.IsNullOrEmpty(miAudio.Codec) OrElse _
-            Not String.IsNullOrEmpty(miAudio.Channels) Then
-                miInfo.StreamDetails.Audio.Add(miAudio)
-            End If
-        Next
-
-        Dim sMatches As MatchCollection = Regex.Matches(sbOutput.ToString, "", RegexOptions.IgnoreCase)
-        For Each sStream As Match In sMatches
-            miSub = New Subtitle
-            miSub.Language = sStream.Groups("lang").ToString.Trim
-            If Not String.IsNullOrEmpty(miSub.Language) Then
-                miInfo.StreamDetails.Subtitle.Add(miSub)
-            End If
-        Next
-
-        fiInfo = miInfo
+    Public Sub New()
+        Handle = MediaInfo_New()
     End Sub
+
+    Protected Overrides Sub Finalize()
+        Try
+            MediaInfo_Delete(Handle)
+            Handle = Nothing
+        Finally
+            MyBase.Finalize()
+        End Try
+    End Sub
+
+    Private Function Open(ByVal FileName As String) As Integer
+        Return MediaInfo_Open(Handle, FileName)
+    End Function
+
+    Private Sub Close()
+        MediaInfo_Close(Handle)
+    End Sub
+
+    Private Function Get_(ByVal StreamKind As StreamKind, ByVal StreamNumber As Integer, ByVal Parameter As String, Optional ByVal KindOfInfo As InfoKind = InfoKind.Text, Optional ByVal KindOfSearch As InfoKind = InfoKind.Name) As String
+        Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, StreamKind, StreamNumber, Parameter, KindOfInfo, KindOfSearch))
+    End Function
+
+    Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
+        If StreamNumber = UInteger.MaxValue Then
+            Return MediaInfo_Count_Get(Handle, StreamKind, -1)
+        Else
+            Return MediaInfo_Count_Get(Handle, StreamKind, StreamNumber)
+        End If
+    End Function
+
+    Public Sub GetMovieMIFromPath(ByRef fiInfo As Fileinfo, ByVal sPath As String)
+
+        If File.Exists(sPath) Then
+
+            Me.Open(sPath)
+
+            Dim fiOut As New Fileinfo
+
+            Dim VideoStreams As Integer = Me.Count_Get(StreamKind.Visual)
+            Dim miVideo As New Video
+            For v As Integer = 0 To VideoStreams - 1
+                miVideo = New Video
+                miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
+                miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
+                miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID/Hint").ToLower)
+                If String.IsNullOrEmpty(miVideo.Codec) Then
+                    miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "Format").ToLower)
+                End If
+                miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String")
+                miVideo.Aspect = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
+                miVideo.Scantype = Me.Get_(StreamKind.Visual, v, "ScanType")
+                With miVideo
+                    If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse _
+                    Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) OrElse Not String.IsNullOrEmpty(.Scantype) Then
+                        fiOut.StreamDetails.Video.Add(miVideo)
+                    End If
+                End With
+            Next
+
+            Dim AudioStreams As Integer = Me.Count_Get(StreamKind.Audio)
+            Dim miAudio As New Audio
+            For a As Integer = 0 To AudioStreams - 1
+                'get audio data
+                miAudio = New Audio
+                miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint").ToLower)
+                If String.IsNullOrEmpty(miAudio.Codec) Then
+                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format")).ToLower
+                End If
+                miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
+                miAudio.Language = Me.Get_(StreamKind.Audio, a, "Language/String")
+                With miAudio
+                    If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
+                        fiOut.StreamDetails.Audio.Add(miAudio)
+                    End If
+                End With
+            Next
+
+            Dim SubtitleStreams As Integer = Me.Count_Get(StreamKind.Text)
+            Dim miSubtitle As Subtitle
+            For s As Integer = 0 To SubtitleStreams - 1
+                'get subtitle data
+                miSubtitle = New MediaInfo.Subtitle
+                miSubtitle.Language = Me.Get_(StreamKind.Text, s, "Language/String")
+                If Not String.IsNullOrEmpty(miSubtitle.Language) Then
+                    fiOut.StreamDetails.Subtitle.Add(miSubtitle)
+                End If
+            Next
+
+            Me.Close()
+            Me.Finalize()
+
+            fiInfo = fiOut
+        End If
+
+    End Sub
+
+    Private Function ConvertVFormat(ByVal sFormat As String) As String
+        If Not String.IsNullOrEmpty(sFormat) Then
+            Dim tFormat As String = sFormat.ToLower
+            Select Case True
+                Case tFormat = "divx 5"
+                    Return "dx50"
+                Case tFormat.Contains("divx 3")
+                    Return "div3"
+                Case Else
+                    Return tFormat
+            End Select
+        Else
+            Return String.Empty
+        End If
+    End Function
+
+    Private Function ConvertAFormat(ByVal sFormat As String) As String
+        If Not String.IsNullOrEmpty(sFormat) Then
+            Select Case sFormat.ToLower
+                Case "ac-3"
+                    Return "ac3"
+                Case "wma2"
+                    Return "wmav2"
+                Case Else
+                    Return sFormat.ToLower
+            End Select
+        Else
+            Return String.Empty
+        End If
+    End Function
 
     <XmlRoot("fileinfo")> _
     Public Class Fileinfo
@@ -113,21 +198,16 @@ Public Class MediaInfo
     <XmlRoot("streamdata")> _
     Public Class StreamData
 
-        Private _video As New Video
+        Private _video As New List(Of Video)
         Private _audio As New List(Of Audio)
         Private _subtitle As New List(Of Subtitle)
 
         <XmlElement("video")> _
-        Public Property Video() As Video
+        Public Property Video() As List(Of Video)
             Get
-                If Not IsNothing(Me._video.Width) AndAlso Not IsNothing(Me._video.Height) AndAlso Not IsNothing(Me._video.Codec) AndAlso _
-                Not IsNothing(Me._video.Aspect) AndAlso Not IsNothing(Me._video.Duration) Then
-                    Return Me._video
-                Else
-                    Return Nothing
-                End If
+                Return Me._video
             End Get
-            Set(ByVal Value As Video)
+            Set(ByVal Value As List(Of Video))
                 Me._video = Value
             End Set
         End Property
@@ -161,6 +241,7 @@ Public Class MediaInfo
         Private _codec As String
         Private _duration As String
         Private _aspect As String
+        Private _scantype As String
 
         <XmlElement("width")> _
         Public Property Width() As String
@@ -209,6 +290,16 @@ Public Class MediaInfo
             End Get
             Set(ByVal Value As String)
                 Me._aspect = Value
+            End Set
+        End Property
+
+        <XmlElement("scantype")> _
+        Public Property Scantype() As String
+            Get
+                Return Me._scantype
+            End Get
+            Set(ByVal Value As String)
+                Me._scantype = Value
             End Set
         End Property
 

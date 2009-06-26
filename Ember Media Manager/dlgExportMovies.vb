@@ -108,11 +108,16 @@ Public Class dlgExportMovies
             For Each _curMovie As Media.Movie In _movies
                 Dim _vidDetails As String = String.Empty
                 Dim _audDetails As String = String.Empty
-                If Not IsNothing(_curMovie.FileInfo) AndAlso (Not IsNothing(_curMovie.FileInfo.StreamDetails.Video) OrElse _curMovie.FileInfo.StreamDetails.Audio.Count > 0) Then
-                    _vidDetails = String.Format("{0} / {1}", Master.GetResFromDimensions(_curMovie.FileInfo), _curMovie.FileInfo.StreamDetails.Video.Codec)
+                If Not IsNothing(_curMovie.FileInfo) Then
+                    If _curMovie.FileInfo.StreamDetails.Video.Count > 0 Then
+                        Dim tVid As MediaInfo.Video = Master.GetBestVideo(_curMovie.FileInfo)
+                        _vidDetails = String.Format("{0} / {1}", Master.GetResFromDimensions(tVid), tVid.Codec)
+                    End If
 
-                    Dim tAud As MediaInfo.Audio = Master.GetBestAudio(_curMovie.FileInfo)
-                    _audDetails = String.Format("{0} / {1}", tAud.Codec, tAud.Channels)
+                    If _curMovie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                        Dim tAud As MediaInfo.Audio = Master.GetBestAudio(_curMovie.FileInfo)
+                        _audDetails = String.Format("{0} / {1}", tAud.Codec, tAud.Channels)
+                    End If
                 End If
 
                 Dim row As New StringBuilder

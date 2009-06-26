@@ -3667,18 +3667,19 @@ doCancel:
         Try
 
             Dim pExt As String = Path.GetExtension(sPath).ToLower
-            If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso Not pExt = ".dat" AndAlso _
-            Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
+            If Not pExt = ".rar" Then
                 Dim MI As New MediaInfo
                 MI.GetMovieMIFromPath(miMovie.FileInfo, sPath)
-                If Master.eSettings.UseMIDuration AndAlso Not IsNothing(miMovie.FileInfo.StreamDetails.Video) AndAlso Not String.IsNullOrEmpty(miMovie.FileInfo.StreamDetails.Video.Duration) Then
-                    Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), miMovie.FileInfo.StreamDetails.Video.Duration))).Subtract(CDate(DateTime.Today))
-                    If Master.eSettings.UseHMForRuntime Then
-                        miMovie.Runtime = String.Format("{0} hrs {1} mins", ts.Hours, ts.Minutes)
-                    Else
-                        Dim intMinutes As Integer = ((ts.Hours * 60) + ts.Minutes) + If(ts.Seconds > 30, 1, 0)
-                        miMovie.Runtime = String.Format("{0} mins", intMinutes)
+                If Master.eSettings.UseMIDuration AndAlso miMovie.FileInfo.StreamDetails.Video.Count > 0 Then
+                    Dim tVid As MediaInfo.Video = Master.GetBestVideo(miMovie.FileInfo)
+
+                    If Not String.IsNullOrEmpty(tVid.Duration) Then
+                        Dim sDuration As Match = Regex.Match(tVid.Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
+                        Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
+                        Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
+                        miMovie.Runtime = If(Master.eSettings.UseHMForRuntime, String.Format("{0} hrs {1} mins", sHour, sMin), String.Format("{0} mins", (sHour * 60) + sMin))
                     End If
+
                 End If
                 MI = Nothing
             End If
