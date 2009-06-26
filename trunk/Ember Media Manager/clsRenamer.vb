@@ -20,7 +20,7 @@
 
 Option Explicit On
 Imports System.IO
-
+Imports System.Text.RegularExpressions
 
 
 Public Class FileFolderRenamer
@@ -36,6 +36,8 @@ Public Class FileFolderRenamer
         Public fType As Integer
         Public Resolution As String
         Public Audio As String
+        Public Source As String = String.Empty
+
         Public Property Title() As String
             Get
                 Return Me._title
@@ -119,22 +121,62 @@ Public Class FileFolderRenamer
 
     Private Function ProccessPattern(ByVal f As FileRename, ByVal pattern As String) As String
         Try
-            pattern = pattern.Replace("$D", f.Path)
-            pattern = pattern.Replace("$F", f.FileName)
-            pattern = pattern.Replace("$T", f.Title)
-            pattern = pattern.Replace("$Y", f.Year)
-            pattern = pattern.Replace("$R", f.Resolution)
-            pattern = pattern.Replace("$A", f.Audio)
-            pattern = pattern.Replace("$t", f.Title.Replace(" ", "."))
-            For Each Invalid As Char In Path.GetInvalidPathChars
-                pattern = pattern.Replace(Invalid, String.Empty)
-            Next
-            pattern = pattern.Replace(":", "-")
+
+            Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
+            Dim strSource As String = String.Empty
+            Try
+                If File.Exists(Path.Combine(mePath, "Flags.xml")) Then
+                    Dim xmlFlags As XDocument = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
+                    Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
+                    'Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Select xVSource.@searchstring
+                    If xVSourceFlag.Count > 0 Then
+                        strSource = xVSourceFlag(0).ToString
+                    End If
+
+                End If
+            Catch ex As Exception
+            End Try
+            pattern = ApplyPattern(pattern, "D", f.Path)
+            pattern = ApplyPattern(pattern, "F", f.FileName)
+            pattern = ApplyPattern(pattern, "T", f.Title)
+            pattern = ApplyPattern(pattern, "Y", f.Year)
+            pattern = ApplyPattern(pattern, "R", f.Resolution)
+            pattern = ApplyPattern(pattern, "A", f.Audio)
+            pattern = ApplyPattern(pattern, "t", f.Title.Replace(" ", "."))
+            pattern = ApplyPattern(pattern, "S", strSource)
             Return pattern
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return vbNullString
         End Try
+    End Function
+    Private Function ApplyPattern(ByVal pattern As String, ByVal flag As String, ByVal v As String) As String
+
+        pattern = pattern.Replace(String.Concat("$", flag), v)
+        If Not v = String.Empty Then
+            pattern = pattern.Replace(String.Concat("$-", flag), v)
+            pattern = pattern.Replace(String.Concat("$+", flag), v)
+        Else
+            Dim pos = -1
+            Dim size = 3
+            Dim nextC = pattern.IndexOf(String.Concat("$-", flag))
+            If nextC >= 0 Then
+                If nextC + 3 < pattern.Length Then size += 1
+                pos = nextC
+            End If
+            Dim prevC = pattern.IndexOf(String.Concat("$+", flag))
+            If prevC >= 0 Then
+                If prevC + 3 < pattern.Length Then size += 1
+                If prevC > 0 Then
+                    size += 1
+                    prevC -= 1
+                End If
+                pos = prevC
+            End If
+
+            If Not pos = -1 Then pattern = pattern.Remove(pos, size)
+        End If
+        Return pattern
     End Function
 
     Public Sub DoRename()
