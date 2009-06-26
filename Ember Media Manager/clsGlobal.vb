@@ -1138,14 +1138,14 @@ Public Class Master
                         strOutput.AppendFormat("{0}Audio Stream {1}{0}", vbNewLine, iAS.ToString)
                         If Not String.IsNullOrEmpty(miAudio.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
                         If Not String.IsNullOrEmpty(miAudio.Channels) Then strOutput.AppendFormat("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
-                        If Not String.IsNullOrEmpty(miAudio.Language) Then strOutput.AppendFormat("- Language: {0}{1}", miAudio.Language, vbNewLine)
+                        If Not String.IsNullOrEmpty(miAudio.LongLanguage) Then strOutput.AppendFormat("- Language: {0}{1}", miAudio.LongLanguage, vbNewLine)
                         iAS += 1
                     Next
 
                     For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
                         'subtitles
                         strOutput.AppendFormat("{0}Subtitle {1}{0}", vbNewLine, iSS.ToString)
-                        If Not String.IsNullOrEmpty(miSub.Language) Then strOutput.AppendFormat("- Language: {0}", miSub.Language)
+                        If Not String.IsNullOrEmpty(miSub.LongLanguage) Then strOutput.AppendFormat("- Language: {0}", miSub.LongLanguage)
                         iSS += 1
                     Next
                 End If
@@ -1255,7 +1255,7 @@ Public Class Master
                     Case iWidth < 640
                         resOut = "SD"
                         'exact
-                    Case (iWidth = 1920 AndAlso iHeight = 1080) OrElse (iWidth = 1440 AndAlso iHeight = 1080) OrElse (iWidth = 1280 AndAlso iHeight = 1080)
+                    Case (iWidth = 1920 AndAlso (iHeight = 1080 OrElse iHeight = 800)) OrElse (iWidth = 1440 AndAlso iHeight = 1080) OrElse (iWidth = 1280 AndAlso iHeight = 1080)
                         resOut = "1080"
                     Case (iWidth = 1366 AndAlso iHeight = 768) OrElse (iWidth = 1024 AndAlso iHeight = 768)
                         resOut = "768"
@@ -1263,22 +1263,22 @@ Public Class Master
                         resOut = "720"
                     Case (iWidth = 1024 AndAlso iHeight = 576) OrElse (iWidth = 720 AndAlso iHeight = 576)
                         resOut = "576"
-                    Case iWidth = 720 AndAlso iHeight = 540
+                    Case (iWidth = 720 OrElse iWidth = 960) AndAlso iHeight = 540
                         resOut = "540"
-                    Case (iWidth = 852 AndAlso iHeight = 480) OrElse (iWidth = 720 AndAlso iHeight = 480) OrElse (iWidth = 704 AndAlso iHeight = 480) OrElse (iWidth = 640 AndAlso iHeight = 480)
+                    Case (iWidth = 852 OrElse iWidth = 720 OrElse iWidth = 704 OrElse iWidth = 640) AndAlso iHeight = 480
                         resOut = "480"
                         'by ADR
-                    Case sinADR >= 1.4 AndAlso iHeight > 768
+                    Case sinADR >= 1.4 AndAlso iWidth = 1920
                         resOut = "1080"
-                    Case sinADR >= 1.4 AndAlso iHeight > 720
+                    Case sinADR >= 1.4 AndAlso iWidth = 1366
                         resOut = "768"
-                    Case sinADR >= 1.4 AndAlso iHeight > 576
+                    Case sinADR >= 1.4 AndAlso iWidth = 1280
                         resOut = "720"
-                    Case sinADR >= 1.4 AndAlso iHeight > 540
+                    Case sinADR >= 1.4 AndAlso iWidth = 1024
                         resOut = "576"
-                    Case sinADR >= 1.4 AndAlso iHeight > 480
+                    Case sinADR >= 1.4 AndAlso iWidth = 960
                         resOut = "540"
-                    Case sinADR >= 1.4 AndAlso iHeight > 450
+                    Case sinADR >= 1.4 AndAlso iWidth = 852
                         resOut = "480"
                         'loose
                     Case iWidth >= 1200 AndAlso iHeight >= 768
