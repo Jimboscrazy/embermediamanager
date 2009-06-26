@@ -113,14 +113,16 @@ Public Class MediaInfo
             Dim AudioStreams As Integer = Me.Count_Get(StreamKind.Audio)
             Dim miAudio As New Audio
             For a As Integer = 0 To AudioStreams - 1
-                'get audio data
                 miAudio = New Audio
                 miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint").ToLower)
                 If String.IsNullOrEmpty(miAudio.Codec) Then
                     miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format")).ToLower
                 End If
                 miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
-                miAudio.Language = Me.Get_(StreamKind.Audio, a, "Language/String")
+                miAudio.LongLanguage = Me.Get_(StreamKind.Audio, a, "Language/String")
+                If Not String.IsNullOrEmpty(miAudio.LongLanguage) Then
+                    miAudio.Language = ConvertL(miAudio.LongLanguage)
+                End If
                 With miAudio
                     If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
                         fiOut.StreamDetails.Audio.Add(miAudio)
@@ -131,9 +133,11 @@ Public Class MediaInfo
             Dim SubtitleStreams As Integer = Me.Count_Get(StreamKind.Text)
             Dim miSubtitle As Subtitle
             For s As Integer = 0 To SubtitleStreams - 1
-                'get subtitle data
                 miSubtitle = New MediaInfo.Subtitle
-                miSubtitle.Language = Me.Get_(StreamKind.Text, s, "Language/String")
+                miSubtitle.LongLanguage = Me.Get_(StreamKind.Text, s, "Language/String")
+                If Not String.IsNullOrEmpty(miSubtitle.LongLanguage) Then
+                    miSubtitle.Language = ConvertL(miSubtitle.LongLanguage)
+                End If
                 If Not String.IsNullOrEmpty(miSubtitle.Language) Then
                     fiOut.StreamDetails.Subtitle.Add(miSubtitle)
                 End If
@@ -173,6 +177,22 @@ Public Class MediaInfo
                 Case Else
                     Return sFormat.ToLower
             End Select
+        Else
+            Return String.Empty
+        End If
+    End Function
+
+    Private Function ConvertL(ByVal sLang As String) As String
+        Dim lPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "Languages.xml")
+        If File.Exists(lPath) Then
+            Dim xmlLang As XDocument = XDocument.Load(lPath)
+
+            Dim xShortLang = From xLang In xmlLang.Descendants("Language") Where xLang.Element("Name").Value = sLang Select xLang.Element("Code").Value
+            If xShortLang.Count > 0 Then
+                Return xShortLang(0)
+            Else
+                Return String.Empty
+            End If
         Else
             Return String.Empty
         End If
@@ -310,6 +330,7 @@ Public Class MediaInfo
         Private _codec As String
         Private _channels As String
         Private _language As String
+        Private _longlanguage As String
 
         <XmlElement("language")> _
         Public Property Language() As String
@@ -318,6 +339,16 @@ Public Class MediaInfo
             End Get
             Set(ByVal Value As String)
                 Me._language = Value
+            End Set
+        End Property
+
+        <XmlElement("longlanguage")> _
+        Public Property LongLanguage() As String
+            Get
+                Return Me._longlanguage
+            End Get
+            Set(ByVal value As String)
+                Me._longlanguage = value
             End Set
         End Property
 
@@ -346,6 +377,7 @@ Public Class MediaInfo
     Public Class Subtitle
 
         Private _language As String
+        Private _longlanguage As String
 
         <XmlElement("language")> _
         Public Property Language() As String
@@ -357,6 +389,15 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlElement("longlanguage")> _
+        Public Property LongLanguage() As String
+            Get
+                Return Me._longlanguage
+            End Get
+            Set(ByVal value As String)
+                Me._longlanguage = value
+            End Set
+        End Property
     End Class
 
 End Class
