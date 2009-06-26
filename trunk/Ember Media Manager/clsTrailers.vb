@@ -235,7 +235,7 @@ Public Class Trailers
             If String.IsNullOrEmpty(Master.GetTrailerPath(sPath, isFile)) OrElse Master.eSettings.OverwriteTrailer Then
                 Return True
             Else
-                If isSingle Then
+                If isSingle AndAlso String.IsNullOrEmpty(Master.GetTrailerPath(sPath, isFile)) Then
                     If String.IsNullOrEmpty(currNfoTrailer) OrElse Not Master.eSettings.LockTrailer Then
                         Return True
                     Else
