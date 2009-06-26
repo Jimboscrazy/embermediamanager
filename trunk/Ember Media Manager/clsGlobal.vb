@@ -573,8 +573,10 @@ Public Class Master
                     vtypeImage = Path.Combine(mePath, xVTypeDefault(0).ToString)
                 End If
 
-                If Not String.IsNullOrEmpty(tVideo.Codec) Then
-                    Dim xVTypeFlag = From xVType In xmlFlags...<vtype>...<name> Where Regex.IsMatch(tVideo.Codec, xVType.@searchstring) Select xVType.<icon>.Value
+                Dim vCodec As String = String.Empty
+                vCodec = If(String.IsNullOrEmpty(tVideo.CodecID), tVideo.Codec, tVideo.CodecID)
+                If Not String.IsNullOrEmpty(vCodec) Then
+                    Dim xVTypeFlag = From xVType In xmlFlags...<vtype>...<name> Where Regex.IsMatch(vCodec, xVType.@searchstring) Select xVType.<icon>.Value
                     If xVTypeFlag.Count > 0 Then
                         vtypeImage = Path.Combine(mePath, xVTypeFlag(0).ToString)
                     End If
@@ -586,8 +588,10 @@ Public Class Master
                     atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
                 End If
 
-                If Not String.IsNullOrEmpty(tAudio.Codec) Then
-                    Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(tAudio.Codec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
+                Dim aCodec As String = String.Empty
+                aCodec = If(String.IsNullOrEmpty(tAudio.CodecID), tAudio.Codec, tAudio.CodecID)
+                If Not String.IsNullOrEmpty(aCodec) Then
+                    Dim xATypeFlag = From xAType In xmlFlags...<atype>...<name> Where Regex.IsMatch(aCodec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
                     If xATypeFlag.Count > 0 Then
                         atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
                         If Not IsNothing(xATypeFlag(0).ref) Then
@@ -1128,6 +1132,7 @@ Public Class Master
                         End If
                         If Not String.IsNullOrEmpty(miVideo.Aspect) Then strOutput.AppendFormat("- Display Aspect Ratio: {0}{1}", miVideo.Aspect, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- Scan Type: {0}{1}", miVideo.Scantype, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.CodecID) Then strOutput.AppendFormat("- Codec ID: {0}{1}", miVideo.CodecID, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miVideo.Codec, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- Duration: {0}{1}", miVideo.Duration, vbNewLine)
                         iVS += 1
@@ -1136,6 +1141,7 @@ Public Class Master
                     For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
                         'audio
                         strOutput.AppendFormat("{0}Audio Stream {1}{0}", vbNewLine, iAS.ToString)
+                        If Not String.IsNullOrEmpty(miAudio.CodecID) Then strOutput.AppendFormat("- Codec ID: {0}{1}", miAudio.CodecID, vbNewLine)
                         If Not String.IsNullOrEmpty(miAudio.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
                         If Not String.IsNullOrEmpty(miAudio.Channels) Then strOutput.AppendFormat("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
                         If Not String.IsNullOrEmpty(miAudio.LongLanguage) Then strOutput.AppendFormat("- Language: {0}{1}", miAudio.LongLanguage, vbNewLine)
@@ -1189,6 +1195,7 @@ Public Class Master
                         fivOut.Height = miVideo.Height
                         fivOut.Aspect = miVideo.Aspect
                         fivOut.Codec = miVideo.Codec
+                        fivOut.CodecID = miVideo.CodecID
                         fivOut.Duration = miVideo.Duration
                         fivOut.Scantype = miVideo.Scantype
                     End If
@@ -1217,12 +1224,12 @@ Public Class Master
             fiaOut.Language = String.Empty
 
             For Each miAudio As MediaInfo.Audio In miFIA.StreamDetails.Audio
-                'audio
                 If Not String.IsNullOrEmpty(miAudio.Channels) Then
                     sinChans = ConvertToSingle(miAudio.Channels)
                     If sinChans > sinMostChannels Then
                         sinMostChannels = sinChans
                         fiaOut.Codec = miAudio.Codec
+                        fiaOut.CodecID = miAudio.CodecID
                         fiaOut.Channels = sinChans
                         fiaOut.Language = miAudio.Language
                     End If
