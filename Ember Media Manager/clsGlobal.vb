@@ -1171,8 +1171,6 @@ Public Class Master
         Try
             Dim iWidest As Integer = 0
             Dim iWidth As Integer = 0
-            Dim iHeight As Integer = 0
-            Dim sinADR As Single = 0
 
             'set some defaults to make it easy on ourselves
             fivOut.Width = String.Empty
@@ -1249,7 +1247,7 @@ Public Class Master
             If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then
                 Dim iWidth As Integer = fiRes.Width
                 Dim iHeight As Integer = fiRes.Height
-                Dim sinADR As Single = fiRes.Aspect
+                Dim sinADR As Single = ConvertToSingle(fiRes.Aspect)
 
                 Select Case True
                     Case iWidth < 640
