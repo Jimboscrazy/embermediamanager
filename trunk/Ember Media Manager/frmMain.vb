@@ -1808,7 +1808,8 @@ Public Class frmMain
                         For Each mRow As DataRow In dtMediaList.Rows
                             MLFind.SearchString = mRow.Item(0)
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
-                            If IsNothing(MLFound) Then
+                            ' if .ext was remove need to check it and remove movie also
+                            If IsNothing(MLFound) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0))) Then
                                 parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
                             End If
