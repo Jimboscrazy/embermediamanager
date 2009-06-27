@@ -1035,17 +1035,17 @@ Public Class frmMain
 
     Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                     parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
                     parID.Value = sRow.Cells(0).Value
                     SQLcommand.ExecuteNonQuery()
-                End Using
-                sRow.Cells(11).Value = If(cmnuMark.Text = "Unmark", False, True)
-            Next
+                    sRow.Cells(11).Value = If(cmnuMark.Text = "Unmark", False, True)
+                Next
+            End Using
             SQLtransaction.Commit()
         End Using
         Me.SetFilterColors()
@@ -1053,17 +1053,17 @@ Public Class frmMain
 
     Private Sub cmnuLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLock.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Boolean, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                     parLock.Value = If(cmnuLock.Text = "Unlock", False, True)
                     parID.Value = sRow.Cells(0).Value
                     SQLcommand.ExecuteNonQuery()
-                End Using
-                sRow.Cells(14).Value = If(cmnuLock.Text = "Unlock", False, True)
-            Next
+                    sRow.Cells(14).Value = If(cmnuLock.Text = "Unlock", False, True)
+                Next
+            End Using
             SQLtransaction.Commit()
         End Using
         Me.SetFilterColors()
@@ -1669,6 +1669,15 @@ Public Class frmMain
         '\\
 
         Try
+            Master.alMoviePaths.Clear()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = "SELECT path FROM movies ORDER BY title;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Master.alMoviePaths.Add(SQLreader("path"))
+                    End While
+                End Using
+            End Using
 
             Master.MediaList.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
@@ -1686,10 +1695,9 @@ Public Class frmMain
 
             'remove any db entries that are not in the media list
             Dim dtMediaList As New DataTable
-            Dim sqlDA As New SQLite.SQLiteDataAdapter
             Dim MLFind As New MovieListFind
             Dim MLFound As New Master.FileAndSource
-            sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies ORDER BY title", Master.SQLcn)
+            Dim sqlDA As New SQLite.SQLiteDataAdapter("SELECT Path FROM movies ORDER BY title;", Master.SQLcn)
             Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
             sqlDA.Fill(dtMediaList)
             If dtMediaList.Rows.Count > 0 Then
@@ -1698,10 +1706,10 @@ Public Class frmMain
                         SQLcommand.CommandText = "DELETE FROM movies WHERE path = (?);"
                         Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
                         For Each mRow As DataRow In dtMediaList.Rows
-                            MLFind.SearchString = mRow.Item(1)
+                            MLFind.SearchString = mRow.Item(0)
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
                             If IsNothing(MLFound) Then
-                                parPath.Value = mRow.Item(1)
+                                parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
                             End If
                             If Me.bwPrelim.CancellationPending Then
@@ -1798,7 +1806,7 @@ Public Class frmMain
                             Return
                         End If
 
-                        If Not String.IsNullOrEmpty(sFile.Filename) Then
+                        If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
                             tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isSingle))
                             mName = tmpMovie.Title
                             mIMDB = tmpMovie.IMDBID
@@ -1830,29 +1838,12 @@ Public Class frmMain
                                 parTrailer.Value = sFile.Trailer
                                 parSub.Value = sFile.Subs
                                 parExtra.Value = sFile.Extra
-                                Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                                    SQLNewcommand.CommandText = String.Concat("SELECT id FROM movies WHERE path = """, sFile.Filename, """;")
-                                    Dim SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                                    If SQLreader.HasRows Then
-                                        parNew.Value = False
-                                    Else
-                                        parNew.Value = True
-                                    End If
-                                End Using
-                                If parNew.Value Then
-                                    parLock.Value = False
-                                    If Master.eSettings.MarkNew Then
-                                        parMark.Value = True
-                                    Else
-                                        parMark.Value = False
-                                    End If
+                                parNew.Value = True
+                                parLock.Value = False
+                                If Master.eSettings.MarkNew Then
+                                    parMark.Value = True
                                 Else
-                                    Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                                        SQLNewcommand.CommandText = String.Concat("SELECT mark, lock FROM movies WHERE path = """, sFile.Filename, """;")
-                                        Dim SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                                        parMark.Value = SQLreader("mark")
-                                        parLock.Value = SQLreader("lock")
-                                    End Using
+                                    parMark.Value = False
                                 End If
                                 parSource.Value = sFile.Source
                                 parIMDB.Value = mIMDB
@@ -4075,7 +4066,6 @@ doCancel:
             Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
             sqlDA.Fill(Me.dtMedia)
 
-
             If isCL Then
                 Me.LoadingDone = True
             Else
@@ -4147,8 +4137,6 @@ doCancel:
                             .dgvMediaList.Rows(iIndex).Cells(3).Selected = True
                             .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
                         End If
-                        '.btnUp.Enabled = True
-                        '.btnMid.Enabled = True
 
                         .ToolsToolStripMenuItem.Enabled = True
                         .tsbAutoPilot.Enabled = True
@@ -4159,9 +4147,6 @@ doCancel:
                     Me.tsbAutoPilot.Enabled = False
                     Me.mnuMediaList.Enabled = False
                     Me.tslStatus.Text = String.Empty
-                    'Me.btnUp.Enabled = False
-                    'Me.btnDown.Enabled = False
-                    'Me.btnMid.Enabled = False
                     Me.ClearInfo()
                 End If
             End If
@@ -4246,9 +4231,106 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
+    Private Sub cmnuRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRefresh.Click
+        Dim aContents(6) As Boolean
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
+                Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
+                Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
+                Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
+                Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
+                Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?)  WHERE id = (?);"
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    aContents = Master.GetFolderContents(sRow.Cells(1).Value, sRow.Cells(2).Value)
+                    parPoster.Value = aContents(0)
+                    parFanart.Value = aContents(1)
+                    parInfo.Value = aContents(2)
+                    parTrailer.Value = aContents(3)
+                    parSub.Value = aContents(4)
+                    parExtra.Value = aContents(5)
+                    parID.Value = sRow.Cells(0).Value
+                    SQLcommand.ExecuteNonQuery()
 
+                    sRow.Cells(4).Value = aContents(0)
+                    sRow.Cells(5).Value = aContents(1)
+                    sRow.Cells(6).Value = aContents(2)
+                    sRow.Cells(7).Value = aContents(3)
+                    sRow.Cells(8).Value = aContents(4)
+                    sRow.Cells(9).Value = aContents(5)
+                Next
+            End Using
+            SQLtransaction.Commit()
+        End Using
+    End Sub
 
-    Private Sub dgvMediaList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellContentClick
+    Private Sub RefreshAllMoviesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshAllMoviesToolStripMenuItem.Click
+        Dim aContents(6) As Boolean
+        If Me.dtMedia.Rows.Count > 0 Then
 
+            Me.ToolsToolStripMenuItem.Enabled = False
+            Me.tsbAutoPilot.Enabled = False
+            Me.tsbRefreshMedia.Enabled = False
+            Me.mnuMediaList.Enabled = False
+            Me.tabsMain.Enabled = False
+            Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.EnableFilters(False)
+
+            Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
+            Me.tspbLoading.Value = 0
+            Me.tslLoading.Text = "Refreshing Media:"
+            Me.tspbLoading.Visible = True
+            Me.tslLoading.Visible = True
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
+                    Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
+                    Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
+                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
+                    Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
+                    Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?)  WHERE id = (?);"
+                    For Each sRow As DataRow In Me.dtMedia.Rows
+                        Me.tslStatus.Text = sRow.Item(3)
+                        aContents = Master.GetFolderContents(sRow.Item(1), sRow.Item(2))
+
+                        parPoster.Value = aContents(0)
+                        parFanart.Value = aContents(1)
+                        parInfo.Value = aContents(2)
+                        parTrailer.Value = aContents(3)
+                        parSub.Value = aContents(4)
+                        parExtra.Value = aContents(5)
+                        parID.Value = sRow.Item(0)
+                        SQLcommand.ExecuteNonQuery()
+
+                        sRow.Item(4) = aContents(0)
+                        sRow.Item(5) = aContents(1)
+                        sRow.Item(6) = aContents(2)
+                        sRow.Item(7) = aContents(3)
+                        sRow.Item(8) = aContents(4)
+                        sRow.Item(9) = aContents(5)
+
+                        Me.tspbLoading.Value += 1
+
+                        Application.DoEvents()
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Me.tslLoading.Text = String.Empty
+            Me.tspbLoading.Visible = False
+            Me.tslLoading.Visible = False
+            Me.ToolsToolStripMenuItem.Enabled = True
+            Me.tsbAutoPilot.Enabled = True
+            Me.tsbRefreshMedia.Enabled = True
+            Me.mnuMediaList.Enabled = True
+            Me.tabsMain.Enabled = True
+            Me.EnableFilters(True)
+        End If
     End Sub
 End Class

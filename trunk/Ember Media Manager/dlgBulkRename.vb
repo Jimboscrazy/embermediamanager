@@ -209,7 +209,7 @@ Public Class dlgBulkRenamer
                         e.CellBounds.Top, e.CellBounds.Right - 1, _
                         e.CellBounds.Bottom)
                     ' Draw the inset highlight box.
-                    If (e.Value IsNot Nothing) Then
+                    If Not IsNothing(e.Value) Then
                         'Dim f As New Font(e.CellStyle.Font, FontStyle.Strikeout)
                         e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
                         Brushes.Gray, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
@@ -230,7 +230,7 @@ Public Class dlgBulkRenamer
             End If
 
             If ((e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then
-                If (e.Value IsNot Nothing AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value = e.Value) Then
+                If Not IsNothing(e.Value) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value = e.Value Then
                     Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
                         e.CellBounds.Width - 4, e.CellBounds.Height - 4)
                     Dim backColorBrush As New SolidBrush(e.CellStyle.BackColor)
@@ -253,7 +253,7 @@ Public Class dlgBulkRenamer
                             e.CellBounds.Bottom)
                         ' Draw the inset highlight box.
 
-                        If (e.Value IsNot Nothing) Then
+                        If Not IsNothing(e.Value) Then
                             e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
                             Brushes.Red, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
                             StringFormat.GenericDefault)

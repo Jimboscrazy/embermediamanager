@@ -257,7 +257,7 @@ mApprox:
                     Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
                                      Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString))
 
-                If R.PartialMatches IsNot Nothing Then
+                If Not IsNothing(R.PartialMatches) Then
                     R.PartialMatches = R.PartialMatches.Union(qApprox.ToList).ToList
                 Else
                     R.PartialMatches = qApprox.ToList
