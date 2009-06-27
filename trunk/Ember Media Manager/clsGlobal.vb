@@ -304,12 +304,15 @@ Public Class Master
                                     "Imdb TEXT, " & _
                                     "Lock BOOL NOT NULL DEFAULT False, " & _
                                     "OriginalTitle TEXT, " & _
-                                    "Year INTEGER, " & _
+                                    "Year TEXT, " & _
                                     "Rating TEXT, " & _
                                     "Votes TEXT, " & _
                                     "MPAA TEXT, " & _
+                                    "Top250 TEXT, " & _
                                     "Outline TEXT, " & _
                                     "Plot TEXT, " & _
+                                    "Tagline TEXT, " & _
+                                    "Certification TEXT, " & _
                                     "Genre TEXT, " & _
                                     "Studio TEXT, " & _
                                     "StudioReal TEXT, " & _
@@ -317,10 +320,12 @@ Public Class Master
                                     "ReleaseDate TEXT, " & _
                                     "Director TEXT, " & _
                                     "Credits TEXT, " & _
-                                    "Video_Width INTEGER, " & _
-                                    "Video_Height INTEGER," & _
+                                    "Playcount TEXT, " & _
+                                    "Watched TEXT, " & _
+                                    "Video_Width TEXT, " & _
+                                    "Video_Height TEXT," & _
                                     "Video_Codec TEXT, " & _
-                                    "Video_FomatInfo TEXT, " & _
+                                    "Video_FormatInfo TEXT, " & _
                                     "Video_Duration TEXT, " & _
                                     "Video_Bitrate TEXT, " & _
                                     "Video_BitrateMode TEXT, " & _
@@ -341,7 +346,7 @@ Public Class Master
                                     "thumb TEXT" & _
                                     ");"
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE TABLE ActorsMovies(" & _
+                        SQLcommand.CommandText = "CREATE TABLE MoviesActors(" & _
                                     "MovieID INTEGER NOT NULL, " & _
                                     "ActorID INTEGER NOT NULL, " & _
                                     "Role TEXT, " & _
