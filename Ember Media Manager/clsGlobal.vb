@@ -293,7 +293,7 @@ Public Class Master
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
 
-                    If Reset Then
+                    If Not NewDB AndAlso Reset Then
                         Dim tColumns As New DataTable
                         Dim tRestrict() As String = New String(2) {Nothing, Nothing, "movies"}
                         Dim aCol As New ArrayList
@@ -302,7 +302,7 @@ Public Class Master
                             aCol.Add(col("column_name").ToString)
                         Next
                         cQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
-                        SQLcommand.CommandText = "DROP INDEX UniquePath;"
+                        SQLcommand.CommandText = "DROP INDEX IF EXISTS UniquePath;"
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "ALTER TABLE Movies RENAME TO tmp_movies;"
                         SQLcommand.ExecuteNonQuery()
@@ -344,43 +344,43 @@ Public Class Master
                                 "TrailerUrl TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (Path);"
+                    SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesVStreams(" & _
-                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                                 "MovieID INTEGER NOT NULL, " & _
+                                "StreamID INTEGER NOT NULL, " & _
                                 "Video_Width TEXT, " & _
                                 "Video_Height TEXT," & _
                                 "Video_Codec TEXT, " & _
-                                "Video_FormatInfo TEXT, " & _
                                 "Video_Duration TEXT, " & _
-                                "Video_Bitrate TEXT, " & _
-                                "Video_BitrateMode TEXT, " & _
-                                "Video_BitrateMax TEXT, " & _
                                 "Video_CodecId TEXT, " & _
-                                "Video_CodecIdInfo TEXT, " & _
                                 "Video_ScanType TEXT, " & _
-                                "Video_AspectDisplayRatio TEXT" & _
+                                "Video_AspectDisplayRatio TEXT, " & _
+                                "PRIMARY KEY (MovieID,StreamID) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesVStreams ON MoviesVStreams (MovieID);"
                     SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesAStreams(" & _
-                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                                 "MovieID INTEGER NOT NULL, " & _
+                                "StreamID INTEGER NOT NULL, " & _
                                 "Audio_Language TEXT, " & _
                                 "Audio_Codec TEXT, " & _
                                 "Audio_Channel TEXT, " & _
-                                "Audio_Bitrate TEXT" & _
+                                "Audio_CodecID TEXT, " & _
+                                "PRIMARY KEY (MovieID,StreamID) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesVStreams ON MoviesAStreams (MovieID);"
                     SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesSubs(" & _
-                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                                 "MovieID INTEGER NOT NULL, " & _
-                                "subs TEXT" & _
+                                "StreamID INTEGER NOT NULL, " & _
+                                "subs TEXT, " & _
+                                "PRIMARY KEY (MovieID,StreamID) " & _
                                  ");"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesSubs ON MoviesSubs (MovieID);"
@@ -418,9 +418,8 @@ Public Class Master
                                 ");"
                     SQLcommand.ExecuteNonQuery()
 
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (Path);"
-                    SQLcommand.ExecuteNonQuery()
-                    If Reset Then
+
+                    If Not NewDB AndAlso Reset Then
                         SQLcommand.CommandText = String.Concat("INSERT INTO Movies ", cQuery, " SELECT * FROM tmp_movies;")
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "DROP TABLE tmp_movies;"
