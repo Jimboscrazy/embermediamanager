@@ -579,7 +579,7 @@ Public Class Master
                 Dim di As New DirectoryInfo(sPath)
                 Dim lFi As New List(Of FileInfo)
                 Dim aContents(6) As Boolean
-
+                Dim SkipStack As Boolean = False
                 Try
                     lFi.AddRange(di.GetFiles())
                 Catch
@@ -598,12 +598,13 @@ Public Class Master
                            ((eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
                                 If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
                                     tmpList.Add(lFile.FullName)
+                                    SkipStack = True
                                 Else
                                     tmpList.Add(CleanStackingMarkers(lFile.FullName))
                                 End If
                                 aContents = GetFolderContents(lFile.FullName, bSingle)
                                 MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)})
-                                If bSingle Then Exit For
+                                If bSingle AndAlso Not SkipStack Then Exit For
                             End If
                         End If
                     Next
