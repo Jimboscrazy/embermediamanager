@@ -55,11 +55,13 @@ Partial Class frmMain
         Me.ExportMoviesListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
         Me.ClearAllCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.RefreshAllMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.dgvMediaList = New System.Windows.Forms.DataGridView
         Me.mnuMediaList = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuTitle = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuRefresh = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuMark = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuLock = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator
@@ -231,8 +233,6 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.cmnuRefresh = New System.Windows.Forms.ToolStripMenuItem
-        Me.RefreshAllMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -492,6 +492,13 @@ Partial Class frmMain
         Me.ClearAllCachesToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
         Me.ClearAllCachesToolStripMenuItem.Text = "Clear All Caches"
         '
+        'RefreshAllMoviesToolStripMenuItem
+        '
+        Me.RefreshAllMoviesToolStripMenuItem.Image = CType(resources.GetObject("RefreshAllMoviesToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RefreshAllMoviesToolStripMenuItem.Name = "RefreshAllMoviesToolStripMenuItem"
+        Me.RefreshAllMoviesToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
+        Me.RefreshAllMoviesToolStripMenuItem.Text = "Refresh All Movies"
+        '
         'scMain
         '
         Me.scMain.Dock = System.Windows.Forms.DockStyle.Fill
@@ -569,6 +576,13 @@ Partial Class frmMain
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
         Me.ToolStripSeparator3.Size = New System.Drawing.Size(198, 6)
+        '
+        'cmnuRefresh
+        '
+        Me.cmnuRefresh.Image = CType(resources.GetObject("cmnuRefresh.Image"), System.Drawing.Image)
+        Me.cmnuRefresh.Name = "cmnuRefresh"
+        Me.cmnuRefresh.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuRefresh.Text = "Refresh"
         '
         'cmnuMark
         '
@@ -1623,8 +1637,8 @@ Partial Class frmMain
         Me.tsbAutoPilot.Image = CType(resources.GetObject("tsbAutoPilot.Image"), System.Drawing.Image)
         Me.tsbAutoPilot.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAutoPilot.Name = "tsbAutoPilot"
-        Me.tsbAutoPilot.Size = New System.Drawing.Size(110, 22)
-        Me.tsbAutoPilot.Text = "Update Media"
+        Me.tsbAutoPilot.Size = New System.Drawing.Size(107, 22)
+        Me.tsbAutoPilot.Text = "Scrape Media"
         '
         'FullToolStripMenuItem
         '
@@ -2045,8 +2059,8 @@ Partial Class frmMain
         Me.tsbRefreshMedia.Image = CType(resources.GetObject("tsbRefreshMedia.Image"), System.Drawing.Image)
         Me.tsbRefreshMedia.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbRefreshMedia.Name = "tsbRefreshMedia"
-        Me.tsbRefreshMedia.Size = New System.Drawing.Size(100, 22)
-        Me.tsbRefreshMedia.Text = "Rescan Media"
+        Me.tsbRefreshMedia.Size = New System.Drawing.Size(104, 22)
+        Me.tsbRefreshMedia.Text = "Update Library"
         '
         'tsbUpdateXBMC
         '
@@ -2105,20 +2119,6 @@ Partial Class frmMain
         'tmrFilterAni
         '
         Me.tmrFilterAni.Interval = 1
-        '
-        'cmnuRefresh
-        '
-        Me.cmnuRefresh.Image = CType(resources.GetObject("cmnuRefresh.Image"), System.Drawing.Image)
-        Me.cmnuRefresh.Name = "cmnuRefresh"
-        Me.cmnuRefresh.Size = New System.Drawing.Size(201, 22)
-        Me.cmnuRefresh.Text = "Refresh"
-        '
-        'RefreshAllMoviesToolStripMenuItem
-        '
-        Me.RefreshAllMoviesToolStripMenuItem.Image = CType(resources.GetObject("RefreshAllMoviesToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.RefreshAllMoviesToolStripMenuItem.Name = "RefreshAllMoviesToolStripMenuItem"
-        Me.RefreshAllMoviesToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.RefreshAllMoviesToolStripMenuItem.Text = "Refresh All Movies"
         '
         'frmMain
         '

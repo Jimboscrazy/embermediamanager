@@ -86,7 +86,7 @@ Partial Class dlgMovieSource
         Me.txtSourceName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSourceName.Location = New System.Drawing.Point(15, 29)
         Me.txtSourceName.Name = "txtSourceName"
-        Me.txtSourceName.Size = New System.Drawing.Size(167, 20)
+        Me.txtSourceName.Size = New System.Drawing.Size(130, 20)
         Me.txtSourceName.TabIndex = 1
         '
         'Label1
@@ -129,9 +129,9 @@ Partial Class dlgMovieSource
         Me.GroupBox1.Controls.Add(Me.chkSingle)
         Me.GroupBox1.Controls.Add(Me.chkUseFolderName)
         Me.GroupBox1.Controls.Add(Me.chkScanRecursive)
-        Me.GroupBox1.Location = New System.Drawing.Point(237, 8)
+        Me.GroupBox1.Location = New System.Drawing.Point(193, 8)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(186, 85)
+        Me.GroupBox1.Size = New System.Drawing.Size(230, 85)
         Me.GroupBox1.TabIndex = 6
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Source Options"
@@ -141,9 +141,9 @@ Partial Class dlgMovieSource
         Me.chkSingle.AutoSize = True
         Me.chkSingle.Location = New System.Drawing.Point(6, 59)
         Me.chkSingle.Name = "chkSingle"
-        Me.chkSingle.Size = New System.Drawing.Size(170, 17)
+        Me.chkSingle.Size = New System.Drawing.Size(223, 17)
         Me.chkSingle.TabIndex = 2
-        Me.chkSingle.Text = "Folders Contain a Single Video"
+        Me.chkSingle.Text = "Only Detect One Movie From Each Folder"
         Me.chkSingle.UseVisualStyleBackColor = True
         '
         'chkUseFolderName
@@ -151,9 +151,9 @@ Partial Class dlgMovieSource
         Me.chkUseFolderName.AutoSize = True
         Me.chkUseFolderName.Location = New System.Drawing.Point(6, 39)
         Me.chkUseFolderName.Name = "chkUseFolderName"
-        Me.chkUseFolderName.Size = New System.Drawing.Size(167, 17)
+        Me.chkUseFolderName.Size = New System.Drawing.Size(183, 17)
         Me.chkUseFolderName.TabIndex = 1
-        Me.chkUseFolderName.Text = "Use Folder Name for Lookups"
+        Me.chkUseFolderName.Text = "Use Folder Name for Initial Listing"
         Me.chkUseFolderName.UseVisualStyleBackColor = True
         '
         'chkScanRecursive
@@ -169,7 +169,7 @@ Partial Class dlgMovieSource
         'pbValid
         '
         Me.pbValid.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
-        Me.pbValid.Location = New System.Drawing.Point(188, 31)
+        Me.pbValid.Location = New System.Drawing.Point(151, 31)
         Me.pbValid.Name = "pbValid"
         Me.pbValid.Size = New System.Drawing.Size(16, 16)
         Me.pbValid.TabIndex = 7
