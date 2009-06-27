@@ -465,13 +465,14 @@ Public Class dlgEditMovie
                 If tRating > 0 Then .BuildStars(tRating)
 
                 If DoAll Then
+
                     If Not _single Then
                         TabControl1.TabPages.Remove(TabPage4)
                         TabControl1.TabPages.Remove(TabPage5)
                     Else
                         Dim pExt As String = Path.GetExtension(Master.currPath).ToLower
                         If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
-                        pExt = ".bin" OrElse pExt = ".cue" Then
+                        pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" Then
                             TabControl1.TabPages.Remove(TabPage4)
                         End If
                         .bwThumbs.RunWorkerAsync()

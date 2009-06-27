@@ -2254,12 +2254,13 @@ Public Class frmMain
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?) WHERE ID = (?);"
+                SQLcommand.CommandText = "UPDATE movies SET title = (?), poster = (?), fanart = (?), info = (?), trailer = (?) WHERE ID = (?);"
+                Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
                 Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
                 Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
                 Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                 Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                 Try
                     If Me.dtMedia.Rows.Count > 0 Then
                         Select Case Args.scrapeType
@@ -2300,8 +2301,9 @@ Public Class frmMain
 
                                     If Not String.IsNullOrEmpty(Master.scrapeMovie.IMDBID) Then
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
+
                                         If Master.eSettings.ScanMediaInfo AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.MI) Then
-                                            UpdateMediaInfo(sPath, Master.scrapeMovie) 
+                                            UpdateMediaInfo(sPath, Master.scrapeMovie)
                                         End If
 
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -2370,6 +2372,11 @@ Public Class frmMain
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.NFO OrElse Args.scrapeMod = Master.ScrapeModifier.MI OrElse _
                                         (Args.scrapeMod = Master.ScrapeModifier.Trailer AndAlso Master.eSettings.UpdaterTrailersNoDownload AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.Trailer)) Then
+                                            If Not String.IsNullOrEmpty(Master.scrapeMovie.Title) Then
+                                                parTitle.Value = Master.scrapeMovie.Title
+                                                drvRow.Item(3) = Master.scrapeMovie.Title
+                                            End If
+
                                             Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                             parInfo.Value = True
                                             drvRow.Item(6) = True
@@ -2472,6 +2479,10 @@ Public Class frmMain
                                         If Me.bwScraper.CancellationPending Then GoTo doCancel
                                         If Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.NFO OrElse Args.scrapeMod = Master.ScrapeModifier.MI OrElse _
                                         (Args.scrapeMod = Master.ScrapeModifier.Trailer AndAlso Master.eSettings.UpdaterTrailersNoDownload AndAlso Not String.IsNullOrEmpty(Master.scrapeMovie.Trailer)) Then
+                                            If Not String.IsNullOrEmpty(Master.scrapeMovie.Title) Then
+                                                parTitle.Value = Master.scrapeMovie.Title
+                                                drvRow.Item(3) = Master.scrapeMovie.Title
+                                            End If
                                             Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
                                             parInfo.Value = True
                                             drvRow.Item(6) = True
@@ -2579,6 +2590,10 @@ Public Class frmMain
                                                 If Master.eSettings.ScanMediaInfo Then
                                                     UpdateMediaInfo(sPath, Master.scrapeMovie)
                                                 End If
+                                                If Not String.IsNullOrEmpty(Master.scrapeMovie.Title) Then
+                                                    parTitle.Value = Master.scrapeMovie.Title
+                                                    drvRow.Item(3) = Master.scrapeMovie.Title
+                                                End If
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(6))
                                                 parInfo.Value = True
                                                 drvRow.Item(6) = True
@@ -2681,6 +2696,11 @@ Public Class frmMain
                                             If Not drvRow.Item(6) AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.NFO) Then
                                                 If Master.eSettings.ScanMediaInfo Then
                                                     UpdateMediaInfo(sPath, Master.scrapeMovie)
+                                                End If
+
+                                                If Not String.IsNullOrEmpty(Master.scrapeMovie.Title) Then
+                                                    parTitle.Value = Master.scrapeMovie.Title
+                                                    drvRow.Item(3) = Master.scrapeMovie.Title
                                                 End If
 
                                                 Master.SaveMovieToNFO(Master.scrapeMovie, sPath, drvRow.Item(2))
