@@ -21,6 +21,7 @@
 Option Explicit On
 
 Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class dlgTrailer
 
@@ -51,22 +52,29 @@ Public Class dlgTrailer
         Me.Cancel_Button.Enabled = False
         Me.btnSetNfo.Enabled = False
         Me.btnPlayTrailer.Enabled = False
-
+        Me.lbTrailers.Enabled = False
+        Me.txtYouTube.Enabled = False
         Me.lblStatus.Text = "Downloading selected trailer..."
         Me.pbStatus.Style = ProgressBarStyle.Continuous
         Me.pbStatus.Value = 0
         Me.pnlStatus.Visible = True
         Application.DoEvents()
 
-        If Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
-            tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
-            Master.MoveFileWithStream(Me.prePath, tURL)
-
-            File.Delete(Me.prePath)
-        Else
+        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
             Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
             Me.bwDownloadTrailer.WorkerReportsProgress = True
-            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.iIndex = lbTrailers.SelectedIndex, .bType = True})
+            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = Me.txtYouTube.Text, .iIndex = -1, .bType = True})
+        Else
+            If Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
+                tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
+                Master.MoveFileWithStream(Me.prePath, tURL)
+
+                File.Delete(Me.prePath)
+            Else
+                Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                Me.bwDownloadTrailer.WorkerReportsProgress = True
+                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.iIndex = lbTrailers.SelectedIndex, .bType = True})
+            End If
         End If
 
     End Sub
@@ -101,12 +109,16 @@ Public Class dlgTrailer
 
         Dim Args As Arguments = e.Argument
         Try
-            If Args.bType Then
+            If Args.bType AndAlso Args.iIndex >= 0 Then
                 tURL = cTrailer.DownloadSelectedTrailer(Me.sPath, Args.iIndex)
             Else
-                Dim sHTTP As New HTTP
-                Me.prePath = sHTTP.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True)
-                sHTTP = Nothing
+                If Args.bType Then
+                    tURL = cTrailer.DownloadYouTubeTrailer(Me.sPath, Args.Parameter)
+                Else
+                    Dim sHTTP As New HTTP
+                    Me.prePath = sHTTP.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True)
+                    sHTTP = Nothing
+                End If
             End If
         Catch
         End Try
@@ -200,4 +212,9 @@ Public Class dlgTrailer
         End Try
     End Sub
 
+    Private Sub txtYouTube_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYouTube.TextChanged
+        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+            Me.OK_Button.Enabled = True
+        End If
+    End Sub
 End Class

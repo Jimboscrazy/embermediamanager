@@ -446,11 +446,10 @@ Public Class frmMain
                     Master.ConnectDB(False)
                     Me.FillList(0)
                 Else
+                    Master.ConnectDB(True)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
-                        Master.ConnectDB(True)
                         Me.LoadMedia(1)
                     Else
-                        Master.ConnectDB(True)
                         Me.FillList(0)
                     End If
                 End If
