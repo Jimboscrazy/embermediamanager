@@ -345,7 +345,6 @@ Public Class Master
                                     "Name TEXT PRIMARY KEY, " & _
                                     "thumb TEXT" & _
                                     ");"
-                        '"ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "CREATE TABLE MoviesActors(" & _
                                     "MovieID INTEGER NOT NULL, " & _
@@ -384,8 +383,73 @@ Public Class Master
                             SQLcommand.ExecuteNonQuery()
                             SQLcommand.CommandText = "ALTER TABLE Movies RENAME TO tmp_movies;"
                             SQLcommand.ExecuteNonQuery()
-                            SQLcommand.CommandText = "CREATE TABLE Movies(ID INTEGER PRIMARY KEY AUTOINCREMENT, Path TEXT NOT NULL, Type BOOL NOT NULL DEFAULT False , Title TEXT NOT NULL, Poster BOOL NOT NULL DEFAULT False, Fanart BOOL NOT NULL DEFAULT False, Info BOOL NOT NULL DEFAULT False, Trailer BOOL NOT NULL DEFAULT False, Sub BOOL NOT NULL DEFAULT False, Extra BOOL NOT NULL DEFAULT False, New BOOL DEFAULT False, Mark BOOL NOT NULL DEFAULT False, Source TEXT NOT NULL, Imdb TEXT, Lock BOOL NOT NULL DEFAULT False);"
+                            SQLcommand.CommandText = "CREATE TABLE Movies(" & _
+                                        "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                        "Path TEXT NOT NULL, " & _
+                                        "Type BOOL NOT NULL DEFAULT False , " & _
+                                        "Title TEXT NOT NULL, " & _
+                                        "Poster BOOL NOT NULL DEFAULT False, " & _
+                                        "Fanart BOOL NOT NULL DEFAULT False, " & _
+                                        "Info BOOL NOT NULL DEFAULT False, " & _
+                                        "Trailer BOOL NOT NULL DEFAULT False, " & _
+                                        "Sub BOOL NOT NULL DEFAULT False, " & _
+                                        "Extra BOOL NOT NULL DEFAULT False, " & _
+                                        "New BOOL DEFAULT False, " & _
+                                        "Mark BOOL NOT NULL DEFAULT False, " & _
+                                        "Source TEXT NOT NULL, " & _
+                                        "Imdb TEXT, " & _
+                                        "Lock BOOL NOT NULL DEFAULT False, " & _
+                                        "OriginalTitle TEXT, " & _
+                                        "Year TEXT, " & _
+                                        "Rating TEXT, " & _
+                                        "Votes TEXT, " & _
+                                        "MPAA TEXT, " & _
+                                        "Top250 TEXT, " & _
+                                        "Outline TEXT, " & _
+                                        "Plot TEXT, " & _
+                                        "Tagline TEXT, " & _
+                                        "Certification TEXT, " & _
+                                        "Genre TEXT, " & _
+                                        "Studio TEXT, " & _
+                                        "StudioReal TEXT, " & _
+                                        "Runtime TEXT, " & _
+                                        "ReleaseDate TEXT, " & _
+                                        "Director TEXT, " & _
+                                        "Credits TEXT, " & _
+                                        "Playcount TEXT, " & _
+                                        "Watched TEXT, " & _
+                                        "Video_Width TEXT, " & _
+                                        "Video_Height TEXT," & _
+                                        "Video_Codec TEXT, " & _
+                                        "Video_FormatInfo TEXT, " & _
+                                        "Video_Duration TEXT, " & _
+                                        "Video_Bitrate TEXT, " & _
+                                        "Video_BitrateMode TEXT, " & _
+                                        "Video_BitrateMax TEXT, " & _
+                                        "Video_CodecId TEXT, " & _
+                                        "Video_CodecIdInfo TEXT, " & _
+                                        "Video_ScanType TEXT, " & _
+                                        "Video_AspectDisplayRatio TEXT, " & _
+                                        "Audio_Language TEXT, " & _
+                                        "Audio_Codec TEXT, " & _
+                                        "Audio_Channel TEXT, " & _
+                                        "Audio_Bitrate TEXT" & _
+                                        ");"
+                            'Ops, note than you can have multi video/audio stream.. need to create tables for streams and cross-link table
                             SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS Actors(" & _
+                                        "Name TEXT PRIMARY KEY, " & _
+                                        "thumb TEXT" & _
+                                        ");"
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS MoviesActors(" & _
+                                        "MovieID INTEGER NOT NULL, " & _
+                                        "ActorName TEXT NOT NULL, " & _
+                                        "Role TEXT, " & _
+                                        "PRIMARY KEY (MovieID,ActorName) " & _
+                                        ");"
+                            SQLcommand.ExecuteNonQuery()
+
                             SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON Movies (Path);"
                             SQLcommand.ExecuteNonQuery()
                             SQLcommand.CommandText = String.Concat("INSERT INTO Movies ", cQuery, " SELECT * FROM tmp_movies;")
