@@ -389,9 +389,6 @@ Public Class frmMain
         Else
             Try
 
-
-                Me.btnMarkAll.Text = If(Master.eSettings.MarkAll, "Mark All", "Unmark All")
-
                 If Master.eSettings.CheckUpdates Then
                     Dim tmpNew As Integer = Master.CheckUpdate
                     If tmpNew > Convert.ToInt32(My.Application.Info.Version.Revision) Then
@@ -1042,7 +1039,8 @@ Public Class frmMain
                     parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
                     parID.Value = sRow.Cells(0).Value
                     SQLcommand.ExecuteNonQuery()
-                    sRow.Cells(11).Value = If(cmnuMark.Text = "Unmark", False, True)
+                    sRow.Cells(11).Value = parMark.Value
+                    Me.btnMarkAll.Text = If(parMark.Value, "Unmark All", Me.btnMarkAll.Text)
                 Next
             End Using
             SQLtransaction.Commit()
@@ -1465,7 +1463,6 @@ Public Class frmMain
         Next
         Me.SetFilterColors()
         btnMarkAll.Text = If(btnMarkAll.Text = "Unmark All", "Mark All", "Unmark All")
-        Master.eSettings.MarkAll = If(btnMarkAll.Text = "Unmark All", False, True)
     End Sub
 
     Private Sub ExportMoviesListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportMoviesListToolStripMenuItem.Click
@@ -3899,6 +3896,17 @@ doCancel:
             Me.mnuNewAskTrailer.Enabled = .DownloadTrailers
             Me.mnuMarkAutoTrailer.Enabled = .DownloadTrailers
             Me.mnuMarkAskTrailer.Enabled = .DownloadTrailers
+
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
+                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    If SQLcount("mcount") > 0 Then
+                        Me.btnMarkAll.Text = "Unmark All"
+                    Else
+                        Me.btnMarkAll.Text = "Mark All"
+                    End If
+                End Using
+            End Using
 
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then

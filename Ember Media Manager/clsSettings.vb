@@ -126,7 +126,6 @@ Public Class emmSettings
     Private _autobd As Boolean
     Private _usemiduration As Boolean
     Private _usehmforruntime As Boolean
-    Private _markall As Boolean
     Private _genrefilter As String
     Private _useetasfa As Boolean
     Private _sets As New ArrayList
@@ -1057,15 +1056,6 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property MarkAll() As Boolean
-        Get
-            Return Me._markall
-        End Get
-        Set(ByVal value As Boolean)
-            Me._markall = value
-        End Set
-    End Property
-
     Public Property GenreFilter() As String
         Get
             Return Me._genrefilter
@@ -1387,7 +1377,6 @@ Public Class emmSettings
         Me._autobd = False
         Me._usemiduration = False
         Me._usehmforruntime = False
-        Me._markall = True
         Me._genrefilter = "[All]"
         Me._useetasfa = False
         Me._useimgcache = True
