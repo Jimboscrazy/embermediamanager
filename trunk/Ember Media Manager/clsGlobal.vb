@@ -315,7 +315,6 @@ Public Class Master
                                     "Certification TEXT, " & _
                                     "Genre TEXT, " & _
                                     "Studio TEXT, " & _
-                                    "StudioReal TEXT, " & _
                                     "Runtime TEXT, " & _
                                     "ReleaseDate TEXT, " & _
                                     "Director TEXT, " & _
@@ -411,7 +410,6 @@ Public Class Master
                                         "Certification TEXT, " & _
                                         "Genre TEXT, " & _
                                         "Studio TEXT, " & _
-                                        "StudioReal TEXT, " & _
                                         "Runtime TEXT, " & _
                                         "ReleaseDate TEXT, " & _
                                         "Director TEXT, " & _
@@ -621,7 +619,7 @@ Public Class Master
 
     Private Shared Function ProperCase(ByVal sString As String) As String
         Dim sReturn As String = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(sString)
-        Dim toUpper As String = "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix)\b"
+        Dim toUpper As String = "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b"
 
         Dim mcUp As MatchCollection = Regex.Matches(sReturn, toUpper, RegexOptions.IgnoreCase)
         For Each M As Match In mcUp

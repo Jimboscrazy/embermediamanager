@@ -166,6 +166,8 @@ Public Class MediaInfo
                     Return "dx50"
                 Case tFormat.Contains("divx 3")
                     Return "div3"
+                Case tFormat = "lmp4", tFormat = "svq3", tFormat = "x264", tFormat = "avc"
+                    Return "h264"
                 Case Else
                     Return tFormat
             End Select
