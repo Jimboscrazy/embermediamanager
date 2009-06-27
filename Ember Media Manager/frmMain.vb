@@ -1652,6 +1652,109 @@ Public Class frmMain
             End Try
         End Using
     End Sub
+
+    Private Sub cmnuRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRefresh.Click
+        Dim aContents(6) As Boolean
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
+                Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
+                Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
+                Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
+                Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
+                Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?)  WHERE id = (?);"
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    aContents = Master.GetFolderContents(sRow.Cells(1).Value, sRow.Cells(2).Value)
+                    parPoster.Value = aContents(0)
+                    parFanart.Value = aContents(1)
+                    parInfo.Value = aContents(2)
+                    parTrailer.Value = aContents(3)
+                    parSub.Value = aContents(4)
+                    parExtra.Value = aContents(5)
+                    parID.Value = sRow.Cells(0).Value
+                    SQLcommand.ExecuteNonQuery()
+
+                    sRow.Cells(4).Value = aContents(0)
+                    sRow.Cells(5).Value = aContents(1)
+                    sRow.Cells(6).Value = aContents(2)
+                    sRow.Cells(7).Value = aContents(3)
+                    sRow.Cells(8).Value = aContents(4)
+                    sRow.Cells(9).Value = aContents(5)
+                Next
+            End Using
+            SQLtransaction.Commit()
+        End Using
+    End Sub
+
+    Private Sub RefreshAllMoviesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshAllMoviesToolStripMenuItem.Click
+        Dim aContents(6) As Boolean
+        If Me.dtMedia.Rows.Count > 0 Then
+
+            Me.ToolsToolStripMenuItem.Enabled = False
+            Me.tsbAutoPilot.Enabled = False
+            Me.tsbRefreshMedia.Enabled = False
+            Me.mnuMediaList.Enabled = False
+            Me.tabsMain.Enabled = False
+            Me.tspbLoading.Style = ProgressBarStyle.Continuous
+            Me.EnableFilters(False)
+
+            Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
+            Me.tspbLoading.Value = 0
+            Me.tslLoading.Text = "Refreshing Media:"
+            Me.tspbLoading.Visible = True
+            Me.tslLoading.Visible = True
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
+                    Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
+                    Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
+                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
+                    Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
+                    Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?)  WHERE id = (?);"
+                    For Each sRow As DataRow In Me.dtMedia.Rows
+                        Me.tslStatus.Text = sRow.Item(3)
+                        aContents = Master.GetFolderContents(sRow.Item(1), sRow.Item(2))
+
+                        parPoster.Value = aContents(0)
+                        parFanart.Value = aContents(1)
+                        parInfo.Value = aContents(2)
+                        parTrailer.Value = aContents(3)
+                        parSub.Value = aContents(4)
+                        parExtra.Value = aContents(5)
+                        parID.Value = sRow.Item(0)
+                        SQLcommand.ExecuteNonQuery()
+
+                        sRow.Item(4) = aContents(0)
+                        sRow.Item(5) = aContents(1)
+                        sRow.Item(6) = aContents(2)
+                        sRow.Item(7) = aContents(3)
+                        sRow.Item(8) = aContents(4)
+                        sRow.Item(9) = aContents(5)
+
+                        Me.tspbLoading.Value += 1
+
+                        Application.DoEvents()
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Me.tslLoading.Text = String.Empty
+            Me.tspbLoading.Visible = False
+            Me.tslLoading.Visible = False
+            Me.ToolsToolStripMenuItem.Enabled = True
+            Me.tsbAutoPilot.Enabled = True
+            Me.tsbRefreshMedia.Enabled = True
+            Me.mnuMediaList.Enabled = True
+            Me.tabsMain.Enabled = True
+            Me.EnableFilters(True)
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -3689,7 +3792,7 @@ doCancel:
         Dim aContents(6) As Boolean
         Try
 
-            aContents = = Master.GetFolderContents(sPath, dRow(0).item(2))
+            aContents = Master.GetFolderContents(sPath, dRow(0).Item(2))
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
@@ -4170,106 +4273,5 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
-    Private Sub cmnuRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRefresh.Click
-        Dim aContents(6) As Boolean
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
-                Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
-                Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
-                Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
-                Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
-                Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?)  WHERE id = (?);"
-                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    aContents = Master.GetFolderContents(sRow.Cells(1).Value, sRow.Cells(2).Value)
-                    parPoster.Value = aContents(0)
-                    parFanart.Value = aContents(1)
-                    parInfo.Value = aContents(2)
-                    parTrailer.Value = aContents(3)
-                    parSub.Value = aContents(4)
-                    parExtra.Value = aContents(5)
-                    parID.Value = sRow.Cells(0).Value
-                    SQLcommand.ExecuteNonQuery()
 
-                    sRow.Cells(4).Value = aContents(0)
-                    sRow.Cells(5).Value = aContents(1)
-                    sRow.Cells(6).Value = aContents(2)
-                    sRow.Cells(7).Value = aContents(3)
-                    sRow.Cells(8).Value = aContents(4)
-                    sRow.Cells(9).Value = aContents(5)
-                Next
-            End Using
-            SQLtransaction.Commit()
-        End Using
-    End Sub
-
-    Private Sub RefreshAllMoviesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshAllMoviesToolStripMenuItem.Click
-        Dim aContents(6) As Boolean
-        If Me.dtMedia.Rows.Count > 0 Then
-
-            Me.ToolsToolStripMenuItem.Enabled = False
-            Me.tsbAutoPilot.Enabled = False
-            Me.tsbRefreshMedia.Enabled = False
-            Me.mnuMediaList.Enabled = False
-            Me.tabsMain.Enabled = False
-            Me.tspbLoading.Style = ProgressBarStyle.Continuous
-            Me.EnableFilters(False)
-
-            Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
-            Me.tspbLoading.Value = 0
-            Me.tslLoading.Text = "Refreshing Media:"
-            Me.tspbLoading.Visible = True
-            Me.tslLoading.Visible = True
-
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
-                    Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
-                    Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
-                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
-                    Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
-                    Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?)  WHERE id = (?);"
-                    For Each sRow As DataRow In Me.dtMedia.Rows
-                        Me.tslStatus.Text = sRow.Item(3)
-                        aContents = Master.GetFolderContents(sRow.Item(1), sRow.Item(2))
-
-                        parPoster.Value = aContents(0)
-                        parFanart.Value = aContents(1)
-                        parInfo.Value = aContents(2)
-                        parTrailer.Value = aContents(3)
-                        parSub.Value = aContents(4)
-                        parExtra.Value = aContents(5)
-                        parID.Value = sRow.Item(0)
-                        SQLcommand.ExecuteNonQuery()
-
-                        sRow.Item(4) = aContents(0)
-                        sRow.Item(5) = aContents(1)
-                        sRow.Item(6) = aContents(2)
-                        sRow.Item(7) = aContents(3)
-                        sRow.Item(8) = aContents(4)
-                        sRow.Item(9) = aContents(5)
-
-                        Me.tspbLoading.Value += 1
-
-                        Application.DoEvents()
-                    Next
-                End Using
-                SQLtransaction.Commit()
-            End Using
-
-            Me.tslLoading.Text = String.Empty
-            Me.tspbLoading.Visible = False
-            Me.tslLoading.Visible = False
-            Me.ToolsToolStripMenuItem.Enabled = True
-            Me.tsbAutoPilot.Enabled = True
-            Me.tsbRefreshMedia.Enabled = True
-            Me.mnuMediaList.Enabled = True
-            Me.tabsMain.Enabled = True
-            Me.EnableFilters(True)
-        End If
-    End Sub
 End Class
