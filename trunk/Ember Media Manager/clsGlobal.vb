@@ -339,6 +339,7 @@ Public Class Master
                                     "Audio_Channel TEXT, " & _
                                     "Audio_Bitrate TEXT" & _
                                     ");"
+                        'Ops, note than you can have multi video/audio stream.. need to create tables for streams and cross-link table
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "CREATE TABLE Actors(" & _
                                     "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
