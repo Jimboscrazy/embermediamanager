@@ -1808,7 +1808,6 @@ Public Class frmMain
                         For Each mRow As DataRow In dtMediaList.Rows
                             MLFind.SearchString = mRow.Item(0)
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
-                            ' if .ext was remove need to check it and remove movie also
                             If IsNothing(MLFound) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0))) Then
                                 parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
@@ -1953,7 +1952,7 @@ Public Class frmMain
                             tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isSingle))
                             mName = tmpMovie.Title
                             mIMDB = tmpMovie.IMDBID
-
+                            cleanName = mName 'From NFO don't need to Celan Name
                             If String.IsNullOrEmpty(mName) Then
                                 If sFile.UseFolder Then
                                     If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
@@ -1964,9 +1963,10 @@ Public Class frmMain
                                 Else
                                     mName = Path.GetFileNameWithoutExtension(sFile.Filename)
                                 End If
+                                cleanName = Master.FilterName(mName)
                             End If
 
-                            cleanName = Master.FilterName(mName)
+
                             Me.bwFolderData.ReportProgress(currentIndex, cleanName)
 
                             If Not String.IsNullOrEmpty(cleanName) Then
