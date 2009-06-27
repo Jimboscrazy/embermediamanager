@@ -2020,12 +2020,12 @@ Public Class frmMain
                                                 Using rdrActor As SQLite.SQLiteDataReader = SQLcommandActor.ExecuteReader()
                                                     If rdrActor.Read Then
                                                         Using SQLcommandMoviesActors As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                                                            SQLcommandMoviesActors.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesActors (MovieID,ActorID,Role) VALUES (?,?,?);")
+                                                            SQLcommandMoviesActors.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesActors (MovieID,ActorName,Role) VALUES (?,?,?);")
                                                             Dim parMoviesActorsMovieID As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsMovieID", DbType.UInt64, 0, "MovieID")
-                                                            Dim parMoviesActorsActorID As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorID", DbType.UInt64, 0, "ActorID")
+                                                            Dim parMoviesActorsActorName As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorName", DbType.UInt64, 0, "ActorNAme")
                                                             Dim parMoviesActorsActorRole As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorRole", DbType.String, 0, "Role")
                                                             parMoviesActorsMovieID.Value = rdrMovie(0)
-                                                            parMoviesActorsActorID.Value = rdrActor(0)
+                                                            parMoviesActorsActorName.Value = rdrActor(0)
                                                             parMoviesActorsActorRole.Value = actor.Role
                                                             SQLcommandMoviesActors.ExecuteNonQuery()
                                                         End Using

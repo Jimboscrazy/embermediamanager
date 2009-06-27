@@ -342,16 +342,16 @@ Public Class Master
                         'Ops, note than you can have multi video/audio stream.. need to create tables for streams and cross-link table
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "CREATE TABLE Actors(" & _
-                                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                    "Name TEXT, " & _
+                                    "Name TEXT PRIMARY KEY, " & _
                                     "thumb TEXT" & _
                                     ");"
+                        '"ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "CREATE TABLE MoviesActors(" & _
                                     "MovieID INTEGER NOT NULL, " & _
-                                    "ActorID INTEGER NOT NULL, " & _
+                                    "ActorName TEXT NOT NULL, " & _
                                     "Role TEXT, " & _
-                                    "PRIMARY KEY (MovieID,ActorID) " & _
+                                    "PRIMARY KEY (MovieID,ActorName) " & _
                                     ");"
                         SQLcommand.ExecuteNonQuery()
 
