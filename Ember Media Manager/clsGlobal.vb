@@ -626,6 +626,7 @@ Public Class Master
 
                     If tSingle Then
                         fList(0).isSingle = True
+                        fList(0).UseFolder = bUseFolder
                         MediaList.Add(fList(0))
                     Else
                         MediaList.AddRange(fList)
@@ -1160,7 +1161,7 @@ Public Class Master
                     End If
                 Next
 
-                If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     hasExtra = True
                 End If
 
