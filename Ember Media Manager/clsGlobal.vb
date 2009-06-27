@@ -45,6 +45,7 @@ Public Class Master
     Public Shared eLog As New ErrorLogger
     Public Shared SQLcn As New SQLite.SQLiteConnection()
     Public Shared DefaultOptions As New ScrapeOptions
+    Public Shared alMoviePaths As New ArrayList
 
     Public Shared TempPath As String = Path.Combine(Application.StartupPath, "Temp")
 
@@ -588,17 +589,22 @@ Public Class Master
                     lFi.Sort(AddressOf SortFileNames)
 
                     For Each lFile As FileInfo In lFi
-                        If Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
-                        Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
-                        ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
-                            If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
-                                tmpList.Add(lFile.FullName)
-                            Else
-                                tmpList.Add(CleanStackingMarkers(lFile.FullName))
+                        If alMoviePaths.Contains(lFile.FullName) Then
+                            'it's already on the list, don't bother scanning
+                            MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
+                        Else
+                            If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
+                           Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
+                           ((eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
+                                If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
+                                    tmpList.Add(lFile.FullName)
+                                Else
+                                    tmpList.Add(CleanStackingMarkers(lFile.FullName))
+                                End If
+                                aContents = GetFolderContents(lFile.FullName, bSingle)
+                                MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)})
+                                If bSingle Then Exit For
                             End If
-                            aContents = GetFolderContents(lFile.FullName, bSingle)
-                            MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)})
-                            If bSingle Then Exit For
                         End If
                     Next
                 End If
