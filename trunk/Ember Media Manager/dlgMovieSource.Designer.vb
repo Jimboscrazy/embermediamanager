@@ -22,6 +22,7 @@ Partial Class dlgMovieSource
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
@@ -36,6 +37,10 @@ Partial Class dlgMovieSource
         Me.chkScanRecursive = New System.Windows.Forms.CheckBox
         Me.pbValid = New System.Windows.Forms.PictureBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
+        Me.tmrWait = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrName = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrPathWait = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -174,6 +179,22 @@ Partial Class dlgMovieSource
         '
         Me.fbdBrowse.Description = "Select the parent folder for your movie folders/files."
         '
+        'tmrWait
+        '
+        Me.tmrWait.Interval = 250
+        '
+        'tmrName
+        '
+        Me.tmrName.Interval = 250
+        '
+        'tmrPathWait
+        '
+        Me.tmrPathWait.Interval = 250
+        '
+        'tmrPath
+        '
+        Me.tmrPath.Interval = 250
+        '
         'dlgMovieSource
         '
         Me.AcceptButton = Me.OK_Button
@@ -218,5 +239,9 @@ Partial Class dlgMovieSource
     Friend WithEvents chkSingle As System.Windows.Forms.CheckBox
     Friend WithEvents pbValid As System.Windows.Forms.PictureBox
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents tmrWait As System.Windows.Forms.Timer
+    Friend WithEvents tmrName As System.Windows.Forms.Timer
+    Friend WithEvents tmrPathWait As System.Windows.Forms.Timer
+    Friend WithEvents tmrPath As System.Windows.Forms.Timer
 
 End Class
