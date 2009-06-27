@@ -583,6 +583,9 @@ Public Class Master
                 Dim lFi As New List(Of FileInfo)
                 Dim aContents(6) As Boolean
                 Dim SkipStack As Boolean = False
+                Dim fList As New List(Of FileAndSource)
+                Dim tSingle As Boolean = False
+
                 Try
                     lFi.AddRange(di.GetFiles())
                 Catch
@@ -600,7 +603,7 @@ Public Class Master
                             Else
                                 tmpList.Add(CleanStackingMarkers(lFile.FullName))
                             End If
-                            MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
+                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
                             If bSingle AndAlso Not SkipStack Then Exit For
                         Else
                             If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
@@ -613,11 +616,22 @@ Public Class Master
                                     tmpList.Add(CleanStackingMarkers(lFile.FullName))
                                 End If
                                 aContents = GetFolderContents(lFile.FullName, bSingle)
-                                MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)})
+                                fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)})
                                 If bSingle AndAlso Not SkipStack Then Exit For
                             End If
                         End If
                     Next
+
+                    If fList.Count = 1 Then tSingle = True
+
+                    If tSingle Then
+                        fList(0).isSingle = True
+                        MediaList.Add(fList(0))
+                    Else
+                        MediaList.AddRange(fList)
+                    End If
+
+                    fList = Nothing
                 End If
             End If
         Catch ex As Exception
