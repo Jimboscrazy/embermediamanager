@@ -1883,7 +1883,11 @@ Public Class frmMain
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
+                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (" & _
+                        "path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock," & _
+                        "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre" & _
+                        "Studio, StudioReal, Runtime, ReleaseDate, Director, Credits, Playcount, Watched" & _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
                     Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 0, "type")
                     Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
@@ -1899,6 +1903,44 @@ Public Class frmMain
                     Dim parIMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parIMDB", DbType.String, 0, "imdb")
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
 
+                    Dim parOriginalTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOriginalTitle", DbType.String, 0, "OriginalTitle")
+                    Dim parYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parYear", DbType.String, 0, "Year")
+                    Dim parRating As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRating", DbType.String, 0, "Rating")
+                    Dim parVotes As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
+                    Dim parMPAA As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMPAA", DbType.String, 0, "MPAA")
+                    Dim parTop250 As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTop250", DbType.String, 0, "Top250")
+                    Dim parOutline As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutline", DbType.String, 0, "Outline")
+                    Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
+                    Dim parTagline As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTagline", DbType.String, 0, "Tagline")
+                    Dim parCertification As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCertification", DbType.String, 0, "Certification")
+                    Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
+                    Dim parStudio As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStudio", DbType.String, 0, "Studio")
+                    Dim parStudioReal As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStudioReal", DbType.String, 0, "StudioReal")
+                    Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
+                    Dim parReleaseDate As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parReleaseDate", DbType.String, 0, "ReleaseDate")
+                    Dim parDirector As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirector", DbType.String, 0, "Director")
+                    Dim parCredits As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCredits", DbType.String, 0, "Credits")
+                    Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
+                    Dim parWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parWatched", DbType.String, 0, "Watched")
+
+                    'Dim parVideo_Width As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
+                    'Dim parVideo_Height As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Height", DbType.String, 0, "Video_Height")
+                    'Dim parVideo_Codec As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Codec", DbType.String, 0, "Video_Codec")
+                    'Dim parVideo_FormatInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_FormatInfo", DbType.String, 0, "Video_FormatInfo")
+                    'Dim parVideo_Duration As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Duration", DbType.String, 0, "Video_Duration")
+                    'Dim parVideo_Bitrate As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Bitrate", DbType.String, 0, "Video_Bitrate")
+                    'Dim parVideo_BitrateMod As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_BitrateMod", DbType.String, 0, "Video_BitrateMod")
+                    'Dim parVideo_BitrateMax As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_BitrateMax", DbType.String, 0, "Video_BitrateMax")
+                    'Dim parVideo_CodecId As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_CodecId", DbType.String, 0, "Video_CodecId")
+                    'Dim parVideo_CodecIdInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_CodecIdInfo", DbType.String, 0, "Video_CodecIdInfo")
+                    'Dim parVideo_ScanType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_ScanType", DbType.String, 0, "Video_ScanType")
+                    'Dim parVideo_AspectDisplayRatio As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_AspectDisplayRatio", DbType.String, 0, "Video_AspectDisplayRatio")
+
+                    'Dim parAudio_Language As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parAudio_Language", DbType.String, 0, "Audio_Language")
+                    'Dim parAudio_Codec As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parAudio_Codec", DbType.String, 0, "Audio_Codec")
+                    'Dim parAudio_Channel As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parAudio_Channel", DbType.String, 0, "Audio_Channel")
+                    'Dim parAudio_Bitrate As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parAudio_Bitrate", DbType.String, 0, "Audio_Bitrate")
+
                     'process the folder type media
                     For Each sFile As Master.FileAndSource In Master.MediaList
                         If Me.bwFolderData.CancellationPending Then
@@ -1910,7 +1952,7 @@ Public Class frmMain
                             tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isSingle))
                             mName = tmpMovie.Title
                             mIMDB = tmpMovie.IMDBID
-                            tmpMovie = Nothing
+
                             If String.IsNullOrEmpty(mName) Then
                                 If sFile.UseFolder Then
                                     If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
@@ -1924,11 +1966,9 @@ Public Class frmMain
                             End If
 
                             cleanName = Master.FilterName(mName)
-
                             Me.bwFolderData.ReportProgress(currentIndex, cleanName)
 
                             If Not String.IsNullOrEmpty(cleanName) Then
-
                                 parPath.Value = sFile.Filename
                                 parType.Value = sFile.isSingle
                                 parTitle.Value = cleanName
@@ -1940,6 +1980,27 @@ Public Class frmMain
                                 parExtra.Value = sFile.Extra
                                 parNew.Value = True
                                 parLock.Value = False
+
+                                parOriginalTitle.Value = tmpMovie.OriginalTitle
+                                parYear.Value = tmpMovie.Year
+                                parRating.Value = tmpMovie.Rating
+                                parVotes.Value = tmpMovie.Votes
+                                parMPAA.Value = tmpMovie.MPAA
+                                parTop250.Value = tmpMovie.Top250
+                                parOutline.Value = tmpMovie.Outline
+                                parPlot.Value = tmpMovie.Plot
+                                parTagline.Value = tmpMovie.Tagline
+                                parCertification.Value = tmpMovie.Certification
+                                parGenre.Value = tmpMovie.Genre
+                                parStudio.Value = tmpMovie.Studio
+                                parStudioReal.Value = tmpMovie.Studio 'Note: StudioReal dont exit in Media.Movie need to check this out
+                                parRuntime.Value = tmpMovie.Runtime
+                                parReleaseDate.Value = tmpMovie.ReleaseDate
+                                parDirector.Value = tmpMovie.Director
+                                parCredits.Value = tmpMovie.Credits
+                                parPlaycount.Value = tmpMovie.PlayCount
+                                parWatched.Value = tmpMovie.Watched
+
                                 If Master.eSettings.MarkNew Then
                                     parMark.Value = True
                                 Else
@@ -1953,6 +2014,7 @@ Public Class frmMain
                                 mIMDB = String.Empty
                                 currentIndex += 1
                             End If
+                            tmpMovie = Nothing
                         End If
                     Next
                 End Using
@@ -4128,9 +4190,11 @@ doCancel:
 
             Me.dtMedia = New DataTable
             If DupesOnly Then
-                sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title", Master.SQLcn)
+                sqlDA = New SQLite.SQLiteDataAdapter("SELECT id, path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title", Master.SQLcn)
+                'sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title", Master.SQLcn)
             Else
-                sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies ORDER BY title", Master.SQLcn)
+                sqlDA = New SQLite.SQLiteDataAdapter("SELECT id, path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock FROM movies ORDER BY title", Master.SQLcn)
+                'sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies ORDER BY title", Master.SQLcn)
             End If
 
             Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
