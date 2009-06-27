@@ -4185,11 +4185,14 @@ doCancel:
                         .dgvMediaList.Columns(9).ReadOnly = True
                         .dgvMediaList.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
-                        .dgvMediaList.Columns(10).Visible = False
-                        .dgvMediaList.Columns(11).Visible = False
-                        .dgvMediaList.Columns(12).Visible = False
-                        .dgvMediaList.Columns(13).Visible = False
-                        .dgvMediaList.Columns(14).Visible = False
+                        For i As Integer = 10 To .dgvMediaList.Columns.Count - 1
+                            .dgvMediaList.Columns(i).Visible = False
+                        Next
+                        '.dgvMediaList.Columns(10).Visible = False
+                        '.dgvMediaList.Columns(11).Visible = False
+                        '.dgvMediaList.Columns(12).Visible = False
+                        '.dgvMediaList.Columns(13).Visible = False
+                        '.dgvMediaList.Columns(14).Visible = False
 
 
                         'Trick to autosize the first column, but still allow resizing by user

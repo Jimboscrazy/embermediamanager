@@ -280,61 +280,124 @@ Public Class Master
     End Class
 
     Public Shared Sub ConnectDB(ByVal Reset As Boolean)
-
-        'create database if it doesn't exist
-        If Not File.Exists(Path.Combine(Application.StartupPath, "Media.emm")) Then
-            SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
-            SQLcn.Open()
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                    SQLcommand.CommandText = "CREATE TABLE Movies(ID INTEGER PRIMARY KEY AUTOINCREMENT, Path TEXT NOT NULL, Type BOOL NOT NULL DEFAULT False , Title TEXT NOT NULL, Poster BOOL NOT NULL DEFAULT False, Fanart BOOL NOT NULL DEFAULT False, Info BOOL NOT NULL DEFAULT False, Trailer BOOL NOT NULL DEFAULT False, Sub BOOL NOT NULL DEFAULT False, Extra BOOL NOT NULL DEFAULT False, New BOOL DEFAULT False, Mark BOOL NOT NULL DEFAULT False, Source TEXT NOT NULL, Imdb TEXT, Lock BOOL NOT NULL DEFAULT False);"
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON Movies (Path);"
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE TABLE Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX UniqueSource ON Sources (Path);"
-                    SQLcommand.ExecuteNonQuery()
-                End Using
-                SQLtransaction.Commit()
-            End Using
-        Else
-            SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
-            SQLcn.Open()
-            If Reset Then
-                Dim tColumns As New DataTable
-                Dim tRestrict() As String = New String(2) {Nothing, Nothing, "movies"}
-
-                Dim aCol As New ArrayList
-                Dim cQuery As String = String.Empty
-                tColumns = SQLcn.GetSchema("Columns", tRestrict)
-                For Each col As DataRow In tColumns.Rows
-                    aCol.Add(col("column_name").ToString)
-                Next
-                cQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
+        Try
+            'create database if it doesn't exist
+            If Not File.Exists(Path.Combine(Application.StartupPath, "Media.emm")) Then
+                SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
+                SQLcn.Open()
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                     Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                        SQLcommand.CommandText = "DROP INDEX UniquePath;"
+                        SQLcommand.CommandText = "CREATE TABLE Movies(" & _
+                                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                    "Path TEXT NOT NULL, " & _
+                                    "Type BOOL NOT NULL DEFAULT False , " & _
+                                    "Title TEXT NOT NULL, " & _
+                                    "Poster BOOL NOT NULL DEFAULT False, " & _
+                                    "Fanart BOOL NOT NULL DEFAULT False, " & _
+                                    "Info BOOL NOT NULL DEFAULT False, " & _
+                                    "Trailer BOOL NOT NULL DEFAULT False, " & _
+                                    "Sub BOOL NOT NULL DEFAULT False, " & _
+                                    "Extra BOOL NOT NULL DEFAULT False, " & _
+                                    "New BOOL DEFAULT False, " & _
+                                    "Mark BOOL NOT NULL DEFAULT False, " & _
+                                    "Source TEXT NOT NULL, " & _
+                                    "Imdb TEXT, " & _
+                                    "Lock BOOL NOT NULL DEFAULT False, " & _
+                                    "OriginalTitle TEXT, " & _
+                                    "Year INTEGER, " & _
+                                    "Rating TEXT, " & _
+                                    "Votes TEXT, " & _
+                                    "MPAA TEXT, " & _
+                                    "Outline TEXT, " & _
+                                    "Plot TEXT, " & _
+                                    "Genre TEXT, " & _
+                                    "Studio TEXT, " & _
+                                    "StudioReal TEXT, " & _
+                                    "Runtime TEXT, " & _
+                                    "ReleaseDate TEXT, " & _
+                                    "Director TEXT, " & _
+                                    "Credits TEXT, " & _
+                                    "Video_Width INTEGER, " & _
+                                    "Video_Height INTEGER," & _
+                                    "Video_Codec TEXT, " & _
+                                    "Video_FomatInfo TEXT, " & _
+                                    "Video_Duration TEXT, " & _
+                                    "Video_Bitrate TEXT, " & _
+                                    "Video_BitrateMode TEXT, " & _
+                                    "Video_BitrateMax TEXT, " & _
+                                    "Video_CodecId TEXT, " & _
+                                    "Video_CodecIdInfo TEXT, " & _
+                                    "Video_ScanType TEXT, " & _
+                                    "Video_AspectDisplayRatio TEXT, " & _
+                                    "Audio_Language TEXT, " & _
+                                    "Audio_Codec TEXT, " & _
+                                    "Audio_Channel TEXT, " & _
+                                    "Audio_Bitrate TEXT" & _
+                                    ");"
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "ALTER TABLE Movies RENAME TO tmp_movies;"
+                        SQLcommand.CommandText = "CREATE TABLE Actors(" & _
+                                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                    "Name TEXT, " & _
+                                    "thumb TEXT" & _
+                                    ");"
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE TABLE Movies(ID INTEGER PRIMARY KEY AUTOINCREMENT, Path TEXT NOT NULL, Type BOOL NOT NULL DEFAULT False , Title TEXT NOT NULL, Poster BOOL NOT NULL DEFAULT False, Fanart BOOL NOT NULL DEFAULT False, Info BOOL NOT NULL DEFAULT False, Trailer BOOL NOT NULL DEFAULT False, Sub BOOL NOT NULL DEFAULT False, Extra BOOL NOT NULL DEFAULT False, New BOOL DEFAULT False, Mark BOOL NOT NULL DEFAULT False, Source TEXT NOT NULL, Imdb TEXT, Lock BOOL NOT NULL DEFAULT False);"
+                        SQLcommand.CommandText = "CREATE TABLE ActorsMovies(" & _
+                                    "MovieID INTEGER NOT NULL, " & _
+                                    "ActorID INTEGER NOT NULL, " & _
+                                    "Role TEXT, " & _
+                                    "PRIMARY KEY (MovieID,ActorID) " & _
+                                    ");"
                         SQLcommand.ExecuteNonQuery()
+
                         SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON Movies (Path);"
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = String.Concat("INSERT INTO Movies ", cQuery, " SELECT * FROM tmp_movies;")
+                        SQLcommand.CommandText = "CREATE TABLE Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "DROP TABLE tmp_movies;"
-                        SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
-                        SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueSource ON Sources (Path);"
+                        SQLcommand.CommandText = "CREATE UNIQUE INDEX UniqueSource ON Sources (Path);"
                         SQLcommand.ExecuteNonQuery()
                     End Using
                     SQLtransaction.Commit()
                 End Using
+            Else
+                SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
+                SQLcn.Open()
+                If Reset Then
+                    Dim tColumns As New DataTable
+                    Dim tRestrict() As String = New String(2) {Nothing, Nothing, "movies"}
+
+                    Dim aCol As New ArrayList
+                    Dim cQuery As String = String.Empty
+                    tColumns = SQLcn.GetSchema("Columns", tRestrict)
+                    For Each col As DataRow In tColumns.Rows
+                        aCol.Add(col("column_name").ToString)
+                    Next
+                    cQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                        Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                            SQLcommand.CommandText = "DROP INDEX UniquePath;"
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = "ALTER TABLE Movies RENAME TO tmp_movies;"
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = "CREATE TABLE Movies(ID INTEGER PRIMARY KEY AUTOINCREMENT, Path TEXT NOT NULL, Type BOOL NOT NULL DEFAULT False , Title TEXT NOT NULL, Poster BOOL NOT NULL DEFAULT False, Fanart BOOL NOT NULL DEFAULT False, Info BOOL NOT NULL DEFAULT False, Trailer BOOL NOT NULL DEFAULT False, Sub BOOL NOT NULL DEFAULT False, Extra BOOL NOT NULL DEFAULT False, New BOOL DEFAULT False, Mark BOOL NOT NULL DEFAULT False, Source TEXT NOT NULL, Imdb TEXT, Lock BOOL NOT NULL DEFAULT False);"
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON Movies (Path);"
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = String.Concat("INSERT INTO Movies ", cQuery, " SELECT * FROM tmp_movies;")
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = "DROP TABLE tmp_movies;"
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
+                            SQLcommand.ExecuteNonQuery()
+                            SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueSource ON Sources (Path);"
+                            SQLcommand.ExecuteNonQuery()
+                        End Using
+                        SQLtransaction.Commit()
+                    End Using
+                End If
             End If
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Public Shared Sub CreateDefaultOptions()
