@@ -1088,27 +1088,42 @@ Public Class Master
         Try
 
             If Not isSingle Then
+
+                Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
+                Dim lFi As New List(Of FileInfo)()
+                Dim fList As New ArrayList
+
+                Try
+                    lFi.AddRange(di.GetFiles())
+                Catch
+                End Try
+
+                For Each sFile As FileInfo In lFi
+                    fList.Add(sFile.FullName)
+                Next
+
+
                 parPath = Directory.GetParent(sPath).FullName
                 tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
                 tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
                 'fanart
-                If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse _
-                    File.Exists(String.Concat(tmpNameNoStack, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".fanart.jpg")) OrElse _
-                    File.Exists(Path.Combine(parPath, "fanart.jpg")) Then
+                If fList.Contains(String.Concat(tmpName, "-fanart.jpg")) OrElse fList.Contains(String.Concat(tmpName, ".fanart.jpg")) OrElse _
+                    fList.Contains(String.Concat(tmpNameNoStack, "-fanart.jpg")) OrElse fList.Contains(String.Concat(tmpNameNoStack, ".fanart.jpg")) OrElse _
+                    fList.Contains(Path.Combine(parPath, "fanart.jpg")) Then
                     hasFanart = True
                 End If
 
                 'poster
-                If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(Path.Combine(parPath, "movie.jpg")) OrElse _
-                    File.Exists(Path.Combine(parPath, "poster.jpg")) OrElse File.Exists(Path.Combine(parPath, "folder.jpg")) OrElse _
-                    File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(Path.Combine(parPath, "movie.tbn")) OrElse _
-                    File.Exists(String.Concat(tmpNameNoStack, ".jpg")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".tbn")) OrElse _
-                    File.Exists(Path.Combine(parPath, "poster.tbn")) Then
+                If fList.Contains(String.Concat(tmpName, ".jpg")) OrElse fList.Contains(Path.Combine(parPath, "movie.jpg")) OrElse _
+                    fList.Contains(Path.Combine(parPath, "poster.jpg")) OrElse fList.Contains(Path.Combine(parPath, "folder.jpg")) OrElse _
+                    fList.Contains(String.Concat(tmpName, ".tbn")) OrElse fList.Contains(Path.Combine(parPath, "movie.tbn")) OrElse _
+                    fList.Contains(String.Concat(tmpNameNoStack, ".jpg")) OrElse fList.Contains(String.Concat(tmpNameNoStack, ".tbn")) OrElse _
+                    fList.Contains(Path.Combine(parPath, "poster.tbn")) Then
                     hasPoster = True
                 End If
 
                 'nfo
-                If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".nfo")) OrElse File.Exists(Path.Combine(parPath, "movie.nfo")) Then
+                If fList.Contains(String.Concat(tmpName, ".nfo")) OrElse fList.Contains(String.Concat(tmpNameNoStack, ".nfo")) OrElse File.Exists(Path.Combine(parPath, "movie.nfo")) Then
                     hasNfo = True
                 End If
 
@@ -1116,20 +1131,25 @@ Public Class Master
                 Dim sExt() As String = Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ",")
 
                 For Each t As String In sExt
-                    If File.Exists(String.Concat(tmpName, t)) OrElse File.Exists(String.Concat(tmpName, t)) OrElse _
-                        File.Exists(String.Concat(tmpNameNoStack, t)) OrElse File.Exists(String.Concat(tmpNameNoStack, t)) Then
+                    If fList.Contains(String.Concat(tmpName, t)) OrElse fList.Contains(String.Concat(tmpName, t)) OrElse _
+                        fList.Contains(String.Concat(tmpNameNoStack, t)) OrElse fList.Contains(String.Concat(tmpNameNoStack, t)) Then
                         hasSub = True
                         Exit For
                     End If
                 Next
 
                 For Each t As String In Master.eSettings.ValidExts
-                    If File.Exists(String.Concat(tmpName, "-trailer", t)) OrElse File.Exists(String.Concat(tmpName, "[trailer]", t)) OrElse _
-                        File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) OrElse File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
+                    If fList.Contains(String.Concat(tmpName, "-trailer", t)) OrElse fList.Contains(String.Concat(tmpName, "[trailer]", t)) OrElse _
+                        fList.Contains(String.Concat(tmpNameNoStack, "-trailer", t)) OrElse fList.Contains(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
                         hasTrailer = True
                         Exit For
                     End If
                 Next
+
+                If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                    hasExtra = True
+                End If
+
             Else
 
                 Dim di As DirectoryInfo
