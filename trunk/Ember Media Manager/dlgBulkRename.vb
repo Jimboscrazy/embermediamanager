@@ -30,9 +30,15 @@ Public Class dlgBulkRenamer
     Private bindingSource1 As New BindingSource()
     Private isLoaded As Boolean = False
     Private FFRenamer As New FileFolderRenamer
+    Private DoneRename As Boolean = False
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
+        If DoneRename Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Else
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        End If
+
         Me.Close()
     End Sub
 
@@ -317,6 +323,7 @@ Public Class dlgBulkRenamer
 
 
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
+        DoneRename = True
         FFRenamer.DoRename()
     End Sub
 

@@ -1645,8 +1645,9 @@ Public Class frmMain
     Private Sub RenamerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RenamerToolStripMenuItem.Click
         Using dBulkRename As New dlgBulkRenamer
             Try
-                dBulkRename.ShowDialog()
-                Me.LoadMedia(1)
+                If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    Me.LoadMedia(1)
+                End If
             Catch ex As Exception
             End Try
         End Using
