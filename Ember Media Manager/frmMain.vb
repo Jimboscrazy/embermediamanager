@@ -2063,7 +2063,7 @@ Public Class frmMain
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock,", _
                         "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
-                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched", _
+                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, TrailerUrl", _
                         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
                     Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 0, "type")
@@ -2098,19 +2098,7 @@ Public Class frmMain
                     Dim parCredits As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCredits", DbType.String, 0, "Credits")
                     Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
                     Dim parWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parWatched", DbType.String, 0, "Watched")
-
-                    'Dim parVideo_Width As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
-                    'Dim parVideo_Height As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Height", DbType.String, 0, "Video_Height")
-                    'Dim parVideo_Codec As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Codec", DbType.String, 0, "Video_Codec")
-                    'Dim parVideo_FormatInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_FormatInfo", DbType.String, 0, "Video_FormatInfo")
-                    'Dim parVideo_Duration As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Duration", DbType.String, 0, "Video_Duration")
-                    'Dim parVideo_Bitrate As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_Bitrate", DbType.String, 0, "Video_Bitrate")
-                    'Dim parVideo_BitrateMod As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_BitrateMod", DbType.String, 0, "Video_BitrateMod")
-                    'Dim parVideo_BitrateMax As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_BitrateMax", DbType.String, 0, "Video_BitrateMax")
-                    'Dim parVideo_CodecId As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_CodecId", DbType.String, 0, "Video_CodecId")
-                    'Dim parVideo_CodecIdInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_CodecIdInfo", DbType.String, 0, "Video_CodecIdInfo")
-                    'Dim parVideo_ScanType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_ScanType", DbType.String, 0, "Video_ScanType")
-                    'Dim parVideo_AspectDisplayRatio As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVideo_AspectDisplayRatio", DbType.String, 0, "Video_AspectDisplayRatio")
+                    Dim parTrailerUrl As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailerUrl", DbType.String, 0, "TrailerUrl")
 
                     'Dim parAudio_Language As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parAudio_Language", DbType.String, 0, "Audio_Language")
                     'Dim parAudio_Codec As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parAudio_Codec", DbType.String, 0, "Audio_Codec")
@@ -2208,6 +2196,31 @@ Public Class frmMain
                                                     End If
                                                 End Using
                                             Next
+                                        End Using
+                                        Using SQLcommandMoviesVStreams As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                            SQLcommandMoviesVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesVStreams (", _
+                                                    "MovieID, Video_Width,Video_Height,Video_Codec,Video_FormatInfo,Video_Duration,", _
+                                                    "Video_Bitrate,Video_BitrateMod,Video_BitrateMax,Video_CodecId,Video_CodecIdInfo", _
+                                                    "Video_ScanType,Video_AspectDisplayRatio", _
+                                                    ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);")
+                                            Dim parVideo_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.String, 0, "MovieID")
+                                            Dim parVideo_Width As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
+                                            Dim parVideo_Height As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Height", DbType.String, 0, "Video_Height")
+                                            Dim parVideo_Codec As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Codec", DbType.String, 0, "Video_Codec")
+                                            Dim parVideo_FormatInfo As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_FormatInfo", DbType.String, 0, "Video_FormatInfo")
+                                            Dim parVideo_Duration As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Duration", DbType.String, 0, "Video_Duration")
+                                            Dim parVideo_Bitrate As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Bitrate", DbType.String, 0, "Video_Bitrate")
+                                            Dim parVideo_BitrateMod As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_BitrateMod", DbType.String, 0, "Video_BitrateMod")
+                                            Dim parVideo_BitrateMax As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_BitrateMax", DbType.String, 0, "Video_BitrateMax")
+                                            Dim parVideo_CodecId As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_CodecId", DbType.String, 0, "Video_CodecId")
+                                            Dim parVideo_CodecIdInfo As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_CodecIdInfo", DbType.String, 0, "Video_CodecIdInfo")
+                                            Dim parVideo_ScanType As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_ScanType", DbType.String, 0, "Video_ScanType")
+                                            Dim parVideo_AspectDisplayRatio As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_AspectDisplayRatio", DbType.String, 0, "Video_AspectDisplayRatio")
+                                            For Each video As MediaInfo.Video In tmpMovie.FileInfo.StreamDetails.Video
+                                                parVideo_MovieID.Value = rdrMovie(0)
+                                                'parActorThumb.Value = actor.Thumb
+                                            Next
+                                            'SQLcommandMoviesVStreams.ExecuteNonQuery()
                                         End Using
                                     End If
                                 End Using

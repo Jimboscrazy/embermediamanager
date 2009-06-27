@@ -68,31 +68,31 @@ Public Class dlgBulkRenamer
             'FFRemamer._movies.Clear()
             ' Load nfo movies using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                Dim _tmpMovie As New Media.Movie
+                'Dim _tmpMovie As New Media.Movie
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT path, type , lock FROM movies ORDER BY title ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT Title, Year, path, type , lock FROM movies ORDER BY title ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             _tmpPath = Master.GetNfoPath(SQLreader("path").ToString, SQLreader("type"))
                             If Not String.IsNullOrEmpty(_tmpPath) Then
                                 MovieFile = New FileFolderRenamer.FileRename
-                                _tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
-                                MovieFile.Title = _tmpMovie.Title
-                                MovieFile.Year = _tmpMovie.Year
+                                '_tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
+                                MovieFile.Title = SQLreader("Title").ToString '_tmpMovie.Title
+                                MovieFile.Year = SQLreader("Year").ToString '_tmpMovie.Year
                                 MovieFile.IsLocked = SQLreader("lock")
-                                If Not IsNothing(_tmpMovie.FileInfo) Then
-                                    If _tmpMovie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = Master.GetResFromDimensions(Master.GetBestVideo(_tmpMovie.FileInfo))
-                                    If _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
-                                End If
+                                'If Not IsNothing(_tmpMovie.FileInfo) Then
+                                'If _tmpMovie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = Master.GetResFromDimensions(Master.GetBestVideo(_tmpMovie.FileInfo))
+                                'If _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
+                                'End If
                                 MovieFile.BasePath = Path.GetDirectoryName(SQLreader("path").ToString)
                                 MovieFile.Path = Path.GetDirectoryName(SQLreader("path").ToString)
-                                For Each i As String In ffrenamer.MovieFolders
+                                For Each i As String In FFRenamer.MovieFolders
                                     If i = MovieFile.Path.Substring(0, i.Length) Then
                                         MovieFile.Path = MovieFile.Path.Substring(String.Concat(i, Path.DirectorySeparatorChar).Length)
                                         MovieFile.BasePath = i
@@ -103,13 +103,13 @@ Public Class dlgBulkRenamer
 
                                 FFRenamer.AddMovie(MovieFile)
                             End If
-                            Me.bwLoadInfo.ReportProgress(iProg, _tmpMovie.Title)
-                            iProg += 1
+                            Me.bwLoadInfo.ReportProgress(iProg, SQLreader("Title").ToString) '_tmpMovie.Title)
+                    iProg += 1
 
-                            If bwLoadInfo.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
+                    If bwLoadInfo.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
                         End While
                         e.Result = True
                     Else

@@ -281,188 +281,158 @@ Public Class Master
 
     Public Shared Sub ConnectDB(ByVal Reset As Boolean)
         Try
+            Dim NewDB As Boolean = False
             'create database if it doesn't exist
             If Not File.Exists(Path.Combine(Application.StartupPath, "Media.emm")) Then
-                SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
-                SQLcn.Open()
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                    Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                        SQLcommand.CommandText = "CREATE TABLE Movies(" & _
-                                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                    "Path TEXT NOT NULL, " & _
-                                    "Type BOOL NOT NULL DEFAULT False , " & _
-                                    "Title TEXT NOT NULL, " & _
-                                    "Poster BOOL NOT NULL DEFAULT False, " & _
-                                    "Fanart BOOL NOT NULL DEFAULT False, " & _
-                                    "Info BOOL NOT NULL DEFAULT False, " & _
-                                    "Trailer BOOL NOT NULL DEFAULT False, " & _
-                                    "Sub BOOL NOT NULL DEFAULT False, " & _
-                                    "Extra BOOL NOT NULL DEFAULT False, " & _
-                                    "New BOOL DEFAULT False, " & _
-                                    "Mark BOOL NOT NULL DEFAULT False, " & _
-                                    "Source TEXT NOT NULL, " & _
-                                    "Imdb TEXT, " & _
-                                    "Lock BOOL NOT NULL DEFAULT False, " & _
-                                    "OriginalTitle TEXT, " & _
-                                    "Year TEXT, " & _
-                                    "Rating TEXT, " & _
-                                    "Votes TEXT, " & _
-                                    "MPAA TEXT, " & _
-                                    "Top250 TEXT, " & _
-                                    "Outline TEXT, " & _
-                                    "Plot TEXT, " & _
-                                    "Tagline TEXT, " & _
-                                    "Certification TEXT, " & _
-                                    "Genre TEXT, " & _
-                                    "Studio TEXT, " & _
-                                    "Runtime TEXT, " & _
-                                    "ReleaseDate TEXT, " & _
-                                    "Director TEXT, " & _
-                                    "Credits TEXT, " & _
-                                    "Playcount TEXT, " & _
-                                    "Watched TEXT, " & _
-                                    "Video_Width TEXT, " & _
-                                    "Video_Height TEXT," & _
-                                    "Video_Codec TEXT, " & _
-                                    "Video_FormatInfo TEXT, " & _
-                                    "Video_Duration TEXT, " & _
-                                    "Video_Bitrate TEXT, " & _
-                                    "Video_BitrateMode TEXT, " & _
-                                    "Video_BitrateMax TEXT, " & _
-                                    "Video_CodecId TEXT, " & _
-                                    "Video_CodecIdInfo TEXT, " & _
-                                    "Video_ScanType TEXT, " & _
-                                    "Video_AspectDisplayRatio TEXT, " & _
-                                    "Audio_Language TEXT, " & _
-                                    "Audio_Codec TEXT, " & _
-                                    "Audio_Channel TEXT, " & _
-                                    "Audio_Bitrate TEXT" & _
-                                    ");"
-                        'Ops, note than you can have multi video/audio stream.. need to create tables for streams and cross-link table
-                        SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE TABLE Actors(" & _
-                                    "Name TEXT PRIMARY KEY, " & _
-                                    "thumb TEXT" & _
-                                    ");"
-                        SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE TABLE MoviesActors(" & _
-                                    "MovieID INTEGER NOT NULL, " & _
-                                    "ActorName TEXT NOT NULL, " & _
-                                    "Role TEXT, " & _
-                                    "PRIMARY KEY (MovieID,ActorName) " & _
-                                    ");"
-                        SQLcommand.ExecuteNonQuery()
-
-                        SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON Movies (Path);"
-                        SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE TABLE Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
-                        SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE UNIQUE INDEX UniqueSource ON Sources (Path);"
-                        SQLcommand.ExecuteNonQuery()
-                    End Using
-                    SQLtransaction.Commit()
-                End Using
-            Else
-                SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
-                SQLcn.Open()
-                If Reset Then
-                    Dim tColumns As New DataTable
-                    Dim tRestrict() As String = New String(2) {Nothing, Nothing, "movies"}
-
-                    Dim aCol As New ArrayList
-                    Dim cQuery As String = String.Empty
-                    tColumns = SQLcn.GetSchema("Columns", tRestrict)
-                    For Each col As DataRow In tColumns.Rows
-                        aCol.Add(col("column_name").ToString)
-                    Next
-                    cQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                        Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                            SQLcommand.CommandText = "DROP INDEX UniquePath;"
-                            SQLcommand.ExecuteNonQuery()
-                            SQLcommand.CommandText = "ALTER TABLE Movies RENAME TO tmp_movies;"
-                            SQLcommand.ExecuteNonQuery()
-                            SQLcommand.CommandText = "CREATE TABLE Movies(" & _
-                                        "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                        "Path TEXT NOT NULL, " & _
-                                        "Type BOOL NOT NULL DEFAULT False , " & _
-                                        "Title TEXT NOT NULL, " & _
-                                        "Poster BOOL NOT NULL DEFAULT False, " & _
-                                        "Fanart BOOL NOT NULL DEFAULT False, " & _
-                                        "Info BOOL NOT NULL DEFAULT False, " & _
-                                        "Trailer BOOL NOT NULL DEFAULT False, " & _
-                                        "Sub BOOL NOT NULL DEFAULT False, " & _
-                                        "Extra BOOL NOT NULL DEFAULT False, " & _
-                                        "New BOOL DEFAULT False, " & _
-                                        "Mark BOOL NOT NULL DEFAULT False, " & _
-                                        "Source TEXT NOT NULL, " & _
-                                        "Imdb TEXT, " & _
-                                        "Lock BOOL NOT NULL DEFAULT False, " & _
-                                        "OriginalTitle TEXT, " & _
-                                        "Year TEXT, " & _
-                                        "Rating TEXT, " & _
-                                        "Votes TEXT, " & _
-                                        "MPAA TEXT, " & _
-                                        "Top250 TEXT, " & _
-                                        "Outline TEXT, " & _
-                                        "Plot TEXT, " & _
-                                        "Tagline TEXT, " & _
-                                        "Certification TEXT, " & _
-                                        "Genre TEXT, " & _
-                                        "Studio TEXT, " & _
-                                        "Runtime TEXT, " & _
-                                        "ReleaseDate TEXT, " & _
-                                        "Director TEXT, " & _
-                                        "Credits TEXT, " & _
-                                        "Playcount TEXT, " & _
-                                        "Watched TEXT, " & _
-                                        "Video_Width TEXT, " & _
-                                        "Video_Height TEXT," & _
-                                        "Video_Codec TEXT, " & _
-                                        "Video_FormatInfo TEXT, " & _
-                                        "Video_Duration TEXT, " & _
-                                        "Video_Bitrate TEXT, " & _
-                                        "Video_BitrateMode TEXT, " & _
-                                        "Video_BitrateMax TEXT, " & _
-                                        "Video_CodecId TEXT, " & _
-                                        "Video_CodecIdInfo TEXT, " & _
-                                        "Video_ScanType TEXT, " & _
-                                        "Video_AspectDisplayRatio TEXT, " & _
-                                        "Audio_Language TEXT, " & _
-                                        "Audio_Codec TEXT, " & _
-                                        "Audio_Channel TEXT, " & _
-                                        "Audio_Bitrate TEXT" & _
-                                        ");"
-                            'Ops, note than you can have multi video/audio stream.. need to create tables for streams and cross-link table
-                            SQLcommand.ExecuteNonQuery()
-                            SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS Actors(" & _
-                                        "Name TEXT PRIMARY KEY, " & _
-                                        "thumb TEXT" & _
-                                        ");"
-                            SQLcommand.ExecuteNonQuery()
-                            SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS MoviesActors(" & _
-                                        "MovieID INTEGER NOT NULL, " & _
-                                        "ActorName TEXT NOT NULL, " & _
-                                        "Role TEXT, " & _
-                                        "PRIMARY KEY (MovieID,ActorName) " & _
-                                        ");"
-                            SQLcommand.ExecuteNonQuery()
-
-                            SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON Movies (Path);"
-                            SQLcommand.ExecuteNonQuery()
-                            SQLcommand.CommandText = String.Concat("INSERT INTO Movies ", cQuery, " SELECT * FROM tmp_movies;")
-                            SQLcommand.ExecuteNonQuery()
-                            SQLcommand.CommandText = "DROP TABLE tmp_movies;"
-                            SQLcommand.ExecuteNonQuery()
-                            SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
-                            SQLcommand.ExecuteNonQuery()
-                            SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueSource ON Sources (Path);"
-                            SQLcommand.ExecuteNonQuery()
-                        End Using
-                        SQLtransaction.Commit()
-                    End Using
-                End If
+                NewDB = True
             End If
+
+            SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
+            SQLcn.Open()
+            Dim cQuery As String = String.Empty
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+
+                    If Reset Then
+                        Dim tColumns As New DataTable
+                        Dim tRestrict() As String = New String(2) {Nothing, Nothing, "movies"}
+                        Dim aCol As New ArrayList
+                        tColumns = SQLcn.GetSchema("Columns", tRestrict)
+                        For Each col As DataRow In tColumns.Rows
+                            aCol.Add(col("column_name").ToString)
+                        Next
+                        cQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
+                        SQLcommand.CommandText = "DROP INDEX UniquePath;"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "ALTER TABLE Movies RENAME TO tmp_movies;"
+                        SQLcommand.ExecuteNonQuery()
+                    End If
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Movies(" & _
+                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                "Path TEXT NOT NULL, " & _
+                                "Type BOOL NOT NULL DEFAULT False , " & _
+                                "Title TEXT NOT NULL, " & _
+                                "Poster BOOL NOT NULL DEFAULT False, " & _
+                                "Fanart BOOL NOT NULL DEFAULT False, " & _
+                                "Info BOOL NOT NULL DEFAULT False, " & _
+                                "Trailer BOOL NOT NULL DEFAULT False, " & _
+                                "Sub BOOL NOT NULL DEFAULT False, " & _
+                                "Extra BOOL NOT NULL DEFAULT False, " & _
+                                "New BOOL DEFAULT False, " & _
+                                "Mark BOOL NOT NULL DEFAULT False, " & _
+                                "Source TEXT NOT NULL, " & _
+                                "Imdb TEXT, " & _
+                                "Lock BOOL NOT NULL DEFAULT False, " & _
+                                "OriginalTitle TEXT, " & _
+                                "Year TEXT, " & _
+                                "Rating TEXT, " & _
+                                "Votes TEXT, " & _
+                                "MPAA TEXT, " & _
+                                "Top250 TEXT, " & _
+                                "Outline TEXT, " & _
+                                "Plot TEXT, " & _
+                                "Tagline TEXT, " & _
+                                "Certification TEXT, " & _
+                                "Genre TEXT, " & _
+                                "Studio TEXT, " & _
+                                "Runtime TEXT, " & _
+                                "ReleaseDate TEXT, " & _
+                                "Director TEXT, " & _
+                                "Credits TEXT, " & _
+                                "Playcount TEXT, " & _
+                                "Watched TEXT, " & _
+                                "TrailerUrl TEXT" & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesVStreams(" & _
+                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                "MovieID INTEGER NOT NULL, " & _
+                                "Video_Width TEXT, " & _
+                                "Video_Height TEXT," & _
+                                "Video_Codec TEXT, " & _
+                                "Video_FormatInfo TEXT, " & _
+                                "Video_Duration TEXT, " & _
+                                "Video_Bitrate TEXT, " & _
+                                "Video_BitrateMode TEXT, " & _
+                                "Video_BitrateMax TEXT, " & _
+                                "Video_CodecId TEXT, " & _
+                                "Video_CodecIdInfo TEXT, " & _
+                                "Video_ScanType TEXT, " & _
+                                "Video_AspectDisplayRatio TEXT" & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesVStreams ON MoviesVStreams (MovieID);"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesAStreams(" & _
+                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                "MovieID INTEGER NOT NULL, " & _
+                                "Audio_Language TEXT, " & _
+                                "Audio_Codec TEXT, " & _
+                                "Audio_Channel TEXT, " & _
+                                "Audio_Bitrate TEXT" & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesVStreams ON MoviesAStreams (MovieID);"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesSubs(" & _
+                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                "MovieID INTEGER NOT NULL, " & _
+                                "subs TEXT" & _
+                                 ");"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesSubs ON MoviesSubs (MovieID);"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesPosters(" & _
+                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                "MovieID INTEGER NOT NULL, " & _
+                                "thumbs TEXT" & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesPosters ON MoviesPosters (MovieID);"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesFanart(" & _
+                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                "MovieID INTEGER NOT NULL, " & _
+                                "url TEXT, " & _
+                                "thums TEXT" & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesFanart ON MoviesFanart (MovieID);"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS Actors(" & _
+                                "Name TEXT PRIMARY KEY, " & _
+                                "thumb TEXT" & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS MoviesActors(" & _
+                                "MovieID INTEGER NOT NULL, " & _
+                                "ActorName TEXT NOT NULL, " & _
+                                "Role TEXT, " & _
+                                "PRIMARY KEY (MovieID,ActorName) " & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (Path);"
+                    SQLcommand.ExecuteNonQuery()
+                    If Reset Then
+                        SQLcommand.CommandText = String.Concat("INSERT INTO Movies ", cQuery, " SELECT * FROM tmp_movies;")
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "DROP TABLE tmp_movies;"
+                        SQLcommand.ExecuteNonQuery()
+                    End If
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueSource ON Sources (Path);"
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
