@@ -24,7 +24,7 @@ Partial Class dlgBulkRenamer
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgBulkRenamer))
-        Me.OK_Button = New System.Windows.Forms.Button
+        Me.Close_Button = New System.Windows.Forms.Button
         Me.pnlTop = New System.Windows.Forms.Panel
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
@@ -49,14 +49,14 @@ Partial Class dlgBulkRenamer
         CType(Me.dgvMoviesList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'OK_Button
+        'Close_Button
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.OK_Button.Location = New System.Drawing.Point(898, 442)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(80, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "Close"
+        Me.Close_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Close_Button.Location = New System.Drawing.Point(898, 442)
+        Me.Close_Button.Name = "Close_Button"
+        Me.Close_Button.Size = New System.Drawing.Size(80, 23)
+        Me.Close_Button.TabIndex = 0
+        Me.Close_Button.Text = "Close"
         '
         'pnlTop
         '
@@ -249,7 +249,7 @@ Partial Class dlgBulkRenamer
         '
         'dlgBulkRenamer
         '
-        Me.AcceptButton = Me.OK_Button
+        Me.AcceptButton = Me.Close_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(992, 477)
@@ -262,7 +262,7 @@ Partial Class dlgBulkRenamer
         Me.Controls.Add(Me.dgvMoviesList)
         Me.Controls.Add(Me.Rename_Button)
         Me.Controls.Add(Me.pnlTop)
-        Me.Controls.Add(Me.OK_Button)
+        Me.Controls.Add(Me.Close_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -280,7 +280,7 @@ Partial Class dlgBulkRenamer
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents Close_Button As System.Windows.Forms.Button
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
