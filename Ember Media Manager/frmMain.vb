@@ -1652,41 +1652,134 @@ Public Class frmMain
 
     Private Sub cmnuRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRefresh.Click
         Dim aContents(6) As Boolean
+        Dim tmpMovie As New Media.Movie
+        Me.dgvMediaList.Cursor = Cursors.WaitCursor
+        Me.dgvMediaList.Enabled = False
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
                 Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
                 Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
                 Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
                 Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
                 Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
                 Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+
+                Dim parOriginalTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOriginalTitle", DbType.String, 0, "OriginalTitle")
+                Dim parYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parYear", DbType.String, 0, "Year")
+                Dim parRating As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRating", DbType.String, 0, "Rating")
+                Dim parVotes As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
+                Dim parMPAA As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMPAA", DbType.String, 0, "MPAA")
+                Dim parTop250 As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTop250", DbType.String, 0, "Top250")
+                Dim parOutline As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutline", DbType.String, 0, "Outline")
+                Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
+                Dim parTagline As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTagline", DbType.String, 0, "Tagline")
+                Dim parCertification As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCertification", DbType.String, 0, "Certification")
+                Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
+                Dim parStudio As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStudio", DbType.String, 0, "Studio")
+                Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
+                Dim parReleaseDate As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parReleaseDate", DbType.String, 0, "ReleaseDate")
+                Dim parDirector As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirector", DbType.String, 0, "Director")
+                Dim parCredits As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCredits", DbType.String, 0, "Credits")
+                Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
+                Dim parWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parWatched", DbType.String, 0, "Watched")
+
                 Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?)  WHERE id = (?);"
+
+                SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?), ", _
+                         "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
+                         "Studio = (?), Runtime = (?), ReleaseDate = (?), Director = (?), Credits = (?), Playcount = (?), Watched = (?) ", _
+                         "WHERE id = (?);")
                 For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sRow.Cells(1).Value, sRow.Cells(2).Value))
+
+                    If Not String.IsNullOrEmpty(tmpMovie.Title) Then
+                        parTitle.Value = tmpMovie.Title
+                    Else
+                        parTitle.Value = sRow.Cells(3).Value
+                    End If
+                    sRow.Cells(3).Value = parTitle.Value
+
                     aContents = Master.GetFolderContents(sRow.Cells(1).Value, sRow.Cells(2).Value)
                     parPoster.Value = aContents(0)
+                    sRow.Cells(4).Value = aContents(0)
                     parFanart.Value = aContents(1)
+                    sRow.Cells(5).Value = aContents(1)
                     parInfo.Value = aContents(2)
+                    sRow.Cells(6).Value = aContents(2)
                     parTrailer.Value = aContents(3)
+                    sRow.Cells(7).Value = aContents(3)
                     parSub.Value = aContents(4)
+                    sRow.Cells(8).Value = aContents(4)
                     parExtra.Value = aContents(5)
+                    sRow.Cells(9).Value = aContents(5)
+
+                    parOriginalTitle.Value = tmpMovie.OriginalTitle
+                    parYear.Value = tmpMovie.Year
+                    parRating.Value = tmpMovie.Rating
+                    parVotes.Value = tmpMovie.Votes
+                    parMPAA.Value = tmpMovie.MPAA
+                    parTop250.Value = tmpMovie.Top250
+                    parOutline.Value = tmpMovie.Outline
+                    parPlot.Value = tmpMovie.Plot
+                    parTagline.Value = tmpMovie.Tagline
+                    parCertification.Value = tmpMovie.Certification
+                    parGenre.Value = tmpMovie.Genre
+                    parStudio.Value = tmpMovie.Studio
+                    parRuntime.Value = tmpMovie.Runtime
+                    parReleaseDate.Value = tmpMovie.ReleaseDate
+                    parDirector.Value = tmpMovie.Director
+                    parCredits.Value = tmpMovie.Credits
+                    parPlaycount.Value = tmpMovie.PlayCount
+                    parWatched.Value = tmpMovie.Watched
                     parID.Value = sRow.Cells(0).Value
+
+                    Using rdrMovie As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        If rdrMovie.Read Then
+                            Using SQLcommandActor As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM Actors;")
+                                Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
+                                Dim parActorThumb As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorThumb", DbType.String, 0, "thumb")
+                                For Each actor As Media.Person In tmpMovie.Actors
+                                    parActorName.Value = actor.Name
+                                    parActorThumb.Value = actor.Thumb
+                                    Using rdrActor As SQLite.SQLiteDataReader = SQLcommandActor.ExecuteReader()
+                                        If rdrActor.Read Then
+                                            Using SQLcommandMoviesActors As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                                SQLcommandMoviesActors.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesActors (MovieID,ActorName,Role) VALUES (?,?,?);")
+                                                Dim parMoviesActorsMovieID As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsMovieID", DbType.UInt64, 0, "MovieID")
+                                                Dim parMoviesActorsActorName As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorName", DbType.UInt64, 0, "ActorName")
+                                                Dim parMoviesActorsActorRole As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorRole", DbType.String, 0, "Role")
+                                                parMoviesActorsMovieID.Value = sRow.Cells(0).Value
+                                                parMoviesActorsActorName.Value = rdrActor(0)
+                                                parMoviesActorsActorRole.Value = actor.Role
+                                                SQLcommandMoviesActors.ExecuteNonQuery()
+                                            End Using
+                                        End If
+                                    End Using
+                                Next
+                            End Using
+                        End If
+                    End Using
+
                     SQLcommand.ExecuteNonQuery()
 
-                    sRow.Cells(4).Value = aContents(0)
-                    sRow.Cells(5).Value = aContents(1)
-                    sRow.Cells(6).Value = aContents(2)
-                    sRow.Cells(7).Value = aContents(3)
-                    sRow.Cells(8).Value = aContents(4)
-                    sRow.Cells(9).Value = aContents(5)
                 Next
             End Using
             SQLtransaction.Commit()
         End Using
+
+        Me.dgvMediaList.Cursor = Cursors.Default
+        Me.dgvMediaList.Enabled = True
+
     End Sub
 
     Private Sub RefreshAllMoviesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshAllMoviesToolStripMenuItem.Click
         Dim aContents(6) As Boolean
+        Dim tmpMovie As New Media.Movie
+        Me.dgvMediaList.Cursor = Cursors.WaitCursor
+        Me.dgvMediaList.Enabled = False
+
         If Me.dtMedia.Rows.Count > 0 Then
 
             Me.ToolsToolStripMenuItem.Enabled = False
@@ -1705,37 +1798,117 @@ Public Class frmMain
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
                     Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
                     Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
                     Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
                     Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
                     Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
                     Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+
+                    Dim parOriginalTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOriginalTitle", DbType.String, 0, "OriginalTitle")
+                    Dim parYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parYear", DbType.String, 0, "Year")
+                    Dim parRating As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRating", DbType.String, 0, "Rating")
+                    Dim parVotes As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
+                    Dim parMPAA As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMPAA", DbType.String, 0, "MPAA")
+                    Dim parTop250 As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTop250", DbType.String, 0, "Top250")
+                    Dim parOutline As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutline", DbType.String, 0, "Outline")
+                    Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
+                    Dim parTagline As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTagline", DbType.String, 0, "Tagline")
+                    Dim parCertification As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCertification", DbType.String, 0, "Certification")
+                    Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
+                    Dim parStudio As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStudio", DbType.String, 0, "Studio")
+                    Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
+                    Dim parReleaseDate As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parReleaseDate", DbType.String, 0, "ReleaseDate")
+                    Dim parDirector As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirector", DbType.String, 0, "Director")
+                    Dim parCredits As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCredits", DbType.String, 0, "Credits")
+                    Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
+                    Dim parWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parWatched", DbType.String, 0, "Watched")
+
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                    SQLcommand.CommandText = "UPDATE movies SET poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?)  WHERE id = (?);"
+
+                    SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?), ", _
+                             "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
+                             "Studio = (?), Runtime = (?), ReleaseDate = (?), Director = (?), Credits = (?), Playcount = (?), Watched = (?) ", _
+                             "WHERE id = (?);")
                     For Each sRow As DataRow In Me.dtMedia.Rows
                         Me.tslStatus.Text = sRow.Item(3)
+                        tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sRow.Item(1), sRow.Item(2)))
+
+                        If Not String.IsNullOrEmpty(tmpMovie.Title) Then
+                            parTitle.Value = tmpMovie.Title
+                        Else
+                            parTitle.Value = sRow.Item(3)
+                        End If
+                        sRow.Item(3) = parTitle.Value
+
                         aContents = Master.GetFolderContents(sRow.Item(1), sRow.Item(2))
-
                         parPoster.Value = aContents(0)
-                        parFanart.Value = aContents(1)
-                        parInfo.Value = aContents(2)
-                        parTrailer.Value = aContents(3)
-                        parSub.Value = aContents(4)
-                        parExtra.Value = aContents(5)
-                        parID.Value = sRow.Item(0)
-                        SQLcommand.ExecuteNonQuery()
-
                         sRow.Item(4) = aContents(0)
+                        parFanart.Value = aContents(1)
                         sRow.Item(5) = aContents(1)
+                        parInfo.Value = aContents(2)
                         sRow.Item(6) = aContents(2)
+                        parTrailer.Value = aContents(3)
                         sRow.Item(7) = aContents(3)
+                        parSub.Value = aContents(4)
                         sRow.Item(8) = aContents(4)
+                        parExtra.Value = aContents(5)
                         sRow.Item(9) = aContents(5)
+
+                        parOriginalTitle.Value = tmpMovie.OriginalTitle
+                        parYear.Value = tmpMovie.Year
+                        parRating.Value = tmpMovie.Rating
+                        parVotes.Value = tmpMovie.Votes
+                        parMPAA.Value = tmpMovie.MPAA
+                        parTop250.Value = tmpMovie.Top250
+                        parOutline.Value = tmpMovie.Outline
+                        parPlot.Value = tmpMovie.Plot
+                        parTagline.Value = tmpMovie.Tagline
+                        parCertification.Value = tmpMovie.Certification
+                        parGenre.Value = tmpMovie.Genre
+                        parStudio.Value = tmpMovie.Studio
+                        parRuntime.Value = tmpMovie.Runtime
+                        parReleaseDate.Value = tmpMovie.ReleaseDate
+                        parDirector.Value = tmpMovie.Director
+                        parCredits.Value = tmpMovie.Credits
+                        parPlaycount.Value = tmpMovie.PlayCount
+                        parWatched.Value = tmpMovie.Watched
+
+                        parID.Value = sRow.Item(0)
+
+                        Using rdrMovie As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            If rdrMovie.Read Then
+                                Using SQLcommandActor As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                    SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM Actors;")
+                                    Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
+                                    Dim parActorThumb As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorThumb", DbType.String, 0, "thumb")
+                                    For Each actor As Media.Person In tmpMovie.Actors
+                                        parActorName.Value = actor.Name
+                                        parActorThumb.Value = actor.Thumb
+                                        Using rdrActor As SQLite.SQLiteDataReader = SQLcommandActor.ExecuteReader()
+                                            If rdrActor.Read Then
+                                                Using SQLcommandMoviesActors As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                                    SQLcommandMoviesActors.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesActors (MovieID,ActorName,Role) VALUES (?,?,?);")
+                                                    Dim parMoviesActorsMovieID As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsMovieID", DbType.UInt64, 0, "MovieID")
+                                                    Dim parMoviesActorsActorName As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorName", DbType.UInt64, 0, "ActorName")
+                                                    Dim parMoviesActorsActorRole As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorRole", DbType.String, 0, "Role")
+                                                    parMoviesActorsMovieID.Value = sRow.Item(0)
+                                                    parMoviesActorsActorName.Value = rdrActor(0)
+                                                    parMoviesActorsActorRole.Value = actor.Role
+                                                    SQLcommandMoviesActors.ExecuteNonQuery()
+                                                End Using
+                                            End If
+                                        End Using
+                                    Next
+                                End Using
+                            End If
+                        End Using
+
+                        SQLcommand.ExecuteNonQuery()
 
                         Me.tspbLoading.Value += 1
 
-                        Application.DoEvents()
                     Next
                 End Using
                 SQLtransaction.Commit()
@@ -1751,6 +1924,10 @@ Public Class frmMain
             Me.tabsMain.Enabled = True
             Me.EnableFilters(True)
         End If
+
+        Me.dgvMediaList.Cursor = Cursors.Default
+        Me.dgvMediaList.Enabled = True
+
     End Sub
 #End Region '*** Form/Controls
 
@@ -1886,7 +2063,7 @@ Public Class frmMain
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock,", _
                         "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
-                        "Studio, StudioReal, Runtime, ReleaseDate, Director, Credits, Playcount, Watched", _
+                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched", _
                         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
                     Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 0, "type")
@@ -1915,7 +2092,6 @@ Public Class frmMain
                     Dim parCertification As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCertification", DbType.String, 0, "Certification")
                     Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
                     Dim parStudio As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStudio", DbType.String, 0, "Studio")
-                    Dim parStudioReal As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStudioReal", DbType.String, 0, "StudioReal")
                     Dim parRuntime As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
                     Dim parReleaseDate As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parReleaseDate", DbType.String, 0, "ReleaseDate")
                     Dim parDirector As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirector", DbType.String, 0, "Director")
@@ -1994,7 +2170,6 @@ Public Class frmMain
                                 parCertification.Value = tmpMovie.Certification
                                 parGenre.Value = tmpMovie.Genre
                                 parStudio.Value = tmpMovie.Studio
-                                parStudioReal.Value = tmpMovie.Studio 'Note: StudioReal dont exit in Media.Movie need to check this out
                                 parRuntime.Value = tmpMovie.Runtime
                                 parReleaseDate.Value = tmpMovie.ReleaseDate
                                 parDirector.Value = tmpMovie.Director
@@ -3185,11 +3360,6 @@ doCancel:
 
             Me.dgvMediaList.DataSource = Nothing
 
-            'Me.pnlInfoPanel.Height = 25
-            'Me.btnDown.Enabled = False
-            'Me.btnMid.Enabled = False
-            'Me.btnUp.Enabled = False
-
             Me.ClearInfo()
             Me.EnableFilters(False)
 
@@ -4278,12 +4448,6 @@ doCancel:
                         For i As Integer = 10 To .dgvMediaList.Columns.Count - 1
                             .dgvMediaList.Columns(i).Visible = False
                         Next
-                        '.dgvMediaList.Columns(10).Visible = False
-                        '.dgvMediaList.Columns(11).Visible = False
-                        '.dgvMediaList.Columns(12).Visible = False
-                        '.dgvMediaList.Columns(13).Visible = False
-                        '.dgvMediaList.Columns(14).Visible = False
-
 
                         'Trick to autosize the first column, but still allow resizing by user
                         .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
