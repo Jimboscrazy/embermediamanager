@@ -50,18 +50,20 @@ Partial Class dlgWizard
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.lvMovies = New System.Windows.Forms.ListView
-        Me.colPath = New System.Windows.Forms.ColumnHeader
-        Me.colType = New System.Windows.Forms.ColumnHeader
-        Me.btnMovieAddFiles = New System.Windows.Forms.Button
         Me.btnMovieRem = New System.Windows.Forms.Button
         Me.btnMovieAddFolder = New System.Windows.Forms.Button
         Me.Label3 = New System.Windows.Forms.Label
-        Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.Panel4 = New System.Windows.Forms.Panel
         Me.Label8 = New System.Windows.Forms.Label
         Me.Label6 = New System.Windows.Forms.Label
         Me.Label7 = New System.Windows.Forms.Label
+        Me.lvMovies = New System.Windows.Forms.ListView
+        Me.colID = New System.Windows.Forms.ColumnHeader
+        Me.colName = New System.Windows.Forms.ColumnHeader
+        Me.colPath = New System.Windows.Forms.ColumnHeader
+        Me.colRecur = New System.Windows.Forms.ColumnHeader
+        Me.colFolder = New System.Windows.Forms.ColumnHeader
+        Me.colSingle = New System.Windows.Forms.ColumnHeader
         Me.Panel1.SuspendLayout()
         Me.Panel3.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -353,7 +355,6 @@ Partial Class dlgWizard
         Me.Panel2.BackColor = System.Drawing.Color.White
         Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel2.Controls.Add(Me.lvMovies)
-        Me.Panel2.Controls.Add(Me.btnMovieAddFiles)
         Me.Panel2.Controls.Add(Me.btnMovieRem)
         Me.Panel2.Controls.Add(Me.btnMovieAddFolder)
         Me.Panel2.Controls.Add(Me.Label3)
@@ -362,41 +363,6 @@ Partial Class dlgWizard
         Me.Panel2.Size = New System.Drawing.Size(372, 323)
         Me.Panel2.TabIndex = 5
         Me.Panel2.Visible = False
-        '
-        'lvMovies
-        '
-        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colPath, Me.colType})
-        Me.lvMovies.FullRowSelect = True
-        Me.lvMovies.HideSelection = False
-        Me.lvMovies.Location = New System.Drawing.Point(3, 125)
-        Me.lvMovies.Name = "lvMovies"
-        Me.lvMovies.Size = New System.Drawing.Size(364, 105)
-        Me.lvMovies.Sorting = System.Windows.Forms.SortOrder.Ascending
-        Me.lvMovies.TabIndex = 53
-        Me.lvMovies.UseCompatibleStateImageBehavior = False
-        Me.lvMovies.View = System.Windows.Forms.View.Details
-        '
-        'colPath
-        '
-        Me.colPath.Text = "Path"
-        Me.colPath.Width = 286
-        '
-        'colType
-        '
-        Me.colType.Text = "Folders/Files"
-        Me.colType.Width = 74
-        '
-        'btnMovieAddFiles
-        '
-        Me.btnMovieAddFiles.Image = CType(resources.GetObject("btnMovieAddFiles.Image"), System.Drawing.Image)
-        Me.btnMovieAddFiles.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieAddFiles.Location = New System.Drawing.Point(3, 262)
-        Me.btnMovieAddFiles.Name = "btnMovieAddFiles"
-        Me.btnMovieAddFiles.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieAddFiles.TabIndex = 55
-        Me.btnMovieAddFiles.Text = "Files Path"
-        Me.btnMovieAddFiles.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieAddFiles.UseVisualStyleBackColor = True
         '
         'btnMovieRem
         '
@@ -418,7 +384,7 @@ Partial Class dlgWizard
         Me.btnMovieAddFolder.Name = "btnMovieAddFolder"
         Me.btnMovieAddFolder.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieAddFolder.TabIndex = 54
-        Me.btnMovieAddFolder.Text = "Folders Path"
+        Me.btnMovieAddFolder.Text = "Add Source"
         Me.btnMovieAddFolder.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnMovieAddFolder.UseVisualStyleBackColor = True
         '
@@ -473,6 +439,45 @@ Partial Class dlgWizard
         Me.Label7.Text = "That's it!" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Ember Media Manager is Ready!"
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'lvMovies
+        '
+        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colPath, Me.colRecur, Me.colFolder, Me.colSingle})
+        Me.lvMovies.FullRowSelect = True
+        Me.lvMovies.HideSelection = False
+        Me.lvMovies.Location = New System.Drawing.Point(5, 124)
+        Me.lvMovies.Name = "lvMovies"
+        Me.lvMovies.Size = New System.Drawing.Size(362, 105)
+        Me.lvMovies.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvMovies.TabIndex = 57
+        Me.lvMovies.UseCompatibleStateImageBehavior = False
+        Me.lvMovies.View = System.Windows.Forms.View.Details
+        '
+        'colID
+        '
+        Me.colID.Width = 0
+        '
+        'colName
+        '
+        Me.colName.Text = "Name"
+        Me.colName.Width = 50
+        '
+        'colPath
+        '
+        Me.colPath.Text = "Path"
+        Me.colPath.Width = 125
+        '
+        'colRecur
+        '
+        Me.colRecur.Text = "Recursive"
+        '
+        'colFolder
+        '
+        Me.colFolder.Text = "Use Folder Name"
+        '
+        'colSingle
+        '
+        Me.colSingle.Text = "Single Video"
+        '
         'dlgWizard
         '
         Me.AcceptButton = Me.OK_Button
@@ -523,13 +528,8 @@ Partial Class dlgWizard
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents Panel3 As System.Windows.Forms.Panel
     Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents lvMovies As System.Windows.Forms.ListView
-    Friend WithEvents colPath As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colType As System.Windows.Forms.ColumnHeader
-    Friend WithEvents btnMovieAddFiles As System.Windows.Forms.Button
     Friend WithEvents btnMovieRem As System.Windows.Forms.Button
     Friend WithEvents btnMovieAddFolder As System.Windows.Forms.Button
-    Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
@@ -551,5 +551,12 @@ Partial Class dlgWizard
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents lvMovies As System.Windows.Forms.ListView
+    Friend WithEvents colID As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colName As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colPath As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colRecur As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colFolder As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colSingle As System.Windows.Forms.ColumnHeader
 
 End Class

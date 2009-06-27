@@ -26,7 +26,6 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
 Public Class dlgOfflineHolder
-    Private alMedia As New ArrayList
     Private IMDB As New IMDB.Scraper
     Private WorkingPath As String = Path.Combine(Master.TempPath, "OfflineHolder")
     Private destPath As String
@@ -60,7 +59,6 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub dlgOfflineHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Dim dirArray() As String
         Try
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -70,13 +68,15 @@ Public Class dlgOfflineHolder
             End Using
 
             'load all the movie folders from settings
-            alMedia = Master.eSettings.MovieFolders
-            For Each strFolders As String In Master.eSettings.MovieFolders
-                dirArray = Split(strFolders, "|")
-                If dirArray(1).ToString = "Folders" Then
-                    Me.cbSources.Items.Add(dirArray(0).ToString)
-                End If
-            Next
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    While SQLReader.Read
+                        Me.cbSources.Items.Add(SQLReader("Name"))
+                    End While
+                End Using
+            End Using
+
             AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
             AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
             If Directory.Exists(WorkingPath) Then
@@ -133,12 +133,12 @@ Public Class dlgOfflineHolder
             If bSuccess Then
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
-                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Posters) Then
+                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.currSingle, Master.ImageType.Posters) Then
                         Using dImgSelect As New dlgImgSelect
                             dImgSelect.ShowDialog(Master.tmpMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
                         End Using
                     End If
-                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Fanart) Then
+                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.currSingle, Master.ImageType.Fanart) Then
                         Using dImgSelect As New dlgImgSelect
                             dImgSelect.ShowDialog(Master.tmpMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
                         End Using

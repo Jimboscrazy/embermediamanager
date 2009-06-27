@@ -126,22 +126,6 @@ Only a handful of settings will be covered in this wizard. You can change these 
     <value>Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnMovieAddFiles.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAAK7wAA
-        Cu8BfXaKSAAAAjFJREFUOE+lk0toE1EUhqeKYFvQTV24EkSpLqxaQUFoxd3QlYp0pQtBXBUhjYiIVdBd
-        1WqNpNo8tBuXoqXFV4JYNDGghiTQkidN0kkyjzuTSbRZiP6eOzWx2KYIDvNzuZdzPv7z35kWAMJ/PRzA
-        pcVLgqLIJ1VVsZNsmqraDKbbMun0wNWhyxvqdX+vVjNXqVQ8rGkqymWjoa/VKuZmZ3Hf4ZjxvfGvCmkA
-        ZLnUx5hGzWWYZROmaYID0qkkbt0cxpjTOXOkp6e1qQOyL3KAYZADLgtUhqHrCAY+4NXLFwiFPj5fE6Bp
-        ywFLo1TISa1WIy0SXI+vlYHIM6Ci3w7+ZLFY+QkupmnRpoBCQRIVRbGsL6k+RhXvUtfgi1+ArEjNAQv5
-        vEg3AZ1m5jnwIGuVH/hW+Q5naAfuBDpQKGa/NHWQnZ8XC5IEPobODKisiIj0DGHpKe4G9mP4fSd8c/ey
-        I8FD/SPBfZvroMY1JhMJMZfLQaUxDGYimn2Lc5MCBqbbccW/E0P+Tthfb6F1N2nXiRWASDjcl0omocgy
-        mMqQKyYx8fkiHn+yY3CqG+cn9+C2/7Rpm+pyDU53bV8BiEajB2OxGDKZDGgcSHkJrFiFvMBw9kkvTk0c
-        QDgSDqyawXpBoFfocIyOXvK4XGMet/uh1+0ef+Txjnu9ngdHr3cnem/szfWfOX5snSBso+KtJOvTtjKg
-        TQsBNi6j8z3VWmC+tpHaSa10sInUxnsagGZ/2r+c/wLFh7kcZsa+5wAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="btnMovieRem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -179,9 +163,6 @@ Only a handful of settings will be covered in this wizard. You can change these 
   <data name="Label3.Text" xml:space="preserve">
     <value>First, let's tell Ember Media Manager where all our movies are.  If each of your movie files are in a separate folder, add a Folder Path pointing to the parent folder.  If all your movie files are in the same folder, add a Files Path pointing to the parent folder. You can select as many Folder Paths, File Paths, or any combination of both that you wish.</value>
   </data>
-  <metadata name="fbdBrowse.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="Label8.Text" xml:space="preserve">
     <value>Some options you may be interested in:
 

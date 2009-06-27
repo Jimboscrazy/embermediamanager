@@ -37,6 +37,7 @@ Public Class dlgImgSelect
     Private imdbID As String = String.Empty
     Private sPath As String = String.Empty
     Private isEdit As Boolean = False
+    Private isSingle As Boolean = False
     Private DLType As Master.ImageType
 
     Private iCounter As Integer = 0
@@ -80,9 +81,9 @@ Public Class dlgImgSelect
                     Me.tmpImage.Save(tmpPathPlus, 100)
                 Else
                     If Me.DLType = Master.ImageType.Fanart Then
-                        Me.tmpImage.SaveAsFanart(Me.sPath, Master.isFile)
+                        Me.tmpImage.SaveAsFanart(Me.sPath, Me.isSingle)
                     Else
-                        Me.tmpImage.SaveAsPoster(Me.sPath, Master.isFile)
+                        Me.tmpImage.SaveAsPoster(Me.sPath, Me.isSingle)
                     End If
                 End If
             Else
@@ -130,9 +131,9 @@ Public Class dlgImgSelect
                         Me.tmpImage.Save(tmpPathPlus, 100)
                     Else
                         If Me.DLType = Master.ImageType.Fanart Then
-                            Me.tmpImage.SaveAsFanart(Me.sPath, Master.isFile)
+                            Me.tmpImage.SaveAsFanart(Me.sPath, Me.isSingle)
                         Else
-                            Me.tmpImage.SaveAsPoster(Me.sPath, Master.isFile)
+                            Me.tmpImage.SaveAsPoster(Me.sPath, Me.isSingle)
                         End If
                     End If
                 End If

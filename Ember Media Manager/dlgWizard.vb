@@ -70,11 +70,9 @@ Public Class dlgWizard
     End Sub
 
     Private Sub btnMovieAddFolders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFolder.Click
-        Me.AddItem(True)
-    End Sub
-
-    Private Sub btnMovieAddFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFiles.Click
-        Me.AddItem(False)
+        Using dSource As New dlgMovieSource
+            If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then RefreshSources()
+        End Using
     End Sub
 
     Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
@@ -106,73 +104,12 @@ Public Class dlgWizard
         End Try
     End Sub
 
-    Private Sub AddItem(ByVal blnIsFolder As Boolean)
-
-        '//
-        ' Add folder to folder list. Check to make sure it exists before adding it
-        '\\
-
-
-        Try
-            Dim iFound As Integer = -1
-            Dim lvItem As ListViewItem
-
-            With Me.fbdBrowse
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-
-                        If Me.lvMovies.Items.Count > 0 Then
-                            For i As Integer = 0 To Me.lvMovies.Items.Count - 1
-                                If Me.lvMovies.Items(i).ToString.ToLower = .SelectedPath.ToString.ToLower Then
-                                    iFound = i
-                                    Exit For
-                                End If
-                            Next
-                        Else
-                            iFound = -1
-                        End If
-
-
-                        If iFound >= 0 Then
-                            Me.lvMovies.Items(iFound).Selected = True
-                            Me.lvMovies.Items(iFound).Focused = True
-                            Me.lvMovies.Focus()
-                        Else
-                            Me.lvMovies.BeginUpdate()
-                            lvItem = Me.lvMovies.Items.Add(.SelectedPath)
-                            If blnIsFolder = True Then
-                                lvItem.SubItems.Add("Folders")
-                            Else
-                                lvItem.SubItems.Add("Files")
-                            End If
-                            lvItem = Nothing
-                            Me.lvMovies.Sort()
-                            Me.lvMovies.EndUpdate()
-                            Me.lvMovies.Columns(0).Width = 388
-                            Me.lvMovies.Columns(1).Width = 74
-                            Me.lvMovies.Refresh()
-                        End If
-
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
     Private Sub dlgWizard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.FillSettings()
     End Sub
 
     Private Sub FillSettings()
-        Dim dirArray() As String
-        Dim lvItem As ListViewItem
-        For Each strFolders As String In Master.eSettings.MovieFolders
-            dirArray = Split(strFolders, "|")
-            lvItem = Me.lvMovies.Items.Add(dirArray(0).ToString)
-            lvItem.SubItems.Add(dirArray(1).ToString)
-        Next
+        Me.RefreshSources()
 
         Me.chkMovieTBN.Checked = Master.eSettings.MovieTBN
         Me.chkMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
@@ -188,11 +125,26 @@ Public Class dlgWizard
         Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
     End Sub
 
+    Private Sub RefreshSources()
+        lvMovies.Items.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            SQLcommand.CommandText = "SELECT * FROM sources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim lvItem As New ListViewItem(SQLreader("ID").ToString)
+                    lvItem.SubItems.Add(SQLreader("Name").ToString)
+                    lvItem.SubItems.Add(SQLreader("Path").ToString)
+                    lvItem.SubItems.Add(If(SQLreader("Recursive"), "Yes", "No"))
+                    lvItem.SubItems.Add(If(SQLreader("Foldername"), "Yes", "No"))
+                    lvItem.SubItems.Add(If(SQLreader("Single"), "Yes", "No"))
+                    lvMovies.Items.Add(lvItem)
+                End While
+            End Using
+        End Using
+
+    End Sub
+
     Private Sub SaveSettings()
-        Master.eSettings.MovieFolders.Clear()
-        For Each lvItem As ListViewItem In Me.lvMovies.Items
-            Master.eSettings.MovieFolders.Add(String.Concat(lvItem.Text, "|", lvItem.SubItems(1).Text))
-        Next
 
         Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked
         Master.eSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked

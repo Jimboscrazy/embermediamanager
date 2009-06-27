@@ -40,9 +40,9 @@ Public Class Master
     Public Shared scrapeMovie As New Media.Movie
     Public Shared currNFO As String = String.Empty
     Public Shared currPath As String = String.Empty
+    Public Shared currSingle As Boolean = False
     Public Shared MediaList As New List(Of FileAndSource)
     Public Shared eLog As New ErrorLogger
-    Public Shared isFile As Boolean = False
     Public Shared SQLcn As New SQLite.SQLiteConnection()
     Public Shared DefaultOptions As New ScrapeOptions
 
@@ -130,7 +130,14 @@ Public Class Master
     Public Class FileAndSource
         Dim _filename As String
         Dim _source As String
-        Dim _isfile As Boolean
+        Dim _single As Boolean
+        Dim _usefolder As Boolean
+        Dim _poster As Boolean
+        Dim _fanart As Boolean
+        Dim _nfo As Boolean
+        Dim _extra As Boolean
+        Dim _trailer As Boolean
+        Dim _subs As Boolean
 
         Public Property Filename() As String
             Get
@@ -150,12 +157,75 @@ Public Class Master
             End Set
         End Property
 
-        Public Property isFile() As Boolean
+        Public Property isSingle() As Boolean
             Get
-                Return _isfile
+                Return _single
             End Get
             Set(ByVal value As Boolean)
-                _isfile = value
+                _single = value
+            End Set
+        End Property
+
+        Public Property UseFolder() As Boolean
+            Get
+                Return _usefolder
+            End Get
+            Set(ByVal value As Boolean)
+                _usefolder = value
+            End Set
+        End Property
+
+        Public Property Poster() As Boolean
+            Get
+                Return _poster
+            End Get
+            Set(ByVal value As Boolean)
+                _poster = value
+            End Set
+        End Property
+
+        Public Property Fanart() As Boolean
+            Get
+                Return _fanart
+            End Get
+            Set(ByVal value As Boolean)
+                _fanart = value
+            End Set
+        End Property
+
+        Public Property Nfo() As Boolean
+            Get
+                Return _nfo
+            End Get
+            Set(ByVal value As Boolean)
+                _nfo = value
+            End Set
+        End Property
+
+        Public Property Extra() As Boolean
+            Get
+                Return _extra
+            End Get
+            Set(ByVal value As Boolean)
+                _extra = value
+            End Set
+        End Property
+
+        Public Property Trailer() As Boolean
+            Get
+                Return _trailer
+            End Get
+            Set(ByVal value As Boolean)
+                _trailer = value
+            End Set
+        End Property
+
+        Public Property Subs() As Boolean
+            Get
+                Return _subs
+            End Get
+            Set(ByVal value As Boolean)
+                _subs = value
             End Set
         End Property
 
@@ -166,7 +236,13 @@ Public Class Master
         Public Sub Clear()
             _filename = String.Empty
             _source = String.Empty
-            _isfile = False
+            _usefolder = False
+            _poster = False
+            _fanart = False
+            _nfo = False
+            _extra = False
+            _trailer = False
+            _subs = False
         End Sub
     End Class
 
@@ -204,17 +280,19 @@ Public Class Master
 
     Public Shared Sub ConnectDB(ByVal Reset As Boolean)
 
-
-
         'create database if it doesn't exist
         If Not File.Exists(Path.Combine(Application.StartupPath, "Media.emm")) Then
             SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
             SQLcn.Open()
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                    SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL NOT NULL DEFAULT False , Title TEXT NOT NULL, Poster BOOL NOT NULL DEFAULT False, Fanart BOOL NOT NULL DEFAULT False, Info BOOL NOT NULL DEFAULT False, Trailer BOOL NOT NULL DEFAULT False, Sub BOOL NOT NULL DEFAULT False, Extra BOOL NOT NULL DEFAULT False, new BOOL DEFAULT False, mark BOOL NOT NULL DEFAULT False, source TEXT NOT NULL, imdb TEXT, lock BOOL NOT NULL DEFAULT False);"
+                    SQLcommand.CommandText = "CREATE TABLE Movies(ID INTEGER PRIMARY KEY AUTOINCREMENT, Path TEXT NOT NULL, Type BOOL NOT NULL DEFAULT False , Title TEXT NOT NULL, Poster BOOL NOT NULL DEFAULT False, Fanart BOOL NOT NULL DEFAULT False, Info BOOL NOT NULL DEFAULT False, Trailer BOOL NOT NULL DEFAULT False, Sub BOOL NOT NULL DEFAULT False, Extra BOOL NOT NULL DEFAULT False, New BOOL DEFAULT False, Mark BOOL NOT NULL DEFAULT False, Source TEXT NOT NULL, Imdb TEXT, Lock BOOL NOT NULL DEFAULT False);"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON Movies (Path);"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE TABLE Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX UniqueSource ON Sources (Path);"
                     SQLcommand.ExecuteNonQuery()
                 End Using
                 SQLtransaction.Commit()
@@ -237,15 +315,19 @@ Public Class Master
                     Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommand.CommandText = "DROP INDEX UniquePath;"
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "ALTER TABLE movies RENAME TO tmp_movies;"
+                        SQLcommand.CommandText = "ALTER TABLE Movies RENAME TO tmp_movies;"
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE TABLE movies(id INTEGER PRIMARY KEY AUTOINCREMENT, path TEXT NOT NULL, type BOOL NOT NULL DEFAULT False , Title TEXT NOT NULL, Poster BOOL NOT NULL DEFAULT False, Fanart BOOL NOT NULL DEFAULT False, Info BOOL NOT NULL DEFAULT False, Trailer BOOL NOT NULL DEFAULT False, Sub BOOL NOT NULL DEFAULT False, Extra BOOL NOT NULL DEFAULT False, new BOOL DEFAULT False, mark BOOL NOT NULL DEFAULT False, source TEXT NOT NULL, imdb TEXT, lock BOOL NOT NULL DEFAULT False);"
+                        SQLcommand.CommandText = "CREATE TABLE Movies(ID INTEGER PRIMARY KEY AUTOINCREMENT, Path TEXT NOT NULL, Type BOOL NOT NULL DEFAULT False , Title TEXT NOT NULL, Poster BOOL NOT NULL DEFAULT False, Fanart BOOL NOT NULL DEFAULT False, Info BOOL NOT NULL DEFAULT False, Trailer BOOL NOT NULL DEFAULT False, Sub BOOL NOT NULL DEFAULT False, Extra BOOL NOT NULL DEFAULT False, New BOOL DEFAULT False, Mark BOOL NOT NULL DEFAULT False, Source TEXT NOT NULL, Imdb TEXT, Lock BOOL NOT NULL DEFAULT False);"
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON movies (path);"
+                        SQLcommand.CommandText = "CREATE UNIQUE INDEX UniquePath ON Movies (Path);"
                         SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = String.Concat("INSERT INTO movies ", cQuery, " SELECT * FROM tmp_movies;")
+                        SQLcommand.CommandText = String.Concat("INSERT INTO Movies ", cQuery, " SELECT * FROM tmp_movies;")
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "DROP TABLE tmp_movies;"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueSource ON Sources (Path);"
                         SQLcommand.ExecuteNonQuery()
                     End Using
                     SQLtransaction.Commit()
@@ -456,7 +538,7 @@ Public Class Master
         Return sPath.Trim
     End Function
 
-    Public Shared Sub EnumerateDirectory(ByVal sPath As String)
+    Public Shared Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
 
         '//
         ' Get all directories in the parent directory
@@ -465,15 +547,16 @@ Public Class Master
         Try
             Dim sMoviePath As String = String.Empty
             If Directory.Exists(sPath) Then
+
                 Dim Dirs As String() = Directory.GetDirectories(sPath)
 
                 For Each inDir As String In Dirs
                     If isValidDir(inDir) Then
-                        Master.GetMoviePaths(inDir, sPath)
+                        ScanForFiles(inDir, sSource, bUseFolder, bSingle)
                     End If
 
-                    If eSettings.ScanRecursive Then
-                        EnumerateDirectory(inDir)
+                    If bRecur AndAlso isValidDir(inDir) Then
+                        ScanSourceDir(sSource, inDir, bRecur, bUseFolder, bSingle)
                     End If
                 Next
             End If
@@ -482,10 +565,10 @@ Public Class Master
         End Try
     End Sub
 
-    Public Shared Sub EnumerateFiles(ByVal sPath As String)
+    Public Shared Sub ScanForFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
 
         '//
-        ' Get all files in the parent directory
+        ' Get all files in the directory
         '\\
 
         Try
@@ -494,6 +577,7 @@ Public Class Master
                 Dim tmpList As New ArrayList
                 Dim di As New DirectoryInfo(sPath)
                 Dim lFi As New List(Of FileInfo)
+                Dim aContents(6) As Boolean
 
                 Try
                     lFi.AddRange(di.GetFiles())
@@ -512,7 +596,9 @@ Public Class Master
                             Else
                                 tmpList.Add(CleanStackingMarkers(lFile.FullName))
                             End If
-                            MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sPath, .isFile = True})
+                            aContents = GetFolderContents(lFile.FullName, bSingle)
+                            MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)})
+                            If bSingle Then Exit For
                         End If
                     Next
                 End If
@@ -963,7 +1049,7 @@ Public Class Master
         Return tNonConf
     End Function
 
-    Public Shared Function GetFolderContents(ByVal sPath As String, ByVal isFile As Boolean)
+    Public Shared Function GetFolderContents(ByVal sPath As String, ByVal isSingle As Boolean) As Boolean()
 
         '//
         ' Check if a folder has all the items (nfo, poster, fanart, etc)
@@ -984,7 +1070,7 @@ Public Class Master
         Dim parPath As String = String.Empty
         Try
 
-            If isFile Then
+            If Not isSingle Then
                 parPath = Directory.GetParent(sPath).FullName
                 tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
                 tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
@@ -1103,6 +1189,7 @@ Public Class Master
 
         Return aResults
     End Function
+
 
     Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo) As String
 
@@ -1345,7 +1432,7 @@ Public Class Master
         Return String.Empty
     End Function
 
-    Public Shared Function GetNfoPath(ByVal sPath As String, ByVal isFile As Boolean) As String
+    Public Shared Function GetNfoPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
 
         '//
         ' Get the proper path to NFO
@@ -1358,11 +1445,11 @@ Public Class Master
             If File.Exists(nPath) Then
                 Return nPath
             Else
-                If isFile Then
-                    Return String.Empty
-                Else
+                If isSingle Then
                     'return movie path so we can use it for looking for non-conforming nfos
                     Return sPath
+                Else
+                    Return String.Empty
                 End If
             End If
         Else
@@ -1374,21 +1461,21 @@ Public Class Master
                 Return String.Concat(nPathWithStack, ".nfo")
             ElseIf eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(nPath, ".nfo")) Then
                 Return String.Concat(nPath, ".nfo")
-            ElseIf Not isFile AndAlso eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
+            ElseIf eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
                 Return Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
             Else
-                If isFile Then
-                    Return String.Empty
-                Else
+                If isSingle Then
                     'return movie path so we can use it for looking for non-conforming nfos
                     Return sPath
+                Else
+                    Return String.Empty
                 End If
             End If
         End If
 
     End Function
 
-    Public Shared Sub SaveMovieToNFO(ByVal movieToSave As Media.Movie, ByVal sPath As String, ByVal isFile As Boolean)
+    Public Shared Sub SaveMovieToNFO(ByVal movieToSave As Media.Movie, ByVal sPath As String, ByVal isSingle As Boolean)
 
         '//
         ' Serialize Media.Movie to an NFO
@@ -1416,7 +1503,7 @@ Public Class Master
                 Dim tmpName As String = Path.GetFileNameWithoutExtension(sPath)
                 nPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
-                If eSettings.MovieNameNFO OrElse isFile Then
+                If eSettings.MovieNameNFO OrElse Not isSingle Then
                     If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                         tPath = Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.nfo")
                     Else
@@ -1434,7 +1521,7 @@ Public Class Master
                     End If
                 End If
 
-                If Not isFile AndAlso eSettings.MovieNFO Then
+                If isSingle AndAlso eSettings.MovieNFO Then
                     tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
 
                     If Not eSettings.OverwriteNfo Then
@@ -1502,7 +1589,7 @@ Public Class Master
         End Try
     End Function
 
-    Public Shared Function GetTrailerPath(ByVal sPath As String, ByVal isFile As Boolean) As String
+    Public Shared Function GetTrailerPath(ByVal sPath As String) As String
 
         '//
         ' Get the proper path to trailer
@@ -1510,42 +1597,24 @@ Public Class Master
 
         Dim tFile As String = String.Empty
 
-        If isFile Then
-            Dim parPath As String = Directory.GetParent(sPath).FullName
-            Dim tmpName As String = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
-            Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
-            For Each t As String In Master.eSettings.ValidExts
-                If File.Exists(String.Concat(tmpName, "-trailer", t)) Then
-                    tFile = String.Concat(tmpName, "-trailer", t)
-                    Exit For
-                ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) Then
-                    tFile = String.Concat(tmpName, "[trailer]", t)
-                    Exit For
-                ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) Then
-                    tFile = String.Concat(tmpNameNoStack, "-trailer", t)
-                    Exit For
-                ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
-                    tFile = String.Concat(tmpNameNoStack, "[trailer]", t)
-                    Exit For
-                End If
-            Next
-        Else
-            Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
-            Dim lFi As New List(Of FileInfo)()
-
-            Try
-                lFi.AddRange(di.GetFiles())
-            Catch
-            End Try
-
-            For Each sFile As FileInfo In lFi
-                If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
-                    (sFile.Name.ToLower.Contains("-trailer") OrElse sFile.Name.ToLower.Contains("[trailer")) Then
-                    tFile = sFile.FullName
-                    Exit For
-                End If
-            Next
-        End If
+        Dim parPath As String = Directory.GetParent(sPath).FullName
+        Dim tmpName As String = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+        Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+        For Each t As String In Master.eSettings.ValidExts
+            If File.Exists(String.Concat(tmpName, "-trailer", t)) Then
+                tFile = String.Concat(tmpName, "-trailer", t)
+                Exit For
+            ElseIf File.Exists(String.Concat(tmpName, "[trailer]", t)) Then
+                tFile = String.Concat(tmpName, "[trailer]", t)
+                Exit For
+            ElseIf File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) Then
+                tFile = String.Concat(tmpNameNoStack, "-trailer", t)
+                Exit For
+            ElseIf File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
+                tFile = String.Concat(tmpNameNoStack, "[trailer]", t)
+                Exit For
+            End If
+        Next
 
         Return tFile
 
@@ -1586,43 +1655,6 @@ Public Class Master
         End Try
 
     End Function
-
-    Public Shared Sub GetMoviePaths(ByVal sPath As String, ByVal sSource As String)
-
-        '//
-        ' Get the proper path to movie
-        '\\
-
-        Dim di As DirectoryInfo
-        Dim lFi As New List(Of FileInfo)
-
-        If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
-            di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
-        Else
-            di = New DirectoryInfo(sPath)
-        End If
-
-        Try
-            lFi.AddRange(di.GetFiles())
-        Catch
-        End Try
-
-        If lFi.Count > 0 Then
-            'sort first so we're sure to get the first file in case of stacking
-            lFi.Sort(AddressOf SortFileNames)
-
-            For Each sFile As FileInfo In lFi
-                If Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower) AndAlso Not sFile.Name.ToLower.Contains("sample") AndAlso _
-                    Not sFile.Name.ToLower.Contains("-trailer") AndAlso Not sFile.Name.ToLower.Contains("[trailer") AndAlso _
-                    ((Master.eSettings.SkipStackSizeCheck AndAlso IsStacked(sFile.Name)) OrElse sFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
-                    MediaList.Add(New FileAndSource With {.Filename = sFile.FullName, .Source = sSource, .isFile = False})
-                    'keep looking for other files if the file extension is on the no stack list
-                    If Not Master.eSettings.NoStackExts.Contains(sFile.Extension.ToLower) Then Exit For
-                End If
-            Next
-        End If
-    End Sub
-
 
     Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
 

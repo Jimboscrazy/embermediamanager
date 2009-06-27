@@ -93,33 +93,33 @@ Public Class Images
         End Try
     End Sub
 
-    Public Sub Delete(ByVal sPath As String, ByVal isFile As Boolean, ByVal fType As Master.ImageType)
+    Public Sub Delete(ByVal sPath As String, ByVal isSingle As Boolean, ByVal fType As Master.ImageType)
         Dim tPath As String = String.Empty
 
         If fType = Master.ImageType.Fanart Then
-            tPath = GetFanartPath(sPath, isFile)
+            tPath = GetFanartPath(sPath, isSingle)
             If Not String.IsNullOrEmpty(tPath) Then
                 File.Delete(tPath)
             End If
         Else
-            tPath = GetPosterPath(sPath, isFile)
+            tPath = GetPosterPath(sPath, isSingle)
             If Not String.IsNullOrEmpty(tPath) Then
                 File.Delete(tPath)
             End If
         End If
     End Sub
 
-    Public Sub Load(ByVal sPath As String, ByVal isFile As Boolean, ByVal fType As Master.ImageType)
+    Public Sub Load(ByVal sPath As String, ByVal isSingle As Boolean, ByVal fType As Master.ImageType)
         Try
             Dim tPath As String = String.Empty
 
             If fType = Master.ImageType.Fanart Then
-                tPath = GetFanartPath(sPath, isFile)
+                tPath = GetFanartPath(sPath, isSingle)
                 If Not String.IsNullOrEmpty(tPath) Then
                     FromFile(tPath)
                 End If
             Else
-                tPath = GetPosterPath(sPath, isFile)
+                tPath = GetPosterPath(sPath, isSingle)
                 If Not String.IsNullOrEmpty(tPath) Then
                     FromFile(tPath)
                 End If
@@ -168,7 +168,7 @@ Public Class Images
         Return Nothing
     End Function
 
-    Public Sub SaveAsPoster(ByVal sPath As String, ByVal isFile As Boolean)
+    Public Sub SaveAsPoster(ByVal sPath As String, ByVal isSingle As Boolean)
         Try
             Dim pPath As String = String.Empty
 
@@ -197,7 +197,7 @@ Public Class Images
                 Dim tmpName As String = Path.GetFileNameWithoutExtension(sPath)
                 pPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
-                If Master.eSettings.MovieTBN AndAlso Not isFile Then
+                If Master.eSettings.MovieTBN AndAlso isSingle Then
                     tPath = Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                         Save(tPath, Master.eSettings.PosterQuality)
@@ -215,7 +215,7 @@ Public Class Images
                     End If
                 End If
 
-                If Master.eSettings.MovieJPG AndAlso Not isFile Then
+                If Master.eSettings.MovieJPG AndAlso isSingle Then
                     tPath = Path.Combine(Directory.GetParent(sPath).FullName, "movie.jpg")
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                         Save(tPath, Master.eSettings.PosterQuality)
@@ -233,21 +233,21 @@ Public Class Images
                     End If
                 End If
 
-                If Master.eSettings.PosterTBN AndAlso Not isFile Then
+                If Master.eSettings.PosterTBN AndAlso isSingle Then
                     tPath = Path.Combine(Directory.GetParent(sPath).FullName, "poster.tbn")
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                         Save(tPath, Master.eSettings.PosterQuality)
                     End If
                 End If
 
-                If Master.eSettings.PosterJPG AndAlso Not isFile Then
+                If Master.eSettings.PosterJPG AndAlso isSingle Then
                     tPath = Path.Combine(Directory.GetParent(sPath).FullName, "poster.jpg")
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                         Save(tPath, Master.eSettings.PosterQuality)
                     End If
                 End If
 
-                If Master.eSettings.FolderJPG AndAlso Not isFile Then
+                If Master.eSettings.FolderJPG AndAlso isSingle Then
                     tPath = Path.Combine(Directory.GetParent(sPath).FullName, "folder.jpg")
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                         Save(tPath, Master.eSettings.PosterQuality)
@@ -275,7 +275,7 @@ Public Class Images
         Me.Save(toPath, 100)
     End Sub
 
-    Public Sub SaveAsFanart(ByVal sPath As String, ByVal isFile As Boolean)
+    Public Sub SaveAsFanart(ByVal sPath As String, ByVal isSingle As Boolean)
         Try
             Dim fPath As String = String.Empty
             Dim tPath As String = String.Empty
@@ -296,7 +296,7 @@ Public Class Images
                 Dim tmpName As String = Path.GetFileNameWithoutExtension(sPath)
                 fPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
 
-                If Master.eSettings.FanartJPG AndAlso Not isFile Then
+                If Master.eSettings.FanartJPG AndAlso isSingle Then
                     tPath = Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                         Save(tPath, Master.eSettings.FanartQuality)
@@ -925,7 +925,7 @@ foundIT:
         Return hasImages
     End Function
 
-    Public Function GetFanartPath(ByVal sPath As String, ByVal isFile As Boolean) As String
+    Public Function GetFanartPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
 
         '//
         ' Get the proper path to fanart
@@ -955,7 +955,7 @@ foundIT:
                     Return String.Concat(fPath, "-fanart.jpg")
                 ElseIf Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts-fanart.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts-fanart.jpg")
-                ElseIf Not isFile AndAlso Master.eSettings.FanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")) Then
+                ElseIf isSingle AndAlso Master.eSettings.FanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")
                 ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(fPathWithStack, ".fanart.jpg")) Then
                     Return String.Concat(fPathWithStack, ".fanart.jpg")
@@ -974,7 +974,7 @@ foundIT:
 
     End Function
 
-    Public Function GetPosterPath(ByVal sPath As String, ByVal isFile As Boolean) As String
+    Public Function GetPosterPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
 
         '//
         ' Get the proper path to poster
@@ -998,7 +998,7 @@ foundIT:
                 Dim tmpNameWithStack As String = Path.GetFileNameWithoutExtension(sPath)
                 Dim pPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameWithStack)
 
-                If Not isFile AndAlso Master.eSettings.MovieTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")) Then
+                If isSingle AndAlso Master.eSettings.MovieTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")
                 ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(pPathWithStack, ".tbn")) Then
                     Return String.Concat(pPathWithStack, ".tbn")
@@ -1006,7 +1006,7 @@ foundIT:
                     Return String.Concat(pPath, ".tbn")
                 ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.tbn")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.tbn")
-                ElseIf Not isFile AndAlso Master.eSettings.MovieJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.jpg")) Then
+                ElseIf isSingle AndAlso Master.eSettings.MovieJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "movie.jpg")
                 ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(pPathWithStack, ".jpg")) Then
                     Return String.Concat(pPathWithStack, ".jpg")
@@ -1014,9 +1014,9 @@ foundIT:
                     Return String.Concat(pPath, ".jpg")
                 ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.jpg")
-                ElseIf Not isFile AndAlso Master.eSettings.PosterTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "poster.tbn")) Then
+                ElseIf isSingle AndAlso Master.eSettings.PosterTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "poster.tbn")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "poster.jpg")
-                ElseIf Not isFile AndAlso Master.eSettings.FolderJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "folder.jpg")) Then
+                ElseIf isSingle AndAlso Master.eSettings.FolderJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "folder.jpg")) Then
                     Return Path.Combine(Directory.GetParent(sPath).FullName, "folder.jpg")
                 Else
                     Return String.Empty
@@ -1029,12 +1029,12 @@ foundIT:
 
     End Function
 
-    Public Function IsAllowedToDownload(ByVal sPath As String, ByVal isFile As Boolean, ByVal fType As Master.ImageType) As Boolean
+    Public Function IsAllowedToDownload(ByVal sPath As String, ByVal isSingle As Boolean, ByVal fType As Master.ImageType) As Boolean
 
         Try
             Select Case fType
                 Case Master.ImageType.Fanart
-                    If (String.IsNullOrEmpty(GetFanartPath(sPath, isFile)) OrElse Master.eSettings.OverwriteFanart) AndAlso _
+                    If (String.IsNullOrEmpty(GetFanartPath(sPath, isSingle)) OrElse Master.eSettings.OverwriteFanart) AndAlso _
                     (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) AndAlso _
                     Master.eSettings.UseTMDB Then
                         Return True
@@ -1042,7 +1042,7 @@ foundIT:
                         Return False
                     End If
                 Case Else
-                    If (String.IsNullOrEmpty(GetPosterPath(sPath, isFile)) OrElse Master.eSettings.OverwritePoster) AndAlso _
+                    If (String.IsNullOrEmpty(GetPosterPath(sPath, isSingle)) OrElse Master.eSettings.OverwritePoster) AndAlso _
                     (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
                      Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterTBN) AndAlso _
                      (Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB OrElse Master.eSettings.UseTMDB) Then

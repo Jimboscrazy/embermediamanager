@@ -1,4 +1,4 @@
-﻿'################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -154,11 +154,9 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieAddFolders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFolder.Click
-        Me.AddItem(True)
-    End Sub
-
-    Private Sub btnMovieAddFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFiles.Click
-        Me.AddItem(False)
+        Using dSource As New dlgMovieSource
+            If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then RefreshSources()
+        End Using
     End Sub
 
     Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
@@ -362,7 +360,7 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
-    Private Sub chkUseFolderNames_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFolderNames.CheckedChanged
+    Private Sub chkUseFolderNames_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.btnApply.Enabled = True
         Me.doRefresh = True
     End Sub
@@ -404,7 +402,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitleFromNfo.CheckedChanged
+    Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.btnApply.Enabled = True
         Me.doRefresh = True
     End Sub
@@ -621,7 +619,7 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
-    Private Sub chkScanRecursive_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanRecursive.CheckedChanged
+    Private Sub chkScanRecursive_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.btnApply.Enabled = True
         Me.doRefresh = True
     End Sub
@@ -1093,63 +1091,6 @@ Public Class dlgSettings
     ' ########## ROUTINES/FUNCTIONS ##########
     ' ########################################
 
-    Private Sub AddItem(ByVal blnIsFolder As Boolean)
-
-        '//
-        ' Add folder to folder list. Check to make sure it exists before adding it
-        '\\
-
-
-        Try
-            Dim iFound As Integer = -1
-            Dim lvItem As ListViewItem
-
-            With Me.fbdBrowse
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
-
-                        If Me.lvMovies.Items.Count > 0 Then
-                            For i As Integer = 0 To Me.lvMovies.Items.Count - 1
-                                If Me.lvMovies.Items(i).ToString.ToLower = .SelectedPath.ToString.ToLower Then
-                                    iFound = i
-                                    Exit For
-                                End If
-                            Next
-                        Else
-                            iFound = -1
-                        End If
-
-
-                        If iFound >= 0 Then
-                            Me.lvMovies.Items(iFound).Selected = True
-                            Me.lvMovies.Items(iFound).Focused = True
-                            Me.lvMovies.Focus()
-                        Else
-                            Me.lvMovies.BeginUpdate()
-                            lvItem = Me.lvMovies.Items.Add(.SelectedPath)
-                            If blnIsFolder = True Then
-                                lvItem.SubItems.Add("Folders")
-                            Else
-                                lvItem.SubItems.Add("Files")
-                            End If
-                            lvItem = Nothing
-                            Me.lvMovies.Sort()
-                            Me.lvMovies.EndUpdate()
-                            Me.lvMovies.Columns(0).Width = 388
-                            Me.lvMovies.Columns(1).Width = 74
-                            Me.lvMovies.Refresh()
-                            Me.btnApply.Enabled = True
-                            Me.doRefresh = True
-                        End If
-
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
     Private Sub SaveSettings()
 
         Try
@@ -1203,7 +1144,6 @@ Public Class dlgSettings
             Master.eSettings.ProperCase = Me.chkProperCase.Checked
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
             Master.eSettings.XBMCComs = Me.XComs
-            Master.eSettings.ScanRecursive = Me.chkScanRecursive.Checked
             Master.eSettings.ValidExts.Clear()
             Master.eSettings.ValidExts.AddRange(lstMovieExts.Items)
             Master.eSettings.NoStackExts.Clear()
@@ -1212,10 +1152,6 @@ Public Class dlgSettings
             Master.eSettings.InfoPanelAnim = chkInfoPanelAnim.Checked
 
             '######## MOVIES TAB ########
-            Master.eSettings.MovieFolders.Clear()
-            For Each lvItem As ListViewItem In Me.lvMovies.Items
-                Master.eSettings.MovieFolders.Add(String.Concat(lvItem.Text, "|", lvItem.SubItems(1).Text))
-            Next
 
             Master.eSettings.CertificationLang = Me.cbCert.Text
             If Not String.IsNullOrEmpty(Me.cbCert.Text) Then
@@ -1243,8 +1179,6 @@ Public Class dlgSettings
             Master.eSettings.FanartQuality = Me.tbFanartQual.Value
             Master.eSettings.OverwritePoster = Me.chkOverwritePoster.Checked
             Master.eSettings.OverwriteFanart = Me.chkOverwriteFanart.Checked
-            Master.eSettings.UseFolderName = Me.chkUseFolderNames.Checked
-            Master.eSettings.UseNameFromNfo = Me.chkTitleFromNfo.Checked
             Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked
             Master.eSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
             Master.eSettings.MovieJPG = Me.chkMovieJPG.Checked
@@ -1354,9 +1288,6 @@ Public Class dlgSettings
 
     Private Sub FillSettings()
 
-        Dim dirArray() As String
-        Dim lvItem As ListViewItem
-
         Try
             '######## GENERAL TAB ########
             Me.lstFilters.Items.AddRange(Master.eSettings.FilterCustom.ToArray)
@@ -1390,17 +1321,11 @@ Public Class dlgSettings
 
             Me.chkLogErrors.Checked = Master.eSettings.LogErrors
             Me.chkProperCase.Checked = Master.eSettings.ProperCase
-            Me.chkScanRecursive.Checked = Master.eSettings.ScanRecursive
             Me.lstMovieExts.Items.AddRange(Master.eSettings.ValidExts.ToArray)
             Me.lstNoStack.Items.AddRange(Master.eSettings.NoStackExts.ToArray)
             Me.chkUpdates.Checked = Master.eSettings.CheckUpdates
             Me.chkInfoPanelAnim.Checked = Master.eSettings.InfoPanelAnim
             '######## MOVIES TAB ########
-            For Each strFolders As String In Master.eSettings.MovieFolders
-                dirArray = Split(strFolders, "|")
-                lvItem = Me.lvMovies.Items.Add(dirArray(0).ToString)
-                lvItem.SubItems.Add(dirArray(1).ToString)
-            Next
 
             If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                 Me.chkCert.Checked = True
@@ -1429,8 +1354,6 @@ Public Class dlgSettings
             Me.tbFanartQual.Value = Master.eSettings.FanartQuality
             Me.chkOverwritePoster.Checked = Master.eSettings.OverwritePoster
             Me.chkOverwriteFanart.Checked = Master.eSettings.OverwriteFanart
-            Me.chkUseFolderNames.Checked = Master.eSettings.UseFolderName
-            Me.chkTitleFromNfo.Checked = Master.eSettings.UseNameFromNfo
             Me.chkMovieTBN.Checked = Master.eSettings.MovieTBN
             Me.chkMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
             Me.chkMovieJPG.Checked = Master.eSettings.MovieJPG
@@ -1526,8 +1449,7 @@ Public Class dlgSettings
             Me.txtFolderPattern.Text = Master.eSettings.FoldersPattern
             Me.txtFilePattern.Text = Master.eSettings.FilesPattern
 
-            Me.lvMovies.Columns(0).Width = 388
-            Me.lvMovies.Columns(1).Width = 74
+            Me.RefreshSources()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1569,6 +1491,26 @@ Public Class dlgSettings
         End If
 
     End Sub
+
+    Private Sub RefreshSources()
+        lvMovies.Items.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            SQLcommand.CommandText = "SELECT * FROM sources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim lvItem As New ListViewItem(SQLreader("ID").ToString)
+                    lvItem.SubItems.Add(SQLreader("Name").ToString)
+                    lvItem.SubItems.Add(SQLreader("Path").ToString)
+                    lvItem.SubItems.Add(If(SQLreader("Recursive"), "Yes", "No"))
+                    lvItem.SubItems.Add(If(SQLreader("Foldername"), "Yes", "No"))
+                    lvItem.SubItems.Add(If(SQLreader("Single"), "Yes", "No"))
+                    lvMovies.Items.Add(lvItem)
+                End While
+            End Using
+        End Using
+
+    End Sub
+
 #End Region '*** Routines/Functions
 
 

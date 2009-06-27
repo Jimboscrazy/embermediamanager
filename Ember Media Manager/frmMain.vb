@@ -46,7 +46,6 @@ Public Class frmMain
 
     Public alActors As New ArrayList
 
-    Private loadType As Integer = 0
     Private aniType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private aniRaise As Boolean = False
     Private aniFilterRaise As Boolean = False
@@ -96,7 +95,7 @@ Public Class frmMain
         Dim pURL As String
         Dim Path As String
         Dim Movie As Media.Movie
-        Dim isFile As Boolean
+        Dim isSingle As Boolean
     End Structure
 
 #End Region '*** Declarations
@@ -280,7 +279,7 @@ Public Class frmMain
         Master.CreateDefaultOptions()
 
         Dim MoviePath As String = String.Empty
-        Dim isFile As Boolean = False
+        Dim isSingle As Boolean = False
         Dim hasSpec As Boolean = False
         Dim clScrapeType As Master.ScrapeType = Nothing
         Dim clScrapeMod As Master.ScrapeModifier = Nothing
@@ -316,11 +315,11 @@ Public Class frmMain
                         clScrapeType = Master.ScrapeType.MarkAuto
                         clAsk = False
                     Case "-file"
-                        isFile = True
+                        isSingle = False
                         hasSpec = True
                         clScrapeType = Master.ScrapeType.SingleScrape
                     Case "-folder"
-                        isFile = False
+                        isSingle = True
                         hasSpec = True
                         clScrapeType = Master.ScrapeType.SingleScrape
                 End Select
@@ -366,10 +365,10 @@ Public Class frmMain
 
                         If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
                             Master.currPath = MoviePath
-                            Master.isFile = isFile
-                            Master.currNFO = Master.GetNfoPath(MoviePath, isFile)
+                            Master.currSingle = isSingle
+                            Master.currNFO = Master.GetNfoPath(MoviePath, isSingle)
                             Master.currMovie = If(Not String.IsNullOrEmpty(Master.currNFO), Master.LoadMovieFromNFO(Master.currNFO), New Media.Movie)
-                            Me.tmpTitle = Master.FilterName(If(isFile, Path.GetFileNameWithoutExtension(MoviePath), Directory.GetParent(MoviePath).Name))
+                            Me.tmpTitle = Master.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
                             Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, clAsk)
                         Else
                             Me.ScraperDone = True
@@ -409,7 +408,6 @@ Public Class frmMain
 
                 Me.SetColors()
 
-                Me.SetMenus(True)
                 Me.aniType = Master.eSettings.InfoPanelState
                 Select Case Me.aniType
                     Case 0
@@ -457,6 +455,7 @@ Public Class frmMain
                     End If
                 End If
 
+                Me.SetMenus(True)
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -635,7 +634,7 @@ Public Class frmMain
         ' Refresh Media Info
         '\\
 
-        Me.LoadInfo(Master.currPath, False, True, Master.isFile, True)
+        Me.LoadInfo(Master.currPath, False, True, Master.currSingle, True)
 
     End Sub
     Private Sub dgvMediaList_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellDoubleClick
@@ -653,15 +652,15 @@ Public Class frmMain
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
             Master.currPath = Me.dgvMediaList.Rows(indX).Cells(1).Value
-            Master.isFile = Me.dgvMediaList.Rows(indX).Cells(2).Value
-            Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
+            Master.currSingle = Me.dgvMediaList.Rows(indX).Cells(2).Value
+            Master.currNFO = Master.GetNfoPath(Master.currPath, Master.currSingle)
             Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
             Me.tslStatus.Text = Master.currPath
             Me.tmpTitle = Me.dgvMediaList.Rows(indX).Cells(3).Value
 
             Using dEditMovie As New dlgEditMovie
 
-                Select Case dEditMovie.ShowDialog(ID)
+                Select Case dEditMovie.ShowDialog(ID, Master.currSingle)
                     Case Windows.Forms.DialogResult.OK
                         Me.ReCheckItems(ID)
                         Me.SetListItemAfterEdit(ID, indX)
@@ -967,57 +966,9 @@ Public Class frmMain
 
     Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click
 
-        '//
-        ' Convert a file source into a folder source by separating everything into separate folders
-        '\\
-
-        If MsgBox(String.Concat("WARNING: If you continue, all files from file-type sources will be sorted into separate folders.", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
-
-            Dim dirArray() As String
-            Dim alMedia As New ArrayList
-            Dim hasFileSource As Boolean = False
-
-            Me.ToolsToolStripMenuItem.Enabled = False
-            Me.tsbAutoPilot.Enabled = False
-            Me.tsbRefreshMedia.Enabled = False
-            Me.mnuMediaList.Enabled = False
-            Me.tabsMain.Enabled = False
-            Me.tspbLoading.Style = ProgressBarStyle.Marquee
-            Me.tslLoading.Text = "Sorting Files:"
-            Me.tslLoading.Visible = True
-            Me.tspbLoading.Visible = True
-
-            Select Case Me.loadType
-                Case 2 'shows
-                Case 3 'music
-                Case Else 'default to movies
-                    'load all the movie folders from settings
-                    alMedia = Master.eSettings.MovieFolders
-            End Select
-
-            For Each movieSource As String In alMedia
-                dirArray = Split(movieSource, "|")
-                If dirArray(1).ToString = "Files" Then
-                    SortFiles(dirArray(0).ToString)
-                    hasFileSource = True
-                End If
-            Next
-
-            If hasFileSource Then
-                Me.LoadMedia(1)
-            Else
-                MsgBox("You do not have any file-type sources to sort.", MsgBoxStyle.Information, "No Files To Sort")
-                Me.ToolsToolStripMenuItem.Enabled = True
-                Me.tsbAutoPilot.Enabled = True
-                Me.tsbRefreshMedia.Enabled = True
-                Me.mnuMediaList.Enabled = True
-                Me.tabsMain.Enabled = True
-                Me.tspbLoading.Style = ProgressBarStyle.Marquee
-                Me.tslLoading.Text = "Sorting Files:"
-                Me.tslLoading.Visible = False
-                Me.tspbLoading.Visible = False
-            End If
-        End If
+        Using dSortFiles As New dlgSortFiles
+            If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then Me.LoadMedia(1)
+        End Using
     End Sub
 
     Private Sub chkFilterNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterNew.CheckedChanged
@@ -1147,7 +1098,7 @@ Public Class frmMain
             Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
 
             Using dEditMovie As New dlgEditMovie
-                Select Case dEditMovie.ShowDialog(ID)
+                Select Case dEditMovie.ShowDialog(ID, Me.dgvMediaList.Item(2, indX).Value)
                     Case Windows.Forms.DialogResult.OK
                         Me.ReCheckItems(ID)
                         Me.SetListItemAfterEdit(ID, indX)
@@ -1717,35 +1668,21 @@ Public Class frmMain
         ' Thread to count directories to prepare for loading media
         '\\
 
-        Dim dirArray() As String
-        Dim alMedia As New ArrayList
-
         Try
 
             Master.MediaList.Clear()
-
-            Select Case Me.loadType
-                Case 2 'shows
-                Case 3 'music
-                Case Else 'default to movies
-                    'load all the movie folders from settings
-                    alMedia = Master.eSettings.MovieFolders
-            End Select
-
-            For Each movieSource As String In alMedia
-
-                dirArray = Split(movieSource, "|")
-                If dirArray(1).ToString = "Folders" Then
-                    Master.EnumerateDirectory(dirArray(0).ToString)
-                Else
-                    Master.EnumerateFiles(dirArray(0).ToString)
-                End If
-
-                If Me.bwPrelim.CancellationPending Then
-                    e.Cancel = True
-                    Return
-                End If
-            Next
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = "SELECT * FROM sources;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Master.ScanSourceDir(SQLreader("Name"), SQLreader("Path"), SQLreader("Recursive"), SQLreader("Foldername"), SQLreader("Single"))
+                        If Me.bwPrelim.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+                    End While
+                End Using
+            End Using
 
             'remove any db entries that are not in the media list
             Dim dtMediaList As New DataTable
@@ -1780,9 +1717,6 @@ Public Class frmMain
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-
-        dirArray = Nothing
-        alMedia = Nothing
 
     End Sub
 
@@ -1836,7 +1770,6 @@ Public Class frmMain
         Dim cleanName As String = String.Empty
         Dim mName As String = String.Empty
         Dim mIMDB As String = String.Empty
-        Dim aContents(6) As Boolean
         Dim tmpMovie As New Media.Movie
 
         Try
@@ -1866,24 +1799,12 @@ Public Class frmMain
                         End If
 
                         If Not String.IsNullOrEmpty(sFile.Filename) Then
-                            If Master.eSettings.UseNameFromNfo Then
-                                tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isFile))
-                                mName = tmpMovie.Title
-                                mIMDB = tmpMovie.IMDBID
-                                tmpMovie = Nothing
-                                If String.IsNullOrEmpty(mName) Then
-                                    If Master.eSettings.UseFolderName AndAlso Not sFile.isFile Then
-                                        If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                            mName = Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name
-                                        Else
-                                            mName = Directory.GetParent(sFile.Filename).Name
-                                        End If
-                                    Else
-                                        mName = Path.GetFileNameWithoutExtension(sFile.Filename)
-                                    End If
-                                End If
-                            Else
-                                If Master.eSettings.UseFolderName AndAlso Not sFile.isFile Then
+                            tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isSingle))
+                            mName = tmpMovie.Title
+                            mIMDB = tmpMovie.IMDBID
+                            tmpMovie = Nothing
+                            If String.IsNullOrEmpty(mName) Then
+                                If sFile.UseFolder Then
                                     If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
                                         mName = Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name
                                     Else
@@ -1900,17 +1821,15 @@ Public Class frmMain
 
                             If Not String.IsNullOrEmpty(cleanName) Then
 
-                                aContents = Master.GetFolderContents(sFile.Filename, sFile.isFile)
-
                                 parPath.Value = sFile.Filename
-                                parType.Value = sFile.isFile
+                                parType.Value = sFile.isSingle
                                 parTitle.Value = cleanName
-                                parPoster.Value = aContents(0)
-                                parFanart.Value = aContents(1)
-                                parInfo.Value = aContents(2)
-                                parTrailer.Value = aContents(3)
-                                parSub.Value = aContents(4)
-                                parExtra.Value = aContents(5)
+                                parPoster.Value = sFile.Poster
+                                parFanart.Value = sFile.Fanart
+                                parInfo.Value = sFile.Nfo
+                                parTrailer.Value = sFile.Trailer
+                                parSub.Value = sFile.Subs
+                                parExtra.Value = sFile.Extra
                                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                                     SQLNewcommand.CommandText = String.Concat("SELECT id FROM movies WHERE path = """, sFile.Filename, """;")
                                     Dim SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
@@ -1939,7 +1858,6 @@ Public Class frmMain
                                 parIMDB.Value = mIMDB
                                 SQLcommand.ExecuteNonQuery()
 
-                                aContents = Nothing
                                 mName = String.Empty
                                 mIMDB = String.Empty
                                 currentIndex += 1
@@ -1951,7 +1869,6 @@ Public Class frmMain
             End Using
 
             tmpMovie = Nothing
-            aContents = Nothing
 
             If Me.bwFolderData.CancellationPending Then
                 e.Cancel = True
@@ -1997,7 +1914,7 @@ Public Class frmMain
 
         Try
             Me.UpdateMediaInfo(Args.Path, Args.Movie)
-            Master.SaveMovieToNFO(Args.Movie, Args.Path, Args.isFile)
+            Master.SaveMovieToNFO(Args.Movie, Args.Path, Args.isSingle)
 
             If Me.bwMediaInfo.CancellationPending Then
                 e.Cancel = True
@@ -2108,14 +2025,14 @@ Public Class frmMain
                 Return
             End If
 
-            If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
+            If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.Load(Master.currPath, Master.currSingle, Master.ImageType.Fanart)
 
             If bwLoadInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
 
-            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.Load(Master.currPath, Master.isFile, Master.ImageType.Posters)
+            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.Load(Master.currPath, Master.currSingle, Master.ImageType.Posters)
 
             'wait for mediainfo to update the nfo
             Do While bwMediaInfo.IsBusy
@@ -2127,7 +2044,7 @@ Public Class frmMain
                 Return
             End If
             'read nfo if it's there
-            Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
+            Master.currNFO = Master.GetNfoPath(Master.currPath, Master.currSingle)
             Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
 
             If bwLoadInfo.CancellationPending Then
@@ -3049,7 +2966,7 @@ doCancel:
 
 
         Try
-            Me.tslStatus.Text = "Performing preliminary tasks..."
+            Me.tslStatus.Text = "Performing Preliminary Tasks (Gathering Data)..."
             If bwPrelim.IsBusy Then
                 bwPrelim.CancelAsync()
                 While bwPrelim.IsBusy
@@ -3084,8 +3001,6 @@ doCancel:
             Me.tabsMain.Enabled = False
             Me.tabMovies.Text = "Movies"
 
-            Me.loadType = mediaType
-
             Me.bwPrelim = New System.ComponentModel.BackgroundWorker
             Me.bwPrelim.WorkerSupportsCancellation = True
             Me.bwPrelim.RunWorkerAsync()
@@ -3097,7 +3012,7 @@ doCancel:
 
     End Sub
 
-    Private Sub LoadInfo(ByVal sPath As String, ByVal doInfo As Boolean, ByVal doMI As Boolean, ByVal isFile As Boolean, Optional ByVal setEnabled As Boolean = False)
+    Private Sub LoadInfo(ByVal sPath As String, ByVal doInfo As Boolean, ByVal doMI As Boolean, ByVal isSingle As Boolean, Optional ByVal setEnabled As Boolean = False)
 
         '//
         ' Begin threads to load images and media info from nfos
@@ -3135,7 +3050,7 @@ doCancel:
             End If
 
             Master.currPath = sPath
-            Master.isFile = isFile
+            Master.currSingle = isSingle
 
             If doMI Then
                 Me.txtMediaInfo.Clear()
@@ -3145,7 +3060,7 @@ doCancel:
             If doMI Then
                 Me.bwMediaInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwMediaInfo.WorkerSupportsCancellation = True
-                Me.bwMediaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie, .isFile = isFile})
+                Me.bwMediaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie, .isSingle = isSingle})
             End If
 
             If doInfo Then
@@ -3588,30 +3503,30 @@ doCancel:
                                     UpdateMediaInfo(Master.currPath, Master.currMovie)
                                 End If
 
-                                If Poster.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Posters) Then
+                                If Poster.IsAllowedToDownload(Master.currPath, Master.currSingle, Master.ImageType.Posters) Then
                                     If Poster.GetPreferredImage(Master.currMovie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs) Then
                                         If Not IsNothing(Poster.Image) Then
-                                            Poster.SaveAsPoster(Master.currPath, Master.isFile)
+                                            Poster.SaveAsPoster(Master.currPath, Master.currSingle)
                                             Master.currMovie.Thumbs = pThumbs
                                         End If
                                     End If
                                 End If
                                 pThumbs = Nothing
 
-                                If Fanart.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Fanart) Then
+                                If Fanart.IsAllowedToDownload(Master.currPath, Master.currSingle, Master.ImageType.Fanart) Then
                                     If Fanart.GetPreferredImage(Master.currMovie.IMDBID, Master.ImageType.Fanart, fArt, Nothing) Then
                                         If Not IsNothing(Fanart.Image) Then
-                                            Fanart.SaveAsFanart(Master.currPath, Master.isFile)
+                                            Fanart.SaveAsFanart(Master.currPath, Master.currSingle)
                                             Master.currMovie.Fanart = fArt
                                         End If
                                     End If
                                 End If
                                 fArt = Nothing
 
-                                Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.isFile)
+                                Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.currSingle)
                             End If
 
-                            If Master.eSettings.AutoThumbs > 0 AndAlso Not Master.isFile Then
+                            If Master.eSettings.AutoThumbs > 0 AndAlso Master.currSingle Then
                                 Master.CreateRandomThumbs(Master.currPath, Master.eSettings.AutoThumbs)
                             End If
                         Catch
@@ -3650,7 +3565,7 @@ doCancel:
                                         Me.mnuMediaList.Enabled = True
                                         Me.tabsMain.Enabled = True
                                         Me.EnableFilters(True)
-                                        Me.LoadInfo(Master.currPath, True, False, Master.isFile)
+                                        Me.LoadInfo(Master.currPath, True, False, Master.currSingle)
                                     End If
                                 End If
                             End Using
@@ -3711,12 +3626,12 @@ doCancel:
                 End If
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
-                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Posters) Then
+                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.currSingle, Master.ImageType.Posters) Then
                         Using dImgSelect As New dlgImgSelect
                             dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
                         End Using
                     End If
-                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.isFile, Master.ImageType.Fanart) Then
+                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.currSingle, Master.ImageType.Fanart) Then
                         Using dImgSelect As New dlgImgSelect
                             dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
                         End Using
@@ -3726,14 +3641,14 @@ doCancel:
 
                     If Master.eSettings.SingleScrapeTrailer Then
                         Dim cTrailer As New Trailers
-                        Dim tURL As String = cTrailer.ShowTDialog(Master.currMovie.IMDBID, Master.currPath, Master.isFile, Master.currMovie.Trailer)
+                        Dim tURL As String = cTrailer.ShowTDialog(Master.currMovie.IMDBID, Master.currPath, Master.currMovie.Trailer)
                         If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
                             Master.currMovie.Trailer = tURL
                         End If
                         cTrailer = Nothing
                     End If
 
-                    If Master.eSettings.AutoThumbs > 0 AndAlso Not Master.isFile Then
+                    If Master.eSettings.AutoThumbs > 0 AndAlso Master.currSingle Then
                         Master.CreateRandomThumbs(Master.currPath, Master.eSettings.AutoThumbs)
                     End If
                 End If
@@ -3742,7 +3657,7 @@ doCancel:
                     Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
 
                     Using dEditMovie As New dlgEditMovie
-                        Select Case dEditMovie.ShowDialog(ID)
+                        Select Case dEditMovie.ShowDialog(ID, Me.dgvMediaList.Rows(indX).Cells(2).Value)
                             Case Windows.Forms.DialogResult.OK
                                 Me.ReCheckItems(ID)
                                 Me.SetListItemAfterEdit(ID, indX)
@@ -3753,7 +3668,7 @@ doCancel:
                         End Select
                     End Using
                 Else
-                    Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.isFile)
+                    Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.currSingle)
                 End If
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
@@ -3956,47 +3871,17 @@ doCancel:
             If ReloadFilters Then
                 cbFilterSource.Items.Clear()
                 cbFilterSource.Items.Add("All")
-                For Each movieSource As String In Master.eSettings.MovieFolders
-                    cbFilterSource.Items.Add(Split(movieSource, "|").First)
-                Next
+                Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                        While SQLReader.Read
+                            cbFilterSource.Items.Add(SQLReader("Name"))
+                        End While
+                    End Using
+                End Using
                 cbFilterSource.Text = "All"
             End If
         End With
-    End Sub
-
-    Private Sub SortFiles(ByVal sPath As String)
-        Dim tmpAL As New ArrayList
-        Dim tmpPath As String = String.Empty
-        Dim tmpName As String = String.Empty
-
-        Try
-            If Directory.Exists(sPath) Then
-                Dim di As New DirectoryInfo(sPath)
-                Dim lFi As New List(Of FileInfo)
-
-                Try
-                    lFi.AddRange(di.GetFiles())
-                Catch
-                End Try
-
-                For Each sFile As FileInfo In lFi
-                    tmpName = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sFile.Name))
-                    tmpName = tmpName.Replace(".fanart", String.Empty)
-                    tmpName = tmpName.Replace("-fanart", String.Empty)
-                    tmpPath = Path.Combine(sPath, tmpName)
-                    If Not Directory.Exists(tmpPath) Then
-                        Directory.CreateDirectory(tmpPath)
-                    End If
-
-                    File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
-                Next
-
-                lFi = Nothing
-                di = Nothing
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
     End Sub
 
     Private Sub SetFilterColors()
@@ -4178,19 +4063,11 @@ doCancel:
             Me.bsMedia.DataSource = Nothing
             Me.dgvMediaList.DataSource = Nothing
             Me.ClearInfo()
-            'Me.pnlInfoPanel.Height = 25
-            'Me.btnDown.Enabled = False
-            'Me.btnMid.Enabled = True
-            'Me.btnUp.Enabled = True
             Application.DoEvents()
 
             Me.dtMedia = New DataTable
             If DupesOnly Then
-                If Master.eSettings.UseNameFromNfo Then
-                    sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title", Master.SQLcn)
-                Else
-                    sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies WHERE title IN (SELECT title FROM movies GROUP BY title HAVING ( COUNT(title) > 1 ))  ORDER BY title", Master.SQLcn)
-                End If
+                sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title", Master.SQLcn)
             Else
                 sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies ORDER BY title", Master.SQLcn)
             End If
@@ -4301,7 +4178,6 @@ doCancel:
             Me.tabMovies.Text = String.Format("Movies ({0})", Me.dgvMediaList.RowCount)
             Me.EnableFilters(True)
 
-            Me.loadType = 0
         End If
     End Sub
 
@@ -4334,8 +4210,8 @@ doCancel:
             Me.ClearInfo()
             Me.pnlNoInfo.Visible = True
             Master.currPath = Me.dgvMediaList.Item(1, iRow).Value.ToString
-            Master.isFile = Me.dgvMediaList.Item(2, iRow).Value.ToString
-            Master.currNFO = Master.GetNfoPath(Master.currPath, Master.isFile)
+            Master.currSingle = Me.dgvMediaList.Item(2, iRow).Value
+            Master.currNFO = Master.GetNfoPath(Master.currPath, Master.currSingle)
             Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
             Me.tslStatus.Text = Master.currPath
             Me.mnuMediaList.Enabled = True
