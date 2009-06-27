@@ -3686,72 +3686,10 @@ doCancel:
     Private Sub ReCheckItems(ByVal ID As Integer)
         Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow
         Dim sPath As String = dRow(0).Item(1)
+        Dim aContents(6) As Boolean
         Try
-            Dim parPath As String = Directory.GetParent(sPath).FullName
-            Dim tmpName As String = String.Empty
-            Dim tmpNameNoStack As String = String.Empty
-            Dim hasNfo As Boolean = False
-            Dim hasPoster As Boolean = False
-            Dim hasFanart As Boolean = False
-            Dim hasTrailer As Boolean = False
-            Dim hasSub As Boolean = False
-            Dim hasExtra As Boolean = False
 
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                tmpName = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name)
-                If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    hasExtra = True
-                End If
-            Else
-                tmpName = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
-                tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
-                If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    hasExtra = True
-                End If
-            End If
-
-            'fanart
-            If File.Exists(String.Concat(tmpName, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpName, ".fanart.jpg")) OrElse _
-            File.Exists(String.Concat(tmpNameNoStack, "-fanart.jpg")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".fanart.jpg")) OrElse _
-            File.Exists(Path.Combine(parPath, "fanart.jpg")) OrElse File.Exists(Path.Combine(parPath, "video_ts-fanart.jpg")) OrElse _
-            File.Exists(Path.Combine(parPath, "video_ts.fanart.jpg")) Then
-                hasFanart = True
-            End If
-
-            'poster
-            If File.Exists(String.Concat(tmpName, ".jpg")) OrElse File.Exists(Path.Combine(parPath, "movie.jpg")) OrElse _
-                File.Exists(Path.Combine(parPath, "poster.jpg")) OrElse File.Exists(Path.Combine(parPath, "folder.jpg")) OrElse _
-                File.Exists(String.Concat(tmpName, ".tbn")) OrElse File.Exists(Path.Combine(parPath, "movie.tbn")) OrElse _
-                File.Exists(Path.Combine(parPath, "poster.tbn")) OrElse File.Exists(Path.Combine(parPath, "video_ts.tbn")) OrElse _
-                File.Exists(Path.Combine(parPath, "video_ts.jpg")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".jpg")) OrElse _
-                File.Exists(String.Concat(tmpNameNoStack, ".tbn")) Then
-                hasPoster = True
-            End If
-
-            'nfo
-            If File.Exists(String.Concat(tmpName, ".nfo")) OrElse File.Exists(String.Concat(tmpNameNoStack, ".nfo")) OrElse File.Exists(Path.Combine(parPath, "movie.nfo")) OrElse _
-                File.Exists(Path.Combine(parPath, "video_ts.nfo")) Then
-                hasNfo = True
-            End If
-
-            'sub
-            Dim sExt() As String = Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ",")
-
-            For Each t As String In sExt
-                If File.Exists(String.Concat(tmpName, t)) OrElse File.Exists(String.Concat(tmpName, t)) OrElse _
-                    File.Exists(String.Concat(tmpNameNoStack, t)) OrElse File.Exists(String.Concat(tmpNameNoStack, t)) Then
-                    hasSub = True
-                    Exit For
-                End If
-            Next
-
-            For Each t As String In Master.eSettings.ValidExts
-                If File.Exists(String.Concat(tmpName, "-trailer", t)) OrElse File.Exists(String.Concat(tmpName, "[trailer]", t)) OrElse _
-                File.Exists(String.Concat(tmpNameNoStack, "-trailer", t)) OrElse File.Exists(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
-                    hasTrailer = True
-                    Exit For
-                End If
-            Next
+            aContents = = Master.GetFolderContents(sPath, dRow(0).item(2))
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
@@ -3764,18 +3702,18 @@ doCancel:
                     Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
 
-                    dRow(0).Item(4) = hasPoster
-                    dRow(0).Item(5) = hasFanart
-                    dRow(0).Item(6) = hasNfo
-                    dRow(0).Item(7) = hasTrailer
-                    dRow(0).Item(8) = hasSub
-                    dRow(0).Item(9) = hasExtra
-                    parPoster.Value = hasPoster
-                    parFanart.Value = hasFanart
-                    parInfo.Value = hasNfo
-                    parTrailer.Value = hasTrailer
-                    parSub.Value = hasSub
-                    parExtra.Value = hasExtra
+                    dRow(0).Item(4) = aContents(0)
+                    dRow(0).Item(5) = aContents(1)
+                    dRow(0).Item(6) = aContents(2)
+                    dRow(0).Item(7) = aContents(3)
+                    dRow(0).Item(8) = aContents(4)
+                    dRow(0).Item(9) = aContents(5)
+                    parPoster.Value = aContents(0)
+                    parFanart.Value = aContents(1)
+                    parInfo.Value = aContents(2)
+                    parTrailer.Value = aContents(3)
+                    parSub.Value = aContents(4)
+                    parExtra.Value = aContents(5)
                     parID.Value = ID
 
                     SQLcommand.ExecuteNonQuery()
@@ -3783,6 +3721,7 @@ doCancel:
                 SQLtransaction.Commit()
             End Using
 
+            aContents = Nothing
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
