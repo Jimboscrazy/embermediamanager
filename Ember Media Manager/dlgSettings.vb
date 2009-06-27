@@ -170,7 +170,7 @@ Public Class dlgSettings
                             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                             SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
                             For i As Integer = lvMovies.SelectedItems.Count - 1 To 0 Step -1
-                                parSource.Value = lvMovies.SelectedItems(i).Text
+                                parSource.Value = lvMovies.SelectedItems(i).SubItems(0).Text
                                 SQLcommand.ExecuteNonQuery()
                                 lvMovies.Items.RemoveAt(lvMovies.SelectedItems(i).Index)
                             Next
@@ -1082,6 +1082,16 @@ Public Class dlgSettings
             End If
         End If
     End Sub
+
+    Private Sub lvMovies_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMovies.DoubleClick
+        If lvMovies.SelectedItems.Count > 0 Then
+            Using dMovieSource As New dlgMovieSource
+                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                    Me.RefreshSources()
+                End If
+            End Using
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1512,6 +1522,5 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
-
 
 End Class

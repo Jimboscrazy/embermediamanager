@@ -100,4 +100,8 @@ Public Class dlgSortFiles
             End If
         End With
     End Sub
+
+    Private Sub dlgSortFiles_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 End Class
