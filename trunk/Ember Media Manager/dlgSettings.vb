@@ -158,6 +158,7 @@ Public Class dlgSettings
             If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
                 RefreshSources()
                 Me.btnApply.Enabled = True
+                Me.doRefresh = True
             End If
         End Using
     End Sub
@@ -1093,6 +1094,7 @@ Public Class dlgSettings
             Using dMovieSource As New dlgMovieSource
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshSources()
+                    Me.doRefresh = True
                 End If
             End Using
         End If

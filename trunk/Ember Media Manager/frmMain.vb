@@ -1671,7 +1671,7 @@ Public Class frmMain
         Try
             Master.alMoviePaths.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = "SELECT path FROM movies ORDER BY title;"
+                SQLcommand.CommandText = "SELECT path FROM movies;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         Master.alMoviePaths.Add(SQLreader("path"))

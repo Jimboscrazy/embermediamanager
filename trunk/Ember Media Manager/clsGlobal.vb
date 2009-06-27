@@ -549,6 +549,9 @@ Public Class Master
             Dim sMoviePath As String = String.Empty
             If Directory.Exists(sPath) Then
 
+                'check if there are any movies in the parent folder
+                ScanForFiles(sPath, sSource, bUseFolder, bSingle)
+
                 Dim Dirs As String() = Directory.GetDirectories(sPath)
 
                 For Each inDir As String In Dirs
@@ -591,11 +594,18 @@ Public Class Master
                     For Each lFile As FileInfo In lFi
                         If alMoviePaths.Contains(lFile.FullName) Then
                             'it's already on the list, don't bother scanning
+                            If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
+                                tmpList.Add(lFile.FullName)
+                                SkipStack = True
+                            Else
+                                tmpList.Add(CleanStackingMarkers(lFile.FullName))
+                            End If
                             MediaList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
+                            If bSingle AndAlso Not SkipStack Then Exit For
                         Else
                             If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
-                           Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
-                           ((eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
+                            Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
+                            ((eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
                                 If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
                                     tmpList.Add(lFile.FullName)
                                     SkipStack = True
