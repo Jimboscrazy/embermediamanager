@@ -34,17 +34,19 @@ Public Class dlgEditMovie
     Private DeleteList As New ArrayList
     Private ExtraIndex As Integer = 0
     Private _id As Integer
+    Private _single As Boolean
     Private CachePath As String = String.Empty
     Private tPath As String = String.Empty
 
 
-    Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal id As Integer, ByVal isSingle As Boolean) As Windows.Forms.DialogResult
 
         '//
         ' Overload to pass data
         '\\
 
         Me._id = id
+        Me._single = isSingle
 
         Return MyBase.ShowDialog()
     End Function
@@ -52,7 +54,7 @@ Public Class dlgEditMovie
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
             Me.SetInfo()
-            Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.isFile)
+            Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.currSingle)
 
             Me.Poster.Clear()
             Me.Poster = Nothing
@@ -412,7 +414,7 @@ Public Class dlgEditMovie
                     .txtCerts.Text = Master.currMovie.Certification
                 End If
 
-                tPath = Master.GetTrailerPath(Master.currPath, Master.isFile)
+                tPath = Master.GetTrailerPath(Master.currPath)
                 Me.lblLocalTrailer.Visible = Not String.IsNullOrEmpty(tPath)
                 If Not String.IsNullOrEmpty(Master.currMovie.Trailer) Then
                     .txtTrailer.Text = Master.currMovie.Trailer
@@ -463,7 +465,7 @@ Public Class dlgEditMovie
                 If tRating > 0 Then .BuildStars(tRating)
 
                 If DoAll Then
-                    If Master.isFile Then
+                    If Not _single Then
                         TabControl1.TabPages.Remove(TabPage4)
                         TabControl1.TabPages.Remove(TabPage5)
                     Else
@@ -475,7 +477,7 @@ Public Class dlgEditMovie
                         .bwThumbs.RunWorkerAsync()
                     End If
 
-                    Fanart.Load(Master.currPath, Master.isFile, Master.ImageType.Fanart)
+                    Fanart.Load(Master.currPath, _single, Master.ImageType.Fanart)
                     If Not IsNothing(Fanart.Image) Then
                         .pbFanart.Image = Fanart.Image
 
@@ -483,7 +485,7 @@ Public Class dlgEditMovie
                         .lblFanartSize.Visible = True
                     End If
 
-                    Poster.Load(Master.currPath, Master.isFile, Master.ImageType.Posters)
+                    Poster.Load(Master.currPath, _single, Master.ImageType.Posters)
                     If Not IsNothing(Poster.Image) Then
                         .pbPoster.Image = Poster.Image
 
@@ -528,20 +530,18 @@ Public Class dlgEditMovie
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
                     Master.currMovie.Title = .txtTitle.Text.Trim
 
-                    'reset title in list just in case user changed it (only if Use Title From NFO is selected)
-                    If Master.eSettings.UseNameFromNfo Then
-                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                                Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
-                                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                                SQLcommand.CommandText = "UPDATE movies SET title = (?) WHERE id = (?);"
-                                parTitle.Value = .txtTitle.Text.Trim
-                                parID.Value = Me._id
-                                SQLcommand.ExecuteNonQuery()
-                            End Using
-                            SQLtransaction.Commit()
+                    'reset title in list just in case user changed it
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                            Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
+                            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                            SQLcommand.CommandText = "UPDATE movies SET title = (?) WHERE id = (?);"
+                            parTitle.Value = .txtTitle.Text.Trim
+                            parID.Value = Me._id
+                            SQLcommand.ExecuteNonQuery()
                         End Using
-                    End If
+                        SQLtransaction.Commit()
+                    End Using
                 End If
 
                 Master.currMovie.Tagline = .txtTagline.Text.Trim
@@ -598,15 +598,15 @@ Public Class dlgEditMovie
                 End If
 
                 If Not IsNothing(.Fanart.Image) Then
-                    .Fanart.SaveAsFanart(Master.currPath, Master.isFile)
+                    .Fanart.SaveAsFanart(Master.currPath, _single)
                 Else
-                    .Fanart.Delete(Master.currPath, Master.isFile, Master.ImageType.Fanart)
+                    .Fanart.Delete(Master.currPath, _single, Master.ImageType.Fanart)
                 End If
 
                 If Not IsNothing(.Poster.Image) Then
-                    .Poster.SaveAsPoster(Master.currPath, Master.isFile)
+                    .Poster.SaveAsPoster(Master.currPath, _single)
                 Else
-                    .Poster.Delete(Master.currPath, Master.isFile, Master.ImageType.Posters)
+                    .Poster.Delete(Master.currPath, _single, Master.ImageType.Posters)
                 End If
 
                 .SaveExtraThumbsList()
@@ -1303,7 +1303,7 @@ Public Class dlgEditMovie
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
         Using dTrailer As New dlgTrailer
-            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.isFile)
+            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
             If Not String.IsNullOrEmpty(tURL) Then
                 Me.btnPlayTrailer.Enabled = True
                 If tURL.Substring(0, 7) = "http://" Then

@@ -93,11 +93,14 @@ Public Class FileFolderRenamer
 
     Public Sub New()
         _movies.Clear()
-        Dim dirArray() As String
-        For Each strFolders As String In Master.eSettings.MovieFolders
-            dirArray = Split(strFolders, "|")
-            MovieFolders.Add(dirArray(0).ToString)
-        Next
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
+            Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                While SQLReader.Read
+                    MovieFolders.Add(SQLReader("Path"))
+                End While
+            End Using
+        End Using
     End Sub
 
     Public Sub AddMovie(ByVal _movie As FileRename)

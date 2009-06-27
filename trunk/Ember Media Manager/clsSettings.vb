@@ -26,8 +26,6 @@ Imports System.Xml.Serialization
 <Serializable()> _
 Public Class emmSettings
     Private _version As String
-    Private _movieFolders As New ArrayList
-    Private _scanrecursive As Boolean
     Private _filterCustom As New ArrayList
     Private _headerColor As String
     Private _backgroundColor As String
@@ -76,10 +74,8 @@ Public Class emmSettings
     Private _overwritePoster As Boolean
     Private _overwriteFanart As Boolean
     Private _logerrors As Boolean
-    Private _usefolderName As Boolean
     Private _properCase As Boolean
     Private _overwritenfo As Boolean
-    Private _usenamefromNfo As Boolean
     Private _validexts As New ArrayList
     Private _nostackexts As New ArrayList
     Private _movietbn As Boolean
@@ -172,24 +168,6 @@ Public Class emmSettings
         End Get
         Set(ByVal value As ArrayList)
             Me._filterCustom = value
-        End Set
-    End Property
-
-    Public Property MovieFolders() As ArrayList
-        Get
-            Return Me._movieFolders
-        End Get
-        Set(ByVal value As ArrayList)
-            Me._movieFolders = value
-        End Set
-    End Property
-
-    Public Property ScanRecursive() As Boolean
-        Get
-            Return Me._scanrecursive
-        End Get
-        Set(ByVal value As Boolean)
-            Me._scanrecursive = value
         End Set
     End Property
 
@@ -616,15 +594,6 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property UseFolderName() As Boolean
-        Get
-            Return Me._usefolderName
-        End Get
-        Set(ByVal value As Boolean)
-            Me._usefolderName = value
-        End Set
-    End Property
-
     Public Property ProperCase() As Boolean
         Get
             Return Me._properCase
@@ -640,15 +609,6 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._overwritenfo = value
-        End Set
-    End Property
-
-    Public Property UseNameFromNfo() As Boolean
-        Get
-            Return Me._usenamefromNfo
-        End Get
-        Set(ByVal value As Boolean)
-            Me._usenamefromNfo = value
         End Set
     End Property
 
@@ -1327,8 +1287,6 @@ Public Class emmSettings
 
     Public Sub Clear()
         Me._version = String.Empty
-        Me._movieFolders.Clear()
-        Me._scanrecursive = False
         Me._filterCustom.Clear()
         Me._headerColor = Color.DimGray.ToArgb
         Me._backgroundColor = Color.DimGray.ToArgb
@@ -1377,10 +1335,8 @@ Public Class emmSettings
         Me._overwritePoster = False
         Me._overwriteFanart = False
         Me._logerrors = True
-        Me._usefolderName = True
         Me._properCase = True
         Me._overwritenfo = False
-        Me._usenamefromNfo = False
         Me._validexts.Clear()
         Me._nostackexts.Clear()
         Me._movietbn = False
