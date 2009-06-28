@@ -2053,6 +2053,7 @@ Public Class frmMain
             If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(dbMovie.FaS.Fanart)
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(dbMovie.FaS.Poster)
             'read nfo if it's there
+
             Master.currNFO = dbMovie.FaS.Nfo
 
             'wait for mediainfo to update the nfo
