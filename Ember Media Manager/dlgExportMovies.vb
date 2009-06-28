@@ -56,11 +56,11 @@ Public Class dlgExportMovies
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT path, type FROM movies ORDER BY title ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT NfoPath FROM movies ORDER BY title ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
-                            _tmpPath = Master.GetNfoPath(SQLreader("path").ToString, SQLreader("type"))
+                            _tmpPath = SQLreader("NfoPath").ToString
                             If Not String.IsNullOrEmpty(_tmpPath) Then
                                 _tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
                                 _movies.Add(_tmpMovie)

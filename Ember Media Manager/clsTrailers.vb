@@ -185,12 +185,12 @@ Public Class Trailers
         End If
     End Function
 
-    Public Function DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String, ByVal isFile As Boolean, ByVal currNfoTrailer As String) As String
+    Public Function DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String, ByVal isSingle As Boolean, ByVal currNfoTrailer As String) As String
         Dim tURL As String = String.Empty
 
         Me._TrailerList.Clear()
 
-        If Not Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isFile, True, currNfoTrailer) Then
+        If Not Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, True, currNfoTrailer) Then
             Me.GetTrailers(ImdbID, True)
 
             If Me._TrailerList.Count > 0 Then
@@ -202,7 +202,7 @@ Public Class Trailers
                     End If
                 End If
             End If
-        ElseIf Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isFile, False, currNfoTrailer) Then
+        ElseIf Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, False, currNfoTrailer) Then
             Me.GetTrailers(ImdbID, True)
 
             If Me._TrailerList.Count > 0 Then

@@ -67,16 +67,18 @@ Public Class Images
     End Sub
 
     Public Sub FromFile(ByVal sPath As String)
-        Try
-            Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
-                ms.SetLength(fsImage.Length)
-                fsImage.Read(ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
-                ms.Flush()
-            End Using
-            _image = Image.FromStream(ms)
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+            Try
+                Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
+                    ms.SetLength(fsImage.Length)
+                    fsImage.Read(ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
+                    ms.Flush()
+                End Using
+                _image = Image.FromStream(ms)
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End If
     End Sub
 
     Public Sub FromWeb(ByVal sURL As String)

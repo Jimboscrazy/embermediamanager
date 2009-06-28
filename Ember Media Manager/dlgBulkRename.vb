@@ -75,11 +75,11 @@ Public Class dlgBulkRenamer
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT Title, Year, path, type , lock FROM movies ORDER BY title ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT Title, Year, MoviePath, type , lock, NfoPath FROM movies ORDER BY title ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
-                            _tmpPath = Master.GetNfoPath(SQLreader("path").ToString, SQLreader("type"))
+                            _tmpPath = SQLreader("NfoPath").ToString
                             If Not String.IsNullOrEmpty(_tmpPath) Then
                                 MovieFile = New FileFolderRenamer.FileRename
                                 '_tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
@@ -90,8 +90,8 @@ Public Class dlgBulkRenamer
                                 'If _tmpMovie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = Master.GetResFromDimensions(Master.GetBestVideo(_tmpMovie.FileInfo))
                                 'If _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
                                 'End If
-                                MovieFile.BasePath = Path.GetDirectoryName(SQLreader("path").ToString)
-                                MovieFile.Path = Path.GetDirectoryName(SQLreader("path").ToString)
+                                MovieFile.BasePath = Path.GetDirectoryName(SQLreader("MoviePath").ToString)
+                                MovieFile.Path = Path.GetDirectoryName(SQLreader("MoviePath").ToString)
                                 For Each i As String In FFRenamer.MovieFolders
                                     If i = MovieFile.Path.Substring(0, i.Length) Then
                                         MovieFile.Path = MovieFile.Path.Substring(String.Concat(i, Path.DirectorySeparatorChar).Length)
