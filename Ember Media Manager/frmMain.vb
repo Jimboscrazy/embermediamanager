@@ -1968,7 +1968,7 @@ Public Class frmMain
             Dim dtMediaList As New DataTable
             Dim MLFind As New MovieListFind
             Dim MLFound As New Master.FileAndSource
-            Dim sqlDA As New SQLite.SQLiteDataAdapter("SELECT Path FROM movies ORDER BY title;", Master.SQLcn)
+            Dim sqlDA As New SQLite.SQLiteDataAdapter("SELECT Path, Id FROM movies ORDER BY title;", Master.SQLcn)
             Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
             sqlDA.Fill(dtMediaList)
             If dtMediaList.Rows.Count > 0 Then
@@ -1982,6 +1982,27 @@ Public Class frmMain
                             If IsNothing(MLFound) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0))) Then
                                 parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
+                                Using SQLOthercommands As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                    Dim parId As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parId", DbType.UInt64, 0, "MovieID")
+                                    SQLOthercommands.CommandText = "DELETE FROM MoviesAStreams WHERE MovieID = (?);"
+                                    parId.Value = mRow.Item(1)
+                                    SQLOthercommands.ExecuteNonQuery()
+                                    SQLOthercommands.CommandText = "DELETE FROM MoviesVStreams WHERE MovieID = (?);"
+                                    parId.Value = mRow.Item(1)
+                                    SQLOthercommands.ExecuteNonQuery()
+                                    SQLOthercommands.CommandText = "DELETE FROM MoviesActors WHERE MovieID = (?);"
+                                    parId.Value = mRow.Item(1)
+                                    SQLOthercommands.ExecuteNonQuery()
+                                    SQLOthercommands.CommandText = "DELETE FROM MoviesSubs WHERE MovieID = (?);"
+                                    parId.Value = mRow.Item(1)
+                                    SQLOthercommands.ExecuteNonQuery()
+                                    SQLOthercommands.CommandText = "DELETE FROM MoviesPosters WHERE MovieID = (?);"
+                                    parId.Value = mRow.Item(1)
+                                    SQLOthercommands.ExecuteNonQuery()
+                                    SQLOthercommands.CommandText = "DELETE FROM MoviesFanart WHERE MovieID = (?);"
+                                    parId.Value = mRow.Item(1)
+                                    SQLOthercommands.ExecuteNonQuery()
+                                End Using
                             End If
                             If Me.bwPrelim.CancellationPending Then
                                 e.Cancel = True
