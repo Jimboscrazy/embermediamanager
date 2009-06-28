@@ -100,6 +100,13 @@ Public Class Master
         Trailer = 5
         MI = 6
     End Enum
+    Public Structure DBMovie
+        Dim Movie As Media.Movie
+        Dim MainFanart As String
+        Dim MainPoster As String
+        Dim currNFO As String
+    End Structure
+
 
     Public Structure ScrapeOptions
         Dim bTitle As Boolean
@@ -409,7 +416,7 @@ Public Class Master
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesFanart(" & _
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                                 "MovieID INTEGER NOT NULL, " & _
-                                "url TEXT, " & _
+                                "preview TEXT, " & _
                                 "thumbs TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
@@ -2298,5 +2305,116 @@ Public Class Master
         pgBrush.SurroundColors = New Color() {color2}
         graphics.FillEllipse(pgBrush, bounds.X, bounds.Y, bounds.Width, bounds.Height)
     End Sub
+    Public Shared Function LoadMovieFromDB(ByVal id As Integer) As DBMovie
+        Dim _movieDB As New DBMovie
+        Try
 
+
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", id, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    _movieDB.MainFanart = SQLreader("FanartPath")
+                    _movieDB.MainPoster = SQLreader("PosterPath")
+                    'read nfo if it's there
+                    _movieDB.currNFO = SQLreader("NfoPath")
+                    _movieDB.Movie = New Media.Movie
+                    With _movieDB.Movie
+                        .Clear()
+                        .ID = SQLreader("IMDB")
+                        .Title = SQLreader("Title")
+                        .OriginalTitle = SQLreader("OriginalTitle")
+                        .Year = SQLreader("Year")
+                        .Rating = SQLreader("Rating")
+                        .Votes = SQLreader("Votes")
+                        .MPAA = SQLreader("MPAA")
+                        .Top250 = SQLreader("Top250")
+                        .Outline = SQLreader("Outline")
+                        .Plot = SQLreader("Plot")
+                        .Tagline = SQLreader("Tagline")
+                        .Trailer = SQLreader("Trailer")
+                        .Certification = SQLreader("Certification")
+                        .Genre = SQLreader("Genre")
+                        .Runtime = SQLreader("Runtime")
+                        .ReleaseDate = SQLreader("ReleaseDate")
+                        .Studio = SQLreader("Studio")
+                        .Director = SQLreader("Director")
+                        .Credits = SQLreader("Credits")
+                        .PlayCount = SQLreader("PlayCount")
+                        .Watched = SQLreader("Watched")
+                        .File = SQLreader("File")
+                        .Path = SQLreader("Path")
+                        .FileNameAndPath = SQLreader("FileNameAndPath")
+                        .Status = SQLreader("Status")
+                    End With
+
+                End Using
+            End Using
+
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT MA.MovieID, MA.ActorName , MA.Role ,Act.Name,Act.thumb FROM MoviesActors AS MA ", _
+                                                       "INNER JOIN Actors AS Act ON (MA.ActorName = Act.Name) WHERE MA.MovieID = ", id, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim person As Media.Person
+                    While SQLreader.Read
+                        person = New Media.Person
+                        person.Name = SQLreader("ActorName")
+                        person.Role = SQLreader("Role")
+                        person.Thumb = SQLreader("thumb")
+                        _movieDB.Movie.Actors.Add(person)
+                    End While
+                End Using
+            End Using
+
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesVStreams WHERE MovieID = ", id, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim video As MediaInfo.Video
+                    While SQLreader.Read
+                        video = New MediaInfo.Video
+                        If Not DBNull.Value.Equals(SQLreader("Video_Width")) Then video.Width = SQLreader("Video_Width")
+                        If Not DBNull.Value.Equals(SQLreader("Video_Height")) Then video.Height = SQLreader("Video_Height")
+                        If Not DBNull.Value.Equals(SQLreader("Video_Codec")) Then video.Codec = SQLreader("Video_Codec")
+                        If Not DBNull.Value.Equals(SQLreader("Video_Duration")) Then video.Duration = SQLreader("Video_Duration")
+                        If Not DBNull.Value.Equals(SQLreader("Video_CodecId")) Then video.CodecID = SQLreader("Video_CodecId")
+                        If Not DBNull.Value.Equals(SQLreader("Video_ScanType")) Then video.Scantype = SQLreader("Video_ScanType")
+                        If Not DBNull.Value.Equals(SQLreader("Video_AspectDisplayRatio")) Then video.Aspect = SQLreader("Video_AspectDisplayRatio")
+                        _movieDB.Movie.FileInfo.StreamDetails.Video.Add(video)
+                    End While
+                End Using
+            End Using
+
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesAStreams WHERE MovieID = ", id, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim audio As MediaInfo.Audio
+                    While SQLreader.Read
+                        audio = New MediaInfo.Audio
+                        If Not DBNull.Value.Equals(SQLreader("Audio_Language")) Then audio.Language = SQLreader("Audio_Language")
+                        If Not DBNull.Value.Equals(SQLreader("Audio_Codec")) Then audio.Codec = SQLreader("Audio_Codec")
+                        If Not DBNull.Value.Equals(SQLreader("Audio_Channel")) Then audio.Channels = SQLreader("Audio_Channel")
+                        If Not DBNull.Value.Equals(SQLreader("Audio_CodecID")) Then audio.CodecID = SQLreader("Audio_CodecID")
+                        _movieDB.Movie.FileInfo.StreamDetails.Audio.Add(audio)
+                    End While
+                End Using
+            End Using
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSubs WHERE MovieID = ", id, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim subtitle As MediaInfo.Subtitle
+                    While SQLreader.Read
+                        subtitle = New MediaInfo.Subtitle
+                        If Not DBNull.Value.Equals(SQLreader("subs")) Then subtitle.Language = SQLreader("subs")
+                        _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Add(subtitle)
+                    End While
+                End Using
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            _movieDB = Nothing
+        End Try
+        Return _movieDB
+    End Function
+    Public Shared Function LoadMovieFromDB(ByVal sPath As String) As Media.Movie
+        Return Nothing
+    End Function
 End Class
