@@ -2327,6 +2327,7 @@ Public Class Master
         Dim _movieDB As New DBMovie
         _movieDB.FaS = New Master.FileAndSource
         Try
+            _movieDB.ID = id
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", id, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -2464,7 +2465,7 @@ Public Class Master
 
         'Dim currentIndex As Integer = 0
         'Dim mIMDB As String = String.Empty
-        Dim tmpMovie As New Media.Movie
+        Dim tmpMovie As Media.Movie
 
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
@@ -2688,9 +2689,10 @@ Public Class Master
                         End Using
                         Using SQLcommandMoviesFanart As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                             SQLcommandMoviesFanart.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesFanart (", _
-                                    "MovieID, thumb", _
-                                    ") VALUES (?,?,?);")
+                                    "MovieID, preview, thumb", _
+                                    ") VALUES (?,?,?,?);")
                             Dim parFanart_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_MovieID", DbType.String, 0, "MovieID")
+                            Dim parFanart_Preview As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_Preview", DbType.String, 0, "Preview")
                             Dim parFanart_thumb As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_thumb", DbType.String, 0, "thumb")
                             ' Same as Poster
                             'For Each p As Media.Fanart In tmpMovie.Fanart
