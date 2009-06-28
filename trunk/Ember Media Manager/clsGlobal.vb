@@ -2329,11 +2329,11 @@ Public Class Master
         Try
             _movieDB.ID = id
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", id, ";")
+                SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     _movieDB.FaS.Fanart = SQLreader("FanartPath")
                     _movieDB.FaS.Poster = SQLreader("PosterPath")
-                    'read nfo if it's there
+                    _movieDB.FaS.Trailer = SQLreader("TrailerPath")
                     _movieDB.FaS.Nfo = SQLreader("NfoPath")
                     _movieDB.Movie = New Media.Movie
                     With _movieDB.Movie
@@ -2370,7 +2370,7 @@ Public Class Master
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT MA.MovieID, MA.ActorName , MA.Role ,Act.Name,Act.thumb FROM MoviesActors AS MA ", _
-                                                       "INNER JOIN Actors AS Act ON (MA.ActorName = Act.Name) WHERE MA.MovieID = ", id, ";")
+                                                       "INNER JOIN Actors AS Act ON (MA.ActorName = Act.Name) WHERE MA.MovieID = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim person As Media.Person
                     While SQLreader.Read
@@ -2384,7 +2384,7 @@ Public Class Master
             End Using
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesVStreams WHERE MovieID = ", id, ";")
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesVStreams WHERE MovieID = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim video As MediaInfo.Video
                     While SQLreader.Read
@@ -2416,7 +2416,7 @@ Public Class Master
                 End Using
             End Using
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSubs WHERE MovieID = ", id, ";")
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim subtitle As MediaInfo.Subtitle
                     While SQLreader.Read
@@ -2427,7 +2427,7 @@ Public Class Master
                 End Using
             End Using
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSets WHERE MovieID = ", id, ";")
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSets WHERE MovieID = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim sets As Media.Set
                     While SQLreader.Read
@@ -2440,7 +2440,7 @@ Public Class Master
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            _movieDB = Nothing
+            _movieDB.ID = -1
         End Try
         Return _movieDB
     End Function
@@ -2452,19 +2452,19 @@ Public Class Master
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.Read Then
                         Return LoadMovieFromDB(SQLreader("ID"))
+                    Else
+                        Return New Master.DBMovie With {.Id = -1} ' No Movie Found
                     End If
                 End Using
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-        Return Nothing
+        Return New Master.DBMovie With {.Id = -1}
     End Function
 
     Public Shared Function SaveMovieToDB(ByVal _movieDB As DBMovie, ByVal IsNew As Boolean) As DBMovie
 
-        'Dim currentIndex As Integer = 0
-        'Dim mIMDB As String = String.Empty
         Dim tmpMovie As Media.Movie
 
         Try
@@ -2674,6 +2674,7 @@ Public Class Master
                                 SQLcommandMoviesSubs.ExecuteNonQuery()
                             Next
                         End Using
+                        ' For what i understand this is used from Poster/Fanart Modules... will not be read/wrtire directly when load/save Movie
                         Using SQLcommandMoviesPosters As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                             SQLcommandMoviesPosters.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesPosters (", _
                                     "MovieID, thumb", _
@@ -2687,6 +2688,7 @@ Public Class Master
                             'SQLcommandMoviesPosters.ExecuteNonQuery()
                             'Next
                         End Using
+                        ' For what i understand this is used from Poster/Fanart Modules... will not be read/wrtire directly when load/save Movie
                         Using SQLcommandMoviesFanart As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                             SQLcommandMoviesFanart.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesFanart (", _
                                     "MovieID, preview, thumb", _
@@ -2735,23 +2737,22 @@ Public Class Master
         End Try
         Return _movieDB
     End Function
-    Public Shared Function SaveMovieToDB(ByVal _movie As Media.Movie, ByVal IsNew As Boolean, Optional ByVal IsMark As Boolean = False, Optional ByVal IsLock As Boolean = False) As DBMovie
-        ' Note not working YET
-        ' If not IsNew that look for the path to get the ID and update
+    Public Shared Function SaveMovieToDB(ByVal _movie As Media.Movie, Optional ByVal IsMark As Boolean = False, Optional ByVal IsLock As Boolean = False) As DBMovie
         Dim _movieDB As New Master.DBMovie
         _movieDB.Movie = _movie
-        ' TODO: If not IsNew that look for the path to get the ID and update
-        If Not IsNew Then
+        Dim _tmpMovieDB As Master.DBMovie = LoadMovieFromDB(_movie.Path)
+        If _tmpMovieDB.ID = -1 Then
+            ' New Movie!!!! Can't Use this Function for new Movies need DBMovie for that
+            _movieDB.ID = -1
+            Return _movieDB
         Else
-            _movieDB.IsNew = IsNew
+            _movieDB.ID = _tmpMovieDB.ID
+            _movieDB.FaS = _tmpMovieDB.FaS
         End If
-        Dim aContents() As String
-        aContents = GetFolderContents(_movie.FileNameAndPath)
-        ' TODO: Need to Build the FileAndSource
-        'Dim FaS As New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)}
-        _movieDB = Master.SaveMovieToDB(_movieDB, IsNew)
+        _movieDB.IsMark = IsMark
+        _movieDB.IsLock = IsLock
+        _movieDB = Master.SaveMovieToDB(_movieDB, False)
         Return _movieDB
     End Function
-
 
 End Class
