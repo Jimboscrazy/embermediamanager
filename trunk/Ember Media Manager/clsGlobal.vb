@@ -365,6 +365,22 @@ Public Class Master
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (MoviePath);"
                     SQLcommand.ExecuteNonQuery()
 
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Sets(" & _
+                                "SetName TEXT NOT NULL PRIMARY KEY" & _
+                                 ");"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesSets(" & _
+                                "MovieID INTEGER NOT NULL, " & _
+                                "SetName TEXT NOT NULL, " & _
+                                "SetOrder TEXT NOT NULL, " & _
+                                "PRIMARY KEY (MovieID,SetName) " & _
+                                 ");"
+                    SQLcommand.ExecuteNonQuery()
+                    'SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesSets ON MoviesSets (MovieID);"
+
+
+
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesVStreams(" & _
                                 "MovieID INTEGER NOT NULL, " & _
                                 "StreamID INTEGER NOT NULL, " & _
@@ -2308,8 +2324,6 @@ Public Class Master
     Public Shared Function LoadMovieFromDB(ByVal id As Integer) As DBMovie
         Dim _movieDB As New DBMovie
         Try
-
-
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", id, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -2408,13 +2422,38 @@ Public Class Master
                     End While
                 End Using
             End Using
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSets WHERE MovieID = ", id, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim sets As Media.Set
+                    While SQLreader.Read
+                        sets = New Media.Set
+                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.SetContainer.Set = SQLreader("SetName")
+                        If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.SetContainer.Order = SQLreader("SetOrder")
+                        _movieDB.Movie.Sets.Add(sets)
+                    End While
+                End Using
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             _movieDB = Nothing
         End Try
         Return _movieDB
     End Function
-    Public Shared Function LoadMovieFromDB(ByVal sPath As String) As Media.Movie
+    Public Shared Function LoadMovieFromDB(ByVal sPath As String) As DBMovie
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                ' One more Query Better then re-write all function again
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies WHERE Path = ", sPath, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If SQLreader.Read Then
+                        Return LoadMovieFromDB(SQLreader("ID"))
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return Nothing
     End Function
 End Class

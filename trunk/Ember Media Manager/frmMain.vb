@@ -2096,8 +2096,33 @@ Public Class frmMain
                                             'SQLcommandMoviesFanart.ExecuteNonQuery()
                                             'Next
                                         End Using
+                                        Using SQLcommandMoviesSubs As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                            SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO Sets (", _
+                                                    "SetName", _
+                                                    ") VALUES (?);")
+                                            Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
+                                            For Each s As Media.Set In tmpMovie.Sets
+                                                parSets_SetName.Value = s.SetContainer.Set
+                                                SQLcommandMoviesSubs.ExecuteNonQuery()
+                                            Next
+                                        End Using
+                                        Using SQLcommandMoviesSubs As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                            SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
+                                                    "MovieID,SetName,SetOrder", _
+                                                    ") VALUES (?,?,?);")
+                                            Dim parMovieSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_MovieID", DbType.UInt64, 0, "MovieID")
+                                            Dim parMovieSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_SetName", DbType.String, 0, "SetName")
+                                            Dim parMovieSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_SetOrder", DbType.String, 0, "SetOrder")
+                                            For Each s As Media.Set In tmpMovie.Sets
+                                                parMovieSets_MovieID.Value = rdrMovie(0)
+                                                parMovieSets_SetName.Value = s.SetContainer.Set
+                                                parMovieSets_SetOrder.Value = s.SetContainer.Order
+                                                SQLcommandMoviesSubs.ExecuteNonQuery()
+                                            Next
+                                        End Using
                                     End If
                                 End Using
+
                                 mName = String.Empty
                                 mIMDB = String.Empty
                                 currentIndex += 1
@@ -2262,7 +2287,6 @@ Public Class frmMain
             Me.MainFanart.Clear()
 
             Me.MainPoster.Clear()
-
             dbMovie = Master.LoadMovieFromDB(Args.ID)
             Master.currMovie = dbMovie.Movie
             If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(dbMovie.MainFanart)
@@ -2271,6 +2295,7 @@ Public Class frmMain
             Master.currNFO = dbMovie.currNFO
 
             'wait for mediainfo to update the nfo
+            ' Note to Nuno: What is this ? ... need to check it before I break something
             Do While bwMediaInfo.IsBusy
                 Application.DoEvents()
             Loop
