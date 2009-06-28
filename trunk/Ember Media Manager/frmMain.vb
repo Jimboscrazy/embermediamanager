@@ -1750,7 +1750,7 @@ Public Class frmMain
             Dim dtMediaList As New DataTable
             Dim MLFind As New MovieListFind
             Dim MLFound As New Master.FileAndSource
-            Dim sqlDA As New SQLite.SQLiteDataAdapter("SELECT Path, Id FROM movies ORDER BY title;", Master.SQLcn)
+            Dim sqlDA As New SQLite.SQLiteDataAdapter("SELECT MoviePath, Id FROM movies ORDER BY title;", Master.SQLcn)
             Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
             sqlDA.Fill(dtMediaList)
             If dtMediaList.Rows.Count > 0 Then
@@ -1861,6 +1861,7 @@ Public Class frmMain
                     End If
                     If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
                         tmpMovieDB.Movie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isSingle))
+
                         If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
                             If sFile.UseFolder Then
                                 If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
@@ -1875,6 +1876,7 @@ Public Class frmMain
                         Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.Movie.Title)
                         If Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
                             tmpMovieDB.FaS = sFile
+                            'tmpMovieDB.Movie.FileNameAndPath
                             tmpMovieDB.IsNew = True
                             tmpMovieDB.IsLock = False
                             tmpMovieDB.IsMark = Master.eSettings.MarkNew
@@ -2046,7 +2048,6 @@ Public Class frmMain
             Master.currNFO = dbMovie.FaS.Nfo
 
             'wait for mediainfo to update the nfo
-            ' Note to Nuno: What is this ? ... need to check it before I break something
             Do While bwMediaInfo.IsBusy
                 Application.DoEvents()
             Loop

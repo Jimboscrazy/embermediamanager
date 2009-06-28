@@ -353,7 +353,6 @@ Public Class Master
                                 "Playcount TEXT, " & _
                                 "Watched TEXT, " & _
                                 "File TEXT, " & _
-                                "Path TEXT, " & _
                                 "FileNameAndPath TEXT, " & _
                                 "Status TEXT, " & _
                                 "Trailer TEXT, " & _
@@ -2360,7 +2359,7 @@ Public Class Master
                         .PlayCount = SQLreader("PlayCount")
                         .Watched = SQLreader("Watched")
                         .File = SQLreader("File")
-                        .Path = SQLreader("Path")
+                        .Path = SQLreader("MoviePath")
                         .FileNameAndPath = SQLreader("FileNameAndPath")
                         .Status = SQLreader("Status")
                     End With
@@ -2475,9 +2474,9 @@ Public Class Master
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
-                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
+                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     'SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), HasPoster = (?), HasFanart = (?), HasNfo = (?), HasTrailer = (?), HasSub = (?), HasExtra = (?), ", _
                     '    "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
@@ -2486,9 +2485,9 @@ Public Class Master
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "ID, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
-                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
+                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.String, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
@@ -2527,7 +2526,6 @@ Public Class Master
                 Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
                 Dim parWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parWatched", DbType.String, 0, "Watched")
                 Dim parFile As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFile", DbType.String, 0, "File")
-                Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "Path")
                 Dim parFileNameAndPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFileNameAndPath", DbType.String, 0, "FileNameAndPath")
                 Dim parStatus As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStatus", DbType.String, 0, "Status")
                 Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.String, 0, "Trailer")
@@ -2573,7 +2571,6 @@ Public Class Master
                 parWatched.Value = tmpMovie.Watched
                 parStatus.Value = tmpMovie.Status
                 parFile.Value = tmpMovie.File
-                parPath.Value = tmpMovie.Path
                 parFileNameAndPath.Value = tmpMovie.FileNameAndPath
                 parTrailer.Value = tmpMovie.Trailer
 
