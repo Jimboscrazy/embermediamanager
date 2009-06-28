@@ -2258,62 +2258,17 @@ Public Class frmMain
         Try
 
             Dim Args As Arguments = e.Argument
-
+            Dim dbMovie As Master.DBMovie
             Me.MainFanart.Clear()
 
             Me.MainPoster.Clear()
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", Args.ID, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If Me.bwLoadInfo.CancellationPending Then
-                        e.Cancel = True
-                        Return
-                    End If
-
-                    If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(SQLreader("FanartPath"))
-
-                    If bwLoadInfo.CancellationPending Then
-                        e.Cancel = True
-                        Return
-                    End If
-
-                    If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(SQLreader("PosterPath"))
-
-                    'read nfo if it's there
-                    Master.currNFO = SQLreader("NfoPath")
-
-                    With Master.currMovie
-                        .Clear()
-                        .ID = SQLreader("IMDB")
-                        .Title = SQLreader("Title")
-                        .OriginalTitle = SQLreader("OriginalTitle")
-                        .Year = SQLreader("Year")
-                        .Rating = SQLreader("Rating")
-                        .Votes = SQLreader("Votes")
-                        .MPAA = SQLreader("MPAA")
-                        .Top250 = SQLreader("Top250")
-                        .Outline = SQLreader("Outline")
-                        .Plot = SQLreader("Plot")
-                        .Tagline = SQLreader("Tagline")
-                        .Trailer = SQLreader("Trailer")
-                        .Certification = SQLreader("Certification")
-                        .Genre = SQLreader("Genre")
-                        .Runtime = SQLreader("Runtime")
-                        .ReleaseDate = SQLreader("ReleaseDate")
-                        .Studio = SQLreader("Studio")
-                        .Director = SQLreader("Director")
-                        .Credits = SQLreader("Credits")
-                        .PlayCount = SQLreader("PlayCount")
-                        .Watched = SQLreader("Watched")
-                        .File = SQLreader("File")
-                        .Path = SQLreader("Path")
-                        .FileNameAndPath = SQLreader("FileNameAndPath")
-                        .Status = SQLreader("Status")
-                    End With
-
-                End Using
-            End Using
+            dbMovie = Master.LoadMovieFromDB(Args.ID)
+            Master.currMovie = dbMovie.Movie
+            If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(dbMovie.MainFanart)
+            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(dbMovie.MainPoster)
+            'read nfo if it's there
+            Master.currNFO = dbMovie.currNFO
 
             'wait for mediainfo to update the nfo
             Do While bwMediaInfo.IsBusy
@@ -2325,10 +2280,6 @@ Public Class frmMain
                 Return
             End If
 
-            If bwLoadInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
