@@ -1853,36 +1853,39 @@ Public Class frmMain
         Try
             tmpMovieDB.Movie = New Media.Movie
             'process the folder type media
-            For Each sFile As Master.FileAndSource In Master.MediaList
-                If Me.bwFolderData.CancellationPending Then
-                    e.Cancel = True
-                    Return
-                End If
-                If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
-                    tmpMovieDB.Movie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isSingle))
-                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                        If sFile.UseFolder Then
-                            If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
+                For Each sFile As Master.FileAndSource In Master.MediaList
+                    If Me.bwFolderData.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
+                    If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
+                        tmpMovieDB.Movie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isSingle))
+                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                            If sFile.UseFolder Then
+                                If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
+                                    tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name
+                                Else
+                                    tmpMovieDB.Movie.Title = Directory.GetParent(sFile.Filename).Name
+                                End If
                             Else
-                                tmpMovieDB.Movie.Title = Directory.GetParent(sFile.Filename).Name
+                                tmpMovieDB.Movie.Title = Path.GetFileNameWithoutExtension(sFile.Filename)
                             End If
-                        Else
-                            tmpMovieDB.Movie.Title = Path.GetFileNameWithoutExtension(sFile.Filename)
                         End If
+                        Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.Movie.Title)
+                        If Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                            tmpMovieDB.FaS = sFile
+                            tmpMovieDB.IsNew = True
+                            tmpMovieDB.IsLock = False
+                            tmpMovieDB.IsMark = Master.eSettings.MarkNew
+                            'Do the Save
+                            tmpMovieDB = Master.SaveMovieToDB(tmpMovieDB, True, True)
+                        End If
+                        currentIndex += 1
                     End If
-                    Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.Movie.Title)
-                    If Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                        tmpMovieDB.FaS = sFile
-                        tmpMovieDB.IsNew = True
-                        tmpMovieDB.IsLock = False
-                        tmpMovieDB.IsMark = Master.eSettings.MarkNew
-                        'Do the Save
-                        tmpMovieDB = Master.SaveMovieToDB(tmpMovieDB, True)
-                    End If
-                    currentIndex += 1
-                End If
-            Next
+                Next
+                SQLtransaction.Commit()
+            End Using
             If Me.bwFolderData.CancellationPending Then
                 e.Cancel = True
                 Return
