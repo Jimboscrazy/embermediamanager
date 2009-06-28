@@ -719,19 +719,25 @@ Public Class dlgImgSelect
             Select Case True
                 Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, ".jpg")
                     ' xlarge
-                    Me.rbXLarge.Enabled = True
-                    Me.rbXLarge.Tag = Me.TMDBPosters.Item(i).URL
-                    If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format("X-Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                    If Not IsNothing(TMDBPosters.Item(i).WebImage) Then
+                        Me.rbXLarge.Enabled = True
+                        Me.rbXLarge.Tag = Me.TMDBPosters.Item(i).URL
+                        If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format("X-Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                    End If
                 Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_mid.jpg")
                     ' large 
-                    Me.rbLarge.Enabled = True
-                    Me.rbLarge.Tag = Me.TMDBPosters.Item(i).URL
-                    If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format("Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                    If Not IsNothing(TMDBPosters.Item(i).WebImage) Then
+                        Me.rbLarge.Enabled = True
+                        Me.rbLarge.Tag = Me.TMDBPosters.Item(i).URL
+                        If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format("Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                    End If
                 Case TMDBPosters.Item(i).URL = String.Concat(sLeft, "_thumb.jpg")
                     ' small
-                    Me.rbSmall.Enabled = True
-                    Me.rbSmall.Tag = Me.TMDBPosters.Item(i).URL
-                    If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format("Small ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                    If Not IsNothing(TMDBPosters.Item(i).WebImage) Then
+                        Me.rbSmall.Enabled = True
+                        Me.rbSmall.Tag = Me.TMDBPosters.Item(i).URL
+                        If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format("Small ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                    End If
                 Case Me.TMDBPosters.Item(i).URL = sURL
                     If Master.eSettings.UseImgCache Then Me.rbMedium.Text = String.Format("Medium ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
             End Select
