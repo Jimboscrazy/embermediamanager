@@ -2585,6 +2585,10 @@ Public Class Master
                         Using rdrMovie As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             If rdrMovie.Read Then
                                 _movieDB.ID = rdrMovie(0)
+                            Else
+                                Master.eLog.WriteToErrorLog("Something very wrong here: SaveMovieToDB", _movieDB.ToString, "Error")
+                                _movieDB.ID = -1
+                                Return _movieDB
                             End If
                         End Using
                     Else
@@ -2608,7 +2612,6 @@ Public Class Master
                                     parMoviesActorsMovieID.Value = _movieDB.ID
                                     parMoviesActorsActorName.Value = actor.Name
                                     parMoviesActorsActorRole.Value = actor.Role
-
                                     SQLcommandMoviesActors.ExecuteNonQuery()
                                 End Using
                             Next
@@ -2739,19 +2742,22 @@ Public Class Master
     End Function
     Public Shared Function SaveMovieToDB(ByVal _movie As Media.Movie, Optional ByVal IsMark As Boolean = False, Optional ByVal IsLock As Boolean = False) As DBMovie
         Dim _movieDB As New Master.DBMovie
-        _movieDB.Movie = _movie
-        Dim _tmpMovieDB As Master.DBMovie = LoadMovieFromDB(_movie.Path)
-        If _tmpMovieDB.ID = -1 Then
-            ' New Movie!!!! Can't Use this Function for new Movies need DBMovie for that
-            _movieDB.ID = -1
-            Return _movieDB
-        Else
-            _movieDB.ID = _tmpMovieDB.ID
-            _movieDB.FaS = _tmpMovieDB.FaS
-        End If
-        _movieDB.IsMark = IsMark
-        _movieDB.IsLock = IsLock
-        _movieDB = Master.SaveMovieToDB(_movieDB, False)
+        Try
+            _movieDB.Movie = _movie
+            Dim _tmpMovieDB As Master.DBMovie = LoadMovieFromDB(_movie.Path)
+            If _tmpMovieDB.ID = -1 Then
+                ' New Movie!!!! Can't Use this Function for new Movies need DBMovie for that
+                Return _tmpMovieDB
+            Else
+                _movieDB.ID = _tmpMovieDB.ID
+                _movieDB.FaS = _tmpMovieDB.FaS
+            End If
+            _movieDB.IsMark = IsMark
+            _movieDB.IsLock = IsLock
+            _movieDB = Master.SaveMovieToDB(_movieDB, False)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return _movieDB
     End Function
 
