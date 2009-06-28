@@ -2731,7 +2731,25 @@ Public Class Master
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-
         Return _movieDB
     End Function
+    Public Shared Function SaveMovieToDB(ByVal _movie As Media.Movie, ByVal IsNew As Boolean, Optional ByVal IsMark As Boolean = False, Optional ByVal IsLock As Boolean = False) As DBMovie
+        ' Note not working YET
+        ' If not IsNew that look for the path to get the ID and update
+        Dim _movieDB As New Master.DBMovie
+        _movieDB.Movie = _movie
+        ' TODO: If not IsNew that look for the path to get the ID and update
+        If Not IsNew Then
+        Else
+            _movieDB.IsNew = IsNew
+        End If
+        Dim aContents() As String
+        aContents = GetFolderContents(_movie.FileNameAndPath)
+        ' TODO: Need to Build the FileAndSource
+        'Dim FaS As New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)}
+        _movieDB = Master.SaveMovieToDB(_movieDB, IsNew)
+        Return _movieDB
+    End Function
+
+
 End Class
