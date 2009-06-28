@@ -96,6 +96,7 @@ Public Class frmMain
         Dim Path As String
         Dim Movie As Media.Movie
         Dim isSingle As Boolean
+        Dim ID As Integer
     End Structure
 
 #End Region '*** Declarations
@@ -369,7 +370,7 @@ Public Class frmMain
                             Master.currNFO = Master.GetNfoPath(MoviePath, isSingle)
                             Master.currMovie = If(Not String.IsNullOrEmpty(Master.currNFO), Master.LoadMovieFromNFO(Master.currNFO), New Media.Movie)
                             Me.tmpTitle = Master.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
-                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, clAsk)
+                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, Nothing, clAsk)
                         Else
                             Me.ScraperDone = True
                         End If
@@ -663,7 +664,7 @@ Public Class frmMain
                     Case Windows.Forms.DialogResult.Retry
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
-                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, True)
+                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID, True)
                 End Select
 
             End Using
@@ -1072,7 +1073,7 @@ Public Class frmMain
         ' Begin the process to scrape IMDB with the current ID
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions)
+        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, Me.dgvMediaList.SelectedRows(0).Cells(0).Value)
     End Sub
 
     Private Sub cmnuSearchNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSearchNew.Click
@@ -1081,7 +1082,7 @@ Public Class frmMain
         ' Begin the process to search IMDB for data
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, True)
+        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, Me.dgvMediaList.SelectedRows(0).Cells(0).Value, True)
     End Sub
 
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
@@ -1100,9 +1101,9 @@ Public Class frmMain
                         Me.RefreshMovie(ID)
                         Me.SetListItemAfterEdit(ID, indX)
                     Case Windows.Forms.DialogResult.Retry
-                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions)
+                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID)
                     Case Windows.Forms.DialogResult.Abort
-                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, True)
+                        Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID, True)
                 End Select
             End Using
         Catch ex As Exception
@@ -1723,10 +1724,10 @@ Public Class frmMain
         Try
             Master.alMoviePaths.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                SQLcommand.CommandText = "SELECT path FROM movies;"
+                SQLcommand.CommandText = "SELECT MoviePath FROM movies;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        Master.alMoviePaths.Add(SQLreader("path"))
+                        Master.alMoviePaths.Add(SQLreader("MoviePath"))
                     End While
                 End Using
             End Using
@@ -1749,14 +1750,14 @@ Public Class frmMain
             Dim dtMediaList As New DataTable
             Dim MLFind As New MovieListFind
             Dim MLFound As New Master.FileAndSource
-            Dim sqlDA As New SQLite.SQLiteDataAdapter("SELECT Path, Id FROM movies ORDER BY title;", Master.SQLcn)
+            Dim sqlDA As New SQLite.SQLiteDataAdapter("SELECT Id FROM movies ORDER BY title;", Master.SQLcn)
             Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
             sqlDA.Fill(dtMediaList)
             If dtMediaList.Rows.Count > 0 Then
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                     Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                        SQLcommand.CommandText = "DELETE FROM movies WHERE path = (?);"
-                        Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
+                        SQLcommand.CommandText = "DELETE FROM movies WHERE MoviePath = (?);"
+                        Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMoviePath", DbType.String, 0, "MoviePath")
                         For Each mRow As DataRow In dtMediaList.Rows
                             MLFind.SearchString = mRow.Item(0)
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
@@ -1857,20 +1858,20 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
-                        "path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock,", _
+                        "MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
-                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, TrailerUrl, ", _
+                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
-                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                    Dim parMoviePath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMoviePath", DbType.String, 0, "MoviePath")
                     Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 0, "type")
                     Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
-                    Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
-                    Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
-                    Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
-                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
-                    Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
-                    Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+                    Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
+                    Dim parHasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasFanart", DbType.Boolean, 0, "HasFanart")
+                    Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
+                    Dim parHasTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasTrailer", DbType.Boolean, 0, "HasTrailer")
+                    Dim parHasSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasSub", DbType.Boolean, 0, "HasSub")
+                    Dim parHasExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasExtra", DbType.Boolean, 0, "HasExtra")
                     Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
                     Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
                     Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
@@ -1895,7 +1896,11 @@ Public Class frmMain
                     Dim parCredits As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCredits", DbType.String, 0, "Credits")
                     Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
                     Dim parWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parWatched", DbType.String, 0, "Watched")
-                    Dim parTrailerUrl As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailerUrl", DbType.String, 0, "TrailerUrl")
+                    Dim parFile As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFile", DbType.String, 0, "File")
+                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "Path")
+                    Dim parFileNameAndPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFileNameAndPath", DbType.String, 0, "FileNameAndPath")
+                    Dim parStatus As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStatus", DbType.String, 0, "Status")
+                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.String, 0, "Trailer")
 
                     Dim parPosterPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPosterPath", DbType.String, 0, "PosterPath")
                     Dim parFanartPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartPath", DbType.String, 0, "FanartPath")
@@ -1932,15 +1937,15 @@ Public Class frmMain
                             Me.bwFolderData.ReportProgress(currentIndex, cleanName)
 
                             If Not String.IsNullOrEmpty(cleanName) Then
-                                parPath.Value = sFile.Filename
+                                parMoviePath.Value = sFile.Filename
                                 parType.Value = sFile.isSingle
                                 parTitle.Value = cleanName
-                                parPoster.Value = If(String.IsNullOrEmpty(sFile.Poster), False, True)
-                                parFanart.Value = If(String.IsNullOrEmpty(sFile.Fanart), False, True)
-                                parInfo.Value = If(String.IsNullOrEmpty(sFile.Nfo), False, True)
-                                parTrailer.Value = If(String.IsNullOrEmpty(sFile.Trailer), False, True)
-                                parSub.Value = If(String.IsNullOrEmpty(sFile.Subs), False, True)
-                                parExtra.Value = If(String.IsNullOrEmpty(sFile.Extra), False, True)
+                                parHasPoster.Value = If(String.IsNullOrEmpty(sFile.Poster), False, True)
+                                parHasFanart.Value = If(String.IsNullOrEmpty(sFile.Fanart), False, True)
+                                parHasNfo.Value = If(String.IsNullOrEmpty(sFile.Nfo), False, True)
+                                parHasTrailer.Value = If(String.IsNullOrEmpty(sFile.Trailer), False, True)
+                                parHasSub.Value = If(String.IsNullOrEmpty(sFile.Subs), False, True)
+                                parHasExtra.Value = If(String.IsNullOrEmpty(sFile.Extra), False, True)
                                 parNew.Value = True
                                 parLock.Value = False
 
@@ -1962,7 +1967,11 @@ Public Class frmMain
                                 parCredits.Value = tmpMovie.Credits
                                 parPlaycount.Value = tmpMovie.PlayCount
                                 parWatched.Value = tmpMovie.Watched
-                                parTrailerUrl.Value = tmpMovie.Trailer
+                                parStatus.Value = tmpMovie.Status
+                                parFile.Value = tmpMovie.File
+                                parPath.Value = tmpMovie.Path
+                                parFileNameAndPath.Value = tmpMovie.FileNameAndPath
+                                parTrailer.Value = tmpMovie.Trailer
 
                                 parPosterPath.Value = sFile.Poster
                                 parFanartPath.Value = sFile.Fanart
@@ -2248,23 +2257,63 @@ Public Class frmMain
 
         Try
 
+            Dim Args As Arguments = e.Argument
+
             Me.MainFanart.Clear()
 
             Me.MainPoster.Clear()
 
-            If Me.bwLoadInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", Args.ID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    If Me.bwLoadInfo.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
 
-            If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.Load(Master.currPath, Master.currSingle, Master.ImageType.Fanart)
+                    If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(SQLreader("FanartPath"))
 
-            If bwLoadInfo.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
+                    If bwLoadInfo.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
 
-            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.Load(Master.currPath, Master.currSingle, Master.ImageType.Posters)
+                    If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(SQLreader("PosterPath"))
+
+                    'read nfo if it's there
+                    Master.currNFO = SQLreader("NfoPath")
+
+                    With Master.currMovie
+                        .Clear()
+                        .ID = SQLreader("IMDB")
+                        .Title = SQLreader("Title")
+                        .OriginalTitle = SQLreader("OriginalTitle")
+                        .Year = SQLreader("Year")
+                        .Rating = SQLreader("Rating")
+                        .Votes = SQLreader("Votes")
+                        .MPAA = SQLreader("MPAA")
+                        .Top250 = SQLreader("Top250")
+                        .Outline = SQLreader("Outline")
+                        .Plot = SQLreader("Plot")
+                        .Tagline = SQLreader("Tagline")
+                        .Trailer = SQLreader("Trailer")
+                        .Certification = SQLreader("Certification")
+                        .Genre = SQLreader("Genre")
+                        .Runtime = SQLreader("Runtime")
+                        .ReleaseDate = SQLreader("ReleaseDate")
+                        .Studio = SQLreader("Studio")
+                        .Director = SQLreader("Director")
+                        .Credits = SQLreader("Credits")
+                        .PlayCount = SQLreader("PlayCount")
+                        .Watched = SQLreader("Watched")
+                        .File = SQLreader("File")
+                        .Path = SQLreader("Path")
+                        .FileNameAndPath = SQLreader("FileNameAndPath")
+                        .Status = SQLreader("Status")
+                    End With
+
+                End Using
+            End Using
 
             'wait for mediainfo to update the nfo
             Do While bwMediaInfo.IsBusy
@@ -2275,9 +2324,6 @@ Public Class frmMain
                 e.Cancel = True
                 Return
             End If
-            'read nfo if it's there
-            Master.currNFO = Master.GetNfoPath(Master.currPath, Master.currSingle)
-            Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
 
             If bwLoadInfo.CancellationPending Then
                 e.Cancel = True
@@ -3259,7 +3305,7 @@ doCancel:
 
     End Sub
 
-    Private Sub LoadInfo(ByVal sPath As String, ByVal doInfo As Boolean, ByVal doMI As Boolean, ByVal isSingle As Boolean, Optional ByVal setEnabled As Boolean = False)
+    Private Sub LoadInfo(ByVal ID As Integer, ByVal sPath As String, ByVal doInfo As Boolean, ByVal doMI As Boolean, ByVal isSingle As Boolean, Optional ByVal setEnabled As Boolean = False)
 
         '//
         ' Begin threads to load images and media info from nfos
@@ -3314,7 +3360,7 @@ doCancel:
                 Me.ClearInfo()
                 Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwLoadInfo.WorkerSupportsCancellation = True
-                Me.bwLoadInfo.RunWorkerAsync()
+                Me.bwLoadInfo.RunWorkerAsync(New Arguments With {.ID = ID})
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3616,7 +3662,7 @@ doCancel:
 
     End Sub
 
-    Private Sub ScrapeData(ByVal sType As Master.ScrapeType, ByVal sMod As Master.ScrapeModifier, ByVal Options As Master.ScrapeOptions, Optional ByVal doSearch As Boolean = False)
+    Private Sub ScrapeData(ByVal sType As Master.ScrapeType, ByVal sMod As Master.ScrapeModifier, ByVal Options As Master.ScrapeOptions, Optional ByVal ID As Integer = 0, Optional ByVal doSearch As Boolean = False)
 
         Try
             Dim chkCount As Integer = 0
@@ -3812,7 +3858,7 @@ doCancel:
                                         Me.mnuMediaList.Enabled = True
                                         Me.tabsMain.Enabled = True
                                         Me.EnableFilters(True)
-                                        Me.LoadInfo(Master.currPath, True, False, Master.currSingle)
+                                        Me.LoadInfo(ID, Master.currPath, True, False, Master.currSingle)
                                     End If
                                 End If
                             End Using
@@ -3909,9 +3955,9 @@ doCancel:
                                 Me.RefreshMovie(ID)
                                 Me.SetListItemAfterEdit(ID, indX)
                             Case Windows.Forms.DialogResult.Retry
-                                Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions)
+                                Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID)
                             Case Windows.Forms.DialogResult.Abort
-                                Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, True)
+                                Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID, True)
                         End Select
                     End Using
                 Else
@@ -3943,19 +3989,19 @@ doCancel:
         Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow
         Dim sPath As String = dRow(0).Item(1)
         Dim aContents(6) As String
-        Dim tmpmovie As New Media.Movie
+        Dim tmpMovie As New Media.Movie
 
         Try
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                     Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
-                    Dim parPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPoster", DbType.Boolean, 0, "poster")
-                    Dim parFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanart", DbType.Boolean, 0, "fanart")
-                    Dim parInfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parInfo", DbType.Boolean, 0, "info")
-                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.Boolean, 0, "trailer")
-                    Dim parSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSub", DbType.Boolean, 0, "sub")
-                    Dim parExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtra", DbType.Boolean, 0, "extra")
+                    Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
+                    Dim parHasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasFanart", DbType.Boolean, 0, "HasFanart")
+                    Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasNfo", DbType.Boolean, 0, "HasNfo")
+                    Dim parHasTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasTrailer", DbType.Boolean, 0, "HasTrailer")
+                    Dim parHasSub As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasSub", DbType.Boolean, 0, "HasSub")
+                    Dim parHasExtra As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasExtra", DbType.Boolean, 0, "HasExtra")
 
                     Dim parOriginalTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOriginalTitle", DbType.String, 0, "OriginalTitle")
                     Dim parYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parYear", DbType.String, 0, "Year")
@@ -3975,7 +4021,11 @@ doCancel:
                     Dim parCredits As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCredits", DbType.String, 0, "Credits")
                     Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
                     Dim parWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parWatched", DbType.String, 0, "Watched")
-                    Dim parTrailerURL As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailerURL", DbType.String, 0, "TrailerURL")
+                    Dim parFile As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFile", DbType.String, 0, "File")
+                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "Path")
+                    Dim parFileNameAndPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFileNameAndPath", DbType.String, 0, "FileNameAndPath")
+                    Dim parStatus As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStatus", DbType.String, 0, "Status")
+                    Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.String, 0, "Trailer")
 
                     Dim parPosterPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPosterPath", DbType.String, 0, "PosterPath")
                     Dim parFanartPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartPath", DbType.String, 0, "FanartPath")
@@ -3985,10 +4035,10 @@ doCancel:
 
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
 
-                    SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), poster = (?), fanart = (?), info = (?), trailer = (?), sub = (?), extra = (?), ", _
+                    SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), HasPoster = (?), HasFanart = (?), HasInfo = (?), HasTrailer = (?), HasSub = (?), HasExtra = (?), ", _
                              "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
-                             "Studio = (?), Runtime = (?), ReleaseDate = (?), Director = (?), Credits = (?), Playcount = (?), Watched = (?) , TrailerURL = (?), ", _
-                             "PosterPath = (?), FanartPath = (?), NfoPath = (?), TrailerPath = (?), SubPath = (?) WHERE id = (?);")
+                             "Studio = (?), Runtime = (?), ReleaseDate = (?), Director = (?), Credits = (?), Playcount = (?), Watched = (?), File = (?), Path = (?), FileNameAndPath = (?), Status = (?), ", _
+                             "Trailer = (?), PosterPath = (?), FanartPath = (?), NfoPath = (?), TrailerPath = (?), SubPath = (?) WHERE id = (?);")
 
                     tmpmovie = Master.LoadMovieFromNFO(Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2)))
 
@@ -4000,38 +4050,42 @@ doCancel:
                     dRow(0).Item(3) = parTitle.Value
 
                     aContents = Master.GetFolderContents(dRow(0).Item(1))
-                    parPoster.Value = If(String.IsNullOrEmpty(aContents(0)), False, True)
+                    parHasPoster.Value = If(String.IsNullOrEmpty(aContents(0)), False, True)
                     dRow(0).Item(4) = If(String.IsNullOrEmpty(aContents(0)), False, True)
-                    parFanart.Value = If(String.IsNullOrEmpty(aContents(1)), False, True)
+                    parHasFanart.Value = If(String.IsNullOrEmpty(aContents(1)), False, True)
                     dRow(0).Item(5) = If(String.IsNullOrEmpty(aContents(1)), False, True)
-                    parInfo.Value = If(String.IsNullOrEmpty(aContents(2)), False, True)
+                    parHasNfo.Value = If(String.IsNullOrEmpty(aContents(2)), False, True)
                     dRow(0).Item(6) = If(String.IsNullOrEmpty(aContents(2)), False, True)
-                    parTrailer.Value = If(String.IsNullOrEmpty(aContents(3)), False, True)
+                    parHasTrailer.Value = If(String.IsNullOrEmpty(aContents(3)), False, True)
                     dRow(0).Item(7) = If(String.IsNullOrEmpty(aContents(3)), False, True)
-                    parSub.Value = If(String.IsNullOrEmpty(aContents(4)), False, True)
+                    parHasSub.Value = If(String.IsNullOrEmpty(aContents(4)), False, True)
                     dRow(0).Item(8) = If(String.IsNullOrEmpty(aContents(4)), False, True)
-                    parExtra.Value = If(String.IsNullOrEmpty(aContents(5)), False, True)
+                    parHasExtra.Value = If(String.IsNullOrEmpty(aContents(5)), False, True)
                     dRow(0).Item(9) = If(String.IsNullOrEmpty(aContents(5)), False, True)
 
-                    parOriginalTitle.Value = tmpmovie.OriginalTitle
-                    parYear.Value = tmpmovie.Year
-                    parRating.Value = tmpmovie.Rating
-                    parVotes.Value = tmpmovie.Votes
-                    parMPAA.Value = tmpmovie.MPAA
-                    parTop250.Value = tmpmovie.Top250
-                    parOutline.Value = tmpmovie.Outline
-                    parPlot.Value = tmpmovie.Plot
-                    parTagline.Value = tmpmovie.Tagline
-                    parCertification.Value = tmpmovie.Certification
-                    parGenre.Value = tmpmovie.Genre
-                    parStudio.Value = tmpmovie.Studio
-                    parRuntime.Value = tmpmovie.Runtime
-                    parReleaseDate.Value = tmpmovie.ReleaseDate
-                    parDirector.Value = tmpmovie.Director
-                    parCredits.Value = tmpmovie.Credits
-                    parPlaycount.Value = tmpmovie.PlayCount
-                    parWatched.Value = tmpmovie.Watched
-                    parTrailerURL.Value = tmpmovie.Trailer
+                    parOriginalTitle.Value = tmpMovie.OriginalTitle
+                    parYear.Value = tmpMovie.Year
+                    parRating.Value = tmpMovie.Rating
+                    parVotes.Value = tmpMovie.Votes
+                    parMPAA.Value = tmpMovie.MPAA
+                    parTop250.Value = tmpMovie.Top250
+                    parOutline.Value = tmpMovie.Outline
+                    parPlot.Value = tmpMovie.Plot
+                    parTagline.Value = tmpMovie.Tagline
+                    parCertification.Value = tmpMovie.Certification
+                    parGenre.Value = tmpMovie.Genre
+                    parStudio.Value = tmpMovie.Studio
+                    parRuntime.Value = tmpMovie.Runtime
+                    parReleaseDate.Value = tmpMovie.ReleaseDate
+                    parDirector.Value = tmpMovie.Director
+                    parCredits.Value = tmpMovie.Credits
+                    parPlaycount.Value = tmpMovie.PlayCount
+                    parWatched.Value = tmpMovie.Watched
+                    parStatus.Value = tmpMovie.Status
+                    parFile.Value = tmpMovie.File
+                    parPath.Value = tmpMovie.Path
+                    parFileNameAndPath.Value = tmpMovie.FileNameAndPath
+                    parTrailer.Value = tmpMovie.Trailer
 
                     parPosterPath.Value = aContents(0)
                     parFanartPath.Value = aContents(1)
@@ -4362,10 +4416,10 @@ doCancel:
 
             Me.dtMedia = New DataTable
             If DupesOnly Then
-                sqlDA = New SQLite.SQLiteDataAdapter("SELECT id, path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title", Master.SQLcn)
+                sqlDA = New SQLite.SQLiteDataAdapter("SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title", Master.SQLcn)
                 'sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title", Master.SQLcn)
             Else
-                sqlDA = New SQLite.SQLiteDataAdapter("SELECT id, path, type, title, poster, fanart, info, trailer, sub, extra, new, mark, source, imdb, lock FROM movies ORDER BY title", Master.SQLcn)
+                sqlDA = New SQLite.SQLiteDataAdapter("SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies ORDER BY title", Master.SQLcn)
                 'sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies ORDER BY title", Master.SQLcn)
             End If
 
@@ -4507,7 +4561,7 @@ doCancel:
             Me.pnlNoInfo.Visible = False
 
             'try to load the info from the NFO
-            Me.LoadInfo(Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False, Me.dgvMediaList.Item(2, iRow).Value)
+            Me.LoadInfo(Me.dgvMediaList.Item(0, iRow).Value, Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False, Me.dgvMediaList.Item(2, iRow).Value)
         End If
     End Sub
 
@@ -4533,6 +4587,5 @@ doCancel:
 
 
 #End Region '*** Routines/Functions
-
 
 End Class

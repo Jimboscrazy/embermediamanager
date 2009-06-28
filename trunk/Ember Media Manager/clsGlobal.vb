@@ -35,12 +35,6 @@ Public Class Master
 
     'Global Variables
     Public Shared eSettings As New emmSettings
-    Public Shared currMovie As New Media.Movie
-    Public Shared tmpMovie As New Media.Movie
-    Public Shared scrapeMovie As New Media.Movie
-    Public Shared currNFO As String = String.Empty
-    Public Shared currPath As String = String.Empty
-    Public Shared currSingle As Boolean = False
     Public Shared MediaList As New List(Of FileAndSource)
     Public Shared eLog As New ErrorLogger
     Public Shared SQLcn As New SQLite.SQLiteConnection()
@@ -48,6 +42,14 @@ Public Class Master
     Public Shared alMoviePaths As New ArrayList
 
     Public Shared TempPath As String = Path.Combine(Application.StartupPath, "Temp")
+
+    'need to get to the point where all of these can be removed (due to loading from db)
+    Public Shared currNFO As String = String.Empty
+    Public Shared currPath As String = String.Empty
+    Public Shared currSingle As Boolean = False
+    Public Shared currMovie As New Media.Movie
+    Public Shared tmpMovie As New Media.Movie
+    Public Shared scrapeMovie As New Media.Movie
 
     'Global Enums
     Public Enum PosterSize As Integer
@@ -309,15 +311,15 @@ Public Class Master
                     End If
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Movies(" & _
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
-                                "Path TEXT NOT NULL, " & _
+                                "MoviePath TEXT NOT NULL, " & _
                                 "Type BOOL NOT NULL DEFAULT False , " & _
                                 "Title TEXT NOT NULL, " & _
-                                "Poster BOOL NOT NULL DEFAULT False, " & _
-                                "Fanart BOOL NOT NULL DEFAULT False, " & _
-                                "Info BOOL NOT NULL DEFAULT False, " & _
-                                "Trailer BOOL NOT NULL DEFAULT False, " & _
-                                "Sub BOOL NOT NULL DEFAULT False, " & _
-                                "Extra BOOL NOT NULL DEFAULT False, " & _
+                                "HasPoster BOOL NOT NULL DEFAULT False, " & _
+                                "HasFanart BOOL NOT NULL DEFAULT False, " & _
+                                "HasNfo BOOL NOT NULL DEFAULT False, " & _
+                                "HasTrailer BOOL NOT NULL DEFAULT False, " & _
+                                "HasSub BOOL NOT NULL DEFAULT False, " & _
+                                "HasExtra BOOL NOT NULL DEFAULT False, " & _
                                 "New BOOL DEFAULT False, " & _
                                 "Mark BOOL NOT NULL DEFAULT False, " & _
                                 "Source TEXT NOT NULL, " & _
@@ -341,7 +343,11 @@ Public Class Master
                                 "Credits TEXT, " & _
                                 "Playcount TEXT, " & _
                                 "Watched TEXT, " & _
-                                "TrailerUrl TEXT, " & _
+                                "File TEXT, " & _
+                                "Path TEXT, " & _
+                                "FileNameAndPath TEXT, " & _
+                                "Status TEXT, " & _
+                                "Trailer TEXT, " & _
                                 "PosterPath TEXT, " & _
                                 "FanartPath TEXT, " & _
                                 "NfoPath TEXT, " & _
@@ -349,7 +355,7 @@ Public Class Master
                                 "SubPath TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (Path);"
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (MoviePath);"
                     SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesVStreams(" & _
@@ -1898,7 +1904,7 @@ Public Class Master
         Return Double.Parse(sNumber.Replace(",", "."), NumberStyles.AllowDecimalPoint, numFormat)
     End Function
 
-    Public Shared Sub DeleteFiles(ByVal isCleaner As Boolean, ByVal sPath As String, ByVal isFile As Boolean)
+    Public Shared Sub DeleteFiles(ByVal isCleaner As Boolean, ByVal sPath As String, ByVal isSingle As Boolean)
         Dim dPath As String = String.Empty
 
         If eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
@@ -1932,7 +1938,7 @@ Public Class Master
         Else
             If Not isCleaner Then
                 Dim Fanart As New Images
-                Dim fPath As String = Fanart.GetFanartPath(sPath, isFile)
+                Dim fPath As String = Fanart.GetFanartPath(sPath, isSingle)
                 Dim tPath As String = String.Empty
                 If Not String.IsNullOrEmpty(fPath) Then
                     If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
@@ -1959,7 +1965,7 @@ Public Class Master
                 Fanart = Nothing
             End If
 
-            If Not isCleaner AndAlso Not isFile Then
+            If Not isCleaner AndAlso isSingle Then
                 If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                     Directory.Delete(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, True)
                 Else
@@ -2292,4 +2298,5 @@ Public Class Master
         pgBrush.SurroundColors = New Color() {color2}
         graphics.FillEllipse(pgBrush, bounds.X, bounds.Y, bounds.Width, bounds.Height)
     End Sub
+
 End Class
