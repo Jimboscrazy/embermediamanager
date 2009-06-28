@@ -133,12 +133,12 @@ Public Class Master
         Dim _source As String
         Dim _single As Boolean
         Dim _usefolder As Boolean
-        Dim _poster As Boolean
-        Dim _fanart As Boolean
-        Dim _nfo As Boolean
-        Dim _extra As Boolean
-        Dim _trailer As Boolean
-        Dim _subs As Boolean
+        Dim _poster As String
+        Dim _fanart As String
+        Dim _nfo As String
+        Dim _extra As String
+        Dim _trailer As String
+        Dim _subs As String
 
         Public Property Filename() As String
             Get
@@ -176,56 +176,56 @@ Public Class Master
             End Set
         End Property
 
-        Public Property Poster() As Boolean
+        Public Property Poster() As String
             Get
                 Return _poster
             End Get
-            Set(ByVal value As Boolean)
+            Set(ByVal value As String)
                 _poster = value
             End Set
         End Property
 
-        Public Property Fanart() As Boolean
+        Public Property Fanart() As String
             Get
                 Return _fanart
             End Get
-            Set(ByVal value As Boolean)
+            Set(ByVal value As String)
                 _fanart = value
             End Set
         End Property
 
-        Public Property Nfo() As Boolean
+        Public Property Nfo() As String
             Get
                 Return _nfo
             End Get
-            Set(ByVal value As Boolean)
+            Set(ByVal value As String)
                 _nfo = value
             End Set
         End Property
 
-        Public Property Extra() As Boolean
+        Public Property Extra() As String
             Get
                 Return _extra
             End Get
-            Set(ByVal value As Boolean)
+            Set(ByVal value As String)
                 _extra = value
             End Set
         End Property
 
-        Public Property Trailer() As Boolean
+        Public Property Trailer() As String
             Get
                 Return _trailer
             End Get
-            Set(ByVal value As Boolean)
+            Set(ByVal value As String)
                 _trailer = value
             End Set
         End Property
 
-        Public Property Subs() As Boolean
+        Public Property Subs() As String
             Get
                 Return _subs
             End Get
-            Set(ByVal value As Boolean)
+            Set(ByVal value As String)
                 _subs = value
             End Set
         End Property
@@ -238,12 +238,12 @@ Public Class Master
             _filename = String.Empty
             _source = String.Empty
             _usefolder = False
-            _poster = False
-            _fanart = False
-            _nfo = False
-            _extra = False
-            _trailer = False
-            _subs = False
+            _poster = String.Empty
+            _fanart = String.Empty
+            _nfo = String.Empty
+            _extra = String.Empty
+            _trailer = String.Empty
+            _subs = String.Empty
         End Sub
     End Class
 
@@ -341,7 +341,12 @@ Public Class Master
                                 "Credits TEXT, " & _
                                 "Playcount TEXT, " & _
                                 "Watched TEXT, " & _
-                                "TrailerUrl TEXT" & _
+                                "TrailerUrl TEXT, " & _
+                                "PosterPath TEXT, " & _
+                                "FanartPath TEXT, " & _
+                                "NfoPath TEXT, " & _
+                                "TrailerPath TEXT, " & _
+                                "SubPath TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (Path);"
@@ -399,7 +404,7 @@ Public Class Master
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                                 "MovieID INTEGER NOT NULL, " & _
                                 "url TEXT, " & _
-                                "thums TEXT" & _
+                                "thumbs TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesFanart ON MoviesFanart (MovieID);"
@@ -681,7 +686,7 @@ Public Class Master
                 Dim tmpList As New ArrayList
                 Dim di As New DirectoryInfo(sPath)
                 Dim lFi As New List(Of FileInfo)
-                Dim aContents(6) As Boolean
+                Dim aContents(6) As String
                 Dim SkipStack As Boolean = False
                 Dim fList As New List(Of FileAndSource)
                 Dim tSingle As Boolean = False
@@ -715,7 +720,7 @@ Public Class Master
                                 Else
                                     tmpList.Add(CleanStackingMarkers(lFile.FullName))
                                 End If
-                                aContents = GetFolderContents(lFile.FullName, bSingle)
+                                aContents = GetFolderContents(lFile.FullName)
                                 fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)})
                                 If bSingle AndAlso Not SkipStack Then Exit For
                             End If
@@ -1181,160 +1186,141 @@ Public Class Master
         Return tNonConf
     End Function
 
-    Public Shared Function GetFolderContents(ByVal sPath As String, ByVal isSingle As Boolean) As Boolean()
+    Public Shared Function GetFolderContents(ByVal sPath As String) As String()
 
         '//
         ' Check if a folder has all the items (nfo, poster, fanart, etc)
-        ' Why 2 methods? Because it's faster to scan each file in folder mode and faster to scan
-        ' for specific files in file mode.
         '\\
 
-        Dim hasNfo As Boolean = False
-        Dim hasPoster As Boolean = False
-        Dim hasFanart As Boolean = False
-        Dim hasTrailer As Boolean = False
-        Dim hasSub As Boolean = False
-        Dim hasExtra As Boolean = False
-        Dim aResults(6) As Boolean
+        Dim NfoPath As String = String.Empty
+        Dim PosterPath As String = String.Empty
+        Dim FanartPath As String = String.Empty
+        Dim TrailerPath As String = String.Empty
+        Dim SubPath As String = String.Empty
+        Dim ExtraPath As String = String.Empty
+        Dim aResults(6) As String
         Dim tmpName As String = String.Empty
         Dim tmpNameNoStack As String = String.Empty
         Dim currname As String = String.Empty
         Dim parPath As String = String.Empty
         Try
 
-            If Not isSingle Then
+            Dim di As DirectoryInfo
 
-                Dim di As New DirectoryInfo(Directory.GetParent(sPath).FullName)
-                Dim lFi As New List(Of FileInfo)()
-                Dim fList As New ArrayList
-
-                Try
-                    lFi.AddRange(di.GetFiles())
-                Catch
-                End Try
-
-                For Each sFile As FileInfo In lFi
-                    fList.Add(sFile.FullName)
-                Next
-
-
-                parPath = Directory.GetParent(sPath).FullName
-                tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
-                tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
-                'fanart
-                If fList.Contains(String.Concat(tmpName, "-fanart.jpg")) OrElse fList.Contains(String.Concat(tmpName, ".fanart.jpg")) OrElse _
-                    fList.Contains(String.Concat(tmpNameNoStack, "-fanart.jpg")) OrElse fList.Contains(String.Concat(tmpNameNoStack, ".fanart.jpg")) OrElse _
-                    fList.Contains(Path.Combine(parPath, "fanart.jpg")) Then
-                    hasFanart = True
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                di = New DirectoryInfo(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName)
+                If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                    ExtraPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
-
-                'poster
-                If fList.Contains(String.Concat(tmpName, ".jpg")) OrElse fList.Contains(Path.Combine(parPath, "movie.jpg")) OrElse _
-                    fList.Contains(Path.Combine(parPath, "poster.jpg")) OrElse fList.Contains(Path.Combine(parPath, "folder.jpg")) OrElse _
-                    fList.Contains(String.Concat(tmpName, ".tbn")) OrElse fList.Contains(Path.Combine(parPath, "movie.tbn")) OrElse _
-                    fList.Contains(String.Concat(tmpNameNoStack, ".jpg")) OrElse fList.Contains(String.Concat(tmpNameNoStack, ".tbn")) OrElse _
-                    fList.Contains(Path.Combine(parPath, "poster.tbn")) Then
-                    hasPoster = True
-                End If
-
-                'nfo
-                If fList.Contains(String.Concat(tmpName, ".nfo")) OrElse fList.Contains(String.Concat(tmpNameNoStack, ".nfo")) OrElse File.Exists(Path.Combine(parPath, "movie.nfo")) Then
-                    hasNfo = True
-                End If
-
-                'sub
-                Dim sExt() As String = Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ",")
-
-                For Each t As String In sExt
-                    If fList.Contains(String.Concat(tmpName, t)) OrElse fList.Contains(String.Concat(tmpName, t)) OrElse _
-                        fList.Contains(String.Concat(tmpNameNoStack, t)) OrElse fList.Contains(String.Concat(tmpNameNoStack, t)) Then
-                        hasSub = True
-                        Exit For
-                    End If
-                Next
-
-                For Each t As String In Master.eSettings.ValidExts
-                    If fList.Contains(String.Concat(tmpName, "-trailer", t)) OrElse fList.Contains(String.Concat(tmpName, "[trailer]", t)) OrElse _
-                        fList.Contains(String.Concat(tmpNameNoStack, "-trailer", t)) OrElse fList.Contains(String.Concat(tmpNameNoStack, "[trailer]", t)) Then
-                        hasTrailer = True
-                        Exit For
-                    End If
-                Next
-
-                If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    hasExtra = True
-                End If
-
             Else
-
-                Dim di As DirectoryInfo
-                If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                    di = New DirectoryInfo(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName)
-                    If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                        hasExtra = True
-                    End If
-                Else
-                    di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
-                    If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                        hasExtra = True
-                    End If
+                di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
+                If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                    ExtraPath = String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
-
-                Dim lFi As New List(Of FileInfo)()
-
-                Try
-                    lFi.AddRange(di.GetFiles())
-                Catch
-                End Try
-
-                For Each sfile As FileInfo In lFi
-                    If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                        tmpName = Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower
-                        tmpNameNoStack = String.Empty
-                    Else
-                        tmpName = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)).ToLower
-                        tmpNameNoStack = Path.GetFileNameWithoutExtension(sPath).ToLower
-                    End If
-
-                    currname = sfile.Name.ToLower
-                    Select Case sfile.Extension.ToLower
-                        Case ".jpg"
-                            If currname = String.Concat(tmpName, "-fanart.jpg") OrElse currname = String.Concat(tmpName, ".fanart.jpg") OrElse _
-                            currname = String.Concat(tmpNameNoStack, "-fanart.jpg") OrElse currname = String.Concat(tmpNameNoStack, ".fanart.jpg") OrElse _
-                            currname = "fanart.jpg" OrElse currname = "video_ts-fanart.jpg" OrElse currname = "video_ts.fanart.jpg" Then
-                                hasFanart = True
-                            ElseIf currname = String.Concat(tmpName, ".jpg") OrElse currname = "movie.jpg" OrElse _
-                            currname = String.Concat(tmpNameNoStack, ".jpg") OrElse currname = "poster.jpg" OrElse _
-                            currname = "folder.jpg" OrElse currname = "video_ts.jpg" Then
-                                hasPoster = True
-                            End If
-                        Case ".tbn"
-                            If currname = String.Concat(tmpName, ".tbn") OrElse currname = "movie.tbn" OrElse _
-                                currname = String.Concat(tmpNameNoStack, ".tbn") OrElse currname = "poster.tbn" OrElse currname = "video_ts.tbn" Then
-                                hasPoster = True
-                            End If
-                        Case ".nfo"
-                            If currname = String.Concat(tmpName, ".nfo") OrElse currname = String.Concat(tmpNameNoStack, ".nfo") OrElse currname = "movie.nfo" OrElse currname = "video_ts.nfo" Then
-                                hasNfo = True
-                            End If
-                        Case ".sst", ".srt", ".sub", ".ssa", ".aqt", ".smi", ".sami", ".jss", ".mpl", ".rt", ".idx", ".ass"
-                            hasSub = True
-                    End Select
-
-                    If Master.eSettings.ValidExts.Contains(sfile.Extension.ToLower) Then
-                        If sfile.Name.ToLower.Contains("-trailer") OrElse sfile.Name.ToLower.Contains("[trailer") Then
-                            hasTrailer = True
-                        End If
-                    End If
-
-                Next
             End If
-            aResults(0) = hasPoster
-            aResults(1) = hasFanart
-            aResults(2) = hasNfo
-            aResults(3) = hasTrailer
-            aResults(4) = hasSub
-            aResults(5) = hasExtra
+
+            Dim lFi As New List(Of FileInfo)()
+            Dim fList As New ArrayList
+
+            Try
+                lFi.AddRange(di.GetFiles())
+            Catch
+            End Try
+
+            For Each sFile As FileInfo In lFi
+                fList.Add(sFile.FullName)
+            Next
+
+
+            parPath = Directory.GetParent(sPath).FullName
+            tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+            tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+
+            'fanart
+            Select Case True
+                Case fList.Contains(Path.Combine(parPath, "fanart.jpg"))
+                    FanartPath = Path.Combine(parPath, "fanart.jpg")
+                Case fList.Contains(String.Concat(tmpName, "-fanart.jpg"))
+                    FanartPath = String.Concat(tmpName, "-fanart.jpg")
+                Case fList.Contains(String.Concat(tmpName, ".fanart.jpg"))
+                    FanartPath = String.Concat(tmpName, ".fanart.jpg")
+                Case fList.Contains(String.Concat(tmpNameNoStack, "-fanart.jpg"))
+                    FanartPath = String.Concat(tmpNameNoStack, "-fanart.jpg")
+                Case fList.Contains(String.Concat(tmpNameNoStack, ".fanart.jpg"))
+                    FanartPath = String.Concat(tmpNameNoStack, ".fanart.jpg")
+                Case fList.Contains(Path.Combine(parPath, "video_ts-fanart.jpg"))
+                    FanartPath = Path.Combine(parPath, "video_ts-fanart.jpg")
+                Case fList.Contains(Path.Combine(parPath, "video_ts.fanart.jpg"))
+                    FanartPath = Path.Combine(parPath, "video_ts.fanart.jpg")
+            End Select
+
+            'poster
+            Select Case True
+                Case fList.Contains(Path.Combine(parPath, "movie.tbn"))
+                    PosterPath = Path.Combine(parPath, "movie.tbn")
+                Case fList.Contains(Path.Combine(parPath, "poster.tbn"))
+                    PosterPath = Path.Combine(parPath, "poster.tbn")
+                Case fList.Contains(Path.Combine(parPath, "movie.jpg"))
+                    PosterPath = Path.Combine(parPath, "movie.jpg")
+                Case fList.Contains(String.Concat(tmpName, ".tbn"))
+                    PosterPath = String.Concat(tmpName, ".tbn")
+                Case fList.Contains(String.Concat(tmpNameNoStack, ".tbn"))
+                    PosterPath = String.Concat(tmpNameNoStack, ".tbn")
+                Case fList.Contains(Path.Combine(parPath, "poster.jpg"))
+                    PosterPath = Path.Combine(parPath, "poster.jpg")
+                Case fList.Contains(String.Concat(tmpName, ".jpg"))
+                    PosterPath = String.Concat(tmpName, ".jpg")
+                Case fList.Contains(String.Concat(tmpNameNoStack, ".jpg"))
+                    PosterPath = String.Concat(tmpNameNoStack, ".jpg")
+                Case fList.Contains(Path.Combine(parPath, "video_ts.jpg"))
+                    PosterPath = Path.Combine(parPath, "video_ts.jpg")
+                Case fList.Contains(Path.Combine(parPath, "folder.jpg"))
+                    PosterPath = Path.Combine(parPath, "folder.jpg")
+            End Select
+
+            'nfo
+            Select Case True
+                Case fList.Contains(Path.Combine(parPath, "movie.nfo"))
+                    NfoPath = Path.Combine(parPath, "movie.nfo")
+                Case fList.Contains(String.Concat(tmpName, ".nfo"))
+                    NfoPath = String.Concat(tmpName, ".nfo")
+                Case fList.Contains(String.Concat(tmpNameNoStack, ".nfo"))
+                    NfoPath = String.Concat(tmpNameNoStack, ".nfo")
+            End Select
+
+            'sub
+            Dim sExt() As String = Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ",")
+
+            For Each t As String In sExt
+                Select Case True
+                    Case fList.Contains(String.Concat(tmpName, t))
+                        SubPath = String.Concat(tmpName, t)
+                        Exit For
+                    Case fList.Contains(String.Concat(tmpNameNoStack, t))
+                        SubPath = String.Concat(tmpNameNoStack, t)
+                        Exit For
+                End Select
+            Next
+
+            For Each t As String In Master.eSettings.ValidExts
+                Select Case True
+                    Case fList.Contains(String.Concat(tmpName, "-trailer", t))
+                        TrailerPath = String.Concat(tmpName, "-trailer", t)
+                    Case fList.Contains(String.Concat(tmpNameNoStack, "-trailer", t))
+                        TrailerPath = String.Concat(tmpNameNoStack, "-trailer", t)
+                    Case fList.Contains(String.Concat(tmpName, "[trailer]", t))
+                        TrailerPath = String.Concat(tmpName, "[trailer]", t)
+                    Case fList.Contains(String.Concat(tmpNameNoStack, "[trailer]", t))
+                        TrailerPath = String.Concat(tmpNameNoStack, "[trailer]", t)
+                End Select
+            Next
+
+            aResults(0) = PosterPath
+            aResults(1) = FanartPath
+            aResults(2) = NfoPath
+            aResults(3) = TrailerPath
+            aResults(4) = SubPath
+            aResults(5) = ExtraPath
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
