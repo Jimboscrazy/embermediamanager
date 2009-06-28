@@ -1877,38 +1877,35 @@ Public Class frmMain
 
                         parID.Value = sRow.Item(0)
 
-                        Using rdrMovie As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            If rdrMovie.Read Then
-                                Using SQLcommandActor As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                                    SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?);")
-                                    Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
-                                    Dim parActorThumb As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorThumb", DbType.String, 0, "thumb")
-                                    For Each actor As Media.Person In tmpMovie.Actors
-                                        parActorName.Value = actor.Name
-                                        parActorThumb.Value = actor.Thumb
-                                        SQLcommandActor.ExecuteNonQuery()
-                                        Using SQLcommandMoviesActors As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                                            SQLcommandMoviesActors.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesActors (MovieID,ActorName,Role) VALUES (?,?,?);")
-                                            Dim parMoviesActorsMovieID As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsMovieID", DbType.UInt64, 0, "MovieID")
-                                            Dim parMoviesActorsActorName As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorName", DbType.UInt64, 0, "ActorName")
-                                            Dim parMoviesActorsActorRole As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorRole", DbType.String, 0, "Role")
-                                            parMoviesActorsMovieID.Value = sRow.Item(0)
-                                            parMoviesActorsActorName.Value = actor.Name
-                                            parMoviesActorsActorRole.Value = actor.Role
-                                            SQLcommandMoviesActors.ExecuteNonQuery()
-                                        End Using
-                                    Next
+                        SQLcommand.ExecuteNonQuery()
+                        Using SQLcommandActor As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                            SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?);")
+                            Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
+                            Dim parActorThumb As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorThumb", DbType.String, 0, "thumb")
+                            For Each actor As Media.Person In tmpMovie.Actors
+                                parActorName.Value = actor.Name
+                                parActorThumb.Value = actor.Thumb
+                                SQLcommandActor.ExecuteNonQuery()
+                                Using SQLcommandMoviesActors As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                                    SQLcommandMoviesActors.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesActors (MovieID,ActorName,Role) VALUES (?,?,?);")
+                                    Dim parMoviesActorsMovieID As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsMovieID", DbType.UInt64, 0, "MovieID")
+                                    Dim parMoviesActorsActorName As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorName", DbType.String, 0, "ActorName")
+                                    Dim parMoviesActorsActorRole As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parMoviesActorsActorRole", DbType.String, 0, "Role")
+                                    parMoviesActorsMovieID.Value = sRow.Item(0)
+                                    parMoviesActorsActorName.Value = actor.Name
+                                    parMoviesActorsActorRole.Value = actor.Role
+                                    SQLcommandMoviesActors.ExecuteNonQuery()
                                 End Using
-                            End If
+                            Next
                         End Using
 
-                        SQLcommand.ExecuteNonQuery()
+                SQLcommand.ExecuteNonQuery()
 
-                        Me.tspbLoading.Value += 1
+                Me.tspbLoading.Value += 1
 
                     Next
-                End Using
-                SQLtransaction.Commit()
+            End Using
+            SQLtransaction.Commit()
             End Using
 
             Me.tslLoading.Text = String.Empty
