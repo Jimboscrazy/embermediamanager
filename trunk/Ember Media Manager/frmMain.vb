@@ -3721,6 +3721,8 @@ doCancel:
 
             If String.IsNullOrEmpty(tmpMovie.Title) Then
                 tmpMovie.Title = dRow(0).Item(3)
+            Else
+                dRow(0).Item(3) = tmpMovie.Title
             End If
 
             aContents = Master.GetFolderContents(dRow(0).Item(1))
