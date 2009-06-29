@@ -381,8 +381,6 @@ Public Class Master
                     SQLcommand.ExecuteNonQuery()
                     'SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesSets ON MoviesSets (MovieID);"
 
-
-
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesVStreams(" & _
                                 "MovieID INTEGER NOT NULL, " & _
                                 "StreamID INTEGER NOT NULL, " & _
