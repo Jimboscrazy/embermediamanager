@@ -360,7 +360,8 @@ Public Class Master
                                 "FanartPath TEXT, " & _
                                 "NfoPath TEXT, " & _
                                 "TrailerPath TEXT, " & _
-                                "SubPath TEXT" & _
+                                "SubPath TEXT, " & _
+                                "FanartURL TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniquePath ON Movies (MoviePath);"
@@ -2362,6 +2363,7 @@ Public Class Master
                         .Path = SQLreader("MoviePath")
                         .FileNameAndPath = SQLreader("FileNameAndPath")
                         .Status = SQLreader("Status")
+                        .Fanart.URL = SQLreader("FanartURL")
                     End With
 
                 End Using
@@ -2437,6 +2439,33 @@ Public Class Master
                     End While
                 End Using
             End Using
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesFanart WHERE MovieID = ", _movieDB.ID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Dim thumb As Media.Thumb
+                    While SQLreader.Read
+                        thumb = New Media.Thumb
+                        If Not DBNull.Value.Equals(SQLreader("preview")) Then thumb.Preview = SQLreader("preview")
+                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then thumb.Text = SQLreader("thumbs")
+                        _movieDB.Movie.Fanart.Thumb.Add(thumb)
+                    End While
+                End Using
+            End Using
+            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesPosters WHERE MovieID = ", _movieDB.ID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+
+                    Dim poster As Media.Posters
+                    If SQLreader.Read Then
+                        _movieDB.Movie.Thumbs = New Media.Poster
+                    End If
+                    While SQLreader.Read
+                        poster = New Media.Posters
+                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then poster.URL = SQLreader("thumbs")
+                        _movieDB.Movie.Thumbs.Thumb.Add(poster)
+                    End While
+                End Using
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             _movieDB.ID = -1
@@ -2475,8 +2504,8 @@ Public Class Master
                         "MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, FanartURL", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     'SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), HasPoster = (?), HasFanart = (?), HasNfo = (?), HasTrailer = (?), HasSub = (?), HasExtra = (?), ", _
                     '    "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
@@ -2486,8 +2515,8 @@ Public Class Master
                         "ID, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, FanartURL", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.String, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
@@ -2535,6 +2564,7 @@ Public Class Master
                 Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
                 Dim parTrailerPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailerPath", DbType.String, 0, "TrailerPath")
                 Dim parSubsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSubsPath", DbType.String, 0, "SubsPath")
+                Dim parFanartURL As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartURL", DbType.String, 0, "FanartURL")
 
 
 
@@ -2579,7 +2609,7 @@ Public Class Master
                 parNfoPath.Value = _movieDB.FaS.Nfo
                 parTrailerPath.Value = _movieDB.FaS.Trailer
                 parSubsPath.Value = _movieDB.FaS.Subs
-
+                parFanartURL.Value = _movieDB.Movie.Fanart.URL
                 If Master.eSettings.MarkNew AndAlso IsNew Then
                     parMark.Value = True
                 Else
@@ -2686,31 +2716,29 @@ Public Class Master
                     ' For what i understand this is used from Poster/Fanart Modules... will not be read/wrtire directly when load/save Movie
                     Using SQLcommandMoviesPosters As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                         SQLcommandMoviesPosters.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesPosters (", _
-                                "MovieID, thumb", _
-                                ") VALUES (?,?,?);")
+                                "MovieID, thumbs", _
+                                ") VALUES (?,?);")
                         Dim parPosters_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_MovieID", DbType.String, 0, "MovieID")
                         Dim parPosters_thumb As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_thumb", DbType.String, 0, "thumb")
-                        ' It seems only one poster.. even if i found a list called Poster is not en Media.Movie
-                        'For Each p As Media.Poster In tmpMovie.Thumbs
-                        'parPosters_MovieID.Value = rdrMovie(0)
-                        'parPosters_thumb.Value = p
-                        'SQLcommandMoviesPosters.ExecuteNonQuery()
-                        'Next
+                        For Each p As Media.Posters In tmpMovie.Thumbs.Thumb
+                            parPosters_MovieID.Value = _movieDB.ID
+                            parPosters_thumb.Value = p.URL
+                            SQLcommandMoviesPosters.ExecuteNonQuery()
+                        Next
                     End Using
-                    ' For what i understand this is used from Poster/Fanart Modules... will not be read/wrtire directly when load/save Movie
                     Using SQLcommandMoviesFanart As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                         SQLcommandMoviesFanart.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesFanart (", _
-                                "MovieID, preview, thumb", _
-                                ") VALUES (?,?,?,?);")
+                                "MovieID, preview, thumbs", _
+                                ") VALUES (?,?,?);")
                         Dim parFanart_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_MovieID", DbType.String, 0, "MovieID")
                         Dim parFanart_Preview As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_Preview", DbType.String, 0, "Preview")
                         Dim parFanart_thumb As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_thumb", DbType.String, 0, "thumb")
-                        ' Same as Poster
-                        'For Each p As Media.Fanart In tmpMovie.Fanart
-                        'parFanart_MovieID.Value = rdrMovie(0)
-                        'parFanart_thumb.Value = p
-                        'SQLcommandMoviesFanart.ExecuteNonQuery()
-                        'Next
+                        For Each p As Media.Thumb In tmpMovie.Fanart.Thumb
+                            parFanart_MovieID.Value = _movieDB.ID
+                            parFanart_Preview.Value = p.Preview
+                            parFanart_thumb.Value = p.Text
+                            SQLcommandMoviesFanart.ExecuteNonQuery()
+                        Next
                     End Using
                     Using SQLcommandMoviesSubs As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                         SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO Sets (", _
