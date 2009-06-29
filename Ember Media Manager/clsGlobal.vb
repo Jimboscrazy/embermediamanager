@@ -2474,7 +2474,7 @@ Public Class Master
         Try
             Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
                 ' One more Query Better then re-write all function again
-                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies WHERE Path = ", sPath, ";")
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies WHERE MoviePath = ", sPath, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.Read Then
                         Return LoadMovieFromDB(SQLreader("ID"))
