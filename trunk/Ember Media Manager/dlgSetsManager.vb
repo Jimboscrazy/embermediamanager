@@ -68,35 +68,15 @@ Public Class dlgSetsManager
     End Class
 
     Friend Class Movies
-        Private _movie As Media.Movie
-        Private _path As String
-        Private _issingle As Boolean
+        Private _dbmovie As Master.DBMovie
         Private _order As Integer
 
-        Public Property Movie() As Media.Movie
+        Public Property DBMovie() As Master.DBMovie
             Get
-                Return Me._movie
+                Return Me._dbmovie
             End Get
-            Set(ByVal value As Media.Movie)
-                Me._movie = value
-            End Set
-        End Property
-
-        Public Property Path() As String
-            Get
-                Return Me._path
-            End Get
-            Set(ByVal value As String)
-                Me._path = value
-            End Set
-        End Property
-
-        Public Property isSingle() As Boolean
-            Get
-                Return Me._issingle
-            End Get
-            Set(ByVal value As Boolean)
-                Me._issingle = value
+            Set(ByVal value As Master.DBMovie)
+                Me._dbmovie = value
             End Set
         End Property
 
@@ -114,9 +94,7 @@ Public Class dlgSetsManager
         End Sub
 
         Public Sub Clear()
-            Me._movie = New Media.Movie
-            Me._path = String.Empty
-            Me._issingle = False
+            Me._dbmovie = New Master.DBMovie
             Me._order = 0
         End Sub
     End Class
@@ -170,34 +148,32 @@ Public Class dlgSetsManager
                 If Not String.IsNullOrEmpty(sSet) Then alSets.Add(sSet)
             Next
 
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                Dim tmpMovie As New Media.Movie
-                Dim tmpPath As String = String.Empty
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                Dim tmpMovie As New Master.DBMovie
                 Dim iProg As Integer = 0
+                Dim ID As Integer
                 SQLcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Me.bwLoadMovies.ReportProgress(-1, SQLcount("mcount"))
                 End Using
-                SQLcommand.CommandText = String.Concat("SELECT type, NfoPath FROM movies ORDER BY title ASC;")
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY title ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             If bwLoadMovies.CancellationPending Then Return
-                            tmpPath = SQLreader("NfoPath").ToString
-                            If Not String.IsNullOrEmpty(tmpPath) Then
-                                tmpMovie = Master.LoadMovieFromNFO(tmpPath)
-                                If Not String.IsNullOrEmpty(tmpMovie.Title) Then
-                                    lMovies.Add(New Movies With {.Movie = tmpMovie, .Path = tmpPath, .isSingle = SQLreader("type")})
-                                    If tmpMovie.Sets.Count > 0 Then
-                                        For Each mSet As Media.Set In tmpMovie.Sets
-                                            If Not alSets.Contains(mSet.SetContainer.Set) AndAlso Not String.IsNullOrEmpty(mSet.SetContainer.Set) Then
-                                                alSets.Add(mSet.SetContainer.Set)
-                                            End If
-                                        Next
-                                    End If
+                            ID = SQLreader("ID")
+                            tmpMovie = Master.DB.LoadMovieFromDB(ID)
+                            If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
+                                lMovies.Add(New Movies With {.DBMovie = tmpMovie})
+                                If tmpMovie.Movie.Sets.Count > 0 Then
+                                    For Each mSet As Media.Set In tmpMovie.Movie.Sets
+                                        If Not alSets.Contains(mSet.SetContainer.Set) AndAlso Not String.IsNullOrEmpty(mSet.SetContainer.Set) Then
+                                            alSets.Add(mSet.SetContainer.Set)
+                                        End If
+                                    Next
                                 End If
                             End If
-                            Me.bwLoadMovies.ReportProgress(iProg, tmpMovie.Title)
+                            Me.bwLoadMovies.ReportProgress(iProg, tmpMovie.Movie.Title)
                             iProg += 1
                         End While
                     End If
@@ -228,7 +204,7 @@ Public Class dlgSetsManager
         Me.LoadSets()
 
         For Each tMovie As Movies In lMovies
-            Me.lbMovies.Items.Add(tMovie.Movie.Title)
+            Me.lbMovies.Items.Add(tMovie.DBMovie.Movie.Title)
         Next
 
         Me.pnlCancel.Visible = False
@@ -280,7 +256,7 @@ Public Class dlgSetsManager
                 Me.currSet.Set = Me.lbSets.SelectedItem.ToString
 
                 For Each tMovie As Movies In lMovies
-                    For Each mSet As Media.Set In tMovie.Movie.Sets
+                    For Each mSet As Media.Set In tMovie.DBMovie.Movie.Sets
                         If mSet.SetContainer.Set = Me.currSet.Set Then
                             If Not String.IsNullOrEmpty(mSet.SetContainer.Order) Then
                                 tOrder = Convert.ToInt32(mSet.SetContainer.Order)
@@ -327,8 +303,8 @@ Public Class dlgSetsManager
     Private Sub SaveSet(ByVal mSet As Sets)
         Try
             For Each tMovie As Movies In mSet.Movies
-                tMovie.Movie.AddSet(mSet.Set, tMovie.Order)
-                Master.SaveMovieToNFO(tMovie.Movie, tMovie.Path, tMovie.isSingle)
+                tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
+                Master.DB.SaveMovieToDB(tMovie.DBMovie, False, False, True)
             Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -355,7 +331,7 @@ Public Class dlgSetsManager
             Me.lbMoviesInSet.Items.Clear()
             Me.currSet.Movies.Sort(AddressOf SortMovies)
             For Each tMovie As Movies In Me.currSet.Movies
-                Me.lbMoviesInSet.Items.Add(tMovie.Movie.Title)
+                Me.lbMoviesInSet.Items.Add(tMovie.DBMovie.Movie.Title)
                 tMovie.Order = Me.lbMoviesInSet.Items.Count
             Next
         Catch ex As Exception
@@ -380,8 +356,8 @@ Public Class dlgSetsManager
 
     Private Sub RemoveFromSet(ByVal iIndex As Integer, ByVal isEdit As Boolean)
         Try
-            Me.currSet.Movies(iIndex).Movie.RemoveSet(Me.currSet.Set)
-            Master.SaveMovieToNFO(Me.currSet.Movies(iIndex).Movie, Me.currSet.Movies(iIndex).Path, Me.currSet.Movies(iIndex).isSingle)
+            Me.currSet.Movies(iIndex).DBMovie.Movie.RemoveSet(Me.currSet.Set)
+            Master.DB.SaveMovieToDB(Me.currSet.Movies(iIndex).DBMovie, False, False, True)
             If Not isEdit Then Me.currSet.Movies.RemoveAt(iIndex)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

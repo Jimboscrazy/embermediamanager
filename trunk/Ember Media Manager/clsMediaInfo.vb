@@ -192,11 +192,9 @@ Public Class MediaInfo
     End Function
 
     Private Function ConvertL(ByVal sLang As String) As String
-        Dim lPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "Languages.xml")
-        If File.Exists(lPath) Then
-            Dim xmlLang As XDocument = XDocument.Load(lPath)
 
-            Dim xShortLang = From xLang In xmlLang.Descendants("Language") Where xLang.Element("Name").Value = sLang Select xLang.Element("Code").Value
+        If Master.LanguageXML.Nodes.Count > 0 Then
+            Dim xShortLang = From xLang In Master.LanguageXML.Descendants("Language") Where xLang.Element("Name").Value = sLang Select xLang.Element("Code").Value
             If xShortLang.Count > 0 Then
                 Return xShortLang(0)
             Else
@@ -205,6 +203,7 @@ Public Class MediaInfo
         Else
             Return String.Empty
         End If
+
     End Function
 
     <XmlRoot("fileinfo")> _

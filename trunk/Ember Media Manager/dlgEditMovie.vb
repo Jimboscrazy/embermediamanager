@@ -33,28 +33,13 @@ Public Class dlgEditMovie
     Private Thumbs As New List(Of ExtraThumbs)
     Private DeleteList As New ArrayList
     Private ExtraIndex As Integer = 0
-    Private _id As Integer
-    Private _single As Boolean
     Private CachePath As String = String.Empty
-    Private tPath As String = String.Empty
-
-
-    Public Overloads Function ShowDialog(ByVal id As Integer, ByVal isSingle As Boolean) As Windows.Forms.DialogResult
-
-        '//
-        ' Overload to pass data
-        '\\
-
-        Me._id = id
-        Me._single = isSingle
-
-        Return MyBase.ShowDialog()
-    End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
             Me.SetInfo()
-            Master.SaveMovieToNFO(Master.currMovie, Master.currPath, Master.currSingle)
+
+            Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
 
             Me.Poster.Clear()
             Me.Poster = Nothing
@@ -306,7 +291,7 @@ Public Class dlgEditMovie
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
             If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Master.currMovie = Master.LoadMovieFromNFO(Master.currNFO)
+                Master.currMovie.Movie = Master.LoadMovieFromNFO(Master.currMovie.FaS.Nfo)
                 Me.FillInfo(False)
             End If
         Catch ex As Exception
@@ -366,75 +351,76 @@ Public Class dlgEditMovie
         Try
             With Me
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Title) Then
-                    .txtTitle.Text = Master.currMovie.Title
+                Me.chkMark.Checked = Master.currMovie.IsMark
+
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
+                    .txtTitle.Text = Master.currMovie.Movie.Title
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Tagline) Then
-                    .txtTagline.Text = Master.currMovie.Tagline
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Tagline) Then
+                    .txtTagline.Text = Master.currMovie.Movie.Tagline
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Year) Then
-                    .mtxtYear.Text = Master.currMovie.Year
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
+                    .mtxtYear.Text = Master.currMovie.Movie.Year
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Votes) Then
-                    .txtVotes.Text = Master.currMovie.Votes
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
+                    .txtVotes.Text = Master.currMovie.Movie.Votes
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Outline) Then
-                    .txtOutline.Text = Master.currMovie.Outline
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Outline) Then
+                    .txtOutline.Text = Master.currMovie.Movie.Outline
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Plot) Then
-                    .txtPlot.Text = Master.currMovie.Plot
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Plot) Then
+                    .txtPlot.Text = Master.currMovie.Movie.Plot
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Top250) Then
-                    .txtTop250.Text = Master.currMovie.Top250
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Top250) Then
+                    .txtTop250.Text = Master.currMovie.Movie.Top250
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Runtime) Then
-                    .txtRuntime.Text = Master.currMovie.Runtime
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Runtime) Then
+                    .txtRuntime.Text = Master.currMovie.Movie.Runtime
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.ReleaseDate) Then
-                    .txtReleaseDate.Text = Master.currMovie.ReleaseDate
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.ReleaseDate) Then
+                    .txtReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Director) Then
-                    .txtDirector.Text = Master.currMovie.Director
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Director) Then
+                    .txtDirector.Text = Master.currMovie.Movie.Director
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Credits) Then
-                    .txtCredits.Text = Master.currMovie.Credits
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Credits) Then
+                    .txtCredits.Text = Master.currMovie.Movie.Credits
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Certification) Then
-                    .txtCerts.Text = Master.currMovie.Certification
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Certification) Then
+                    .txtCerts.Text = Master.currMovie.Movie.Certification
                 End If
 
-                tPath = Master.GetTrailerPath(Master.currPath)
-                Me.lblLocalTrailer.Visible = Not String.IsNullOrEmpty(tPath)
-                If Not String.IsNullOrEmpty(Master.currMovie.Trailer) Then
-                    .txtTrailer.Text = Master.currMovie.Trailer
+                Me.lblLocalTrailer.Visible = Not String.IsNullOrEmpty(Master.currMovie.FaS.Trailer)
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Trailer) Then
+                    .txtTrailer.Text = Master.currMovie.Movie.Trailer
                 Else
-                    If String.IsNullOrEmpty(tPath) Then
+                    If String.IsNullOrEmpty(Master.currMovie.FaS.Trailer) Then
                         .btnPlayTrailer.Enabled = False
                     End If
                 End If
 
                 .btnDLTrailer.Enabled = Master.eSettings.DownloadTrailers
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Studio) Then
-                    .txtStudio.Text = Master.currMovie.Studio
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
+                    .txtStudio.Text = Master.currMovie.Movie.Studio
                 End If
 
                 Me.SelectMPAA()
 
-                If Not String.IsNullOrEmpty(Master.currMovie.Genre) Then
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.Genre) Then
                     Dim genreArray() As String
-                    genreArray = Strings.Split(Master.currMovie.Genre, " / ")
+                    genreArray = Strings.Split(Master.currMovie.Movie.Genre, " / ")
                     For g As Integer = 0 To UBound(genreArray)
                         If .lbGenre.FindString(Strings.Trim(genreArray(g))) > 0 Then .lbGenre.SetItemChecked(.lbGenre.FindString(Strings.Trim(genreArray(g))), True)
                     Next
@@ -449,13 +435,13 @@ Public Class dlgEditMovie
 
                 Dim lvItem As ListViewItem
                 .lvActors.Items.Clear()
-                For Each imdbAct As Media.Person In Master.currMovie.Actors
+                For Each imdbAct As Media.Person In Master.currMovie.Movie.Actors
                     lvItem = .lvActors.Items.Add(imdbAct.Name)
                     lvItem.SubItems.Add(imdbAct.Role)
                     lvItem.SubItems.Add(imdbAct.Thumb)
                 Next
 
-                Dim tRating As Single = Master.ConvertToSingle(Master.currMovie.Rating)
+                Dim tRating As Single = Master.ConvertToSingle(Master.currMovie.Movie.Rating)
                 .tmpRating = tRating
                 .pbStar1.Tag = tRating
                 .pbStar2.Tag = tRating
@@ -466,11 +452,11 @@ Public Class dlgEditMovie
 
                 If DoAll Then
 
-                    If Not _single Then
+                    If Not Master.currMovie.FaS.isSingle Then
                         TabControl1.TabPages.Remove(TabPage4)
                         TabControl1.TabPages.Remove(TabPage5)
                     Else
-                        Dim pExt As String = Path.GetExtension(Master.currPath).ToLower
+                        Dim pExt As String = Path.GetExtension(Master.currMovie.FaS.Filename).ToLower
                         If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
                         pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" Then
                             TabControl1.TabPages.Remove(TabPage4)
@@ -478,7 +464,7 @@ Public Class dlgEditMovie
                         .bwThumbs.RunWorkerAsync()
                     End If
 
-                    Fanart.Load(Master.currPath, _single, Master.ImageType.Fanart)
+                    Fanart.Load(Master.currMovie.FaS.Filename, Master.currMovie.FaS.isSingle, Master.ImageType.Fanart)
                     If Not IsNothing(Fanart.Image) Then
                         .pbFanart.Image = Fanart.Image
 
@@ -486,7 +472,7 @@ Public Class dlgEditMovie
                         .lblFanartSize.Visible = True
                     End If
 
-                    Poster.Load(Master.currPath, _single, Master.ImageType.Posters)
+                    Poster.Load(Master.currMovie.FaS.Filename, Master.currMovie.FaS.isSingle, Master.ImageType.Posters)
                     If Not IsNothing(Poster.Image) Then
                         .pbPoster.Image = Poster.Image
 
@@ -500,20 +486,14 @@ Public Class dlgEditMovie
                             .btnSetPosterScrape.Enabled = False
                         End If
                     End If
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                        SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", Me._id, ";")
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            .chkMark.Checked = SQLreader("mark")
-                        End Using
-                    End Using
 
                     If Master.eSettings.AutoThumbs > 0 Then
                         .txtThumbCount.Text = Master.eSettings.AutoThumbs
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(Master.currMovie.IMDBID) AndAlso Master.eSettings.UseImgCache Then
-                    CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, Master.currMovie.IMDBID.Replace("tt", String.Empty))
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) AndAlso Master.eSettings.UseImgCache Then
+                    CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, Master.currMovie.Movie.IMDBID.Replace("tt", String.Empty))
                     If Directory.Exists(CachePath) Then
                         Me.btnClearCache.Visible = True
                     End If
@@ -528,64 +508,53 @@ Public Class dlgEditMovie
         Try
             With Me
 
-                If Not String.IsNullOrEmpty(.txtTitle.Text) Then
-                    Master.currMovie.Title = .txtTitle.Text.Trim
+                Master.currMovie.IsMark = Me.chkMark.Checked
 
-                    'reset title in list just in case user changed it
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                            Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
-                            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                            SQLcommand.CommandText = "UPDATE movies SET title = (?) WHERE id = (?);"
-                            parTitle.Value = .txtTitle.Text.Trim
-                            parID.Value = Me._id
-                            SQLcommand.ExecuteNonQuery()
-                        End Using
-                        SQLtransaction.Commit()
-                    End Using
+                If Not String.IsNullOrEmpty(.txtTitle.Text) Then
+                    Master.currMovie.Movie.Title = .txtTitle.Text.Trim
                 End If
 
-                Master.currMovie.Tagline = .txtTagline.Text.Trim
-                Master.currMovie.Year = .mtxtYear.Text.Trim
-                Master.currMovie.Votes = .txtVotes.Text.Trim
-                Master.currMovie.Outline = .txtOutline.Text.Trim
-                Master.currMovie.Plot = .txtPlot.Text.Trim
-                Master.currMovie.Top250 = .txtTop250.Text.Trim
-                Master.currMovie.Director = .txtDirector.Text.Trim
+                Master.currMovie.Movie.Tagline = .txtTagline.Text.Trim
+                Master.currMovie.Movie.Year = .mtxtYear.Text.Trim
+                Master.currMovie.Movie.Votes = .txtVotes.Text.Trim
+                Master.currMovie.Movie.Outline = .txtOutline.Text.Trim
+                Master.currMovie.Movie.Plot = .txtPlot.Text.Trim
+                Master.currMovie.Movie.Top250 = .txtTop250.Text.Trim
+                Master.currMovie.Movie.Director = .txtDirector.Text.Trim
 
                 If .lbMPAA.SelectedIndices.Count > 0 Then
                     If .lbMPAA.SelectedIndex = 0 Then
-                        Master.currMovie.MPAA = String.Empty
+                        Master.currMovie.Movie.MPAA = String.Empty
                     Else
-                        Master.currMovie.MPAA = String.Concat(.lbMPAA.SelectedItem.ToString, " ", .txtMPAADesc.Text).Trim
+                        Master.currMovie.Movie.MPAA = String.Concat(.lbMPAA.SelectedItem.ToString, " ", .txtMPAADesc.Text).Trim
                     End If
                 Else
-                    Master.currMovie.MPAA = String.Empty
+                    Master.currMovie.Movie.MPAA = String.Empty
                 End If
 
-                Master.currMovie.Rating = .tmpRating
+                Master.currMovie.Movie.Rating = .tmpRating
 
-                Master.currMovie.Runtime = .txtRuntime.Text.Trim
-                Master.currMovie.Certification = .txtCerts.Text.Trim
-                Master.currMovie.ReleaseDate = .txtReleaseDate.Text.Trim
-                Master.currMovie.Credits = .txtCredits.Text.Trim
-                Master.currMovie.Trailer = .txtTrailer.Text.Trim
-                Master.currMovie.Studio = .txtStudio.Text.Trim
+                Master.currMovie.Movie.Runtime = .txtRuntime.Text.Trim
+                Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
+                Master.currMovie.Movie.ReleaseDate = .txtReleaseDate.Text.Trim
+                Master.currMovie.Movie.Credits = .txtCredits.Text.Trim
+                Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
+                Master.currMovie.Movie.Studio = .txtStudio.Text.Trim
 
                 If .lbGenre.CheckedItems.Count > 0 Then
 
                     If .lbGenre.CheckedIndices.Contains(0) Then
-                        Master.currMovie.Genre = String.Empty
+                        Master.currMovie.Movie.Genre = String.Empty
                     Else
                         Dim strGenre As String = String.Empty
                         Dim isFirst As Boolean = True
                         Dim iChecked = From iCheck In .lbGenre.CheckedItems
                         strGenre = Strings.Join(iChecked.ToArray, " / ")
-                        Master.currMovie.Genre = strGenre.Trim
+                        Master.currMovie.Movie.Genre = strGenre.Trim
                     End If
                 End If
 
-                Master.currMovie.Actors.Clear()
+                Master.currMovie.Movie.Actors.Clear()
 
                 If .lvActors.Items.Count > 0 Then
                     For Each lviActor As ListViewItem In .lvActors.Items
@@ -594,27 +563,31 @@ Public Class dlgEditMovie
                         addActor.Role = lviActor.SubItems(1).Text.Trim
                         addActor.Thumb = lviActor.SubItems(2).Text.Trim
 
-                        Master.currMovie.Actors.Add(addActor)
+                        Master.currMovie.Movie.Actors.Add(addActor)
                     Next
                 End If
 
                 If Not IsNothing(.Fanart.Image) Then
-                    .Fanart.SaveAsFanart(Master.currPath, _single)
+                    Dim fPath As String = .Fanart.SaveAsFanart(Master.currMovie)
+                    Master.currMovie.FaS.Fanart = fPath
                 Else
-                    .Fanart.Delete(Master.currPath, _single, Master.ImageType.Fanart)
+                    .Fanart.Delete(Master.currMovie.FaS.Filename, Master.currMovie.FaS.isSingle, Master.ImageType.Fanart)
+                    Master.currMovie.FaS.Fanart = String.Empty
                 End If
 
                 If Not IsNothing(.Poster.Image) Then
-                    .Poster.SaveAsPoster(Master.currPath, _single)
+                    Dim pPath As String = .Poster.SaveAsPoster(Master.currMovie)
+                    Master.currMovie.FaS.Poster = pPath
                 Else
-                    .Poster.Delete(Master.currPath, _single, Master.ImageType.Posters)
+                    .Poster.Delete(Master.currMovie.FaS.Filename, Master.currMovie.FaS.isSingle, Master.ImageType.Posters)
+                    Master.currMovie.FaS.Poster = String.Empty
                 End If
 
                 .SaveExtraThumbsList()
 
                 If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
                     Dim di As New DirectoryInfo(Path.Combine(Master.TempPath, "extrathumbs"))
-                    Dim ePath As String = Path.Combine(Directory.GetParent(Master.currPath).FullName, "extrathumbs")
+                    Dim ePath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
 
                     If Not Directory.Exists(ePath) Then
                         Directory.CreateDirectory(ePath)
@@ -640,19 +613,10 @@ Public Class dlgEditMovie
 
                     fList = Nothing
                     di = Nothing
+
+                    Master.currMovie.FaS.Extra = ePath
                 End If
 
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
-                        Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                        Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                        SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
-                        parMark.Value = Me.chkMark.Checked
-                        parID.Value = Me._id
-                        SQLcommand.ExecuteNonQuery()
-                    End Using
-                    SQLtransaction.Commit()
-                End Using
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -727,7 +691,7 @@ Public Class dlgEditMovie
     Private Sub btnSetPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Master.currPath).FullName
+                .InitialDirectory = Directory.GetParent(Master.currMovie.FaS.Filename).FullName
                 .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
                 .FilterIndex = 0
             End With
@@ -747,7 +711,7 @@ Public Class dlgEditMovie
     Private Sub btnSetFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Master.currPath).FullName
+                .InitialDirectory = Directory.GetParent(Master.currMovie.FaS.Filename).FullName
                 .Filter = "JPEGs|*.jpg"
                 .FilterIndex = 4
             End With
@@ -769,7 +733,7 @@ Public Class dlgEditMovie
             Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
 
             Using dImgSelect As New dlgImgSelect
-                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Posters, True) = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)) Then
 
                     Poster.FromFile(sPath)
                     pbPoster.Image = Poster.Image
@@ -792,7 +756,7 @@ Public Class dlgEditMovie
             Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
 
             Using dImgSelect As New dlgImgSelect
-                If dImgSelect.ShowDialog(Master.currMovie.IMDBID, Master.currPath, Master.ImageType.Fanart, True) = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Fanart, True)) Then
 
                     Fanart.FromFile(sPath)
                     pbFanart.Image = Fanart.Image
@@ -816,7 +780,7 @@ Public Class dlgEditMovie
             Using ffmpeg As New Process()
 
                 ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-                ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currPath, Path.Combine(Master.TempPath, "frame.jpg"))
+                ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currMovie.FaS.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
                 ffmpeg.StartInfo.CreateNoWindow = True
@@ -880,7 +844,7 @@ Public Class dlgEditMovie
             Using ffmpeg As New Process()
 
                 ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currPath, Path.Combine(Master.TempPath, "frame.jpg"))
+                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currMovie.FaS.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
                 ffmpeg.StartInfo.CreateNoWindow = True
@@ -927,17 +891,17 @@ Public Class dlgEditMovie
             Dim tPath As String = Path.Combine(Master.TempPath, "frame.jpg")
             Dim sPath As String = String.Empty
 
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currPath).Name.ToLower = "video_ts" Then
-                sPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currPath).FullName).FullName, "extrathumbs")
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currMovie.FaS.Filename).Name.ToLower = "video_ts" Then
+                sPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.FaS.Filename).FullName).FullName, "extrathumbs")
             Else
-                sPath = Path.Combine(Directory.GetParent(Master.currPath).FullName, "extrathumbs")
+                sPath = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
             End If
 
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
             End If
 
-            Dim iMod As Integer = Master.GetExtraModifier(Master.currPath)
+            Dim iMod As Integer = Master.GetExtraModifier(Master.currMovie.FaS.Filename)
 
             Dim exImage As New Images
             exImage.ResizeExtraThumb(tPath, Path.Combine(sPath, String.Concat("thumb", (iMod + 1), ".jpg")))
@@ -953,7 +917,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub LoadThumbs()
-        Dim tPath As String = Path.Combine(Directory.GetParent(Master.currPath).FullName, "extrathumbs")
+        Dim tPath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
         If Directory.Exists(tPath) Then
             Dim di As New DirectoryInfo(tPath)
             Dim lFI As New List(Of FileInfo)
@@ -1025,7 +989,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SaveExtraThumbsList()
-        Dim tPath As String = Path.Combine(Directory.GetParent(Master.currPath).FullName, "extrathumbs")
+        Dim tPath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
 
         'first delete the ones from the delete list
         Try
@@ -1166,7 +1130,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SelectMPAA()
-        If Not String.IsNullOrEmpty(Master.currMovie.MPAA) Then
+        If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
 
 
             Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings")
@@ -1175,7 +1139,7 @@ Public Class dlgEditMovie
                 Try
                     Dim xmlRating As XDocument = XDocument.Load(Path.Combine(mePath, "Ratings.xml"))
                     If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso xmlRating.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
-                        Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.MPAA))
+                        Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.Movie.MPAA))
                         Me.lbMPAA.SelectedIndex = l
                         If Me.lbMPAA.SelectedItems.Count = 0 Then
                             Me.lbMPAA.SelectedIndex = 0
@@ -1185,7 +1149,7 @@ Public Class dlgEditMovie
 
                         txtMPAADesc.Enabled = False
                     Else
-                        Dim strMPAA As String = Master.currMovie.MPAA
+                        Dim strMPAA As String = Master.currMovie.Movie.MPAA
                         If Strings.InStr(strMPAA.ToLower, "rated g") > 0 Then
                             Me.lbMPAA.SelectedIndex = 1
                         ElseIf Strings.InStr(strMPAA.ToLower, "rated pg-13") > 0 Then
@@ -1232,7 +1196,7 @@ Public Class dlgEditMovie
         If Convert.ToInt32(txtThumbCount.Text) > 0 Then
             pnlFrameProgress.Visible = True
             Me.Refresh()
-            Master.CreateRandomThumbs(Master.currPath, Convert.ToInt32(txtThumbCount.Text))
+            Master.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text))
             pnlFrameProgress.Visible = False
             Me.RefreshExtraThumbs()
         End If
@@ -1267,7 +1231,7 @@ Public Class dlgEditMovie
 
     Private Sub btnStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStudio.Click
         Using dStudio As New dlgStudioSelect
-            Dim tStudio As String = dStudio.ShowDialog(Master.currMovie.IMDBID)
+            Dim tStudio As String = dStudio.ShowDialog(Master.currMovie.Movie.IMDBID)
             If Not String.IsNullOrEmpty(tStudio) Then
                 Me.txtStudio.Text = tStudio
             End If
@@ -1292,8 +1256,8 @@ Public Class dlgEditMovie
 
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
         Try
-            If Not String.IsNullOrEmpty(tPath) Then
-                System.Diagnostics.Process.Start(String.Concat("""", tPath, """"))
+            If Not String.IsNullOrEmpty(Master.currMovie.FaS.Trailer) Then
+                System.Diagnostics.Process.Start(String.Concat("""", Master.currMovie.FaS.Trailer, """"))
             ElseIf Not String.IsNullOrEmpty(Me.txtTrailer.Text) Then
                 System.Diagnostics.Process.Start(String.Concat("""", Me.txtTrailer.Text, """"))
             End If
@@ -1304,13 +1268,13 @@ Public Class dlgEditMovie
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
         Using dTrailer As New dlgTrailer
-            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.IMDBID, Master.currPath)
+            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.FaS.Filename)
             If Not String.IsNullOrEmpty(tURL) Then
                 Me.btnPlayTrailer.Enabled = True
                 If tURL.Substring(0, 7) = "http://" Then
                     Me.txtTrailer.Text = tURL
                 Else
-                    tPath = tURL
+                    Master.currMovie.FaS.Trailer = tURL
                     Me.lblLocalTrailer.Visible = True
                 End If
             End If

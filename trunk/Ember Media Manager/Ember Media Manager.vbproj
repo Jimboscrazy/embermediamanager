@@ -146,6 +146,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsDatabase.vb" />
     <Compile Include="clsErrorLog.vb" />
     <Compile Include="clsHashing.vb" />
     <Compile Include="clsHTTP.vb" />
