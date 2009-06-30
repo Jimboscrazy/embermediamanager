@@ -93,7 +93,7 @@ Public Class FileFolderRenamer
 
     Public Sub New()
         _movies.Clear()
-        Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read

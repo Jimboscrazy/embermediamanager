@@ -28,6 +28,7 @@ Imports System.Drawing.Drawing2D
 Public Class dlgOfflineHolder
     Private IMDB As New IMDB.Scraper
     Private WorkingPath As String = Path.Combine(Master.TempPath, "OfflineHolder")
+    Private FileName As String = Path.Combine(WorkingPath, "PlaceHolder.avi")
     Private destPath As String
     Private idxStsSource As Integer = -1
     Private idxStsMovie As Integer = -1
@@ -42,7 +43,9 @@ Public Class dlgOfflineHolder
     Private prevTopText As String = String.Empty
     Private drawFont As New Font("Arial", 22, FontStyle.Bold)
     Private txtTopPos As Integer
+    Private tMovie As New Master.DBMovie
     Friend WithEvents bwCreateHolder As New System.ComponentModel.BackgroundWorker
+
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CLOSE_Button.Click
         If bwCreateHolder.IsBusy Then
             bwCreateHolder.CancelAsync()
@@ -68,7 +71,7 @@ Public Class dlgOfflineHolder
             End Using
 
             'load all the movie folders from settings
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
                 Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     While SQLReader.Read
@@ -89,7 +92,6 @@ Public Class dlgOfflineHolder
                 CreatePreview()
             End If
 
-            Master.currPath = Path.Combine(WorkingPath, "PlaceHolder.avi")
             idxStsSource = lvStatus.Items.Add("Source Folder").Index
             lvStatus.Items(idxStsSource).SubItems.Add("Invalid")
             lvStatus.Items(idxStsSource).UseItemStyleForSubItems = False
@@ -133,21 +135,21 @@ Public Class dlgOfflineHolder
             If bSuccess Then
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
-                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.currSingle, Master.ImageType.Posters) Then
+                    If tmpImages.IsAllowedToDownload(tMovie, Master.ImageType.Posters) Then
                         Using dImgSelect As New dlgImgSelect
-                            dImgSelect.ShowDialog(Master.tmpMovie.IMDBID, Master.currPath, Master.ImageType.Posters)
+                            dImgSelect.ShowDialog(tMovie, Master.ImageType.Posters)
                         End Using
                     End If
-                    If tmpImages.IsAllowedToDownload(Master.currPath, Master.currSingle, Master.ImageType.Fanart) Then
+                    If tmpImages.IsAllowedToDownload(tMovie, Master.ImageType.Fanart) Then
                         Using dImgSelect As New dlgImgSelect
-                            dImgSelect.ShowDialog(Master.tmpMovie.IMDBID, Master.currPath, Master.ImageType.Fanart)
+                            dImgSelect.ShowDialog(tMovie, Master.ImageType.Fanart)
                         End Using
                     End If
                     tmpImages.Dispose()
                     tmpImages = Nothing
                 End If
 
-                Master.SaveMovieToNFO(Master.tmpMovie, Master.currPath, False)
+                Master.SaveMovieToNFO(tMovie)
 
                 Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
             Else
@@ -202,7 +204,7 @@ Public Class dlgOfflineHolder
                 lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
             End If
 
-            Dim fPath As String = Fanart.GetFanartPath(Master.currPath, False)
+            Dim fPath As String = Fanart.GetFanartPath(Master.currMovie.FaS.Filename, False)
 
             If Not String.IsNullOrEmpty(fPath) Then
                 chkUseFanart.Enabled = True
@@ -343,7 +345,7 @@ Public Class dlgOfflineHolder
             ffmpeg.StartInfo.CreateNoWindow = True
             ffmpeg.StartInfo.RedirectStandardOutput = True
             ffmpeg.StartInfo.RedirectStandardError = True
-            ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -i ""{0}\image%d.jpg"" ""{1}""", buildPath, Master.currPath)
+            ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -i ""{0}\image%d.jpg"" ""{1}""", buildPath, Master.currMovie.FaS.Filename)
             ffmpeg.Start()
             ffmpeg.WaitForExit()
             ffmpeg.Close()
@@ -364,7 +366,7 @@ Public Class dlgOfflineHolder
             Directory.Delete(buildPath, True)
         End If
         Try
-            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(Master.currPath)), Master.tmpMovie, "$D", "$D")
+            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(Master.currMovie.FaS.Filename)), Master.tmpMovie, "$D", "$D")
         Catch ex As Exception
         End Try
 

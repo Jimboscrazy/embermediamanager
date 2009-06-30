@@ -43,8 +43,8 @@ Public Class dlgMovieSource
     End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 If Me._id >= 0 Then
                     SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?) WHERE ID =", Me._id, ";")
                 Else
@@ -120,7 +120,7 @@ Public Class dlgMovieSource
         If String.IsNullOrEmpty(Me.txtSourceName.Text) Then
             pbValid.Image = My.Resources.invalid
         Else
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT ID FROM Sources WHERE Name LIKE """, Me.txtSourceName.Text.Trim, """ AND ID != ", Me._id, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If Not String.IsNullOrEmpty(SQLreader("ID").ToString) Then
@@ -162,7 +162,7 @@ Public Class dlgMovieSource
 
     Private Sub dlgMovieSource_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Me._id >= 0 Then
-            Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT * FROM Sources WHERE ID = ", Me._id, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Me.txtSourceName.Text = SQLreader("Name").ToString

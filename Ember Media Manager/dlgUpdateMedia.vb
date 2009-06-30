@@ -58,7 +58,7 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub CheckNewAndMark()
-        Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS ncount FROM movies WHERE new = 1;")
             Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 rbUpdateModifier_New.Enabled = SQLcount("ncount") > 0

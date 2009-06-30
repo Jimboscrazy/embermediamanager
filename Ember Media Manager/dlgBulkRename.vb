@@ -67,7 +67,7 @@ Public Class dlgBulkRenamer
             ' Clean up Movies List if any
             'FFRemamer._movies.Clear()
             ' Load nfo movies using path from DB
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 'Dim _tmpMovie As New Media.Movie
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
@@ -99,17 +99,17 @@ Public Class dlgBulkRenamer
                                         Exit For
                                     End If
                                 Next
-                                MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(SQLreader("path").ToString))
+                                MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(SQLreader("MoviePath").ToString))
 
                                 FFRenamer.AddMovie(MovieFile)
                             End If
                             Me.bwLoadInfo.ReportProgress(iProg, SQLreader("Title").ToString) '_tmpMovie.Title)
-                    iProg += 1
+                            iProg += 1
 
-                    If bwLoadInfo.CancellationPending Then
-                        e.Cancel = True
-                        Return
-                    End If
+                            If bwLoadInfo.CancellationPending Then
+                                e.Cancel = True
+                                Return
+                            End If
                         End While
                         e.Result = True
                     Else

@@ -34,10 +34,8 @@ Public Class dlgImgSelect
     Friend WithEvents bwTMDBDownload As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMPDBDownload As New System.ComponentModel.BackgroundWorker
 
-    Private imdbID As String = String.Empty
-    Private sPath As String = String.Empty
+    Private tMovie As New Master.DBMovie
     Private isEdit As Boolean = False
-    Private isSingle As Boolean = False
     Private DLType As Master.ImageType
 
     Private iCounter As Integer = 0
@@ -64,6 +62,7 @@ Public Class dlgImgSelect
     Private Event MPDBDone()
 
     Private CachePath As String = String.Empty
+    Private OutPath As String = String.Empty
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
@@ -81,9 +80,9 @@ Public Class dlgImgSelect
                     Me.tmpImage.Save(tmpPathPlus, 100)
                 Else
                     If Me.DLType = Master.ImageType.Fanart Then
-                        Me.tmpImage.SaveAsFanart(Me.sPath, Me.isSingle)
+                        OutPath = Me.tmpImage.SaveAsFanart(tMovie)
                     Else
-                        Me.tmpImage.SaveAsPoster(Me.sPath, Me.isSingle)
+                        OutPath = Me.tmpImage.SaveAsPoster(tMovie)
                     End If
                 End If
             Else
@@ -131,9 +130,9 @@ Public Class dlgImgSelect
                         Me.tmpImage.Save(tmpPathPlus, 100)
                     Else
                         If Me.DLType = Master.ImageType.Fanart Then
-                            Me.tmpImage.SaveAsFanart(Me.sPath, Me.isSingle)
+                            OutPath = Me.tmpImage.SaveAsFanart(Me.tMovie)
                         Else
-                            Me.tmpImage.SaveAsPoster(Me.sPath, Me.isSingle)
+                            OutPath = Me.tmpImage.SaveAsPoster(Me.tMovie)
                         End If
                     End If
                 End If
@@ -141,7 +140,7 @@ Public Class dlgImgSelect
             End If
 
             If Me.DLType = Master.ImageType.Fanart Then
-                Dim iMod As Integer = Master.GetExtraModifier(Me.sPath)
+                Dim iMod As Integer = Master.GetExtraModifier(Me.tMovie.FaS.Filename)
                 Dim extraPath As String = String.Empty
                 Dim iVal As Integer = 1
                 If iMod = -1 Then iMod = 0
@@ -160,7 +159,7 @@ Public Class dlgImgSelect
                     If isEdit Then
                         extraPath = Path.Combine(Master.TempPath, "extrathumbs")
                     Else
-                        extraPath = Path.Combine(Directory.GetParent(Me.sPath).FullName, "extrathumbs")
+                        extraPath = Path.Combine(Directory.GetParent(Me.tMovie.FaS.Filename).FullName, "extrathumbs")
                     End If
 
                     If Not Directory.Exists(extraPath) Then
@@ -238,7 +237,7 @@ Public Class dlgImgSelect
                 Me.pnlDLStatus.Top = 207
             End If
 
-            CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, imdbID, Path.DirectorySeparatorChar, If(Me.DLType = Master.ImageType.Posters, "posters", "fanart"))
+            CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Master.ImageType.Posters, "posters", "fanart"))
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -456,7 +455,7 @@ Public Class dlgImgSelect
 
                     Me._tmdbDone = False
 
-                    Me.TMDB.GetImagesAsync(imdbID, "poster")
+                    Me.TMDB.GetImagesAsync(tMovie.Movie.IMDBID, "poster")
                 Else
                     Me.lblDL1.Text = "TheMovieDB.com is not enabled"
                 End If
@@ -470,7 +469,7 @@ Public Class dlgImgSelect
 
                     Me._impaDone = False
 
-                    Me.IMPA.GetImagesAsync(imdbID)
+                    Me.IMPA.GetImagesAsync(tMovie.Movie.IMDBID)
                 Else
                     Me.lblDL2.Text = "IMPAwards.com is not enabled"
                 End If
@@ -484,7 +483,7 @@ Public Class dlgImgSelect
 
                     Me._mpdbDone = False
 
-                    Me.MPDB.GetImagesAsync(imdbID)
+                    Me.MPDB.GetImagesAsync(tMovie.Movie.IMDBID)
                 Else
                     Me.lblDL3.Text = "MoviePostersDB.com is not enabled"
                 End If
@@ -553,7 +552,7 @@ Public Class dlgImgSelect
                     Me.pnlDLStatus.Visible = True
                     Me.Refresh()
 
-                    Me.TMDB.GetImagesAsync(imdbID, "backdrop")
+                    Me.TMDB.GetImagesAsync(tMovie.Movie.IMDBID, "backdrop")
                 End If
             End If
         Catch ex As Exception
@@ -984,18 +983,19 @@ Public Class dlgImgSelect
         Me.OK_Button.Enabled = True
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal _imdbID As String, ByVal _sPath As String, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As Windows.Forms.DialogResult
 
         '//
         ' Overload to pass data
         '\\
 
-        Me.imdbID = _imdbID
-        Me.sPath = _sPath
+        Me.tMovie = mMovie
         Me.DLType = _DLType
         Me.isEdit = _isEdit
 
-        Return MyBase.ShowDialog()
+        MyBase.ShowDialog()
+
+        Return OutPath
     End Function
 
     Private Sub chkOriginal_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOriginal.CheckedChanged

@@ -81,8 +81,8 @@ Public Class dlgWizard
                 If MsgBox("Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database.", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
                     Me.lvMovies.BeginUpdate()
 
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.SQLcn.BeginTransaction
-                        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                             For i As Integer = lvMovies.SelectedItems.Count - 1 To 0 Step -1
                                 parSource.Value = lvMovies.SelectedItems(i).SubItems(1).Text
@@ -129,7 +129,7 @@ Public Class dlgWizard
 
     Private Sub RefreshSources()
         lvMovies.Items.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.SQLcn.CreateCommand
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLcommand.CommandText = "SELECT * FROM sources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
