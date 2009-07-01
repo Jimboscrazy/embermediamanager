@@ -244,9 +244,14 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.FaS.Filename = SQLreader("MoviePath")
                     _movieDB.FaS.isSingle = SQLreader("type")
                     If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _movieDB.FaS.Fanart = SQLreader("FanartPath")
+                    _movieDB.HasFanart = SQLreader("HasFanart")
                     If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _movieDB.FaS.Poster = SQLreader("PosterPath")
+                    _movieDB.HasPoster = SQLreader("HasPoster")
                     If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.FaS.Trailer = SQLreader("TrailerPath")
+                    _movieDB.HasTrailer = SQLreader("HasTrailer")
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.FaS.Nfo = SQLreader("NfoPath")
+                    _movieDB.HasNfo = SQLreader("HasNfo")
+                    _movieDB.HasExtra = SQLreader("HasExtra")
                     If Not DBNull.Value.Equals(SQLreader("source")) Then _movieDB.FaS.Source = SQLreader("source")
                     _movieDB.IsMark = SQLreader("mark")
                     _movieDB.IsLock = SQLreader("lock")
@@ -336,6 +341,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim subtitle As MediaInfo.Subtitle
+                    _movieDB.HasSub = SQLreader.Read
                     While SQLreader.Read
                         subtitle = New MediaInfo.Subtitle
                         If Not DBNull.Value.Equals(SQLreader("subs")) Then subtitle.Language = SQLreader("subs")
@@ -488,12 +494,21 @@ Public Class Database
                 parMoviePath.Value = _movieDB.FaS.Filename
                 parType.Value = _movieDB.FaS.isSingle
                 parTitle.Value = tmpMovie.Title
-                parHasPoster.Value = If(String.IsNullOrEmpty(_movieDB.FaS.Poster), False, True)
-                parHasFanart.Value = If(String.IsNullOrEmpty(_movieDB.FaS.Fanart), False, True)
-                parHasNfo.Value = If(String.IsNullOrEmpty(_movieDB.FaS.Nfo), False, True)
-                parHasTrailer.Value = If(String.IsNullOrEmpty(_movieDB.FaS.Trailer), False, True)
-                parHasSub.Value = If(String.IsNullOrEmpty(_movieDB.FaS.Subs), False, True)
-                parHasExtra.Value = If(String.IsNullOrEmpty(_movieDB.FaS.Extra), False, True)
+
+                parPosterPath.Value = _movieDB.FaS.Poster
+                parFanartPath.Value = _movieDB.FaS.Fanart
+                parNfoPath.Value = _movieDB.FaS.Nfo
+                parTrailerPath.Value = _movieDB.FaS.Trailer
+                parSubsPath.Value = _movieDB.FaS.Subs
+                parFanartURL.Value = _movieDB.Movie.Fanart.URL
+
+                parHasPoster.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Poster)
+                parHasFanart.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Fanart)
+                parHasNfo.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Nfo)
+                parHasTrailer.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Trailer)
+                parHasSub.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Subs)
+                parHasExtra.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Extra)
+
                 parNew.Value = _movieDB.IsNew
                 parMark.Value = _movieDB.IsMark
                 parLock.Value = _movieDB.IsLock
@@ -520,13 +535,6 @@ Public Class Database
                 parFile.Value = tmpMovie.File
                 parFileNameAndPath.Value = tmpMovie.FileNameAndPath
                 parTrailer.Value = tmpMovie.Trailer
-
-                parPosterPath.Value = _movieDB.FaS.Poster
-                parFanartPath.Value = _movieDB.FaS.Fanart
-                parNfoPath.Value = _movieDB.FaS.Nfo
-                parTrailerPath.Value = _movieDB.FaS.Trailer
-                parSubsPath.Value = _movieDB.FaS.Subs
-                parFanartURL.Value = _movieDB.Movie.Fanart.URL
 
                 parNeedsSave.Value = _movieDB.NeedsSave
 
