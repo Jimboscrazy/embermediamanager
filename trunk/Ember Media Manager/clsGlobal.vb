@@ -108,6 +108,12 @@ Public Class Master
         Dim IsNew As Boolean
         Dim IsMark As Boolean
         Dim IsLock As Boolean
+        Dim HasPoster As Boolean
+        Dim HasFanart As Boolean
+        Dim HasNfo As Boolean
+        Dim HasTrailer As Boolean
+        Dim HasSub As Boolean
+        Dim HasExtra As Boolean
         Dim NeedsSave As Boolean
     End Structure
 
