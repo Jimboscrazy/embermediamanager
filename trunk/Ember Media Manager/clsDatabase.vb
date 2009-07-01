@@ -490,6 +490,9 @@ Public Class Database
                 Dim parFanartURL As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartURL", DbType.String, 0, "FanartURL")
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.String, 0, "NeedsSave")
 
+                ' First let's save it to NFO, even because we will need the NFO path
+                If ToNfo Then Master.SaveMovieToNFO(_movieDB)
+
                 tmpMovie = _movieDB.Movie
                 parMoviePath.Value = _movieDB.FaS.Filename
                 parType.Value = _movieDB.FaS.isSingle
@@ -695,8 +698,6 @@ Public Class Database
                 End If
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
-
-            If ToNfo Then Master.SaveMovieToNFO(_movieDB)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

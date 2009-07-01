@@ -1457,7 +1457,7 @@ Public Class Master
 
     End Function
 
-    Public Shared Sub SaveMovieToNFO(ByVal movieToSave As Master.DBMovie)
+    Public Shared Sub SaveMovieToNFO(ByRef movieToSave As Master.DBMovie)
 
         '//
         ' Serialize Media.Movie to an NFO
@@ -1478,6 +1478,7 @@ Public Class Master
 
                 If Not File.Exists(nPath) OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
                     Using xmlSW As New StreamWriter(nPath)
+                        movieToSave.FaS.Nfo = tPath
                         xmlSer.Serialize(xmlSW, movieToSave.Movie)
                     End Using
                 End If
@@ -1498,6 +1499,7 @@ Public Class Master
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                         Using xmlSW As New StreamWriter(tPath)
+                            movieToSave.FaS.Nfo = tPath
                             xmlSer.Serialize(xmlSW, movieToSave.Movie)
                         End Using
                     End If
@@ -1512,6 +1514,7 @@ Public Class Master
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                         Using xmlSW As New StreamWriter(tPath)
+                            movieToSave.FaS.Nfo = tPath
                             xmlSer.Serialize(xmlSW, movieToSave.Movie)
                         End Using
                     End If
