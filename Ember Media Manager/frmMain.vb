@@ -441,13 +441,16 @@ Public Class frmMain
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     Master.DB.Connect(False, False)
                     Me.FillList(0)
+                    Me.Visible = True
                 Else
                     '!!CHANGE!! - Change to (True, False) for next release
                     Master.DB.Connect(True, True)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
+                        Me.Visible = True
                         Me.LoadMedia(1)
                     Else
                         Me.FillList(0)
+                        Me.Visible = True
                     End If
                 End If
 
@@ -457,7 +460,6 @@ Public Class frmMain
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
-            Me.Visible = True
             Me.Activate()
 
         End If
