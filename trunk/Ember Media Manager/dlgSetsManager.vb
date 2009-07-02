@@ -151,7 +151,6 @@ Public Class dlgSetsManager
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 Dim tmpMovie As New Master.DBMovie
                 Dim iProg As Integer = 0
-                Dim ID As Integer
                 SQLcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Me.bwLoadMovies.ReportProgress(-1, SQLcount("mcount"))
@@ -161,8 +160,7 @@ Public Class dlgSetsManager
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             If bwLoadMovies.CancellationPending Then Return
-                            ID = SQLreader("ID")
-                            tmpMovie = Master.DB.LoadMovieFromDB(ID)
+                            tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("ID")))
                             If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                                 lMovies.Add(New Movies With {.DBMovie = tmpMovie})
                                 If tmpMovie.Movie.Sets.Count > 0 Then
