@@ -256,7 +256,6 @@ Public Class dlgEditMovie
             If Me.lvActors.Items.Count > 0 Then
                 For i As Integer = Me.lvActors.SelectedItems.Count - 1 To 0 Step -1
                     Me.lvActors.Items.Remove(Me.lvActors.SelectedItems(i))
-                    Me.lvActors.Enabled = True
                 Next
             End If
         Catch ex As Exception
