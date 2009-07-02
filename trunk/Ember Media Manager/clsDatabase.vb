@@ -34,11 +34,13 @@ Public Class Database
         Return SQLcn.BeginTransaction
     End Function
 
-    Public Sub FillDataTable(ByRef dTable As DataTable, ByVal Command As String)
+    Public Sub FillDataTable(ByRef dTable As DataTable, ByVal Command As String, ByVal SortColumn As String)
         dTable.Clear()
         Dim sqlDA As New SQLite.SQLiteDataAdapter(Command, SQLcn)
         Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
         sqlDA.Fill(dTable)
+
+        If dTable.Columns.Contains(SortColumn) Then dTable.DefaultView.Sort = String.Format("{0} ASC", SortColumn)
     End Sub
 
     Public Sub Close()
