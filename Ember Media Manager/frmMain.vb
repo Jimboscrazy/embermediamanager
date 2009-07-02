@@ -2275,6 +2275,8 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                         drvRow.Item(3) = scrapeMovie.Movie.Title
+                                    Else
+                                        scrapeMovie.Movie.Title = drvRow.Item(3)
                                     End If
 
                                 End If
@@ -2325,6 +2327,8 @@ Public Class frmMain
 
                                         If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                             drvRow.Item(3) = scrapeMovie.Movie.Title
+                                        Else
+                                            scrapeMovie.Movie.Title = drvRow.Item(3)
                                         End If
 
                                         drvRow.Item(6) = True
@@ -2408,7 +2412,6 @@ Public Class frmMain
                                         End If
                                     End If
 
-
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(scrapeMovie.FaS.Filename).FullName, "extrathumbs")) AndAlso _
                                     (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
@@ -2431,7 +2434,7 @@ Public Class frmMain
                                 If drvRow.Item(14) Then Continue For
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2))
+                                If Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2)) Then Me.RefreshMovie(drvRow.Item(0))
                             Next
 
                         Case Master.ScrapeType.CopyBD
