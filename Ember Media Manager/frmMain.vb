@@ -657,8 +657,11 @@ Public Class frmMain
 
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        Me.RefreshMovie(ID)
-                        Me.SetListItemAfterEdit(ID, indX)
+                        If Me.RefreshMovie(ID) Then
+                            Me.FillList(0)
+                        Else
+                            Me.SetListItemAfterEdit(ID, indX)
+                        End If
                     Case Windows.Forms.DialogResult.Retry
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
@@ -1109,8 +1112,11 @@ Public Class frmMain
             Using dEditMovie As New dlgEditMovie
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        Me.RefreshMovie(ID)
-                        Me.SetListItemAfterEdit(ID, indX)
+                        If Me.RefreshMovie(ID) Then
+                            Me.FillList(0)
+                        Else
+                            Me.SetListItemAfterEdit(ID, indX)
+                        End If
                     Case Windows.Forms.DialogResult.Retry
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID)
                     Case Windows.Forms.DialogResult.Abort
@@ -1663,9 +1669,11 @@ Public Class frmMain
         Me.dgvMediaList.Cursor = Cursors.WaitCursor
         Me.dgvMediaList.Enabled = False
 
+        Dim doFill As Boolean = False
+
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
             For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                Me.RefreshMovie(sRow.Cells(0).Value)
+                doFill = Me.RefreshMovie(sRow.Cells(0).Value)
             Next
             SQLtransaction.Commit()
         End Using
@@ -1673,6 +1681,7 @@ Public Class frmMain
         Me.dgvMediaList.Cursor = Cursors.Default
         Me.dgvMediaList.Enabled = True
 
+        If doFill Then FillList(0)
     End Sub
 
     Private Sub RefreshAllMoviesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshAllMoviesToolStripMenuItem.Click
@@ -2630,6 +2639,7 @@ doCancel:
         Me.tabsMain.Enabled = True
         Me.EnableFilters(True)
 
+        Me.FillList(0)
     End Sub
 
 #End Region '*** Background Workers
@@ -3489,7 +3499,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub RefreshMovie(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal DoNfo As Boolean = True)
+    Private Function RefreshMovie(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal DoNfo As Boolean = True) As Boolean
         Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow
         Dim sPath As String = dRow(0).Item(1)
         Dim aContents(6) As String
@@ -3497,50 +3507,58 @@ doCancel:
         Dim tmpMovieDb As New Master.DBMovie
         Try
 
-            If DoNfo Then
-                tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2)), dRow(0).Item(2))
+            If Directory.Exists(Directory.GetParent(dRow(0).Item(1)).FullName) Then
+                If DoNfo Then
+                    tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2)), dRow(0).Item(2))
 
-                If String.IsNullOrEmpty(tmpMovie.Title) Then
-                    tmpMovieDb.ListTitle = dRow(0).Item(3)
+                    If String.IsNullOrEmpty(tmpMovie.Title) Then
+                        tmpMovieDb.ListTitle = dRow(0).Item(3)
+                    Else
+                        dRow(0).Item(3) = tmpMovie.Title
+                        tmpMovieDb.ListTitle = tmpMovie.Title
+                    End If
+
+                    tmpMovieDb.Movie = tmpMovie
                 Else
-                    dRow(0).Item(3) = tmpMovie.Title
-                    tmpMovieDb.ListTitle = tmpMovie.Title
+                    tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
                 End If
 
-                tmpMovieDb.Movie = tmpMovie
+                tmpMovieDb.FaS = New Master.FileAndSource
+                tmpMovieDb.FaS.Filename = dRow(0).Item(1)
+                tmpMovieDb.FaS.isSingle = dRow(0).Item(2)
+                tmpMovieDb.FaS.Source = dRow(0).Item(12)
+                aContents = Master.GetFolderContents(dRow(0).Item(1))
+                tmpMovieDb.FaS.Poster = aContents(0)
+                dRow(0).Item(4) = If(String.IsNullOrEmpty(aContents(0)), False, True)
+                tmpMovieDb.FaS.Fanart = aContents(1)
+                dRow(0).Item(5) = If(String.IsNullOrEmpty(aContents(1)), False, True)
+                tmpMovieDb.FaS.Nfo = aContents(2)
+                dRow(0).Item(6) = If(String.IsNullOrEmpty(aContents(2)), False, True)
+                tmpMovieDb.FaS.Trailer = aContents(3)
+                dRow(0).Item(7) = If(String.IsNullOrEmpty(aContents(3)), False, True)
+                tmpMovieDb.FaS.Subs = aContents(4)
+                dRow(0).Item(8) = If(String.IsNullOrEmpty(aContents(4)), False, True)
+                tmpMovieDb.FaS.Extra = aContents(5)
+                dRow(0).Item(9) = If(String.IsNullOrEmpty(aContents(5)), False, True)
+
+                tmpMovieDb.ID = dRow(0).Item(0)
+                tmpMovieDb.IsMark = dRow(0).Item(11)
+                tmpMovieDb.IsLock = dRow(0).Item(14)
+
+                Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode)
+
+                aContents = Nothing
             Else
-                tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
+                Master.DB.DeleteFromDB(dRow(0).Item(0), BatchMode)
+                Return True
             End If
 
-            tmpMovieDb.FaS = New Master.FileAndSource
-            tmpMovieDb.FaS.Filename = dRow(0).Item(1)
-            tmpMovieDb.FaS.isSingle = dRow(0).Item(2)
-            tmpMovieDb.FaS.Source = dRow(0).Item(12)
-            aContents = Master.GetFolderContents(dRow(0).Item(1))
-            tmpMovieDb.FaS.Poster = aContents(0)
-            dRow(0).Item(4) = If(String.IsNullOrEmpty(aContents(0)), False, True)
-            tmpMovieDb.FaS.Fanart = aContents(1)
-            dRow(0).Item(5) = If(String.IsNullOrEmpty(aContents(1)), False, True)
-            tmpMovieDb.FaS.Nfo = aContents(2)
-            dRow(0).Item(6) = If(String.IsNullOrEmpty(aContents(2)), False, True)
-            tmpMovieDb.FaS.Trailer = aContents(3)
-            dRow(0).Item(7) = If(String.IsNullOrEmpty(aContents(3)), False, True)
-            tmpMovieDb.FaS.Subs = aContents(4)
-            dRow(0).Item(8) = If(String.IsNullOrEmpty(aContents(4)), False, True)
-            tmpMovieDb.FaS.Extra = aContents(5)
-            dRow(0).Item(9) = If(String.IsNullOrEmpty(aContents(5)), False, True)
-
-            tmpMovieDb.ID = dRow(0).Item(0)
-            tmpMovieDb.IsMark = dRow(0).Item(11)
-            tmpMovieDb.IsLock = dRow(0).Item(14)
-
-            Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode)
-
-            aContents = Nothing
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
+
+        Return False
+    End Function
 
     Private Sub SetMenus(ByVal ReloadFilters As Boolean)
 
