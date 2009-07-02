@@ -144,11 +144,13 @@ Public Class frmMain
             If Me.bwValidateNfo.IsBusy Then Me.bwValidateNfo.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
 
+            lblCanceling.Text = "Canceling All Processes..."
+            btnCancel.Visible = False
+            lblCanceling.Visible = True
+            pbCanceling.Visible = True
+            pnlCancel.Visible = True
+
             Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwValidateNfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy
-                btnCancel.Visible = False
-                lblCanceling.Visible = True
-                pbCanceling.Visible = True
-                pnlCancel.Visible = True
                 Application.DoEvents()
             Loop
 
@@ -3203,6 +3205,20 @@ doCancel:
                 Me.EnableFilters(False)
 
                 If Not sType = Master.ScrapeType.SingleScrape Then
+                    Select Case sType
+                        Case Master.ScrapeType.CleanFolders
+                            lblCanceling.Text = "Canceling File Cleaner..."
+                            btnCancel.Text = "Cancel Cleaner"
+                        Case Master.ScrapeType.CopyBD
+                            lblCanceling.Text = "Canceling Backdrop Copy..."
+                            btnCancel.Text = "Cancel Copy"
+                        Case Master.ScrapeType.RevertStudios
+                            lblCanceling.Text = "Canceling Reversion..."
+                            btnCancel.Text = "Cancel Reversion"
+                        Case Else
+                            lblCanceling.Text = "Canceling Scraper..."
+                            btnCancel.Text = "Cancel Scraper"
+                    End Select
                     btnCancel.Visible = True
                     lblCanceling.Visible = False
                     pbCanceling.Visible = False
@@ -3852,9 +3868,9 @@ doCancel:
             Application.DoEvents()
 
             If DupesOnly Then
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY title")
+                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY title ASC")
             Else
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies ORDER BY title")
+                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies ORDER BY title ASC")
             End If
 
             If isCL Then
@@ -3921,8 +3937,6 @@ doCancel:
                         .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
 
-                        'Trick to work around the blank table bug in the DGV
-                        .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Descending)
                         .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
                         If .dgvMediaList.RowCount > 0 Then
