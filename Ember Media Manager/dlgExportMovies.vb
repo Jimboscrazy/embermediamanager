@@ -26,7 +26,7 @@ Imports System.Text.RegularExpressions
 
 Public Class dlgExportMovies
     Dim HTMLBody As New StringBuilder
-    Dim _movies As New List(Of Media.Movie)
+    Dim _movies As New List(Of Master.DBMovie)
     Dim bFiltered As Boolean = False
     Dim bCancelled As Boolean = False
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
@@ -49,25 +49,22 @@ Public Class dlgExportMovies
             _movies.Clear()
             ' Load nfo movies using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                Dim _tmpMovie As New Media.Movie
-                Dim _tmpPath As String = String.Empty
+                Dim _tmpMovie As New Master.DBMovie
+                Dim _ID As Integer
                 Dim iProg As Integer = 0
                 SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT NfoPath FROM movies ORDER BY title ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY title ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
-                            _tmpPath = SQLreader("NfoPath").ToString
-                            If Not String.IsNullOrEmpty(_tmpPath) Then
-                                _tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
-                                _movies.Add(_tmpMovie)
-                            End If
-                            Me.bwLoadInfo.ReportProgress(iProg, _tmpMovie.Title) '  show File
+                            _ID = SQLreader("ID")
+                            _tmpMovie = Master.DB.LoadMovieFromDB(_ID)
+                            _movies.Add(_tmpMovie)
+                            Me.bwLoadInfo.ReportProgress(iProg, _tmpMovie.Movie.Title) '  show File
                             iProg += 1
-
                             If bwLoadInfo.CancellationPending Then
                                 e.Cancel = True
                                 Return
@@ -87,6 +84,9 @@ Public Class dlgExportMovies
     Sub BuildHTML(Optional ByVal bSearch As Boolean = False, Optional ByVal strFilter As String = "", Optional ByVal strIn As String = "")
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
+            Dim tVid As New MediaInfo.Video
+            Dim tAud As New MediaInfo.Audio
+            Dim tRes As String = String.Empty
             HTMLBody = New StringBuilder 'blank it
             HTMLBody.Append(My.Resources.MovieListHeader)
             HTMLBody.Append(My.Resources.MediaListLogo)
@@ -105,32 +105,33 @@ Public Class dlgExportMovies
             rowHeader.AppendFormat(My.Resources.MovieListTableHeader, "Audio")
             rowHeader.Append(My.Resources.MovieListTableRowEnd)
             HTMLBody.Append(rowHeader)
-            For Each _curMovie As Media.Movie In _movies
+            For Each _curMovie As Master.DBMovie In _movies
                 Dim _vidDetails As String = String.Empty
                 Dim _audDetails As String = String.Empty
-                If Not IsNothing(_curMovie.FileInfo) Then
-                    If _curMovie.FileInfo.StreamDetails.Video.Count > 0 Then
-                        Dim tVid As MediaInfo.Video = Master.GetBestVideo(_curMovie.FileInfo)
-                        _vidDetails = String.Format("{0} / {1}", Master.GetResFromDimensions(tVid), tVid.Codec)
+                If Not IsNothing(_curMovie.Movie.FileInfo) Then
+                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                        tVid = Master.GetBestVideo(_curMovie.Movie.FileInfo)
+                        tRes = Master.GetResFromDimensions(tVid)
+                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), "Unknown", tRes), If(String.IsNullOrEmpty(tVid.Codec), "Unknown", tVid.Codec))
                     End If
 
-                    If _curMovie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                        Dim tAud As MediaInfo.Audio = Master.GetBestAudio(_curMovie.FileInfo)
-                        _audDetails = String.Format("{0} / {1}", tAud.Codec, tAud.Channels)
+                    If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                        tAud = Master.GetBestAudio(_curMovie.Movie.FileInfo)
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), "Unknown", tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), "Unknown", tAud.Channels))
                     End If
                 End If
 
                 Dim row As New StringBuilder
                 row.Append(My.Resources.MovieListTableRowStart)
-                row.AppendFormat(My.Resources.MovieListTableCol, Web.HttpUtility.HtmlEncode(_curMovie.Title))
-                row.AppendFormat(My.Resources.MovieListTableCol, _curMovie.Year)
+                row.AppendFormat(My.Resources.MovieListTableCol, Web.HttpUtility.HtmlEncode(_curMovie.Movie.Title))
+                row.AppendFormat(My.Resources.MovieListTableCol, _curMovie.Movie.Year)
                 row.AppendFormat(My.Resources.MovieListTableCol, _vidDetails)
                 row.AppendFormat(My.Resources.MovieListTableCol, _audDetails)
                 If bSearch Then
                     If (strIn = "Video Flag" And _vidDetails.Contains(strFilter)) Or _
                        (strIn = "Audio Flag" And _audDetails.Contains(strFilter)) Or _
-                       (strIn = "Title" And _curMovie.Title.Contains(strFilter)) Or _
-                       (strIn = "Year" And _curMovie.Year.Contains(strFilter)) Then
+                       (strIn = "Title" And _curMovie.Movie.Title.Contains(strFilter)) Or _
+                       (strIn = "Year" And _curMovie.Movie.Year.Contains(strFilter)) Then
                         row.Append(My.Resources.MovieListTableRowEnd)
                         HTMLBody.Append(row)
                     End If
