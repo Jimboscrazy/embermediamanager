@@ -576,7 +576,7 @@ Public Class Master
                                 Else
                                     tmpList.Add(CleanStackingMarkers(lFile.FullName))
                                 End If
-                                aContents = GetFolderContents(lFile.FullName)
+                                aContents = GetFolderContents(lFi, lFile.FullName)
                                 fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)})
                                 If bSingle AndAlso Not SkipStack Then Exit For
                             End If
@@ -1028,6 +1028,135 @@ Public Class Master
         ioFi = Nothing
 
         Return tNonConf
+    End Function
+
+    Public Shared Function GetFolderContents(ByVal lFI As List(Of FileInfo), ByVal sPath As String) As String()
+        '//
+        ' Check if a folder has all the items (nfo, poster, fanart, etc)
+        '\\
+
+        Dim NfoPath As String = String.Empty
+        Dim PosterPath As String = String.Empty
+        Dim FanartPath As String = String.Empty
+        Dim TrailerPath As String = String.Empty
+        Dim SubPath As String = String.Empty
+        Dim ExtraPath As String = String.Empty
+        Dim aResults(6) As String
+        Dim tmpName As String = String.Empty
+        Dim tmpNameNoStack As String = String.Empty
+        Dim parPath As String = String.Empty
+        Dim fList As New ArrayList
+
+        Try
+
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                    ExtraPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                End If
+            Else
+                If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                    ExtraPath = String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                End If
+            End If
+
+            For Each sFile As FileInfo In lFI
+                fList.Add(sFile.FullName)
+            Next
+
+            parPath = Directory.GetParent(sPath).FullName
+            tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+            tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+
+            'fanart
+            Select Case True
+                Case fList.Contains(Path.Combine(parPath, "fanart.jpg"))
+                    FanartPath = Path.Combine(parPath, "fanart.jpg")
+                Case fList.Contains(String.Concat(tmpName, "-fanart.jpg"))
+                    FanartPath = String.Concat(tmpName, "-fanart.jpg")
+                Case fList.Contains(String.Concat(tmpName, ".fanart.jpg"))
+                    FanartPath = String.Concat(tmpName, ".fanart.jpg")
+                Case fList.Contains(String.Concat(tmpNameNoStack, "-fanart.jpg"))
+                    FanartPath = String.Concat(tmpNameNoStack, "-fanart.jpg")
+                Case fList.Contains(String.Concat(tmpNameNoStack, ".fanart.jpg"))
+                    FanartPath = String.Concat(tmpNameNoStack, ".fanart.jpg")
+                Case fList.Contains(Path.Combine(parPath, "video_ts-fanart.jpg"))
+                    FanartPath = Path.Combine(parPath, "video_ts-fanart.jpg")
+                Case fList.Contains(Path.Combine(parPath, "video_ts.fanart.jpg"))
+                    FanartPath = Path.Combine(parPath, "video_ts.fanart.jpg")
+            End Select
+
+            'poster
+            Select Case True
+                Case fList.Contains(Path.Combine(parPath, "movie.tbn"))
+                    PosterPath = Path.Combine(parPath, "movie.tbn")
+                Case fList.Contains(Path.Combine(parPath, "poster.tbn"))
+                    PosterPath = Path.Combine(parPath, "poster.tbn")
+                Case fList.Contains(Path.Combine(parPath, "movie.jpg"))
+                    PosterPath = Path.Combine(parPath, "movie.jpg")
+                Case fList.Contains(String.Concat(tmpName, ".tbn"))
+                    PosterPath = String.Concat(tmpName, ".tbn")
+                Case fList.Contains(String.Concat(tmpNameNoStack, ".tbn"))
+                    PosterPath = String.Concat(tmpNameNoStack, ".tbn")
+                Case fList.Contains(Path.Combine(parPath, "poster.jpg"))
+                    PosterPath = Path.Combine(parPath, "poster.jpg")
+                Case fList.Contains(String.Concat(tmpName, ".jpg"))
+                    PosterPath = String.Concat(tmpName, ".jpg")
+                Case fList.Contains(String.Concat(tmpNameNoStack, ".jpg"))
+                    PosterPath = String.Concat(tmpNameNoStack, ".jpg")
+                Case fList.Contains(Path.Combine(parPath, "video_ts.jpg"))
+                    PosterPath = Path.Combine(parPath, "video_ts.jpg")
+                Case fList.Contains(Path.Combine(parPath, "folder.jpg"))
+                    PosterPath = Path.Combine(parPath, "folder.jpg")
+            End Select
+
+            'nfo
+            Select Case True
+                Case fList.Contains(Path.Combine(parPath, "movie.nfo"))
+                    NfoPath = Path.Combine(parPath, "movie.nfo")
+                Case fList.Contains(String.Concat(tmpName, ".nfo"))
+                    NfoPath = String.Concat(tmpName, ".nfo")
+                Case fList.Contains(String.Concat(tmpNameNoStack, ".nfo"))
+                    NfoPath = String.Concat(tmpNameNoStack, ".nfo")
+            End Select
+
+            'sub
+            Dim sExt() As String = Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ",")
+
+            For Each t As String In sExt
+                Select Case True
+                    Case fList.Contains(String.Concat(tmpName, t))
+                        SubPath = String.Concat(tmpName, t)
+                        Exit For
+                    Case fList.Contains(String.Concat(tmpNameNoStack, t))
+                        SubPath = String.Concat(tmpNameNoStack, t)
+                        Exit For
+                End Select
+            Next
+
+            For Each t As String In Master.eSettings.ValidExts
+                Select Case True
+                    Case fList.Contains(String.Concat(tmpName, "-trailer", t))
+                        TrailerPath = String.Concat(tmpName, "-trailer", t)
+                    Case fList.Contains(String.Concat(tmpNameNoStack, "-trailer", t))
+                        TrailerPath = String.Concat(tmpNameNoStack, "-trailer", t)
+                    Case fList.Contains(String.Concat(tmpName, "[trailer]", t))
+                        TrailerPath = String.Concat(tmpName, "[trailer]", t)
+                    Case fList.Contains(String.Concat(tmpNameNoStack, "[trailer]", t))
+                        TrailerPath = String.Concat(tmpNameNoStack, "[trailer]", t)
+                End Select
+            Next
+
+            aResults(0) = PosterPath
+            aResults(1) = FanartPath
+            aResults(2) = NfoPath
+            aResults(3) = TrailerPath
+            aResults(4) = SubPath
+            aResults(5) = ExtraPath
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return aResults
     End Function
 
     Public Shared Function GetFolderContents(ByVal sPath As String) As String()
