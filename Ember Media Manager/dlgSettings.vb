@@ -1095,6 +1095,19 @@ Public Class dlgSettings
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshSources()
                     Me.doRefresh = True
+                    Me.btnApply.Enabled = True
+                End If
+            End Using
+        End If
+    End Sub
+
+    Private Sub btnEditSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSource.Click
+        If lvMovies.SelectedItems.Count > 0 Then
+            Using dMovieSource As New dlgMovieSource
+                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                    Me.RefreshSources()
+                    Me.doRefresh = True
+                    Me.btnApply.Enabled = True
                 End If
             End Using
         End If
