@@ -1854,7 +1854,11 @@ Public Class frmMain
                         Return
                     End If
                     If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
-                        tmpMovieDB.Movie = Master.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                        If Not String.IsNullOrEmpty(sFile.Nfo) Then
+                            tmpMovieDB.Movie = Master.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                        Else
+                            tmpMovieDB.Movie = Master.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
+                        End If
 
                         If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
                             'no title so assume it's an invalid nfo, clear nfo path if exists
