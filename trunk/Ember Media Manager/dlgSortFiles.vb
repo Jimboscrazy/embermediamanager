@@ -42,6 +42,8 @@ Public Class dlgSortFiles
                 SortFiles(Me.txtPath.Text)
                 lblStatus.Text = "Done!"
                 pbStatus.Value = 0
+
+                Master.eSettings.SortPath = Me.txtPath.Text
             End If
         Else
             MsgBox("The folder you entered does not exist. Please enter a valid path.", MsgBoxStyle.Exclamation, "Directory Not Found")
@@ -99,6 +101,10 @@ Public Class dlgSortFiles
                 End If
             End If
         End With
+    End Sub
+
+    Private Sub dlgSortFiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.txtPath.Text = Master.eSettings.SortPath
     End Sub
 
     Private Sub dlgSortFiles_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown

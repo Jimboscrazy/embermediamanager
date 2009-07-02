@@ -150,6 +150,7 @@ Public Class emmSettings
     Private _xbmccoms As New List(Of XBMCCom)
     Private _defaultfolderspattern As String
     Private _defaultfilespattern As String
+    Private _sortpath As String
 
 
     Public Property Version() As String
@@ -1262,12 +1263,22 @@ Public Class emmSettings
             Me._defaultfolderspattern = value
         End Set
     End Property
+
     Public Property FilesPattern() As String
         Get
             Return Me._defaultfilespattern
         End Get
         Set(ByVal value As String)
             Me._defaultfilespattern = value
+        End Set
+    End Property
+
+    Public Property SortPath() As String
+        Get
+            Return Me._sortpath
+        End Get
+        Set(ByVal value As String)
+            Me._sortpath = value
         End Set
     End Property
 
@@ -1401,6 +1412,7 @@ Public Class emmSettings
         Me._defaultfolderspattern = "$T ($Y)"
         Me._defaultfilespattern = "$T"
         Me._xbmccoms.Clear()
+        Me._sortpath = String.Empty
     End Sub
 
     Public Sub Save()
