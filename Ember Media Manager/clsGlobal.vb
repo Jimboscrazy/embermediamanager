@@ -926,7 +926,7 @@ Public Class Master
         End Try
     End Sub
 
-    Public Shared Function LoadMovieFromNFO(ByVal sPath As String) As Media.Movie
+    Public Shared Function LoadMovieFromNFO(ByVal sPath As String, ByVal isSingle As Boolean) As Media.Movie
 
         '//
         ' Deserialze the NFO to pass all the data to a Media.Movie
@@ -943,7 +943,7 @@ Public Class Master
             Else
                 If Not String.IsNullOrEmpty(sPath) Then
                     Dim sReturn As New NonConf
-                    sReturn = GetIMDBFromNonConf(sPath)
+                    sReturn = GetIMDBFromNonConf(sPath, isSingle)
                     xmlMov.IMDBID = sReturn.IMDBID
                     Try
                         If Not String.IsNullOrEmpty(sReturn.Text) Then
@@ -962,7 +962,7 @@ Public Class Master
             xmlMov = New Media.Movie
             If Not String.IsNullOrEmpty(sPath) Then
                 Dim sReturn As New NonConf
-                sReturn = GetIMDBFromNonConf(sPath)
+                sReturn = GetIMDBFromNonConf(sPath, isSingle)
                 xmlMov.IMDBID = sReturn.IMDBID
                 Try
                     If Not String.IsNullOrEmpty(sReturn.Text) Then
@@ -993,20 +993,43 @@ Public Class Master
         Return sXML
     End Function
 
-    Public Shared Function GetIMDBFromNonConf(ByVal sPath As String) As NonConf
+    Public Shared Function GetIMDBFromNonConf(ByVal sPath As String, ByVal isSingle As Boolean) As NonConf
         Dim tNonConf As New NonConf
         Dim dirInfo As New DirectoryInfo(Directory.GetParent(sPath).FullName)
         Dim ioFi As New List(Of FileInfo)
 
-        Try
-            ioFi.AddRange(dirInfo.GetFiles("*.nfo"))
-        Catch
-        End Try
+        If isSingle Then
+            Try
+                ioFi.AddRange(dirInfo.GetFiles("*.nfo"))
+            Catch
+            End Try
 
-        Try
-            ioFi.AddRange(dirInfo.GetFiles("*.info"))
-        Catch
-        End Try
+            Try
+                ioFi.AddRange(dirInfo.GetFiles("*.info"))
+            Catch
+            End Try
+        Else
+
+            Dim fName As String = Path.GetFileNameWithoutExtension(sPath)
+            Dim oName As String = Directory.GetParent(sPath).Name
+            Try
+                ioFi.AddRange(dirInfo.GetFiles(String.Concat(fName, "*.nfo")))
+            Catch
+            End Try
+            Try
+                ioFi.AddRange(dirInfo.GetFiles(String.Concat(oName, "*.nfo")))
+            Catch
+            End Try
+
+            Try
+                ioFi.AddRange(dirInfo.GetFiles(String.Concat(fName, "*.info")))
+            Catch
+            End Try
+            Try
+                ioFi.AddRange(dirInfo.GetFiles(String.Concat(oName, "*.info")))
+            Catch
+            End Try
+        End If
 
         For Each sFile As FileInfo In ioFi
             Using srInfo As New StreamReader(sFile.FullName)

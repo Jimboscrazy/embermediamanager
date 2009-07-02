@@ -1854,7 +1854,7 @@ Public Class frmMain
                         Return
                     End If
                     If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
-                        tmpMovieDB.Movie = Master.LoadMovieFromNFO(sFile.Nfo)
+                        tmpMovieDB.Movie = Master.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
 
                         If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
                             'no title so assume it's an invalid nfo, clear nfo path if exists
@@ -2185,7 +2185,7 @@ Public Class frmMain
 
                                 doSave = False
 
-                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(drvRow.Item(0)))
+                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
 
                                 If Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.NFO Then
                                     If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
@@ -2319,7 +2319,7 @@ Public Class frmMain
 
                                     doSave = False
 
-                                    scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(drvRow.Item(0)))
+                                    scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
 
@@ -2443,7 +2443,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                                If Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2)) Then Me.RefreshMovie(Convert.ToInt32(drvRow.Item(0)), True, False)
+                                If Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2)) Then Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, False)
                             Next
 
                         Case Master.ScrapeType.CopyBD
@@ -2482,7 +2482,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(drvRow.Item(0)))
+                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
 
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Studio) AndAlso scrapeMovie.Movie.Studio.Contains(" / ") Then
                                     scrapeMovie.Movie.Studio = Strings.Trim(Strings.Left(scrapeMovie.Movie.Studio, Strings.InStr(scrapeMovie.Movie.Studio, " / ") - 1))
@@ -3468,7 +3468,7 @@ doCancel:
         Try
 
             If DoNfo Then
-                tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2)))
+                tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2)), dRow(0).Item(2))
 
                 If String.IsNullOrEmpty(tmpMovie.Title) Then
                     tmpMovie.Title = dRow(0).Item(3)
@@ -3943,7 +3943,7 @@ doCancel:
             If Not Me.dgvMediaList.Item(4, iRow).Value AndAlso Not Me.dgvMediaList.Item(5, iRow).Value AndAlso Not Me.dgvMediaList.Item(6, iRow).Value Then
                 Me.ClearInfo()
                 Me.pnlNoInfo.Visible = True
-                Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(Me.dgvMediaList.Item(0, iRow).Value))
+                Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMediaList.Item(0, iRow).Value))
                 Me.tslStatus.Text = Master.currMovie.FaS.Filename
                 Me.mnuMediaList.Enabled = True
             Else
