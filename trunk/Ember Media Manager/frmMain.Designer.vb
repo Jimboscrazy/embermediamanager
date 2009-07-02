@@ -890,9 +890,9 @@ Partial Class frmMain
         Me.lblCanceling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCanceling.Location = New System.Drawing.Point(4, 12)
         Me.lblCanceling.Name = "lblCanceling"
-        Me.lblCanceling.Size = New System.Drawing.Size(149, 16)
+        Me.lblCanceling.Size = New System.Drawing.Size(148, 16)
         Me.lblCanceling.TabIndex = 1
-        Me.lblCanceling.Text = "Canceling Updater..."
+        Me.lblCanceling.Text = "Canceling Scraper..."
         Me.lblCanceling.Visible = False
         '
         'btnCancel
@@ -904,7 +904,7 @@ Partial Class frmMain
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(205, 55)
         Me.btnCancel.TabIndex = 0
-        Me.btnCancel.Text = "Cancel Updater"
+        Me.btnCancel.Text = "Cancel Scraper"
         Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnCancel.UseVisualStyleBackColor = True
         '
