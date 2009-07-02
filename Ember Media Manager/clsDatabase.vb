@@ -232,7 +232,7 @@ Public Class Database
         End Try
     End Sub
 
-    Public Function LoadMovieFromDB(ByVal id As Integer) As Master.DBMovie
+    Public Function LoadMovieFromDB(ByVal id As Long) As Master.DBMovie
         Dim _movieDB As New Master.DBMovie
         _movieDB.FaS = New Master.FileAndSource
         Try
