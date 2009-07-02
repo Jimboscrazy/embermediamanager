@@ -33,10 +33,13 @@ Public Class FileFolderRenamer
         Private _newPath As String
         Private _newFileName As String
         Private _islocked As Boolean ' support for bulkRenamer 
+        Private _dirExist As Boolean ' support for bulkRenamer 
+        Private _fileExist As Boolean ' support for bulkRenamer 
         Public fType As Integer
         Public Resolution As String
         Public Audio As String
         Public Source As String = String.Empty
+
 
         Public Property Title() As String
             Get
@@ -87,11 +90,34 @@ Public Class FileFolderRenamer
                 Me._islocked = value
             End Set
         End Property
+        Public Property DirExist() As Boolean
+            Get
+                Return Me._dirExist
+            End Get
+            Set(ByVal value As Boolean)
+                Me._dirExist = value
+            End Set
+        End Property
+        Public Property FileExist() As Boolean
+            Get
+                Return Me._fileExist
+            End Get
+            Set(ByVal value As Boolean)
+                Me._fileExist = value
+            End Set
+        End Property
     End Class
     Private _movies As New List(Of FileRename)
     Public MovieFolders As New ArrayList
+    Dim xmlFlags As XDocument
 
     Public Sub New()
+        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
+
+        If File.Exists(Path.Combine(mePath, "Flags.xml")) Then
+            xmlFlags = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
+        End If
+
         _movies.Clear()
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
@@ -116,6 +142,9 @@ Public Class FileFolderRenamer
             For Each f As FileRename In _movies
                 f.NewFileName = ProccessPattern(f, filePattern)
                 f.NewPath = ProccessPattern(f, folderPattern)
+                f.FileExist = File.Exists(Path.Combine(f.Source, f.NewFileName)) AndAlso Not (f.FileExist = f.NewFileName)
+                f.DirExist = File.Exists(Path.Combine(f.Source, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
+
             Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -125,17 +154,12 @@ Public Class FileFolderRenamer
     Private Function ProccessPattern(ByVal f As FileRename, ByVal pattern As String) As String
         Try
 
-            Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
             Dim strSource As String = String.Empty
             Try
-                If File.Exists(Path.Combine(mePath, "Flags.xml")) Then
-                    Dim xmlFlags As XDocument = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
-                    Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
-                    'Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Select xVSource.@searchstring
-                    If xVSourceFlag.Count > 0 Then
-                        strSource = xVSourceFlag(0).ToString
-                    End If
-
+                Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
+                'Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Select xVSource.@searchstring
+                If xVSourceFlag.Count > 0 Then
+                    strSource = xVSourceFlag(0).ToString
                 End If
             Catch ex As Exception
             End Try
@@ -147,6 +171,13 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "A", f.Audio)
             pattern = ApplyPattern(pattern, "t", f.Title.Replace(" ", "."))
             pattern = ApplyPattern(pattern, "S", strSource)
+            'Remove/Replace some Invalid chars from path/filename
+            pattern = pattern.Replace(":", "-")
+            pattern = pattern.Replace("?", String.Empty)
+            pattern = pattern.Replace("*", String.Empty)
+            For Each Invalid As Char In Path.GetInvalidPathChars
+                pattern = pattern.Replace(Invalid, String.Empty)
+            Next
             Return pattern
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -187,13 +218,19 @@ Public Class FileFolderRenamer
             For Each f As FileFolderRenamer.FileRename In _movies
                 If Not f.IsLocked Then
                     'Rename Directory
-                    If Not f.NewPath = f.Path Then
-                        Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
-                        Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
-                        System.IO.Directory.Move(srcDir, destDir)
+                    If Not f.NewPath.ToLower = f.Path.ToLower Then
+                        Try
+                            Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
+                            Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
+                            System.IO.Directory.Move(srcDir, destDir)
+                        Catch ex As Exception
+                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            Continue For
+                        End Try
+
                     End If
                     'Rename Files
-                    If Not f.NewFileName = f.FileName Then
+                    If Not f.NewFileName.ToLower = f.FileName.ToLower Then
                         Dim tmpList As New ArrayList
 
                         Dim di As New DirectoryInfo(Path.Combine(f.BasePath, f.NewPath))
@@ -210,8 +247,12 @@ Public Class FileFolderRenamer
                                 srcFile = lFile.FullName
                                 dstFile = Path.Combine(Path.GetDirectoryName(lFile.FullName), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
                                 If Not srcFile = dstFile Then
-                                    Dim fr = New System.IO.FileInfo(srcFile)
-                                    fr.MoveTo(dstFile)
+                                    Try
+                                        Dim fr = New System.IO.FileInfo(srcFile)
+                                        fr.MoveTo(dstFile)
+                                    Catch ex As Exception
+                                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                    End Try
                                 End If
                             Next
                         End If
