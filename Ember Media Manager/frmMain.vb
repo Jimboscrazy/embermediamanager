@@ -2530,7 +2530,9 @@ doCancel:
 
             Select Case e.Result
                 Case Master.ScrapeType.CleanFolders
-                    Me.LoadMedia(1)
+                    'only rescan media if expert cleaner and videos are not whitelisted 
+                    'since the db is updated during cleaner now.
+                    If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then Me.LoadMedia(1)
                 Case Else
 
                     Try
@@ -3187,6 +3189,7 @@ doCancel:
             Dim nfoPath As String = String.Empty
 
             If Not isCL Then
+                Me.tslStatus.Text = String.Empty 'clear status for scrapers that do not report
                 Me.ToolsToolStripMenuItem.Enabled = False
                 Me.tsbAutoPilot.Enabled = False
                 Me.tsbRefreshMedia.Enabled = False
