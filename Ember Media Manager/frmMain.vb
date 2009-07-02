@@ -2193,6 +2193,13 @@ Public Class frmMain
                                     doSave = True
                                 End If
 
+                                If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
+                                    drvRow.Item(3) = scrapeMovie.Movie.Title
+                                Else
+                                    scrapeMovie.Movie.Title = drvRow.Item(3)
+                                End If
+
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -2270,13 +2277,6 @@ Public Class frmMain
                                                 drvRow.Item(7) = True
                                             End If
                                         End If
-                                    End If
-
-                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
-                                        drvRow.Item(3) = scrapeMovie.Movie.Title
-                                    Else
-                                        scrapeMovie.Movie.Title = drvRow.Item(3)
                                     End If
 
                                 End If
