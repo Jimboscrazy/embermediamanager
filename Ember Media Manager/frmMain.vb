@@ -147,6 +147,7 @@ Public Class frmMain
             lblCanceling.Visible = True
             pbCanceling.Visible = True
             pnlCancel.Visible = True
+            Me.Refresh()
 
             Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
                 Application.DoEvents()
@@ -3520,102 +3521,108 @@ doCancel:
 
     Private Sub SetMenus(ByVal ReloadFilters As Boolean)
 
-        With Master.eSettings
-            If (Not .ExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
-            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
-            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs)) OrElse _
-            (.ExpertCleaner AndAlso (.CleanWhitelistVideo OrElse .CleanWhitelistExts.Count > 0)) Then
-                Me.CleanFoldersToolStripMenuItem.Enabled = True
-            Else
-                Me.CleanFoldersToolStripMenuItem.Enabled = False
-            End If
+        Try
+            With Master.eSettings
+                If (Not .ExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
+                .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
+                .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtraThumbs)) OrElse _
+                (.ExpertCleaner AndAlso (.CleanWhitelistVideo OrElse .CleanWhitelistExts.Count > 0)) Then
+                    Me.CleanFoldersToolStripMenuItem.Enabled = True
+                Else
+                    Me.CleanFoldersToolStripMenuItem.Enabled = False
+                End If
 
-            If .XBMCComs.Count > 0 Then
-                Me.tsbUpdateXBMC.Enabled = True
-                tsbUpdateXBMC.DropDownItems.Clear()
-                For Each xCom As emmSettings.XBMCCom In .XBMCComs
-                    tsbUpdateXBMC.DropDownItems.Add(String.Concat("Update ", xCom.Name, " Only"), Nothing, New System.EventHandler(AddressOf XComSubClick))
-                Next
-            Else
-                Me.tsbUpdateXBMC.Enabled = False
-            End If
+                If .XBMCComs.Count > 0 Then
+                    Me.tsbUpdateXBMC.Enabled = True
+                    tsbUpdateXBMC.DropDownItems.Clear()
+                    For Each xCom As emmSettings.XBMCCom In .XBMCComs
+                        tsbUpdateXBMC.DropDownItems.Add(String.Concat("Update ", xCom.Name, " Only"), Nothing, New System.EventHandler(AddressOf XComSubClick))
+                    Next
+                Else
+                    Me.tsbUpdateXBMC.Enabled = False
+                End If
 
-            Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = Directory.Exists(.BDPath)
+                Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Enabled = Directory.Exists(.BDPath)
 
-            Me.ClearAllCachesToolStripMenuItem.Enabled = .UseImgCache
+                Me.ClearAllCachesToolStripMenuItem.Enabled = .UseImgCache
 
-            Me.mnuAllAutoExtra.Enabled = .AutoThumbs > 0
-            Me.mnuAllAskExtra.Enabled = .AutoThumbs > 0
-            Me.mnuMissAutoExtra.Enabled = .AutoThumbs > 0
-            Me.mnuMissAskExtra.Enabled = .AutoThumbs > 0
-            Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0
-            Me.mnuMarkAskExtra.Enabled = .AutoThumbs > 0
-            Me.mnuNewAutoExtra.Enabled = .AutoThumbs > 0
-            Me.mnuNewAskExtra.Enabled = .AutoThumbs > 0
-            Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0
+                Me.mnuAllAutoExtra.Enabled = .AutoThumbs > 0
+                Me.mnuAllAskExtra.Enabled = .AutoThumbs > 0
+                Me.mnuMissAutoExtra.Enabled = .AutoThumbs > 0
+                Me.mnuMissAskExtra.Enabled = .AutoThumbs > 0
+                Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0
+                Me.mnuMarkAskExtra.Enabled = .AutoThumbs > 0
+                Me.mnuNewAutoExtra.Enabled = .AutoThumbs > 0
+                Me.mnuNewAskExtra.Enabled = .AutoThumbs > 0
+                Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0
 
-            Me.mnuAllAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
-            Me.mnuAllAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
-            Me.mnuMissAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
-            Me.mnuMissAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
-            Me.mnuMarkAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
-            Me.mnuMarkAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
-            Me.mnuNewAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
-            Me.mnuNewAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuAllAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuAllAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuMissAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuMissAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuMarkAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuMarkAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuNewAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuNewAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
 
-            Me.mnuAllAutoFanart.Enabled = .UseTMDB
-            Me.mnuAllAskFanart.Enabled = .UseTMDB
-            Me.mnuMissAutoFanart.Enabled = .UseTMDB
-            Me.mnuMissAskFanart.Enabled = .UseTMDB
-            Me.mnuMarkAutoFanart.Enabled = .UseTMDB
-            Me.mnuMarkAskFanart.Enabled = .UseTMDB
-            Me.mnuNewAutoFanart.Enabled = .UseTMDB
-            Me.mnuNewAskFanart.Enabled = .UseTMDB
+                Me.mnuAllAutoFanart.Enabled = .UseTMDB
+                Me.mnuAllAskFanart.Enabled = .UseTMDB
+                Me.mnuMissAutoFanart.Enabled = .UseTMDB
+                Me.mnuMissAskFanart.Enabled = .UseTMDB
+                Me.mnuMarkAutoFanart.Enabled = .UseTMDB
+                Me.mnuMarkAskFanart.Enabled = .UseTMDB
+                Me.mnuNewAutoFanart.Enabled = .UseTMDB
+                Me.mnuNewAskFanart.Enabled = .UseTMDB
 
-            Me.mnuAllAskMI.Enabled = .ScanMediaInfo
-            Me.mnuAllAutoMI.Enabled = .ScanMediaInfo
-            Me.mnuNewAskMI.Enabled = .ScanMediaInfo
-            Me.mnuNewAutoMI.Enabled = .ScanMediaInfo
-            Me.mnuMarkAskMI.Enabled = .ScanMediaInfo
-            Me.mnuMarkAutoMI.Enabled = .ScanMediaInfo
+                Me.mnuAllAskMI.Enabled = .ScanMediaInfo
+                Me.mnuAllAutoMI.Enabled = .ScanMediaInfo
+                Me.mnuNewAskMI.Enabled = .ScanMediaInfo
+                Me.mnuNewAutoMI.Enabled = .ScanMediaInfo
+                Me.mnuMarkAskMI.Enabled = .ScanMediaInfo
+                Me.mnuMarkAutoMI.Enabled = .ScanMediaInfo
 
-            Me.mnuAllAutoTrailer.Enabled = .DownloadTrailers
-            Me.mnuAllAskTrailer.Enabled = .DownloadTrailers
-            Me.mnuMissAutoTrailer.Enabled = .DownloadTrailers
-            Me.mnuMissAskTrailer.Enabled = .DownloadTrailers
-            Me.mnuNewAutoTrailer.Enabled = .DownloadTrailers
-            Me.mnuNewAskTrailer.Enabled = .DownloadTrailers
-            Me.mnuMarkAutoTrailer.Enabled = .DownloadTrailers
-            Me.mnuMarkAskTrailer.Enabled = .DownloadTrailers
+                Me.mnuAllAutoTrailer.Enabled = .DownloadTrailers
+                Me.mnuAllAskTrailer.Enabled = .DownloadTrailers
+                Me.mnuMissAutoTrailer.Enabled = .DownloadTrailers
+                Me.mnuMissAskTrailer.Enabled = .DownloadTrailers
+                Me.mnuNewAutoTrailer.Enabled = .DownloadTrailers
+                Me.mnuNewAskTrailer.Enabled = .DownloadTrailers
+                Me.mnuMarkAutoTrailer.Enabled = .DownloadTrailers
+                Me.mnuMarkAskTrailer.Enabled = .DownloadTrailers
 
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
-                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    If SQLcount("mcount") > 0 Then
-                        Me.btnMarkAll.Text = "Unmark All"
-                    Else
-                        Me.btnMarkAll.Text = "Mark All"
-                    End If
-                End Using
-            End Using
-
-            'not technically a menu, but it's a good place to put it
-            If ReloadFilters Then
-                RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-                cbFilterSource.Items.Clear()
-                cbFilterSource.Items.Add("All")
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
-                    Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                        While SQLReader.Read
-                            cbFilterSource.Items.Add(SQLReader("Name"))
-                        End While
+                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
+                    Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                        If SQLcount("mcount") > 0 Then
+                            Me.btnMarkAll.Text = "Unmark All"
+                        Else
+                            Me.btnMarkAll.Text = "Mark All"
+                        End If
                     End Using
                 End Using
-                cbFilterSource.Text = "All"
-                AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-            End If
-        End With
+
+                'not technically a menu, but it's a good place to put it
+                If ReloadFilters Then
+                    RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+                    cbFilterSource.Items.Clear()
+                    cbFilterSource.Items.Add("All")
+                    Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
+                        Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                            While SQLReader.Read
+                                cbFilterSource.Items.Add(SQLReader("Name"))
+                            End While
+                        End Using
+                    End Using
+                    cbFilterSource.Text = "All"
+                    AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+                End If
+            End With
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
     End Sub
 
     Private Sub SetFilterColors()
@@ -3910,42 +3917,53 @@ doCancel:
     End Sub
 
     Public Sub SetListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-            SQLcommand.CommandText = String.Concat("SELECT title, mark FROM movies WHERE id = ", iID, ";")
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                Me.SetFilterColors()
-                Me.dgvMediaList.Item(3, iRow).Value = SQLreader("title")
-                Me.dgvMediaList.Item(11, iRow).Value = SQLreader("mark")
+
+        Try
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT title, mark FROM movies WHERE id = ", iID, ";")
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Me.SetFilterColors()
+                    Me.dgvMediaList.Item(3, iRow).Value = SQLreader("title")
+                    Me.dgvMediaList.Item(11, iRow).Value = SQLreader("mark")
+                End Using
             End Using
-        End Using
 
-        Me.SelectRow(iRow)
+            Me.SelectRow(iRow)
 
-        Me.SetFilterColors()
+            Me.SetFilterColors()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
     End Sub
 
     Private Sub SelectRow(ByVal iRow As Integer)
 
-        If Me.bwLoadInfo.IsBusy Then
-            Me.bwLoadInfo.CancelAsync()
-            Do While Me.bwLoadInfo.IsBusy
-                Application.DoEvents()
-            Loop
-        End If
+        Try
+            If Me.bwLoadInfo.IsBusy Then
+                Me.bwLoadInfo.CancelAsync()
+                Do While Me.bwLoadInfo.IsBusy
+                    Application.DoEvents()
+                Loop
+            End If
 
-        Me.tmpTitle = Me.dgvMediaList.Item(3, iRow).Value.ToString
-        If Not Me.dgvMediaList.Item(4, iRow).Value AndAlso Not Me.dgvMediaList.Item(5, iRow).Value AndAlso Not Me.dgvMediaList.Item(6, iRow).Value Then
-            Me.ClearInfo()
-            Me.pnlNoInfo.Visible = True
-            Master.currMovie = Master.DB.LoadMovieFromDB(Me.dgvMediaList.Item(0, iRow).Value)
-            Me.tslStatus.Text = Master.currMovie.FaS.Filename
-            Me.mnuMediaList.Enabled = True
-        Else
-            Me.pnlNoInfo.Visible = False
+            Me.tmpTitle = Me.dgvMediaList.Item(3, iRow).Value.ToString
+            If Not Me.dgvMediaList.Item(4, iRow).Value AndAlso Not Me.dgvMediaList.Item(5, iRow).Value AndAlso Not Me.dgvMediaList.Item(6, iRow).Value Then
+                Me.ClearInfo()
+                Me.pnlNoInfo.Visible = True
+                Dim ID As Integer = Me.dgvMediaList.Item(0, iRow).Value
+                Master.currMovie = Master.DB.LoadMovieFromDB(ID)
+                Me.tslStatus.Text = Master.currMovie.FaS.Filename
+                Me.mnuMediaList.Enabled = True
+            Else
+                Me.pnlNoInfo.Visible = False
 
-            'try to load the info from the NFO
-            Me.LoadInfo(Me.dgvMediaList.Item(0, iRow).Value, Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
-        End If
+                'try to load the info from the NFO
+                Me.LoadInfo(Me.dgvMediaList.Item(0, iRow).Value, Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub SetToolTips()
