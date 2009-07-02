@@ -2435,7 +2435,9 @@ Public Class frmMain
                                 If drvRow.Item(14) Then Continue For
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                If Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2)) Then Me.RefreshMovie(drvRow.Item(0))
+
+                                ID = drvRow.Item(0)
+                                If Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2)) Then Me.RefreshMovie(ID, True, False)
                             Next
 
                         Case Master.ScrapeType.CopyBD
@@ -2534,9 +2536,13 @@ doCancel:
                     Case Master.ScrapeType.CleanFolders
                         'only rescan media if expert cleaner and videos are not whitelisted 
                         'since the db is updated during cleaner now.
-                        If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then Me.LoadMedia(1)
-                    Case Else
+                        If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
+                            Me.LoadMedia(1)
+                        Else
+                            Me.dgvMediaList.Refresh()
+                        End If
 
+                    Case Else
                         If Me.dgvMediaList.SelectedRows.Count > 0 Then
                             Me.FillList(Me.dgvMediaList.SelectedRows(0).Index)
                         Else
@@ -3510,7 +3516,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub RefreshMovie(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False)
+    Private Sub RefreshMovie(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal DoNfo As Boolean = True)
         Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow
         Dim sPath As String = dRow(0).Item(1)
         Dim aContents(6) As String
@@ -3518,12 +3524,18 @@ doCancel:
         Dim tmpMovieDb As New Master.DBMovie
         Try
 
-            tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2)))
+            If DoNfo Then
+                tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2)))
 
-            If String.IsNullOrEmpty(tmpMovie.Title) Then
-                tmpMovie.Title = dRow(0).Item(3)
+                If String.IsNullOrEmpty(tmpMovie.Title) Then
+                    tmpMovie.Title = dRow(0).Item(3)
+                Else
+                    dRow(0).Item(3) = tmpMovie.Title
+                End If
+
+                tmpMovieDb.Movie = tmpMovie
             Else
-                dRow(0).Item(3) = tmpMovie.Title
+                tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
             End If
 
             tmpMovieDb.FaS = New Master.FileAndSource
@@ -3547,7 +3559,6 @@ doCancel:
             tmpMovieDb.ID = dRow(0).Item(0)
             tmpMovieDb.IsMark = dRow(0).Item(11)
             tmpMovieDb.IsLock = dRow(0).Item(14)
-            tmpMovieDb.Movie = tmpMovie
 
             Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode)
 
