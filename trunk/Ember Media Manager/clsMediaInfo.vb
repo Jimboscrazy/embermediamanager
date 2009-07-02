@@ -117,6 +117,7 @@ Public Class MediaInfo
             Dim AudioStreams As Integer = Me.Count_Get(StreamKind.Audio)
             Dim miAudio As New Audio
             Dim aCodec As String = String.Empty
+            Dim aLang As String = String.Empty
             For a As Integer = 0 To AudioStreams - 1
                 miAudio = New Audio
                 miAudio.CodecID = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"))
@@ -126,8 +127,9 @@ Public Class MediaInfo
                 End If
                 miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format"))
                 miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
-                miAudio.LongLanguage = Me.Get_(StreamKind.Audio, a, "Language/String")
-                If Not String.IsNullOrEmpty(miAudio.LongLanguage) Then
+                aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
+                If Not String.IsNullOrEmpty(aLang) Then
+                    miAudio.LongLanguage = aLang
                     miAudio.Language = ConvertL(miAudio.LongLanguage)
                 End If
                 With miAudio
@@ -139,10 +141,12 @@ Public Class MediaInfo
 
             Dim SubtitleStreams As Integer = Me.Count_Get(StreamKind.Text)
             Dim miSubtitle As Subtitle
+            Dim sLang As String = String.Empty
             For s As Integer = 0 To SubtitleStreams - 1
                 miSubtitle = New MediaInfo.Subtitle
-                miSubtitle.LongLanguage = Me.Get_(StreamKind.Text, s, "Language/String")
-                If Not String.IsNullOrEmpty(miSubtitle.LongLanguage) Then
+                sLang = Me.Get_(StreamKind.Text, s, "Language/String")
+                If Not String.IsNullOrEmpty(sLang) Then
+                    miSubtitle.LongLanguage = sLang
                     miSubtitle.Language = ConvertL(miSubtitle.LongLanguage)
                 End If
                 If Not String.IsNullOrEmpty(miSubtitle.Language) Then

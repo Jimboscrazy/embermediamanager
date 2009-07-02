@@ -54,7 +54,6 @@ Public Class frmMain
     Private MainFanart As New Images
     Private pbGenre() As PictureBox = Nothing
     Private pnlGenre() As Panel = Nothing
-    Private firsttime As Boolean = False
     Private tmpTitle As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
     Private IMDB As New IMDB.Scraper
@@ -966,7 +965,7 @@ Public Class frmMain
         End Using
     End Sub
 
-    Private Sub chkFilterNew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterNew.CheckedChanged
+    Private Sub chkFilterNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNew.Click
         Try
             Me.chkFilterDupe.Enabled = Not Me.chkFilterNew.Checked
             If Me.chkFilterNew.Checked Then
@@ -980,7 +979,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub chkFilterMark_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark.CheckedChanged
+    Private Sub chkFilterMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark.Click
         Try
             Me.chkFilterDupe.Enabled = Not Me.chkFilterMark.Checked
             If Me.chkFilterMark.Checked Then
@@ -994,15 +993,15 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub rbFilterAnd_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd.CheckedChanged
+    Private Sub rbFilterAnd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd.Click
         If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
     End Sub
 
-    Private Sub rbFilterOr_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.CheckedChanged
+    Private Sub rbFilterOr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.Click
         If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
     End Sub
 
-    Private Sub chkFilterDupe_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.CheckedChanged
+    Private Sub chkFilterDupe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.Click
         Me.chkFilterMark.Enabled = Not chkFilterDupe.Checked
         Me.chkFilterNew.Enabled = Not chkFilterDupe.Checked
         Me.rbFilterAnd.Enabled = Not chkFilterDupe.Checked
@@ -1011,7 +1010,9 @@ Public Class frmMain
         If Me.chkFilterDupe.Checked Then
             Me.chkFilterMark.Checked = False
             Me.chkFilterNew.Checked = False
+            RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
             Me.cbFilterSource.Text = "All"
+            AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
         End If
         Me.RunFilter()
     End Sub
@@ -1537,7 +1538,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterSource.SelectedIndexChanged
+    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwValidateNfo.IsBusy
                 Application.DoEvents()
@@ -1917,7 +1918,7 @@ Public Class frmMain
 
         Try
             Me.UpdateMediaInfo(Args.Movie)
-            Master.SaveMovieToNFO(Args.Movie)
+            Master.DB.SaveMovieToDB(Args.Movie, False, False, True)
 
             If Me.bwMediaInfo.CancellationPending Then
                 e.Cancel = True
@@ -2885,7 +2886,7 @@ doCancel:
 
     End Sub
 
-    Public Sub ClearInfo(Optional ByVal displayOnly As Boolean = False)
+    Public Sub ClearInfo()
 
         '//
         ' Reset all info fields
@@ -3282,7 +3283,7 @@ doCancel:
                         End If
                     End If
                 Case Master.ScrapeType.SingleScrape
-                    Me.ClearInfo(True)
+                    Me.ClearInfo()
                     Me.tslStatus.Text = String.Format("Re-scraping {0}", Master.currMovie.Movie.Title)
                     Me.tslLoading.Text = "Scraping:"
                     Me.tspbLoading.Maximum = 13
@@ -3348,7 +3349,7 @@ doCancel:
                             Using dSearch As New dlgIMDBSearchResults
                                 If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
                                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
-                                        Me.ClearInfo(True)
+                                        Me.ClearInfo()
                                         Me.tslStatus.Text = String.Format("Scraping {0}", Master.tmpMovie.Title)
                                         Me.tslLoading.Text = "Scraping:"
                                         Me.tspbLoading.Maximum = 13
@@ -3635,6 +3636,7 @@ doCancel:
 
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then
+                RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
                 cbFilterSource.Items.Clear()
                 cbFilterSource.Items.Add("All")
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -3646,6 +3648,7 @@ doCancel:
                     End Using
                 End Using
                 cbFilterSource.Text = "All"
+                AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
             End If
         End With
     End Sub
@@ -3746,7 +3749,10 @@ doCancel:
         Me.rbFilterAnd.Enabled = True
         Me.rbFilterAnd.Checked = True
         Me.cbFilterSource.Enabled = True
+        RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
         Me.cbFilterSource.Text = "All"
+        AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+
     End Sub
 
     Private Sub RunFilter()
@@ -3831,11 +3837,9 @@ doCancel:
             Application.DoEvents()
 
             If DupesOnly Then
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title")
-                'sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies GROUP BY imdb HAVING ( COUNT(imdb) > 1 ))  ORDER BY title", Master.SQLcn)
+                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY title")
             Else
                 Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies ORDER BY title")
-                'sqlDA = New SQLite.SQLiteDataAdapter("SELECT * FROM movies ORDER BY title", Master.SQLcn)
             End If
 
             If isCL Then
