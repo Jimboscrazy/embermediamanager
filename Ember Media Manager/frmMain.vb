@@ -1746,7 +1746,7 @@ Public Class frmMain
             Dim dtMediaList As New DataTable
             Dim MLFind As New MovieListFind
             Dim MLFound As New Master.FileAndSource
-            Master.DB.FillDataTable(dtMediaList, "SELECT MoviePath, Id FROM movies ORDER BY title;")
+            Master.DB.FillDataTable(dtMediaList, "SELECT MoviePath, Id FROM movies;", "title")
             If dtMediaList.Rows.Count > 0 Then
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -1866,12 +1866,12 @@ Public Class frmMain
 
                             If sFile.UseFolder Then
                                 If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                    tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name
+                                    tmpMovieDB.Movie.Title = Master.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
                                 Else
-                                    tmpMovieDB.Movie.Title = Directory.GetParent(sFile.Filename).Name
+                                    tmpMovieDB.Movie.Title = Master.FilterName(Directory.GetParent(sFile.Filename).Name)
                                 End If
                             Else
-                                tmpMovieDB.Movie.Title = Path.GetFileNameWithoutExtension(sFile.Filename)
+                                tmpMovieDB.Movie.Title = Master.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
                             End If
                         End If
                         Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.Movie.Title)
@@ -3826,9 +3826,9 @@ doCancel:
             Application.DoEvents()
 
             If DupesOnly Then
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY title ASC")
+                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 ));", "title")
             Else
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies ORDER BY title ASC")
+                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies;", "title")
             End If
 
             If isCL Then
