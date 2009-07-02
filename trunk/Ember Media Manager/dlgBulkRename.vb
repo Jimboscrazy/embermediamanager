@@ -193,48 +193,49 @@ Public Class dlgBulkRenamer
     End Sub
     Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
         Try
-            If dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then ' Locked
-                Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
-                    e.CellBounds.Width - 4, e.CellBounds.Height - 4)
-                Dim backColorBrush As New SolidBrush(e.CellStyle.BackColor)
-                Dim gridBrush As New SolidBrush(Me.dgvMoviesList.GridColor)
-                Dim gridLinePen As New Pen(gridBrush)
-                Try
-                    ' Erase the cell.
-                    If e.State And DataGridViewElementStates.Selected Then
-                        e.Graphics.FillRectangle(New SolidBrush(e.CellStyle.SelectionBackColor), e.CellBounds)
-                    Else
-                        e.Graphics.FillRectangle(backColorBrush, e.CellBounds)
-                    End If
-                    ' Draw the grid lines (only the right and bottom lines;
-                    ' DataGridView takes care of the others).
-                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, _
-                        e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, _
-                        e.CellBounds.Bottom - 1)
-                    e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, _
-                        e.CellBounds.Top, e.CellBounds.Right - 1, _
-                        e.CellBounds.Bottom)
-                    ' Draw the inset highlight box.
-                    If Not IsNothing(e.Value) Then
-                        'Dim f As New Font(e.CellStyle.Font, FontStyle.Strikeout)
-                        e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
-                        Brushes.Gray, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
-                        StringFormat.GenericDefault)
-                        Dim pointS As New Point(e.CellBounds.Left, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
-                        Dim pointE As New Point(e.CellBounds.Right, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
-                        If e.ColumnIndex = 0 Then pointS.X += 4
-                        If e.ColumnIndex = 4 Then pointE.X -= 4
-                        e.Graphics.DrawLine(New Pen(Color.DarkGray), pointS, pointE)
-                        e.Handled = True
-                    End If
+            If dgvMoviesList.ColumnCount <= 5 Then
+                If dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then ' Locked
+                    Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
+                        e.CellBounds.Width - 4, e.CellBounds.Height - 4)
+                    Dim backColorBrush As New SolidBrush(e.CellStyle.BackColor)
+                    Dim gridBrush As New SolidBrush(Me.dgvMoviesList.GridColor)
+                    Dim gridLinePen As New Pen(gridBrush)
+                    Try
+                        ' Erase the cell.
+                        If e.State And DataGridViewElementStates.Selected Then
+                            e.Graphics.FillRectangle(New SolidBrush(e.CellStyle.SelectionBackColor), e.CellBounds)
+                        Else
+                            e.Graphics.FillRectangle(backColorBrush, e.CellBounds)
+                        End If
+                        ' Draw the grid lines (only the right and bottom lines;
+                        ' DataGridView takes care of the others).
+                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, _
+                            e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, _
+                            e.CellBounds.Bottom - 1)
+                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, _
+                            e.CellBounds.Top, e.CellBounds.Right - 1, _
+                            e.CellBounds.Bottom)
+                        ' Draw the inset highlight box.
+                        If Not IsNothing(e.Value) Then
+                            'Dim f As New Font(e.CellStyle.Font, FontStyle.Strikeout)
+                            e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
+                            Brushes.Gray, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
+                            StringFormat.GenericDefault)
+                            Dim pointS As New Point(e.CellBounds.Left, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
+                            Dim pointE As New Point(e.CellBounds.Right, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
+                            If e.ColumnIndex = 0 Then pointS.X += 4
+                            If e.ColumnIndex = 4 Then pointE.X -= 4
+                            e.Graphics.DrawLine(New Pen(Color.DarkGray), pointS, pointE)
+                            e.Handled = True
+                        End If
 
-                Finally
-                    gridLinePen.Dispose()
-                    gridBrush.Dispose()
-                    backColorBrush.Dispose()
-                End Try
+                    Finally
+                        gridLinePen.Dispose()
+                        gridBrush.Dispose()
+                        backColorBrush.Dispose()
+                    End Try
+                End If
             End If
-
             If ((e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then
                 If Not IsNothing(e.Value) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value = e.Value Then
                     Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
