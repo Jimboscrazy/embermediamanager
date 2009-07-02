@@ -258,6 +258,7 @@ Partial Class dlgSettings
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
         Me.pnlSources = New System.Windows.Forms.Panel
+        Me.btnEditSource = New System.Windows.Forms.Button
         Me.GroupBox19 = New System.Windows.Forms.GroupBox
         Me.chkSkipStackedSizeCheck = New System.Windows.Forms.CheckBox
         Me.Label21 = New System.Windows.Forms.Label
@@ -2708,6 +2709,7 @@ Partial Class dlgSettings
         '
         Me.pnlSources.BackColor = System.Drawing.Color.White
         Me.pnlSources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlSources.Controls.Add(Me.btnEditSource)
         Me.pnlSources.Controls.Add(Me.GroupBox19)
         Me.pnlSources.Controls.Add(Me.GroupBox16)
         Me.pnlSources.Controls.Add(Me.lvMovies)
@@ -2719,6 +2721,18 @@ Partial Class dlgSettings
         Me.pnlSources.Size = New System.Drawing.Size(597, 353)
         Me.pnlSources.TabIndex = 67
         Me.pnlSources.Visible = False
+        '
+        'btnEditSource
+        '
+        Me.btnEditSource.Image = CType(resources.GetObject("btnEditSource.Image"), System.Drawing.Image)
+        Me.btnEditSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditSource.Location = New System.Drawing.Point(481, 35)
+        Me.btnEditSource.Name = "btnEditSource"
+        Me.btnEditSource.Size = New System.Drawing.Size(104, 23)
+        Me.btnEditSource.TabIndex = 69
+        Me.btnEditSource.Text = "Edit Source"
+        Me.btnEditSource.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditSource.UseVisualStyleBackColor = True
         '
         'GroupBox19
         '
@@ -3181,4 +3195,5 @@ Partial Class dlgSettings
     Friend WithEvents colSingle As System.Windows.Forms.ColumnHeader
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents btnEditSource As System.Windows.Forms.Button
 End Class
