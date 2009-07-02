@@ -402,6 +402,7 @@ Public Class frmMain
 
                 Master.CacheXMLs()
                 Me.SetColors()
+                Me.SetToolTips()
 
                 Me.aniType = Master.eSettings.InfoPanelState
                 Select Case Me.aniType
@@ -3867,36 +3868,43 @@ doCancel:
                         .dgvMediaList.Columns(3).ReadOnly = True
                         .dgvMediaList.Columns(3).MinimumWidth = 83
                         .dgvMediaList.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvMediaList.Columns(3).ToolTipText = "Title"
                         .dgvMediaList.Columns(4).Width = 20
                         .dgvMediaList.Columns(4).Resizable = True
                         .dgvMediaList.Columns(4).ReadOnly = True
                         .dgvMediaList.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
+                        .dgvMediaList.Columns(4).ToolTipText = "Poster"
                         .dgvMediaList.Columns(5).Width = 20
                         .dgvMediaList.Columns(5).Resizable = True
                         .dgvMediaList.Columns(5).ReadOnly = True
                         .dgvMediaList.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(5).Visible = Not Master.eSettings.MovieFanartCol
+                        .dgvMediaList.Columns(5).ToolTipText = "Fanart"
                         .dgvMediaList.Columns(6).Width = 20
                         .dgvMediaList.Columns(6).Resizable = True
                         .dgvMediaList.Columns(6).ReadOnly = True
                         .dgvMediaList.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
+                        .dgvMediaList.Columns(6).ToolTipText = "Nfo"
                         .dgvMediaList.Columns(7).Width = 20
                         .dgvMediaList.Columns(7).Resizable = True
                         .dgvMediaList.Columns(7).ReadOnly = True
                         .dgvMediaList.Columns(7).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
+                        .dgvMediaList.Columns(7).ToolTipText = "Trailer"
                         .dgvMediaList.Columns(8).Width = 20
                         .dgvMediaList.Columns(8).Resizable = True
                         .dgvMediaList.Columns(8).ReadOnly = True
                         .dgvMediaList.Columns(8).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(8).Visible = Not Master.eSettings.MovieSubCol
+                        .dgvMediaList.Columns(8).ToolTipText = "Subtitles"
                         .dgvMediaList.Columns(9).Width = 20
                         .dgvMediaList.Columns(9).Resizable = True
                         .dgvMediaList.Columns(9).ReadOnly = True
                         .dgvMediaList.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
+                        .dgvMediaList.Columns(9).ToolTipText = "Extrathumbs"
                         For i As Integer = 10 To .dgvMediaList.Columns.Count - 1
                             .dgvMediaList.Columns(i).Visible = False
                         Next
@@ -3984,6 +3992,22 @@ doCancel:
         End If
     End Sub
 
+    Private Sub SetToolTips()
+        Dim TT As ToolTip = New System.Windows.Forms.ToolTip(Me.components)
+        Me.tsbAutoPilot.ToolTipText = "Scrape/download data from the internet for multiple movies."
+        Me.tsbRefreshMedia.ToolTipText = "Scans sources for new content and cleans database."
+        Me.tsbUpdateXBMC.ToolTipText = "Sends a command to XBMC to begin its internal ""Update Library"" process."
+        TT.SetToolTip(Me.btnMarkAll, "Mark or Unmark all movies in the list.")
+        TT.SetToolTip(Me.txtSearch, "Search the movie titles by entering text here.")
+        TT.SetToolTip(Me.btnPlay, "Play the movie file with the system default media player.")
+        TT.SetToolTip(Me.btnMIRefresh, "Rescan and save the media info for the selected movie.")
+        TT.SetToolTip(Me.chkFilterDupe, "Display only movies that have duplicate IMDB IDs.")
+        TT.SetToolTip(Me.chkFilterNew, "Display only new movies.")
+        TT.SetToolTip(Me.chkFilterMark, "Display only marked movies.")
+        TT.SetToolTip(Me.cbFilterSource, "Display only movies from the selected source.")
+        TT.Active = True
+
+    End Sub
     Friend Class MovieListFind
 
         Private _searchstring As String = String.Empty
