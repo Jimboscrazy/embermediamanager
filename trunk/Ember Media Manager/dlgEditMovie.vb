@@ -463,7 +463,7 @@ Public Class dlgEditMovie
                         .bwThumbs.RunWorkerAsync()
                     End If
 
-                    Fanart.Load(Master.currMovie.FaS.Filename, Master.currMovie.FaS.isSingle, Master.ImageType.Fanart)
+                    Fanart.FromFile(Master.currMovie.FaS.Fanart)
                     If Not IsNothing(Fanart.Image) Then
                         .pbFanart.Image = Fanart.Image
 
@@ -471,7 +471,7 @@ Public Class dlgEditMovie
                         .lblFanartSize.Visible = True
                     End If
 
-                    Poster.Load(Master.currMovie.FaS.Filename, Master.currMovie.FaS.isSingle, Master.ImageType.Posters)
+                    Poster.FromFile(Master.currMovie.FaS.Poster)
                     If Not IsNothing(Poster.Image) Then
                         .pbPoster.Image = Poster.Image
 
