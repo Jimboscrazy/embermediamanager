@@ -1438,13 +1438,10 @@ Public Class frmMain
 
     Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
         If MsgBox(String.Concat("WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE(S) FROM THE HARD DRIVE", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
                 For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                     Master.DeleteFiles(False, sRow.Cells(1).Value, sRow.Cells(2).Value)
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE id = ", sRow.Cells(0).Value, ";")
-                        SQLcommand.ExecuteNonQuery()
-                    End Using
+                    Master.DB.DeleteFromDB(Convert.ToInt64(sRow.Cells(0).Value), True)
                 Next
                 SQLtransaction.Commit()
             End Using

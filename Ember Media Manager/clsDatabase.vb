@@ -747,5 +747,38 @@ Public Class Database
         End Try
         Return _movieDB
     End Function
+    Public Function DeleteFromDB(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = Master.DB.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE id = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+                Dim parId As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parId", DbType.UInt64, 0, "MovieID")
+                SQLcommand.CommandText = "DELETE FROM MoviesAStreams WHERE MovieID = (?);"
+                parId.Value = ID
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = "DELETE FROM MoviesVStreams WHERE MovieID = (?);"
+                parId.Value = ID
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = "DELETE FROM MoviesActors WHERE MovieID = (?);"
+                parId.Value = ID
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = "DELETE FROM MoviesSubs WHERE MovieID = (?);"
+                parId.Value = ID
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = "DELETE FROM MoviesPosters WHERE MovieID = (?);"
+                parId.Value = ID
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = "DELETE FROM MoviesFanart WHERE MovieID = (?);"
+                parId.Value = ID
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            If Not BatchMode Then SQLtransaction.Commit()
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
+    End Function
 
 End Class
