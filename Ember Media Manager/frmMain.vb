@@ -2163,7 +2163,6 @@ Public Class frmMain
         Dim doSave As Boolean = False
         Dim pPath As String = String.Empty
         Dim fPath As String = String.Empty
-        Dim ID As Integer
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
 
@@ -2189,8 +2188,7 @@ Public Class frmMain
 
                                 doSave = False
 
-                                ID = drvRow.Item(0)
-                                scrapeMovie = Master.DB.LoadMovieFromDB(ID)
+                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(drvRow.Item(0)))
 
                                 If Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.NFO Then
                                     If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
@@ -2324,8 +2322,7 @@ Public Class frmMain
 
                                     doSave = False
 
-                                    ID = drvRow.Item(0)
-                                    scrapeMovie = Master.DB.LoadMovieFromDB(ID)
+                                    scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(drvRow.Item(0)))
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
 
@@ -2449,8 +2446,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                                ID = drvRow.Item(0)
-                                If Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2)) Then Me.RefreshMovie(ID, True, False)
+                                If Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2)) Then Me.RefreshMovie(Convert.ToInt32(drvRow.Item(0)), True, False)
                             Next
 
                         Case Master.ScrapeType.CopyBD
@@ -2489,8 +2485,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                                ID = drvRow.Item(0)
-                                scrapeMovie = Master.DB.LoadMovieFromDB(ID)
+                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(drvRow.Item(0)))
 
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Studio) AndAlso scrapeMovie.Movie.Studio.Contains(" / ") Then
                                     scrapeMovie.Movie.Studio = Strings.Trim(Strings.Left(scrapeMovie.Movie.Studio, Strings.InStr(scrapeMovie.Movie.Studio, " / ") - 1))
@@ -3951,8 +3946,7 @@ doCancel:
             If Not Me.dgvMediaList.Item(4, iRow).Value AndAlso Not Me.dgvMediaList.Item(5, iRow).Value AndAlso Not Me.dgvMediaList.Item(6, iRow).Value Then
                 Me.ClearInfo()
                 Me.pnlNoInfo.Visible = True
-                Dim ID As Integer = Me.dgvMediaList.Item(0, iRow).Value
-                Master.currMovie = Master.DB.LoadMovieFromDB(ID)
+                Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(Me.dgvMediaList.Item(0, iRow).Value))
                 Me.tslStatus.Text = Master.currMovie.FaS.Filename
                 Me.mnuMediaList.Enabled = True
             Else
