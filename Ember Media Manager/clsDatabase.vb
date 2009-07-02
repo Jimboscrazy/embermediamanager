@@ -34,13 +34,11 @@ Public Class Database
         Return SQLcn.BeginTransaction
     End Function
 
-    Public Sub FillDataTable(ByRef dTable As DataTable, ByVal Command As String, ByVal SortColumn As String)
+    Public Sub FillDataTable(ByRef dTable As DataTable, ByVal Command As String)
         dTable.Clear()
         Dim sqlDA As New SQLite.SQLiteDataAdapter(Command, SQLcn)
         Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
         sqlDA.Fill(dTable)
-
-        If dTable.Columns.Contains(SortColumn) Then dTable.DefaultView.Sort = String.Format("{0} ASC", SortColumn)
     End Sub
 
     Public Sub Close()
@@ -82,7 +80,7 @@ Public Class Database
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                                 "MoviePath TEXT NOT NULL, " & _
                                 "Type BOOL NOT NULL DEFAULT False , " & _
-                                "Title TEXT NOT NULL, " & _
+                                "ListTitle TEXT NOT NULL, " & _
                                 "HasPoster BOOL NOT NULL DEFAULT False, " & _
                                 "HasFanart BOOL NOT NULL DEFAULT False, " & _
                                 "HasNfo BOOL NOT NULL DEFAULT False, " & _
@@ -94,6 +92,7 @@ Public Class Database
                                 "Source TEXT NOT NULL, " & _
                                 "Imdb TEXT, " & _
                                 "Lock BOOL NOT NULL DEFAULT False, " & _
+                                "Title TEXT, " & _
                                 "OriginalTitle TEXT, " & _
                                 "Year TEXT, " & _
                                 "Rating TEXT, " & _
@@ -243,6 +242,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
 
+                    If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle")
                     If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.FaS.Filename = SQLreader("MoviePath")
                     _movieDB.FaS.isSingle = SQLreader("type")
                     If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _movieDB.FaS.Fanart = SQLreader("FanartPath")
@@ -426,29 +426,29 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 If IsNew Then
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
-                        "MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
-                        "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
+                        "MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
+                        "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, FanartURL, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     'SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), HasPoster = (?), HasFanart = (?), HasNfo = (?), HasTrailer = (?), HasSub = (?), HasExtra = (?), ", _
                     '    "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
                     '    "Studio = (?), Runtime = (?), ReleaseDate = (?), Director = (?), Credits = (?), Playcount = (?), Watched = (?), File = (?), Path = (?), FileNameAndPath = (?), Status = (?), ", _
                     '    "Trailer = (?), PosterPath = (?), FanartPath = (?), NfoPath = (?), TrailerPath = (?), SubPath = (?) WHERE id = ", _movieDB.ID.ToString, ";")
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
-                        "ID, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
-                        "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
+                        "ID, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
+                        "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, FanartURL, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.String, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
 
                 Dim parMoviePath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMoviePath", DbType.String, 0, "MoviePath")
                 Dim parType As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parType", DbType.Boolean, 0, "type")
-                Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "title")
+                Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
                 Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
                 Dim parHasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasFanart", DbType.Boolean, 0, "HasFanart")
                 Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
@@ -461,6 +461,7 @@ Public Class Database
                 Dim parIMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parIMDB", DbType.String, 0, "imdb")
                 Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
 
+                Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "Title")
                 Dim parOriginalTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOriginalTitle", DbType.String, 0, "OriginalTitle")
                 Dim parYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parYear", DbType.String, 0, "Year")
                 Dim parRating As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRating", DbType.String, 0, "Rating")
@@ -498,7 +499,7 @@ Public Class Database
                 tmpMovie = _movieDB.Movie
                 parMoviePath.Value = _movieDB.FaS.Filename
                 parType.Value = _movieDB.FaS.isSingle
-                parTitle.Value = tmpMovie.Title
+                parListTitle.Value = _movieDB.ListTitle
 
                 parPosterPath.Value = _movieDB.FaS.Poster
                 parFanartPath.Value = _movieDB.FaS.Fanart
@@ -518,6 +519,7 @@ Public Class Database
                 parMark.Value = _movieDB.IsMark
                 parLock.Value = _movieDB.IsLock
 
+                parTitle.Value = tmpMovie.Title
                 parOriginalTitle.Value = tmpMovie.OriginalTitle
                 parYear.Value = tmpMovie.Year
                 parRating.Value = tmpMovie.Rating

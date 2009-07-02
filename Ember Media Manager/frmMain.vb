@@ -1746,7 +1746,7 @@ Public Class frmMain
             Dim dtMediaList As New DataTable
             Dim MLFind As New MovieListFind
             Dim MLFound As New Master.FileAndSource
-            Master.DB.FillDataTable(dtMediaList, "SELECT MoviePath, Id FROM movies;", "title")
+            Master.DB.FillDataTable(dtMediaList, "SELECT MoviePath, Id FROM movies ORDER BY ListTitle COLLATE NOCASE;")
             If dtMediaList.Rows.Count > 0 Then
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -1866,16 +1866,19 @@ Public Class frmMain
 
                             If sFile.UseFolder Then
                                 If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                    tmpMovieDB.Movie.Title = Master.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                    tmpMovieDB.ListTitle = Master.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
                                 Else
-                                    tmpMovieDB.Movie.Title = Master.FilterName(Directory.GetParent(sFile.Filename).Name)
+                                    tmpMovieDB.ListTitle = Master.FilterName(Directory.GetParent(sFile.Filename).Name)
                                 End If
                             Else
-                                tmpMovieDB.Movie.Title = Master.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                tmpMovieDB.ListTitle = Master.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
                             End If
+                        Else
+                            tmpMovieDB.ListTitle = tmpMovieDB.Movie.Title
                         End If
-                        Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.Movie.Title)
-                        If Not String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+
+                        Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
+                        If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
                             tmpMovieDB.FaS = sFile
                             'tmpMovieDB.Movie.FileNameAndPath
                             tmpMovieDB.IsNew = True
@@ -2226,8 +2229,9 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                     drvRow.Item(3) = scrapeMovie.Movie.Title
+                                    scrapeMovie.ListTitle = scrapeMovie.Movie.Title
                                 Else
-                                    scrapeMovie.Movie.Title = drvRow.Item(3)
+                                    scrapeMovie.ListTitle = drvRow.Item(3)
                                 End If
 
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
@@ -2358,8 +2362,9 @@ Public Class frmMain
 
                                         If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                             drvRow.Item(3) = scrapeMovie.Movie.Title
+                                            scrapeMovie.ListTitle = scrapeMovie.Movie.Title
                                         Else
-                                            scrapeMovie.Movie.Title = drvRow.Item(3)
+                                            scrapeMovie.ListTitle = drvRow.Item(3)
                                         End If
 
                                         drvRow.Item(6) = True
@@ -3496,9 +3501,10 @@ doCancel:
                 tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2)), dRow(0).Item(2))
 
                 If String.IsNullOrEmpty(tmpMovie.Title) Then
-                    tmpMovie.Title = dRow(0).Item(3)
+                    tmpMovieDb.ListTitle = dRow(0).Item(3)
                 Else
                     dRow(0).Item(3) = tmpMovie.Title
+                    tmpMovieDb.ListTitle = tmpMovie.Title
                 End If
 
                 tmpMovieDb.Movie = tmpMovie
@@ -3826,9 +3832,9 @@ doCancel:
             Application.DoEvents()
 
             If DupesOnly Then
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 ));", "title")
+                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
             Else
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies;", "title")
+                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies ORDER BY ListTitle COLLATE NOCASE;")
             End If
 
             If isCL Then
@@ -3837,8 +3843,8 @@ doCancel:
                 If Me.dtMedia.Rows.Count > 0 Then
 
                     With Me
-                        .bsMedia.DataSource = dtMedia
-                        .dgvMediaList.DataSource = bsMedia
+                        .bsMedia.DataSource = .dtMedia
+                        .dgvMediaList.DataSource = .bsMedia
 
                         'why did the resizable property all the sudden become opposite? resizable = false now means it IS resizable
                         'wasn't like that before and was reported (after release of v alpha 022, but no telling how long it's been
@@ -3937,10 +3943,10 @@ doCancel:
 
         Try
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT title, mark FROM movies WHERE id = ", iID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT ListTitle, mark FROM movies WHERE id = ", iID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Me.SetFilterColors()
-                    Me.dgvMediaList.Item(3, iRow).Value = SQLreader("title")
+                    Me.dgvMediaList.Item(3, iRow).Value = SQLreader("ListTitle")
                     Me.dgvMediaList.Item(11, iRow).Value = SQLreader("mark")
                 End Using
             End Using

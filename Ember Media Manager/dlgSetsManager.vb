@@ -155,12 +155,12 @@ Public Class dlgSetsManager
                 Using SQLcount As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Me.bwLoadMovies.ReportProgress(-1, SQLcount("mcount"))
                 End Using
-                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY title ASC;")
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY ListTitle ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             If bwLoadMovies.CancellationPending Then Return
-                            tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("ID")))
+                            tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("ID")))
                             If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                                 lMovies.Add(New Movies With {.DBMovie = tmpMovie})
                                 If tmpMovie.Movie.Sets.Count > 0 Then
