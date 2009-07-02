@@ -1054,12 +1054,12 @@ foundIT:
 
     End Function
 
-    Public Function IsAllowedToDownload(ByVal mMovie As Master.DBMovie, ByVal fType As Master.ImageType) As Boolean
+    Public Function IsAllowedToDownload(ByVal mMovie As Master.DBMovie, ByVal fType As Master.ImageType, Optional ByVal isChange As Boolean = False) As Boolean
 
         Try
             Select Case fType
                 Case Master.ImageType.Fanart
-                    If (String.IsNullOrEmpty(GetFanartPath(mMovie.FaS.Filename, mMovie.FaS.isSingle)) OrElse Master.eSettings.OverwriteFanart) AndAlso _
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.FaS.Fanart) OrElse Master.eSettings.OverwriteFanart)) AndAlso _
                     (Master.eSettings.MovieNameDotFanartJPG OrElse Master.eSettings.MovieNameFanartJPG OrElse Master.eSettings.FanartJPG) AndAlso _
                     Master.eSettings.UseTMDB Then
                         Return True
@@ -1067,7 +1067,7 @@ foundIT:
                         Return False
                     End If
                 Case Else
-                    If (String.IsNullOrEmpty(GetPosterPath(mMovie.FaS.Filename, mMovie.FaS.isSingle)) OrElse Master.eSettings.OverwritePoster) AndAlso _
+                    If (isChange OrElse (String.IsNullOrEmpty(mMovie.FaS.Poster) OrElse Master.eSettings.OverwritePoster)) AndAlso _
                     (Master.eSettings.MovieTBN OrElse Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieJPG OrElse _
                      Master.eSettings.MovieNameJPG OrElse Master.eSettings.PosterTBN OrElse Master.eSettings.PosterTBN) AndAlso _
                      (Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB OrElse Master.eSettings.UseTMDB) Then

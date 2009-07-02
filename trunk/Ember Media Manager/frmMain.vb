@@ -3460,7 +3460,7 @@ doCancel:
                 End If
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
-                    If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters) Then
+                    If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters, True) Then
                         Using dImgSelect As New dlgImgSelect
                             Dim pPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters)
                             If Not String.IsNullOrEmpty(pPath) Then
@@ -3468,7 +3468,7 @@ doCancel:
                             End If
                         End Using
                     End If
-                    If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart) Then
+                    If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart, True) Then
                         Using dImgSelect As New dlgImgSelect
                             Dim fPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Fanart)
                             If Not String.IsNullOrEmpty(fPath) Then
