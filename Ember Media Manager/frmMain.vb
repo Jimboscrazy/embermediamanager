@@ -2198,7 +2198,7 @@ Public Class frmMain
                                     If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Poster) Then
                                         pThumbs.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, True) Then
+                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
                                                     pPath = Poster.SaveAsPoster(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(pPath) Then
@@ -2220,7 +2220,7 @@ Public Class frmMain
                                                             End If
                                                         End If
                                                     End Using
-                                                    End If
+                                                End If
                                             End If
                                         End If
                                     End If
@@ -2229,8 +2229,7 @@ Public Class frmMain
                                     If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Fanart) Then
                                         fArt.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, True) Then
-
+                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Fanart.Image) Then
                                                     fPath = Fanart.SaveAsFanart(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(fPath) Then
@@ -2335,7 +2334,7 @@ Public Class frmMain
                                     If Not drvRow.Item(4) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Poster) Then
                                         pThumbs.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, True) Then
+                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
                                                     pPath = Poster.SaveAsPoster(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(pPath) Then
@@ -2366,7 +2365,7 @@ Public Class frmMain
                                     If Not drvRow.Item(5) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Fanart) Then
                                         fArt.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, True) Then
+                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
 
                                                 If Not IsNothing(Fanart.Image) Then
                                                     fPath = Fanart.SaveAsFanart(scrapeMovie)
