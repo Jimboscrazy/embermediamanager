@@ -983,7 +983,7 @@ Public Class dlgImgSelect
         Me.OK_Button.Enabled = True
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As String
 
         '//
         ' Overload to pass data

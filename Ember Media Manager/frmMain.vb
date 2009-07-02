@@ -3434,12 +3434,18 @@ doCancel:
                     Dim tmpImages As New Images
                     If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters) Then
                         Using dImgSelect As New dlgImgSelect
-                            dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters)
+                            Dim pPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters)
+                            If Not String.IsNullOrEmpty(pPath) Then
+                                Master.currMovie.FaS.Poster = pPath
+                            End If
                         End Using
                     End If
                     If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart) Then
                         Using dImgSelect As New dlgImgSelect
-                            dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Fanart)
+                            Dim fPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Fanart)
+                            If Not String.IsNullOrEmpty(fPath) Then
+                                Master.currMovie.FaS.Fanart = fPath
+                            End If
                         End Using
                     End If
                     tmpImages.Dispose()
