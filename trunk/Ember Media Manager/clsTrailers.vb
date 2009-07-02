@@ -187,29 +187,31 @@ Public Class Trailers
 
     Public Function DownloadSingleTrailer(ByVal sPath As String, ByVal ImdbID As String, ByVal isSingle As Boolean, ByVal currNfoTrailer As String) As String
         Dim tURL As String = String.Empty
+        Try
+            Me._TrailerList.Clear()
 
-        Me._TrailerList.Clear()
+            If Not Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, currNfoTrailer, True) Then
+                Me.GetTrailers(ImdbID, True)
 
-        If Not Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, True, currNfoTrailer) Then
-            Me.GetTrailers(ImdbID, True)
-
-            If Me._TrailerList.Count > 0 Then
-                tURL = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False)
-                If Not String.IsNullOrEmpty(tURL) Then
-                    'delete any other trailer if enabled in settings and download successful
-                    If Master.eSettings.DeleteAllTrailers Then
-                        Me.DeleteTrailers(sPath, tURL)
+                If Me._TrailerList.Count > 0 Then
+                    tURL = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False)
+                    If Not String.IsNullOrEmpty(tURL) Then
+                        'delete any other trailer if enabled in settings and download successful
+                        If Master.eSettings.DeleteAllTrailers Then
+                            Me.DeleteTrailers(sPath, tURL)
+                        End If
                     End If
                 End If
-            End If
-        ElseIf Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, False, currNfoTrailer) Then
-            Me.GetTrailers(ImdbID, True)
+            ElseIf Master.eSettings.UpdaterTrailersNoDownload AndAlso IsAllowedToDownload(sPath, isSingle, currNfoTrailer, False) Then
+                Me.GetTrailers(ImdbID, True)
 
-            If Me._TrailerList.Count > 0 Then
-                tURL = Me._TrailerList.Item(0)
+                If Me._TrailerList.Count > 0 Then
+                    tURL = Me._TrailerList.Item(0)
+                End If
             End If
-        End If
-
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return tURL
     End Function
 
