@@ -430,7 +430,10 @@ Public Class Database
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, FanartURL, NeedsSave", _
                         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
-
+                    'SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), HasPoster = (?), HasFanart = (?), HasNfo = (?), HasTrailer = (?), HasSub = (?), HasExtra = (?), ", _
+                    '    "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
+                    '    "Studio = (?), Runtime = (?), ReleaseDate = (?), Director = (?), Credits = (?), Playcount = (?), Watched = (?), File = (?), Path = (?), FileNameAndPath = (?), Status = (?), ", _
+                    '    "Trailer = (?), PosterPath = (?), FanartPath = (?), NfoPath = (?), TrailerPath = (?), SubPath = (?) WHERE id = ", _movieDB.ID.ToString, ";")
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "ID, MoviePath, type, title, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
@@ -560,6 +563,28 @@ Public Class Database
                 End If
 
                 If Not _movieDB.ID = -1 Then
+                    Using SQLOthercommands As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        Dim parId As SQLite.SQLiteParameter = SQLOthercommands.Parameters.Add("parId", DbType.UInt64, 0, "MovieID")
+                        SQLOthercommands.CommandText = "DELETE FROM MoviesAStreams WHERE MovieID = (?);"
+                        parId.Value = _movieDB.ID
+                        SQLOthercommands.ExecuteNonQuery()
+                        SQLOthercommands.CommandText = "DELETE FROM MoviesVStreams WHERE MovieID = (?);"
+                        parId.Value = _movieDB.ID
+                        SQLOthercommands.ExecuteNonQuery()
+                        SQLOthercommands.CommandText = "DELETE FROM MoviesActors WHERE MovieID = (?);"
+                        parId.Value = _movieDB.ID
+                        SQLOthercommands.ExecuteNonQuery()
+                        SQLOthercommands.CommandText = "DELETE FROM MoviesSubs WHERE MovieID = (?);"
+                        parId.Value = _movieDB.ID
+                        SQLOthercommands.ExecuteNonQuery()
+                        SQLOthercommands.CommandText = "DELETE FROM MoviesPosters WHERE MovieID = (?);"
+                        parId.Value = _movieDB.ID
+                        SQLOthercommands.ExecuteNonQuery()
+                        SQLOthercommands.CommandText = "DELETE FROM MoviesFanart WHERE MovieID = (?);"
+                        parId.Value = _movieDB.ID
+                        SQLOthercommands.ExecuteNonQuery()
+                    End Using
+
                     Using SQLcommandActor As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?)")
                         Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
