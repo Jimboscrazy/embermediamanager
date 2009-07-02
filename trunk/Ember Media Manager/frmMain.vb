@@ -40,7 +40,6 @@ Public Class frmMain
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwScraper As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwValidateNfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
 
     Friend WithEvents bsMedia As New BindingSource
@@ -141,7 +140,6 @@ Public Class frmMain
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
             If Me.bwPrelim.IsBusy Then Me.bwPrelim.CancelAsync()
             If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
-            If Me.bwValidateNfo.IsBusy Then Me.bwValidateNfo.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
 
             lblCanceling.Text = "Canceling All Processes..."
@@ -150,7 +148,7 @@ Public Class frmMain
             pbCanceling.Visible = True
             pnlCancel.Visible = True
 
-            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwValidateNfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
                 Application.DoEvents()
             Loop
 
@@ -223,13 +221,13 @@ Public Class frmMain
 
                     If dResult = Windows.Forms.DialogResult.Retry Then
                         If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
-                            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwValidateNfo.IsBusy
+                            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
                                 Application.DoEvents()
                             Loop
                             Me.LoadMedia(1)
                         End If
                     Else
-                        If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwScraper.IsBusy AndAlso Not Me.bwValidateNfo.IsBusy Then
+                        If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy Then
                             Me.FillList(0)
                         End If
                     End If
@@ -646,8 +644,7 @@ Public Class frmMain
         Try
 
             If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse _
-            Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse _
-            Me.bwValidateNfo.IsBusy Then Return
+            Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
@@ -1043,11 +1040,22 @@ Public Class frmMain
                     parID.Value = sRow.Cells(0).Value
                     SQLcommand.ExecuteNonQuery()
                     sRow.Cells(11).Value = parMark.Value
-                    Me.btnMarkAll.Text = If(parMark.Value, "Unmark All", Me.btnMarkAll.Text)
                 Next
             End Using
             SQLtransaction.Commit()
         End Using
+
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
+            Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                If SQLcount("mcount") > 0 Then
+                    Me.btnMarkAll.Text = "Unmark All"
+                Else
+                    Me.btnMarkAll.Text = "Mark All"
+                End If
+            End Using
+        End Using
+
         Me.SetFilterColors()
     End Sub
 
@@ -1414,10 +1422,9 @@ Public Class frmMain
         pbCanceling.Visible = True
 
         If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
-        If Me.bwValidateNfo.IsBusy Then Me.bwValidateNfo.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
 
-        Do While Me.bwScraper.IsBusy OrElse Me.bwValidateNfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+        Do While Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
             Application.DoEvents()
         Loop
     End Sub
@@ -1543,7 +1550,7 @@ Public Class frmMain
 
     Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
-            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwValidateNfo.IsBusy
+            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
                 Application.DoEvents()
             Loop
 
@@ -1849,9 +1856,12 @@ Public Class frmMain
                         Return
                     End If
                     If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
-                        tmpMovieDB.Movie = Master.LoadMovieFromNFO(Master.GetNfoPath(sFile.Filename, sFile.isSingle))
+                        tmpMovieDB.Movie = Master.LoadMovieFromNFO(sFile.Nfo)
 
                         If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                            'no title so assume it's an invalid nfo, clear nfo path if exists
+                            sFile.Nfo = String.Empty
+
                             If sFile.UseFolder Then
                                 If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
                                     tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name
@@ -2567,73 +2577,6 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub bwValidateNfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwValidateNfo.DoWork
-
-        '//
-        ' Thread to check each nfo to make sure it is valid
-        '\\
-
-        Dim nfoPath As String = String.Empty
-        Dim Args As Arguments = e.Argument
-
-        If Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.NFO Then
-            For i As Integer = 0 To Me.dtMedia.Rows.Count - 1
-                If bwValidateNfo.CancellationPending Then
-                    e.Cancel = True
-                    Return
-                End If
-
-                nfoPath = Master.GetNfoPath(Me.dtMedia.Rows(i).Item(1), Me.dtMedia.Rows(i).Item(2))
-                Me.bwValidateNfo.ReportProgress(i, nfoPath)
-                If Not Master.IsConformingNfo(nfoPath) Then
-                    Me.dtMedia.Rows(i).Item(6) = False
-                End If
-            Next
-        End If
-
-        If bwValidateNfo.CancellationPending Then
-            e.Cancel = True
-            Return
-        End If
-
-        e.Result = New Results With {.scrapeType = Args.scrapeType, .scrapeMod = Args.scrapeMod, .Options = Args.Options}
-
-    End Sub
-
-    Private Sub bwValidateNfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwValidateNfo.ProgressChanged
-        Me.tslStatus.Text = e.UserState.ToString
-        Me.tspbLoading.Value = e.ProgressPercentage
-    End Sub
-
-    Private Sub bwValidateNfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwValidateNfo.RunWorkerCompleted
-
-        '//
-        ' Thread finished: start scraping
-        '\\
-
-        Dim Res As Results = e.Result
-
-        If Not bwScraper.CancellationPending AndAlso Not e.Cancelled Then
-            Me.tspbLoading.Value = 0
-            Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
-            If Res.scrapeType = Master.ScrapeType.UpdateAuto Then
-                Me.tslLoading.Text = "Updating Media (Movies Missing Items - Auto):"
-            Else
-                Me.tslLoading.Text = "Updating Media (Movies Missing Items - Ask):"
-            End If
-            Me.tslLoading.Visible = True
-            Me.tspbLoading.Visible = True
-
-            If Not bwScraper.IsBusy Then
-                bwScraper.WorkerSupportsCancellation = True
-                bwScraper.WorkerReportsProgress = True
-                bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = Res.scrapeType, .scrapeMod = Res.scrapeMod, .Options = Res.Options})
-            End If
-        Else
-            pnlCancel.Visible = False
-        End If
-    End Sub
-
     Private Sub bwRefreshMovies_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRefreshMovies.DoWork
         Dim iCount As Integer = 0
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
@@ -3240,6 +3183,10 @@ doCancel:
                             Me.tslLoading.Text = "Copying Fanart to Backdrops Folder:"
                         Case Master.ScrapeType.RevertStudios
                             Me.tslLoading.Text = "Reverting Media Info Studio Tags:"
+                        Case Master.ScrapeType.UpdateAuto
+                            Me.tslLoading.Text = "Updating Media (Movies Missing Items - Auto):"
+                        Case Master.ScrapeType.UpdateAsk
+                            Me.tslLoading.Text = "Updating Media (Movies Missing Items - Ask):"
                     End Select
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
@@ -3248,19 +3195,6 @@ doCancel:
                         bwScraper.WorkerReportsProgress = True
                         bwScraper.WorkerSupportsCancellation = True
                         bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod, .Options = Options})
-                    End If
-
-                Case Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
-
-                    Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
-                    Me.tslLoading.Text = "Checking for valid NFO:"
-                    Me.tslLoading.Visible = True
-                    Me.tspbLoading.Visible = True
-
-                    If Not bwValidateNfo.IsBusy Then
-                        bwValidateNfo.WorkerSupportsCancellation = True
-                        bwValidateNfo.WorkerReportsProgress = True
-                        bwValidateNfo.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod, .Options = Options})
                     End If
 
                 Case Master.ScrapeType.NewAsk, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAsk, Master.ScrapeType.MarkAuto
