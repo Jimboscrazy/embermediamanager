@@ -56,14 +56,14 @@ Public Class dlgExportMovies
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY title ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY ListTitle ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             _ID = SQLreader("ID")
                             _tmpMovie = Master.DB.LoadMovieFromDB(_ID)
                             _movies.Add(_tmpMovie)
-                            Me.bwLoadInfo.ReportProgress(iProg, _tmpMovie.Movie.Title) '  show File
+                            Me.bwLoadInfo.ReportProgress(iProg, _tmpMovie.ListTitle) '  show File
                             iProg += 1
                             If bwLoadInfo.CancellationPending Then
                                 e.Cancel = True

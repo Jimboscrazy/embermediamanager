@@ -75,7 +75,7 @@ Public Class dlgBulkRenamer
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT Title, Year, MoviePath, type , lock, NfoPath FROM movies ORDER BY title ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT ListTitle, Year, MoviePath, type , lock, NfoPath FROM movies ORDER BY ListTitle ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
@@ -83,7 +83,7 @@ Public Class dlgBulkRenamer
                             If Not String.IsNullOrEmpty(_tmpPath) Then
                                 MovieFile = New FileFolderRenamer.FileRename
                                 '_tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
-                                MovieFile.Title = SQLreader("Title").ToString '_tmpMovie.Title
+                                MovieFile.Title = SQLreader("ListTitle").ToString '_tmpMovie.Title
                                 MovieFile.Year = SQLreader("Year").ToString '_tmpMovie.Year
                                 MovieFile.IsLocked = SQLreader("lock")
                                 'If Not IsNothing(_tmpMovie.FileInfo) Then
@@ -103,7 +103,7 @@ Public Class dlgBulkRenamer
 
                                 FFRenamer.AddMovie(MovieFile)
                             End If
-                            Me.bwLoadInfo.ReportProgress(iProg, SQLreader("Title").ToString) '_tmpMovie.Title)
+                            Me.bwLoadInfo.ReportProgress(iProg, SQLreader("ListTitle").ToString) '_tmpMovie.Title)
                             iProg += 1
 
                             If bwLoadInfo.CancellationPending Then

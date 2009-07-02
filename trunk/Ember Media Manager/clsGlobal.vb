@@ -103,6 +103,7 @@ Public Class Master
 
     Public Structure DBMovie
         Dim ID As Integer
+        Dim ListTitle As String
         Dim Movie As Media.Movie
         Dim FaS As FileAndSource
         Dim IsNew As Boolean
