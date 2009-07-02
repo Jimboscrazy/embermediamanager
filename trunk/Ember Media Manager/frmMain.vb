@@ -2037,10 +2037,27 @@ Public Class frmMain
 
             Dim Args As Arguments = e.Argument
             Me.MainFanart.Clear()
-
             Me.MainPoster.Clear()
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
             Master.currMovie = Master.DB.LoadMovieFromDB(Args.ID)
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
             If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(Master.currMovie.FaS.Fanart)
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currMovie.FaS.Poster)
             'read nfo if it's there
 
@@ -2218,6 +2235,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Poster) Then
                                         pThumbs.Clear()
+                                        Poster.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
                                             If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
@@ -2249,6 +2267,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Fanart) Then
                                         fArt.Clear()
+                                        Fanart.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
                                             If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Fanart.Image) Then
@@ -2350,6 +2369,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not drvRow.Item(4) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Poster) Then
                                         pThumbs.Clear()
+                                        Poster.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
                                             If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
@@ -2381,6 +2401,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not drvRow.Item(5) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Fanart) Then
                                         fArt.Clear()
+                                        Fanart.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
                                             If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
 
