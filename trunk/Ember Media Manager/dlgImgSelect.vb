@@ -128,6 +128,7 @@ Public Class dlgImgSelect
                 If Not IsNothing(Me.tmpImage.Image) Then
                     If isEdit Then
                         Me.tmpImage.Save(tmpPathPlus, 100)
+                        OutPath = tmpPathPlus
                     Else
                         If Me.DLType = Master.ImageType.Fanart Then
                             OutPath = Me.tmpImage.SaveAsFanart(Me.tMovie)
