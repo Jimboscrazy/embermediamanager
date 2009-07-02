@@ -2429,7 +2429,7 @@ Public Class frmMain
                         Case Master.ScrapeType.CleanFolders
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(3))
                                 iCount += 1
 
                                 If drvRow.Item(14) Then Continue For
@@ -2524,42 +2524,39 @@ doCancel:
         ' Thread finished: re-fill media list and load info for first item
         '\\
 
-        If isCL Then
-            Me.ScraperDone = True
-        Else
-            Me.pnlCancel.Visible = False
+        Try
+            If isCL Then
+                Me.ScraperDone = True
+            Else
+                Me.pnlCancel.Visible = False
 
-            Select Case e.Result
-                Case Master.ScrapeType.CleanFolders
-                    'only rescan media if expert cleaner and videos are not whitelisted 
-                    'since the db is updated during cleaner now.
-                    If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then Me.LoadMedia(1)
-                Case Else
+                Select Case e.Result
+                    Case Master.ScrapeType.CleanFolders
+                        'only rescan media if expert cleaner and videos are not whitelisted 
+                        'since the db is updated during cleaner now.
+                        If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then Me.LoadMedia(1)
+                    Case Else
 
-                    Try
                         If Me.dgvMediaList.SelectedRows.Count > 0 Then
                             Me.FillList(Me.dgvMediaList.SelectedRows(0).Index)
                         Else
                             Me.FillList(0)
                         End If
+                End Select
+            End If
+            Me.tslLoading.Visible = False
+            Me.tspbLoading.Visible = False
+            Me.tslStatus.Text = String.Empty
 
-                    Catch ex As Exception
-                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                    End Try
-
-                    Me.tslLoading.Visible = False
-                    Me.tspbLoading.Visible = False
-                    Me.tslStatus.Text = String.Empty
-
-                    Me.ToolsToolStripMenuItem.Enabled = True
-                    Me.tsbAutoPilot.Enabled = True
-                    Me.tsbRefreshMedia.Enabled = True
-                    Me.mnuMediaList.Enabled = True
-                    Me.tabsMain.Enabled = True
-                    Me.EnableFilters(True)
-            End Select
-        End If
-
+            Me.ToolsToolStripMenuItem.Enabled = True
+            Me.tsbAutoPilot.Enabled = True
+            Me.tsbRefreshMedia.Enabled = True
+            Me.mnuMediaList.Enabled = True
+            Me.tabsMain.Enabled = True
+            Me.EnableFilters(True)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub bwValidateNfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwValidateNfo.DoWork
