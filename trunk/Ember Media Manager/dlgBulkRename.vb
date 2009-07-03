@@ -79,7 +79,7 @@ Public Class dlgBulkRenamer
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT ListTitle, Year, MoviePath, type , lock, NfoPath FROM movies ORDER BY ListTitle ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT ListTitle, Year, MoviePath, type , lock, NfoPath ,id FROM movies ORDER BY ListTitle ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
@@ -87,6 +87,7 @@ Public Class dlgBulkRenamer
                             If Not String.IsNullOrEmpty(_tmpPath) Then
                                 MovieFile = New FileFolderRenamer.FileRename
                                 '_tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
+                                MovieFile.ID = SQLreader("id")
                                 MovieFile.Title = SQLreader("ListTitle").ToString '_tmpMovie.Title
                                 MovieFile.Year = SQLreader("Year").ToString '_tmpMovie.Year
                                 MovieFile.IsLocked = SQLreader("lock")
@@ -359,6 +360,7 @@ Public Class dlgBulkRenamer
     End Sub
     Private Sub bwbwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
         pnlCancel.Visible = False
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
