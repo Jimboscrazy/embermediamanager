@@ -3752,6 +3752,7 @@ doCancel:
                         drvRow.Selected = False
                         Me.dgvMediaList.CurrentCell = Nothing
                         If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
+                        Me.dgvMediaList.ClearSelection()
                     End If
                 End If
 
