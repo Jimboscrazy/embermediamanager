@@ -1660,6 +1660,7 @@ Public Class frmMain
         Using dBulkRename As New dlgBulkRenamer
             Try
                 If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    Application.DoEvents()
                     Me.LoadMedia(1)
                 End If
             Catch ex As Exception
