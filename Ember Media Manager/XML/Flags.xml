@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flags>
-
   <vres>
     <name searchstring="1080p">
       <icon>1080p.png</icon>
@@ -8,17 +7,35 @@
     <name searchstring="1080i">
       <icon>1080i.png</icon>
     </name>
+    <name searchstring="1080">
+      <icon>1080.png</icon>
+    </name>
+    <name searchstring="768p">
+      <icon>768p.png</icon>
+    </name>
+    <name searchstring="768i">
+      <icon>768i.png</icon>
+    </name>
+    <name searchstring="768">
+      <icon>768.png</icon>
+    </name>
     <name searchstring="720p">
       <icon>720p.png</icon>
     </name>
     <name searchstring="720i">
       <icon>720i.png</icon>
     </name>
-    <name searchstring="576i">
-      <icon>576i.png</icon>
+    <name searchstring="720">
+      <icon>720.png</icon>
     </name>
     <name searchstring="576p">
       <icon>576p.png</icon>
+    </name>
+    <name searchstring="576i">
+      <icon>576i.png</icon>
+    </name>
+    <name searchstring="576">
+      <icon>576.png</icon>
     </name>
     <name searchstring="540p">
       <icon>540p.png</icon>
@@ -26,13 +43,19 @@
     <name searchstring="540i">
       <icon>540i.png</icon>
     </name>
+    <name searchstring="540">
+      <icon>540.png</icon>
+    </name>
     <name searchstring="480p">
       <icon>480p.png</icon>
     </name>
     <name searchstring="480i">
       <icon>480i.png</icon>
-    </name>
-    <name searchstring="sd|sdp|sdi">
+    </name>    
+    <name searchstring="480">
+      <icon>480.png</icon>
+    </name> 
+    <name searchstring="sdp|sdi|sd">
       <icon>sd.png</icon>
     </name>
     <default>
@@ -62,39 +85,38 @@
   </vsource>
 
   <vtype>
-    <name searchstring="lmp4|svq3|x264|avc|davc">
+    <name searchstring="h264">
       <icon>h264.png</icon>
     </name>  
-    <name searchstring="3ivx|3iv1|3iv2">
+    <name searchstring="3ivx">
       <icon>3ivx.png</icon>
     </name>
-    <name searchstring="flv|swf">
+    <name searchstring="flv">
       <icon>flv.png</icon>
     </name>
-    <name searchstring="div3|div4|div5|dx50">
+    <name searchstring="divx">
+      <icon>divx.png</icon>
+    </name>
+    <name searchstring="div|dx50">
       <icon>mpeg4.png</icon>
     </name>
-    <!-- need new icon for these -->
-    <name searchstring="dm4v|fmp4|geox|m4s2|mp4s|mpeg4|ndsm|ndsp|ndxc|ndxh|ndxp|ndxs|pvmm">
+    <name searchstring="dm4v|mp4|geox|m4s2|mpeg4|mpeg-4|nds|ndx|pvmm">
       <icon>mpeg4.png</icon>
     </name>
-    <name searchstring="lmp2|mmes|mp2t|mp2v|em2v|mpeg2|mpeg-2">
+    <name searchstring="lmp2|mmes|mp2|em2v|mpeg2|mpeg-2">
       <icon>mpeg2.png</icon>
     </name>
     <name searchstring="mpeg|pim1">
       <icon>mpeg.png</icon>
     </name>
-    <name searchstring="8bps|avrn|advj|rle|rpza|smc|sv10|svq1|svq3|zygo">
+    <name searchstring="8bps|avrn|advj|rle|rpza|smc|sv10|svq|zygo">
       <icon>qt.png</icon>
-    </name>
-    <name searchstring="wmv1|wmv2|wmv3">
-      <icon>wmv.png</icon>
     </name>
     <name searchstring="wmva">
       <icon>wmvhd.png</icon>
     </name>
-    <name searchstring="divx">
-      <icon>divx.png</icon>
+    <name searchstring="wmv">
+      <icon>wmv.png</icon>
     </name>
     <name searchstring="xvid">
       <icon>xvid.png</icon>
@@ -113,11 +135,11 @@
       <icon>dts.png</icon>
       <ref>dts</ref>
     </name>
-    <name searchstring="ac-3|dd|dolby">
+    <name searchstring="ac3|dd|dolby">
       <icon>dolbydigital.png</icon>
       <ref>dd</ref>
     </name>
-    <name searchstring="ogg|vorbis">
+    <name searchstring="vorbis">
       <icon>ogg.png</icon>
     </name>
     <name searchstring="flac">
@@ -126,10 +148,10 @@
     <name searchstring="aac">
       <icon>aac.png</icon>
     </name>
-    <name searchstring="mp4v">
+    <name searchstring="mp4">
       <icon>mp4.png</icon>
     </name>
-    <name searchstring="mp3|mpeg audio">
+    <name searchstring="mp3">
       <icon>mp3.png</icon>
     </name>
     <name searchstring="mp2">
@@ -150,35 +172,32 @@
   </atype>
   
   <achan>
-    <name searchstring="8ch{atype=dts}">
+    <name searchstring="8{atype=dts}">
       <icon>dts71.png</icon>
     </name>
-    <name searchstring="6ch{atype=dts}">
+    <name searchstring="6{atype=dts}">
       <icon>dts51.png</icon>
     </name>
-    <name searchstring="8ch{atype=dd}">
+    <name searchstring="8{atype=dd}">
       <icon>dd71.png</icon>
     </name>
-    <name searchstring="6ch{atype=dd}">
+    <name searchstring="6{atype=dd}">
       <icon>dd51.png</icon>
     </name>
-    <name searchstring="2ch{atype=dd}">
+    <name searchstring="2{atype=dd}">
       <icon>dd20.png</icon>
     </name>
-    <name searchstring="8ch{atype=}">
+    <name searchstring="8{atype=}">
       <icon>8ch.png</icon>
     </name>
-    <name searchstring="6ch{atype=}">
+    <name searchstring="6{atype=}">
       <icon>6ch.png</icon>
     </name>
-    <name searchstring="2ch{atype=}">
-      <icon>dolby20.png</icon>
+    <name searchstring="2{atype=}">
+      <icon>2ch.png</icon>
     </name>
-    <name searchstring="mono{atype=}">
+    <name searchstring="1{atype=}">
       <icon>mono.png</icon>
-    </name>
-    <name searchstring="sub|cc{atype=}">
-      <icon>cc.png</icon>
     </name>
     <default>
       <icon>defaultsound.png</icon>
