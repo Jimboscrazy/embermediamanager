@@ -220,7 +220,7 @@ Public Class dlgBulkRenamer
                         If Not IsNothing(e.Value) Then
                             'Dim f As New Font(e.CellStyle.Font, FontStyle.Strikeout)
                             e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
-                            Brushes.Gray, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
+                            Brushes.Gray, e.CellBounds.X + 1, e.CellBounds.Y + 4, _
                             StringFormat.GenericDefault)
                             Dim pointS As New Point(e.CellBounds.Left, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
                             Dim pointE As New Point(e.CellBounds.Right, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
@@ -269,7 +269,7 @@ Public Class dlgBulkRenamer
                                 tb = Brushes.Purple
                             End If
                             e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
-                            tb, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
+                            tb, e.CellBounds.X + 1, e.CellBounds.Y + 4, _
                             StringFormat.GenericDefault)
                             e.Handled = True
                         End If
@@ -325,7 +325,7 @@ Public Class dlgBulkRenamer
         End Using
 
         'testing proposes
-        Dim s As String = String.Concat("$T = Title", vbCrLf, "$t = Title (Space = .)", vbCrLf, "$D = Directory", vbCrLf, "$F = File Name", vbCrLf, "$Y = Year", vbCrLf, "$R = Resolution", vbCrLf, "$A = Audio", vbCrLf, "$S = Source")
+        Dim s As String = String.Concat("$T = Title", vbCrLf, "$X. (Replace Space with .)", vbCrLf, "$D = Directory", vbCrLf, "$F = File Name", vbCrLf, "$Y = Year", vbCrLf, "$R = Resolution", vbCrLf, "$A = Audio", vbCrLf, "$S = Source")
         lblLabel.Text = s.Replace(vbCrLf, "    ")
         frmToolTip.SetToolTip(txtFolder, s)
         frmToolTip.SetToolTip(txtFile, s)
