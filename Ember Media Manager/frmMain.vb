@@ -657,10 +657,9 @@ Public Class frmMain
 
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
+                        Me.SetListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
-                        Else
-                            Me.SetListItemAfterEdit(ID, indX)
                         End If
                     Case Windows.Forms.DialogResult.Retry
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions)
@@ -1135,10 +1134,9 @@ Public Class frmMain
             Using dEditMovie As New dlgEditMovie
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
+                        Me.SetListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
-                        Else
-                            Me.SetListItemAfterEdit(ID, indX)
                         End If
                     Case Windows.Forms.DialogResult.Retry
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID)
@@ -3528,8 +3526,10 @@ doCancel:
                     Using dEditMovie As New dlgEditMovie
                         Select Case dEditMovie.ShowDialog()
                             Case Windows.Forms.DialogResult.OK
-                                Me.RefreshMovie(ID)
                                 Me.SetListItemAfterEdit(ID, indX)
+                                If Me.RefreshMovie(ID) Then
+                                    Me.FillList(0)
+                                End If
                             Case Windows.Forms.DialogResult.Retry
                                 Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID)
                             Case Windows.Forms.DialogResult.Abort
@@ -3589,35 +3589,35 @@ doCancel:
                     tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
                 End If
 
-                    tmpMovieDb.FaS = New Master.FileAndSource
-                    tmpMovieDb.FaS.Filename = dRow(0).Item(1)
-                    tmpMovieDb.FaS.isSingle = dRow(0).Item(2)
-                    tmpMovieDb.FaS.Source = dRow(0).Item(12)
-                    aContents = Master.GetFolderContents(dRow(0).Item(1))
-                    tmpMovieDb.FaS.Poster = aContents(0)
-                    dRow(0).Item(4) = If(String.IsNullOrEmpty(aContents(0)), False, True)
-                    tmpMovieDb.FaS.Fanart = aContents(1)
-                    dRow(0).Item(5) = If(String.IsNullOrEmpty(aContents(1)), False, True)
-                    tmpMovieDb.FaS.Nfo = aContents(2)
-                    dRow(0).Item(6) = If(String.IsNullOrEmpty(aContents(2)), False, True)
-                    tmpMovieDb.FaS.Trailer = aContents(3)
-                    dRow(0).Item(7) = If(String.IsNullOrEmpty(aContents(3)), False, True)
-                    tmpMovieDb.FaS.Subs = aContents(4)
-                    dRow(0).Item(8) = If(String.IsNullOrEmpty(aContents(4)), False, True)
-                    tmpMovieDb.FaS.Extra = aContents(5)
-                    dRow(0).Item(9) = If(String.IsNullOrEmpty(aContents(5)), False, True)
+                tmpMovieDb.FaS = New Master.FileAndSource
+                tmpMovieDb.FaS.Filename = dRow(0).Item(1)
+                tmpMovieDb.FaS.isSingle = dRow(0).Item(2)
+                tmpMovieDb.FaS.Source = dRow(0).Item(12)
+                aContents = Master.GetFolderContents(dRow(0).Item(1))
+                tmpMovieDb.FaS.Poster = aContents(0)
+                dRow(0).Item(4) = If(String.IsNullOrEmpty(aContents(0)), False, True)
+                tmpMovieDb.FaS.Fanart = aContents(1)
+                dRow(0).Item(5) = If(String.IsNullOrEmpty(aContents(1)), False, True)
+                tmpMovieDb.FaS.Nfo = aContents(2)
+                dRow(0).Item(6) = If(String.IsNullOrEmpty(aContents(2)), False, True)
+                tmpMovieDb.FaS.Trailer = aContents(3)
+                dRow(0).Item(7) = If(String.IsNullOrEmpty(aContents(3)), False, True)
+                tmpMovieDb.FaS.Subs = aContents(4)
+                dRow(0).Item(8) = If(String.IsNullOrEmpty(aContents(4)), False, True)
+                tmpMovieDb.FaS.Extra = aContents(5)
+                dRow(0).Item(9) = If(String.IsNullOrEmpty(aContents(5)), False, True)
 
-                    tmpMovieDb.ID = dRow(0).Item(0)
-                    tmpMovieDb.IsMark = dRow(0).Item(11)
-                    tmpMovieDb.IsLock = dRow(0).Item(14)
+                tmpMovieDb.ID = dRow(0).Item(0)
+                tmpMovieDb.IsMark = dRow(0).Item(11)
+                tmpMovieDb.IsLock = dRow(0).Item(14)
 
-                    Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode)
+                Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode)
 
-                    aContents = Nothing
-                Else
-                    Master.DB.DeleteFromDB(dRow(0).Item(0), BatchMode)
-                    Return True
-                End If
+                aContents = Nothing
+            Else
+                Master.DB.DeleteFromDB(dRow(0).Item(0), BatchMode)
+                Return True
+            End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4044,12 +4044,12 @@ doCancel:
     Public Sub SetListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
 
         Try
+            Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = iID Select drvRow
+
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT ListTitle, mark FROM movies WHERE id = ", iID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", iID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    Me.SetFilterColors()
-                    Me.dgvMediaList.Item(3, iRow).Value = SQLreader("ListTitle")
-                    Me.dgvMediaList.Item(11, iRow).Value = SQLreader("mark")
+                    dRow(0).Item(11) = SQLreader("mark")
                 End Using
             End Using
 
