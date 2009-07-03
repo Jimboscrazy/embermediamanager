@@ -1084,12 +1084,12 @@ Public Class Master
             End If
 
             For Each sFile As FileInfo In lFI
-                fList.Add(sFile.FullName)
+                fList.Add(sFile.FullName.ToLower)
             Next
 
-            parPath = Directory.GetParent(sPath).FullName
-            tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
-            tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+            parPath = Directory.GetParent(sPath).FullName.ToLower
+            tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))).ToLower
+            tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath)).ToLower
 
             'fanart
             Select Case True
@@ -1225,13 +1225,13 @@ Public Class Master
             End Try
 
             For Each sFile As FileInfo In lFi
-                fList.Add(sFile.FullName)
+                fList.Add(sFile.FullName.ToLower)
             Next
 
 
-            parPath = Directory.GetParent(sPath).FullName
-            tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
-            tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
+            parPath = Directory.GetParent(sPath).FullName.ToLower
+            tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))).ToLower
+            tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath)).ToLower
 
             'fanart
             Select Case True
