@@ -213,16 +213,23 @@ Public Class FileFolderRenamer
         Return pattern
     End Function
 
-    Public Sub DoRename()
+    Public Delegate Function ShowProgress(ByVal movie As String) As Boolean
+    'Private _getDelegate As ShowProgress
+
+    Public Sub DoRename(Optional ByVal sfunction As ShowProgress = Nothing)
         Try
             For Each f As FileFolderRenamer.FileRename In _movies
                 If Not f.IsLocked Then
                     'Rename Directory
                     If Not f.NewPath.ToLower = f.Path.ToLower Then
+
+                        Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
+                        Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
+                        If Not sfunction Is Nothing Then
+                            If Not sfunction(f.NewPath) Then Return
+                        End If
                         Try
-                            Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
-                            Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
-                            System.IO.Directory.Move(srcDir, destDir)
+                            'System.IO.Directory.Move(srcDir, destDir)
                         Catch ex As Exception
                             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                             Continue For
@@ -249,7 +256,7 @@ Public Class FileFolderRenamer
                                 If Not srcFile = dstFile Then
                                     Try
                                         Dim fr = New System.IO.FileInfo(srcFile)
-                                        fr.MoveTo(dstFile)
+                                        'fr.MoveTo(dstFile)
                                     Catch ex As Exception
                                         Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                                     End Try
