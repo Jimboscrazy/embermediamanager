@@ -935,31 +935,36 @@ Public Class frmMain
         ' Clean all items in folders that match user selected types
         '\\
 
-        Dim sWarning As String = String.Empty
-        Dim sWarningFile As String = String.Empty
-        With Master.eSettings
-            If .ExpertCleaner Then
-                sWarning = String.Concat("WARNING: If you continue, all non-whitelisted file types will be deleted!", vbNewLine, vbNewLine, "Are you sure you want to continue?")
-            Else
-                If .CleanDotFanartJPG Then sWarningFile += String.Concat("<movie>.fanart.jpg", vbNewLine)
-                If .CleanFanartJPG Then sWarningFile += String.Concat("<movie>.jpg", vbNewLine)
-                If .CleanFolderJPG Then sWarningFile += String.Concat("folder.jpg", vbNewLine)
-                If .CleanMovieFanartJPG Then sWarningFile += String.Concat("<movie>-fanart.jpg", vbNewLine)
-                If .CleanMovieJPG Then sWarningFile += String.Concat("movie.jpg", vbNewLine)
-                If .CleanMovieNameJPG Then sWarningFile += String.Concat("<movie>.jpg", vbNewLine)
-                If .CleanMovieNFO Then sWarningFile += String.Concat("movie.nfo", vbNewLine)
-                If .CleanMovieNFOB Then sWarningFile += String.Concat("<movie>.nfo", vbNewLine)
-                If .CleanMovieTBN Then sWarningFile += String.Concat("movie.tbn", vbNewLine)
-                If .CleanMovieTBNB Then sWarningFile += String.Concat("<movie>.tbn", vbNewLine)
-                If .CleanPosterJPG Then sWarningFile += String.Concat("poster.jpg", vbNewLine)
-                If .CleanPosterTBN Then sWarningFile += String.Concat("poster.tbn", vbNewLine)
-                If .CleanExtraThumbs Then sWarningFile += String.Concat("/extrathumbs/", vbNewLine)
-                sWarning = String.Concat("WARNING: If you continue, all files of the following types will be permanently deleted:", vbNewLine, vbNewLine, sWarningFile, vbNewLine, "Are you sure you want to continue?")
+        Try
+            Dim sWarning As String = String.Empty
+            Dim sWarningFile As String = String.Empty
+            With Master.eSettings
+                If .ExpertCleaner Then
+                    sWarning = String.Concat("WARNING: If you continue, all non-whitelisted file types will be deleted!", vbNewLine, vbNewLine, "Are you sure you want to continue?")
+                Else
+                    If .CleanDotFanartJPG Then sWarningFile += String.Concat("<movie>.fanart.jpg", vbNewLine)
+                    If .CleanFanartJPG Then sWarningFile += String.Concat("<movie>.jpg", vbNewLine)
+                    If .CleanFolderJPG Then sWarningFile += String.Concat("folder.jpg", vbNewLine)
+                    If .CleanMovieFanartJPG Then sWarningFile += String.Concat("<movie>-fanart.jpg", vbNewLine)
+                    If .CleanMovieJPG Then sWarningFile += String.Concat("movie.jpg", vbNewLine)
+                    If .CleanMovieNameJPG Then sWarningFile += String.Concat("<movie>.jpg", vbNewLine)
+                    If .CleanMovieNFO Then sWarningFile += String.Concat("movie.nfo", vbNewLine)
+                    If .CleanMovieNFOB Then sWarningFile += String.Concat("<movie>.nfo", vbNewLine)
+                    If .CleanMovieTBN Then sWarningFile += String.Concat("movie.tbn", vbNewLine)
+                    If .CleanMovieTBNB Then sWarningFile += String.Concat("<movie>.tbn", vbNewLine)
+                    If .CleanPosterJPG Then sWarningFile += String.Concat("poster.jpg", vbNewLine)
+                    If .CleanPosterTBN Then sWarningFile += String.Concat("poster.tbn", vbNewLine)
+                    If .CleanExtraThumbs Then sWarningFile += String.Concat("/extrathumbs/", vbNewLine)
+                    sWarning = String.Concat("WARNING: If you continue, all files of the following types will be permanently deleted:", vbNewLine, vbNewLine, sWarningFile, vbNewLine, "Are you sure you want to continue?")
+                End If
+            End With
+            If MsgBox(sWarning, MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
+                Me.ScrapeData(Master.ScrapeType.CleanFolders, Nothing, Nothing)
             End If
-        End With
-        If MsgBox(sWarning, MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
-            Me.ScrapeData(Master.ScrapeType.CleanFolders, Nothing, Nothing)
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
     End Sub
 
     Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click
@@ -1006,79 +1011,97 @@ Public Class frmMain
     End Sub
 
     Private Sub chkFilterDupe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.Click
-        Me.chkFilterMark.Enabled = Not chkFilterDupe.Checked
-        Me.chkFilterNew.Enabled = Not chkFilterDupe.Checked
-        Me.rbFilterAnd.Enabled = Not chkFilterDupe.Checked
-        Me.rbFilterOr.Enabled = Not chkFilterDupe.Checked
-        Me.cbFilterSource.Enabled = Not chkFilterDupe.Checked
-        If Me.chkFilterDupe.Checked Then
-            Me.chkFilterMark.Checked = False
-            Me.chkFilterNew.Checked = False
-            RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-            Me.cbFilterSource.Text = "All"
-            AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-        End If
-        Me.RunFilter()
+
+        Try
+            Me.chkFilterMark.Enabled = Not chkFilterDupe.Checked
+            Me.chkFilterNew.Enabled = Not chkFilterDupe.Checked
+            Me.rbFilterAnd.Enabled = Not chkFilterDupe.Checked
+            Me.rbFilterOr.Enabled = Not chkFilterDupe.Checked
+            Me.cbFilterSource.Enabled = Not chkFilterDupe.Checked
+            If Me.chkFilterDupe.Checked Then
+                Me.chkFilterMark.Checked = False
+                Me.chkFilterNew.Checked = False
+                RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+                Me.cbFilterSource.Text = "All"
+                AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+            End If
+            Me.RunFilter()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
     End Sub
 
     Private Sub dgvMediaList_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMediaList.KeyPress
 
-        For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-            If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
-                drvRow.Selected = True
-                Me.dgvMediaList.CurrentCell = drvRow.Cells(3)
-                Exit For
-            End If
-        Next
+        Try
+            For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+                If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
+                    drvRow.Selected = True
+                    Me.dgvMediaList.CurrentCell = drvRow.Cells(3)
+                    Exit For
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
     End Sub
 
     Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
-                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
-                    parID.Value = sRow.Cells(0).Value
-                    SQLcommand.ExecuteNonQuery()
-                    sRow.Cells(11).Value = parMark.Value
-                Next
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                        parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(11).Value = parMark.Value
+                    Next
+                End Using
+                SQLtransaction.Commit()
             End Using
-            SQLtransaction.Commit()
-        End Using
 
-        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
-            Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                If SQLcount("mcount") > 0 Then
-                    Me.btnMarkAll.Text = "Unmark All"
-                Else
-                    Me.btnMarkAll.Text = "Mark All"
-                End If
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
+                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    If SQLcount("mcount") > 0 Then
+                        Me.btnMarkAll.Text = "Unmark All"
+                    Else
+                        Me.btnMarkAll.Text = "Mark All"
+                    End If
+                End Using
             End Using
-        End Using
 
-        Me.SetFilterColors()
+            Me.SetFilterColors()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub cmnuLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLock.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
-                SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
-                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    parLock.Value = If(cmnuLock.Text = "Unlock", False, True)
-                    parID.Value = sRow.Cells(0).Value
-                    SQLcommand.ExecuteNonQuery()
-                    sRow.Cells(14).Value = If(cmnuLock.Text = "Unlock", False, True)
-                Next
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                        parLock.Value = If(cmnuLock.Text = "Unlock", False, True)
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                        sRow.Cells(14).Value = If(cmnuLock.Text = "Unlock", False, True)
+                    Next
+                End Using
+                SQLtransaction.Commit()
             End Using
-            SQLtransaction.Commit()
-        End Using
-        Me.SetFilterColors()
+            Me.SetFilterColors()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub cmnuRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrape.Click
@@ -1129,67 +1152,71 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMediaList_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMediaList.MouseDown
-        If e.Button = Windows.Forms.MouseButtons.Right Then
-            Dim dgvHTI As DataGridView.HitTestInfo = sender.HitTest(e.X, e.Y)
-            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMediaList.RowCount > 0 Then
+                Dim dgvHTI As DataGridView.HitTestInfo = sender.HitTest(e.X, e.Y)
+                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
-                If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
-                    Dim setMark As Boolean = False
-                    Dim setLock As Boolean = False
-                    Me.cmnuTitle.Text = ">> Multiple <<"
-                    Me.cmnuEditMovie.Visible = False
-                    Me.cmnuRescrape.Visible = False
-                    Me.cmnuSearchNew.Visible = False
-                    Me.cmnuSep.Visible = False
-                    Me.cmnuSep2.Visible = False
+                    If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
+                        Dim setMark As Boolean = False
+                        Dim setLock As Boolean = False
+                        Me.cmnuTitle.Text = ">> Multiple <<"
+                        Me.cmnuEditMovie.Visible = False
+                        Me.cmnuRescrape.Visible = False
+                        Me.cmnuSearchNew.Visible = False
+                        Me.cmnuSep.Visible = False
+                        Me.cmnuSep2.Visible = False
 
-                    For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                        'if any one item is set as unmarked, set menu to mark
-                        'else they are all marked, so set menu to unmark
-                        If Not sRow.Cells(11).Value Then
-                            setMark = True
+                        For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                            'if any one item is set as unmarked, set menu to mark
+                            'else they are all marked, so set menu to unmark
+                            If Not sRow.Cells(11).Value Then
+                                setMark = True
+                            End If
+                            'if any one item is set as unlocked, set menu to lock
+                            'else they are all locked so set menu to unlock
+                            If Not sRow.Cells(14).Value Then
+                                setLock = True
+                            End If
+                        Next
+
+                        cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
+                        cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
+                        cmnuMark.Text = If(setMark, "Mark", "Unmark")
+                        cmnuLock.Text = If(setLock, "Lock", "Unlock")
+                    Else
+                        Me.cmnuEditMovie.Visible = True
+                        Me.cmnuRescrape.Visible = True
+                        Me.cmnuSearchNew.Visible = True
+                        Me.cmnuSep.Visible = True
+                        Me.cmnuSep2.Visible = True
+
+                        If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.mnuMediaList.Enabled = False
                         End If
-                        'if any one item is set as unlocked, set menu to lock
-                        'else they are all locked so set menu to unlock
-                        If Not sRow.Cells(14).Value Then
-                            setLock = True
+
+                        cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
+
+                        If Me.bwLoadInfo.IsBusy Then
+                            Me.bwLoadInfo.CancelAsync()
+                            Do While Me.bwLoadInfo.IsBusy
+                                Application.DoEvents()
+                            Loop
                         End If
-                    Next
 
-                    cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
-                    cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
-                    cmnuMark.Text = If(setMark, "Mark", "Unmark")
-                    cmnuLock.Text = If(setLock, "Lock", "Unlock")
-                Else
-                    Me.cmnuEditMovie.Visible = True
-                    Me.cmnuRescrape.Visible = True
-                    Me.cmnuSearchNew.Visible = True
-                    Me.cmnuSep.Visible = True
-                    Me.cmnuSep2.Visible = True
-
-                    If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
-                        Me.mnuMediaList.Enabled = False
+                        If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.dgvMediaList.ClearSelection()
+                            Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
+                            Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
+                        End If
+                        Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
+                        Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
                     End If
-
-                    cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
-
-                    If Me.bwLoadInfo.IsBusy Then
-                        Me.bwLoadInfo.CancelAsync()
-                        Do While Me.bwLoadInfo.IsBusy
-                            Application.DoEvents()
-                        Loop
-                    End If
-
-                    If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
-                        Me.dgvMediaList.ClearSelection()
-                        Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
-                        Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
-                    End If
-                    Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
-                    Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
-                    End If
+                End If
             End If
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub mnuAllAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoAll.Click
@@ -1445,18 +1472,22 @@ Public Class frmMain
     End Sub
 
     Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
-        Dim mMovie As Master.DBMovie
-        If MsgBox(String.Concat("WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE(S) FROM THE HARD DRIVE", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
-                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    mMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
-                    Master.DeleteFiles(False, mMovie)
-                    Master.DB.DeleteFromDB(Convert.ToInt64(sRow.Cells(0).Value), True)
-                Next
-                SQLtransaction.Commit()
-            End Using
-            Me.FillList(0)
-        End If
+        Try
+            Dim mMovie As Master.DBMovie
+            If MsgBox(String.Concat("WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE(S) FROM THE HARD DRIVE", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
+                    For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                        mMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+                        Master.DeleteFiles(False, mMovie)
+                        Master.DB.DeleteFromDB(Convert.ToInt64(sRow.Cells(0).Value), True)
+                    Next
+                    SQLtransaction.Commit()
+                End Using
+                Me.FillList(0)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub CopyExistingFanartToBackdropsFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CopyExistingFanartToBackdropsFolderToolStripMenuItem.Click
@@ -1468,20 +1499,24 @@ Public Class frmMain
     End Sub
 
     Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                SQLcommand.CommandText = "UPDATE movies SET mark = (?);"
-                parMark.Value = If(btnMarkAll.Text = "Unmark All", False, True)
-                SQLcommand.ExecuteNonQuery()
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                    SQLcommand.CommandText = "UPDATE movies SET mark = (?);"
+                    parMark.Value = If(btnMarkAll.Text = "Unmark All", False, True)
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
             End Using
-            SQLtransaction.Commit()
-        End Using
-        For Each drvRow As DataRow In dtMedia.Rows
-            drvRow.Item(11) = If(btnMarkAll.Text = "Unmark All", False, True)
-        Next
-        Me.SetFilterColors()
-        btnMarkAll.Text = If(btnMarkAll.Text = "Unmark All", "Mark All", "Unmark All")
+            For Each drvRow As DataRow In dtMedia.Rows
+                drvRow.Item(11) = If(btnMarkAll.Text = "Unmark All", False, True)
+            Next
+            Me.SetFilterColors()
+            btnMarkAll.Text = If(btnMarkAll.Text = "Unmark All", "Mark All", "Unmark All")
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub ExportMoviesListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ExportMoviesListToolStripMenuItem.Click
@@ -1575,6 +1610,7 @@ Public Class frmMain
             End If
             Me.RunFilter()
         Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -1671,22 +1707,26 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRefresh.Click
-        Me.dgvMediaList.Cursor = Cursors.WaitCursor
-        Me.dgvMediaList.Enabled = False
+        Try
+            Me.dgvMediaList.Cursor = Cursors.WaitCursor
+            Me.dgvMediaList.Enabled = False
 
-        Dim doFill As Boolean = False
+            Dim doFill As Boolean = False
 
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                doFill = Me.RefreshMovie(sRow.Cells(0).Value)
-            Next
-            SQLtransaction.Commit()
-        End Using
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    doFill = Me.RefreshMovie(sRow.Cells(0).Value)
+                Next
+                SQLtransaction.Commit()
+            End Using
 
-        Me.dgvMediaList.Cursor = Cursors.Default
-        Me.dgvMediaList.Enabled = True
+            Me.dgvMediaList.Cursor = Cursors.Default
+            Me.dgvMediaList.Enabled = True
 
-        If doFill Then FillList(0)
+            If doFill Then FillList(0)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub RefreshAllMoviesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshAllMoviesToolStripMenuItem.Click
@@ -2021,14 +2061,18 @@ Public Class frmMain
         '\\
 
         Dim Args As Arguments = e.Argument
-        Dim tImage As Image = Nothing
+        Try
+            Dim tImage As Image = Nothing
 
-        Dim wrRequest As WebRequest = WebRequest.Create(Args.pURL)
-        wrRequest.Timeout = 10000
-        Using wrResponse As WebResponse = wrRequest.GetResponse()
-            tImage = Image.FromStream(wrResponse.GetResponseStream())
-        End Using
-        e.Result = New Results With {.ResultType = Args.pType, .Result = tImage}
+            Dim wrRequest As WebRequest = WebRequest.Create(Args.pURL)
+            wrRequest.Timeout = 10000
+            Using wrResponse As WebResponse = wrRequest.GetResponse()
+                tImage = Image.FromStream(wrResponse.GetResponseStream())
+            End Using
+            e.Result = New Results With {.ResultType = Args.pType, .Result = tImage}
+        Catch ex As Exception
+            e.Result = New Results With {.ResultType = Args.pType, .Result = Nothing}
+        End Try
 
     End Sub
 
@@ -3690,58 +3734,62 @@ doCancel:
 
     Private Sub SetFilterColors()
 
-        For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-            If drvRow.Cells(11).Value Then
-                drvRow.Cells(3).Style.ForeColor = Color.Crimson
-                drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                drvRow.Cells(3).Style.SelectionForeColor = Color.Crimson
-            ElseIf drvRow.Cells(10).Value Then
-                drvRow.Cells(3).Style.ForeColor = Color.Green
-                drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                drvRow.Cells(3).Style.SelectionForeColor = Color.Green
-            Else
-                drvRow.Cells(3).Style.ForeColor = Color.Black
-                drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
-                drvRow.Cells(3).Style.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-                If Me.chkFilterMark.Checked Then
-                    drvRow.Selected = False
-                    Me.dgvMediaList.CurrentCell = Nothing
-                    If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
+        Try
+            For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+                If drvRow.Cells(11).Value Then
+                    drvRow.Cells(3).Style.ForeColor = Color.Crimson
+                    drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    drvRow.Cells(3).Style.SelectionForeColor = Color.Crimson
+                ElseIf drvRow.Cells(10).Value Then
+                    drvRow.Cells(3).Style.ForeColor = Color.Green
+                    drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    drvRow.Cells(3).Style.SelectionForeColor = Color.Green
+                Else
+                    drvRow.Cells(3).Style.ForeColor = Color.Black
+                    drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                    drvRow.Cells(3).Style.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                    If Me.chkFilterMark.Checked Then
+                        drvRow.Selected = False
+                        Me.dgvMediaList.CurrentCell = Nothing
+                        If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
+                    End If
                 End If
-            End If
 
-            If drvRow.Cells(14).Value Then
-                drvRow.Cells(3).Style.BackColor = Color.MistyRose
-                drvRow.Cells(4).Style.BackColor = Color.MistyRose
-                drvRow.Cells(5).Style.BackColor = Color.MistyRose
-                drvRow.Cells(6).Style.BackColor = Color.MistyRose
-                drvRow.Cells(7).Style.BackColor = Color.MistyRose
-                drvRow.Cells(8).Style.BackColor = Color.MistyRose
-                drvRow.Cells(9).Style.BackColor = Color.MistyRose
-                drvRow.Cells(3).Style.SelectionBackColor = Color.DarkMagenta
-                drvRow.Cells(4).Style.SelectionBackColor = Color.DarkMagenta
-                drvRow.Cells(5).Style.SelectionBackColor = Color.DarkMagenta
-                drvRow.Cells(6).Style.SelectionBackColor = Color.DarkMagenta
-                drvRow.Cells(7).Style.SelectionBackColor = Color.DarkMagenta
-                drvRow.Cells(8).Style.SelectionBackColor = Color.DarkMagenta
-                drvRow.Cells(9).Style.SelectionBackColor = Color.DarkMagenta
-            Else
-                drvRow.Cells(3).Style.BackColor = Color.White
-                drvRow.Cells(4).Style.BackColor = Color.White
-                drvRow.Cells(5).Style.BackColor = Color.White
-                drvRow.Cells(6).Style.BackColor = Color.White
-                drvRow.Cells(7).Style.BackColor = Color.White
-                drvRow.Cells(8).Style.BackColor = Color.White
-                drvRow.Cells(9).Style.BackColor = Color.White
-                drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                drvRow.Cells(8).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-            End If
-        Next
+                If drvRow.Cells(14).Value Then
+                    drvRow.Cells(3).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(4).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(5).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(6).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(7).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(8).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(9).Style.BackColor = Color.MistyRose
+                    drvRow.Cells(3).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(4).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(5).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(6).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(7).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(8).Style.SelectionBackColor = Color.DarkMagenta
+                    drvRow.Cells(9).Style.SelectionBackColor = Color.DarkMagenta
+                Else
+                    drvRow.Cells(3).Style.BackColor = Color.White
+                    drvRow.Cells(4).Style.BackColor = Color.White
+                    drvRow.Cells(5).Style.BackColor = Color.White
+                    drvRow.Cells(6).Style.BackColor = Color.White
+                    drvRow.Cells(7).Style.BackColor = Color.White
+                    drvRow.Cells(8).Style.BackColor = Color.White
+                    drvRow.Cells(9).Style.BackColor = Color.White
+                    drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(8).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
     End Sub
 
@@ -3798,27 +3846,33 @@ doCancel:
     End Sub
 
     Private Sub RunFilter()
-        If Me.Visible Then
 
-            If Me.chkFilterDupe.Checked Then
-                Me.FillList(0, True)
-            Else
-                If FilterArray.Count > 0 Then
-                    Dim FilterString As String = String.Empty
+        Try
+            If Me.Visible Then
 
-                    If rbFilterAnd.Checked Then
-                        FilterString = Strings.Join(FilterArray.ToArray, " AND ")
-                    Else
-                        FilterString = Strings.Join(FilterArray.ToArray, " OR ")
-                    End If
-
-                    bsMedia.Filter = FilterString
+                If Me.chkFilterDupe.Checked Then
+                    Me.FillList(0, True)
                 Else
-                    bsMedia.RemoveFilter()
+                    If FilterArray.Count > 0 Then
+                        Dim FilterString As String = String.Empty
+
+                        If rbFilterAnd.Checked Then
+                            FilterString = Strings.Join(FilterArray.ToArray, " AND ")
+                        Else
+                            FilterString = Strings.Join(FilterArray.ToArray, " OR ")
+                        End If
+
+                        bsMedia.Filter = FilterString
+                    Else
+                        bsMedia.RemoveFilter()
+                    End If
+                    Me.FillList(0)
                 End If
-                Me.FillList(0)
             End If
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
     End Sub
 
     Private Sub XComSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
