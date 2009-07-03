@@ -199,6 +199,8 @@ Public Class dlgIMDBSearchResults
         Master.tmpMovie.Genre = String.Empty
         Master.tmpMovie.Outline = String.Empty
         Master.tmpMovie.IMDBID = String.Empty
+
+        IMDB.CancelAsync()
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)

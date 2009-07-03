@@ -161,10 +161,19 @@ Namespace IMDB
             End Try
         End Function
 
+        Public Sub CancelAsync()
+            If bwIMDB.IsBusy Then bwIMDB.CancelAsync()
+
+            Do While bwIMDB.IsBusy
+                Application.DoEvents()
+            Loop
+        End Sub
+
         Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As Media.Movie, ByVal Options As Master.ScrapeOptions)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = False
+                    bwIMDB.WorkerSupportsCancellation = True
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.SearchDetails, _
                                            .Parameter = imdbID, .IMDBMovie = IMDBMovie, .Options = Options})
                 End If
@@ -316,6 +325,8 @@ mResult:
                 Dim ofdbPlot As String = String.Empty
                 Dim ofdbGenre As String = String.Empty
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
                 If (Master.eSettings.UseOFDBTitle AndAlso Options.bTitle) OrElse (Master.eSettings.UseOFDBOutline AndAlso Options.bOutline) OrElse _
                 (Master.eSettings.UseOFDBPlot AndAlso Options.bPlot) OrElse (Master.eSettings.UseOFDBGenre AndAlso Options.bGenre) Then
                     Dim OFDBScrape As New OFDB(strID, IMDBMovie)
@@ -325,9 +336,13 @@ mResult:
                     If Master.eSettings.UseOFDBGenre AndAlso Options.bGenre Then ofdbGenre = OFDBScrape.Genre
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
                 Dim sHTTP As New HTTP
                 Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, If(FullCrew OrElse FullCast, "/combined", String.Empty)))
                 sHTTP = Nothing
+
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 Dim sPlot As New HTTP
                 Dim PlotHtml As String = sPlot.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/plotsummary"))
@@ -337,6 +352,8 @@ mResult:
                     bwIMDB.ReportProgress(1)
                 End If
                 IMDBMovie.IMDBID = strID
+
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 Dim OriginalTitle As String = Regex.Match(HTML, MOVIE_TITLE_PATTERN).ToString
                 If Options.bTitle Then
@@ -350,9 +367,13 @@ mResult:
                     End If
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
                 If GetPoster Then
                     sPoster = Regex.Match(Regex.Match(HTML, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
                 End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 If Options.bYear Then IMDBMovie.Year = Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))").ToString
 
@@ -366,6 +387,8 @@ mResult:
                 End If
 
                 Dim D, W As Integer
+
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 If Options.bMPAA Then
                     'get certifications
@@ -390,6 +413,8 @@ mResult:
                     End If
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
                 If Options.bRelease Then
                     'Get Release Date ( According to your country )
                     Dim RelDate As Date
@@ -403,6 +428,8 @@ mResult:
                     End If
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
                 If doProgress Then
                     bwIMDB.ReportProgress(3)
                 End If
@@ -415,6 +442,8 @@ mResult:
                         IMDBMovie.Rating = RegexRating.Split("/".ToCharArray)(0).Trim
                     End If
                 End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 'trailer
                 If Options.bTrailer AndAlso (String.IsNullOrEmpty(IMDBMovie.Trailer) OrElse Not Master.eSettings.LockTrailer) Then
@@ -436,11 +465,15 @@ mResult:
                     End If
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
                 If Options.bVotes Then IMDBMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
 
                 If doProgress Then
                     bwIMDB.ReportProgress(4)
                 End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 If Options.bCast Then
                     'Find all cast of the movie  
@@ -477,6 +510,8 @@ mResult:
                     bwIMDB.ReportProgress(5)
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
                 D = 0 : W = 0
 
                 If Options.bTagline AndAlso (String.IsNullOrEmpty(IMDBMovie.Tagline) OrElse Not Master.eSettings.LockTagline) Then
@@ -489,6 +524,8 @@ mResult:
 
                     IMDBMovie.Tagline = (If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Replace("<h5>Tagline:</h5>", String.Empty).Split(vbCrLf.ToCharArray)(1)).Trim, String.Empty))
                 End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 If Options.bDirector Then
                     'Get the directors
@@ -511,6 +548,7 @@ mResult:
                     bwIMDB.ReportProgress(6)
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 'Get genres of the movie
                 If Options.bGenre AndAlso (String.IsNullOrEmpty(IMDBMovie.Genre) OrElse Not Master.eSettings.LockGenre) Then
@@ -537,6 +575,8 @@ mResult:
                         End If
                     End If
                 End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 If doProgress Then
                     bwIMDB.ReportProgress(7)
@@ -585,6 +625,8 @@ mResult:
                     bwIMDB.ReportProgress(8)
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
 mPlot:
                 'Get the full Plot
                 If Options.bPlot AndAlso (String.IsNullOrEmpty(IMDBMovie.Plot) OrElse Not Master.eSettings.LockPlot) Then
@@ -599,6 +641,8 @@ mPlot:
                         IMDBMovie.Plot = IMDBMovie.Outline
                     End If
                 End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
 
                 If doProgress Then
                     bwIMDB.ReportProgress(9)
@@ -634,6 +678,8 @@ mPlot:
                     bwIMDB.ReportProgress(10)
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
                 'Get Writers
                 If Options.bWriters Then
                     D = 0 : W = 0
@@ -652,6 +698,8 @@ mPlot:
                     End If
                 End If
 
+                If bwIMDB.CancellationPending Then Return Nothing
+
                 If doProgress Then
                     bwIMDB.ReportProgress(11)
                 End If
@@ -666,6 +714,9 @@ mPlot:
                         Dim qTables As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TABLE_PATTERN)
 
                         For Each M As Match In qTables
+
+                            If bwIMDB.CancellationPending Then Return Nothing
+
                             'Producers
                             If Options.bProducers AndAlso M.ToString.Contains("Produced by</a></h5>") Then
                                 Dim Pr = From Po In Regex.Matches(M.ToString, "<td\svalign=""top"">(.*?)</td>") _
@@ -697,6 +748,8 @@ mPlot:
                     If doProgress Then
                         bwIMDB.ReportProgress(12)
                     End If
+
+                    If bwIMDB.CancellationPending Then Return Nothing
 
                     'Special Effects
                     If Options.bOtherCrew Then

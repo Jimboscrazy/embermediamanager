@@ -297,6 +297,14 @@ Public Class dlgImgSelect
     Private Sub ProcessPics(ByVal posters As List(Of Media.Image))
         Try
             Dim iIndex As Integer = 0
+
+            'remove all entries with invalid images
+            For i As Integer = posters.Count - 1 To 0 Step -1
+                If IsNothing(posters.Item(i).WebImage) Then
+                    posters.RemoveAt(i)
+                End If
+            Next
+
             If posters.Count > 0 Then
                 posters.Sort(AddressOf SortImages)
 
