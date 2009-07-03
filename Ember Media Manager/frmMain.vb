@@ -3558,6 +3558,8 @@ doCancel:
             Me.tsbRefreshMedia.Enabled = True
             Me.mnuMediaList.Enabled = True
             Me.tabsMain.Enabled = True
+            Me.EnableFilters(False)
+            Me.EnableSorting(True)
         End If
     End Sub
 
