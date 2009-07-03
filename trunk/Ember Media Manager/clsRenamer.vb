@@ -133,6 +133,10 @@ Public Class FileFolderRenamer
         Return _movies
     End Function
 
+    Public Function GetMoviesCount() As Integer
+        Return _movies.Count
+    End Function
+
     Public Sub ProccessFiles(ByVal folderPattern As String, ByVal filePattern As String)
         Try
             For Each f As FileRename In _movies
@@ -147,9 +151,9 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Private Function ProccessPattern(ByVal f As FileRename, ByVal pattern As String) As String
+    Private Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String) As String
         Try
-
+            Dim pattern As String = opattern
             Dim strSource As String = String.Empty
             Try
                 Dim xVSourceFlag = From xVSource In Master.FlagsXML...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
@@ -159,14 +163,51 @@ Public Class FileFolderRenamer
                 End If
             Catch ex As Exception
             End Try
+            'pattern = "$T{($S.$S)}"
+            Dim nextC = pattern.IndexOf("$")
+            Dim nextIB = pattern.IndexOf("{")
+            Dim nextEB = pattern.IndexOf("}")
+            Dim strCond As String
+            Dim strBase As String
+            While Not nextC = -1
+                If nextC > nextIB AndAlso nextC < nextEB AndAlso Not nextC = -1 AndAlso Not nextIB = -1 AndAlso Not nextEB = -1 Then
+                    strCond = pattern.Substring(nextIB, nextEB - nextIB + 1)
+                    strBase = strCond
+                    strCond = ApplyPattern(strCond, "D", f.Path)
+                    strCond = ApplyPattern(strCond, "F", f.FileName)
+                    strCond = ApplyPattern(strCond, "T", f.Title)
+                    strCond = ApplyPattern(strCond, "Y", f.Year)
+                    strCond = ApplyPattern(strCond, "R", f.Resolution)
+                    strCond = ApplyPattern(strCond, "A", f.Audio)
+                    strCond = ApplyPattern(strCond, "S", strSource)
+
+                    Dim strNoFlags As String = Regex.Replace(pattern, "\$((?:[DFTYRAS]))", "") '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    If strCond.Trim = strNoFlags.Trim Then
+                        strCond = String.Empty
+                    Else
+                        strCond = strCond.Substring(1, strCond.Length - 2)
+                    End If
+                    pattern = pattern.Replace(strBase, strCond)
+                    nextC = pattern.IndexOf("$")
+                Else
+                    nextC = pattern.IndexOf("$", nextC + 1)
+                End If
+                nextIB = pattern.IndexOf("{")
+                nextEB = pattern.IndexOf("}")
+            End While
             pattern = ApplyPattern(pattern, "D", f.Path)
             pattern = ApplyPattern(pattern, "F", f.FileName)
             pattern = ApplyPattern(pattern, "T", f.Title)
             pattern = ApplyPattern(pattern, "Y", f.Year)
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "A", f.Audio)
-            pattern = ApplyPattern(pattern, "t", f.Title.Replace(" ", "."))
             pattern = ApplyPattern(pattern, "S", strSource)
+            nextC = pattern.IndexOf("$X")
+            If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
+                strCond = pattern.Substring(nextC + 2, 1)
+                pattern = pattern.Replace(String.Concat("$X", strCond), "")
+                pattern = pattern.Replace(" ", strCond)
+            End If
             'Remove/Replace some Invalid chars from path/filename
             pattern = pattern.Replace(":", " -")
             pattern = pattern.Replace("?", String.Empty)
@@ -232,15 +273,16 @@ Public Class FileFolderRenamer
     End Function
 
 
-    Public Delegate Function ShowProgress(ByVal movie As String) As Boolean
-    'Private _getDelegate As ShowProgress
+    Public Delegate Function ShowProgress(ByVal movie As String, ByVal iProgress As Integer) As Boolean
 
     Public Sub DoRename(Optional ByVal sfunction As ShowProgress = Nothing)
         Dim DoDB As Boolean
         Dim DoUpdate As Boolean
         Dim _movieDB As Master.DBMovie = Nothing
+        Dim iProg As Integer = 0
         Try
             For Each f As FileFolderRenamer.FileRename In _movies
+                iProg += 1
                 DoUpdate = False
                 If Not f.IsLocked Then
                     If Not f.ID = -1 AndAlso ((Not f.NewPath.ToLower = f.Path.ToLower) OrElse (Not f.NewFileName.ToLower = f.FileName.ToLower)) Then
@@ -256,7 +298,7 @@ Public Class FileFolderRenamer
                         Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
                         Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
                         If Not sfunction Is Nothing Then
-                            If Not sfunction(f.NewPath) Then Return
+                            If Not sfunction(f.NewPath, iProg) Then Return
                         End If
                         Try
                             System.IO.Directory.Move(srcDir, destDir)
