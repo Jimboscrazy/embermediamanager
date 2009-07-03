@@ -76,7 +76,6 @@ Public Class Images
                 End Using
                 _image = Image.FromStream(ms)
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End If
     End Sub
@@ -91,7 +90,6 @@ Public Class Images
             End Using
             wrRequest = Nothing
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
@@ -576,10 +574,10 @@ Public Class Images
 
                             If tmpListIMPA.Count > 0 Then
                                 hasImages = True
-                                For Each iMovie As Media.Image In tmpListIMPA
-                                    FromWeb(iMovie.URL)
+                                For Each iImage As Media.Image In tmpListIMPA
+                                    FromWeb(iImage.URL)
                                     If Not IsNothing(_image) Then
-                                        If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = iMovie.URL})
+                                        If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = iImage.URL})
                                         Dim tmpSize As Master.PosterSize = GetImageDims(_image, Master.ImageType.Posters)
                                         If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                             'cache the first result from each type in case the preferred size is not available
@@ -624,10 +622,10 @@ Public Class Images
 
                             If tmpListMPDB.Count > 0 Then
                                 hasImages = True
-                                For Each iMovie As Media.Image In tmpListMPDB
-                                    FromWeb(iMovie.URL)
+                                For Each iImage As Media.Image In tmpListMPDB
+                                    FromWeb(iImage.URL)
                                     If Not IsNothing(_image) Then
-                                        If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = iMovie.URL})
+                                        If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = iImage.URL})
                                         Dim tmpSize As Master.PosterSize = GetImageDims(_image, Master.ImageType.Posters)
                                         If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                             'cache the first result from each type in case the preferred size is not available

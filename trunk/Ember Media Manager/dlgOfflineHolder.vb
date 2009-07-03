@@ -44,6 +44,7 @@ Public Class dlgOfflineHolder
     Private drawFont As New Font("Arial", 22, FontStyle.Bold)
     Private txtTopPos As Integer
     Private tMovie As New Master.DBMovie
+    Private MovieName As String = String.Empty
     Friend WithEvents bwCreateHolder As New System.ComponentModel.BackgroundWorker
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CLOSE_Button.Click
@@ -92,6 +93,9 @@ Public Class dlgOfflineHolder
                 CreatePreview()
             End If
 
+            tMovie.FaS = New Master.FileAndSource
+            tMovie.Movie = New Media.Movie
+            tMovie.FaS.isSingle = True
             idxStsSource = lvStatus.Items.Add("Source Folder").Index
             lvStatus.Items(idxStsSource).SubItems.Add("Invalid")
             lvStatus.Items(idxStsSource).UseItemStyleForSubItems = False
@@ -112,17 +116,16 @@ Public Class dlgOfflineHolder
 
     Private Sub GetIMDB_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GetIMDB_Button.Click
         Try
-            Master.tmpMovie = New Media.Movie
-
             Using dSearch As New dlgIMDBSearchResults
-                If dSearch.ShowDialog(txtMovieName) = Windows.Forms.DialogResult.OK Then
+                Master.tmpMovie = New Media.Movie
+                If dSearch.ShowDialog(txtMovieName.Text) = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                         Me.pbProgress.Value = 100
                         Me.pbProgress.Style = ProgressBarStyle.Marquee
                         Me.pbProgress.MarqueeAnimationSpeed = 25
                         Me.pbProgress.Visible = True
                         'Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
-                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
+                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, tMovie.Movie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                     End If
                 End If
             End Using
@@ -137,21 +140,25 @@ Public Class dlgOfflineHolder
                     Dim tmpImages As New Images
                     If tmpImages.IsAllowedToDownload(tMovie, Master.ImageType.Posters) Then
                         Using dImgSelect As New dlgImgSelect
-                            dImgSelect.ShowDialog(tMovie, Master.ImageType.Posters)
+                            Dim pPath As String = dImgSelect.ShowDialog(tMovie, Master.ImageType.Posters)
+                            If Not String.IsNullOrEmpty(pPath) Then
+                                tMovie.FaS.Poster = pPath
+                            End If
                         End Using
                     End If
                     If tmpImages.IsAllowedToDownload(tMovie, Master.ImageType.Fanart) Then
                         Using dImgSelect As New dlgImgSelect
-                            dImgSelect.ShowDialog(tMovie, Master.ImageType.Fanart)
+                            Dim fPath As String = dImgSelect.ShowDialog(tMovie, Master.ImageType.Fanart)
+                            If Not String.IsNullOrEmpty(fPath) Then
+                                tMovie.FaS.Fanart = fPath
+                            End If
                         End Using
                     End If
                     tmpImages.Dispose()
                     tmpImages = Nothing
                 End If
 
-                Master.SaveMovieToNFO(tMovie)
-
-                Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
+                Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
             End If
@@ -161,6 +168,7 @@ Public Class dlgOfflineHolder
         Me.pbProgress.Visible = False
         CheckConditions()
     End Sub
+
     Private Sub MovieInfoDownloadedPercent(ByVal iPercent As Integer)
         Me.pbProgress.Value = iPercent
         Me.Refresh()
@@ -172,21 +180,31 @@ Public Class dlgOfflineHolder
 
     Sub CheckConditions()
         Dim Fanart As New Images
-        Dim MovieName As String = String.Empty
         Try
+
 
             If txtMovieName.Text.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
                 MovieName = txtMovieName.Text
+                tMovie.FaS.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
             Else
                 MovieName = txtMovieName.Text
                 For Each Invalid As Char In Path.GetInvalidPathChars
                     MovieName = MovieName.Replace(Invalid, String.Empty)
                 Next
+                tMovie.FaS.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
             End If
+
             If cbSources.SelectedIndex >= 0 Then
-                destPath = Path.Combine(cbSources.SelectedItem.ToString, MovieName)
-                lvStatus.Items(idxStsSource).SubItems(1).Text = "Valid"
-                lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Green
+                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources WHERE Name = """, cbSources.SelectedItem.ToString, """;")
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                        If SQLReader.Read Then
+                            destPath = Path.Combine(SQLReader("Path"), MovieName)
+                            lvStatus.Items(idxStsSource).SubItems(1).Text = "Valid"
+                            lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Green
+                        End If
+                    End Using
+                End Using
             Else
                 lvStatus.Items(idxStsSource).SubItems(1).Text = "Invalid"
                 lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Red
@@ -204,7 +222,7 @@ Public Class dlgOfflineHolder
                 lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
             End If
 
-            Dim fPath As String = Master.currMovie.FaS.Fanart
+            Dim fPath As String = tMovie.FaS.Fanart
 
             If Not String.IsNullOrEmpty(fPath) Then
                 chkUseFanart.Enabled = True
@@ -345,7 +363,7 @@ Public Class dlgOfflineHolder
             ffmpeg.StartInfo.CreateNoWindow = True
             ffmpeg.StartInfo.RedirectStandardOutput = True
             ffmpeg.StartInfo.RedirectStandardError = True
-            ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -i ""{0}\image%d.jpg"" ""{1}""", buildPath, Master.currMovie.FaS.Filename)
+            ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -i ""{0}\image%d.jpg"" ""{1}""", buildPath, tMovie.FaS.Filename)
             ffmpeg.Start()
             ffmpeg.WaitForExit()
             ffmpeg.Close()
@@ -361,12 +379,25 @@ Public Class dlgOfflineHolder
         End If
 
         DirectoryCopy(WorkingPath, destPath)
+
+        tMovie.FaS.Filename = Path.Combine(destPath, String.Concat(MovieName, ".avi"))
+        tMovie.FaS.Poster = Path.Combine(destPath, Path.GetFileName(tMovie.FaS.Poster).ToString)
+        tMovie.FaS.Fanart = Path.Combine(destPath, Path.GetFileName(tMovie.FaS.Fanart).ToString)
+
+        If Not String.IsNullOrEmpty(tMovie.Movie.Title) Then
+            tMovie.ListTitle = tMovie.Movie.Title
+        Else
+            tMovie.ListTitle = MovieName.Replace("[Offline]", String.Empty).Trim
+        End If
+
+        Master.DB.SaveMovieToDB(tMovie, True, False, True)
+
         Me.bwCreateHolder.ReportProgress(4, "Renaming Files")
         If Directory.Exists(buildPath) Then
             Directory.Delete(buildPath, True)
         End If
         Try
-            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(Master.currMovie.FaS.Filename)), Master.tmpMovie, "$D", "$D")
+            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(tMovie.FaS.Filename)), tMovie.Movie, "$D", "$D")
         Catch ex As Exception
         End Try
 
