@@ -2606,7 +2606,6 @@ doCancel:
             Me.EnableFilters(True)
             Me.EnableSorting(True)
 
-            Me.cmnuMark.Enabled = True
             Me.btnMarkAll.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3248,16 +3247,14 @@ doCancel:
                     If chkCount > 0 Then
                         Select Case sType
                             Case Master.ScrapeType.NewAsk
-                                Me.cmnuMark.Enabled = False
-                                Me.btnMarkAll.Enabled = False
                                 Me.tslLoading.Text = "Updating Media (New Movies - Ask):"
                             Case Master.ScrapeType.NewAuto
-                                Me.cmnuMark.Enabled = False
-                                Me.btnMarkAll.Enabled = False
                                 Me.tslLoading.Text = "Updating Media (New Movies - Auto):"
                             Case Master.ScrapeType.MarkAsk
+                                Me.btnMarkAll.Enabled = False
                                 Me.tslLoading.Text = "Updating Media (Marked Movies - Ask):"
                             Case Master.ScrapeType.MarkAuto
+                                Me.btnMarkAll.Enabled = False
                                 Me.tslLoading.Text = "Updating Media (Marked Movies - Auto):"
                         End Select
                         Me.tspbLoading.Maximum = chkCount
