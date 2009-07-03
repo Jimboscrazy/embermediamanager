@@ -1661,7 +1661,7 @@ Public Class frmMain
             Try
                 If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     Application.DoEvents()
-                    Me.LoadMedia(1)
+                    Me.LoadMedia(0)
                 End If
             Catch ex As Exception
             End Try
@@ -1688,6 +1688,10 @@ Public Class frmMain
     End Sub
 
     Private Sub RefreshAllMoviesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RefreshAllMoviesToolStripMenuItem.Click
+        RefreshAllMovies()
+    End Sub
+
+    Private Sub RefreshAllMovies()
         Dim aContents(6) As String
         Dim tmpMovie As New Media.Movie
 
@@ -1713,6 +1717,7 @@ Public Class frmMain
 
         End If
     End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -3520,10 +3525,10 @@ doCancel:
 
             If Directory.Exists(Directory.GetParent(dRow(0).Item(1)).FullName) Then
                 If DoNfo Then
-                    If String.IsNullOrEmpty(dRow(0).Item(40)) Then
+                    If String.IsNullOrEmpty(dRow(0).Item(41)) Then
                         tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(1), dRow(0).Item(2))
                     Else
-                        tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(40), dRow(0).Item(2))
+                        tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(41), dRow(0).Item(2))
                     End If
 
                     If String.IsNullOrEmpty(tmpMovie.Title) Then
