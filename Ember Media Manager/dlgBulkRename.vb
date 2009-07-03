@@ -266,7 +266,7 @@ Public Class dlgBulkRenamer
                             If (dgvMoviesList.Rows(e.RowIndex).Cells(6).Value AndAlso e.ColumnIndex = 3) OrElse (dgvMoviesList.Rows(e.RowIndex).Cells(7).Value AndAlso e.ColumnIndex = 4) Then
                                 tb = Brushes.Red
                             Else
-                                tb = Brushes.Blue
+                                tb = Brushes.Purple
                             End If
                             e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
                             tb, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
@@ -338,17 +338,17 @@ Public Class dlgBulkRenamer
         DoneRename = True
         pnlCancel.Visible = True
         lblCompiling.Text = "Renaming..."
+        pbCompile.Maximum = FFRenamer.GetMoviesCount
+        pbCompile.Value = 0
         Application.DoEvents()
         'Start worker
         Me.bwDoRename = New System.ComponentModel.BackgroundWorker
         Me.bwDoRename.WorkerSupportsCancellation = True
         Me.bwDoRename.WorkerReportsProgress = True
         Me.bwDoRename.RunWorkerAsync()
-
-
     End Sub
-    Function ShowProgressRename(ByVal mov As String)
-        Me.bwDoRename.ReportProgress(1, mov.ToString)
+    Function ShowProgressRename(ByVal mov As String, ByVal iProg As Integer)
+        Me.bwDoRename.ReportProgress(iProg, mov.ToString)
         If CancelRename Then Return False
         Return True
     End Function
@@ -356,6 +356,7 @@ Public Class dlgBulkRenamer
         FFRenamer.DoRename(AddressOf ShowProgressRename)
     End Sub
     Private Sub bwDoRename_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDoRename.ProgressChanged
+        pbCompile.Value = e.ProgressPercentage
         lblFile.Text = e.UserState
     End Sub
     Private Sub bwbwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
