@@ -216,7 +216,7 @@ Public Class FileFolderRenamer
             For Each Invalid As Char In Path.GetInvalidPathChars
                 pattern = pattern.Replace(Invalid, String.Empty)
             Next
-            Return pattern
+            Return pattern.Trim
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return vbNullString
@@ -293,21 +293,27 @@ Public Class FileFolderRenamer
                         DoDB = False
                     End If
                     'Rename Directory
-                    If Not f.NewPath.ToLower = f.Path.ToLower Then
+                    If Not f.NewPath = f.Path Then
 
                         Dim srcDir As String = Path.Combine(f.BasePath, f.Path)
                         Dim destDir As String = Path.Combine(f.BasePath, f.NewPath)
                         If Not sfunction Is Nothing Then
                             If Not sfunction(f.NewPath, iProg) Then Return
                         End If
+
                         Try
-                            System.IO.Directory.Move(srcDir, destDir)
+                            If f.NewPath.ToLower = f.Path.ToLower Then
+                                System.IO.Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
+                                System.IO.Directory.Move(String.Concat(destDir, ".$emm"), destDir)
+                            Else
+                                System.IO.Directory.Move(srcDir, destDir)
+                            End If
                             If DoDB = True Then
                                 _movieDB.FaS = UpdateFaSPaths(_movieDB.FaS, f.Path, f.NewPath)
                             End If
                             DoUpdate = True
                         Catch ex As Exception
-                            'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                             'Need to make some type of failure log
                             Continue For
                         End Try
@@ -333,10 +339,17 @@ Public Class FileFolderRenamer
                                 If Not srcFile = dstFile Then
                                     Try
                                         Dim fr = New System.IO.FileInfo(srcFile)
-                                        fr.MoveTo(dstFile)
+                                        If srcFile.ToLower = dstFile.ToLower Then
+                                            fr.MoveTo(String.Concat(dstFile, ".$emm$"))
+                                            Dim frr = New System.IO.FileInfo(String.Concat(dstFile, ".$emm$"))
+                                            frr.MoveTo(dstFile)
+                                        Else
+                                            fr.MoveTo(dstFile)
+                                        End If
+
                                         DoUpdate = True
                                     Catch ex As Exception
-                                        'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                                         'Need to make some type of failure log
                                     End Try
                                 End If
