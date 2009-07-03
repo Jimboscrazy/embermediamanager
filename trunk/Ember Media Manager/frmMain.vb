@@ -2604,6 +2604,7 @@ doCancel:
             Me.mnuMediaList.Enabled = True
             Me.tabsMain.Enabled = True
             Me.EnableFilters(True)
+            Me.EnableSorting(True)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -3179,6 +3180,7 @@ doCancel:
                 Me.tabsMain.Enabled = False
                 Me.tspbLoading.Style = ProgressBarStyle.Continuous
                 Me.EnableFilters(False)
+                Me.EnableSorting(False)
 
                 If Not sType = Master.ScrapeType.SingleScrape Then
                     Select Case sType
@@ -3203,7 +3205,7 @@ doCancel:
             End If
 
             Select Case sType
-                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD, Master.ScrapeType.RevertStudios
+                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD, Master.ScrapeType.RevertStudios, Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
                     Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
                     Select Case sType
                         Case Master.ScrapeType.FullAsk
@@ -3366,6 +3368,7 @@ doCancel:
                                         Me.mnuMediaList.Enabled = True
                                         Me.tabsMain.Enabled = True
                                         Me.EnableFilters(True)
+                                        Me.EnableSorting(True)
                                         Me.LoadInfo(ID, Master.currMovie.FaS.Filename, True, False)
                                     End If
                                 End If
@@ -3875,6 +3878,7 @@ doCancel:
                         .dgvMediaList.Columns(3).MinimumWidth = 83
                         .dgvMediaList.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(3).ToolTipText = "Title"
+                        .dgvMediaList.Columns(3).HeaderText = "Title"
                         .dgvMediaList.Columns(4).Width = 20
                         .dgvMediaList.Columns(4).Resizable = True
                         .dgvMediaList.Columns(4).ReadOnly = True
@@ -4022,6 +4026,17 @@ doCancel:
         TT.Active = True
 
     End Sub
+
+    Private Sub EnableSorting(ByVal Enable As Boolean)
+        For Each dgvCol As DataGridViewColumn In Me.dgvMediaList.Columns
+            If Enable Then
+                dgvCol.SortMode = DataGridViewColumnSortMode.Automatic
+            Else
+                dgvCol.SortMode = DataGridViewColumnSortMode.NotSortable
+            End If
+        Next
+    End Sub
+
     Friend Class MovieListFind
 
         Private _searchstring As String = String.Empty
