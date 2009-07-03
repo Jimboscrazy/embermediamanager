@@ -109,14 +109,9 @@ Public Class FileFolderRenamer
     End Class
     Private _movies As New List(Of FileRename)
     Public MovieFolders As New ArrayList
-    Dim xmlFlags As XDocument
 
     Public Sub New()
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
-
-        If File.Exists(Path.Combine(mePath, "Flags.xml")) Then
-            xmlFlags = XDocument.Load(Path.Combine(mePath, "Flags.xml"))
-        End If
 
         _movies.Clear()
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -156,7 +151,7 @@ Public Class FileFolderRenamer
 
             Dim strSource As String = String.Empty
             Try
-                Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
+                Dim xVSourceFlag = From xVSource In Master.FlagsXML...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
                 'Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Select xVSource.@searchstring
                 If xVSourceFlag.Count > 0 Then
                     strSource = xVSourceFlag(0).ToString
@@ -172,9 +167,10 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "t", f.Title.Replace(" ", "."))
             pattern = ApplyPattern(pattern, "S", strSource)
             'Remove/Replace some Invalid chars from path/filename
-            pattern = pattern.Replace(":", "-")
+            pattern = pattern.Replace(":", " -")
             pattern = pattern.Replace("?", String.Empty)
             pattern = pattern.Replace("*", String.Empty)
+            pattern = pattern.Replace("  ", " ")
             For Each Invalid As Char In Path.GetInvalidPathChars
                 pattern = pattern.Replace(Invalid, String.Empty)
             Next
