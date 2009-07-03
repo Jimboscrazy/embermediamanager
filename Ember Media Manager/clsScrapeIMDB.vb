@@ -529,7 +529,9 @@ mResult:
                                 Dim Gen = From M As Match In rGenres _
                                           Select N = Web.HttpUtility.HtmlDecode(M.Groups("name").ToString) Where Not N.Contains("more")
                                 If Gen.Count > 0 Then
-                                    IMDBMovie.Genre = Strings.Join(Gen.ToArray, " / ").Trim
+                                    'force splitting of /ed genres
+                                    Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
+                                    IMDBMovie.Genre = Strings.Join(tGenre.Split(New Char() {"/"}), " / ").Trim
                                 End If
                             End If
                         End If

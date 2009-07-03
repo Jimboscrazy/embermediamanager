@@ -166,7 +166,8 @@ Public Class OFDB
                                 Dim Gen = From M As Match In rGenres _
                                       Select N = Web.HttpUtility.HtmlDecode(M.Groups("name").ToString)
                                 If Gen.Count > 0 Then
-                                    _genre = Strings.Join(Gen.ToArray, " / ").Trim
+                                    Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
+                                    _genre = Strings.Join(tGenre.Split(New Char() {"/"}), " / ").Trim
                                 End If
                             End If
                         End If

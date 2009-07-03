@@ -419,18 +419,10 @@ Public Class dlgEditMovie
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Genre) Then
                     Dim genreArray() As String
-                    Dim gArray() As String
-                    genreArray = Strings.Split(Master.currMovie.Movie.Genre, " / ")
+                    genreArray = Strings.Split(Master.currMovie.Movie.Genre, "/")
                     For g As Integer = 0 To UBound(genreArray)
                         If .lbGenre.FindString(genreArray(g).Trim) > 0 Then
                             .lbGenre.SetItemChecked(.lbGenre.FindString(genreArray(g).Trim), True)
-                        ElseIf genreArray(g).Contains("/") Then
-                            gArray = Strings.Split(genreArray(g), "/")
-                            For i As Integer = 0 To UBound(gArray)
-                                If .lbGenre.FindString(gArray(i).Trim) > 0 Then
-                                    .lbGenre.SetItemChecked(.lbGenre.FindString(gArray(i).Trim), True)
-                                End If
-                            Next
                         End If
                     Next
 
@@ -1083,7 +1075,7 @@ Public Class dlgEditMovie
                     For i As Integer = 0 To xGenre.Count - 1
                         splitLang = xGenre(i).language.Split(New Char() {"|"})
                         For Each strGen As String In splitLang
-                            If Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen) Then
+                            If Not Me.lbGenre.Items.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
                                 Me.lbGenre.Items.Add(xGenre(i).searchstring)
                             End If
                         Next
