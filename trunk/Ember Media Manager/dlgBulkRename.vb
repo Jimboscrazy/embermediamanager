@@ -337,7 +337,7 @@ Public Class dlgBulkRenamer
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
         DoneRename = True
         pnlCancel.Visible = True
-        lblCompiling.Text = "Renamming..."
+        lblCompiling.Text = "Renaming..."
         Application.DoEvents()
         'Start worker
         Me.bwDoRename = New System.ComponentModel.BackgroundWorker
