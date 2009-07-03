@@ -325,7 +325,8 @@ Public Class dlgBulkRenamer
         End Using
 
         'testing proposes
-        Dim s As String = String.Concat("$T = Title", vbCrLf, "$X. (Replace Space with .)", vbCrLf, "$D = Directory", vbCrLf, "$F = File Name", vbCrLf, "$Y = Year", vbCrLf, "$R = Resolution", vbCrLf, "$A = Audio", vbCrLf, "$S = Source")
+        Dim s As String = String.Concat("$T = Title", vbCrLf, "$X. (Replace Space with .)", vbCrLf, "$D = Directory", vbCrLf, "$F = File Name", vbCrLf, "$Y = Year", vbCrLf, "$S = Source")
+        '"$R = Resolution", vbCrLf, "$A = Audio", vbCrLf, -> This not working for now.. need to think over it
         lblLabel.Text = s.Replace(vbCrLf, "    ")
         frmToolTip.SetToolTip(txtFolder, s)
         frmToolTip.SetToolTip(txtFile, s)
