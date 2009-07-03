@@ -3788,6 +3788,9 @@ doCancel:
                     drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
             Next
+
+            Me.tabMovies.Text = String.Format("Movies ({0})", Me.dgvMediaList.RowCount)
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4007,8 +4010,6 @@ doCancel:
                         .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
                         If .dgvMediaList.RowCount > 0 Then
-                            .SetFilterColors()
-
                             'Set current cell and automatically load the info for the first movie in the list
                             .dgvMediaList.Rows(iIndex).Cells(3).Selected = True
                             .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
@@ -4036,7 +4037,7 @@ doCancel:
             Me.tspbLoading.Visible = False
             Me.tspbLoading.Value = 0
 
-            Me.tabMovies.Text = String.Format("Movies ({0})", Me.dgvMediaList.RowCount)
+            Me.SetFilterColors()
             Me.EnableFilters(True)
 
         End If
