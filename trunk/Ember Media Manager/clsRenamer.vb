@@ -307,7 +307,8 @@ Public Class FileFolderRenamer
                             End If
                             DoUpdate = True
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            'Need to make some type of failure log
                             Continue For
                         End Try
 
@@ -335,7 +336,8 @@ Public Class FileFolderRenamer
                                         fr.MoveTo(dstFile)
                                         DoUpdate = True
                                     Catch ex As Exception
-                                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                        'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                        'Need to make some type of failure log
                                     End Try
                                 End If
                             Next
