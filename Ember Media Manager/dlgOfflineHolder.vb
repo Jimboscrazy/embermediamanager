@@ -204,7 +204,7 @@ Public Class dlgOfflineHolder
                 lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
             End If
 
-            Dim fPath As String = Fanart.GetFanartPath(Master.currMovie.FaS.Filename, False)
+            Dim fPath As String = Master.currMovie.FaS.Fanart
 
             If Not String.IsNullOrEmpty(fPath) Then
                 chkUseFanart.Enabled = True

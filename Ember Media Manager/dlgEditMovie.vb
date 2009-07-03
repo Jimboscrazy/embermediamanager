@@ -572,7 +572,7 @@ Public Class dlgEditMovie
                     Dim fPath As String = .Fanart.SaveAsFanart(Master.currMovie)
                     Master.currMovie.FaS.Fanart = fPath
                 Else
-                    .Fanart.Delete(Master.currMovie.FaS.Filename, Master.currMovie.FaS.isSingle, Master.ImageType.Fanart)
+                    .Fanart.Delete(Master.currMovie.FaS.Fanart, Master.ImageType.Fanart)
                     Master.currMovie.FaS.Fanart = String.Empty
                 End If
 
@@ -580,7 +580,7 @@ Public Class dlgEditMovie
                     Dim pPath As String = .Poster.SaveAsPoster(Master.currMovie)
                     Master.currMovie.FaS.Poster = pPath
                 Else
-                    .Poster.Delete(Master.currMovie.FaS.Filename, Master.currMovie.FaS.isSingle, Master.ImageType.Posters)
+                    .Poster.Delete(Master.currMovie.FaS.Poster, Master.ImageType.Posters)
                     Master.currMovie.FaS.Poster = String.Empty
                 End If
 

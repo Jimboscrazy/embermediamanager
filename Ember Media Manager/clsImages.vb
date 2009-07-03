@@ -95,40 +95,18 @@ Public Class Images
         End Try
     End Sub
 
-    Public Sub Delete(ByVal sPath As String, ByVal isSingle As Boolean, ByVal fType As Master.ImageType)
+    Public Sub Delete(ByVal sPath As String, ByVal fType As Master.ImageType)
         Dim tPath As String = String.Empty
 
         If fType = Master.ImageType.Fanart Then
-            tPath = GetFanartPath(sPath, isSingle)
-            If Not String.IsNullOrEmpty(tPath) Then
-                File.Delete(tPath)
+            If Not String.IsNullOrEmpty(sPath) Then
+                File.Delete(sPath)
             End If
         Else
-            tPath = GetPosterPath(sPath, isSingle)
-            If Not String.IsNullOrEmpty(tPath) Then
-                File.Delete(tPath)
+            If Not String.IsNullOrEmpty(sPath) Then
+                File.Delete(sPath)
             End If
         End If
-    End Sub
-
-    Public Sub Load(ByVal sPath As String, ByVal isSingle As Boolean, ByVal fType As Master.ImageType)
-        Try
-            Dim tPath As String = String.Empty
-
-            If fType = Master.ImageType.Fanart Then
-                tPath = GetFanartPath(sPath, isSingle)
-                If Not String.IsNullOrEmpty(tPath) Then
-                    FromFile(tPath)
-                End If
-            Else
-                tPath = GetPosterPath(sPath, isSingle)
-                If Not String.IsNullOrEmpty(tPath) Then
-                    FromFile(tPath)
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
     End Sub
 
     Public Sub Save(ByVal sPath As String, ByVal iQuality As Long)
@@ -948,110 +926,6 @@ foundIT:
         tmpListIMPA = Nothing
         tmpListMPDB = Nothing
         Return hasImages
-    End Function
-
-    Public Function GetFanartPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
-
-        '//
-        ' Get the proper path to fanart
-        '\\
-
-        Try
-            Dim fPath As String = String.Empty
-
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                fPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".fanart.jpg")
-                If File.Exists(fPath) Then
-                    Return fPath
-                Else
-                    Return String.Empty
-                End If
-            Else
-
-                Dim tmpName As String = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
-                fPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
-
-                Dim tmpNameWithStack As String = Path.GetFileNameWithoutExtension(sPath)
-                Dim fPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameWithStack)
-
-                If Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(fPathWithStack, "-fanart.jpg")) Then
-                    Return String.Concat(fPathWithStack, "-fanart.jpg")
-                ElseIf Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(String.Concat(fPath, "-fanart.jpg")) Then
-                    Return String.Concat(fPath, "-fanart.jpg")
-                ElseIf Master.eSettings.MovieNameFanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts-fanart.jpg")) Then
-                    Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts-fanart.jpg")
-                ElseIf isSingle AndAlso Master.eSettings.FanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")) Then
-                    Return Path.Combine(Directory.GetParent(sPath).FullName, "fanart.jpg")
-                ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(fPathWithStack, ".fanart.jpg")) Then
-                    Return String.Concat(fPathWithStack, ".fanart.jpg")
-                ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(String.Concat(fPath, ".fanart.jpg")) Then
-                    Return String.Concat(fPath, ".fanart.jpg")
-                ElseIf Master.eSettings.MovieNameDotFanartJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.fanart.jpg")) Then
-                    Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.fanart.jpg")
-                Else
-                    Return String.Empty
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Return String.Empty
-        End Try
-
-    End Function
-
-    Public Function GetPosterPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
-
-        '//
-        ' Get the proper path to poster
-        '\\
-        Try
-            Dim pPath As String = String.Empty
-
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                pPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name)
-                If Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(pPath, ".jpg")) Then
-                    Return String.Concat(pPath, ".jpg")
-                ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(pPath, ".tbn")) Then
-                    Return String.Concat(pPath, ".tbn")
-                Else
-                    Return String.Empty
-                End If
-            Else
-                Dim tmpName As String = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
-                pPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
-
-                Dim tmpNameWithStack As String = Path.GetFileNameWithoutExtension(sPath)
-                Dim pPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameWithStack)
-
-                If isSingle AndAlso Master.eSettings.MovieTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")) Then
-                    Return Path.Combine(Directory.GetParent(sPath).FullName, "movie.tbn")
-                ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(pPathWithStack, ".tbn")) Then
-                    Return String.Concat(pPathWithStack, ".tbn")
-                ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(String.Concat(pPath, ".tbn")) Then
-                    Return String.Concat(pPath, ".tbn")
-                ElseIf Master.eSettings.MovieNameTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.tbn")) Then
-                    Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.tbn")
-                ElseIf isSingle AndAlso Master.eSettings.MovieJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.jpg")) Then
-                    Return Path.Combine(Directory.GetParent(sPath).FullName, "movie.jpg")
-                ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(pPathWithStack, ".jpg")) Then
-                    Return String.Concat(pPathWithStack, ".jpg")
-                ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(String.Concat(pPath, ".jpg")) Then
-                    Return String.Concat(pPath, ".jpg")
-                ElseIf Master.eSettings.MovieNameJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.jpg")) Then
-                    Return Path.Combine(Directory.GetParent(sPath).FullName, "video_ts.jpg")
-                ElseIf isSingle AndAlso Master.eSettings.PosterTBN AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "poster.tbn")) Then
-                    Return Path.Combine(Directory.GetParent(sPath).FullName, "poster.jpg")
-                ElseIf isSingle AndAlso Master.eSettings.FolderJPG AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "folder.jpg")) Then
-                    Return Path.Combine(Directory.GetParent(sPath).FullName, "folder.jpg")
-                Else
-                    Return String.Empty
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Return String.Empty
-        End Try
-
     End Function
 
     Public Function IsAllowedToDownload(ByVal mMovie As Master.DBMovie, ByVal fType As Master.ImageType, Optional ByVal isChange As Boolean = False) As Boolean

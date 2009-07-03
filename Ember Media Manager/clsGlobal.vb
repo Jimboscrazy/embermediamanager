@@ -1567,49 +1567,6 @@ Public Class Master
         Return String.Empty
     End Function
 
-    Public Shared Function GetNfoPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
-
-        '//
-        ' Get the proper path to NFO
-        '\\
-
-        Dim nPath As String = String.Empty
-
-        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-            nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
-            If File.Exists(nPath) Then
-                Return nPath
-            Else
-                If isSingle Then
-                    'return movie path so we can use it for looking for non-conforming nfos
-                    Return sPath
-                Else
-                    Return String.Empty
-                End If
-            End If
-        Else
-            Dim tmpName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
-            Dim tmpNameNoStack As String = Path.GetFileNameWithoutExtension(sPath)
-            nPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
-            Dim nPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack)
-            If eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(nPathWithStack, ".nfo")) Then
-                Return String.Concat(nPathWithStack, ".nfo")
-            ElseIf eSettings.MovieNameNFO AndAlso File.Exists(String.Concat(nPath, ".nfo")) Then
-                Return String.Concat(nPath, ".nfo")
-            ElseIf eSettings.MovieNFO AndAlso File.Exists(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
-                Return Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
-            Else
-                If isSingle Then
-                    'return movie path so we can use it for looking for non-conforming nfos
-                    Return sPath
-                Else
-                    Return String.Empty
-                End If
-            End If
-        End If
-
-    End Function
-
     Public Shared Sub SaveMovieToNFO(ByRef movieToSave As Master.DBMovie)
 
         '//
@@ -1898,15 +1855,15 @@ Public Class Master
         Return Double.Parse(sNumber.Replace(",", "."), NumberStyles.AllowDecimalPoint, numFormat)
     End Function
 
-    Public Shared Function DeleteFiles(ByVal isCleaner As Boolean, ByVal sPath As String, ByVal isSingle As Boolean) As Boolean
+    Public Shared Function DeleteFiles(ByVal isCleaner As Boolean, ByVal mMovie As DBMovie) As Boolean
         Dim dPath As String = String.Empty
         Dim bReturn As Boolean = False
         Dim fList As New ArrayList
 
-        If eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-            dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".ext")
+        If eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
+            dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).Name), ".ext")
         Else
-            dPath = sPath
+            dPath = mMovie.FaS.Filename
         End If
 
         Dim sOrName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
@@ -1935,7 +1892,7 @@ Public Class Master
 
             If Not isCleaner Then
                 Dim Fanart As New Images
-                Dim fPath As String = Fanart.GetFanartPath(sPath, isSingle)
+                Dim fPath As String = mMovie.FaS.Fanart
                 Dim tPath As String = String.Empty
                 If Not String.IsNullOrEmpty(fPath) Then
                     If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
@@ -1950,7 +1907,7 @@ Public Class Master
                         End If
                     Else
                         If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                            tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(sPath), "-fanart.jpg"))
+                            tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(mMovie.FaS.Filename), "-fanart.jpg"))
                         Else
                             tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
                         End If
@@ -1962,11 +1919,11 @@ Public Class Master
                 Fanart = Nothing
             End If
 
-            If Not isCleaner AndAlso isSingle Then
-                If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                    Directory.Delete(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, True)
+            If Not isCleaner AndAlso mMovie.FaS.isSingle Then
+                If Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
+                    Directory.Delete(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName, True)
                 Else
-                    Directory.Delete(Directory.GetParent(sPath).FullName, True)
+                    Directory.Delete(Directory.GetParent(mMovie.FaS.Filename).FullName, True)
                 End If
             Else
                 For Each lFI As FileInfo In ioFi
@@ -2113,7 +2070,7 @@ Public Class Master
                     End Try
 
                     Try
-                        ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(sPath), ".*")))
+                        ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.FaS.Filename), ".*")))
                     Catch
                     End Try
 
@@ -2220,7 +2177,7 @@ Public Class Master
                         Directory.Delete(tPath, True)
                     Else
                         Dim exFanart As New Images
-                        If Master.eSettings.UseETasFA AndAlso Not File.Exists(exFanart.GetFanartPath(mMovie.FaS.Filename, False)) Then
+                        If Master.eSettings.UseETasFA AndAlso String.IsNullOrEmpty(mMovie.FaS.Fanart) Then
                             exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
                             exFanart.SaveAsFanart(mMovie)
                             didSetFA = True
