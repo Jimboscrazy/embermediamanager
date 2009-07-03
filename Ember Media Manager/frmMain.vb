@@ -3333,7 +3333,7 @@ doCancel:
                                 End If
                                 fArt = Nothing
 
-                                Master.SaveMovieToNFO(Master.currMovie)
+                                Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
                             End If
 
                             If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.FaS.isSingle Then
@@ -3485,7 +3485,7 @@ doCancel:
                         End Select
                     End Using
                 Else
-                    Master.SaveMovieToNFO(Master.currMovie)
+                    Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
                 End If
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
