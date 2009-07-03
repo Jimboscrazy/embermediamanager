@@ -1180,12 +1180,14 @@ Public Class frmMain
                         Loop
                     End If
 
-                    Me.dgvMediaList.ClearSelection()
-                    Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
-                    Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
+                    If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
+                        Me.dgvMediaList.ClearSelection()
+                        Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
+                        Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
+                    End If
                     Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
                     Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
-                End If
+                    End If
             End If
         End If
     End Sub
@@ -3687,6 +3689,7 @@ doCancel:
     End Sub
 
     Private Sub SetFilterColors()
+
         For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
             If drvRow.Cells(11).Value Then
                 drvRow.Cells(3).Style.ForeColor = Color.Crimson
@@ -3700,6 +3703,11 @@ doCancel:
                 drvRow.Cells(3).Style.ForeColor = Color.Black
                 drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
                 drvRow.Cells(3).Style.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                If Me.chkFilterMark.Checked Then
+                    drvRow.Selected = False
+                    Me.dgvMediaList.CurrentCell = Nothing
+                    If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
+                End If
             End If
 
             If drvRow.Cells(14).Value Then
@@ -3734,6 +3742,7 @@ doCancel:
                 drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
             End If
         Next
+
     End Sub
 
     Private Sub EnableFilters(ByVal isEnabled As Boolean)
