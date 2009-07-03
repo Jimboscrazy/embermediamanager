@@ -117,6 +117,7 @@ Public Class Database
                                 "Trailer TEXT, " & _
                                 "PosterPath TEXT, " & _
                                 "FanartPath TEXT, " & _
+                                "ExtraPath TEXT, " & _
                                 "NfoPath TEXT, " & _
                                 "TrailerPath TEXT, " & _
                                 "SubPath TEXT, " & _
@@ -253,6 +254,7 @@ Public Class Database
                     _movieDB.HasTrailer = SQLreader("HasTrailer")
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.FaS.Nfo = SQLreader("NfoPath")
                     _movieDB.HasNfo = SQLreader("HasNfo")
+                    If Not DBNull.Value.Equals(SQLreader("ExtraPath")) Then _movieDB.FaS.Extra = SQLreader("ExtraPath")
                     _movieDB.HasExtra = SQLreader("HasExtra")
                     If Not DBNull.Value.Equals(SQLreader("source")) Then _movieDB.FaS.Source = SQLreader("source")
                     _movieDB.IsMark = SQLreader("mark")
@@ -429,8 +431,8 @@ Public Class Database
                         "MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, FanartURL, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     'SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), HasPoster = (?), HasFanart = (?), HasNfo = (?), HasTrailer = (?), HasSub = (?), HasExtra = (?), ", _
                     '    "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
@@ -440,8 +442,8 @@ Public Class Database
                         "ID, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, FanartURL, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.String, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
@@ -490,6 +492,7 @@ Public Class Database
                 Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
                 Dim parTrailerPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailerPath", DbType.String, 0, "TrailerPath")
                 Dim parSubsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSubsPath", DbType.String, 0, "SubsPath")
+                Dim parExtraPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtraPath", DbType.String, 0, "ExtraPath")
                 Dim parFanartURL As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartURL", DbType.String, 0, "FanartURL")
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.String, 0, "NeedsSave")
 
@@ -506,6 +509,7 @@ Public Class Database
                 parNfoPath.Value = _movieDB.FaS.Nfo
                 parTrailerPath.Value = _movieDB.FaS.Trailer
                 parSubsPath.Value = _movieDB.FaS.Subs
+                parExtraPath.Value = _movieDB.FaS.Extra
                 parFanartURL.Value = _movieDB.Movie.Fanart.URL
 
                 parHasPoster.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Poster)
