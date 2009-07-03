@@ -27,10 +27,12 @@ Imports System.Drawing.Drawing2D
 
 Public Class dlgBulkRenamer
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwDoRename As New System.ComponentModel.BackgroundWorker
     Private bindingSource1 As New BindingSource()
     Private isLoaded As Boolean = False
     Private FFRenamer As New FileFolderRenamer
     Private DoneRename As Boolean = False
+    Private CancelRename As Boolean = False
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
         If DoneRename Then
@@ -53,6 +55,8 @@ Public Class dlgBulkRenamer
                 .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 .DataSource = bindingSource1
                 .Columns(5).Visible = False
+                .Columns(6).Visible = False
+                .Columns(7).Visible = False
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -86,10 +90,6 @@ Public Class dlgBulkRenamer
                                 MovieFile.Title = SQLreader("ListTitle").ToString '_tmpMovie.Title
                                 MovieFile.Year = SQLreader("Year").ToString '_tmpMovie.Year
                                 MovieFile.IsLocked = SQLreader("lock")
-                                'If Not IsNothing(_tmpMovie.FileInfo) Then
-                                'If _tmpMovie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = Master.GetResFromDimensions(Master.GetBestVideo(_tmpMovie.FileInfo))
-                                'If _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
-                                'End If
                                 MovieFile.BasePath = Path.GetDirectoryName(SQLreader("MoviePath").ToString)
                                 MovieFile.Path = Path.GetDirectoryName(SQLreader("MoviePath").ToString)
                                 For Each i As String In FFRenamer.MovieFolders
@@ -193,7 +193,7 @@ Public Class dlgBulkRenamer
     End Sub
     Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
         Try
-            If dgvMoviesList.ColumnCount <= 5 Then
+            If dgvMoviesList.ColumnCount > 5 AndAlso e.RowIndex >= 0 Then
                 If dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then ' Locked
                     Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
                         e.CellBounds.Width - 4, e.CellBounds.Height - 4)
@@ -261,8 +261,14 @@ Public Class dlgBulkRenamer
                         ' Draw the inset highlight box.
 
                         If Not IsNothing(e.Value) Then
+                            Dim tb As Brush
+                            If (dgvMoviesList.Rows(e.RowIndex).Cells(6).Value AndAlso e.ColumnIndex = 3) OrElse (dgvMoviesList.Rows(e.RowIndex).Cells(7).Value AndAlso e.ColumnIndex = 4) Then
+                                tb = Brushes.Red
+                            Else
+                                tb = Brushes.Blue
+                            End If
                             e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
-                            Brushes.Red, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
+                            tb, e.CellBounds.X + 2, e.CellBounds.Y + 3, _
                             StringFormat.GenericDefault)
                             e.Handled = True
                         End If
@@ -301,7 +307,11 @@ Public Class dlgBulkRenamer
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        DoCancel()
+        If DoneRename Then
+            CancelRename = True
+        Else
+            DoCancel()
+        End If
     End Sub
 
     Private Sub dlgBulkRename_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -325,7 +335,31 @@ Public Class dlgBulkRenamer
 
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
         DoneRename = True
-        FFRenamer.DoRename()
+        pnlCancel.Visible = True
+        lblCompiling.Text = "Renamming..."
+        Application.DoEvents()
+        'Start worker
+        Me.bwDoRename = New System.ComponentModel.BackgroundWorker
+        Me.bwDoRename.WorkerSupportsCancellation = True
+        Me.bwDoRename.WorkerReportsProgress = True
+        Me.bwDoRename.RunWorkerAsync()
+
+
+    End Sub
+    Function ShowProgressRename(ByVal mov As String)
+        Me.bwDoRename.ReportProgress(1, mov.ToString)
+        If CancelRename Then Return False
+        Return True
+    End Function
+    Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
+        FFRenamer.DoRename(AddressOf ShowProgressRename)
+    End Sub
+    Private Sub bwDoRename_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDoRename.ProgressChanged
+        lblFile.Text = e.UserState
+    End Sub
+    Private Sub bwbwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
+        pnlCancel.Visible = False
+        Me.Close()
     End Sub
 
     Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
