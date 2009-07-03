@@ -1744,6 +1744,7 @@ Public Class frmMain
             Me.tabsMain.Enabled = False
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.EnableFilters(False)
+            Me.EnableSorting(False)
 
             Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count + 1
             Me.tspbLoading.Value = 0
@@ -2694,6 +2695,7 @@ doCancel:
         Me.mnuMediaList.Enabled = True
         Me.tabsMain.Enabled = True
         Me.EnableFilters(True)
+        Me.EnableSorting(True)
 
         Me.FillList(0)
     End Sub
@@ -3621,6 +3623,8 @@ doCancel:
                 Return True
             End If
 
+            If Not BatchMode Then Me.SetFilterColors()
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4058,8 +4062,6 @@ doCancel:
             End Using
 
             Me.SelectRow(iRow)
-
-            Me.SetFilterColors()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4086,7 +4088,6 @@ doCancel:
             Else
                 Me.pnlNoInfo.Visible = False
 
-                'try to load the info from the NFO
                 Me.LoadInfo(Me.dgvMediaList.Item(0, iRow).Value, Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
         Catch ex As Exception
