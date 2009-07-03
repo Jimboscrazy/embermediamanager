@@ -1443,10 +1443,12 @@ Public Class frmMain
     End Sub
 
     Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
+        Dim mMovie As Master.DBMovie
         If MsgBox(String.Concat("WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE(S) FROM THE HARD DRIVE", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
                 For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    Master.DeleteFiles(False, sRow.Cells(1).Value, sRow.Cells(2).Value)
+                    mMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+                    Master.DeleteFiles(False, mMovie)
                     Master.DB.DeleteFromDB(Convert.ToInt64(sRow.Cells(0).Value), True)
                 Next
                 SQLtransaction.Commit()
@@ -2482,7 +2484,8 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                                If Master.DeleteFiles(True, drvRow.Item(1).ToString, drvRow.Item(2)) Then Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, False)
+                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
+                                If Master.DeleteFiles(True, scrapeMovie) Then Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, False)
                             Next
 
                         Case Master.ScrapeType.CopyBD
@@ -2493,7 +2496,7 @@ Public Class frmMain
                                 iCount += 1
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                sPath = Fanart.GetFanartPath(drvRow.Item(1).ToString, drvRow.Item(2))
+                                sPath = drvRow.Item(39)
                                 If Not String.IsNullOrEmpty(sPath) Then
                                     If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                                         If Master.eSettings.VideoTSParent Then
@@ -3516,7 +3519,11 @@ doCancel:
 
             If Directory.Exists(Directory.GetParent(dRow(0).Item(1)).FullName) Then
                 If DoNfo Then
-                    tmpMovie = Master.LoadMovieFromNFO(Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2)), dRow(0).Item(2))
+                    If String.IsNullOrEmpty(dRow(0).Item(40)) Then
+                        tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(1), dRow(0).Item(2))
+                    Else
+                        tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(40), dRow(0).Item(2))
+                    End If
 
                     If String.IsNullOrEmpty(tmpMovie.Title) Then
                         tmpMovieDb.ListTitle = dRow(0).Item(3)
@@ -3530,35 +3537,35 @@ doCancel:
                     tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
                 End If
 
-                tmpMovieDb.FaS = New Master.FileAndSource
-                tmpMovieDb.FaS.Filename = dRow(0).Item(1)
-                tmpMovieDb.FaS.isSingle = dRow(0).Item(2)
-                tmpMovieDb.FaS.Source = dRow(0).Item(12)
-                aContents = Master.GetFolderContents(dRow(0).Item(1))
-                tmpMovieDb.FaS.Poster = aContents(0)
-                dRow(0).Item(4) = If(String.IsNullOrEmpty(aContents(0)), False, True)
-                tmpMovieDb.FaS.Fanart = aContents(1)
-                dRow(0).Item(5) = If(String.IsNullOrEmpty(aContents(1)), False, True)
-                tmpMovieDb.FaS.Nfo = aContents(2)
-                dRow(0).Item(6) = If(String.IsNullOrEmpty(aContents(2)), False, True)
-                tmpMovieDb.FaS.Trailer = aContents(3)
-                dRow(0).Item(7) = If(String.IsNullOrEmpty(aContents(3)), False, True)
-                tmpMovieDb.FaS.Subs = aContents(4)
-                dRow(0).Item(8) = If(String.IsNullOrEmpty(aContents(4)), False, True)
-                tmpMovieDb.FaS.Extra = aContents(5)
-                dRow(0).Item(9) = If(String.IsNullOrEmpty(aContents(5)), False, True)
+                    tmpMovieDb.FaS = New Master.FileAndSource
+                    tmpMovieDb.FaS.Filename = dRow(0).Item(1)
+                    tmpMovieDb.FaS.isSingle = dRow(0).Item(2)
+                    tmpMovieDb.FaS.Source = dRow(0).Item(12)
+                    aContents = Master.GetFolderContents(dRow(0).Item(1))
+                    tmpMovieDb.FaS.Poster = aContents(0)
+                    dRow(0).Item(4) = If(String.IsNullOrEmpty(aContents(0)), False, True)
+                    tmpMovieDb.FaS.Fanart = aContents(1)
+                    dRow(0).Item(5) = If(String.IsNullOrEmpty(aContents(1)), False, True)
+                    tmpMovieDb.FaS.Nfo = aContents(2)
+                    dRow(0).Item(6) = If(String.IsNullOrEmpty(aContents(2)), False, True)
+                    tmpMovieDb.FaS.Trailer = aContents(3)
+                    dRow(0).Item(7) = If(String.IsNullOrEmpty(aContents(3)), False, True)
+                    tmpMovieDb.FaS.Subs = aContents(4)
+                    dRow(0).Item(8) = If(String.IsNullOrEmpty(aContents(4)), False, True)
+                    tmpMovieDb.FaS.Extra = aContents(5)
+                    dRow(0).Item(9) = If(String.IsNullOrEmpty(aContents(5)), False, True)
 
-                tmpMovieDb.ID = dRow(0).Item(0)
-                tmpMovieDb.IsMark = dRow(0).Item(11)
-                tmpMovieDb.IsLock = dRow(0).Item(14)
+                    tmpMovieDb.ID = dRow(0).Item(0)
+                    tmpMovieDb.IsMark = dRow(0).Item(11)
+                    tmpMovieDb.IsLock = dRow(0).Item(14)
 
-                Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode)
+                    Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode)
 
-                aContents = Nothing
-            Else
-                Master.DB.DeleteFromDB(dRow(0).Item(0), BatchMode)
-                Return True
-            End If
+                    aContents = Nothing
+                Else
+                    Master.DB.DeleteFromDB(dRow(0).Item(0), BatchMode)
+                    Return True
+                End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3857,9 +3864,9 @@ doCancel:
             Application.DoEvents()
 
             If DupesOnly Then
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
             Else
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT id, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
             End If
 
             If isCL Then
