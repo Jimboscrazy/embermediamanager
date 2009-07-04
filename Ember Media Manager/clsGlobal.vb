@@ -2088,9 +2088,9 @@ Public Class Master
         Return bReturn
     End Function
 
-    Public Shared Function CreateRandomThumbs(ByVal mMovie As DBMovie, ByVal ThumbCount As Integer) As Boolean
+    Public Shared Function CreateRandomThumbs(ByVal mMovie As DBMovie, ByVal ThumbCount As Integer) As String
 
-        Dim didSetFA As Boolean = False
+        Dim SetFA As String = String.Empty
 
         Try
             Dim pExt As String = Path.GetExtension(mMovie.FaS.Filename).ToLower
@@ -2177,10 +2177,11 @@ Public Class Master
                         Directory.Delete(tPath, True)
                     Else
                         Dim exFanart As New Images
+                        'always set to something if extrathumbs are created so we know during scrapers
+                        SetFA = "TRUE"
                         If Master.eSettings.UseETasFA AndAlso String.IsNullOrEmpty(mMovie.FaS.Fanart) Then
                             exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
-                            exFanart.SaveAsFanart(mMovie)
-                            didSetFA = True
+                            SetFA = exFanart.SaveAsFanart(mMovie)
                         End If
                         exFanart.Dispose()
                         exFanart = Nothing
@@ -2194,7 +2195,7 @@ Public Class Master
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        Return didSetFA
+        Return SetFA
     End Function
 
     Public Shared Function CheckUpdate() As Integer
