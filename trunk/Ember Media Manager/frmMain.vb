@@ -1902,6 +1902,8 @@ Public Class frmMain
         '\\
         Dim currentIndex As Integer = 0
         Dim tmpMovieDB As New Master.DBMovie
+        Dim aContents(6) As String
+
         Try
             tmpMovieDB.Movie = New Media.Movie
             'process the folder type media
@@ -1912,6 +1914,15 @@ Public Class frmMain
                         Return
                     End If
                     If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
+                        'first, lets get the contents
+                        aContents = Master.GetFolderContents(sFile)
+                        sFile.Poster = aContents(0)
+                        sFile.Fanart = aContents(1)
+                        sFile.Nfo = aContents(2)
+                        sFile.Trailer = aContents(3)
+                        sFile.Subs = aContents(4)
+                        sFile.Extra = aContents(5)
+
                         If Not String.IsNullOrEmpty(sFile.Nfo) Then
                             tmpMovieDB.Movie = Master.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
                         Else
