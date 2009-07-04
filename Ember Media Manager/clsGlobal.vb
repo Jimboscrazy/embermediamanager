@@ -972,6 +972,12 @@ Public Class Master
         Catch
             xmlMov = New Media.Movie
             If Not String.IsNullOrEmpty(sPath) Then
+
+                'go ahead and rename it now, will still be picked up in getimdbfromnonconf
+                If Not eSettings.OverwriteNfo Then
+                    RenameNonConfNfo(sPath, True)
+                End If
+
                 Dim sReturn As New NonConf
                 sReturn = GetIMDBFromNonConf(sPath, isSingle)
                 xmlMov.IMDBID = sReturn.IMDBID
@@ -1596,7 +1602,7 @@ Public Class Master
                 nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.FaS.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.FaS.Filename).FullName).Name), ".nfo")
 
                 If Not eSettings.OverwriteNfo Then
-                    RenameNonConfNfo(nPath)
+                    RenameNonConfNfo(tPath, False)
                 End If
 
                 If Not File.Exists(nPath) OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
@@ -1617,7 +1623,7 @@ Public Class Master
                     End If
 
                     If Not eSettings.OverwriteNfo Then
-                        RenameNonConfNfo(tPath)
+                        RenameNonConfNfo(tPath, False)
                     End If
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
@@ -1632,7 +1638,7 @@ Public Class Master
                     tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
 
                     If Not eSettings.OverwriteNfo Then
-                        RenameNonConfNfo(tPath)
+                        RenameNonConfNfo(tPath, False)
                     End If
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
@@ -1649,12 +1655,12 @@ Public Class Master
         End Try
     End Sub
 
-    Private Shared Sub RenameNonConfNfo(ByVal sPath As String)
+    Private Shared Sub RenameNonConfNfo(ByVal sPath As String, ByVal isChecked As Boolean)
         'test if current nfo is non-conforming... rename per setting
 
         Try
-            If Not IsConformingNfo(sPath) Then
-                If File.Exists(sPath) Then
+            If isChecked OrElse Not IsConformingNfo(sPath) Then
+                If isChecked OrElse File.Exists(sPath) Then
                     Dim i As Integer = 1
                     Dim strNewName As String = String.Concat(RemoveExtFromPath(sPath), ".info")
                     'in case there is already a .info file
