@@ -563,7 +563,7 @@ Public Class Master
                                 tmpList.Add(lFile.FullName.ToLower)
                                 SkipStack = True
                             Else
-                                tmpList.Add(CleanStackingMarkers(lFile.FullName))
+                                tmpList.Add(CleanStackingMarkers(lFile.FullName).ToLower)
                             End If
                             fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
                             If bSingle AndAlso Not SkipStack Then Exit For
