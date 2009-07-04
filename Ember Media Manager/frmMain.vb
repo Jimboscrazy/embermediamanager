@@ -1781,7 +1781,7 @@ Public Class frmMain
                 SQLcommand.CommandText = "SELECT MoviePath FROM movies;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        Master.alMoviePaths.Add(SQLreader("MoviePath"))
+                        Master.alMoviePaths.Add(SQLreader("MoviePath").ToString.ToLower)
                     End While
                 End Using
             End Using
