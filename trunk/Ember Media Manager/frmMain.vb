@@ -942,7 +942,7 @@ Public Class frmMain
                     sWarning = String.Concat("WARNING: If you continue, all non-whitelisted file types will be deleted!", vbNewLine, vbNewLine, "Are you sure you want to continue?")
                 Else
                     If .CleanDotFanartJPG Then sWarningFile += String.Concat("<movie>.fanart.jpg", vbNewLine)
-                    If .CleanFanartJPG Then sWarningFile += String.Concat("<movie>.jpg", vbNewLine)
+                    If .CleanFanartJPG Then sWarningFile += String.Concat("fanart.jpg", vbNewLine)
                     If .CleanFolderJPG Then sWarningFile += String.Concat("folder.jpg", vbNewLine)
                     If .CleanMovieFanartJPG Then sWarningFile += String.Concat("<movie>-fanart.jpg", vbNewLine)
                     If .CleanMovieJPG Then sWarningFile += String.Concat("movie.jpg", vbNewLine)
