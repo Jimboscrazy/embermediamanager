@@ -1814,7 +1814,7 @@ Public Class frmMain
                             MLFind.SearchString = mRow.Item(0).ToString.ToLower
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
                             If IsNothing(MLFound) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0)).ToLower) Then
-                                parPath.Value = mRow.Item(0).ToString.ToLower
+                                parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
 
                                 Using SQLOthercommands As SQLite.SQLiteCommand = Master.DB.CreateCommand
