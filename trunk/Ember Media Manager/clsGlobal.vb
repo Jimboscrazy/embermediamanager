@@ -557,10 +557,10 @@ Public Class Master
                     lFi.Sort(AddressOf SortFileNames)
 
                     For Each lFile As FileInfo In lFi
-                        If alMoviePaths.Contains(lFile.FullName) Then
+                        If alMoviePaths.Contains(lFile.FullName.ToLower) Then
                             'it's already on the list, don't bother scanning
                             If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
-                                tmpList.Add(lFile.FullName)
+                                tmpList.Add(lFile.FullName.ToLower)
                                 SkipStack = True
                             Else
                                 tmpList.Add(CleanStackingMarkers(lFile.FullName))
@@ -568,14 +568,14 @@ Public Class Master
                             fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
                             If bSingle AndAlso Not SkipStack Then Exit For
                         Else
-                            If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName)) AndAlso _
+                            If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
                             Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                             ((eSettings.SkipStackSizeCheck AndAlso IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
                                 If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
-                                    tmpList.Add(lFile.FullName)
+                                    tmpList.Add(lFile.FullName.ToLower)
                                     SkipStack = True
                                 Else
-                                    tmpList.Add(CleanStackingMarkers(lFile.FullName))
+                                    tmpList.Add(CleanStackingMarkers(lFile.FullName).ToLower)
                                 End If
                                 aContents = GetFolderContents(lFi, lFile.FullName)
                                 fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Poster = aContents(0), .Fanart = aContents(1), .Nfo = aContents(2), .Trailer = aContents(3), .Subs = aContents(4), .Extra = aContents(5)})
