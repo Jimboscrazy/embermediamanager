@@ -3610,7 +3610,7 @@ doCancel:
                 tmpMovieDb.FaS.Filename = dRow(0).Item(1)
                 tmpMovieDb.FaS.isSingle = dRow(0).Item(2)
                 tmpMovieDb.FaS.Source = dRow(0).Item(12)
-                aContents = Master.GetFolderContents(dRow(0).Item(1))
+                aContents = Master.GetFolderContents(dRow(0).Item(1), dRow(0).Item(2))
                 tmpMovieDb.FaS.Poster = aContents(0)
                 dRow(0).Item(4) = If(String.IsNullOrEmpty(aContents(0)), False, True)
                 tmpMovieDb.FaS.Fanart = aContents(1)
