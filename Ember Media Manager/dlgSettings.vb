@@ -792,8 +792,8 @@ Public Class dlgSettings
     Private Sub btnAddMovieExt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddMovieExt.Click
         If Not String.IsNullOrEmpty(txtMovieExt.Text) Then
             If Not Strings.Left(txtMovieExt.Text, 1) = "." Then txtMovieExt.Text = String.Concat(".", txtMovieExt.Text)
-            If Not lstMovieExts.Items.Contains(txtMovieExt.Text) Then
-                lstMovieExts.Items.Add(txtMovieExt.Text)
+            If Not lstMovieExts.Items.Contains(txtMovieExt.Text.ToLower) Then
+                lstMovieExts.Items.Add(txtMovieExt.Text.ToLower)
                 Me.btnApply.Enabled = True
                 Me.doRefresh = True
                 txtMovieExt.Text = String.Empty
@@ -984,8 +984,8 @@ Public Class dlgSettings
     Private Sub btnAddWhitelist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddWhitelist.Click
         If Not String.IsNullOrEmpty(Me.txtWhitelist.Text) Then
             If Not Strings.Left(txtWhitelist.Text, 1) = "." Then txtWhitelist.Text = String.Concat(".", txtWhitelist.Text)
-            If Not lstWhitelist.Items.Contains(txtWhitelist.Text) Then
-                lstWhitelist.Items.Add(txtWhitelist.Text)
+            If Not lstWhitelist.Items.Contains(txtWhitelist.Text.ToLower) Then
+                lstWhitelist.Items.Add(txtWhitelist.Text.ToLower)
                 Me.btnApply.Enabled = True
                 txtWhitelist.Text = String.Empty
                 txtWhitelist.Focus()
