@@ -191,6 +191,8 @@ Public Class MediaInfo
                     Return "ac3"
                 Case "wma2"
                     Return "wmav2"
+                Case "dts"
+                    Return "dca"
                 Case Else
                     Return sFormat.ToLower
             End Select
