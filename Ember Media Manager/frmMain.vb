@@ -444,8 +444,7 @@ Public Class frmMain
                     Me.FillList(0)
                     Me.Visible = True
                 Else
-                    '!!CHANGE!! - Change to (True, False) for next release
-                    Master.DB.Connect(True, True)
+                    Master.DB.Connect(True, False)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Me.Visible = True
                         Me.LoadMedia(1)

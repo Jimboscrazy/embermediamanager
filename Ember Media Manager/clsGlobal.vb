@@ -1105,14 +1105,14 @@ Public Class Master
             Select Case True
                 Case sFAS.isSingle AndAlso eSettings.FanartJPG AndAlso fList.Contains(Path.Combine(parPath, "fanart.jpg"))
                     FanartPath = Path.Combine(parPath, "fanart.jpg")
-                Case eSettings.MovieNameFanartJPG AndAlso fList.Contains(String.Concat(tmpName, "-fanart.jpg"))
-                    FanartPath = String.Concat(tmpName, "-fanart.jpg")
-                Case eSettings.MovieNameDotFanartJPG AndAlso fList.Contains(String.Concat(tmpName, ".fanart.jpg"))
-                    FanartPath = String.Concat(tmpName, ".fanart.jpg")
                 Case eSettings.MovieNameFanartJPG AndAlso fList.Contains(String.Concat(tmpNameNoStack, "-fanart.jpg"))
                     FanartPath = String.Concat(tmpNameNoStack, "-fanart.jpg")
                 Case eSettings.MovieNameDotFanartJPG AndAlso fList.Contains(String.Concat(tmpNameNoStack, ".fanart.jpg"))
                     FanartPath = String.Concat(tmpNameNoStack, ".fanart.jpg")
+                Case eSettings.MovieNameFanartJPG AndAlso fList.Contains(String.Concat(tmpName, "-fanart.jpg"))
+                    FanartPath = String.Concat(tmpName, "-fanart.jpg")
+                Case eSettings.MovieNameDotFanartJPG AndAlso fList.Contains(String.Concat(tmpName, ".fanart.jpg"))
+                    FanartPath = String.Concat(tmpName, ".fanart.jpg")
                 Case eSettings.MovieNameFanartJPG AndAlso fList.Contains(Path.Combine(parPath, "video_ts-fanart.jpg"))
                     FanartPath = Path.Combine(parPath, "video_ts-fanart.jpg")
                 Case eSettings.MovieNameDotFanartJPG AndAlso fList.Contains(Path.Combine(parPath, "video_ts.fanart.jpg"))
@@ -1127,16 +1127,16 @@ Public Class Master
                     PosterPath = Path.Combine(parPath, "poster.tbn")
                 Case sFAS.isSingle AndAlso eSettings.MovieJPG AndAlso fList.Contains(Path.Combine(parPath, "movie.jpg"))
                     PosterPath = Path.Combine(parPath, "movie.jpg")
-                Case eSettings.MovieNameTBN AndAlso fList.Contains(String.Concat(tmpName, ".tbn"))
-                    PosterPath = String.Concat(tmpName, ".tbn")
                 Case eSettings.MovieNameTBN AndAlso fList.Contains(String.Concat(tmpNameNoStack, ".tbn"))
                     PosterPath = String.Concat(tmpNameNoStack, ".tbn")
+                Case eSettings.MovieNameTBN AndAlso fList.Contains(String.Concat(tmpName, ".tbn"))
+                    PosterPath = String.Concat(tmpName, ".tbn")
                 Case sFAS.isSingle AndAlso eSettings.PosterJPG AndAlso fList.Contains(Path.Combine(parPath, "poster.jpg"))
                     PosterPath = Path.Combine(parPath, "poster.jpg")
-                Case eSettings.MovieNameJPG AndAlso fList.Contains(String.Concat(tmpName, ".jpg"))
-                    PosterPath = String.Concat(tmpName, ".jpg")
                 Case eSettings.MovieNameJPG AndAlso fList.Contains(String.Concat(tmpNameNoStack, ".jpg"))
                     PosterPath = String.Concat(tmpNameNoStack, ".jpg")
+                Case eSettings.MovieNameJPG AndAlso fList.Contains(String.Concat(tmpName, ".jpg"))
+                    PosterPath = String.Concat(tmpName, ".jpg")
                 Case eSettings.MovieNameTBN AndAlso fList.Contains(Path.Combine(parPath, "video_ts.tbn"))
                     PosterPath = Path.Combine(parPath, "video_ts.tbn")
                 Case eSettings.MovieNameJPG AndAlso fList.Contains(Path.Combine(parPath, "video_ts.jpg"))
@@ -1149,10 +1149,10 @@ Public Class Master
             Select Case True
                 Case sFAS.isSingle AndAlso eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(parPath, "movie.nfo"))
                     NfoPath = Path.Combine(parPath, "movie.nfo")
-                Case eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(tmpName, ".nfo"))
-                    NfoPath = String.Concat(tmpName, ".nfo")
                 Case eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(tmpNameNoStack, ".nfo"))
                     NfoPath = String.Concat(tmpNameNoStack, ".nfo")
+                Case eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(tmpName, ".nfo"))
+                    NfoPath = String.Concat(tmpName, ".nfo")
             End Select
 
             'sub
@@ -1160,25 +1160,25 @@ Public Class Master
 
             For Each t As String In sExt
                 Select Case True
-                    Case fList.Contains(String.Concat(tmpName, t))
-                        SubPath = String.Concat(tmpName, t)
-                        Exit For
                     Case fList.Contains(String.Concat(tmpNameNoStack, t))
                         SubPath = String.Concat(tmpNameNoStack, t)
+                        Exit For
+                    Case fList.Contains(String.Concat(tmpName, t))
+                        SubPath = String.Concat(tmpName, t)
                         Exit For
                 End Select
             Next
 
             For Each t As String In Master.eSettings.ValidExts
                 Select Case True
-                    Case fList.Contains(String.Concat(tmpName, "-trailer", t))
-                        TrailerPath = String.Concat(tmpName, "-trailer", t)
                     Case fList.Contains(String.Concat(tmpNameNoStack, "-trailer", t))
                         TrailerPath = String.Concat(tmpNameNoStack, "-trailer", t)
-                    Case fList.Contains(String.Concat(tmpName, "[trailer]", t))
-                        TrailerPath = String.Concat(tmpName, "[trailer]", t)
+                    Case fList.Contains(String.Concat(tmpName, "-trailer", t))
+                        TrailerPath = String.Concat(tmpName, "-trailer", t)
                     Case fList.Contains(String.Concat(tmpNameNoStack, "[trailer]", t))
                         TrailerPath = String.Concat(tmpNameNoStack, "[trailer]", t)
+                    Case fList.Contains(String.Concat(tmpName, "[trailer]", t))
+                        TrailerPath = String.Concat(tmpName, "[trailer]", t)
                 End Select
             Next
 
@@ -1249,14 +1249,14 @@ Public Class Master
             Select Case True
                 Case bSingle AndAlso eSettings.FanartJPG AndAlso fList.Contains(Path.Combine(parPath, "fanart.jpg"))
                     FanartPath = Path.Combine(parPath, "fanart.jpg")
-                Case eSettings.MovieNameFanartJPG AndAlso fList.Contains(String.Concat(tmpName, "-fanart.jpg"))
-                    FanartPath = String.Concat(tmpName, "-fanart.jpg")
-                Case eSettings.MovieNameDotFanartJPG AndAlso fList.Contains(String.Concat(tmpName, ".fanart.jpg"))
-                    FanartPath = String.Concat(tmpName, ".fanart.jpg")
                 Case eSettings.MovieNameFanartJPG AndAlso fList.Contains(String.Concat(tmpNameNoStack, "-fanart.jpg"))
                     FanartPath = String.Concat(tmpNameNoStack, "-fanart.jpg")
                 Case eSettings.MovieNameDotFanartJPG AndAlso fList.Contains(String.Concat(tmpNameNoStack, ".fanart.jpg"))
                     FanartPath = String.Concat(tmpNameNoStack, ".fanart.jpg")
+                Case eSettings.MovieNameFanartJPG AndAlso fList.Contains(String.Concat(tmpName, "-fanart.jpg"))
+                    FanartPath = String.Concat(tmpName, "-fanart.jpg")
+                Case eSettings.MovieNameDotFanartJPG AndAlso fList.Contains(String.Concat(tmpName, ".fanart.jpg"))
+                    FanartPath = String.Concat(tmpName, ".fanart.jpg")
                 Case eSettings.MovieNameFanartJPG AndAlso fList.Contains(Path.Combine(parPath, "video_ts-fanart.jpg"))
                     FanartPath = Path.Combine(parPath, "video_ts-fanart.jpg")
                 Case eSettings.MovieNameDotFanartJPG AndAlso fList.Contains(Path.Combine(parPath, "video_ts.fanart.jpg"))
@@ -1271,16 +1271,16 @@ Public Class Master
                     PosterPath = Path.Combine(parPath, "poster.tbn")
                 Case bSingle AndAlso eSettings.MovieJPG AndAlso fList.Contains(Path.Combine(parPath, "movie.jpg"))
                     PosterPath = Path.Combine(parPath, "movie.jpg")
-                Case eSettings.MovieNameTBN AndAlso fList.Contains(String.Concat(tmpName, ".tbn"))
-                    PosterPath = String.Concat(tmpName, ".tbn")
                 Case eSettings.MovieNameTBN AndAlso fList.Contains(String.Concat(tmpNameNoStack, ".tbn"))
                     PosterPath = String.Concat(tmpNameNoStack, ".tbn")
+                Case eSettings.MovieNameTBN AndAlso fList.Contains(String.Concat(tmpName, ".tbn"))
+                    PosterPath = String.Concat(tmpName, ".tbn")
                 Case bSingle AndAlso eSettings.PosterJPG AndAlso fList.Contains(Path.Combine(parPath, "poster.jpg"))
                     PosterPath = Path.Combine(parPath, "poster.jpg")
-                Case eSettings.MovieNameJPG AndAlso fList.Contains(String.Concat(tmpName, ".jpg"))
-                    PosterPath = String.Concat(tmpName, ".jpg")
                 Case eSettings.MovieNameJPG AndAlso fList.Contains(String.Concat(tmpNameNoStack, ".jpg"))
                     PosterPath = String.Concat(tmpNameNoStack, ".jpg")
+                Case eSettings.MovieNameJPG AndAlso fList.Contains(String.Concat(tmpName, ".jpg"))
+                    PosterPath = String.Concat(tmpName, ".jpg")
                 Case eSettings.MovieNameTBN AndAlso fList.Contains(Path.Combine(parPath, "video_ts.tbn"))
                     PosterPath = Path.Combine(parPath, "video_ts.tbn")
                 Case eSettings.MovieNameJPG AndAlso fList.Contains(Path.Combine(parPath, "video_ts.jpg"))
@@ -1293,10 +1293,10 @@ Public Class Master
             Select Case True
                 Case bSingle AndAlso eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(parPath, "movie.nfo"))
                     NfoPath = Path.Combine(parPath, "movie.nfo")
-                Case eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(tmpName, ".nfo"))
-                    NfoPath = String.Concat(tmpName, ".nfo")
                 Case eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(tmpNameNoStack, ".nfo"))
                     NfoPath = String.Concat(tmpNameNoStack, ".nfo")
+                Case eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(tmpName, ".nfo"))
+                    NfoPath = String.Concat(tmpName, ".nfo")
             End Select
 
             'sub
@@ -1304,25 +1304,25 @@ Public Class Master
 
             For Each t As String In sExt
                 Select Case True
-                    Case fList.Contains(String.Concat(tmpName, t))
-                        SubPath = String.Concat(tmpName, t)
-                        Exit For
                     Case fList.Contains(String.Concat(tmpNameNoStack, t))
                         SubPath = String.Concat(tmpNameNoStack, t)
+                        Exit For
+                    Case fList.Contains(String.Concat(tmpName, t))
+                        SubPath = String.Concat(tmpName, t)
                         Exit For
                 End Select
             Next
 
             For Each t As String In Master.eSettings.ValidExts
                 Select Case True
-                    Case fList.Contains(String.Concat(tmpName, "-trailer", t))
-                        TrailerPath = String.Concat(tmpName, "-trailer", t)
                     Case fList.Contains(String.Concat(tmpNameNoStack, "-trailer", t))
                         TrailerPath = String.Concat(tmpNameNoStack, "-trailer", t)
-                    Case fList.Contains(String.Concat(tmpName, "[trailer]", t))
-                        TrailerPath = String.Concat(tmpName, "[trailer]", t)
+                    Case fList.Contains(String.Concat(tmpName, "-trailer", t))
+                        TrailerPath = String.Concat(tmpName, "-trailer", t)
                     Case fList.Contains(String.Concat(tmpNameNoStack, "[trailer]", t))
                         TrailerPath = String.Concat(tmpNameNoStack, "[trailer]", t)
+                    Case fList.Contains(String.Concat(tmpName, "[trailer]", t))
+                        TrailerPath = String.Concat(tmpName, "[trailer]", t)
                 End Select
             Next
 
