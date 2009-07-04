@@ -1,6 +1,31 @@
 #summary Ember Media Manager Changelog
 #labels Featured
 
+*Changelog for version r596:*
+    * Feature: Option to display image dimensions
+    * Feature: Bulk Renamer
+    * Feature: Option to not display images
+    * Feature: Selectable trailer naming
+    * Feature: Option to use outline for plot if plot is empty
+    * Feature: Options for runtime format when using MI duration
+    * Feature: Select multiple items in list for processing (limited)
+    * Feature: Option to skip stacking of configurable extensions
+    * Feature: Support for "native" studio flags
+    * Feature: Enhanced source handling
+    * Feature: Deep integration of database
+    * Feature: Manual entry of YouTube URL for download as trailer
+    * Fix: String conversion error during scraping
+    * Fix: VerifyCompleted error during scraping
+    * Fix: Access denied when writing nfo
+    * Change/Fix: Massive amounts of code re-writes\tweaks\fixes
+    * Change: Improvements to Offline Media Manager
+    * Change: Safer loading from/saving to image cache
+    * Change: More options for trailers, less sites to choose from
+    * Change: Re-write of media info handling to be more compatible with XBMC's native flagging. (May need some tweaking)
+    * Change: Smarter "Mark All" state
+    * Change: Update list titles during multi-scrapers
+    * Change: Tweaks to GUI and item naming
+
 *Changelog for version r422:*
     * Fix: Frame extraction not working
     * Change/Fix: Improvements to saving panel/splitter positions
