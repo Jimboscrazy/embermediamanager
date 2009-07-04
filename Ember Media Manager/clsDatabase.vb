@@ -254,6 +254,8 @@ Public Class Database
                     _movieDB.HasTrailer = SQLreader("HasTrailer")
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.FaS.Nfo = SQLreader("NfoPath")
                     _movieDB.HasNfo = SQLreader("HasNfo")
+                    If Not DBNull.Value.Equals(SQLreader("SubPath")) Then _movieDB.FaS.Subs = SQLreader("SubPath")
+                    _movieDB.HasSub = SQLreader("HasSub")
                     If Not DBNull.Value.Equals(SQLreader("ExtraPath")) Then _movieDB.FaS.Extra = SQLreader("ExtraPath")
                     _movieDB.HasExtra = SQLreader("HasExtra")
                     If Not DBNull.Value.Equals(SQLreader("source")) Then _movieDB.FaS.Source = SQLreader("source")
@@ -491,7 +493,7 @@ Public Class Database
                 Dim parFanartPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartPath", DbType.String, 0, "FanartPath")
                 Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
                 Dim parTrailerPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailerPath", DbType.String, 0, "TrailerPath")
-                Dim parSubsPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSubsPath", DbType.String, 0, "SubsPath")
+                Dim parSubPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSubPath", DbType.String, 0, "SubPath")
                 Dim parExtraPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtraPath", DbType.String, 0, "ExtraPath")
                 Dim parFanartURL As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartURL", DbType.String, 0, "FanartURL")
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.String, 0, "NeedsSave")
@@ -508,7 +510,7 @@ Public Class Database
                 parFanartPath.Value = _movieDB.FaS.Fanart
                 parNfoPath.Value = _movieDB.FaS.Nfo
                 parTrailerPath.Value = _movieDB.FaS.Trailer
-                parSubsPath.Value = _movieDB.FaS.Subs
+                parSubPath.Value = _movieDB.FaS.Subs
                 parExtraPath.Value = _movieDB.FaS.Extra
                 parFanartURL.Value = _movieDB.Movie.Fanart.URL
 
