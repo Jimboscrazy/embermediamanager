@@ -125,6 +125,7 @@ Public Class dlgOfflineHolder
                         Me.pbProgress.MarqueeAnimationSpeed = 25
                         Me.pbProgress.Visible = True
                         'Me.txtMovieName.Text = String.Format("{0} [OffLine]", Master.tmpMovie.Title)
+                        Me.GetIMDB_Button.Enabled = False
                         IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, tMovie.Movie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                     End If
                 End If
@@ -157,8 +158,13 @@ Public Class dlgOfflineHolder
                     tmpImages.Dispose()
                     tmpImages = Nothing
                 End If
-
-                Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
+                ' Apply default pattern to the Folder Name
+                Dim ff As New FileFolderRenamer.FileRename
+                ff.Title = tMovie.Movie.Title
+                ff.Year = tMovie.Movie.Year
+                ff.FileName = ""
+                Me.txtMovieName.Text = String.Concat(FileFolderRenamer.ProccessPattern(ff, Master.eSettings.FoldersPattern), " [Offline]")
+                'Me.txtMovieName.Text = String.Format("{0} [OffLine]", tMovie.Movie.Title)
             Else
                 MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
             End If
@@ -166,6 +172,7 @@ Public Class dlgOfflineHolder
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Me.pbProgress.Visible = False
+        Me.GetIMDB_Button.Enabled = True
         CheckConditions()
     End Sub
 
@@ -274,7 +281,6 @@ Public Class dlgOfflineHolder
 
     Private Sub txtMovieName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieName.TextChanged
         Me.currNameText = Me.txtMovieName.Text
-
         Me.tmrNameWait.Enabled = False
         Me.tmrNameWait.Enabled = True
     End Sub
@@ -390,7 +396,7 @@ Public Class dlgOfflineHolder
             tMovie.ListTitle = MovieName.Replace("[Offline]", String.Empty).Trim
         End If
 
-        Master.DB.SaveMovieToDB(tMovie, True, False, True)
+        tMovie = Master.DB.SaveMovieToDB(tMovie, True, False, True)
 
         Me.bwCreateHolder.ReportProgress(4, "Renaming Files")
         If Directory.Exists(buildPath) Then

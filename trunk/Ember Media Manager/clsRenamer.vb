@@ -151,7 +151,7 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Private Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String) As String
+    Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String) As String
         Try
             Dim pattern As String = opattern
             Dim strSource As String = String.Empty
@@ -222,7 +222,7 @@ Public Class FileFolderRenamer
             Return vbNullString
         End Try
     End Function
-    Private Function ApplyPattern(ByVal pattern As String, ByVal flag As String, ByVal v As String) As String
+    Private Shared Function ApplyPattern(ByVal pattern As String, ByVal flag As String, ByVal v As String) As String
 
         pattern = pattern.Replace(String.Concat("$", flag), v)
         If Not v = String.Empty Then
