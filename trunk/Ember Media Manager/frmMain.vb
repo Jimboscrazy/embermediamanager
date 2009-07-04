@@ -2381,7 +2381,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
-                                    If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) Then
+                                    If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) Then
                                         If Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs) Then
                                             drvRow.Item(5) = True
                                             scrapeMovie.FaS.Extra = "TRUE"
@@ -2513,7 +2513,7 @@ Public Class frmMain
                                     End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.AutoThumbs > 0 AndAlso Not drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(scrapeMovie.FaS.Filename).FullName, "extrathumbs")) AndAlso _
+                                    If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(scrapeMovie.FaS.Filename).FullName, "extrathumbs")) AndAlso _
                                     (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
                                         If Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs) Then drvRow.Item(5) = True
                                     End If
