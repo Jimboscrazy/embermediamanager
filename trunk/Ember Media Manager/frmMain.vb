@@ -1811,9 +1811,9 @@ Public Class frmMain
                         SQLcommand.CommandText = "DELETE FROM movies WHERE MoviePath = (?);"
                         Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMoviePath", DbType.String, 0, "MoviePath")
                         For Each mRow As DataRow In dtMediaList.Rows
-                            MLFind.SearchString = mRow.Item(0)
+                            MLFind.SearchString = mRow.Item(0).ToString.ToLower
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
-                            If IsNothing(MLFound) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0))) Then
+                            If IsNothing(MLFound) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0)).ToLower) Then
                                 parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
 
