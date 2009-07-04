@@ -1183,7 +1183,7 @@ Public Class Master
         Return aResults
     End Function
 
-    Public Shared Function GetFolderContents(ByVal sPath As String) As String()
+    Public Shared Function GetFolderContents(ByVal sPath As String, ByVal bSingle As Boolean) As String()
 
         '//
         ' Check if a folder has all the items (nfo, poster, fanart, etc)
@@ -1206,12 +1206,12 @@ Public Class Master
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                 di = New DirectoryInfo(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName)
-                If File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                If bSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     ExtraPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
             Else
                 di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
-                If File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                If bSingle AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     ExtraPath = String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
             End If
@@ -1235,7 +1235,7 @@ Public Class Master
 
             'fanart
             Select Case True
-                Case fList.Contains(Path.Combine(parPath, "fanart.jpg"))
+                Case bSingle AndAlso fList.Contains(Path.Combine(parPath, "fanart.jpg"))
                     FanartPath = Path.Combine(parPath, "fanart.jpg")
                 Case fList.Contains(String.Concat(tmpName, "-fanart.jpg"))
                     FanartPath = String.Concat(tmpName, "-fanart.jpg")
@@ -1253,17 +1253,17 @@ Public Class Master
 
             'poster
             Select Case True
-                Case fList.Contains(Path.Combine(parPath, "movie.tbn"))
+                Case bSingle AndAlso fList.Contains(Path.Combine(parPath, "movie.tbn"))
                     PosterPath = Path.Combine(parPath, "movie.tbn")
-                Case fList.Contains(Path.Combine(parPath, "poster.tbn"))
+                Case bSingle AndAlso fList.Contains(Path.Combine(parPath, "poster.tbn"))
                     PosterPath = Path.Combine(parPath, "poster.tbn")
-                Case fList.Contains(Path.Combine(parPath, "movie.jpg"))
+                Case bSingle AndAlso fList.Contains(Path.Combine(parPath, "movie.jpg"))
                     PosterPath = Path.Combine(parPath, "movie.jpg")
                 Case fList.Contains(String.Concat(tmpName, ".tbn"))
                     PosterPath = String.Concat(tmpName, ".tbn")
                 Case fList.Contains(String.Concat(tmpNameNoStack, ".tbn"))
                     PosterPath = String.Concat(tmpNameNoStack, ".tbn")
-                Case fList.Contains(Path.Combine(parPath, "poster.jpg"))
+                Case bSingle AndAlso fList.Contains(Path.Combine(parPath, "poster.jpg"))
                     PosterPath = Path.Combine(parPath, "poster.jpg")
                 Case fList.Contains(String.Concat(tmpName, ".jpg"))
                     PosterPath = String.Concat(tmpName, ".jpg")
@@ -1271,13 +1271,13 @@ Public Class Master
                     PosterPath = String.Concat(tmpNameNoStack, ".jpg")
                 Case fList.Contains(Path.Combine(parPath, "video_ts.jpg"))
                     PosterPath = Path.Combine(parPath, "video_ts.jpg")
-                Case fList.Contains(Path.Combine(parPath, "folder.jpg"))
+                Case bSingle AndAlso fList.Contains(Path.Combine(parPath, "folder.jpg"))
                     PosterPath = Path.Combine(parPath, "folder.jpg")
             End Select
 
             'nfo
             Select Case True
-                Case fList.Contains(Path.Combine(parPath, "movie.nfo"))
+                Case bSingle AndAlso fList.Contains(Path.Combine(parPath, "movie.nfo"))
                     NfoPath = Path.Combine(parPath, "movie.nfo")
                 Case fList.Contains(String.Concat(tmpName, ".nfo"))
                     NfoPath = String.Concat(tmpName, ".nfo")

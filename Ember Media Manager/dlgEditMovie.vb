@@ -512,6 +512,7 @@ Public Class dlgEditMovie
                 Master.currMovie.IsMark = Me.chkMark.Checked
 
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
+                    Master.currMovie.ListTitle = .txtTitle.Text.Trim
                     Master.currMovie.Movie.Title = .txtTitle.Text.Trim
                 End If
 
