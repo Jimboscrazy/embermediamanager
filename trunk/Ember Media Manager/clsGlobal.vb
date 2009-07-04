@@ -1240,7 +1240,6 @@ Public Class Master
                 fList.Add(sFile.FullName.ToLower)
             Next
 
-
             parPath = Directory.GetParent(sPath).FullName.ToLower
             tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))).ToLower
             tmpNameNoStack = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath)).ToLower

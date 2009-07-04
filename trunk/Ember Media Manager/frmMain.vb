@@ -3289,9 +3289,9 @@ doCancel:
                     Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
                     Select Case sType
                         Case Master.ScrapeType.FullAsk
-                            Me.tslLoading.Text = "Updating Media (All Movies - Ask):"
+                            Me.tslLoading.Text = "Scraping Media (All Movies - Ask):"
                         Case Master.ScrapeType.FullAuto
-                            Me.tslLoading.Text = "Updating Media (All Movies - Auto):"
+                            Me.tslLoading.Text = "Scraping Media (All Movies - Auto):"
                         Case Master.ScrapeType.CleanFolders
                             Me.tslLoading.Text = "Cleaning Files:"
                         Case Master.ScrapeType.CopyBD
@@ -3299,9 +3299,9 @@ doCancel:
                         Case Master.ScrapeType.RevertStudios
                             Me.tslLoading.Text = "Reverting Media Info Studio Tags:"
                         Case Master.ScrapeType.UpdateAuto
-                            Me.tslLoading.Text = "Updating Media (Movies Missing Items - Auto):"
+                            Me.tslLoading.Text = "Scraping Media (Movies Missing Items - Auto):"
                         Case Master.ScrapeType.UpdateAsk
-                            Me.tslLoading.Text = "Updating Media (Movies Missing Items - Ask):"
+                            Me.tslLoading.Text = "Scraping Media (Movies Missing Items - Ask):"
                     End Select
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
@@ -3325,15 +3325,15 @@ doCancel:
                     If chkCount > 0 Then
                         Select Case sType
                             Case Master.ScrapeType.NewAsk
-                                Me.tslLoading.Text = "Updating Media (New Movies - Ask):"
+                                Me.tslLoading.Text = "Scraping Media (New Movies - Ask):"
                             Case Master.ScrapeType.NewAuto
-                                Me.tslLoading.Text = "Updating Media (New Movies - Auto):"
+                                Me.tslLoading.Text = "Scraping Media (New Movies - Auto):"
                             Case Master.ScrapeType.MarkAsk
                                 Me.btnMarkAll.Enabled = False
-                                Me.tslLoading.Text = "Updating Media (Marked Movies - Ask):"
+                                Me.tslLoading.Text = "Scraping Media (Marked Movies - Ask):"
                             Case Master.ScrapeType.MarkAuto
                                 Me.btnMarkAll.Enabled = False
-                                Me.tslLoading.Text = "Updating Media (Marked Movies - Auto):"
+                                Me.tslLoading.Text = "Scraping Media (Marked Movies - Auto):"
                         End Select
                         Me.tspbLoading.Maximum = chkCount
                         Me.tslLoading.Visible = True
