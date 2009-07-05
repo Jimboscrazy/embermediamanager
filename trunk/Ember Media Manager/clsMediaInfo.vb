@@ -96,19 +96,17 @@ Public Class MediaInfo
                 miVideo = New Video
                 miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
                 miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
-                miVideo.CodecID = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID/Hint"))
-                If String.IsNullOrEmpty(miVideo.CodecID) OrElse IsNumeric(miVideo.CodecID) Then
+                miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID/Hint"))
+                If String.IsNullOrEmpty(miVideo.Codec) OrElse IsNumeric(miVideo.Codec) Then
                     vCodec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"))
-                    miVideo.CodecID = If(IsNumeric(vCodec), String.Empty, vCodec)
+                    miVideo.Codec = If(IsNumeric(vCodec), ConvertVFormat(Me.Get_(StreamKind.Visual, v, "Format")), vCodec)
                 End If
-                miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "Format"))
                 miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String")
                 miVideo.Aspect = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
                 miVideo.Scantype = Me.Get_(StreamKind.Visual, v, "ScanType")
                 With miVideo
                     If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse _
-                    Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) OrElse Not String.IsNullOrEmpty(.Scantype) OrElse _
-                    Not String.IsNullOrEmpty(.CodecID) Then
+                    Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) OrElse Not String.IsNullOrEmpty(.Scantype) Then
                         fiOut.StreamDetails.Video.Add(miVideo)
                     End If
                 End With
@@ -120,12 +118,11 @@ Public Class MediaInfo
             Dim aLang As String = String.Empty
             For a As Integer = 0 To AudioStreams - 1
                 miAudio = New Audio
-                miAudio.CodecID = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"))
-                If String.IsNullOrEmpty(miAudio.CodecID) OrElse IsNumeric(miAudio.CodecID) Then
+                miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"))
+                If String.IsNullOrEmpty(miAudio.Codec) OrElse IsNumeric(miAudio.Codec) Then
                     aCodec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"))
-                    miAudio.CodecID = If(IsNumeric(aCodec), String.Empty, aCodec)
+                    miAudio.Codec = If(IsNumeric(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format")), aCodec)
                 End If
-                miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format"))
                 miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
                 aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
                 If Not String.IsNullOrEmpty(aLang) Then
@@ -133,7 +130,7 @@ Public Class MediaInfo
                     miAudio.Language = ConvertL(miAudio.LongLanguage)
                 End If
                 With miAudio
-                    If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.CodecID) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
+                    If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
                         fiOut.StreamDetails.Audio.Add(miAudio)
                     End If
                 End With
@@ -277,7 +274,6 @@ Public Class MediaInfo
         Private _width As String
         Private _height As String
         Private _codec As String
-        Private _codecid As String
         Private _duration As String
         Private _aspect As String
         Private _scantype As String
@@ -299,16 +295,6 @@ Public Class MediaInfo
             End Get
             Set(ByVal Value As String)
                 Me._height = Value
-            End Set
-        End Property
-
-        <XmlElement("codecid")> _
-        Public Property CodecID() As String
-            Get
-                Return Me._codecid
-            End Get
-            Set(ByVal Value As String)
-                Me._codecid = Value
             End Set
         End Property
 
@@ -356,7 +342,6 @@ Public Class MediaInfo
 
     Public Class Audio
 
-        Private _codecid As String
         Private _codec As String
         Private _channels As String
         Private _language As String
@@ -379,16 +364,6 @@ Public Class MediaInfo
             End Get
             Set(ByVal value As String)
                 Me._longlanguage = value
-            End Set
-        End Property
-
-        <XmlElement("codecid")> _
-        Public Property CodecID() As String
-            Get
-                Return Me._codecid
-            End Get
-            Set(ByVal Value As String)
-                Me._codecid = Value
             End Set
         End Property
 

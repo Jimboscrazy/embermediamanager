@@ -152,7 +152,6 @@ Public Class Database
                                 "Video_Height TEXT," & _
                                 "Video_Codec TEXT, " & _
                                 "Video_Duration TEXT, " & _
-                                "Video_CodecId TEXT, " & _
                                 "Video_ScanType TEXT, " & _
                                 "Video_AspectDisplayRatio TEXT, " & _
                                 "PRIMARY KEY (MovieID,StreamID) " & _
@@ -167,7 +166,6 @@ Public Class Database
                                 "Audio_Language TEXT, " & _
                                 "Audio_Codec TEXT, " & _
                                 "Audio_Channel TEXT, " & _
-                                "Audio_CodecID TEXT, " & _
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
@@ -322,7 +320,6 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Video_Height")) Then video.Height = SQLreader("Video_Height")
                         If Not DBNull.Value.Equals(SQLreader("Video_Codec")) Then video.Codec = SQLreader("Video_Codec")
                         If Not DBNull.Value.Equals(SQLreader("Video_Duration")) Then video.Duration = SQLreader("Video_Duration")
-                        If Not DBNull.Value.Equals(SQLreader("Video_CodecId")) Then video.CodecID = SQLreader("Video_CodecId")
                         If Not DBNull.Value.Equals(SQLreader("Video_ScanType")) Then video.Scantype = SQLreader("Video_ScanType")
                         If Not DBNull.Value.Equals(SQLreader("Video_AspectDisplayRatio")) Then video.Aspect = SQLreader("Video_AspectDisplayRatio")
                         _movieDB.Movie.FileInfo.StreamDetails.Video.Add(video)
@@ -339,7 +336,6 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Audio_Language")) Then audio.Language = SQLreader("Audio_Language")
                         If Not DBNull.Value.Equals(SQLreader("Audio_Codec")) Then audio.Codec = SQLreader("Audio_Codec")
                         If Not DBNull.Value.Equals(SQLreader("Audio_Channel")) Then audio.Channels = SQLreader("Audio_Channel")
-                        If Not DBNull.Value.Equals(SQLreader("Audio_CodecID")) Then audio.CodecID = SQLreader("Audio_CodecID")
                         _movieDB.Movie.FileInfo.StreamDetails.Audio.Add(audio)
                     End While
                 End Using
@@ -624,15 +620,14 @@ Public Class Database
                     Using SQLcommandMoviesVStreams As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommandMoviesVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesVStreams (", _
                                 "MovieID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
-                                "Video_CodecId, Video_ScanType,Video_AspectDisplayRatio", _
-                                ") VALUES (?,?,?,?,?,?,?,?,?);")
+                                "Video_ScanType, Video_AspectDisplayRatio", _
+                                ") VALUES (?,?,?,?,?,?,?,?);")
                         Dim parVideo_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.String, 0, "MovieID")
                         Dim parVideo_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StreamID", DbType.String, 0, "StreamID")
                         Dim parVideo_Width As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
                         Dim parVideo_Height As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Height", DbType.String, 0, "Video_Height")
                         Dim parVideo_Codec As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Codec", DbType.String, 0, "Video_Codec")
                         Dim parVideo_Duration As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Duration", DbType.String, 0, "Video_Duration")
-                        Dim parVideo_CodecId As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_CodecId", DbType.String, 0, "Video_CodecId")
                         Dim parVideo_ScanType As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_ScanType", DbType.String, 0, "Video_ScanType")
                         Dim parVideo_AspectDisplayRatio As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_AspectDisplayRatio", DbType.String, 0, "Video_AspectDisplayRatio")
                         For i As Integer = 0 To tmpMovie.FileInfo.StreamDetails.Video.Count - 1
@@ -642,7 +637,6 @@ Public Class Database
                             parVideo_Height.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Height
                             parVideo_Codec.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Codec
                             parVideo_Duration.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Duration
-                            parVideo_CodecId.Value = tmpMovie.FileInfo.StreamDetails.Video(i).CodecID
                             parVideo_ScanType.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Scantype
                             parVideo_AspectDisplayRatio.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Aspect
                             SQLcommandMoviesVStreams.ExecuteNonQuery()
@@ -650,21 +644,19 @@ Public Class Database
                     End Using
                     Using SQLcommandMoviesAStreams As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommandMoviesAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesAStreams (", _
-                                "MovieID, StreamID, Audio_Language,Audio_Codec,Audio_Channel,Audio_CodecID", _
-                                ") VALUES (?,?,?,?,?,?);")
+                                "MovieID, StreamID, Audio_Language, Audio_Codec, Audio_Channel", _
+                                ") VALUES (?,?,?,?,?);")
                         Dim parAudio_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_MovieID", DbType.String, 0, "MovieID")
                         Dim parAudio_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_StreamID", DbType.String, 0, "StreamID")
                         Dim parAudio_Language As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Language", DbType.String, 0, "Audio_Language")
                         Dim parAudio_Codec As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Codec", DbType.String, 0, "Audio_Codec")
                         Dim parAudio_Channel As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Channel", DbType.String, 0, "Audio_Channel")
-                        Dim parAudio_CodecID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_CodecID", DbType.String, 0, "Audio_CodecID")
                         For i As Integer = 0 To tmpMovie.FileInfo.StreamDetails.Audio.Count - 1
                             parAudio_MovieID.Value = _movieDB.ID
                             parAudio_StreamID.Value = i
                             parAudio_Language.Value = tmpMovie.FileInfo.StreamDetails.Audio(i).Language
                             parAudio_Codec.Value = tmpMovie.FileInfo.StreamDetails.Audio(i).Codec
                             parAudio_Channel.Value = tmpMovie.FileInfo.StreamDetails.Audio(i).Channels
-                            parAudio_CodecID.Value = tmpMovie.FileInfo.StreamDetails.Audio(i).CodecID
                             SQLcommandMoviesAStreams.ExecuteNonQuery()
                         Next
                     End Using
