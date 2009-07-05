@@ -1938,7 +1938,11 @@ Public Class frmMain
                                     tmpMovieDB.ListTitle = Master.FilterName(Directory.GetParent(sFile.Filename).Name)
                                 End If
                             Else
-                                tmpMovieDB.ListTitle = Master.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
+                                    tmpMovieDB.ListTitle = Master.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                Else
+                                    tmpMovieDB.ListTitle = Master.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                End If
                             End If
                         Else
                             tmpMovieDB.ListTitle = tmpMovieDB.Movie.Title
