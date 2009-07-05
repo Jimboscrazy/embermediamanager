@@ -46,8 +46,11 @@ Public Class Master
     Public Shared tmpMovie As New Media.Movie
 
     Public Shared FlagsXML As New XDocument
+    Public Shared alFlags As New ArrayList
     Public Shared GenreXML As New XDocument
+    Public Shared alGenres As New ArrayList
     Public Shared StudioXML As New XDocument
+    Public Shared alStudios As New ArrayList
     Public Shared RatingXML As New XDocument
     Public Shared LanguageXML As New XDocument
 
@@ -708,31 +711,31 @@ Public Class Master
                     End If
                 End If
 
-                If File.Exists(vresImage) Then
+                If Not String.IsNullOrEmpty(vresImage) AndAlso alFlags.Contains(vresImage.ToLower) Then
                     Using fsImage As New FileStream(vresImage, FileMode.Open, FileAccess.Read)
                         frmMain.pbResolution.Image = Image.FromStream(fsImage)
                     End Using
                 End If
 
-                If File.Exists(vsourceImage) Then
+                If Not String.IsNullOrEmpty(vsourceImage) AndAlso alFlags.Contains(vsourceImage.ToLower) Then
                     Using fsImage As New FileStream(vsourceImage, FileMode.Open, FileAccess.Read)
                         frmMain.pbVideo.Image = Image.FromStream(fsImage)
                     End Using
                 End If
 
-                If File.Exists(vtypeImage) Then
+                If Not String.IsNullOrEmpty(vtypeImage) AndAlso alFlags.Contains(vtypeImage.ToLower) Then
                     Using fsImage As New FileStream(vtypeImage, FileMode.Open, FileAccess.Read)
                         frmMain.pbVType.Image = Image.FromStream(fsImage)
                     End Using
                 End If
 
-                If File.Exists(atypeImage) Then
+                If Not String.IsNullOrEmpty(atypeImage) AndAlso alFlags.Contains(atypeImage.ToLower) Then
                     Using fsImage As New FileStream(atypeImage, FileMode.Open, FileAccess.Read)
                         frmMain.pbAudio.Image = Image.FromStream(fsImage)
                     End Using
                 End If
 
-                If File.Exists(achanImage) Then
+                If Not String.IsNullOrEmpty(achanImage) AndAlso alFlags.Contains(achanImage.ToLower) Then
                     Using fsImage As New FileStream(achanImage, FileMode.Open, FileAccess.Read)
                         frmMain.pbChannels.Image = Image.FromStream(fsImage)
                     End Using
@@ -754,7 +757,7 @@ Public Class Master
         Dim imgStudio As Image = Nothing
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Studios")
 
-        If File.Exists(Path.Combine(mePath, String.Concat(strStudio, ".png"))) Then
+        If alStudios.Contains(Path.Combine(mePath, String.Concat(strStudio, ".png")).ToLower) Then
             Using fsImage As New FileStream(Path.Combine(mePath, String.Concat(strStudio, ".png")), FileMode.Open, FileAccess.Read)
                 imgStudio = Image.FromStream(fsImage)
             End Using
@@ -771,7 +774,7 @@ Public Class Master
                     imgStudioStr = Path.Combine(mePath, xStudio(0).ToString)
                 End If
 
-                If Not String.IsNullOrEmpty(imgStudioStr) AndAlso File.Exists(imgStudioStr) Then
+                If Not String.IsNullOrEmpty(imgStudioStr) AndAlso alStudios.Contains(imgStudioStr.ToLower) Then
                     Using fsImage As New FileStream(imgStudioStr, FileMode.Open, FileAccess.Read)
                         imgStudio = Image.FromStream(fsImage)
                     End Using
@@ -811,7 +814,7 @@ Public Class Master
                     imgGenreStr = Path.Combine(mePath, xGenre(0).ToString)
                 End If
 
-                If Not String.IsNullOrEmpty(imgGenreStr) AndAlso File.Exists(imgGenreStr) Then
+                If Not String.IsNullOrEmpty(imgGenreStr) AndAlso alGenres.Contains(imgGenreStr.ToLower) Then
                     Using fsImage As New FileStream(imgGenreStr, FileMode.Open, FileAccess.Read)
                         imgGenre = Image.FromStream(fsImage)
                     End Using
@@ -2317,11 +2320,22 @@ Public Class Master
     End Sub
 
     Public Shared Sub CacheXMLs()
+        Dim di As DirectoryInfo
+        Dim lFI As New List(Of FileInfo)
+
         Dim fPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
         If File.Exists(fPath) Then
             FlagsXML = XDocument.Load(fPath)
         Else
             MsgBox(String.Concat("Cannot find Flags.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, fPath), MsgBoxStyle.Critical, "File Not Found")
+        End If
+
+        If Directory.Exists(Directory.GetParent(fPath).FullName) Then
+            di = New DirectoryInfo(Directory.GetParent(fPath).FullName)
+            lFI.AddRange(di.GetFiles("*.png"))
+            For Each fFile As FileInfo In lFI
+                alFlags.Add(fFile.FullName.ToLower)
+            Next
         End If
 
         Dim gPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
@@ -2331,11 +2345,29 @@ Public Class Master
             MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, gPath), MsgBoxStyle.Critical, "File Not Found")
         End If
 
+        If Directory.Exists(Directory.GetParent(gPath).FullName) Then
+            di = New DirectoryInfo(Directory.GetParent(gPath).FullName)
+            lFI.Clear()
+            lFI.AddRange(di.GetFiles("*.jpg"))
+            For Each gFile As FileInfo In lFI
+                alGenres.Add(gFile.FullName.ToLower)
+            Next
+        End If
+
         Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
         If File.Exists(sPath) Then
             StudioXML = XDocument.Load(sPath)
         Else
             MsgBox(String.Concat("Cannot find Studios.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, sPath), MsgBoxStyle.Critical, "File Not Found")
+        End If
+
+        If Directory.Exists(Directory.GetParent(sPath).FullName) Then
+            di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
+            lFI.Clear()
+            lFI.AddRange(di.GetFiles("*.png"))
+            For Each sFile As FileInfo In lFI
+                alStudios.Add(sFile.FullName.ToLower)
+            Next
         End If
 
         Dim rPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
