@@ -552,11 +552,17 @@ Public Class Master
 
             If Directory.Exists(sPath) Then
                 Dim tmpList As New ArrayList
-                Dim di As New DirectoryInfo(sPath)
+                Dim di As DirectoryInfo
                 Dim lFi As New List(Of FileInfo)
                 Dim SkipStack As Boolean = False
                 Dim fList As New List(Of FileAndSource)
                 Dim tSingle As Boolean = False
+
+                If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
+                    di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
+                Else
+                    di = New DirectoryInfo(sPath)
+                End If
 
                 Try
                     lFi.AddRange(di.GetFiles())
