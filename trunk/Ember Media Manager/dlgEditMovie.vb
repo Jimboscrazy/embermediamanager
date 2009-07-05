@@ -766,6 +766,8 @@ Public Class dlgEditMovie
                     Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                     Me.lblFanartSize.Visible = True
 
+                    Me.RefreshExtraThumbs()
+
                 End If
             End Using
 
