@@ -112,6 +112,7 @@ Public Class Database
                                 "Playcount TEXT, " & _
                                 "Watched TEXT, " & _
                                 "File TEXT, " & _
+                                "Path TEXT, " & _
                                 "FileNameAndPath TEXT, " & _
                                 "Status TEXT, " & _
                                 "Trailer TEXT, " & _
@@ -287,7 +288,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount")
                         If Not DBNull.Value.Equals(SQLreader("Watched")) Then .Watched = SQLreader("Watched")
                         If Not DBNull.Value.Equals(SQLreader("File")) Then .File = SQLreader("File")
-                        If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then .Path = SQLreader("MoviePath")
+                        If Not DBNull.Value.Equals(SQLreader("Path")) Then .Path = SQLreader("Path")
                         If Not DBNull.Value.Equals(SQLreader("FileNameAndPath")) Then .FileNameAndPath = SQLreader("FileNameAndPath")
                         If Not DBNull.Value.Equals(SQLreader("Status")) Then .Status = SQLreader("Status")
                         If Not DBNull.Value.Equals(SQLreader("FanartURL")) Then .Fanart.URL = SQLreader("FanartURL")
@@ -432,9 +433,9 @@ Public Class Database
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
-                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
+                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     'SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), HasPoster = (?), HasFanart = (?), HasNfo = (?), HasTrailer = (?), HasSub = (?), HasExtra = (?), ", _
                     '    "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
@@ -443,9 +444,9 @@ Public Class Database
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "ID, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
-                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File,  FileNameAndPath, Trailer, ", _
+                        "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
                         "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.String, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
@@ -485,6 +486,7 @@ Public Class Database
                 Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.String, 0, "Playcount")
                 Dim parWatched As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parWatched", DbType.String, 0, "Watched")
                 Dim parFile As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFile", DbType.String, 0, "File")
+                Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "Path")
                 Dim parFileNameAndPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFileNameAndPath", DbType.String, 0, "FileNameAndPath")
                 Dim parStatus As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStatus", DbType.String, 0, "Status")
                 Dim parTrailer As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTrailer", DbType.String, 0, "Trailer")
@@ -546,6 +548,7 @@ Public Class Database
                 parWatched.Value = tmpMovie.Watched
                 parStatus.Value = tmpMovie.Status
                 parFile.Value = tmpMovie.File
+                parPath.Value = tmpMovie.Path
                 parFileNameAndPath.Value = tmpMovie.FileNameAndPath
                 parTrailer.Value = tmpMovie.Trailer
 
@@ -737,26 +740,27 @@ Public Class Database
         Return _movieDB
     End Function
 
-    Public Function SaveMovieToDB(ByVal _movie As Media.Movie, Optional ByVal IsMark As Boolean = False, Optional ByVal IsLock As Boolean = False) As Master.DBMovie
-        Dim _movieDB As New Master.DBMovie
-        Try
-            _movieDB.Movie = _movie
-            Dim _tmpMovieDB As Master.DBMovie = LoadMovieFromDB(_movie.Path)
-            If _tmpMovieDB.ID = -1 Then
-                ' New Movie!!!! Can't Use this Function for new Movies need DBMovie for that
-                Return _tmpMovieDB
-            Else
-                _movieDB.ID = _tmpMovieDB.ID
-                _movieDB.FaS = _tmpMovieDB.FaS
-            End If
-            _movieDB.IsMark = IsMark
-            _movieDB.IsLock = IsLock
-            _movieDB = SaveMovieToDB(_movieDB, False)
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        Return _movieDB
-    End Function
+    'Public Function SaveMovieToDB(ByVal _movie As Media.Movie, ByVal sPath As String, Optional ByVal IsMark As Boolean = False, Optional ByVal IsLock As Boolean = False) As Master.DBMovie
+    '    Dim _movieDB As New Master.DBMovie
+    '    Try
+    '        _movieDB.Movie = _movie
+    '        Dim _tmpMovieDB As Master.DBMovie = LoadMovieFromDB(sPath)
+    '        If _tmpMovieDB.ID = -1 Then
+    '            ' New Movie!!!! Can't Use this Function for new Movies need DBMovie for that
+    '            Return _tmpMovieDB
+    '        Else
+    '            _movieDB.ID = _tmpMovieDB.ID
+    '            _movieDB.FaS = _tmpMovieDB.FaS
+    '        End If
+    '        _movieDB.IsMark = IsMark
+    '        _movieDB.IsLock = IsLock
+    '        _movieDB = SaveMovieToDB(_movieDB, False)
+    '    Catch ex As Exception
+    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+    '    End Try
+    '    Return _movieDB
+    'End Function
+
     Public Function DeleteFromDB(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
