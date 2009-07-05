@@ -497,7 +497,7 @@ Partial Class frmMain
         Me.RefreshAllMoviesToolStripMenuItem.Image = CType(resources.GetObject("RefreshAllMoviesToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RefreshAllMoviesToolStripMenuItem.Name = "RefreshAllMoviesToolStripMenuItem"
         Me.RefreshAllMoviesToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.RefreshAllMoviesToolStripMenuItem.Text = "Refresh All Movies"
+        Me.RefreshAllMoviesToolStripMenuItem.Text = "Reload All Movies"
         '
         'scMain
         '
@@ -582,7 +582,7 @@ Partial Class frmMain
         Me.cmnuRefresh.Image = CType(resources.GetObject("cmnuRefresh.Image"), System.Drawing.Image)
         Me.cmnuRefresh.Name = "cmnuRefresh"
         Me.cmnuRefresh.Size = New System.Drawing.Size(201, 22)
-        Me.cmnuRefresh.Text = "Refresh"
+        Me.cmnuRefresh.Text = "Reload"
         '
         'cmnuMark
         '
