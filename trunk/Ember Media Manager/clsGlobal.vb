@@ -1179,6 +1179,9 @@ Public Class Master
                     Case fList.Contains(String.Concat(tmpName, t))
                         SubPath = String.Concat(tmpName, t)
                         Exit For
+                    Case sFAS.isSingle AndAlso eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(parPath, String.Concat("movie", t)))
+                        SubPath = Path.Combine(parPath, String.Concat("movie", t))
+                        Exit For
                 End Select
             Next
 
@@ -1186,12 +1189,22 @@ Public Class Master
                 Select Case True
                     Case fList.Contains(String.Concat(tmpNameNoStack, "-trailer", t))
                         TrailerPath = String.Concat(tmpNameNoStack, "-trailer", t)
+                        Exit For
                     Case fList.Contains(String.Concat(tmpName, "-trailer", t))
                         TrailerPath = String.Concat(tmpName, "-trailer", t)
+                        Exit For
                     Case fList.Contains(String.Concat(tmpNameNoStack, "[trailer]", t))
                         TrailerPath = String.Concat(tmpNameNoStack, "[trailer]", t)
+                        Exit For
                     Case fList.Contains(String.Concat(tmpName, "[trailer]", t))
                         TrailerPath = String.Concat(tmpName, "[trailer]", t)
+                        Exit For
+                    Case sFAS.isSingle AndAlso fList.Contains(Path.Combine(parPath, String.Concat("movie-trailer", t)))
+                        TrailerPath = Path.Combine(parPath, String.Concat("movie-trailer", t))
+                        Exit For
+                    Case sFAS.isSingle AndAlso fList.Contains(Path.Combine(parPath, String.Concat("movie[trailer]", t)))
+                        TrailerPath = Path.Combine(parPath, String.Concat("movie[trailer]", t))
+                        Exit For
                 End Select
             Next
 
@@ -1322,6 +1335,9 @@ Public Class Master
                     Case fList.Contains(String.Concat(tmpName, t))
                         SubPath = String.Concat(tmpName, t)
                         Exit For
+                    Case bSingle AndAlso eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(parPath, String.Concat("movie", t)))
+                        SubPath = Path.Combine(parPath, String.Concat("movie", t))
+                        Exit For
                 End Select
             Next
 
@@ -1329,12 +1345,22 @@ Public Class Master
                 Select Case True
                     Case fList.Contains(String.Concat(tmpNameNoStack, "-trailer", t))
                         TrailerPath = String.Concat(tmpNameNoStack, "-trailer", t)
+                        Exit For
                     Case fList.Contains(String.Concat(tmpName, "-trailer", t))
                         TrailerPath = String.Concat(tmpName, "-trailer", t)
+                        Exit For
                     Case fList.Contains(String.Concat(tmpNameNoStack, "[trailer]", t))
                         TrailerPath = String.Concat(tmpNameNoStack, "[trailer]", t)
+                        Exit For
                     Case fList.Contains(String.Concat(tmpName, "[trailer]", t))
                         TrailerPath = String.Concat(tmpName, "[trailer]", t)
+                        Exit For
+                    Case bSingle AndAlso fList.Contains(Path.Combine(parPath, String.Concat("movie-trailer", t)))
+                        TrailerPath = Path.Combine(parPath, String.Concat("movie-trailer", t))
+                        Exit For
+                    Case bSingle AndAlso fList.Contains(Path.Combine(parPath, String.Concat("movie[trailer]", t)))
+                        TrailerPath = Path.Combine(parPath, String.Concat("movie[trailer]", t))
+                        Exit For
                 End Select
             Next
 
