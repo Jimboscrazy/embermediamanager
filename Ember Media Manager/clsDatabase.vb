@@ -790,6 +790,9 @@ Public Class Database
                 SQLcommand.CommandText = "DELETE FROM MoviesFanart WHERE MovieID = (?);"
                 parId.Value = ID
                 SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = "DELETE FROM MoviesSets WHERE MovieID = (?);"
+                parId.Value = ID
+                SQLcommand.ExecuteNonQuery()
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
