@@ -2332,7 +2332,12 @@ Public Class Master
 
         If Directory.Exists(Directory.GetParent(fPath).FullName) Then
             di = New DirectoryInfo(Directory.GetParent(fPath).FullName)
-            lFI.AddRange(di.GetFiles("*.png"))
+
+            Try
+                lFI.AddRange(di.GetFiles("*.png"))
+            Catch
+            End Try
+
             For Each fFile As FileInfo In lFI
                 alFlags.Add(fFile.FullName.ToLower)
             Next
@@ -2348,7 +2353,12 @@ Public Class Master
         If Directory.Exists(Directory.GetParent(gPath).FullName) Then
             di = New DirectoryInfo(Directory.GetParent(gPath).FullName)
             lFI.Clear()
-            lFI.AddRange(di.GetFiles("*.jpg"))
+
+            Try
+                lFI.AddRange(di.GetFiles("*.jpg"))
+            Catch
+            End Try
+
             For Each gFile As FileInfo In lFI
                 alGenres.Add(gFile.FullName.ToLower)
             Next
@@ -2364,7 +2374,12 @@ Public Class Master
         If Directory.Exists(Directory.GetParent(sPath).FullName) Then
             di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
             lFI.Clear()
-            lFI.AddRange(di.GetFiles("*.png"))
+
+            Try
+                lFI.AddRange(di.GetFiles("*.png"))
+            Catch
+            End Try
+
             For Each sFile As FileInfo In lFI
                 alStudios.Add(sFile.FullName.ToLower)
             Next
