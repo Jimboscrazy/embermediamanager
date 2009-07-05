@@ -1542,15 +1542,15 @@ Public Class Master
                     Case sinADR >= 1.4 AndAlso iWidth = 852
                         resOut = "480"
                         'loose
-                    Case iWidth >= 1200 AndAlso iHeight >= 768
+                    Case iWidth >= 1200 AndAlso iHeight > 768
                         resOut = "1080"
-                    Case iWidth >= 1000 AndAlso iHeight >= 720
+                    Case iWidth >= 1000 AndAlso iHeight > 720
                         resOut = "768"
-                    Case iWidth >= 1024 AndAlso iHeight >= 500
+                    Case iWidth >= 1000 AndAlso iHeight > 500
                         resOut = "720"
-                    Case iWidth >= 700 AndAlso iHeight >= 540
+                    Case iWidth >= 700 AndAlso iHeight > 540
                         resOut = "576"
-                    Case iWidth >= 700 AndAlso iHeight >= 480
+                    Case iWidth >= 700 AndAlso iHeight > 480
                         resOut = "540"
                     Case Else
                         resOut = "480"
