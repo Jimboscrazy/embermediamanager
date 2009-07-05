@@ -2665,6 +2665,7 @@ doCancel:
     End Sub
     Private Sub bwScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwScraper.ProgressChanged
         If Not isCL Then
+            SetFilterColors()
             Me.tslStatus.Text = e.UserState.ToString
             Me.tspbLoading.Value = e.ProgressPercentage
         End If
