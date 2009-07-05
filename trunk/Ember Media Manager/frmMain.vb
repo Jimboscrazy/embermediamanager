@@ -3598,10 +3598,10 @@ doCancel:
 
             If Directory.Exists(Directory.GetParent(dRow(0).Item(1)).FullName) Then
                 If DoNfo Then
-                    If String.IsNullOrEmpty(dRow(0).Item(41)) Then
+                    If String.IsNullOrEmpty(dRow(0).Item(42)) Then
                         tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(1), dRow(0).Item(2))
                     Else
-                        tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(41), dRow(0).Item(2))
+                        tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(42), dRow(0).Item(2))
                     End If
 
                     If String.IsNullOrEmpty(tmpMovie.Title) Then
