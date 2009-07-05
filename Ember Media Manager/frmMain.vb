@@ -1913,7 +1913,7 @@ Public Class frmMain
                     End If
                     If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
                         'first, lets get the contents
-                        aContents = Master.GetFolderContents(sFile)
+                        aContents = Master.GetFolderContents(sFile.Filename, sFile.isSingle)
                         sFile.Poster = aContents(0)
                         sFile.Fanart = aContents(1)
                         sFile.Nfo = aContents(2)
