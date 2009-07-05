@@ -1562,21 +1562,25 @@ Public Class Master
         End If
     End Function
 
-    Public Shared Function TruncateURL(ByVal sString As String, ByVal MaxLength As Integer) As String
+    Public Shared Function TruncateURL(ByVal sString As String, ByVal MaxLength As Integer, Optional ByVal EndOnly As Boolean = False) As String
 
         '//
         ' Shorten a URL to fit on the GUI
         '\\
 
         Try
-            Dim sEnd As String = sString.Substring(sString.LastIndexOf("/"), sString.Length - sString.LastIndexOf("/"))
-            If ((MaxLength - sEnd.Length) - 3) > 0 Then
-                Return String.Format("{0}...{1}", Strings.Left(sString, (MaxLength - sEnd.Length) - 3), sEnd)
+            If EndOnly Then
+                Return Strings.Right(sString, MaxLength)
             Else
-                If sEnd.Length >= MaxLength Then
-                    Return String.Format("...{0}", Strings.Right(sEnd, MaxLength - 3))
+                Dim sEnd As String = sString.Substring(sString.LastIndexOf("/"), sString.Length - sString.LastIndexOf("/"))
+                If ((MaxLength - sEnd.Length) - 3) > 0 Then
+                    Return String.Format("{0}...{1}", Strings.Left(sString, (MaxLength - sEnd.Length) - 3), sEnd)
                 Else
-                    Return sEnd
+                    If sEnd.Length >= MaxLength Then
+                        Return String.Format("...{0}", Strings.Right(sEnd, MaxLength - 3))
+                    Else
+                        Return sEnd
+                    End If
                 End If
             End If
         Catch ex As Exception
@@ -2281,6 +2285,11 @@ Public Class Master
         If unClean Then
             Return sURL.Replace("$c$", ":").Replace("$s$", "/")
         Else
+            If sURL.ToLower.Contains("themoviedb.org") Then
+                sURL = String.Concat("[themoviedb.org]", TruncateURL(sURL, 40, True))
+            Else
+                sURL = TruncateURL(sURL, 40, True)
+            End If
             Return sURL.Replace(":", "$c$").Replace("/", "$s$")
         End If
     End Function
