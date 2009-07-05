@@ -1743,7 +1743,6 @@ Public Class frmMain
             Me.tabsMain.Enabled = False
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.EnableFilters(False)
-            Me.EnableSorting(False)
 
             Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count + 1
             Me.tspbLoading.Value = 0
@@ -2602,12 +2601,8 @@ Public Class frmMain
 
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Studio) AndAlso scrapeMovie.Movie.Studio.Contains(" / ") Then
                                     scrapeMovie.Movie.Studio = Strings.Trim(Strings.Left(scrapeMovie.Movie.Studio, Strings.InStr(scrapeMovie.Movie.Studio, " / ") - 1))
-                                Else
-                                    scrapeMovie.Movie.Studio = String.Empty
+                                    Master.DB.SaveMovieToDB(scrapeMovie, False, True, True)
                                 End If
-
-                                Master.DB.SaveMovieToDB(scrapeMovie, False, True, True)
-
                             Next
 
                     End Select
@@ -2687,7 +2682,6 @@ doCancel:
             Me.mnuMediaList.Enabled = True
             Me.tabsMain.Enabled = True
             Me.EnableFilters(True)
-            Me.EnableSorting(True)
 
             Me.btnMarkAll.Enabled = True
         Catch ex As Exception
@@ -2724,7 +2718,6 @@ doCancel:
         Me.mnuMediaList.Enabled = True
         Me.tabsMain.Enabled = True
         Me.EnableFilters(True)
-        Me.EnableSorting(True)
 
         Me.FillList(0)
     End Sub
@@ -3266,7 +3259,6 @@ doCancel:
                 Me.tabsMain.Enabled = False
                 Me.tspbLoading.Style = ProgressBarStyle.Continuous
                 Me.EnableFilters(False)
-                Me.EnableSorting(False)
 
                 If Not sType = Master.ScrapeType.SingleScrape Then
                     Select Case sType
@@ -3456,7 +3448,6 @@ doCancel:
                                         Me.mnuMediaList.Enabled = True
                                         Me.tabsMain.Enabled = True
                                         Me.EnableFilters(True)
-                                        Me.EnableSorting(True)
                                         Me.LoadInfo(ID, Master.currMovie.FaS.Filename, True, False)
                                     End If
                                 End If
@@ -3590,7 +3581,6 @@ doCancel:
             Me.mnuMediaList.Enabled = True
             Me.tabsMain.Enabled = True
             Me.EnableFilters(False)
-            Me.EnableSorting(True)
         End If
     End Sub
 
@@ -4139,16 +4129,6 @@ doCancel:
         TT.SetToolTip(Me.cbFilterSource, "Display only movies from the selected source.")
         TT.Active = True
 
-    End Sub
-
-    Private Sub EnableSorting(ByVal Enable As Boolean)
-        For Each dgvCol As DataGridViewColumn In Me.dgvMediaList.Columns
-            If Enable Then
-                dgvCol.SortMode = DataGridViewColumnSortMode.Automatic
-            Else
-                dgvCol.SortMode = DataGridViewColumnSortMode.NotSortable
-            End If
-        Next
     End Sub
 
     Friend Class MovieListFind
