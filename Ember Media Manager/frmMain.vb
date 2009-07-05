@@ -2618,6 +2618,12 @@ Public Class frmMain
             End Try
 
 doCancel:
+            If Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.FullAuto OrElse Args.scrapeType = Master.ScrapeType.MarkAsk OrElse _
+            Args.scrapeType = Master.ScrapeType.MarkAuto OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.NewAuto OrElse _
+            Args.scrapeType = Master.ScrapeType.RevertStudios OrElse Args.scrapeType = Master.ScrapeType.UpdateAsk OrElse Args.scrapeType = Master.ScrapeType.UpdateAuto Then
+                'Save the last movie scraper was working on
+                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
+            End If
             SQLtransaction.Commit()
         End Using
         e.Result = Args.scrapeType

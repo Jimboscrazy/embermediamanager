@@ -663,7 +663,7 @@ Public Class Master
                 End If
 
                 Dim vCodec As String = String.Empty
-                vCodec = If(String.IsNullOrEmpty(tVideo.CodecID), tVideo.Codec, tVideo.CodecID)
+                vCodec = If(String.IsNullOrEmpty(tVideo.CodecID), tVideo.Codec.ToLower, tVideo.CodecID.ToLower)
                 If Not String.IsNullOrEmpty(vCodec) Then
                     Dim xVTypeFlag = From xVType In FlagsXML...<vtype>...<name> Where Regex.IsMatch(vCodec, xVType.@searchstring) Select xVType.<icon>.Value
                     If xVTypeFlag.Count > 0 Then
@@ -678,7 +678,7 @@ Public Class Master
                 End If
 
                 Dim aCodec As String = String.Empty
-                aCodec = If(String.IsNullOrEmpty(tAudio.CodecID), tAudio.Codec, tAudio.CodecID)
+                aCodec = If(String.IsNullOrEmpty(tAudio.CodecID), tAudio.Codec.ToLower, tAudio.CodecID.ToLower)
                 If Not String.IsNullOrEmpty(aCodec) Then
                     Dim xATypeFlag = From xAType In FlagsXML...<atype>...<name> Where Regex.IsMatch(aCodec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
                     If xATypeFlag.Count > 0 Then

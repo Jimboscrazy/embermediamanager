@@ -67,9 +67,13 @@ Public Class dlgSetsManager
 
     End Class
 
-    Friend Class Movies
+    Friend Class Movies:Implements IComparable(Of Movies)
         Private _dbmovie As Master.DBMovie
         Private _order As Integer
+
+        Public Function CompareTo(ByVal other As Movies) As Integer Implements IComparable(Of Movies).CompareTo
+            Return (Me.Order).CompareTo(other.Order)
+        End Function
 
         Public Property DBMovie() As Master.DBMovie
             Get
@@ -327,7 +331,7 @@ Public Class dlgSetsManager
     Private Sub LoadCurrSet()
         Try
             Me.lbMoviesInSet.Items.Clear()
-            Me.currSet.Movies.Sort(AddressOf SortMovies)
+            Me.currSet.Movies.Sort()
             For Each tMovie As Movies In Me.currSet.Movies
                 Me.lbMoviesInSet.Items.Add(tMovie.DBMovie.Movie.Title)
                 tMovie.Order = Me.lbMoviesInSet.Items.Count
@@ -336,21 +340,6 @@ Public Class dlgSetsManager
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
-    Private Function SortMovies(ByVal x As Movies, ByVal y As Movies) As Integer
-        Try
-            If IsNothing(x.Order) OrElse x.Order <= 0 Then
-                Return -1
-            End If
-            If IsNothing(y.Order) OrElse y.Order <= 0 Then
-                Return 1
-            End If
-
-            Return x.Order.CompareTo(y.Order)
-        Catch
-            Return 0
-        End Try
-    End Function
 
     Private Sub RemoveFromSet(ByVal iIndex As Integer, ByVal isEdit As Boolean)
         Try
@@ -461,4 +450,5 @@ Public Class dlgSetsManager
             Me.pnlTop.BackgroundImage = iBackground
         End Using
     End Sub
+
 End Class
