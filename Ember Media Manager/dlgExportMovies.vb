@@ -112,12 +112,12 @@ Public Class dlgExportMovies
                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                         tVid = Master.GetBestVideo(_curMovie.Movie.FileInfo)
                         tRes = Master.GetResFromDimensions(tVid)
-                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), "Unknown", tRes), If(String.IsNullOrEmpty(tVid.CodecID), If(String.IsNullOrEmpty(tVid.Codec), "Unknown", tVid.Codec), tVid.CodecID))
+                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), "Unknown", tRes), If(String.IsNullOrEmpty(tVid.Codec), "Unknown", tVid.Codec))
                     End If
 
                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                         tAud = Master.GetBestAudio(_curMovie.Movie.FileInfo)
-                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.CodecID), If(String.IsNullOrEmpty(tAud.Codec), "Unknown", tAud.Codec), tAud.CodecID), If(String.IsNullOrEmpty(tAud.Channels), "Unknown", tAud.Channels))
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), "Unknown", tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), "Unknown", tAud.Channels))
                     End If
                 End If
 
