@@ -596,6 +596,9 @@ Public Class Database
                         SQLOthercommands.CommandText = "DELETE FROM MoviesFanart WHERE MovieID = (?);"
                         parId.Value = _movieDB.ID
                         SQLOthercommands.ExecuteNonQuery()
+                        SQLOthercommands.CommandText = "DELETE FROM MoviesSets WHERE MovieID = (?);"
+                        parId.Value = _movieDB.ID
+                        SQLOthercommands.ExecuteNonQuery()
                     End Using
 
                     Using SQLcommandActor As SQLite.SQLiteCommand = SQLcn.CreateCommand
