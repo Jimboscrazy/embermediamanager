@@ -123,12 +123,7 @@ Public Class dlgExportMovies
 
                 Dim row As New StringBuilder
                 row.Append(My.Resources.MovieListTableRowStart)
-                If _curMovie.Movie.Title = String.Empty Then
-                    row.AppendFormat(My.Resources.MovieListTableCol, Web.HttpUtility.HtmlEncode(_curMovie.ListTitle))
-                Else
-                    row.AppendFormat(My.Resources.MovieListTableCol, Web.HttpUtility.HtmlEncode(_curMovie.Movie.Title))
-                End If
-
+                row.AppendFormat(My.Resources.MovieListTableCol, Web.HttpUtility.HtmlEncode(_curMovie.ListTitle))
                 row.AppendFormat(My.Resources.MovieListTableCol, _curMovie.Movie.Year)
                 row.AppendFormat(My.Resources.MovieListTableCol, _vidDetails)
                 row.AppendFormat(My.Resources.MovieListTableCol, _audDetails)
