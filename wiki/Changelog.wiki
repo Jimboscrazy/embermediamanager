@@ -1,6 +1,32 @@
 #summary Ember Media Manager Changelog
 #labels Featured
 
+*Changelog for version r626:*
+    * Fix: Convert "dts" flag to "dca"
+    * Fix: Do not change File, Path, or FileAndPath values in nfo
+    * Fix: Sets not updating properly
+    * Fix: Shorten cache filenames to avoid 260 character limit
+    * Fix: Delete Sets from db when deleting movie
+    * Fix: Use IComparable for sets sorting
+    * Fix: VIDEO_TS directories not being detected
+    * Fix: Studio reversion tool deleting valid studios
+    * Fix: Unmarked movies could appear as marked in some cases
+    * Fix: Do not re-enable interface after load info if refresh movie bw is running
+    * Fix: Use ListTitle for movie exporter
+    * Change: Use default renaming pattern for Offline Media Manager
+    * Change: Change order in which folder items are detected
+    * Change: Update some control names for consistency
+    * Change: Rename non-conf nfos on both read and write
+    * Change: Cache Extras image paths on load
+    * Change: Always use parent folder name for VIDEO_TS
+    * Change: Small tweaks to resolution to descriptor logic
+    * Change: Refresh extrathumbs list after scraping fanart
+    * Change: Thread safe update of media list
+    * Change: Merge CodecID and Codec
+    * Change: Detect movie.ext for subs and movie-trailer and movie[trailer]
+    * Change: Some minor code tweaks
+    * Change: Account for (assume) invalid nfo in refreshmovie
+
 *Changelog for version r596:*
     * Feature: Option to display image dimensions
     * Feature: Bulk Renamer
