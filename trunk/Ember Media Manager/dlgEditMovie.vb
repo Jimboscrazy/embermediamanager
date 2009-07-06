@@ -296,7 +296,7 @@ Public Class dlgEditMovie
                     Me.FillInfo(False)
                 End If
             Else
-                MsgBox("Movie have no information", MsgBoxStyle.Exclamation, "File don't exist")
+                MsgBox("Movie has no information", MsgBoxStyle.Exclamation, "File Does Not Exist")
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

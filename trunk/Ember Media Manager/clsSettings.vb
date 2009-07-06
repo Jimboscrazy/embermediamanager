@@ -1409,8 +1409,8 @@ Public Class emmSettings
         Me._nodisplayposter = False
         Me._nodisplayfanart = False
         Me._outlineforplot = False
-        Me._defaultfolderspattern = "$T ($Y)"
-        Me._defaultfilespattern = "$T"
+        Me._defaultfolderspattern = "$T {($Y)}"
+        Me._defaultfilespattern = "$T{.$S}"
         Me._xbmccoms.Clear()
         Me._sortpath = String.Empty
     End Sub
