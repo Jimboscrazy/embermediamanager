@@ -347,7 +347,9 @@ Public Class dlgManualEdit
 
         Me.Activate()
         currFile = Master.currMovie.FaS.Nfo
-        RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
+        If File.Exists(Master.currMovie.FaS.Nfo) Then
+            RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
+        End If
         Me.Text = String.Concat("Manual NFO Editor | ", currFile.Substring(currFile.LastIndexOf("\") + 1))
 
         Changed = False
