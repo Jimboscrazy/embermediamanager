@@ -68,31 +68,45 @@ Public Class dlgBulkRenamer
         '\\
         Try
             Dim MovieFile As FileFolderRenamer.FileRename
-            ' Clean up Movies List if any
-            'FFRemamer._movies.Clear()
+            Dim _curMovie As Master.DBMovie
+            Dim tVid As New MediaInfo.Video
+            Dim tAud As New MediaInfo.Audio
+            Dim tRes As String = String.Empty
             ' Load nfo movies using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                'Dim _tmpMovie As New Media.Movie
                 Dim _tmpPath As String = String.Empty
                 Dim iProg As Integer = 0
                 SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies;")
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT ListTitle, Year, MoviePath, type , lock, NfoPath ,id FROM movies ORDER BY ListTitle ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT NfoPath ,id FROM movies ORDER BY ListTitle ASC;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             _tmpPath = SQLreader("NfoPath").ToString
                             If Not String.IsNullOrEmpty(_tmpPath) Then
                                 MovieFile = New FileFolderRenamer.FileRename
-                                '_tmpMovie = Master.LoadMovieFromNFO(_tmpPath)
                                 MovieFile.ID = SQLreader("id")
-                                MovieFile.Title = SQLreader("ListTitle").ToString '_tmpMovie.Title
-                                MovieFile.Year = SQLreader("Year").ToString '_tmpMovie.Year
-                                MovieFile.IsLocked = SQLreader("lock")
-                                MovieFile.BasePath = Path.GetDirectoryName(SQLreader("MoviePath").ToString)
-                                MovieFile.Path = Path.GetDirectoryName(SQLreader("MoviePath").ToString)
+                                _curMovie = Master.DB.LoadMovieFromDB(MovieFile.ID)
+                                MovieFile.Title = _curMovie.ListTitle
+                                MovieFile.Year = _curMovie.Movie.Year
+                                MovieFile.IsLocked = _curMovie.IsLock
+                                MovieFile.BasePath = Path.GetDirectoryName(_curMovie.FaS.Filename)
+                                MovieFile.Path = Path.GetDirectoryName(_curMovie.FaS.Filename)
+                                If Not IsNothing(_curMovie.Movie.FileInfo) Then
+                                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                                        tVid = Master.GetBestVideo(_curMovie.Movie.FileInfo)
+                                        tRes = Master.GetResFromDimensions(tVid)
+                                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), "Unknown", tRes))
+                                    End If
+
+                                    If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                                        tAud = Master.GetBestAudio(_curMovie.Movie.FileInfo)
+                                        MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), "Unknown", tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), "Unknown", tAud.Channels))
+                                    End If
+                                End If
+                                '
                                 For Each i As String In FFRenamer.MovieFolders
                                     If i = MovieFile.Path.Substring(0, i.Length) Then
                                         MovieFile.Path = MovieFile.Path.Substring(String.Concat(i, Path.DirectorySeparatorChar).Length)
@@ -100,11 +114,12 @@ Public Class dlgBulkRenamer
                                         Exit For
                                     End If
                                 Next
-                                MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(SQLreader("MoviePath").ToString))
+                                MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(_curMovie.FaS.Filename))
 
                                 FFRenamer.AddMovie(MovieFile)
+                                Me.bwLoadInfo.ReportProgress(iProg, _curMovie.ListTitle)
                             End If
-                            Me.bwLoadInfo.ReportProgress(iProg, SQLreader("ListTitle").ToString) '_tmpMovie.Title)
+
                             iProg += 1
 
                             If bwLoadInfo.CancellationPending Then
@@ -325,8 +340,7 @@ Public Class dlgBulkRenamer
         End Using
 
         'testing proposes
-        Dim s As String = String.Concat("$T = Title", vbCrLf, "$X. (Replace Space with .)", vbCrLf, "$D = Directory", vbCrLf, "$F = File Name", vbCrLf, "$Y = Year", vbCrLf, "$S = Source")
-        '"$R = Resolution", vbCrLf, "$A = Audio", vbCrLf, -> This not working for now.. need to think over it
+        Dim s As String = String.Concat("$T = Title", vbCrLf, "$X. (Replace Space with .)", vbCrLf, "$D = Directory", vbCrLf, "$F = File Name", vbCrLf, "$Y = Year", vbCrLf, "$R = Resolution", vbCrLf, "$A = Audio", vbCrLf, "$S = Source")
         lblLabel.Text = s.Replace(vbCrLf, "    ")
         frmToolTip.SetToolTip(txtFolder, s)
         frmToolTip.SetToolTip(txtFile, s)
