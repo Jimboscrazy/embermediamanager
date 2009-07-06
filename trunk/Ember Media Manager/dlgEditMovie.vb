@@ -288,10 +288,15 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
+
         Try
-            If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Master.currMovie.Movie = Master.LoadMovieFromNFO(Master.currMovie.FaS.Nfo, Master.currMovie.FaS.isSingle)
-                Me.FillInfo(False)
+            If Not Master.currMovie.FaS.Nfo = String.Empty Then
+                If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    Master.currMovie.Movie = Master.LoadMovieFromNFO(Master.currMovie.FaS.Nfo, Master.currMovie.FaS.isSingle)
+                    Me.FillInfo(False)
+                End If
+            Else
+                MsgBox("Movie have no information", MsgBoxStyle.Exclamation, "File don't exist")
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
