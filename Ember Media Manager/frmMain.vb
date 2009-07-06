@@ -3637,7 +3637,6 @@ doCancel:
                         tmpMovieDb.ListTitle = dRow(0).Item(3)
                     Else
                         Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovie.Title})
-                        'dRow(0).Item(3) = tmpMovie.Title
                         tmpMovieDb.ListTitle = tmpMovie.Title
                     End If
 
@@ -3653,22 +3652,17 @@ doCancel:
                 aContents = Master.GetFolderContents(dRow(0).Item(1), dRow(0).Item(2))
                 tmpMovieDb.FaS.Poster = aContents(0)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(aContents(0)), False, True)})
-                'dRow(0).Item(4) = If(String.IsNullOrEmpty(aContents(0)), False, True)
                 tmpMovieDb.FaS.Fanart = aContents(1)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(aContents(1)), False, True)})
-                'dRow(0).Item(5) = If(String.IsNullOrEmpty(aContents(1)), False, True)
-                tmpMovieDb.FaS.Nfo = aContents(2)
-                Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(aContents(2)), False, True)})
-                'dRow(0).Item(6) = If(String.IsNullOrEmpty(aContents(2)), False, True)
+                'assume invalid nfo if no title
+                tmpMovieDb.FaS.Nfo = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, aContents(2))
+                Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpMovieDb.FaS.Nfo), False, True)})
                 tmpMovieDb.FaS.Trailer = aContents(3)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 7, If(String.IsNullOrEmpty(aContents(3)), False, True)})
-                'dRow(0).Item(7) = If(String.IsNullOrEmpty(aContents(3)), False, True)
                 tmpMovieDb.FaS.Subs = aContents(4)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 8, If(String.IsNullOrEmpty(aContents(4)), False, True)})
-                'dRow(0).Item(8) = If(String.IsNullOrEmpty(aContents(4)), False, True)
                 tmpMovieDb.FaS.Extra = aContents(5)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(aContents(5)), False, True)})
-                'dRow(0).Item(9) = If(String.IsNullOrEmpty(aContents(5)), False, True)
 
                 tmpMovieDb.ID = dRow(0).Item(0)
                 tmpMovieDb.IsMark = dRow(0).Item(11)
