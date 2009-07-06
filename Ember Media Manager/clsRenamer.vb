@@ -252,23 +252,23 @@ Public Class FileFolderRenamer
     End Function
 
     Private Function UpdateFaSPaths(ByVal _fas As Master.FileAndSource, ByVal oldPath As String, ByVal newPath As String) As Master.FileAndSource
-        If Not String.IsNullOrEmpty(_fas.Fanart) Then _fas.Fanart = Path.Combine(Path.GetDirectoryName(_fas.Fanart).Replace(oldPath, newPath), Path.GetFileName(_fas.Fanart))
-        If Not String.IsNullOrEmpty(_fas.Extra) Then _fas.Extra = Path.Combine(Path.GetDirectoryName(_fas.Extra).Replace(oldPath, newPath), Path.GetFileName(_fas.Extra))
-        If Not String.IsNullOrEmpty(_fas.Filename) Then _fas.Filename = Path.Combine(Path.GetDirectoryName(_fas.Filename).Replace(oldPath, newPath), Path.GetFileName(_fas.Filename))
-        If Not String.IsNullOrEmpty(_fas.Nfo) Then _fas.Nfo = Path.Combine(Path.GetDirectoryName(_fas.Nfo).Replace(oldPath, newPath), Path.GetFileName(_fas.Nfo))
-        If Not String.IsNullOrEmpty(_fas.Poster) Then _fas.Poster = Path.Combine(Path.GetDirectoryName(_fas.Poster).Replace(oldPath, newPath), Path.GetFileName(_fas.Poster))
-        If Not String.IsNullOrEmpty(_fas.Subs) Then _fas.Subs = Path.Combine(Path.GetDirectoryName(_fas.Subs).Replace(oldPath, newPath), Path.GetFileName(_fas.Subs))
-        If Not String.IsNullOrEmpty(_fas.Trailer) Then _fas.Trailer = Path.Combine(Path.GetDirectoryName(_fas.Trailer).Replace(oldPath, newPath), Path.GetFileName(_fas.Trailer))
+        If Not String.IsNullOrEmpty(_fas.Fanart) Then _fas.Fanart = Path.Combine(Path.GetDirectoryName(_fas.Fanart).ToLower.Replace(oldPath.ToLower, newPath), Path.GetFileName(_fas.Fanart))
+        If Not String.IsNullOrEmpty(_fas.Extra) Then _fas.Extra = Path.Combine(Path.GetDirectoryName(_fas.Extra).ToLower.Replace(oldPath.ToLower, newPath), Path.GetFileName(_fas.Extra))
+        If Not String.IsNullOrEmpty(_fas.Filename) Then _fas.Filename = Path.Combine(Path.GetDirectoryName(_fas.Filename).ToLower.Replace(oldPath.ToLower, newPath), Path.GetFileName(_fas.Filename))
+        If Not String.IsNullOrEmpty(_fas.Nfo) Then _fas.Nfo = Path.Combine(Path.GetDirectoryName(_fas.Nfo).ToLower.Replace(oldPath.ToLower, newPath), Path.GetFileName(_fas.Nfo))
+        If Not String.IsNullOrEmpty(_fas.Poster) Then _fas.Poster = Path.Combine(Path.GetDirectoryName(_fas.Poster).ToLower.Replace(oldPath.ToLower, newPath), Path.GetFileName(_fas.Poster))
+        If Not String.IsNullOrEmpty(_fas.Subs) Then _fas.Subs = Path.Combine(Path.GetDirectoryName(_fas.Subs).ToLower.Replace(oldPath.ToLower, newPath), Path.GetFileName(_fas.Subs))
+        If Not String.IsNullOrEmpty(_fas.Trailer) Then _fas.Trailer = Path.Combine(Path.GetDirectoryName(_fas.Trailer).ToLower.Replace(oldPath.ToLower, newPath), Path.GetFileName(_fas.Trailer))
         Return _fas
     End Function
     Private Function UpdateFaSFiles(ByVal _fas As Master.FileAndSource, ByVal oldPath As String, ByVal newPath As String) As Master.FileAndSource
-        If Not String.IsNullOrEmpty(_fas.Fanart) Then _fas.Fanart = Path.Combine(Path.GetDirectoryName(_fas.Fanart), Path.GetFileName(_fas.Fanart).Replace(oldPath, newPath))
-        If Not String.IsNullOrEmpty(_fas.Extra) Then _fas.Extra = Path.Combine(Path.GetDirectoryName(_fas.Extra), Path.GetFileName(_fas.Extra).Replace(oldPath, newPath))
-        If Not String.IsNullOrEmpty(_fas.Filename) Then _fas.Filename = Path.Combine(Path.GetDirectoryName(_fas.Filename), Path.GetFileName(_fas.Filename).Replace(oldPath, newPath))
-        If Not String.IsNullOrEmpty(_fas.Nfo) Then _fas.Nfo = Path.Combine(Path.GetDirectoryName(_fas.Nfo), Path.GetFileName(_fas.Nfo).Replace(oldPath, newPath))
-        If Not String.IsNullOrEmpty(_fas.Poster) Then _fas.Poster = Path.Combine(Path.GetDirectoryName(_fas.Poster), Path.GetFileName(_fas.Poster).Replace(oldPath, newPath))
-        If Not String.IsNullOrEmpty(_fas.Subs) Then _fas.Subs = Path.Combine(Path.GetDirectoryName(_fas.Subs), Path.GetFileName(_fas.Subs).Replace(oldPath, newPath))
-        If Not String.IsNullOrEmpty(_fas.Trailer) Then _fas.Trailer = Path.Combine(Path.GetDirectoryName(_fas.Trailer), Path.GetFileName(_fas.Trailer).Replace(oldPath, newPath))
+        If Not String.IsNullOrEmpty(_fas.Fanart) Then _fas.Fanart = Path.Combine(Path.GetDirectoryName(_fas.Fanart), Path.GetFileName(_fas.Fanart).Replace(oldPath.ToLower, newPath))
+        If Not String.IsNullOrEmpty(_fas.Extra) Then _fas.Extra = Path.Combine(Path.GetDirectoryName(_fas.Extra), Path.GetFileName(_fas.Extra).ToLower.Replace(oldPath.ToLower, newPath))
+        If Not String.IsNullOrEmpty(_fas.Filename) Then _fas.Filename = Path.Combine(Path.GetDirectoryName(_fas.Filename), Path.GetFileName(_fas.Filename).ToLower.Replace(oldPath.ToLower, newPath))
+        If Not String.IsNullOrEmpty(_fas.Nfo) Then _fas.Nfo = Path.Combine(Path.GetDirectoryName(_fas.Nfo), Path.GetFileName(_fas.Nfo).ToLower.Replace(oldPath.ToLower, newPath))
+        If Not String.IsNullOrEmpty(_fas.Poster) Then _fas.Poster = Path.Combine(Path.GetDirectoryName(_fas.Poster), Path.GetFileName(_fas.Poster).ToLower.Replace(oldPath.ToLower, newPath))
+        If Not String.IsNullOrEmpty(_fas.Subs) Then _fas.Subs = Path.Combine(Path.GetDirectoryName(_fas.Subs), Path.GetFileName(_fas.Subs).ToLower.Replace(oldPath.ToLower, newPath))
+        If Not String.IsNullOrEmpty(_fas.Trailer) Then _fas.Trailer = Path.Combine(Path.GetDirectoryName(_fas.Trailer), Path.GetFileName(_fas.Trailer).ToLower.Replace(oldPath.ToLower, newPath))
         Return _fas
     End Function
 
@@ -322,9 +322,11 @@ Public Class FileFolderRenamer
                     'Rename Files
                     If Not f.NewFileName.ToLower = f.FileName.ToLower Then
                         Dim tmpList As New ArrayList
-
                         Dim di As New DirectoryInfo(Path.Combine(f.BasePath, f.NewPath))
                         Dim lFi As New List(Of FileInfo)
+                        If Not sfunction Is Nothing Then
+                            If Not sfunction(f.NewPath, iProg) Then Return
+                        End If
                         Try
                             lFi.AddRange(di.GetFiles())
                         Catch
@@ -361,6 +363,8 @@ Public Class FileFolderRenamer
                     End If
                 End If
                 If DoDB AndAlso DoUpdate Then
+                    _movieDB.Movie.FileNameAndPath = _movieDB.FaS.Filename
+                    _movieDB.Movie.Path = _movieDB.FaS.Filename
                     Master.DB.SaveMovieToDB(_movieDB, False)
                 End If
             Next
