@@ -94,6 +94,7 @@ Public Class dlgBulkRenamer
                                 MovieFile.IsLocked = _curMovie.IsLock
                                 MovieFile.BasePath = Path.GetDirectoryName(_curMovie.FaS.Filename)
                                 MovieFile.Path = Path.GetDirectoryName(_curMovie.FaS.Filename)
+                                MovieFile.IsSingle = _curMovie.FaS.isSingle
                                 If Not IsNothing(_curMovie.Movie.FileInfo) Then
                                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                                         tVid = Master.GetBestVideo(_curMovie.Movie.FileInfo)
@@ -115,7 +116,7 @@ Public Class dlgBulkRenamer
                                         If MovieFile.Path.Length >= plen Then
                                             MovieFile.Path = MovieFile.Path.Substring(plen)
                                         Else
-                                            MovieFile.Path = ".\"
+                                            MovieFile.Path = String.Empty
                                         End If
                                         MovieFile.BasePath = i
                                         Exit For
@@ -321,7 +322,7 @@ Public Class dlgBulkRenamer
             'Need to make simulate thread safe
             tmrSimul.Enabled = False
             If isLoaded Then
-                FFRenamer.ProccessFiles(txtFolder.Text, txtFile.Text)
+                FFRenamer.ProccessFiles(txtFolder.Text, txtFile.Text, txtFolderNotSingle.Text)
                 Simulate()
             End If
         Catch ex As Exception
@@ -395,4 +396,11 @@ Public Class dlgBulkRenamer
         End Try
     End Sub
 
+    Private Sub txtFolderNotSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderNotSingle.TextChanged
+        Try
+            tmrSimul.Enabled = True
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class
