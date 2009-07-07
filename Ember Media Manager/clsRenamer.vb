@@ -302,11 +302,15 @@ Public Class FileFolderRenamer
                         End If
 
                         Try
-                            If f.NewPath.ToLower = f.Path.ToLower Then
-                                System.IO.Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
-                                System.IO.Directory.Move(String.Concat(destDir, ".$emm"), destDir)
+                            If f.Path = ".\" AndAlso Not f.NewPath = ".\" Then
+                                System.IO.Directory.CreateDirectory(destDir)
                             Else
-                                System.IO.Directory.Move(srcDir, destDir)
+                                If f.NewPath.ToLower = f.Path.ToLower Then
+                                    System.IO.Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
+                                    System.IO.Directory.Move(String.Concat(destDir, ".$emm"), destDir)
+                                Else
+                                    System.IO.Directory.Move(srcDir, destDir)
+                                End If
                             End If
                             If DoDB = True Then
                                 _movieDB.FaS = UpdateFaSPaths(_movieDB.FaS, f.Path, f.NewPath)
@@ -320,12 +324,17 @@ Public Class FileFolderRenamer
 
                     End If
                     'Rename Files
-                    If Not f.NewFileName.ToLower = f.FileName.ToLower Then
+                    If (Not f.NewFileName.ToLower = f.FileName.ToLower) OrElse (f.Path = ".\" AndAlso Not f.NewPath = ".\") Then
                         Dim tmpList As New ArrayList
-                        Dim di As New DirectoryInfo(Path.Combine(f.BasePath, f.NewPath))
+                        Dim di As DirectoryInfo
+                        If (f.Path = ".\" AndAlso Not f.NewPath = ".\") Then
+                            di = New DirectoryInfo(Path.Combine(f.BasePath, f.Path))
+                        Else
+                            di = New DirectoryInfo(Path.Combine(f.BasePath, f.NewPath))
+                        End If
                         Dim lFi As New List(Of FileInfo)
                         If Not sfunction Is Nothing Then
-                            If Not sfunction(f.NewPath, iProg) Then Return
+                            If Not sfunction(f.NewFileName, iProg) Then Return
                         End If
                         Try
                             lFi.AddRange(di.GetFiles())
@@ -337,7 +346,12 @@ Public Class FileFolderRenamer
                             Dim dstFile As String
                             For Each lFile As FileInfo In lFi
                                 srcFile = lFile.FullName
-                                dstFile = Path.Combine(Path.GetDirectoryName(lFile.FullName), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
+                                If (f.Path = ".\" AndAlso Not f.NewPath = ".\") Then
+                                    dstFile = Path.Combine(Path.Combine(Path.GetDirectoryName(lFile.FullName), f.NewPath), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
+                                Else
+                                    dstFile = Path.Combine(Path.GetDirectoryName(lFile.FullName), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
+                                End If
+
                                 If Not srcFile = dstFile Then
                                     Try
                                         Dim fr = New System.IO.FileInfo(srcFile)
@@ -346,7 +360,9 @@ Public Class FileFolderRenamer
                                             Dim frr = New System.IO.FileInfo(String.Concat(dstFile, ".$emm$"))
                                             frr.MoveTo(dstFile)
                                         Else
-                                            fr.MoveTo(dstFile)
+                                            If Path.GetFileName(fr.FullName).StartsWith(f.FileName) Then
+                                                fr.MoveTo(dstFile)
+                                            End If
                                         End If
 
                                         DoUpdate = True
