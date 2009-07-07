@@ -1994,8 +1994,10 @@ Public Class Master
                         Dim s As String = d.ReadLine()
                         If s.Contains("Duration: ") Then
                             Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-                            Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
-                            intSeconds = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
+                            If Not sTime = "N/A" Then
+                                Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
+                                intSeconds = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
+                            End If
                         End If
                     Loop While Not d.EndOfStream
 
@@ -2229,7 +2231,10 @@ Public Class Master
                 Dim fFiles As String() = Directory.GetFiles(sPath)
 
                 For Each fFile As String In fFiles
-                    File.Delete(fFile)
+                    Try
+                        File.Delete(fFile)
+                    Catch
+                    End Try
                 Next
 
                 Directory.Delete(sPath, True)
