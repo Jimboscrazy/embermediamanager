@@ -216,14 +216,14 @@ Partial Class dlgBulkRenamer
         Me.lblFolderPattern.AutoSize = True
         Me.lblFolderPattern.Location = New System.Drawing.Point(26, 398)
         Me.lblFolderPattern.Name = "lblFolderPattern"
-        Me.lblFolderPattern.Size = New System.Drawing.Size(185, 13)
+        Me.lblFolderPattern.Size = New System.Drawing.Size(200, 13)
         Me.lblFolderPattern.TabIndex = 70
-        Me.lblFolderPattern.Text = "Folder Pattern (for Single file in Folder)"
+        Me.lblFolderPattern.Text = "Folder Pattern (for Single movie in Folder)"
         '
         'lblFilePattern
         '
         Me.lblFilePattern.AutoSize = True
-        Me.lblFilePattern.Location = New System.Drawing.Point(427, 398)
+        Me.lblFilePattern.Location = New System.Drawing.Point(441, 398)
         Me.lblFilePattern.Name = "lblFilePattern"
         Me.lblFilePattern.Size = New System.Drawing.Size(60, 13)
         Me.lblFilePattern.TabIndex = 71
@@ -231,7 +231,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFile
         '
-        Me.txtFile.Location = New System.Drawing.Point(490, 395)
+        Me.txtFile.Location = New System.Drawing.Point(504, 395)
         Me.txtFile.Name = "txtFile"
         Me.txtFile.Size = New System.Drawing.Size(224, 20)
         Me.txtFile.TabIndex = 72
@@ -239,7 +239,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFolder
         '
-        Me.txtFolder.Location = New System.Drawing.Point(213, 395)
+        Me.txtFolder.Location = New System.Drawing.Point(227, 395)
         Me.txtFolder.Name = "txtFolder"
         Me.txtFolder.Size = New System.Drawing.Size(200, 20)
         Me.txtFolder.TabIndex = 73
@@ -259,7 +259,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFolderNotSingle
         '
-        Me.txtFolderNotSingle.Location = New System.Drawing.Point(213, 416)
+        Me.txtFolderNotSingle.Location = New System.Drawing.Point(227, 416)
         Me.txtFolderNotSingle.Name = "txtFolderNotSingle"
         Me.txtFolderNotSingle.Size = New System.Drawing.Size(200, 20)
         Me.txtFolderNotSingle.TabIndex = 76
@@ -270,15 +270,15 @@ Partial Class dlgBulkRenamer
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(12, 419)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(197, 13)
+        Me.Label1.Size = New System.Drawing.Size(212, 13)
         Me.Label1.TabIndex = 75
-        Me.Label1.Text = "Folder Pattern (for Multiple files in Folder)"
+        Me.Label1.Text = "Folder Pattern (for Multiple movies in Folder)"
         '
         'cmsMovieList
         '
         Me.cmsMovieList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmLockMovie, Me.tsmUnlockMovie, Me.ToolStripSeparator1, Me.tsmLockAll, Me.tsmUnlockAll})
         Me.cmsMovieList.Name = "cmsMovieList"
-        Me.cmsMovieList.Size = New System.Drawing.Size(161, 120)
+        Me.cmsMovieList.Size = New System.Drawing.Size(161, 98)
         '
         'tsmLockMovie
         '
