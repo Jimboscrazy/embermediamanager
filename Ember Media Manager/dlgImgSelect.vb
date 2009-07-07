@@ -142,11 +142,9 @@ Public Class dlgImgSelect
             End If
 
             If Me.DLType = Master.ImageType.Fanart Then
-                Dim iMod As Integer = Master.GetExtraModifier(Me.tMovie.FaS.Filename)
-                Dim extraPath As String = String.Empty
+                Dim iMod As Integer = 0
                 Dim iVal As Integer = 1
-                If iMod = -1 Then iMod = 0
-
+                Dim extraPath As String = String.Empty
                 Dim isChecked As Boolean = False
 
                 For i As Integer = 0 To UBound(Me.chkImage)
@@ -162,6 +160,8 @@ Public Class dlgImgSelect
                         extraPath = Path.Combine(Master.TempPath, "extrathumbs")
                     Else
                         extraPath = Path.Combine(Directory.GetParent(Me.tMovie.FaS.Filename).FullName, "extrathumbs")
+                        iMod = Master.GetExtraModifier(Me.tMovie.FaS.Filename)
+                        iVal = iMod + 1
                     End If
 
                     If Not Directory.Exists(extraPath) Then
@@ -170,7 +170,7 @@ Public Class dlgImgSelect
 
                     For i As Integer = 0 To UBound(Me.chkImage)
                         If Me.chkImage(i).Checked Then
-                            Dim fsET As New FileStream(Path.Combine(extraPath, String.Concat("thumb", iVal + iMod, ".jpg")), FileMode.OpenOrCreate, FileAccess.ReadWrite)
+                            Dim fsET As New FileStream(Path.Combine(extraPath, String.Concat("thumb", iVal, ".jpg")), FileMode.OpenOrCreate, FileAccess.ReadWrite)
                             Me.pbImage(i).Image.Save(fsET, System.Drawing.Imaging.ImageFormat.Jpeg)
                             fsET.Close()
                             fsET = Nothing
@@ -410,7 +410,7 @@ Public Class dlgImgSelect
                 Dim lFi As New List(Of FileInfo)
                 Dim di As New DirectoryInfo(CachePath)
 
-                If Master.eSettings.UseImgCache AndAlso Not Directory.Exists(CachePath) Then
+                If Not Directory.Exists(CachePath) Then
                     Directory.CreateDirectory(CachePath)
                 Else
                     Try
@@ -441,7 +441,7 @@ Public Class dlgImgSelect
                             Case sFile.Name.Contains("(poster)")
                                 tImage.Description = "poster"
                         End Select
-                        tImage.URL = Master.CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
+                        tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
                         Me.TMDBPosters.Add(tImage)
                         tmpImage.Clear()
                     Next
@@ -512,7 +512,7 @@ Public Class dlgImgSelect
                 Dim di As New DirectoryInfo(CachePath)
                 Dim lFi As New List(Of FileInfo)
 
-                If Master.eSettings.UseImgCache AndAlso Not Directory.Exists(CachePath) Then
+                If Not Directory.Exists(CachePath) Then
                     Directory.CreateDirectory(CachePath)
                 Else
                     Try
@@ -538,7 +538,7 @@ Public Class dlgImgSelect
                             Case sFile.Name.Contains("(thumb)")
                                 tImage.Description = "thumb"
                         End Select
-                        tImage.URL = Master.CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
+                        tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
                         Me.TMDBPosters.Add(tImage)
                         tmpImage.Clear()
                     Next

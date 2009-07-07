@@ -470,7 +470,7 @@ Public Class Images
                                 Case sFile.Name.Contains("(poster)")
                                     tImage.Description = "poster"
                             End Select
-                            tImage.URL = Master.CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
+                            tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
                             If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = tImage.URL})
                             tmpListTMDB.Add(tImage)
                             Me.Clear()
@@ -785,7 +785,7 @@ Public Class Images
                                     Case sFile.Name.Contains("(thumb)")
                                         tImage.Description = "thumb"
                                 End Select
-                                tImage.URL = Master.CleanURL(Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString, True)
+                                tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
                                 tmpListTMDB.Add(tImage)
                                 Me.Clear()
                             Next

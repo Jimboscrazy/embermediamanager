@@ -159,7 +159,7 @@ Public Class frmMain
 
             If Not Master.eSettings.PersistImgCache Then
                 If Directory.Exists(Master.TempPath) Then
-                    Directory.Delete(Master.TempPath, True)
+                    Master.DeleteDirectory(Master.TempPath)
                 End If
             End If
         Catch
@@ -1531,7 +1531,7 @@ Public Class frmMain
 
     Private Sub ClearAllCachesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearAllCachesToolStripMenuItem.Click
         If Directory.Exists(Master.TempPath) Then
-            Directory.Delete(Master.TempPath, True)
+            Master.DeleteDirectory(Master.TempPath)
         End If
 
         Directory.CreateDirectory(Master.TempPath)
