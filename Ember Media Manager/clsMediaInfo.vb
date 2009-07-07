@@ -184,7 +184,7 @@ Public Class MediaInfo
     Private Function ConvertAFormat(ByVal sFormat As String) As String
         If Not String.IsNullOrEmpty(sFormat) Then
             Select Case sFormat.ToLower
-                Case "ac-3"
+                Case "ac-3", "a_ac3"
                     Return "ac3"
                 Case "wma2"
                     Return "wmav2"
