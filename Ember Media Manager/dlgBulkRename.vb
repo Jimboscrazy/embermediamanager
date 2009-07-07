@@ -107,9 +107,16 @@ Public Class dlgBulkRenamer
                                     End If
                                 End If
                                 '
+                                Dim plen As Integer
                                 For Each i As String In FFRenamer.MovieFolders
+                                    If i.EndsWith(Path.DirectorySeparatorChar) Then i = Path.GetDirectoryName(i)
                                     If i = MovieFile.Path.Substring(0, i.Length) Then
-                                        MovieFile.Path = MovieFile.Path.Substring(String.Concat(i, Path.DirectorySeparatorChar).Length)
+                                        plen = String.Concat(i, Path.DirectorySeparatorChar).Length
+                                        If MovieFile.Path.Length >= plen Then
+                                            MovieFile.Path = MovieFile.Path.Substring(plen)
+                                        Else
+                                            MovieFile.Path = ".\"
+                                        End If
                                         MovieFile.BasePath = i
                                         Exit For
                                     End If
