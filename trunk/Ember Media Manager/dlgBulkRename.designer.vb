@@ -43,6 +43,8 @@ Partial Class dlgBulkRenamer
         Me.txtFile = New System.Windows.Forms.TextBox
         Me.txtFolder = New System.Windows.Forms.TextBox
         Me.lblLabel = New System.Windows.Forms.Label
+        Me.txtFolderNotSingle = New System.Windows.Forms.TextBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlCancel.SuspendLayout()
@@ -204,16 +206,16 @@ Partial Class dlgBulkRenamer
         'lblFolderPattern
         '
         Me.lblFolderPattern.AutoSize = True
-        Me.lblFolderPattern.Location = New System.Drawing.Point(12, 398)
+        Me.lblFolderPattern.Location = New System.Drawing.Point(26, 398)
         Me.lblFolderPattern.Name = "lblFolderPattern"
-        Me.lblFolderPattern.Size = New System.Drawing.Size(73, 13)
+        Me.lblFolderPattern.Size = New System.Drawing.Size(185, 13)
         Me.lblFolderPattern.TabIndex = 70
-        Me.lblFolderPattern.Text = "Folder Pattern"
+        Me.lblFolderPattern.Text = "Folder Pattern (for Single file in Folder)"
         '
         'lblFilePattern
         '
         Me.lblFilePattern.AutoSize = True
-        Me.lblFilePattern.Location = New System.Drawing.Point(318, 398)
+        Me.lblFilePattern.Location = New System.Drawing.Point(427, 398)
         Me.lblFilePattern.Name = "lblFilePattern"
         Me.lblFilePattern.Size = New System.Drawing.Size(60, 13)
         Me.lblFilePattern.TabIndex = 71
@@ -221,7 +223,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFile
         '
-        Me.txtFile.Location = New System.Drawing.Point(381, 395)
+        Me.txtFile.Location = New System.Drawing.Point(490, 395)
         Me.txtFile.Name = "txtFile"
         Me.txtFile.Size = New System.Drawing.Size(224, 20)
         Me.txtFile.TabIndex = 72
@@ -229,7 +231,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFolder
         '
-        Me.txtFolder.Location = New System.Drawing.Point(91, 395)
+        Me.txtFolder.Location = New System.Drawing.Point(213, 395)
         Me.txtFolder.Name = "txtFolder"
         Me.txtFolder.Size = New System.Drawing.Size(200, 20)
         Me.txtFolder.TabIndex = 73
@@ -239,7 +241,7 @@ Partial Class dlgBulkRenamer
         '
         Me.lblLabel.AutoSize = True
         Me.lblLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblLabel.Location = New System.Drawing.Point(15, 421)
+        Me.lblLabel.Location = New System.Drawing.Point(15, 440)
         Me.lblLabel.Name = "lblLabel"
         Me.lblLabel.Size = New System.Drawing.Size(35, 15)
         Me.lblLabel.TabIndex = 74
@@ -247,12 +249,31 @@ Partial Class dlgBulkRenamer
         Me.lblLabel.Text = "Label"
         Me.lblLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'txtFolderNotSingle
+        '
+        Me.txtFolderNotSingle.Location = New System.Drawing.Point(213, 416)
+        Me.txtFolderNotSingle.Name = "txtFolderNotSingle"
+        Me.txtFolderNotSingle.Size = New System.Drawing.Size(200, 20)
+        Me.txtFolderNotSingle.TabIndex = 76
+        Me.txtFolderNotSingle.Text = "$D"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(12, 419)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(197, 13)
+        Me.Label1.TabIndex = 75
+        Me.Label1.Text = "Folder Pattern (for Multiple files in Folder)"
+        '
         'dlgBulkRenamer
         '
         Me.AcceptButton = Me.Close_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(992, 477)
+        Me.Controls.Add(Me.txtFolderNotSingle)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.lblLabel)
         Me.Controls.Add(Me.txtFolder)
         Me.Controls.Add(Me.txtFile)
@@ -299,5 +320,7 @@ Partial Class dlgBulkRenamer
     Friend WithEvents txtFile As System.Windows.Forms.TextBox
     Friend WithEvents txtFolder As System.Windows.Forms.TextBox
     Friend WithEvents lblLabel As System.Windows.Forms.Label
+    Friend WithEvents txtFolderNotSingle As System.Windows.Forms.TextBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 
 End Class

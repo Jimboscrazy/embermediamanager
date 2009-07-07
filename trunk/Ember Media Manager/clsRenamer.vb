@@ -36,6 +36,7 @@ Public Class FileFolderRenamer
         Private _islocked As Boolean ' support for bulkRenamer 
         Private _dirExist As Boolean ' support for bulkRenamer 
         Private _fileExist As Boolean ' support for bulkRenamer 
+        Private _isSingle As Boolean = True
         Public fType As Integer
         Public Resolution As String
         Public Audio As String
@@ -107,6 +108,15 @@ Public Class FileFolderRenamer
                 Me._fileExist = value
             End Set
         End Property
+
+        Public Property IsSingle() As Boolean
+            Get
+                Return Me._isSingle
+            End Get
+            Set(ByVal value As Boolean)
+                Me._isSingle = value
+            End Set
+        End Property
     End Class
     Private _movies As New List(Of FileRename)
     Public MovieFolders As New ArrayList
@@ -137,11 +147,17 @@ Public Class FileFolderRenamer
         Return _movies.Count
     End Function
 
-    Public Sub ProccessFiles(ByVal folderPattern As String, ByVal filePattern As String)
+    Public Sub ProccessFiles(ByVal folderPattern As String, ByVal filePattern As String, Optional ByVal folderPatternIsNotSingle As String = "$D")
         Try
+            Dim localForderPattern As String
             For Each f As FileRename In _movies
-                f.NewFileName = ProccessPattern(f, filePattern)
-                f.NewPath = ProccessPattern(f, folderPattern)
+                If f.IsSingle Then
+                    localForderPattern = folderPattern
+                Else
+                    localForderPattern = folderPatternIsNotSingle
+                End If
+                f.NewFileName = ProccessPattern(f, filePattern).Trim
+                f.NewPath = ProccessPattern(f, localForderPattern).Trim
                 f.FileExist = File.Exists(Path.Combine(f.Source, f.NewFileName)) AndAlso Not (f.FileExist = f.NewFileName)
                 f.DirExist = File.Exists(Path.Combine(f.Source, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
 
@@ -302,7 +318,7 @@ Public Class FileFolderRenamer
                         End If
 
                         Try
-                            If f.Path = ".\" AndAlso Not f.NewPath = ".\" Then
+                            If Not f.IsSingle Then
                                 System.IO.Directory.CreateDirectory(destDir)
                             Else
                                 If f.NewPath.ToLower = f.Path.ToLower Then
@@ -313,21 +329,21 @@ Public Class FileFolderRenamer
                                 End If
                             End If
                             If DoDB = True Then
-                                _movieDB.FaS = UpdateFaSPaths(_movieDB.FaS, f.Path, f.NewPath)
+                                _movieDB.FaS = UpdateFaSPaths(_movieDB.FaS, Path.Combine(f.BasePath, f.Path), Path.Combine(f.BasePath, f.NewPath))
                             End If
                             DoUpdate = True
                         Catch ex As Exception
-                            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                            Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
                             'Need to make some type of failure log
                             Continue For
                         End Try
 
                     End If
                     'Rename Files
-                    If (Not f.NewFileName.ToLower = f.FileName.ToLower) OrElse (f.Path = ".\" AndAlso Not f.NewPath = ".\") Then
+                    If (Not f.NewFileName.ToLower = f.FileName.ToLower) OrElse (f.Path = String.Empty AndAlso Not f.NewPath = String.Empty) OrElse Not f.IsSingle Then
                         Dim tmpList As New ArrayList
                         Dim di As DirectoryInfo
-                        If (f.Path = ".\" AndAlso Not f.NewPath = ".\") Then
+                        If Not f.IsSingle Then
                             di = New DirectoryInfo(Path.Combine(f.BasePath, f.Path))
                         Else
                             di = New DirectoryInfo(Path.Combine(f.BasePath, f.NewPath))
@@ -346,8 +362,8 @@ Public Class FileFolderRenamer
                             Dim dstFile As String
                             For Each lFile As FileInfo In lFi
                                 srcFile = lFile.FullName
-                                If (f.Path = ".\" AndAlso Not f.NewPath = ".\") Then
-                                    dstFile = Path.Combine(Path.Combine(Path.GetDirectoryName(lFile.FullName), f.NewPath), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
+                                If Not f.IsSingle Then
+                                    dstFile = Path.Combine(Path.Combine(f.BasePath, f.NewPath), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
                                 Else
                                     dstFile = Path.Combine(Path.GetDirectoryName(lFile.FullName), Path.GetFileName(lFile.FullName).Replace(f.FileName, f.NewFileName))
                                 End If
@@ -367,7 +383,7 @@ Public Class FileFolderRenamer
 
                                         DoUpdate = True
                                     Catch ex As Exception
-                                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                                        Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
                                         'Need to make some type of failure log
                                     End Try
                                 End If
@@ -382,6 +398,12 @@ Public Class FileFolderRenamer
                     _movieDB.Movie.FileNameAndPath = _movieDB.FaS.Filename
                     _movieDB.Movie.Path = _movieDB.FaS.Filename
                     Master.DB.SaveMovieToDB(_movieDB, False)
+                    If Not f.IsSingle Then
+                        Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(f.BasePath, f.Path))
+                        If di.GetFiles().Count = 0 Then
+                            di.Delete()
+                        End If
+                    End If
                 End If
             Next
         Catch ex As Exception
