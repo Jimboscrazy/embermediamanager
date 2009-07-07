@@ -766,9 +766,13 @@ Public Class dlgEditMovie
                         Dim s As String = d.ReadLine()
                         If s.Contains("Duration: ") Then
                             Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-                            Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
-                            Dim intSeconds As Integer = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
-                            tbFrame.Maximum = intSeconds
+                            If Not sTime = "N/A" Then
+                                Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
+                                Dim intSeconds As Integer = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
+                                tbFrame.Maximum = intSeconds
+                            Else
+                                tbFrame.Maximum = 0
+                            End If
                             tbFrame.Value = 0
                             tbFrame.Enabled = True
                         End If
@@ -778,7 +782,7 @@ Public Class dlgEditMovie
                 ffmpeg.Close()
             End Using
 
-            If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
+            If tbFrame.Maximum > 0 AndAlso File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
                 Using fsFImage As New FileStream(Path.Combine(Master.TempPath, "frame.jpg"), FileMode.Open, FileAccess.Read)
                     pbFrame.Image = Image.FromStream(fsFImage)
                 End Using
