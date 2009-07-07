@@ -45,10 +45,17 @@ Partial Class dlgBulkRenamer
         Me.lblLabel = New System.Windows.Forms.Label
         Me.txtFolderNotSingle = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
+        Me.cmsMovieList = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.tsmLockMovie = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.tsmLockAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.tsmUnlockMovie = New System.Windows.Forms.ToolStripMenuItem
+        Me.tsmUnlockAll = New System.Windows.Forms.ToolStripMenuItem
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlCancel.SuspendLayout()
         CType(Me.dgvMoviesList, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.cmsMovieList.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_Button
@@ -195,6 +202,7 @@ Partial Class dlgBulkRenamer
         Me.dgvMoviesList.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvMoviesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvMoviesList.ContextMenuStrip = Me.cmsMovieList
         Me.dgvMoviesList.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.dgvMoviesList.Location = New System.Drawing.Point(12, 76)
         Me.dgvMoviesList.Name = "dgvMoviesList"
@@ -266,6 +274,41 @@ Partial Class dlgBulkRenamer
         Me.Label1.TabIndex = 75
         Me.Label1.Text = "Folder Pattern (for Multiple files in Folder)"
         '
+        'cmsMovieList
+        '
+        Me.cmsMovieList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmLockMovie, Me.tsmUnlockMovie, Me.ToolStripSeparator1, Me.tsmLockAll, Me.tsmUnlockAll})
+        Me.cmsMovieList.Name = "cmsMovieList"
+        Me.cmsMovieList.Size = New System.Drawing.Size(161, 120)
+        '
+        'tsmLockMovie
+        '
+        Me.tsmLockMovie.Name = "tsmLockMovie"
+        Me.tsmLockMovie.Size = New System.Drawing.Size(160, 22)
+        Me.tsmLockMovie.Text = "Lock Movie(s)"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(157, 6)
+        '
+        'tsmLockAll
+        '
+        Me.tsmLockAll.Name = "tsmLockAll"
+        Me.tsmLockAll.Size = New System.Drawing.Size(160, 22)
+        Me.tsmLockAll.Text = "Lock All"
+        '
+        'tsmUnlockMovie
+        '
+        Me.tsmUnlockMovie.Name = "tsmUnlockMovie"
+        Me.tsmUnlockMovie.Size = New System.Drawing.Size(160, 22)
+        Me.tsmUnlockMovie.Text = "Unlock Movie(s)"
+        '
+        'tsmUnlockAll
+        '
+        Me.tsmUnlockAll.Name = "tsmUnlockAll"
+        Me.tsmUnlockAll.Size = New System.Drawing.Size(160, 22)
+        Me.tsmUnlockAll.Text = "Unlock All"
+        '
         'dlgBulkRenamer
         '
         Me.AcceptButton = Me.Close_Button
@@ -297,6 +340,7 @@ Partial Class dlgBulkRenamer
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlCancel.ResumeLayout(False)
         CType(Me.dgvMoviesList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cmsMovieList.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -322,5 +366,11 @@ Partial Class dlgBulkRenamer
     Friend WithEvents lblLabel As System.Windows.Forms.Label
     Friend WithEvents txtFolderNotSingle As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents cmsMovieList As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents tsmLockMovie As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents tsmLockAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents tsmUnlockMovie As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents tsmUnlockAll As System.Windows.Forms.ToolStripMenuItem
 
 End Class
