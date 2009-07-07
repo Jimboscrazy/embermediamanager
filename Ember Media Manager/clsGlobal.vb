@@ -563,6 +563,7 @@ Public Class Master
 
                 If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
                     di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
+                    bSingle = True
                 Else
                     di = New DirectoryInfo(sPath)
                 End If
