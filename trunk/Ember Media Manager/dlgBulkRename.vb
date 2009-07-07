@@ -57,6 +57,7 @@ Public Class dlgBulkRenamer
                 .Columns(5).Visible = False
                 .Columns(6).Visible = False
                 .Columns(7).Visible = False
+                .Columns(8).Visible = False
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -217,6 +218,15 @@ Public Class dlgBulkRenamer
     End Sub
     Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
         Try
+            If e.RowIndex = -1 AndAlso e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 4 Then
+                e.PaintBackground(e.ClipBounds, True)
+                Dim strColumn() As String = {"Folder", "Filename", "New Folder", "New Filename"}
+
+                e.Graphics.DrawString(strColumn(e.ColumnIndex - 1), e.CellStyle.Font, _
+                    New SolidBrush(e.CellStyle.ForeColor), e.CellBounds.X + 1, e.CellBounds.Y + 4, _
+                    StringFormat.GenericDefault)
+                e.Handled = True
+            End If
             If dgvMoviesList.ColumnCount > 5 AndAlso e.RowIndex >= 0 Then
                 If dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then ' Locked
                     Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
@@ -402,5 +412,75 @@ Public Class dlgBulkRenamer
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+
+
+    Private Sub tsmUnlockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockAll.Click
+        setLockAll(False)
+    End Sub
+
+    Private Sub tsmLockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockAll.Click
+        setLockAll(True)
+    End Sub
+    Private Sub cmsMovieList_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsMovieList.Opening
+        Dim count As Integer = FFRenamer.GetCount
+        Dim lockcount As Integer = FFRenamer.GetCountLocked
+        If count > 0 Then
+            If lockcount > 0 Then
+                tsmUnlockAll.Visible = True
+                If lockcount < count Then
+                    tsmLockAll.Visible = True
+                Else
+                    tsmLockAll.Visible = False
+                End If
+                If lockcount = count Then
+                    tsmLockAll.Visible = False
+                End If
+
+            Else
+                tsmLockAll.Visible = True
+                tsmUnlockAll.Visible = False
+            End If
+        Else
+            tsmUnlockAll.Visible = False
+            tsmLockAll.Visible = False
+        End If
+        tsmLockMovie.Visible = False
+        tsmUnlockMovie.Visible = False
+        For Each row As DataGridViewRow In dgvMoviesList.SelectedRows
+            If row.Cells(5).Value Then
+                tsmUnlockMovie.Visible = True
+            Else
+                tsmLockMovie.Visible = True
+            End If
+        Next
+
+    End Sub
+
+    Private Sub tsmLockMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockMovie.Click
+        setLock(True)
+    End Sub
+
+    Private Sub tsmUnlockMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockMovie.Click
+        setLock(False)
+    End Sub
+    Sub setLockAll(ByVal lock As Boolean)
+        Try
+            FFRenamer.SetIsLocked(String.Empty, String.Empty, False)
+            For Each row As DataGridViewRow In dgvMoviesList.Rows
+                row.Cells(5).Value = lock
+            Next
+            dgvMoviesList.Refresh()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    Sub setLock(ByVal lock As Boolean)
+        For Each row As DataGridViewRow In dgvMoviesList.SelectedRows
+            FFRenamer.SetIsLocked(row.Cells(1).Value, row.Cells(2).Value, lock)
+            row.Cells(5).Value = lock
+        Next
+        dgvMoviesList.Refresh()
     End Sub
 End Class

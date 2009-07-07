@@ -120,6 +120,22 @@ Public Class FileFolderRenamer
     End Class
     Private _movies As New List(Of FileRename)
     Public MovieFolders As New ArrayList
+    Public Function GetCount() As Integer
+        Return _movies.Count
+    End Function
+    Public Function GetCountLocked() As Integer
+        Dim c As Integer = c
+        For Each f As FileRename In _movies
+            If f.IsLocked Then c += 1
+        Next
+        Return c
+    End Function
+
+    Public Sub SetIsLocked(ByVal path As String, ByVal filename As String, ByVal lock As Boolean)
+        For Each f As FileRename In _movies
+            If (f.Path = path AndAlso f.FileName = filename) OrElse filename = String.Empty Then f.IsLocked = lock
+        Next
+    End Sub
 
     Public Sub New()
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
@@ -400,7 +416,7 @@ Public Class FileFolderRenamer
                     Master.DB.SaveMovieToDB(_movieDB, False)
                     If Not f.IsSingle Then
                         Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(f.BasePath, f.Path))
-                        If di.GetFiles().Count = 0 Then
+                        If di.GetFiles().Count = 0 AndAlso di.GetDirectories().Count = 0 Then
                             di.Delete()
                         End If
                     End If
