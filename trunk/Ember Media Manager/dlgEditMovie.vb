@@ -1145,13 +1145,17 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnAutoGen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAutoGen.Click
-        If Convert.ToInt32(txtThumbCount.Text) > 0 Then
-            pnlFrameProgress.Visible = True
-            Me.Refresh()
-            Master.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text))
-            pnlFrameProgress.Visible = False
-            Me.RefreshExtraThumbs()
-        End If
+        Try
+            If Convert.ToInt32(txtThumbCount.Text) > 0 Then
+                pnlFrameProgress.Visible = True
+                Me.Refresh()
+                Master.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text))
+                pnlFrameProgress.Visible = False
+                Me.RefreshExtraThumbs()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub txtThumbCount_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.GotFocus
@@ -1171,10 +1175,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub RefreshExtraThumbs()
-        Thumbs.Clear()
-        lvThumbs.Clear()
-        ilThumbs.Images.Clear()
-        Me.bwThumbs.RunWorkerAsync()
+        Try
+            Thumbs.Clear()
+            lvThumbs.Clear()
+            ilThumbs.Images.Clear()
+            Me.bwThumbs.RunWorkerAsync()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub btnThumbsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnThumbsRefresh.Click
@@ -1241,6 +1249,80 @@ Public Class dlgEditMovie
         End If
     End Sub
 
+    Private Sub btnTransferNow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTransferNow.Click
+        Me.TransferETs()
+        Me.RefreshExtraThumbs()
+        Me.pnlETQueue.Visible = False
+    End Sub
+
+    Private Sub TransferETs()
+        Try
+            If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
+                Dim ePath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
+
+                Dim iMod As Integer = Master.GetExtraModifier(ePath)
+                Dim iVal As Integer = iMod + 1
+                Dim hasET As Boolean = Not iMod = 0
+
+                Dim fList As String() = Directory.GetFiles(Path.Combine(Master.TempPath, "extrathumbs"), "thumb*.jpg")
+
+                If fList.Count > 0 Then
+
+                    If Not hasET Then
+                        Directory.CreateDirectory(ePath)
+                    End If
+
+                    For Each sFile As String In fList
+                        Master.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
+                        iVal += 1
+                    Next
+                End If
+
+                Master.currMovie.FaS.Extra = ePath
+
+                Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub TabControl1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TabControl1.SelectedIndexChanged
+        Try
+            If TabControl1.SelectedIndex = 3 Then
+                If File.Exists(String.Concat(Master.TempPath, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                    Me.pnlETQueue.Visible = True
+                Else
+                    Me.pnlETQueue.Visible = False
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub CleanUp()
+        Try
+            If File.Exists(Path.Combine(Master.TempPath, "poster.jpg")) Then
+                File.Delete(Path.Combine(Master.TempPath, "poster.jpg"))
+            End If
+
+            If File.Exists(Path.Combine(Master.TempPath, "fanart.jpg")) Then
+                File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
+            End If
+
+            If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
+                File.Delete(Path.Combine(Master.TempPath, "frame.jpg"))
+            End If
+
+            If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
+                Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Friend Class ExtraThumbs
         Private _image As Image
         Private _name As String
@@ -1294,68 +1376,4 @@ Public Class dlgEditMovie
             _path = String.Empty
         End Sub
     End Class
-
-    Private Sub btnTransferNow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTransferNow.Click
-        Me.TransferETs()
-        Me.RefreshExtraThumbs()
-        Me.pnlETQueue.Visible = False
-    End Sub
-
-    Private Sub TransferETs()
-        If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-            Dim ePath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
-
-            Dim iMod As Integer = Master.GetExtraModifier(ePath)
-            Dim iVal As Integer = iMod + 1
-            Dim hasET As Boolean = Not iMod = 0
-
-            Dim fList As String() = Directory.GetFiles(Path.Combine(Master.TempPath, "extrathumbs"), "thumb*.jpg")
-
-            If fList.Count > 0 Then
-
-                If Not hasET Then
-                    Directory.CreateDirectory(ePath)
-                End If
-
-                For Each sFile As String In fList
-                    Master.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
-                    iVal += 1
-                Next
-            End If
-
-            Master.currMovie.FaS.Extra = ePath
-
-            Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
-        End If
-    End Sub
-
-    Private Sub TabControl1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TabControl1.SelectedIndexChanged
-        If TabControl1.SelectedIndex = 3 Then
-            If File.Exists(String.Concat(Master.TempPath, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                Me.pnlETQueue.Visible = True
-            Else
-                Me.pnlETQueue.Visible = False
-            End If
-        End If
-    End Sub
-
-    Private Sub CleanUp()
-
-        If File.Exists(Path.Combine(Master.TempPath, "poster.jpg")) Then
-            File.Delete(Path.Combine(Master.TempPath, "poster.jpg"))
-        End If
-
-        If File.Exists(Path.Combine(Master.TempPath, "fanart.jpg")) Then
-            File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
-        End If
-
-        If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
-            File.Delete(Path.Combine(Master.TempPath, "frame.jpg"))
-        End If
-
-        If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-            Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
-        End If
-
-    End Sub
 End Class

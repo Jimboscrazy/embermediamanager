@@ -1723,232 +1723,234 @@ Public Class Master
         Dim dPath As String = String.Empty
         Dim bReturn As Boolean = False
         Dim fList As New ArrayList
-
-        If eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
-            dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).Name), ".ext")
-        Else
-            dPath = mMovie.FaS.Filename
-        End If
-
-        Dim sOrName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
-        Dim sPathShort As String = Directory.GetParent(dPath).FullName
-        Dim sPathNoExt As String = RemoveExtFromPath(dPath)
-
-        Dim dirInfo As New DirectoryInfo(sPathShort)
-        Dim ioFi As New List(Of FileInfo)
-
         Try
-            ioFi.AddRange(dirInfo.GetFiles())
-        Catch
-        End Try
+            If eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
+                dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).Name), ".ext")
+            Else
+                dPath = mMovie.FaS.Filename
+            End If
 
-        If isCleaner And Master.eSettings.ExpertCleaner Then
+            Dim sOrName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
+            Dim sPathShort As String = Directory.GetParent(dPath).FullName
+            Dim sPathNoExt As String = RemoveExtFromPath(dPath)
 
-            For Each sFile As FileInfo In ioFi
-                Dim test As String = sFile.Extension
-                If Not Master.eSettings.CleanWhitelistExts.Contains(sFile.Extension) AndAlso ((Master.eSettings.CleanWhitelistVideo AndAlso Not Master.eSettings.ValidExts.Contains(sFile.Extension)) OrElse Not Master.eSettings.CleanWhitelistVideo) Then
-                    File.Delete(sFile.FullName)
-                    bReturn = True
-                End If
-            Next
+            Dim dirInfo As New DirectoryInfo(sPathShort)
+            Dim ioFi As New List(Of FileInfo)
 
-        Else
+            Try
+                ioFi.AddRange(dirInfo.GetFiles())
+            Catch
+            End Try
 
-            If Not isCleaner Then
-                Dim Fanart As New Images
-                Dim fPath As String = mMovie.FaS.Fanart
-                Dim tPath As String = String.Empty
-                If Not String.IsNullOrEmpty(fPath) Then
-                    If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
-                        If Master.eSettings.VideoTSParent Then
-                            tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fPath).FullName).Name), "-fanart.jpg"))
+            If isCleaner And Master.eSettings.ExpertCleaner Then
+
+                For Each sFile As FileInfo In ioFi
+                    Dim test As String = sFile.Extension
+                    If Not Master.eSettings.CleanWhitelistExts.Contains(sFile.Extension) AndAlso ((Master.eSettings.CleanWhitelistVideo AndAlso Not Master.eSettings.ValidExts.Contains(sFile.Extension)) OrElse Not Master.eSettings.CleanWhitelistVideo) Then
+                        File.Delete(sFile.FullName)
+                        bReturn = True
+                    End If
+                Next
+
+            Else
+
+                If Not isCleaner Then
+                    Dim Fanart As New Images
+                    Dim fPath As String = mMovie.FaS.Fanart
+                    Dim tPath As String = String.Empty
+                    If Not String.IsNullOrEmpty(fPath) Then
+                        If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
+                            If Master.eSettings.VideoTSParent Then
+                                tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fPath).FullName).Name), "-fanart.jpg"))
+                            Else
+                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
+                                    tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
+                                Else
+                                    tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
+                                End If
+                            End If
                         Else
                             If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
+                                tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(mMovie.FaS.Filename), "-fanart.jpg"))
                             Else
                                 tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
                             End If
                         End If
+                    End If
+                    If Not String.IsNullOrEmpty(tPath) AndAlso File.Exists(tPath) Then
+                        File.Delete(tPath)
+                    End If
+                    Fanart = Nothing
+                End If
+
+                If Not isCleaner AndAlso mMovie.FaS.isSingle Then
+                    If Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
+                        DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName)
                     Else
-                        If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                            tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(mMovie.FaS.Filename), "-fanart.jpg"))
-                        Else
-                            tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
-                        End If
+                        DeleteDirectory(Directory.GetParent(mMovie.FaS.Filename).FullName)
                     End If
-                End If
-                If Not String.IsNullOrEmpty(tPath) AndAlso File.Exists(tPath) Then
-                    File.Delete(tPath)
-                End If
-                Fanart = Nothing
-            End If
-
-            If Not isCleaner AndAlso mMovie.FaS.isSingle Then
-                If Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
-                    DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName)
                 Else
-                    DeleteDirectory(Directory.GetParent(mMovie.FaS.Filename).FullName)
-                End If
-            Else
-                For Each lFI As FileInfo In ioFi
-                    fList.Add(lFI.FullName)
-                Next
-
-                If (Master.eSettings.CleanFolderJPG AndAlso isCleaner) Then
-                    If fList.Contains(Path.Combine(sPathShort, "folder.jpg")) Then
-                        File.Delete(Path.Combine(sPathShort, "folder.jpg"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanFanartJPG AndAlso isCleaner) Then
-                    If fList.Contains(Path.Combine(sPathShort, "fanart.jpg")) Then
-                        File.Delete(Path.Combine(sPathShort, "fanart.jpg"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanMovieTBN AndAlso isCleaner) Then
-                    If fList.Contains(Path.Combine(sPathShort, "movie.tbn")) Then
-                        File.Delete(Path.Combine(sPathShort, "movie.tbn"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanMovieNFO AndAlso isCleaner) Then
-                    If fList.Contains(Path.Combine(sPathShort, "movie.nfo")) Then
-                        File.Delete(Path.Combine(sPathShort, "movie.nfo"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanPosterTBN AndAlso isCleaner) Then
-                    If fList.Contains(Path.Combine(sPathShort, "poster.tbn")) Then
-                        File.Delete(Path.Combine(sPathShort, "poster.tbn"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanPosterJPG AndAlso isCleaner) Then
-                    If fList.Contains(Path.Combine(sPathShort, "poster.jpg")) Then
-                        File.Delete(Path.Combine(sPathShort, "poster.jpg"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanMovieJPG AndAlso isCleaner) Then
-                    If fList.Contains(Path.Combine(sPathShort, "movie.jpg")) Then
-                        File.Delete(Path.Combine(sPathShort, "movie.jpg"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanExtraThumbs AndAlso isCleaner) Then
-                    If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
-                        DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                    If fList.Contains(String.Concat(sPathNoExt, ".tbn")) Then
-                        File.Delete(String.Concat(sPathNoExt, ".tbn"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(Path.Combine(sPathShort, "video_ts.tbn")) Then
-                        File.Delete(Path.Combine(sPathShort, "video_ts.tbn"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".tbn")) Then
-                        File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".tbn"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                    If fList.Contains(String.Concat(sPathNoExt, "-fanart.jpg")) Then
-                        File.Delete(String.Concat(sPathNoExt, "-fanart.jpg"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(Path.Combine(sPathShort, "video_ts-fanart.jpg")) Then
-                        File.Delete(Path.Combine(sPathShort, "video_ts-fanart.jpg"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), "-fanart.jpg")) Then
-                        File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), "-fanart.jpg"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                    If fList.Contains(String.Concat(sPathNoExt, ".nfo")) Then
-                        File.Delete(String.Concat(sPathNoExt, ".nfo"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(Path.Combine(sPathShort, "video_ts.nfo")) Then
-                        File.Delete(Path.Combine(sPathShort, "video_ts.nfo"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".nfo")) Then
-                        File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".nfo"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                    If fList.Contains(String.Concat(sPathNoExt, ".fanart.jpg")) Then
-                        File.Delete(String.Concat(sPathNoExt, ".fanart.jpg"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(Path.Combine(sPathShort, "video_ts.fanart.jpg")) Then
-                        File.Delete(Path.Combine(sPathShort, "video_ts.fanart.jpg"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".fanart.jpg")) Then
-                        File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".fanart.jpg"))
-                        bReturn = True
-                    End If
-                End If
-
-                If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                    If fList.Contains(String.Concat(sPathNoExt, ".jpg")) Then
-                        File.Delete(String.Concat(sPathNoExt, ".jpg"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(Path.Combine(sPathShort, "video_ts.jpg")) Then
-                        File.Delete(Path.Combine(sPathShort, "video_ts.jpg"))
-                        bReturn = True
-                    End If
-                    If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg")) Then
-                        File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg"))
-                        bReturn = True
-                    End If
-                End If
-
-                If Not isCleaner Then
-
-                    ioFi.Clear()
-                    Try
-                        ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
-                    Catch
-                    End Try
-
-                    Try
-                        ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.FaS.Filename), ".*")))
-                    Catch
-                    End Try
-
-                    For Each sFile As FileInfo In ioFi
-                        File.Delete(sFile.FullName)
+                    For Each lFI As FileInfo In ioFi
+                        fList.Add(lFI.FullName)
                     Next
 
+                    If (Master.eSettings.CleanFolderJPG AndAlso isCleaner) Then
+                        If fList.Contains(Path.Combine(sPathShort, "folder.jpg")) Then
+                            File.Delete(Path.Combine(sPathShort, "folder.jpg"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanFanartJPG AndAlso isCleaner) Then
+                        If fList.Contains(Path.Combine(sPathShort, "fanart.jpg")) Then
+                            File.Delete(Path.Combine(sPathShort, "fanart.jpg"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanMovieTBN AndAlso isCleaner) Then
+                        If fList.Contains(Path.Combine(sPathShort, "movie.tbn")) Then
+                            File.Delete(Path.Combine(sPathShort, "movie.tbn"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanMovieNFO AndAlso isCleaner) Then
+                        If fList.Contains(Path.Combine(sPathShort, "movie.nfo")) Then
+                            File.Delete(Path.Combine(sPathShort, "movie.nfo"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanPosterTBN AndAlso isCleaner) Then
+                        If fList.Contains(Path.Combine(sPathShort, "poster.tbn")) Then
+                            File.Delete(Path.Combine(sPathShort, "poster.tbn"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanPosterJPG AndAlso isCleaner) Then
+                        If fList.Contains(Path.Combine(sPathShort, "poster.jpg")) Then
+                            File.Delete(Path.Combine(sPathShort, "poster.jpg"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanMovieJPG AndAlso isCleaner) Then
+                        If fList.Contains(Path.Combine(sPathShort, "movie.jpg")) Then
+                            File.Delete(Path.Combine(sPathShort, "movie.jpg"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanExtraThumbs AndAlso isCleaner) Then
+                        If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
+                            DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If fList.Contains(String.Concat(sPathNoExt, ".tbn")) Then
+                            File.Delete(String.Concat(sPathNoExt, ".tbn"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(Path.Combine(sPathShort, "video_ts.tbn")) Then
+                            File.Delete(Path.Combine(sPathShort, "video_ts.tbn"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".tbn")) Then
+                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".tbn"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If fList.Contains(String.Concat(sPathNoExt, "-fanart.jpg")) Then
+                            File.Delete(String.Concat(sPathNoExt, "-fanart.jpg"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(Path.Combine(sPathShort, "video_ts-fanart.jpg")) Then
+                            File.Delete(Path.Combine(sPathShort, "video_ts-fanart.jpg"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), "-fanart.jpg")) Then
+                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), "-fanart.jpg"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If fList.Contains(String.Concat(sPathNoExt, ".nfo")) Then
+                            File.Delete(String.Concat(sPathNoExt, ".nfo"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(Path.Combine(sPathShort, "video_ts.nfo")) Then
+                            File.Delete(Path.Combine(sPathShort, "video_ts.nfo"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".nfo")) Then
+                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".nfo"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If fList.Contains(String.Concat(sPathNoExt, ".fanart.jpg")) Then
+                            File.Delete(String.Concat(sPathNoExt, ".fanart.jpg"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(Path.Combine(sPathShort, "video_ts.fanart.jpg")) Then
+                            File.Delete(Path.Combine(sPathShort, "video_ts.fanart.jpg"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".fanart.jpg")) Then
+                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".fanart.jpg"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If fList.Contains(String.Concat(sPathNoExt, ".jpg")) Then
+                            File.Delete(String.Concat(sPathNoExt, ".jpg"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(Path.Combine(sPathShort, "video_ts.jpg")) Then
+                            File.Delete(Path.Combine(sPathShort, "video_ts.jpg"))
+                            bReturn = True
+                        End If
+                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg")) Then
+                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg"))
+                            bReturn = True
+                        End If
+                    End If
+
+                    If Not isCleaner Then
+
+                        ioFi.Clear()
+                        Try
+                            ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
+                        Catch
+                        End Try
+
+                        Try
+                            ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.FaS.Filename), ".*")))
+                        Catch
+                        End Try
+
+                        For Each sFile As FileInfo In ioFi
+                            File.Delete(sFile.FullName)
+                        Next
+
+                    End If
                 End If
             End If
-        End If
 
-        ioFi = Nothing
-        dirInfo = Nothing
-
+            ioFi = Nothing
+            dirInfo = Nothing
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return bReturn
     End Function
 
@@ -2084,37 +2086,43 @@ Public Class Master
     End Function
 
     Public Shared Function GetChangelog() As String
-        Dim sHTTP As New HTTP
-        Dim strChangelog As String = sHTTP.DownloadData("http://www.cube3studios.com/EMM/Changelog.txt")
-        sHTTP = Nothing
+        Try
+            Dim sHTTP As New HTTP
+            Dim strChangelog As String = sHTTP.DownloadData("http://www.cube3studios.com/EMM/Changelog.txt")
+            sHTTP = Nothing
 
-        If strChangelog.Length > 0 Then
-            Return strChangelog
-        Else
-            Return "Unavailable"
-        End If
+            If strChangelog.Length > 0 Then
+                Return strChangelog
+            End If
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return "Unavailable"
     End Function
 
     Public Shared Function GetNETVersion() As Boolean
-        Const regLocation As String = "SOFTWARE\\Microsoft\\NET Framework Setup\\NDP"
-        Dim masterKey As RegistryKey = Registry.LocalMachine.OpenSubKey(regLocation)
-        Dim tempKey As RegistryKey
-        Dim sVersion As String = String.Empty
+        Try
+            Const regLocation As String = "SOFTWARE\\Microsoft\\NET Framework Setup\\NDP"
+            Dim masterKey As RegistryKey = Registry.LocalMachine.OpenSubKey(regLocation)
+            Dim tempKey As RegistryKey
+            Dim sVersion As String = String.Empty
 
-        If Not IsNothing(masterKey) Then
-            Dim SubKeyNames As String() = masterKey.GetSubKeyNames()
-            For i As Integer = 0 To SubKeyNames.Count - 1
-                tempKey = Registry.LocalMachine.OpenSubKey(String.Concat(regLocation, "\\", SubKeyNames(i)))
-                sVersion = tempKey.GetValue("Version")
-                If Not String.IsNullOrEmpty(sVersion) Then
-                    Dim tVersion() As String = sVersion.Split(New Char() {"."})
-                    If tVersion(0) >= 3 AndAlso tVersion(1) >= 5 Then
-                        Return True
+            If Not IsNothing(masterKey) Then
+                Dim SubKeyNames As String() = masterKey.GetSubKeyNames()
+                For i As Integer = 0 To SubKeyNames.Count - 1
+                    tempKey = Registry.LocalMachine.OpenSubKey(String.Concat(regLocation, "\\", SubKeyNames(i)))
+                    sVersion = tempKey.GetValue("Version")
+                    If Not String.IsNullOrEmpty(sVersion) Then
+                        Dim tVersion() As String = sVersion.Split(New Char() {"."})
+                        If tVersion(0) >= 3 AndAlso tVersion(1) >= 5 Then
+                            Return True
+                        End If
                     End If
-                End If
-            Next
-        End If
-
+                Next
+            End If
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return False
     End Function
 
@@ -2129,75 +2137,83 @@ Public Class Master
     End Function
 
     Public Shared Sub DrawGradEllipse(ByRef graphics As Graphics, ByVal bounds As Rectangle, ByVal color1 As Color, ByVal color2 As Color)
-        Dim rPoints() As Point = { _
+        Try
+            Dim rPoints() As Point = { _
             New Point(bounds.X, bounds.Y), _
             New Point(bounds.X + bounds.Width, bounds.Y), _
             New Point(bounds.X + bounds.Width, bounds.Y + bounds.Height), _
             New Point(bounds.X, bounds.Y + bounds.Height) _
         }
-        Dim pgBrush As New Drawing2D.PathGradientBrush(rPoints)
-        Dim gPath As New Drawing2D.GraphicsPath
-        gPath.AddEllipse(bounds.X, bounds.Y, bounds.Width, bounds.Height)
-        pgBrush = New Drawing2D.PathGradientBrush(gPath)
-        pgBrush.CenterColor = color1
-        pgBrush.SurroundColors = New Color() {color2}
-        graphics.FillEllipse(pgBrush, bounds.X, bounds.Y, bounds.Width, bounds.Height)
+            Dim pgBrush As New Drawing2D.PathGradientBrush(rPoints)
+            Dim gPath As New Drawing2D.GraphicsPath
+            gPath.AddEllipse(bounds.X, bounds.Y, bounds.Width, bounds.Height)
+            pgBrush = New Drawing2D.PathGradientBrush(gPath)
+            pgBrush.CenterColor = color1
+            pgBrush.SurroundColors = New Color() {color2}
+            graphics.FillEllipse(pgBrush, bounds.X, bounds.Y, bounds.Width, bounds.Height)
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Public Shared Sub CacheXMLs()
 
-        Dim fPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
-        If File.Exists(fPath) Then
-            FlagsXML = XDocument.Load(fPath)
-        Else
-            MsgBox(String.Concat("Cannot find Flags.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, fPath), MsgBoxStyle.Critical, "File Not Found")
-        End If
+        Try
+            Dim fPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
+            If File.Exists(fPath) Then
+                FlagsXML = XDocument.Load(fPath)
+            Else
+                MsgBox(String.Concat("Cannot find Flags.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, fPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
 
-        If Directory.Exists(Directory.GetParent(fPath).FullName) Then
-            Dim alF As New ArrayList
-            alF.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
-            alFlags.AddRange(alF.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
-        End If
+            If Directory.Exists(Directory.GetParent(fPath).FullName) Then
+                Dim alF As New ArrayList
+                alF.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
+                alFlags.AddRange(alF.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+            End If
 
-        Dim gPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
-        If File.Exists(gPath) Then
-            GenreXML = XDocument.Load(gPath)
-        Else
-            MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, gPath), MsgBoxStyle.Critical, "File Not Found")
-        End If
+            Dim gPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
+            If File.Exists(gPath) Then
+                GenreXML = XDocument.Load(gPath)
+            Else
+                MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, gPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
 
-        If Directory.Exists(Directory.GetParent(gPath).FullName) Then
-            Dim alG As New ArrayList
-            alG.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
-            alGenres.AddRange(alG.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
-        End If
+            If Directory.Exists(Directory.GetParent(gPath).FullName) Then
+                Dim alG As New ArrayList
+                alG.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
+                alGenres.AddRange(alG.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+            End If
 
-        Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
-        If File.Exists(sPath) Then
-            StudioXML = XDocument.Load(sPath)
-        Else
-            MsgBox(String.Concat("Cannot find Studios.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, sPath), MsgBoxStyle.Critical, "File Not Found")
-        End If
+            Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
+            If File.Exists(sPath) Then
+                StudioXML = XDocument.Load(sPath)
+            Else
+                MsgBox(String.Concat("Cannot find Studios.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, sPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
 
-        If Directory.Exists(Directory.GetParent(sPath).FullName) Then
-            Dim alS As New ArrayList
-            alS.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png"))
-            alStudios.AddRange(alS.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
-        End If
+            If Directory.Exists(Directory.GetParent(sPath).FullName) Then
+                Dim alS As New ArrayList
+                alS.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png"))
+                alStudios.AddRange(alS.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+            End If
 
-        Dim rPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
-        If File.Exists(rPath) Then
-            RatingXML = XDocument.Load(rPath)
-        Else
-            MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, rPath), MsgBoxStyle.Critical, "File Not Found")
-        End If
+            Dim rPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
+            If File.Exists(rPath) Then
+                RatingXML = XDocument.Load(rPath)
+            Else
+                MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, rPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
 
-        Dim lPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "Languages.xml")
-        If File.Exists(lPath) Then
-            LanguageXML = XDocument.Load(lPath)
-        Else
-            MsgBox(String.Concat("Cannot find Language.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
-        End If
+            Dim lPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "Languages.xml")
+            If File.Exists(lPath) Then
+                LanguageXML = XDocument.Load(lPath)
+            Else
+                MsgBox(String.Concat("Cannot find Language.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
+            End If
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
     End Sub
 
@@ -2219,6 +2235,7 @@ Public Class Master
                 Directory.Delete(sPath, True)
             End If
         Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 End Class
