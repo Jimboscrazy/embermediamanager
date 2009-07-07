@@ -347,7 +347,7 @@ Public Class dlgEditMovie
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
         Try
             With Me
-                If Not String.IsNullOrEmpty(Master.currMovie.FaS.Nfo) Then
+                If String.IsNullOrEmpty(Master.currMovie.FaS.Nfo) Then
                     .btnManual.Enabled = False
                 End If
 
