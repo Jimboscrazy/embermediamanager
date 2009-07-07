@@ -98,6 +98,9 @@ Partial Class dlgEditMovie
         Me.btnSetFanart = New System.Windows.Forms.Button
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.pnlETQueue = New System.Windows.Forms.Panel
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.btnTransferNow = New System.Windows.Forms.Button
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.btnSetAsFanart = New System.Windows.Forms.Button
         Me.btnThumbsRefresh = New System.Windows.Forms.Button
@@ -140,6 +143,7 @@ Partial Class dlgEditMovie
         Me.TabPage3.SuspendLayout()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage5.SuspendLayout()
+        Me.pnlETQueue.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
@@ -895,6 +899,7 @@ Partial Class dlgEditMovie
         '
         'TabPage5
         '
+        Me.TabPage5.Controls.Add(Me.pnlETQueue)
         Me.TabPage5.Controls.Add(Me.Panel1)
         Me.TabPage5.Controls.Add(Me.btnThumbsRefresh)
         Me.TabPage5.Controls.Add(Me.btnRemoveThumb)
@@ -909,12 +914,45 @@ Partial Class dlgEditMovie
         Me.TabPage5.Text = "Extrathumbs"
         Me.TabPage5.UseVisualStyleBackColor = True
         '
+        'pnlETQueue
+        '
+        Me.pnlETQueue.BackColor = System.Drawing.Color.LightGray
+        Me.pnlETQueue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlETQueue.Controls.Add(Me.Label4)
+        Me.pnlETQueue.Controls.Add(Me.btnTransferNow)
+        Me.pnlETQueue.Location = New System.Drawing.Point(626, 11)
+        Me.pnlETQueue.Name = "pnlETQueue"
+        Me.pnlETQueue.Size = New System.Drawing.Size(201, 69)
+        Me.pnlETQueue.TabIndex = 16
+        Me.pnlETQueue.Visible = False
+        '
+        'Label4
+        '
+        Me.Label4.Location = New System.Drawing.Point(3, 3)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(193, 26)
+        Me.Label4.TabIndex = 1
+        Me.Label4.Text = "You have extrathumbs queued to be transferred to the movie directory."
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'btnTransferNow
+        '
+        Me.btnTransferNow.Image = CType(resources.GetObject("btnTransferNow.Image"), System.Drawing.Image)
+        Me.btnTransferNow.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnTransferNow.Location = New System.Drawing.Point(53, 32)
+        Me.btnTransferNow.Name = "btnTransferNow"
+        Me.btnTransferNow.Size = New System.Drawing.Size(103, 32)
+        Me.btnTransferNow.TabIndex = 0
+        Me.btnTransferNow.Text = "Transfer Now"
+        Me.btnTransferNow.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnTransferNow.UseVisualStyleBackColor = True
+        '
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.LightGray
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.Panel1.Controls.Add(Me.btnSetAsFanart)
-        Me.Panel1.Location = New System.Drawing.Point(716, 402)
+        Me.Panel1.Location = New System.Drawing.Point(718, 403)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(109, 39)
         Me.Panel1.TabIndex = 15
@@ -1240,6 +1278,7 @@ Partial Class dlgEditMovie
         Me.TabPage3.ResumeLayout(False)
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage5.ResumeLayout(False)
+        Me.pnlETQueue.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         CType(Me.pbExtraThumbs, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage4.ResumeLayout(False)
@@ -1356,5 +1395,8 @@ Partial Class dlgEditMovie
     Friend WithEvents btnDLTrailer As System.Windows.Forms.Button
     Friend WithEvents btnPlayTrailer As System.Windows.Forms.Button
     Friend WithEvents lblLocalTrailer As System.Windows.Forms.Label
+    Friend WithEvents pnlETQueue As System.Windows.Forms.Panel
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents btnTransferNow As System.Windows.Forms.Button
 
 End Class

@@ -58,7 +58,7 @@ Public Class dlgOfflineHolder
 
     Private Sub dlgOfflineHolder_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         If Directory.Exists(WorkingPath) Then
-            Directory.Delete(WorkingPath, True)
+            Master.DeleteDirectory(WorkingPath)
         End If
     End Sub
 
@@ -84,7 +84,7 @@ Public Class dlgOfflineHolder
             AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
             AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
             If Directory.Exists(WorkingPath) Then
-                Directory.Delete(WorkingPath, True)
+                Master.DeleteDirectory(WorkingPath)
             End If
             Directory.CreateDirectory(WorkingPath)
 
@@ -316,7 +316,7 @@ Public Class dlgOfflineHolder
         Dim newGraphics As Graphics
         Me.bwCreateHolder.ReportProgress(0, "Preparing data")
         If Directory.Exists(buildPath) Then
-            Directory.Delete(buildPath, True)
+            Master.DeleteDirectory(buildPath)
         End If
         Directory.CreateDirectory(buildPath)
 
@@ -381,7 +381,7 @@ Public Class dlgOfflineHolder
         End If
         Me.bwCreateHolder.ReportProgress(4, "Moving Files")
         If Directory.Exists(buildPath) Then
-            Directory.Delete(buildPath, True)
+            Master.DeleteDirectory(buildPath)
         End If
 
         DirectoryCopy(WorkingPath, destPath)
@@ -400,7 +400,7 @@ Public Class dlgOfflineHolder
 
         Me.bwCreateHolder.ReportProgress(4, "Renaming Files")
         If Directory.Exists(buildPath) Then
-            Directory.Delete(buildPath, True)
+            Master.DeleteDirectory(buildPath)
         End If
         Try
             FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(tMovie.FaS.Filename)), tMovie.Movie, "$D", "$D")

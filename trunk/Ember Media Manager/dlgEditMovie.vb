@@ -41,27 +41,7 @@ Public Class dlgEditMovie
 
             Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
 
-            Me.Poster.Clear()
-            Me.Poster = Nothing
-
-            Me.Fanart.Clear()
-            Me.Fanart = Nothing
-
-            If File.Exists(Path.Combine(Master.TempPath, "poster.jpg")) Then
-                File.Delete(Path.Combine(Master.TempPath, "poster.jpg"))
-            End If
-
-            If File.Exists(Path.Combine(Master.TempPath, "fanart.jpg")) Then
-                File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
-            End If
-
-            If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
-                File.Delete(Path.Combine(Master.TempPath, "frame.jpg"))
-            End If
-
-            If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-                Directory.Delete(Path.Combine(Master.TempPath, "extrathumbs"), True)
-            End If
+            Me.cleanup()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -72,18 +52,35 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.CleanUp()
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
     Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
+        Me.CleanUp()
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Retry
         Me.Close()
     End Sub
 
     Private Sub btnChangeMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeMovie.Click
+        Me.CleanUp()
+
         Me.DialogResult = System.Windows.Forms.DialogResult.Abort
         Me.Close()
+    End Sub
+
+    Private Sub dlgEditMovie_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Me.Poster.Dispose()
+        Me.Poster = Nothing
+
+        Me.Fanart.Dispose()
+        Me.Fanart = Nothing
+
+        Me.Thumbs.Clear()
+        Me.Thumbs = Nothing
     End Sub
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -290,13 +287,9 @@ Public Class dlgEditMovie
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
 
         Try
-            If Not Master.currMovie.FaS.Nfo = String.Empty Then
-                If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    Master.currMovie.Movie = Master.LoadMovieFromNFO(Master.currMovie.FaS.Nfo, Master.currMovie.FaS.isSingle)
-                    Me.FillInfo(False)
-                End If
-            Else
-                MsgBox("Movie has no information", MsgBoxStyle.Exclamation, "File Does Not Exist")
+            If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                Master.currMovie.Movie = Master.LoadMovieFromNFO(Master.currMovie.FaS.Nfo, Master.currMovie.FaS.isSingle)
+                Me.FillInfo(False)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -342,11 +335,11 @@ Public Class dlgEditMovie
     Private Sub btnClearCache_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearCache.Click
         Try
             If Directory.Exists(CachePath) Then
-                Directory.Delete(CachePath, True)
+                Master.DeleteDirectory(CachePath)
             End If
 
             btnClearCache.Visible = False
-        Catch
+        Catch ex As Exception
             MsgBox("One or more cache resources is currently in use and cannot be deleted at the moment.", MsgBoxStyle.Information, "Cannot Clear Cache")
         End Try
     End Sub
@@ -354,6 +347,9 @@ Public Class dlgEditMovie
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
         Try
             With Me
+                If Not String.IsNullOrEmpty(Master.currMovie.FaS.Nfo) Then
+                    .btnManual.Enabled = False
+                End If
 
                 Me.chkMark.Checked = Master.currMovie.IsMark
 
@@ -592,37 +588,7 @@ Public Class dlgEditMovie
 
                 .SaveExtraThumbsList()
 
-                If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-                    Dim di As New DirectoryInfo(Path.Combine(Master.TempPath, "extrathumbs"))
-                    Dim ePath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
-
-                    If Not Directory.Exists(ePath) Then
-                        Directory.CreateDirectory(ePath)
-                    End If
-
-                    'we need to recheck which thumbs we already have 
-                    'again in case user made changes to the order of
-                    'extrathumbs after downloading new extrathumbs
-                    Dim iMod As Integer = Master.GetExtraModifier(ePath)
-                    Dim iVal As Integer = 1
-                    If iMod = -1 Then iMod = 0
-                    Dim fList As New List(Of FileInfo)
-
-                    Try
-                        fList.AddRange(di.GetFiles("thumb*.jpg"))
-                    Catch
-                    End Try
-
-                    For Each sFile As FileInfo In fList
-                        Master.MoveFileWithStream(sFile.FullName, Path.Combine(ePath, String.Concat("thumb", iVal + iMod, ".jpg")))
-                        iVal += 1
-                    Next
-
-                    fList = Nothing
-                    di = Nothing
-
-                    Master.currMovie.FaS.Extra = ePath
-                End If
+                .TransferETs()
 
             End With
         Catch ex As Exception
@@ -770,8 +736,6 @@ Public Class dlgEditMovie
 
                     Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                     Me.lblFanartSize.Visible = True
-
-                    Me.RefreshExtraThumbs()
 
                 End If
             End Using
@@ -1074,28 +1038,22 @@ Public Class dlgEditMovie
 
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres")
 
-        If File.Exists(Path.Combine(mePath, "Genres.xml")) Then
-            Try
-                Dim xmlGenre As XDocument = XDocument.Load(Path.Combine(mePath, "Genres.xml"))
-
-                Dim xGenre = From xGen In xmlGenre...<name> Select xGen.@searchstring, xGen.@language
-                If xGenre.Count > 0 Then
-                    For i As Integer = 0 To xGenre.Count - 1
-                        splitLang = xGenre(i).language.Split(New Char() {"|"})
-                        For Each strGen As String In splitLang
-                            If Not Me.lbGenre.Items.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
-                                Me.lbGenre.Items.Add(xGenre(i).searchstring)
-                            End If
-                        Next
+        Try
+            Dim xGenre = From xGen In Master.GenreXML...<name> Select xGen.@searchstring, xGen.@language
+            If xGenre.Count > 0 Then
+                For i As Integer = 0 To xGenre.Count - 1
+                    splitLang = xGenre(i).language.Split(New Char() {"|"})
+                    For Each strGen As String In splitLang
+                        If Not Me.lbGenre.Items.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
+                            Me.lbGenre.Items.Add(xGenre(i).searchstring)
+                        End If
                     Next
-                End If
+                Next
+            End If
 
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        Else
-            MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Genres.xml")), MsgBoxStyle.Critical, "File Not Found")
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
     End Sub
 
@@ -1109,85 +1067,70 @@ Public Class dlgEditMovie
 
         Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings")
 
-        If File.Exists(Path.Combine(mePath, "Ratings.xml")) Then
-            Try
-                Dim xmlRating As XDocument = XDocument.Load(Path.Combine(mePath, "Ratings.xml"))
-
-                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso xmlRating.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
-                    Dim xRating = From xRat In xmlRating.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
-                    If xRating.Count > 0 Then
-                        For Each strRating As String In xRating
-                            Me.lbMPAA.Items.Add(strRating)
-                        Next
-                    End If
-                Else
-                    Dim xRating = From xRat In xmlRating...<usa>...<name> Select xRat.@searchstring
-                    If xRating.Count > 0 Then
-                        For Each strRating As String In xRating
-                            Me.lbMPAA.Items.Add(strRating.Trim)
-                        Next
-                    End If
+        Try
+            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso Master.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
+                Dim xRating = From xRat In Master.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
+                If xRating.Count > 0 Then
+                    For Each strRating As String In xRating
+                        Me.lbMPAA.Items.Add(strRating)
+                    Next
                 End If
+            Else
+                Dim xRating = From xRat In Master.RatingXML...<usa>...<name> Select xRat.@searchstring
+                If xRating.Count > 0 Then
+                    For Each strRating As String In xRating
+                        Me.lbMPAA.Items.Add(strRating.Trim)
+                    Next
+                End If
+            End If
 
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        Else
-            MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Ratings.xml")), MsgBoxStyle.Critical, "File Not Found")
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
     End Sub
 
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
-
-
-            Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings")
-
-            If File.Exists(Path.Combine(mePath, "Ratings.xml")) Then
-                Try
-                    Dim xmlRating As XDocument = XDocument.Load(Path.Combine(mePath, "Ratings.xml"))
-                    If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso xmlRating.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
-                        Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.Movie.MPAA))
-                        Me.lbMPAA.SelectedIndex = l
-                        If Me.lbMPAA.SelectedItems.Count = 0 Then
-                            Me.lbMPAA.SelectedIndex = 0
-                        End If
-
-                        Me.lbMPAA.TopIndex = 0
-
-                        txtMPAADesc.Enabled = False
-                    Else
-                        Dim strMPAA As String = Master.currMovie.Movie.MPAA
-                        If Strings.InStr(strMPAA.ToLower, "rated g") > 0 Then
-                            Me.lbMPAA.SelectedIndex = 1
-                        ElseIf Strings.InStr(strMPAA.ToLower, "rated pg-13") > 0 Then
-                            Me.lbMPAA.SelectedIndex = 3
-                        ElseIf Strings.InStr(strMPAA.ToLower, "rated pg") > 0 Then
-                            Me.lbMPAA.SelectedIndex = 2
-                        ElseIf Strings.InStr(strMPAA.ToLower, "rated r") > 0 Then
-                            Me.lbMPAA.SelectedIndex = 4
-                        ElseIf Strings.InStr(strMPAA.ToLower, "rated nc-17") > 0 Then
-                            Me.lbMPAA.SelectedIndex = 5
-                        Else
-                            Me.lbMPAA.SelectedIndex = 0
-                        End If
-
-                        Dim strMPAADesc As String = strMPAA
-                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated g", String.Empty, 1, -1, CompareMethod.Text))
-                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg-13", String.Empty, 1, -1, CompareMethod.Text))
-                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg", String.Empty, 1, -1, CompareMethod.Text))
-                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated r", String.Empty, 1, -1, CompareMethod.Text))
-                        strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated nc-17", String.Empty, 1, -1, CompareMethod.Text))
-                        txtMPAADesc.Text = strMPAADesc
+            Try
+                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso Master.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
+                    Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.Movie.MPAA))
+                    Me.lbMPAA.SelectedIndex = l
+                    If Me.lbMPAA.SelectedItems.Count = 0 Then
+                        Me.lbMPAA.SelectedIndex = 0
                     End If
 
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Else
-                MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Ratings.xml")), MsgBoxStyle.Critical, "File Not Found")
-            End If
+                    Me.lbMPAA.TopIndex = 0
+
+                    txtMPAADesc.Enabled = False
+                Else
+                    Dim strMPAA As String = Master.currMovie.Movie.MPAA
+                    If Strings.InStr(strMPAA.ToLower, "rated g") > 0 Then
+                        Me.lbMPAA.SelectedIndex = 1
+                    ElseIf Strings.InStr(strMPAA.ToLower, "rated pg-13") > 0 Then
+                        Me.lbMPAA.SelectedIndex = 3
+                    ElseIf Strings.InStr(strMPAA.ToLower, "rated pg") > 0 Then
+                        Me.lbMPAA.SelectedIndex = 2
+                    ElseIf Strings.InStr(strMPAA.ToLower, "rated r") > 0 Then
+                        Me.lbMPAA.SelectedIndex = 4
+                    ElseIf Strings.InStr(strMPAA.ToLower, "rated nc-17") > 0 Then
+                        Me.lbMPAA.SelectedIndex = 5
+                    Else
+                        Me.lbMPAA.SelectedIndex = 0
+                    End If
+
+                    Dim strMPAADesc As String = strMPAA
+                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated g", String.Empty, 1, -1, CompareMethod.Text))
+                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg-13", String.Empty, 1, -1, CompareMethod.Text))
+                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg", String.Empty, 1, -1, CompareMethod.Text))
+                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated r", String.Empty, 1, -1, CompareMethod.Text))
+                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated nc-17", String.Empty, 1, -1, CompareMethod.Text))
+                    txtMPAADesc.Text = strMPAADesc
+                End If
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
         End If
     End Sub
 
@@ -1351,4 +1294,68 @@ Public Class dlgEditMovie
             _path = String.Empty
         End Sub
     End Class
+
+    Private Sub btnTransferNow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTransferNow.Click
+        Me.TransferETs()
+        Me.RefreshExtraThumbs()
+        Me.pnlETQueue.Visible = False
+    End Sub
+
+    Private Sub TransferETs()
+        If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
+            Dim ePath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
+
+            Dim iMod As Integer = Master.GetExtraModifier(ePath)
+            Dim iVal As Integer = iMod + 1
+            Dim hasET As Boolean = Not iMod = 0
+
+            Dim fList As String() = Directory.GetFiles(Path.Combine(Master.TempPath, "extrathumbs"), "thumb*.jpg")
+
+            If fList.Count > 0 Then
+
+                If Not hasET Then
+                    Directory.CreateDirectory(ePath)
+                End If
+
+                For Each sFile As String In fList
+                    Master.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
+                    iVal += 1
+                Next
+            End If
+
+            Master.currMovie.FaS.Extra = ePath
+
+            Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+        End If
+    End Sub
+
+    Private Sub TabControl1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TabControl1.SelectedIndexChanged
+        If TabControl1.SelectedIndex = 3 Then
+            If File.Exists(String.Concat(Master.TempPath, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                Me.pnlETQueue.Visible = True
+            Else
+                Me.pnlETQueue.Visible = False
+            End If
+        End If
+    End Sub
+
+    Private Sub CleanUp()
+
+        If File.Exists(Path.Combine(Master.TempPath, "poster.jpg")) Then
+            File.Delete(Path.Combine(Master.TempPath, "poster.jpg"))
+        End If
+
+        If File.Exists(Path.Combine(Master.TempPath, "fanart.jpg")) Then
+            File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
+        End If
+
+        If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
+            File.Delete(Path.Combine(Master.TempPath, "frame.jpg"))
+        End If
+
+        If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
+            Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+        End If
+
+    End Sub
 End Class

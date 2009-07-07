@@ -1019,44 +1019,23 @@ Public Class Master
 
     Public Shared Function GetIMDBFromNonConf(ByVal sPath As String, ByVal isSingle As Boolean) As NonConf
         Dim tNonConf As New NonConf
-        Dim dirInfo As New DirectoryInfo(Directory.GetParent(sPath).FullName)
-        Dim ioFi As New List(Of FileInfo)
+        Dim dirPath As String = Directory.GetParent(sPath).FullName
+        Dim lFiles As New ArrayList
 
         If isSingle Then
-            Try
-                ioFi.AddRange(dirInfo.GetFiles("*.nfo"))
-            Catch
-            End Try
-
-            Try
-                ioFi.AddRange(dirInfo.GetFiles("*.info"))
-            Catch
-            End Try
+            lFiles.AddRange(Directory.GetFiles(dirPath, "*.nfo"))
+            lFiles.AddRange(Directory.GetFiles(dirPath, "*.info"))
         Else
-
             Dim fName As String = Path.GetFileNameWithoutExtension(sPath)
             Dim oName As String = Directory.GetParent(sPath).Name
-            Try
-                ioFi.AddRange(dirInfo.GetFiles(String.Concat(fName, "*.nfo")))
-            Catch
-            End Try
-            Try
-                ioFi.AddRange(dirInfo.GetFiles(String.Concat(oName, "*.nfo")))
-            Catch
-            End Try
-
-            Try
-                ioFi.AddRange(dirInfo.GetFiles(String.Concat(fName, "*.info")))
-            Catch
-            End Try
-            Try
-                ioFi.AddRange(dirInfo.GetFiles(String.Concat(oName, "*.info")))
-            Catch
-            End Try
+            lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, "*.nfo")))
+            lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, "*.nfo")))
+            lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, "*.info")))
+            lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, "*.info")))
         End If
 
-        For Each sFile As FileInfo In ioFi
-            Using srInfo As New StreamReader(sFile.FullName)
+        For Each sFile As String In lFiles
+            Using srInfo As New StreamReader(sFile)
                 Dim sInfo As String = srInfo.ReadToEnd
                 Dim sIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
 
@@ -1071,9 +1050,6 @@ Public Class Master
 
             End Using
         Next
-
-        ioFi = Nothing
-
         Return tNonConf
     End Function
 
@@ -1094,33 +1070,23 @@ Public Class Master
         Dim tmpNameNoStack As String = String.Empty
         Dim currname As String = String.Empty
         Dim parPath As String = String.Empty
+        Dim fList As New ArrayList
+        Dim tList As New ArrayList
         Try
-
-            Dim di As DirectoryInfo
-
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                di = New DirectoryInfo(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName)
+                tList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName))
+                fList.AddRange(tList.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+
                 If bSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     ExtraPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
             Else
-                di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
+                tList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName))
+                fList.AddRange(tList.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
                 If bSingle AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     ExtraPath = String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
             End If
-
-            Dim lFi As New List(Of FileInfo)()
-            Dim fList As New ArrayList
-
-            Try
-                lFi.AddRange(di.GetFiles())
-            Catch
-            End Try
-
-            For Each sFile As FileInfo In lFi
-                fList.Add(sFile.FullName.ToLower)
-            Next
 
             parPath = Directory.GetParent(sPath).FullName.ToLower
             tmpName = Path.Combine(parPath, CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))).ToLower
@@ -1454,10 +1420,16 @@ Public Class Master
         '\\
 
         Try
+            Dim sEnd As String = String.Empty
             If EndOnly Then
-                Return Strings.Right(sString, MaxLength)
+                sEnd = Strings.Right(sString, sString.Length - (sString.LastIndexOf("/") + 1))
+                If MaxLength = 0 Then
+                    Return sEnd
+                Else
+                    Return Strings.Right(sString, MaxLength)
+                End If
             Else
-                Dim sEnd As String = sString.Substring(sString.LastIndexOf("/"), sString.Length - sString.LastIndexOf("/"))
+                sEnd = Strings.Right(sString, sString.Length - sString.LastIndexOf("/"))
                 If ((MaxLength - sEnd.Length) - 3) > 0 Then
                     Return String.Format("{0}...{1}", Strings.Left(sString, (MaxLength - sEnd.Length) - 3), sEnd)
                 Else
@@ -1666,37 +1638,20 @@ Public Class Master
         '\\
 
         Dim iMod As Integer = 0
-        Dim alThumbs As New ArrayList
+        Dim lThumbs As New ArrayList
 
         Try
             Dim extraPath As String = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
 
-            If Not Directory.Exists(extraPath) Then
-                iMod = -1
-            Else
-                Dim dirInfo As New DirectoryInfo(extraPath)
-                Dim ioFi As New List(Of FileInfo)
+            If Directory.Exists(extraPath) Then
 
-                Try
-                    ioFi.AddRange(dirInfo.GetFiles("thumb*.jpg"))
-                Catch
-                End Try
+                lThumbs.AddRange(Directory.GetFiles(extraPath, "thumb*.jpg"))
 
-                For Each sFile As FileInfo In ioFi
-                    alThumbs.Add(sFile.Name)
-                Next
-
-                ioFi = Nothing
-
-                If alThumbs.Count > 0 Then
-                    alThumbs.Sort()
-                    iMod = Convert.ToInt32(Regex.Match(alThumbs.Item(alThumbs.Count - 1), "\d+").ToString)
-                Else
-                    iMod = -1
+                If lThumbs.Count > 0 Then
+                    iMod = Convert.ToInt32(Regex.Match(lThumbs.Item(lThumbs.Count - 1), "(\d+).jpg").Groups(1).ToString)
                 End If
             End If
 
-            alThumbs = Nothing
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1829,9 +1784,9 @@ Public Class Master
 
             If Not isCleaner AndAlso mMovie.FaS.isSingle Then
                 If Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
-                    Directory.Delete(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName, True)
+                    DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName)
                 Else
-                    Directory.Delete(Directory.GetParent(mMovie.FaS.Filename).FullName, True)
+                    DeleteDirectory(Directory.GetParent(mMovie.FaS.Filename).FullName)
                 End If
             Else
                 For Each lFI As FileInfo In ioFi
@@ -1889,7 +1844,7 @@ Public Class Master
 
                 If (Master.eSettings.CleanExtraThumbs AndAlso isCleaner) Then
                     If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
-                        Directory.Delete(Path.Combine(sPathShort, "extrathumbs"), True)
+                        DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
                         bReturn = True
                     End If
                 End If
@@ -2075,14 +2030,10 @@ Public Class Master
                     End If
 
                     Dim fThumbs As New ArrayList
-
-                    Try
-                        fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
-                    Catch
-                    End Try
+                    fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
 
                     If fThumbs.Count <= 0 Then
-                        Directory.Delete(tPath, True)
+                        DeleteDirectory(tPath)
                     Else
                         Dim exFanart As New Images
                         'always set to something if extrathumbs are created so we know during scrapers
@@ -2166,17 +2117,14 @@ Public Class Master
         Return False
     End Function
 
-    Public Shared Function CleanURL(ByVal sURL As String, Optional ByVal unClean As Boolean = False)
-        If unClean Then
-            Return sURL.Replace("$c$", ":").Replace("$s$", "/")
+    Public Shared Function CleanURL(ByVal sURL As String)
+        If sURL.ToLower.Contains("themoviedb.org") Then
+            '$$ to sort first
+            sURL = String.Concat("$$[themoviedb.org]", TruncateURL(sURL, 0, True))
         Else
-            If sURL.ToLower.Contains("themoviedb.org") Then
-                sURL = String.Concat("[themoviedb.org]", TruncateURL(sURL, 40, True))
-            Else
-                sURL = TruncateURL(sURL, 40, True)
-            End If
-            Return sURL.Replace(":", "$c$").Replace("/", "$s$")
+            sURL = TruncateURL(sURL, 40, True)
         End If
+        Return sURL.Replace(":", "$c$").Replace("/", "$s$")
     End Function
 
     Public Shared Sub DrawGradEllipse(ByRef graphics As Graphics, ByVal bounds As Rectangle, ByVal color1 As Color, ByVal color2 As Color)
@@ -2196,8 +2144,6 @@ Public Class Master
     End Sub
 
     Public Shared Sub CacheXMLs()
-        Dim di As DirectoryInfo
-        Dim lFI As New List(Of FileInfo)
 
         Dim fPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
         If File.Exists(fPath) Then
@@ -2207,16 +2153,9 @@ Public Class Master
         End If
 
         If Directory.Exists(Directory.GetParent(fPath).FullName) Then
-            di = New DirectoryInfo(Directory.GetParent(fPath).FullName)
-
-            Try
-                lFI.AddRange(di.GetFiles("*.png"))
-            Catch
-            End Try
-
-            For Each fFile As FileInfo In lFI
-                alFlags.Add(fFile.FullName.ToLower)
-            Next
+            Dim alF As New ArrayList
+            alF.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
+            alFlags.AddRange(alF.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
         End If
 
         Dim gPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
@@ -2227,17 +2166,9 @@ Public Class Master
         End If
 
         If Directory.Exists(Directory.GetParent(gPath).FullName) Then
-            di = New DirectoryInfo(Directory.GetParent(gPath).FullName)
-            lFI.Clear()
-
-            Try
-                lFI.AddRange(di.GetFiles("*.jpg"))
-            Catch
-            End Try
-
-            For Each gFile As FileInfo In lFI
-                alGenres.Add(gFile.FullName.ToLower)
-            Next
+            Dim alG As New ArrayList
+            alG.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
+            alGenres.AddRange(alG.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
         End If
 
         Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
@@ -2248,17 +2179,9 @@ Public Class Master
         End If
 
         If Directory.Exists(Directory.GetParent(sPath).FullName) Then
-            di = New DirectoryInfo(Directory.GetParent(sPath).FullName)
-            lFI.Clear()
-
-            Try
-                lFI.AddRange(di.GetFiles("*.png"))
-            Catch
-            End Try
-
-            For Each sFile As FileInfo In lFI
-                alStudios.Add(sFile.FullName.ToLower)
-            Next
+            Dim alS As New ArrayList
+            alS.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png"))
+            alStudios.AddRange(alS.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
         End If
 
         Dim rPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
@@ -2275,5 +2198,26 @@ Public Class Master
             MsgBox(String.Concat("Cannot find Language.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
         End If
 
+    End Sub
+
+    Public Shared Sub DeleteDirectory(ByVal sPath As String)
+        Try
+            If Directory.Exists(sPath) Then
+                Dim Dirs As String() = Directory.GetDirectories(sPath)
+
+                For Each inDir As String In Dirs
+                    DeleteDirectory(inDir)
+                Next
+
+                Dim fFiles As String() = Directory.GetFiles(sPath)
+
+                For Each fFile As String In fFiles
+                    File.Delete(fFile)
+                Next
+
+                Directory.Delete(sPath, True)
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
 End Class
