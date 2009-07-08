@@ -1164,9 +1164,11 @@ Public Class Master
             'End Select
             'Next
             For Each t As String In fList
-                If ((t.StartsWith(tmpNameNoStack) OrElse t.StartsWith(tmpName) OrElse _
-                    (t.StartsWith("movie") AndAlso bSingle AndAlso eSettings.MovieNFO)) AndAlso _
-                        Regex.IsMatch(t, "\.[sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass]$")) Then
+                'If ((t.StartsWith(tmpNameNoStack) OrElse t.StartsWith(tmpName) OrElse _
+                '    (t.StartsWith("movie") AndAlso bSingle AndAlso eSettings.MovieNFO)) AndAlso _
+                '        Regex.IsMatch(t, "\.[sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass]$")) Then
+                If Regex.IsMatch(t, String.Concat("(i?)^\Q", tmpNameNoStack, "\E(\.(.*?))?\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")) OrElse _
+                        Regex.IsMatch(t, String.Concat("(i?)^\Q", tmpName, "\E(\.(.*?))?\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$")) Then
                     SubPath = t
                     Exit For
                 End If
