@@ -539,6 +539,9 @@ Public Class dlgEditMovie
 
                 Master.currMovie.Movie.Runtime = .txtRuntime.Text.Trim
                 Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
+                If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.MPAA))) Then
+                    Master.currMovie.Movie.MPAA = Master.currMovie.Movie.Certification
+                End If
                 Master.currMovie.Movie.ReleaseDate = .txtReleaseDate.Text.Trim
                 Master.currMovie.Movie.Credits = .txtCredits.Text.Trim
                 Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
