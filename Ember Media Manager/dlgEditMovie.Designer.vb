@@ -515,7 +515,6 @@ Partial Class dlgEditMovie
         Me.lvActors.Location = New System.Drawing.Point(217, 155)
         Me.lvActors.Name = "lvActors"
         Me.lvActors.Size = New System.Drawing.Size(408, 132)
-        Me.lvActors.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvActors.TabIndex = 11
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
