@@ -1148,22 +1148,29 @@ Public Class Master
             End Select
 
             'sub
-            Dim sExt() As String = Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ",")
+            'Dim sExt() As String = Split(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass", ",")
 
-            For Each t As String In sExt
-                Select Case True
-                    Case fList.Contains(String.Concat(tmpNameNoStack, t))
-                        SubPath = String.Concat(tmpNameNoStack, t)
-                        Exit For
-                    Case fList.Contains(String.Concat(tmpName, t))
-                        SubPath = String.Concat(tmpName, t)
-                        Exit For
-                    Case bSingle AndAlso eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(parPath, String.Concat("movie", t)))
-                        SubPath = Path.Combine(parPath, String.Concat("movie", t))
-                        Exit For
-                End Select
+            'For Each t As String In sExt
+            'Select Case True
+            '    Case fList.Contains(String.Concat(tmpNameNoStack, t))
+            'SubPath = String.Concat(tmpNameNoStack, t)
+            'Exit For
+            '    Case fList.Contains(String.Concat(tmpName, t))
+            'SubPath = String.Concat(tmpName, t)
+            'Exit For
+            '    Case bSingle AndAlso eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(parPath, String.Concat("movie", t)))
+            'SubPath = Path.Combine(parPath, String.Concat("movie", t))
+            'Exit For
+            'End Select
+            'Next
+            For Each t As String In fList
+                If ((t.StartsWith(tmpNameNoStack) OrElse t.StartsWith(tmpName) OrElse _
+                    (t.StartsWith("movie") AndAlso bSingle AndAlso eSettings.MovieNFO)) AndAlso _
+                        Regex.IsMatch(t, "\.[sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass]$")) Then
+                    SubPath = t
+                    Exit For
+                End If
             Next
-
             For Each t As String In Master.eSettings.ValidExts
                 Select Case True
                     Case fList.Contains(String.Concat(tmpNameNoStack, "-trailer", t))
