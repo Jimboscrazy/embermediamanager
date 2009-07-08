@@ -2065,7 +2065,7 @@ Public Class Master
     Public Shared Function CheckUpdate() As Integer
         Try
             Dim sHTTP As New HTTP
-            Dim updateXML As String = sHTTP.DownloadData("http://www.cube3studios.com/EMM/Update.xml")
+            Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Update.xml")
             sHTTP = Nothing
 
             Dim xmlUpdate As XDocument
@@ -2090,7 +2090,7 @@ Public Class Master
     Public Shared Function GetChangelog() As String
         Try
             Dim sHTTP As New HTTP
-            Dim strChangelog As String = sHTTP.DownloadData("http://www.cube3studios.com/EMM/Changelog.txt")
+            Dim strChangelog As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Changelog.txt")
             sHTTP = Nothing
 
             If strChangelog.Length > 0 Then
