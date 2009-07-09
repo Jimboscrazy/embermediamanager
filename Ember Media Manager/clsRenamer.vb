@@ -240,11 +240,33 @@ Public Class FileFolderRenamer
                 pattern = pattern.Replace(String.Concat("$X", strCond), "")
                 pattern = pattern.Replace(" ", strCond)
             End If
-            'Remove/Replace some Invalid chars from path/filename
-            pattern = pattern.Replace(":", " -")
+            nextC = pattern.IndexOf("$?")
+            If nextC > -1 Then
+                strBase = pattern.Substring(nextC + 2)
+                pattern = pattern.Substring(0, nextC)
+                If Not strBase = String.Empty Then
+                    nextIB = strBase.IndexOf("?")
+                    If nextIB > -1 Then
+                        nextEB = strBase.Substring(nextIB + 1).IndexOf("?")
+                        If nextEB > -1 Then
+                            strCond = strBase.Substring(nextIB + 1, nextEB)
+                            strBase = strBase.Substring(0, nextIB)
+                            If Not strBase = String.Empty Then pattern = pattern.Replace(strBase, strCond)
+                        End If
+                    End If
+                End If
+            End If
+
+            pattern = pattern.Replace(":", "-")
+            pattern = pattern.Replace("/", String.Empty)
+            pattern = pattern.Replace("\", String.Empty)
+            pattern = pattern.Replace("|", String.Empty)
+            pattern = pattern.Replace("<", String.Empty)
+            pattern = pattern.Replace(">", String.Empty)
             pattern = pattern.Replace("?", String.Empty)
             pattern = pattern.Replace("*", String.Empty)
             pattern = pattern.Replace("  ", " ")
+
             For Each Invalid As Char In Path.GetInvalidPathChars
                 pattern = pattern.Replace(Invalid, String.Empty)
             Next
