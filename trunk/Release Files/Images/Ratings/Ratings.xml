@@ -5,11 +5,11 @@
     <name searchstring="Rated G">
       <icon>usa/mpaag.png</icon>
     </name>
-    <name searchstring="Rated PG-13">
-      <icon>usa/mpaapg13.png</icon>
-    </name>
     <name searchstring="Rated PG">
       <icon>usa/mpaapg.png</icon>
+    </name>
+    <name searchstring="Rated PG-13">
+      <icon>usa/mpaapg13.png</icon>
     </name>
     <name searchstring="Rated R">
       <icon>usa/mpaar.png</icon>
@@ -44,6 +44,9 @@
   </uk>
   
   <germany>
+    <name searchstring="Germany:o.Al.">
+      <icon>de/de_0.png</icon>
+    </name>
     <name searchstring="Germany:0">
       <icon>de/de_0.png</icon>
     </name>
@@ -59,10 +62,6 @@
     <name searchstring="Germany:18">
       <icon>de/de_18.png</icon>
     </name>
-    <!-- no idea what this is so have no clue what image should be -->
-    <name searchstring="Germany:o.Al.">
-      <icon>de/de_0.png</icon>
-    </name>
   </germany>
   
   <australia>
@@ -75,14 +74,14 @@
     <name searchstring="Australia:PG-13">
       <icon>au/australia_pg13.png</icon>
     </name>
+    <name searchstring="Australia:R">
+      <icon>au/australia_r.png</icon>
+    </name>
     <name searchstring="Australia:M">
       <icon>au/australia_m.png</icon>
     </name>
     <name searchstring="Australia:MA">
       <icon>au/australia_ma.png</icon>
-    </name>
-    <name searchstring="Australia:R">
-      <icon>au/australia_r.png</icon>
     </name>
   </australia>
 </ratings>
