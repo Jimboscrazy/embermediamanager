@@ -69,7 +69,7 @@ Public Class dlgBulkRenamer
         '\\
         Try
             Dim MovieFile As FileFolderRenamer.FileRename
-            Dim _curMovie As Master.DBMovie
+            Dim _curMovie As New Master.DBMovie
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty

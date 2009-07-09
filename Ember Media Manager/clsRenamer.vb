@@ -257,7 +257,7 @@ Public Class FileFolderRenamer
                 End If
             End If
 
-            pattern = pattern.Replace(":", "-")
+            pattern = pattern.Replace(":", " -")
             pattern = pattern.Replace("/", String.Empty)
             pattern = pattern.Replace("\", String.Empty)
             pattern = pattern.Replace("|", String.Empty)
