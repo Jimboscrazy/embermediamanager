@@ -33,19 +33,65 @@ Public Class dlgOfflineHolder
     Private idxStsSource As Integer = -1
     Private idxStsMovie As Integer = -1
     Private idxStsImage As Integer = -1
-    Private Preview As New Images
+    Private Preview As Bitmap
+    Private Overlay As New Images
     Private PreviewPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "OfflineDefault.jpg")
+    Private OverlayPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Offlineoverlay.png")
     Private currText As String = "Insert DVD"
     Private prevText As String = String.Empty
     Private currNameText As String = String.Empty
     Private prevNameText As String = String.Empty
-    Private currTopText As String = "470"
-    Private prevTopText As String = String.Empty
+    '    Private currTopText As String
+    '    Private prevTopText As String = String.Empty
     Private drawFont As New Font("Arial", 22, FontStyle.Bold)
-    Private txtTopPos As Integer
     Private tMovie As New Master.DBMovie
     Private MovieName As String = String.Empty
     Friend WithEvents bwCreateHolder As New System.ComponentModel.BackgroundWorker
+    Private Video_Width As Integer
+    Private Video_Height As Integer
+    Private RealImage_W As Integer
+    Private RealImage_H As Integer
+    Private RealImage_ratio As Double
+    Private txtTopPos As Integer
+    Private textHeight As SizeF
+    Private def_pbPreview_w As Integer
+    Private def_pbPreview_h As Integer
+
+    Sub SetPreview(ByVal bDefault As Boolean, Optional ByVal path As String = "")
+        Try
+
+            If bDefault Then
+                path = PreviewPath
+                'txtTopPos = RealImage_H - 100
+            End If
+            If path <> "" Then
+                'First let's resize it (Mantain aspect ratio)
+                Dim tmpImg As Bitmap = New Bitmap(path)
+                RealImage_W = Video_Width
+                RealImage_ratio = tmpImg.Width / tmpImg.Height
+                RealImage_H = RealImage_W / RealImage_ratio
+                Preview = New Bitmap(RealImage_W, RealImage_H)
+                Dim newGraphics = Graphics.FromImage(Preview)
+                newGraphics.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                newGraphics.DrawImage(tmpImg, New Rectangle(0, 0, RealImage_W, RealImage_H), New Rectangle(0, 0, tmpImg.Width, tmpImg.Height), GraphicsUnit.Pixel)
+                'Dont need this one anymore
+                textHeight = newGraphics.MeasureString(txtTagline.Text, drawFont)
+                tmpImg.Dispose()
+            Else
+                RealImage_W = Video_Width
+                RealImage_ratio = Preview.Width / Preview.Height
+                RealImage_H = RealImage_W / RealImage_ratio
+            End If
+
+            If txtTopPos > RealImage_H Then
+                txtTop.Text = (RealImage_H - 30).ToString
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CLOSE_Button.Click
         If bwCreateHolder.IsBusy Then
@@ -64,7 +110,11 @@ Public Class dlgOfflineHolder
 
     Private Sub dlgOfflineHolder_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-
+            def_pbPreview_w = pbPreview.Width
+            def_pbPreview_h = pbPreview.Height
+            Video_Width = 1280
+            Video_Height = 720
+            cbFormat.SelectedIndex = 0
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
                 g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
@@ -88,11 +138,11 @@ Public Class dlgOfflineHolder
             End If
             Directory.CreateDirectory(WorkingPath)
 
-            If File.Exists(PreviewPath) Then
-                Preview.FromFile(PreviewPath)
-                CreatePreview()
-            End If
-
+            'If File.Exists(PreviewPath) Then
+            'SetPreview(True, PreviewPath)
+            'CreatePreview()
+            'End If
+            CreatePreview()
             tMovie.FaS = New Master.FileAndSource
             tMovie.Movie = New Media.Movie
             tMovie.FaS.isSingle = True
@@ -108,7 +158,7 @@ Public Class dlgOfflineHolder
             lvStatus.Items(idxStsImage).SubItems.Add("Valid")
             lvStatus.Items(idxStsImage).UseItemStyleForSubItems = False
             lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
-            tbTagLine.Value = tbTagLine.Maximum - 470
+            'tbTagLine.Value = tbTagLine.Maximum - 470 'Video_Height - 100
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -240,7 +290,8 @@ Public Class dlgOfflineHolder
 
             If chkUseFanart.Checked Then
                 If Not String.IsNullOrEmpty(fPath) Then
-                    Preview.FromFile(fPath)
+                    SetPreview(False, fPath)
+                    txtTop.Text = (Preview.Height - 100).ToString
                     lvStatus.Items(idxStsImage).SubItems(1).Text = "Valid"
                     lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
                 Else
@@ -302,9 +353,15 @@ Public Class dlgOfflineHolder
     Private Sub cbUseFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFanart.CheckedChanged
         If Not sender.checked Then
             If File.Exists(PreviewPath) Then
-                txtTop.Text = "470"
-                Preview.FromFile(PreviewPath)
+                SetPreview(True, PreviewPath)
+                txtTop.Text = (Preview.Height - 100).ToString
             End If
+        End If
+        chkOverlay.Enabled = sender.checked
+        chkBackground.Enabled = sender.checked
+        If chkOverlay.Enabled Then
+            chkOverlay.CheckState = CheckState.Checked
+            chkBackground.CheckState = CheckState.Checked
         End If
         CheckConditions()
     End Sub
@@ -320,17 +377,17 @@ Public Class dlgOfflineHolder
         End If
         Directory.CreateDirectory(buildPath)
 
-        If Not IsNothing(Preview.Image) Then
-            imgTemp = Preview.Image
+        If Not IsNothing(Preview) Then
+            imgTemp = Preview
         Else
-            imgTemp = New Bitmap(720, 576)
+            imgTemp = New Bitmap(Video_Width, Video_Height)
         End If
 
         'First let's resize it (Mantain aspect ratio)
-        imgFinal = New Bitmap(720, Convert.ToInt32(720 / (imgTemp.Width / imgTemp.Height)))
+        imgFinal = New Bitmap(Video_Width, Convert.ToInt32(Video_Width / RealImage_ratio))
         newGraphics = Graphics.FromImage(imgFinal)
         newGraphics.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-        newGraphics.DrawImage(imgTemp, New Rectangle(0, 0, 720, 720 / (imgTemp.Width / imgTemp.Height)), New Rectangle(0, 0, imgTemp.Width, imgTemp.Height), GraphicsUnit.Pixel)
+        newGraphics.DrawImage(imgTemp, New Rectangle(0, 0, Video_Width, Video_Width / (imgTemp.Width / imgTemp.Height)), New Rectangle(0, 0, imgTemp.Width, imgTemp.Height), GraphicsUnit.Pixel)
         'Dont need this one anymore
         imgTemp.Dispose()
         'Save Master Image
@@ -338,6 +395,7 @@ Public Class dlgOfflineHolder
         ' Create string to draw.
         Dim drawString As String = txtTagline.Text
         Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
+        Dim backgroundBrush As New SolidBrush(Color.FromArgb(180, btnBackgroundColor.BackColor.R, btnBackgroundColor.BackColor.G, btnBackgroundColor.BackColor.B))
         Dim drawPoint As New PointF(0.0F, txtTopPos)
         Dim stringSize As New SizeF
         stringSize = newGraphics.MeasureString(drawString, drawFont)
@@ -345,12 +403,20 @@ Public Class dlgOfflineHolder
         Me.bwCreateHolder.ReportProgress(1, "Creating Movie")
         'Let cycle
         Dim f As Integer = 1
-        For c As Integer = 720 To -stringSize.Width Step -2
+        For c As Integer = Video_Width To -stringSize.Width Step -2
             imgTemp = imgFinal.Clone
             newGraphics = Graphics.FromImage(imgTemp)
             drawPoint.X = c
             newGraphics.Save()
+
+            If chkBackground.Checked AndAlso chkUseFanart.Checked Then
+                newGraphics.FillRectangle(backgroundBrush, 0, txtTopPos - 5, imgTemp.Width, stringSize.Height + 10)
+            End If
             newGraphics.DrawString(drawString, drawFont, drawBrush, drawPoint)
+            If chkOverlay.Checked AndAlso chkUseFanart.Checked Then
+                newGraphics.DrawImage(Overlay.Image, 0, Convert.ToUInt16(txtTopPos - 65 / (1280 / Video_Width)), Convert.ToUInt16(Overlay.Image.Width / (1280 / Video_Width)), Convert.ToUInt16(Overlay.Image.Height / (1280 / Video_Width)))
+            End If
+
             imgTemp.Save(Path.Combine(buildPath, String.Format("image{0}.jpg", f)), System.Drawing.Imaging.ImageFormat.Jpeg)
             newGraphics.Dispose()
             imgTemp.Dispose()
@@ -437,7 +503,7 @@ Public Class dlgOfflineHolder
         txtTagline.Enabled = False
         chkUseFanart.Enabled = False
         'Need to avoid cross thread in BackgroundWorker
-        txtTopPos = 720 / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
+        'txtTopPos = Video_Width / (pbPreview.Image.Width / Convert.ToSingle(currTopText)) ' ... and Scale it
         Me.pbProgress.Value = 100
         Me.pbProgress.Style = ProgressBarStyle.Marquee
         Me.pbProgress.MarqueeAnimationSpeed = 25
@@ -490,49 +556,40 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub CreatePreview()
-        Dim bmPreview As New Bitmap(Me.Preview.Image)
-        Dim grPreview As Graphics = Graphics.FromImage(bmPreview)
-        Dim drawString As String = txtTagline.Text
-        Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
-        'Dim drawPoint As New PointF(0.0F, 470.0F)
-        tbTagLine.Maximum = bmPreview.Height - grPreview.MeasureString(drawString, drawFont).Height
-        If Convert.ToInt32(txtTop.Text) > bmPreview.Height - grPreview.MeasureString(drawString, drawFont).Height Then
-            txtTop.Text = Convert.ToInt32(bmPreview.Height - grPreview.MeasureString(drawString, drawFont).Height - 10).ToString
+        Dim bmCloneOriginal As Bitmap = Preview.Clone
+        tbTagLine.Maximum = Preview.Height - textHeight.Height
+        tbTagLine.Value = tbTagLine.Maximum - txtTopPos
+        Dim w, h As Integer
+        w = pbPreview.Width
+        h = Convert.ToInt16(pbPreview.Width / RealImage_ratio)
+        If h > def_pbPreview_h Then
+            h = pbPreview.Height
+            w = Convert.ToInt16(pbPreview.Height * RealImage_ratio)
         End If
-        Dim iLeft As Integer = (bmPreview.Width - grPreview.MeasureString(drawString, drawFont).Width) / 2
-        grPreview.DrawString(drawString, drawFont, drawBrush, iLeft, Convert.ToInt32(txtTop.Text))
-        pbPreview.Image = bmPreview
-        If tbTagLine.Tag Is Nothing Then tbTagLine.Tag = 0
-        If Not tbTagLine.Tag = bmPreview.Height Then
-            tbTagLine.Top = GroupBox1.Top + 10 + (pbPreview.Height - (bmPreview.Height / (bmPreview.Width / pbPreview.Width))) / 2
-            tbTagLine.Height = (bmPreview.Height / (bmPreview.Width / pbPreview.Width)) + 16
-        End If
-        tbTagLine.Tag = bmPreview.Height
-        tbTagLine.Value = tbTagLine.Maximum - Convert.ToInt16(txtTop.Text)
 
+        pbPreview.Image = New Bitmap(w, h)
+
+        Dim grOriginal As Graphics = Graphics.FromImage(bmCloneOriginal)
+        Dim grPreview As Graphics = Graphics.FromImage(pbPreview.Image)
+        Dim drawBrush As New SolidBrush(btnTextColor.BackColor)
+        Dim backgroundBrush As New SolidBrush(Color.FromArgb(180, btnBackgroundColor.BackColor.R, btnBackgroundColor.BackColor.G, btnBackgroundColor.BackColor.B))
+        'End If
+        Dim iLeft As Integer = (bmCloneOriginal.Width - textHeight.Width) / 2
+        If chkBackground.Checked AndAlso chkUseFanart.Checked Then
+            grOriginal.FillRectangle(backgroundBrush, 0, txtTopPos - 5, bmCloneOriginal.Width, textHeight.Height + 10)
+        End If
+        grOriginal.DrawString(txtTagline.Text, drawFont, drawBrush, iLeft, txtTopPos)
+        If chkOverlay.Checked AndAlso chkUseFanart.Checked Then
+            grOriginal.DrawImage(Overlay.Image, 0, Convert.ToUInt16(txtTopPos - 65 / (1280 / Video_Width)), Convert.ToUInt16(Overlay.Image.Width / (1280 / Video_Width)), Convert.ToUInt16(Overlay.Image.Height / (1280 / Video_Width)))
+        End If
+        grPreview.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+        grPreview.DrawImage(bmCloneOriginal, New Rectangle(0, 0, pbPreview.Width, pbPreview.Height), New Rectangle(0, 0, bmCloneOriginal.Width, bmCloneOriginal.Height), GraphicsUnit.Pixel)
+        tbTagLine.Height = pbPreview.Image.Height + 7
     End Sub
 
     Private Sub txtTagline_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTagline.TextChanged
         Me.currText = Me.txtTagline.Text
-
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Enabled = True
     End Sub
-
-    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        If Me.prevText = Me.currText Then
-            Me.tmrPreview.Enabled = True
-        Else
-            Me.prevText = Me.currText
-        End If
-    End Sub
-
-    Private Sub tmrPreview_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPreview.Tick
-        Me.tmrWait.Enabled = False
-        Me.CheckConditions()
-        Me.tmrPreview.Enabled = False
-    End Sub
-
     Private Sub btnFont_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFont.Click
         With Me.cdFont
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -547,27 +604,17 @@ Public Class dlgOfflineHolder
     Private Sub txtTop_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTop.KeyPress
         If Master.NumericOnly(Asc(e.KeyChar)) Then
             e.Handled = True
+            Me.CheckConditions()
         Else
             e.Handled = False
-            Me.tmrTopWait.Enabled = False
-            Me.tmrTopWait.Enabled = True
+            'Me.tmrTopWait.Enabled = False
+            'Me.tmrTopWait.Enabled = True
         End If
     End Sub
 
-    Private Sub tmrTopWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrTopWait.Tick
-        If Me.prevTopText = Me.currTopText Then
-            Me.tmrTop.Enabled = True
-        Else
-            Me.prevTopText = Me.currTopText
-            Me.currTopText = Me.txtTop.Text
-        End If
-    End Sub
 
-    Private Sub tmrTop_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrTop.Tick
-        Me.tmrTopWait.Enabled = False
-        Me.CheckConditions()
-        Me.tmrTop.Enabled = False
-    End Sub
+
+
 
     Private Sub dlgOfflineHolder_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
@@ -575,10 +622,59 @@ Public Class dlgOfflineHolder
 
     Private Sub TrackBar1_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbTagLine.Scroll
         txtTop.Text = sender.maximum - sender.value.ToString
-        'Me.currTopText = sender.value.ToString
-        Me.prevTopText = Me.currTopText
-        Me.currTopText = Me.txtTop.Text
+    End Sub
+
+    Private Sub btnBackgroundColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBackgroundColor.Click
+        With Me.cdColor
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not .Color = Nothing Then
+                    Me.btnBackgroundColor.BackColor = .Color
+                    Me.CreatePreview()
+                End If
+            End If
+        End With
+    End Sub
+
+    Private Sub chkBackground_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkBackground.CheckedChanged
+        Me.CreatePreview()
+        'CheckConditions()
+    End Sub
+
+    Private Sub chkOverlay_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverlay.CheckedChanged
+        If sender.checked Then
+            Overlay.FromFile(OverlayPath)
+        End If
+        Me.CreatePreview()
+        'CheckConditions()
+    End Sub
+
+    Private Sub cbFormat_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFormat.SelectedIndexChanged
+        Select Case (sender.selectedindex)
+            Case 0
+                Video_Width = 1280
+                Video_Height = 720
+            Case 1
+                Video_Width = 720
+                Video_Height = 576
+        End Select
+        drawFont = New Font("Arial", Convert.ToUInt16(22 / (1280 / Video_Width)), FontStyle.Bold)
+        SetPreview(Not chkUseFanart.Checked, String.Empty)
+        'tbTagLine.Maximum = Preview.Height - textHeight.Height
+        If Not chkUseFanart.Checked AndAlso Not Preview Is Nothing Then
+            txtTop.Text = Convert.ToUInt16((Preview.Height - 120 / (1280 / Video_Width))).ToString
+            txtTopPos = Convert.ToUInt16(txtTop.Text)
+        End If
+        'tbTagLine.Value = tbTagLine.Maximum - txtTop.Text
         Me.CheckConditions()
     End Sub
 
+    Private Sub txtTop_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTop.TextChanged
+        Try
+            txtTopPos = Convert.ToUInt16(txtTop.Text)
+            '            tbTagLine.Value = tbTagLine.Maximum - txtTop.Text
+            CreatePreview()
+        Catch ex As Exception
+        End Try
+
+    End Sub
 End Class
