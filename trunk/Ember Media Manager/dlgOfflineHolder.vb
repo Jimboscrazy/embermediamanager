@@ -556,6 +556,7 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub CreatePreview()
+        If Preview Is Nothing Then Return
         Dim bmCloneOriginal As Bitmap = Preview.Clone
         tbTagLine.Maximum = Preview.Height - textHeight.Height
         tbTagLine.Value = tbTagLine.Maximum - txtTopPos
