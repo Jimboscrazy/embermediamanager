@@ -62,6 +62,7 @@
     <!-- no idea what this is so have no clue what image should be -->
     <name searchstring="Germany:o.Al.">
       <icon>de/de_0.png</icon>
+    </name>
   </germany>
   
   <australia>
