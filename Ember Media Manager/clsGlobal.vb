@@ -845,12 +845,12 @@ Public Class Master
                 If Master.eSettings.UseCertForMPAA AndAlso Not eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
                     Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Where strRating.ToLower = xRat.@searchstring.ToLower Select xRat.<icon>.Value
                     If xRating.Count > 0 Then
-                        imgRatingStr = Path.Combine(mePath, xRating(0).ToString)
+                        imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
                     End If
                 Else
                     Dim xRating = From xRat In RatingXML...<usa>...<name> Where strRating.ToLower.StartsWith(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
                     If xRating.Count > 0 Then
-                        imgRatingStr = Path.Combine(mePath, xRating(0).ToString)
+                        imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
                     End If
                 End If
 
