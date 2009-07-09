@@ -16,13 +16,13 @@ msbuild "Ember Media Manager.sln" /p:Configuration=Release;platform=x86;OutDir=.
 
 IF EXIST "packages\x64\Ember Media Manager.exe" (
 copy "Release Files\*" packages\x64\ > nul 2> nul
-copy /Y "Release Files\x64\System.Data.SQLite.dll" packages\x64\ > nul 2> nul
+rem copy /Y "Release Files\x64\System.Data.SQLite.dll" packages\x64\ > nul 2> nul
 
 pushd packages\x64\
 ..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x64.zip "Ember Media Manager.exe" > nul 2> nul
 ..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x64.zip "License.txt" > nul 2> nul
 ..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x64.zip "README.rtf" > nul 2> nul
-..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x64.zip "System.Data.SQLite.dll" > nul 2> nul
+..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x64.zip "Ember Media Manager.exe.manifest" > nul 2> nul
 popd
 echo Pack x64
 ) ELSE (
@@ -36,7 +36,7 @@ pushd packages\x86\
 ..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x86.zip "Ember Media Manager.exe" > nul 2> nul
 ..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x86.zip "License.txt" > nul 2> nul
 ..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x86.zip "README.rtf" > nul 2> nul
-..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x86.zip "System.Data.SQLite.dll" > nul 2> nul
+..\..\7za a  ..\EMM_r%EMM_REV%_exeonly_x86.zip "Ember Media Manager.exe.manifest" > nul 2> nul
 popd
 echo Pack x86
 ) ELSE (
