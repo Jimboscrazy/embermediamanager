@@ -398,7 +398,17 @@ Public Class dlgEditMovie
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Certification) Then
-                    .txtCerts.Text = Master.currMovie.Movie.Certification
+                    If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
+                        Dim lCert() As String = Master.currMovie.Movie.Certification.Trim.Split(New Char() {"/"})
+                        Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.CertificationLang), "\:(.*?)"))
+                        If fCert.Count > 0 Then
+                            .txtCerts.Text = fCert(0).ToString.Trim
+                        Else
+                            .txtCerts.Text = Master.currMovie.Movie.Certification
+                        End If
+                    Else
+                        .txtCerts.Text = Master.currMovie.Movie.Certification
+                    End If
                 End If
 
                 Me.lblLocalTrailer.Visible = Not String.IsNullOrEmpty(Master.currMovie.FaS.Trailer)
@@ -527,19 +537,17 @@ Public Class dlgEditMovie
 
                 Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
 
-                If .lbMPAA.SelectedIndices.Count > 0 Then
-                    If .lbMPAA.SelectedIndex = 0 Then
-                        If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.MPAA))) Then
-                            Master.currMovie.Movie.MPAA = Master.currMovie.Movie.Certification
+                If .lbMPAA.SelectedIndices.Count > 0 AndAlso Not .lbMPAA.SelectedIndex <= 0 Then
+                    Master.currMovie.Movie.MPAA = String.Concat(.lbMPAA.SelectedItem.ToString, " ", .txtMPAADesc.Text).Trim
+                Else
+                    If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso .lbMPAA.SelectedIndex = 0)) Then
+                        Dim lCert() As String = .txtCerts.Text.Trim.Split(New Char() {"/"})
+                        Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.CertificationLang), "\:(.*?)"))
+                        If fCert.Count > 0 Then
+                            Master.currMovie.Movie.MPAA = If(Master.eSettings.CertificationLang = "USA", Master.USACertToMPAA(fCert(0).ToString.Trim), fCert(0).ToString.Trim)
                         Else
                             Master.currMovie.Movie.MPAA = String.Empty
                         End If
-                    Else
-                        Master.currMovie.Movie.MPAA = String.Concat(.lbMPAA.SelectedItem.ToString, " ", .txtMPAADesc.Text).Trim
-                    End If
-                Else
-                    If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.MPAA))) Then
-                        Master.currMovie.Movie.MPAA = Master.currMovie.Movie.Certification
                     Else
                         Master.currMovie.Movie.MPAA = String.Empty
                     End If
@@ -1117,32 +1125,36 @@ Public Class dlgEditMovie
                     txtMPAADesc.Enabled = False
                 Else
                     Dim strMPAA As String = Master.currMovie.Movie.MPAA
-                    If Strings.InStr(strMPAA.ToLower, "rated g") > 0 Then
+                    If strMPAA.ToLower.StartsWith("rated g") Then
                         Me.lbMPAA.SelectedIndex = 1
-                    ElseIf Strings.InStr(strMPAA.ToLower, "rated pg-13") > 0 Then
+                    ElseIf strMPAA.ToLower.StartsWith("rated pg-13") Then
                         Me.lbMPAA.SelectedIndex = 3
-                    ElseIf Strings.InStr(strMPAA.ToLower, "rated pg") > 0 Then
+                    ElseIf strMPAA.ToLower.StartsWith("rated pg") Then
                         Me.lbMPAA.SelectedIndex = 2
-                    ElseIf Strings.InStr(strMPAA.ToLower, "rated r") > 0 Then
+                    ElseIf strMPAA.ToLower.StartsWith("rated r") Then
                         Me.lbMPAA.SelectedIndex = 4
-                    ElseIf Strings.InStr(strMPAA.ToLower, "rated nc-17") > 0 Then
+                    ElseIf strMPAA.ToLower.StartsWith("rated nc-17") Then
                         Me.lbMPAA.SelectedIndex = 5
                     Else
                         Me.lbMPAA.SelectedIndex = 0
                     End If
 
-                    Dim strMPAADesc As String = strMPAA
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated g", String.Empty, 1, -1, CompareMethod.Text))
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg-13", String.Empty, 1, -1, CompareMethod.Text))
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated pg", String.Empty, 1, -1, CompareMethod.Text))
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated r", String.Empty, 1, -1, CompareMethod.Text))
-                    strMPAADesc = Strings.Trim(Strings.Replace(strMPAADesc, "rated nc-17", String.Empty, 1, -1, CompareMethod.Text))
-                    txtMPAADesc.Text = strMPAADesc
+                    If Me.lbMPAA.SelectedIndex > 0 Then
+                        Dim strMPAADesc As String = strMPAA
+                        strMPAADesc = Strings.Replace(strMPAADesc, "rated g", String.Empty, 1, -1, CompareMethod.Text).Trim
+                        strMPAADesc = Strings.Replace(strMPAADesc, "rated pg-13", String.Empty, 1, -1, CompareMethod.Text).Trim
+                        strMPAADesc = Strings.Replace(strMPAADesc, "rated pg", String.Empty, 1, -1, CompareMethod.Text).Trim
+                        strMPAADesc = Strings.Replace(strMPAADesc, "rated r", String.Empty, 1, -1, CompareMethod.Text).Trim
+                        strMPAADesc = Strings.Replace(strMPAADesc, "rated nc-17", String.Empty, 1, -1, CompareMethod.Text).Trim
+                        txtMPAADesc.Text = strMPAADesc
+                    End If
                 End If
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
+        Else
+            Me.lbMPAA.SelectedIndex = 0
         End If
     End Sub
 
