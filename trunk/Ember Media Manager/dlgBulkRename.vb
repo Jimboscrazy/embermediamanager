@@ -90,43 +90,46 @@ Public Class dlgBulkRenamer
                                 MovieFile = New FileFolderRenamer.FileRename
                                 MovieFile.ID = SQLreader("id")
                                 _curMovie = Master.DB.LoadMovieFromDB(MovieFile.ID)
-                                MovieFile.Title = _curMovie.ListTitle
-                                MovieFile.Year = _curMovie.Movie.Year
-                                MovieFile.IsLocked = _curMovie.IsLock
-                                MovieFile.BasePath = Path.GetDirectoryName(_curMovie.FaS.Filename)
-                                MovieFile.Path = Path.GetDirectoryName(_curMovie.FaS.Filename)
-                                MovieFile.IsSingle = _curMovie.FaS.isSingle
-                                If Not IsNothing(_curMovie.Movie.FileInfo) Then
-                                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                        tVid = Master.GetBestVideo(_curMovie.Movie.FileInfo)
-                                        tRes = Master.GetResFromDimensions(tVid)
-                                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), "Unknown", tRes))
-                                    End If
-
-                                    If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                                        tAud = Master.GetBestAudio(_curMovie.Movie.FileInfo)
-                                        MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), "Unknown", tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), "Unknown", tAud.Channels))
-                                    End If
-                                End If
-                                '
-                                Dim plen As Integer
-                                For Each i As String In FFRenamer.MovieFolders
-                                    If i.EndsWith(Path.DirectorySeparatorChar) Then i = Path.GetDirectoryName(i)
-                                    If i = MovieFile.Path.Substring(0, i.Length) Then
-                                        plen = String.Concat(i, Path.DirectorySeparatorChar).Length
-                                        If MovieFile.Path.Length >= plen Then
-                                            MovieFile.Path = MovieFile.Path.Substring(plen)
-                                        Else
-                                            MovieFile.Path = String.Empty
+                                If Not _curMovie.ID = -1 Then
+                                    MovieFile.Title = _curMovie.ListTitle
+                                    MovieFile.Year = _curMovie.Movie.Year
+                                    MovieFile.IsLocked = _curMovie.IsLock
+                                    MovieFile.BasePath = Path.GetDirectoryName(_curMovie.FaS.Filename)
+                                    MovieFile.Path = Path.GetDirectoryName(_curMovie.FaS.Filename)
+                                    MovieFile.IsSingle = _curMovie.FaS.isSingle
+                                    If Not IsNothing(_curMovie.Movie.FileInfo) Then
+                                        If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                                            tVid = Master.GetBestVideo(_curMovie.Movie.FileInfo)
+                                            tRes = Master.GetResFromDimensions(tVid)
+                                            MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), "Unknown", tRes))
                                         End If
-                                        MovieFile.BasePath = i
-                                        Exit For
-                                    End If
-                                Next
-                                MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(_curMovie.FaS.Filename))
 
-                                FFRenamer.AddMovie(MovieFile)
-                                Me.bwLoadInfo.ReportProgress(iProg, _curMovie.ListTitle)
+                                        If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                                            tAud = Master.GetBestAudio(_curMovie.Movie.FileInfo)
+                                            MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), "Unknown", tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), "Unknown", tAud.Channels))
+                                        End If
+                                    End If
+                                    '
+                                    Dim plen As Integer
+                                    For Each i As String In FFRenamer.MovieFolders
+                                        If i.EndsWith(Path.DirectorySeparatorChar) Then i = Path.GetDirectoryName(i)
+                                        If i = MovieFile.Path.Substring(0, i.Length) Then
+                                            plen = String.Concat(i, Path.DirectorySeparatorChar).Length
+                                            If MovieFile.Path.Length >= plen Then
+                                                MovieFile.Path = MovieFile.Path.Substring(plen)
+                                            Else
+                                                MovieFile.Path = String.Empty
+                                            End If
+                                            MovieFile.BasePath = i
+                                            Exit For
+                                        End If
+                                    Next
+                                    MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(_curMovie.FaS.Filename))
+
+                                    FFRenamer.AddMovie(MovieFile)
+
+                                    Me.bwLoadInfo.ReportProgress(iProg, _curMovie.ListTitle)
+                                End If
                             End If
 
                             iProg += 1
