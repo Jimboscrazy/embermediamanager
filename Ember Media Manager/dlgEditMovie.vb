@@ -525,23 +525,28 @@ Public Class dlgEditMovie
                 Master.currMovie.Movie.Top250 = .txtTop250.Text.Trim
                 Master.currMovie.Movie.Director = .txtDirector.Text.Trim
 
+                Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
+
                 If .lbMPAA.SelectedIndices.Count > 0 Then
                     If .lbMPAA.SelectedIndex = 0 Then
-                        Master.currMovie.Movie.MPAA = String.Empty
+                        If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.MPAA))) Then
+                            Master.currMovie.Movie.MPAA = Master.currMovie.Movie.Certification
+                        Else
+                            Master.currMovie.Movie.MPAA = String.Empty
+                        End If
                     Else
                         Master.currMovie.Movie.MPAA = String.Concat(.lbMPAA.SelectedItem.ToString, " ", .txtMPAADesc.Text).Trim
                     End If
                 Else
-                    Master.currMovie.Movie.MPAA = String.Empty
+                    If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.MPAA))) Then
+                        Master.currMovie.Movie.MPAA = Master.currMovie.Movie.Certification
+                    Else
+                        Master.currMovie.Movie.MPAA = String.Empty
+                    End If
                 End If
 
                 Master.currMovie.Movie.Rating = .tmpRating
-
                 Master.currMovie.Movie.Runtime = .txtRuntime.Text.Trim
-                Master.currMovie.Movie.Certification = .txtCerts.Text.Trim
-                If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.MPAA))) Then
-                    Master.currMovie.Movie.MPAA = Master.currMovie.Movie.Certification
-                End If
                 Master.currMovie.Movie.ReleaseDate = .txtReleaseDate.Text.Trim
                 Master.currMovie.Movie.Credits = .txtCredits.Text.Trim
                 Master.currMovie.Movie.Trailer = .txtTrailer.Text.Trim
