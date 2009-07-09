@@ -1695,19 +1695,26 @@ Public Class Master
 
     Public Shared Function Decode(ByVal encText As String) As String
 
-        Dim dByte() As Byte
-        dByte = System.Convert.FromBase64String(encText)
-        Dim decText As String
-        decText = System.Text.Encoding.ASCII.GetString(dByte)
-        Return decText
-
+        Try
+            Dim dByte() As Byte
+            dByte = System.Convert.FromBase64String(encText)
+            Dim decText As String
+            decText = System.Text.Encoding.ASCII.GetString(dByte)
+            Return decText
+        Catch
+        End Try
+        Return String.Empty
     End Function
 
     Public Shared Function ConvertToSingle(ByVal sNumber As String) As Single
-        If String.IsNullOrEmpty(sNumber) Then Return 0
-        Dim numFormat As NumberFormatInfo = New NumberFormatInfo()
-        numFormat.NumberDecimalSeparator = "."
-        Return Double.Parse(sNumber.Replace(",", "."), NumberStyles.AllowDecimalPoint, numFormat)
+        Try
+            If String.IsNullOrEmpty(sNumber) OrElse sNumber = 0 Then Return 0
+            Dim numFormat As NumberFormatInfo = New NumberFormatInfo()
+            numFormat.NumberDecimalSeparator = "."
+            Return Single.Parse(sNumber.Replace(",", "."), NumberStyles.AllowDecimalPoint, numFormat)
+        Catch
+        End Try
+        Return 0
     End Function
 
     Public Shared Function DeleteFiles(ByVal isCleaner As Boolean, ByVal mMovie As DBMovie) As Boolean
