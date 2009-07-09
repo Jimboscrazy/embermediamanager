@@ -848,7 +848,7 @@ Public Class Master
                         imgRatingStr = Path.Combine(mePath, xRating(0).ToString)
                     End If
                 Else
-                    Dim xRating = From xRat In RatingXML...<usa>...<name> Where strRating.ToLower.Contains(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
+                    Dim xRating = From xRat In RatingXML...<usa>...<name> Where strRating.ToLower.StartsWith(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
                     If xRating.Count > 0 Then
                         imgRatingStr = Path.Combine(mePath, xRating(0).ToString)
                     End If
@@ -2241,4 +2241,20 @@ Public Class Master
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Public Shared Function USACertToMPAA(ByVal sCert As String) As String
+        Select Case sCert.ToLower
+            Case "usa:g"
+                Return "Rated G"
+            Case "usa:pg"
+                Return "Rated PG"
+            Case "usa:pg-13"
+                Return "Rated PG-13"
+            Case "usa:r"
+                Return "Rated R"
+            Case "usa:nc-17"
+                Return "Rated NC-17"
+        End Select
+        Return String.Empty
+    End Function
 End Class

@@ -2,20 +2,19 @@
 <ratings>
 
   <usa>
-    <!-- space at the end to handle pg-13 vs pg (only needed for USA ratings)-->
-    <name searchstring="Rated G ">
+    <name searchstring="Rated G">
       <icon>usa/mpaag.png</icon>
     </name>
-    <name searchstring="Rated PG ">
-      <icon>usa/mpaapg.png</icon>
-    </name>
-    <name searchstring="Rated PG-13 ">
+    <name searchstring="Rated PG-13">
       <icon>usa/mpaapg13.png</icon>
     </name>
-    <name searchstring="Rated R ">
+    <name searchstring="Rated PG">
+      <icon>usa/mpaapg.png</icon>
+    </name>
+    <name searchstring="Rated R">
       <icon>usa/mpaar.png</icon>
     </name>
-    <name searchstring="Rated NC-17 ">
+    <name searchstring="Rated NC-17">
       <icon>usa/mpaanc17.png</icon>
     </name>
   </usa>
