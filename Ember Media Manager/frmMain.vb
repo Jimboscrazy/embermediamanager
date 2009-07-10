@@ -2304,21 +2304,20 @@ Public Class frmMain
                                 End If
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                If Master.eSettings.ScanMediaInfo AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.MI) Then
-                                    UpdateMediaInfo(scrapeMovie)
-                                    doSave = True
-                                End If
-
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                     Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
-                                    'drvRow.Item(3) = scrapeMovie.Movie.Title
                                     scrapeMovie.ListTitle = scrapeMovie.Movie.Title
                                 Else
                                     scrapeMovie.ListTitle = drvRow.Item(3)
                                 End If
 
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
+
+                                    If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                    If Master.eSettings.ScanMediaInfo AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.MI) Then
+                                        UpdateMediaInfo(scrapeMovie)
+                                        doSave = True
+                                    End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Poster) Then
@@ -2331,7 +2330,6 @@ Public Class frmMain
                                                     If Not String.IsNullOrEmpty(pPath) Then
                                                         scrapeMovie.FaS.Poster = pPath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                        'drvRow.Item(4) = True
                                                         If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                             scrapeMovie.Movie.Thumbs = pThumbs
                                                         End If
@@ -2343,7 +2341,6 @@ Public Class frmMain
                                                         If Not String.IsNullOrEmpty(pPath) Then
                                                             scrapeMovie.FaS.Poster = pPath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                            'drvRow.Item(4) = True
                                                             If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                                 scrapeMovie.Movie.Thumbs = pThumbs
                                                             End If
@@ -2365,7 +2362,6 @@ Public Class frmMain
                                                     If Not String.IsNullOrEmpty(fPath) Then
                                                         scrapeMovie.FaS.Fanart = fPath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                        'drvRow.Item(5) = True
                                                         If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                             scrapeMovie.Movie.Fanart = fArt
                                                         End If
@@ -2378,7 +2374,6 @@ Public Class frmMain
                                                         If Not String.IsNullOrEmpty(fPath) Then
                                                             scrapeMovie.FaS.Fanart = fPath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                            'drvRow.Item(5) = True
                                                             If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                                 scrapeMovie.Movie.Fanart = fArt
                                                             End If
@@ -2399,7 +2394,6 @@ Public Class frmMain
                                             Else
                                                 scrapeMovie.FaS.Trailer = tURL
                                                 Me.Invoke(myDelegate, New Object() {drvRow, 7, True})
-                                                'drvRow.Item(7) = True
                                             End If
                                         End If
                                     End If
@@ -2412,11 +2406,9 @@ Public Class frmMain
                                         Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs)
                                         If Not String.IsNullOrEmpty(ETasFA) Then
                                             Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
-                                            'drvRow.Item(9) = True
                                             scrapeMovie.FaS.Extra = "TRUE"
                                             If Not ETasFA = "TRUE" Then
                                                 Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                'drvRow.Item(5) = True
                                                 scrapeMovie.FaS.Fanart = ETasFA
                                             End If
                                         End If
@@ -2425,7 +2417,6 @@ Public Class frmMain
 
                                 If doSave Then
                                     Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
-                                    'drvRow.Item(6) = True
                                 End If
 
 
@@ -2456,19 +2447,17 @@ Public Class frmMain
                                             scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType, Args.Options)
                                         End If
 
-                                        If Master.eSettings.ScanMediaInfo Then
+                                        If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
                                             UpdateMediaInfo(scrapeMovie)
                                         End If
 
                                         If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                             Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
-                                            'drvRow.Item(3) = scrapeMovie.Movie.Title
                                             scrapeMovie.ListTitle = scrapeMovie.Movie.Title
                                         Else
                                             scrapeMovie.ListTitle = drvRow.Item(3)
                                         End If
                                         Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
-                                        'drvRow.Item(6) = True
                                         doSave = True
                                     End If
 
@@ -2483,7 +2472,6 @@ Public Class frmMain
                                                     If Not String.IsNullOrEmpty(pPath) Then
                                                         scrapeMovie.FaS.Poster = pPath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                        'drvRow.Item(4) = True
                                                         If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                             scrapeMovie.Movie.Thumbs = pThumbs
                                                         End If
@@ -2495,7 +2483,6 @@ Public Class frmMain
                                                         If Not String.IsNullOrEmpty(pPath) Then
                                                             scrapeMovie.FaS.Poster = pPath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                            'drvRow.Item(4) = True
                                                             If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                                 scrapeMovie.Movie.Thumbs = pThumbs
                                                             End If
@@ -2518,7 +2505,6 @@ Public Class frmMain
                                                     If Not String.IsNullOrEmpty(fPath) Then
                                                         scrapeMovie.FaS.Fanart = fPath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                        'drvRow.Item(5) = True
                                                         If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                             scrapeMovie.Movie.Fanart = fArt
                                                         End If
@@ -2530,7 +2516,6 @@ Public Class frmMain
                                                         If Not String.IsNullOrEmpty(fPath) Then
                                                             scrapeMovie.FaS.Fanart = fPath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                            'drvRow.Item(5) = True
                                                             If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                                 scrapeMovie.Movie.Fanart = fArt
                                                             End If
@@ -2551,7 +2536,6 @@ Public Class frmMain
                                             Else
                                                 scrapeMovie.FaS.Trailer = tURL
                                                 Me.Invoke(myDelegate, New Object() {drvRow, 7, True})
-                                                'drvRow.Item(7) = True
                                             End If
                                         End If
                                     End If
@@ -2563,11 +2547,9 @@ Public Class frmMain
                                         If Not String.IsNullOrEmpty(ETasFA) Then
 
                                             Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
-                                            'drvRow.Item(9) = True
                                             scrapeMovie.FaS.Extra = "TRUE"
                                             If Not ETasFA = "TRUE" Then
                                                 Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                'drvRow.Item(5) = True
                                                 scrapeMovie.FaS.Fanart = ETasFA
                                             End If
                                         End If
@@ -2644,9 +2626,7 @@ Public Class frmMain
             End Try
 
 doCancel:
-            If Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.FullAuto OrElse Args.scrapeType = Master.ScrapeType.MarkAsk OrElse _
-            Args.scrapeType = Master.ScrapeType.MarkAuto OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.NewAuto OrElse _
-            Args.scrapeType = Master.ScrapeType.RevertStudios OrElse Args.scrapeType = Master.ScrapeType.UpdateAsk OrElse Args.scrapeType = Master.ScrapeType.UpdateAuto Then
+            If Not Args.scrapeType = Master.ScrapeType.CopyBD AndAlso Not Args.scrapeType = Master.ScrapeType.CleanFolders Then
                 'Save the last movie scraper was working on
                 Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
             End If
