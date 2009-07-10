@@ -21,6 +21,7 @@ del /Q "README.rtf"
 del /Q "Ember Media Manager.exe.manifest" 
 del /Q "Ember Media Manager.exe"
 echo Package %4% OK
+echo Package create in: %3%
 ) ELSE (
 echo Error Package %4%
 )
