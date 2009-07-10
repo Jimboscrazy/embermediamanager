@@ -1708,7 +1708,7 @@ Public Class Master
 
     Public Shared Function ConvertToSingle(ByVal sNumber As String) As Single
         Try
-            If String.IsNullOrEmpty(sNumber) OrElse sNumber = 0 Then Return 0
+            If String.IsNullOrEmpty(sNumber) OrElse sNumber = "0" Then Return 0
             Dim numFormat As NumberFormatInfo = New NumberFormatInfo()
             numFormat.NumberDecimalSeparator = "."
             Return Single.Parse(sNumber.Replace(",", "."), NumberStyles.AllowDecimalPoint, numFormat)
