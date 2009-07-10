@@ -75,14 +75,14 @@ Public Class dlgOfflineHolder
                 newGraphics.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                 newGraphics.DrawImage(tmpImg, New Rectangle(0, 0, RealImage_W, RealImage_H), New Rectangle(0, 0, tmpImg.Width, tmpImg.Height), GraphicsUnit.Pixel)
                 'Dont need this one anymore
-                textHeight = newGraphics.MeasureString(txtTagline.Text, drawFont)
                 tmpImg.Dispose()
+                drawFont = New Font("Arial", Convert.ToUInt16(22 / (1280 / Video_Width)), FontStyle.Bold)
+                textHeight = newGraphics.MeasureString(txtTagline.Text, drawFont)
             Else
                 RealImage_W = Video_Width
                 RealImage_ratio = Preview.Width / Preview.Height
                 RealImage_H = RealImage_W / RealImage_ratio
             End If
-
             If txtTopPos > RealImage_H Then
                 txtTop.Text = (RealImage_H - 30).ToString
             End If
@@ -138,10 +138,6 @@ Public Class dlgOfflineHolder
             End If
             Directory.CreateDirectory(WorkingPath)
 
-            'If File.Exists(PreviewPath) Then
-            'SetPreview(True, PreviewPath)
-            'CreatePreview()
-            'End If
             CreatePreview()
             tMovie.FaS = New Master.FileAndSource
             tMovie.Movie = New Media.Movie
@@ -238,8 +234,6 @@ Public Class dlgOfflineHolder
     Sub CheckConditions()
         Dim Fanart As New Images
         Try
-
-
             If txtMovieName.Text.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
                 MovieName = txtMovieName.Text
                 tMovie.FaS.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
@@ -288,10 +282,10 @@ Public Class dlgOfflineHolder
                 chkUseFanart.Enabled = False
             End If
 
+
             If chkUseFanart.Checked Then
                 If Not String.IsNullOrEmpty(fPath) Then
                     SetPreview(False, fPath)
-                    txtTop.Text = (Preview.Height - 100).ToString
                     lvStatus.Items(idxStsImage).SubItems(1).Text = "Valid"
                     lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
                 Else
@@ -299,11 +293,6 @@ Public Class dlgOfflineHolder
                     lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Red
                 End If
             Else
-                'If File.Exists(PreviewPath) Then
-                'txtTop.Text = "470"
-                'Preview.FromFile(PreviewPath)
-                'End If
-
                 lvStatus.Items(idxStsImage).SubItems(1).Text = "Valid"
                 lvStatus.Items(idxStsImage).SubItems(1).ForeColor = Color.Green
             End If
@@ -354,7 +343,12 @@ Public Class dlgOfflineHolder
         If Not sender.checked Then
             If File.Exists(PreviewPath) Then
                 SetPreview(True, PreviewPath)
-                txtTop.Text = (Preview.Height - 100).ToString
+                txtTop.Text = (Preview.Height - 150 / (1280 / Video_Width)).ToString
+            End If
+        Else
+            Dim fPath As String = tMovie.FaS.Fanart
+            If Not fPath = String.Empty Then
+                SetPreview(False, fPath)
             End If
         End If
         chkOverlay.Enabled = sender.checked
@@ -363,7 +357,8 @@ Public Class dlgOfflineHolder
             chkOverlay.CheckState = CheckState.Checked
             chkBackground.CheckState = CheckState.Checked
         End If
-        CheckConditions()
+        CreatePreview()
+
     End Sub
 
     Private Sub bwCreateHolder_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCreateHolder.DoWork
@@ -559,6 +554,10 @@ Public Class dlgOfflineHolder
         If Preview Is Nothing Then Return
         Dim bmCloneOriginal As Bitmap = Preview.Clone
         tbTagLine.Maximum = Preview.Height - textHeight.Height
+        If txtTopPos > tbTagLine.Maximum Then
+            txtTopPos = tbTagLine.Maximum - 30
+            txtTop.Text = txtTopPos
+        End If
         tbTagLine.Value = tbTagLine.Maximum - txtTopPos
         Dim w, h As Integer
         w = pbPreview.Width
@@ -658,15 +657,15 @@ Public Class dlgOfflineHolder
                 Video_Width = 720
                 Video_Height = 576
         End Select
-        drawFont = New Font("Arial", Convert.ToUInt16(22 / (1280 / Video_Width)), FontStyle.Bold)
         SetPreview(Not chkUseFanart.Checked, String.Empty)
         'tbTagLine.Maximum = Preview.Height - textHeight.Height
         If Not chkUseFanart.Checked AndAlso Not Preview Is Nothing Then
-            txtTop.Text = Convert.ToUInt16((Preview.Height - 120 / (1280 / Video_Width))).ToString
-            txtTopPos = Convert.ToUInt16(txtTop.Text)
+            txtTop.Text = Convert.ToUInt16((Preview.Height - 150 / (1280 / Video_Width))).ToString
+            'txtTopPos = Convert.ToUInt16(txtTop.Text)
         End If
         'tbTagLine.Value = tbTagLine.Maximum - txtTop.Text
-        Me.CheckConditions()
+        CreatePreview()
+        'Me.CheckConditions()
     End Sub
 
     Private Sub txtTop_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTop.TextChanged
