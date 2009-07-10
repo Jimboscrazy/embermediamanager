@@ -151,6 +151,7 @@ Public Class emmSettings
     Private _defaultfolderspattern As String
     Private _defaultfilespattern As String
     Private _sortpath As String
+    Private _allwaysdisplaygenrestext As Boolean
 
 
     Public Property Version() As String
@@ -1234,6 +1235,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._nodisplayfanart = value
+        End Set
+    End Property
+
+    Public Property AllwaysDisplayGenresText() As Boolean
+        Get
+            Return Me._allwaysdisplaygenrestext
+        End Get
+        Set(ByVal value As Boolean)
+            Me._allwaysdisplaygenrestext = value
         End Set
     End Property
 
