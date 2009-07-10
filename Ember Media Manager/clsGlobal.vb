@@ -1414,12 +1414,7 @@ Public Class Master
         Try
             Dim sEnd As String = String.Empty
             If EndOnly Then
-                sEnd = Strings.Right(sString, sString.Length - (sString.LastIndexOf("/") + 1))
-                If MaxLength = 0 Then
-                    Return sEnd
-                Else
-                    Return Strings.Right(sString, MaxLength)
-                End If
+                Return Strings.Right(sString, MaxLength)
             Else
                 sEnd = Strings.Right(sString, sString.Length - sString.LastIndexOf("/"))
                 If ((MaxLength - sEnd.Length) - 3) > 0 Then
@@ -2128,8 +2123,10 @@ Public Class Master
 
     Public Shared Function CleanURL(ByVal sURL As String)
         If sURL.ToLower.Contains("themoviedb.org") Then
+            Dim tURL As String = sURL.Replace("http://images.themoviedb.org/posters/", String.Empty)
+            tURL = tURL.Replace("http://images.themoviedb.org/backdrops/", String.Empty)
             '$$ to sort first
-            sURL = String.Concat("$$[themoviedb.org]", TruncateURL(sURL, 0, True))
+            sURL = String.Concat("$$[themoviedb.org]", tURL)
         Else
             sURL = TruncateURL(sURL, 40, True)
         End If

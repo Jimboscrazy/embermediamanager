@@ -94,7 +94,7 @@ Public Class dlgImgSelect
                         Me.Refresh()
                         Application.DoEvents()
                         If Master.eSettings.UseImgCache Then
-                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(original)_(url=", Master.CleanURL(Me.rbXLarge.Tag), ").jpg")))
+                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(original)_(url=", Me.rbXLarge.Tag, ").jpg")))
                         Else
                             Me.tmpImage.FromWeb(Me.rbXLarge.Tag)
                         End If
@@ -104,7 +104,7 @@ Public Class dlgImgSelect
                         Me.Refresh()
                         Application.DoEvents()
                         If Master.eSettings.UseImgCache Then
-                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(mid)_(url=", Master.CleanURL(Me.rbLarge.Tag), ").jpg")))
+                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(mid)_(url=", Me.rbLarge.Tag, ").jpg")))
                         Else
                             Me.tmpImage.FromWeb(Me.rbLarge.Tag)
                         End If
@@ -120,7 +120,7 @@ Public Class dlgImgSelect
                         Me.Refresh()
                         Application.DoEvents()
                         If Master.eSettings.UseImgCache Then
-                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(thumb)_(url=", Master.CleanURL(Me.rbSmall.Tag), ").jpg")))
+                            Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(thumb)_(url=", Me.rbSmall.Tag, ").jpg")))
                         Else
                             Me.tmpImage.FromWeb(Me.rbSmall.Tag)
                         End If
@@ -726,28 +726,28 @@ Public Class dlgImgSelect
 
         For i As Integer = 0 To Me.TMDBPosters.Count - 1
             Select Case True
-                Case Master.CleanURL(Me.TMDBPosters.Item(i).URL) = Master.CleanURL(String.Concat(sLeft, ".jpg"))
+                Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, ".jpg")
                     ' xlarge
                     If Not IsNothing(TMDBPosters.Item(i).WebImage) Then
                         Me.rbXLarge.Enabled = True
                         Me.rbXLarge.Tag = Me.TMDBPosters.Item(i).URL
                         If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format("X-Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
                     End If
-                Case Master.CleanURL(Me.TMDBPosters.Item(i).URL) = Master.CleanURL(String.Concat(sLeft, "_mid.jpg"))
+                Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_mid.jpg")
                     ' large 
                     If Not IsNothing(TMDBPosters.Item(i).WebImage) Then
                         Me.rbLarge.Enabled = True
                         Me.rbLarge.Tag = Me.TMDBPosters.Item(i).URL
                         If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format("Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
                     End If
-                Case Master.CleanURL(Me.TMDBPosters.Item(i).URL) = Master.CleanURL(String.Concat(sLeft, "_thumb.jpg"))
+                Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_thumb.jpg")
                     ' small
                     If Not IsNothing(TMDBPosters.Item(i).WebImage) Then
                         Me.rbSmall.Enabled = True
                         Me.rbSmall.Tag = Me.TMDBPosters.Item(i).URL
                         If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format("Small ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
                     End If
-                Case Master.CleanURL(Me.TMDBPosters.Item(i).URL) = Master.CleanURL(sURL)
+                Case Me.TMDBPosters.Item(i).URL = sURL
                     If Master.eSettings.UseImgCache Then Me.rbMedium.Text = String.Format("Medium ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
             End Select
         Next
@@ -813,7 +813,8 @@ Public Class dlgImgSelect
                     If wrResponse.ContentType.Contains("image") Then
                         Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                         If Master.eSettings.UseImgCache Then
-                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.IMPAPosters.Item(i).Description, ")_(url=", Master.CleanURL(Me.IMPAPosters.Item(i).URL), ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
+                            Me.IMPAPosters.Item(i).URL = Master.CleanURL(Me.IMPAPosters.Item(i).URL)
+                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.IMPAPosters.Item(i).Description, ")_(url=", Me.IMPAPosters.Item(i).URL, ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
                                 Me.IMPAPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
                             End Using
                         End If
@@ -875,7 +876,8 @@ Public Class dlgImgSelect
                         If wrResponse.ContentType.Contains("image") Then
                             Me.TMDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                             If Master.eSettings.UseImgCache Then
-                                Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Master.CleanURL(Me.TMDBPosters.Item(i).URL), ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
+                                Me.TMDBPosters.Item(i).URL = Master.CleanURL(Me.TMDBPosters.Item(i).URL)
+                                Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Me.TMDBPosters.Item(i).URL, ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
                                     Me.TMDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
                                 End Using
                             End If
@@ -936,7 +938,8 @@ Public Class dlgImgSelect
                     If wrResponse.ContentType.Contains("image") Then
                         Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                         If Master.eSettings.UseImgCache Then
-                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.MPDBPosters.Item(i).Description, ")_(url=", Master.CleanURL(Me.MPDBPosters.Item(i).URL), ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
+                            Me.MPDBPosters.Item(i).URL = Master.CleanURL(Me.MPDBPosters.Item(i).URL)
+                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.MPDBPosters.Item(i).Description, ")_(url=", Me.MPDBPosters.Item(i).URL, ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
                                 Me.MPDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
                             End Using
                         End If
