@@ -12,10 +12,10 @@ copy "Ember Media Manager.exe.manifest" %3  > nul 2> nul
 cd %3
 copy "Release Files\License.txt" %3  > nul 2> nul
 copy "Release Files\README.rtf" %3  > nul 2> nul
-7za a "EMM_r%EMM_REV_exeonly_%4.zip" "Ember Media Manager.exe" > nul 2> nul
-7za a "EMM_r%EMM_REV_exeonly_%4.zip" "License.txt" > nul 2> nul
-7za a "EMM_r%EMM_REV_exeonly_%4.zip" "README.rtf" > nul 2> nul
-7za a "EMM_r%EMM_REV_exeonly_%4.zip" "Ember Media Manager.exe.manifest" > nul 2> nul
+7za a "EMM_r%EMM_REV%_exeonly_%4.zip" "Ember Media Manager.exe" > nul 2> nul
+7za a "EMM_r%EMM_REV%_exeonly_%4.zip" "License.txt" > nul 2> nul
+7za a "EMM_r%EMM_REV%_exeonly_%4.zip" "README.rtf" > nul 2> nul
+7za a "EMM_r%EMM_REV%_exeonly_%4.zip" "Ember Media Manager.exe.manifest" > nul 2> nul
 del /Q "License.txt"
 del /Q "README.rtf"
 del /Q "Ember Media Manager.exe.manifest" 
