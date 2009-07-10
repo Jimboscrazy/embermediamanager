@@ -1013,7 +1013,9 @@ Public Class dlgSettings
     Private Sub chkShowDims_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowDims.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
-
+    Private Sub chkShowGenresText_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowGenresText.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
     Private Sub chkNoDisplayPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNoDisplayPoster.CheckedChanged
         Me.btnApply.Enabled = True
         If Me.chkNoDisplayFanart.Checked AndAlso Me.chkNoDisplayPoster.Checked Then
@@ -1309,7 +1311,7 @@ Public Class dlgSettings
 
             Master.eSettings.FoldersPattern = Me.txtFolderPattern.Text
             Master.eSettings.FilesPattern = Me.txtFilePattern.Text
-
+            Master.eSettings.AllwaysDisplayGenresText = Me.chkShowGenresText.Checked
             Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1478,6 +1480,7 @@ Public Class dlgSettings
 
             Me.txtFolderPattern.Text = Master.eSettings.FoldersPattern
             Me.txtFilePattern.Text = Master.eSettings.FilesPattern
+            Me.chkShowGenresText.Checked = Master.eSettings.AllwaysDisplayGenresText
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -1542,5 +1545,6 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
+
 
 End Class

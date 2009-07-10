@@ -693,6 +693,7 @@ Public Class frmMain
         '\\
 
         Try
+            If Master.eSettings.AllwaysDisplayGenresText Then Return
             Dim iLeft As Integer = 0
             Me.GenreImage = sender.image
             Dim bmGenre As New Bitmap(Me.GenreImage)
@@ -720,6 +721,7 @@ Public Class frmMain
         '\\
 
         Try
+            If Master.eSettings.AllwaysDisplayGenresText Then Return
             sender.image = GenreImage
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3266,6 +3268,22 @@ doCancel:
                 Me.pnlGenre(i).BringToFront()
                 AddHandler Me.pbGenre(i).MouseEnter, AddressOf pbGenre_MouseEnter
                 AddHandler Me.pbGenre(i).MouseLeave, AddressOf pbGenre_MouseLeave
+                If Master.eSettings.AllwaysDisplayGenresText Then
+                    Dim iLeft As Integer = 0
+                    Me.GenreImage = pbGenre(i).Image
+                    Dim bmGenre As New Bitmap(Me.GenreImage)
+                    Dim grGenre As Graphics = Graphics.FromImage(bmGenre)
+                    Dim drawString As String = pbGenre(i).Name
+                    Dim drawFont As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
+                    Dim drawBrush As New SolidBrush(Color.White)
+                    Dim drawWidth As Single = grGenre.MeasureString(drawString, drawFont).Width
+                    Dim drawSize As Integer = (14 * (bmGenre.Width / drawWidth)) - 0.5
+                    drawFont = New Font("Microsoft Sans Serif", If(drawSize > 14, 14, drawSize), FontStyle.Bold, GraphicsUnit.Pixel)
+                    Dim drawHeight As Single = grGenre.MeasureString(drawString, drawFont).Height
+                    iLeft = (bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2
+                    grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
+                    pbGenre(i).Image = bmGenre
+                End If
             Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
