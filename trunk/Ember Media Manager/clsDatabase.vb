@@ -297,7 +297,7 @@ Public Class Database
 
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT MA.MovieID, MA.ActorName , MA.Role ,Act.Name,Act.thumb FROM MoviesActors AS MA ", _
-                                                       "INNER JOIN Actors AS Act ON (MA.ActorName = Act.Name) WHERE MA.MovieID = ", _movieDB.ID, ";")
+                                                       "INNER JOIN Actors AS Act ON (MA.ActorName = Act.Name) WHERE MA.MovieID = ", _movieDB.ID, " ORDER BY MA.ROWID;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim person As Media.Person
                     While SQLreader.Read
