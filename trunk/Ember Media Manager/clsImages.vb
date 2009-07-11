@@ -188,7 +188,7 @@ Public Class Images
                     End If
                 End If
 
-                If Master.eSettings.MovieNameTBN Then
+                If Master.eSettings.MovieNameTBN AndAlso (Not mMovie.FaS.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
                     If Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.FaS.Filename).FullName, "video_ts.tbn")
                     Else
@@ -208,7 +208,7 @@ Public Class Images
                     End If
                 End If
 
-                If Master.eSettings.MovieNameJPG Then
+                If Master.eSettings.MovieNameJPG AndAlso (Not mMovie.FaS.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
                     If Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.FaS.Filename).FullName, "video_ts.jpg")
                     Else
@@ -317,7 +317,7 @@ Public Class Images
                     End If
                 End If
 
-                If Master.eSettings.MovieNameFanartJPG Then
+                If Master.eSettings.MovieNameFanartJPG AndAlso (Not mMovie.FaS.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
                     If Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.FaS.Filename).FullName, "video_ts-fanart.jpg")
                     Else
@@ -336,7 +336,7 @@ Public Class Images
                     End If
                 End If
 
-                If Master.eSettings.MovieNameDotFanartJPG Then
+                If Master.eSettings.MovieNameDotFanartJPG AndAlso (Not mMovie.FaS.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
                     If Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.FaS.Filename).FullName, "video_ts.fanart.jpg")
                     Else
