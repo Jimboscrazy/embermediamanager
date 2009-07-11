@@ -1282,17 +1282,20 @@ Public Class Master
         Else
             Dim tmpName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
             Dim tmpNameNoStack As String = Path.GetFileNameWithoutExtension(sPath)
-            nPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
-            Dim nPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack)
+            nPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName).ToLower
+            Dim nPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack).ToLower
 
             Dim fList As New ArrayList
-            fList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.nfo"))
+            Dim tList As New ArrayList
+            tList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.nfo"))
+            fList.AddRange(tList.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+
             If eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
                 Return String.Concat(nPathWithStack, ".nfo")
             ElseIf eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
                 Return String.Concat(nPath, ".nfo")
-            ElseIf isSingle AndAlso eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
-                Return Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+            ElseIf isSingle AndAlso eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
+                Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
             Else
                 If Not isSingle Then
                     Return String.Empty
