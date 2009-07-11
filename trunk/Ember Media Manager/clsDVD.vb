@@ -9,7 +9,6 @@ Public Class clsDVD
     Private Const ifo_CellInfoSize As Short = 24
 
     Private ParsedIFOFile As struct_IFO_VST_Parse
-    Private intNbOfIFOFile As Byte
 
     Private oEnc As System.Text.Encoding = System.Text.ASCIIEncoding.GetEncoding(1252)
 
@@ -119,7 +118,7 @@ Public Class clsDVD
             If IFOFiles.Count > 1 Then
                 'find the one with the longest duration
                 For Each fFile As String In IFOFiles
-                    ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, fFile)
+                    ParsedIFOFile = fctParseIFO_VSTFile(fFile)
                     currDuration = Convert.ToInt32(GetProgramChainPlayBackTime(1, True))
                     If currDuration > currLongest Then
                         currLongest = currDuration
@@ -130,7 +129,7 @@ Public Class clsDVD
                 ParsedIFOFile = tIFOFile
                 Return True
             ElseIf Path.GetExtension(strPath).ToLower = ".ifo" Then
-                ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, strPath)
+                ParsedIFOFile = fctParseIFO_VSTFile(strPath)
                 Return True
             End If
         Catch ex As Exception
@@ -148,12 +147,6 @@ Public Class clsDVD
     Public ReadOnly Property GetIFOSubPicNumberOf() As Integer
         Get
             Return ParsedIFOFile.NumSubPictureStreams_VTS_VOBS
-        End Get
-    End Property
-
-    Public ReadOnly Property GetNumberIFOFileToRead() As Byte
-        Get
-            GetNumberIFOFileToRead = intNbOfIFOFile
         End Get
     End Property
 
@@ -346,7 +339,7 @@ Public Class clsDVD
     End Function
 
     'Open an IFO file and return the Parsed Variable
-    Private Function fctParseIFO_VSTFile(ByVal iIndexFile As Integer, ByVal strFileName As String) As struct_IFO_VST_Parse
+    Private Function fctParseIFO_VSTFile(ByVal strFileName As String) As struct_IFO_VST_Parse
         Dim strTmpIFOFileIn As String
         Dim tmpIFO As New struct_IFO_VST_Parse
 
