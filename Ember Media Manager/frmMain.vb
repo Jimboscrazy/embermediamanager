@@ -66,7 +66,7 @@ Public Class frmMain
     Private LoadingDone As Boolean = False
     Private isCL As Boolean = False
     Private GenreImage As Image
-
+    Private _Genres As New List(Of String)
     Private Enum PicType As Integer
         Actor = 0
         Poster = 1
@@ -111,6 +111,8 @@ Public Class frmMain
         Me.Activate()
     End Sub
 
+    Private Sub mnuMediaList_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles mnuMediaList.Opening
+    End Sub
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
         '//
@@ -402,6 +404,22 @@ Public Class frmMain
                 Me.WindowState = Master.eSettings.WindowState
 
                 Master.CacheXMLs()
+                Try
+                    Dim splitLang() As String
+                    Dim xGenre = From xGen In Master.GenreXML...<name> Select xGen.@searchstring, xGen.@language
+                    If xGenre.Count > 0 Then
+                        For i As Integer = 0 To xGenre.Count - 1
+                            splitLang = xGenre(i).language.Split(New Char() {"|"})
+                            For Each strGen As String In splitLang
+                                If Not Me._Genres.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
+                                    Me._Genres.Add(xGenre(i).searchstring)
+                                End If
+                            Next
+                        Next
+                    End If
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
                 Me.SetColors()
                 Me.SetToolTips()
 
@@ -4151,12 +4169,34 @@ doCancel:
                 Me.pnlNoInfo.Visible = True
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMediaList.Item(0, iRow).Value))
                 Me.tslStatus.Text = Master.currMovie.FaS.Filename
-                Me.mnuMediaList.Enabled = True
             Else
                 Me.pnlNoInfo.Visible = False
 
                 Me.LoadInfo(Me.dgvMediaList.Item(0, iRow).Value, Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
+            AddGenreToolStripMenuItem.DropDownItems.Clear()
+            SetGenreToolStripMenuItem.DropDownItems.Clear()
+            RemoveGenreToolStripMenuItem.DropDownItems.Clear()
+            GenreToolStripComboBox.Items.Clear()
+            For Each g As String In _Genres 'Master.currMovie.Movie.Genre
+                Dim mnuItem As ToolStripMenuItem
+                If Not Master.currMovie.Movie Is Nothing Then
+                    If Master.currMovie.Movie.Genre.Contains(g) Then
+                        mnuItem = New ToolStripMenuItem
+                        mnuItem.Text = g
+                        RemoveGenreToolStripMenuItem.DropDownItems.Add(mnuItem)
+                    Else
+                        mnuItem = New ToolStripMenuItem
+                        mnuItem.Text = g
+                        AddGenreToolStripMenuItem.DropDownItems.Add(mnuItem)
+                    End If
+                    GenreToolStripComboBox.Items.Add(g)
+                    mnuItem = New ToolStripMenuItem
+                    mnuItem.Text = g
+                    SetGenreToolStripMenuItem.DropDownItems.Add(mnuItem)
+                End If
+            Next
+            Me.mnuMediaList.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4201,5 +4241,5 @@ doCancel:
 
 
 #End Region '*** Routines/Functions
-
+    'Class Genre
 End Class

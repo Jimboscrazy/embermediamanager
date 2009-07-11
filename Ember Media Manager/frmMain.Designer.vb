@@ -73,6 +73,10 @@ Partial Class frmMain
         Me.OpenContainingFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
         Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.GenresToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.AddGenreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.SetGenreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.RemoveGenreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlSearch = New System.Windows.Forms.Panel
         Me.picSearch = New System.Windows.Forms.PictureBox
@@ -233,6 +237,7 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
+        Me.GenreToolStripComboBox = New System.Windows.Forms.ToolStripComboBox
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -560,9 +565,9 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem, Me.GenresToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(202, 232)
+        Me.mnuMediaList.Size = New System.Drawing.Size(202, 276)
         '
         'cmnuTitle
         '
@@ -652,6 +657,31 @@ Partial Class frmMain
         Me.DeleteMovieToolStripMenuItem.Name = "DeleteMovieToolStripMenuItem"
         Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
         Me.DeleteMovieToolStripMenuItem.Text = "Delete Movie"
+        '
+        'GenresToolStripMenuItem
+        '
+        Me.GenresToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenreToolStripComboBox, Me.AddGenreToolStripMenuItem, Me.SetGenreToolStripMenuItem, Me.RemoveGenreToolStripMenuItem})
+        Me.GenresToolStripMenuItem.Name = "GenresToolStripMenuItem"
+        Me.GenresToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
+        Me.GenresToolStripMenuItem.Text = "Genres"
+        '
+        'AddGenreToolStripMenuItem
+        '
+        Me.AddGenreToolStripMenuItem.Name = "AddGenreToolStripMenuItem"
+        Me.AddGenreToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.AddGenreToolStripMenuItem.Text = "Add"
+        '
+        'SetGenreToolStripMenuItem
+        '
+        Me.SetGenreToolStripMenuItem.Name = "SetGenreToolStripMenuItem"
+        Me.SetGenreToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.SetGenreToolStripMenuItem.Text = "Set"
+        '
+        'RemoveGenreToolStripMenuItem
+        '
+        Me.RemoveGenreToolStripMenuItem.Name = "RemoveGenreToolStripMenuItem"
+        Me.RemoveGenreToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.RemoveGenreToolStripMenuItem.Text = "Remove"
         '
         'Panel1
         '
@@ -2120,6 +2150,11 @@ Partial Class frmMain
         '
         Me.tmrFilterAni.Interval = 1
         '
+        'GenreToolStripComboBox
+        '
+        Me.GenreToolStripComboBox.Name = "GenreToolStripComboBox"
+        Me.GenreToolStripComboBox.Size = New System.Drawing.Size(121, 23)
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2402,4 +2437,9 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuRefresh As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RefreshAllMoviesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents GenresToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AddGenreToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents SetGenreToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents RemoveGenreToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents GenreToolStripComboBox As System.Windows.Forms.ToolStripComboBox
 End Class
