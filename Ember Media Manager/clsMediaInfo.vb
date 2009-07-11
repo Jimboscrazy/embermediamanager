@@ -84,7 +84,7 @@ Public Class MediaInfo
     Public Sub GetMovieMIFromPath(ByRef fiInfo As Fileinfo, ByVal sPath As String)
 
         If File.Exists(sPath) Then
-            Dim sExt As String = Path.GetExtension(sPath)
+            Dim sExt As String = Path.GetExtension(sPath).ToLower
             Dim fiOut As New Fileinfo
             Dim miVideo As New Video
             Dim miAudio As New Audio
