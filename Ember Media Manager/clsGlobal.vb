@@ -1463,7 +1463,7 @@ Public Class Master
                 Dim tmpName As String = Path.GetFileNameWithoutExtension(movieToSave.FaS.Filename)
                 nPath = Path.Combine(Directory.GetParent(movieToSave.FaS.Filename).FullName, tmpName)
 
-                If eSettings.MovieNameNFO Then
+                If eSettings.MovieNameNFO AndAlso (Not movieToSave.FaS.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
                     If Directory.GetParent(movieToSave.FaS.Filename).Name.ToLower = "video_ts" Then
                         tPath = Path.Combine(Directory.GetParent(movieToSave.FaS.Filename).FullName, "video_ts.nfo")
                     Else

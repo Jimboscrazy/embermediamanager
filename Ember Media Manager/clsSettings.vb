@@ -90,6 +90,7 @@ Public Class emmSettings
     Private _movienamedotfanartjpg As Boolean
     Private _movienfo As Boolean
     Private _movienamenfo As Boolean
+    Private _movienamemultionly As Boolean
     Private _dashtrailer As Boolean
     Private _videotsparent As Boolean
     Private _lockplot As Boolean
@@ -741,6 +742,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movienamenfo = value
+        End Set
+    End Property
+
+    Public Property MovieNameMultiOnly() As Boolean
+        Get
+            Return Me._movienamemultionly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movienamemultionly = value
         End Set
     End Property
 
@@ -1412,6 +1422,7 @@ Public Class emmSettings
         Me._movienamedotfanartjpg = False
         Me._movienfo = False
         Me._movienamenfo = False
+        Me._movienamemultionly = True
         Me._dashtrailer = True
         Me._videotsparent = False
         Me._lockplot = False
