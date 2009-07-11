@@ -102,12 +102,12 @@ Public Class MediaInfo
                 cDVD.fctOpenIFOFile(sPath)
 
                 ifoVideo = cDVD.GetIFOVideo
-                Dim vRes() As String = ifoVideo(2).Split(New Char() {"x"})
+                Dim vRes() As String = ifoVideo(1).Split(New Char() {"x"})
                 miVideo.Width = vRes(0)
                 miVideo.Height = vRes(1)
-                miVideo.Codec = ifoVideo(1)
+                miVideo.Codec = ifoVideo(0)
                 miVideo.Duration = cDVD.GetProgramChainPlayBackTime(1, 1)
-                miVideo.Aspect = ifoVideo(0)
+                miVideo.Aspect = ifoVideo(2)
                 With miVideo
                     If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse _
                     Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) OrElse Not String.IsNullOrEmpty(.Scantype) Then
