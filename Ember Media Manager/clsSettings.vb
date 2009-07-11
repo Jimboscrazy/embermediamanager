@@ -152,6 +152,7 @@ Public Class emmSettings
     Private _defaultfilespattern As String
     Private _sortpath As String
     Private _allwaysdisplaygenrestext As Boolean
+    Private _displayyear As Boolean
 
 
     Public Property Version() As String
@@ -1292,6 +1293,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property DisplayYear() As Boolean
+        Get
+            Return Me._displayyear
+        End Get
+        Set(ByVal value As Boolean)
+            Me._displayyear = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1423,6 +1433,8 @@ Public Class emmSettings
         Me._defaultfilespattern = "$T{.$S}"
         Me._xbmccoms.Clear()
         Me._sortpath = String.Empty
+        Me._allwaysdisplaygenrestext = False
+        Me._displayyear = False
     End Sub
 
     Public Sub Save()
