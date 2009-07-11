@@ -232,8 +232,10 @@ Public Class dlgImgSelect
             AddHandler MPDBDone, AddressOf MPDBDoneDownloading
 
             If Me.DLType = Master.ImageType.Posters Then
+                Me.Text = String.Concat("Select Poster - ", Me.tMovie.ListTitle)
                 Me.pnlDLStatus.Visible = True
             Else
+                Me.Text = String.Concat("Select Fanart - ", Me.tMovie.ListTitle)
                 Me.pnlDLStatus.Visible = False
                 Me.pnlDLStatus.Height = 75
                 Me.pnlDLStatus.Top = 207
@@ -800,10 +802,8 @@ Public Class dlgImgSelect
         Try
             Select Case Me.DLType
                 Case Master.ImageType.Posters
-                    Me.Text = "Select Poster"
                     Me.GetPosters()
                 Case Master.ImageType.Fanart
-                    Me.Text = "Select Fanart"
                     Me.GetFanart()
             End Select
         Catch ex As Exception
