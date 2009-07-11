@@ -2562,7 +2562,7 @@ Public Class frmMain
                                 End If
 
 
-                                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
+                                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
                             Next
 
                         Case Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
@@ -2775,7 +2775,7 @@ Public Class frmMain
 doCancel:
             If Not Args.scrapeType = Master.ScrapeType.CopyBD AndAlso Not Args.scrapeType = Master.ScrapeType.CleanFolders Then
                 'Save the last movie scraper was working on
-                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
+                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
             End If
             SQLtransaction.Commit()
         End Using
