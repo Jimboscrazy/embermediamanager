@@ -110,7 +110,7 @@ Public Class MediaInfo
                 miVideo.Aspect = ifoVideo(2)
                 With miVideo
                     If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse _
-                    Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) OrElse Not String.IsNullOrEmpty(.Scantype) Then
+                    Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) Then
                         fiOut.StreamDetails.Video.Add(miVideo)
                     End If
                 End With
