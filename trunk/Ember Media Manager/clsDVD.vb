@@ -73,8 +73,6 @@ Public Class clsDVD
         Dim NumberOfPrograms As Byte
         Dim NumberOfCells As Byte
         Dim PlayBackTime As DVD_Time_Type
-        'Up to 64 Chapters
-        Dim PChainInformation() As PGC_Cell_Info_Type
         'Currently only implamenting basic useful information
     End Structure
 
@@ -111,22 +109,22 @@ Public Class clsDVD
         Dim SubPictureAtt_VTS_VOBS() As SubPictureAtt_VTSM_VTS_Type
     End Structure
 
-    Private Function fctIsIFOFileExist(ByVal strDrive As String) As Boolean
-        Dim objDI As New DirectoryInfo(strDrive & "VIDEO_TS\")
-        Dim objIFOFile As FileInfo
-        If objDI.Exists() Then
-            If objDI.GetFiles("VTS*.IFO").Length > 0 Then
-                fctIsIFOFileExist = True
-            Else
-                fctIsIFOFileExist = False
-            End If
-        Else
-            fctIsIFOFileExist = False
-        End If
+    'Private Function fctIsIFOFileExist(ByVal strDrive As String) As Boolean
+    '    Dim objDI As New DirectoryInfo(strDrive & "VIDEO_TS\")
+    '    Dim objIFOFile As FileInfo
+    '    If objDI.Exists() Then
+    '        If objDI.GetFiles("VTS*.IFO").Length > 0 Then
+    '            fctIsIFOFileExist = True
+    '        Else
+    '            fctIsIFOFileExist = False
+    '        End If
+    '    Else
+    '        fctIsIFOFileExist = False
+    '    End If
 
-        objIFOFile = Nothing
-        objDI = Nothing
-    End Function
+    '    objIFOFile = Nothing
+    '    objDI = Nothing
+    'End Function
 
     Public Function fctOpenIFOFile(ByVal strPath As String) As Boolean
         Dim IFOFiles As New ArrayList
@@ -140,7 +138,7 @@ Public Class clsDVD
             'find the one with the longest duration
             For Each fFile As String In IFOFiles
                 ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, fFile)
-                currDuration = Convert.ToInt32(GetProgramChainPlayBackTime(1, 1, True))
+                currDuration = Convert.ToInt32(GetProgramChainPlayBackTime(1, True))
                 If currDuration > currLongest Then
                     currLongest = currDuration
                     tIFOFile = ParsedIFOFile
@@ -181,27 +179,14 @@ Public Class clsDVD
         End Get
     End Property
 
-    Public ReadOnly Property GetProgramChainPlayBackTime(ByVal bytProChainIndex As Byte, Optional ByVal bytCellIndex As Byte = 0, Optional ByVal MinsOnly As Boolean = False) As String
+    Public ReadOnly Property GetProgramChainPlayBackTime(ByVal bytProChainIndex As Byte, Optional ByVal MinsOnly As Boolean = False) As String
         Get
             If bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
                 bytProChainIndex = bytProChainIndex - 1
 
-                If bytCellIndex = 0 Then
-                    Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
-                Else
-                    Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PChainInformation(bytCellIndex - 1).CellPlayBackTime, MinsOnly)
-                End If
+                Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
             End If
             Return String.Empty
-        End Get
-    End Property
-
-    Public ReadOnly Property GetProgramChainNumChapters(ByVal bytProChainIndex As Byte) As Integer
-        Get
-            If bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
-                bytProChainIndex = bytProChainIndex - 1
-                Return ParsedIFOFile.ProgramChainInformation(bytProChainIndex).NumberOfPrograms
-            End If
         End Get
     End Property
 
@@ -329,19 +314,6 @@ Public Class clsDVD
         End Select
     End Function
 
-    'Note:  This is for the Chapter Information
-    Private Function fctPChainInformation(ByVal shoProgramChainNumber As Short, ByVal shoCellNumber As Short, ByRef strIFOFileBuffer As String, ByRef tmpIFO As struct_IFO_VST_Parse) As PGC_Cell_Info_Type
-        Dim ChainLoc As Integer
-
-        'Setup the Start loc for the File
-        ChainLoc = (tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE) + fctStrByteToHex((strIFOFileBuffer).Substring(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE + 12 + (shoProgramChainNumber) * 8, 4))
-        ChainLoc = ChainLoc + fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 232, 2)) + 1 + (ifo_CellInfoSize * (shoCellNumber - 1))
-
-        fctPChainInformation.CellPlayBackTime.hours = fctHexTimeToDecTime(Convert.ToInt32(oEnc.GetBytes(((strIFOFileBuffer).Substring(ChainLoc + 3, 1)).Chars(0))(0)))
-        fctPChainInformation.CellPlayBackTime.minutes = fctHexTimeToDecTime(Convert.ToInt32(oEnc.GetBytes(((strIFOFileBuffer).Substring(ChainLoc + 4, 1)).Chars(0))(0)))
-        fctPChainInformation.CellPlayBackTime.seconds = fctHexTimeToDecTime(Convert.ToInt32(oEnc.GetBytes(((strIFOFileBuffer).Substring(ChainLoc + 5, 1)).Chars(0))(0)))
-    End Function
-
     Private Function fctProgramChainInformation(ByVal shoProgramChainNumber As Short, ByRef strIFOFileBuffer As String, ByRef tmpIFO As struct_IFO_VST_Parse) As struct_Program_Chain_Type
         Dim ChainLoc As Integer
         Dim PCT As New struct_Program_Chain_Type
@@ -369,7 +341,6 @@ Public Class clsDVD
         Dim tmpIFO As New struct_IFO_VST_Parse
 
         Dim intFileLength As Integer
-        Dim i As Integer
 
         'Read in the Info file name
         Dim objFS As FileStream
@@ -444,10 +415,6 @@ Public Class clsDVD
         For intFileLength = 0 To tmpIFO.NumberOfProgramChains - 1
             ReDim Preserve tmpIFO.ProgramChainInformation(intFileLength)
             tmpIFO.ProgramChainInformation(intFileLength) = fctProgramChainInformation(intFileLength, strTmpIFOFileIn, tmpIFO)
-            For i = 0 To tmpIFO.ProgramChainInformation(intFileLength).NumberOfPrograms
-                ReDim Preserve tmpIFO.ProgramChainInformation(intFileLength).PChainInformation(i)
-                tmpIFO.ProgramChainInformation(intFileLength).PChainInformation(i) = fctPChainInformation(intFileLength, i, strTmpIFOFileIn, tmpIFO)
-            Next
         Next
 
         'Setup the Return Value

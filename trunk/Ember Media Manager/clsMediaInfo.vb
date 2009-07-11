@@ -106,7 +106,7 @@ Public Class MediaInfo
                 miVideo.Width = vRes(0)
                 miVideo.Height = vRes(1)
                 miVideo.Codec = ifoVideo(0)
-                miVideo.Duration = cDVD.GetProgramChainPlayBackTime(1, 1)
+                miVideo.Duration = cDVD.GetProgramChainPlayBackTime(1)
                 miVideo.Aspect = ifoVideo(2)
                 With miVideo
                     If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse _
