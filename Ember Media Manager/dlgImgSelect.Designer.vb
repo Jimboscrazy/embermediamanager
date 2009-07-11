@@ -22,12 +22,14 @@ Partial Class dlgImgSelect
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImgSelect))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.pnlBottomMain = New System.Windows.Forms.Panel
         Me.pnlSize = New System.Windows.Forms.Panel
+        Me.btnPreview = New System.Windows.Forms.Button
         Me.rbSmall = New System.Windows.Forms.RadioButton
         Me.rbMedium = New System.Windows.Forms.RadioButton
         Me.rbLarge = New System.Windows.Forms.RadioButton
@@ -123,6 +125,7 @@ Partial Class dlgImgSelect
         '
         Me.pnlSize.BackColor = System.Drawing.Color.White
         Me.pnlSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlSize.Controls.Add(Me.btnPreview)
         Me.pnlSize.Controls.Add(Me.rbSmall)
         Me.pnlSize.Controls.Add(Me.rbMedium)
         Me.pnlSize.Controls.Add(Me.rbLarge)
@@ -133,11 +136,24 @@ Partial Class dlgImgSelect
         Me.pnlSize.TabIndex = 4
         Me.pnlSize.Visible = False
         '
+        'btnPreview
+        '
+        Me.btnPreview.Enabled = False
+        Me.btnPreview.Image = CType(resources.GetObject("btnPreview.Image"), System.Drawing.Image)
+        Me.btnPreview.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnPreview.Location = New System.Drawing.Point(593, 5)
+        Me.btnPreview.Name = "btnPreview"
+        Me.btnPreview.Size = New System.Drawing.Size(75, 23)
+        Me.btnPreview.TabIndex = 4
+        Me.btnPreview.Text = "Preview"
+        Me.btnPreview.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnPreview.UseVisualStyleBackColor = True
+        '
         'rbSmall
         '
         Me.rbSmall.AutoSize = True
         Me.rbSmall.Enabled = False
-        Me.rbSmall.Location = New System.Drawing.Point(505, 8)
+        Me.rbSmall.Location = New System.Drawing.Point(475, 8)
         Me.rbSmall.Name = "rbSmall"
         Me.rbSmall.Size = New System.Drawing.Size(50, 17)
         Me.rbSmall.TabIndex = 3
@@ -148,7 +164,7 @@ Partial Class dlgImgSelect
         'rbMedium
         '
         Me.rbMedium.AutoSize = True
-        Me.rbMedium.Location = New System.Drawing.Point(342, 8)
+        Me.rbMedium.Location = New System.Drawing.Point(322, 8)
         Me.rbMedium.Name = "rbMedium"
         Me.rbMedium.Size = New System.Drawing.Size(62, 17)
         Me.rbMedium.TabIndex = 2
@@ -160,7 +176,7 @@ Partial Class dlgImgSelect
         '
         Me.rbLarge.AutoSize = True
         Me.rbLarge.Enabled = False
-        Me.rbLarge.Location = New System.Drawing.Point(189, 8)
+        Me.rbLarge.Location = New System.Drawing.Point(179, 8)
         Me.rbLarge.Name = "rbLarge"
         Me.rbLarge.Size = New System.Drawing.Size(52, 17)
         Me.rbLarge.TabIndex = 1
@@ -428,5 +444,6 @@ Partial Class dlgImgSelect
     Friend WithEvents chkThumb As System.Windows.Forms.CheckBox
     Friend WithEvents chkMid As System.Windows.Forms.CheckBox
     Friend WithEvents chkOriginal As System.Windows.Forms.CheckBox
+    Friend WithEvents btnPreview As System.Windows.Forms.Button
 
 End Class
