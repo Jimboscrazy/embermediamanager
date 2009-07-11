@@ -1947,7 +1947,11 @@ Public Class frmMain
                                 End If
                             End If
                         Else
-                            tmpMovieDB.ListTitle = tmpMovieDB.Movie.Title
+                            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", tmpMovieDB.Movie.Title, tmpMovieDB.Movie.Year)
+                            Else
+                                tmpMovieDB.ListTitle = tmpMovieDB.Movie.Title
+                            End If
                         End If
 
                         Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
@@ -2305,8 +2309,12 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
-                                    Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
-                                    scrapeMovie.ListTitle = scrapeMovie.Movie.Title
+                                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
+                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", scrapeMovie.Movie.Title, scrapeMovie.Movie.Year)
+                                    Else
+                                        scrapeMovie.ListTitle = scrapeMovie.Movie.Title
+                                    End If
+                                    Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
                                 Else
                                     scrapeMovie.ListTitle = drvRow.Item(3)
                                 End If
@@ -2452,14 +2460,18 @@ Public Class frmMain
                                         End If
 
                                         If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
+                                            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
+                                                scrapeMovie.ListTitle = String.Format("{0} ({1})", scrapeMovie.Movie.Title, scrapeMovie.Movie.Year)
+                                            Else
+                                                scrapeMovie.ListTitle = scrapeMovie.Movie.Title
+                                            End If
                                             Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
-                                            scrapeMovie.ListTitle = scrapeMovie.Movie.Title
                                         Else
                                             scrapeMovie.ListTitle = drvRow.Item(3)
                                         End If
-                                        Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
-                                        doSave = True
-                                    End If
+                                            Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
+                                            doSave = True
+                                        End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not drvRow.Item(4) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Poster) Then
@@ -3633,8 +3645,12 @@ doCancel:
                     If String.IsNullOrEmpty(tmpMovie.Title) Then
                         tmpMovieDb.ListTitle = dRow(0).Item(3)
                     Else
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovie.Title})
-                        tmpMovieDb.ListTitle = tmpMovie.Title
+                        If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovie.Year) Then
+                            tmpMovieDb.ListTitle = String.Format("{0} ({1})", tmpMovie.Title, tmpMovie.Year)
+                        Else
+                            tmpMovieDb.ListTitle = tmpMovie.Title
+                        End If
+                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
                     End If
 
                     tmpMovieDb.Movie = tmpMovie

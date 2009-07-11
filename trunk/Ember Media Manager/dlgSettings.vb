@@ -1114,6 +1114,11 @@ Public Class dlgSettings
             End Using
         End If
     End Sub
+
+    Private Sub chkDisplayYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDisplayYear.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -1312,6 +1317,8 @@ Public Class dlgSettings
             Master.eSettings.FoldersPattern = Me.txtFolderPattern.Text
             Master.eSettings.FilesPattern = Me.txtFilePattern.Text
             Master.eSettings.AllwaysDisplayGenresText = Me.chkShowGenresText.Checked
+            Master.eSettings.DisplayYear = Me.chkDisplayYear.Checked
+
             Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1481,6 +1488,7 @@ Public Class dlgSettings
             Me.txtFolderPattern.Text = Master.eSettings.FoldersPattern
             Me.txtFilePattern.Text = Master.eSettings.FilesPattern
             Me.chkShowGenresText.Checked = Master.eSettings.AllwaysDisplayGenresText
+            Me.chkDisplayYear.Checked = Master.eSettings.DisplayYear
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -1545,6 +1553,5 @@ Public Class dlgSettings
     End Sub
 
 #End Region '*** Routines/Functions
-
 
 End Class
