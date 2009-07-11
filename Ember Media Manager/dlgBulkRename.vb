@@ -91,7 +91,11 @@ Public Class dlgBulkRenamer
                                 MovieFile.ID = SQLreader("id")
                                 _curMovie = Master.DB.LoadMovieFromDB(MovieFile.ID)
                                 If Not _curMovie.ID = -1 Then
-                                    MovieFile.Title = _curMovie.ListTitle
+                                    If _curMovie.Movie.Title = String.Empty Then
+                                        MovieFile.Title = _curMovie.ListTitle
+                                    Else
+                                        MovieFile.Title = _curMovie.Movie.Title
+                                    End If
                                     MovieFile.Year = _curMovie.Movie.Year
                                     MovieFile.IsLocked = _curMovie.IsLock
                                     MovieFile.BasePath = Path.GetDirectoryName(_curMovie.FaS.Filename)
