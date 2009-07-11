@@ -3112,6 +3112,7 @@ doCancel:
 
                     Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name, imdbAct.Role))
                 Next
+                Me.lstActors.SelectedIndex = 0
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
