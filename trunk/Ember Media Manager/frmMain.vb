@@ -111,7 +111,12 @@ Public Class frmMain
         Me.Activate()
     End Sub
 
-    Private Sub mnuMediaList_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles mnuMediaList.Opening
+    Private Sub GenreListToolStripComboBox_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GenreListToolStripComboBox.SelectedIndexChanged
+
+        RemoveGenreToolStripMenuItem.Enabled = GenreListToolStripComboBox.Tag.contains(GenreListToolStripComboBox.Text)
+        AddGenreToolStripMenuItem.Enabled = Not GenreListToolStripComboBox.Tag.contains(GenreListToolStripComboBox.Text)
+
+        SetGenreToolStripMenuItem.Enabled = True
     End Sub
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
@@ -1201,6 +1206,7 @@ Public Class frmMain
                         cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
                         cmnuMark.Text = If(setMark, "Mark", "Unmark")
                         cmnuLock.Text = If(setLock, "Lock", "Unlock")
+                        GenresToolStripMenuItem.Visible = False
                     Else
                         Me.cmnuEditMovie.Visible = True
                         Me.cmnuRescrape.Visible = True
@@ -1228,6 +1234,11 @@ Public Class frmMain
                         End If
                         Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
                         Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
+                        GenresToolStripMenuItem.Visible = True
+                        GenreListToolStripComboBox.Tag = Me.dgvMediaList.Item(26, dgvHTI.RowIndex).Value
+                        AddGenreToolStripMenuItem.Enabled = False
+                        SetGenreToolStripMenuItem.Enabled = False
+                        RemoveGenreToolStripMenuItem.Enabled = False
                     End If
                 End If
             End If
@@ -3816,7 +3827,7 @@ doCancel:
                     AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
                 End If
             End With
-
+            SetGenresContext()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4174,34 +4185,21 @@ doCancel:
 
                 Me.LoadInfo(Me.dgvMediaList.Item(0, iRow).Value, Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
-            AddGenreToolStripMenuItem.DropDownItems.Clear()
-            SetGenreToolStripMenuItem.DropDownItems.Clear()
-            RemoveGenreToolStripMenuItem.DropDownItems.Clear()
-            GenreToolStripComboBox.Items.Clear()
-            For Each g As String In _Genres 'Master.currMovie.Movie.Genre
-                Dim mnuItem As ToolStripMenuItem
-                If Not Master.currMovie.Movie Is Nothing Then
-                    If Master.currMovie.Movie.Genre.Contains(g) Then
-                        mnuItem = New ToolStripMenuItem
-                        mnuItem.Text = g
-                        RemoveGenreToolStripMenuItem.DropDownItems.Add(mnuItem)
-                    Else
-                        mnuItem = New ToolStripMenuItem
-                        mnuItem.Text = g
-                        AddGenreToolStripMenuItem.DropDownItems.Add(mnuItem)
-                    End If
-                    GenreToolStripComboBox.Items.Add(g)
-                    mnuItem = New ToolStripMenuItem
-                    mnuItem.Text = g
-                    SetGenreToolStripMenuItem.DropDownItems.Add(mnuItem)
-                End If
-            Next
+            ''''
             Me.mnuMediaList.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
+    Private Sub SetGenresContext()
+
+        GenreListToolStripComboBox.Items.Clear()
+        GenreListToolStripComboBox.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList
+        For Each g As String In _Genres
+            GenreListToolStripComboBox.Items.Add(g)
+        Next
+    End Sub
     Private Sub SetToolTips()
         Dim TT As ToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.tsbAutoPilot.ToolTipText = "Scrape/download data from the internet for multiple movies."
@@ -4242,4 +4240,7 @@ doCancel:
 
 #End Region '*** Routines/Functions
     'Class Genre
+
+
+
 End Class
