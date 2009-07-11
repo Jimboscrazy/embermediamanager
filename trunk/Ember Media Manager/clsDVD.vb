@@ -44,13 +44,11 @@ Public Class clsDVD
     Private Structure struct_SRPT
         Dim Coding_Mode As Byte
         Dim Resolution As Byte
-        Dim Bitrate As Boolean
     End Structure
 
     Private Structure struct_VideoAttributes_VTS_VOBS
         Dim Video_Standard As Byte
         Dim Coding_Mode As Byte
-        Dim LetterBoxed As Boolean
         Dim Resolution As Byte
     End Structure
 
@@ -109,49 +107,35 @@ Public Class clsDVD
         Dim SubPictureAtt_VTS_VOBS() As SubPictureAtt_VTSM_VTS_Type
     End Structure
 
-    'Private Function fctIsIFOFileExist(ByVal strDrive As String) As Boolean
-    '    Dim objDI As New DirectoryInfo(strDrive & "VIDEO_TS\")
-    '    Dim objIFOFile As FileInfo
-    '    If objDI.Exists() Then
-    '        If objDI.GetFiles("VTS*.IFO").Length > 0 Then
-    '            fctIsIFOFileExist = True
-    '        Else
-    '            fctIsIFOFileExist = False
-    '        End If
-    '    Else
-    '        fctIsIFOFileExist = False
-    '    End If
-
-    '    objIFOFile = Nothing
-    '    objDI = Nothing
-    'End Function
-
     Public Function fctOpenIFOFile(ByVal strPath As String) As Boolean
         Dim IFOFiles As New ArrayList
         Dim tIFOFile As New struct_IFO_VST_Parse
         Dim currLongest As Integer = 0
         Dim currDuration As Integer = 0
 
-        IFOFiles.AddRange(Directory.GetFiles(Directory.GetParent(strPath).FullName, "VTS*.IFO"))
+        Try
+            IFOFiles.AddRange(Directory.GetFiles(Directory.GetParent(strPath).FullName, "VTS*.IFO"))
 
-        If IFOFiles.Count > 1 Then
-            'find the one with the longest duration
-            For Each fFile As String In IFOFiles
-                ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, fFile)
-                currDuration = Convert.ToInt32(GetProgramChainPlayBackTime(1, True))
-                If currDuration > currLongest Then
-                    currLongest = currDuration
-                    tIFOFile = ParsedIFOFile
-                End If
-            Next
+            If IFOFiles.Count > 1 Then
+                'find the one with the longest duration
+                For Each fFile As String In IFOFiles
+                    ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, fFile)
+                    currDuration = Convert.ToInt32(GetProgramChainPlayBackTime(1, True))
+                    If currDuration > currLongest Then
+                        currLongest = currDuration
+                        tIFOFile = ParsedIFOFile
+                    End If
+                Next
 
-            ParsedIFOFile = tIFOFile
-            Return True
-        ElseIf Path.GetExtension(strPath).ToLower = ".ifo" Then
-            ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, strPath)
-            Return True
-        End If
-
+                ParsedIFOFile = tIFOFile
+                Return True
+            ElseIf Path.GetExtension(strPath).ToLower = ".ifo" Then
+                ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, strPath)
+                Return True
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return False
     End Function
 
@@ -181,11 +165,15 @@ Public Class clsDVD
 
     Public ReadOnly Property GetProgramChainPlayBackTime(ByVal bytProChainIndex As Byte, Optional ByVal MinsOnly As Boolean = False) As String
         Get
-            If bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
-                bytProChainIndex = bytProChainIndex - 1
+            Try
+                If bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
+                    bytProChainIndex = bytProChainIndex - 1
 
-                Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
-            End If
+                    Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
             Return String.Empty
         End Get
     End Property
@@ -193,21 +181,24 @@ Public Class clsDVD
     Public ReadOnly Property GetIFOVideo() As String()
         Get
             Dim ReturnArray(2) As String
-            If mVideoCodingMode.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString) Then
-                ReturnArray(0) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString)
-            Else
-                'assume mpeg2
-                ReturnArray(0) = "mpeg2"
-            End If
-            ReturnArray(1) = mVideoResolution(ParsedIFOFile.VideoAtt_VTS_VOBS.Video_Standard)(ParsedIFOFile.VideoAtt_VTS_VOBS.Resolution)
-            If ReturnArray(1).Contains("x") Then
-                Dim sinAspect() As String
-                sinAspect = ReturnArray(1).Split(New Char() {"x"})
-                ReturnArray(2) = Convert.ToSingle(sinAspect(0)) / Convert.ToSingle(sinAspect(1))
-            Else
-                ReturnArray(2) = String.Empty
-            End If
-
+            Try
+                If mVideoCodingMode.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString) Then
+                    ReturnArray(0) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString)
+                Else
+                    'assume mpeg2
+                    ReturnArray(0) = "mpeg2"
+                End If
+                ReturnArray(1) = mVideoResolution(ParsedIFOFile.VideoAtt_VTS_VOBS.Video_Standard)(ParsedIFOFile.VideoAtt_VTS_VOBS.Resolution)
+                If ReturnArray(1).Contains("x") Then
+                    Dim sinAspect() As String
+                    sinAspect = ReturnArray(1).Split(New Char() {"x"})
+                    ReturnArray(2) = Convert.ToSingle(sinAspect(0)) / Convert.ToSingle(sinAspect(1))
+                Else
+                    ReturnArray(2) = String.Empty
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
             Return ReturnArray
         End Get
     End Property
@@ -215,27 +206,35 @@ Public Class clsDVD
     Public ReadOnly Property GetIFOAudio(ByVal bytAudioIndex As Byte) As String()
         Get
             Dim ReturnArray(2) As String
-            If bytAudioIndex <= ParsedIFOFile.NumAudioStreams_VTS_VOBS AndAlso bytAudioIndex > 0 Then
-                bytAudioIndex -= 1
-                If mAudioModes.ContainsKey(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString) Then
-                    ReturnArray(0) = mAudioModes.Item(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString)
-                Else
-                    'assume ac3
-                    ReturnArray(0) = "ac3"
+            Try
+                If bytAudioIndex <= ParsedIFOFile.NumAudioStreams_VTS_VOBS AndAlso bytAudioIndex > 0 Then
+                    bytAudioIndex -= 1
+                    If mAudioModes.ContainsKey(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString) Then
+                        ReturnArray(0) = mAudioModes.Item(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString)
+                    Else
+                        'assume ac3
+                        ReturnArray(0) = "ac3"
+                    End If
+                    ReturnArray(1) = fctLang2CodeToLong(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).LanguageCode)
+                    ReturnArray(2) = ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).NumberOfChannels.ToString
                 End If
-                ReturnArray(1) = fctLang2CodeToLong(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).LanguageCode)
-                ReturnArray(2) = ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).NumberOfChannels.ToString
-            End If
-                Return ReturnArray
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+            Return ReturnArray
         End Get
     End Property
 
     Public ReadOnly Property GetIFOSubPic(ByVal bytSubPicIndex As Byte) As String
         Get
-            If bytSubPicIndex <= ParsedIFOFile.NumSubPictureStreams_VTS_VOBS AndAlso bytSubPicIndex > 0 Then
-                bytSubPicIndex -= 1
-                Return fctLang2CodeToLong(ParsedIFOFile.SubPictureAtt_VTS_VOBS(bytSubPicIndex).LanguageCode)
-            End If
+            Try
+                If bytSubPicIndex <= ParsedIFOFile.NumSubPictureStreams_VTS_VOBS AndAlso bytSubPicIndex > 0 Then
+                    bytSubPicIndex -= 1
+                    Return fctLang2CodeToLong(ParsedIFOFile.SubPictureAtt_VTS_VOBS(bytSubPicIndex).LanguageCode)
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
             Return String.Empty
         End Get
     End Property
@@ -249,11 +248,16 @@ Public Class clsDVD
 
     'Convert the DVD time type to a string HH:MM:SS
     Private Function fctPlayBackTimeToString(ByRef PlayBack As DVD_Time_Type, Optional ByVal MinsOnly As Boolean = False) As String
-        If MinsOnly Then
-            Return (PlayBack.hours * 60) + PlayBack.minutes
-        Else
-            Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s ")
-        End If
+        Try
+            If MinsOnly Then
+                Return (PlayBack.hours * 60) + PlayBack.minutes
+            Else
+                Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s ")
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return String.Empty
     End Function
 
     'Fill in the Audio Header Information
@@ -261,31 +265,35 @@ Public Class clsDVD
         Dim byteInfo(8) As Byte
         Dim i As Integer
         Dim bytTempValue As Byte
+        Dim tVTSM As New struct_AudioAttributes_VTSM_VTS
+        Try
+            'Setup Byte info
+            For i = 0 To 7
+                byteInfo(i) = Convert.ToInt32(oEnc.GetBytes(((strAudioInfo).Substring(i, 1)).Chars(0))(0))
+            Next
 
-        'Setup Byte info
-        For i = 0 To 7
-            byteInfo(i) = Convert.ToInt32(oEnc.GetBytes(((strAudioInfo).Substring(i, 1)).Chars(0))(0))
-        Next
+            If byteInfo(2) <> 0 AndAlso byteInfo(3) <> 0 Then
+                tVTSM.LanguageCode = Convert.ToChar(byteInfo(2)) & Convert.ToChar(byteInfo(3)) ' & Convert.ToChar(byteInfo(4))
+            Else
+                tVTSM.LanguageCode = String.Empty
+            End If
 
-        If byteInfo(2) <> 0 AndAlso byteInfo(3) <> 0 Then
-            fctAudioAttVTSM_VTS.LanguageCode = Convert.ToChar(byteInfo(2)) & Convert.ToChar(byteInfo(3)) ' & Convert.ToChar(byteInfo(4))
-        Else
-            fctAudioAttVTSM_VTS.LanguageCode = ""
-        End If
-
-        'Using Logic AND's to check if bits are set dec 176 -> bin 10110000
-        bytTempValue = 0
-        If (byteInfo(0) And 32) = 32 Then bytTempValue = 1
-        If (byteInfo(0) And 64) = 64 Then bytTempValue = bytTempValue + 2
-        If (byteInfo(0) And 128) = 128 Then bytTempValue = bytTempValue + 4
-        fctAudioAttVTSM_VTS.CodingMode = bytTempValue
+            'Using Logic AND's to check if bits are set dec 176 -> bin 10110000
+            bytTempValue = 0
+            If (byteInfo(0) And 32) = 32 Then bytTempValue = 1
+            If (byteInfo(0) And 64) = 64 Then bytTempValue = bytTempValue + 2
+            If (byteInfo(0) And 128) = 128 Then bytTempValue = bytTempValue + 4
+            tVTSM.CodingMode = bytTempValue
 
 
-        If (byteInfo(1) And 1) = 1 Then bytTempValue = 1
-        If (byteInfo(1) And 2) = 2 Then bytTempValue = bytTempValue + 2
-        If (byteInfo(1) And 4) = 4 Then bytTempValue = bytTempValue + 4
-        fctAudioAttVTSM_VTS.NumberOfChannels = bytTempValue + 1
-
+            If (byteInfo(1) And 1) = 1 Then bytTempValue = 1
+            If (byteInfo(1) And 2) = 2 Then bytTempValue = bytTempValue + 2
+            If (byteInfo(1) And 4) = 4 Then bytTempValue = bytTempValue + 4
+            tVTSM.NumberOfChannels = bytTempValue + 1
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return tVTSM
     End Function
 
     Private Function fctHexOffset(ByVal strHexString As String) As Integer
@@ -317,21 +325,23 @@ Public Class clsDVD
     Private Function fctProgramChainInformation(ByVal shoProgramChainNumber As Short, ByRef strIFOFileBuffer As String, ByRef tmpIFO As struct_IFO_VST_Parse) As struct_Program_Chain_Type
         Dim ChainLoc As Integer
         Dim PCT As New struct_Program_Chain_Type
+        Try
+            'Setup the Start loc for the File
+            ChainLoc = (tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE) + fctStrByteToHex((strIFOFileBuffer).Substring(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE + 12 + (shoProgramChainNumber) * 8, 4))
 
-        'Setup the Start loc for the File
-        ChainLoc = (tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE) + fctStrByteToHex((strIFOFileBuffer).Substring(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE + 12 + (shoProgramChainNumber) * 8, 4))
+            'The Program Number
+            PCT.NumberOfPrograms = fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 2, 1))
 
-        'The Program Number
-        PCT.NumberOfPrograms = fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 2, 1))
+            'Number of Cells in Program Chain
+            PCT.NumberOfCells = fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 3, 1))
 
-        'Number of Cells in Program Chain
-        PCT.NumberOfCells = fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 3, 1))
-
-        'Get DVD Chain Type Info
-        PCT.PlayBackTime.hours = fctHexTimeToDecTime(Convert.ToInt32(((strIFOFileBuffer).Substring(ChainLoc + 4, 1)).Chars(0)))
-        PCT.PlayBackTime.minutes = fctHexTimeToDecTime(Convert.ToInt32(((strIFOFileBuffer).Substring(ChainLoc + 5, 1)).Chars(0)))
-        PCT.PlayBackTime.seconds = fctHexTimeToDecTime(Convert.ToInt32(((strIFOFileBuffer).Substring(ChainLoc + 6, 1)).Chars(0)))
-
+            'Get DVD Chain Type Info
+            PCT.PlayBackTime.hours = fctHexTimeToDecTime(Convert.ToInt32(((strIFOFileBuffer).Substring(ChainLoc + 4, 1)).Chars(0)))
+            PCT.PlayBackTime.minutes = fctHexTimeToDecTime(Convert.ToInt32(((strIFOFileBuffer).Substring(ChainLoc + 5, 1)).Chars(0)))
+            PCT.PlayBackTime.seconds = fctHexTimeToDecTime(Convert.ToInt32(((strIFOFileBuffer).Substring(ChainLoc + 6, 1)).Chars(0)))
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return PCT
     End Function
 
@@ -342,86 +352,88 @@ Public Class clsDVD
 
         Dim intFileLength As Integer
 
-        'Read in the Info file name
-        Dim objFS As FileStream
-        objFS = File.Open(strFileName, FileMode.Open, FileAccess.Read)
-        Dim objBR As New BinaryReader(objFS)
-        strTmpIFOFileIn = System.Text.Encoding.Default.GetString(objBR.ReadBytes(objFS.Length))
-        intFileLength = strTmpIFOFileIn.Length
-        objBR.Close()
-        objBR = Nothing
-        objFS.Close()
-        objFS = Nothing
+        Try
+            'Read in the Info file name
+            Dim objFS As FileStream
+            objFS = File.Open(strFileName, FileMode.Open, FileAccess.Read)
+            Dim objBR As New BinaryReader(objFS)
+            strTmpIFOFileIn = System.Text.Encoding.Default.GetString(objBR.ReadBytes(objFS.Length))
+            intFileLength = strTmpIFOFileIn.Length
+            objBR.Close()
+            objBR = Nothing
+            objFS.Close()
+            objFS = Nothing
 
-        'Save the Ifo File name
-        tmpIFO.IFO_FileName = strFileName
+            If intFileLength > 0 Then
+                'Save the Ifo File name
+                tmpIFO.IFO_FileName = strFileName
 
-        'See MPUcoder (http://www.mpucoder.com/DVD/ifo.html)
-        'Parse the File in tmpIFOFileIn
-        tmpIFO.FileType_Header = (strTmpIFOFileIn).Substring(fctHexOffset("0"), 12)
-        tmpIFO.LastSectorOfTitle = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("C"), 4))
-        tmpIFO.LastSectorOfIFO = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("1C"), 4))
-        tmpIFO.VersionNumber = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("20"), 2))
-        tmpIFO.VSTCategory = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("22"), 4))
+                'See MPUcoder (http://www.mpucoder.com/DVD/ifo.html)
+                'Parse the File in tmpIFOFileIn
+                tmpIFO.FileType_Header = (strTmpIFOFileIn).Substring(fctHexOffset("0"), 12)
+                tmpIFO.LastSectorOfTitle = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("C"), 4))
+                tmpIFO.LastSectorOfIFO = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("1C"), 4))
+                tmpIFO.VersionNumber = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("20"), 2))
+                tmpIFO.VSTCategory = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("22"), 4))
 
-        tmpIFO.EndByteAddress_VTS_MAT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("80"), 4))
+                tmpIFO.EndByteAddress_VTS_MAT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("80"), 4))
 
-        tmpIFO.StartSector_MenuVOB = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("C0"), 4))
-        tmpIFO.StartSector_TitleVOB = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("C4"), 4))
+                tmpIFO.StartSector_MenuVOB = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("C0"), 4))
+                tmpIFO.StartSector_TitleVOB = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("C4"), 4))
 
-        tmpIFO.SectorPointer_VTS_PTT_SRPT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("C8"), 4))
-        tmpIFO.SectorPointer_VTS_PGCI = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("CC"), 4))
-        tmpIFO.SectorPointer_VTSM_PGCI_UT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("D0"), 4))
-        tmpIFO.SectorPointer_VTS_TMAPTI = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("D4"), 4))
-        tmpIFO.SectorPointer_VSTM_C_ADT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("D8"), 4))
-        tmpIFO.SectorPointer_VSTM_VOBU_ADMAP = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("DC"), 4))
-        tmpIFO.SectorPointer_VST_C_ADT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("E0"), 4))
-        tmpIFO.SectorPointer_VTS_VOBU_ADMAP = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("E4"), 4))
+                tmpIFO.SectorPointer_VTS_PTT_SRPT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("C8"), 4))
+                tmpIFO.SectorPointer_VTS_PGCI = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("CC"), 4))
+                tmpIFO.SectorPointer_VTSM_PGCI_UT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("D0"), 4))
+                tmpIFO.SectorPointer_VTS_TMAPTI = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("D4"), 4))
+                tmpIFO.SectorPointer_VSTM_C_ADT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("D8"), 4))
+                tmpIFO.SectorPointer_VSTM_VOBU_ADMAP = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("DC"), 4))
+                tmpIFO.SectorPointer_VST_C_ADT = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("E0"), 4))
+                tmpIFO.SectorPointer_VTS_VOBU_ADMAP = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("E4"), 4))
 
-        'VTSM
-        'Get Video of Main Information
-        tmpIFO.VideoAtt_VSTM_VOBS = fctVideoAtt_VTS_VOBS((strTmpIFOFileIn).Substring(fctHexOffset("100"), 2))
-        tmpIFO.NumOfAudioStreamsIn_VTSM_VOBS = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("102"), 2))
-        'Read in all Audio Track Information
-        For intFileLength = 0 To tmpIFO.NumOfAudioStreamsIn_VTSM_VOBS - 1
-            ReDim Preserve tmpIFO.AudioAtt_VTSM_VOBS(intFileLength)
-            tmpIFO.AudioAtt_VTSM_VOBS(intFileLength) = fctAudioAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("104") + (intFileLength * 8), 8))
-        Next
+                'VTSM
+                'Get Video of Main Information
+                tmpIFO.VideoAtt_VSTM_VOBS = fctVideoAtt_VTS_VOBS((strTmpIFOFileIn).Substring(fctHexOffset("100"), 2))
+                tmpIFO.NumOfAudioStreamsIn_VTSM_VOBS = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("102"), 2))
+                'Read in all Audio Track Information
+                For intFileLength = 0 To tmpIFO.NumOfAudioStreamsIn_VTSM_VOBS - 1
+                    ReDim Preserve tmpIFO.AudioAtt_VTSM_VOBS(intFileLength)
+                    tmpIFO.AudioAtt_VTSM_VOBS(intFileLength) = fctAudioAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("104") + (intFileLength * 8), 8))
+                Next
 
-        'Get SubPicture Main info
-        tmpIFO.NumSubPictureStreams_VTSM_VOBS = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("154"), 2))
-        tmpIFO.SubPictureAtt_VTSM_VOBS = fctSubPictureAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("156"), 6))
+                'Get SubPicture Main info
+                tmpIFO.NumSubPictureStreams_VTSM_VOBS = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("154"), 2))
+                tmpIFO.SubPictureAtt_VTSM_VOBS = fctSubPictureAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("156"), 6))
 
-        'VTS
-        'Get Video Information
-        tmpIFO.VideoAtt_VTS_VOBS = fctVideoAtt_VTS_VOBS((strTmpIFOFileIn).Substring(fctHexOffset("200"), 2))
+                'VTS
+                'Get Video Information
+                tmpIFO.VideoAtt_VTS_VOBS = fctVideoAtt_VTS_VOBS((strTmpIFOFileIn).Substring(fctHexOffset("200"), 2))
 
-        'Get Audio Information
-        tmpIFO.NumAudioStreams_VTS_VOBS = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("203"), 1))
-        For intFileLength = 0 To tmpIFO.NumAudioStreams_VTS_VOBS - 1
-            ReDim Preserve tmpIFO.AudioAtt_VTS_VOBS(intFileLength)
-            tmpIFO.AudioAtt_VTS_VOBS(intFileLength) = fctAudioAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("204") + (intFileLength * 8), 8))
-        Next
+                'Get Audio Information
+                tmpIFO.NumAudioStreams_VTS_VOBS = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("203"), 1))
+                For intFileLength = 0 To tmpIFO.NumAudioStreams_VTS_VOBS - 1
+                    ReDim Preserve tmpIFO.AudioAtt_VTS_VOBS(intFileLength)
+                    tmpIFO.AudioAtt_VTS_VOBS(intFileLength) = fctAudioAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("204") + (intFileLength * 8), 8))
+                Next
 
-        'Get SubPicture info
-        tmpIFO.NumSubPictureStreams_VTS_VOBS = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("255"), 1))
-        For intFileLength = 0 To tmpIFO.NumSubPictureStreams_VTS_VOBS - 1
-            ReDim Preserve tmpIFO.SubPictureAtt_VTS_VOBS(intFileLength)
-            tmpIFO.SubPictureAtt_VTS_VOBS(intFileLength) = fctSubPictureAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("256") + (intFileLength * 6), 6))
-        Next
+                'Get SubPicture info
+                tmpIFO.NumSubPictureStreams_VTS_VOBS = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("255"), 1))
+                For intFileLength = 0 To tmpIFO.NumSubPictureStreams_VTS_VOBS - 1
+                    ReDim Preserve tmpIFO.SubPictureAtt_VTS_VOBS(intFileLength)
+                    tmpIFO.SubPictureAtt_VTS_VOBS(intFileLength) = fctSubPictureAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("256") + (intFileLength * 6), 6))
+                Next
 
-        'Get Program Chain Information
-        tmpIFO.NumberOfProgramChains = fctStrByteToHex((strTmpIFOFileIn).Substring(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE, 2))
-        For intFileLength = 0 To tmpIFO.NumberOfProgramChains - 1
-            ReDim Preserve tmpIFO.ProgramChainInformation(intFileLength)
-            tmpIFO.ProgramChainInformation(intFileLength) = fctProgramChainInformation(intFileLength, strTmpIFOFileIn, tmpIFO)
-        Next
+                'Get Program Chain Information
+                tmpIFO.NumberOfProgramChains = fctStrByteToHex((strTmpIFOFileIn).Substring(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE, 2))
+                For intFileLength = 0 To tmpIFO.NumberOfProgramChains - 1
+                    ReDim Preserve tmpIFO.ProgramChainInformation(intFileLength)
+                    tmpIFO.ProgramChainInformation(intFileLength) = fctProgramChainInformation(intFileLength, strTmpIFOFileIn, tmpIFO)
+                Next
+            End If
 
-        'Setup the Return Value
-        fctParseIFO_VSTFile = tmpIFO
-
-        'Manually Release Memory
-        strTmpIFOFileIn = ""
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return tmpIFO
     End Function
 
     Public Function CovertByteToHex(ByVal BytConvert() As Byte) As String
@@ -444,20 +456,23 @@ Public Class clsDVD
     'Convert a string of Bytes (0x00-0xFF) into a complete number
     Private Function fctStrByteToHex(ByVal strHexString As String) As Integer
         Dim i As Long
-        Dim HexTotal As Double
+        Dim HexTotal As Double = 0
         Dim HexMod As Double
         Dim CharNum As Long
 
-        HexTotal = 0
-        For i = 0 To (strHexString).Length - 1
-            CharNum = Convert.ToInt32(oEnc.GetBytes(strHexString.Substring(i, 1).Chars(0))(0))
-            If i <> (strHexString).Length Then
-                HexMod = 256 ^ (((strHexString).Length - 1) - i)
-                HexTotal = HexTotal + CharNum * HexMod
-            Else
-                HexTotal = HexTotal + CharNum
-            End If
-        Next
+        Try
+            For i = 0 To (strHexString).Length - 1
+                CharNum = Convert.ToInt32(oEnc.GetBytes(strHexString.Substring(i, 1).Chars(0))(0))
+                If i <> (strHexString).Length Then
+                    HexMod = 256 ^ (((strHexString).Length - 1) - i)
+                    HexTotal = HexTotal + CharNum * HexMod
+                Else
+                    HexTotal = HexTotal + CharNum
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
         Return HexTotal
     End Function
 
@@ -467,32 +482,26 @@ Public Class clsDVD
         Dim byte1 As Byte
         Dim byte2 As Byte
         Dim bytTmpValue As Byte
+        Dim tSRPT As New struct_SRPT
 
-        'Split String for logic AND checks
-        byte1 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(0, 1)).Chars(0))(0))
-        byte2 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
+        Try
+            'Split String for logic AND checks
+            byte1 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(0, 1)).Chars(0))(0))
+            byte2 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
 
-        'BYTE 1
+            bytTmpValue = 0
+            If (byte1 And 64) = 64 Then bytTmpValue = 1
+            If (byte1 And 128) = 128 Then bytTmpValue = bytTmpValue + 2
+            tSRPT.Coding_Mode = bytTmpValue
 
-        'Revers bits
-
-        bytTmpValue = 0
-        If (byte1 And 64) = 64 Then bytTmpValue = 1
-        If (byte1 And 128) = 128 Then bytTmpValue = bytTmpValue + 2
-        fctSRPT.Coding_Mode = bytTmpValue
-
-        'BYTE 2
-        fctSRPT.Bitrate = (byte2 And 16)
-
-        bytTmpValue = 0
-        If (byte2 And 4) = 4 Then bytTmpValue = 1
-        If (byte2 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
-        fctSRPT.Resolution = bytTmpValue
-
-        bytTmpValue = 0
-        If (byte2 And 32) = 32 Then bytTmpValue = 1
-        If (byte2 And 64) = 64 Then bytTmpValue = bytTmpValue + 2
-        If (byte2 And 128) = 128 Then bytTmpValue = bytTmpValue + 4
+            bytTmpValue = 0
+            If (byte2 And 4) = 4 Then bytTmpValue = 1
+            If (byte2 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
+            tSRPT.Resolution = bytTmpValue
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return tSRPT
     End Function
 
     'Creates the Video info from a string of 2 bytes
@@ -500,41 +509,44 @@ Public Class clsDVD
         Dim byte1 As Byte
         Dim byte2 As Byte
         Dim bytTmpValue As Byte
+        Dim tVTSVOB As New struct_VideoAttributes_VTS_VOBS
+        Try
+            'Split String for logic AND checks
+            byte1 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(0, 1)).Chars(0))(0))
+            byte2 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
 
-        'Split String for logic AND checks
-        byte1 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(0, 1)).Chars(0))(0))
-        byte2 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
+            'BYTE 1
+            'Revers bits
 
-        'BYTE 1
-        'Revers bits
+            bytTmpValue = 0
+            If (byte1 And 16) = 16 Then bytTmpValue = 1
+            If (byte1 And 32) = 32 Then bytTmpValue = bytTmpValue + 2
+            tVTSVOB.Video_Standard = bytTmpValue
 
-        bytTmpValue = 0
-        If (byte1 And 16) = 16 Then bytTmpValue = 1
-        If (byte1 And 32) = 32 Then bytTmpValue = bytTmpValue + 2
-        fctVideoAtt_VTS_VOBS.Video_Standard = bytTmpValue
+            bytTmpValue = 0
+            If (byte1 And 64) = 64 Then bytTmpValue = 1
+            If (byte1 And 128) = 128 Then bytTmpValue = bytTmpValue + 2
+            tVTSVOB.Coding_Mode = bytTmpValue
 
-        bytTmpValue = 0
-        If (byte1 And 64) = 64 Then bytTmpValue = 1
-        If (byte1 And 128) = 128 Then bytTmpValue = bytTmpValue + 2
-        fctVideoAtt_VTS_VOBS.Coding_Mode = bytTmpValue
-
-        'BYTE 2
-        fctVideoAtt_VTS_VOBS.LetterBoxed = (byte2 And 2)
-
-        bytTmpValue = 0
-        If (byte2 And 4) = 4 Then bytTmpValue = 1
-        If (byte2 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
-        fctVideoAtt_VTS_VOBS.Resolution = bytTmpValue
-
-        bytTmpValue = 0
-        If (byte2 And 32) = 32 Then bytTmpValue = 1
-        If (byte2 And 64) = 64 Then bytTmpValue = bytTmpValue + 2
-        If (byte2 And 128) = 128 Then bytTmpValue = bytTmpValue + 4
+            bytTmpValue = 0
+            If (byte2 And 4) = 4 Then bytTmpValue = 1
+            If (byte2 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
+            tVTSVOB.Resolution = bytTmpValue
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return tVTSVOB
     End Function
 
     Private Function fctSubPictureAttVTSM_VTS(ByVal strSubPictureInfo As String) As SubPictureAtt_VTSM_VTS_Type
-        fctSubPictureAttVTSM_VTS.LanguageCode = (strSubPictureInfo).Substring(2, 1) & (strSubPictureInfo).Substring(3, 1)
-        fctSubPictureAttVTSM_VTS.CodeExtention = Convert.ToInt32(oEnc.GetBytes((((strSubPictureInfo).Substring(5, 1)).Chars(0)))(0))
+        Dim SubPicATT As New SubPictureAtt_VTSM_VTS_Type
+        Try
+            SubPicATT.LanguageCode = (strSubPictureInfo).Substring(2, 1) & (strSubPictureInfo).Substring(3, 1)
+            SubPicATT.CodeExtention = Convert.ToInt32(oEnc.GetBytes((((strSubPictureInfo).Substring(5, 1)).Chars(0)))(0))
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return SubPicATT
     End Function
 
     Public Sub New()
