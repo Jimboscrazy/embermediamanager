@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsDatabase.vb" />
+    <Compile Include="clsDVD.vb" />
     <Compile Include="clsErrorLog.vb" />
     <Compile Include="clsHashing.vb" />
     <Compile Include="clsHTTP.vb" />
