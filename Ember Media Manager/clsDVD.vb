@@ -38,7 +38,6 @@ Public Class clsDVD
 
     'Individual Cell information
     Private Structure PGC_Cell_Info_Type
-        Dim Interleaved As Boolean
         Dim CellPlayBackTime As DVD_Time_Type
     End Structure
 
@@ -335,7 +334,6 @@ Public Class clsDVD
         ChainLoc = (tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE) + fctStrByteToHex((strIFOFileBuffer).Substring(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE + 12 + (shoProgramChainNumber) * 8, 4))
         ChainLoc = ChainLoc + fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 232, 2)) + 1 + (ifo_CellInfoSize * (shoCellNumber - 1))
 
-        fctPChainInformation.Interleaved = (fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc, 1)) AndAlso 8)
         fctPChainInformation.CellPlayBackTime.hours = fctHexTimeToDecTime(Convert.ToInt32(oEnc.GetBytes(((strIFOFileBuffer).Substring(ChainLoc + 3, 1)).Chars(0))(0)))
         fctPChainInformation.CellPlayBackTime.minutes = fctHexTimeToDecTime(Convert.ToInt32(oEnc.GetBytes(((strIFOFileBuffer).Substring(ChainLoc + 4, 1)).Chars(0))(0)))
         fctPChainInformation.CellPlayBackTime.seconds = fctHexTimeToDecTime(Convert.ToInt32(oEnc.GetBytes(((strIFOFileBuffer).Substring(ChainLoc + 5, 1)).Chars(0))(0)))
