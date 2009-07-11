@@ -43,14 +43,12 @@ Public Class clsDVD
     End Structure
 
     Private Structure struct_SRPT
-        Dim Aspect_Ratio As Byte
         Dim Coding_Mode As Byte
         Dim Resolution As Byte
         Dim Bitrate As Boolean
     End Structure
 
     Private Structure struct_VideoAttributes_VTS_VOBS
-        Dim Aspect_Ratio As Byte
         Dim Video_Standard As Byte
         Dim Coding_Mode As Byte
         Dim LetterBoxed As Boolean
@@ -197,17 +195,20 @@ Public Class clsDVD
     Public ReadOnly Property GetIFOVideo() As String()
         Get
             Dim ReturnArray(2) As String
-            If mVideoAspect.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Aspect_Ratio.ToString) Then
-                ReturnArray(0) = mVideoAspect.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Aspect_Ratio.ToString)
+            If mVideoCodingMode.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString) Then
+                ReturnArray(0) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString)
             Else
                 ReturnArray(0) = String.Empty
             End If
-            If mVideoCodingMode.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString) Then
-                ReturnArray(1) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString)
+            ReturnArray(1) = mVideoResolution(ParsedIFOFile.VideoAtt_VTS_VOBS.Video_Standard)(ParsedIFOFile.VideoAtt_VTS_VOBS.Resolution)
+            If ReturnArray(1).Contains("x") Then
+                Dim sinAspect() As String
+                sinAspect = ReturnArray(1).Split(New Char() {"x"})
+                ReturnArray(2) = Convert.ToSingle(sinAspect(0)) / Convert.ToSingle(sinAspect(1))
             Else
-                ReturnArray(1) = String.Empty
+                ReturnArray(2) = String.Empty
             End If
-            ReturnArray(2) = mVideoResolution(ParsedIFOFile.VideoAtt_VTS_VOBS.Video_Standard)(ParsedIFOFile.VideoAtt_VTS_VOBS.Resolution)
+
             Return ReturnArray
         End Get
     End Property
@@ -439,20 +440,20 @@ Public Class clsDVD
     End Function
 
     Public Function CovertByteToHex(ByVal BytConvert() As Byte) As String
+        Dim hexStr As String = String.Empty
         Try
 
-            Dim hexStr As String = String.Empty
             Dim i As Integer
             For i = 0 To BytConvert.Length - 1
                 hexStr = hexStr + (BytConvert(i)).ToString("X")
             Next i
             hexStr = hexStr.PadLeft(16, "0")
             hexStr = hexStr.Insert(0, "0x")
-            Return hexStr
 
         Catch ex As Exception
-            Throw ex
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+        Return hexStr
     End Function
 
     'Convert a string of Bytes (0x00-0xFF) into a complete number
@@ -489,10 +490,6 @@ Public Class clsDVD
         'BYTE 1
 
         'Revers bits
-        bytTmpValue = 0
-        If (byte1 And 4) = 4 Then bytTmpValue = 1
-        If (byte1 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
-        fctSRPT.Aspect_Ratio = bytTmpValue
 
         bytTmpValue = 0
         If (byte1 And 64) = 64 Then bytTmpValue = 1
@@ -525,10 +522,6 @@ Public Class clsDVD
 
         'BYTE 1
         'Revers bits
-        bytTmpValue = 0
-        If (byte1 And 4) = 4 Then bytTmpValue = 1
-        If (byte1 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
-        fctVideoAtt_VTS_VOBS.Aspect_Ratio = bytTmpValue
 
         bytTmpValue = 0
         If (byte1 And 16) = 16 Then bytTmpValue = 1
