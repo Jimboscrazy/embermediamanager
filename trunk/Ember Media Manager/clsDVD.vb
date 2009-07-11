@@ -129,20 +129,28 @@ Public Class clsDVD
         objDI = Nothing
     End Function
 
-    Public Function fctOpenIFOFile(ByVal strPath As String) As Byte
-        ' Dim objDI As New DirectoryInfo(Directory.GetParent(strPath).FullName)
-        '   Dim objIFOFile As FileInfo
+    Public Sub fctOpenIFOFile(ByVal strPath As String)
+        Dim IFOFiles As New ArrayList
+        Dim tIFOFile As New struct_IFO_VST_Parse
+        Dim currLongest As Integer = 0
 
-        'For Each objIFOFile In objDI.GetFiles("VTS*.IFO")
-        'Chargement du fichier IFO en mmoire
-        ' ReDim Preserve ParsedIFOFile(intNbOfIFOFile)
-        ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, strPath)
-        '  intNbOfIFOFile = intNbOfIFOFile + 1
-        ' Next
+        IFOFiles.AddRange(Directory.GetFiles(Directory.GetParent(strPath).FullName, "VTS*.IFO"))
 
-        'objIFOFile = Nothing
-        'objDI = Nothing
-    End Function
+        If IFOFiles.Count > 1 Then
+            'find the one with the longest duration
+            For Each fFile As String In IFOFiles
+                ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, fFile)
+                If Convert.ToInt32(GetProgramChainPlayBackTime(1, 1, True)) > currLongest Then
+                    tIFOFile = ParsedIFOFile
+                End If
+            Next
+
+            ParsedIFOFile = tIFOFile
+        Else
+            ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, strPath)
+        End If
+
+    End Sub
 
     Public ReadOnly Property GetIFOAudioNumberOfTracks() As Integer
         Get
@@ -168,15 +176,15 @@ Public Class clsDVD
         End Get
     End Property
 
-    Public ReadOnly Property GetProgramChainPlayBackTime(ByVal bytProChainIndex As Byte, Optional ByVal bytCellIndex As Byte = 0) As String
+    Public ReadOnly Property GetProgramChainPlayBackTime(ByVal bytProChainIndex As Byte, Optional ByVal bytCellIndex As Byte = 0, Optional ByVal MinsOnly As Boolean = False) As String
         Get
             If bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
                 bytProChainIndex = bytProChainIndex - 1
 
                 If bytCellIndex = 0 Then
-                    Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime)
+                    Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
                 Else
-                    Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PChainInformation(bytCellIndex - 1).CellPlayBackTime)
+                    Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PChainInformation(bytCellIndex - 1).CellPlayBackTime, MinsOnly)
                 End If
             End If
             Return String.Empty
@@ -248,8 +256,12 @@ Public Class clsDVD
     End Function
 
     'Convert the DVD time type to a string HH:MM:SS
-    Private Function fctPlayBackTimeToString(ByRef PlayBack As DVD_Time_Type) As String
-        Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s ")
+    Private Function fctPlayBackTimeToString(ByRef PlayBack As DVD_Time_Type, Optional ByVal MinsOnly As Boolean = False) As String
+        If MinsOnly Then
+            Return (PlayBack.hours * 60) + PlayBack.minutes
+        Else
+            Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s ")
+        End If
     End Function
 
     'Fill in the Audio Header Information
