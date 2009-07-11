@@ -2,7 +2,7 @@ rem call "$(SolutionDir)ON-Build-Release" $(OutDir) "$(ProjectDir)" "$(SolutionD
 @echo off
 for /F "usebackq tokens=1 " %%i in ("C:\Users\Jason\Desktop\Source Code\Ember Media Manager\svn_rev.txt") do  @set EMM_REV=%%i
 cd %3
-del /f /q EMM_r*%4.zip  > nul 2> nul
+del /f /q Packages\EMM_r*%4.zip  > nul 2> nul
 cd %2
 cd %1
 echo %CD%
