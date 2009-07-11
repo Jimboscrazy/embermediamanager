@@ -206,11 +206,12 @@ Public Class clsDVD
     Public ReadOnly Property GetIFOVideo() As String()
         Get
             Dim ReturnArray(2) As String
-            If mVideoCodingMode.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString) Then
-                ReturnArray(0) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString)
-            Else
-                ReturnArray(0) = String.Empty
-            End If
+            ReturnArray(0) = ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString
+            'If mVideoCodingMode.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString) Then
+            ' ReturnArray(0) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString)
+            ' Else
+            ' ReturnArray(0) = String.Empty
+            ' End If
             ReturnArray(1) = mVideoResolution(ParsedIFOFile.VideoAtt_VTS_VOBS.Video_Standard)(ParsedIFOFile.VideoAtt_VTS_VOBS.Resolution)
             If ReturnArray(1).Contains("x") Then
                 Dim sinAspect() As String
@@ -229,11 +230,12 @@ Public Class clsDVD
             Dim ReturnArray(2) As String
             If bytAudioIndex <= ParsedIFOFile.NumAudioStreams_VTS_VOBS AndAlso bytAudioIndex > 0 Then
                 bytAudioIndex -= 1
-                If mAudioModes.ContainsKey(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString) Then
-                    ReturnArray(0) = mAudioModes.Item(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString)
-                Else
-                    ReturnArray(0) = String.Empty
-                End If
+                ReturnArray(0) = ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString
+                'If mAudioModes.ContainsKey(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString) Then
+                '    ReturnArray(0) = mAudioModes.Item(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString)
+                'Else
+                '    ReturnArray(0) = String.Empty
+                'End If
                 ReturnArray(1) = fctLang2CodeToLong(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).LanguageCode)
                 ReturnArray(2) = ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).NumberOfChannels.ToString
             End If
