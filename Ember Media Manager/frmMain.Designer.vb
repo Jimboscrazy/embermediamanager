@@ -237,7 +237,8 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.GenreToolStripComboBox = New System.Windows.Forms.ToolStripComboBox
+        Me.GenreListToolStripComboBox = New System.Windows.Forms.ToolStripComboBox
+        Me.LblGenreStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -660,7 +661,7 @@ Partial Class frmMain
         '
         'GenresToolStripMenuItem
         '
-        Me.GenresToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.GenreToolStripComboBox, Me.AddGenreToolStripMenuItem, Me.SetGenreToolStripMenuItem, Me.RemoveGenreToolStripMenuItem})
+        Me.GenresToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LblGenreStripMenuItem2, Me.GenreListToolStripComboBox, Me.AddGenreToolStripMenuItem, Me.SetGenreToolStripMenuItem, Me.RemoveGenreToolStripMenuItem})
         Me.GenresToolStripMenuItem.Name = "GenresToolStripMenuItem"
         Me.GenresToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
         Me.GenresToolStripMenuItem.Text = "Genres"
@@ -2150,10 +2151,17 @@ Partial Class frmMain
         '
         Me.tmrFilterAni.Interval = 1
         '
-        'GenreToolStripComboBox
+        'GenreListToolStripComboBox
         '
-        Me.GenreToolStripComboBox.Name = "GenreToolStripComboBox"
-        Me.GenreToolStripComboBox.Size = New System.Drawing.Size(121, 23)
+        Me.GenreListToolStripComboBox.Name = "GenreListToolStripComboBox"
+        Me.GenreListToolStripComboBox.Size = New System.Drawing.Size(121, 23)
+        '
+        'LblGenreStripMenuItem2
+        '
+        Me.LblGenreStripMenuItem2.Enabled = False
+        Me.LblGenreStripMenuItem2.Name = "LblGenreStripMenuItem2"
+        Me.LblGenreStripMenuItem2.Size = New System.Drawing.Size(181, 22)
+        Me.LblGenreStripMenuItem2.Text = ">> Select Genre <<"
         '
         'frmMain
         '
@@ -2441,5 +2449,6 @@ Partial Class frmMain
     Friend WithEvents AddGenreToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SetGenreToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RemoveGenreToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents GenreToolStripComboBox As System.Windows.Forms.ToolStripComboBox
+    Friend WithEvents GenreListToolStripComboBox As System.Windows.Forms.ToolStripComboBox
+    Friend WithEvents LblGenreStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
 End Class
