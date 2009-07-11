@@ -1190,7 +1190,7 @@ Partial Class dlgSettings
         Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
         Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(165, 30)
         Me.chkMovieNameMultiOnly.TabIndex = 5
-        Me.chkMovieNameMultiOnly.Text = "Use <moviename> Only for Folders with Multiple Movies Only"
+        Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
         Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
         '
         'GroupBox21
@@ -3010,13 +3010,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

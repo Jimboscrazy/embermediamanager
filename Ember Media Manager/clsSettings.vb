@@ -1422,7 +1422,7 @@ Public Class emmSettings
         Me._movienamedotfanartjpg = False
         Me._movienfo = False
         Me._movienamenfo = False
-        Me._movienamemultionly = True
+        Me._movienamemultionly = False
         Me._dashtrailer = True
         Me._videotsparent = False
         Me._lockplot = False
