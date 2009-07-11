@@ -129,7 +129,7 @@ Public Class clsDVD
         objDI = Nothing
     End Function
 
-    Public Sub fctOpenIFOFile(ByVal strPath As String)
+    Public Function fctOpenIFOFile(ByVal strPath As String) As Boolean
         Dim IFOFiles As New ArrayList
         Dim tIFOFile As New struct_IFO_VST_Parse
         Dim currLongest As Integer = 0
@@ -146,11 +146,14 @@ Public Class clsDVD
             Next
 
             ParsedIFOFile = tIFOFile
-        Else
+            Return True
+        ElseIf Path.GetExtension(strPath) = ".ifo" Then
             ParsedIFOFile = fctParseIFO_VSTFile(intNbOfIFOFile, strPath)
+            Return True
         End If
 
-    End Sub
+        Return False
+    End Function
 
     Public ReadOnly Property GetIFOAudioNumberOfTracks() As Integer
         Get

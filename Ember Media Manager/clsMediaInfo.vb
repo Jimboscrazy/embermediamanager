@@ -84,6 +84,7 @@ Public Class MediaInfo
     Public Sub GetMovieMIFromPath(ByRef fiInfo As Fileinfo, ByVal sPath As String)
 
         If File.Exists(sPath) Then
+            Dim sExt As String = Path.GetExtension(sPath)
             Dim fiOut As New Fileinfo
             Dim miVideo As New Video
             Dim miAudio As New Audio
@@ -93,13 +94,12 @@ Public Class MediaInfo
             Dim SubtitleStreams As Integer
             Dim aLang As String = String.Empty
             Dim sLang As String = String.Empty
+            Dim cDVD As New clsDVD
 
-            If Path.GetExtension(sPath) = ".ifo" Then
-                Dim cDVD As New clsDVD
+            Dim ifoVideo(2) As String
+            Dim ifoAudio(2) As String
 
-                Dim ifoVideo(2) As String
-                Dim ifoAudio(2) As String
-                cDVD.fctOpenIFOFile(sPath)
+            If (sExt = ".ifo" OrElse sExt = ".vob") AndAlso cDVD.fctOpenIFOFile(sPath) Then
 
                 ifoVideo = cDVD.GetIFOVideo
                 Dim vRes() As String = ifoVideo(1).Split(New Char() {"x"})
@@ -148,7 +148,7 @@ Public Class MediaInfo
 
                 cDVD.Close()
                 cDVD = Nothing
-            Else
+            ElseIf Not sExt = (".ifo") Then
 
                 Me.Open(sPath)
 
