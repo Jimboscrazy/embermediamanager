@@ -148,6 +148,9 @@ Public Class MediaInfo
 
                 cDVD.Close()
                 cDVD = Nothing
+
+                fiInfo = fiOut
+
             ElseIf Not sExt = (".ifo") Then
 
                 Me.Open(sPath)
