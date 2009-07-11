@@ -1119,6 +1119,42 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub rbETCustom_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbETCustom.CheckedChanged
+        Me.btnApply.Enabled = False
+        Me.txtETHeight.Enabled = Me.rbETCustom.Checked
+        Me.txtETWidth.Enabled = Me.rbETCustom.Checked
+        Me.chkETPadding.Enabled = Me.rbETCustom.Checked
+    End Sub
+
+    Private Sub rbETNative_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbETNative.CheckedChanged
+        Me.btnApply.Enabled = False
+        If rbETNative.Checked Then
+            Me.txtETHeight.Text = String.Empty
+            Me.txtETWidth.Text = String.Empty
+            Me.chkETPadding.Checked = False
+        End If
+    End Sub
+
+    Private Sub txtETWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtETWidth.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
+    Private Sub txtETHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtETHeight.KeyPress
+        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+    End Sub
+
+    Private Sub txtETWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtETWidth.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtETHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtETHeight.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkETPadding_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkETPadding.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -1318,6 +1354,18 @@ Public Class dlgSettings
             Master.eSettings.FilesPattern = Me.txtFilePattern.Text
             Master.eSettings.AllwaysDisplayGenresText = Me.chkShowGenresText.Checked
             Master.eSettings.DisplayYear = Me.chkDisplayYear.Checked
+            Master.eSettings.ETNative = Me.rbETNative.Checked
+            Dim iWidth As Integer = If(Me.txtETWidth.Text.Length > 0, Convert.ToInt32(Me.txtETWidth.Text), 0)
+            Dim iHeight As Integer = If(Me.txtETHeight.Text.Length > 0, Convert.ToInt32(Me.txtETHeight.Text), 0)
+            If Me.rbETCustom.Checked AndAlso iWidth > 0 AndAlso iHeight > 0 Then
+                Master.eSettings.ETWidth = iWidth
+                Master.eSettings.ETHeight = iHeight
+                Master.eSettings.ETPadding = Me.chkETPadding.Checked
+            Else
+                Master.eSettings.ETWidth = 0
+                Master.eSettings.ETHeight = 0
+                Master.eSettings.ETPadding = False
+            End If
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -1489,6 +1537,16 @@ Public Class dlgSettings
             Me.txtFilePattern.Text = Master.eSettings.FilesPattern
             Me.chkShowGenresText.Checked = Master.eSettings.AllwaysDisplayGenresText
             Me.chkDisplayYear.Checked = Master.eSettings.DisplayYear
+
+            Me.rbETNative.Checked = Master.eSettings.ETNative
+            If Not Master.eSettings.ETNative AndAlso Master.eSettings.ETWidth > 0 AndAlso Master.eSettings.ETHeight > 0 Then
+                Me.rbETCustom.Checked = True
+                Me.txtETHeight.Text = Master.eSettings.ETHeight
+                Me.txtETWidth.Text = Master.eSettings.ETWidth
+                Me.chkETPadding.Checked = Master.eSettings.ETPadding
+            Else
+                Me.rbETNative.Checked = True
+            End If
 
             Me.RefreshSources()
         Catch ex As Exception

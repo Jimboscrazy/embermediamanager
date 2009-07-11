@@ -181,16 +181,16 @@ Partial Class dlgSettings
         Me.chkLockPlot = New System.Windows.Forms.CheckBox
         Me.GroupBox9 = New System.Windows.Forms.GroupBox
         Me.chkNoSaveImagesToNfo = New System.Windows.Forms.CheckBox
+        Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
+        Me.chkUseMPDB = New System.Windows.Forms.CheckBox
+        Me.chkUseTMDB = New System.Windows.Forms.CheckBox
+        Me.chkUseIMPA = New System.Windows.Forms.CheckBox
         Me.chkUseETasFA = New System.Windows.Forms.CheckBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.chkNoSpoilers = New System.Windows.Forms.CheckBox
         Me.Label15 = New System.Windows.Forms.Label
         Me.txtAutoThumbs = New System.Windows.Forms.TextBox
         Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
-        Me.chkSingleScrapeImages = New System.Windows.Forms.CheckBox
-        Me.chkUseMPDB = New System.Windows.Forms.CheckBox
-        Me.chkUseTMDB = New System.Windows.Forms.CheckBox
-        Me.chkUseIMPA = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.gbRTFormat = New System.Windows.Forms.GroupBox
         Me.rbHM = New System.Windows.Forms.RadioButton
@@ -267,6 +267,15 @@ Partial Class dlgSettings
         Me.txtSkipLessThan = New System.Windows.Forms.TextBox
         Me.Label20 = New System.Windows.Forms.Label
         Me.pnlImages = New System.Windows.Forms.Panel
+        Me.GroupBox23 = New System.Windows.Forms.GroupBox
+        Me.GroupBox24 = New System.Windows.Forms.GroupBox
+        Me.chkETPadding = New System.Windows.Forms.CheckBox
+        Me.Label28 = New System.Windows.Forms.Label
+        Me.Label29 = New System.Windows.Forms.Label
+        Me.txtETWidth = New System.Windows.Forms.TextBox
+        Me.txtETHeight = New System.Windows.Forms.TextBox
+        Me.rbETCustom = New System.Windows.Forms.RadioButton
+        Me.rbETNative = New System.Windows.Forms.RadioButton
         Me.GroupBox17 = New System.Windows.Forms.GroupBox
         Me.chkUseImgCacheUpdaters = New System.Windows.Forms.CheckBox
         Me.Label19 = New System.Windows.Forms.Label
@@ -313,6 +322,8 @@ Partial Class dlgSettings
         Me.pnlSources.SuspendLayout()
         Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
+        Me.GroupBox23.SuspendLayout()
+        Me.GroupBox24.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -1502,9 +1513,9 @@ Partial Class dlgSettings
         Me.GroupBox14.Controls.Add(Me.lblPosterSize)
         Me.GroupBox14.Controls.Add(Me.cbPosterSize)
         Me.GroupBox14.Controls.Add(Me.chkOverwritePoster)
-        Me.GroupBox14.Location = New System.Drawing.Point(215, 3)
+        Me.GroupBox14.Location = New System.Drawing.Point(203, 3)
         Me.GroupBox14.Name = "GroupBox14"
-        Me.GroupBox14.Size = New System.Drawing.Size(249, 170)
+        Me.GroupBox14.Size = New System.Drawing.Size(218, 170)
         Me.GroupBox14.TabIndex = 2
         Me.GroupBox14.TabStop = False
         Me.GroupBox14.Text = "Poster"
@@ -1512,7 +1523,7 @@ Partial Class dlgSettings
         'lblPosterQual
         '
         Me.lblPosterQual.AutoSize = True
-        Me.lblPosterQual.Location = New System.Drawing.Point(212, 142)
+        Me.lblPosterQual.Location = New System.Drawing.Point(186, 146)
         Me.lblPosterQual.Name = "lblPosterQual"
         Me.lblPosterQual.Size = New System.Drawing.Size(25, 13)
         Me.lblPosterQual.TabIndex = 46
@@ -1525,7 +1536,7 @@ Partial Class dlgSettings
         Me.tbPosterQual.Location = New System.Drawing.Point(7, 136)
         Me.tbPosterQual.Maximum = 100
         Me.tbPosterQual.Name = "tbPosterQual"
-        Me.tbPosterQual.Size = New System.Drawing.Size(200, 27)
+        Me.tbPosterQual.Size = New System.Drawing.Size(183, 27)
         Me.tbPosterQual.TabIndex = 5
         Me.tbPosterQual.TickFrequency = 10
         Me.tbPosterQual.Value = 100
@@ -1551,7 +1562,7 @@ Partial Class dlgSettings
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(124, 98)
+        Me.Label12.Location = New System.Drawing.Point(106, 98)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(64, 13)
         Me.Label12.TabIndex = 42
@@ -1573,16 +1584,16 @@ Partial Class dlgSettings
         Me.txtPosterWidth.Enabled = False
         Me.txtPosterWidth.Location = New System.Drawing.Point(65, 94)
         Me.txtPosterWidth.Name = "txtPosterWidth"
-        Me.txtPosterWidth.Size = New System.Drawing.Size(53, 20)
+        Me.txtPosterWidth.Size = New System.Drawing.Size(38, 20)
         Me.txtPosterWidth.TabIndex = 3
         '
         'txtPosterHeight
         '
         Me.txtPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPosterHeight.Enabled = False
-        Me.txtPosterHeight.Location = New System.Drawing.Point(190, 94)
+        Me.txtPosterHeight.Location = New System.Drawing.Point(172, 94)
         Me.txtPosterHeight.Name = "txtPosterHeight"
-        Me.txtPosterHeight.Size = New System.Drawing.Size(53, 20)
+        Me.txtPosterHeight.Size = New System.Drawing.Size(38, 20)
         Me.txtPosterHeight.TabIndex = 4
         '
         'lblPosterSize
@@ -1601,7 +1612,7 @@ Partial Class dlgSettings
         Me.cbPosterSize.Items.AddRange(New Object() {"X-Large", "Large", "Medium", "Small", "Wide"})
         Me.cbPosterSize.Location = New System.Drawing.Point(6, 33)
         Me.cbPosterSize.Name = "cbPosterSize"
-        Me.cbPosterSize.Size = New System.Drawing.Size(179, 21)
+        Me.cbPosterSize.Size = New System.Drawing.Size(148, 21)
         Me.cbPosterSize.TabIndex = 0
         '
         'chkOverwritePoster
@@ -1628,9 +1639,9 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.cbFanartSize)
         Me.GroupBox13.Controls.Add(Me.lblFanartSize)
         Me.GroupBox13.Controls.Add(Me.chkOverwriteFanart)
-        Me.GroupBox13.Location = New System.Drawing.Point(216, 175)
+        Me.GroupBox13.Location = New System.Drawing.Point(204, 175)
         Me.GroupBox13.Name = "GroupBox13"
-        Me.GroupBox13.Size = New System.Drawing.Size(249, 170)
+        Me.GroupBox13.Size = New System.Drawing.Size(218, 170)
         Me.GroupBox13.TabIndex = 3
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Fanart"
@@ -1638,7 +1649,7 @@ Partial Class dlgSettings
         'chkFanartOnly
         '
         Me.chkFanartOnly.AutoSize = True
-        Me.chkFanartOnly.Location = New System.Drawing.Point(191, 32)
+        Me.chkFanartOnly.Location = New System.Drawing.Point(163, 34)
         Me.chkFanartOnly.Name = "chkFanartOnly"
         Me.chkFanartOnly.Size = New System.Drawing.Size(47, 17)
         Me.chkFanartOnly.TabIndex = 1
@@ -1648,7 +1659,7 @@ Partial Class dlgSettings
         'lblFanartQual
         '
         Me.lblFanartQual.AutoSize = True
-        Me.lblFanartQual.Location = New System.Drawing.Point(211, 142)
+        Me.lblFanartQual.Location = New System.Drawing.Point(185, 144)
         Me.lblFanartQual.Name = "lblFanartQual"
         Me.lblFanartQual.Size = New System.Drawing.Size(25, 13)
         Me.lblFanartQual.TabIndex = 49
@@ -1661,7 +1672,7 @@ Partial Class dlgSettings
         Me.tbFanartQual.Location = New System.Drawing.Point(6, 136)
         Me.tbFanartQual.Maximum = 100
         Me.tbFanartQual.Name = "tbFanartQual"
-        Me.tbFanartQual.Size = New System.Drawing.Size(200, 27)
+        Me.tbFanartQual.Size = New System.Drawing.Size(183, 27)
         Me.tbFanartQual.TabIndex = 6
         Me.tbFanartQual.TickFrequency = 10
         Me.tbFanartQual.Value = 100
@@ -1687,7 +1698,7 @@ Partial Class dlgSettings
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(124, 97)
+        Me.Label10.Location = New System.Drawing.Point(106, 97)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(64, 13)
         Me.Label10.TabIndex = 42
@@ -1709,16 +1720,16 @@ Partial Class dlgSettings
         Me.txtFanartWidth.Enabled = False
         Me.txtFanartWidth.Location = New System.Drawing.Point(65, 93)
         Me.txtFanartWidth.Name = "txtFanartWidth"
-        Me.txtFanartWidth.Size = New System.Drawing.Size(53, 20)
+        Me.txtFanartWidth.Size = New System.Drawing.Size(38, 20)
         Me.txtFanartWidth.TabIndex = 4
         '
         'txtFanartHeight
         '
         Me.txtFanartHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFanartHeight.Enabled = False
-        Me.txtFanartHeight.Location = New System.Drawing.Point(190, 93)
+        Me.txtFanartHeight.Location = New System.Drawing.Point(172, 93)
         Me.txtFanartHeight.Name = "txtFanartHeight"
-        Me.txtFanartHeight.Size = New System.Drawing.Size(53, 20)
+        Me.txtFanartHeight.Size = New System.Drawing.Size(38, 20)
         Me.txtFanartHeight.TabIndex = 5
         '
         'cbFanartSize
@@ -1728,7 +1739,7 @@ Partial Class dlgSettings
         Me.cbFanartSize.Items.AddRange(New Object() {"Large", "Medium", "Small"})
         Me.cbFanartSize.Location = New System.Drawing.Point(6, 30)
         Me.cbFanartSize.Name = "cbFanartSize"
-        Me.cbFanartSize.Size = New System.Drawing.Size(179, 21)
+        Me.cbFanartSize.Size = New System.Drawing.Size(148, 21)
         Me.cbFanartSize.TabIndex = 0
         '
         'lblFanartSize
@@ -1850,19 +1861,13 @@ Partial Class dlgSettings
         'GroupBox9
         '
         Me.GroupBox9.Controls.Add(Me.chkNoSaveImagesToNfo)
-        Me.GroupBox9.Controls.Add(Me.chkUseETasFA)
-        Me.GroupBox9.Controls.Add(Me.Label17)
-        Me.GroupBox9.Controls.Add(Me.chkNoSpoilers)
-        Me.GroupBox9.Controls.Add(Me.Label15)
-        Me.GroupBox9.Controls.Add(Me.txtAutoThumbs)
-        Me.GroupBox9.Controls.Add(Me.chkAutoThumbs)
         Me.GroupBox9.Controls.Add(Me.chkSingleScrapeImages)
         Me.GroupBox9.Controls.Add(Me.chkUseMPDB)
         Me.GroupBox9.Controls.Add(Me.chkUseTMDB)
         Me.GroupBox9.Controls.Add(Me.chkUseIMPA)
         Me.GroupBox9.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(207, 231)
+        Me.GroupBox9.Size = New System.Drawing.Size(195, 108)
         Me.GroupBox9.TabIndex = 0
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
@@ -1876,64 +1881,6 @@ Partial Class dlgSettings
         Me.chkNoSaveImagesToNfo.TabIndex = 4
         Me.chkNoSaveImagesToNfo.Text = "Do Not Save Image URLs to Nfo"
         Me.chkNoSaveImagesToNfo.UseVisualStyleBackColor = True
-        '
-        'chkUseETasFA
-        '
-        Me.chkUseETasFA.Enabled = False
-        Me.chkUseETasFA.Location = New System.Drawing.Point(26, 197)
-        Me.chkUseETasFA.Name = "chkUseETasFA"
-        Me.chkUseETasFA.Size = New System.Drawing.Size(174, 30)
-        Me.chkUseETasFA.TabIndex = 8
-        Me.chkUseETasFA.Text = "Use Extrathumb if no Fanart Found"
-        Me.chkUseETasFA.UseVisualStyleBackColor = True
-        '
-        'Label17
-        '
-        Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(24, 170)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(168, 24)
-        Me.Label17.TabIndex = 63
-        Me.Label17.Text = "(If checked, Ember will use only the first half of the movie to extract thumbs)"
-        Me.Label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'chkNoSpoilers
-        '
-        Me.chkNoSpoilers.AutoSize = True
-        Me.chkNoSpoilers.Enabled = False
-        Me.chkNoSpoilers.Location = New System.Drawing.Point(27, 154)
-        Me.chkNoSpoilers.Name = "chkNoSpoilers"
-        Me.chkNoSpoilers.Size = New System.Drawing.Size(80, 17)
-        Me.chkNoSpoilers.TabIndex = 7
-        Me.chkNoSpoilers.Text = "No Spoilers"
-        Me.chkNoSpoilers.UseVisualStyleBackColor = True
-        '
-        'Label15
-        '
-        Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(24, 136)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(97, 13)
-        Me.Label15.TabIndex = 61
-        Me.Label15.Text = "Number To Create:"
-        '
-        'txtAutoThumbs
-        '
-        Me.txtAutoThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtAutoThumbs.Enabled = False
-        Me.txtAutoThumbs.Location = New System.Drawing.Point(124, 133)
-        Me.txtAutoThumbs.Name = "txtAutoThumbs"
-        Me.txtAutoThumbs.Size = New System.Drawing.Size(53, 20)
-        Me.txtAutoThumbs.TabIndex = 6
-        '
-        'chkAutoThumbs
-        '
-        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 104)
-        Me.chkAutoThumbs.Name = "chkAutoThumbs"
-        Me.chkAutoThumbs.Size = New System.Drawing.Size(194, 31)
-        Me.chkAutoThumbs.TabIndex = 5
-        Me.chkAutoThumbs.Text = "Automatically Create Extrathumbs During Update"
-        Me.chkAutoThumbs.UseVisualStyleBackColor = True
         '
         'chkSingleScrapeImages
         '
@@ -1974,6 +1921,64 @@ Partial Class dlgSettings
         Me.chkUseIMPA.TabIndex = 1
         Me.chkUseIMPA.Text = "Get Images From IMPAwards"
         Me.chkUseIMPA.UseVisualStyleBackColor = True
+        '
+        'chkUseETasFA
+        '
+        Me.chkUseETasFA.Enabled = False
+        Me.chkUseETasFA.Location = New System.Drawing.Point(24, 107)
+        Me.chkUseETasFA.Name = "chkUseETasFA"
+        Me.chkUseETasFA.Size = New System.Drawing.Size(163, 30)
+        Me.chkUseETasFA.TabIndex = 8
+        Me.chkUseETasFA.Text = "Use Extrathumb if no Fanart Found"
+        Me.chkUseETasFA.UseVisualStyleBackColor = True
+        '
+        'Label17
+        '
+        Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label17.Location = New System.Drawing.Point(22, 80)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(168, 24)
+        Me.Label17.TabIndex = 63
+        Me.Label17.Text = "(If checked, Ember will use only the first half of the movie to extract thumbs)"
+        Me.Label17.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'chkNoSpoilers
+        '
+        Me.chkNoSpoilers.AutoSize = True
+        Me.chkNoSpoilers.Enabled = False
+        Me.chkNoSpoilers.Location = New System.Drawing.Point(25, 64)
+        Me.chkNoSpoilers.Name = "chkNoSpoilers"
+        Me.chkNoSpoilers.Size = New System.Drawing.Size(80, 17)
+        Me.chkNoSpoilers.TabIndex = 7
+        Me.chkNoSpoilers.Text = "No Spoilers"
+        Me.chkNoSpoilers.UseVisualStyleBackColor = True
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(22, 47)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(97, 13)
+        Me.Label15.TabIndex = 61
+        Me.Label15.Text = "Number To Create:"
+        '
+        'txtAutoThumbs
+        '
+        Me.txtAutoThumbs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtAutoThumbs.Enabled = False
+        Me.txtAutoThumbs.Location = New System.Drawing.Point(122, 44)
+        Me.txtAutoThumbs.Name = "txtAutoThumbs"
+        Me.txtAutoThumbs.Size = New System.Drawing.Size(53, 20)
+        Me.txtAutoThumbs.TabIndex = 6
+        '
+        'chkAutoThumbs
+        '
+        Me.chkAutoThumbs.Location = New System.Drawing.Point(6, 14)
+        Me.chkAutoThumbs.Name = "chkAutoThumbs"
+        Me.chkAutoThumbs.Size = New System.Drawing.Size(184, 30)
+        Me.chkAutoThumbs.TabIndex = 5
+        Me.chkAutoThumbs.Text = "Automatically Create Extrathumbs During Scrapers"
+        Me.chkAutoThumbs.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
@@ -2810,6 +2815,7 @@ Partial Class dlgSettings
         '
         Me.pnlImages.BackColor = System.Drawing.Color.White
         Me.pnlImages.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlImages.Controls.Add(Me.GroupBox23)
         Me.pnlImages.Controls.Add(Me.GroupBox17)
         Me.pnlImages.Controls.Add(Me.GroupBox9)
         Me.pnlImages.Controls.Add(Me.GroupBox13)
@@ -2820,36 +2826,136 @@ Partial Class dlgSettings
         Me.pnlImages.TabIndex = 68
         Me.pnlImages.Visible = False
         '
+        'GroupBox23
+        '
+        Me.GroupBox23.Controls.Add(Me.GroupBox24)
+        Me.GroupBox23.Controls.Add(Me.chkAutoThumbs)
+        Me.GroupBox23.Controls.Add(Me.chkUseETasFA)
+        Me.GroupBox23.Controls.Add(Me.txtAutoThumbs)
+        Me.GroupBox23.Controls.Add(Me.Label17)
+        Me.GroupBox23.Controls.Add(Me.Label15)
+        Me.GroupBox23.Controls.Add(Me.chkNoSpoilers)
+        Me.GroupBox23.Location = New System.Drawing.Point(3, 115)
+        Me.GroupBox23.Name = "GroupBox23"
+        Me.GroupBox23.Size = New System.Drawing.Size(195, 230)
+        Me.GroupBox23.TabIndex = 4
+        Me.GroupBox23.TabStop = False
+        Me.GroupBox23.Text = "Extrathumbs"
+        '
+        'GroupBox24
+        '
+        Me.GroupBox24.Controls.Add(Me.chkETPadding)
+        Me.GroupBox24.Controls.Add(Me.Label28)
+        Me.GroupBox24.Controls.Add(Me.Label29)
+        Me.GroupBox24.Controls.Add(Me.txtETWidth)
+        Me.GroupBox24.Controls.Add(Me.txtETHeight)
+        Me.GroupBox24.Controls.Add(Me.rbETCustom)
+        Me.GroupBox24.Controls.Add(Me.rbETNative)
+        Me.GroupBox24.Location = New System.Drawing.Point(5, 132)
+        Me.GroupBox24.Name = "GroupBox24"
+        Me.GroupBox24.Size = New System.Drawing.Size(185, 93)
+        Me.GroupBox24.TabIndex = 64
+        Me.GroupBox24.TabStop = False
+        Me.GroupBox24.Text = "Sizing"
+        '
+        'chkETPadding
+        '
+        Me.chkETPadding.AutoSize = True
+        Me.chkETPadding.Enabled = False
+        Me.chkETPadding.Location = New System.Drawing.Point(24, 72)
+        Me.chkETPadding.Name = "chkETPadding"
+        Me.chkETPadding.Size = New System.Drawing.Size(65, 17)
+        Me.chkETPadding.TabIndex = 48
+        Me.chkETPadding.Text = "Padding"
+        Me.chkETPadding.UseVisualStyleBackColor = True
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(19, 53)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(38, 13)
+        Me.Label28.TabIndex = 47
+        Me.Label28.Text = "Width:"
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Location = New System.Drawing.Point(101, 53)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(41, 13)
+        Me.Label29.TabIndex = 46
+        Me.Label29.Text = "Height:"
+        '
+        'txtETWidth
+        '
+        Me.txtETWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtETWidth.Enabled = False
+        Me.txtETWidth.Location = New System.Drawing.Point(57, 49)
+        Me.txtETWidth.Name = "txtETWidth"
+        Me.txtETWidth.Size = New System.Drawing.Size(38, 20)
+        Me.txtETWidth.TabIndex = 44
+        '
+        'txtETHeight
+        '
+        Me.txtETHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtETHeight.Enabled = False
+        Me.txtETHeight.Location = New System.Drawing.Point(143, 49)
+        Me.txtETHeight.Name = "txtETHeight"
+        Me.txtETHeight.Size = New System.Drawing.Size(38, 20)
+        Me.txtETHeight.TabIndex = 45
+        '
+        'rbETCustom
+        '
+        Me.rbETCustom.AutoSize = True
+        Me.rbETCustom.Location = New System.Drawing.Point(7, 32)
+        Me.rbETCustom.Name = "rbETCustom"
+        Me.rbETCustom.Size = New System.Drawing.Size(105, 17)
+        Me.rbETCustom.TabIndex = 1
+        Me.rbETCustom.TabStop = True
+        Me.rbETCustom.Text = "Use Custom Size"
+        Me.rbETCustom.UseVisualStyleBackColor = True
+        '
+        'rbETNative
+        '
+        Me.rbETNative.AutoSize = True
+        Me.rbETNative.Location = New System.Drawing.Point(7, 14)
+        Me.rbETNative.Name = "rbETNative"
+        Me.rbETNative.Size = New System.Drawing.Size(131, 17)
+        Me.rbETNative.TabIndex = 0
+        Me.rbETNative.TabStop = True
+        Me.rbETNative.Text = "Use Native Resolution"
+        Me.rbETNative.UseVisualStyleBackColor = True
+        '
         'GroupBox17
         '
         Me.GroupBox17.Controls.Add(Me.chkUseImgCacheUpdaters)
         Me.GroupBox17.Controls.Add(Me.Label19)
         Me.GroupBox17.Controls.Add(Me.chkPersistImgCache)
         Me.GroupBox17.Controls.Add(Me.chkUseImgCache)
-        Me.GroupBox17.Location = New System.Drawing.Point(3, 236)
+        Me.GroupBox17.Location = New System.Drawing.Point(426, 3)
         Me.GroupBox17.Name = "GroupBox17"
-        Me.GroupBox17.Size = New System.Drawing.Size(205, 109)
+        Me.GroupBox17.Size = New System.Drawing.Size(166, 129)
         Me.GroupBox17.TabIndex = 1
         Me.GroupBox17.TabStop = False
         Me.GroupBox17.Text = "Caching"
         '
         'chkUseImgCacheUpdaters
         '
-        Me.chkUseImgCacheUpdaters.AutoSize = True
         Me.chkUseImgCacheUpdaters.Enabled = False
-        Me.chkUseImgCacheUpdaters.Location = New System.Drawing.Point(24, 35)
+        Me.chkUseImgCacheUpdaters.Location = New System.Drawing.Point(20, 35)
         Me.chkUseImgCacheUpdaters.Name = "chkUseImgCacheUpdaters"
-        Me.chkUseImgCacheUpdaters.Size = New System.Drawing.Size(172, 17)
+        Me.chkUseImgCacheUpdaters.Size = New System.Drawing.Size(142, 31)
         Me.chkUseImgCacheUpdaters.TabIndex = 1
-        Me.chkUseImgCacheUpdaters.Text = "Use Image Cache for Updaters"
+        Me.chkUseImgCacheUpdaters.Text = "Use Image Cache for Scrapers"
         Me.chkUseImgCacheUpdaters.UseVisualStyleBackColor = True
         '
         'Label19
         '
         Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(36, 70)
+        Me.Label19.Location = New System.Drawing.Point(32, 86)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(158, 24)
+        Me.Label19.Size = New System.Drawing.Size(129, 36)
         Me.Label19.TabIndex = 2
         Me.Label19.Text = "(When enabled, the cache will be available between sessions)"
         Me.Label19.TextAlign = System.Drawing.ContentAlignment.TopCenter
@@ -2858,7 +2964,7 @@ Partial Class dlgSettings
         '
         Me.chkPersistImgCache.AutoSize = True
         Me.chkPersistImgCache.Enabled = False
-        Me.chkPersistImgCache.Location = New System.Drawing.Point(24, 53)
+        Me.chkPersistImgCache.Location = New System.Drawing.Point(20, 66)
         Me.chkPersistImgCache.Name = "chkPersistImgCache"
         Me.chkPersistImgCache.Size = New System.Drawing.Size(138, 17)
         Me.chkPersistImgCache.TabIndex = 2
@@ -2893,13 +2999,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -2975,6 +3081,10 @@ Partial Class dlgSettings
         Me.GroupBox19.ResumeLayout(False)
         Me.GroupBox19.PerformLayout()
         Me.pnlImages.ResumeLayout(False)
+        Me.GroupBox23.ResumeLayout(False)
+        Me.GroupBox23.PerformLayout()
+        Me.GroupBox24.ResumeLayout(False)
+        Me.GroupBox24.PerformLayout()
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
         Me.ResumeLayout(False)
@@ -3222,4 +3332,13 @@ Partial Class dlgSettings
     Friend WithEvents btnEditSource As System.Windows.Forms.Button
     Friend WithEvents chkShowGenresText As System.Windows.Forms.CheckBox
     Friend WithEvents chkDisplayYear As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox23 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox24 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkETPadding As System.Windows.Forms.CheckBox
+    Friend WithEvents Label28 As System.Windows.Forms.Label
+    Friend WithEvents Label29 As System.Windows.Forms.Label
+    Friend WithEvents txtETWidth As System.Windows.Forms.TextBox
+    Friend WithEvents txtETHeight As System.Windows.Forms.TextBox
+    Friend WithEvents rbETCustom As System.Windows.Forms.RadioButton
+    Friend WithEvents rbETNative As System.Windows.Forms.RadioButton
 End Class

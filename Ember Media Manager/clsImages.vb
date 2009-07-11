@@ -254,16 +254,26 @@ Public Class Images
     Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
         'there has to be a better way to do this. lol
         Me.FromFile(fromPath)
-        Dim int As Integer = _image.Width
-        Me.ResizeImage(1280, 720)
-        Dim bgBMP As Bitmap = New Bitmap(1280, 720, Imaging.PixelFormat.Format32bppRgb)
-        Dim grOverlay As Graphics = Graphics.FromImage(bgBMP)
-        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-        grOverlay.FillRectangle(New SolidBrush(Color.Black), New RectangleF(0, 0, 1280, 720))
-        Dim iLeft As Integer = If(_image.Width = 1280, 0, (1280 - _image.Width) / 2)
-        Dim iTop As Integer = If(_image.Height = 720, 0, (720 - _image.Height) / 2)
-        grOverlay.DrawImage(_image, iLeft, iTop, _image.Width, _image.Height)
-        _image = bgBMP
+        Dim iWidth As Integer
+        Dim iHeight As Integer
+        If Master.eSettings.ETNative Then
+            iWidth = _image.Width
+            iHeight = _image.Height
+        Else
+            iWidth = Master.eSettings.ETWidth
+            iHeight = Master.eSettings.ETHeight
+        End If
+        Me.ResizeImage(iWidth, iHeight)
+        If Not Master.eSettings.ETNative AndAlso Master.eSettings.ETPadding Then
+            Dim bgBMP As Bitmap = New Bitmap(iWidth, iHeight, Imaging.PixelFormat.Format32bppRgb)
+            Dim grOverlay As Graphics = Graphics.FromImage(bgBMP)
+            grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+            grOverlay.FillRectangle(New SolidBrush(Color.Black), New RectangleF(0, 0, iWidth, iHeight))
+            Dim iLeft As Integer = If(_image.Width = iWidth, 0, (iWidth - _image.Width) / 2)
+            Dim iTop As Integer = If(_image.Height = iHeight, 0, (iHeight - _image.Height) / 2)
+            grOverlay.DrawImage(_image, iLeft, iTop, _image.Width, _image.Height)
+            _image = bgBMP
+        End If
         Me.Save(toPath, 100)
     End Sub
 
