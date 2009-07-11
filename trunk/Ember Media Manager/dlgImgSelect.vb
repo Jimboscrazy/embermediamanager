@@ -299,11 +299,13 @@ Public Class dlgImgSelect
             Dim iIndex As Integer = 0
 
             'remove all entries with invalid images
-            For i As Integer = posters.Count - 1 To 0 Step -1
-                If IsNothing(posters.Item(i).WebImage) Then
-                    posters.RemoveAt(i)
-                End If
-            Next
+            If Master.eSettings.UseImgCache Then
+                For i As Integer = posters.Count - 1 To 0 Step -1
+                    If IsNothing(posters.Item(i).WebImage) Then
+                        posters.RemoveAt(i)
+                    End If
+                Next
+            End If
 
             If posters.Count > 0 Then
                 posters.Sort(AddressOf SortImages)
@@ -403,7 +405,6 @@ Public Class dlgImgSelect
     Private Sub GetPosters()
 
         Try
-
             Dim NoneFound As Boolean = True
 
             If Master.eSettings.UseImgCache Then
@@ -606,6 +607,7 @@ Public Class dlgImgSelect
             Me.pnlImage(iIndex).Controls.Add(Me.pbImage(iIndex))
             Me.pnlImage(iIndex).BringToFront()
             AddHandler pbImage(iIndex).Click, AddressOf pbImage_Click
+            AddHandler pbImage(iIndex).DoubleClick, AddressOf pbImage_DoubleClick
             AddHandler pnlImage(iIndex).Click, AddressOf pnlImage_Click
 
             If Me.DLType = Master.ImageType.Fanart Then
@@ -708,62 +710,78 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub SetupSizes(ByVal sURL As String)
-        Dim sLeft As String = Strings.Left(sURL, sURL.Length - 10)
 
-        Me.rbXLarge.Checked = False
-        Me.rbXLarge.Enabled = False
-        Me.rbXLarge.Text = "X-Large"
-        Me.rbLarge.Checked = False
-        Me.rbLarge.Enabled = False
-        Me.rbLarge.Text = "Large"
-        Me.rbMedium.Checked = False
-        Me.rbMedium.Text = "Medium"
-        Me.rbSmall.Checked = False
-        Me.rbSmall.Enabled = False
-        Me.rbSmall.Text = "Small"
+        Try
+            Dim sLeft As String = Strings.Left(sURL, sURL.Length - 10)
 
-        Me.rbMedium.Tag = sURL
+            Me.rbXLarge.Checked = False
+            Me.rbXLarge.Enabled = False
+            Me.rbXLarge.Text = "X-Large"
+            Me.rbLarge.Checked = False
+            Me.rbLarge.Enabled = False
+            Me.rbLarge.Text = "Large"
+            Me.rbMedium.Checked = False
+            Me.rbMedium.Text = "Medium"
+            Me.rbSmall.Checked = False
+            Me.rbSmall.Enabled = False
+            Me.rbSmall.Text = "Small"
 
-        For i As Integer = 0 To Me.TMDBPosters.Count - 1
-            Select Case True
-                Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, ".jpg")
-                    ' xlarge
-                    If Not IsNothing(TMDBPosters.Item(i).WebImage) Then
-                        Me.rbXLarge.Enabled = True
-                        Me.rbXLarge.Tag = Me.TMDBPosters.Item(i).URL
-                        If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format("X-Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
-                    End If
-                Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_mid.jpg")
-                    ' large 
-                    If Not IsNothing(TMDBPosters.Item(i).WebImage) Then
-                        Me.rbLarge.Enabled = True
-                        Me.rbLarge.Tag = Me.TMDBPosters.Item(i).URL
-                        If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format("Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
-                    End If
-                Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_thumb.jpg")
-                    ' small
-                    If Not IsNothing(TMDBPosters.Item(i).WebImage) Then
-                        Me.rbSmall.Enabled = True
-                        Me.rbSmall.Tag = Me.TMDBPosters.Item(i).URL
-                        If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format("Small ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
-                    End If
-                Case Me.TMDBPosters.Item(i).URL = sURL
-                    If Master.eSettings.UseImgCache Then Me.rbMedium.Text = String.Format("Medium ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+            Me.rbMedium.Tag = sURL
+
+            For i As Integer = 0 To Me.TMDBPosters.Count - 1
+                Select Case True
+                    Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, ".jpg")
+                        ' xlarge
+                        If Not Master.eSettings.UseImgCache OrElse Not IsNothing(TMDBPosters.Item(i).WebImage) Then
+                            Me.rbXLarge.Enabled = True
+                            Me.rbXLarge.Tag = Me.TMDBPosters.Item(i).URL
+                            If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format("X-Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                        End If
+                    Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_mid.jpg")
+                        ' large 
+                        If Not Master.eSettings.UseImgCache OrElse Not IsNothing(TMDBPosters.Item(i).WebImage) Then
+                            Me.rbLarge.Enabled = True
+                            Me.rbLarge.Tag = Me.TMDBPosters.Item(i).URL
+                            If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format("Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                        End If
+                    Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_thumb.jpg")
+                        ' small
+                        If Not Master.eSettings.UseImgCache OrElse Not IsNothing(TMDBPosters.Item(i).WebImage) Then
+                            Me.rbSmall.Enabled = True
+                            Me.rbSmall.Tag = Me.TMDBPosters.Item(i).URL
+                            If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format("Small ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                        End If
+                    Case Me.TMDBPosters.Item(i).URL = sURL
+                        If Master.eSettings.UseImgCache Then Me.rbMedium.Text = String.Format("Medium ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                End Select
+            Next
+
+            Select Case Master.eSettings.PreferredPosterSize
+                Case Master.PosterSize.Small
+                    Me.rbSmall.Checked = Me.rbSmall.Enabled
+                Case Master.PosterSize.Mid
+                    Me.rbMedium.Checked = Me.rbMedium.Enabled
+                Case Master.PosterSize.Lrg
+                    Me.rbLarge.Checked = Me.rbLarge.Enabled
+                Case Master.PosterSize.Xlrg
+                    Me.rbXLarge.Checked = Me.rbXLarge.Enabled
             End Select
-        Next
 
-        Select Case Master.eSettings.PreferredPosterSize
-            Case Master.PosterSize.Small
-                Me.rbSmall.Checked = Me.rbSmall.Enabled
-            Case Master.PosterSize.Mid
-                Me.rbMedium.Checked = Me.rbMedium.Enabled
-            Case Master.PosterSize.Lrg
-                Me.rbLarge.Checked = Me.rbLarge.Enabled
-            Case Master.PosterSize.Xlrg
-                Me.rbXLarge.Checked = Me.rbXLarge.Enabled
-        End Select
+            pnlSize.Visible = True
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 
-        pnlSize.Visible = True
+    Private Sub pbImage_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Try
+            If Me.DLType = Master.ImageType.Fanart OrElse Not sender.tag.contains("themoviedb.org") Then
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(sender.image)
+                End Using
+            End If
+        Catch
+        End Try
     End Sub
 
     Private Sub pbImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -982,18 +1000,22 @@ Public Class dlgImgSelect
 
     Private Sub rbXLarge_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbXLarge.CheckedChanged
         Me.OK_Button.Enabled = True
+        Me.btnPreview.Enabled = True
     End Sub
 
     Private Sub rbLarge_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbLarge.CheckedChanged
         Me.OK_Button.Enabled = True
+        Me.btnPreview.Enabled = True
     End Sub
 
     Private Sub rbMedium_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbMedium.CheckedChanged
         Me.OK_Button.Enabled = True
+        Me.btnPreview.Enabled = True
     End Sub
 
     Private Sub rbSmall_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbSmall.CheckedChanged
         Me.OK_Button.Enabled = True
+        Me.btnPreview.Enabled = True
     End Sub
 
     Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As String
@@ -1033,6 +1055,60 @@ Public Class dlgImgSelect
 
     End Sub
 
+    Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
+
+        Try
+            Dim tImage As New Images
+
+            Me.pnlSinglePic.Visible = True
+            Application.DoEvents()
+
+            Select Case True
+                Case rbXLarge.Checked
+                    If Master.eSettings.UseImgCache Then
+                        tImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(original)_(url=", Me.rbXLarge.Tag, ").jpg")))
+                    Else
+                        tImage.FromWeb(Me.rbXLarge.Tag)
+                    End If
+                Case rbLarge.Checked
+                    If Master.eSettings.UseImgCache Then
+                        tImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(mid)_(url=", Me.rbLarge.Tag, ").jpg")))
+                    Else
+                        tImage.FromWeb(Me.rbLarge.Tag)
+                    End If
+                Case rbMedium.Checked
+                    If Master.eSettings.UseImgCache Then
+                        tImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(cover)_(url=", Me.rbMedium.Tag, ").jpg")))
+                    Else
+                        tImage.FromWeb(Me.rbMedium.Tag)
+                    End If
+                Case rbSmall.Checked
+                    If Master.eSettings.UseImgCache Then
+                        tImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(thumb)_(url=", Me.rbSmall.Tag, ").jpg")))
+                    Else
+                        tImage.FromWeb(Me.rbSmall.Tag)
+                    End If
+            End Select
+
+            Me.pnlSinglePic.Visible = False
+
+            If Not IsNothing(tImage.Image) Then
+
+                Using dImgView As New dlgImgView
+                    dImgView.ShowDialog(tImage.Image)
+                End Using
+
+            End If
+
+            tImage.Dispose()
+            tImage = Nothing
+
+        Catch ex As Exception
+            Me.pnlSinglePic.Visible = False
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
 End Class
 
 
