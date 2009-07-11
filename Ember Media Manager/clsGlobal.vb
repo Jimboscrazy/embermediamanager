@@ -954,7 +954,7 @@ Public Class Master
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlMov As New Media.Movie
         Try
-            If File.Exists(sPath) AndAlso Not Master.eSettings.ValidExts.Contains(Path.GetExtension(sPath).ToLower) Then
+            If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
                 Using xmlSR As StreamReader = New StreamReader(sPath)
                     xmlSer = New XmlSerializer(GetType(Media.Movie))
                     xmlMov = CType(xmlSer.Deserialize(xmlSR), Media.Movie)
@@ -1257,6 +1257,52 @@ Public Class Master
         Else
             Return "Media Info is not available for this movie. Try rescanning."
         End If
+    End Function
+
+    Public Shared Function GetNfoPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
+
+        '//
+        ' Get the proper path to NFO
+        '\\
+
+        Dim nPath As String = String.Empty
+
+        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+            nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
+            If File.Exists(nPath) Then
+                Return nPath
+            Else
+                If Not isSingle Then
+                    Return String.Empty
+                Else
+                    'return movie path so we can use it for looking for non-conforming nfos
+                    Return sPath
+                End If
+            End If
+        Else
+            Dim tmpName As String = CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath))
+            Dim tmpNameNoStack As String = Path.GetFileNameWithoutExtension(sPath)
+            nPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName)
+            Dim nPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack)
+
+            Dim fList As New ArrayList
+            fList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.nfo"))
+            If eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
+                Return String.Concat(nPathWithStack, ".nfo")
+            ElseIf eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
+                Return String.Concat(nPath, ".nfo")
+            ElseIf isSingle AndAlso eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName, "movie.nfo")) Then
+                Return Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
+            Else
+                If Not isSingle Then
+                    Return String.Empty
+                Else
+                    'return movie path so we can use it for looking for non-conforming nfos
+                    Return sPath
+                End If
+            End If
+        End If
+
     End Function
 
     Public Shared Function GetBestVideo(ByRef miFIV As MediaInfo.Fileinfo) As MediaInfo.Video

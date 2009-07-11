@@ -3771,9 +3771,13 @@ doCancel:
         Try
 
             If Directory.Exists(Directory.GetParent(dRow(0).Item(1)).FullName) Then
+                tmpMovieDb.FaS = New Master.FileAndSource
+
                 If FromNfo Then
                     If String.IsNullOrEmpty(dRow(0).Item(42)) Then
-                        tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(1), dRow(0).Item(2))
+                        Dim sNFO As String = Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2))
+                        tmpMovieDb.FaS.Nfo = sNFO
+                        tmpMovie = Master.LoadMovieFromNFO(sNFO, dRow(0).Item(2))
                     Else
                         tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(42), dRow(0).Item(2))
                     End If
@@ -3797,7 +3801,6 @@ doCancel:
                 'update genre
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
-                tmpMovieDb.FaS = New Master.FileAndSource
                 tmpMovieDb.FaS.Filename = dRow(0).Item(1)
                 tmpMovieDb.FaS.isSingle = dRow(0).Item(2)
                 tmpMovieDb.FaS.Source = dRow(0).Item(12)
