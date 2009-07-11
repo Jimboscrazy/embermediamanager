@@ -66,7 +66,7 @@ Public Class frmMain
     Private LoadingDone As Boolean = False
     Private isCL As Boolean = False
     Private GenreImage As Image
-    Private _Genres As New List(Of String)
+
     Private Enum PicType As Integer
         Actor = 0
         Poster = 1
@@ -95,6 +95,7 @@ Public Class frmMain
         Dim Path As String
         Dim Movie As Master.DBMovie
         Dim ID As Integer
+        Dim SourceName As String
     End Structure
 
 #End Region '*** Declarations
@@ -109,6 +110,10 @@ Public Class frmMain
 
     Private Sub frmMain_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
+    End Sub
+
+    Private Sub GenreListToolStripComboBox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles GenreListToolStripComboBox.DropDown
+        Me.GenreListToolStripComboBox.Items.Remove("Select Genre...")
     End Sub
 
     Private Sub GenreListToolStripComboBox_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GenreListToolStripComboBox.SelectedIndexChanged
@@ -409,22 +414,7 @@ Public Class frmMain
                 Me.WindowState = Master.eSettings.WindowState
 
                 Master.CacheXMLs()
-                Try
-                    Dim splitLang() As String
-                    Dim xGenre = From xGen In Master.GenreXML...<name> Select xGen.@searchstring, xGen.@language
-                    If xGenre.Count > 0 Then
-                        For i As Integer = 0 To xGenre.Count - 1
-                            splitLang = xGenre(i).language.Split(New Char() {"|"})
-                            For Each strGen As String In splitLang
-                                If Not Me._Genres.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
-                                    Me._Genres.Add(xGenre(i).searchstring)
-                                End If
-                            Next
-                        Next
-                    End If
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
+
                 Me.SetColors()
                 Me.SetToolTips()
 
@@ -537,7 +527,7 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub tsbRefreshMedia_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRefreshMedia.Click
+    Private Sub tsbRefreshMedia_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbRefreshMedia.ButtonClick
 
         '//
         ' Reload media type when "Rescan Media" is clicked
@@ -1127,6 +1117,105 @@ Public Class frmMain
         End Try
     End Sub
 
+    Private Sub AddGenreToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles AddGenreToolStripMenuItem.Click
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET Genre = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                        If Not sRow.Cells(26).Value.contains(Me.GenreListToolStripComboBox.Text) Then
+                            If Not String.IsNullOrEmpty(sRow.Cells(26).Value) Then
+                                parGenre.Value = String.Format("{0} / {1}", sRow.Cells(26).Value, Me.GenreListToolStripComboBox.Text).Trim
+                            Else
+                                parGenre.Value = Me.GenreListToolStripComboBox.Text.Trim
+                            End If
+                            parID.Value = sRow.Cells(0).Value
+                            SQLcommand.ExecuteNonQuery()
+                        End If
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    If Not sRow.Cells(26).Value.contains(Me.GenreListToolStripComboBox.Text) Then
+                        Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
+                    End If
+                Next
+                SQLtransaction.Commit()
+            End Using
+
+            Me.LoadInfo(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value, Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value, True, False)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub SetGenreToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SetGenreToolStripMenuItem.Click
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET Genre = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                        parGenre.Value = Me.GenreListToolStripComboBox.Text.Trim
+                        parID.Value = sRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
+                Next
+                SQLtransaction.Commit()
+            End Using
+
+            Me.LoadInfo(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value, Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value, True, False)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub RemoveGenreToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveGenreToolStripMenuItem.Click
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
+                    SQLcommand.CommandText = "UPDATE movies SET Genre = (?) WHERE id = (?);"
+                    For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                        If sRow.Cells(26).Value.contains(Me.GenreListToolStripComboBox.Text) Then
+                            parGenre.Value = sRow.Cells(26).Value.ToString.Replace(String.Concat(" / ", Me.GenreListToolStripComboBox.Text), String.Empty).Replace(String.Concat(Me.GenreListToolStripComboBox.Text, " / "), String.Empty).Replace(Me.GenreListToolStripComboBox.Text, String.Empty).Trim
+                            parID.Value = sRow.Cells(0).Value
+                            SQLcommand.ExecuteNonQuery()
+                        End If
+                    Next
+                End Using
+                SQLtransaction.Commit()
+            End Using
+
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
+                Next
+                SQLtransaction.Commit()
+            End Using
+
+            Me.LoadInfo(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value, Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value, True, False)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
     Private Sub cmnuRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrape.Click
 
         '//
@@ -1202,11 +1291,16 @@ Public Class frmMain
                             End If
                         Next
 
-                        cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
-                        cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
-                        cmnuMark.Text = If(setMark, "Mark", "Unmark")
-                        cmnuLock.Text = If(setLock, "Lock", "Unlock")
-                        GenresToolStripMenuItem.Visible = False
+                        Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
+                        Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
+                        Me.cmnuMark.Text = If(setMark, "Mark", "Unmark")
+                        Me.cmnuLock.Text = If(setLock, "Lock", "Unlock")
+
+                        Me.GenreListToolStripComboBox.Items.Insert(0, "Select Genre...")
+                        Me.GenreListToolStripComboBox.SelectedItem = "Select Genre..."
+                        Me.AddGenreToolStripMenuItem.Enabled = True
+                        Me.SetGenreToolStripMenuItem.Enabled = True
+                        Me.RemoveGenreToolStripMenuItem.Enabled = True
                     Else
                         Me.cmnuEditMovie.Visible = True
                         Me.cmnuRescrape.Visible = True
@@ -1232,13 +1326,16 @@ Public Class frmMain
                             Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
                             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
                         End If
+
                         Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
                         Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
-                        GenresToolStripMenuItem.Visible = True
-                        GenreListToolStripComboBox.Tag = Me.dgvMediaList.Item(26, dgvHTI.RowIndex).Value
-                        AddGenreToolStripMenuItem.Enabled = False
-                        SetGenreToolStripMenuItem.Enabled = False
-                        RemoveGenreToolStripMenuItem.Enabled = False
+
+                        Me.GenreListToolStripComboBox.Tag = Me.dgvMediaList.Item(26, dgvHTI.RowIndex).Value
+                        Me.GenreListToolStripComboBox.Items.Insert(0, "Select Genre...")
+                        Me.GenreListToolStripComboBox.SelectedItem = "Select Genre..."
+                        Me.AddGenreToolStripMenuItem.Enabled = False
+                        Me.SetGenreToolStripMenuItem.Enabled = False
+                        Me.RemoveGenreToolStripMenuItem.Enabled = False
                     End If
                 End If
             End If
@@ -1804,6 +1901,7 @@ Public Class frmMain
         ' Thread to count directories to prepare for loading media
         '\\
 
+        Dim Args As Arguments = e.Argument
         Try
             Master.alMoviePaths.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -1817,7 +1915,11 @@ Public Class frmMain
 
             Master.MediaList.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = "SELECT * FROM sources;"
+                If Not String.IsNullOrEmpty(Args.SourceName) Then
+                    SQLcommand.CommandText = String.Format("SELECT * FROM sources WHERE Name = ""{0}"";", Args.SourceName)
+                Else
+                    SQLcommand.CommandText = "SELECT * FROM sources;"
+                End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
                         Master.ScanSourceDir(SQLreader("Name"), SQLreader("Path"), SQLreader("Recursive"), SQLreader("Foldername"), SQLreader("Single"))
@@ -1833,7 +1935,7 @@ Public Class frmMain
             Dim dtMediaList As New DataTable
             Dim MLFind As New MovieListFind
             Dim MLFound As New Master.FileAndSource
-            Master.DB.FillDataTable(dtMediaList, "SELECT MoviePath, Id FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+            Master.DB.FillDataTable(dtMediaList, "SELECT MoviePath, Id, Source FROM movies ORDER BY ListTitle COLLATE NOCASE;")
             If dtMediaList.Rows.Count > 0 Then
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -1842,7 +1944,7 @@ Public Class frmMain
                         For Each mRow As DataRow In dtMediaList.Rows
                             MLFind.SearchString = mRow.Item(0)
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
-                            If IsNothing(MLFound) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0)).ToLower) Then
+                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2) = Args.SourceName)) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0)).ToLower) Then
                                 parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
 
@@ -2498,9 +2600,9 @@ Public Class frmMain
                                         Else
                                             scrapeMovie.ListTitle = drvRow.Item(3)
                                         End If
-                                            Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
-                                            doSave = True
-                                        End If
+                                        Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
+                                        doSave = True
+                                    End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not drvRow.Item(4) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Poster) Then
@@ -2896,7 +2998,7 @@ doCancel:
 
     End Sub
 
-    Public Sub LoadMedia(ByVal mediaType As Integer)
+    Public Sub LoadMedia(ByVal mediaType As Integer, Optional ByVal SourceName As String = "")
 
         '//
         ' Begin threads to fill datagrid with media data
@@ -2936,7 +3038,7 @@ doCancel:
 
             Me.bwPrelim = New System.ComponentModel.BackgroundWorker
             Me.bwPrelim.WorkerSupportsCancellation = True
-            Me.bwPrelim.RunWorkerAsync()
+            Me.bwPrelim.RunWorkerAsync(New Arguments With {.SourceName = SourceName})
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3653,7 +3755,7 @@ doCancel:
         End If
     End Sub
 
-    Private Function RefreshMovie(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal DoNfo As Boolean = True) As Boolean
+    Private Function RefreshMovie(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow
         Dim sPath As String = dRow(0).Item(1)
         Dim aContents(6) As String
@@ -3665,7 +3767,7 @@ doCancel:
         Try
 
             If Directory.Exists(Directory.GetParent(dRow(0).Item(1)).FullName) Then
-                If DoNfo Then
+                If FromNfo Then
                     If String.IsNullOrEmpty(dRow(0).Item(42)) Then
                         tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(1), dRow(0).Item(2))
                     Else
@@ -3687,6 +3789,9 @@ doCancel:
                 Else
                     tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
                 End If
+
+                'update genre
+                Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
                 tmpMovieDb.FaS = New Master.FileAndSource
                 tmpMovieDb.FaS.Filename = dRow(0).Item(1)
@@ -3711,7 +3816,7 @@ doCancel:
                 tmpMovieDb.IsMark = dRow(0).Item(11)
                 tmpMovieDb.IsLock = dRow(0).Item(14)
 
-                Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode)
+                Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
 
                 aContents = Nothing
             Else
@@ -3810,8 +3915,34 @@ doCancel:
                     End Using
                 End Using
 
+                Me.tsbRefreshMedia.DropDownItems.Clear()
+                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                        While SQLReader.Read
+                            Me.tsbRefreshMedia.DropDownItems.Add(String.Concat("Update ", SQLReader("Name"), " Only"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
+                        End While
+                    End Using
+                End Using
+
+                GenreListToolStripComboBox.Items.Clear()
+                Dim splitLang() As String
+                Dim xGenre = From xGen In Master.GenreXML...<name> Select xGen.@searchstring, xGen.@language
+                If xGenre.Count > 0 Then
+                    For i As Integer = 0 To xGenre.Count - 1
+                        splitLang = xGenre(i).language.Split(New Char() {"|"})
+                        For Each strGen As String In splitLang
+                            If Not Me.GenreListToolStripComboBox.Items.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
+                                GenreListToolStripComboBox.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList
+                                GenreListToolStripComboBox.Items.Add(xGenre(i).searchstring)
+                            End If
+                        Next
+                    Next
+                End If
+
                 'not technically a menu, but it's a good place to put it
                 If ReloadFilters Then
+
                     RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
                     cbFilterSource.Items.Clear()
                     cbFilterSource.Items.Add("All")
@@ -3827,7 +3958,7 @@ doCancel:
                     AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
                 End If
             End With
-            SetGenresContext()
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -3979,6 +4110,13 @@ doCancel:
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
+    End Sub
+
+    Private Sub SourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim SourceName As String = sender.ToString.Replace("Update ", String.Empty).Replace(" Only", String.Empty).Trim
+        If Not String.IsNullOrEmpty(SourceName) Then
+            Me.LoadMedia(1, SourceName)
+        End If
     End Sub
 
     Private Sub XComSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -4192,14 +4330,6 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub SetGenresContext()
-
-        GenreListToolStripComboBox.Items.Clear()
-        GenreListToolStripComboBox.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList
-        For Each g As String In _Genres
-            GenreListToolStripComboBox.Items.Add(g)
-        Next
-    End Sub
     Private Sub SetToolTips()
         Dim TT As ToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.tsbAutoPilot.ToolTipText = "Scrape/download data from the internet for multiple movies."
@@ -4239,8 +4369,5 @@ doCancel:
 
 
 #End Region '*** Routines/Functions
-    'Class Genre
-
-
 
 End Class
