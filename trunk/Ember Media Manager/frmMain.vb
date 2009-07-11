@@ -2445,10 +2445,10 @@ Public Class frmMain
                                     Else
                                         scrapeMovie.ListTitle = scrapeMovie.Movie.Title
                                     End If
-                                    Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
                                 Else
-                                    scrapeMovie.ListTitle = drvRow.Item(3)
+                                    scrapeMovie.ListTitle = Master.FilterName(drvRow.Item(3))
                                 End If
+                                Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
 
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
 
@@ -2596,10 +2596,11 @@ Public Class frmMain
                                             Else
                                                 scrapeMovie.ListTitle = scrapeMovie.Movie.Title
                                             End If
-                                            Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
                                         Else
-                                            scrapeMovie.ListTitle = drvRow.Item(3)
+                                            scrapeMovie.ListTitle = Master.FilterName(drvRow.Item(3))
                                         End If
+                                        Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
+
                                         Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
                                         doSave = True
                                     End If
@@ -3775,15 +3776,15 @@ doCancel:
                     End If
 
                     If String.IsNullOrEmpty(tmpMovie.Title) Then
-                        tmpMovieDb.ListTitle = dRow(0).Item(3)
+                        tmpMovieDb.ListTitle = Master.FilterName(dRow(0).Item(3))
                     Else
                         If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovie.Year) Then
                             tmpMovieDb.ListTitle = String.Format("{0} ({1})", tmpMovie.Title, tmpMovie.Year)
                         Else
                             tmpMovieDb.ListTitle = tmpMovie.Title
                         End If
-                        Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
                     End If
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
 
                     tmpMovieDb.Movie = tmpMovie
                 Else
