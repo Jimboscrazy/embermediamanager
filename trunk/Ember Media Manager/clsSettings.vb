@@ -153,6 +153,10 @@ Public Class emmSettings
     Private _sortpath As String
     Private _allwaysdisplaygenrestext As Boolean
     Private _displayyear As Boolean
+    Private _etnative As Boolean
+    Private _etwidth As Integer
+    Private _etheight As Integer
+    Private _etpadding As Boolean
 
 
     Public Property Version() As String
@@ -1302,6 +1306,42 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property ETNative() As Boolean
+        Get
+            Return Me._etnative
+        End Get
+        Set(ByVal value As Boolean)
+            Me._etnative = value
+        End Set
+    End Property
+
+    Public Property ETWidth() As Integer
+        Get
+            Return Me._etwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._etwidth = value
+        End Set
+    End Property
+
+    Public Property ETHeight() As Integer
+        Get
+            Return Me._etheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._etheight = value
+        End Set
+    End Property
+
+    Public Property ETPadding() As Integer
+        Get
+            Return Me._etpadding
+        End Get
+        Set(ByVal value As Integer)
+            Me._etpadding = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1435,6 +1475,10 @@ Public Class emmSettings
         Me._sortpath = String.Empty
         Me._allwaysdisplaygenrestext = False
         Me._displayyear = False
+        Me._etnative = False
+        Me._etwidth = 1280
+        Me._etheight = 720
+        Me._etpadding = True
     End Sub
 
     Public Sub Save()
