@@ -28,6 +28,7 @@ Partial Class dlgImgManual
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.txtURL = New System.Windows.Forms.TextBox
         Me.btnPreview = New System.Windows.Forms.Button
+        Me.Label1 = New System.Windows.Forms.Label
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -39,7 +40,7 @@ Partial Class dlgImgManual
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(285, 37)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(285, 51)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -69,7 +70,7 @@ Partial Class dlgImgManual
         'txtURL
         '
         Me.txtURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtURL.Location = New System.Drawing.Point(12, 12)
+        Me.txtURL.Location = New System.Drawing.Point(12, 25)
         Me.txtURL.Name = "txtURL"
         Me.txtURL.Size = New System.Drawing.Size(335, 20)
         Me.txtURL.TabIndex = 1
@@ -79,7 +80,7 @@ Partial Class dlgImgManual
         Me.btnPreview.Enabled = False
         Me.btnPreview.Image = CType(resources.GetObject("btnPreview.Image"), System.Drawing.Image)
         Me.btnPreview.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPreview.Location = New System.Drawing.Point(353, 9)
+        Me.btnPreview.Location = New System.Drawing.Point(353, 24)
         Me.btnPreview.Name = "btnPreview"
         Me.btnPreview.Size = New System.Drawing.Size(75, 23)
         Me.btnPreview.TabIndex = 5
@@ -87,13 +88,23 @@ Partial Class dlgImgManual
         Me.btnPreview.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnPreview.UseVisualStyleBackColor = True
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(12, 9)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(104, 13)
+        Me.Label1.TabIndex = 6
+        Me.Label1.Text = "Enter URL to Image:"
+        '
         'dlgImgManual
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(443, 78)
+        Me.ClientSize = New System.Drawing.Size(443, 87)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btnPreview)
         Me.Controls.Add(Me.txtURL)
         Me.Controls.Add(Me.TableLayoutPanel1)
@@ -114,5 +125,6 @@ Partial Class dlgImgManual
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents txtURL As System.Windows.Forms.TextBox
     Friend WithEvents btnPreview As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 
 End Class
