@@ -129,6 +129,8 @@ Partial Class dlgEditMovie
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
+        Me.btnSetPosterDL = New System.Windows.Forms.Button
+        Me.btnSetFanartDL = New System.Windows.Forms.Button
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -753,6 +755,7 @@ Partial Class dlgEditMovie
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.btnSetPosterDL)
         Me.TabPage2.Controls.Add(Me.btnRemovePoster)
         Me.TabPage2.Controls.Add(Me.lblPosterSize)
         Me.TabPage2.Controls.Add(Me.btnSetPosterScrape)
@@ -826,6 +829,7 @@ Partial Class dlgEditMovie
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.btnSetFanartDL)
         Me.TabPage3.Controls.Add(Me.btnRemoveFanart)
         Me.TabPage3.Controls.Add(Me.lblFanartSize)
         Me.TabPage3.Controls.Add(Me.btnSetFanartScrape)
@@ -1239,6 +1243,30 @@ Partial Class dlgEditMovie
         Me.btnClearCache.UseVisualStyleBackColor = True
         Me.btnClearCache.Visible = False
         '
+        'btnSetPosterDL
+        '
+        Me.btnSetPosterDL.Image = CType(resources.GetObject("btnSetPosterDL.Image"), System.Drawing.Image)
+        Me.btnSetPosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetPosterDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetPosterDL.Name = "btnSetPosterDL"
+        Me.btnSetPosterDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetPosterDL.TabIndex = 27
+        Me.btnSetPosterDL.Text = "Change Poster (Download)"
+        Me.btnSetPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetPosterDL.UseVisualStyleBackColor = True
+        '
+        'btnSetFanartDL
+        '
+        Me.btnSetFanartDL.Image = CType(resources.GetObject("btnSetFanartDL.Image"), System.Drawing.Image)
+        Me.btnSetFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetFanartDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetFanartDL.Name = "btnSetFanartDL"
+        Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetFanartDL.TabIndex = 29
+        Me.btnSetFanartDL.Text = "Change Fanart (Download)"
+        Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetFanartDL.UseVisualStyleBackColor = True
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1397,5 +1425,7 @@ Partial Class dlgEditMovie
     Friend WithEvents pnlETQueue As System.Windows.Forms.Panel
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents btnTransferNow As System.Windows.Forms.Button
+    Friend WithEvents btnSetPosterDL As System.Windows.Forms.Button
+    Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
 
 End Class

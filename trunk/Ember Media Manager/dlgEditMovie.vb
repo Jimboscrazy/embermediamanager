@@ -18,7 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
+Option Explicit On
+
 Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
@@ -1342,6 +1343,38 @@ Public Class dlgEditMovie
             If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
                 Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
             End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                If dImgManual.ShowDialog(Master.ImageType.Posters) = DialogResult.OK Then
+                    Poster.FromFile(Path.Combine(Master.TempPath, "poster.jpg"))
+                    pbPoster.Image = Poster.Image
+
+                    Me.lblPosterSize.Text = String.Format("Size: {0}x{1}", Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                    Me.lblPosterSize.Visible = True
+                End If
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
+        Try
+            Using dImgManual As New dlgImgManual
+                If dImgManual.ShowDialog(Master.ImageType.Fanart) = DialogResult.OK Then
+                    Fanart.FromFile(Path.Combine(Master.TempPath, "fanart.jpg"))
+                    pbFanart.Image = Fanart.Image
+
+                    Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Visible = True
+                End If
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
