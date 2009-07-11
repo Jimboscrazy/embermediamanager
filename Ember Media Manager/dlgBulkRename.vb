@@ -33,6 +33,9 @@ Public Class dlgBulkRenamer
     Private FFRenamer As New FileFolderRenamer
     Private DoneRename As Boolean = False
     Private CancelRename As Boolean = False
+    Private run_once As Boolean = True
+    Private _columnsize(9) As Integer
+
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
         If DoneRename Then
@@ -48,16 +51,41 @@ Public Class dlgBulkRenamer
     Public Sub Simulate()
         Try
             With Me.dgvMoviesList
+                If Not run_once Then
+                    For Each c As DataGridViewColumn In .Columns
+                        _columnsize(c.Index) = c.Width
+                    Next
+                End If
                 .DataSource = Nothing
                 .Rows.Clear()
                 .AutoGenerateColumns = True
+                If run_once Then
+                    .Tag = False
+                    .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                End If
                 bindingSource1.DataSource = FFRenamer.GetMovies
-                .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 .DataSource = bindingSource1
                 .Columns(5).Visible = False
                 .Columns(6).Visible = False
                 .Columns(7).Visible = False
                 .Columns(8).Visible = False
+                If run_once Then
+                    For Each c As DataGridViewColumn In .Columns
+                        c.MinimumWidth = .Width / 5
+                    Next
+                    .AutoResizeColumns()
+                    .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
+                    For Each c As DataGridViewColumn In .Columns
+                        c.MinimumWidth = 20
+                    Next
+                    run_once = False
+                Else
+                    .Tag = True
+                    For Each c As DataGridViewColumn In .Columns
+                        c.Width = _columnsize(c.Index)
+                    Next
+                    .Tag = False
+                End If
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -489,5 +517,17 @@ Public Class dlgBulkRenamer
             row.Cells(5).Value = lock
         Next
         dgvMoviesList.Refresh()
+    End Sub
+
+
+    Private Sub dgvMoviesList_ColumnWidthChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewColumnEventArgs) Handles dgvMoviesList.ColumnWidthChanged
+        If Not dgvMoviesList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None OrElse dgvMoviesList.Columns.Count < 9 OrElse dgvMoviesList.Tag Then Return
+        Dim sum As Integer = 0
+        For Each c As DataGridViewColumn In dgvMoviesList.Columns
+            If c.Visible Then sum += c.Width
+        Next
+        If sum < dgvMoviesList.Width Then
+            e.Column.Width = dgvMoviesList.Width - (sum - e.Column.Width)
+        End If
     End Sub
 End Class

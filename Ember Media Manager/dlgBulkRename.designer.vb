@@ -38,6 +38,12 @@ Partial Class dlgBulkRenamer
         Me.Rename_Button = New System.Windows.Forms.Button
         Me.tmrSimul = New System.Windows.Forms.Timer(Me.components)
         Me.dgvMoviesList = New System.Windows.Forms.DataGridView
+        Me.cmsMovieList = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.tsmLockMovie = New System.Windows.Forms.ToolStripMenuItem
+        Me.tsmUnlockMovie = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.tsmLockAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.tsmUnlockAll = New System.Windows.Forms.ToolStripMenuItem
         Me.lblFolderPattern = New System.Windows.Forms.Label
         Me.lblFilePattern = New System.Windows.Forms.Label
         Me.txtFile = New System.Windows.Forms.TextBox
@@ -45,12 +51,6 @@ Partial Class dlgBulkRenamer
         Me.lblLabel = New System.Windows.Forms.Label
         Me.txtFolderNotSingle = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
-        Me.cmsMovieList = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.tsmLockMovie = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
-        Me.tsmLockAll = New System.Windows.Forms.ToolStripMenuItem
-        Me.tsmUnlockMovie = New System.Windows.Forms.ToolStripMenuItem
-        Me.tsmUnlockAll = New System.Windows.Forms.ToolStripMenuItem
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlCancel.SuspendLayout()
@@ -211,6 +211,41 @@ Partial Class dlgBulkRenamer
         Me.dgvMoviesList.Size = New System.Drawing.Size(966, 316)
         Me.dgvMoviesList.TabIndex = 68
         '
+        'cmsMovieList
+        '
+        Me.cmsMovieList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmLockMovie, Me.tsmUnlockMovie, Me.ToolStripSeparator1, Me.tsmLockAll, Me.tsmUnlockAll})
+        Me.cmsMovieList.Name = "cmsMovieList"
+        Me.cmsMovieList.Size = New System.Drawing.Size(161, 98)
+        '
+        'tsmLockMovie
+        '
+        Me.tsmLockMovie.Name = "tsmLockMovie"
+        Me.tsmLockMovie.Size = New System.Drawing.Size(160, 22)
+        Me.tsmLockMovie.Text = "Lock Movie(s)"
+        '
+        'tsmUnlockMovie
+        '
+        Me.tsmUnlockMovie.Name = "tsmUnlockMovie"
+        Me.tsmUnlockMovie.Size = New System.Drawing.Size(160, 22)
+        Me.tsmUnlockMovie.Text = "Unlock Movie(s)"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(157, 6)
+        '
+        'tsmLockAll
+        '
+        Me.tsmLockAll.Name = "tsmLockAll"
+        Me.tsmLockAll.Size = New System.Drawing.Size(160, 22)
+        Me.tsmLockAll.Text = "Lock All"
+        '
+        'tsmUnlockAll
+        '
+        Me.tsmUnlockAll.Name = "tsmUnlockAll"
+        Me.tsmUnlockAll.Size = New System.Drawing.Size(160, 22)
+        Me.tsmUnlockAll.Text = "Unlock All"
+        '
         'lblFolderPattern
         '
         Me.lblFolderPattern.AutoSize = True
@@ -273,41 +308,6 @@ Partial Class dlgBulkRenamer
         Me.Label1.Size = New System.Drawing.Size(212, 13)
         Me.Label1.TabIndex = 75
         Me.Label1.Text = "Folder Pattern (for Multiple movies in Folder)"
-        '
-        'cmsMovieList
-        '
-        Me.cmsMovieList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmLockMovie, Me.tsmUnlockMovie, Me.ToolStripSeparator1, Me.tsmLockAll, Me.tsmUnlockAll})
-        Me.cmsMovieList.Name = "cmsMovieList"
-        Me.cmsMovieList.Size = New System.Drawing.Size(161, 98)
-        '
-        'tsmLockMovie
-        '
-        Me.tsmLockMovie.Name = "tsmLockMovie"
-        Me.tsmLockMovie.Size = New System.Drawing.Size(160, 22)
-        Me.tsmLockMovie.Text = "Lock Movie(s)"
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(157, 6)
-        '
-        'tsmLockAll
-        '
-        Me.tsmLockAll.Name = "tsmLockAll"
-        Me.tsmLockAll.Size = New System.Drawing.Size(160, 22)
-        Me.tsmLockAll.Text = "Lock All"
-        '
-        'tsmUnlockMovie
-        '
-        Me.tsmUnlockMovie.Name = "tsmUnlockMovie"
-        Me.tsmUnlockMovie.Size = New System.Drawing.Size(160, 22)
-        Me.tsmUnlockMovie.Text = "Unlock Movie(s)"
-        '
-        'tsmUnlockAll
-        '
-        Me.tsmUnlockAll.Name = "tsmUnlockAll"
-        Me.tsmUnlockAll.Size = New System.Drawing.Size(160, 22)
-        Me.tsmUnlockAll.Text = "Unlock All"
         '
         'dlgBulkRenamer
         '

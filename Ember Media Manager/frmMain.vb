@@ -117,10 +117,13 @@ Public Class frmMain
     End Sub
 
     Private Sub GenreListToolStripComboBox_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GenreListToolStripComboBox.SelectedIndexChanged
-
-        RemoveGenreToolStripMenuItem.Enabled = GenreListToolStripComboBox.Tag.contains(GenreListToolStripComboBox.Text)
-        AddGenreToolStripMenuItem.Enabled = Not GenreListToolStripComboBox.Tag.contains(GenreListToolStripComboBox.Text)
-
+        If dgvMediaList.SelectedRows.Count > 1 Then
+            RemoveGenreToolStripMenuItem.Enabled = True
+            AddGenreToolStripMenuItem.Enabled = True
+        Else
+            RemoveGenreToolStripMenuItem.Enabled = GenreListToolStripComboBox.Tag.contains(GenreListToolStripComboBox.Text)
+            AddGenreToolStripMenuItem.Enabled = Not GenreListToolStripComboBox.Tag.contains(GenreListToolStripComboBox.Text)
+        End If
         SetGenreToolStripMenuItem.Enabled = True
     End Sub
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -1298,9 +1301,9 @@ Public Class frmMain
 
                         Me.GenreListToolStripComboBox.Items.Insert(0, "Select Genre...")
                         Me.GenreListToolStripComboBox.SelectedItem = "Select Genre..."
-                        Me.AddGenreToolStripMenuItem.Enabled = True
-                        Me.SetGenreToolStripMenuItem.Enabled = True
-                        Me.RemoveGenreToolStripMenuItem.Enabled = True
+                        Me.AddGenreToolStripMenuItem.Enabled = False
+                        Me.SetGenreToolStripMenuItem.Enabled = False
+                        Me.RemoveGenreToolStripMenuItem.Enabled = False
                     Else
                         Me.cmnuEditMovie.Visible = True
                         Me.cmnuRescrape.Visible = True
