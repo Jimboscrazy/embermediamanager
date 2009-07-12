@@ -185,7 +185,7 @@ Public Class clsDVD
                 If ReturnArray(1).Contains("x") Then
                     Dim sinAspect() As String
                     sinAspect = ReturnArray(1).Split(New Char() {"x"})
-                    ReturnArray(2) = Convert.ToSingle(sinAspect(0)) / Convert.ToSingle(sinAspect(1))
+                    ReturnArray(2) = Master.ConvertToSingle(sinAspect(0)) / Convert.ToSingle(sinAspect(1))
                 Else
                     ReturnArray(2) = String.Empty
                 End If
