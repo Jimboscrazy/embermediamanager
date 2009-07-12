@@ -475,8 +475,7 @@ Public Class Master
     End Function
 
     Public Shared Function IsStacked(ByVal sName As String) As Boolean
-        If Regex.IsMatch(sName, "(?i)[ _\.-]+cd[ _\.-]*([0-9a-d]+)") OrElse Regex.IsMatch(sName, "(?i)[ _\.-]+dvd[ _\.-]*([0-9a-d]+)") OrElse _
-        Regex.IsMatch(sName, "(?i)[ _\.-]+part[ _\.-]*([0-9a-d]+)") OrElse Regex.IsMatch(sName, "(?i)[ _\.-]+dis[ck][ _\.-]*([0-9a-d]+)") Then
+        If Regex.IsMatch(sName, "(?i)[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)") Then
             Return True
         Else
             Return False
@@ -489,30 +488,7 @@ Public Class Master
         ' Removes the stacking indicators from the file name
         '\\
 
-        Dim filename As String = String.Empty
-        Dim strTemp As String = String.Empty
-
-        strTemp = Regex.Match(sPath, "(?i)[ _\.-]+cd[ _\.-]*([0-9a-d]+)").ToString
-        If Not String.IsNullOrEmpty(strTemp) Then
-            sPath = sPath.Replace(strTemp, String.Empty)
-        End If
-
-        strTemp = Regex.Match(sPath, "(?i)[ _\.-]+dvd[ _\.-]*([0-9a-d]+)").ToString
-        If Not String.IsNullOrEmpty(strTemp) Then
-            sPath = sPath.Replace(strTemp, String.Empty)
-        End If
-
-        strTemp = Regex.Match(sPath, "(?i)[ _\.-]+part[ _\.-]*([0-9a-d]+)").ToString
-        If Not String.IsNullOrEmpty(strTemp) Then
-            sPath = sPath.Replace(strTemp, String.Empty)
-        End If
-
-        strTemp = Regex.Match(sPath, "(?i)[ _\.-]+dis[ck][ _\.-]*([0-9a-d]+)").ToString
-        If Not String.IsNullOrEmpty(strTemp) Then
-            sPath = sPath.Replace(strTemp, String.Empty)
-        End If
-
-        Return sPath.Trim
+        Return Regex.Replace(sPath, "(?i)[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", String.Empty).Trim
     End Function
 
     Public Shared Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
