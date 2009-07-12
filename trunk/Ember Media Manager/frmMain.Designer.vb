@@ -57,6 +57,10 @@ Partial Class frmMain
         Me.ClearAllCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RefreshAllMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
+        Me.pnlFilterGenre = New System.Windows.Forms.Panel
+        Me.lblGFilClose = New System.Windows.Forms.Label
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.clbFilterGenres = New System.Windows.Forms.CheckedListBox
         Me.dgvMediaList = New System.Windows.Forms.DataGridView
         Me.mnuMediaList = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuTitle = New System.Windows.Forms.ToolStripMenuItem
@@ -87,6 +91,8 @@ Partial Class frmMain
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.pnlFilter = New System.Windows.Forms.Panel
+        Me.txtFilterGenre = New System.Windows.Forms.TextBox
+        Me.Label3 = New System.Windows.Forms.Label
         Me.cbFilterSource = New System.Windows.Forms.ComboBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.btnFilterDown = New System.Windows.Forms.Button
@@ -244,6 +250,7 @@ Partial Class frmMain
         Me.scMain.Panel1.SuspendLayout()
         Me.scMain.Panel2.SuspendLayout()
         Me.scMain.SuspendLayout()
+        Me.pnlFilterGenre.SuspendLayout()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.mnuMediaList.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -515,6 +522,7 @@ Partial Class frmMain
         'scMain.Panel1
         '
         Me.scMain.Panel1.BackColor = System.Drawing.Color.Gainsboro
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterGenre)
         Me.scMain.Panel1.Controls.Add(Me.dgvMediaList)
         Me.scMain.Panel1.Controls.Add(Me.Panel1)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
@@ -539,6 +547,55 @@ Partial Class frmMain
         Me.scMain.SplitterDistance = 308
         Me.scMain.TabIndex = 7
         '
+        'pnlFilterGenre
+        '
+        Me.pnlFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterGenre.Controls.Add(Me.lblGFilClose)
+        Me.pnlFilterGenre.Controls.Add(Me.Label4)
+        Me.pnlFilterGenre.Controls.Add(Me.clbFilterGenres)
+        Me.pnlFilterGenre.Location = New System.Drawing.Point(135, 424)
+        Me.pnlFilterGenre.Name = "pnlFilterGenre"
+        Me.pnlFilterGenre.Size = New System.Drawing.Size(166, 192)
+        Me.pnlFilterGenre.TabIndex = 15
+        Me.pnlFilterGenre.Visible = False
+        '
+        'lblGFilClose
+        '
+        Me.lblGFilClose.AutoSize = True
+        Me.lblGFilClose.BackColor = System.Drawing.Color.DimGray
+        Me.lblGFilClose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblGFilClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblGFilClose.ForeColor = System.Drawing.Color.White
+        Me.lblGFilClose.Location = New System.Drawing.Point(130, 2)
+        Me.lblGFilClose.Name = "lblGFilClose"
+        Me.lblGFilClose.Size = New System.Drawing.Size(33, 13)
+        Me.lblGFilClose.TabIndex = 24
+        Me.lblGFilClose.Text = "Close"
+        '
+        'Label4
+        '
+        Me.Label4.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label4.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.Label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.Label4.Location = New System.Drawing.Point(1, 1)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(162, 17)
+        Me.Label4.TabIndex = 23
+        Me.Label4.Text = "Genres"
+        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'clbFilterGenres
+        '
+        Me.clbFilterGenres.CheckOnClick = True
+        Me.clbFilterGenres.FormattingEnabled = True
+        Me.clbFilterGenres.Location = New System.Drawing.Point(1, 20)
+        Me.clbFilterGenres.Name = "clbFilterGenres"
+        Me.clbFilterGenres.Size = New System.Drawing.Size(162, 169)
+        Me.clbFilterGenres.TabIndex = 8
+        '
         'dgvMediaList
         '
         Me.dgvMediaList.AllowUserToAddRows = False
@@ -561,7 +618,7 @@ Partial Class frmMain
         Me.dgvMediaList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMediaList.ShowCellErrors = False
         Me.dgvMediaList.ShowRowErrors = False
-        Me.dgvMediaList.Size = New System.Drawing.Size(308, 547)
+        Me.dgvMediaList.Size = New System.Drawing.Size(308, 497)
         Me.dgvMediaList.TabIndex = 10
         '
         'mnuMediaList
@@ -781,6 +838,8 @@ Partial Class frmMain
         'pnlFilter
         '
         Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilter.Controls.Add(Me.txtFilterGenre)
+        Me.pnlFilter.Controls.Add(Me.Label3)
         Me.pnlFilter.Controls.Add(Me.cbFilterSource)
         Me.pnlFilter.Controls.Add(Me.Label2)
         Me.pnlFilter.Controls.Add(Me.btnFilterDown)
@@ -792,16 +851,34 @@ Partial Class frmMain
         Me.pnlFilter.Controls.Add(Me.lblFilter)
         Me.pnlFilter.Controls.Add(Me.chkFilterNew)
         Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter.Location = New System.Drawing.Point(0, 603)
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 553)
         Me.pnlFilter.Name = "pnlFilter"
-        Me.pnlFilter.Size = New System.Drawing.Size(308, 85)
+        Me.pnlFilter.Size = New System.Drawing.Size(308, 135)
         Me.pnlFilter.TabIndex = 12
+        '
+        'txtFilterGenre
+        '
+        Me.txtFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilterGenre.Location = New System.Drawing.Point(134, 62)
+        Me.txtFilterGenre.Name = "txtFilterGenre"
+        Me.txtFilterGenre.ReadOnly = True
+        Me.txtFilterGenre.Size = New System.Drawing.Size(166, 20)
+        Me.txtFilterGenre.TabIndex = 32
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(90, 64)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(39, 13)
+        Me.Label3.TabIndex = 31
+        Me.Label3.Text = "Genre:"
         '
         'cbFilterSource
         '
         Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterSource.FormattingEnabled = True
-        Me.cbFilterSource.Location = New System.Drawing.Point(136, 60)
+        Me.cbFilterSource.Location = New System.Drawing.Point(134, 107)
         Me.cbFilterSource.Name = "cbFilterSource"
         Me.cbFilterSource.Size = New System.Drawing.Size(166, 21)
         Me.cbFilterSource.TabIndex = 30
@@ -809,7 +886,7 @@ Partial Class frmMain
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(92, 64)
+        Me.Label2.Location = New System.Drawing.Point(90, 111)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(44, 13)
         Me.Label2.TabIndex = 29
@@ -2189,6 +2266,8 @@ Partial Class frmMain
         Me.scMain.Panel2.ResumeLayout(False)
         Me.scMain.Panel2.PerformLayout()
         Me.scMain.ResumeLayout(False)
+        Me.pnlFilterGenre.ResumeLayout(False)
+        Me.pnlFilterGenre.PerformLayout()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.mnuMediaList.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
@@ -2455,4 +2534,10 @@ Partial Class frmMain
     Friend WithEvents GenreListToolStripComboBox As System.Windows.Forms.ToolStripComboBox
     Friend WithEvents LblGenreStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tsbRefreshMedia As System.Windows.Forms.ToolStripSplitButton
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents clbFilterGenres As System.Windows.Forms.CheckedListBox
+    Friend WithEvents txtFilterGenre As System.Windows.Forms.TextBox
+    Friend WithEvents pnlFilterGenre As System.Windows.Forms.Panel
+    Friend WithEvents lblGFilClose As System.Windows.Forms.Label
+    Friend WithEvents Label4 As System.Windows.Forms.Label
 End Class

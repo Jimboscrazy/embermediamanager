@@ -67,6 +67,10 @@ Public Class frmMain
     Private isCL As Boolean = False
     Private GenreImage As Image
 
+    'filters
+    Private filSearch As String = String.Empty
+    Private filGenre As String = String.Empty
+
     Private Enum PicType As Integer
         Actor = 0
         Poster = 1
@@ -198,6 +202,7 @@ Public Class frmMain
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
                 Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
                 Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
+                Me.pnlFilterGenre.Location = New Point(Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top) - Me.pnlFilterGenre.Height)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -442,7 +447,7 @@ Public Class frmMain
 
                 Me.aniFilterRaise = Master.eSettings.FilterPanelState
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = 85
+                    Me.pnlFilter.Height = 135
                     Me.btnFilterDown.Enabled = True
                     Me.btnFilterUp.Enabled = False
                 Else
@@ -804,6 +809,7 @@ Public Class frmMain
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
                 Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
                 Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
+                Me.pnlFilterGenre.Location = New Point(Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top) - Me.pnlFilterGenre.Height)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -928,10 +934,14 @@ Public Class frmMain
     Private Sub tmrSearch_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch.Tick
         Me.tmrSearchWait.Enabled = False
         Try
-            If Not String.IsNullOrEmpty(txtSearch.Text) Then
-                bsMedia.Filter = String.Concat("title LIKE '%", txtSearch.Text, "%'")
+            If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
+                Me.filSearch = String.Concat("title LIKE '%", Me.txtSearch.Text, "%'")
+                Me.FilterArray.Add(Me.filSearch)
+                Me.RunFilter()
             Else
-                bsMedia.RemoveFilter()
+                Me.FilterArray.Remove(Me.filSearch)
+                Me.filSearch = String.Empty
+                Me.RunFilter()
             End If
         Catch
         End Try
@@ -1019,11 +1029,49 @@ Public Class frmMain
     End Sub
 
     Private Sub rbFilterAnd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd.Click
-        If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
+
+        If clbFilterGenres.CheckedItems.Count > 0 Then
+            Me.txtFilterGenre.Text = String.Empty
+            Me.FilterArray.Remove(Me.filGenre)
+
+            Dim alGenres As New ArrayList
+            alGenres.AddRange(clbFilterGenres.CheckedItems)
+
+            Me.txtFilterGenre.Text = Strings.Join(alGenres.ToArray, " AND ")
+
+            For i As Integer = 0 To alGenres.Count - 1
+                alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+            Next
+
+            Me.filGenre = Strings.Join(alGenres.ToArray, " AND ")
+
+            Me.FilterArray.Add(Me.filGenre)
+        End If
+
+        If Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
     End Sub
 
     Private Sub rbFilterOr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.Click
-        If Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
+
+        If clbFilterGenres.CheckedItems.Count > 0 Then
+            Me.txtFilterGenre.Text = String.Empty
+            Me.FilterArray.Remove(Me.filGenre)
+
+            Dim alGenres As New ArrayList
+            alGenres.AddRange(clbFilterGenres.CheckedItems)
+
+            Me.txtFilterGenre.Text = Strings.Join(alGenres.ToArray, " OR ")
+
+            For i As Integer = 0 To alGenres.Count - 1
+                alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+            Next
+
+            Me.filGenre = Strings.Join(alGenres.ToArray, " OR ")
+
+            Me.FilterArray.Add(Me.filGenre)
+        End If
+
+        If Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
     End Sub
 
     Private Sub chkFilterDupe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.Click
@@ -1034,6 +1082,11 @@ Public Class frmMain
             Me.rbFilterAnd.Enabled = Not chkFilterDupe.Checked
             Me.rbFilterOr.Enabled = Not chkFilterDupe.Checked
             Me.cbFilterSource.Enabled = Not chkFilterDupe.Checked
+            Me.txtFilterGenre.Enabled = Not chkFilterDupe.Checked
+            Me.txtFilterGenre.Text = String.Empty
+            For i As Integer = 0 To clbFilterGenres.Items.Count - 1
+                clbFilterGenres.SetItemChecked(i, False)
+            Next
             If Me.chkFilterDupe.Checked Then
                 Me.chkFilterMark.Checked = False
                 Me.chkFilterNew.Checked = False
@@ -1699,7 +1752,7 @@ Public Class frmMain
                 End If
             Else
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = 85
+                    Me.pnlFilter.Height = 135
                 Else
                     Me.pnlFilter.Height = 25
                 End If
@@ -1708,7 +1761,7 @@ Public Class frmMain
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = True
                 Me.btnFilterDown.Enabled = False
-            ElseIf Me.pnlFilter.Height = 85 Then
+            ElseIf Me.pnlFilter.Height = 135 Then
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = False
                 Me.btnFilterDown.Enabled = True
@@ -1886,6 +1939,67 @@ Public Class frmMain
             Me.bwRefreshMovies.RunWorkerAsync()
 
         End If
+    End Sub
+
+    Private Sub clbFilterGenres_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterGenres.LostFocus
+        Try
+            Me.pnlFilterGenre.Visible = False
+            Me.pnlFilterGenre.Tag = "NO"
+
+            If clbFilterGenres.CheckedItems.Count > 0 Then
+                Me.chkFilterDupe.Enabled = False
+                Me.txtFilterGenre.Text = String.Empty
+                Me.FilterArray.Remove(Me.filGenre)
+
+                Dim alGenres As New ArrayList
+                alGenres.AddRange(clbFilterGenres.CheckedItems)
+
+                If rbFilterAnd.Checked Then
+                    Me.txtFilterGenre.Text = Strings.Join(alGenres.ToArray, " AND ")
+                Else
+                    Me.txtFilterGenre.Text = Strings.Join(alGenres.ToArray, " OR ")
+                End If
+
+                For i As Integer = 0 To alGenres.Count - 1
+                    alGenres.Item(i) = String.Format("Genre LIKE '%{0}%'", alGenres.Item(i))
+                Next
+
+                If rbFilterAnd.Checked Then
+                    Me.filGenre = Strings.Join(alGenres.ToArray, " AND ")
+                Else
+                    Me.filGenre = Strings.Join(alGenres.ToArray, " OR ")
+                End If
+
+                Me.FilterArray.Add(Me.filGenre)
+                Me.RunFilter()
+            Else
+                If Not String.IsNullOrEmpty(Me.filGenre) Then
+                    Me.txtFilterGenre.Text = String.Empty
+                    Me.FilterArray.Remove(Me.filGenre)
+                    Me.filGenre = String.Empty
+                    Me.RunFilter()
+                End If
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub txtFilterGenre_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterGenre.Click
+        Me.pnlFilterGenre.Location = New Point(Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top) - Me.pnlFilterGenre.Height)
+        If Me.pnlFilterGenre.Visible Then
+            Me.pnlFilterGenre.Visible = False
+        ElseIf Not Me.pnlFilterGenre.Tag = "NO" Then
+            Me.pnlFilterGenre.Tag = String.Empty
+            Me.pnlFilterGenre.Visible = True
+            Me.clbFilterGenres.Focus()
+        Else
+            Me.pnlFilterGenre.Tag = String.Empty
+        End If
+    End Sub
+
+    Private Sub lblGFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblGFilClose.Click
+        Me.txtFilterGenre.Focus()
+        Me.pnlFilterGenre.Tag = String.Empty
     End Sub
 
 #End Region '*** Form/Controls
@@ -3933,6 +4047,7 @@ doCancel:
                 End Using
 
                 GenreListToolStripComboBox.Items.Clear()
+                Me.clbFilterGenres.Items.Clear()
                 Dim splitLang() As String
                 Dim xGenre = From xGen In Master.GenreXML...<name> Select xGen.@searchstring, xGen.@language
                 If xGenre.Count > 0 Then
@@ -3940,8 +4055,10 @@ doCancel:
                         splitLang = xGenre(i).language.Split(New Char() {"|"})
                         For Each strGen As String In splitLang
                             If Not Me.GenreListToolStripComboBox.Items.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
-                                GenreListToolStripComboBox.ComboBox.DropDownStyle = ComboBoxStyle.DropDownList
                                 GenreListToolStripComboBox.Items.Add(xGenre(i).searchstring)
+                            End If
+                            If Not Me.clbFilterGenres.Items.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
+                                clbFilterGenres.Items.Add(xGenre(i).searchstring)
                             End If
                         Next
                     Next
@@ -4046,13 +4163,15 @@ doCancel:
                 Me.rbFilterOr.Enabled = False
                 Me.rbFilterAnd.Enabled = False
                 Me.cbFilterSource.Enabled = False
-            ElseIf Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then
+                Me.txtFilterGenre.Enabled = False
+            ElseIf Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then
                 Me.chkFilterDupe.Enabled = False
                 Me.chkFilterMark.Enabled = True
                 Me.chkFilterNew.Enabled = True
                 Me.rbFilterOr.Enabled = True
                 Me.rbFilterAnd.Enabled = True
                 Me.cbFilterSource.Enabled = True
+                Me.txtFilterGenre.Enabled = True
             Else
                 Me.chkFilterDupe.Enabled = True
                 Me.chkFilterMark.Enabled = True
@@ -4060,6 +4179,7 @@ doCancel:
                 Me.rbFilterOr.Enabled = True
                 Me.rbFilterAnd.Enabled = True
                 Me.cbFilterSource.Enabled = True
+                Me.txtFilterGenre.Enabled = True
             End If
         Else
             Me.chkFilterDupe.Enabled = False
@@ -4068,6 +4188,7 @@ doCancel:
             Me.rbFilterOr.Enabled = False
             Me.rbFilterAnd.Enabled = False
             Me.cbFilterSource.Enabled = False
+            Me.txtFilterGenre.Enabled = False
         End If
     End Sub
 
