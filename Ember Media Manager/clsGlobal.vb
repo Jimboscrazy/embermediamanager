@@ -475,20 +475,16 @@ Public Class Master
     End Function
 
     Public Shared Function IsStacked(ByVal sName As String) As Boolean
-        If Regex.IsMatch(sName, "(?i)[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)") Then
-            Return True
-        Else
-            Return False
-        End If
+        Return Regex.IsMatch(sName, "(?i)[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)")
     End Function
 
-    Public Shared Function CleanStackingMarkers(ByVal sPath As String) As String
+    Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False) As String
 
         '//
         ' Removes the stacking indicators from the file name
         '\\
 
-        Return Regex.Replace(sPath, "(?i)[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", String.Empty).Trim
+        Return Regex.Replace(sPath, "(?i)[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", If(Asterisk, "*", String.Empty)).Trim
     End Function
 
     Public Shared Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)

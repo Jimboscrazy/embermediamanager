@@ -128,7 +128,7 @@ Public Class clsDVD
 
                 ParsedIFOFile = tIFOFile
                 Return True
-            ElseIf Path.GetExtension(strPath).ToLower = ".ifo" Then
+            ElseIf Path.GetExtension(strPath).ToLower = ".ifo" AndAlso Not Path.GetFileName(strPath).ToLower = "video_ts.ifo" Then
                 ParsedIFOFile = fctParseIFO_VSTFile(strPath)
                 Return True
             End If
@@ -245,7 +245,7 @@ Public Class clsDVD
             If MinsOnly Then
                 Return (PlayBack.hours * 60) + PlayBack.minutes
             Else
-                Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s ")
+                Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s")
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
