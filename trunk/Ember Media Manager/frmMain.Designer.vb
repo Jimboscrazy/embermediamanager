@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -92,21 +92,24 @@ Partial Class frmMain
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.pnlFilter = New System.Windows.Forms.Panel
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.chkFilterDupe = New System.Windows.Forms.CheckBox
+        Me.gbSpecific = New System.Windows.Forms.GroupBox
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.rbFilterAnd = New System.Windows.Forms.RadioButton
+        Me.rbFilterOr = New System.Windows.Forms.RadioButton
+        Me.chkFilterNew = New System.Windows.Forms.CheckBox
         Me.cbFilterYear = New System.Windows.Forms.ComboBox
+        Me.chkFilterMark = New System.Windows.Forms.CheckBox
         Me.cbFilterYearMod = New System.Windows.Forms.ComboBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.txtFilterGenre = New System.Windows.Forms.TextBox
+        Me.Label2 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
         Me.cbFilterSource = New System.Windows.Forms.ComboBox
-        Me.Label2 = New System.Windows.Forms.Label
         Me.btnFilterDown = New System.Windows.Forms.Button
         Me.btnFilterUp = New System.Windows.Forms.Button
-        Me.chkFilterDupe = New System.Windows.Forms.CheckBox
-        Me.rbFilterOr = New System.Windows.Forms.RadioButton
-        Me.rbFilterAnd = New System.Windows.Forms.RadioButton
-        Me.chkFilterMark = New System.Windows.Forms.CheckBox
         Me.lblFilter = New System.Windows.Forms.Label
-        Me.chkFilterNew = New System.Windows.Forms.CheckBox
         Me.pnlCancel = New System.Windows.Forms.Panel
         Me.pbCanceling = New System.Windows.Forms.ProgressBar
         Me.lblCanceling = New System.Windows.Forms.Label
@@ -249,6 +252,7 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
+        Me.btnClearFilters = New System.Windows.Forms.Button
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -262,6 +266,9 @@ Partial Class frmMain
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabsMain.SuspendLayout()
         Me.pnlFilter.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.gbSpecific.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlNoInfo.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -548,7 +555,7 @@ Partial Class frmMain
         Me.scMain.Panel2.Controls.Add(Me.pbFanart)
         Me.scMain.Panel2.Margin = New System.Windows.Forms.Padding(3)
         Me.scMain.Size = New System.Drawing.Size(1016, 688)
-        Me.scMain.SplitterDistance = 308
+        Me.scMain.SplitterDistance = 349
         Me.scMain.TabIndex = 7
         '
         'pnlFilterGenre
@@ -557,7 +564,7 @@ Partial Class frmMain
         Me.pnlFilterGenre.Controls.Add(Me.lblGFilClose)
         Me.pnlFilterGenre.Controls.Add(Me.Label4)
         Me.pnlFilterGenre.Controls.Add(Me.clbFilterGenres)
-        Me.pnlFilterGenre.Location = New System.Drawing.Point(135, 424)
+        Me.pnlFilterGenre.Location = New System.Drawing.Point(172, 422)
         Me.pnlFilterGenre.Name = "pnlFilterGenre"
         Me.pnlFilterGenre.Size = New System.Drawing.Size(166, 192)
         Me.pnlFilterGenre.TabIndex = 15
@@ -605,8 +612,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -622,7 +629,7 @@ Partial Class frmMain
         Me.dgvMediaList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMediaList.ShowCellErrors = False
         Me.dgvMediaList.ShowRowErrors = False
-        Me.dgvMediaList.Size = New System.Drawing.Size(308, 497)
+        Me.dgvMediaList.Size = New System.Drawing.Size(349, 477)
         Me.dgvMediaList.TabIndex = 10
         '
         'mnuMediaList
@@ -769,7 +776,7 @@ Partial Class frmMain
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(308, 56)
+        Me.Panel1.Size = New System.Drawing.Size(349, 56)
         Me.Panel1.TabIndex = 14
         '
         'pnlSearch
@@ -782,7 +789,7 @@ Partial Class frmMain
         Me.pnlSearch.Controls.Add(Me.txtSearch)
         Me.pnlSearch.Location = New System.Drawing.Point(0, 23)
         Me.pnlSearch.Name = "pnlSearch"
-        Me.pnlSearch.Size = New System.Drawing.Size(308, 33)
+        Me.pnlSearch.Size = New System.Drawing.Size(349, 33)
         Me.pnlSearch.TabIndex = 11
         '
         'cbSearch
@@ -791,7 +798,7 @@ Partial Class frmMain
         Me.cbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSearch.FormattingEnabled = True
         Me.cbSearch.Items.AddRange(New Object() {"Title", "Actor", "Director"})
-        Me.cbSearch.Location = New System.Drawing.Point(197, 5)
+        Me.cbSearch.Location = New System.Drawing.Point(238, 5)
         Me.cbSearch.Name = "cbSearch"
         Me.cbSearch.Size = New System.Drawing.Size(83, 21)
         Me.cbSearch.TabIndex = 2
@@ -800,7 +807,7 @@ Partial Class frmMain
         '
         Me.picSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.picSearch.Image = CType(resources.GetObject("picSearch.Image"), System.Drawing.Image)
-        Me.picSearch.Location = New System.Drawing.Point(284, 8)
+        Me.picSearch.Location = New System.Drawing.Point(325, 8)
         Me.picSearch.Name = "picSearch"
         Me.picSearch.Size = New System.Drawing.Size(16, 16)
         Me.picSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -814,7 +821,7 @@ Partial Class frmMain
         Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSearch.Location = New System.Drawing.Point(7, 6)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(186, 20)
+        Me.txtSearch.Size = New System.Drawing.Size(227, 20)
         Me.txtSearch.TabIndex = 0
         '
         'btnMarkAll
@@ -822,7 +829,7 @@ Partial Class frmMain
         Me.btnMarkAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMarkAll.Image = CType(resources.GetObject("btnMarkAll.Image"), System.Drawing.Image)
         Me.btnMarkAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMarkAll.Location = New System.Drawing.Point(226, 1)
+        Me.btnMarkAll.Location = New System.Drawing.Point(267, 1)
         Me.btnMarkAll.Name = "btnMarkAll"
         Me.btnMarkAll.Size = New System.Drawing.Size(81, 21)
         Me.btnMarkAll.TabIndex = 13
@@ -838,7 +845,7 @@ Partial Class frmMain
         Me.tabsMain.Location = New System.Drawing.Point(3, 3)
         Me.tabsMain.Name = "tabsMain"
         Me.tabsMain.SelectedIndex = 0
-        Me.tabsMain.Size = New System.Drawing.Size(306, 35)
+        Me.tabsMain.Size = New System.Drawing.Size(347, 35)
         Me.tabsMain.TabIndex = 8
         '
         'tabMovies
@@ -846,7 +853,7 @@ Partial Class frmMain
         Me.tabMovies.Location = New System.Drawing.Point(4, 22)
         Me.tabMovies.Name = "tabMovies"
         Me.tabMovies.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabMovies.Size = New System.Drawing.Size(298, 9)
+        Me.tabMovies.Size = New System.Drawing.Size(339, 9)
         Me.tabMovies.TabIndex = 0
         Me.tabMovies.Text = "Movies"
         Me.tabMovies.UseVisualStyleBackColor = True
@@ -854,43 +861,126 @@ Partial Class frmMain
         'pnlFilter
         '
         Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFilter.Controls.Add(Me.cbFilterYear)
-        Me.pnlFilter.Controls.Add(Me.cbFilterYearMod)
-        Me.pnlFilter.Controls.Add(Me.Label5)
-        Me.pnlFilter.Controls.Add(Me.txtFilterGenre)
-        Me.pnlFilter.Controls.Add(Me.Label3)
-        Me.pnlFilter.Controls.Add(Me.cbFilterSource)
-        Me.pnlFilter.Controls.Add(Me.Label2)
+        Me.pnlFilter.Controls.Add(Me.btnClearFilters)
+        Me.pnlFilter.Controls.Add(Me.GroupBox3)
+        Me.pnlFilter.Controls.Add(Me.gbSpecific)
         Me.pnlFilter.Controls.Add(Me.btnFilterDown)
         Me.pnlFilter.Controls.Add(Me.btnFilterUp)
-        Me.pnlFilter.Controls.Add(Me.chkFilterDupe)
-        Me.pnlFilter.Controls.Add(Me.rbFilterOr)
-        Me.pnlFilter.Controls.Add(Me.rbFilterAnd)
-        Me.pnlFilter.Controls.Add(Me.chkFilterMark)
         Me.pnlFilter.Controls.Add(Me.lblFilter)
-        Me.pnlFilter.Controls.Add(Me.chkFilterNew)
         Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter.Location = New System.Drawing.Point(0, 553)
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 533)
         Me.pnlFilter.Name = "pnlFilter"
-        Me.pnlFilter.Size = New System.Drawing.Size(308, 135)
+        Me.pnlFilter.Size = New System.Drawing.Size(349, 155)
         Me.pnlFilter.TabIndex = 12
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.chkFilterDupe)
+        Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(117, 99)
+        Me.GroupBox3.TabIndex = 37
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "General"
+        '
+        'chkFilterDupe
+        '
+        Me.chkFilterDupe.AutoSize = True
+        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 18)
+        Me.chkFilterDupe.Name = "chkFilterDupe"
+        Me.chkFilterDupe.Size = New System.Drawing.Size(108, 17)
+        Me.chkFilterDupe.TabIndex = 26
+        Me.chkFilterDupe.Text = "Duplicate Movies"
+        Me.chkFilterDupe.UseVisualStyleBackColor = True
+        '
+        'gbSpecific
+        '
+        Me.gbSpecific.Controls.Add(Me.GroupBox2)
+        Me.gbSpecific.Controls.Add(Me.chkFilterNew)
+        Me.gbSpecific.Controls.Add(Me.cbFilterYear)
+        Me.gbSpecific.Controls.Add(Me.chkFilterMark)
+        Me.gbSpecific.Controls.Add(Me.cbFilterYearMod)
+        Me.gbSpecific.Controls.Add(Me.Label5)
+        Me.gbSpecific.Controls.Add(Me.txtFilterGenre)
+        Me.gbSpecific.Controls.Add(Me.Label2)
+        Me.gbSpecific.Controls.Add(Me.Label3)
+        Me.gbSpecific.Controls.Add(Me.cbFilterSource)
+        Me.gbSpecific.Location = New System.Drawing.Point(121, 22)
+        Me.gbSpecific.Name = "gbSpecific"
+        Me.gbSpecific.Size = New System.Drawing.Size(224, 129)
+        Me.gbSpecific.TabIndex = 36
+        Me.gbSpecific.TabStop = False
+        Me.gbSpecific.Text = "Specific"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.rbFilterAnd)
+        Me.GroupBox2.Controls.Add(Me.rbFilterOr)
+        Me.GroupBox2.Location = New System.Drawing.Point(158, 10)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(58, 43)
+        Me.GroupBox2.TabIndex = 36
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Modifier"
+        '
+        'rbFilterAnd
+        '
+        Me.rbFilterAnd.AutoSize = True
+        Me.rbFilterAnd.Checked = True
+        Me.rbFilterAnd.Location = New System.Drawing.Point(6, 11)
+        Me.rbFilterAnd.Name = "rbFilterAnd"
+        Me.rbFilterAnd.Size = New System.Drawing.Size(44, 17)
+        Me.rbFilterAnd.TabIndex = 24
+        Me.rbFilterAnd.TabStop = True
+        Me.rbFilterAnd.Text = "And"
+        Me.rbFilterAnd.UseVisualStyleBackColor = True
+        '
+        'rbFilterOr
+        '
+        Me.rbFilterOr.AutoSize = True
+        Me.rbFilterOr.Location = New System.Drawing.Point(6, 25)
+        Me.rbFilterOr.Name = "rbFilterOr"
+        Me.rbFilterOr.Size = New System.Drawing.Size(36, 17)
+        Me.rbFilterOr.TabIndex = 25
+        Me.rbFilterOr.Text = "Or"
+        Me.rbFilterOr.UseVisualStyleBackColor = True
+        '
+        'chkFilterNew
+        '
+        Me.chkFilterNew.AutoSize = True
+        Me.chkFilterNew.Location = New System.Drawing.Point(9, 18)
+        Me.chkFilterNew.Name = "chkFilterNew"
+        Me.chkFilterNew.Size = New System.Drawing.Size(85, 17)
+        Me.chkFilterNew.TabIndex = 1
+        Me.chkFilterNew.Text = "New Movies"
+        Me.chkFilterNew.UseVisualStyleBackColor = True
         '
         'cbFilterYear
         '
         Me.cbFilterYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterYear.FormattingEnabled = True
         Me.cbFilterYear.Items.AddRange(New Object() {"=", ">", "<", "!="})
-        Me.cbFilterYear.Location = New System.Drawing.Point(214, 84)
+        Me.cbFilterYear.Location = New System.Drawing.Point(130, 80)
         Me.cbFilterYear.Name = "cbFilterYear"
         Me.cbFilterYear.Size = New System.Drawing.Size(69, 21)
         Me.cbFilterYear.TabIndex = 35
+        '
+        'chkFilterMark
+        '
+        Me.chkFilterMark.AutoSize = True
+        Me.chkFilterMark.Location = New System.Drawing.Point(9, 36)
+        Me.chkFilterMark.Name = "chkFilterMark"
+        Me.chkFilterMark.Size = New System.Drawing.Size(99, 17)
+        Me.chkFilterMark.TabIndex = 23
+        Me.chkFilterMark.Text = "Marked Movies"
+        Me.chkFilterMark.UseVisualStyleBackColor = True
         '
         'cbFilterYearMod
         '
         Me.cbFilterYearMod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterYearMod.FormattingEnabled = True
         Me.cbFilterYearMod.Items.AddRange(New Object() {"=", ">", "<", "<>"})
-        Me.cbFilterYearMod.Location = New System.Drawing.Point(151, 84)
+        Me.cbFilterYearMod.Location = New System.Drawing.Point(67, 80)
         Me.cbFilterYearMod.Name = "cbFilterYearMod"
         Me.cbFilterYearMod.Size = New System.Drawing.Size(59, 21)
         Me.cbFilterYearMod.TabIndex = 34
@@ -898,7 +988,7 @@ Partial Class frmMain
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(90, 87)
+        Me.Label5.Location = New System.Drawing.Point(6, 83)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(32, 13)
         Me.Label5.TabIndex = 33
@@ -907,16 +997,25 @@ Partial Class frmMain
         'txtFilterGenre
         '
         Me.txtFilterGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilterGenre.Location = New System.Drawing.Point(134, 62)
+        Me.txtFilterGenre.Location = New System.Drawing.Point(50, 58)
         Me.txtFilterGenre.Name = "txtFilterGenre"
         Me.txtFilterGenre.ReadOnly = True
         Me.txtFilterGenre.Size = New System.Drawing.Size(166, 20)
         Me.txtFilterGenre.TabIndex = 32
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(6, 107)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(44, 13)
+        Me.Label2.TabIndex = 29
+        Me.Label2.Text = "Source:"
+        '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(90, 64)
+        Me.Label3.Location = New System.Drawing.Point(6, 60)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(39, 13)
         Me.Label3.TabIndex = 31
@@ -926,26 +1025,17 @@ Partial Class frmMain
         '
         Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterSource.FormattingEnabled = True
-        Me.cbFilterSource.Location = New System.Drawing.Point(134, 107)
+        Me.cbFilterSource.Location = New System.Drawing.Point(50, 103)
         Me.cbFilterSource.Name = "cbFilterSource"
         Me.cbFilterSource.Size = New System.Drawing.Size(166, 21)
         Me.cbFilterSource.TabIndex = 30
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(90, 111)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(44, 13)
-        Me.Label2.TabIndex = 29
-        Me.Label2.Text = "Source:"
         '
         'btnFilterDown
         '
         Me.btnFilterDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnFilterDown.BackColor = System.Drawing.SystemColors.Control
         Me.btnFilterDown.Enabled = False
-        Me.btnFilterDown.Location = New System.Drawing.Point(268, 1)
+        Me.btnFilterDown.Location = New System.Drawing.Point(309, 1)
         Me.btnFilterDown.Name = "btnFilterDown"
         Me.btnFilterDown.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterDown.TabIndex = 28
@@ -958,55 +1048,13 @@ Partial Class frmMain
         Me.btnFilterUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnFilterUp.BackColor = System.Drawing.SystemColors.Control
         Me.btnFilterUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnFilterUp.Location = New System.Drawing.Point(236, 1)
+        Me.btnFilterUp.Location = New System.Drawing.Point(277, 1)
         Me.btnFilterUp.Name = "btnFilterUp"
         Me.btnFilterUp.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterUp.TabIndex = 27
         Me.btnFilterUp.Text = "^"
         Me.btnFilterUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnFilterUp.UseVisualStyleBackColor = False
-        '
-        'chkFilterDupe
-        '
-        Me.chkFilterDupe.AutoSize = True
-        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 23)
-        Me.chkFilterDupe.Name = "chkFilterDupe"
-        Me.chkFilterDupe.Size = New System.Drawing.Size(108, 17)
-        Me.chkFilterDupe.TabIndex = 26
-        Me.chkFilterDupe.Text = "Duplicate Movies"
-        Me.chkFilterDupe.UseVisualStyleBackColor = True
-        '
-        'rbFilterOr
-        '
-        Me.rbFilterOr.AutoSize = True
-        Me.rbFilterOr.Location = New System.Drawing.Point(258, 40)
-        Me.rbFilterOr.Name = "rbFilterOr"
-        Me.rbFilterOr.Size = New System.Drawing.Size(36, 17)
-        Me.rbFilterOr.TabIndex = 25
-        Me.rbFilterOr.Text = "Or"
-        Me.rbFilterOr.UseVisualStyleBackColor = True
-        '
-        'rbFilterAnd
-        '
-        Me.rbFilterAnd.AutoSize = True
-        Me.rbFilterAnd.Checked = True
-        Me.rbFilterAnd.Location = New System.Drawing.Point(258, 22)
-        Me.rbFilterAnd.Name = "rbFilterAnd"
-        Me.rbFilterAnd.Size = New System.Drawing.Size(44, 17)
-        Me.rbFilterAnd.TabIndex = 24
-        Me.rbFilterAnd.TabStop = True
-        Me.rbFilterAnd.Text = "And"
-        Me.rbFilterAnd.UseVisualStyleBackColor = True
-        '
-        'chkFilterMark
-        '
-        Me.chkFilterMark.AutoSize = True
-        Me.chkFilterMark.Location = New System.Drawing.Point(136, 41)
-        Me.chkFilterMark.Name = "chkFilterMark"
-        Me.chkFilterMark.Size = New System.Drawing.Size(99, 17)
-        Me.chkFilterMark.TabIndex = 23
-        Me.chkFilterMark.Text = "Marked Movies"
-        Me.chkFilterMark.UseVisualStyleBackColor = True
         '
         'lblFilter
         '
@@ -1018,20 +1066,10 @@ Partial Class frmMain
         Me.lblFilter.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilter.Location = New System.Drawing.Point(4, 3)
         Me.lblFilter.Name = "lblFilter"
-        Me.lblFilter.Size = New System.Drawing.Size(298, 17)
+        Me.lblFilter.Size = New System.Drawing.Size(339, 17)
         Me.lblFilter.TabIndex = 22
         Me.lblFilter.Text = "Filters"
         Me.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'chkFilterNew
-        '
-        Me.chkFilterNew.AutoSize = True
-        Me.chkFilterNew.Location = New System.Drawing.Point(136, 23)
-        Me.chkFilterNew.Name = "chkFilterNew"
-        Me.chkFilterNew.Size = New System.Drawing.Size(85, 17)
-        Me.chkFilterNew.TabIndex = 1
-        Me.chkFilterNew.Text = "New Movies"
-        Me.chkFilterNew.UseVisualStyleBackColor = True
         '
         'pnlCancel
         '
@@ -1153,7 +1191,7 @@ Partial Class frmMain
         Me.pnlInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 346)
         Me.pnlInfoPanel.Name = "pnlInfoPanel"
-        Me.pnlInfoPanel.Size = New System.Drawing.Size(704, 342)
+        Me.pnlInfoPanel.Size = New System.Drawing.Size(663, 342)
         Me.pnlInfoPanel.TabIndex = 10
         '
         'txtCerts
@@ -1163,7 +1201,7 @@ Partial Class frmMain
         Me.txtCerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtCerts.Location = New System.Drawing.Point(116, 208)
         Me.txtCerts.Name = "txtCerts"
-        Me.txtCerts.Size = New System.Drawing.Size(269, 20)
+        Me.txtCerts.Size = New System.Drawing.Size(228, 20)
         Me.txtCerts.TabIndex = 41
         '
         'lblCertsHeader
@@ -1176,7 +1214,7 @@ Partial Class frmMain
         Me.lblCertsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblCertsHeader.Location = New System.Drawing.Point(116, 188)
         Me.lblCertsHeader.Name = "lblCertsHeader"
-        Me.lblCertsHeader.Size = New System.Drawing.Size(269, 17)
+        Me.lblCertsHeader.Size = New System.Drawing.Size(228, 17)
         Me.lblCertsHeader.TabIndex = 40
         Me.lblCertsHeader.Text = "Certifications"
         Me.lblCertsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1186,7 +1224,7 @@ Partial Class frmMain
         Me.lblReleaseDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblReleaseDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblReleaseDate.ForeColor = System.Drawing.Color.Black
-        Me.lblReleaseDate.Location = New System.Drawing.Point(187, 48)
+        Me.lblReleaseDate.Location = New System.Drawing.Point(146, 48)
         Me.lblReleaseDate.Name = "lblReleaseDate"
         Me.lblReleaseDate.Size = New System.Drawing.Size(105, 16)
         Me.lblReleaseDate.TabIndex = 39
@@ -1200,7 +1238,7 @@ Partial Class frmMain
         Me.lblReleaseDateHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblReleaseDateHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblReleaseDateHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblReleaseDateHeader.Location = New System.Drawing.Point(188, 27)
+        Me.lblReleaseDateHeader.Location = New System.Drawing.Point(147, 27)
         Me.lblReleaseDateHeader.Name = "lblReleaseDateHeader"
         Me.lblReleaseDateHeader.Size = New System.Drawing.Size(105, 17)
         Me.lblReleaseDateHeader.TabIndex = 38
@@ -1211,7 +1249,7 @@ Partial Class frmMain
         '
         Me.btnMid.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMid.BackColor = System.Drawing.SystemColors.Control
-        Me.btnMid.Location = New System.Drawing.Point(633, 1)
+        Me.btnMid.Location = New System.Drawing.Point(592, 1)
         Me.btnMid.Name = "btnMid"
         Me.btnMid.Size = New System.Drawing.Size(30, 22)
         Me.btnMid.TabIndex = 37
@@ -1223,7 +1261,7 @@ Partial Class frmMain
         '
         Me.pbMILoading.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pbMILoading.Image = CType(resources.GetObject("pbMILoading.Image"), System.Drawing.Image)
-        Me.pbMILoading.Location = New System.Drawing.Point(535, 374)
+        Me.pbMILoading.Location = New System.Drawing.Point(494, 374)
         Me.pbMILoading.Name = "pbMILoading"
         Me.pbMILoading.Size = New System.Drawing.Size(41, 39)
         Me.pbMILoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -1234,7 +1272,7 @@ Partial Class frmMain
         'btnMIRefresh
         '
         Me.btnMIRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnMIRefresh.Location = New System.Drawing.Point(623, 278)
+        Me.btnMIRefresh.Location = New System.Drawing.Point(582, 278)
         Me.btnMIRefresh.Name = "btnMIRefresh"
         Me.btnMIRefresh.Size = New System.Drawing.Size(75, 23)
         Me.btnMIRefresh.TabIndex = 34
@@ -1248,7 +1286,7 @@ Partial Class frmMain
         Me.lblMIHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblMIHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMIHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblMIHeader.Location = New System.Drawing.Point(399, 282)
+        Me.lblMIHeader.Location = New System.Drawing.Point(358, 282)
         Me.lblMIHeader.Name = "lblMIHeader"
         Me.lblMIHeader.Size = New System.Drawing.Size(294, 17)
         Me.lblMIHeader.TabIndex = 35
@@ -1262,7 +1300,7 @@ Partial Class frmMain
         Me.txtMediaInfo.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.txtMediaInfo.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMediaInfo.ForeColor = System.Drawing.Color.Black
-        Me.txtMediaInfo.Location = New System.Drawing.Point(401, 303)
+        Me.txtMediaInfo.Location = New System.Drawing.Point(360, 303)
         Me.txtMediaInfo.Multiline = True
         Me.txtMediaInfo.Name = "txtMediaInfo"
         Me.txtMediaInfo.ReadOnly = True
@@ -1275,7 +1313,7 @@ Partial Class frmMain
         '
         Me.btnPlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnPlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlay.Location = New System.Drawing.Point(365, 254)
+        Me.btnPlay.Location = New System.Drawing.Point(324, 254)
         Me.btnPlay.Name = "btnPlay"
         Me.btnPlay.Size = New System.Drawing.Size(20, 20)
         Me.btnPlay.TabIndex = 32
@@ -1288,7 +1326,7 @@ Partial Class frmMain
         Me.txtFilePath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFilePath.Location = New System.Drawing.Point(3, 254)
         Me.txtFilePath.Name = "txtFilePath"
-        Me.txtFilePath.Size = New System.Drawing.Size(360, 20)
+        Me.txtFilePath.Size = New System.Drawing.Size(319, 20)
         Me.txtFilePath.TabIndex = 31
         '
         'lblFilePathHeader
@@ -1301,7 +1339,7 @@ Partial Class frmMain
         Me.lblFilePathHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblFilePathHeader.Location = New System.Drawing.Point(3, 234)
         Me.lblFilePathHeader.Name = "lblFilePathHeader"
-        Me.lblFilePathHeader.Size = New System.Drawing.Size(381, 17)
+        Me.lblFilePathHeader.Size = New System.Drawing.Size(340, 17)
         Me.lblFilePathHeader.TabIndex = 30
         Me.lblFilePathHeader.Text = "File Path"
         Me.lblFilePathHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1335,7 +1373,7 @@ Partial Class frmMain
         Me.lblDirector.ForeColor = System.Drawing.Color.Black
         Me.lblDirector.Location = New System.Drawing.Point(2, 48)
         Me.lblDirector.Name = "lblDirector"
-        Me.lblDirector.Size = New System.Drawing.Size(180, 16)
+        Me.lblDirector.Size = New System.Drawing.Size(139, 16)
         Me.lblDirector.TabIndex = 27
         Me.lblDirector.Text = "Director"
         Me.lblDirector.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1350,7 +1388,7 @@ Partial Class frmMain
         Me.lblDirectorHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblDirectorHeader.Location = New System.Drawing.Point(3, 27)
         Me.lblDirectorHeader.Name = "lblDirectorHeader"
-        Me.lblDirectorHeader.Size = New System.Drawing.Size(179, 17)
+        Me.lblDirectorHeader.Size = New System.Drawing.Size(138, 17)
         Me.lblDirectorHeader.TabIndex = 21
         Me.lblDirectorHeader.Text = "Director"
         Me.lblDirectorHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1363,7 +1401,7 @@ Partial Class frmMain
         Me.pnlActors.Controls.Add(Me.lstActors)
         Me.pnlActors.Controls.Add(Me.pbActors)
         Me.pnlActors.Controls.Add(Me.lblActorsHeader)
-        Me.pnlActors.Location = New System.Drawing.Point(397, 29)
+        Me.pnlActors.Location = New System.Drawing.Point(356, 29)
         Me.pnlActors.Name = "pnlActors"
         Me.pnlActors.Size = New System.Drawing.Size(302, 244)
         Me.pnlActors.TabIndex = 19
@@ -1424,7 +1462,7 @@ Partial Class frmMain
         Me.lblOutlineHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblOutlineHeader.Location = New System.Drawing.Point(3, 81)
         Me.lblOutlineHeader.Name = "lblOutlineHeader"
-        Me.lblOutlineHeader.Size = New System.Drawing.Size(382, 17)
+        Me.lblOutlineHeader.Size = New System.Drawing.Size(341, 17)
         Me.lblOutlineHeader.TabIndex = 17
         Me.lblOutlineHeader.Text = "Plot Outline"
         Me.lblOutlineHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1442,7 +1480,7 @@ Partial Class frmMain
         Me.txtOutline.Name = "txtOutline"
         Me.txtOutline.ReadOnly = True
         Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtOutline.Size = New System.Drawing.Size(382, 78)
+        Me.txtOutline.Size = New System.Drawing.Size(341, 78)
         Me.txtOutline.TabIndex = 16
         Me.txtOutline.Text = "Blah Blah Blah Plot Outline"
         '
@@ -1451,7 +1489,7 @@ Partial Class frmMain
         Me.pnlTop250.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlTop250.Controls.Add(Me.lblTop250)
         Me.pnlTop250.Controls.Add(Me.pbTop250)
-        Me.pnlTop250.Location = New System.Drawing.Point(318, 28)
+        Me.pnlTop250.Location = New System.Drawing.Point(277, 28)
         Me.pnlTop250.Name = "pnlTop250"
         Me.pnlTop250.Size = New System.Drawing.Size(56, 48)
         Me.pnlTop250.TabIndex = 15
@@ -1488,7 +1526,7 @@ Partial Class frmMain
         Me.lblPlotHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblPlotHeader.Location = New System.Drawing.Point(3, 282)
         Me.lblPlotHeader.Name = "lblPlotHeader"
-        Me.lblPlotHeader.Size = New System.Drawing.Size(388, 17)
+        Me.lblPlotHeader.Size = New System.Drawing.Size(347, 17)
         Me.lblPlotHeader.TabIndex = 8
         Me.lblPlotHeader.Text = "Plot"
         Me.lblPlotHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1506,14 +1544,14 @@ Partial Class frmMain
         Me.txtPlot.Name = "txtPlot"
         Me.txtPlot.ReadOnly = True
         Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtPlot.Size = New System.Drawing.Size(386, 184)
+        Me.txtPlot.Size = New System.Drawing.Size(345, 184)
         Me.txtPlot.TabIndex = 7
         '
         'btnDown
         '
         Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnDown.BackColor = System.Drawing.SystemColors.Control
-        Me.btnDown.Location = New System.Drawing.Point(665, 1)
+        Me.btnDown.Location = New System.Drawing.Point(624, 1)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(30, 22)
         Me.btnDown.TabIndex = 6
@@ -1526,7 +1564,7 @@ Partial Class frmMain
         Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnUp.BackColor = System.Drawing.SystemColors.Control
         Me.btnUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnUp.Location = New System.Drawing.Point(601, 1)
+        Me.btnUp.Location = New System.Drawing.Point(560, 1)
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(30, 22)
         Me.btnUp.TabIndex = 1
@@ -1544,7 +1582,7 @@ Partial Class frmMain
         Me.lblInfoPanelHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblInfoPanelHeader.Location = New System.Drawing.Point(3, 3)
         Me.lblInfoPanelHeader.Name = "lblInfoPanelHeader"
-        Me.lblInfoPanelHeader.Size = New System.Drawing.Size(696, 17)
+        Me.lblInfoPanelHeader.Size = New System.Drawing.Size(655, 17)
         Me.lblInfoPanelHeader.TabIndex = 0
         Me.lblInfoPanelHeader.Text = "Info"
         Me.lblInfoPanelHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1610,7 +1648,7 @@ Partial Class frmMain
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 25)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(704, 74)
+        Me.pnlTop.Size = New System.Drawing.Size(663, 74)
         Me.pnlTop.TabIndex = 9
         '
         'lblTitle
@@ -1634,7 +1672,7 @@ Partial Class frmMain
         Me.pnlInfoIcons.Controls.Add(Me.pbResolution)
         Me.pnlInfoIcons.Controls.Add(Me.pbChannels)
         Me.pnlInfoIcons.Dock = System.Windows.Forms.DockStyle.Right
-        Me.pnlInfoIcons.Location = New System.Drawing.Point(312, 0)
+        Me.pnlInfoIcons.Location = New System.Drawing.Point(271, 0)
         Me.pnlInfoIcons.Name = "pnlInfoIcons"
         Me.pnlInfoIcons.Size = New System.Drawing.Size(390, 72)
         Me.pnlInfoIcons.TabIndex = 31
@@ -1799,7 +1837,7 @@ Partial Class frmMain
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
         Me.tsMain.Padding = New System.Windows.Forms.Padding(0)
-        Me.tsMain.Size = New System.Drawing.Size(704, 25)
+        Me.tsMain.Size = New System.Drawing.Size(663, 25)
         Me.tsMain.Stretch = True
         Me.tsMain.TabIndex = 6
         '
@@ -2257,7 +2295,7 @@ Partial Class frmMain
         '
         Me.pbFanart.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.pbFanart.BackColor = System.Drawing.Color.DimGray
-        Me.pbFanart.Location = New System.Drawing.Point(4, 99)
+        Me.pbFanart.Location = New System.Drawing.Point(-17, 99)
         Me.pbFanart.Name = "pbFanart"
         Me.pbFanart.Size = New System.Drawing.Size(696, 250)
         Me.pbFanart.TabIndex = 1
@@ -2292,6 +2330,18 @@ Partial Class frmMain
         '
         Me.tmrFilterAni.Interval = 1
         '
+        'btnClearFilters
+        '
+        Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
+        Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnClearFilters.Location = New System.Drawing.Point(15, 125)
+        Me.btnClearFilters.Name = "btnClearFilters"
+        Me.btnClearFilters.Size = New System.Drawing.Size(92, 23)
+        Me.btnClearFilters.TabIndex = 16
+        Me.btnClearFilters.Text = "Clear Filters"
+        Me.btnClearFilters.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnClearFilters.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2324,7 +2374,12 @@ Partial Class frmMain
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabsMain.ResumeLayout(False)
         Me.pnlFilter.ResumeLayout(False)
-        Me.pnlFilter.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.gbSpecific.ResumeLayout(False)
+        Me.gbSpecific.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.pnlCancel.ResumeLayout(False)
         Me.pnlCancel.PerformLayout()
         Me.pnlNoInfo.ResumeLayout(False)
@@ -2592,4 +2647,8 @@ Partial Class frmMain
     Friend WithEvents cbFilterYearMod As System.Windows.Forms.ComboBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents cbFilterYear As System.Windows.Forms.ComboBox
+    Friend WithEvents gbSpecific As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnClearFilters As System.Windows.Forms.Button
 End Class
