@@ -1169,7 +1169,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnAddToken_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddToken.Click
-        If Not String.IsNullOrEmpty(lstSortTokens.Text) Then
+        If Not String.IsNullOrEmpty(txtSortToken.Text) Then
             If Not lstSortTokens.Items.Contains(txtSortToken.Text) Then
                 lstSortTokens.Items.Add(txtSortToken.Text)
                 Me.btnApply.Enabled = True
