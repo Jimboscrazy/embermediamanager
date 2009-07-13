@@ -203,7 +203,7 @@ Public Class frmMain
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
                 Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
                 Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
-                Me.pnlFilterGenre.Location = New Point(Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top) - Me.pnlFilterGenre.Height)
+                Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -449,7 +449,7 @@ Public Class frmMain
 
                 Me.aniFilterRaise = Master.eSettings.FilterPanelState
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = 135
+                    Me.pnlFilter.Height = 155
                     Me.btnFilterDown.Enabled = True
                     Me.btnFilterUp.Enabled = False
                 Else
@@ -811,7 +811,7 @@ Public Class frmMain
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
                 Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
                 Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
-                Me.pnlFilterGenre.Location = New Point(Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top) - Me.pnlFilterGenre.Height)
+                Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1026,10 +1026,8 @@ Public Class frmMain
 
     Private Sub chkFilterNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNew.Click
         Try
-            Me.chkFilterDupe.Enabled = Not Me.chkFilterNew.Checked
             If Me.chkFilterNew.Checked Then
                 Me.FilterArray.Add("new = 1")
-                Me.chkFilterDupe.Checked = False
             Else
                 Me.FilterArray.Remove("new = 1")
             End If
@@ -1040,10 +1038,8 @@ Public Class frmMain
 
     Private Sub chkFilterMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark.Click
         Try
-            Me.chkFilterDupe.Enabled = Not Me.chkFilterMark.Checked
             If Me.chkFilterMark.Checked Then
                 Me.FilterArray.Add("mark = 1")
-                Me.chkFilterDupe.Checked = False
             Else
                 Me.FilterArray.Remove("mark = 1")
             End If
@@ -1101,31 +1097,6 @@ Public Class frmMain
     Private Sub chkFilterDupe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.Click
 
         Try
-            Me.chkFilterMark.Enabled = Not chkFilterDupe.Checked
-            Me.chkFilterNew.Enabled = Not chkFilterDupe.Checked
-            Me.rbFilterAnd.Enabled = Not chkFilterDupe.Checked
-            Me.rbFilterOr.Enabled = Not chkFilterDupe.Checked
-            Me.cbFilterSource.Enabled = Not chkFilterDupe.Checked
-            Me.txtFilterGenre.Enabled = Not chkFilterDupe.Checked
-            Me.cbFilterYearMod.Enabled = Not chkFilterDupe.Checked
-            Me.cbFilterYear.Enabled = Not chkFilterDupe.Checked
-            If Me.chkFilterDupe.Checked Then
-                Me.chkFilterMark.Checked = False
-                Me.chkFilterNew.Checked = False
-                RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-                Me.cbFilterSource.SelectedIndex = 0
-                AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-                RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
-                Me.cbFilterYear.SelectedIndex = 0
-                AddHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
-                RemoveHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
-                Me.cbFilterYearMod.SelectedIndex = 0
-                AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
-                Me.txtFilterGenre.Text = String.Empty
-                For i As Integer = 0 To clbFilterGenres.Items.Count - 1
-                    clbFilterGenres.SetItemChecked(i, False)
-                Next
-            End If
             Me.RunFilter()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1784,7 +1755,7 @@ Public Class frmMain
                 End If
             Else
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = 135
+                    Me.pnlFilter.Height = 155
                 Else
                     Me.pnlFilter.Height = 25
                 End If
@@ -1793,7 +1764,7 @@ Public Class frmMain
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = True
                 Me.btnFilterDown.Enabled = False
-            ElseIf Me.pnlFilter.Height = 135 Then
+            ElseIf Me.pnlFilter.Height = 155 Then
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = False
                 Me.btnFilterDown.Enabled = True
@@ -1810,7 +1781,6 @@ Public Class frmMain
                 Application.DoEvents()
             Loop
 
-            Me.chkFilterDupe.Enabled = cbFilterSource.Text = "All"
             For i As Integer = Me.FilterArray.Count - 1 To 0 Step -1
                 If Strings.Left(Me.FilterArray(i), 8) = "source =" Then
                     Me.FilterArray.RemoveAt(i)
@@ -1819,7 +1789,6 @@ Public Class frmMain
 
             If Not cbFilterSource.Text = "All" Then
                 Me.FilterArray.Add(String.Format("source = '{0}'", cbFilterSource.Text))
-                Me.chkFilterDupe.Checked = False
             End If
             Me.RunFilter()
         Catch ex As Exception
@@ -1979,7 +1948,6 @@ Public Class frmMain
             Me.pnlFilterGenre.Tag = "NO"
 
             If clbFilterGenres.CheckedItems.Count > 0 Then
-                Me.chkFilterDupe.Enabled = False
                 Me.txtFilterGenre.Text = String.Empty
                 Me.FilterArray.Remove(Me.filGenre)
 
@@ -2017,7 +1985,7 @@ Public Class frmMain
     End Sub
 
     Private Sub txtFilterGenre_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterGenre.Click
-        Me.pnlFilterGenre.Location = New Point(Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top) - Me.pnlFilterGenre.Height)
+        Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
         If Me.pnlFilterGenre.Visible Then
             Me.pnlFilterGenre.Visible = False
         ElseIf Not Me.pnlFilterGenre.Tag = "NO" Then
@@ -2041,7 +2009,6 @@ Public Class frmMain
     Private Sub cbFilterYearMod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYearMod.SelectedIndexChanged
         Try
             If Not String.IsNullOrEmpty(cbFilterYear.Text) AndAlso Not cbFilterYear.Text = "All" Then
-                Me.chkFilterDupe.Enabled = False
                 Me.FilterArray.Remove(Me.filYear)
                 Me.filYear = String.Empty
 
@@ -2063,7 +2030,6 @@ Public Class frmMain
     Private Sub cbFilterYear_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYear.SelectedIndexChanged
         Try
             If Not String.IsNullOrEmpty(cbFilterYearMod.Text) AndAlso Not cbFilterYear.Text = "All" Then
-                Me.chkFilterDupe.Enabled = False
                 Me.FilterArray.Remove(Me.filYear)
                 Me.filYear = String.Empty
 
@@ -2085,6 +2051,11 @@ Public Class frmMain
         Catch
         End Try
     End Sub
+
+    Private Sub btnClearFilters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearFilters.Click
+        Me.ClearFilters(True)
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -3228,6 +3199,7 @@ doCancel:
             Me.dgvMediaList.DataSource = Nothing
 
             Me.ClearInfo()
+            Me.ClearFilters()
             Me.EnableFilters(False)
 
             Me.ToolsToolStripMenuItem.Enabled = False
@@ -4252,67 +4224,52 @@ doCancel:
     End Sub
 
     Private Sub EnableFilters(ByVal isEnabled As Boolean)
-        If isEnabled Then
-            If Me.chkFilterDupe.Checked Then
-                Me.chkFilterDupe.Enabled = True
-                Me.chkFilterMark.Enabled = False
-                Me.chkFilterNew.Enabled = False
-                Me.rbFilterOr.Enabled = False
-                Me.rbFilterAnd.Enabled = False
-                Me.cbFilterSource.Enabled = False
-                Me.txtFilterGenre.Enabled = False
-                Me.cbFilterYearMod.Enabled = False
-                Me.cbFilterYear.Enabled = False
-            ElseIf (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse (Not String.IsNullOrEmpty(Me.cbFilterSource.Text) AndAlso Not Me.cbFilterSource.Text = "All") Then
-                Me.chkFilterDupe.Enabled = False
-                Me.chkFilterMark.Enabled = True
-                Me.chkFilterNew.Enabled = True
-                Me.rbFilterOr.Enabled = True
-                Me.rbFilterAnd.Enabled = True
-                Me.cbFilterSource.Enabled = True
-                Me.txtFilterGenre.Enabled = True
-                Me.cbFilterYearMod.Enabled = True
-                Me.cbFilterYear.Enabled = True
-            Else
-                Me.chkFilterDupe.Enabled = True
-                Me.chkFilterMark.Enabled = True
-                Me.chkFilterNew.Enabled = True
-                Me.rbFilterOr.Enabled = True
-                Me.rbFilterAnd.Enabled = True
-                Me.cbFilterSource.Enabled = True
-                Me.txtFilterGenre.Enabled = True
-                Me.cbFilterYearMod.Enabled = True
-                Me.cbFilterYear.Enabled = True
-            End If
-        Else
-            Me.chkFilterDupe.Enabled = False
-            Me.chkFilterMark.Enabled = False
-            Me.chkFilterNew.Enabled = False
-            Me.rbFilterOr.Enabled = False
-            Me.rbFilterAnd.Enabled = False
-            Me.cbFilterSource.Enabled = False
-            Me.txtFilterGenre.Enabled = False
-            Me.cbFilterYearMod.Enabled = False
-            Me.cbFilterYear.Enabled = False
-        End If
+        Me.txtSearch.Enabled = isEnabled
+        Me.cbSearch.Enabled = isEnabled
+        Me.chkFilterDupe.Enabled = isEnabled
+        Me.chkFilterMark.Enabled = isEnabled
+        Me.chkFilterNew.Enabled = isEnabled
+        Me.rbFilterOr.Enabled = isEnabled
+        Me.rbFilterAnd.Enabled = isEnabled
+        Me.cbFilterSource.Enabled = isEnabled
+        Me.txtFilterGenre.Enabled = isEnabled
+        Me.cbFilterYearMod.Enabled = isEnabled
+        Me.cbFilterYear.Enabled = isEnabled
+        Me.btnClearFilters.Enabled = isEnabled
     End Sub
 
-    Private Sub ClearFilters()
-        Me.chkFilterDupe.Enabled = True
-        Me.chkFilterDupe.Checked = False
-        Me.chkFilterMark.Enabled = True
-        Me.chkFilterMark.Checked = False
-        Me.chkFilterNew.Enabled = True
-        Me.chkFilterNew.Checked = False
-        Me.rbFilterOr.Enabled = True
-        Me.rbFilterOr.Checked = False
-        Me.rbFilterAnd.Enabled = True
-        Me.rbFilterAnd.Checked = True
-        Me.cbFilterSource.Enabled = True
-        RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-        Me.cbFilterSource.Text = "All"
-        AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+    Private Sub ClearFilters(Optional ByVal Reload As Boolean = False)
 
+        Me.bsMedia.RemoveFilter()
+        Me.FilterArray.Clear()
+        Me.filSearch = String.Empty
+        Me.filGenre = String.Empty
+        Me.filYear = String.Empty
+
+        RemoveHandler txtSearch.TextChanged, AddressOf txtSearch_TextChanged
+        Me.txtSearch.Text = String.Empty
+        AddHandler txtSearch.TextChanged, AddressOf txtSearch_TextChanged
+        Me.cbSearch.SelectedIndex = 0
+        Me.chkFilterDupe.Checked = False
+        Me.chkFilterMark.Checked = False
+        Me.chkFilterNew.Checked = False
+        Me.rbFilterOr.Checked = False
+        Me.rbFilterAnd.Checked = True
+        Me.txtFilterGenre.Text = String.Empty
+        For i As Integer = 0 To Me.clbFilterGenres.Items.Count - 1
+            Me.clbFilterGenres.SetItemChecked(i, False)
+        Next
+        RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+        Me.cbFilterSource.SelectedIndex = 0
+        AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+        RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+        Me.cbFilterYear.SelectedIndex = 0
+        AddHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+        RemoveHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+        Me.cbFilterYearMod.SelectedIndex = 0
+        AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+
+        If Reload Then Me.FillList(0)
     End Sub
 
     Private Sub RunFilter()
@@ -4320,27 +4277,30 @@ doCancel:
         Try
             If Me.Visible Then
 
+                If FilterArray.Count > 0 Then
+                    Dim FilterString As String = String.Empty
+
+                    If rbFilterAnd.Checked Then
+                        FilterString = Strings.Join(FilterArray.ToArray, " AND ")
+                    Else
+                        FilterString = Strings.Join(FilterArray.ToArray, " OR ")
+                    End If
+
+                    bsMedia.Filter = FilterString
+                Else
+                    bsMedia.RemoveFilter()
+                End If
+
                 If Me.chkFilterDupe.Checked Then
                     Me.FillList(0, True)
                 ElseIf Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = "Actor" Then
                     Me.FillList(0, False, Me.filSearch)
                 Else
-                    If FilterArray.Count > 0 Then
-                        Dim FilterString As String = String.Empty
-
-                        If rbFilterAnd.Checked Then
-                            FilterString = Strings.Join(FilterArray.ToArray, " AND ")
-                        Else
-                            FilterString = Strings.Join(FilterArray.ToArray, " OR ")
-                        End If
-
-                        bsMedia.Filter = FilterString
-                    Else
-                        bsMedia.RemoveFilter()
-                    End If
                     Me.FillList(0)
                 End If
+
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4384,7 +4344,6 @@ doCancel:
 
     Private Sub SaveMovieList()
         Try
-            Me.ClearFilters()
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLcommand.CommandText = "UPDATE movies SET new = (?);"
