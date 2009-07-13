@@ -1107,13 +1107,41 @@ Public Class frmMain
     Private Sub dgvMediaList_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMediaList.KeyPress
 
         Try
-            For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
-                If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
-                    drvRow.Selected = True
-                    Me.dgvMediaList.CurrentCell = drvRow.Cells(3)
-                    Exit For
-                End If
-            Next
+            If Not Master.AlphaNumericOnly(e.KeyChar) Then
+                For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+                    If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
+                        drvRow.Selected = True
+                        Me.dgvMediaList.CurrentCell = drvRow.Cells(3)
+                        Exit For
+                    End If
+                Next
+            ElseIf e.KeyChar = Chr(13) Then
+                If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse _
+                Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+
+                Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
+                Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
+                Master.currMovie = Master.DB.LoadMovieFromDB(ID)
+                Me.tslStatus.Text = Master.currMovie.FaS.Filename
+                Me.tmpTitle = Me.dgvMediaList.Rows(indX).Cells(3).Value
+
+                Using dEditMovie As New dlgEditMovie
+
+                    Select Case dEditMovie.ShowDialog()
+                        Case Windows.Forms.DialogResult.OK
+                            Me.SetListItemAfterEdit(ID, indX)
+                            If Me.RefreshMovie(ID) Then
+                                Me.FillList(0)
+                            End If
+                        Case Windows.Forms.DialogResult.Retry
+                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions)
+                        Case Windows.Forms.DialogResult.Abort
+                            Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID, True)
+                    End Select
+
+                End Using
+
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1122,13 +1150,25 @@ Public Class frmMain
 
     Private Sub cmnuMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMark.Click
         Try
+            Dim setMark As Boolean = False
+            If Me.dgvMediaList.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    'if any one item is set as unmarked, set menu to mark
+                    'else they are all marked, so set menu to unmark
+                    If Not sRow.Cells(11).Value Then
+                        setMark = True
+                        Exit For
+                    End If
+                Next
+            End If
+
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                     SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                        parMark.Value = If(cmnuMark.Text = "Unmark", False, True)
+                        parMark.Value = If(Me.dgvMediaList.SelectedRows.Count > 1, setMark, Not sRow.Cells(11).Value)
                         parID.Value = sRow.Cells(0).Value
                         SQLcommand.ExecuteNonQuery()
                         sRow.Cells(11).Value = parMark.Value
@@ -1137,16 +1177,14 @@ Public Class frmMain
                 SQLtransaction.Commit()
             End Using
 
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
-                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    If SQLcount("mcount") > 0 Then
-                        Me.btnMarkAll.Text = "Unmark All"
-                    Else
-                        Me.btnMarkAll.Text = "Mark All"
-                    End If
-                End Using
-            End Using
+            setMark = False
+            For Each sRow As DataGridViewRow In Me.dgvMediaList.Rows
+                If sRow.Cells(11).Value Then
+                    setMark = True
+                    Exit For
+                End If
+            Next
+            Me.btnMarkAll.Text = If(setMark, "Unmark All", "Mark All")
 
             Me.SetFilterColors()
         Catch ex As Exception
@@ -1156,16 +1194,28 @@ Public Class frmMain
 
     Private Sub cmnuLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuLock.Click
         Try
+            Dim setLock As Boolean = False
+            If Me.dgvMediaList.SelectedRows.Count > 1 Then
+                For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                    'if any one item is set as unlocked, set menu to lock
+                    'else they are all locked so set menu to unlock
+                    If Not sRow.Cells(14).Value Then
+                        setLock = True
+                        Exit For
+                    End If
+                Next
+            End If
+
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                     SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                        parLock.Value = If(cmnuLock.Text = "Unlock", False, True)
+                        parLock.Value = If(Me.dgvMediaList.SelectedRows.Count > 1, setLock, Not sRow.Cells(14).Value)
                         parID.Value = sRow.Cells(0).Value
                         SQLcommand.ExecuteNonQuery()
-                        sRow.Cells(14).Value = If(cmnuLock.Text = "Unlock", False, True)
+                        sRow.Cells(14).Value = parLock.Value
                     Next
                 End Using
                 SQLtransaction.Commit()
@@ -1330,6 +1380,7 @@ Public Class frmMain
                     If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                         Dim setMark As Boolean = False
                         Dim setLock As Boolean = False
+
                         Me.cmnuTitle.Text = ">> Multiple <<"
                         Me.cmnuEditMovie.Visible = False
                         Me.cmnuRescrape.Visible = False
@@ -1342,16 +1393,16 @@ Public Class frmMain
                             'else they are all marked, so set menu to unmark
                             If Not sRow.Cells(11).Value Then
                                 setMark = True
+                                If setLock Then Exit For
                             End If
                             'if any one item is set as unlocked, set menu to lock
                             'else they are all locked so set menu to unlock
                             If Not sRow.Cells(14).Value Then
                                 setLock = True
+                                If setMark Then Exit For
                             End If
                         Next
 
-                        Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
-                        Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
                         Me.cmnuMark.Text = If(setMark, "Mark", "Unmark")
                         Me.cmnuLock.Text = If(setLock, "Lock", "Unlock")
 
@@ -2056,6 +2107,10 @@ Public Class frmMain
         Me.ClearFilters(True)
     End Sub
 
+    Private Sub dgvMediaList_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMediaList.KeyDown
+        'stop enter key from selecting next list item
+        e.Handled = e.KeyCode = Keys.Enter
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -4566,5 +4621,6 @@ doCancel:
     End Class
 
 #End Region '*** Routines/Functions
+
 
 End Class
