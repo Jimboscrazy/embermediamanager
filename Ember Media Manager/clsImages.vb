@@ -503,7 +503,7 @@ Public Class Images
                             If Not IsNothing(tmdbThumb.WebImage) Then
                                 If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = tmdbThumb.URL})
                                 _image = New Bitmap(tmdbThumb.WebImage)
-                                Save(Path.Combine(CachePath, String.Concat("poster_(", tmdbThumb.Description, ")_(url=", Master.CleanURL(tmdbThumb.URL), ").jpg")), 100)
+                                Save(Path.Combine(CachePath, String.Concat("poster_(", tmdbThumb.Description, ")_(url=", StringManip.CleanURL(tmdbThumb.URL), ").jpg")), 100)
                             End If
                             Me.Clear()
                         Next
@@ -816,7 +816,7 @@ Public Class Images
                                     miFanart.WebImage = GenericFromWeb(miFanart.URL)
                                     If Not IsNothing(miFanart.WebImage) Then
                                         _image = New Bitmap(miFanart.WebImage)
-                                        Save(Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", Master.CleanURL(miFanart.URL), ").jpg")), 100)
+                                        Save(Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringManip.CleanURL(miFanart.URL), ").jpg")), 100)
                                         If Not Master.eSettings.NoSaveImagesToNfo Then fArt.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)})
                                     End If
                                     Me.Clear()

@@ -1633,14 +1633,14 @@ Public Class emmSettings
                 If String.IsNullOrEmpty(Me._xbmcpassword) Then
                     Return String.Empty
                 Else
-                    Return Master.Decode(Me._xbmcpassword)
+                    Return StringManip.Decode(Me._xbmcpassword)
                 End If
             End Get
             Set(ByVal value As String)
                 If String.IsNullOrEmpty(value) Then
                     Me._xbmcpassword = value
                 Else
-                    Me._xbmcpassword = Master.Encode(value)
+                    Me._xbmcpassword = StringManip.Encode(value)
                 End If
             End Set
         End Property

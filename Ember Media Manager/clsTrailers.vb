@@ -348,7 +348,7 @@ Public Class Trailers
 
     Public Sub DeleteTrailers(ByVal sPath As String, ByVal NewTrailer As String)
         Dim parPath As String = Directory.GetParent(sPath).FullName
-        Dim tmpName As String = Path.Combine(parPath, Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
+        Dim tmpName As String = Path.Combine(parPath, StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
         Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
         For Each t As String In Master.eSettings.ValidExts
             If File.Exists(String.Concat(tmpName, "-trailer", t)) AndAlso Not String.Concat(tmpName, "-trailer", t).ToLower = NewTrailer.ToLower Then

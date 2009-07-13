@@ -131,13 +131,13 @@ Public Class dlgBulkRenamer
                                     MovieFile.IsSingle = _curMovie.FaS.isSingle
                                     If Not IsNothing(_curMovie.Movie.FileInfo) Then
                                         If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                            tVid = Master.GetBestVideo(_curMovie.Movie.FileInfo)
-                                            tRes = Master.GetResFromDimensions(tVid)
+                                            tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
+                                            tRes = NFO.GetResFromDimensions(tVid)
                                             MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), "Unknown", tRes))
                                         End If
 
                                         If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                                            tAud = Master.GetBestAudio(_curMovie.Movie.FileInfo)
+                                            tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
                                             MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), "Unknown", tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), "Unknown", tAud.Channels))
                                         End If
                                     End If
@@ -156,7 +156,7 @@ Public Class dlgBulkRenamer
                                             Exit For
                                         End If
                                     Next
-                                    MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(_curMovie.FaS.Filename))
+                                    MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_curMovie.FaS.Filename))
 
                                     FFRenamer.AddMovie(MovieFile)
 

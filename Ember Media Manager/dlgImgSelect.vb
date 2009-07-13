@@ -831,7 +831,7 @@ Public Class dlgImgSelect
                     If wrResponse.ContentType.Contains("image") Then
                         Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                         If Master.eSettings.UseImgCache Then
-                            Me.IMPAPosters.Item(i).URL = Master.CleanURL(Me.IMPAPosters.Item(i).URL)
+                            Me.IMPAPosters.Item(i).URL = StringManip.CleanURL(Me.IMPAPosters.Item(i).URL)
                             Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.IMPAPosters.Item(i).Description, ")_(url=", Me.IMPAPosters.Item(i).URL, ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
                                 Me.IMPAPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
                             End Using
@@ -852,7 +852,7 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            Me.lblDL2Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, Master.TruncateURL(sStatus, 40), sStatus))
+            Me.lblDL2Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL2.Value = e.ProgressPercentage
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -894,7 +894,7 @@ Public Class dlgImgSelect
                         If wrResponse.ContentType.Contains("image") Then
                             Me.TMDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                             If Master.eSettings.UseImgCache Then
-                                Me.TMDBPosters.Item(i).URL = Master.CleanURL(Me.TMDBPosters.Item(i).URL)
+                                Me.TMDBPosters.Item(i).URL = StringManip.CleanURL(Me.TMDBPosters.Item(i).URL)
                                 Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Me.TMDBPosters.Item(i).URL, ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
                                     Me.TMDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
                                 End Using
@@ -916,7 +916,7 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            Me.lblDL1Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, Master.TruncateURL(sStatus, 40), sStatus))
+            Me.lblDL1Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL1.Value = e.ProgressPercentage
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -956,7 +956,7 @@ Public Class dlgImgSelect
                     If wrResponse.ContentType.Contains("image") Then
                         Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
                         If Master.eSettings.UseImgCache Then
-                            Me.MPDBPosters.Item(i).URL = Master.CleanURL(Me.MPDBPosters.Item(i).URL)
+                            Me.MPDBPosters.Item(i).URL = StringManip.CleanURL(Me.MPDBPosters.Item(i).URL)
                             Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.MPDBPosters.Item(i).Description, ")_(url=", Me.MPDBPosters.Item(i).URL, ").jpg")), FileMode.OpenOrCreate, FileAccess.Write)
                                 Me.MPDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
                             End Using
@@ -977,7 +977,7 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            Me.lblDL3Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, Master.TruncateURL(sStatus, 40), sStatus))
+            Me.lblDL3Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL3.Value = e.ProgressPercentage
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

@@ -289,7 +289,7 @@ Public Class dlgEditMovie
 
         Try
             If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Master.currMovie.Movie = Master.LoadMovieFromNFO(Master.currMovie.FaS.Nfo, Master.currMovie.FaS.isSingle)
+                Master.currMovie.Movie = NFO.LoadMovieFromNFO(Master.currMovie.FaS.Nfo, Master.currMovie.FaS.isSingle)
                 Me.FillInfo(False)
             End If
         Catch ex As Exception
@@ -545,7 +545,7 @@ Public Class dlgEditMovie
                         Dim lCert() As String = .txtCerts.Text.Trim.Split(New Char() {"/"})
                         Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.CertificationLang), "\:(.*?)"))
                         If fCert.Count > 0 Then
-                            Master.currMovie.Movie.MPAA = If(Master.eSettings.CertificationLang = "USA", Master.USACertToMPAA(fCert(0).ToString.Trim), fCert(0).ToString.Trim)
+                            Master.currMovie.Movie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringManip.USACertToMPAA(fCert(0).ToString.Trim), fCert(0).ToString.Trim)
                         Else
                             Master.currMovie.Movie.MPAA = String.Empty
                         End If
@@ -1055,26 +1055,7 @@ Public Class dlgEditMovie
 
         Me.lbGenre.Items.Add("[none]")
 
-        Dim splitLang() As String
-
-        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres")
-
-        Try
-            Dim xGenre = From xGen In Master.GenreXML...<name> Select xGen.@searchstring, xGen.@language
-            If xGenre.Count > 0 Then
-                For i As Integer = 0 To xGenre.Count - 1
-                    splitLang = xGenre(i).language.Split(New Char() {"|"})
-                    For Each strGen As String In splitLang
-                        If Not Me.lbGenre.Items.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
-                            Me.lbGenre.Items.Add(xGenre(i).searchstring)
-                        End If
-                    Next
-                Next
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+        Me.lbGenre.Items.AddRange(XML.GetGenreList)
 
     End Sub
 
@@ -1086,35 +1067,14 @@ Public Class dlgEditMovie
 
         Me.lbMPAA.Items.Add("[none]")
 
-        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Ratings")
-
-        Try
-            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso Master.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
-                Dim xRating = From xRat In Master.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
-                If xRating.Count > 0 Then
-                    For Each strRating As String In xRating
-                        Me.lbMPAA.Items.Add(strRating)
-                    Next
-                End If
-            Else
-                Dim xRating = From xRat In Master.RatingXML...<usa>...<name> Select xRat.@searchstring
-                If xRating.Count > 0 Then
-                    For Each strRating As String In xRating
-                        Me.lbMPAA.Items.Add(strRating.Trim)
-                    Next
-                End If
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+        Me.lbMPAA.Items.Add(XML.GetRatingList)
 
     End Sub
 
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             Try
-                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso Master.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
+                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso XML.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
                     Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.Movie.MPAA))
                     Me.lbMPAA.SelectedIndex = l
                     If Me.lbMPAA.SelectedItems.Count = 0 Then
@@ -1188,7 +1148,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtThumbCount.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtThumbCount_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.LostFocus

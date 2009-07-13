@@ -199,7 +199,7 @@ Public Class frmMain
             If Me.Created Then
                 Me.MoveMPAA()
                 Me.MoveGenres()
-                Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
                 Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
                 Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
@@ -388,7 +388,7 @@ Public Class frmMain
 
                         If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
                             Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
-                            Me.tmpTitle = Master.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
+                            Me.tmpTitle = StringManip.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
                             Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, Nothing, clAsk)
                         Else
                             Me.ScraperDone = True
@@ -422,7 +422,7 @@ Public Class frmMain
                 Me.Size = Master.eSettings.WindowSize
                 Me.WindowState = Master.eSettings.WindowState
 
-                Master.CacheXMLs()
+                XML.CacheXMLs()
 
                 Me.SetColors()
                 Me.SetToolTips()
@@ -807,7 +807,7 @@ Public Class frmMain
                 Me.MoveMPAA()
                 Me.MoveGenres()
 
-                Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
                 Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
                 Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
@@ -919,7 +919,7 @@ Public Class frmMain
     End Sub
 
     Private Sub txtSearch_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearch.KeyPress
-        e.Handled = Master.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = StringManip.AlphaNumericOnly(e.KeyChar, True)
     End Sub
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
@@ -1107,7 +1107,7 @@ Public Class frmMain
     Private Sub dgvMediaList_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMediaList.KeyPress
 
         Try
-            If Not Master.AlphaNumericOnly(e.KeyChar) Then
+            If Not StringManip.AlphaNumericOnly(e.KeyChar) Then
                 For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
                     If drvRow.Cells(3).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
                         drvRow.Selected = True
@@ -2281,9 +2281,9 @@ Public Class frmMain
                         sFile.Extra = aContents(5)
 
                         If Not String.IsNullOrEmpty(sFile.Nfo) Then
-                            tmpMovieDB.Movie = Master.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                            tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
                         Else
-                            tmpMovieDB.Movie = Master.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
+                            tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
                         End If
 
                         If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
@@ -2292,22 +2292,22 @@ Public Class frmMain
 
                             If sFile.UseFolder Then
                                 If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                    tmpMovieDB.ListTitle = Master.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
                                 Else
-                                    tmpMovieDB.ListTitle = Master.FilterName(Directory.GetParent(sFile.Filename).Name)
+                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
                                 End If
                             Else
                                 If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                    tmpMovieDB.ListTitle = Master.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
                                 Else
-                                    tmpMovieDB.ListTitle = Master.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                    tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
                                 End If
                             End If
                         Else
                             If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", Master.FilterTokens(tmpMovieDB.Movie.Title), tmpMovieDB.Movie.Year)
+                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(tmpMovieDB.Movie.Title), tmpMovieDB.Movie.Year)
                             Else
-                                tmpMovieDB.ListTitle = Master.FilterTokens(tmpMovieDB.Movie.Title)
+                                tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
                             End If
                         End If
 
@@ -2377,7 +2377,7 @@ Public Class frmMain
                 Return
             End If
 
-            e.Result = New Results With {.fileinfo = Master.FIToString(Args.Movie.Movie.FileInfo), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
+            e.Result = New Results With {.fileinfo = NFO.FIToString(Args.Movie.Movie.FileInfo), .setEnabled = Args.setEnabled, .Path = Args.Path, .Movie = Args.Movie}
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
@@ -2398,7 +2398,7 @@ Public Class frmMain
                     Me.pbMILoading.Visible = False
                     Me.txtMediaInfo.Text = Res.fileInfo
                     If Master.eSettings.ScanMediaInfo Then
-                        Master.GetAVImages(Res.Movie)
+                        XML.GetAVImages(Res.Movie)
                         Me.pnlInfoIcons.Width = 390
                         Me.pbStudio.Left = 325
                     Else
@@ -2549,8 +2549,8 @@ Public Class frmMain
 
                 If Not IsNothing(Me.MainPoster.Image) Then
                     Me.pbPosterCache.Image = Me.MainPoster.Image
-                    Master.ResizePB(Me.pbPoster, Me.pbPosterCache, 160, 160)
-                    Master.SetOverlay(Me.pbPoster)
+                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, 160, 160)
+                    ImageManip.SetOverlay(Me.pbPoster)
                     Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                     If Master.eSettings.ShowDims Then
@@ -2559,7 +2559,7 @@ Public Class frmMain
                         strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
                         lenSize = g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width
                         rect = New Rectangle((pbPoster.Image.Width - lenSize) / 2 - 15, Me.pbPoster.Height - 25, lenSize + 30, 25)
-                        Master.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                        ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                         g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbPoster.Image.Width - lenSize) / 2, Me.pbPoster.Height - 20)
                     End If
 
@@ -2573,7 +2573,7 @@ Public Class frmMain
                     End If
                 End If
 
-                Master.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
                 Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
 
                 If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
@@ -2582,7 +2582,7 @@ Public Class frmMain
                     strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
                     lenSize = g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width
                     rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                    Master.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
                 End If
 
@@ -2666,12 +2666,12 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", Master.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
+                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
                                     Else
-                                        scrapeMovie.ListTitle = Master.FilterTokens(scrapeMovie.Movie.Title)
+                                        scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
                                     End If
                                 Else
-                                    scrapeMovie.ListTitle = Master.FilterName(drvRow.Item(3))
+                                    scrapeMovie.ListTitle = StringManip.FilterName(drvRow.Item(3))
                                 End If
                                 Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
 
@@ -2821,12 +2821,12 @@ Public Class frmMain
 
                                         If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                             If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                                scrapeMovie.ListTitle = String.Format("{0} ({1})", Master.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
+                                                scrapeMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
                                             Else
-                                                scrapeMovie.ListTitle = Master.FilterTokens(scrapeMovie.Movie.Title)
+                                                scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
                                             End If
                                         Else
-                                            scrapeMovie.ListTitle = Master.FilterName(drvRow.Item(3))
+                                            scrapeMovie.ListTitle = StringManip.FilterName(drvRow.Item(3))
                                         End If
                                         Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
 
@@ -3487,7 +3487,7 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
-                Dim tmpRatingImg As Image = Master.GetRatingImage(Master.currMovie.Movie.MPAA)
+                Dim tmpRatingImg As Image = XML.GetRatingImage(Master.currMovie.Movie.MPAA)
                 If Not IsNothing(tmpRatingImg) Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
@@ -3505,13 +3505,13 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
-                Me.pbStudio.Image = Master.GetStudioImage(Master.currMovie.Movie.Studio)
+                Me.pbStudio.Image = XML.GetStudioImage(Master.currMovie.Movie.Studio)
             Else
-                Me.pbStudio.Image = Master.GetStudioImage("####")
+                Me.pbStudio.Image = XML.GetStudioImage("####")
             End If
 
             If Master.eSettings.ScanMediaInfo Then
-                Master.GetAVImages(Master.currMovie)
+                XML.GetAVImages(Master.currMovie)
                 Me.pnlInfoIcons.Width = 390
                 Me.pbStudio.Left = 325
             Else
@@ -3528,7 +3528,7 @@ doCancel:
             Me.lblReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
             Me.txtCerts.Text = Master.currMovie.Movie.Certification
 
-            Me.txtMediaInfo.Text = Master.FIToString(Master.currMovie.Movie.FileInfo)
+            Me.txtMediaInfo.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3622,7 +3622,7 @@ doCancel:
                 Me.pnlGenre(i).BackColor = Color.Gainsboro
                 Me.pnlGenre(i).BorderStyle = BorderStyle.FixedSingle
                 Me.pbGenre(i).SizeMode = PictureBoxSizeMode.StretchImage
-                Me.pbGenre(i).Image = Master.GetGenreImage(genreArray(i).Trim)
+                Me.pbGenre(i).Image = XML.GetGenreImage(genreArray(i).Trim)
                 Me.pnlGenre(i).Left = ((Me.pnlInfoPanel.Right) - (i * 73)) - 73
                 Me.pbGenre(i).Left = 2
                 Me.pnlGenre(i).Top = Me.pnlInfoPanel.Top - 105
@@ -3880,7 +3880,7 @@ doCancel:
                 Dim MI As New MediaInfo
                 MI.GetMovieMIFromPath(miMovie.Movie.FileInfo, miMovie.FaS.Filename)
                 If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                    Dim tVid As MediaInfo.Video = Master.GetBestVideo(miMovie.Movie.FileInfo)
+                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
 
                     If Not String.IsNullOrEmpty(tVid.Duration) Then
                         Dim sDuration As Match = Regex.Match(tVid.Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
@@ -4011,20 +4011,20 @@ doCancel:
 
                 If FromNfo Then
                     If String.IsNullOrEmpty(dRow(0).Item(42)) Then
-                        Dim sNFO As String = Master.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2))
+                        Dim sNFO As String = NFO.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2))
                         tmpMovieDb.FaS.Nfo = sNFO
-                        tmpMovie = Master.LoadMovieFromNFO(sNFO, dRow(0).Item(2))
+                        tmpMovie = NFO.LoadMovieFromNFO(sNFO, dRow(0).Item(2))
                     Else
-                        tmpMovie = Master.LoadMovieFromNFO(dRow(0).Item(42), dRow(0).Item(2))
+                        tmpMovie = NFO.LoadMovieFromNFO(dRow(0).Item(42), dRow(0).Item(2))
                     End If
 
                     If String.IsNullOrEmpty(tmpMovie.Title) Then
-                        tmpMovieDb.ListTitle = Master.FilterName(dRow(0).Item(3))
+                        tmpMovieDb.ListTitle = StringManip.FilterName(dRow(0).Item(3))
                     Else
                         If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovie.Year) Then
-                            tmpMovieDb.ListTitle = String.Format("{0} ({1})", Master.FilterTokens(tmpMovie.Title), tmpMovie.Year)
+                            tmpMovieDb.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(tmpMovie.Title), tmpMovie.Year)
                         Else
-                            tmpMovieDb.ListTitle = Master.FilterTokens(tmpMovie.Title)
+                            tmpMovieDb.ListTitle = StringManip.FilterTokens(tmpMovie.Title)
                         End If
                     End If
                     Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
@@ -4170,21 +4170,9 @@ doCancel:
 
                 GenreListToolStripComboBox.Items.Clear()
                 Me.clbFilterGenres.Items.Clear()
-                Dim splitLang() As String
-                Dim xGenre = From xGen In Master.GenreXML...<name> Select xGen.@searchstring, xGen.@language
-                If xGenre.Count > 0 Then
-                    For i As Integer = 0 To xGenre.Count - 1
-                        splitLang = xGenre(i).language.Split(New Char() {"|"})
-                        For Each strGen As String In splitLang
-                            If Not Me.GenreListToolStripComboBox.Items.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
-                                GenreListToolStripComboBox.Items.Add(xGenre(i).searchstring)
-                            End If
-                            If Not Me.clbFilterGenres.Items.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains("[All]") OrElse Master.eSettings.GenreFilter.Split(New Char() {","}).Contains(strGen)) Then
-                                clbFilterGenres.Items.Add(xGenre(i).searchstring)
-                            End If
-                        Next
-                    Next
-                End If
+                Dim lGenre() As Object = XML.GetGenreList
+                GenreListToolStripComboBox.Items.AddRange(lGenre)
+                clbFilterGenres.Items.AddRange(lGenre)
 
                 'not technically a menu, but it's a good place to put it
                 If ReloadFilters Then

@@ -188,7 +188,7 @@ Public Class FileFolderRenamer
             Dim pattern As String = opattern
             Dim strSource As String = String.Empty
             Try
-                Dim xVSourceFlag = From xVSource In Master.FlagsXML...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
+                Dim xVSourceFlag = From xVSource In XML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
                 'Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Select xVSource.@searchstring
                 If xVSourceFlag.Count > 0 Then
                     strSource = xVSourceFlag(0).ToString
@@ -469,8 +469,8 @@ Public Class FileFolderRenamer
         MovieFile.Title = _tmpMovie.Title
         MovieFile.Year = _tmpMovie.Year
         If Not IsNothing(_tmpMovie.FileInfo) Then
-            If _tmpMovie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = Master.GetResFromDimensions(Master.GetBestVideo(_tmpMovie.FileInfo))
-            If _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = Master.GetBestAudio(_tmpMovie.FileInfo).Codec
+            If _tmpMovie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = NFO.GetResFromDimensions(NFO.GetBestVideo(_tmpMovie.FileInfo))
+            If _tmpMovie.FileInfo.StreamDetails.Audio.Count > 0 Then MovieFile.Audio = NFO.GetBestAudio(_tmpMovie.FileInfo).Codec
         End If
 
         MovieFile.BasePath = Path.GetDirectoryName(_tmpPath)
@@ -487,7 +487,7 @@ Public Class FileFolderRenamer
                 Exit For
             End If
         Next
-        MovieFile.FileName = Path.GetFileNameWithoutExtension(Master.CleanStackingMarkers(_tmpPath))
+        MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_tmpPath))
 
         bulkRename.AddMovie(MovieFile)
         bulkRename.ProccessFiles(folderPattern, filePattern)

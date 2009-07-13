@@ -164,7 +164,7 @@ Public Class dlgImgView
             Me.isFull = False
             Me.pnlBG.AutoScroll = False
 
-            Master.ResizePB(Me.pbPicture, Me.pbCache, My.Computer.Screen.Bounds.Height - 60, My.Computer.Screen.Bounds.Width)
+            ImageManip.ResizePB(Me.pbPicture, Me.pbCache, My.Computer.Screen.Bounds.Height - 60, My.Computer.Screen.Bounds.Width)
 
             Me.Width = Me.pbPicture.Width
             Me.Height = Me.pbPicture.Height + 53

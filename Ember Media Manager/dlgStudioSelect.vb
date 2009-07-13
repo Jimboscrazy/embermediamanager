@@ -40,7 +40,7 @@ Public Class dlgStudioSelect
         Dim alStudio As ArrayList = IMDB.GetMovieStudios(Me._imdbid)
 
         For i As Integer = 0 To alStudio.Count - 1
-            ilStudios.Images.Add(alStudio(i).ToString, Master.GetStudioImage(alStudio(i).ToString))
+            ilStudios.Images.Add(alStudio(i).ToString, XML.GetStudioImage(alStudio(i).ToString))
             Dim lvItem As ListViewItem = lvStudios.Items.Add(alStudio(i).ToString, i)
         Next
 
