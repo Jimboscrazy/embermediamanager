@@ -158,7 +158,10 @@ Public Class MediaInfo
                 If Master.IsStacked(Path.GetFileNameWithoutExtension(sPath)) Then
                     Dim tFile As New ArrayList
                     Dim sFile As New ArrayList
-                    tFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, Master.CleanStackingMarkers(Path.GetFileName(sPath), True)))
+                    Try
+                        tFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, Master.CleanStackingMarkers(Path.GetFileName(sPath), True)))
+                    Catch
+                    End Try
                     sFile.AddRange(tFile.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
 
                     Dim TotalDur As Integer = 0
