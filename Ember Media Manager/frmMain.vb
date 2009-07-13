@@ -2647,7 +2647,6 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
                                 Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
-                                iCount += 1
 
                                 If drvRow.Item(14) Then Continue For
 
@@ -2786,12 +2785,16 @@ Public Class frmMain
 
 
                                 Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
+
+                                'use this one to check for need of load info
+                                Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                iCount += 1
                             Next
 
                         Case Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
                             For Each drvRow As DataRow In Me.dtMedia.Rows
+
                                 Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
-                                iCount += 1
 
                                 If drvRow.Item(14) Then Continue For
 
@@ -2930,6 +2933,10 @@ Public Class frmMain
 
                                 End If
 
+                                'use this one to check for need of load info
+                                Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                iCount += 1
+
                             Next
 
                         Case Master.ScrapeType.CleanFolders
@@ -3017,9 +3024,15 @@ doCancel:
     End Sub
     Private Sub bwScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwScraper.ProgressChanged
         If Not isCL Then
-            SetFilterColors()
-            Me.tslStatus.Text = e.UserState.ToString
-            Me.tspbLoading.Value = e.ProgressPercentage
+            If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") Then
+                If Me.dgvMediaList.SelectedRows(0).Cells(0).Value = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
+                    Me.LoadInfo(Me.dgvMediaList.SelectedRows(0).Cells(0).Value, Me.dgvMediaList.SelectedRows(0).Cells(1).Value, True, False)
+                End If
+            Else
+                SetFilterColors()
+                Me.tslStatus.Text = e.UserState.ToString
+                Me.tspbLoading.Value = e.ProgressPercentage
+            End If
         End If
     End Sub
 
@@ -3298,13 +3311,6 @@ doCancel:
                 End While
             End If
 
-            If Me.bwMediaInfo.IsBusy Then
-                Me.bwMediaInfo.CancelAsync()
-                While Me.bwMediaInfo.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
-
             If Me.bwLoadInfo.IsBusy Then
                 Me.bwLoadInfo.CancelAsync()
                 While Me.bwLoadInfo.IsBusy
@@ -3313,6 +3319,12 @@ doCancel:
             End If
 
             If doMI Then
+                If Me.bwMediaInfo.IsBusy Then
+                    Me.bwMediaInfo.CancelAsync()
+                    While Me.bwMediaInfo.IsBusy
+                        Application.DoEvents()
+                    End While
+                End If
                 Me.txtMediaInfo.Clear()
                 Me.pbMILoading.Visible = True
             End If
