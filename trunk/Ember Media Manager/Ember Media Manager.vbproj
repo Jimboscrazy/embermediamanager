@@ -151,7 +151,9 @@
     <Compile Include="clsErrorLog.vb" />
     <Compile Include="clsHashing.vb" />
     <Compile Include="clsHTTP.vb" />
+    <Compile Include="clsImageManip.vb" />
     <Compile Include="clsImages.vb" />
+    <Compile Include="clsNFO.vb" />
     <Compile Include="clsRenamer.vb" />
     <Compile Include="clsScrapeIMDB.vb" />
     <Compile Include="clsScrapeIMPA.vb" />
@@ -160,7 +162,9 @@
     <Compile Include="clsSettings.vb" />
     <Compile Include="clsSorter.vb" />
     <Compile Include="clsScrapeTMDB.vb" />
+    <Compile Include="clsStringManip.vb" />
     <Compile Include="clsTrailers.vb" />
+    <Compile Include="clsXML.vb" />
     <Compile Include="dlgImgManual.Designer.vb">
       <DependentUpon>dlgImgManual.vb</DependentUpon>
     </Compile>

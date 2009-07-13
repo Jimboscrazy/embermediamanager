@@ -155,11 +155,11 @@ Public Class MediaInfo
 
             ElseIf Not sExt = (".ifo") Then
 
-                If Master.IsStacked(Path.GetFileNameWithoutExtension(sPath)) Then
+                If StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath)) Then
                     Dim tFile As New ArrayList
                     Dim sFile As New ArrayList
                     Try
-                        tFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, Master.CleanStackingMarkers(Path.GetFileName(sPath), True)))
+                        tFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, StringManip.CleanStackingMarkers(Path.GetFileName(sPath), True)))
                     Catch
                     End Try
                     sFile.AddRange(tFile.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
@@ -380,8 +380,8 @@ Public Class MediaInfo
 
     Private Function ConvertL(ByVal sLang As String) As String
 
-        If Master.LanguageXML.Nodes.Count > 0 Then
-            Dim xShortLang = From xLang In Master.LanguageXML.Descendants("Language") Where xLang.Element("Name").Value = sLang Select xLang.Element("Code").Value
+        If XML.LanguageXML.Nodes.Count > 0 Then
+            Dim xShortLang = From xLang In XML.LanguageXML.Descendants("Language") Where xLang.Element("Name").Value = sLang Select xLang.Element("Code").Value
             If xShortLang.Count > 0 Then
                 Return xShortLang(0)
             Else

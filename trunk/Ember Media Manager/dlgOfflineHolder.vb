@@ -602,7 +602,7 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub txtTop_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTop.KeyPress
-        If Master.NumericOnly(e.KeyChar) Then
+        If StringManip.NumericOnly(e.KeyChar) Then
             e.Handled = True
             Me.CheckConditions()
         Else

@@ -502,7 +502,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtIP_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtIP.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar, True)
+        e.Handled = StringManip.NumericOnly(e.KeyChar, True)
     End Sub
 
     Private Sub txtIP_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIP.TextChanged
@@ -510,7 +510,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPort.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPort.TextChanged
@@ -546,11 +546,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFanartWidth.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFanartHeight.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFanartWidth.TextChanged
@@ -574,11 +574,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPosterWidth.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtPosterHeight.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPosterWidth.TextChanged
@@ -606,7 +606,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtAutoThumbs_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtAutoThumbs.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtAutoThumbs_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtAutoThumbs.TextChanged
@@ -885,7 +885,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSkipLessThan.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSkipLessThan.TextChanged
@@ -940,7 +940,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtTimeout_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTimeout.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtTimeout_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTimeout.TextChanged
@@ -1136,11 +1136,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtETWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtETWidth.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtETHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtETHeight.KeyPress
-        e.Handled = Master.NumericOnly(e.KeyChar)
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtETWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtETWidth.TextChanged
@@ -1601,26 +1601,7 @@ Public Class dlgSettings
         '\\
 
         Me.lbGenre.Items.Add("[All]")
-
-        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Genres")
-
-        If File.Exists(Path.Combine(mePath, "Genres.xml")) Then
-            Try
-                Dim xmlGenre As XDocument = XDocument.Load(Path.Combine(mePath, "Genres.xml"))
-
-                Dim xGenre = From xGen In xmlGenre...<supported>.Descendants Select xGen.Value
-                If xGenre.Count > 0 Then
-                    For Each sGenre As String In xGenre
-                        Me.lbGenre.Items.Add(sGenre)
-                    Next
-                End If
-
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        Else
-            MsgBox(String.Concat("Cannot find Genres.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, Path.Combine(mePath, "Genres.xml")), MsgBoxStyle.Critical, "File Not Found")
-        End If
+        Me.lbGenre.Items.AddRange(XML.GetGenreList(True))
 
     End Sub
 

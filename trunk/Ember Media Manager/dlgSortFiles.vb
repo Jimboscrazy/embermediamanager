@@ -70,7 +70,7 @@ Public Class dlgSortFiles
 
                 For Each sFile As FileInfo In lFi
                     lblStatus.Text = String.Concat("Moving ", sFile.Name)
-                    tmpName = Master.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sFile.Name))
+                    tmpName = StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sFile.Name))
                     tmpName = tmpName.Replace(".fanart", String.Empty)
                     tmpName = tmpName.Replace("-fanart", String.Empty)
                     tmpName = tmpName.Replace("-trailer", String.Empty)
