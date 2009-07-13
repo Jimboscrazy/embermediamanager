@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -92,6 +92,7 @@ Partial Class frmMain
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.pnlFilter = New System.Windows.Forms.Panel
+        Me.btnClearFilters = New System.Windows.Forms.Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.chkFilterDupe = New System.Windows.Forms.CheckBox
         Me.gbSpecific = New System.Windows.Forms.GroupBox
@@ -252,7 +253,6 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.btnClearFilters = New System.Windows.Forms.Button
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -345,42 +345,42 @@ Partial Class frmMain
         Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
-        Me.FileToolStripMenuItem.Text = "File"
+        Me.FileToolStripMenuItem.Text = "&File"
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Image = CType(resources.GetObject("ExitToolStripMenuItem.Image"), System.Drawing.Image)
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(92, 22)
-        Me.ExitToolStripMenuItem.Text = "Exit"
+        Me.ExitToolStripMenuItem.Text = "E&xit"
         '
         'EditToolStripMenuItem
         '
         Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SettingsToolStripMenuItem})
         Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
         Me.EditToolStripMenuItem.Size = New System.Drawing.Size(39, 20)
-        Me.EditToolStripMenuItem.Text = "Edit"
+        Me.EditToolStripMenuItem.Text = "&Edit"
         '
         'SettingsToolStripMenuItem
         '
         Me.SettingsToolStripMenuItem.Image = CType(resources.GetObject("SettingsToolStripMenuItem.Image"), System.Drawing.Image)
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
         Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(125, 22)
-        Me.SettingsToolStripMenuItem.Text = "Settings..."
+        Me.SettingsToolStripMenuItem.Text = "&Settings..."
         '
         'HelpToolStripMenuItem
         '
         Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutToolStripMenuItem})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
-        Me.HelpToolStripMenuItem.Text = "Help"
+        Me.HelpToolStripMenuItem.Text = "&Help"
         '
         'AboutToolStripMenuItem
         '
         Me.AboutToolStripMenuItem.Image = CType(resources.GetObject("AboutToolStripMenuItem.Image"), System.Drawing.Image)
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(116, 22)
-        Me.AboutToolStripMenuItem.Text = "About..."
+        Me.AboutToolStripMenuItem.Text = "&About..."
         '
         'StatusStrip
         '
@@ -436,92 +436,112 @@ Partial Class frmMain
         Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.RenamerToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem, Me.ToolStripSeparator5, Me.ClearAllCachesToolStripMenuItem, Me.RefreshAllMoviesToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
-        Me.ToolsToolStripMenuItem.Text = "Tools"
+        Me.ToolsToolStripMenuItem.Text = "&Tools"
         '
         'CleanFoldersToolStripMenuItem
         '
         Me.CleanFoldersToolStripMenuItem.Image = CType(resources.GetObject("CleanFoldersToolStripMenuItem.Image"), System.Drawing.Image)
         Me.CleanFoldersToolStripMenuItem.Name = "CleanFoldersToolStripMenuItem"
-        Me.CleanFoldersToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.CleanFoldersToolStripMenuItem.Text = "Clean Files"
+        Me.CleanFoldersToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
+        Me.CleanFoldersToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.CleanFoldersToolStripMenuItem.Text = "&Clean Files"
         '
         'ConvertFileSourceToFolderSourceToolStripMenuItem
         '
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Image = CType(resources.GetObject("ConvertFileSourceToFolderSourceToolStripMenuItem.Image"), System.Drawing.Image)
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Name = "ConvertFileSourceToFolderSourceToolStripMenuItem"
-        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Text = "Sort Files Into Folders"
+        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
+        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.ConvertFileSourceToFolderSourceToolStripMenuItem.Text = "&Sort Files Into Folders"
         '
         'CopyExistingFanartToBackdropsFolderToolStripMenuItem
         '
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Image = CType(resources.GetObject("CopyExistingFanartToBackdropsFolderToolStripMenuItem.Image"), System.Drawing.Image)
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Name = "CopyExistingFanartToBackdropsFolderToolStripMenuItem"
-        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = "Copy Existing Fanart To Backdrops Folder"
+        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
+        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = "Copy Existing Fanart To &Backdrops Folder"
         '
         'mnuRevertStudioTags
         '
         Me.mnuRevertStudioTags.Image = CType(resources.GetObject("mnuRevertStudioTags.Image"), System.Drawing.Image)
         Me.mnuRevertStudioTags.Name = "mnuRevertStudioTags"
-        Me.mnuRevertStudioTags.Size = New System.Drawing.Size(292, 22)
-        Me.mnuRevertStudioTags.Text = "Revert Media Info Studio Tags"
+        Me.mnuRevertStudioTags.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.T), System.Windows.Forms.Keys)
+        Me.mnuRevertStudioTags.Size = New System.Drawing.Size(356, 22)
+        Me.mnuRevertStudioTags.Text = "Revert Media Info Studio &Tags"
         '
         'RenamerToolStripMenuItem
         '
         Me.RenamerToolStripMenuItem.Image = CType(resources.GetObject("RenamerToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RenamerToolStripMenuItem.Name = "RenamerToolStripMenuItem"
-        Me.RenamerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.RenamerToolStripMenuItem.Text = "Bulk Renamer"
+        Me.RenamerToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        Me.RenamerToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.RenamerToolStripMenuItem.Text = "Bulk &Renamer"
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(289, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(353, 6)
         '
         'SetsManagerToolStripMenuItem
         '
         Me.SetsManagerToolStripMenuItem.Image = CType(resources.GetObject("SetsManagerToolStripMenuItem.Image"), System.Drawing.Image)
         Me.SetsManagerToolStripMenuItem.Name = "SetsManagerToolStripMenuItem"
-        Me.SetsManagerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.SetsManagerToolStripMenuItem.Text = "Sets Manager"
+        Me.SetsManagerToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
+        Me.SetsManagerToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.SetsManagerToolStripMenuItem.Text = "Sets &Manager"
         '
         'OfflineMediaManagerToolStripMenuItem
         '
         Me.OfflineMediaManagerToolStripMenuItem.Image = CType(resources.GetObject("OfflineMediaManagerToolStripMenuItem.Image"), System.Drawing.Image)
         Me.OfflineMediaManagerToolStripMenuItem.Name = "OfflineMediaManagerToolStripMenuItem"
-        Me.OfflineMediaManagerToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.OfflineMediaManagerToolStripMenuItem.Text = "Offline Media Manager"
+        Me.OfflineMediaManagerToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
+        Me.OfflineMediaManagerToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.OfflineMediaManagerToolStripMenuItem.Text = "&Offline Media Manager"
         '
         'ToolStripMenuItem3
         '
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(289, 6)
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(353, 6)
         '
         'ExportMoviesListToolStripMenuItem
         '
         Me.ExportMoviesListToolStripMenuItem.Image = CType(resources.GetObject("ExportMoviesListToolStripMenuItem.Image"), System.Drawing.Image)
         Me.ExportMoviesListToolStripMenuItem.Name = "ExportMoviesListToolStripMenuItem"
-        Me.ExportMoviesListToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.ExportMoviesListToolStripMenuItem.Text = "Export Movies List"
+        Me.ExportMoviesListToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
+        Me.ExportMoviesListToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.ExportMoviesListToolStripMenuItem.Text = "&Export Movies List"
         '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(289, 6)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(353, 6)
         '
         'ClearAllCachesToolStripMenuItem
         '
         Me.ClearAllCachesToolStripMenuItem.Image = CType(resources.GetObject("ClearAllCachesToolStripMenuItem.Image"), System.Drawing.Image)
         Me.ClearAllCachesToolStripMenuItem.Name = "ClearAllCachesToolStripMenuItem"
-        Me.ClearAllCachesToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.ClearAllCachesToolStripMenuItem.Text = "Clear All Caches"
+        Me.ClearAllCachesToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
+        Me.ClearAllCachesToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.ClearAllCachesToolStripMenuItem.Text = "Clear &All Caches"
         '
         'RefreshAllMoviesToolStripMenuItem
         '
         Me.RefreshAllMoviesToolStripMenuItem.Image = CType(resources.GetObject("RefreshAllMoviesToolStripMenuItem.Image"), System.Drawing.Image)
         Me.RefreshAllMoviesToolStripMenuItem.Name = "RefreshAllMoviesToolStripMenuItem"
-        Me.RefreshAllMoviesToolStripMenuItem.Size = New System.Drawing.Size(292, 22)
-        Me.RefreshAllMoviesToolStripMenuItem.Text = "Reload All Movies"
+        Me.RefreshAllMoviesToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
+        Me.RefreshAllMoviesToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.RefreshAllMoviesToolStripMenuItem.Text = "Re&load All Movies"
         '
         'scMain
         '
@@ -612,8 +632,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -636,52 +656,56 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(202, 254)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 254)
         '
         'cmnuTitle
         '
         Me.cmnuTitle.Enabled = False
         Me.cmnuTitle.Image = CType(resources.GetObject("cmnuTitle.Image"), System.Drawing.Image)
         Me.cmnuTitle.Name = "cmnuTitle"
-        Me.cmnuTitle.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuTitle.Size = New System.Drawing.Size(244, 22)
         Me.cmnuTitle.Text = "Title"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(198, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(241, 6)
         '
         'cmnuRefresh
         '
         Me.cmnuRefresh.Image = CType(resources.GetObject("cmnuRefresh.Image"), System.Drawing.Image)
         Me.cmnuRefresh.Name = "cmnuRefresh"
-        Me.cmnuRefresh.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuRefresh.ShortcutKeys = System.Windows.Forms.Keys.F5
+        Me.cmnuRefresh.Size = New System.Drawing.Size(244, 22)
         Me.cmnuRefresh.Text = "Reload"
         '
         'cmnuMark
         '
         Me.cmnuMark.Image = CType(resources.GetObject("cmnuMark.Image"), System.Drawing.Image)
         Me.cmnuMark.Name = "cmnuMark"
-        Me.cmnuMark.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuMark.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.M), System.Windows.Forms.Keys)
+        Me.cmnuMark.Size = New System.Drawing.Size(244, 22)
         Me.cmnuMark.Text = "Mark"
         '
         'cmnuLock
         '
         Me.cmnuLock.Image = CType(resources.GetObject("cmnuLock.Image"), System.Drawing.Image)
         Me.cmnuLock.Name = "cmnuLock"
-        Me.cmnuLock.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuLock.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
+        Me.cmnuLock.Size = New System.Drawing.Size(244, 22)
         Me.cmnuLock.Text = "Lock"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(198, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(241, 6)
         '
         'cmnuEditMovie
         '
         Me.cmnuEditMovie.Image = CType(resources.GetObject("cmnuEditMovie.Image"), System.Drawing.Image)
         Me.cmnuEditMovie.Name = "cmnuEditMovie"
-        Me.cmnuEditMovie.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuEditMovie.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.E), System.Windows.Forms.Keys)
+        Me.cmnuEditMovie.Size = New System.Drawing.Size(244, 22)
         Me.cmnuEditMovie.Text = "Edit Movie"
         '
         'GenresToolStripMenuItem
@@ -689,7 +713,7 @@ Partial Class frmMain
         Me.GenresToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LblGenreStripMenuItem2, Me.GenreListToolStripComboBox, Me.AddGenreToolStripMenuItem, Me.SetGenreToolStripMenuItem, Me.RemoveGenreToolStripMenuItem})
         Me.GenresToolStripMenuItem.Image = CType(resources.GetObject("GenresToolStripMenuItem.Image"), System.Drawing.Image)
         Me.GenresToolStripMenuItem.Name = "GenresToolStripMenuItem"
-        Me.GenresToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
+        Me.GenresToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.GenresToolStripMenuItem.Text = "Genres"
         '
         'LblGenreStripMenuItem2
@@ -728,44 +752,48 @@ Partial Class frmMain
         'cmnuSep
         '
         Me.cmnuSep.Name = "cmnuSep"
-        Me.cmnuSep.Size = New System.Drawing.Size(198, 6)
+        Me.cmnuSep.Size = New System.Drawing.Size(241, 6)
         '
         'cmnuRescrape
         '
         Me.cmnuRescrape.Image = CType(resources.GetObject("cmnuRescrape.Image"), System.Drawing.Image)
         Me.cmnuRescrape.Name = "cmnuRescrape"
-        Me.cmnuRescrape.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuRescrape.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.I), System.Windows.Forms.Keys)
+        Me.cmnuRescrape.Size = New System.Drawing.Size(244, 22)
         Me.cmnuRescrape.Text = "Re-scrape IMDB"
         '
         'cmnuSearchNew
         '
         Me.cmnuSearchNew.Image = CType(resources.GetObject("cmnuSearchNew.Image"), System.Drawing.Image)
         Me.cmnuSearchNew.Name = "cmnuSearchNew"
-        Me.cmnuSearchNew.Size = New System.Drawing.Size(201, 22)
+        Me.cmnuSearchNew.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
+        Me.cmnuSearchNew.Size = New System.Drawing.Size(244, 22)
         Me.cmnuSearchNew.Text = "Change Movie"
         '
         'cmnuSep2
         '
         Me.cmnuSep2.Name = "cmnuSep2"
-        Me.cmnuSep2.Size = New System.Drawing.Size(198, 6)
+        Me.cmnuSep2.Size = New System.Drawing.Size(241, 6)
         '
         'OpenContainingFolderToolStripMenuItem
         '
         Me.OpenContainingFolderToolStripMenuItem.Image = CType(resources.GetObject("OpenContainingFolderToolStripMenuItem.Image"), System.Drawing.Image)
         Me.OpenContainingFolderToolStripMenuItem.Name = "OpenContainingFolderToolStripMenuItem"
-        Me.OpenContainingFolderToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
+        Me.OpenContainingFolderToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
+        Me.OpenContainingFolderToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.OpenContainingFolderToolStripMenuItem.Text = "Open Containing Folder"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(198, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(241, 6)
         '
         'DeleteMovieToolStripMenuItem
         '
         Me.DeleteMovieToolStripMenuItem.Image = CType(resources.GetObject("DeleteMovieToolStripMenuItem.Image"), System.Drawing.Image)
         Me.DeleteMovieToolStripMenuItem.Name = "DeleteMovieToolStripMenuItem"
-        Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(201, 22)
+        Me.DeleteMovieToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete
+        Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
         Me.DeleteMovieToolStripMenuItem.Text = "Delete Movie"
         '
         'Panel1
@@ -872,6 +900,18 @@ Partial Class frmMain
         Me.pnlFilter.Name = "pnlFilter"
         Me.pnlFilter.Size = New System.Drawing.Size(349, 155)
         Me.pnlFilter.TabIndex = 12
+        '
+        'btnClearFilters
+        '
+        Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
+        Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnClearFilters.Location = New System.Drawing.Point(15, 125)
+        Me.btnClearFilters.Name = "btnClearFilters"
+        Me.btnClearFilters.Size = New System.Drawing.Size(92, 23)
+        Me.btnClearFilters.TabIndex = 16
+        Me.btnClearFilters.Text = "Clear Filters"
+        Me.btnClearFilters.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnClearFilters.UseVisualStyleBackColor = True
         '
         'GroupBox3
         '
@@ -2329,18 +2369,6 @@ Partial Class frmMain
         'tmrFilterAni
         '
         Me.tmrFilterAni.Interval = 1
-        '
-        'btnClearFilters
-        '
-        Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
-        Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters.Location = New System.Drawing.Point(15, 125)
-        Me.btnClearFilters.Name = "btnClearFilters"
-        Me.btnClearFilters.Size = New System.Drawing.Size(92, 23)
-        Me.btnClearFilters.TabIndex = 16
-        Me.btnClearFilters.Text = "Clear Filters"
-        Me.btnClearFilters.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnClearFilters.UseVisualStyleBackColor = True
         '
         'frmMain
         '
