@@ -1690,8 +1690,18 @@ Public Class Master
 
     End Sub
 
-    Public Shared Function NumericOnly(ByVal KeyPressed As String, Optional ByVal isIP As Boolean = False) As Boolean
-        If (KeyPressed >= 48 AndAlso KeyPressed <= 57) OrElse KeyPressed = 8 OrElse (isIP AndAlso KeyPressed = 46) Then
+    Public Shared Function NumericOnly(ByVal KeyChar As Char, Optional ByVal isIP As Boolean = False) As Boolean
+        If Char.IsNumber(KeyChar) OrElse Char.IsControl(KeyChar) OrElse Char.IsWhiteSpace(KeyChar) OrElse (isIP AndAlso Asc(KeyChar) = 46) Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
+
+    Public Shared Function AlphaNumericOnly(ByVal KeyChar As Char, Optional ByVal AllowSpecial As Boolean = False) As Boolean
+        Dim test As Integer = Asc(KeyChar)
+        If Char.IsLetterOrDigit(KeyChar) OrElse Char.IsControl(KeyChar) OrElse Char.IsWhiteSpace(KeyChar) OrElse _
+        (AllowSpecial AndAlso (Asc(KeyChar) = 45 OrElse Asc(KeyChar) = 46 OrElse Asc(KeyChar) = 58)) Then
             Return False
         Else
             Return True

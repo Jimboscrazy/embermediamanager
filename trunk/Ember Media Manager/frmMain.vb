@@ -70,6 +70,7 @@ Public Class frmMain
     'filters
     Private filSearch As String = String.Empty
     Private filGenre As String = String.Empty
+    Private filYear As String = String.Empty
 
     Private Enum PicType As Integer
         Actor = 0
@@ -425,6 +426,7 @@ Public Class frmMain
 
                 Me.SetColors()
                 Me.SetToolTips()
+                Me.cbSearch.SelectedIndex = 0
 
                 Me.aniType = Master.eSettings.InfoPanelState
                 Select Case Me.aniType
@@ -916,7 +918,12 @@ Public Class frmMain
         End Try
     End Sub
 
+    Private Sub txtSearch_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearch.KeyPress
+        e.Handled = Master.AlphaNumericOnly(e.KeyChar, True)
+    End Sub
+
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
+
         Me.currText = Me.txtSearch.Text
 
         Me.tmrSearchWait.Enabled = False
@@ -934,15 +941,32 @@ Public Class frmMain
     Private Sub tmrSearch_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch.Tick
         Me.tmrSearchWait.Enabled = False
         Try
+
             If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
-                Me.filSearch = String.Concat("title LIKE '%", Me.txtSearch.Text, "%'")
-                Me.FilterArray.Add(Me.filSearch)
-                Me.RunFilter()
-            Else
                 Me.FilterArray.Remove(Me.filSearch)
                 Me.filSearch = String.Empty
+
+                Select Case Me.cbSearch.Text
+                    Case "Title"
+                        Me.filSearch = String.Concat("ListTitle LIKE '%", Me.txtSearch.Text, "%'")
+                        Me.FilterArray.Add(Me.filSearch)
+                    Case "Actor"
+                        Me.filSearch = Me.txtSearch.Text
+                    Case "Director"
+                        Me.filSearch = String.Concat("Director LIKE '%", Me.txtSearch.Text, "%'")
+                        Me.FilterArray.Add(Me.filSearch)
+                End Select
+
                 Me.RunFilter()
+
+            Else
+                If Not String.IsNullOrEmpty(Me.filSearch) Then
+                    Me.FilterArray.Remove(Me.filSearch)
+                    Me.filSearch = String.Empty
+                    Me.RunFilter()
+                End If
             End If
+
         Catch
         End Try
         Me.tmrSearch.Enabled = False
@@ -1048,7 +1072,7 @@ Public Class frmMain
             Me.FilterArray.Add(Me.filGenre)
         End If
 
-        If Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
+        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
     End Sub
 
     Private Sub rbFilterOr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.Click
@@ -1071,7 +1095,7 @@ Public Class frmMain
             Me.FilterArray.Add(Me.filGenre)
         End If
 
-        If Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
+        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
     End Sub
 
     Private Sub chkFilterDupe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.Click
@@ -1083,16 +1107,24 @@ Public Class frmMain
             Me.rbFilterOr.Enabled = Not chkFilterDupe.Checked
             Me.cbFilterSource.Enabled = Not chkFilterDupe.Checked
             Me.txtFilterGenre.Enabled = Not chkFilterDupe.Checked
-            Me.txtFilterGenre.Text = String.Empty
-            For i As Integer = 0 To clbFilterGenres.Items.Count - 1
-                clbFilterGenres.SetItemChecked(i, False)
-            Next
+            Me.cbFilterYearMod.Enabled = Not chkFilterDupe.Checked
+            Me.cbFilterYear.Enabled = Not chkFilterDupe.Checked
             If Me.chkFilterDupe.Checked Then
                 Me.chkFilterMark.Checked = False
                 Me.chkFilterNew.Checked = False
                 RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-                Me.cbFilterSource.Text = "All"
+                Me.cbFilterSource.SelectedIndex = 0
                 AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+                RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+                Me.cbFilterYear.SelectedIndex = 0
+                AddHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+                RemoveHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+                Me.cbFilterYearMod.SelectedIndex = 0
+                AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+                Me.txtFilterGenre.Text = String.Empty
+                For i As Integer = 0 To clbFilterGenres.Items.Count - 1
+                    clbFilterGenres.SetItemChecked(i, False)
+                Next
             End If
             Me.RunFilter()
         Catch ex As Exception
@@ -2002,6 +2034,57 @@ Public Class frmMain
         Me.pnlFilterGenre.Tag = String.Empty
     End Sub
 
+    Private Sub cbSearch_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearch.SelectedIndexChanged
+        Me.txtSearch.Text = String.Empty
+    End Sub
+
+    Private Sub cbFilterYearMod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYearMod.SelectedIndexChanged
+        Try
+            If Not String.IsNullOrEmpty(cbFilterYear.Text) AndAlso Not cbFilterYear.Text = "All" Then
+                Me.chkFilterDupe.Enabled = False
+                Me.FilterArray.Remove(Me.filYear)
+                Me.filYear = String.Empty
+
+                Me.filYear = String.Concat("Year ", cbFilterYearMod.Text, " '", cbFilterYear.Text, "'")
+
+                Me.FilterArray.Add(Me.filYear)
+                Me.RunFilter()
+            Else
+                If Not String.IsNullOrEmpty(Me.filYear) Then
+                    Me.FilterArray.Remove(Me.filYear)
+                    Me.filYear = String.Empty
+                    Me.RunFilter()
+                End If
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub cbFilterYear_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYear.SelectedIndexChanged
+        Try
+            If Not String.IsNullOrEmpty(cbFilterYearMod.Text) AndAlso Not cbFilterYear.Text = "All" Then
+                Me.chkFilterDupe.Enabled = False
+                Me.FilterArray.Remove(Me.filYear)
+                Me.filYear = String.Empty
+
+                Me.filYear = String.Concat("Year ", cbFilterYearMod.Text, " '", cbFilterYear.Text, "'")
+
+                Me.FilterArray.Add(Me.filYear)
+                Me.RunFilter()
+            Else
+                If Not String.IsNullOrEmpty(Me.filYear) Then
+                    Me.FilterArray.Remove(Me.filYear)
+                    Me.filYear = String.Empty
+                    Me.RunFilter()
+                End If
+
+                If cbFilterYear.Text = "All" Then
+                    Me.cbFilterYearMod.Text = String.Empty
+                End If
+            End If
+        Catch
+        End Try
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -4078,8 +4161,22 @@ doCancel:
                             End While
                         End Using
                     End Using
-                    cbFilterSource.Text = "All"
+                    cbFilterSource.SelectedIndex = 0
                     AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+
+                    RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+                    Me.cbFilterYear.Items.Clear()
+                    cbFilterYear.Items.Add("All")
+                    For i As Integer = (Year(Today) + 1) To 1888 Step -1
+                        Me.cbFilterYear.Items.Add(i)
+                    Next
+                    cbFilterYear.SelectedIndex = 0
+                    AddHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+
+                    RemoveHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+                    cbFilterYearMod.SelectedIndex = 0
+                    AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+
                 End If
             End With
 
@@ -4164,7 +4261,9 @@ doCancel:
                 Me.rbFilterAnd.Enabled = False
                 Me.cbFilterSource.Enabled = False
                 Me.txtFilterGenre.Enabled = False
-            ElseIf Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then
+                Me.cbFilterYearMod.Enabled = False
+                Me.cbFilterYear.Enabled = False
+            ElseIf (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse (Not String.IsNullOrEmpty(Me.cbFilterSource.Text) AndAlso Not Me.cbFilterSource.Text = "All") Then
                 Me.chkFilterDupe.Enabled = False
                 Me.chkFilterMark.Enabled = True
                 Me.chkFilterNew.Enabled = True
@@ -4172,6 +4271,8 @@ doCancel:
                 Me.rbFilterAnd.Enabled = True
                 Me.cbFilterSource.Enabled = True
                 Me.txtFilterGenre.Enabled = True
+                Me.cbFilterYearMod.Enabled = True
+                Me.cbFilterYear.Enabled = True
             Else
                 Me.chkFilterDupe.Enabled = True
                 Me.chkFilterMark.Enabled = True
@@ -4180,6 +4281,8 @@ doCancel:
                 Me.rbFilterAnd.Enabled = True
                 Me.cbFilterSource.Enabled = True
                 Me.txtFilterGenre.Enabled = True
+                Me.cbFilterYearMod.Enabled = True
+                Me.cbFilterYear.Enabled = True
             End If
         Else
             Me.chkFilterDupe.Enabled = False
@@ -4189,6 +4292,8 @@ doCancel:
             Me.rbFilterAnd.Enabled = False
             Me.cbFilterSource.Enabled = False
             Me.txtFilterGenre.Enabled = False
+            Me.cbFilterYearMod.Enabled = False
+            Me.cbFilterYear.Enabled = False
         End If
     End Sub
 
@@ -4217,6 +4322,8 @@ doCancel:
 
                 If Me.chkFilterDupe.Checked Then
                     Me.FillList(0, True)
+                ElseIf Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = "Actor" Then
+                    Me.FillList(0, False, Me.filSearch)
                 Else
                     If FilterArray.Count > 0 Then
                         Dim FilterString As String = String.Empty
@@ -4297,17 +4404,21 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub FillList(ByVal iIndex As Integer, Optional ByVal DupesOnly As Boolean = False)
+    Private Sub FillList(ByVal iIndex As Integer, Optional ByVal DupesOnly As Boolean = False, Optional ByVal Actor As String = "")
         Try
             Me.bsMedia.DataSource = Nothing
             Me.dgvMediaList.DataSource = Nothing
             Me.ClearInfo()
             Application.DoEvents()
 
-            If DupesOnly Then
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+            If Not String.IsNullOrEmpty(Actor) Then
+                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT * FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Actor, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             Else
-                Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                If DupesOnly Then
+                    Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+                Else
+                    Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                End If
             End If
 
             If isCL Then
@@ -4494,7 +4605,6 @@ doCancel:
         End Function
 
     End Class
-
 
 #End Region '*** Routines/Functions
 

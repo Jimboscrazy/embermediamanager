@@ -85,12 +85,16 @@ Partial Class frmMain
         Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlSearch = New System.Windows.Forms.Panel
+        Me.cbSearch = New System.Windows.Forms.ComboBox
         Me.picSearch = New System.Windows.Forms.PictureBox
         Me.txtSearch = New System.Windows.Forms.TextBox
         Me.btnMarkAll = New System.Windows.Forms.Button
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.pnlFilter = New System.Windows.Forms.Panel
+        Me.cbFilterYear = New System.Windows.Forms.ComboBox
+        Me.cbFilterYearMod = New System.Windows.Forms.ComboBox
+        Me.Label5 = New System.Windows.Forms.Label
         Me.txtFilterGenre = New System.Windows.Forms.TextBox
         Me.Label3 = New System.Windows.Forms.Label
         Me.cbFilterSource = New System.Windows.Forms.ComboBox
@@ -773,12 +777,24 @@ Partial Class frmMain
         Me.pnlSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlSearch.Controls.Add(Me.cbSearch)
         Me.pnlSearch.Controls.Add(Me.picSearch)
         Me.pnlSearch.Controls.Add(Me.txtSearch)
         Me.pnlSearch.Location = New System.Drawing.Point(0, 23)
         Me.pnlSearch.Name = "pnlSearch"
         Me.pnlSearch.Size = New System.Drawing.Size(308, 33)
         Me.pnlSearch.TabIndex = 11
+        '
+        'cbSearch
+        '
+        Me.cbSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSearch.FormattingEnabled = True
+        Me.cbSearch.Items.AddRange(New Object() {"Title", "Actor", "Director"})
+        Me.cbSearch.Location = New System.Drawing.Point(197, 5)
+        Me.cbSearch.Name = "cbSearch"
+        Me.cbSearch.Size = New System.Drawing.Size(83, 21)
+        Me.cbSearch.TabIndex = 2
         '
         'picSearch
         '
@@ -798,7 +814,7 @@ Partial Class frmMain
         Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSearch.Location = New System.Drawing.Point(7, 6)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(270, 20)
+        Me.txtSearch.Size = New System.Drawing.Size(186, 20)
         Me.txtSearch.TabIndex = 0
         '
         'btnMarkAll
@@ -838,6 +854,9 @@ Partial Class frmMain
         'pnlFilter
         '
         Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilter.Controls.Add(Me.cbFilterYear)
+        Me.pnlFilter.Controls.Add(Me.cbFilterYearMod)
+        Me.pnlFilter.Controls.Add(Me.Label5)
         Me.pnlFilter.Controls.Add(Me.txtFilterGenre)
         Me.pnlFilter.Controls.Add(Me.Label3)
         Me.pnlFilter.Controls.Add(Me.cbFilterSource)
@@ -855,6 +874,35 @@ Partial Class frmMain
         Me.pnlFilter.Name = "pnlFilter"
         Me.pnlFilter.Size = New System.Drawing.Size(308, 135)
         Me.pnlFilter.TabIndex = 12
+        '
+        'cbFilterYear
+        '
+        Me.cbFilterYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterYear.FormattingEnabled = True
+        Me.cbFilterYear.Items.AddRange(New Object() {"=", ">", "<", "!="})
+        Me.cbFilterYear.Location = New System.Drawing.Point(214, 84)
+        Me.cbFilterYear.Name = "cbFilterYear"
+        Me.cbFilterYear.Size = New System.Drawing.Size(69, 21)
+        Me.cbFilterYear.TabIndex = 35
+        '
+        'cbFilterYearMod
+        '
+        Me.cbFilterYearMod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterYearMod.FormattingEnabled = True
+        Me.cbFilterYearMod.Items.AddRange(New Object() {"=", ">", "<", "<>"})
+        Me.cbFilterYearMod.Location = New System.Drawing.Point(151, 84)
+        Me.cbFilterYearMod.Name = "cbFilterYearMod"
+        Me.cbFilterYearMod.Size = New System.Drawing.Size(59, 21)
+        Me.cbFilterYearMod.TabIndex = 34
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(90, 87)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(32, 13)
+        Me.Label5.TabIndex = 33
+        Me.Label5.Text = "Year:"
         '
         'txtFilterGenre
         '
@@ -2540,4 +2588,8 @@ Partial Class frmMain
     Friend WithEvents pnlFilterGenre As System.Windows.Forms.Panel
     Friend WithEvents lblGFilClose As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents cbSearch As System.Windows.Forms.ComboBox
+    Friend WithEvents cbFilterYearMod As System.Windows.Forms.ComboBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents cbFilterYear As System.Windows.Forms.ComboBox
 End Class

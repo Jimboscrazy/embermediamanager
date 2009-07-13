@@ -1188,7 +1188,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtThumbCount.KeyPress
-        e.Handled = Master.NumericOnly(Asc(e.KeyChar))
+        e.Handled = Master.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtThumbCount_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtThumbCount.LostFocus
