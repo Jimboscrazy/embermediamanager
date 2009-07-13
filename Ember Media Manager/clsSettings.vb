@@ -154,10 +154,13 @@ Public Class emmSettings
     Private _sortpath As String
     Private _allwaysdisplaygenrestext As Boolean
     Private _displayyear As Boolean
+    Private _sorttokens As New ArrayList
     Private _etnative As Boolean
     Private _etwidth As Integer
     Private _etheight As Integer
     Private _etpadding As Boolean
+    Private _nofilters As Boolean
+    Private _notokens As Boolean
 
 
     Public Property Version() As String
@@ -1316,6 +1319,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property SortTokens() As ArrayList
+        Get
+            Return Me._sorttokens
+        End Get
+        Set(ByVal value As ArrayList)
+            Me._sorttokens = value
+        End Set
+    End Property
+
     Public Property ETNative() As Boolean
         Get
             Return Me._etnative
@@ -1349,6 +1361,24 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Integer)
             Me._etpadding = value
+        End Set
+    End Property
+
+    Public Property NoFilters() As Boolean
+        Get
+            Return Me._nofilters
+        End Get
+        Set(ByVal value As Boolean)
+            Me._nofilters = value
+        End Set
+    End Property
+
+    Public Property NoTokens() As Boolean
+        Get
+            Return Me._notokens
+        End Get
+        Set(ByVal value As Boolean)
+            Me._notokens = value
         End Set
     End Property
 
@@ -1410,19 +1440,19 @@ Public Class emmSettings
         Me._overwritenfo = False
         Me._validexts.Clear()
         Me._nostackexts.Clear()
-        Me._movietbn = False
-        Me._movienametbn = False
+        Me._movietbn = True
+        Me._movienametbn = True
         Me._moviejpg = False
         Me._movienamejpg = False
         Me._postertbn = False
         Me._posterjpg = False
         Me._folderjpg = False
-        Me._fanartjpg = False
-        Me._movienamefanartjpg = False
+        Me._fanartjpg = True
+        Me._movienamefanartjpg = True
         Me._movienamedotfanartjpg = False
-        Me._movienfo = False
-        Me._movienamenfo = False
-        Me._movienamemultionly = False
+        Me._movienfo = True
+        Me._movienamenfo = True
+        Me._movienamemultionly = True
         Me._dashtrailer = True
         Me._videotsparent = False
         Me._lockplot = False
@@ -1486,10 +1516,13 @@ Public Class emmSettings
         Me._sortpath = String.Empty
         Me._allwaysdisplaygenrestext = False
         Me._displayyear = False
+        Me._sorttokens.Clear()
         Me._etnative = False
         Me._etwidth = 1280
         Me._etheight = 720
         Me._etpadding = True
+        Me._nofilters = False
+        Me._notokens = False
     End Sub
 
     Public Sub Save()
@@ -1518,10 +1551,38 @@ Public Class emmSettings
             Master.eSettings = New emmSettings
         End Try
 
+        If Not Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
+            SetDefaultsForLists()
+        End If
+    End Sub
+
+    Public Sub SetDefaultsForLists()
+        If Master.eSettings.FilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoFilters Then
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]blu[ _\.-]?ray.*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]bd[ _\.-]?rip.*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]720[pi].*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]1080[pi].*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]ac3.*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]dc.*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]dir(ector'?s?)?\s?cut.*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]extended.*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]hd[(tv) _\.-].*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]unrated.*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]uncut.*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]dvd[_\.-]?(rip)?.*")
+            Master.eSettings.FilterCustom.Add("(i?)[ _\.-]\(\d\d\d\d\).*")
+            Master.eSettings.FilterCustom.Add("\.[->] ")
+        End If
+
+        If Master.eSettings.SortTokens.Count <= 0 AndAlso Not Master.eSettings.NoTokens Then
+            Master.eSettings.SortTokens.Add("the[ _\.-]")
+            Master.eSettings.SortTokens.Add("a[ _\.-]")
+            Master.eSettings.SortTokens.Add("an[ _\.-]")
+        End If
+
         If Master.eSettings.ValidExts.Count <= 0 Then
             Master.eSettings.ValidExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb", ","))
         End If
-
     End Sub
 
     Public Class XBMCCom
