@@ -283,6 +283,11 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
+        Me.GroupBox25 = New System.Windows.Forms.GroupBox
+        Me.btnRemoveToken = New System.Windows.Forms.Button
+        Me.btnAddToken = New System.Windows.Forms.Button
+        Me.txtSortToken = New System.Windows.Forms.TextBox
+        Me.lstSortTokens = New System.Windows.Forms.ListBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -326,6 +331,7 @@ Partial Class dlgSettings
         Me.GroupBox23.SuspendLayout()
         Me.GroupBox24.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
+        Me.GroupBox25.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -1177,9 +1183,9 @@ Partial Class dlgSettings
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
-        Me.GroupBox8.Location = New System.Drawing.Point(229, 121)
+        Me.GroupBox8.Location = New System.Drawing.Point(229, 113)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(356, 172)
+        Me.GroupBox8.Size = New System.Drawing.Size(356, 187)
         Me.GroupBox8.TabIndex = 5
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
@@ -1197,7 +1203,7 @@ Partial Class dlgSettings
         '
         Me.GroupBox21.Controls.Add(Me.rbBracketTrailer)
         Me.GroupBox21.Controls.Add(Me.rbDashTrailer)
-        Me.GroupBox21.Location = New System.Drawing.Point(137, 99)
+        Me.GroupBox21.Location = New System.Drawing.Point(137, 111)
         Me.GroupBox21.Name = "GroupBox21"
         Me.GroupBox21.Size = New System.Drawing.Size(68, 53)
         Me.GroupBox21.TabIndex = 3
@@ -1239,7 +1245,7 @@ Partial Class dlgSettings
         '
         Me.GroupBox7.Controls.Add(Me.chkMovieNameNFO)
         Me.GroupBox7.Controls.Add(Me.chkMovieNFO)
-        Me.GroupBox7.Location = New System.Drawing.Point(211, 99)
+        Me.GroupBox7.Location = New System.Drawing.Point(211, 111)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(92, 53)
         Me.GroupBox7.TabIndex = 4
@@ -1271,7 +1277,7 @@ Partial Class dlgSettings
         Me.GroupBox6.Controls.Add(Me.chkMovieNameDotFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkMovieNameFanartJPG)
         Me.GroupBox6.Controls.Add(Me.chkFanartJPG)
-        Me.GroupBox6.Location = New System.Drawing.Point(6, 99)
+        Me.GroupBox6.Location = New System.Drawing.Point(6, 111)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(125, 70)
         Me.GroupBox6.TabIndex = 2
@@ -1317,7 +1323,7 @@ Partial Class dlgSettings
         Me.GroupBox5.Controls.Add(Me.chkMovieJPG)
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
-        Me.GroupBox5.Location = New System.Drawing.Point(6, 14)
+        Me.GroupBox5.Location = New System.Drawing.Point(6, 17)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(174, 83)
         Me.GroupBox5.TabIndex = 0
@@ -2765,14 +2771,15 @@ Partial Class dlgSettings
         '
         'GroupBox19
         '
+        Me.GroupBox19.Controls.Add(Me.GroupBox25)
         Me.GroupBox19.Controls.Add(Me.chkDisplayYear)
         Me.GroupBox19.Controls.Add(Me.chkSkipStackedSizeCheck)
         Me.GroupBox19.Controls.Add(Me.Label21)
         Me.GroupBox19.Controls.Add(Me.txtSkipLessThan)
         Me.GroupBox19.Controls.Add(Me.Label20)
-        Me.GroupBox19.Location = New System.Drawing.Point(9, 121)
+        Me.GroupBox19.Location = New System.Drawing.Point(5, 113)
         Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(211, 172)
+        Me.GroupBox19.Size = New System.Drawing.Size(211, 187)
         Me.GroupBox19.TabIndex = 4
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
@@ -2780,7 +2787,7 @@ Partial Class dlgSettings
         'chkDisplayYear
         '
         Me.chkDisplayYear.AutoSize = True
-        Me.chkDisplayYear.Location = New System.Drawing.Point(7, 17)
+        Me.chkDisplayYear.Location = New System.Drawing.Point(7, 13)
         Me.chkDisplayYear.Name = "chkDisplayYear"
         Me.chkDisplayYear.Size = New System.Drawing.Size(138, 17)
         Me.chkDisplayYear.TabIndex = 70
@@ -2789,9 +2796,10 @@ Partial Class dlgSettings
         '
         'chkSkipStackedSizeCheck
         '
-        Me.chkSkipStackedSizeCheck.Location = New System.Drawing.Point(26, 81)
+        Me.chkSkipStackedSizeCheck.AutoSize = True
+        Me.chkSkipStackedSizeCheck.Location = New System.Drawing.Point(26, 168)
         Me.chkSkipStackedSizeCheck.Name = "chkSkipStackedSizeCheck"
-        Me.chkSkipStackedSizeCheck.Size = New System.Drawing.Size(183, 19)
+        Me.chkSkipStackedSizeCheck.Size = New System.Drawing.Size(183, 17)
         Me.chkSkipStackedSizeCheck.TabIndex = 1
         Me.chkSkipStackedSizeCheck.Text = "Skip Size Check of Stacked Files"
         Me.chkSkipStackedSizeCheck.UseVisualStyleBackColor = True
@@ -2799,7 +2807,7 @@ Partial Class dlgSettings
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(132, 59)
+        Me.Label21.Location = New System.Drawing.Point(132, 151)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(59, 13)
         Me.Label21.TabIndex = 69
@@ -2808,7 +2816,7 @@ Partial Class dlgSettings
         'txtSkipLessThan
         '
         Me.txtSkipLessThan.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSkipLessThan.Location = New System.Drawing.Point(26, 55)
+        Me.txtSkipLessThan.Location = New System.Drawing.Point(26, 147)
         Me.txtSkipLessThan.Name = "txtSkipLessThan"
         Me.txtSkipLessThan.Size = New System.Drawing.Size(100, 20)
         Me.txtSkipLessThan.TabIndex = 0
@@ -2816,7 +2824,7 @@ Partial Class dlgSettings
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(3, 37)
+        Me.Label20.Location = New System.Drawing.Point(3, 131)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(97, 13)
         Me.Label20.TabIndex = 67
@@ -2996,6 +3004,55 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
+        'GroupBox25
+        '
+        Me.GroupBox25.Controls.Add(Me.btnRemoveToken)
+        Me.GroupBox25.Controls.Add(Me.btnAddToken)
+        Me.GroupBox25.Controls.Add(Me.txtSortToken)
+        Me.GroupBox25.Controls.Add(Me.lstSortTokens)
+        Me.GroupBox25.Location = New System.Drawing.Point(5, 30)
+        Me.GroupBox25.Name = "GroupBox25"
+        Me.GroupBox25.Size = New System.Drawing.Size(200, 98)
+        Me.GroupBox25.TabIndex = 71
+        Me.GroupBox25.TabStop = False
+        Me.GroupBox25.Text = "Sort Tokens to Ignore"
+        '
+        'btnRemoveToken
+        '
+        Me.btnRemoveToken.Image = CType(resources.GetObject("btnRemoveToken.Image"), System.Drawing.Image)
+        Me.btnRemoveToken.Location = New System.Drawing.Point(167, 72)
+        Me.btnRemoveToken.Name = "btnRemoveToken"
+        Me.btnRemoveToken.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveToken.TabIndex = 3
+        Me.btnRemoveToken.UseVisualStyleBackColor = True
+        '
+        'btnAddToken
+        '
+        Me.btnAddToken.Image = CType(resources.GetObject("btnAddToken.Image"), System.Drawing.Image)
+        Me.btnAddToken.Location = New System.Drawing.Point(72, 72)
+        Me.btnAddToken.Name = "btnAddToken"
+        Me.btnAddToken.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddToken.TabIndex = 2
+        Me.btnAddToken.UseVisualStyleBackColor = True
+        '
+        'txtSortToken
+        '
+        Me.txtSortToken.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSortToken.Location = New System.Drawing.Point(10, 73)
+        Me.txtSortToken.Name = "txtSortToken"
+        Me.txtSortToken.Size = New System.Drawing.Size(61, 20)
+        Me.txtSortToken.TabIndex = 1
+        '
+        'lstSortTokens
+        '
+        Me.lstSortTokens.FormattingEnabled = True
+        Me.lstSortTokens.Location = New System.Drawing.Point(10, 15)
+        Me.lstSortTokens.Name = "lstSortTokens"
+        Me.lstSortTokens.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstSortTokens.Size = New System.Drawing.Size(180, 56)
+        Me.lstSortTokens.Sorted = True
+        Me.lstSortTokens.TabIndex = 0
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3098,6 +3155,8 @@ Partial Class dlgSettings
         Me.GroupBox24.PerformLayout()
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
+        Me.GroupBox25.ResumeLayout(False)
+        Me.GroupBox25.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3353,4 +3412,9 @@ Partial Class dlgSettings
     Friend WithEvents rbETCustom As System.Windows.Forms.RadioButton
     Friend WithEvents rbETNative As System.Windows.Forms.RadioButton
     Friend WithEvents chkMovieNameMultiOnly As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox25 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnRemoveToken As System.Windows.Forms.Button
+    Friend WithEvents btnAddToken As System.Windows.Forms.Button
+    Friend WithEvents txtSortToken As System.Windows.Forms.TextBox
+    Friend WithEvents lstSortTokens As System.Windows.Forms.ListBox
 End Class

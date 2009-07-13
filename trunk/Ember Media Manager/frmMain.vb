@@ -2250,9 +2250,9 @@ Public Class frmMain
                             End If
                         Else
                             If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", tmpMovieDB.Movie.Title, tmpMovieDB.Movie.Year)
+                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", Master.FilterTokens(tmpMovieDB.Movie.Title), tmpMovieDB.Movie.Year)
                             Else
-                                tmpMovieDB.ListTitle = tmpMovieDB.Movie.Title
+                                tmpMovieDB.ListTitle = Master.FilterTokens(tmpMovieDB.Movie.Title)
                             End If
                         End If
 
@@ -2612,9 +2612,9 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", scrapeMovie.Movie.Title, scrapeMovie.Movie.Year)
+                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", Master.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
                                     Else
-                                        scrapeMovie.ListTitle = scrapeMovie.Movie.Title
+                                        scrapeMovie.ListTitle = Master.FilterTokens(scrapeMovie.Movie.Title)
                                     End If
                                 Else
                                     scrapeMovie.ListTitle = Master.FilterName(drvRow.Item(3))
@@ -2763,9 +2763,9 @@ Public Class frmMain
 
                                         If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
                                             If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                                scrapeMovie.ListTitle = String.Format("{0} ({1})", scrapeMovie.Movie.Title, scrapeMovie.Movie.Year)
+                                                scrapeMovie.ListTitle = String.Format("{0} ({1})", Master.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
                                             Else
-                                                scrapeMovie.ListTitle = scrapeMovie.Movie.Title
+                                                scrapeMovie.ListTitle = Master.FilterTokens(scrapeMovie.Movie.Title)
                                             End If
                                         Else
                                             scrapeMovie.ListTitle = Master.FilterName(drvRow.Item(3))
@@ -3955,9 +3955,9 @@ doCancel:
                         tmpMovieDb.ListTitle = Master.FilterName(dRow(0).Item(3))
                     Else
                         If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovie.Year) Then
-                            tmpMovieDb.ListTitle = String.Format("{0} ({1})", tmpMovie.Title, tmpMovie.Year)
+                            tmpMovieDb.ListTitle = String.Format("{0} ({1})", Master.FilterTokens(tmpMovie.Title), tmpMovie.Year)
                         Else
-                            tmpMovieDb.ListTitle = tmpMovie.Title
+                            tmpMovieDb.ListTitle = Master.FilterTokens(tmpMovie.Title)
                         End If
                     End If
                     Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})

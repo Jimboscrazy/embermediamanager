@@ -803,7 +803,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnRemMovieExt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemMovieExt.Click
-        If lstMovieExts.Items.Count > 0 And lstMovieExts.SelectedItems.Count > 0 Then
+        If lstMovieExts.Items.Count > 0 AndAlso lstMovieExts.SelectedItems.Count > 0 Then
             For Each i As Integer In lstMovieExts.SelectedIndices
                 lstMovieExts.Items.RemoveAt(i)
             Next
@@ -994,7 +994,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnRemoveWhitelist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveWhitelist.Click
-        If lstWhitelist.Items.Count > 0 And lstWhitelist.SelectedItems.Count > 0 Then
+        If lstWhitelist.Items.Count > 0 AndAlso lstWhitelist.SelectedItems.Count > 0 Then
             For Each i As Integer In lstWhitelist.SelectedIndices
                 lstWhitelist.Items.RemoveAt(i)
             Next
@@ -1158,6 +1158,26 @@ Public Class dlgSettings
     Private Sub chkMovieNameMultiOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieNameMultiOnly.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub btnRemoveToken_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveToken.Click
+        If lstSortTokens.Items.Count > 0 AndAlso lstSortTokens.SelectedItems.Count > 0 Then
+            For Each i As Integer In lstSortTokens.SelectedIndices
+                lstSortTokens.Items.RemoveAt(i)
+            Next
+            Me.btnApply.Enabled = True
+        End If
+    End Sub
+
+    Private Sub btnAddToken_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddToken.Click
+        If Not String.IsNullOrEmpty(lstSortTokens.Text) Then
+            If Not lstSortTokens.Items.Contains(txtSortToken.Text) Then
+                lstSortTokens.Items.Add(txtSortToken.Text)
+                Me.btnApply.Enabled = True
+                txtSortToken.Text = String.Empty
+                txtSortToken.Focus()
+            End If
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1173,6 +1193,8 @@ Public Class dlgSettings
             '######## GENERAL TAB ########
             Master.eSettings.FilterCustom.Clear()
             Master.eSettings.FilterCustom.AddRange(Me.lstFilters.Items)
+            If Master.eSettings.FilterCustom.Count <= 0 Then Master.eSettings.NoFilters = True
+
             Master.eSettings.HeaderColor = Me.btnHeaders.BackColor.ToArgb
             Master.eSettings.BackgroundColor = Me.btnBackground.BackColor.ToArgb
             Master.eSettings.InfoPanelColor = Me.btnInfoPanel.BackColor.ToArgb
@@ -1371,6 +1393,10 @@ Public Class dlgSettings
                 Master.eSettings.ETPadding = False
             End If
 
+            Master.eSettings.SortTokens.Clear()
+            Master.eSettings.SortTokens.AddRange(lstSortTokens.Items)
+            If Master.eSettings.SortTokens.Count <= 0 Then Master.eSettings.NoTokens = True
+
             Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1552,6 +1578,8 @@ Public Class dlgSettings
             Else
                 Me.rbETNative.Checked = True
             End If
+
+            Me.lstSortTokens.Items.AddRange(Master.eSettings.SortTokens.ToArray)
 
             Me.RefreshSources()
         Catch ex As Exception

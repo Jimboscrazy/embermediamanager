@@ -458,7 +458,7 @@ Public Class Master
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        Return CleanStackingMarkers(movieName.Trim)
+        Return FilterTokens(CleanStackingMarkers(movieName.Trim))
 
     End Function
 
@@ -475,7 +475,7 @@ Public Class Master
     End Function
 
     Public Shared Function IsStacked(ByVal sName As String) As Boolean
-        Return Regex.IsMatch(sName, "(?i)[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)")
+        Return Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", RegexOptions.IgnoreCase)
     End Function
 
     Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False) As String
@@ -484,7 +484,7 @@ Public Class Master
         ' Removes the stacking indicators from the file name
         '\\
 
-        Return Regex.Replace(sPath, "(?i)[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", If(Asterisk, "*", String.Empty)).Trim
+        Return Regex.Replace(sPath, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", If(Asterisk, "*", String.Empty), RegexOptions.IgnoreCase).Trim
     End Function
 
     Public Shared Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
@@ -2284,5 +2284,18 @@ Public Class Master
                 Return "Rated NC-17"
         End Select
         Return String.Empty
+    End Function
+
+    Public Shared Function FilterTokens(ByVal sTitle As String) As String
+        Dim newTitle As String = sTitle
+        If eSettings.SortTokens.Count > 0 Then
+            For Each sToken As String In eSettings.SortTokens
+                If Regex.IsMatch(sTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
+                    newTitle = String.Format("{0}, {1}", Regex.Replace(sTitle, String.Concat("^", sToken), String.Empty, RegexOptions.IgnoreCase).Trim, Regex.Match(sTitle, String.Concat("^", Regex.Replace(sToken, "\[(.*?)\]", String.Empty)), RegexOptions.IgnoreCase)).Trim
+                    Exit For
+                End If
+            Next
+        End If
+        Return newTitle
     End Function
 End Class
