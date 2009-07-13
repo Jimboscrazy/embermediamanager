@@ -437,8 +437,22 @@ Public Class FileFolderRenamer
                     _movieDB.Movie.Path = _movieDB.FaS.Filename
                     Master.DB.SaveMovieToDB(_movieDB, False)
                     If Not f.IsSingle Then
+                        Dim fileCount As Integer = 0
+                        Dim dirCount As Integer = 0
+
                         Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(f.BasePath, f.Path))
-                        If di.GetFiles().Count = 0 AndAlso di.GetDirectories().Count = 0 Then
+
+                        Try
+                            fileCount = di.GetFiles().Count
+                        Catch
+                        End Try
+
+                        Try
+                            dirCount = di.GetDirectories().Count
+                        Catch 
+                        End Try
+
+                        If fileCount = 0 AndAlso dirCount = 0 Then
                             di.Delete()
                         End If
                     End If

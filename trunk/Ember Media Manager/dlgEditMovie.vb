@@ -1288,8 +1288,12 @@ Public Class dlgEditMovie
                 Dim iMod As Integer = Master.GetExtraModifier(ePath)
                 Dim iVal As Integer = iMod + 1
                 Dim hasET As Boolean = Not iMod = 0
+                Dim fList As New ArrayList
 
-                Dim fList As String() = Directory.GetFiles(Path.Combine(Master.TempPath, "extrathumbs"), "thumb*.jpg")
+                Try
+                    fList.AddRange(Directory.GetFiles(Path.Combine(Master.TempPath, "extrathumbs"), "thumb*.jpg"))
+                Catch
+                End Try
 
                 If fList.Count > 0 Then
 

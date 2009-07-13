@@ -113,7 +113,10 @@ Public Class clsDVD
         Dim currDuration As Integer = 0
 
         Try
-            IFOFiles.AddRange(Directory.GetFiles(Directory.GetParent(strPath).FullName, "VTS*.IFO"))
+            Try
+                IFOFiles.AddRange(Directory.GetFiles(Directory.GetParent(strPath).FullName, "VTS*.IFO"))
+            Catch
+            End Try
 
             If IFOFiles.Count > 1 Then
                 'find the one with the longest duration
@@ -135,7 +138,7 @@ Public Class clsDVD
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-        Return False
+            Return False
     End Function
 
     Public ReadOnly Property GetIFOAudioNumberOfTracks() As Integer

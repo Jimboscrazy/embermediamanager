@@ -996,15 +996,33 @@ Public Class Master
         Dim lFiles As New ArrayList
 
         If isSingle Then
-            lFiles.AddRange(Directory.GetFiles(dirPath, "*.nfo"))
-            lFiles.AddRange(Directory.GetFiles(dirPath, "*.info"))
+            Try
+                lFiles.AddRange(Directory.GetFiles(dirPath, "*.nfo"))
+            Catch
+            End Try
+            Try
+                lFiles.AddRange(Directory.GetFiles(dirPath, "*.info"))
+            Catch
+            End Try
         Else
             Dim fName As String = Path.GetFileNameWithoutExtension(sPath)
             Dim oName As String = Directory.GetParent(sPath).Name
-            lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, "*.nfo")))
-            lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, "*.nfo")))
-            lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, "*.info")))
-            lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, "*.info")))
+            Try
+                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, "*.nfo")))
+            Catch
+            End Try
+            Try
+                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, "*.nfo")))
+            Catch
+            End Try
+            Try
+                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(fName, "*.info")))
+            Catch
+            End Try
+            Try
+                lFiles.AddRange(Directory.GetFiles(dirPath, String.Concat(oName, "*.info")))
+            Catch
+            End Try
         End If
 
         For Each sFile As String In lFiles
@@ -1047,14 +1065,20 @@ Public Class Master
         Dim tList As New ArrayList
         Try
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                tList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName))
+                Try
+                    tList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName))
+                Catch
+                End Try
                 fList.AddRange(tList.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
 
                 If bSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     ExtraPath = String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
             Else
-                tList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName))
+                Try
+                    tList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName))
+                Catch
+                End Try
                 fList.AddRange(tList.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
                 If bSingle AndAlso File.Exists(String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     ExtraPath = String.Concat(Directory.GetParent(sPath).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
@@ -1259,7 +1283,10 @@ Public Class Master
 
             Dim fList As New ArrayList
             Dim tList As New ArrayList
-            tList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.nfo"))
+            Try
+                tList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.nfo"))
+            Catch
+            End Try
             fList.AddRange(tList.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
 
             If eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
@@ -1653,7 +1680,10 @@ Public Class Master
 
             If Directory.Exists(extraPath) Then
 
-                lThumbs.AddRange(Directory.GetFiles(extraPath, "thumb*.jpg"))
+                Try
+                    lThumbs.AddRange(Directory.GetFiles(extraPath, "thumb*.jpg"))
+                Catch
+                End Try
 
                 If lThumbs.Count > 0 Then
                     iMod = Convert.ToInt32(Regex.Match(lThumbs.Item(lThumbs.Count - 1), "(\d+).jpg").Groups(1).ToString)
@@ -2059,7 +2089,10 @@ Public Class Master
                     End If
 
                     Dim fThumbs As New ArrayList
-                    fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
+                    Try
+                        fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
+                    Catch
+                    End Try
 
                     If fThumbs.Count <= 0 Then
                         DeleteDirectory(tPath)
@@ -2196,7 +2229,10 @@ Public Class Master
 
             If Directory.Exists(Directory.GetParent(fPath).FullName) Then
                 Dim alF As New ArrayList
-                alF.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
+                Try
+                    alF.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
+                Catch
+                End Try
                 alFlags.AddRange(alF.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
             End If
 
@@ -2209,7 +2245,10 @@ Public Class Master
 
             If Directory.Exists(Directory.GetParent(gPath).FullName) Then
                 Dim alG As New ArrayList
-                alG.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
+                Try
+                    alG.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
+                Catch
+                End Try
                 alGenres.AddRange(alG.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
             End If
 
@@ -2222,7 +2261,10 @@ Public Class Master
 
             If Directory.Exists(Directory.GetParent(sPath).FullName) Then
                 Dim alS As New ArrayList
-                alS.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png"))
+                Try
+                    alS.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png"))
+                Catch
+                End Try
                 alStudios.AddRange(alS.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
             End If
 
@@ -2248,13 +2290,25 @@ Public Class Master
     Public Shared Sub DeleteDirectory(ByVal sPath As String)
         Try
             If Directory.Exists(sPath) Then
-                Dim Dirs As String() = Directory.GetDirectories(sPath)
+
+                Dim Dirs As New ArrayList
+
+                Try
+                    Dirs.AddRange(Directory.GetDirectories(sPath))
+                Catch
+                End Try
 
                 For Each inDir As String In Dirs
                     DeleteDirectory(inDir)
                 Next
 
-                Dim fFiles As String() = Directory.GetFiles(sPath)
+
+                Dim fFiles As New ArrayList
+
+                Try
+                    fFiles.AddRange(Directory.GetFiles(sPath))
+                Catch
+                End Try
 
                 For Each fFile As String In fFiles
                     Try
