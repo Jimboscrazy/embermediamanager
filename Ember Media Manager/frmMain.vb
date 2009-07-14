@@ -468,7 +468,8 @@ Public Class frmMain
                     Me.FillList(0)
                     Me.Visible = True
                 Else
-                    Master.DB.Connect(True, False)
+                    '!!CHANGE ME!!
+                    Master.DB.Connect(True, True)
                     Me.SetMenus(True)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Me.Visible = True
@@ -656,7 +657,7 @@ Public Class frmMain
         ' Refresh Media Info
         '\\
 
-        Me.LoadInfo(Master.currMovie.ID, Master.currMovie.FaS.Filename, False, True, True)
+        Me.LoadInfo(Master.currMovie.ID, Master.currMovie.Filename, False, True, True)
 
     End Sub
     Private Sub dgvMediaList_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellDoubleClick
@@ -673,7 +674,7 @@ Public Class frmMain
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
             Master.currMovie = Master.DB.LoadMovieFromDB(ID)
-            Me.tslStatus.Text = Master.currMovie.FaS.Filename
+            Me.tslStatus.Text = Master.currMovie.Filename
             Me.tmpTitle = Me.dgvMediaList.Rows(indX).Cells(3).Value
 
             Using dEditMovie As New dlgEditMovie
@@ -1123,7 +1124,7 @@ Public Class frmMain
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                 Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
                 Master.currMovie = Master.DB.LoadMovieFromDB(ID)
-                Me.tslStatus.Text = Master.currMovie.FaS.Filename
+                Me.tslStatus.Text = Master.currMovie.Filename
                 Me.tmpTitle = Me.dgvMediaList.Rows(indX).Cells(3).Value
 
                 Using dEditMovie As New dlgEditMovie
@@ -2292,15 +2293,11 @@ Public Class frmMain
                             'no title so assume it's an invalid nfo, clear nfo path if exists
                             sFile.Nfo = String.Empty
 
-                            If sFile.UseFolder Then
-                                If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
-                                Else
-                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
-                                End If
+                            If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
+                                tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
                             Else
-                                If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                If sFile.UseFolder AndAlso sFile.isSingle Then
+                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
                                 Else
                                     tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
                                 End If
@@ -2315,8 +2312,16 @@ Public Class frmMain
 
                         Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
                         If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
-                            tmpMovieDB.FaS = sFile
-                            'tmpMovieDB.Movie.FileNameAndPath
+                            tmpMovieDB.NfoPath = sFile.Nfo
+                            tmpMovieDB.PosterPath = sFile.Poster
+                            tmpMovieDB.FanartPath = sFile.Fanart
+                            tmpMovieDB.TrailerPath = sFile.Trailer
+                            tmpMovieDB.SubPath = sFile.Subs
+                            tmpMovieDB.ExtraPath = sFile.Extra
+                            tmpMovieDB.Filename = sFile.Filename
+                            tmpMovieDB.isSingle = sFile.isSingle
+                            tmpMovieDB.UseFolder = sFile.UseFolder
+                            tmpMovieDB.Source = sFile.Source
                             tmpMovieDB.IsNew = True
                             tmpMovieDB.IsLock = False
                             tmpMovieDB.IsMark = Master.eSettings.MarkNew
@@ -2494,14 +2499,14 @@ Public Class frmMain
                 Return
             End If
 
-            If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(Master.currMovie.FaS.Fanart)
+            If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(Master.currMovie.FanartPath)
 
             If bwLoadInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
 
-            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currMovie.FaS.Poster)
+            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currMovie.PosterPath)
             'read nfo if it's there
 
             'wait for mediainfo to update the nfo
@@ -2673,8 +2678,17 @@ Public Class frmMain
                                         scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
                                     End If
                                 Else
-                                    scrapeMovie.ListTitle = StringManip.FilterName(drvRow.Item(3))
+                                    If Directory.GetParent(drvRow.Item(1)).Name.ToLower = "video_ts" Then
+                                        scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1)).FullName).Name)
+                                    Else
+                                        If drvRow.Item(46) AndAlso drvRow.Item(2) Then
+                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1)).Name)
+                                        Else
+                                            scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1)))
+                                        End If
+                                    End If
                                 End If
+
                                 Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
 
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
@@ -2694,7 +2708,7 @@ Public Class frmMain
                                                 If Not IsNothing(Poster.Image) Then
                                                     pPath = Poster.SaveAsPoster(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(pPath) Then
-                                                        scrapeMovie.FaS.Poster = pPath
+                                                        scrapeMovie.PosterPath = pPath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
                                                         If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                             scrapeMovie.Movie.Thumbs = pThumbs
@@ -2705,7 +2719,7 @@ Public Class frmMain
                                                     Using dImgSelect As New dlgImgSelect
                                                         pPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
                                                         If Not String.IsNullOrEmpty(pPath) Then
-                                                            scrapeMovie.FaS.Poster = pPath
+                                                            scrapeMovie.PosterPath = pPath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
                                                             If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                                 scrapeMovie.Movie.Thumbs = pThumbs
@@ -2726,7 +2740,7 @@ Public Class frmMain
                                                 If Not IsNothing(Fanart.Image) Then
                                                     fPath = Fanart.SaveAsFanart(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(fPath) Then
-                                                        scrapeMovie.FaS.Fanart = fPath
+                                                        scrapeMovie.FanartPath = fPath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
                                                         If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                             scrapeMovie.Movie.Fanart = fArt
@@ -2738,7 +2752,7 @@ Public Class frmMain
                                                     Using dImgSelect As New dlgImgSelect
                                                         fPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
                                                         If Not String.IsNullOrEmpty(fPath) Then
-                                                            scrapeMovie.FaS.Fanart = fPath
+                                                            scrapeMovie.FanartPath = fPath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
                                                             If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                                 scrapeMovie.Movie.Fanart = fArt
@@ -2752,13 +2766,13 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If (Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer Then
-                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.FaS.Filename, scrapeMovie.Movie.IMDBID, drvRow.Item(2), scrapeMovie.Movie.Trailer)
+                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.Filename, scrapeMovie.Movie.IMDBID, drvRow.Item(2), scrapeMovie.Movie.Trailer)
                                         If Not String.IsNullOrEmpty(tURL) Then
                                             If tURL.Substring(0, 7) = "http://" Then
                                                 scrapeMovie.Movie.Trailer = tURL
                                                 doSave = True
                                             Else
-                                                scrapeMovie.FaS.Trailer = tURL
+                                                scrapeMovie.TrailerPath = tURL
                                                 Me.Invoke(myDelegate, New Object() {drvRow, 7, True})
                                             End If
                                         End If
@@ -2766,31 +2780,31 @@ Public Class frmMain
 
                                 End If
 
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
-                                    If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) Then
-                                        Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs)
-                                        If Not String.IsNullOrEmpty(ETasFA) Then
-                                            Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
-                                            scrapeMovie.FaS.Extra = "TRUE"
-                                            If Not ETasFA = "TRUE" Then
-                                                Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                scrapeMovie.FaS.Fanart = ETasFA
-                                            End If
-                                        End If
-                                    End If
-                                End If
+                If Me.bwScraper.CancellationPending Then GoTo doCancel
+                If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
+                    If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) Then
+                        Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs)
+                        If Not String.IsNullOrEmpty(ETasFA) Then
+                            Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
+                            scrapeMovie.ExtraPath = "TRUE"
+                            If Not ETasFA = "TRUE" Then
+                                Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
+                                scrapeMovie.FanartPath = ETasFA
+                            End If
+                        End If
+                    End If
+                End If
 
-                                If doSave Then
-                                    Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
-                                End If
+                If doSave Then
+                    Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
+                End If
 
 
-                                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
+                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
 
-                                'use this one to check for need of load info
-                                Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
-                                iCount += 1
+                'use this one to check for need of load info
+                Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                iCount += 1
                             Next
 
                         Case Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
@@ -2828,10 +2842,18 @@ Public Class frmMain
                                                 scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
                                             End If
                                         Else
-                                            scrapeMovie.ListTitle = StringManip.FilterName(drvRow.Item(3))
+                                            If Directory.GetParent(drvRow.Item(1)).Name.ToLower = "video_ts" Then
+                                                scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1)).FullName).Name)
+                                            Else
+                                                If drvRow.Item(46) AndAlso drvRow.Item(2) Then
+                                                    scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1)).Name)
+                                                Else
+                                                    scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1)))
+                                                End If
+                                            End If
                                         End If
-                                        Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
 
+                                        Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
                                         Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
                                         doSave = True
                                     End If
@@ -2845,7 +2867,7 @@ Public Class frmMain
                                                 If Not IsNothing(Poster.Image) Then
                                                     pPath = Poster.SaveAsPoster(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(pPath) Then
-                                                        scrapeMovie.FaS.Poster = pPath
+                                                        scrapeMovie.PosterPath = pPath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
                                                         If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                             scrapeMovie.Movie.Thumbs = pThumbs
@@ -2856,7 +2878,7 @@ Public Class frmMain
                                                     Using dImgSelect As New dlgImgSelect
                                                         pPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
                                                         If Not String.IsNullOrEmpty(pPath) Then
-                                                            scrapeMovie.FaS.Poster = pPath
+                                                            scrapeMovie.PosterPath = pPath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
                                                             If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                                 scrapeMovie.Movie.Thumbs = pThumbs
@@ -2878,7 +2900,7 @@ Public Class frmMain
                                                 If Not IsNothing(Fanart.Image) Then
                                                     fPath = Fanart.SaveAsFanart(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(fPath) Then
-                                                        scrapeMovie.FaS.Fanart = fPath
+                                                        scrapeMovie.FanartPath = fPath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
                                                         If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                             scrapeMovie.Movie.Fanart = fArt
@@ -2889,7 +2911,7 @@ Public Class frmMain
                                                     Using dImgSelect As New dlgImgSelect
                                                         fPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
                                                         If Not String.IsNullOrEmpty(fPath) Then
-                                                            scrapeMovie.FaS.Fanart = fPath
+                                                            scrapeMovie.FanartPath = fPath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
                                                             If Args.scrapeMod = Master.ScrapeModifier.All Then
                                                                 scrapeMovie.Movie.Fanart = fArt
@@ -2903,29 +2925,29 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso ((Args.scrapeMod = Master.ScrapeModifier.All AndAlso Master.eSettings.UpdaterTrailers) OrElse Args.scrapeMod = Master.ScrapeModifier.Trailer) Then
-                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.FaS.Filename, scrapeMovie.Movie.IMDBID, drvRow.Item(2), scrapeMovie.Movie.Trailer)
+                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.Filename, scrapeMovie.Movie.IMDBID, drvRow.Item(2), scrapeMovie.Movie.Trailer)
                                         If Not String.IsNullOrEmpty(tURL) Then
                                             If tURL.Substring(0, 7) = "http://" Then
                                                 scrapeMovie.Movie.Trailer = tURL
                                                 doSave = True
                                             Else
-                                                scrapeMovie.FaS.Trailer = tURL
+                                                scrapeMovie.TrailerPath = tURL
                                                 Me.Invoke(myDelegate, New Object() {drvRow, 7, True})
                                             End If
                                         End If
                                     End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(scrapeMovie.FaS.Filename).FullName, "extrathumbs")) AndAlso _
+                                    If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(scrapeMovie.Filename).FullName, "extrathumbs")) AndAlso _
                                     (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
                                         Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs)
                                         If Not String.IsNullOrEmpty(ETasFA) Then
 
                                             Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
-                                            scrapeMovie.FaS.Extra = "TRUE"
+                                            scrapeMovie.ExtraPath = "TRUE"
                                             If Not ETasFA = "TRUE" Then
                                                 Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                scrapeMovie.FaS.Fanart = ETasFA
+                                                scrapeMovie.FanartPath = ETasFA
                                             End If
                                         End If
                                     End If
@@ -3525,7 +3547,7 @@ doCancel:
 
             Me.txtIMDBID.Text = Master.currMovie.Movie.IMDBID
 
-            Me.txtFilePath.Text = Master.currMovie.FaS.Filename
+            Me.txtFilePath.Text = Master.currMovie.Filename
 
             Me.lblReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
             Me.txtCerts.Text = Master.currMovie.Movie.Certification
@@ -3822,7 +3844,7 @@ doCancel:
                                 Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
                             End If
 
-                            If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.FaS.isSingle Then
+                            If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
                                 Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs)
                             End If
                         Catch
@@ -3861,7 +3883,7 @@ doCancel:
                                         Me.mnuMediaList.Enabled = True
                                         Me.tabsMain.Enabled = True
                                         Me.EnableFilters(True)
-                                        Me.LoadInfo(ID, Master.currMovie.FaS.Filename, True, False)
+                                        Me.LoadInfo(ID, Master.currMovie.Filename, True, False)
                                     End If
                                 End If
                             End Using
@@ -3877,10 +3899,10 @@ doCancel:
     Private Sub UpdateMediaInfo(ByRef miMovie As Master.DBMovie)
         Try
 
-            Dim pExt As String = Path.GetExtension(miMovie.FaS.Filename).ToLower
+            Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
             If Not pExt = ".rar" Then
                 Dim MI As New MediaInfo
-                MI.GetMovieMIFromPath(miMovie.Movie.FileInfo, miMovie.FaS.Filename)
+                MI.GetMovieMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename)
                 If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                     Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
 
@@ -3926,7 +3948,7 @@ doCancel:
                         Using dImgSelect As New dlgImgSelect
                             Dim pPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)
                             If Not String.IsNullOrEmpty(pPath) Then
-                                Master.currMovie.FaS.Poster = pPath
+                                Master.currMovie.PosterPath = pPath
                             End If
                         End Using
                     End If
@@ -3934,7 +3956,7 @@ doCancel:
                         Using dImgSelect As New dlgImgSelect
                             Dim fPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Fanart, True)
                             If Not String.IsNullOrEmpty(fPath) Then
-                                Master.currMovie.FaS.Fanart = fPath
+                                Master.currMovie.FanartPath = fPath
                             End If
                         End Using
                     End If
@@ -3943,14 +3965,14 @@ doCancel:
 
                     If Master.eSettings.SingleScrapeTrailer Then
                         Dim cTrailer As New Trailers
-                        Dim tURL As String = cTrailer.ShowTDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.FaS.Filename, Master.currMovie.Movie.Trailer)
+                        Dim tURL As String = cTrailer.ShowTDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename, Master.currMovie.Movie.Trailer)
                         If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
                             Master.currMovie.Movie.Trailer = tURL
                         End If
                         cTrailer = Nothing
                     End If
 
-                    If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.FaS.isSingle Then
+                    If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
                         Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs)
                     End If
                 End If
@@ -4009,19 +4031,26 @@ doCancel:
         Try
 
             If Directory.Exists(Directory.GetParent(dRow(0).Item(1)).FullName) Then
-                tmpMovieDb.FaS = New Master.FileAndSource
 
                 If FromNfo Then
                     If String.IsNullOrEmpty(dRow(0).Item(42)) Then
                         Dim sNFO As String = NFO.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2))
-                        tmpMovieDb.FaS.Nfo = sNFO
+                        tmpMovieDb.NfoPath = sNFO
                         tmpMovie = NFO.LoadMovieFromNFO(sNFO, dRow(0).Item(2))
                     Else
                         tmpMovie = NFO.LoadMovieFromNFO(dRow(0).Item(42), dRow(0).Item(2))
                     End If
 
                     If String.IsNullOrEmpty(tmpMovie.Title) Then
-                        tmpMovieDb.ListTitle = StringManip.FilterName(dRow(0).Item(3))
+                        If Directory.GetParent(dRow(0).Item(1)).Name.ToLower = "video_ts" Then
+                            tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(dRow(0).Item(1)).FullName).Name)
+                        Else
+                            If dRow(0).Item(46) AndAlso dRow(0).Item(2) Then
+                                tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(dRow(0).Item(1)).Name)
+                            Else
+                                tmpMovieDb.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(dRow(0).Item(1)))
+                            End If
+                        End If
                     Else
                         If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovie.Year) Then
                             tmpMovieDb.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(tmpMovie.Title), tmpMovie.Year)
@@ -4029,6 +4058,7 @@ doCancel:
                             tmpMovieDb.ListTitle = StringManip.FilterTokens(tmpMovie.Title)
                         End If
                     End If
+
                     Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
                     Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovie.Title})
 
@@ -4040,22 +4070,22 @@ doCancel:
                 'update genre
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
-                tmpMovieDb.FaS.Filename = dRow(0).Item(1)
-                tmpMovieDb.FaS.isSingle = dRow(0).Item(2)
-                tmpMovieDb.FaS.Source = dRow(0).Item(12)
+                tmpMovieDb.Filename = dRow(0).Item(1)
+                tmpMovieDb.isSingle = dRow(0).Item(2)
+                tmpMovieDb.Source = dRow(0).Item(12)
                 aContents = Master.GetFolderContents(dRow(0).Item(1), dRow(0).Item(2))
-                tmpMovieDb.FaS.Poster = aContents(0)
+                tmpMovieDb.PosterPath = aContents(0)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(aContents(0)), False, True)})
-                tmpMovieDb.FaS.Fanart = aContents(1)
+                tmpMovieDb.FanartPath = aContents(1)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(aContents(1)), False, True)})
                 'assume invalid nfo if no title
-                tmpMovieDb.FaS.Nfo = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, aContents(2))
-                Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpMovieDb.FaS.Nfo), False, True)})
-                tmpMovieDb.FaS.Trailer = aContents(3)
+                tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, aContents(2))
+                Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)})
+                tmpMovieDb.TrailerPath = aContents(3)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 7, If(String.IsNullOrEmpty(aContents(3)), False, True)})
-                tmpMovieDb.FaS.Subs = aContents(4)
+                tmpMovieDb.SubPath = aContents(4)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 8, If(String.IsNullOrEmpty(aContents(4)), False, True)})
-                tmpMovieDb.FaS.Extra = aContents(5)
+                tmpMovieDb.ExtraPath = aContents(5)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(aContents(5)), False, True)})
 
                 tmpMovieDb.ID = dRow(0).Item(0)
@@ -4222,7 +4252,7 @@ doCancel:
     Private Sub SetFilterColors()
 
         Try
-            Dim pExt As String = String.Empty
+            Dim LevFail As Boolean = False
 
             For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
 
@@ -4246,7 +4276,23 @@ doCancel:
                     End If
                 End If
 
-                pExt = Path.GetExtension(drvRow.Cells(1).Value).ToLower
+                If Master.eSettings.LevTolerance > 0 Then
+                    Dim pExt As String = Path.GetExtension(drvRow.Cells(1).Value).ToLower
+                    Dim pTitle As String = String.Empty
+                    If Directory.GetParent(drvRow.Cells(1).Value).Name.ToLower = "video_ts" Then
+                        pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value).FullName).Name
+                    Else
+                        If drvRow.Cells(46).Value AndAlso drvRow.Cells(2).Value Then
+                            pTitle = Directory.GetParent(drvRow.Cells(1).Value).Name
+                        Else
+                            pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value)
+                        End If
+                    End If
+                    LevFail = Not pExt = ".vob" AndAlso Not pExt = ".ifo" AndAlso _
+                              StringManip.ComputeLevenshtein(StringManip.RemovePunctuation(drvRow.Cells(15).Value), StringManip.FilterName(pTitle, False)) > Master.eSettings.LevTolerance AndAlso _
+                              StringManip.ComputeLevenshtein(StringManip.RemovePunctuation(drvRow.Cells(15).Value), pTitle) > Master.eSettings.LevTolerance
+
+                End If
 
                 If drvRow.Cells(14).Value Then
                     drvRow.Cells(3).Style.BackColor = Color.LightSteelBlue
@@ -4263,9 +4309,7 @@ doCancel:
                     drvRow.Cells(7).Style.SelectionBackColor = Color.MediumOrchid
                     drvRow.Cells(8).Style.SelectionBackColor = Color.MediumOrchid
                     drvRow.Cells(9).Style.SelectionBackColor = Color.MediumOrchid
-                ElseIf Master.eSettings.LevTolerance > 0 AndAlso Not pExt = ".vob" AndAlso Not pExt = ".ifo" AndAlso _
-                StringManip.ComputeLevenshtein(drvRow.Cells(15).Value, StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value), False)) > Master.eSettings.LevTolerance AndAlso _
-                StringManip.ComputeLevenshtein(drvRow.Cells(15).Value, Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value)) > Master.eSettings.LevTolerance Then
+                ElseIf LevFail Then
                     drvRow.Cells(3).Style.BackColor = Color.MistyRose
                     drvRow.Cells(4).Style.BackColor = Color.MistyRose
                     drvRow.Cells(5).Style.BackColor = Color.MistyRose
@@ -4591,7 +4635,7 @@ doCancel:
                 Me.ClearInfo()
                 Me.pnlNoInfo.Visible = True
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMediaList.Item(0, iRow).Value))
-                Me.tslStatus.Text = Master.currMovie.FaS.Filename
+                Me.tslStatus.Text = Master.currMovie.Filename
             Else
                 Me.pnlNoInfo.Visible = False
 

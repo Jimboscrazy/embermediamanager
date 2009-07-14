@@ -126,9 +126,9 @@ Public Class dlgBulkRenamer
                                     End If
                                     MovieFile.Year = _curMovie.Movie.Year
                                     MovieFile.IsLocked = _curMovie.IsLock
-                                    MovieFile.BasePath = Path.GetDirectoryName(_curMovie.FaS.Filename)
-                                    MovieFile.Path = Path.GetDirectoryName(_curMovie.FaS.Filename)
-                                    MovieFile.IsSingle = _curMovie.FaS.isSingle
+                                    MovieFile.BasePath = Path.GetDirectoryName(_curMovie.Filename)
+                                    MovieFile.Path = Path.GetDirectoryName(_curMovie.Filename)
+                                    MovieFile.IsSingle = _curMovie.isSingle
                                     If Not IsNothing(_curMovie.Movie.FileInfo) Then
                                         If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                                             tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
@@ -156,7 +156,7 @@ Public Class dlgBulkRenamer
                                             Exit For
                                         End If
                                     Next
-                                    MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_curMovie.FaS.Filename))
+                                    MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_curMovie.Filename))
 
                                     FFRenamer.AddMovie(MovieFile)
 

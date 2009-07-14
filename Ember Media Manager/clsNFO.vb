@@ -485,8 +485,8 @@ Public Class NFO
             Dim tPath As String = String.Empty
             Dim nPath As String = String.Empty
 
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(movieToSave.FaS.Filename).Name.ToLower = "video_ts" Then
-                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.FaS.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.FaS.Filename).FullName).Name), ".nfo")
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(movieToSave.Filename).Name.ToLower = "video_ts" Then
+                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).Name), ".nfo")
 
                 If Not Master.eSettings.OverwriteNfo Then
                     RenameNonConfNfo(tPath, False)
@@ -494,17 +494,17 @@ Public Class NFO
 
                 If Not File.Exists(nPath) OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
                     Using xmlSW As New StreamWriter(nPath)
-                        movieToSave.FaS.Nfo = tPath
+                        movieToSave.NfoPath = tPath
                         xmlSer.Serialize(xmlSW, movieToSave.Movie)
                     End Using
                 End If
             Else
-                Dim tmpName As String = Path.GetFileNameWithoutExtension(movieToSave.FaS.Filename)
-                nPath = Path.Combine(Directory.GetParent(movieToSave.FaS.Filename).FullName, tmpName)
+                Dim tmpName As String = Path.GetFileNameWithoutExtension(movieToSave.Filename)
+                nPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, tmpName)
 
-                If Master.eSettings.MovieNameNFO AndAlso (Not movieToSave.FaS.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
-                    If Directory.GetParent(movieToSave.FaS.Filename).Name.ToLower = "video_ts" Then
-                        tPath = Path.Combine(Directory.GetParent(movieToSave.FaS.Filename).FullName, "video_ts.nfo")
+                If Master.eSettings.MovieNameNFO AndAlso (Not movieToSave.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
+                    If Directory.GetParent(movieToSave.Filename).Name.ToLower = "video_ts" Then
+                        tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
                     Else
                         tPath = String.Concat(nPath, ".nfo")
                     End If
@@ -515,13 +515,13 @@ Public Class NFO
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                         Using xmlSW As New StreamWriter(tPath)
-                            movieToSave.FaS.Nfo = tPath
+                            movieToSave.NfoPath = tPath
                             xmlSer.Serialize(xmlSW, movieToSave.Movie)
                         End Using
                     End If
                 End If
 
-                If movieToSave.FaS.isSingle AndAlso Master.eSettings.MovieNFO Then
+                If movieToSave.isSingle AndAlso Master.eSettings.MovieNFO Then
                     tPath = Path.Combine(Directory.GetParent(nPath).FullName, "movie.nfo")
 
                     If Not Master.eSettings.OverwriteNfo Then
@@ -530,7 +530,7 @@ Public Class NFO
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
                         Using xmlSW As New StreamWriter(tPath)
-                            movieToSave.FaS.Nfo = tPath
+                            movieToSave.NfoPath = tPath
                             xmlSer.Serialize(xmlSW, movieToSave.Movie)
                         End Using
                     End If

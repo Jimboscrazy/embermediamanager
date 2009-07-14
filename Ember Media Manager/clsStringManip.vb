@@ -54,7 +54,7 @@ Public Class StringManip
                 d(k, l) = Math.Min(Math.Min(d(k - 1, l) + 1, d(k, l - 1) + 1), d(k - 1, l - 1) + cost)
             Next
         Next
-        Return d(n, m)
+        Return d(n, m) - 1
     End Function
 
     Public Shared Function FilterTokens(ByVal sTitle As String) As String
@@ -67,7 +67,7 @@ Public Class StringManip
                 End If
             Next
         End If
-        Return newTitle
+        Return newTitle.Trim
     End Function
 
     Public Shared Function USACertToMPAA(ByVal sCert As String) As String
@@ -169,7 +169,7 @@ Public Class StringManip
         End If
     End Function
 
-    Public Shared Function FilterName(ByRef movieName As String, Optional ByVal doTokens As Boolean = True) As String
+    Public Shared Function FilterName(ByRef movieName As String, Optional ByVal doExtras As Boolean = True) As String
 
         '//
         ' Clean all the crap out of the name
@@ -192,7 +192,7 @@ Public Class StringManip
             End If
 
             'Convert String To Proper Case
-            If Master.eSettings.ProperCase Then
+            If Master.eSettings.ProperCase AndAlso doExtras Then
                 movieName = ProperCase(movieName)
             End If
 
@@ -200,10 +200,10 @@ Public Class StringManip
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        If doTokens Then
+        If doExtras Then
             Return FilterTokens(CleanStackingMarkers(movieName.Trim))
         Else
-            Return CleanStackingMarkers(movieName.Trim)
+            Return RemovePunctuation(CleanStackingMarkers(movieName.Trim))
         End If
 
     End Function
@@ -223,16 +223,21 @@ Public Class StringManip
     Public Shared Function IsStacked(ByVal sName As String, Optional ByVal VTS As Boolean = False) As Boolean
         Dim bReturn As Boolean = False
         If VTS Then
-            bReturn = Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
+            bReturn = Regex.IsMatch(sName, "[ _.-]+(cd|dvd|part|dis[ck])[ _.-]*([0-9a-d]+)", RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
         Else
-            bReturn = Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", RegexOptions.IgnoreCase)
+            bReturn = Regex.IsMatch(sName, "[ _.-]+(cd|dvd|part|dis[ck])[ _.-]*([0-9a-d]+)", RegexOptions.IgnoreCase)
         End If
         Return bReturn
     End Function
 
     Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False, Optional ByVal VTS As Boolean = False) As String
-        Dim sReturn As String = Regex.Replace(sPath, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
+        Dim sReturn As String = Regex.Replace(sPath, "[ _.-]+(cd|dvd|part|dis[ck])[ _.-]*([0-9a-d]+)", If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
         If VTS Then sReturn = Regex.Replace(sReturn, "[0-9]+$", If(Asterisk, "*", " "), RegexOptions.IgnoreCase)
-        Return Regex.Replace(sReturn, "\s\s(\s+)?", " ")
+        Return Regex.Replace(sReturn, "\s\s(\s+)?", " ").Trim
+    End Function
+
+    Public Shared Function RemovePunctuation(ByVal sString As String) As String
+        Dim sReturn As String = Regex.Replace(sString, "\W", " ")
+        Return Regex.Replace(sReturn.ToLower, "\s\s(\s+)?", " ").Trim
     End Function
 End Class

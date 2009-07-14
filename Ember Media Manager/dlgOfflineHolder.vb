@@ -139,9 +139,8 @@ Public Class dlgOfflineHolder
             Directory.CreateDirectory(WorkingPath)
 
             CreatePreview()
-            tMovie.FaS = New Master.FileAndSource
             tMovie.Movie = New Media.Movie
-            tMovie.FaS.isSingle = True
+            tMovie.isSingle = True
             idxStsSource = lvStatus.Items.Add("Source Folder").Index
             lvStatus.Items(idxStsSource).SubItems.Add("Invalid")
             lvStatus.Items(idxStsSource).UseItemStyleForSubItems = False
@@ -189,7 +188,7 @@ Public Class dlgOfflineHolder
                         Using dImgSelect As New dlgImgSelect
                             Dim pPath As String = dImgSelect.ShowDialog(tMovie, Master.ImageType.Posters)
                             If Not String.IsNullOrEmpty(pPath) Then
-                                tMovie.FaS.Poster = pPath
+                                tMovie.PosterPath = pPath
                             End If
                         End Using
                     End If
@@ -197,7 +196,7 @@ Public Class dlgOfflineHolder
                         Using dImgSelect As New dlgImgSelect
                             Dim fPath As String = dImgSelect.ShowDialog(tMovie, Master.ImageType.Fanart)
                             If Not String.IsNullOrEmpty(fPath) Then
-                                tMovie.FaS.Fanart = fPath
+                                tMovie.FanartPath = fPath
                             End If
                         End Using
                     End If
@@ -236,13 +235,13 @@ Public Class dlgOfflineHolder
         Try
             If txtMovieName.Text.IndexOfAny(Path.GetInvalidPathChars) <= 0 Then
                 MovieName = txtMovieName.Text
-                tMovie.FaS.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
+                tMovie.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
             Else
                 MovieName = txtMovieName.Text
                 For Each Invalid As Char In Path.GetInvalidPathChars
                     MovieName = MovieName.Replace(Invalid, String.Empty)
                 Next
-                tMovie.FaS.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
+                tMovie.Filename = Path.Combine(WorkingPath, String.Concat(MovieName, ".avi"))
             End If
 
             If cbSources.SelectedIndex >= 0 Then
@@ -273,7 +272,7 @@ Public Class dlgOfflineHolder
                 lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
             End If
 
-            Dim fPath As String = tMovie.FaS.Fanart
+            Dim fPath As String = tMovie.FanartPath
 
             If Not String.IsNullOrEmpty(fPath) Then
                 chkUseFanart.Enabled = True
@@ -346,7 +345,7 @@ Public Class dlgOfflineHolder
                 txtTop.Text = (Preview.Height - 150 / (1280 / Video_Width)).ToString
             End If
         Else
-            Dim fPath As String = tMovie.FaS.Fanart
+            Dim fPath As String = tMovie.FanartPath
             If Not fPath = String.Empty Then
                 SetPreview(False, fPath)
             End If
@@ -430,7 +429,7 @@ Public Class dlgOfflineHolder
             ffmpeg.StartInfo.CreateNoWindow = True
             ffmpeg.StartInfo.RedirectStandardOutput = True
             ffmpeg.StartInfo.RedirectStandardError = True
-            ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -i ""{0}\image%d.jpg"" ""{1}""", buildPath, tMovie.FaS.Filename)
+            ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -i ""{0}\image%d.jpg"" ""{1}""", buildPath, tMovie.Filename)
             ffmpeg.Start()
             ffmpeg.WaitForExit()
             ffmpeg.Close()
@@ -447,9 +446,9 @@ Public Class dlgOfflineHolder
 
         DirectoryCopy(WorkingPath, destPath)
 
-        tMovie.FaS.Filename = Path.Combine(destPath, String.Concat(MovieName, ".avi"))
-        tMovie.FaS.Poster = Path.Combine(destPath, Path.GetFileName(tMovie.FaS.Poster).ToString)
-        tMovie.FaS.Fanart = Path.Combine(destPath, Path.GetFileName(tMovie.FaS.Fanart).ToString)
+        tMovie.Filename = Path.Combine(destPath, String.Concat(MovieName, ".avi"))
+        tMovie.PosterPath = Path.Combine(destPath, Path.GetFileName(tMovie.PosterPath).ToString)
+        tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
 
         If Not String.IsNullOrEmpty(tMovie.Movie.Title) Then
             tMovie.ListTitle = tMovie.Movie.Title
@@ -464,7 +463,7 @@ Public Class dlgOfflineHolder
             Master.DeleteDirectory(buildPath)
         End If
         Try
-            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(tMovie.FaS.Filename)), tMovie.Movie, "$D", "$D")
+            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(tMovie.Filename)), tMovie.Movie, "$D", "$D")
         Catch ex As Exception
         End Try
 

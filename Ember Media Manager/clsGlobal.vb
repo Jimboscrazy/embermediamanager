@@ -93,17 +93,20 @@ Public Class Master
         Dim ID As Integer
         Dim ListTitle As String
         Dim Movie As Media.Movie
-        Dim FaS As FileAndSource
         Dim IsNew As Boolean
         Dim IsMark As Boolean
         Dim IsLock As Boolean
-        Dim HasPoster As Boolean
-        Dim HasFanart As Boolean
-        Dim HasNfo As Boolean
-        Dim HasTrailer As Boolean
-        Dim HasSub As Boolean
-        Dim HasExtra As Boolean
         Dim NeedsSave As Boolean
+        Dim UseFolder As Boolean
+        Dim Filename As String
+        Dim isSingle As Boolean
+        Dim PosterPath As String
+        Dim FanartPath As String
+        Dim NfoPath As String
+        Dim TrailerPath As String
+        Dim SubPath As String
+        Dim ExtraPath As String
+        Dim Source As String
     End Structure
 
     Public Structure ScrapeOptions
@@ -302,15 +305,19 @@ Public Class Master
                 'check if there are any movies in the parent folder
                 ScanForFiles(sPath, sSource, bUseFolder, bSingle)
 
-                Dim Dirs As String() = Directory.GetDirectories(sPath)
+                Dim Dirs As New ArrayList
+
+                Try
+                    Dirs.AddRange(Directory.GetDirectories(sPath))
+                Catch
+                End Try
 
                 For Each inDir As String In Dirs
                     If isValidDir(inDir) Then
                         ScanForFiles(inDir, sSource, bUseFolder, bSingle)
-                    End If
-
-                    If bRecur AndAlso isValidDir(inDir) Then
-                        ScanSourceDir(sSource, inDir, bRecur, bUseFolder, bSingle)
+                        If bRecur Then
+                            ScanSourceDir(sSource, inDir, bRecur, bUseFolder, bSingle)
+                        End If
                     End If
                 Next
             End If
@@ -327,61 +334,80 @@ Public Class Master
 
         Try
 
-            If Directory.Exists(sPath) Then
-                Dim tmpList As New ArrayList
-                Dim di As DirectoryInfo
-                Dim lFi As New List(Of FileInfo)
-                Dim SkipStack As Boolean = False
-                Dim fList As New List(Of FileAndSource)
-                Dim tSingle As Boolean = False
+            Dim tmpList As New ArrayList
+            Dim di As DirectoryInfo
+            Dim lFi As New List(Of FileInfo)
+            Dim SkipStack As Boolean = False
+            Dim fList As New List(Of FileAndSource)
+            Dim tSingle As Boolean = False
 
-                If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
-                    di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
-                    bSingle = True
-                Else
-                    di = New DirectoryInfo(sPath)
-                End If
+            If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
+                di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
+                bSingle = True
+            Else
+                di = New DirectoryInfo(sPath)
+            End If
 
-                Try
-                    lFi.AddRange(di.GetFiles())
-                Catch
-                End Try
+            Try
+                lFi.AddRange(di.GetFiles())
+            Catch
+            End Try
 
-                If lFi.Count > 0 Then
-                    lFi.Sort(AddressOf SortFileNames)
+            If lFi.Count > 0 Then
 
-                    For Each lFile As FileInfo In lFi
-
-                        If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
-                        Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
-                        ((eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
-                            If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
-                                tmpList.Add(lFile.FullName.ToLower)
-                                SkipStack = True
-                            Else
-                                tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
-                            End If
-                            If alMoviePaths.Contains(lFile.FullName.ToLower) Then
-                                fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
-                            Else
-                                fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
-                            End If
-                            If bSingle AndAlso Not SkipStack Then Exit For
+                'Check folder if it contains ifo, vob, and bup, consider it a video_ts folder (if bSingle is not already true)
+                If eSettings.AutoDetectVTS AndAlso Not bSingle Then
+                    Dim hasIfo As Integer = 0
+                    Dim hasVob As Integer = 0
+                    Dim hasBup As Integer = 0
+                    For Each lfile As FileInfo In lFi
+                        If Path.GetExtension(lfile.FullName).ToLower = ".ifo" Then
+                            hasIfo = 1
                         End If
+                        If Path.GetExtension(lfile.FullName).ToLower = ".vob" Then
+                            hasVob = 1
+                        End If
+                        If Path.GetExtension(lfile.FullName).ToLower = ".bup" Then
+                            hasBup = 1
+                        End If
+                        If (hasIfo + hasVob + hasBup) > 1 Then Exit For
                     Next
-
-                    If fList.Count = 1 Then tSingle = True
-
-                    If tSingle Then
-                        fList(0).isSingle = True
-                        fList(0).UseFolder = bUseFolder
-                        MediaList.Add(fList(0))
-                    Else
-                        MediaList.AddRange(fList)
-                    End If
-
-                    fList = Nothing
+                    bSingle = (hasIfo + hasVob + hasBup) > 1
                 End If
+
+                lFi.Sort(AddressOf SortFileNames)
+
+                For Each lFile As FileInfo In lFi
+
+                    If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
+                    Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
+                    ((eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
+                        If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
+                            tmpList.Add(lFile.FullName.ToLower)
+                            SkipStack = True
+                        Else
+                            tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
+                        End If
+                        If alMoviePaths.Contains(lFile.FullName.ToLower) Then
+                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
+                        Else
+                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
+                        End If
+                        If bSingle AndAlso Not SkipStack Then Exit For
+                    End If
+                Next
+
+                If fList.Count = 1 Then tSingle = True
+
+                If tSingle Then
+                    fList(0).isSingle = True
+                    fList(0).UseFolder = bUseFolder
+                    MediaList.Add(fList(0))
+                Else
+                    MediaList.AddRange(fList)
+                End If
+
+                fList = Nothing
             End If
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -718,10 +744,10 @@ Public Class Master
         Dim bReturn As Boolean = False
         Dim fList As New ArrayList
         Try
-            If eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
-                dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).Name), ".ext")
+            If eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".ext")
             Else
-                dPath = mMovie.FaS.Filename
+                dPath = mMovie.Filename
             End If
 
             Dim sOrName As String = StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
@@ -750,7 +776,7 @@ Public Class Master
 
                 If Not isCleaner Then
                     Dim Fanart As New Images
-                    Dim fPath As String = mMovie.FaS.Fanart
+                    Dim fPath As String = mMovie.FanartPath
                     Dim tPath As String = String.Empty
                     If Not String.IsNullOrEmpty(fPath) Then
                         If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
@@ -765,7 +791,7 @@ Public Class Master
                             End If
                         Else
                             If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(mMovie.FaS.Filename), "-fanart.jpg"))
+                                tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), "-fanart.jpg"))
                             Else
                                 tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
                             End If
@@ -777,11 +803,11 @@ Public Class Master
                     Fanart = Nothing
                 End If
 
-                If Not isCleaner AndAlso mMovie.FaS.isSingle Then
-                    If Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
-                        DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName)
+                If Not isCleaner AndAlso mMovie.isSingle Then
+                    If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                        DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
                     Else
-                        DeleteDirectory(Directory.GetParent(mMovie.FaS.Filename).FullName)
+                        DeleteDirectory(Directory.GetParent(mMovie.Filename).FullName)
                     End If
                 Else
                     For Each lFI As FileInfo In ioFi
@@ -928,7 +954,7 @@ Public Class Master
                         End Try
 
                         Try
-                            ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.FaS.Filename), ".*")))
+                            ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), ".*")))
                         Catch
                         End Try
 
@@ -953,7 +979,7 @@ Public Class Master
         Dim SetFA As String = String.Empty
 
         Try
-            Dim pExt As String = Path.GetExtension(mMovie.FaS.Filename).ToLower
+            Dim pExt As String = Path.GetExtension(mMovie.Filename).ToLower
             If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso _
             Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
 
@@ -963,10 +989,10 @@ Public Class Master
                     Dim tPath As String = String.Empty
                     Dim exImage As New Images
 
-                    If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.FaS.Filename).Name.ToLower = "video_ts" Then
-                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.FaS.Filename).FullName).FullName, "extrathumbs")
+                    If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, "extrathumbs")
                     Else
-                        tPath = Path.Combine(Directory.GetParent(mMovie.FaS.Filename).FullName, "extrathumbs")
+                        tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "extrathumbs")
                     End If
 
                     If Not Directory.Exists(tPath) Then
@@ -981,7 +1007,7 @@ Public Class Master
                     ffmpeg.StartInfo.RedirectStandardError = True
 
                     'first get the duration
-                    ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", mMovie.FaS.Filename)
+                    ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", mMovie.Filename)
                     ffmpeg.Start()
                     Dim d As StreamReader = ffmpeg.StandardError
                     Do
@@ -1013,7 +1039,7 @@ Public Class Master
                             'check to see if file already exists... if so, don't bother running ffmpeg since we're not
                             'overwriting current thumbs anyway
                             If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg"))) Then
-                                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg ""{2}""", intSeconds, mMovie.FaS.Filename, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
+                                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg ""{2}""", intSeconds, mMovie.Filename, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
                                 ffmpeg.Start()
                                 ffmpeg.WaitForExit()
                                 ffmpeg.Close()
@@ -1040,7 +1066,7 @@ Public Class Master
                         Dim exFanart As New Images
                         'always set to something if extrathumbs are created so we know during scrapers
                         SetFA = "TRUE"
-                        If Master.eSettings.UseETasFA AndAlso String.IsNullOrEmpty(mMovie.FaS.Fanart) Then
+                        If Master.eSettings.UseETasFA AndAlso String.IsNullOrEmpty(mMovie.FanartPath) Then
                             exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
                             SetFA = exFanart.SaveAsFanart(mMovie)
                         End If

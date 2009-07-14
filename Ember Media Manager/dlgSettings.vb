@@ -1193,6 +1193,10 @@ Public Class dlgSettings
         If Not Me.chkCheckTitles.Checked Then Me.txtCheckTitleTol.Text = String.Empty
     End Sub
 
+    Private Sub chkAutoDetectVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoDetectVTS.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -1413,6 +1417,7 @@ Public Class dlgSettings
             If Master.eSettings.SortTokens.Count <= 0 Then Master.eSettings.NoTokens = True
 
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
+            Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -1603,6 +1608,7 @@ Public Class dlgSettings
                 Me.txtCheckTitleTol.Enabled = True
                 Me.txtCheckTitleTol.Text = Master.eSettings.LevTolerance.ToString
             End If
+            Me.chkAutoDetectVTS.Checked = Master.eSettings.AutoDetectVTS
 
             Me.RefreshSources()
         Catch ex As Exception

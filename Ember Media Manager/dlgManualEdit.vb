@@ -346,8 +346,8 @@ Public Class dlgManualEdit
     Private Sub Editor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Me.Activate()
-        currFile = Master.currMovie.FaS.Nfo
-        If File.Exists(Master.currMovie.FaS.Nfo) Then
+        currFile = Master.currMovie.NfoPath
+        If File.Exists(currFile) Then
             RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
         End If
         Me.Text = String.Concat("Manual NFO Editor | ", currFile.Substring(currFile.LastIndexOf("\") + 1))
