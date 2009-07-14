@@ -49,10 +49,6 @@ Public Class MediaInfo
 
     Private Handle As IntPtr
 
-    Public Sub New()
-        Handle = MediaInfo_New()
-    End Sub
-
     Protected Overrides Sub Finalize()
         Try
             MediaInfo_Delete(Handle)
@@ -90,7 +86,6 @@ Public Class MediaInfo
             Dim miVideo As New Video
             Dim miAudio As New Audio
             Dim miSubtitle As New Subtitle
-            Dim VideoStreams As Integer
             Dim AudioStreams As Integer
             Dim SubtitleStreams As Integer
             Dim aLang As String = String.Empty
@@ -155,174 +150,138 @@ Public Class MediaInfo
 
             ElseIf Not sExt = (".ifo") Then
 
-                If StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath)) Then
+                If StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) Then
                     Dim tFile As New ArrayList
                     Dim sFile As New ArrayList
                     Try
-                        tFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, StringManip.CleanStackingMarkers(Path.GetFileName(sPath), True)))
+                        tFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath), True, True), Path.GetExtension(sPath))))
                     Catch
                     End Try
                     sFile.AddRange(tFile.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
 
                     Dim TotalDur As Integer = 0
+                    Dim tInfo As New Fileinfo
                     Dim tVideo As New Video
-                    Dim cVideo As New Video
                     Dim tAudio As New Audio
-                    Dim cAudio As New Audio
-
                     For Each File As String In sFile
-                        Me.Open(File)
+                        If Master.eSettings.ValidExts.Contains(Path.GetExtension(File).ToLower) Then
+                            tInfo = ScanMI(File)
 
-                        tVideo = New Video
-                        Dim iWidth As Integer = 0
+                            tVideo = NFO.GetBestVideo(tInfo)
+                            tAudio = NFO.GetBestAudio(tInfo)
 
-                        VideoStreams = Me.Count_Get(StreamKind.Visual)
-                        Dim vCodec As String = String.Empty
-                        For v As Integer = 0 To VideoStreams - 1
-                            miVideo = New Video
-                            miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
-                            miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
-                            miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID/Hint"))
-                            If String.IsNullOrEmpty(miVideo.Codec) OrElse IsNumeric(miVideo.Codec) Then
-                                vCodec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"))
-                                miVideo.Codec = If(IsNumeric(vCodec), ConvertVFormat(Me.Get_(StreamKind.Visual, v, "Format")), vCodec)
-                            End If
-                            miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String")
-                            TotalDur += Convert.ToInt32(DurationToMins(miVideo.Duration, False))
-                            miVideo.Aspect = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
-                            miVideo.Scantype = Me.Get_(StreamKind.Visual, v, "ScanType")
-                            With miVideo
-                                If Convert.ToInt32(.Width) > iWidth Then
-                                    If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse _
-                                    Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) OrElse Not String.IsNullOrEmpty(.Scantype) Then
-                                        iWidth = Convert.ToInt32(.Width)
-                                        tVideo = miVideo
-                                    End If
+                            If String.IsNullOrEmpty(miVideo.Codec) OrElse Not String.IsNullOrEmpty(tVideo.Codec) Then
+                                If Not String.IsNullOrEmpty(tVideo.Width) AndAlso Convert.ToInt32(tVideo.Width) >= Convert.ToInt32(miVideo.Width) Then
+                                    miVideo = tVideo
                                 End If
-                            End With
-                        Next
-
-                        tAudio = New Audio
-                        Dim iChans As Single = 0
-
-                        AudioStreams = Me.Count_Get(StreamKind.Audio)
-                        Dim aCodec As String = String.Empty
-                        For a As Integer = 0 To AudioStreams - 1
-                            miAudio = New Audio
-                            miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"))
-                            If String.IsNullOrEmpty(miAudio.Codec) OrElse IsNumeric(miAudio.Codec) Then
-                                aCodec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"))
-                                miAudio.Codec = If(IsNumeric(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format")), aCodec)
                             End If
-                            miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
-                            aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
-                            If Not String.IsNullOrEmpty(aLang) Then
-                                miAudio.LongLanguage = aLang
-                                miAudio.Language = ConvertL(miAudio.LongLanguage)
-                            End If
-                            With miAudio
-                                If Master.ConvertToSingle(.Channels) > iChans Then
-                                    If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
-                                        iChans = Master.ConvertToSingle(.Channels)
-                                        tAudio = miAudio
-                                    End If
+
+                            If String.IsNullOrEmpty(miAudio.Codec) OrElse Not String.IsNullOrEmpty(tAudio.Codec) Then
+                                If Not String.IsNullOrEmpty(tAudio.Channels) AndAlso Master.ConvertToSingle(tAudio.Channels) >= Master.ConvertToSingle(miAudio.Channels) Then
+                                    miAudio = tAudio
                                 End If
-                            End With
-                        Next
+                            End If
 
-                        'skip subs for stacks
+                            If Not String.IsNullOrEmpty(tVideo.Duration) Then TotalDur += Convert.ToInt32(DurationToMins(tVideo.Duration, False))
 
-                        If Convert.ToInt32(tVideo.Width) > Convert.ToInt32(cVideo.Width) Then
-                            cVideo = tVideo
-                        End If
-
-                        If Master.ConvertToSingle(tAudio.Channels) > Master.ConvertToSingle(cAudio.Channels) Then
-                            cAudio = tAudio
+                            For Each sSub As Subtitle In tInfo.StreamDetails.Subtitle
+                                If Not fiOut.StreamDetails.Subtitle.Contains(sSub) Then
+                                    fiOut.StreamDetails.Subtitle.Add(sSub)
+                                End If
+                            Next
                         End If
                     Next
-                    Me.Close()
-                    Me.Finalize()
 
-                    If Not String.IsNullOrEmpty(cVideo.Codec) OrElse Not String.IsNullOrEmpty(cVideo.Aspect) OrElse _
-                    Not String.IsNullOrEmpty(cVideo.Height) OrElse Not String.IsNullOrEmpty(cVideo.Width) OrElse Not String.IsNullOrEmpty(cVideo.Scantype) Then
-                        cVideo.Duration = DurationToMins(TotalDur, True)
-                        fiOut.StreamDetails.Video.Add(cVideo)
-                    End If
-                    If Not String.IsNullOrEmpty(cAudio.Codec) OrElse Not String.IsNullOrEmpty(cAudio.Channels) OrElse Not String.IsNullOrEmpty(cAudio.Language) Then
-                        fiOut.StreamDetails.Audio.Add(cAudio)
-                    End If
+                    fiOut.StreamDetails.Video.Add(miVideo)
+                    fiOut.StreamDetails.Audio.Add(miAudio)
+                    fiOut.StreamDetails.Video(0).Duration = DurationToMins(TotalDur, True)
+
                     fiInfo = fiOut
                 Else
-
-                    Me.Open(sPath)
-
-                    VideoStreams = Me.Count_Get(StreamKind.Visual)
-                    Dim vCodec As String = String.Empty
-                    For v As Integer = 0 To VideoStreams - 1
-                        miVideo = New Video
-                        miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
-                        miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
-                        miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID/Hint"))
-                        If String.IsNullOrEmpty(miVideo.Codec) OrElse IsNumeric(miVideo.Codec) Then
-                            vCodec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"))
-                            miVideo.Codec = If(IsNumeric(vCodec), ConvertVFormat(Me.Get_(StreamKind.Visual, v, "Format")), vCodec)
-                        End If
-                        miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String")
-                        miVideo.Aspect = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
-                        miVideo.Scantype = Me.Get_(StreamKind.Visual, v, "ScanType")
-                        With miVideo
-                            If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse _
-                            Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) OrElse Not String.IsNullOrEmpty(.Scantype) Then
-                                fiOut.StreamDetails.Video.Add(miVideo)
-                            End If
-                        End With
-                    Next
-
-                    AudioStreams = Me.Count_Get(StreamKind.Audio)
-                    Dim aCodec As String = String.Empty
-                    For a As Integer = 0 To AudioStreams - 1
-                        miAudio = New Audio
-                        miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"))
-                        If String.IsNullOrEmpty(miAudio.Codec) OrElse IsNumeric(miAudio.Codec) Then
-                            aCodec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"))
-                            miAudio.Codec = If(IsNumeric(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format")), aCodec)
-                        End If
-                        miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
-                        aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
-                        If Not String.IsNullOrEmpty(aLang) Then
-                            miAudio.LongLanguage = aLang
-                            miAudio.Language = ConvertL(miAudio.LongLanguage)
-                        End If
-                        With miAudio
-                            If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
-                                fiOut.StreamDetails.Audio.Add(miAudio)
-                            End If
-                        End With
-                    Next
-
-                    SubtitleStreams = Me.Count_Get(StreamKind.Text)
-                    For s As Integer = 0 To SubtitleStreams - 1
-                        miSubtitle = New MediaInfo.Subtitle
-                        sLang = Me.Get_(StreamKind.Text, s, "Language/String")
-                        If Not String.IsNullOrEmpty(sLang) Then
-                            miSubtitle.LongLanguage = sLang
-                            miSubtitle.Language = ConvertL(miSubtitle.LongLanguage)
-                        End If
-                        If Not String.IsNullOrEmpty(miSubtitle.Language) Then
-                            fiOut.StreamDetails.Subtitle.Add(miSubtitle)
-                        End If
-                    Next
-
-                    Me.Close()
-                    Me.Finalize()
-
-                    fiInfo = fiOut
-
+                    fiInfo = ScanMI(sPath)
                 End If
-                End If
+            End If
         End If
 
     End Sub
+
+    Private Function ScanMI(ByVal sPath As String) As Fileinfo
+        Dim fiOut As New Fileinfo
+        Dim miVideo As New Video
+        Dim miAudio As New Audio
+        Dim miSubtitle As New Subtitle
+        Dim VideoStreams As Integer
+        Dim AudioStreams As Integer
+        Dim SubtitleStreams As Integer
+        Dim aLang As String = String.Empty
+        Dim sLang As String = String.Empty
+
+        Me.Handle = MediaInfo_New()
+
+        Me.Open(sPath)
+
+        VideoStreams = Me.Count_Get(StreamKind.Visual)
+        Dim vCodec As String = String.Empty
+        For v As Integer = 0 To VideoStreams - 1
+            miVideo = New Video
+            miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
+            miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
+            miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID/Hint"))
+            If String.IsNullOrEmpty(miVideo.Codec) OrElse IsNumeric(miVideo.Codec) Then
+                vCodec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"))
+                miVideo.Codec = If(IsNumeric(vCodec), ConvertVFormat(Me.Get_(StreamKind.Visual, v, "Format")), vCodec)
+            End If
+            miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String")
+            miVideo.Aspect = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
+            miVideo.Scantype = Me.Get_(StreamKind.Visual, v, "ScanType")
+            With miVideo
+                If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse _
+                Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) OrElse Not String.IsNullOrEmpty(.Scantype) Then
+                    fiOut.StreamDetails.Video.Add(miVideo)
+                End If
+            End With
+        Next
+
+        AudioStreams = Me.Count_Get(StreamKind.Audio)
+        Dim aCodec As String = String.Empty
+        For a As Integer = 0 To AudioStreams - 1
+            miAudio = New Audio
+            miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"))
+            If String.IsNullOrEmpty(miAudio.Codec) OrElse IsNumeric(miAudio.Codec) Then
+                aCodec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"))
+                miAudio.Codec = If(IsNumeric(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format")), aCodec)
+            End If
+            miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
+            aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
+            If Not String.IsNullOrEmpty(aLang) Then
+                miAudio.LongLanguage = aLang
+                miAudio.Language = ConvertL(miAudio.LongLanguage)
+            End If
+            With miAudio
+                If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
+                    fiOut.StreamDetails.Audio.Add(miAudio)
+                End If
+            End With
+        Next
+
+        SubtitleStreams = Me.Count_Get(StreamKind.Text)
+        For s As Integer = 0 To SubtitleStreams - 1
+            miSubtitle = New MediaInfo.Subtitle
+            sLang = Me.Get_(StreamKind.Text, s, "Language/String")
+            If Not String.IsNullOrEmpty(sLang) Then
+                miSubtitle.LongLanguage = sLang
+                miSubtitle.Language = ConvertL(miSubtitle.LongLanguage)
+            End If
+            If Not String.IsNullOrEmpty(miSubtitle.Language) Then
+                fiOut.StreamDetails.Subtitle.Add(miSubtitle)
+            End If
+        Next
+
+        Me.Close()
+        Me.Finalize()
+
+        Return fiOut
+    End Function
 
     Private Function DurationToMins(ByVal Duration As String, ByVal Reverse As Boolean) As String
         If Not String.IsNullOrEmpty(Duration) Then
@@ -351,7 +310,7 @@ Public Class MediaInfo
                     Return "h264"
                 Case tFormat.Contains("flv"), tFormat.Contains("swf")
                     Return "flv"
-                Case tFormat.Contains("3ivx"), tFormat.Contains("3iv")
+                Case tFormat.Contains("3iv")
                     Return "3ivx"
                 Case Else
                     Return tFormat

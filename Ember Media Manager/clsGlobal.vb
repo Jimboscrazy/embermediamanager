@@ -351,30 +351,22 @@ Public Class Master
                     lFi.Sort(AddressOf SortFileNames)
 
                     For Each lFile As FileInfo In lFi
-                        If alMoviePaths.Contains(lFile.FullName.ToLower) Then
-                            'it's already on the list, don't bother scanning
+
+                        If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
+                        Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
+                        ((eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
                             If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
                                 tmpList.Add(lFile.FullName.ToLower)
                                 SkipStack = True
                             Else
                                 tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
                             End If
-                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
-                            If bSingle AndAlso Not SkipStack Then Exit For
-                        Else
-                            If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
-                            Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
-                            ((eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
-                                If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
-                                    tmpList.Add(lFile.FullName.ToLower)
-                                    SkipStack = True
-                                Else
-                                    tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
-                                End If
-
+                            If alMoviePaths.Contains(lFile.FullName.ToLower) Then
+                                fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
+                            Else
                                 fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
-                                If bSingle AndAlso Not SkipStack Then Exit For
                             End If
+                            If bSingle AndAlso Not SkipStack Then Exit For
                         End If
                     Next
 

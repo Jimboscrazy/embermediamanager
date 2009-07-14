@@ -216,11 +216,19 @@ Public Class StringManip
         Return sReturn
     End Function
 
-    Public Shared Function IsStacked(ByVal sName As String) As Boolean
-        Return Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", RegexOptions.IgnoreCase)
+    Public Shared Function IsStacked(ByVal sName As String, Optional ByVal VTS As Boolean = False) As Boolean
+        Dim bReturn As Boolean = False
+        If VTS Then
+            bReturn = Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)?", RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
+        Else
+            bReturn = Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)?", RegexOptions.IgnoreCase)
+        End If
+        Return bReturn
     End Function
 
-    Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False) As String
-        Return Regex.Replace(sPath, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", If(Asterisk, "*", String.Empty), RegexOptions.IgnoreCase).Trim
+    Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False, Optional ByVal VTS As Boolean = False) As String
+        Dim sReturn As String = Regex.Replace(sPath, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)?", If(Asterisk, "*", String.Empty), RegexOptions.IgnoreCase).Trim
+        If VTS Then sReturn = Regex.Replace(sReturn, "[0-9]+$", If(Asterisk, "*", String.Empty), RegexOptions.IgnoreCase)
+        Return sReturn
     End Function
 End Class

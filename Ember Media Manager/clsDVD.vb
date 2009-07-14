@@ -737,9 +737,9 @@ Public Class clsDVD
         'Audio Format
         mAudioModes.Add("0", "ac3")
         mAudioModes.Add("1", String.Empty)
-        mAudioModes.Add("2", "mpeg1")
-        mAudioModes.Add("3", "mpeg2")
-        mAudioModes.Add("4", "lpcm")
+        mAudioModes.Add("2", "mp1")
+        mAudioModes.Add("3", "mp2")
+        mAudioModes.Add("4", "wav")
         mAudioModes.Add("5", String.Empty)
         mAudioModes.Add("6", "dca")
         mAudioModes.Add("7", String.Empty)
