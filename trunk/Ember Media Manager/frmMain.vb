@@ -1946,10 +1946,11 @@ Public Class frmMain
             Me.dgvMediaList.Enabled = False
 
             Dim doFill As Boolean = False
+            Dim doBatch As Boolean = Me.dgvMediaList.SelectedRows.Count > 1
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    doFill = Me.RefreshMovie(sRow.Cells(0).Value)
+                    doFill = Me.RefreshMovie(sRow.Cells(0).Value, doBatch)
                 Next
                 SQLtransaction.Commit()
             End Using
@@ -4068,7 +4069,10 @@ doCancel:
                 Return True
             End If
 
-            If Not BatchMode Then Me.SetFilterColors()
+            If Not BatchMode Then
+                Me.SetFilterColors()
+                Me.LoadInfo(dRow(0).Item(0), dRow(0).Item(1), True, False)
+            End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
