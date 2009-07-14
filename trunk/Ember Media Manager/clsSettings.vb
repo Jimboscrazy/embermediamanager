@@ -1590,6 +1590,8 @@ Public Class emmSettings
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]hd(tv)?[ _.-].*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]unrated.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]uncut.*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]pal[ _.-].*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]ntsc.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]dvd[_.-]?(rip)?.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]\(\d\d\d\d\).*")
             Master.eSettings.FilterCustom.Add("\.[->] ")
