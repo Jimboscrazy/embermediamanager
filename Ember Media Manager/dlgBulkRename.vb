@@ -157,6 +157,10 @@ Public Class dlgBulkRenamer
                                         End If
                                     Next
                                     MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_curMovie.Filename))
+                                    Dim stackMark As String = Path.GetFileNameWithoutExtension(_curMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
+                                    If _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
+                                        MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
+                                    End If
 
                                     FFRenamer.AddMovie(MovieFile)
 
