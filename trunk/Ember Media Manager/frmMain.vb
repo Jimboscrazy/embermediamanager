@@ -464,10 +464,12 @@ Public Class frmMain
 
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     Master.DB.Connect(False, False)
+                    Me.SetMenus(True)
                     Me.FillList(0)
                     Me.Visible = True
                 Else
                     Master.DB.Connect(True, False)
+                    Me.SetMenus(True)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Me.Visible = True
                         Me.LoadMedia(1)
@@ -477,7 +479,6 @@ Public Class frmMain
                     End If
                 End If
 
-                Me.SetMenus(True)
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
