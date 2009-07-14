@@ -123,6 +123,7 @@ Public Class Database
                                 "TrailerPath TEXT, " & _
                                 "SubPath TEXT, " & _
                                 "FanartURL TEXT, " & _
+                                "UseFolder BOOL NOT NULL DEFAULT False, " & _
                                 "NeedsSave BOOL NOT NULL DEFAULT False" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
@@ -235,7 +236,6 @@ Public Class Database
 
     Public Function LoadMovieFromDB(ByVal id As Long) As Master.DBMovie
         Dim _movieDB As New Master.DBMovie
-        _movieDB.FaS = New Master.FileAndSource
         Try
             _movieDB.ID = id
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
@@ -243,23 +243,18 @@ Public Class Database
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
 
                     If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle")
-                    If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.FaS.Filename = SQLreader("MoviePath")
-                    _movieDB.FaS.isSingle = SQLreader("type")
-                    If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _movieDB.FaS.Fanart = SQLreader("FanartPath")
-                    _movieDB.HasFanart = SQLreader("HasFanart")
-                    If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _movieDB.FaS.Poster = SQLreader("PosterPath")
-                    _movieDB.HasPoster = SQLreader("HasPoster")
-                    If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.FaS.Trailer = SQLreader("TrailerPath")
-                    _movieDB.HasTrailer = SQLreader("HasTrailer")
-                    If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.FaS.Nfo = SQLreader("NfoPath")
-                    _movieDB.HasNfo = SQLreader("HasNfo")
-                    If Not DBNull.Value.Equals(SQLreader("SubPath")) Then _movieDB.FaS.Subs = SQLreader("SubPath")
-                    _movieDB.HasSub = SQLreader("HasSub")
-                    If Not DBNull.Value.Equals(SQLreader("ExtraPath")) Then _movieDB.FaS.Extra = SQLreader("ExtraPath")
-                    _movieDB.HasExtra = SQLreader("HasExtra")
-                    If Not DBNull.Value.Equals(SQLreader("source")) Then _movieDB.FaS.Source = SQLreader("source")
+                    If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath")
+                    _movieDB.isSingle = SQLreader("type")
+                    If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _movieDB.FanartPath = SQLreader("FanartPath")
+                    If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _movieDB.PosterPath = SQLreader("PosterPath")
+                    If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.TrailerPath = SQLreader("TrailerPath")
+                    If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.NfoPath = SQLreader("NfoPath")
+                    If Not DBNull.Value.Equals(SQLreader("SubPath")) Then _movieDB.SubPath = SQLreader("SubPath")
+                    If Not DBNull.Value.Equals(SQLreader("ExtraPath")) Then _movieDB.ExtraPath = SQLreader("ExtraPath")
+                    If Not DBNull.Value.Equals(SQLreader("source")) Then _movieDB.Source = SQLreader("source")
                     _movieDB.IsMark = SQLreader("mark")
                     _movieDB.IsLock = SQLreader("lock")
+                    _movieDB.UseFolder = SQLreader("UseFolder")
                     _movieDB.NeedsSave = SQLreader("NeedsSave")
                     _movieDB.Movie = New Media.Movie
                     With _movieDB.Movie
@@ -344,7 +339,6 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Dim subtitle As MediaInfo.Subtitle
-                    _movieDB.HasSub = SQLreader.Read
                     While SQLreader.Read
                         subtitle = New MediaInfo.Subtitle
                         If Not DBNull.Value.Equals(SQLreader("subs")) Then subtitle.Language = SQLreader("subs")
@@ -419,8 +413,6 @@ Public Class Database
 
     Public Function SaveMovieToDB(ByVal _movieDB As Master.DBMovie, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Master.DBMovie
 
-        Dim tmpMovie As Media.Movie
-
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
@@ -430,19 +422,15 @@ Public Class Database
                         "MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
-                    'SQLcommand.CommandText = String.Concat("UPDATE movies SET title = (?), HasPoster = (?), HasFanart = (?), HasNfo = (?), HasTrailer = (?), HasSub = (?), HasExtra = (?), ", _
-                    '    "OriginalTitle = (?), Year = (?), Rating = (?), Votes = (?), MPAA = (?), Top250 = (?), Outline = (?), Plot = (?), Tagline = (?), Certification = (?), Genre = (?), ", _
-                    '    "Studio = (?), Runtime = (?), ReleaseDate = (?), Director = (?), Credits = (?), Playcount = (?), Watched = (?), File = (?), Path = (?), FileNameAndPath = (?), Status = (?), ", _
-                    '    "Trailer = (?), PosterPath = (?), FanartPath = (?), NfoPath = (?), TrailerPath = (?), SubPath = (?) WHERE id = ", _movieDB.ID.ToString, ";")
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "ID, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.String, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
@@ -494,64 +482,65 @@ Public Class Database
                 Dim parSubPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSubPath", DbType.String, 0, "SubPath")
                 Dim parExtraPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtraPath", DbType.String, 0, "ExtraPath")
                 Dim parFanartURL As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartURL", DbType.String, 0, "FanartURL")
-                Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.String, 0, "NeedsSave")
+                Dim parUseFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parUseFolder", DbType.Boolean, 0, "UseFolder")
+                Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
 
                 ' First let's save it to NFO, even because we will need the NFO path
                 If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
 
-                tmpMovie = _movieDB.Movie
-                parMoviePath.Value = _movieDB.FaS.Filename
-                parType.Value = _movieDB.FaS.isSingle
+                parMoviePath.Value = _movieDB.Filename
+                parType.Value = _movieDB.isSingle
                 parListTitle.Value = _movieDB.ListTitle
 
-                parPosterPath.Value = _movieDB.FaS.Poster
-                parFanartPath.Value = _movieDB.FaS.Fanart
-                parNfoPath.Value = _movieDB.FaS.Nfo
-                parTrailerPath.Value = _movieDB.FaS.Trailer
-                parSubPath.Value = _movieDB.FaS.Subs
-                parExtraPath.Value = _movieDB.FaS.Extra
+                parPosterPath.Value = _movieDB.PosterPath
+                parFanartPath.Value = _movieDB.FanartPath
+                parNfoPath.Value = _movieDB.NfoPath
+                parTrailerPath.Value = _movieDB.TrailerPath
+                parSubPath.Value = _movieDB.SubPath
+                parExtraPath.Value = _movieDB.ExtraPath
                 parFanartURL.Value = _movieDB.Movie.Fanart.URL
 
-                parHasPoster.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Poster)
-                parHasFanart.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Fanart)
-                parHasNfo.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Nfo)
-                parHasTrailer.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Trailer)
-                parHasSub.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Subs)
-                parHasExtra.Value = Not String.IsNullOrEmpty(_movieDB.FaS.Extra)
+                parHasPoster.Value = Not String.IsNullOrEmpty(_movieDB.PosterPath)
+                parHasFanart.Value = Not String.IsNullOrEmpty(_movieDB.FanartPath)
+                parHasNfo.Value = Not String.IsNullOrEmpty(_movieDB.NfoPath)
+                parHasTrailer.Value = Not String.IsNullOrEmpty(_movieDB.TrailerPath)
+                parHasSub.Value = Not String.IsNullOrEmpty(_movieDB.SubPath)
+                parHasExtra.Value = Not String.IsNullOrEmpty(_movieDB.ExtraPath)
 
                 parNew.Value = _movieDB.IsNew
                 parMark.Value = _movieDB.IsMark
                 parLock.Value = _movieDB.IsLock
 
-                parTitle.Value = tmpMovie.Title
-                parOriginalTitle.Value = tmpMovie.OriginalTitle
-                parYear.Value = tmpMovie.Year
-                parRating.Value = tmpMovie.Rating
-                parVotes.Value = tmpMovie.Votes
-                parMPAA.Value = tmpMovie.MPAA
-                parTop250.Value = tmpMovie.Top250
-                parOutline.Value = tmpMovie.Outline
-                parPlot.Value = tmpMovie.Plot
-                parTagline.Value = tmpMovie.Tagline
-                parCertification.Value = tmpMovie.Certification
-                parGenre.Value = tmpMovie.Genre
-                parStudio.Value = tmpMovie.Studio
-                parRuntime.Value = tmpMovie.Runtime
-                parReleaseDate.Value = tmpMovie.ReleaseDate
-                parDirector.Value = tmpMovie.Director
-                parCredits.Value = tmpMovie.Credits
-                parPlaycount.Value = tmpMovie.PlayCount
-                parWatched.Value = tmpMovie.Watched
-                parStatus.Value = tmpMovie.Status
-                parFile.Value = tmpMovie.File
-                parPath.Value = tmpMovie.Path
-                parFileNameAndPath.Value = tmpMovie.FileNameAndPath
-                parTrailer.Value = tmpMovie.Trailer
+                parIMDB.Value = _movieDB.Movie.IMDBID
+                parTitle.Value = _movieDB.Movie.Title
+                parOriginalTitle.Value = _movieDB.Movie.OriginalTitle
+                parYear.Value = _movieDB.Movie.Year
+                parRating.Value = _movieDB.Movie.Rating
+                parVotes.Value = _movieDB.Movie.Votes
+                parMPAA.Value = _movieDB.Movie.MPAA
+                parTop250.Value = _movieDB.Movie.Top250
+                parOutline.Value = _movieDB.Movie.Outline
+                parPlot.Value = _movieDB.Movie.Plot
+                parTagline.Value = _movieDB.Movie.Tagline
+                parCertification.Value = _movieDB.Movie.Certification
+                parGenre.Value = _movieDB.Movie.Genre
+                parStudio.Value = _movieDB.Movie.Studio
+                parRuntime.Value = _movieDB.Movie.Runtime
+                parReleaseDate.Value = _movieDB.Movie.ReleaseDate
+                parDirector.Value = _movieDB.Movie.Director
+                parCredits.Value = _movieDB.Movie.Credits
+                parPlaycount.Value = _movieDB.Movie.PlayCount
+                parWatched.Value = _movieDB.Movie.Watched
+                parStatus.Value = _movieDB.Movie.Status
+                parFile.Value = _movieDB.Movie.File
+                parPath.Value = _movieDB.Movie.Path
+                parFileNameAndPath.Value = _movieDB.Movie.FileNameAndPath
+                parTrailer.Value = _movieDB.Movie.Trailer
 
+                parUseFolder.Value = _movieDB.UseFolder
                 parNeedsSave.Value = _movieDB.NeedsSave
 
-                parSource.Value = _movieDB.FaS.Source
-                parIMDB.Value = tmpMovie.IMDBID
+                parSource.Value = _movieDB.Source
                 If IsNew Then
                     If Master.eSettings.MarkNew Then
                         parMark.Value = True
@@ -601,7 +590,7 @@ Public Class Database
                         SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?)")
                         Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
                         Dim parActorThumb As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorThumb", DbType.String, 0, "thumb")
-                        For Each actor As Media.Person In tmpMovie.Actors
+                        For Each actor As Media.Person In _movieDB.Movie.Actors
                             parActorName.Value = actor.Name
                             parActorThumb.Value = actor.Thumb
                             SQLcommandActor.ExecuteNonQuery()
@@ -630,15 +619,15 @@ Public Class Database
                         Dim parVideo_Duration As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Duration", DbType.String, 0, "Video_Duration")
                         Dim parVideo_ScanType As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_ScanType", DbType.String, 0, "Video_ScanType")
                         Dim parVideo_AspectDisplayRatio As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_AspectDisplayRatio", DbType.String, 0, "Video_AspectDisplayRatio")
-                        For i As Integer = 0 To tmpMovie.FileInfo.StreamDetails.Video.Count - 1
+                        For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Video.Count - 1
                             parVideo_MovieID.Value = _movieDB.ID
                             parVideo_StreamID.Value = i
-                            parVideo_Width.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Width
-                            parVideo_Height.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Height
-                            parVideo_Codec.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Codec
-                            parVideo_Duration.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Duration
-                            parVideo_ScanType.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Scantype
-                            parVideo_AspectDisplayRatio.Value = tmpMovie.FileInfo.StreamDetails.Video(i).Aspect
+                            parVideo_Width.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Width
+                            parVideo_Height.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Height
+                            parVideo_Codec.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Codec
+                            parVideo_Duration.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Duration
+                            parVideo_ScanType.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Scantype
+                            parVideo_AspectDisplayRatio.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Aspect
                             SQLcommandMoviesVStreams.ExecuteNonQuery()
                         Next
                     End Using
@@ -651,12 +640,12 @@ Public Class Database
                         Dim parAudio_Language As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Language", DbType.String, 0, "Audio_Language")
                         Dim parAudio_Codec As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Codec", DbType.String, 0, "Audio_Codec")
                         Dim parAudio_Channel As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Channel", DbType.String, 0, "Audio_Channel")
-                        For i As Integer = 0 To tmpMovie.FileInfo.StreamDetails.Audio.Count - 1
+                        For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Audio.Count - 1
                             parAudio_MovieID.Value = _movieDB.ID
                             parAudio_StreamID.Value = i
-                            parAudio_Language.Value = tmpMovie.FileInfo.StreamDetails.Audio(i).Language
-                            parAudio_Codec.Value = tmpMovie.FileInfo.StreamDetails.Audio(i).Codec
-                            parAudio_Channel.Value = tmpMovie.FileInfo.StreamDetails.Audio(i).Channels
+                            parAudio_Language.Value = _movieDB.Movie.FileInfo.StreamDetails.Audio(i).Language
+                            parAudio_Codec.Value = _movieDB.Movie.FileInfo.StreamDetails.Audio(i).Codec
+                            parAudio_Channel.Value = _movieDB.Movie.FileInfo.StreamDetails.Audio(i).Channels
                             SQLcommandMoviesAStreams.ExecuteNonQuery()
                         Next
                     End Using
@@ -667,10 +656,10 @@ Public Class Database
                         Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.String, 0, "MovieID")
                         Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.String, 0, "StreamID")
                         Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "subs")
-                        For i As Integer = 0 To tmpMovie.FileInfo.StreamDetails.Subtitle.Count - 1
+                        For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
                             parSubs_MovieID.Value = _movieDB.ID
                             parSubs_StreamID.Value = i
-                            parSubs_Language.Value = tmpMovie.FileInfo.StreamDetails.Subtitle(i).Language
+                            parSubs_Language.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).Language
                             SQLcommandMoviesSubs.ExecuteNonQuery()
                         Next
                     End Using
@@ -681,7 +670,7 @@ Public Class Database
                                 ") VALUES (?,?);")
                         Dim parPosters_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_MovieID", DbType.String, 0, "MovieID")
                         Dim parPosters_thumb As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_thumb", DbType.String, 0, "thumb")
-                        For Each p As Media.Posters In tmpMovie.Thumbs.Thumb
+                        For Each p As Media.Posters In _movieDB.Movie.Thumbs.Thumb
                             parPosters_MovieID.Value = _movieDB.ID
                             parPosters_thumb.Value = p.URL
                             SQLcommandMoviesPosters.ExecuteNonQuery()
@@ -694,7 +683,7 @@ Public Class Database
                         Dim parFanart_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_MovieID", DbType.String, 0, "MovieID")
                         Dim parFanart_Preview As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_Preview", DbType.String, 0, "Preview")
                         Dim parFanart_thumb As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_thumb", DbType.String, 0, "thumb")
-                        For Each p As Media.Thumb In tmpMovie.Fanart.Thumb
+                        For Each p As Media.Thumb In _movieDB.Movie.Fanart.Thumb
                             parFanart_MovieID.Value = _movieDB.ID
                             parFanart_Preview.Value = p.Preview
                             parFanart_thumb.Value = p.Text
@@ -706,7 +695,7 @@ Public Class Database
                                 "SetName", _
                                 ") VALUES (?);")
                         Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
-                        For Each s As Media.Set In tmpMovie.Sets
+                        For Each s As Media.Set In _movieDB.Movie.Sets
                             parSets_SetName.Value = s.SetContainer.Set
                             SQLcommandMoviesSubs.ExecuteNonQuery()
                         Next
@@ -718,7 +707,7 @@ Public Class Database
                         Dim parMovieSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parMovieSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_SetName", DbType.String, 0, "SetName")
                         Dim parMovieSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_SetOrder", DbType.String, 0, "SetOrder")
-                        For Each s As Media.Set In tmpMovie.Sets
+                        For Each s As Media.Set In _movieDB.Movie.Sets
                             parMovieSets_MovieID.Value = _movieDB.ID
                             parMovieSets_SetName.Value = s.SetContainer.Set
                             parMovieSets_SetOrder.Value = s.SetContainer.Order

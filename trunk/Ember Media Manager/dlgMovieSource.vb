@@ -94,6 +94,7 @@ Public Class dlgMovieSource
     End Sub
 
     Private Sub txtSourceName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourceName.TextChanged
+        Me.OK_Button.Enabled = False
         Me.currNameText = Me.txtSourceName.Text
 
         Me.tmrWait.Enabled = False
@@ -153,6 +154,7 @@ Public Class dlgMovieSource
     End Sub
 
     Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
+        Me.OK_Button.Enabled = False
         Me.currPathText = Me.txtSourcePath.Text
 
         Me.tmrPathWait.Enabled = False

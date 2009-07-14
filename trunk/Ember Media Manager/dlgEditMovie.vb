@@ -289,7 +289,7 @@ Public Class dlgEditMovie
 
         Try
             If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Master.currMovie.Movie = NFO.LoadMovieFromNFO(Master.currMovie.FaS.Nfo, Master.currMovie.FaS.isSingle)
+                Master.currMovie.Movie = NFO.LoadMovieFromNFO(Master.currMovie.NfoPath, Master.currMovie.isSingle)
                 Me.FillInfo(False)
             End If
         Catch ex As Exception
@@ -348,7 +348,7 @@ Public Class dlgEditMovie
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
         Try
             With Me
-                If String.IsNullOrEmpty(Master.currMovie.FaS.Nfo) Then
+                If String.IsNullOrEmpty(Master.currMovie.NfoPath) Then
                     .btnManual.Enabled = False
                 End If
 
@@ -412,11 +412,11 @@ Public Class dlgEditMovie
                     End If
                 End If
 
-                Me.lblLocalTrailer.Visible = Not String.IsNullOrEmpty(Master.currMovie.FaS.Trailer)
+                Me.lblLocalTrailer.Visible = Not String.IsNullOrEmpty(Master.currMovie.TrailerPath)
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Trailer) Then
                     .txtTrailer.Text = Master.currMovie.Movie.Trailer
                 Else
-                    If String.IsNullOrEmpty(Master.currMovie.FaS.Trailer) Then
+                    If String.IsNullOrEmpty(Master.currMovie.TrailerPath) Then
                         .btnPlayTrailer.Enabled = False
                     End If
                 End If
@@ -465,11 +465,11 @@ Public Class dlgEditMovie
 
                 If DoAll Then
 
-                    If Not Master.currMovie.FaS.isSingle Then
+                    If Not Master.currMovie.isSingle Then
                         TabControl1.TabPages.Remove(TabPage4)
                         TabControl1.TabPages.Remove(TabPage5)
                     Else
-                        Dim pExt As String = Path.GetExtension(Master.currMovie.FaS.Filename).ToLower
+                        Dim pExt As String = Path.GetExtension(Master.currMovie.Filename).ToLower
                         If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
                         pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" Then
                             TabControl1.TabPages.Remove(TabPage4)
@@ -477,7 +477,7 @@ Public Class dlgEditMovie
                         .bwThumbs.RunWorkerAsync()
                     End If
 
-                    Fanart.FromFile(Master.currMovie.FaS.Fanart)
+                    Fanart.FromFile(Master.currMovie.FanartPath)
                     If Not IsNothing(Fanart.Image) Then
                         .pbFanart.Image = Fanart.Image
 
@@ -485,7 +485,7 @@ Public Class dlgEditMovie
                         .lblFanartSize.Visible = True
                     End If
 
-                    Poster.FromFile(Master.currMovie.FaS.Poster)
+                    Poster.FromFile(Master.currMovie.PosterPath)
                     If Not IsNothing(Poster.Image) Then
                         .pbPoster.Image = Poster.Image
 
@@ -589,18 +589,18 @@ Public Class dlgEditMovie
 
                 If Not IsNothing(.Fanart.Image) Then
                     Dim fPath As String = .Fanart.SaveAsFanart(Master.currMovie)
-                    Master.currMovie.FaS.Fanart = fPath
+                    Master.currMovie.FanartPath = fPath
                 Else
-                    .Fanart.Delete(Master.currMovie.FaS.Fanart, Master.ImageType.Fanart)
-                    Master.currMovie.FaS.Fanart = String.Empty
+                    .Fanart.Delete(Master.currMovie.FanartPath, Master.ImageType.Fanart)
+                    Master.currMovie.FanartPath = String.Empty
                 End If
 
                 If Not IsNothing(.Poster.Image) Then
                     Dim pPath As String = .Poster.SaveAsPoster(Master.currMovie)
-                    Master.currMovie.FaS.Poster = pPath
+                    Master.currMovie.PosterPath = pPath
                 Else
-                    .Poster.Delete(Master.currMovie.FaS.Poster, Master.ImageType.Posters)
-                    Master.currMovie.FaS.Poster = String.Empty
+                    .Poster.Delete(Master.currMovie.PosterPath, Master.ImageType.Posters)
+                    Master.currMovie.PosterPath = String.Empty
                 End If
 
                 .SaveExtraThumbsList()
@@ -681,7 +681,7 @@ Public Class dlgEditMovie
     Private Sub btnSetPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPoster.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Master.currMovie.FaS.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
                 .Filter = "Supported Images(*.jpg, *.jpeg, *.tbn)|*.jpg;*.jpeg;*.tbn|jpeg (*.jpg, *.jpeg)|*.jpg;*.jpeg|tbn (*.tbn)|*.tbn"
                 .FilterIndex = 0
             End With
@@ -701,7 +701,7 @@ Public Class dlgEditMovie
     Private Sub btnSetFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanart.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(Master.currMovie.FaS.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
                 .Filter = "JPEGs|*.jpg"
                 .FilterIndex = 4
             End With
@@ -770,7 +770,7 @@ Public Class dlgEditMovie
             Using ffmpeg As New Process()
 
                 ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-                ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currMovie.FaS.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
+                ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
                 ffmpeg.StartInfo.CreateNoWindow = True
@@ -838,7 +838,7 @@ Public Class dlgEditMovie
             Using ffmpeg As New Process()
 
                 ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currMovie.FaS.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
+                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
                 ffmpeg.StartInfo.CreateNoWindow = True
@@ -885,17 +885,17 @@ Public Class dlgEditMovie
             Dim tPath As String = Path.Combine(Master.TempPath, "frame.jpg")
             Dim sPath As String = String.Empty
 
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currMovie.FaS.Filename).Name.ToLower = "video_ts" Then
-                sPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.FaS.Filename).FullName).FullName, "extrathumbs")
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currMovie.Filename).Name.ToLower = "video_ts" Then
+                sPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
             Else
-                sPath = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
+                sPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
             End If
 
             If Not Directory.Exists(sPath) Then
                 Directory.CreateDirectory(sPath)
             End If
 
-            Dim iMod As Integer = Master.GetExtraModifier(Master.currMovie.FaS.Filename)
+            Dim iMod As Integer = Master.GetExtraModifier(Master.currMovie.Filename)
 
             Dim exImage As New Images
             exImage.ResizeExtraThumb(tPath, Path.Combine(sPath, String.Concat("thumb", (iMod + 1), ".jpg")))
@@ -911,7 +911,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub LoadThumbs()
-        Dim tPath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
+        Dim tPath As String = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
         If Directory.Exists(tPath) Then
             Dim di As New DirectoryInfo(tPath)
             Dim lFI As New List(Of FileInfo)
@@ -983,7 +983,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SaveExtraThumbsList()
-        Dim tPath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
+        Dim tPath As String = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
 
         'first delete the ones from the delete list
         Try
@@ -1201,8 +1201,8 @@ Public Class dlgEditMovie
 
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
         Try
-            If Not String.IsNullOrEmpty(Master.currMovie.FaS.Trailer) Then
-                System.Diagnostics.Process.Start(String.Concat("""", Master.currMovie.FaS.Trailer, """"))
+            If Not String.IsNullOrEmpty(Master.currMovie.TrailerPath) Then
+                System.Diagnostics.Process.Start(String.Concat("""", Master.currMovie.TrailerPath, """"))
             ElseIf Not String.IsNullOrEmpty(Me.txtTrailer.Text) Then
                 System.Diagnostics.Process.Start(String.Concat("""", Me.txtTrailer.Text, """"))
             End If
@@ -1213,13 +1213,13 @@ Public Class dlgEditMovie
 
     Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
         Using dTrailer As New dlgTrailer
-            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.FaS.Filename)
+            Dim tURL As String = dTrailer.ShowDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename)
             If Not String.IsNullOrEmpty(tURL) Then
                 Me.btnPlayTrailer.Enabled = True
                 If tURL.Substring(0, 7) = "http://" Then
                     Me.txtTrailer.Text = tURL
                 Else
-                    Master.currMovie.FaS.Trailer = tURL
+                    Master.currMovie.TrailerPath = tURL
                     Me.lblLocalTrailer.Visible = True
                 End If
             End If
@@ -1243,7 +1243,7 @@ Public Class dlgEditMovie
     Private Sub TransferETs()
         Try
             If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-                Dim ePath As String = Path.Combine(Directory.GetParent(Master.currMovie.FaS.Filename).FullName, "extrathumbs")
+                Dim ePath As String = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
 
                 Dim iMod As Integer = Master.GetExtraModifier(ePath)
                 Dim iVal As Integer = iMod + 1
@@ -1267,7 +1267,7 @@ Public Class dlgEditMovie
                     Next
                 End If
 
-                Master.currMovie.FaS.Extra = ePath
+                Master.currMovie.ExtraPath = ePath
 
                 Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
             End If

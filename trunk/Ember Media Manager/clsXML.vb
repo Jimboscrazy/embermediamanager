@@ -75,7 +75,7 @@ Public Class XML
                     vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
                 End If
 
-                Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(String.Concat(Directory.GetParent(AVMovie.FaS.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.FaS.Filename).ToLower), xVSource.@searchstring) Select xVSource.<icon>.Value
+                Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(String.Concat(Directory.GetParent(AVMovie.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.Filename).ToLower), xVSource.@searchstring) Select xVSource.<icon>.Value
                 If xVSourceFlag.Count > 0 Then
                     vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
                 End If
