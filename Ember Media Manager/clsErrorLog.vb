@@ -41,7 +41,7 @@ Public Class ErrorLogger
                 End If
 
                 'check the file
-                Dim fs As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.OpenOrCreate, FileAccess.ReadWrite)
+                Dim fs As FileStream = New FileStream(Path.Combine(sPath, "errlog.txt"), FileMode.Create, FileAccess.ReadWrite)
                 Dim s As StreamWriter = New StreamWriter(fs)
                 s.Close()
                 fs.Close()

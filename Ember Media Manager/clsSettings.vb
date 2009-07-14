@@ -1450,8 +1450,8 @@ Public Class emmSettings
         Me._postersize = Master.PosterSize.Xlrg
         Me._fanartsize = Master.FanartSize.Lrg
         Me._fanartprefsizeonly = False
-        Me._posterQuality = 100
-        Me._fanartQuality = 100
+        Me._posterQuality = 85
+        Me._fanartQuality = 85
         Me._overwritePoster = False
         Me._overwriteFanart = False
         Me._logerrors = True
@@ -1536,10 +1536,10 @@ Public Class emmSettings
         Me._allwaysdisplaygenrestext = False
         Me._displayyear = False
         Me._sorttokens.Clear()
-        Me._etnative = False
-        Me._etwidth = 1280
-        Me._etheight = 720
-        Me._etpadding = True
+        Me._etnative = True
+        Me._etwidth = 0
+        Me._etheight = 0
+        Me._etpadding = False
         Me._nofilters = False
         Me._notokens = False
         Me._levtolerance = 0

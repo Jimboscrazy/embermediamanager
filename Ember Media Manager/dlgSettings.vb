@@ -954,11 +954,41 @@ Public Class dlgSettings
     Private Sub tbPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbPosterQual.ValueChanged
         Me.btnApply.Enabled = True
         Me.lblPosterQual.Text = tbPosterQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblPosterQual
+            Select Case True
+                Case tbPosterQual.Value > 95 OrElse tbPosterQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbPosterQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbPosterQual.Value, 300 - tbPosterQual.Value, 0)
+                Case tbPosterQual.Value >= 80 AndAlso tbPosterQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbPosterQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, 8.5 * (tbPosterQual.Value - 20), 0)
+                Case tbPosterQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, 255 - (8.5 * (tbPosterQual.Value - 50)), 255, 0)
+            End Select
+        End With
     End Sub
 
     Private Sub tbFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbFanartQual.ValueChanged
         Me.btnApply.Enabled = True
         Me.lblFanartQual.Text = tbFanartQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblFanartQual
+            Select Case True
+                Case tbFanartQual.Value > 95 OrElse tbFanartQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbFanartQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbFanartQual.Value, 300 - tbFanartQual.Value, 0)
+                Case tbFanartQual.Value >= 80 AndAlso tbFanartQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbFanartQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, 8.5 * (tbFanartQual.Value - 20), 0)
+                Case tbFanartQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, 255 - (8.5 * (tbFanartQual.Value - 50)), 255, 0)
+            End Select
+        End With
     End Sub
 
     Private Sub chkFanartOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFanartOnly.CheckedChanged

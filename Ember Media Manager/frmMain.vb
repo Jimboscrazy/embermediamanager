@@ -71,6 +71,7 @@ Public Class frmMain
     Private filSearch As String = String.Empty
     Private filGenre As String = String.Empty
     Private filYear As String = String.Empty
+    Private filMissing As String = String.Empty
 
     Private Enum PicType As Integer
         Actor = 0
@@ -1026,6 +1027,28 @@ Public Class frmMain
         End Using
     End Sub
 
+    Private Sub chkFilterMissing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterMissing.Click
+        Try
+            Dim MissingFilter As New ArrayList
+            If Me.chkFilterMissing.Checked Then
+                With Master.eSettings
+                    If Not .MoviePosterCol Then MissingFilter.Add("HasPoster = 0")
+                    If Not .MovieFanartCol Then MissingFilter.Add("HasFanart = 0")
+                    If Not .MovieInfoCol Then MissingFilter.Add("HasNfo = 0")
+                    If Not .MovieTrailerCol Then MissingFilter.Add("HasTrailer = 0")
+                    If Not .MovieSubCol Then MissingFilter.Add("HasSub = 0")
+                    If Not .MovieExtraCol Then MissingFilter.Add("HasExtra = 0")
+                End With
+                filMissing = Strings.Join(MissingFilter.ToArray, " OR ")
+                Me.FilterArray.Add(filMissing)
+            Else
+                Me.FilterArray.Remove(filMissing)
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
     Private Sub chkFilterNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNew.Click
         Try
             If Me.chkFilterNew.Checked Then
@@ -1044,6 +1067,18 @@ Public Class frmMain
                 Me.FilterArray.Add("mark = 1")
             Else
                 Me.FilterArray.Remove("mark = 1")
+            End If
+            Me.RunFilter()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub chkFilterLock_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterLock.Click
+        Try
+            If Me.chkFilterLock.Checked Then
+                Me.FilterArray.Add("Lock = 1")
+            Else
+                Me.FilterArray.Remove("Lock = 1")
             End If
             Me.RunFilter()
         Catch
@@ -1070,7 +1105,9 @@ Public Class frmMain
             Me.FilterArray.Add(Me.filGenre)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
+        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
+        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = "All" OrElse _
+        Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked Then Me.RunFilter()
     End Sub
 
     Private Sub rbFilterOr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.Click
@@ -1093,7 +1130,9 @@ Public Class frmMain
             Me.FilterArray.Add(Me.filGenre)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Not Me.cbFilterSource.Text = "All" Then Me.RunFilter()
+        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
+        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = "All" OrElse _
+        Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked Then Me.RunFilter()
     End Sub
 
     Private Sub chkFilterDupe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.Click
@@ -4302,13 +4341,13 @@ doCancel:
                     drvRow.Cells(7).Style.BackColor = Color.LightSteelBlue
                     drvRow.Cells(8).Style.BackColor = Color.LightSteelBlue
                     drvRow.Cells(9).Style.BackColor = Color.LightSteelBlue
-                    drvRow.Cells(3).Style.SelectionBackColor = Color.MediumOrchid
-                    drvRow.Cells(4).Style.SelectionBackColor = Color.MediumOrchid
-                    drvRow.Cells(5).Style.SelectionBackColor = Color.MediumOrchid
-                    drvRow.Cells(6).Style.SelectionBackColor = Color.MediumOrchid
-                    drvRow.Cells(7).Style.SelectionBackColor = Color.MediumOrchid
-                    drvRow.Cells(8).Style.SelectionBackColor = Color.MediumOrchid
-                    drvRow.Cells(9).Style.SelectionBackColor = Color.MediumOrchid
+                    drvRow.Cells(3).Style.SelectionBackColor = Color.DarkTurquoise
+                    drvRow.Cells(4).Style.SelectionBackColor = Color.DarkTurquoise
+                    drvRow.Cells(5).Style.SelectionBackColor = Color.DarkTurquoise
+                    drvRow.Cells(6).Style.SelectionBackColor = Color.DarkTurquoise
+                    drvRow.Cells(7).Style.SelectionBackColor = Color.DarkTurquoise
+                    drvRow.Cells(8).Style.SelectionBackColor = Color.DarkTurquoise
+                    drvRow.Cells(9).Style.SelectionBackColor = Color.DarkTurquoise
                 ElseIf LevFail Then
                     drvRow.Cells(3).Style.BackColor = Color.MistyRose
                     drvRow.Cells(4).Style.BackColor = Color.MistyRose
@@ -4325,13 +4364,20 @@ doCancel:
                     drvRow.Cells(8).Style.SelectionBackColor = Color.DarkMagenta
                     drvRow.Cells(9).Style.SelectionBackColor = Color.DarkMagenta
                 Else
-                    drvRow.Cells(3).Style = dgvMediaList.DefaultCellStyle
-                    drvRow.Cells(4).Style = dgvMediaList.DefaultCellStyle
-                    drvRow.Cells(5).Style = dgvMediaList.DefaultCellStyle
-                    drvRow.Cells(6).Style = dgvMediaList.DefaultCellStyle
-                    drvRow.Cells(7).Style = dgvMediaList.DefaultCellStyle
-                    drvRow.Cells(8).Style = dgvMediaList.DefaultCellStyle
-                    drvRow.Cells(9).Style = dgvMediaList.DefaultCellStyle
+                    drvRow.Cells(3).Style.BackColor = Color.White
+                    drvRow.Cells(4).Style.BackColor = Color.White
+                    drvRow.Cells(5).Style.BackColor = Color.White
+                    drvRow.Cells(6).Style.BackColor = Color.White
+                    drvRow.Cells(7).Style.BackColor = Color.White
+                    drvRow.Cells(8).Style.BackColor = Color.White
+                    drvRow.Cells(9).Style.BackColor = Color.White
+                    drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(8).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
                 End If
             Next
 
@@ -4347,8 +4393,10 @@ doCancel:
         Me.txtSearch.Enabled = isEnabled
         Me.cbSearch.Enabled = isEnabled
         Me.chkFilterDupe.Enabled = isEnabled
+        Me.chkFilterMissing.Enabled = isEnabled
         Me.chkFilterMark.Enabled = isEnabled
         Me.chkFilterNew.Enabled = isEnabled
+        Me.chkFilterLock.Enabled = isEnabled
         Me.rbFilterOr.Enabled = isEnabled
         Me.rbFilterAnd.Enabled = isEnabled
         Me.cbFilterSource.Enabled = isEnabled
@@ -4371,8 +4419,10 @@ doCancel:
         AddHandler txtSearch.TextChanged, AddressOf txtSearch_TextChanged
         Me.cbSearch.SelectedIndex = 0
         Me.chkFilterDupe.Checked = False
+        Me.chkFilterMissing.Checked = False
         Me.chkFilterMark.Checked = False
         Me.chkFilterNew.Checked = False
+        Me.chkFilterLock.Checked = False
         Me.rbFilterOr.Checked = False
         Me.rbFilterAnd.Checked = True
         Me.txtFilterGenre.Text = String.Empty
@@ -4658,8 +4708,10 @@ doCancel:
         TT.SetToolTip(Me.btnPlay, "Play the movie file with the system default media player.")
         TT.SetToolTip(Me.btnMIRefresh, "Rescan and save the media info for the selected movie.")
         TT.SetToolTip(Me.chkFilterDupe, "Display only movies that have duplicate IMDB IDs.")
+        TT.SetToolTip(Me.chkFilterMissing, "Display only movies that have items missing.")
         TT.SetToolTip(Me.chkFilterNew, "Display only new movies.")
         TT.SetToolTip(Me.chkFilterMark, "Display only marked movies.")
+        TT.SetToolTip(Me.chkFilterLock, "Display only locked movies.")
         TT.SetToolTip(Me.cbFilterSource, "Display only movies from the selected source.")
         TT.Active = True
 
@@ -4686,6 +4738,5 @@ doCancel:
     End Class
 
 #End Region '*** Routines/Functions
-
 
 End Class

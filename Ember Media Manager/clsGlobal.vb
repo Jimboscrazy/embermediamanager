@@ -713,7 +713,7 @@ Public Class Master
 
         Try
             Using SourceStream As FileStream = New FileStream(sPathFrom, FileMode.Open, FileAccess.Read)
-                Using DestinationStream As FileStream = New FileStream(sPathTo, FileMode.OpenOrCreate, FileAccess.Write)
+                Using DestinationStream As FileStream = New FileStream(sPathTo, FileMode.Create, FileAccess.Write)
                     Dim StreamBuffer(SourceStream.Length - 1) As Byte
 
                     SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)

@@ -126,7 +126,7 @@ Public Class HTTP
                 If File.Exists(outFile) Then File.Delete(outFile)
 
                 Using Ms As Stream = wrResponse.GetResponseStream
-                    Using mStream As New FileStream(outFile, FileMode.OpenOrCreate, FileAccess.Write)
+                    Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
                         Dim StreamBuffer(4096) As Byte
                         Dim BlockSize As Integer
                         Dim iProgress As Integer
