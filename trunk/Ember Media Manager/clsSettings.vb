@@ -161,7 +161,7 @@ Public Class emmSettings
     Private _etpadding As Boolean
     Private _nofilters As Boolean
     Private _notokens As Boolean
-
+    Private _levtolerance As Integer
 
     Public Property Version() As String
         Get
@@ -1382,6 +1382,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property LevTolerance() As Integer
+        Get
+            Return Me._levtolerance
+        End Get
+        Set(ByVal value As Integer)
+            Me._levtolerance = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1523,6 +1532,7 @@ Public Class emmSettings
         Me._etpadding = True
         Me._nofilters = False
         Me._notokens = False
+        Me._levtolerance = 0
     End Sub
 
     Public Sub Save()

@@ -169,7 +169,7 @@ Public Class StringManip
         End If
     End Function
 
-    Public Shared Function FilterName(ByRef movieName As String) As String
+    Public Shared Function FilterName(ByRef movieName As String, Optional ByVal doTokens As Boolean = True) As String
 
         '//
         ' Clean all the crap out of the name
@@ -200,7 +200,11 @@ Public Class StringManip
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        Return FilterTokens(CleanStackingMarkers(movieName.Trim))
+        If doTokens Then
+            Return FilterTokens(CleanStackingMarkers(movieName.Trim))
+        Else
+            Return CleanStackingMarkers(movieName.Trim)
+        End If
 
     End Function
 
@@ -219,16 +223,16 @@ Public Class StringManip
     Public Shared Function IsStacked(ByVal sName As String, Optional ByVal VTS As Boolean = False) As Boolean
         Dim bReturn As Boolean = False
         If VTS Then
-            bReturn = Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)?", RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
+            bReturn = Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
         Else
-            bReturn = Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)?", RegexOptions.IgnoreCase)
+            bReturn = Regex.IsMatch(sName, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", RegexOptions.IgnoreCase)
         End If
         Return bReturn
     End Function
 
     Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False, Optional ByVal VTS As Boolean = False) As String
-        Dim sReturn As String = Regex.Replace(sPath, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)?", If(Asterisk, "*", String.Empty), RegexOptions.IgnoreCase).Trim
-        If VTS Then sReturn = Regex.Replace(sReturn, "[0-9]+$", If(Asterisk, "*", String.Empty), RegexOptions.IgnoreCase)
-        Return sReturn
+        Dim sReturn As String = Regex.Replace(sPath, "[ _\.-]+(cd|dvd|part|dis[ck])[ _\.-]*([0-9a-d]+)", If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
+        If VTS Then sReturn = Regex.Replace(sReturn, "[0-9]+$", If(Asterisk, "*", " "), RegexOptions.IgnoreCase)
+        Return Regex.Replace(sReturn, "\s\s(\s+)?", " ")
     End Function
 End Class
