@@ -325,7 +325,7 @@ Public Class NFO
 
     End Function
 
-    Public Shared Function GetBestVideo(ByRef miFIV As MediaInfo.Fileinfo) As MediaInfo.Video
+    Public Shared Function GetBestVideo(ByVal miFIV As MediaInfo.Fileinfo) As MediaInfo.Video
 
         '//
         ' Get the highest values from file info
@@ -366,7 +366,7 @@ Public Class NFO
 
     End Function
 
-    Public Shared Function GetBestAudio(ByRef miFIA As MediaInfo.Fileinfo) As MediaInfo.Audio
+    Public Shared Function GetBestAudio(ByVal miFIA As MediaInfo.Fileinfo) As MediaInfo.Audio
 
         '//
         ' Get the highest values from file info
