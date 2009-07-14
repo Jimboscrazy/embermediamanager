@@ -96,6 +96,7 @@ Partial Class frmMain
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.chkFilterDupe = New System.Windows.Forms.CheckBox
         Me.gbSpecific = New System.Windows.Forms.GroupBox
+        Me.chkFilterLock = New System.Windows.Forms.CheckBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.rbFilterAnd = New System.Windows.Forms.RadioButton
         Me.rbFilterOr = New System.Windows.Forms.RadioButton
@@ -253,6 +254,7 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
+        Me.chkFilterMissing = New System.Windows.Forms.CheckBox
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -584,7 +586,7 @@ Partial Class frmMain
         Me.pnlFilterGenre.Controls.Add(Me.lblGFilClose)
         Me.pnlFilterGenre.Controls.Add(Me.Label4)
         Me.pnlFilterGenre.Controls.Add(Me.clbFilterGenres)
-        Me.pnlFilterGenre.Location = New System.Drawing.Point(172, 422)
+        Me.pnlFilterGenre.Location = New System.Drawing.Point(142, 300)
         Me.pnlFilterGenre.Name = "pnlFilterGenre"
         Me.pnlFilterGenre.Size = New System.Drawing.Size(166, 192)
         Me.pnlFilterGenre.TabIndex = 15
@@ -915,6 +917,7 @@ Partial Class frmMain
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.chkFilterMissing)
         Me.GroupBox3.Controls.Add(Me.chkFilterDupe)
         Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
         Me.GroupBox3.Name = "GroupBox3"
@@ -928,13 +931,14 @@ Partial Class frmMain
         Me.chkFilterDupe.AutoSize = True
         Me.chkFilterDupe.Location = New System.Drawing.Point(7, 18)
         Me.chkFilterDupe.Name = "chkFilterDupe"
-        Me.chkFilterDupe.Size = New System.Drawing.Size(108, 17)
+        Me.chkFilterDupe.Size = New System.Drawing.Size(76, 17)
         Me.chkFilterDupe.TabIndex = 26
-        Me.chkFilterDupe.Text = "Duplicate Movies"
+        Me.chkFilterDupe.Text = "Duplicates"
         Me.chkFilterDupe.UseVisualStyleBackColor = True
         '
         'gbSpecific
         '
+        Me.gbSpecific.Controls.Add(Me.chkFilterLock)
         Me.gbSpecific.Controls.Add(Me.GroupBox2)
         Me.gbSpecific.Controls.Add(Me.chkFilterNew)
         Me.gbSpecific.Controls.Add(Me.cbFilterYear)
@@ -951,6 +955,16 @@ Partial Class frmMain
         Me.gbSpecific.TabIndex = 36
         Me.gbSpecific.TabStop = False
         Me.gbSpecific.Text = "Specific"
+        '
+        'chkFilterLock
+        '
+        Me.chkFilterLock.AutoSize = True
+        Me.chkFilterLock.Location = New System.Drawing.Point(80, 18)
+        Me.chkFilterLock.Name = "chkFilterLock"
+        Me.chkFilterLock.Size = New System.Drawing.Size(62, 17)
+        Me.chkFilterLock.TabIndex = 37
+        Me.chkFilterLock.Text = "Locked"
+        Me.chkFilterLock.UseVisualStyleBackColor = True
         '
         'GroupBox2
         '
@@ -990,9 +1004,9 @@ Partial Class frmMain
         Me.chkFilterNew.AutoSize = True
         Me.chkFilterNew.Location = New System.Drawing.Point(9, 18)
         Me.chkFilterNew.Name = "chkFilterNew"
-        Me.chkFilterNew.Size = New System.Drawing.Size(85, 17)
+        Me.chkFilterNew.Size = New System.Drawing.Size(48, 17)
         Me.chkFilterNew.TabIndex = 1
-        Me.chkFilterNew.Text = "New Movies"
+        Me.chkFilterNew.Text = "New"
         Me.chkFilterNew.UseVisualStyleBackColor = True
         '
         'cbFilterYear
@@ -1010,9 +1024,9 @@ Partial Class frmMain
         Me.chkFilterMark.AutoSize = True
         Me.chkFilterMark.Location = New System.Drawing.Point(9, 36)
         Me.chkFilterMark.Name = "chkFilterMark"
-        Me.chkFilterMark.Size = New System.Drawing.Size(99, 17)
+        Me.chkFilterMark.Size = New System.Drawing.Size(62, 17)
         Me.chkFilterMark.TabIndex = 23
-        Me.chkFilterMark.Text = "Marked Movies"
+        Me.chkFilterMark.Text = "Marked"
         Me.chkFilterMark.UseVisualStyleBackColor = True
         '
         'cbFilterYearMod
@@ -2370,6 +2384,16 @@ Partial Class frmMain
         '
         Me.tmrFilterAni.Interval = 1
         '
+        'chkFilterMissing
+        '
+        Me.chkFilterMissing.AutoSize = True
+        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 36)
+        Me.chkFilterMissing.Name = "chkFilterMissing"
+        Me.chkFilterMissing.Size = New System.Drawing.Size(89, 17)
+        Me.chkFilterMissing.TabIndex = 27
+        Me.chkFilterMissing.Text = "Missing Items"
+        Me.chkFilterMissing.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2679,4 +2703,6 @@ Partial Class frmMain
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents btnClearFilters As System.Windows.Forms.Button
+    Friend WithEvents chkFilterLock As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFilterMissing As System.Windows.Forms.CheckBox
 End Class

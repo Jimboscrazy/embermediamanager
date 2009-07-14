@@ -43,7 +43,7 @@ Public Class dlgImgManual
         End If
 
         If Not IsNothing(tImage.Image) Then
-            tImage.Save(tmpPathPlus, 100)
+            tImage.Save(tmpPathPlus, 85)
         End If
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
