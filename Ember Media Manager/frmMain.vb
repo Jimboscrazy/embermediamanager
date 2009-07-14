@@ -4030,6 +4030,7 @@ doCancel:
                         End If
                     End If
                     Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
+                    Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovie.Title})
 
                     tmpMovieDb.Movie = tmpMovie
                 Else
@@ -4221,7 +4222,10 @@ doCancel:
     Private Sub SetFilterColors()
 
         Try
+            Dim pExt As String = String.Empty
+
             For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+
                 If drvRow.Cells(11).Value Then
                     drvRow.Cells(3).Style.ForeColor = Color.Crimson
                     drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
@@ -4242,7 +4246,26 @@ doCancel:
                     End If
                 End If
 
+                pExt = Path.GetExtension(drvRow.Cells(1).Value).ToLower
+
                 If drvRow.Cells(14).Value Then
+                    drvRow.Cells(3).Style.BackColor = Color.LightSteelBlue
+                    drvRow.Cells(4).Style.BackColor = Color.LightSteelBlue
+                    drvRow.Cells(5).Style.BackColor = Color.LightSteelBlue
+                    drvRow.Cells(6).Style.BackColor = Color.LightSteelBlue
+                    drvRow.Cells(7).Style.BackColor = Color.LightSteelBlue
+                    drvRow.Cells(8).Style.BackColor = Color.LightSteelBlue
+                    drvRow.Cells(9).Style.BackColor = Color.LightSteelBlue
+                    drvRow.Cells(3).Style.SelectionBackColor = Color.MediumOrchid
+                    drvRow.Cells(4).Style.SelectionBackColor = Color.MediumOrchid
+                    drvRow.Cells(5).Style.SelectionBackColor = Color.MediumOrchid
+                    drvRow.Cells(6).Style.SelectionBackColor = Color.MediumOrchid
+                    drvRow.Cells(7).Style.SelectionBackColor = Color.MediumOrchid
+                    drvRow.Cells(8).Style.SelectionBackColor = Color.MediumOrchid
+                    drvRow.Cells(9).Style.SelectionBackColor = Color.MediumOrchid
+                ElseIf Master.eSettings.LevTolerance > 0 AndAlso Not pExt = ".vob" AndAlso Not pExt = ".ifo" AndAlso _
+                StringManip.ComputeLevenshtein(drvRow.Cells(15).Value, StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value), False)) > Master.eSettings.LevTolerance AndAlso _
+                StringManip.ComputeLevenshtein(drvRow.Cells(15).Value, Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value)) > Master.eSettings.LevTolerance Then
                     drvRow.Cells(3).Style.BackColor = Color.MistyRose
                     drvRow.Cells(4).Style.BackColor = Color.MistyRose
                     drvRow.Cells(5).Style.BackColor = Color.MistyRose
@@ -4258,20 +4281,13 @@ doCancel:
                     drvRow.Cells(8).Style.SelectionBackColor = Color.DarkMagenta
                     drvRow.Cells(9).Style.SelectionBackColor = Color.DarkMagenta
                 Else
-                    drvRow.Cells(3).Style.BackColor = Color.White
-                    drvRow.Cells(4).Style.BackColor = Color.White
-                    drvRow.Cells(5).Style.BackColor = Color.White
-                    drvRow.Cells(6).Style.BackColor = Color.White
-                    drvRow.Cells(7).Style.BackColor = Color.White
-                    drvRow.Cells(8).Style.BackColor = Color.White
-                    drvRow.Cells(9).Style.BackColor = Color.White
-                    drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(8).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    drvRow.Cells(3).Style = dgvMediaList.DefaultCellStyle
+                    drvRow.Cells(4).Style = dgvMediaList.DefaultCellStyle
+                    drvRow.Cells(5).Style = dgvMediaList.DefaultCellStyle
+                    drvRow.Cells(6).Style = dgvMediaList.DefaultCellStyle
+                    drvRow.Cells(7).Style = dgvMediaList.DefaultCellStyle
+                    drvRow.Cells(8).Style = dgvMediaList.DefaultCellStyle
+                    drvRow.Cells(9).Style = dgvMediaList.DefaultCellStyle
                 End If
             Next
 

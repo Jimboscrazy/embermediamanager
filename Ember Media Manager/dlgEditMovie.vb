@@ -1067,7 +1067,7 @@ Public Class dlgEditMovie
 
         Me.lbMPAA.Items.Add("[none]")
 
-        Me.lbMPAA.Items.Add(XML.GetRatingList)
+        Me.lbMPAA.Items.AddRange(XML.GetRatingList)
 
     End Sub
 

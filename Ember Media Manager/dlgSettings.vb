@@ -1178,6 +1178,21 @@ Public Class dlgSettings
             End If
         End If
     End Sub
+
+    Private Sub txtCheckTitleTol_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCheckTitleTol.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtCheckTitleTol_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtCheckTitleTol.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub chkCheckTitles_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCheckTitles.CheckedChanged
+        Me.btnApply.Enabled = True
+        Me.txtCheckTitleTol.Enabled = Me.chkCheckTitles.Checked
+        If Not Me.chkCheckTitles.Checked Then Me.txtCheckTitleTol.Text = String.Empty
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -1397,6 +1412,8 @@ Public Class dlgSettings
             Master.eSettings.SortTokens.AddRange(lstSortTokens.Items)
             If Master.eSettings.SortTokens.Count <= 0 Then Master.eSettings.NoTokens = True
 
+            Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
+
             Master.eSettings.Save()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1581,6 +1598,12 @@ Public Class dlgSettings
 
             Me.lstSortTokens.Items.AddRange(Master.eSettings.SortTokens.ToArray)
 
+            If Master.eSettings.LevTolerance > 0 Then
+                Me.chkCheckTitles.Checked = True
+                Me.txtCheckTitleTol.Enabled = True
+                Me.txtCheckTitleTol.Text = Master.eSettings.LevTolerance.ToString
+            End If
+
             Me.RefreshSources()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1624,6 +1647,6 @@ Public Class dlgSettings
 
     End Sub
 
-#End Region '*** Routines/Functions
+#End Region'*** Routines/Functions
 
 End Class
