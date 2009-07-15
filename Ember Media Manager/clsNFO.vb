@@ -392,6 +392,7 @@ Public Class NFO
                     End If
                 End If
 
+                If Not String.IsNullOrEmpty(Master.eSettings.FlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.FlagLang.ToLower Then fiaOut.HasPreferred = True
             Next
 
         Catch ex As Exception

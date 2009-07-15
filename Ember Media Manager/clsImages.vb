@@ -154,7 +154,7 @@ Public Class Images
             Dim pPath As String = String.Empty
 
             If Master.eSettings.ResizePoster AndAlso (_image.Width > Master.eSettings.PosterWidth OrElse _image.Height > Master.eSettings.PosterHeight) Then
-                ResizeImage(Master.eSettings.PosterWidth, Master.eSettings.PosterHeight)
+                ImageManip.ResizeImage(_image, Master.eSettings.PosterWidth, Master.eSettings.PosterHeight)
             End If
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
@@ -252,27 +252,11 @@ Public Class Images
     End Function
 
     Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
-        'there has to be a better way to do this. lol
         Me.FromFile(fromPath)
-        Dim iWidth As Integer
-        Dim iHeight As Integer
-        If Master.eSettings.ETNative Then
-            iWidth = _image.Width
-            iHeight = _image.Height
-        Else
-            iWidth = Master.eSettings.ETWidth
-            iHeight = Master.eSettings.ETHeight
-        End If
-        Me.ResizeImage(iWidth, iHeight)
-        If Not Master.eSettings.ETNative AndAlso Master.eSettings.ETPadding Then
-            Dim bgBMP As Bitmap = New Bitmap(iWidth, iHeight, Imaging.PixelFormat.Format32bppRgb)
-            Dim grOverlay As Graphics = Graphics.FromImage(bgBMP)
-            grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-            grOverlay.FillRectangle(New SolidBrush(Color.Black), New RectangleF(0, 0, iWidth, iHeight))
-            Dim iLeft As Integer = If(_image.Width = iWidth, 0, (iWidth - _image.Width) / 2)
-            Dim iTop As Integer = If(_image.Height = iHeight, 0, (iHeight - _image.Height) / 2)
-            grOverlay.DrawImage(_image, iLeft, iTop, _image.Width, _image.Height)
-            _image = bgBMP
+        If Not Master.eSettings.ETNative Then
+            Dim iWidth As Integer = Master.eSettings.ETWidth
+            Dim iHeight As Integer = Master.eSettings.ETHeight
+            ImageManip.ResizeImage(_image, iWidth, iHeight, Master.eSettings.ETPadding, Color.Black.ToArgb)
         End If
         Me.Save(toPath, 85)
     End Sub
@@ -286,7 +270,7 @@ Public Class Images
             Dim tPath As String = String.Empty
 
             If Master.eSettings.ResizeFanart AndAlso (_image.Width > Master.eSettings.FanartWidth OrElse _image.Height > Master.eSettings.FanartHeight) Then
-                ResizeImage(Master.eSettings.FanartWidth, Master.eSettings.FanartHeight)
+                ImageManip.ResizeImage(_image, Master.eSettings.FanartWidth, Master.eSettings.FanartHeight)
             End If
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
@@ -964,44 +948,6 @@ foundIT:
         End Try
 
     End Function
-
-    Public Sub ResizeImage(ByVal maxWidth As Integer, ByVal maxHeight As Integer)
-
-        Try
-            If Not IsNothing(_image) Then
-                Dim sPropPerc As Single = 1.0 'no default scaling
-
-                If _image.Width > _image.Height Then
-                    sPropPerc = CSng(maxWidth / _image.Width)
-                Else
-                    sPropPerc = CSng(maxHeight / _image.Height)
-                End If
-
-                ' Get the source bitmap.
-                Using bmSource As New Bitmap(_image)
-                    ' Make a bitmap for the result.
-                    Dim bmDest As New Bitmap( _
-                    Convert.ToInt32(bmSource.Width * sPropPerc), _
-                    Convert.ToInt32(bmSource.Height * sPropPerc))
-                    ' Make a Graphics object for the result Bitmap.
-                    Using grDest As Graphics = Graphics.FromImage(bmDest)
-                        grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        ' Copy the source image into the destination bitmap.
-                        grDest.DrawImage(bmSource, New Rectangle(0, 0, _
-                        bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
-                        bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
-                    End Using
-
-                    _image = bmDest
-
-                End Using
-
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
 
     Private Function SortImages(ByVal x As Media.Image, ByVal y As Media.Image) As Integer
         Try

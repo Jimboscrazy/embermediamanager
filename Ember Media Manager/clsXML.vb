@@ -23,6 +23,7 @@ Imports System
 Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
+Imports System.Text
 Imports System.Text.RegularExpressions
 
 Public Class XML
@@ -144,7 +145,11 @@ Public Class XML
 
                 If Not String.IsNullOrEmpty(atypeImage) AndAlso alFlags.Contains(atypeImage.ToLower) Then
                     Using fsImage As New FileStream(atypeImage, FileMode.Open, FileAccess.Read)
-                        frmMain.pbAudio.Image = Image.FromStream(fsImage)
+                        If tAudio.HasPreferred Then
+                            frmMain.pbAudio.Image = ImageManip.SetOverlay(Image.FromStream(fsImage), 64, 44, My.Resources.heart, 4)
+                        Else
+                            frmMain.pbAudio.Image = Image.FromStream(fsImage)
+                        End If
                     End Using
                 End If
 
@@ -366,9 +371,7 @@ Public Class XML
             If LangsOnly Then
                 Dim xGenre = From xGen In GenreXML...<supported>.Descendants Select xGen.Value
                 If xGenre.Count > 0 Then
-                    For Each sGenre As String In xGenre
-                        retGenre.Add(sGenre)
-                    Next
+                    retGenre.Add(xGenre.ToArray)
                 End If
             Else
                 Dim splitLang() As String
@@ -396,16 +399,12 @@ Public Class XML
             If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso XML.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
                 Dim xRating = From xRat In XML.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
-                    For Each strRating As String In xRating
-                        retRatings.Add(strRating)
-                    Next
+                    retRatings.Add(xRating.ToArray)
                 End If
             Else
                 Dim xRating = From xRat In XML.RatingXML...<usa>...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
-                    For Each strRating As String In xRating
-                        retRatings.Add(strRating.Trim)
-                    Next
+                    retRatings.AddRange(xRating.ToArray)
                 End If
             End If
 
@@ -413,5 +412,18 @@ Public Class XML
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return retRatings.ToArray
+    End Function
+
+    Public Shared Function GetLanguageList() As Object()
+        Dim retLang As New ArrayList
+        Try
+            Dim xLang = From xL In XML.LanguageXML.Descendants("Language") Select xL.Element("Name").Value
+            If xLang.Count > 0 Then
+                retLang.AddRange(xLang.ToArray)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return retLang.ToArray
     End Function
 End Class

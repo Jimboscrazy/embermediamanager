@@ -374,6 +374,15 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property VideoSpecified() As Boolean
+            Get
+                Return (Not IsNothing(_streamdetails.Video) AndAlso _streamdetails.Video.Count > 0) OrElse _
+                (Not IsNothing(_streamdetails.Audio) AndAlso _streamdetails.Audio.Count > 0) OrElse _
+                (Not IsNothing(_streamdetails.Subtitle) AndAlso _streamdetails.Subtitle.Count > 0)
+            End Get
+        End Property
+
     End Class
 
     <XmlRoot("streamdata")> _
@@ -393,6 +402,13 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property VideoSpecified() As Boolean
+            Get
+                Return Me._video.Count > 0
+            End Get
+        End Property
+
         <XmlElement("audio")> _
          Public Property Audio() As List(Of Audio)
             Get
@@ -401,6 +417,13 @@ Public Class MediaInfo
             Set(ByVal Value As List(Of Audio))
                 Me._audio = Value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property AudioSpecified() As Boolean
+            Get
+                Return Me._audio.Count > 0
+            End Get
         End Property
 
         <XmlElement("subtitle")> _
@@ -413,16 +436,23 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property SubtitleSpecified() As Boolean
+            Get
+                Return Me._subtitle.Count > 0
+            End Get
+        End Property
+
     End Class
 
     Public Class Video
 
-        Private _width As String
-        Private _height As String
-        Private _codec As String
-        Private _duration As String
-        Private _aspect As String
-        Private _scantype As String
+        Private _width As String = String.Empty
+        Private _height As String = String.Empty
+        Private _codec As String = String.Empty
+        Private _duration As String = String.Empty
+        Private _aspect As String = String.Empty
+        Private _scantype As String = String.Empty
 
         <XmlElement("width")> _
         Public Property Width() As String
@@ -432,6 +462,13 @@ Public Class MediaInfo
             Set(ByVal Value As String)
                 Me._width = Value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property WidthSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._width)
+            End Get
         End Property
 
         <XmlElement("height")> _
@@ -444,6 +481,13 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property HeightSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._height)
+            End Get
+        End Property
+
         <XmlElement("codec")> _
         Public Property Codec() As String
             Get
@@ -452,6 +496,13 @@ Public Class MediaInfo
             Set(ByVal Value As String)
                 Me._codec = Value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property CodecSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._codec)
+            End Get
         End Property
 
         <XmlElement("duration")> _
@@ -464,6 +515,13 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property DurationSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._duration)
+            End Get
+        End Property
+
         <XmlElement("aspect")> _
         Public Property Aspect() As String
             Get
@@ -472,6 +530,13 @@ Public Class MediaInfo
             Set(ByVal Value As String)
                 Me._aspect = Value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property AspectSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._aspect)
+            End Get
         End Property
 
         <XmlElement("scantype")> _
@@ -484,14 +549,22 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property ScantypeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._scantype)
+            End Get
+        End Property
+
     End Class
 
     Public Class Audio
 
-        Private _codec As String
-        Private _channels As String
-        Private _language As String
-        Private _longlanguage As String
+        Private _codec As String = String.Empty
+        Private _channels As String = String.Empty
+        Private _language As String = String.Empty
+        Private _longlanguage As String = String.Empty
+        Private _haspreferred As Boolean = False
 
         <XmlElement("language")> _
         Public Property Language() As String
@@ -503,6 +576,13 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
+            End Get
+        End Property
+
         <XmlElement("longlanguage")> _
         Public Property LongLanguage() As String
             Get
@@ -511,6 +591,13 @@ Public Class MediaInfo
             Set(ByVal value As String)
                 Me._longlanguage = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property LongLanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._longlanguage)
+            End Get
         End Property
 
         <XmlElement("codec")> _
@@ -523,6 +610,13 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property CodecSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._codec)
+            End Get
+        End Property
+
         <XmlElement("channels")> _
         Public Property Channels() As String
             Get
@@ -533,12 +627,30 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property ChannelsSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._channels)
+            End Get
+        End Property
+
+        <XmlIgnore()> _
+        Public Property HasPreferred() As Boolean
+            Get
+                Return Me._haspreferred
+            End Get
+            Set(ByVal value As Boolean)
+                Me._haspreferred = value
+            End Set
+        End Property
+
     End Class
 
     Public Class Subtitle
 
-        Private _language As String
-        Private _longlanguage As String
+        Private _language As String = String.Empty
+        Private _longlanguage As String = String.Empty
+        Private _haspreferred As Boolean = False
 
         <XmlElement("language")> _
         Public Property Language() As String
@@ -550,6 +662,13 @@ Public Class MediaInfo
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
+            End Get
+        End Property
+
         <XmlElement("longlanguage")> _
         Public Property LongLanguage() As String
             Get
@@ -557,6 +676,23 @@ Public Class MediaInfo
             End Get
             Set(ByVal value As String)
                 Me._longlanguage = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property LongLanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._longlanguage)
+            End Get
+        End Property
+
+        <XmlIgnore()> _
+        Public Property HasPreferred() As Boolean
+            Get
+                Return Me._haspreferred
+            End Get
+            Set(ByVal value As Boolean)
+                Me._haspreferred = value
             End Set
         End Property
     End Class

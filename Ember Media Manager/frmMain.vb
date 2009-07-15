@@ -2612,7 +2612,7 @@ Public Class frmMain
                 If Not IsNothing(Me.MainPoster.Image) Then
                     Me.pbPosterCache.Image = Me.MainPoster.Image
                     ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, 160, 160)
-                    ImageManip.SetOverlay(Me.pbPoster)
+                    ImageManip.SetGlassOverlay(Me.pbPoster)
                     Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
                     If Master.eSettings.ShowDims Then

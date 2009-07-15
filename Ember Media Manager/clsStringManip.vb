@@ -29,7 +29,7 @@ Public Class StringManip
         Dim d As Integer(,) = New Integer(n, m) {}
 
         If n = 0 Then
-            Return m
+            Return (Master.eSettings.LevTolerance + 1)
         End If
 
         If m = 0 Then
@@ -240,4 +240,5 @@ Public Class StringManip
         Dim sReturn As String = Regex.Replace(sString, "\W", " ")
         Return Regex.Replace(sReturn.ToLower, "\s\s(\s+)?", " ").Trim
     End Function
+
 End Class
