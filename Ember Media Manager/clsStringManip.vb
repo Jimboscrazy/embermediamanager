@@ -169,7 +169,7 @@ Public Class StringManip
         End If
     End Function
 
-    Public Shared Function FilterName(ByRef movieName As String, Optional ByVal doExtras As Boolean = True) As String
+    Public Shared Function FilterName(ByVal movieName As String, Optional ByVal doExtras As Boolean = True) As String
 
         '//
         ' Clean all the crap out of the name

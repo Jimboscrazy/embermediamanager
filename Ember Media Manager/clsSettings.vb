@@ -1609,7 +1609,7 @@ Public Class emmSettings
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]([a-z]{3}|multi)[sd]ub.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]\[offline\].*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]ntsc.*")
-            Master.eSettings.FilterCustom.Add("[ _.-]PAL[ _.-].*")
+            Master.eSettings.FilterCustom.Add("[ _.-]PAL[ _.-]?.*")
             Master.eSettings.FilterCustom.Add("\.[->] ")
         End If
 

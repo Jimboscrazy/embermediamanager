@@ -120,7 +120,7 @@ Public Class NFO
             End If
 
         Catch
-            xmlMov = New Media.Movie
+            xmlMov.Clear()
             If Not String.IsNullOrEmpty(sPath) Then
 
                 'go ahead and rename it now, will still be picked up in getimdbfromnonconf

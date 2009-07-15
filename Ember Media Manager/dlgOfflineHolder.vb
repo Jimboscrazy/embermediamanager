@@ -162,7 +162,8 @@ Public Class dlgOfflineHolder
     Private Sub GetIMDB_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GetIMDB_Button.Click
         Try
             Using dSearch As New dlgIMDBSearchResults
-                Master.tmpMovie = New Media.Movie
+                Master.tmpMovie.Clear()
+                tMovie.Movie.Clear()
                 If dSearch.ShowDialog(txtMovieName.Text) = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                         Me.pbProgress.Value = 100
