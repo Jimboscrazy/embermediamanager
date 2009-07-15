@@ -66,6 +66,7 @@ Public Class frmMain
     Private LoadingDone As Boolean = False
     Private isCL As Boolean = False
     Private GenreImage As Image
+    Private InfoCleared As Boolean = False
 
     'filters
     Private filSearch As String = String.Empty
@@ -673,16 +674,15 @@ Public Class frmMain
             Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-            Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
+            Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
             Master.currMovie = Master.DB.LoadMovieFromDB(ID)
             Me.tslStatus.Text = Master.currMovie.Filename
-            Me.tmpTitle = Me.dgvMediaList.Rows(indX).Cells(3).Value
+            Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
 
             Using dEditMovie As New dlgEditMovie
 
                 Select Case dEditMovie.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        Me.SetListItemAfterEdit(ID, indX)
                         If Me.RefreshMovie(ID) Then
                             Me.FillList(0)
                         End If
@@ -690,6 +690,8 @@ Public Class frmMain
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions)
                     Case Windows.Forms.DialogResult.Abort
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID, True)
+                    Case Else
+                        If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
                 End Select
 
             End Using
@@ -1177,10 +1179,10 @@ Public Class frmMain
                 Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-                Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
+                Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
                 Master.currMovie = Master.DB.LoadMovieFromDB(ID)
                 Me.tslStatus.Text = Master.currMovie.Filename
-                Me.tmpTitle = Me.dgvMediaList.Rows(indX).Cells(3).Value
+                Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
 
                 Using dEditMovie As New dlgEditMovie
 
@@ -1194,6 +1196,8 @@ Public Class frmMain
                             Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions)
                         Case Windows.Forms.DialogResult.Abort
                             Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID, True)
+                        Case Else
+                            If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
                     End Select
 
                 End Using
@@ -1409,6 +1413,7 @@ Public Class frmMain
         Try
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
+            Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
 
             Using dEditMovie As New dlgEditMovie
                 Select Case dEditMovie.ShowDialog()
@@ -1421,6 +1426,8 @@ Public Class frmMain
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID)
                     Case Windows.Forms.DialogResult.Abort
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID, True)
+                    Case Else
+                        If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
                 End Select
             End Using
         Catch ex As Exception
@@ -2652,6 +2659,8 @@ Public Class frmMain
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
                 End If
 
+                Me.InfoCleared = False
+
                 If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy Then
                     Me.ToolsToolStripMenuItem.Enabled = True
                     Me.tsbAutoPilot.Enabled = True
@@ -3437,6 +3446,8 @@ doCancel:
         '\\
         Try
             With Me
+                .InfoCleared = True
+
                 If Not IsNothing(.pbFanart.Image) Then
                     .pbFanart.Image.Dispose()
                     .pbFanart.Image = Nothing
@@ -3453,8 +3464,7 @@ doCancel:
                         .scMain.Panel2.Controls.Remove(.pbGenre(iDel))
                         .scMain.Panel2.Controls.Remove(.pnlGenre(iDel))
                     Next
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Catch
                 End Try
 
                 If Not IsNothing(.pbMPAA.Image) Then
@@ -4043,7 +4053,8 @@ doCancel:
                 End If
                 If Not isCL Then
                     Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-                    Dim ID As Integer = Me.dgvMediaList.Rows(indX).Cells(0).Value
+                    Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
+                    Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
 
                     Using dEditMovie As New dlgEditMovie
                         Select Case dEditMovie.ShowDialog()
@@ -4056,6 +4067,8 @@ doCancel:
                                 Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID)
                             Case Windows.Forms.DialogResult.Abort
                                 Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID, True)
+                            Case Else
+                                If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
                         End Select
                     End Using
                 Else
