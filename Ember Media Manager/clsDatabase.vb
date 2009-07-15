@@ -124,6 +124,7 @@ Public Class Database
                                 "SubPath TEXT, " & _
                                 "FanartURL TEXT, " & _
                                 "UseFolder BOOL NOT NULL DEFAULT False, " & _
+                                "OutOfTolerance BOOL NOT NULL DEFAULT False, " & _
                                 "NeedsSave BOOL NOT NULL DEFAULT False" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
@@ -255,6 +256,7 @@ Public Class Database
                     _movieDB.IsMark = SQLreader("mark")
                     _movieDB.IsLock = SQLreader("lock")
                     _movieDB.UseFolder = SQLreader("UseFolder")
+                    _movieDB.OutOfTolerance = SQLreader("OutOfTolerance")
                     _movieDB.NeedsSave = SQLreader("NeedsSave")
                     _movieDB.Movie = New Media.Movie
                     With _movieDB.Movie
@@ -422,16 +424,16 @@ Public Class Database
                         "MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, OutOfTolerance, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "ID, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
-                    Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.String, 0, "ID")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, OutOfTolerance, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                    Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.Int32, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
 
@@ -483,6 +485,7 @@ Public Class Database
                 Dim parExtraPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExtraPath", DbType.String, 0, "ExtraPath")
                 Dim parFanartURL As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartURL", DbType.String, 0, "FanartURL")
                 Dim parUseFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parUseFolder", DbType.Boolean, 0, "UseFolder")
+                Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
 
                 ' First let's save it to NFO, even because we will need the NFO path
@@ -538,6 +541,7 @@ Public Class Database
                 parTrailer.Value = _movieDB.Movie.Trailer
 
                 parUseFolder.Value = _movieDB.UseFolder
+                parOutOfTolerance.Value = _movieDB.OutOfTolerance
                 parNeedsSave.Value = _movieDB.NeedsSave
 
                 parSource.Value = _movieDB.Source

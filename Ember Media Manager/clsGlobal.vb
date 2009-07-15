@@ -107,6 +107,7 @@ Public Class Master
         Dim SubPath As String
         Dim ExtraPath As String
         Dim Source As String
+        Dim OutOfTolerance As Boolean
     End Structure
 
     Public Structure ScrapeOptions

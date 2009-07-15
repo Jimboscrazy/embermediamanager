@@ -94,6 +94,7 @@ Partial Class frmMain
         Me.pnlFilter = New System.Windows.Forms.Panel
         Me.btnClearFilters = New System.Windows.Forms.Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.chkFilterTolerance = New System.Windows.Forms.CheckBox
         Me.chkFilterMissing = New System.Windows.Forms.CheckBox
         Me.chkFilterDupe = New System.Windows.Forms.CheckBox
         Me.gbSpecific = New System.Windows.Forms.GroupBox
@@ -917,6 +918,7 @@ Partial Class frmMain
         '
         'GroupBox3
         '
+        Me.GroupBox3.Controls.Add(Me.chkFilterTolerance)
         Me.GroupBox3.Controls.Add(Me.chkFilterMissing)
         Me.GroupBox3.Controls.Add(Me.chkFilterDupe)
         Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
@@ -926,10 +928,20 @@ Partial Class frmMain
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "General"
         '
+        'chkFilterTolerance
+        '
+        Me.chkFilterTolerance.AutoSize = True
+        Me.chkFilterTolerance.Location = New System.Drawing.Point(7, 50)
+        Me.chkFilterTolerance.Name = "chkFilterTolerance"
+        Me.chkFilterTolerance.Size = New System.Drawing.Size(106, 17)
+        Me.chkFilterTolerance.TabIndex = 28
+        Me.chkFilterTolerance.Text = "Out of Tolerance"
+        Me.chkFilterTolerance.UseVisualStyleBackColor = True
+        '
         'chkFilterMissing
         '
         Me.chkFilterMissing.AutoSize = True
-        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 36)
+        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 34)
         Me.chkFilterMissing.Name = "chkFilterMissing"
         Me.chkFilterMissing.Size = New System.Drawing.Size(89, 17)
         Me.chkFilterMissing.TabIndex = 27
@@ -2705,4 +2717,5 @@ Partial Class frmMain
     Friend WithEvents btnClearFilters As System.Windows.Forms.Button
     Friend WithEvents chkFilterLock As System.Windows.Forms.CheckBox
     Friend WithEvents chkFilterMissing As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFilterTolerance As System.Windows.Forms.CheckBox
 End Class
