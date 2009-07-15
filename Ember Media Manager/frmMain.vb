@@ -4359,7 +4359,7 @@ doCancel:
                                 Dim debug As String = "Difference: " & StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) & vbNewLine & _
                                 "Title: " & StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower & vbNewLine & _
                                 "File/Folder: " & StringManip.FilterName(pTitle, False).ToLower & vbNewLine & vbNewLine & _
-                                "Use Folder: " & If(drvRow.Cells(46).Value, "Yes", "No")
+                                "Use Folder: " & If(drvRow.Cells(46).Value, "Yes", "No") & vbNewLine & "Is Single: " & If(drvRow.Cells(2).Value, "Yes", "No")
 
                             End If
 
