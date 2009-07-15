@@ -4352,7 +4352,7 @@ doCancel:
 
                             LevFail = Not pExt = ".vob" AndAlso Not pExt = ".ifo" AndAlso _
                                       StringManip.ComputeLevenshtein(StringManip.RemovePunctuation(drvRow.Cells(15).Value), StringManip.FilterName(pTitle, False)) > Master.eSettings.LevTolerance AndAlso _
-                                      StringManip.ComputeLevenshtein(StringManip.RemovePunctuation(drvRow.Cells(15).Value), pTitle) > Master.eSettings.LevTolerance
+                                      StringManip.ComputeLevenshtein(StringManip.RemovePunctuation(drvRow.Cells(15).Value), StringManip.RemovePunctuation(pTitle)) > Master.eSettings.LevTolerance
 
                             parOutOfTolerance.Value = LevFail
                             drvRow.Cells(47).Value = LevFail
