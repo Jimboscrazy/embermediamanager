@@ -4337,11 +4337,12 @@ doCancel:
                         End If
 
                         If Master.eSettings.LevTolerance > 0 AndAlso DoTitleCheck Then
-                            Dim pExt As String = Path.GetExtension(drvRow.Cells(1).Value).ToLower
+                            Dim pExt As String = String.Empty
                             Dim pTitle As String = String.Empty
                             If Directory.GetParent(drvRow.Cells(1).Value).Name.ToLower = "video_ts" Then
                                 pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value).FullName).Name
                             Else
+                                pExt = Path.GetExtension(drvRow.Cells(1).Value).ToLower
                                 If drvRow.Cells(46).Value AndAlso drvRow.Cells(2).Value Then
                                     pTitle = Directory.GetParent(drvRow.Cells(1).Value).Name
                                 Else
