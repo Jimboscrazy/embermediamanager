@@ -50,12 +50,7 @@ Public Class MediaInfo
     Private Handle As IntPtr
 
     Protected Overrides Sub Finalize()
-        Try
-            MediaInfo_Delete(Handle)
-            Handle = Nothing
-        Finally
-            MyBase.Finalize()
-        End Try
+        MyBase.Finalize()
     End Sub
 
     Private Sub Open(ByVal FileName As String)
@@ -64,6 +59,8 @@ Public Class MediaInfo
 
     Private Sub Close()
         MediaInfo_Close(Handle)
+        MediaInfo_Delete(Handle)
+        Handle = Nothing
     End Sub
 
     Private Function Get_(ByVal StreamKind As StreamKind, ByVal StreamNumber As Integer, ByVal Parameter As String, Optional ByVal KindOfInfo As InfoKind = InfoKind.Text, Optional ByVal KindOfSearch As InfoKind = InfoKind.Name) As String
@@ -95,7 +92,7 @@ Public Class MediaInfo
             Dim ifoVideo(2) As String
             Dim ifoAudio(2) As String
 
-            If (sExt = ".ifo" OrElse sExt = ".vob") AndAlso cDVD.fctOpenIFOFile(sPath) Then
+            If 1 > 1 AndAlso (sExt = ".ifo" OrElse sExt = ".vob") AndAlso cDVD.fctOpenIFOFile(sPath) Then
 
                 ifoVideo = cDVD.GetIFOVideo
                 Dim vRes() As String = ifoVideo(1).Split(New Char() {"x"})
@@ -229,8 +226,13 @@ Public Class MediaInfo
             miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID/Hint"))
             If String.IsNullOrEmpty(miVideo.Codec) OrElse IsNumeric(miVideo.Codec) Then
                 vCodec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"))
-                miVideo.Codec = If(IsNumeric(vCodec), ConvertVFormat(Me.Get_(StreamKind.Visual, v, "Format")), vCodec)
+                If IsNumeric(vCodec) OrElse String.IsNullOrEmpty(vCodec) Then
+                    miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "Format"), Me.Get_(StreamKind.Visual, v, "Format_Version"))
+                Else
+                    miVideo.Codec = vCodec
+                End If
             End If
+
             miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String")
             miVideo.Aspect = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
             miVideo.Scantype = Me.Get_(StreamKind.Visual, v, "ScanType")
@@ -249,7 +251,7 @@ Public Class MediaInfo
             miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID/Hint"))
             If String.IsNullOrEmpty(miAudio.Codec) OrElse IsNumeric(miAudio.Codec) Then
                 aCodec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"))
-                miAudio.Codec = If(IsNumeric(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format")), aCodec)
+                miAudio.Codec = If(IsNumeric(aCodec) OrElse String.IsNullOrEmpty(aCodec), ConvertAFormat(Me.Get_(StreamKind.Audio, a, "Format")), aCodec)
             End If
             miAudio.Channels = Me.Get_(StreamKind.Audio, a, "Channel(s)")
             aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
@@ -278,7 +280,6 @@ Public Class MediaInfo
         Next
 
         Me.Close()
-        Me.Finalize()
 
         Return fiOut
     End Function
@@ -298,7 +299,7 @@ Public Class MediaInfo
         Return 0
     End Function
 
-    Private Function ConvertVFormat(ByVal sFormat As String) As String
+    Private Function ConvertVFormat(ByVal sFormat As String, Optional ByVal sModifier As String = "") As String
         If Not String.IsNullOrEmpty(sFormat) Then
             Dim tFormat As String = sFormat.ToLower
             Select Case True
@@ -312,6 +313,12 @@ Public Class MediaInfo
                     Return "flv"
                 Case tFormat.Contains("3iv")
                     Return "3ivx"
+                Case tFormat = "mpeg video"
+                    If sModifier.ToLower = "version 2" Then
+                        Return "mpeg2"
+                    Else
+                        Return "mpeg"
+                    End If
                 Case Else
                     Return tFormat
             End Select
