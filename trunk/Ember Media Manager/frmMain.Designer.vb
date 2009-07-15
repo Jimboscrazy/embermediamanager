@@ -94,6 +94,7 @@ Partial Class frmMain
         Me.pnlFilter = New System.Windows.Forms.Panel
         Me.btnClearFilters = New System.Windows.Forms.Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.chkFilterMissing = New System.Windows.Forms.CheckBox
         Me.chkFilterDupe = New System.Windows.Forms.CheckBox
         Me.gbSpecific = New System.Windows.Forms.GroupBox
         Me.chkFilterLock = New System.Windows.Forms.CheckBox
@@ -254,7 +255,6 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.chkFilterMissing = New System.Windows.Forms.CheckBox
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -586,7 +586,7 @@ Partial Class frmMain
         Me.pnlFilterGenre.Controls.Add(Me.lblGFilClose)
         Me.pnlFilterGenre.Controls.Add(Me.Label4)
         Me.pnlFilterGenre.Controls.Add(Me.clbFilterGenres)
-        Me.pnlFilterGenre.Location = New System.Drawing.Point(142, 300)
+        Me.pnlFilterGenre.Location = New System.Drawing.Point(172, 422)
         Me.pnlFilterGenre.Name = "pnlFilterGenre"
         Me.pnlFilterGenre.Size = New System.Drawing.Size(166, 192)
         Me.pnlFilterGenre.TabIndex = 15
@@ -925,6 +925,16 @@ Partial Class frmMain
         Me.GroupBox3.TabIndex = 37
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "General"
+        '
+        'chkFilterMissing
+        '
+        Me.chkFilterMissing.AutoSize = True
+        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 36)
+        Me.chkFilterMissing.Name = "chkFilterMissing"
+        Me.chkFilterMissing.Size = New System.Drawing.Size(89, 17)
+        Me.chkFilterMissing.TabIndex = 27
+        Me.chkFilterMissing.Text = "Missing Items"
+        Me.chkFilterMissing.UseVisualStyleBackColor = True
         '
         'chkFilterDupe
         '
@@ -2383,16 +2393,6 @@ Partial Class frmMain
         'tmrFilterAni
         '
         Me.tmrFilterAni.Interval = 1
-        '
-        'chkFilterMissing
-        '
-        Me.chkFilterMissing.AutoSize = True
-        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 36)
-        Me.chkFilterMissing.Name = "chkFilterMissing"
-        Me.chkFilterMissing.Size = New System.Drawing.Size(89, 17)
-        Me.chkFilterMissing.TabIndex = 27
-        Me.chkFilterMissing.Text = "Missing Items"
-        Me.chkFilterMissing.UseVisualStyleBackColor = True
         '
         'frmMain
         '
