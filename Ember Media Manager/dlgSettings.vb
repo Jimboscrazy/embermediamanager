@@ -959,6 +959,8 @@ Public Class dlgSettings
         'change text color to indicate recommendations
         With Me.lblPosterQual
             Select Case True
+                Case tbPosterQual.Value = 0
+                    .ForeColor = Color.Black
                 Case tbPosterQual.Value > 95 OrElse tbPosterQual.Value < 20
                     .ForeColor = Color.Red
                 Case tbPosterQual.Value > 85
@@ -979,6 +981,8 @@ Public Class dlgSettings
         'change text color to indicate recommendations
         With Me.lblFanartQual
             Select Case True
+                Case tbFanartQual.Value = 0
+                    .ForeColor = Color.Black
                 Case tbFanartQual.Value > 95 OrElse tbFanartQual.Value < 20
                     .ForeColor = Color.Red
                 Case tbFanartQual.Value > 85

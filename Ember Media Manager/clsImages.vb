@@ -76,6 +76,7 @@ Public Class Images
                 End Using
                 _image = Image.FromStream(ms)
             Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End If
     End Sub
@@ -89,7 +90,7 @@ Public Class Images
                 wrResponse.Close()
             End Using
             wrRequest = Nothing
-        Catch ex As Exception
+        Catch
         End Try
     End Sub
 
@@ -107,18 +108,22 @@ Public Class Images
         End If
     End Sub
 
-    Public Sub Save(ByVal sPath As String, ByVal iQuality As Long)
+    Public Sub Save(ByVal sPath As String, Optional ByVal iQuality As Long = 0)
         Try
             If Not File.Exists(sPath) OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly)) Then
                 Using msSave As New MemoryStream
                     Dim retSave() As Byte
-                    Dim ICI As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
-                    Dim EncPars As EncoderParameters = New EncoderParameters(2)
+                    If iQuality > 0 Then
+                        Dim ICI As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
+                        Dim EncPars As EncoderParameters = New EncoderParameters(2)
 
-                    EncPars.Param(0) = New EncoderParameter(Encoder.Quality, iQuality)
-                    EncPars.Param(1) = New EncoderParameter(Encoder.RenderMethod, EncoderValue.RenderNonProgressive)
+                        EncPars.Param(0) = New EncoderParameter(Encoder.Quality, iQuality)
+                        EncPars.Param(1) = New EncoderParameter(Encoder.RenderMethod, EncoderValue.RenderNonProgressive)
 
-                    _image.Save(msSave, ICI, EncPars)
+                        _image.Save(msSave, ICI, EncPars)
+                    Else
+                        _image.Save(msSave, ImageFormat.Jpeg)
+                    End If
 
                     retSave = msSave.ToArray
 
@@ -258,7 +263,7 @@ Public Class Images
             Dim iHeight As Integer = Master.eSettings.ETHeight
             ImageManip.ResizeImage(_image, iWidth, iHeight, Master.eSettings.ETPadding, Color.Black.ToArgb)
         End If
-        Me.Save(toPath, 85)
+        Me.Save(toPath)
     End Sub
 
     Public Function SaveAsFanart(ByVal mMovie As Master.DBMovie) As String
@@ -487,7 +492,7 @@ Public Class Images
                             If Not IsNothing(tmdbThumb.WebImage) Then
                                 If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = tmdbThumb.URL})
                                 _image = New Bitmap(tmdbThumb.WebImage)
-                                Save(Path.Combine(CachePath, String.Concat("poster_(", tmdbThumb.Description, ")_(url=", StringManip.CleanURL(tmdbThumb.URL), ").jpg")), 85)
+                                Save(Path.Combine(CachePath, String.Concat("poster_(", tmdbThumb.Description, ")_(url=", StringManip.CleanURL(tmdbThumb.URL), ").jpg")))
                             End If
                             Me.Clear()
                         Next
@@ -800,7 +805,7 @@ Public Class Images
                                     miFanart.WebImage = GenericFromWeb(miFanart.URL)
                                     If Not IsNothing(miFanart.WebImage) Then
                                         _image = New Bitmap(miFanart.WebImage)
-                                        Save(Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringManip.CleanURL(miFanart.URL), ").jpg")), 85)
+                                        Save(Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringManip.CleanURL(miFanart.URL), ").jpg")))
                                         If Not Master.eSettings.NoSaveImagesToNfo Then fArt.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)})
                                     End If
                                     Me.Clear()

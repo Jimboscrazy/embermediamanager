@@ -2338,7 +2338,7 @@ Partial Class frmMain
         '
         Me.CustomUpdaterToolStripMenuItem.Name = "CustomUpdaterToolStripMenuItem"
         Me.CustomUpdaterToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
-        Me.CustomUpdaterToolStripMenuItem.Text = "Custom Updater..."
+        Me.CustomUpdaterToolStripMenuItem.Text = "Custom Scraper..."
         '
         'tsbRefreshMedia
         '
