@@ -3910,11 +3910,10 @@ doCancel:
                         End Try
                         Me.ScraperDone = True
                     Else
+                        Master.tmpMovie.Clear()
                         If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) AndAlso doSearch = False Then
-                            IMDB.GetMovieInfoAsync(Master.currMovie.Movie.IMDBID, Master.currMovie.Movie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
+                            IMDB.GetMovieInfoAsync(Master.currMovie.Movie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                         Else
-                            Master.tmpMovie.Clear()
-
                             Using dSearch As New dlgIMDBSearchResults
                                 If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
                                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
@@ -3992,7 +3991,7 @@ doCancel:
     Private Sub MovieInfoDownloaded(ByVal bSuccess As Boolean)
 
         Try
-            If bSuccess Then
+            If bSuccess AndAlso Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                 Master.currMovie.Movie = Master.tmpMovie
                 If Master.eSettings.ScanMediaInfo Then
                     Me.tslLoading.Text = "Scanning Media Info:"
@@ -4004,37 +4003,43 @@ doCancel:
                 End If
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
-                    If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters, True) Then
-                        Using dImgSelect As New dlgImgSelect
-                            Dim pPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)
-                            If Not String.IsNullOrEmpty(pPath) Then
-                                Master.currMovie.PosterPath = pPath
-                            End If
-                        End Using
-                    End If
-                    If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart, True) Then
-                        Using dImgSelect As New dlgImgSelect
-                            Dim fPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Fanart, True)
+                    Using dImgSelectFanart As New dlgImgSelect
+                        Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart, True)
+
+                        If AllowFA Then dImgSelectFanart.ShowDialog(Master.currMovie, Master.ImageType.Fanart, True, True)
+
+                        If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters, True) Then
+                            Using dImgSelect As New dlgImgSelect
+                                Dim pPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)
+                                If Not String.IsNullOrEmpty(pPath) Then
+                                    Master.currMovie.PosterPath = pPath
+                                End If
+                            End Using
+                        End If
+
+                        If AllowFA Then
+                            Dim fPath As String = dImgSelectFanart.ShowDialog
                             If Not String.IsNullOrEmpty(fPath) Then
                                 Master.currMovie.FanartPath = fPath
                             End If
-                        End Using
-                    End If
+                        End If
+
+                    End Using
                     tmpImages.Dispose()
                     tmpImages = Nothing
+                End If
 
-                    If Master.eSettings.SingleScrapeTrailer Then
-                        Dim cTrailer As New Trailers
-                        Dim tURL As String = cTrailer.ShowTDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename, Master.currMovie.Movie.Trailer)
-                        If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
-                            Master.currMovie.Movie.Trailer = tURL
-                        End If
-                        cTrailer = Nothing
+                If Master.eSettings.SingleScrapeTrailer Then
+                    Dim cTrailer As New Trailers
+                    Dim tURL As String = cTrailer.ShowTDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename, Master.currMovie.Movie.Trailer)
+                    If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
+                        Master.currMovie.Movie.Trailer = tURL
                     End If
+                    cTrailer = Nothing
+                End If
 
-                    If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
-                        Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs)
-                    End If
+                If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
+                    Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs)
                 End If
                 If Not isCL Then
                     Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
