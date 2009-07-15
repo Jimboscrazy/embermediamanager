@@ -77,7 +77,7 @@ Public Class dlgImgSelect
 
             If Not IsNothing(Me.tmpImage.Image) Then
                 If isEdit Then
-                    Me.tmpImage.Save(tmpPathPlus, 85)
+                    Me.tmpImage.Save(tmpPathPlus)
                     OutPath = tmpPathPlus
                 Else
                     If Me.DLType = Master.ImageType.Fanart Then
@@ -116,7 +116,7 @@ Public Class dlgImgSelect
 
                 If Not IsNothing(Me.tmpImage.Image) Then
                     If isEdit Then
-                        Me.tmpImage.Save(tmpPathPlus, 85)
+                        Me.tmpImage.Save(tmpPathPlus)
                         OutPath = tmpPathPlus
                     Else
                         If Me.DLType = Master.ImageType.Fanart Then
@@ -520,17 +520,19 @@ Public Class dlgImgSelect
                     For Each sFile As FileInfo In lFi
                         tImage = New Media.Image
                         tmpImage.FromFile(sFile.FullName)
-                        tImage.WebImage = New Bitmap(tmpImage.Image)
-                        Select Case True
-                            Case sFile.Name.Contains("(original)")
-                                tImage.Description = "original"
-                            Case sFile.Name.Contains("(mid)")
-                                tImage.Description = "mid"
-                            Case sFile.Name.Contains("(thumb)")
-                                tImage.Description = "thumb"
-                        End Select
-                        tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
-                        Me.TMDBPosters.Add(tImage)
+                        If Not IsNothing(tmpImage.Image) Then
+                            tImage.WebImage = New Bitmap(tmpImage.Image)
+                            Select Case True
+                                Case sFile.Name.Contains("(original)")
+                                    tImage.Description = "original"
+                                Case sFile.Name.Contains("(mid)")
+                                    tImage.Description = "mid"
+                                Case sFile.Name.Contains("(thumb)")
+                                    tImage.Description = "thumb"
+                            End Select
+                            tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
+                            Me.TMDBPosters.Add(tImage)
+                        End If
                         tmpImage.Clear()
                     Next
                     tmpImage.Dispose()

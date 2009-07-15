@@ -102,9 +102,9 @@ Partial Class dlgUpdateMedia
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(64, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(123, 13)
+        Me.Label2.Size = New System.Drawing.Size(122, 13)
         Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Create a custom updater"
+        Me.Label2.Text = "Create a custom scraper"
         '
         'Label4
         '
@@ -114,9 +114,9 @@ Partial Class dlgUpdateMedia
         Me.Label4.ForeColor = System.Drawing.Color.White
         Me.Label4.Location = New System.Drawing.Point(61, 3)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(201, 29)
+        Me.Label4.Size = New System.Drawing.Size(200, 29)
         Me.Label4.TabIndex = 1
-        Me.Label4.Text = "Custom Updater"
+        Me.Label4.Text = "Custom Scraper"
         '
         'PictureBox1
         '
@@ -552,7 +552,7 @@ Partial Class dlgUpdateMedia
         Me.MinimizeBox = False
         Me.Name = "dlgUpdateMedia"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Custom Updater"
+        Me.Text = "Custom Scraper"
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

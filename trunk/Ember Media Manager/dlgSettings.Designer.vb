@@ -45,13 +45,13 @@ Partial Class dlgSettings
         Me.txtPort = New System.Windows.Forms.TextBox
         Me.txtIP = New System.Windows.Forms.TextBox
         Me.GroupBox4 = New System.Windows.Forms.GroupBox
-        Me.cbLanguages = New System.Windows.Forms.ComboBox
-        Me.Label31 = New System.Windows.Forms.Label
         Me.chkInfoPanelAnim = New System.Windows.Forms.CheckBox
         Me.chkUpdates = New System.Windows.Forms.CheckBox
         Me.chkOverwriteNfo = New System.Windows.Forms.CheckBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.chkLogErrors = New System.Windows.Forms.CheckBox
+        Me.cbLanguages = New System.Windows.Forms.ComboBox
+        Me.Label31 = New System.Windows.Forms.Label
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.tcCleaner = New System.Windows.Forms.TabControl
         Me.tpStandard = New System.Windows.Forms.TabPage
@@ -206,11 +206,7 @@ Partial Class dlgSettings
         Me.txtAutoThumbs = New System.Windows.Forms.TextBox
         Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.gbRTFormat = New System.Windows.Forms.GroupBox
-        Me.rbHM = New System.Windows.Forms.RadioButton
-        Me.rbMins = New System.Windows.Forms.RadioButton
         Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox
-        Me.chkUseMIDuration = New System.Windows.Forms.CheckBox
         Me.Label18 = New System.Windows.Forms.Label
         Me.txtIMDBURL = New System.Windows.Forms.TextBox
         Me.chkCastWithImg = New System.Windows.Forms.CheckBox
@@ -219,6 +215,10 @@ Partial Class dlgSettings
         Me.chkFullCrew = New System.Windows.Forms.CheckBox
         Me.cbCert = New System.Windows.Forms.ComboBox
         Me.chkCert = New System.Windows.Forms.CheckBox
+        Me.gbRTFormat = New System.Windows.Forms.GroupBox
+        Me.rbHM = New System.Windows.Forms.RadioButton
+        Me.rbMins = New System.Windows.Forms.RadioButton
+        Me.chkUseMIDuration = New System.Windows.Forms.CheckBox
         Me.chkScanMediaInfo = New System.Windows.Forms.CheckBox
         Me.btnOK = New System.Windows.Forms.Button
         Me.btnApply = New System.Windows.Forms.Button
@@ -240,6 +240,7 @@ Partial Class dlgSettings
         Me.btnBrowse = New System.Windows.Forms.Button
         Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.pnlScraper = New System.Windows.Forms.Panel
+        Me.GroupBox26 = New System.Windows.Forms.GroupBox
         Me.GroupBox20 = New System.Windows.Forms.GroupBox
         Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox
         Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox
@@ -294,7 +295,6 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
-        Me.GroupBox26 = New System.Windows.Forms.GroupBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -327,6 +327,7 @@ Partial Class dlgSettings
         Me.pnlMovies.SuspendLayout()
         Me.GroupBox16.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
+        Me.GroupBox26.SuspendLayout()
         Me.GroupBox20.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlExtensions.SuspendLayout()
@@ -339,7 +340,6 @@ Partial Class dlgSettings
         Me.GroupBox23.SuspendLayout()
         Me.GroupBox24.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
-        Me.GroupBox26.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -488,24 +488,6 @@ Partial Class dlgSettings
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
         '
-        'cbLanguages
-        '
-        Me.cbLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbLanguages.FormattingEnabled = True
-        Me.cbLanguages.Location = New System.Drawing.Point(16, 123)
-        Me.cbLanguages.Name = "cbLanguages"
-        Me.cbLanguages.Size = New System.Drawing.Size(174, 21)
-        Me.cbLanguages.Sorted = True
-        Me.cbLanguages.TabIndex = 17
-        '
-        'Label31
-        '
-        Me.Label31.Location = New System.Drawing.Point(3, 94)
-        Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(207, 26)
-        Me.Label31.TabIndex = 16
-        Me.Label31.Text = "Display Overlay if Video Contains an Audio Stream With the Following Language:"
-        '
         'chkInfoPanelAnim
         '
         Me.chkInfoPanelAnim.AutoSize = True
@@ -555,6 +537,24 @@ Partial Class dlgSettings
         Me.chkLogErrors.TabIndex = 1
         Me.chkLogErrors.Text = "Log Errors to File"
         Me.chkLogErrors.UseVisualStyleBackColor = True
+        '
+        'cbLanguages
+        '
+        Me.cbLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbLanguages.FormattingEnabled = True
+        Me.cbLanguages.Location = New System.Drawing.Point(16, 123)
+        Me.cbLanguages.Name = "cbLanguages"
+        Me.cbLanguages.Size = New System.Drawing.Size(174, 21)
+        Me.cbLanguages.Sorted = True
+        Me.cbLanguages.TabIndex = 17
+        '
+        'Label31
+        '
+        Me.Label31.Location = New System.Drawing.Point(3, 94)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(207, 26)
+        Me.Label31.TabIndex = 16
+        Me.Label31.Text = "Display Overlay if Video Contains an Audio Stream With the Following Language:"
         '
         'GroupBox3
         '
@@ -2135,7 +2135,7 @@ Partial Class dlgSettings
         Me.chkAutoThumbs.Name = "chkAutoThumbs"
         Me.chkAutoThumbs.Size = New System.Drawing.Size(184, 30)
         Me.chkAutoThumbs.TabIndex = 5
-        Me.chkAutoThumbs.Text = "Automatically Create Extrathumbs During Scrapers"
+        Me.chkAutoThumbs.Text = "Automatically Extract Extrathumbs During Scrapers"
         Me.chkAutoThumbs.UseVisualStyleBackColor = True
         '
         'GroupBox1
@@ -2156,40 +2156,6 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
         '
-        'gbRTFormat
-        '
-        Me.gbRTFormat.Controls.Add(Me.rbHM)
-        Me.gbRTFormat.Controls.Add(Me.rbMins)
-        Me.gbRTFormat.Enabled = False
-        Me.gbRTFormat.Location = New System.Drawing.Point(33, 52)
-        Me.gbRTFormat.Name = "gbRTFormat"
-        Me.gbRTFormat.Size = New System.Drawing.Size(169, 39)
-        Me.gbRTFormat.TabIndex = 9
-        Me.gbRTFormat.TabStop = False
-        Me.gbRTFormat.Text = "Runtime Format"
-        '
-        'rbHM
-        '
-        Me.rbHM.AutoSize = True
-        Me.rbHM.Location = New System.Drawing.Point(75, 15)
-        Me.rbHM.Name = "rbHM"
-        Me.rbHM.Size = New System.Drawing.Size(83, 17)
-        Me.rbHM.TabIndex = 1
-        Me.rbHM.Text = "X hrs X mins"
-        Me.rbHM.UseVisualStyleBackColor = True
-        '
-        'rbMins
-        '
-        Me.rbMins.AutoSize = True
-        Me.rbMins.Checked = True
-        Me.rbMins.Location = New System.Drawing.Point(6, 15)
-        Me.rbMins.Name = "rbMins"
-        Me.rbMins.Size = New System.Drawing.Size(56, 17)
-        Me.rbMins.TabIndex = 0
-        Me.rbMins.TabStop = True
-        Me.rbMins.Text = "X mins"
-        Me.rbMins.UseVisualStyleBackColor = True
-        '
         'chkOutlineForPlot
         '
         Me.chkOutlineForPlot.AutoSize = True
@@ -2199,17 +2165,6 @@ Partial Class dlgSettings
         Me.chkOutlineForPlot.TabIndex = 3
         Me.chkOutlineForPlot.Text = "Use Outline for Plot if Plot is Empty"
         Me.chkOutlineForPlot.UseVisualStyleBackColor = True
-        '
-        'chkUseMIDuration
-        '
-        Me.chkUseMIDuration.AutoSize = True
-        Me.chkUseMIDuration.Enabled = False
-        Me.chkUseMIDuration.Location = New System.Drawing.Point(33, 33)
-        Me.chkUseMIDuration.Name = "chkUseMIDuration"
-        Me.chkUseMIDuration.Size = New System.Drawing.Size(145, 17)
-        Me.chkUseMIDuration.TabIndex = 8
-        Me.chkUseMIDuration.Text = "Use Duration for Runtime"
-        Me.chkUseMIDuration.UseVisualStyleBackColor = True
         '
         'Label18
         '
@@ -2290,6 +2245,51 @@ Partial Class dlgSettings
         Me.chkCert.TabIndex = 4
         Me.chkCert.Text = "Use Certification Language:"
         Me.chkCert.UseVisualStyleBackColor = True
+        '
+        'gbRTFormat
+        '
+        Me.gbRTFormat.Controls.Add(Me.rbHM)
+        Me.gbRTFormat.Controls.Add(Me.rbMins)
+        Me.gbRTFormat.Enabled = False
+        Me.gbRTFormat.Location = New System.Drawing.Point(33, 52)
+        Me.gbRTFormat.Name = "gbRTFormat"
+        Me.gbRTFormat.Size = New System.Drawing.Size(169, 39)
+        Me.gbRTFormat.TabIndex = 9
+        Me.gbRTFormat.TabStop = False
+        Me.gbRTFormat.Text = "Runtime Format"
+        '
+        'rbHM
+        '
+        Me.rbHM.AutoSize = True
+        Me.rbHM.Location = New System.Drawing.Point(75, 15)
+        Me.rbHM.Name = "rbHM"
+        Me.rbHM.Size = New System.Drawing.Size(83, 17)
+        Me.rbHM.TabIndex = 1
+        Me.rbHM.Text = "X hrs X mins"
+        Me.rbHM.UseVisualStyleBackColor = True
+        '
+        'rbMins
+        '
+        Me.rbMins.AutoSize = True
+        Me.rbMins.Checked = True
+        Me.rbMins.Location = New System.Drawing.Point(6, 15)
+        Me.rbMins.Name = "rbMins"
+        Me.rbMins.Size = New System.Drawing.Size(56, 17)
+        Me.rbMins.TabIndex = 0
+        Me.rbMins.TabStop = True
+        Me.rbMins.Text = "X mins"
+        Me.rbMins.UseVisualStyleBackColor = True
+        '
+        'chkUseMIDuration
+        '
+        Me.chkUseMIDuration.AutoSize = True
+        Me.chkUseMIDuration.Enabled = False
+        Me.chkUseMIDuration.Location = New System.Drawing.Point(33, 33)
+        Me.chkUseMIDuration.Name = "chkUseMIDuration"
+        Me.chkUseMIDuration.Size = New System.Drawing.Size(145, 17)
+        Me.chkUseMIDuration.TabIndex = 8
+        Me.chkUseMIDuration.Text = "Use Duration for Runtime"
+        Me.chkUseMIDuration.UseVisualStyleBackColor = True
         '
         'chkScanMediaInfo
         '
@@ -2554,6 +2554,20 @@ Partial Class dlgSettings
         Me.pnlScraper.Size = New System.Drawing.Size(597, 353)
         Me.pnlScraper.TabIndex = 62
         Me.pnlScraper.Visible = False
+        '
+        'GroupBox26
+        '
+        Me.GroupBox26.Controls.Add(Me.cbLanguages)
+        Me.GroupBox26.Controls.Add(Me.Label31)
+        Me.GroupBox26.Controls.Add(Me.gbRTFormat)
+        Me.GroupBox26.Controls.Add(Me.chkScanMediaInfo)
+        Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
+        Me.GroupBox26.Location = New System.Drawing.Point(5, 185)
+        Me.GroupBox26.Name = "GroupBox26"
+        Me.GroupBox26.Size = New System.Drawing.Size(211, 157)
+        Me.GroupBox26.TabIndex = 63
+        Me.GroupBox26.TabStop = False
+        Me.GroupBox26.Text = "Meta Data"
         '
         'GroupBox20
         '
@@ -2991,7 +3005,7 @@ Partial Class dlgSettings
         Me.GroupBox24.Size = New System.Drawing.Size(185, 93)
         Me.GroupBox24.TabIndex = 64
         Me.GroupBox24.TabStop = False
-        Me.GroupBox24.Text = "Sizing"
+        Me.GroupBox24.Text = "Sizing (Extracted Frames)"
         '
         'chkETPadding
         '
@@ -3120,20 +3134,6 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
-        'GroupBox26
-        '
-        Me.GroupBox26.Controls.Add(Me.cbLanguages)
-        Me.GroupBox26.Controls.Add(Me.Label31)
-        Me.GroupBox26.Controls.Add(Me.gbRTFormat)
-        Me.GroupBox26.Controls.Add(Me.chkScanMediaInfo)
-        Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
-        Me.GroupBox26.Location = New System.Drawing.Point(5, 185)
-        Me.GroupBox26.Name = "GroupBox26"
-        Me.GroupBox26.Size = New System.Drawing.Size(211, 157)
-        Me.GroupBox26.TabIndex = 63
-        Me.GroupBox26.TabStop = False
-        Me.GroupBox26.Text = "Meta Data"
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3148,13 +3148,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -3216,6 +3216,8 @@ Partial Class dlgSettings
         Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox16.PerformLayout()
         Me.pnlScraper.ResumeLayout(False)
+        Me.GroupBox26.ResumeLayout(False)
+        Me.GroupBox26.PerformLayout()
         Me.GroupBox20.ResumeLayout(False)
         Me.GroupBox20.PerformLayout()
         Me.Panel1.ResumeLayout(False)
@@ -3237,8 +3239,6 @@ Partial Class dlgSettings
         Me.GroupBox24.PerformLayout()
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
-        Me.GroupBox26.ResumeLayout(False)
-        Me.GroupBox26.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub

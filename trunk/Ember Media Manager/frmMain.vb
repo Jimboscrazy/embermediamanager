@@ -1759,7 +1759,11 @@ Public Class frmMain
 
     Private Sub OpenContainingFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenContainingFolderToolStripMenuItem.Click
         For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-            Process.Start("explorer.exe", Directory.GetParent(sRow.Cells(1).Value).FullName)
+            Using Explorer As New Diagnostics.Process
+                Explorer.StartInfo.FileName = "explorer.exe"
+                Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells(1).Value)
+                Explorer.Start()
+            End Using
         Next
     End Sub
 
@@ -4412,7 +4416,9 @@ doCancel:
                 End Using
                 SQLtransaction.Commit()
             End Using
+
             Me.tabMovies.Text = String.Format("Movies ({0})", Me.dgvMediaList.RowCount)
+            Me.dgvMediaList.Invalidate()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
