@@ -163,6 +163,7 @@ Public Class emmSettings
     Private _notokens As Boolean
     Private _levtolerance As Integer
     Private _autodetectvts As Boolean
+    Private _flaglang As String
 
     Public Property Version() As String
         Get
@@ -1401,6 +1402,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property FlagLang() As String
+        Get
+            Return Me._flaglang
+        End Get
+        Set(ByVal value As String)
+            Me._flaglang = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1544,6 +1554,7 @@ Public Class emmSettings
         Me._notokens = False
         Me._levtolerance = 0
         Me._autodetectvts = True
+        Me._flaglang = String.Empty
     End Sub
 
     Public Sub Save()
@@ -1579,21 +1590,26 @@ Public Class emmSettings
 
     Public Sub SetDefaultsForLists()
         If Master.eSettings.FilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoFilters Then
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]\(?\d{4}\)?.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]blu[ _.-]?ray.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]bd[ _.-]?rip.*")
-            Master.eSettings.FilterCustom.Add("(?i)[ _.-]720[pi].*")
-            Master.eSettings.FilterCustom.Add("(?i)[ _.-]1080[pi].*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]dvd.*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]720.*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]ac3.*")
-            Master.eSettings.FilterCustom.Add("(?i)[ _.-]dc[ _.-].*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]dts.*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]divx.*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]xvid.*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]dc[ _.-]?.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]dir(ector'?s?)?\s?cut.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]extended.*")
-            Master.eSettings.FilterCustom.Add("(?i)[ _.-]hd(tv)?[ _.-].*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]hd(tv)?.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]unrated.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]uncut.*")
-            Master.eSettings.FilterCustom.Add("(?i)[ _.-]pal[ _.-].*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]([a-z]{3}|multi)[sd]ub.*")
+            Master.eSettings.FilterCustom.Add("(?i)[ _.-]\[offline\].*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]ntsc.*")
-            Master.eSettings.FilterCustom.Add("(?i)[ _.-]dvd[_.-]?(rip)?.*")
-            Master.eSettings.FilterCustom.Add("(?i)[ _.-]\(\d\d\d\d\).*")
+            Master.eSettings.FilterCustom.Add("[ _.-]PAL[ _.-].*")
             Master.eSettings.FilterCustom.Add("\.[->] ")
         End If
 

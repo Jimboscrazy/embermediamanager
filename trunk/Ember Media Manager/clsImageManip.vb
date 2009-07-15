@@ -82,27 +82,117 @@ Public Class ImageManip
         End Try
     End Sub
 
-    Public Shared Sub SetOverlay(ByRef pbOverlay As PictureBox)
+    Public Shared Sub ResizeImage(ByRef _image As Image, ByVal maxWidth As Integer, ByVal maxHeight As Integer, Optional ByVal usePadding As Boolean = False, Optional ByVal PaddingARGB As Integer = -16777216)
+
+        Try
+            If Not IsNothing(_image) Then
+                Dim sPropPerc As Single = 1.0 'no default scaling
+
+                If _image.Width > _image.Height Then
+                    sPropPerc = CSng(maxWidth / _image.Width)
+                Else
+                    sPropPerc = CSng(maxHeight / _image.Height)
+                End If
+
+                ' Get the source bitmap.
+                Using bmSource As New Bitmap(_image)
+                    ' Make a bitmap for the result.
+                    Dim bmDest As New Bitmap( _
+                    Convert.ToInt32(bmSource.Width * sPropPerc), _
+                    Convert.ToInt32(bmSource.Height * sPropPerc))
+                    ' Make a Graphics object for the result Bitmap.
+                    Using grDest As Graphics = Graphics.FromImage(bmDest)
+                        grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                        ' Copy the source image into the destination bitmap.
+                        grDest.DrawImage(bmSource, New Rectangle(0, 0, _
+                        bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
+                        bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
+                    End Using
+
+                    If usePadding Then
+                        Dim bgBMP As Bitmap = New Bitmap(maxWidth, maxHeight)
+                        Dim grOverlay As Graphics = Graphics.FromImage(bgBMP)
+                        grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                        grOverlay.FillRectangle(New SolidBrush(Color.FromArgb(PaddingARGB)), New RectangleF(0, 0, maxWidth, maxHeight))
+                        Dim iLeft As Integer = If(bmDest.Width = maxWidth, 0, (maxWidth - bmDest.Width) / 2)
+                        Dim iTop As Integer = If(bmDest.Height = maxHeight, 0, (maxHeight - bmDest.Height) / 2)
+                        grOverlay.DrawImage(bmDest, iLeft, iTop, bmDest.Width, bmDest.Height)
+                        bmDest = bgBMP
+                    End If
+
+                    _image = bmDest
+
+                End Using
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Public Shared Function SetOverlay(ByRef imgUnderlay As Image, ByVal iWidth As Integer, ByVal iHeight As Integer, ByVal imgOverlay As Image, ByVal Location As Integer) As Image
+        'locations:
+        '1 = upper left
+        '2 = upper right
+        '3 = lower left
+        '4 = lower right
+        Try
+            ResizeImage(imgUnderlay, iWidth, iHeight, True, Color.Transparent.ToArgb)
+            Dim bmOverlay As New Bitmap(imgUnderlay)
+            Dim grOverlay As Graphics = Graphics.FromImage(bmOverlay)
+            Dim iLeft As Integer = 0
+            Dim iTop As Integer = 0
+
+            Select Case Location
+                Case 2
+                    iLeft = bmOverlay.Width - imgOverlay.Width
+                    iTop = 0
+                Case 3
+                    iLeft = 0
+                    iTop = bmOverlay.Height - imgOverlay.Height
+                Case 4
+                    iLeft = bmOverlay.Width - imgOverlay.Width
+                    iTop = bmOverlay.Height - imgOverlay.Height
+                Case Else
+                    iLeft = 0
+                    iTop = 0
+            End Select
+
+            grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+
+            grOverlay.DrawImage(imgOverlay, iLeft, iTop, imgOverlay.Width, imgOverlay.Height)
+            imgUnderlay = bmOverlay
+
+            grOverlay.Dispose()
+            bmOverlay = Nothing
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return imgUnderlay
+    End Function
+    Public Shared Sub SetGlassOverlay(ByRef pbUnderlay As PictureBox)
 
         '//
         ' Put our crappy glossy overlay over the poster
         '\\
 
         Try
-            Dim bmOverlay As New Bitmap(pbOverlay.Image)
+            Dim bmOverlay As New Bitmap(pbUnderlay.Image)
             Dim grOverlay As Graphics = Graphics.FromImage(bmOverlay)
-            Dim bmHeight As Integer = pbOverlay.Image.Height * 0.65
+            Dim bmHeight As Integer = pbUnderlay.Image.Height * 0.65
 
             grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
 
-            grOverlay.DrawImage(My.Resources.overlay, 0, 0, pbOverlay.Image.Width, bmHeight)
-            pbOverlay.Image = bmOverlay
+            grOverlay.DrawImage(My.Resources.overlay, 0, 0, pbUnderlay.Image.Width, bmHeight)
+            pbUnderlay.Image = bmOverlay
 
-            bmOverlay = New Bitmap(pbOverlay.Image)
+            bmOverlay = New Bitmap(pbUnderlay.Image)
             grOverlay = Graphics.FromImage(bmOverlay)
 
-            grOverlay.DrawImage(My.Resources.overlay2, 0, 0, pbOverlay.Image.Width, pbOverlay.Image.Height)
-            pbOverlay.Image = bmOverlay
+            grOverlay.DrawImage(My.Resources.overlay2, 0, 0, pbUnderlay.Image.Width, pbUnderlay.Image.Height)
+            pbUnderlay.Image = bmOverlay
 
             grOverlay.Dispose()
             bmOverlay = Nothing

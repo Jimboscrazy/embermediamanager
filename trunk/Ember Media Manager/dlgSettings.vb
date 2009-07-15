@@ -227,6 +227,7 @@ Public Class dlgSettings
             End Using
 
             Me.LoadGenreLangs()
+            Me.LoadLangs()
             Me.FillSettings()
 
             Me.btnApply.Enabled = False
@@ -261,6 +262,7 @@ Public Class dlgSettings
     Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanMediaInfo.CheckedChanged
         Me.btnApply.Enabled = True
         Me.chkUseMIDuration.Enabled = Me.chkScanMediaInfo.Checked
+        Me.cbLanguages.Enabled = Me.chkScanMediaInfo.Checked
         If Not Me.chkScanMediaInfo.Checked Then
             Me.chkUseMIDuration.Checked = False
             Me.gbRTFormat.Enabled = False
@@ -1227,6 +1229,10 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub cbLanguages_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbLanguages.SelectedIndexChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -1448,6 +1454,7 @@ Public Class dlgSettings
 
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
             Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
+            Master.eSettings.FlagLang = If(Me.cbLanguages.Text = "[Disabled]", String.Empty, Me.cbLanguages.Text)
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -1639,6 +1646,7 @@ Public Class dlgSettings
                 Me.txtCheckTitleTol.Text = Master.eSettings.LevTolerance.ToString
             End If
             Me.chkAutoDetectVTS.Checked = Master.eSettings.AutoDetectVTS
+            Me.cbLanguages.Text = If(String.IsNullOrEmpty(Master.eSettings.FlagLang), "[Disabled]", Master.eSettings.FlagLang)
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -1655,12 +1663,15 @@ Public Class dlgSettings
 
     Private Sub LoadGenreLangs()
 
-        '//
-        ' Read all the genre languages from the xml and load into the list
-        '\\
-
         Me.lbGenre.Items.Add("[All]")
         Me.lbGenre.Items.AddRange(XML.GetGenreList(True))
+
+    End Sub
+
+    Private Sub LoadLangs()
+
+        Me.lbGenre.Items.Add("[Disabled]")
+        Me.cbLanguages.Items.AddRange(XML.GetLanguageList)
 
     End Sub
 
