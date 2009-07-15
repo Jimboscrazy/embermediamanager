@@ -3909,7 +3909,7 @@ doCancel:
                         If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) AndAlso doSearch = False Then
                             IMDB.GetMovieInfoAsync(Master.currMovie.Movie.IMDBID, Master.currMovie.Movie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                         Else
-                            Master.tmpMovie = New Media.Movie
+                            Master.tmpMovie.Clear()
 
                             Using dSearch As New dlgIMDBSearchResults
                                 If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
@@ -3922,7 +3922,7 @@ doCancel:
                                         Me.ReportDownloadPercent = True
                                         Me.tslLoading.Visible = True
                                         Me.tspbLoading.Visible = True
-                                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.currMovie.Movie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
+                                        IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                                     End If
                                 Else
                                     If isCL Then
@@ -3989,6 +3989,7 @@ doCancel:
 
         Try
             If bSuccess Then
+                Master.currMovie.Movie = Master.tmpMovie
                 If Master.eSettings.ScanMediaInfo Then
                     Me.tslLoading.Text = "Scanning Media Info:"
                     Me.tspbLoading.Value = Me.tspbLoading.Maximum
@@ -4351,8 +4352,16 @@ doCancel:
                             End If
 
                             LevFail = Not pExt = ".vob" AndAlso Not pExt = ".ifo" AndAlso _
-                                      StringManip.ComputeLevenshtein(StringManip.RemovePunctuation(drvRow.Cells(15).Value), StringManip.FilterName(pTitle, False)) > Master.eSettings.LevTolerance AndAlso _
-                                      StringManip.ComputeLevenshtein(StringManip.RemovePunctuation(drvRow.Cells(15).Value), StringManip.RemovePunctuation(pTitle)) > Master.eSettings.LevTolerance
+                                      StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
+
+                            'debug message
+                            If LevFail Then
+                                Dim debug As String = "Difference: " & StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) & vbNewLine & _
+                                "Title: " & StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower & vbNewLine & _
+                                "File/Folder: " & StringManip.FilterName(pTitle, False).ToLower & vbNewLine & vbNewLine & _
+                                "Use Folder: " & If(drvRow.Cells(46).Value, "Yes", "No")
+
+                            End If
 
                             parOutOfTolerance.Value = LevFail
                             drvRow.Cells(47).Value = LevFail
