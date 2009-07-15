@@ -37,6 +37,7 @@ Public Class dlgImgSelect
     Private tMovie As New Master.DBMovie
     Private isEdit As Boolean = False
     Private DLType As Master.ImageType
+    Private PreDL As Boolean = False
 
     Private iCounter As Integer = 0
     Private iTop As Integer = 5
@@ -205,10 +206,11 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub dlgImgSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        If Not PreDL Then SetUp()
+    End Sub
 
+    Private Sub SetUp()
         Try
-            Me.Activate()
-
             AddHandler TMDB.PostersDownloaded, AddressOf TMDBPostersDownloaded
             AddHandler TMDB.ProgressUpdated, AddressOf TMDBProgressUpdated
             AddHandler IMPA.PostersDownloaded, AddressOf IMPAPostersDownloaded
@@ -790,6 +792,17 @@ Public Class dlgImgSelect
 
     Private Sub dlgImgSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Try
+
+            Me.Activate()
+            If Not PreDL Then StartDownload()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub StartDownload()
+        Try
             Select Case Me.DLType
                 Case Master.ImageType.Posters
                     Me.GetPosters()
@@ -1008,7 +1021,7 @@ Public Class dlgImgSelect
         Me.btnPreview.Enabled = True
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As String
+    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False, Optional ByVal _PreDL As Boolean = False) As String
 
         '//
         ' Overload to pass data
@@ -1017,10 +1030,24 @@ Public Class dlgImgSelect
         Me.tMovie = mMovie
         Me.DLType = _DLType
         Me.isEdit = _isEdit
+        Me.PreDL = _PreDL
 
-        MyBase.ShowDialog()
+        If Not _PreDL Then
+            MyBase.ShowDialog()
+            Return OutPath
+        Else
+            Me.SetUp()
+            Me.StartDownload()
+            Return Nothing
+        End If
 
-        Return OutPath
+    End Function
+
+    Public Overloads Function ShowDialog() As String
+
+            MyBase.ShowDialog()
+            Return OutPath
+
     End Function
 
     Private Sub chkOriginal_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOriginal.CheckedChanged

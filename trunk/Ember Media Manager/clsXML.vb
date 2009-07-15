@@ -371,7 +371,7 @@ Public Class XML
             If LangsOnly Then
                 Dim xGenre = From xGen In GenreXML...<supported>.Descendants Select xGen.Value
                 If xGenre.Count > 0 Then
-                    retGenre.Add(xGenre.ToArray)
+                    retGenre.AddRange(xGenre.ToArray)
                 End If
             Else
                 Dim splitLang() As String
@@ -399,7 +399,7 @@ Public Class XML
             If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso XML.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
                 Dim xRating = From xRat In XML.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
-                    retRatings.Add(xRating.ToArray)
+                    retRatings.AddRange(xRating.ToArray)
                 End If
             Else
                 Dim xRating = From xRat In XML.RatingXML...<usa>...<name> Select xRat.@searchstring

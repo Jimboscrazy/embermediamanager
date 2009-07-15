@@ -1674,7 +1674,7 @@ Public Class dlgSettings
 
     Private Sub LoadLangs()
 
-        Me.lbGenre.Items.Add("[Disabled]")
+        Me.cbLanguages.Items.Add("[Disabled]")
         Me.cbLanguages.Items.AddRange(XML.GetLanguageList)
 
     End Sub
