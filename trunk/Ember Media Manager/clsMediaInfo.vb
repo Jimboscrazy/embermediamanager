@@ -92,7 +92,7 @@ Public Class MediaInfo
             Dim ifoVideo(2) As String
             Dim ifoAudio(2) As String
 
-            If 1 > 1 AndAlso (sExt = ".ifo" OrElse sExt = ".vob") AndAlso cDVD.fctOpenIFOFile(sPath) Then
+            If (sExt = ".ifo" OrElse sExt = ".vob") AndAlso cDVD.fctOpenIFOFile(sPath) Then
 
                 ifoVideo = cDVD.GetIFOVideo
                 Dim vRes() As String = ifoVideo(1).Split(New Char() {"x"})
