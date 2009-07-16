@@ -175,6 +175,8 @@ Public Class StringManip
         ' Clean all the crap out of the name
         '\\
 
+        If String.IsNullOrEmpty(movieName) Then Return String.Empty
+
         Dim strSplit() As String
         Try
 
@@ -209,6 +211,7 @@ Public Class StringManip
     End Function
 
     Private Shared Function ProperCase(ByVal sString As String) As String
+        If String.IsNullOrEmpty(sString) Then Return String.Empty
         Dim sReturn As String = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(sString)
         Dim toUpper As String = "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b"
 
@@ -221,6 +224,7 @@ Public Class StringManip
     End Function
 
     Public Shared Function IsStacked(ByVal sName As String, Optional ByVal VTS As Boolean = False) As Boolean
+        If String.IsNullOrEmpty(sName) Then Return False
         Dim bReturn As Boolean = False
         If VTS Then
             bReturn = Regex.IsMatch(sName, "[ _.-]+(cd|dvd|part|dis[ck])[ _.-]*([0-9a-d]+)", RegexOptions.IgnoreCase) OrElse Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
@@ -231,12 +235,14 @@ Public Class StringManip
     End Function
 
     Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False, Optional ByVal VTS As Boolean = False) As String
+        If String.IsNullOrEmpty(sPath) Then Return String.Empty
         Dim sReturn As String = Regex.Replace(sPath, "[ _.-]+(cd|dvd|part|dis[ck])[ _.-]*([0-9a-d]+)", If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
         If VTS Then sReturn = Regex.Replace(sReturn, "[0-9]+$", If(Asterisk, "*", " "), RegexOptions.IgnoreCase)
         Return Regex.Replace(sReturn, "\s\s(\s+)?", " ").Trim
     End Function
 
     Public Shared Function RemovePunctuation(ByVal sString As String) As String
+        If String.IsNullOrEmpty(sString) Then Return String.Empty
         Dim sReturn As String = Regex.Replace(sString, "\W", " ")
         Return Regex.Replace(sReturn.ToLower, "\s\s(\s+)?", " ").Trim
     End Function
