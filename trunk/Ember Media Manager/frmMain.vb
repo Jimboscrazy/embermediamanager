@@ -2823,34 +2823,36 @@ Public Class frmMain
 
                                 End If
 
-                If Me.bwScraper.CancellationPending Then GoTo doCancel
-                If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
-                    If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) Then
-                        Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs)
-                        If Not String.IsNullOrEmpty(ETasFA) Then
-                            Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
-                            scrapeMovie.ExtraPath = "TRUE"
-                            If Not ETasFA = "TRUE" Then
-                                Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                scrapeMovie.FanartPath = ETasFA
-                            End If
-                        End If
-                    End If
-                End If
+                                If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                If doSave Then
-                    Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
-                End If
+                                If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
+                                    If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) Then
+                                        Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs)
+                                        If Not String.IsNullOrEmpty(ETasFA) Then
+                                            Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
+                                            scrapeMovie.ExtraPath = "TRUE"
+                                            If Not ETasFA = "TRUE" Then
+                                                Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
+                                                scrapeMovie.FanartPath = ETasFA
+                                            End If
+                                        End If
+                                    End If
+                                End If
+
+                                If doSave Then
+                                    Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
+                                End If
 
 
-                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
+                                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
 
-                'use this one to check for need of load info
-                Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
-                iCount += 1
+                                'use this one to check for need of load info
+                                Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                iCount += 1
                             Next
 
                         Case Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
+
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
                                 Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
@@ -3027,23 +3029,23 @@ Public Class frmMain
                                 iCount += 1
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                sPath = drvRow.Item(39)
+                                sPath = drvRow.Item(40)
                                 If Not String.IsNullOrEmpty(sPath) Then
                                     If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                                         If Master.eSettings.VideoTSParent Then
-                                            File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")), True)
+                                            Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
                                         Else
                                             If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")), True)
+                                                Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
                                             Else
-                                                File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)), True)
+                                                Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                             End If
                                         End If
                                     Else
                                         If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                            File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")), True)
+                                            Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
                                         Else
-                                            File.Copy(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)), True)
+                                            Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                         End If
                                     End If
                                 End If
@@ -3073,8 +3075,8 @@ doCancel:
             If Not Args.scrapeType = Master.ScrapeType.CopyBD AndAlso Not Args.scrapeType = Master.ScrapeType.CleanFolders Then
                 'Save the last movie scraper was working on
                 Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
+                SQLtransaction.Commit()
             End If
-            SQLtransaction.Commit()
         End Using
         e.Result = Args.scrapeType
 
@@ -4566,7 +4568,7 @@ doCancel:
                         End If
                     Next
                 End Using
-                SQLtransaction.Commit()
+                If DoTitleCheck Then SQLtransaction.Commit()
             End Using
 
             Me.tabMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMediaList.RowCount)
