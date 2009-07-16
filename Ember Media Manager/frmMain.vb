@@ -1285,9 +1285,7 @@ Public Class frmMain
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    If Not sRow.Cells(26).Value.contains(Me.GenreListToolStripComboBox.Text) Then
-                        Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
-                    End If
+                    Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), True, False, True)
                 Next
                 SQLtransaction.Commit()
             End Using
