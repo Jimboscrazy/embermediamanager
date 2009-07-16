@@ -227,6 +227,7 @@ Public Class dlgSettings
             End Using
 
             Me.LoadGenreLangs()
+            Me.LoadIntLangs()
             Me.LoadLangs()
             Me.FillSettings()
 
@@ -1237,6 +1238,10 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub cbIntLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIntLang.SelectedIndexChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -1459,6 +1464,7 @@ Public Class dlgSettings
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
             Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = "[Disabled]", String.Empty, Me.cbLanguages.Text)
+            Master.eSettings.Language = Me.cbIntLang.Text
 
             Master.eSettings.Save()
         Catch ex As Exception
@@ -1650,7 +1656,8 @@ Public Class dlgSettings
                 Me.txtCheckTitleTol.Text = Master.eSettings.LevTolerance.ToString
             End If
             Me.chkAutoDetectVTS.Checked = Master.eSettings.AutoDetectVTS
-            Me.cbLanguages.Text = If(String.IsNullOrEmpty(Master.eSettings.FlagLang), "[Disabled]", Master.eSettings.FlagLang)
+            Me.cbLanguages.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.FlagLang), "[Disabled]", Master.eSettings.FlagLang)
+            Me.cbIntLang.SelectedItem = Master.eSettings.Language
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -1676,6 +1683,21 @@ Public Class dlgSettings
 
         Me.cbLanguages.Items.Add("[Disabled]")
         Me.cbLanguages.Items.AddRange(XML.GetLanguageList)
+
+    End Sub
+
+    Private Sub LoadIntLangs()
+
+        If Directory.Exists(Path.Combine(Application.StartupPath, "Langs")) Then
+            Dim alL As New ArrayList
+            Dim alLangs As New ArrayList
+            Try
+                alL.AddRange(Directory.GetFiles(Path.Combine(Application.StartupPath, "Langs"), "*.xml"))
+            Catch
+            End Try
+            alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)
+            Me.cbIntLang.Items.AddRange(alLangs.ToArray)
+        End If
 
     End Sub
 

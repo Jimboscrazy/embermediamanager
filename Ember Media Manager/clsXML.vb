@@ -55,6 +55,13 @@ Public Class XML
                 Dim achanImage As String = String.Empty
                 Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
                 Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV)
+                Dim sourceCheck As String = String.Empty
+
+                If Directory.GetParent(AVMovie.Filename).Name.ToLower = "video_ts" Then
+                    sourceCheck = Directory.GetParent(Directory.GetParent(AVMovie.Filename).FullName).Name.ToLower
+                Else
+                    sourceCheck = String.Concat(Directory.GetParent(AVMovie.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.Filename).ToLower)
+                End If
 
                 'video resolution
                 Dim xVResDefault = From xDef In FlagsXML...<vres> Select xDef.Element("default").Element("icon").Value
@@ -76,7 +83,7 @@ Public Class XML
                     vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
                 End If
 
-                Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(String.Concat(Directory.GetParent(AVMovie.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.Filename).ToLower), xVSource.@searchstring) Select xVSource.<icon>.Value
+                Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.<icon>.Value
                 If xVSourceFlag.Count > 0 Then
                     vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
                 End If
