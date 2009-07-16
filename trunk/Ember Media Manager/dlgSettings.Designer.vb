@@ -295,6 +295,8 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
+        Me.Label32 = New System.Windows.Forms.Label
+        Me.cbIntLang = New System.Windows.Forms.ComboBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -476,6 +478,8 @@ Partial Class dlgSettings
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.Label32)
+        Me.GroupBox4.Controls.Add(Me.cbIntLang)
         Me.GroupBox4.Controls.Add(Me.chkInfoPanelAnim)
         Me.GroupBox4.Controls.Add(Me.chkUpdates)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
@@ -3134,6 +3138,24 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Location = New System.Drawing.Point(7, 114)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(103, 13)
+        Me.Label32.TabIndex = 17
+        Me.Label32.Text = "Interface Language:"
+        '
+        'cbIntLang
+        '
+        Me.cbIntLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbIntLang.FormattingEnabled = True
+        Me.cbIntLang.Location = New System.Drawing.Point(10, 131)
+        Me.cbIntLang.Name = "cbIntLang"
+        Me.cbIntLang.Size = New System.Drawing.Size(148, 21)
+        Me.cbIntLang.TabIndex = 16
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3148,13 +3170,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -3506,4 +3528,6 @@ Partial Class dlgSettings
     Friend WithEvents cbLanguages As System.Windows.Forms.ComboBox
     Friend WithEvents Label31 As System.Windows.Forms.Label
     Friend WithEvents GroupBox26 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label32 As System.Windows.Forms.Label
+    Friend WithEvents cbIntLang As System.Windows.Forms.ComboBox
 End Class

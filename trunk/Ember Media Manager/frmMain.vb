@@ -121,7 +121,7 @@ Public Class frmMain
     End Sub
 
     Private Sub GenreListToolStripComboBox_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles GenreListToolStripComboBox.DropDown
-        Me.GenreListToolStripComboBox.Items.Remove("Select Genre...")
+        Me.GenreListToolStripComboBox.Items.Remove(Master.eLang.GetString(98, "Select Genre..."))
     End Sub
 
     Private Sub GenreListToolStripComboBox_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GenreListToolStripComboBox.SelectedIndexChanged
@@ -165,7 +165,7 @@ Public Class frmMain
             If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
 
-            lblCanceling.Text = "Canceling All Processes..."
+            lblCanceling.Text = Master.eLang.GetString(99, "Canceling All Processes...")
             btnCancel.Visible = False
             lblCanceling.Visible = True
             pbCanceling.Visible = True
@@ -224,7 +224,7 @@ Public Class frmMain
                 Dim dResult As Windows.Forms.DialogResult = dSettings.ShowDialog
                 If dResult = Windows.Forms.DialogResult.OK OrElse dResult = Windows.Forms.DialogResult.Retry Then
 
-                    Me.SetColors()
+                    Me.SetUp()
 
                     If Me.dgvMediaList.RowCount > 0 Then
                         Me.dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
@@ -276,13 +276,7 @@ Public Class frmMain
 
         Me.Visible = False
         Dim Args() As String = Environment.GetCommandLineArgs
-        ' Check if is allready running
-        If Args.Count = 1 Then
-            If CheckInstanceOfApp() Then
-                Application.Exit()
-                Return
-            End If
-        End If
+
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)
@@ -301,16 +295,13 @@ Public Class frmMain
 
         If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
-        Master.eSettings.Load()
-        Master.CreateDefaultOptions()
-
-        Dim MoviePath As String = String.Empty
-        Dim isSingle As Boolean = False
-        Dim hasSpec As Boolean = False
-        Dim clScrapeType As Master.ScrapeType = Nothing
-        Dim clScrapeMod As Master.ScrapeModifier = Nothing
 
         If Args.Count > 1 Then
+            Dim MoviePath As String = String.Empty
+            Dim isSingle As Boolean = False
+            Dim hasSpec As Boolean = False
+            Dim clScrapeType As Master.ScrapeType = Nothing
+            Dim clScrapeMod As Master.ScrapeModifier = Nothing
             isCL = True
             Dim clAsk As Boolean = False
 
@@ -427,8 +418,7 @@ Public Class frmMain
 
                 XML.CacheXMLs()
 
-                Me.SetColors()
-                Me.SetToolTips()
+                Me.SetUp()
                 Me.cbSearch.SelectedIndex = 0
 
                 Me.aniType = Master.eSettings.InfoPanelState
@@ -492,23 +482,7 @@ Public Class frmMain
         End If
 
     End Sub
-    Private Function CheckInstanceOfApp() As Boolean
-        Dim appProc() As Process
-        Dim strModName, strProcName As String
-        strModName = Process.GetCurrentProcess.MainModule.ModuleName
-        strProcName = System.IO.Path.GetFileNameWithoutExtension(strModName)
-        appProc = Process.GetProcessesByName(strProcName)
-        If appProc.Length > 1 Then
-            CType(My.Application.SplashScreen, frmSplash).CloseForm()
-            Dim f = New Form()
-            f.TopMost = True
-            MessageBox.Show(f, "There is an instance of this Ember Media Manager running.")
-            f.Close()
-            f = Nothing
-            Return True
-        End If
-        Return False
-    End Function
+
     Private Sub lstActors_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstActors.SelectedIndexChanged
         '//
         ' Begin thread to download actor image if one exists
@@ -952,14 +926,14 @@ Public Class frmMain
                 Me.filSearch = String.Empty
 
                 Select Case Me.cbSearch.Text
-                    Case "Title"
+                    Case Master.eLang.GetString(21, "Title")
                         Me.filSearch = String.Concat("ListTitle LIKE '%", Me.txtSearch.Text, "%'")
                         Me.FilterArray.Add(Me.filSearch)
                         isActorSearch = False
-                    Case "Actor"
+                    Case Master.eLang.GetString(100, "Actor")
                         Me.filSearch = Me.txtSearch.Text
                         isActorSearch = True
-                    Case "Director"
+                    Case Master.eLang.GetString(62, "Director")
                         Me.filSearch = String.Concat("Director LIKE '%", Me.txtSearch.Text, "%'")
                         Me.FilterArray.Add(Me.filSearch)
                         isActorSearch = False
@@ -999,7 +973,7 @@ Public Class frmMain
             Dim sWarningFile As String = String.Empty
             With Master.eSettings
                 If .ExpertCleaner Then
-                    sWarning = String.Concat("WARNING: If you continue, all non-whitelisted file types will be deleted!", vbNewLine, vbNewLine, "Are you sure you want to continue?")
+                    sWarning = String.Concat(Master.eLang.GetString(102, "WARNING: If you continue, all non-whitelisted file types will be deleted!"), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
                 Else
                     If .CleanDotFanartJPG Then sWarningFile += String.Concat("<movie>.fanart.jpg", vbNewLine)
                     If .CleanFanartJPG Then sWarningFile += String.Concat("fanart.jpg", vbNewLine)
@@ -1014,10 +988,10 @@ Public Class frmMain
                     If .CleanPosterJPG Then sWarningFile += String.Concat("poster.jpg", vbNewLine)
                     If .CleanPosterTBN Then sWarningFile += String.Concat("poster.tbn", vbNewLine)
                     If .CleanExtraThumbs Then sWarningFile += String.Concat("/extrathumbs/", vbNewLine)
-                    sWarning = String.Concat("WARNING: If you continue, all files of the following types will be permanently deleted:", vbNewLine, vbNewLine, sWarningFile, vbNewLine, "Are you sure you want to continue?")
+                    sWarning = String.Concat(Master.eLang.GetString(103, "WARNING: If you continue, all files of the following types will be permanently deleted:"), vbNewLine, vbNewLine, sWarningFile, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
                 End If
             End With
-            If MsgBox(sWarning, MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
+            If MsgBox(sWarning, MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
                 Me.ScrapeData(Master.ScrapeType.CleanFolders, Nothing, Nothing)
             End If
         Catch ex As Exception
@@ -1245,7 +1219,7 @@ Public Class frmMain
                     Exit For
                 End If
             Next
-            Me.btnMarkAll.Text = If(setMark, "Unmark All", "Mark All")
+            Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
 
             Me.SetFilterColors(False)
         Catch ex As Exception
@@ -1445,7 +1419,7 @@ Public Class frmMain
                         Dim setMark As Boolean = False
                         Dim setLock As Boolean = False
 
-                        Me.cmnuTitle.Text = ">> Multiple <<"
+                        Me.cmnuTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                         Me.cmnuEditMovie.Visible = False
                         Me.cmnuRescrape.Visible = False
                         Me.cmnuSearchNew.Visible = False
@@ -1467,11 +1441,11 @@ Public Class frmMain
                             End If
                         Next
 
-                        Me.cmnuMark.Text = If(setMark, "Mark", "Unmark")
-                        Me.cmnuLock.Text = If(setLock, "Lock", "Unlock")
+                        Me.cmnuMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                        Me.cmnuLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
 
-                        Me.GenreListToolStripComboBox.Items.Insert(0, "Select Genre...")
-                        Me.GenreListToolStripComboBox.SelectedItem = "Select Genre..."
+                        Me.GenreListToolStripComboBox.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
+                        Me.GenreListToolStripComboBox.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
                         Me.AddGenreToolStripMenuItem.Enabled = False
                         Me.SetGenreToolStripMenuItem.Enabled = False
                         Me.RemoveGenreToolStripMenuItem.Enabled = False
@@ -1501,12 +1475,12 @@ Public Class frmMain
                             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
                         End If
 
-                        Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, "Unmark", "Mark")
-                        Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, "Unlock", "Lock")
+                        Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                        Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
                         Me.GenreListToolStripComboBox.Tag = Me.dgvMediaList.Item(26, dgvHTI.RowIndex).Value
-                        Me.GenreListToolStripComboBox.Items.Insert(0, "Select Genre...")
-                        Me.GenreListToolStripComboBox.SelectedItem = "Select Genre..."
+                        Me.GenreListToolStripComboBox.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
+                        Me.GenreListToolStripComboBox.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
                         Me.AddGenreToolStripMenuItem.Enabled = False
                         Me.SetGenreToolStripMenuItem.Enabled = False
                         Me.RemoveGenreToolStripMenuItem.Enabled = False
@@ -1777,7 +1751,7 @@ Public Class frmMain
     Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
         Try
             Dim mMovie As Master.DBMovie
-            If MsgBox(String.Concat("WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE(S) FROM THE HARD DRIVE", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
+            If MsgBox(String.Concat(Master.eLang.GetString(109, "WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE(S) FROM THE HARD DRIVE"), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
                     For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                         mMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
@@ -1803,20 +1777,21 @@ Public Class frmMain
 
     Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
         Try
+            Dim MarkAll As Boolean = Not btnMarkAll.Text = Master.eLang.GetString(105, "Unmark All")
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
                     SQLcommand.CommandText = "UPDATE movies SET mark = (?);"
-                    parMark.Value = If(btnMarkAll.Text = "Unmark All", False, True)
+                    parMark.Value = MarkAll
                     SQLcommand.ExecuteNonQuery()
                 End Using
                 SQLtransaction.Commit()
             End Using
             For Each drvRow As DataRow In dtMedia.Rows
-                drvRow.Item(11) = If(btnMarkAll.Text = "Unmark All", False, True)
+                drvRow.Item(11) = MarkAll
             Next
             Me.SetFilterColors(False)
-            btnMarkAll.Text = If(btnMarkAll.Text = "Unmark All", "Mark All", "Unmark All")
+            btnMarkAll.Text = If(Not MarkAll, Master.eLang.GetString(35, "Mark All"), Master.eLang.GetString(105, "Unmark All"))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2051,7 +2026,7 @@ Public Class frmMain
 
             Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count + 1
             Me.tspbLoading.Value = 0
-            Me.tslLoading.Text = "Refreshing Media:"
+            Me.tslLoading.Text = Master.eLang.GetString(110, "Refreshing Media:")
             Me.tspbLoading.Visible = True
             Me.tslLoading.Visible = True
 
@@ -2293,7 +2268,7 @@ Public Class frmMain
                     If isCL Then
                         Me.ScraperDone = True
                     Else
-                        Me.tslStatus.Text = "Unable to load directories. Please check settings."
+                        Me.tslStatus.Text = Master.eLang.GetString(111, "Unable to load directories. Please check settings.")
                         Me.tspbLoading.Visible = False
                         Me.tslLoading.Visible = False
                         Me.tabsMain.Enabled = True
@@ -2304,7 +2279,7 @@ Public Class frmMain
                     End If
 
                 Else
-                    Me.tslLoading.Text = "Loading Media:"
+                    Me.tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
                     Me.tspbLoading.Style = ProgressBarStyle.Continuous
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
@@ -2480,7 +2455,7 @@ Public Class frmMain
                     End If
                     If Master.eSettings.UseMIDuration Then
                         If Not String.IsNullOrEmpty(Res.Movie.Movie.Runtime) Then
-                            Me.lblRuntime.Text = String.Format("Runtime: {0}", Res.Movie.Movie.Runtime)
+                            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), Res.Movie.Movie.Runtime)
                         End If
                     End If
                     Me.btnMIRefresh.Focus()
@@ -2783,7 +2758,7 @@ Public Class frmMain
                                                         End If
                                                     End If
                                                 ElseIf Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk Then
-                                                    MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
+                                                    MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                                                     Using dImgSelect As New dlgImgSelect
                                                         pPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
                                                         If Not String.IsNullOrEmpty(pPath) Then
@@ -2815,7 +2790,7 @@ Public Class frmMain
                                                         End If
                                                     End If
                                                 ElseIf Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk Then
-                                                    MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
+                                                    MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
 
                                                     Using dImgSelect As New dlgImgSelect
                                                         fPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
@@ -2942,7 +2917,7 @@ Public Class frmMain
                                                         End If
                                                     End If
                                                 ElseIf Args.scrapeType = Master.ScrapeType.UpdateAsk Then
-                                                    MsgBox("A poster of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
+                                                    MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                                                     Using dImgSelect As New dlgImgSelect
                                                         pPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
                                                         If Not String.IsNullOrEmpty(pPath) Then
@@ -2975,7 +2950,7 @@ Public Class frmMain
                                                         End If
                                                     End If
                                                 ElseIf Args.scrapeType = Master.ScrapeType.UpdateAsk Then
-                                                    MsgBox("Fanart of your preferred size could not be found. Please choose another", MsgBoxStyle.Information, "No Preferred Size")
+                                                    MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                                                     Using dImgSelect As New dlgImgSelect
                                                         fPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
                                                         If Not String.IsNullOrEmpty(fPath) Then
@@ -3218,7 +3193,7 @@ doCancel:
     ' ###### GENERAL ROUTINES/FUNCTIONS ######
     ' ########################################
 
-    Public Sub SetColors()
+    Public Sub SetUp()
 
         Try
             With Me
@@ -3292,6 +3267,164 @@ doCancel:
                 .lblFilter.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
                 .lblFilter.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
 
+                .FileToolStripMenuItem.Text = Master.eLang.GetString(1, "&File")
+                .ExitToolStripMenuItem.Text = Master.eLang.GetString(2, "E&xit")
+                .EditToolStripMenuItem.Text = Master.eLang.GetString(3, "&Edit")
+                .SettingsToolStripMenuItem.Text = Master.eLang.GetString(4, "&Settings...")
+                .HelpToolStripMenuItem.Text = Master.eLang.GetString(5, "&Help")
+                .AboutToolStripMenuItem.Text = Master.eLang.GetString(6, "&About...")
+                .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
+                .ToolsToolStripMenuItem.Text = Master.eLang.GetString(8, "&Tools")
+                .CleanFoldersToolStripMenuItem.Text = Master.eLang.GetString(9, "&Clean Files")
+                .ConvertFileSourceToFolderSourceToolStripMenuItem.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
+                .CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = Master.eLang.GetString(11, "Copy Existing Fanart To &Backdrops Folder")
+                .mnuRevertStudioTags.Text = Master.eLang.GetString(12, "Revert Media Info Studio &Tags")
+                .RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
+                .SetsManagerToolStripMenuItem.Text = Master.eLang.GetString(14, "Sets &Manager")
+                .OfflineMediaManagerToolStripMenuItem.Text = Master.eLang.GetString(15, "&Offline Media Manager")
+                .ExportMoviesListToolStripMenuItem.Text = Master.eLang.GetString(16, "&Export Movies List")
+                .ClearAllCachesToolStripMenuItem.Text = Master.eLang.GetString(17, "Clear &All Caches")
+                .RefreshAllMoviesToolStripMenuItem.Text = Master.eLang.GetString(18, "Re&load All Movies")
+                .lblGFilClose.Text = Master.eLang.GetString(19, "Close")
+                .Label4.Text = Master.eLang.GetString(20, "Genres")
+                .cmnuTitle.Text = Master.eLang.GetString(21, "Title")
+                .cmnuRefresh.Text = Master.eLang.GetString(22, "Reload")
+                .cmnuMark.Text = Master.eLang.GetString(23, "Mark")
+                .cmnuLock.Text = Master.eLang.GetString(24, "Lock")
+                .cmnuEditMovie.Text = Master.eLang.GetString(25, "Edit Movie")
+                .GenresToolStripMenuItem.Text = Master.eLang.GetString(26, "Genres")
+                .LblGenreStripMenuItem2.Text = Master.eLang.GetString(27, ">> Select Genre <<")
+                .AddGenreToolStripMenuItem.Text = Master.eLang.GetString(28, "Add")
+                .SetGenreToolStripMenuItem.Text = Master.eLang.GetString(29, "Set")
+                .RemoveGenreToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")
+                .cmnuRescrape.Text = Master.eLang.GetString(31, "Re-scrape IMDB")
+                .cmnuSearchNew.Text = Master.eLang.GetString(32, "Change Movie")
+                .OpenContainingFolderToolStripMenuItem.Text = Master.eLang.GetString(33, "Open Containing Folder")
+                .DeleteMovieToolStripMenuItem.Text = Master.eLang.GetString(34, "Delete Movie")
+                .btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
+                .tabMovies.Text = Master.eLang.GetString(36, "Movies")
+                .btnClearFilters.Text = Master.eLang.GetString(37, "Clear Filters")
+                .GroupBox3.Text = Master.eLang.GetString(38, "General")
+                .chkFilterTolerance.Text = Master.eLang.GetString(39, "Out of Tolerance")
+                .chkFilterMissing.Text = Master.eLang.GetString(40, "Missing Items")
+                .chkFilterDupe.Text = Master.eLang.GetString(41, "Duplicates")
+                .gbSpecific.Text = Master.eLang.GetString(42, "Specific")
+                .chkFilterLock.Text = Master.eLang.GetString(43, "Locked")
+                .GroupBox2.Text = Master.eLang.GetString(44, "Modifier")
+                .rbFilterAnd.Text = Master.eLang.GetString(45, "And")
+                .rbFilterOr.Text = Master.eLang.GetString(46, "Or")
+                .chkFilterNew.Text = Master.eLang.GetString(47, "New")
+                .chkFilterMark.Text = Master.eLang.GetString(48, "Marked")
+                .Label5.Text = Master.eLang.GetString(49, "Year:")
+                .Label2.Text = Master.eLang.GetString(50, "Source:")
+                .Label3.Text = Master.eLang.GetString(51, "Genre:")
+                .lblFilter.Text = Master.eLang.GetString(52, "Filters")
+                .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+                .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+                .Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
+                .lblCertsHeader.Text = Master.eLang.GetString(56, "Certifications")
+                .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
+                .btnMIRefresh.Text = Master.eLang.GetString(58, "Refresh")
+                .lblMIHeader.Text = Master.eLang.GetString(59, "Media Info")
+                .lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
+                .lblIMDBHeader.Text = Master.eLang.GetString(61, "IMDB ID")
+                .lblDirectorHeader.Text = Master.eLang.GetString(62, "Director")
+                .lblActorsHeader.Text = Master.eLang.GetString(63, "Cast")
+                .lblOutlineHeader.Text = Master.eLang.GetString(64, "Plot Outline")
+                .lblPlotHeader.Text = Master.eLang.GetString(65, "Plot")
+                .lblInfoPanelHeader.Text = Master.eLang.GetString(66, "Info")
+                .tsbAutoPilot.Text = Master.eLang.GetString(67, "Scrape Media")
+                .FullToolStripMenuItem.Text = Master.eLang.GetString(68, "All Movies")
+                .FullAutoToolStripMenuItem.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+                .mnuAllAutoAll.Text = Master.eLang.GetString(70, "All Items")
+                .mnuAllAutoNfo.Text = Master.eLang.GetString(71, "NFO Only")
+                .mnuAllAutoPoster.Text = Master.eLang.GetString(72, "Posters Only")
+                .mnuAllAutoFanart.Text = Master.eLang.GetString(73, "Fanart Only")
+                .mnuAllAutoExtra.Text = Master.eLang.GetString(74, "Extra Thumbs Only")
+                .mnuAllAutoTrailer.Text = Master.eLang.GetString(75, "Trailer Only")
+                .mnuAllAutoMI.Text = Master.eLang.GetString(76, "Media Tags Only")
+                .FullAskToolStripMenuItem.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+                .mnuAllAskAll.Text = mnuAllAutoAll.Text
+                .mnuAllAskNfo.Text = .mnuAllAutoNfo.Text
+                .mnuAllAskPoster.Text = .mnuAllAutoPoster.Text
+                .mnuAllAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuAllAskExtra.Text = .mnuAllAutoExtra.Text
+                .mnuAllAskTrailer.Text = .mnuAllAutoTrailer.Text
+                .mnuAllAskMI.Text = .mnuAllAutoMI.Text
+                .UpdateOnlyToolStripMenuItem.Text = Master.eLang.GetString(78, "Movies Missing Items")
+                .UpdateAutoToolStripMenuItem.Text = .FullAutoToolStripMenuItem.Text
+                .mnuMissAutoAll.Text = .mnuAllAutoAll.Text
+                .mnuMissAutoNfo.Text = .mnuAllAutoNfo.Text
+                .mnuMissAutoPoster.Text = .mnuAllAutoPoster.Text
+                .mnuMissAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMissAutoExtra.Text = .mnuAllAutoExtra.Text
+                .mnuMissAutoTrailer.Text = .mnuAllAutoTrailer.Text
+                .UpdateAskToolStripMenuItem.Text = .FullAskToolStripMenuItem.Text
+                .mnuMissAskAll.Text = .mnuAllAutoAll.Text
+                .mnuMissAskNfo.Text = .mnuAllAutoNfo.Text
+                .mnuMissAskPoster.Text = .mnuAllAutoPoster.Text
+                .mnuMissAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMissAskExtra.Text = .mnuAllAutoExtra.Text
+                .mnuMissAskTrailer.Text = .mnuAllAutoTrailer.Text
+                .NewMoviesToolStripMenuItem.Text = Master.eLang.GetString(79, "New Movies")
+                .AutomaticForceBestMatchToolStripMenuItem.Text = .FullAutoToolStripMenuItem.Text
+                .mnuNewAutoAll.Text = .mnuAllAutoAll.Text
+                .mnuNewAutoNfo.Text = .mnuAllAutoNfo.Text
+                .mnuNewAutoPoster.Text = .mnuAllAutoPoster.Text
+                .mnuNewAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuNewAutoExtra.Text = .mnuAllAutoExtra.Text
+                .mnuNewAutoTrailer.Text = .mnuAllAutoTrailer.Text
+                .mnuNewAutoMI.Text = .mnuAllAutoMI.Text
+                .AskRequireInputToolStripMenuItem.Text = .FullAskToolStripMenuItem.Text
+                .mnuNewAskAll.Text = .mnuAllAutoAll.Text
+                .mnuNewAskNfo.Text = .mnuAllAutoNfo.Text
+                .mnuNewAskPoster.Text = .mnuAllAutoPoster.Text
+                .mnuNewAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuNewAskExtra.Text = .mnuAllAutoExtra.Text
+                .mnuNewAskTrailer.Text = .mnuAllAutoTrailer.Text
+                .mnuNewAskMI.Text = .mnuAllAutoMI.Text
+                .MarkedMoviesToolStripMenuItem.Text = Master.eLang.GetString(80, "Marked Movies")
+                .AutomaticForceBestMatchToolStripMenuItem1.Text = .FullAutoToolStripMenuItem.Text
+                .mnuMarkAutoAll.Text = .mnuAllAutoAll.Text
+                .mnuMarkAutoNfo.Text = .mnuAllAutoNfo.Text
+                .mnuMarkAutoPoster.Text = .mnuAllAutoPoster.Text
+                .mnuMarkAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMarkAutoExtra.Text = .mnuAllAutoExtra.Text
+                .mnuMarkAutoTrailer.Text = .mnuAllAutoTrailer.Text
+                .mnuMarkAutoMI.Text = .mnuAllAutoMI.Text
+                .AskRequireInputIfNoExactMatchToolStripMenuItem.Text = .FullAskToolStripMenuItem.Text
+                .mnuMarkAskAll.Text = .mnuAllAutoAll.Text
+                .mnuMarkAskNfo.Text = .mnuAllAutoNfo.Text
+                .mnuMarkAskPoster.Text = .mnuAllAutoPoster.Text
+                .mnuMarkAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuMarkAskExtra.Text = .mnuAllAutoExtra.Text
+                .mnuMarkAskTrailer.Text = .mnuAllAutoTrailer.Text
+                .mnuMarkAskMI.Text = .mnuAllAutoMI.Text
+                .CustomUpdaterToolStripMenuItem.Text = Master.eLang.GetString(81, "Custom Scraper...")
+                .tsbRefreshMedia.Text = Master.eLang.GetString(82, "Update Library")
+                .tsbUpdateXBMC.Text = Master.eLang.GetString(83, "Initiate XBMC Update")
+
+                Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
+                .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
+                .tsbRefreshMedia.ToolTipText = Master.eLang.GetString(85, "Scans sources for new content and cleans database.")
+                .tsbUpdateXBMC.ToolTipText = Master.eLang.GetString(86, "Sends a command to XBMC to begin its internal ""Update Library"" process.")
+                TT.SetToolTip(.btnMarkAll, Master.eLang.GetString(87, "Mark or Unmark all movies in the list."))
+                TT.SetToolTip(.txtSearch, Master.eLang.GetString(88, "Search the movie titles by entering text here."))
+                TT.SetToolTip(.btnPlay, Master.eLang.GetString(89, "Play the movie file with the system default media player."))
+                TT.SetToolTip(.btnMIRefresh, Master.eLang.GetString(90, "Rescan and save the media info for the selected movie."))
+                TT.SetToolTip(.chkFilterDupe, Master.eLang.GetString(91, "Display only movies that have duplicate IMDB IDs."))
+                TT.SetToolTip(.chkFilterTolerance, Master.eLang.GetString(92, "Display only movies whose title matching is out of tolerance."))
+                TT.SetToolTip(.chkFilterMissing, Master.eLang.GetString(93, "Display only movies that have items missing."))
+                TT.SetToolTip(.chkFilterNew, Master.eLang.GetString(94, "Display only new movies."))
+                TT.SetToolTip(.chkFilterMark, Master.eLang.GetString(95, "Display only marked movies."))
+                TT.SetToolTip(.chkFilterLock, Master.eLang.GetString(96, "Display only locked movies."))
+                TT.SetToolTip(.cbFilterSource, Master.eLang.GetString(97, "Display only movies from the selected source."))
+                TT.Active = True
+
+                .cbSearch.Items.Clear()
+                .cbSearch.Items.Add(Master.eLang.GetString(21, "Title"))
+                .cbSearch.Items.Add(Master.eLang.GetString(100, "Actor"))
+                .cbSearch.Items.Add(Master.eLang.GetString(62, "Director"))
 
             End With
         Catch ex As Exception
@@ -3338,7 +3471,7 @@ doCancel:
 
 
         Try
-            Me.tslStatus.Text = "Performing Preliminary Tasks (Gathering Data)..."
+            Me.tslStatus.Text = Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)...")
             If bwPrelim.IsBusy Then
                 bwPrelim.CancelAsync()
                 While bwPrelim.IsBusy
@@ -3367,7 +3500,7 @@ doCancel:
             Me.tsbRefreshMedia.Enabled = False
             Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
-            Me.tabMovies.Text = "Movies"
+            Me.tabMovies.Text = Master.eLang.GetString(36, "Movies")
 
             Me.bwPrelim = New System.ComponentModel.BackgroundWorker
             Me.bwPrelim.WorkerSupportsCancellation = True
@@ -3534,15 +3667,15 @@ doCancel:
             ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
                 Me.lblTitle.Text = Master.currMovie.Movie.Title
             ElseIf String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
-                Me.lblTitle.Text = String.Format("Unknown Movie ({0})", Master.currMovie.Movie.Year)
+                Me.lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), Master.currMovie.Movie.Year)
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Votes) Then
-                Me.lblVotes.Text = String.Format("{0} Votes", Master.currMovie.Movie.Votes)
+                Me.lblVotes.Text = String.Format(Master.eLang.GetString(118, "{0} Votes"), Master.currMovie.Movie.Votes)
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Runtime) Then
-                Me.lblRuntime.Text = String.Format("Runtime: {0}", If(Master.currMovie.Movie.Runtime.Contains("|"), Strings.Left(Master.currMovie.Movie.Runtime, Master.currMovie.Movie.Runtime.IndexOf("|")), Master.currMovie.Movie.Runtime)).Trim
+                Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), If(Master.currMovie.Movie.Runtime.Contains("|"), Strings.Left(Master.currMovie.Movie.Runtime, Master.currMovie.Movie.Runtime.IndexOf("|")), Master.currMovie.Movie.Runtime)).Trim
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Top250) AndAlso IsNumeric(Master.currMovie.Movie.Top250) AndAlso (IsNumeric(Master.currMovie.Movie.Top250) AndAlso Convert.ToInt32(Master.currMovie.Movie.Top250) > 0) Then
@@ -3767,17 +3900,17 @@ doCancel:
                 If Not sType = Master.ScrapeType.SingleScrape Then
                     Select Case sType
                         Case Master.ScrapeType.CleanFolders
-                            lblCanceling.Text = "Canceling File Cleaner..."
-                            btnCancel.Text = "Cancel Cleaner"
+                            lblCanceling.Text = Master.eLang.GetString(119, "Canceling File Cleaner...")
+                            btnCancel.Text = Master.eLang.GetString(120, "Cancel Cleaner")
                         Case Master.ScrapeType.CopyBD
-                            lblCanceling.Text = "Canceling Backdrop Copy..."
-                            btnCancel.Text = "Cancel Copy"
+                            lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
+                            btnCancel.Text = Master.eLang.GetString(122, "Cancel Copy")
                         Case Master.ScrapeType.RevertStudios
-                            lblCanceling.Text = "Canceling Reversion..."
-                            btnCancel.Text = "Cancel Reversion"
+                            lblCanceling.Text = Master.eLang.GetString(123, "Canceling Reversion...")
+                            btnCancel.Text = Master.eLang.GetString(124, "Cancel Reversion")
                         Case Else
-                            lblCanceling.Text = "Canceling Scraper..."
-                            btnCancel.Text = "Cancel Scraper"
+                            lblCanceling.Text = Master.eLang.GetString(125, "Canceling Scraper...")
+                            btnCancel.Text = Master.eLang.GetString(126, "Cancel Scraper")
                     End Select
                     btnCancel.Visible = True
                     lblCanceling.Visible = False
@@ -3791,19 +3924,19 @@ doCancel:
                     Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
                     Select Case sType
                         Case Master.ScrapeType.FullAsk
-                            Me.tslLoading.Text = "Scraping Media (All Movies - Ask):"
+                            Me.tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
                         Case Master.ScrapeType.FullAuto
-                            Me.tslLoading.Text = "Scraping Media (All Movies - Auto):"
+                            Me.tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
                         Case Master.ScrapeType.CleanFolders
-                            Me.tslLoading.Text = "Cleaning Files:"
+                            Me.tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
                         Case Master.ScrapeType.CopyBD
-                            Me.tslLoading.Text = "Copying Fanart to Backdrops Folder:"
+                            Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
                         Case Master.ScrapeType.RevertStudios
-                            Me.tslLoading.Text = "Reverting Media Info Studio Tags:"
+                            Me.tslLoading.Text = Master.eLang.GetString(131, "Reverting Media Info Studio Tags:")
                         Case Master.ScrapeType.UpdateAuto
-                            Me.tslLoading.Text = "Scraping Media (Movies Missing Items - Auto):"
+                            Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
                         Case Master.ScrapeType.UpdateAsk
-                            Me.tslLoading.Text = "Scraping Media (Movies Missing Items - Ask):"
+                            Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
                     End Select
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
@@ -3827,15 +3960,15 @@ doCancel:
                     If chkCount > 0 Then
                         Select Case sType
                             Case Master.ScrapeType.NewAsk
-                                Me.tslLoading.Text = "Scraping Media (New Movies - Ask):"
+                                Me.tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
                             Case Master.ScrapeType.NewAuto
-                                Me.tslLoading.Text = "Scraping Media (New Movies - Auto):"
+                                Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
                             Case Master.ScrapeType.MarkAsk
                                 Me.btnMarkAll.Enabled = False
-                                Me.tslLoading.Text = "Scraping Media (Marked Movies - Ask):"
+                                Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
                             Case Master.ScrapeType.MarkAuto
                                 Me.btnMarkAll.Enabled = False
-                                Me.tslLoading.Text = "Scraping Media (Marked Movies - Auto):"
+                                Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
                         End Select
                         Me.tspbLoading.Maximum = chkCount
                         Me.tslLoading.Visible = True
@@ -3863,8 +3996,8 @@ doCancel:
                     End If
                 Case Master.ScrapeType.SingleScrape
                     Me.ClearInfo()
-                    Me.tslStatus.Text = String.Format("Re-scraping {0}", Master.currMovie.Movie.Title)
-                    Me.tslLoading.Text = "Scraping:"
+                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(138, "Re-scraping {0}"), Master.currMovie.Movie.Title)
+                    Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
                     Me.tspbLoading.Maximum = 13
                     Me.ReportDownloadPercent = True
                     Me.tslLoading.Visible = True
@@ -3928,8 +4061,8 @@ doCancel:
                                 If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
                                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                         Me.ClearInfo()
-                                        Me.tslStatus.Text = String.Format("Scraping {0}", Master.tmpMovie.Title)
-                                        Me.tslLoading.Text = "Scraping:"
+                                        Me.tslStatus.Text = String.Format(Master.eLang.GetString(138, "Re-scraping {0}"), Master.tmpMovie.Title)
+                                        Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
                                         Me.tspbLoading.Maximum = 13
                                         Me.tspbLoading.Style = ProgressBarStyle.Continuous
                                         Me.ReportDownloadPercent = True
@@ -4004,7 +4137,7 @@ doCancel:
             If bSuccess AndAlso Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                 Master.currMovie.Movie = Master.tmpMovie
                 If Master.eSettings.ScanMediaInfo Then
-                    Me.tslLoading.Text = "Scanning Media Info:"
+                    Me.tslLoading.Text = Master.eLang.GetString(140, "Scanning Meta Data:")
                     Me.tspbLoading.Value = Me.tspbLoading.Maximum
                     Me.tspbLoading.Style = ProgressBarStyle.Marquee
                     Me.tspbLoading.MarqueeAnimationSpeed = 25
@@ -4075,7 +4208,7 @@ doCancel:
                     Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
                 End If
             Else
-                MsgBox("Unable to retrieve movie details from the internet. Please check your connection and try again.", MsgBoxStyle.Exclamation, "Error Retrieving Details")
+                MsgBox(Master.eLang.GetString(141, "Unable to retrieve movie details from the internet. Please check your connection and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(142, "Error Retrieving Details"))
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4150,6 +4283,7 @@ doCancel:
 
                 tmpMovieDb.Filename = dRow(0).Item(1)
                 tmpMovieDb.isSingle = dRow(0).Item(2)
+                tmpMovieDb.UseFolder = dRow(0).Item(46)
                 tmpMovieDb.Source = dRow(0).Item(12)
                 aContents = Master.GetFolderContents(dRow(0).Item(1), dRow(0).Item(2))
                 tmpMovieDb.PosterPath = aContents(0)
@@ -4207,7 +4341,7 @@ doCancel:
                     Me.tsbUpdateXBMC.Enabled = True
                     tsbUpdateXBMC.DropDownItems.Clear()
                     For Each xCom As emmSettings.XBMCCom In .XBMCComs
-                        tsbUpdateXBMC.DropDownItems.Add(String.Concat("Update ", xCom.Name, " Only"), Nothing, New System.EventHandler(AddressOf XComSubClick))
+                        tsbUpdateXBMC.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), xCom.Name), Nothing, New System.EventHandler(AddressOf XComSubClick))
                     Next
                 Else
                     Me.tsbUpdateXBMC.Enabled = False
@@ -4265,9 +4399,9 @@ doCancel:
                     SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
                     Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         If SQLcount("mcount") > 0 Then
-                            Me.btnMarkAll.Text = "Unmark All"
+                            Me.btnMarkAll.Text = Master.eLang.GetString(105, "Unmark All")
                         Else
-                            Me.btnMarkAll.Text = "Mark All"
+                            Me.btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
                         End If
                     End Using
                 End Using
@@ -4277,7 +4411,7 @@ doCancel:
                     SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
-                            Me.tsbRefreshMedia.DropDownItems.Add(String.Concat("Update ", SQLReader("Name"), " Only"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
+                            Me.tsbRefreshMedia.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf SourceSubClick))
                         End While
                     End Using
                 End Using
@@ -4435,7 +4569,7 @@ doCancel:
                 SQLtransaction.Commit()
             End Using
 
-            Me.tabMovies.Text = String.Format("Movies ({0})", Me.dgvMediaList.RowCount)
+            Me.tabMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMediaList.RowCount)
             Me.dgvMediaList.Invalidate()
 
         Catch ex As Exception
@@ -4539,14 +4673,14 @@ doCancel:
     End Sub
 
     Private Sub SourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim SourceName As String = sender.ToString.Replace("Update ", String.Empty).Replace(" Only", String.Empty).Trim
+        Dim SourceName As String = sender.ToString.Replace(Master.eLang.GetString(144, "Update "), String.Empty).Replace(Master.eLang.GetString(145, " Only"), String.Empty).Trim
         If Not String.IsNullOrEmpty(SourceName) Then
             Me.LoadMedia(1, SourceName)
         End If
     End Sub
 
     Private Sub XComSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim xComName As String = sender.ToString.Replace("Update ", String.Empty).Replace(" Only", String.Empty).Trim
+        Dim xComName As String = sender.ToString.Replace(Master.eLang.GetString(144, "Update "), String.Empty).Replace(Master.eLang.GetString(145, " Only"), String.Empty).Trim
         Dim xCom = From x As emmSettings.XBMCCom In Master.eSettings.XBMCComs Where x.Name = xComName
         If xCom.Count > 0 Then
             DoXCom(xCom(0))
@@ -4564,12 +4698,12 @@ doCancel:
             Using Wres As HttpWebResponse = Wr.GetResponse
                 Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
                 If Not Sr.Contains("OK") Then
-                    MsgBox(String.Concat("There was a problem communicating with ", xCom.Name, vbNewLine, "Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), MsgBoxStyle.Exclamation, String.Concat("Unable to Start XBMC Update for ", xCom.Name))
+                    MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
                 End If
             End Using
             Wr = Nothing
         Catch
-            MsgBox(String.Concat("There was a problem communicating with ", xCom.Name, vbNewLine, "Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), MsgBoxStyle.Exclamation, String.Concat("Unable to Start XBMC Update for ", xCom.Name))
+            MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
         End Try
     End Sub
 
@@ -4630,44 +4764,44 @@ doCancel:
                         .dgvMediaList.Columns(3).ReadOnly = True
                         .dgvMediaList.Columns(3).MinimumWidth = 83
                         .dgvMediaList.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMediaList.Columns(3).ToolTipText = "Title"
-                        .dgvMediaList.Columns(3).HeaderText = "Title"
+                        .dgvMediaList.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
+                        .dgvMediaList.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
                         .dgvMediaList.Columns(4).Width = 20
                         .dgvMediaList.Columns(4).Resizable = True
                         .dgvMediaList.Columns(4).ReadOnly = True
                         .dgvMediaList.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
-                        .dgvMediaList.Columns(4).ToolTipText = "Poster"
+                        .dgvMediaList.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
                         .dgvMediaList.Columns(5).Width = 20
                         .dgvMediaList.Columns(5).Resizable = True
                         .dgvMediaList.Columns(5).ReadOnly = True
                         .dgvMediaList.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(5).Visible = Not Master.eSettings.MovieFanartCol
-                        .dgvMediaList.Columns(5).ToolTipText = "Fanart"
+                        .dgvMediaList.Columns(5).ToolTipText = Master.eLang.GetString(149, "Fanart")
                         .dgvMediaList.Columns(6).Width = 20
                         .dgvMediaList.Columns(6).Resizable = True
                         .dgvMediaList.Columns(6).ReadOnly = True
                         .dgvMediaList.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
-                        .dgvMediaList.Columns(6).ToolTipText = "Nfo"
+                        .dgvMediaList.Columns(6).ToolTipText = Master.eLang.GetString(150, "Nfo")
                         .dgvMediaList.Columns(7).Width = 20
                         .dgvMediaList.Columns(7).Resizable = True
                         .dgvMediaList.Columns(7).ReadOnly = True
                         .dgvMediaList.Columns(7).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
-                        .dgvMediaList.Columns(7).ToolTipText = "Trailer"
+                        .dgvMediaList.Columns(7).ToolTipText = Master.eLang.GetString(151, "Trailer")
                         .dgvMediaList.Columns(8).Width = 20
                         .dgvMediaList.Columns(8).Resizable = True
                         .dgvMediaList.Columns(8).ReadOnly = True
                         .dgvMediaList.Columns(8).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(8).Visible = Not Master.eSettings.MovieSubCol
-                        .dgvMediaList.Columns(8).ToolTipText = "Subtitles"
+                        .dgvMediaList.Columns(8).ToolTipText = Master.eLang.GetString(152, "Subtitles")
                         .dgvMediaList.Columns(9).Width = 20
                         .dgvMediaList.Columns(9).Resizable = True
                         .dgvMediaList.Columns(9).ReadOnly = True
                         .dgvMediaList.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
-                        .dgvMediaList.Columns(9).ToolTipText = "Extrathumbs"
+                        .dgvMediaList.Columns(9).ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
                         For i As Integer = 10 To .dgvMediaList.Columns.Count - 1
                             .dgvMediaList.Columns(i).Visible = False
                         Next
@@ -4757,26 +4891,6 @@ doCancel:
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
-
-    Private Sub SetToolTips()
-        Dim TT As ToolTip = New System.Windows.Forms.ToolTip(Me.components)
-        Me.tsbAutoPilot.ToolTipText = "Scrape/download data from the internet for multiple movies."
-        Me.tsbRefreshMedia.ToolTipText = "Scans sources for new content and cleans database."
-        Me.tsbUpdateXBMC.ToolTipText = "Sends a command to XBMC to begin its internal ""Update Library"" process."
-        TT.SetToolTip(Me.btnMarkAll, "Mark or Unmark all movies in the list.")
-        TT.SetToolTip(Me.txtSearch, "Search the movie titles by entering text here.")
-        TT.SetToolTip(Me.btnPlay, "Play the movie file with the system default media player.")
-        TT.SetToolTip(Me.btnMIRefresh, "Rescan and save the media info for the selected movie.")
-        TT.SetToolTip(Me.chkFilterDupe, "Display only movies that have duplicate IMDB IDs.")
-        TT.SetToolTip(Me.chkFilterTolerance, "Display only movies whose title matching is out of tolerance.")
-        TT.SetToolTip(Me.chkFilterMissing, "Display only movies that have items missing.")
-        TT.SetToolTip(Me.chkFilterNew, "Display only new movies.")
-        TT.SetToolTip(Me.chkFilterMark, "Display only marked movies.")
-        TT.SetToolTip(Me.chkFilterLock, "Display only locked movies.")
-        TT.SetToolTip(Me.cbFilterSource, "Display only movies from the selected source.")
-        TT.Active = True
-
     End Sub
 
     Friend Class MovieListFind

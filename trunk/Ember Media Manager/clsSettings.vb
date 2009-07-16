@@ -164,6 +164,7 @@ Public Class emmSettings
     Private _levtolerance As Integer
     Private _autodetectvts As Boolean
     Private _flaglang As String
+    Private _language As String
 
     Public Property Version() As String
         Get
@@ -1411,6 +1412,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property Language() As String
+        Get
+            Return Me._language
+        End Get
+        Set(ByVal value As String)
+            Me._language = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1555,6 +1565,7 @@ Public Class emmSettings
         Me._levtolerance = 0
         Me._autodetectvts = True
         Me._flaglang = String.Empty
+        Me._language = String.Empty
     End Sub
 
     Public Sub Save()

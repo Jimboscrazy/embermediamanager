@@ -146,6 +146,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="clsDatabase.vb" />
     <Compile Include="clsDVD.vb" />
     <Compile Include="clsErrorLog.vb" />
@@ -153,6 +154,7 @@
     <Compile Include="clsHTTP.vb" />
     <Compile Include="clsImageManip.vb" />
     <Compile Include="clsImages.vb" />
+    <Compile Include="clsLocalization.vb" />
     <Compile Include="clsNFO.vb" />
     <Compile Include="clsRenamer.vb" />
     <Compile Include="clsScrapeIMDB.vb" />

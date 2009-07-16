@@ -29,6 +29,7 @@ Public Class Master
 
     'Global Variables
     Public Shared eSettings As New emmSettings
+    Public Shared eLang As New Localization
     Public Shared MediaList As New List(Of FileAndSource)
     Public Shared eLog As New ErrorLogger
     Public Shared DefaultOptions As New ScrapeOptions

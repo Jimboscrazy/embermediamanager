@@ -828,7 +828,6 @@ Partial Class frmMain
         Me.cbSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSearch.FormattingEnabled = True
-        Me.cbSearch.Items.AddRange(New Object() {"Title", "Actor", "Director"})
         Me.cbSearch.Location = New System.Drawing.Point(238, 5)
         Me.cbSearch.Name = "cbSearch"
         Me.cbSearch.Size = New System.Drawing.Size(83, 21)
