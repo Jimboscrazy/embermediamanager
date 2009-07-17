@@ -386,7 +386,7 @@ Public Class MediaInfo
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property VideoSpecified() As Boolean
+        Public ReadOnly Property StreamDetailsSpecified() As Boolean
             Get
                 Return (Not IsNothing(_streamdetails.Video) AndAlso _streamdetails.Video.Count > 0) OrElse _
                 (Not IsNothing(_streamdetails.Audio) AndAlso _streamdetails.Audio.Count > 0) OrElse _
