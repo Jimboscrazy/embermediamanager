@@ -159,8 +159,8 @@ Public Class Database
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesVStreams ON MoviesVStreams (MovieID);"
-                    SQLcommand.ExecuteNonQuery()
+                    'SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesVStreams ON MoviesVStreams (MovieID);"
+                    'SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesAStreams(" & _
                                 "MovieID INTEGER NOT NULL, " & _
@@ -172,8 +172,8 @@ Public Class Database
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesVStreams ON MoviesAStreams (MovieID);"
-                    SQLcommand.ExecuteNonQuery()
+                    'SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesAStreams ON MoviesAStreams (MovieID);"
+                    'SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesSubs(" & _
                                 "MovieID INTEGER NOT NULL, " & _
@@ -183,8 +183,8 @@ Public Class Database
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                  ");"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesSubs ON MoviesSubs (MovieID);"
-                    SQLcommand.ExecuteNonQuery()
+                    'SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesSubs ON MoviesSubs (MovieID);"
+                    'SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesPosters(" & _
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
@@ -619,8 +619,8 @@ Public Class Database
                                 "MovieID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
                                 "Video_ScanType, Video_AspectDisplayRatio", _
                                 ") VALUES (?,?,?,?,?,?,?,?);")
-                        Dim parVideo_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.String, 0, "MovieID")
-                        Dim parVideo_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StreamID", DbType.String, 0, "StreamID")
+                        Dim parVideo_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.UInt64, 0, "MovieID")
+                        Dim parVideo_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parVideo_Width As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
                         Dim parVideo_Height As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Height", DbType.String, 0, "Video_Height")
                         Dim parVideo_Codec As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Codec", DbType.String, 0, "Video_Codec")
@@ -643,8 +643,8 @@ Public Class Database
                         SQLcommandMoviesAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesAStreams (", _
                                 "MovieID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel", _
                                 ") VALUES (?,?,?,?,?,?);")
-                        Dim parAudio_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_MovieID", DbType.String, 0, "MovieID")
-                        Dim parAudio_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_StreamID", DbType.String, 0, "StreamID")
+                        Dim parAudio_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_MovieID", DbType.UInt64, 0, "MovieID")
+                        Dim parAudio_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parAudio_Language As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Language", DbType.String, 0, "Audio_Language")
                         Dim parAudio_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_LongLanguage", DbType.String, 0, "Audio_LongLanguage")
                         Dim parAudio_Codec As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Codec", DbType.String, 0, "Audio_Codec")
@@ -663,8 +663,8 @@ Public Class Database
                         SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (", _
                                 "MovieID, StreamID, Subs_Language, Subs_LongLanguage", _
                                 ") VALUES (?,?,?,?);")
-                        Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.String, 0, "MovieID")
-                        Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.String, 0, "StreamID")
+                        Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.UInt64, 0, "MovieID")
+                        Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
                         Dim parSubs_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
                         For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
@@ -680,7 +680,7 @@ Public Class Database
                         SQLcommandMoviesPosters.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesPosters (", _
                                 "MovieID, thumbs", _
                                 ") VALUES (?,?);")
-                        Dim parPosters_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_MovieID", DbType.String, 0, "MovieID")
+                        Dim parPosters_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parPosters_thumb As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_thumb", DbType.String, 0, "thumb")
                         For Each p As Media.Posters In _movieDB.Movie.Thumbs.Thumb
                             parPosters_MovieID.Value = _movieDB.ID
@@ -692,7 +692,7 @@ Public Class Database
                         SQLcommandMoviesFanart.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesFanart (", _
                                 "MovieID, preview, thumbs", _
                                 ") VALUES (?,?,?);")
-                        Dim parFanart_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_MovieID", DbType.String, 0, "MovieID")
+                        Dim parFanart_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parFanart_Preview As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_Preview", DbType.String, 0, "Preview")
                         Dim parFanart_thumb As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_thumb", DbType.String, 0, "thumb")
                         For Each p As Media.Thumb In _movieDB.Movie.Fanart.Thumb
