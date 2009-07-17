@@ -131,8 +131,8 @@ Public Class MediaInfo
                 For s As Integer = 1 To SubtitleStreams
                     miSubtitle = New MediaInfo.Subtitle
                     sLang = cDVD.GetIFOSubPic(s)
-                    If Not String.IsNullOrEmpty(aLang) Then
-                        miSubtitle.LongLanguage = aLang
+                    If Not String.IsNullOrEmpty(sLang) Then
+                        miSubtitle.LongLanguage = sLang
                         miSubtitle.Language = ConvertL(miSubtitle.LongLanguage)
                         If Not String.IsNullOrEmpty(miSubtitle.Language) Then
                             fiOut.StreamDetails.Subtitle.Add(miSubtitle)
