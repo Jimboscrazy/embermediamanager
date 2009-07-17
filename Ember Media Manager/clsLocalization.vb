@@ -29,23 +29,27 @@ Public Class Localization
 
     Public Sub LoadLanguage(ByVal Language As String)
         htStrings.Clear()
-        If Not String.IsNullOrEmpty(Language) Then
-            Dim lPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, String.Concat(Language, ".xml"))
-            If File.Exists(lPath) Then
-                Dim LangXML As XDocument = XDocument.Load(lPath)
-                Dim xLanguage = From xLang In LangXML...<strings> Select xLang.<string>.@id, xLang.<string>.Value
-                If xLanguage.Count > 0 Then
-                    For i As Integer = 0 To xLanguage.Count - 1
-                        htStrings.Add(xLanguage(i).id, xLanguage(i).string)
-                    Next
+        Try
+            If Not String.IsNullOrEmpty(Language) Then
+                Dim lPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, String.Concat(Language, ".xml"))
+                If File.Exists(lPath) Then
+                    Dim LangXML As XDocument = XDocument.Load(lPath)
+                    Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@id, xLang.Value
+                    If xLanguage.Count > 0 Then
+                        For i As Integer = 0 To xLanguage.Count - 1
+                            htStrings.Add(Convert.ToInt32(xLanguage(i).id), xLanguage(i).Value)
+                        Next
+                    End If
+                Else
+                    MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
                 End If
-            Else
-                MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
             End If
-        End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
-    Public Function GetString(ByVal ID As String, ByVal strDefault As String) As String
+    Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         If htStrings.ContainsKey(ID) Then
             Return htStrings.Item(ID)
         Else

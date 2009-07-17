@@ -4732,14 +4732,14 @@ doCancel:
     End Sub
 
     Private Sub SourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim SourceName As String = sender.ToString.Replace(Master.eLang.GetString(144, "Update "), String.Empty).Replace(Master.eLang.GetString(145, " Only"), String.Empty).Trim
+        Dim SourceName As String = sender.ToString.Replace(Master.eLang.GetString(144, "Update"), String.Empty).Replace(Master.eLang.GetString(145, "Only"), String.Empty).Trim
         If Not String.IsNullOrEmpty(SourceName) Then
             Me.LoadMedia(1, SourceName)
         End If
     End Sub
 
     Private Sub XComSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim xComName As String = sender.ToString.Replace(Master.eLang.GetString(144, "Update "), String.Empty).Replace(Master.eLang.GetString(145, " Only"), String.Empty).Trim
+        Dim xComName As String = sender.ToString.Replace(Master.eLang.GetString(144, "Update"), String.Empty).Replace(Master.eLang.GetString(145, "Only"), String.Empty).Trim
         Dim xCom = From x As emmSettings.XBMCCom In Master.eSettings.XBMCComs Where x.Name = xComName
         If xCom.Count > 0 Then
             DoXCom(xCom(0))

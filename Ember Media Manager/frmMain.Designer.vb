@@ -1303,7 +1303,6 @@ Partial Class frmMain
         Me.lblReleaseDate.Name = "lblReleaseDate"
         Me.lblReleaseDate.Size = New System.Drawing.Size(105, 16)
         Me.lblReleaseDate.TabIndex = 39
-        Me.lblReleaseDate.Text = "Release"
         Me.lblReleaseDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblReleaseDateHeader
@@ -1450,7 +1449,6 @@ Partial Class frmMain
         Me.lblDirector.Name = "lblDirector"
         Me.lblDirector.Size = New System.Drawing.Size(139, 16)
         Me.lblDirector.TabIndex = 27
-        Me.lblDirector.Text = "Director"
         Me.lblDirector.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblDirectorHeader
@@ -1557,7 +1555,6 @@ Partial Class frmMain
         Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtOutline.Size = New System.Drawing.Size(341, 78)
         Me.txtOutline.TabIndex = 16
-        Me.txtOutline.Text = "Blah Blah Blah Plot Outline"
         '
         'pnlTop250
         '
@@ -1733,9 +1730,8 @@ Partial Class frmMain
         Me.lblTitle.ForeColor = System.Drawing.Color.Black
         Me.lblTitle.Location = New System.Drawing.Point(4, 2)
         Me.lblTitle.Name = "lblTitle"
-        Me.lblTitle.Size = New System.Drawing.Size(151, 20)
+        Me.lblTitle.Size = New System.Drawing.Size(0, 20)
         Me.lblTitle.TabIndex = 25
-        Me.lblTitle.Text = "Movie Title (2009)"
         Me.lblTitle.UseMnemonic = False
         '
         'pnlInfoIcons
@@ -1819,9 +1815,8 @@ Partial Class frmMain
         Me.lblRuntime.ForeColor = System.Drawing.Color.Black
         Me.lblRuntime.Location = New System.Drawing.Point(213, 32)
         Me.lblRuntime.Name = "lblRuntime"
-        Me.lblRuntime.Size = New System.Drawing.Size(94, 13)
+        Me.lblRuntime.Size = New System.Drawing.Size(0, 13)
         Me.lblRuntime.TabIndex = 32
-        Me.lblRuntime.Text = "Runtime: ###mins"
         Me.lblRuntime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblTagline
@@ -1831,9 +1826,8 @@ Partial Class frmMain
         Me.lblTagline.ForeColor = System.Drawing.Color.Black
         Me.lblTagline.Location = New System.Drawing.Point(5, 55)
         Me.lblTagline.Name = "lblTagline"
-        Me.lblTagline.Size = New System.Drawing.Size(98, 13)
+        Me.lblTagline.Size = New System.Drawing.Size(0, 13)
         Me.lblTagline.TabIndex = 26
-        Me.lblTagline.Text = """Just some tagline"""
         Me.lblTagline.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblTagline.UseMnemonic = False
         '
@@ -1897,9 +1891,8 @@ Partial Class frmMain
         Me.lblVotes.ForeColor = System.Drawing.Color.Black
         Me.lblVotes.Location = New System.Drawing.Point(123, 8)
         Me.lblVotes.Name = "lblVotes"
-        Me.lblVotes.Size = New System.Drawing.Size(79, 13)
+        Me.lblVotes.Size = New System.Drawing.Size(0, 13)
         Me.lblVotes.TabIndex = 22
-        Me.lblVotes.Text = "###### Votes"
         Me.lblVotes.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'tsMain
@@ -1942,43 +1935,43 @@ Partial Class frmMain
         'mnuAllAutoAll
         '
         Me.mnuAllAutoAll.Name = "mnuAllAutoAll"
-        Me.mnuAllAutoAll.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoAll.Size = New System.Drawing.Size(168, 22)
         Me.mnuAllAutoAll.Text = "All Items"
         '
         'mnuAllAutoNfo
         '
         Me.mnuAllAutoNfo.Name = "mnuAllAutoNfo"
-        Me.mnuAllAutoNfo.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoNfo.Size = New System.Drawing.Size(168, 22)
         Me.mnuAllAutoNfo.Text = "NFO Only"
         '
         'mnuAllAutoPoster
         '
         Me.mnuAllAutoPoster.Name = "mnuAllAutoPoster"
-        Me.mnuAllAutoPoster.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoPoster.Size = New System.Drawing.Size(168, 22)
         Me.mnuAllAutoPoster.Text = "Poster Only"
         '
         'mnuAllAutoFanart
         '
         Me.mnuAllAutoFanart.Name = "mnuAllAutoFanart"
-        Me.mnuAllAutoFanart.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoFanart.Size = New System.Drawing.Size(168, 22)
         Me.mnuAllAutoFanart.Text = "Fanart Only"
         '
         'mnuAllAutoExtra
         '
         Me.mnuAllAutoExtra.Name = "mnuAllAutoExtra"
-        Me.mnuAllAutoExtra.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoExtra.Size = New System.Drawing.Size(168, 22)
         Me.mnuAllAutoExtra.Text = "Extrathumbs Only"
         '
         'mnuAllAutoTrailer
         '
         Me.mnuAllAutoTrailer.Name = "mnuAllAutoTrailer"
-        Me.mnuAllAutoTrailer.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoTrailer.Size = New System.Drawing.Size(168, 22)
         Me.mnuAllAutoTrailer.Text = "Trailer Only"
         '
         'mnuAllAutoMI
         '
         Me.mnuAllAutoMI.Name = "mnuAllAutoMI"
-        Me.mnuAllAutoMI.Size = New System.Drawing.Size(174, 22)
+        Me.mnuAllAutoMI.Size = New System.Drawing.Size(168, 22)
         Me.mnuAllAutoMI.Text = "Meta Data Only"
         '
         'FullAskToolStripMenuItem

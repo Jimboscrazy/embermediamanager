@@ -166,7 +166,7 @@ Public Class dlgSettings
     Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
         Try
             If Me.lvMovies.SelectedItems.Count > 0 Then
-                If MsgBox("Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database.", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, "Are You Sure?") = MsgBoxResult.Yes Then
+                If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
                     Me.lvMovies.BeginUpdate()
 
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
@@ -209,7 +209,7 @@ Public Class dlgSettings
 
     Private Sub frmSettings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Me.Activate()
+            Me.SetUp()
 
             tvSettings.ExpandAll()
             tvSettings.SelectedNode = tvSettings.Nodes(0)
@@ -689,7 +689,7 @@ Public Class dlgSettings
             'have to iterate the list instead of using .comtains so we can convert each to lower case
             For i As Integer = 0 To lbXBMCCom.Items.Count - 1
                 If lbXBMCCom.Items(i).ToString.ToLower = Me.txtName.Text.ToLower Then
-                    MsgBox("The name you are attempting to use for this XBMC installation is already in use. Please choose another.", MsgBoxStyle.Exclamation, "Each name must be unique")
+                    MsgBox(Master.eLang.GetString(559, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(560, "Each name must be unique"))
                     txtName.Focus()
                     Exit Sub
                 End If
@@ -709,15 +709,15 @@ Public Class dlgSettings
                     Me.btnEditCom.Enabled = False
                     Me.btnApply.Enabled = True
                 Else
-                    MsgBox("You must enter a port for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Port")
+                    MsgBox(Master.eLang.GetString(561, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(564, "Please Enter a Port"))
                     txtPort.Focus()
                 End If
             Else
-                MsgBox("You must enter an IP for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter an IP")
+                MsgBox(Master.eLang.GetString(562, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(565, "Please Enter an IP"))
                 txtIP.Focus()
             End If
         Else
-            MsgBox("You must enter a name for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Unique Name")
+            MsgBox(Master.eLang.GetString(563, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(566, "Please Enter a Unique Name"))
             txtName.Focus()
         End If
 
@@ -730,7 +730,7 @@ Public Class dlgSettings
 
             For i As Integer = 0 To lbXBMCCom.Items.Count - 1
                 If Not iSel = i AndAlso lbXBMCCom.Items(i).ToString.ToLower = Me.txtName.Text.ToLower Then
-                    MsgBox("The name you are attempting to use for this XBMC installation is already in use. Please choose another.", MsgBoxStyle.Exclamation, "Each name must be unique")
+                    MsgBox(Master.eLang.GetString(559, "The name you are attempting to use for this XBMC installation is already in use. Please choose another."), MsgBoxStyle.Exclamation, Master.eLang.GetString(560, "Each name must be unique"))
                     txtName.Focus()
                     Exit Sub
                 End If
@@ -755,16 +755,16 @@ Public Class dlgSettings
 
                     Me.btnApply.Enabled = True
                 Else
-                    MsgBox("You must enter a port for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Port")
+                    MsgBox(Master.eLang.GetString(561, "You must enter a port for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(564, "Please Enter a Port"))
                     txtPort.Focus()
                 End If
             Else
-                MsgBox("You must enter an IP for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter an IP")
+                MsgBox(Master.eLang.GetString(562, "You must enter an IP for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(565, "Please Enter an IP"))
                 txtIP.Focus()
             End If
 
         Else
-            MsgBox("You must enter a name for this XBMC installation.", MsgBoxStyle.Exclamation, "Please Enter a Unique Name")
+            MsgBox(Master.eLang.GetString(563, "You must enter a name for this XBMC installation."), MsgBoxStyle.Exclamation, Master.eLang.GetString(566, "Please Enter a Unique Name"))
             txtName.Focus()
         End If
 
@@ -1242,6 +1242,9 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1464,6 +1467,7 @@ Public Class dlgSettings
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
             Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = "[Disabled]", String.Empty, Me.cbLanguages.Text)
+            If Not cbIntLang.Text = Master.eSettings.Language Then Master.eLang.LoadLanguage(cbIntLang.Text)
             Master.eSettings.Language = Me.cbIntLang.Text
 
             Master.eSettings.Save()
@@ -1692,7 +1696,7 @@ Public Class dlgSettings
             Dim alL As New ArrayList
             Dim alLangs As New ArrayList
             Try
-                alL.AddRange(Directory.GetFiles(Path.Combine(Application.StartupPath, "Langs"), "*.xml"))
+                alL.AddRange(Directory.GetFiles(Path.Combine(Application.StartupPath, "Langs"), "*).xml"))
             Catch
             End Try
             alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)
@@ -1720,6 +1724,177 @@ Public Class dlgSettings
 
     End Sub
 
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(420, "Settings")
+        Me.GroupBox11.Text = Master.eLang.GetString(421, "XBMC Communication")
+        Me.btnEditCom.Text = Master.eLang.GetString(422, "Commit Edit")
+        Me.Label16.Text = Master.eLang.GetString(423, "Name:")
+        Me.btnAddCom.Text = Master.eLang.GetString(424, "Add New")
+        Me.Label13.Text = Master.eLang.GetString(425, "Username:")
+        Me.Label14.Text = Master.eLang.GetString(426, "Password:")
+        Me.Label7.Text = Master.eLang.GetString(427, "XBMC IP:")
+        Me.Label6.Text = Master.eLang.GetString(428, "XBMC Port:")
+        Me.GroupBox4.Text = Master.eLang.GetString(429, "Miscellaneous")
+        Me.Label32.Text = Master.eLang.GetString(430, "Interface Language:")
+        Me.chkInfoPanelAnim.Text = Master.eLang.GetString(431, "Enable Panel Animation")
+        Me.chkUpdates.Text = Master.eLang.GetString(432, "Check for Updates")
+        Me.chkOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
+        Me.Label5.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
+        Me.chkLogErrors.Text = Master.eLang.GetString(435, "Log Errors to File")
+        Me.Label31.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
+        Me.GroupBox3.Text = Master.eLang.GetString(437, "Clean Files")
+        Me.tpStandard.Text = Master.eLang.GetString(438, "Standard")
+        Me.tpExpert.Text = Master.eLang.GetString(439, "Expert")
+        Me.chkWhitelistVideo.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
+        Me.Label27.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
+        Me.Label25.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
+        Me.gbColors.Text = Master.eLang.GetString(443, "Colors")
+        Me.Label3.Text = Master.eLang.GetString(444, "Background Color:")
+        Me.lblTopPanelText.Text = Master.eLang.GetString(445, "Top Panel Text Color:")
+        Me.Label1.Text = Master.eLang.GetString(446, "Top Panel Background Color:")
+        Me.lblInfoPanelText.Text = Master.eLang.GetString(447, "Info Panel Text Color:")
+        Me.lblPanel.Text = Master.eLang.GetString(448, "Info Panel Background Color:")
+        Me.lblHeaderText.Text = Master.eLang.GetString(449, "Info Panel Header Text Color:")
+        Me.lblHeader.Text = Master.eLang.GetString(450, "Info Panel Header Color:")
+        Me.gbFilters.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
+        Me.chkProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
+        Me.GroupBox12.Text = Me.GroupBox4.Text
+        Me.chkShowGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
+        Me.lblGenre.Text = Master.eLang.GetString(454, "Genre Language Filter:")
+        Me.chkNoDisplayFanart.Text = Master.eLang.GetString(455, "Do Not Display Fanart")
+        Me.chkNoDisplayPoster.Text = Master.eLang.GetString(456, "Do Not Display Poster")
+        Me.chkShowDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
+        Me.Label8.Text = Master.eLang.GetString(458, "(New movies will still display in green if not checked.)")
+        Me.chkMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
+        Me.GroupBox2.Text = Master.eLang.GetString(460, "Media List Options")
+        Me.Label30.Text = Master.eLang.GetString(461, "Tolerance:")
+        Me.chkCheckTitles.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
+        Me.GroupBox25.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
+        Me.chkDisplayYear.Text = Master.eLang.GetString(464, "Display Year in List Title")
+        Me.chkMovieExtraCol.Text = Master.eLang.GetString(465, "Hide Extrathumb Column")
+        Me.chkMovieSubCol.Text = Master.eLang.GetString(466, "Hide Sub Column")
+        Me.chkMovieTrailerCol.Text = Master.eLang.GetString(467, "Hide Trailer Column")
+        Me.chkMovieInfoCol.Text = Master.eLang.GetString(468, "Hide Info Column")
+        Me.chkMovieFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
+        Me.chkMoviePosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
+        Me.GroupBox8.Text = Master.eLang.GetString(471, "File Naming")
+        Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
+        Me.GroupBox21.Text = Master.eLang.GetString(151, "Trailer")
+        Me.chkVideoTSParent.Text = Master.eLang.GetString(473, "YAMJ Compatible VIDEO_TS File Placement/Naming")
+        Me.GroupBox6.Text = Master.eLang.GetString(149, "Fanart")
+        Me.GroupBox5.Text = Master.eLang.GetString(148, "Poster")
+        Me.colName.Text = Master.eLang.GetString(232, "Name")
+        Me.colPath.Text = Master.eLang.GetString(410, "Path")
+        Me.colRecur.Text = Master.eLang.GetString(411, "Recursive")
+        Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
+        Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
+        Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
+        Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
+        Me.chkOFDBGenre.Text = Master.eLang.GetString(474, "Use OFDB Genre")
+        Me.chkOFDBPlot.Text = Master.eLang.GetString(475, "Use OFDB Plot")
+        Me.chkOFDBOutline.Text = Master.eLang.GetString(476, "Use OFDB Outline")
+        Me.chkOFDBTitle.Text = Master.eLang.GetString(477, "Use OFDB Title")
+        Me.GroupBox14.Text = Master.eLang.GetString(148, "Poster")
+        Me.Label24.Text = Master.eLang.GetString(478, "Poster Quality:")
+        Me.Label11.Text = Master.eLang.GetString(479, "Max Width:")
+        Me.Label12.Text = Master.eLang.GetString(480, "Max Height:")
+        Me.chkResizePoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
+        Me.lblPosterSize.Text = Master.eLang.GetString(482, "Preferred Poster Size")
+        Me.chkOverwritePoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
+        Me.GroupBox13.Text = Master.eLang.GetString(149, "Fanart")
+        Me.chkFanartOnly.Text = Master.eLang.GetString(145, "Only")
+        Me.Label26.Text = Master.eLang.GetString(484, "Fanart Quality:")
+        Me.Label9.Text = Me.Label11.Text
+        Me.Label10.Text = Me.Label12.Text
+        Me.chkResizeFanart.Text = Master.eLang.GetString(485, "Automatically Resize Fanart:")
+        Me.lblFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
+        Me.chkOverwriteFanart.Text = Master.eLang.GetString(487, "Overwrite Existing Fanart")
+        Me.GroupBox10.Text = Master.eLang.GetString(488, "Global Locks (Do not allow updates during scraping)")
+        Me.chkLockTrailer.Text = Master.eLang.GetString(489, "Lock Trailer")
+        Me.chkLockGenre.Text = Master.eLang.GetString(490, "Lock Genre")
+        Me.chkLockRealStudio.Text = Master.eLang.GetString(491, "Lock Studio")
+        Me.chkLockRating.Text = Master.eLang.GetString(492, "Lock Rating")
+        Me.chkLockTagline.Text = Master.eLang.GetString(493, "Lock Tagline")
+        Me.chkLockTitle.Text = Master.eLang.GetString(494, "Lock Title")
+        Me.chkLockOutline.Text = Master.eLang.GetString(495, "Lock Outline")
+        Me.chkLockPlot.Text = Master.eLang.GetString(496, "Lock Plot")
+        Me.GroupBox9.Text = Master.eLang.GetString(497, "Images")
+        Me.chkNoSaveImagesToNfo.Text = Master.eLang.GetString(498, "Do Not Save Image URLs to Nfo")
+        Me.chkSingleScrapeImages.Text = Master.eLang.GetString(499, "Scrape Images on Single Scrape")
+        Me.chkUseMPDB.Text = Master.eLang.GetString(500, "Get Images From MoviePostersDB")
+        Me.chkUseTMDB.Text = Master.eLang.GetString(501, "Get Images From TMDB")
+        Me.chkUseIMPA.Text = Master.eLang.GetString(502, "Get Images From IMPAwards")
+        Me.chkUseETasFA.Text = Master.eLang.GetString(503, "Use Extrathumb if no Fanart Found")
+        Me.Label17.Text = Master.eLang.GetString(504, "(If checked, Ember will use only the first half of the movie to extract thumbs)")
+        Me.chkNoSpoilers.Text = Master.eLang.GetString(505, "No Spoilers")
+        Me.Label15.Text = Master.eLang.GetString(506, "Number To Create:")
+        Me.chkAutoThumbs.Text = Master.eLang.GetString(507, "Automatically Extract Extrathumbs During Scrapers")
+        Me.GroupBox1.Text = Master.eLang.GetString(390, "Options")
+        Me.chkOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
+        Me.Label18.Text = Master.eLang.GetString(509, "IMDB Mirror:")
+        Me.chkCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
+        Me.chkUseCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
+        Me.chkFullCast.Text = Master.eLang.GetString(512, "Scrape Full Cast")
+        Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
+        Me.chkCert.Text = Master.eLang.GetString(514, "Use Certification Language:")
+        Me.gbRTFormat.Text = Master.eLang.GetString(515, "Runtime Format")
+        Me.chkUseMIDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
+        Me.chkScanMediaInfo.Text = Master.eLang.GetString(517, "Scan Meta Data")
+        Me.btnOK.Text = Master.eLang.GetString(179, "OK")
+        Me.btnApply.Text = Master.eLang.GetString(276, "Apply")
+        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(518, "Configure Ember's appearance and operation.")
+        Me.Label4.Text = Me.Text
+        Me.btnRemoveCom.Text = Master.eLang.GetString(519, "Remove Selected")
+        Me.GroupBox16.Text = Master.eLang.GetString(520, "Backdrops Folder")
+        Me.chkAutoBD.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
+        Me.GroupBox26.Text = Master.eLang.GetString(59, "Meta Data")
+        Me.GroupBox20.Text = Master.eLang.GetString(151, "Trailers")
+        Me.chkDeleteAllTrailers.Text = Master.eLang.GetString(522, "Delete All Existing Trailers")
+        Me.chkOverwriteTrailer.Text = Master.eLang.GetString(523, "Overwrite Trailer")
+        Me.chkNoDLTrailer.Text = Master.eLang.GetString(524, "Only Get URLs During Scrapers")
+        Me.chkSingleScrapeTrailer.Text = Master.eLang.GetString(525, "Get Trailers During Single-Scrape")
+        Me.Label23.Text = Master.eLang.GetString(526, "Timeout:")
+        Me.chkUpdaterTrailer.Text = Master.eLang.GetString(527, "Get Trailers During ""All Items"" Scrapers")
+        Me.Label22.Text = Master.eLang.GetString(528, "Supported Trailer Sites:")
+        Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Trailer Downloading")
+        Me.lblCurrent.Text = Master.eLang.GetString(38, "General")
+        Me.GroupBox22.Text = Master.eLang.GetString(530, "No Stack Extensions")
+        Me.gbRenamerPatterns.Text = Master.eLang.GetString(531, "Default Renaming Patterns")
+        Me.lblFilePattern.Text = Master.eLang.GetString(532, "Files Pattern")
+        Me.lblFolderPattern.Text = Master.eLang.GetString(533, "Folders Pattern")
+        Me.GroupBox18.Text = Master.eLang.GetString(534, "Valid Movie Extensions")
+        Me.btnEditSource.Text = Master.eLang.GetString(535, "Edit Source")
+        Me.GroupBox19.Text = Master.eLang.GetString(536, "Miscellaneous Options")
+        Me.chkAutoDetectVTS.Text = Master.eLang.GetString(537, "Automatically Detect VIDEO_TS Folders Even if They Are Not Named ""VIDEO_TS""")
+        Me.chkSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
+        Me.Label21.Text = Master.eLang.GetString(539, "Megabytes")
+        Me.Label20.Text = Master.eLang.GetString(540, "Skip files less than:")
+        Me.GroupBox23.Text = Master.eLang.GetString(153, "Extrathumbs")
+        Me.GroupBox24.Text = Master.eLang.GetString(541, "Sizing (Extracted Frames)")
+        Me.chkETPadding.Text = Master.eLang.GetString(542, "Padding")
+        Me.Label28.Text = Master.eLang.GetString(543, "Width:")
+        Me.Label29.Text = Master.eLang.GetString(544, "Height:")
+        Me.rbETCustom.Text = Master.eLang.GetString(545, "Use Custom Size")
+        Me.rbETNative.Text = Master.eLang.GetString(546, "Use Native Resolution")
+        Me.GroupBox17.Text = Master.eLang.GetString(547, "Caching")
+        Me.chkUseImgCacheUpdaters.Text = Master.eLang.GetString(548, "Use Image Cache for Scrapers")
+        Me.Label19.Text = Master.eLang.GetString(549, "(When enabled, the cache will be available between sessions)")
+        Me.chkPersistImgCache.Text = Master.eLang.GetString(550, "Persistent Image Cache")
+        Me.chkUseImgCache.Text = Master.eLang.GetString(551, "Use Image Cache")
+        Me.fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops.")
+
+        Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
+        Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
+        Me.tvSettings.Nodes(0).Nodes(1).Text = Master.eLang.GetString(554, "XBMC Communication")
+        Me.tvSettings.Nodes(1).Text = Master.eLang.GetString(36, "Movies")
+        Me.tvSettings.Nodes(1).Nodes(0).Text = Master.eLang.GetString(555, "Files and Sources")
+        Me.tvSettings.Nodes(1).Nodes(1).Text = Master.eLang.GetString(556, "Scraper - Data")
+        Me.tvSettings.Nodes(1).Nodes(2).Text = Master.eLang.GetString(557, "Scraper - Images")
+
+        Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+        Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+    End Sub
 #End Region'*** Routines/Functions
 
 End Class
