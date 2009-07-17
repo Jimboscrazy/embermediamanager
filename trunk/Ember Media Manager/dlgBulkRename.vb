@@ -429,7 +429,7 @@ Public Class dlgBulkRenamer
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
         DoneRename = True
         pnlCancel.Visible = True
-        lblCompiling.Text = "Renaming..."
+        lblCompiling.Text = Master.eLang.GetString(567, "Renaming...")
         pbCompile.Maximum = FFRenamer.GetMoviesCount
         pbCompile.Value = 0
         Application.DoEvents()
