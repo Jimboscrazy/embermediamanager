@@ -348,7 +348,7 @@ Public Class frmMain
                             isSingle = True
                             hasSpec = True
                             clScrapeType = Master.ScrapeType.SingleScrape
-                            If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
+                            If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
                                 MoviePath = Args(i + 1).Replace("""", String.Empty)
                                 i += 1
                             End If
@@ -373,11 +373,10 @@ Public Class frmMain
                         'End If
                 End Select
             Next
-
+            Master.DB.Connect(False, False)
             If Not IsNothing(clScrapeType) Then
                 If Not IsNothing(clScrapeMod) AndAlso Not clScrapeType = Master.ScrapeType.SingleScrape Then
                     Try
-                        Master.DB.Connect(False, False)
                         LoadMedia(1)
                         Do While Not Me.LoadingDone
                             Application.DoEvents()
@@ -392,6 +391,10 @@ Public Class frmMain
                         If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
                             Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
                             Me.tmpTitle = StringManip.FilterName(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
+                            If Master.currMovie.Movie Is Nothing Then
+                                Master.currMovie.Movie = New Media.Movie
+                                Master.currMovie.Movie.Title = tmpTitle
+                            End If
                             Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, Nothing, clAsk)
                         Else
                             Me.ScraperDone = True
@@ -3075,6 +3078,7 @@ Public Class frmMain
                 End If
 
             Catch ex As Exception
+                ScraperDone = True
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
@@ -4101,6 +4105,7 @@ doCancel:
                     End If
             End Select
         Catch ex As Exception
+            ScraperDone = True
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
