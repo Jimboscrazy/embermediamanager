@@ -23662,7 +23662,7 @@
  </Language>
  <Language>
   <Code>spa</Code>
-  <Name>Castilian/Spanish</Name>
+  <Name>Spanish</Name>
  </Language>
  <Language>
   <Code>spb</Code>
@@ -30777,10 +30777,6 @@
   <Name>Zay</Name>
  </Language>
  <Language>
-  <Code>zxx</Code>
-  <Name>No linguistic content/Not applicable</Name>
- </Language>
- <Language>
   <Code>zyb</Code>
   <Name>Yongbei Zhuang</Name>
  </Language>
@@ -30802,7 +30798,7 @@
  </Language>
  <Language>
   <Code>zza</Code>
-  <Name>Dimili/Dimli/Kirdki/Kirmanjki/Zaza/Zazaki</Name>
+  <Name>Zazaki</Name>
  </Language>
  <Language>
   <Code>zzj</Code>

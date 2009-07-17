@@ -415,7 +415,7 @@ Public Class clsDVD
                 tmpIFO.NumSubPictureStreams_VTS_VOBS = fctStrByteToHex((strTmpIFOFileIn).Substring(fctHexOffset("255"), 1))
                 For intFileLength = 0 To tmpIFO.NumSubPictureStreams_VTS_VOBS - 1
                     ReDim Preserve tmpIFO.SubPictureAtt_VTS_VOBS(intFileLength)
-                    tmpIFO.SubPictureAtt_VTS_VOBS(intFileLength) = fctSubPictureAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("256") + (intFileLength * 8), 8))
+                    tmpIFO.SubPictureAtt_VTS_VOBS(intFileLength) = fctSubPictureAttVTSM_VTS((strTmpIFOFileIn).Substring(fctHexOffset("256") + (intFileLength * 6), 6))
                 Next
 
                 'Get Program Chain Information
