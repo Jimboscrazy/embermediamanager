@@ -98,15 +98,23 @@ Public Class dlgImgManual
     End Function
 
     Private Sub dlgImgManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
 
         If Me.DLType = Master.ImageType.Fanart Then
-            Me.Text = "Manual Fanart Entry"
+            Me.Text = Master.eLang.GetString(182, "Manual Fanart Entry")
         Else
-            Me.Text = "Manual Poster Entry"
+            Me.Text = Master.eLang.GetString(183, "Manual Poster Entry")
         End If
     End Sub
 
     Private Sub dlgImgManual_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
+    End Sub
+
+    Private Sub SetUp()
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
+        Me.Label1.Text = Master.eLang.GetString(181, "Enter URL to Image:")
     End Sub
 End Class

@@ -259,7 +259,7 @@ Public Class dlgBulkRenamer
         Try
             If e.RowIndex = -1 AndAlso e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 4 Then
                 e.PaintBackground(e.ClipBounds, True)
-                Dim strColumn() As String = {"Folder", "Filename", "New Folder", "New Filename"}
+                Dim strColumn() As String = {Master.eLang.GetString(174, "Folder"), Master.eLang.GetString(175, "Filename"), Master.eLang.GetString(176, "New Folder"), Master.eLang.GetString(177, "New Filename")}
 
                 e.Graphics.DrawString(strColumn(e.ColumnIndex - 1), e.CellStyle.Font, _
                     New SolidBrush(e.CellStyle.ForeColor), e.CellBounds.X + 1, e.CellBounds.Y + 4, _
@@ -388,6 +388,9 @@ Public Class dlgBulkRenamer
     End Sub
 
     Private Sub dlgBulkRename_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        Me.SetUp()
+
         Dim frmToolTip As New ToolTip()
 
         Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
@@ -397,7 +400,7 @@ Public Class dlgBulkRenamer
         End Using
 
         'testing proposes
-        Dim s As String = String.Concat("$T = Title", vbCrLf, "$X. (Replace Space with .)", vbCrLf, "$D = Directory", vbCrLf, "$F = File Name", vbCrLf, "$Y = Year", vbCrLf, "$R = Resolution", vbCrLf, "$A = Audio", vbCrLf, "$S = Source")
+        Dim s As String = String.Format(Master.eLang.GetString(178, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source"), vbNewLine)
         lblLabel.Text = s.Replace(vbCrLf, "    ")
         frmToolTip.SetToolTip(txtFolder, s)
         frmToolTip.SetToolTip(txtFile, s)
@@ -405,6 +408,23 @@ Public Class dlgBulkRenamer
         txtFile.Text = Master.eSettings.FilesPattern
     End Sub
 
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(163, "Bulk Renamer")
+        Me.Close_Button.Text = Master.eLang.GetString(19, "Close")
+        Me.Label2.Text = Master.eLang.GetString(164, "Rename movies and files")
+        Me.Label4.Text = Me.Text
+        Me.lblCompiling.Text = Master.eLang.GetString(165, "Compiling Movie List...")
+        Me.lblCanceling.Text = Master.eLang.GetString(166, "Canceling Compilation...")
+        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Rename_Button.Text = Master.eLang.GetString(168, "Rename")
+        Me.tsmLockMovie.Text = Master.eLang.GetString(24, "Lock")
+        Me.tsmUnlockMovie.Text = Master.eLang.GetString(108, "Unlock")
+        Me.tsmLockAll.Text = Master.eLang.GetString(169, "Lock All")
+        Me.tsmUnlockAll.Text = Master.eLang.GetString(170, "Unlock All")
+        Me.lblFolderPattern.Text = Master.eLang.GetString(171, "Folder Pattern (for Single movie in Folder)")
+        Me.lblFilePattern.Text = Master.eLang.GetString(172, "File Pattern")
+        Me.Label1.Text = Master.eLang.GetString(173, "Folder Pattern (for Multiple movies in Folder)")
+    End Sub
 
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
         DoneRename = True

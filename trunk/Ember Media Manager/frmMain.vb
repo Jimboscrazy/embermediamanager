@@ -3287,7 +3287,7 @@ doCancel:
                 .CleanFoldersToolStripMenuItem.Text = Master.eLang.GetString(9, "&Clean Files")
                 .ConvertFileSourceToFolderSourceToolStripMenuItem.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
                 .CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = Master.eLang.GetString(11, "Copy Existing Fanart To &Backdrops Folder")
-                .mnuRevertStudioTags.Text = Master.eLang.GetString(12, "Revert Media Info Studio &Tags")
+                .mnuRevertStudioTags.Text = Master.eLang.GetString(12, "Revert Meta Data Studio &Tags")
                 .RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
                 .SetsManagerToolStripMenuItem.Text = Master.eLang.GetString(14, "Sets &Manager")
                 .OfflineMediaManagerToolStripMenuItem.Text = Master.eLang.GetString(15, "&Offline Media Manager")
@@ -3334,7 +3334,7 @@ doCancel:
                 .lblCertsHeader.Text = Master.eLang.GetString(56, "Certifications")
                 .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
                 .btnMIRefresh.Text = Master.eLang.GetString(58, "Refresh")
-                .lblMIHeader.Text = Master.eLang.GetString(59, "Media Info")
+                .lblMIHeader.Text = Master.eLang.GetString(59, "Meta Data")
                 .lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
                 .lblIMDBHeader.Text = Master.eLang.GetString(61, "IMDB ID")
                 .lblDirectorHeader.Text = Master.eLang.GetString(62, "Director")
@@ -3420,7 +3420,7 @@ doCancel:
                 TT.SetToolTip(.btnMarkAll, Master.eLang.GetString(87, "Mark or Unmark all movies in the list."))
                 TT.SetToolTip(.txtSearch, Master.eLang.GetString(88, "Search the movie titles by entering text here."))
                 TT.SetToolTip(.btnPlay, Master.eLang.GetString(89, "Play the movie file with the system default media player."))
-                TT.SetToolTip(.btnMIRefresh, Master.eLang.GetString(90, "Rescan and save the media info for the selected movie."))
+                TT.SetToolTip(.btnMIRefresh, Master.eLang.GetString(90, "Rescan and save the meta data for the selected movie."))
                 TT.SetToolTip(.chkFilterDupe, Master.eLang.GetString(91, "Display only movies that have duplicate IMDB IDs."))
                 TT.SetToolTip(.chkFilterTolerance, Master.eLang.GetString(92, "Display only movies whose title matching is out of tolerance."))
                 TT.SetToolTip(.chkFilterMissing, Master.eLang.GetString(93, "Display only movies that have items missing."))
@@ -3941,7 +3941,7 @@ doCancel:
                         Case Master.ScrapeType.CopyBD
                             Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
                         Case Master.ScrapeType.RevertStudios
-                            Me.tslLoading.Text = Master.eLang.GetString(131, "Reverting Media Info Studio Tags:")
+                            Me.tslLoading.Text = Master.eLang.GetString(131, "Reverting Meta Data Studio Tags:")
                         Case Master.ScrapeType.UpdateAuto
                             Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
                         Case Master.ScrapeType.UpdateAsk

@@ -79,7 +79,7 @@ Partial Class dlgNewSet
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(82, 13)
         Me.Label1.TabIndex = 2
-        Me.Label1.Text = "New Set Name:"
+        Me.Label1.Text = "Set Name:"
         '
         'dlgNewSet
         '

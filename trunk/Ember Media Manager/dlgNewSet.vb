@@ -43,7 +43,12 @@ Public Class dlgNewSet
 
     Public Overloads Function ShowDialog(Optional ByVal SetName As String = "") As String
 
-        If Not String.IsNullOrEmpty(SetName) Then txtSetName.Text = SetName
+        If Not String.IsNullOrEmpty(SetName) Then
+            txtSetName.Text = SetName
+            Me.Text = Master.eLang.GetString(207, "Edit Set")
+        Else
+            Me.Text = Master.eLang.GetString(208, "Add New Set")
+        End If
 
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Return txtSetName.Text
@@ -54,5 +59,15 @@ Public Class dlgNewSet
 
     Private Sub dlgNewSet_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
+    End Sub
+
+    Private Sub dlgNewSet_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.SetUp()
+    End Sub
+
+    Private Sub SetUp()
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label1.Text = Master.eLang.GetString(206, "Set Name:")
     End Sub
 End Class

@@ -30,10 +30,18 @@ Public Class dlgImgView
         ' Default to Fit method
         '\\
 
-        Me.Activate()
+        Me.SetUp()
 
         Me.DoFit()
 
+        Me.Activate()
+
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(184, "Image Viewer")
+        Me.tsbFit.Text = Master.eLang.GetString(185, "Fit")
+        Me.tsbFull.Text = Master.eLang.GetString(186, "Full Size")
     End Sub
 
     Private Sub tsbFull_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbFull.Click

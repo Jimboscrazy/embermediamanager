@@ -129,7 +129,7 @@ Partial Class dlgManualEdit
         '
         Me.mnuFile.Index = 0
         Me.mnuFile.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuSave, Me.MenuItem9, Me.mnuExit})
-        Me.mnuFile.Text = "File"
+        Me.mnuFile.Text = "&File"
         '
         'mnuSave
         '
