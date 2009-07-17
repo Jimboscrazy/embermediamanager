@@ -257,11 +257,11 @@ Public Class dlgBulkRenamer
     End Sub
     Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
         Try
-            If e.RowIndex = -1 AndAlso e.ColumnIndex >= 1 AndAlso e.ColumnIndex <= 4 Then
+            If e.RowIndex = -1 AndAlso e.ColumnIndex >= 0 AndAlso e.ColumnIndex <= 4 Then
                 e.PaintBackground(e.ClipBounds, True)
-                Dim strColumn() As String = {Master.eLang.GetString(174, "Folder"), Master.eLang.GetString(175, "Filename"), Master.eLang.GetString(176, "New Folder"), Master.eLang.GetString(177, "New Filename")}
+                Dim strColumn() As String = {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(174, "Folder"), Master.eLang.GetString(175, "Filename"), Master.eLang.GetString(176, "New Folder"), Master.eLang.GetString(177, "New Filename")}
 
-                e.Graphics.DrawString(strColumn(e.ColumnIndex - 1), e.CellStyle.Font, _
+                e.Graphics.DrawString(strColumn(e.ColumnIndex), e.CellStyle.Font, _
                     New SolidBrush(e.CellStyle.ForeColor), e.CellBounds.X + 1, e.CellBounds.Y + 4, _
                     StringFormat.GenericDefault)
                 e.Handled = True
