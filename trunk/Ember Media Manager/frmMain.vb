@@ -3084,8 +3084,6 @@ Public Class frmMain
 
 doCancel:
             If Not Args.scrapeType = Master.ScrapeType.CopyBD AndAlso Not Args.scrapeType = Master.ScrapeType.CleanFolders Then
-                'Save the last movie scraper was working on
-                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
                 SQLtransaction.Commit()
             End If
         End Using
@@ -3305,7 +3303,7 @@ doCancel:
                 .cmnuMark.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuEditMovie.Text = Master.eLang.GetString(25, "Edit Movie")
-                .GenresToolStripMenuItem.Text = Master.eLang.GetString(26, "Genres")
+                .GenresToolStripMenuItem.Text = Master.eLang.GetString(20, "Genres")
                 .LblGenreStripMenuItem2.Text = Master.eLang.GetString(27, ">> Select Genre <<")
                 .AddGenreToolStripMenuItem.Text = Master.eLang.GetString(28, "Add")
                 .SetGenreToolStripMenuItem.Text = Master.eLang.GetString(29, "Set")
@@ -3330,12 +3328,12 @@ doCancel:
                 .chkFilterMark.Text = Master.eLang.GetString(48, "Marked")
                 .Label5.Text = Master.eLang.GetString(49, "Year:")
                 .Label2.Text = Master.eLang.GetString(50, "Source:")
-                .Label3.Text = Master.eLang.GetString(51, "Genre:")
+                .Label3.Text = Master.eLang.GetString(51, "Genre(s):")
                 .lblFilter.Text = Master.eLang.GetString(52, "Filters")
                 .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
                 .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
                 .Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
-                .lblCertsHeader.Text = Master.eLang.GetString(56, "Certifications")
+                .lblCertsHeader.Text = Master.eLang.GetString(56, "Certification(s)")
                 .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
                 .btnMIRefresh.Text = Master.eLang.GetString(58, "Refresh")
                 .lblMIHeader.Text = Master.eLang.GetString(59, "Meta Data")
@@ -3435,9 +3433,7 @@ doCancel:
                 TT.Active = True
 
                 .cbSearch.Items.Clear()
-                .cbSearch.Items.Add(Master.eLang.GetString(21, "Title"))
-                .cbSearch.Items.Add(Master.eLang.GetString(100, "Actor"))
-                .cbSearch.Items.Add(Master.eLang.GetString(62, "Director"))
+                .cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(62, "Director")})
 
             End With
         Catch ex As Exception
@@ -4480,108 +4476,108 @@ doCancel:
         Try
             Dim LevFail As Boolean = False
 
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLcommand.CommandText = "UPDATE movies SET OutOfTolerance = (?) WHERE ID = (?);"
-                    Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
-                    For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If DoTitleCheck Then SQLtransaction = Master.DB.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLcommand.CommandText = "UPDATE movies SET OutOfTolerance = (?) WHERE ID = (?);"
+                Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
 
-                        If drvRow.Cells(11).Value Then
-                            drvRow.Cells(3).Style.ForeColor = Color.Crimson
-                            drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                            drvRow.Cells(3).Style.SelectionForeColor = Color.Crimson
-                        ElseIf drvRow.Cells(10).Value Then
-                            drvRow.Cells(3).Style.ForeColor = Color.Green
-                            drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                            drvRow.Cells(3).Style.SelectionForeColor = Color.Green
-                        Else
-                            drvRow.Cells(3).Style.ForeColor = Color.Black
-                            drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
-                            drvRow.Cells(3).Style.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-                            If Me.chkFilterMark.Checked Then
-                                drvRow.Selected = False
-                                Me.dgvMediaList.CurrentCell = Nothing
-                                If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
-                                Me.dgvMediaList.ClearSelection()
-                            End If
+                    If drvRow.Cells(11).Value Then
+                        drvRow.Cells(3).Style.ForeColor = Color.Crimson
+                        drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                        drvRow.Cells(3).Style.SelectionForeColor = Color.Crimson
+                    ElseIf drvRow.Cells(10).Value Then
+                        drvRow.Cells(3).Style.ForeColor = Color.Green
+                        drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                        drvRow.Cells(3).Style.SelectionForeColor = Color.Green
+                    Else
+                        drvRow.Cells(3).Style.ForeColor = Color.Black
+                        drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                        drvRow.Cells(3).Style.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                        If Me.chkFilterMark.Checked Then
+                            drvRow.Selected = False
+                            Me.dgvMediaList.CurrentCell = Nothing
+                            If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
+                            Me.dgvMediaList.ClearSelection()
                         End If
+                    End If
 
-                        If Master.eSettings.LevTolerance > 0 AndAlso DoTitleCheck Then
-                            Dim pExt As String = String.Empty
-                            Dim pTitle As String = String.Empty
-                            If Directory.GetParent(drvRow.Cells(1).Value).Name.ToLower = "video_ts" Then
-                                pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value).FullName).Name
+                    If Master.eSettings.LevTolerance > 0 AndAlso DoTitleCheck Then
+                        Dim pExt As String = String.Empty
+                        Dim pTitle As String = String.Empty
+                        If Directory.GetParent(drvRow.Cells(1).Value).Name.ToLower = "video_ts" Then
+                            pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value).FullName).Name
+                        Else
+                            pExt = Path.GetExtension(drvRow.Cells(1).Value).ToLower
+                            If drvRow.Cells(46).Value AndAlso drvRow.Cells(2).Value Then
+                                pTitle = Directory.GetParent(drvRow.Cells(1).Value).Name
                             Else
-                                pExt = Path.GetExtension(drvRow.Cells(1).Value).ToLower
-                                If drvRow.Cells(46).Value AndAlso drvRow.Cells(2).Value Then
-                                    pTitle = Directory.GetParent(drvRow.Cells(1).Value).Name
-                                Else
-                                    pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value)
-                                End If
+                                pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value)
                             End If
-
-                            LevFail = Not pExt = ".vob" AndAlso Not pExt = ".ifo" AndAlso _
-                                      StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
-
-                            parOutOfTolerance.Value = LevFail
-                            drvRow.Cells(47).Value = LevFail
-                            parID.Value = drvRow.Cells(0).Value
-                            SQLcommand.ExecuteNonQuery()
-                        Else
-                            LevFail = drvRow.Cells(47).Value
                         End If
 
-                        If drvRow.Cells(14).Value Then
-                            drvRow.Cells(3).Style.BackColor = Color.LightSteelBlue
-                            drvRow.Cells(4).Style.BackColor = Color.LightSteelBlue
-                            drvRow.Cells(5).Style.BackColor = Color.LightSteelBlue
-                            drvRow.Cells(6).Style.BackColor = Color.LightSteelBlue
-                            drvRow.Cells(7).Style.BackColor = Color.LightSteelBlue
-                            drvRow.Cells(8).Style.BackColor = Color.LightSteelBlue
-                            drvRow.Cells(9).Style.BackColor = Color.LightSteelBlue
-                            drvRow.Cells(3).Style.SelectionBackColor = Color.DarkTurquoise
-                            drvRow.Cells(4).Style.SelectionBackColor = Color.DarkTurquoise
-                            drvRow.Cells(5).Style.SelectionBackColor = Color.DarkTurquoise
-                            drvRow.Cells(6).Style.SelectionBackColor = Color.DarkTurquoise
-                            drvRow.Cells(7).Style.SelectionBackColor = Color.DarkTurquoise
-                            drvRow.Cells(8).Style.SelectionBackColor = Color.DarkTurquoise
-                            drvRow.Cells(9).Style.SelectionBackColor = Color.DarkTurquoise
-                        ElseIf LevFail Then
-                            drvRow.Cells(3).Style.BackColor = Color.MistyRose
-                            drvRow.Cells(4).Style.BackColor = Color.MistyRose
-                            drvRow.Cells(5).Style.BackColor = Color.MistyRose
-                            drvRow.Cells(6).Style.BackColor = Color.MistyRose
-                            drvRow.Cells(7).Style.BackColor = Color.MistyRose
-                            drvRow.Cells(8).Style.BackColor = Color.MistyRose
-                            drvRow.Cells(9).Style.BackColor = Color.MistyRose
-                            drvRow.Cells(3).Style.SelectionBackColor = Color.DarkMagenta
-                            drvRow.Cells(4).Style.SelectionBackColor = Color.DarkMagenta
-                            drvRow.Cells(5).Style.SelectionBackColor = Color.DarkMagenta
-                            drvRow.Cells(6).Style.SelectionBackColor = Color.DarkMagenta
-                            drvRow.Cells(7).Style.SelectionBackColor = Color.DarkMagenta
-                            drvRow.Cells(8).Style.SelectionBackColor = Color.DarkMagenta
-                            drvRow.Cells(9).Style.SelectionBackColor = Color.DarkMagenta
-                        Else
-                            drvRow.Cells(3).Style.BackColor = Color.White
-                            drvRow.Cells(4).Style.BackColor = Color.White
-                            drvRow.Cells(5).Style.BackColor = Color.White
-                            drvRow.Cells(6).Style.BackColor = Color.White
-                            drvRow.Cells(7).Style.BackColor = Color.White
-                            drvRow.Cells(8).Style.BackColor = Color.White
-                            drvRow.Cells(9).Style.BackColor = Color.White
-                            drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                            drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                            drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                            drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                            drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                            drvRow.Cells(8).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                            drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                        End If
-                    Next
-                End Using
-                If DoTitleCheck Then SQLtransaction.Commit()
+                        LevFail = Not pExt = ".vob" AndAlso Not pExt = ".ifo" AndAlso _
+                                  StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
+
+                        parOutOfTolerance.Value = LevFail
+                        drvRow.Cells(47).Value = LevFail
+                        parID.Value = drvRow.Cells(0).Value
+                        SQLcommand.ExecuteNonQuery()
+                    Else
+                        LevFail = drvRow.Cells(47).Value
+                    End If
+
+                    If drvRow.Cells(14).Value Then
+                        drvRow.Cells(3).Style.BackColor = Color.LightSteelBlue
+                        drvRow.Cells(4).Style.BackColor = Color.LightSteelBlue
+                        drvRow.Cells(5).Style.BackColor = Color.LightSteelBlue
+                        drvRow.Cells(6).Style.BackColor = Color.LightSteelBlue
+                        drvRow.Cells(7).Style.BackColor = Color.LightSteelBlue
+                        drvRow.Cells(8).Style.BackColor = Color.LightSteelBlue
+                        drvRow.Cells(9).Style.BackColor = Color.LightSteelBlue
+                        drvRow.Cells(3).Style.SelectionBackColor = Color.DarkTurquoise
+                        drvRow.Cells(4).Style.SelectionBackColor = Color.DarkTurquoise
+                        drvRow.Cells(5).Style.SelectionBackColor = Color.DarkTurquoise
+                        drvRow.Cells(6).Style.SelectionBackColor = Color.DarkTurquoise
+                        drvRow.Cells(7).Style.SelectionBackColor = Color.DarkTurquoise
+                        drvRow.Cells(8).Style.SelectionBackColor = Color.DarkTurquoise
+                        drvRow.Cells(9).Style.SelectionBackColor = Color.DarkTurquoise
+                    ElseIf LevFail Then
+                        drvRow.Cells(3).Style.BackColor = Color.MistyRose
+                        drvRow.Cells(4).Style.BackColor = Color.MistyRose
+                        drvRow.Cells(5).Style.BackColor = Color.MistyRose
+                        drvRow.Cells(6).Style.BackColor = Color.MistyRose
+                        drvRow.Cells(7).Style.BackColor = Color.MistyRose
+                        drvRow.Cells(8).Style.BackColor = Color.MistyRose
+                        drvRow.Cells(9).Style.BackColor = Color.MistyRose
+                        drvRow.Cells(3).Style.SelectionBackColor = Color.DarkMagenta
+                        drvRow.Cells(4).Style.SelectionBackColor = Color.DarkMagenta
+                        drvRow.Cells(5).Style.SelectionBackColor = Color.DarkMagenta
+                        drvRow.Cells(6).Style.SelectionBackColor = Color.DarkMagenta
+                        drvRow.Cells(7).Style.SelectionBackColor = Color.DarkMagenta
+                        drvRow.Cells(8).Style.SelectionBackColor = Color.DarkMagenta
+                        drvRow.Cells(9).Style.SelectionBackColor = Color.DarkMagenta
+                    Else
+                        drvRow.Cells(3).Style.BackColor = Color.White
+                        drvRow.Cells(4).Style.BackColor = Color.White
+                        drvRow.Cells(5).Style.BackColor = Color.White
+                        drvRow.Cells(6).Style.BackColor = Color.White
+                        drvRow.Cells(7).Style.BackColor = Color.White
+                        drvRow.Cells(8).Style.BackColor = Color.White
+                        drvRow.Cells(9).Style.BackColor = Color.White
+                        drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                        drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                        drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                        drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                        drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                        drvRow.Cells(8).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                        drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                    End If
+                Next
             End Using
+            If DoTitleCheck Then SQLtransaction.Commit()
 
             Me.tabMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMediaList.RowCount)
             Me.dgvMediaList.Invalidate()
