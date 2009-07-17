@@ -304,9 +304,9 @@ Public Class frmMain
             Dim clScrapeMod As Master.ScrapeModifier = Nothing
             isCL = True
             Dim clAsk As Boolean = False
+            For i As Integer = 1 To Args.Count - 1
 
-            If Args.Count = 3 OrElse Args.Count = 4 Then
-                Select Case Args(1).ToLower
+                Select Case Args(i).ToLower
                     Case "-fullask"
                         clScrapeType = Master.ScrapeType.FullAsk
                         clAsk = True
@@ -332,16 +332,29 @@ Public Class frmMain
                         clScrapeType = Master.ScrapeType.MarkAuto
                         clAsk = False
                     Case "-file"
-                        isSingle = False
-                        hasSpec = True
-                        clScrapeType = Master.ScrapeType.SingleScrape
+                        If Args.Count - 1 > i Then
+                            isSingle = False
+                            hasSpec = True
+                            clScrapeType = Master.ScrapeType.SingleScrape
+                            If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
+                                MoviePath = Args(i + 1).Replace("""", String.Empty)
+                                i += 1
+                            End If
+                        Else
+                            Exit For
+                        End If
                     Case "-folder"
-                        isSingle = True
-                        hasSpec = True
-                        clScrapeType = Master.ScrapeType.SingleScrape
-                End Select
-
-                Select Case Args(2).ToLower
+                        If Args.Count - 1 > i Then
+                            isSingle = True
+                            hasSpec = True
+                            clScrapeType = Master.ScrapeType.SingleScrape
+                            If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
+                                MoviePath = Args(i + 1).Replace("""", String.Empty)
+                                i += 1
+                            End If
+                        Else
+                            Exit For
+                        End If
                     Case "-all"
                         clScrapeMod = Master.ScrapeModifier.All
                     Case "-nfo"
@@ -352,18 +365,14 @@ Public Class frmMain
                         clScrapeMod = Master.ScrapeModifier.Fanart
                     Case "-extra"
                         clScrapeMod = Master.ScrapeModifier.Extra
+                    Case "--verbose"
+                        clAsk = True
                     Case Else
-                        If File.Exists(Args(2).Replace("""", String.Empty)) Then
-                            MoviePath = Args(2).Replace("""", String.Empty)
-                        End If
+                        'If File.Exists(Args(2).Replace("""", String.Empty)) Then
+                        'MoviePath = Args(2).Replace("""", String.Empty)
+                        'End If
                 End Select
-            End If
-
-            If Args.Count = 4 Then
-                If Args(3) = "-verbose" Then
-                    clAsk = True
-                End If
-            End If
+            Next
 
             If Not IsNothing(clScrapeType) Then
                 If Not IsNothing(clScrapeMod) AndAlso Not clScrapeType = Master.ScrapeType.SingleScrape Then
