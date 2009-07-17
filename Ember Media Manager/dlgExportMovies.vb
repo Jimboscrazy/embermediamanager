@@ -99,10 +99,10 @@ Public Class dlgExportMovies
             ' For now fixed Cols
             Dim rowHeader As New StringBuilder
             rowHeader.Append(My.Resources.MovieListTableRowStart)
-            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, "Title")
-            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, "Year")
-            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, "Video")
-            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, "Audio")
+            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, Master.eLang.GetString(21, "Title"))
+            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, Master.eLang.GetString(278, "Year"))
+            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, Master.eLang.GetString(281, "Video"))
+            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, Master.eLang.GetString(282, "Audio"))
             rowHeader.Append(My.Resources.MovieListTableRowEnd)
             HTMLBody.Append(rowHeader)
             For Each _curMovie As Master.DBMovie In _movies
@@ -112,12 +112,12 @@ Public Class dlgExportMovies
                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                         tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
                         tRes = NFO.GetResFromDimensions(tVid)
-                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), "Unknown", tRes), If(String.IsNullOrEmpty(tVid.Codec), "Unknown", tVid.Codec))
+                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown"), tVid.Codec))
                     End If
 
                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                         tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
-                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), "Unknown", tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), "Unknown", tAud.Channels))
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
                     End If
                 End If
 
@@ -129,10 +129,10 @@ Public Class dlgExportMovies
                 row.AppendFormat(My.Resources.MovieListTableCol, _audDetails)
 
                 If bSearch Then
-                    If (strIn = "Video Flag" And _vidDetails.Contains(strFilter)) Or _
-                       (strIn = "Audio Flag" And _audDetails.Contains(strFilter)) Or _
-                       (strIn = "Title" And _curMovie.Movie.Title.Contains(strFilter)) Or _
-                       (strIn = "Year" And _curMovie.Movie.Year.Contains(strFilter)) Then
+                    If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso _vidDetails.Contains(strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso _audDetails.Contains(strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(21, "Title") AndAlso _curMovie.Movie.Title.Contains(strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(278, "Year") AndAlso _curMovie.Movie.Year.Contains(strFilter)) Then
                         row.Append(My.Resources.MovieListTableRowEnd)
                         HTMLBody.Append(row)
                     End If
@@ -157,7 +157,7 @@ Public Class dlgExportMovies
         If Not e.Cancelled Then
             wbMovieList.DocumentText = HTMLBody.ToString
         Else
-            wbMovieList.DocumentText = "<center><h1 style=""color:Red;"">Cancelled</h1></center>"
+            wbMovieList.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Cancelled"), "</h1></center>")
         End If
         Me.pnlCancel.Visible = False
 
@@ -243,9 +243,11 @@ Public Class dlgExportMovies
         wbMovieList.DocumentText = HTMLBody.ToString
     End Sub
 
-    Private Sub dlgMoviesReport_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
+    End Sub
 
-        Me.Activate()
+    Private Sub dlgMoviesReport_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
 
         ' Show Cancel Panel
         btnCancel.Visible = True
@@ -256,11 +258,31 @@ Public Class dlgExportMovies
         pnlCancel.Visible = True
         Application.DoEvents()
 
+        Me.Activate()
+
         'Start worker
         Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
         Me.bwLoadInfo.WorkerSupportsCancellation = True
         Me.bwLoadInfo.WorkerReportsProgress = True
         Me.bwLoadInfo.RunWorkerAsync()
+
+    End Sub
+
+    Private Sub SetUp()
+
+        Me.Text = Master.eLang.GetString(272, "Export Movies")
+        Me.Save_Button.Text = Master.eLang.GetString(272, "Save")
+        Me.Close_Button.Text = Master.eLang.GetString(19, "Close")
+        Me.Reset_Button.Text = Master.eLang.GetString(274, "Reset")
+        Me.Label1.Text = Master.eLang.GetString(275, "Filter")
+        Me.Search_Button.Text = Master.eLang.GetString(276, "Apply")
+        Me.lblIn.Text = Master.eLang.GetString(277, "in")
+        Me.lblCompiling.Text = Master.eLang.GetString(165, "Compiling Movie List...")
+        Me.lblCanceling.Text = Master.eLang.GetString(166, "Canceling Compilation...")
+        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+
+        Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(278, "Year"), Master.eLang.GetString(279, "Video Flag"), Master.eLang.GetString(280, "Audio Flag")})
+
     End Sub
 End Class
 

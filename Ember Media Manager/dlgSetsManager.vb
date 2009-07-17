@@ -444,6 +444,7 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub dlgSetsManager_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.SetUp()
         Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
         Using g As Graphics = Graphics.FromImage(iBackground)
             g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
@@ -451,4 +452,7 @@ Public Class dlgSetsManager
         End Using
     End Sub
 
+    Private Sub SetUp()
+
+    End Sub
 End Class

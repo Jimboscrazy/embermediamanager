@@ -38,10 +38,10 @@ Public Class dlgIMDBSearchResults
         Try
             If Me.chkManual.Checked AndAlso Me.btnVerify.Enabled Then
                 If Not Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
-                    MsgBox("The ID you entered is not a valid IMDB ID", MsgBoxStyle.Exclamation, "Invalid Entry")
+                    MsgBox(Master.eLang.GetString(291, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
                     Exit Sub
                 Else
-                    If MsgBox(String.Concat("You have manually entered an IMDB ID but have not verified it is correct.", vbNewLine, vbNewLine, "Are you sure you want to continue without verification?"), MsgBoxStyle.YesNo, "Continue without verification?") = MsgBoxResult.No Then
+                    If MsgBox(String.Concat(Master.eLang.GetString(293, "You have manually entered an IMDB ID but have not verified it is correct."), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.YesNo, Master.eLang.GetString(294, "Continue without verification?")) = MsgBoxResult.No Then
                         Exit Sub
                     Else
                         Master.tmpMovie.IMDBID = Me.txtIMDBID.Text.Replace("tt", String.Empty)
@@ -66,7 +66,7 @@ Public Class dlgIMDBSearchResults
     End Sub
 
     Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
+        Me.SetUp()
         AddHandler IMDB.SearchMovieInfoDownloaded, AddressOf SearchMovieInfoDownloaded
         AddHandler IMDB.SearchResultsDownloaded, AddressOf SearchResultsDownloaded
 
@@ -79,6 +79,21 @@ Public Class dlgIMDBSearchResults
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub SetUp()
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(285, "View details of each result to find the proper movie.")
+        Me.Label1.Text = Master.eLang.GetString(286, "Movie Search Results")
+        Me.chkManual.Text = Master.eLang.GetString(287, "Manual IMDB Entry:")
+        Me.btnVerify.Text = Master.eLang.GetString(288, "Verify")
+        Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
+        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
+        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
+        Me.lblIMDBHeader.Text = Master.eLang.GetString(289, "IMDB ID:")
+        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
+        Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
     End Sub
 
     Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
@@ -114,7 +129,7 @@ Public Class dlgIMDBSearchResults
                 Me.btnVerify.Enabled = False
             Else
                 If Me.chkManual.Checked Then
-                    MsgBox("Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again.", MsgBoxStyle.Exclamation, "Verification Failed")
+                    MsgBox(Master.eLang.GetString(295, "Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(296, "Verification Failed"))
                     Me.btnVerify.Enabled = True
                 End If
             End If
@@ -237,7 +252,7 @@ Public Class dlgIMDBSearchResults
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
             IMDB.GetSearchMovieInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), Master.tmpMovie, Master.DefaultOptions)
         Else
-            MsgBox("The ID you entered is not a valid IMDB ID", MsgBoxStyle.Exclamation, "Invalid Entry")
+            MsgBox(Master.eLang.GetString(291, "The ID you entered is not a valid IMDB ID."), MsgBoxStyle.Exclamation, Master.eLang.GetString(292, "Invalid Entry"))
         End If
     End Sub
 
@@ -269,7 +284,7 @@ Public Class dlgIMDBSearchResults
             Me.ClearInfo()
             If Not IsNothing(M) Then
                 If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 OrElse M.ExactMatches.Count > 0 Then
-                    Dim TnP As New TreeNode(String.Format("Partial Matches ({0})", M.PartialMatches.Count))
+                    Dim TnP As New TreeNode(String.Format(Master.eLang.GetString(297, "Partial Matches ({0})"), M.PartialMatches.Count))
                     Dim selNode As New TreeNode
 
                     If M.PartialMatches.Count > 0 Then
@@ -285,7 +300,7 @@ Public Class dlgIMDBSearchResults
                         If M.PartialMatches.Count > 0 Then
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
-                        TnP = New TreeNode("Exact Matches")
+                        TnP = New TreeNode(Master.eLang.GetString(298, "Exact Matches"))
                         For Each Movie As Media.Movie In M.ExactMatches
                             TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
                         Next
@@ -299,7 +314,7 @@ Public Class dlgIMDBSearchResults
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
 
-                        TnP = New TreeNode(String.Format("Popular Titles ({0})", M.PopularTitles.Count))
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(299, "Popular Titles ({0})"), M.PopularTitles.Count))
                         For Each Movie As Media.Movie In M.PopularTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
                         Next
@@ -311,7 +326,7 @@ Public Class dlgIMDBSearchResults
                     Me.tvResults.SelectedNode = selNode
                     Me.tvResults.Focus()
                 Else
-                    Me.tvResults.Nodes.Add(New TreeNode With {.Text = "No Matches Found"})
+                    Me.tvResults.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(300, "No Matches Found")})
                 End If
             End If
         Catch ex As Exception
@@ -334,7 +349,7 @@ Public Class dlgIMDBSearchResults
         ' Overload to pass data
         '\\
 
-        Me.Text = String.Concat("Search Results - ", sMovieTitle)
+        Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
         IMDB.SearchMovieAsync(sMovieTitle)
 
         Return MyBase.ShowDialog()
@@ -346,7 +361,7 @@ Public Class dlgIMDBSearchResults
         ' Overload to pass data
         '\\
 
-        Me.Text = String.Concat("Search Results - ", sMovieTitle)
+        Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
         SearchResultsDownloaded(Res)
 
         Return MyBase.ShowDialog()

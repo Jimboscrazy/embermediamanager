@@ -222,10 +222,10 @@ Public Class dlgImgSelect
             AddHandler MPDBDone, AddressOf MPDBDoneDownloading
 
             If Me.DLType = Master.ImageType.Posters Then
-                Me.Text = String.Concat("Select Poster - ", Me.tMovie.ListTitle)
+                Me.Text = String.Concat(Master.eLang.GetString(308, "Select Poster - "), Me.tMovie.ListTitle)
                 Me.pnlDLStatus.Visible = True
             Else
-                Me.Text = String.Concat("Select Fanart - ", Me.tMovie.ListTitle)
+                Me.Text = String.Concat(Master.eLang.GetString(309, "Select Fanart - "), Me.tMovie.ListTitle)
                 Me.pnlDLStatus.Visible = False
                 Me.pnlDLStatus.Height = 75
                 Me.pnlDLStatus.Top = 207
@@ -233,6 +233,17 @@ Public Class dlgImgSelect
 
             CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Master.ImageType.Posters, "posters", "fanart"))
 
+            Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+            Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+            Me.btnPreview.Text = Master.eLang.GetString(180, "Preview")
+            Me.chkThumb.Text = Master.eLang.GetString(302, "Check All Thumb")
+            Me.chkMid.Text = Master.eLang.GetString(303, "Check All Mid")
+            Me.chkOriginal.Text = Master.eLang.GetString(304, "Check All Original")
+            Me.lblInfo.Text = Master.eLang.GetString(305, "Selected item will be set as fanart. All checked items will be saved to \extrathumbs.")
+            Me.lblDL3.Text = Master.eLang.GetString(306, "Performing Preliminary Tasks...")
+            Me.lblDL2.Text = Me.lblDL3.Text
+            Me.lblDL1.Text = Me.lblDL3.Text
+            Me.Label2.Text = Master.eLang.GetString(307, "Downloading Selected Image...")
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -310,9 +321,9 @@ Public Class dlgImgSelect
                 Next
             Else
                 If Me.DLType = Master.ImageType.Fanart Then
-                    MsgBox("No Fanart found for this movie", MsgBoxStyle.Information, "No Fanart Found")
+                    MsgBox(Master.eLang.GetString(310, "No Fanart found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(311, "No Fanart Found"))
                 Else
-                    MsgBox("No Posters found for this movie", MsgBoxStyle.Information, "No Posters Found")
+                    MsgBox(Master.eLang.GetString(312, "No Posters found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(313, "No Posters Found"))
                 End If
                 Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
                 Me.Close()
@@ -331,7 +342,7 @@ Public Class dlgImgSelect
         Try
             Me.pbDL3.Value = 0
 
-            Me.lblDL3.Text = "Preparing images..."
+            Me.lblDL3.Text = Master.eLang.GetString(314, "Preparing images...")
             Me.lblDL3Status.Text = String.Empty
             Me.pbDL3.Maximum = Posters.Count
 
@@ -355,7 +366,7 @@ Public Class dlgImgSelect
         Try
             Me.pbDL1.Value = 0
 
-            Me.lblDL1.Text = "Preparing images..."
+            Me.lblDL1.Text = Master.eLang.GetString(314, "Preparing images...")
             Me.lblDL1Status.Text = String.Empty
             Me.pbDL1.Maximum = Posters.Count
 
@@ -379,7 +390,7 @@ Public Class dlgImgSelect
         Try
             Me.pbDL2.Value = 0
 
-            Me.lblDL2.Text = "Preparing images..."
+            Me.lblDL2.Text = Master.eLang.GetString(314, "Preparing images...")
             Me.lblDL2Status.Text = String.Empty
             Me.pbDL2.Maximum = Posters.Count
 
@@ -450,7 +461,7 @@ Public Class dlgImgSelect
 
             If NoneFound Then
                 If Master.eSettings.UseTMDB Then
-                    Me.lblDL1.Text = "Retrieving data from TheMovieDB.com..."
+                    Me.lblDL1.Text = Master.eLang.GetString(315, "Retrieving data from TheMovieDB.com...")
                     Me.lblDL1Status.Text = String.Empty
                     Me.pbDL1.Maximum = 3
                     Me.pnlDLStatus.Visible = True
@@ -460,11 +471,11 @@ Public Class dlgImgSelect
 
                     Me.TMDB.GetImagesAsync(tMovie.Movie.IMDBID, "poster")
                 Else
-                    Me.lblDL1.Text = "TheMovieDB.com is not enabled"
+                    Me.lblDL1.Text = Master.eLang.GetString(316, "TheMovieDB.com is not enabled")
                 End If
 
                 If Master.eSettings.UseIMPA Then
-                    Me.lblDL2.Text = "Retrieving data from IMPAwards.com..."
+                    Me.lblDL2.Text = Master.eLang.GetString(317, "Retrieving data from IMPAwards.com...")
                     Me.lblDL2Status.Text = String.Empty
                     Me.pbDL2.Maximum = 3
                     Me.pnlDLStatus.Visible = True
@@ -474,11 +485,11 @@ Public Class dlgImgSelect
 
                     Me.IMPA.GetImagesAsync(tMovie.Movie.IMDBID)
                 Else
-                    Me.lblDL2.Text = "IMPAwards.com is not enabled"
+                    Me.lblDL2.Text = Master.eLang.GetString(318, "IMPAwards.com is not enabled")
                 End If
 
                 If Master.eSettings.UseMPDB Then
-                    Me.lblDL3.Text = "Retrieving data from MoviePosterDB.com..."
+                    Me.lblDL3.Text = Master.eLang.GetString(319, "Retrieving data from MoviePosterDB.com...")
                     Me.lblDL3Status.Text = String.Empty
                     Me.pbDL3.Maximum = 3
                     Me.pnlDLStatus.Visible = True
@@ -488,7 +499,7 @@ Public Class dlgImgSelect
 
                     Me.MPDB.GetImagesAsync(tMovie.Movie.IMDBID)
                 Else
-                    Me.lblDL3.Text = "MoviePostersDB.com is not enabled"
+                    Me.lblDL3.Text = Master.eLang.GetString(320, "MoviePostersDB.com is not enabled")
                 End If
             End If
         Catch ex As Exception
@@ -551,7 +562,7 @@ Public Class dlgImgSelect
 
             If NoneFound Then
                 If Master.eSettings.UseTMDB Then
-                    Me.lblDL1.Text = "Retrieving data from TheMovieDB.com..."
+                    Me.lblDL1.Text = Master.eLang.GetString(315, "Retrieving data from TheMovieDB.com...")
                     Me.lblDL1Status.Text = String.Empty
                     Me.pbDL1.Maximum = 3
                     Me.pnlDLStatus.Visible = True
@@ -625,7 +636,7 @@ Public Class dlgImgSelect
                 Me.lblImage(iIndex).BackColor = Color.White
                 Me.lblImage(iIndex).TextAlign = ContentAlignment.MiddleCenter
                 If sURL.ToLower.Contains("themoviedb.org") Then
-                    Me.lblImage(iIndex).Text = "Multiple"
+                    Me.lblImage(iIndex).Text = Master.eLang.GetString(321, "Multiple")
                 Else
                     Me.lblImage(iIndex).Text = String.Format("{0}x{1} ({2})", Me.pbImage(iIndex).Image.Width.ToString, Me.pbImage(iIndex).Image.Height.ToString, sDescription)
                 End If
@@ -710,15 +721,15 @@ Public Class dlgImgSelect
 
             Me.rbXLarge.Checked = False
             Me.rbXLarge.Enabled = False
-            Me.rbXLarge.Text = "X-Large"
+            Me.rbXLarge.Text = Master.eLang.GetString(322, "X-Large")
             Me.rbLarge.Checked = False
             Me.rbLarge.Enabled = False
-            Me.rbLarge.Text = "Large"
+            Me.rbLarge.Text = Master.eLang.GetString(323, "Large")
             Me.rbMedium.Checked = False
-            Me.rbMedium.Text = "Medium"
+            Me.rbMedium.Text = Master.eLang.GetString(324, "Medium")
             Me.rbSmall.Checked = False
             Me.rbSmall.Enabled = False
-            Me.rbSmall.Text = "Small"
+            Me.rbSmall.Text = Master.eLang.GetString(325, "Small")
 
             Me.rbMedium.Tag = sURL
 
@@ -729,24 +740,24 @@ Public Class dlgImgSelect
                         If Not Master.eSettings.UseImgCache OrElse Not IsNothing(TMDBPosters.Item(i).WebImage) Then
                             Me.rbXLarge.Enabled = True
                             Me.rbXLarge.Tag = Me.TMDBPosters.Item(i).URL
-                            If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format("X-Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                            If Master.eSettings.UseImgCache Then Me.rbXLarge.Text = String.Format(Master.eLang.GetString(326, "X-Large ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
                         End If
                     Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_mid.jpg")
                         ' large 
                         If Not Master.eSettings.UseImgCache OrElse Not IsNothing(TMDBPosters.Item(i).WebImage) Then
                             Me.rbLarge.Enabled = True
                             Me.rbLarge.Tag = Me.TMDBPosters.Item(i).URL
-                            If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format("Large ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                            If Master.eSettings.UseImgCache Then Me.rbLarge.Text = String.Format(Master.eLang.GetString(327, "Large ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
                         End If
                     Case Me.TMDBPosters.Item(i).URL = String.Concat(sLeft, "_thumb.jpg")
                         ' small
                         If Not Master.eSettings.UseImgCache OrElse Not IsNothing(TMDBPosters.Item(i).WebImage) Then
                             Me.rbSmall.Enabled = True
                             Me.rbSmall.Tag = Me.TMDBPosters.Item(i).URL
-                            If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format("Small ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                            If Master.eSettings.UseImgCache Then Me.rbSmall.Text = String.Format(Master.eLang.GetString(328, "Small ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
                         End If
                     Case Me.TMDBPosters.Item(i).URL = sURL
-                        If Master.eSettings.UseImgCache Then Me.rbMedium.Text = String.Format("Medium ({0}x{1})", Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
+                        If Master.eSettings.UseImgCache Then Me.rbMedium.Text = String.Format(Master.eLang.GetString(329, "Medium ({0}x{1})"), Me.TMDBPosters.Item(i).WebImage.Width, Me.TMDBPosters.Item(i).WebImage.Height)
                 End Select
             Next
 
@@ -855,7 +866,7 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            Me.lblDL2Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
+            Me.lblDL2Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL2.Value = e.ProgressPercentage
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -919,7 +930,7 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            Me.lblDL1Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
+            Me.lblDL1Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL1.Value = e.ProgressPercentage
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -980,7 +991,7 @@ Public Class dlgImgSelect
         '\\
         Try
             Dim sStatus As String = e.UserState.ToString
-            Me.lblDL3Status.Text = String.Format("Downloading {0}", If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
+            Me.lblDL3Status.Text = String.Format(Master.eLang.GetString(330, "Downloading {0}"), If(sStatus.Length > 40, StringManip.TruncateURL(sStatus, 40), sStatus))
             Me.pbDL3.Value = e.ProgressPercentage
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

@@ -86,7 +86,8 @@ Public Class dlgEditMovie
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Me.Activate()
+
+            Me.SetUp()
 
             Me.lvwActorSorter = New ListViewColumnSorter()
             Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
@@ -107,6 +108,65 @@ Public Class dlgEditMovie
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(25, "Edit Movie")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
+        Me.Label1.Text = Me.Text
+        Me.TabPage1.Text = Master.eLang.GetString(26, "Details")
+        Me.lblLocalTrailer.Text = Master.eLang.GetString(225, "Local Trailer Found")
+        Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
+        Me.lblTrailer.Text = Master.eLang.GetString(227, "Trailer URL:")
+        Me.lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
+        Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
+        Me.lblCerts.Text = Master.eLang.GetString(237, "Certification(s):")
+        Me.lblRuntime.Text = Master.eLang.GetString(238, "Runtime:")
+        Me.lblMPAADesc.Text = Master.eLang.GetString(229, "MPAA Rating Description:")
+        Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
+        Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
+        Me.colName.Text = Master.eLang.GetString(232, "Name")
+        Me.colRole.Text = Master.eLang.GetString(233, "Role")
+        Me.colThumb.Text = Master.eLang.GetString(234, "Thumb")
+        Me.lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
+        Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
+        Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
+        Me.lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
+        Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
+        Me.lblOutline.Text = Master.eLang.GetString(242, "Plot Outline:")
+        Me.lblTagline.Text = Master.eLang.GetString(243, "Tagline:")
+        Me.lblVotes.Text = Master.eLang.GetString(244, "Votes:")
+        Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
+        Me.lblYear.Text = Master.eLang.GetString(49, "Year:")
+        Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
+        Me.TabPage2.Text = Master.eLang.GetString(148, "Poster")
+        Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
+        Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
+        Me.TabPage3.Text = Master.eLang.GetString(149, "Fanart")
+        Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
+        Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
+        Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
+        Me.TabPage5.Text = Master.eLang.GetString(153, "Extrathumbs")
+        Me.Label4.Text = Master.eLang.GetString(253, "You have extrathumbs queued to be transferred to the movie directory.")
+        Me.btnTransferNow.Text = Master.eLang.GetString(254, "Transfer Now")
+        Me.btnSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
+        Me.TabPage4.Text = Master.eLang.GetString(256, "Frame Extraction")
+        Me.GroupBox1.Text = Master.eLang.GetString(257, "Auto-Generate")
+        Me.Label5.Text = Master.eLang.GetString(258, "# to Create:")
+        Me.btnAutoGen.Text = Master.eLang.GetString(259, "Auto-Gen")
+        Me.btnFrameSave.Text = Master.eLang.GetString(260, "Save Extrathumb")
+        Me.Label3.Text = Master.eLang.GetString(261, "Extracting Frame...")
+        Me.btnGrab.Text = Master.eLang.GetString(262, "Grab Frame")
+        Me.btnFrameLoad.Text = Master.eLang.GetString(263, "Load Movie")
+        Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
+        Me.btnRescrape.Text = Master.eLang.GetString(31, "Re-scrape IMDB")
+        Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
+        Me.btnClearCache.Text = Master.eLang.GetString(264, "Clear Cache")
+        Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
+        Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
     End Sub
 
     Private Sub pbStar1_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar1.MouseLeave
@@ -341,7 +401,7 @@ Public Class dlgEditMovie
 
             btnClearCache.Visible = False
         Catch ex As Exception
-            MsgBox("One or more cache resources is currently in use and cannot be deleted at the moment.", MsgBoxStyle.Information, "Cannot Clear Cache")
+            MsgBox(Master.eLang.GetString(267, "One or more cache resources is currently in use and cannot be deleted at the moment."), MsgBoxStyle.Information, Master.eLang.GetString(268, "Cannot Clear Cache"))
         End Try
     End Sub
 
@@ -481,7 +541,7 @@ Public Class dlgEditMovie
                     If Not IsNothing(Fanart.Image) Then
                         .pbFanart.Image = Fanart.Image
 
-                        .lblFanartSize.Text = String.Format("Size: {0}x{1}", .pbFanart.Image.Width, .pbFanart.Image.Height)
+                        .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
                         .lblFanartSize.Visible = True
                     End If
 
@@ -489,7 +549,7 @@ Public Class dlgEditMovie
                     If Not IsNothing(Poster.Image) Then
                         .pbPoster.Image = Poster.Image
 
-                        .lblPosterSize.Text = String.Format("Size: {0}x{1}", .pbPoster.Image.Width, .pbPoster.Image.Height)
+                        .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
                         .lblPosterSize.Visible = True
                     End If
 
@@ -690,7 +750,7 @@ Public Class dlgEditMovie
                 Poster.FromFile(ofdImage.FileName)
                 pbPoster.Image = Poster.Image
 
-                Me.lblPosterSize.Text = String.Format("Size: {0}x{1}", Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                 Me.lblPosterSize.Visible = True
             End If
         Catch ex As Exception
@@ -710,7 +770,7 @@ Public Class dlgEditMovie
                 Fanart.FromFile(ofdImage.FileName)
                 pbFanart.Image = Fanart.Image
 
-                Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                 Me.lblFanartSize.Visible = True
             End If
         Catch ex As Exception
@@ -728,7 +788,7 @@ Public Class dlgEditMovie
                     Poster.FromFile(sPath)
                     pbPoster.Image = Poster.Image
 
-                    Me.lblPosterSize.Text = String.Format("Size: {0}x{1}", Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                     Me.lblPosterSize.Visible = True
                 End If
             End Using
@@ -751,7 +811,7 @@ Public Class dlgEditMovie
                     Fanart.FromFile(sPath)
                     pbFanart.Image = Fanart.Image
 
-                    Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                     Me.lblFanartSize.Visible = True
 
                 End If
@@ -1207,7 +1267,7 @@ Public Class dlgEditMovie
                 System.Diagnostics.Process.Start(String.Concat("""", Me.txtTrailer.Text, """"))
             End If
         Catch
-            MsgBox("The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.", MsgBoxStyle.Critical, "Error Playing Trailer")
+            MsgBox(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(271, "Error Playing Trailer"))
         End Try
     End Sub
 
@@ -1319,7 +1379,7 @@ Public Class dlgEditMovie
                     Poster.FromFile(Path.Combine(Master.TempPath, "poster.jpg"))
                     pbPoster.Image = Poster.Image
 
-                    Me.lblPosterSize.Text = String.Format("Size: {0}x{1}", Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
+                    Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
                     Me.lblPosterSize.Visible = True
                 End If
             End Using
@@ -1335,7 +1395,7 @@ Public Class dlgEditMovie
                     Fanart.FromFile(Path.Combine(Master.TempPath, "fanart.jpg"))
                     pbFanart.Image = Fanart.Image
 
-                    Me.lblFanartSize.Text = String.Format("Size: {0}x{1}", Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
+                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                     Me.lblFanartSize.Visible = True
                 End If
             End Using
@@ -1397,4 +1457,8 @@ Public Class dlgEditMovie
             _path = String.Empty
         End Sub
     End Class
+
+    Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
+    End Sub
 End Class
