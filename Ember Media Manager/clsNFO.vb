@@ -220,7 +220,7 @@ Public Class NFO
         Try
             If Not IsNothing(miFI) Then
 
-                If Not miFI.StreamDetails Is Nothing Then
+                If Not IsNothing(miFI.StreamDetails) Then
                     If miFI.StreamDetails.Video.Count > 0 Then
                         strOutput.AppendFormat("Video Streams: {0}{1}", miFI.StreamDetails.Video.Count.ToString, vbNewLine)
                     End If
