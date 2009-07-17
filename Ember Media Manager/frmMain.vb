@@ -3349,11 +3349,11 @@ doCancel:
                 .FullAutoToolStripMenuItem.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
                 .mnuAllAutoAll.Text = Master.eLang.GetString(70, "All Items")
                 .mnuAllAutoNfo.Text = Master.eLang.GetString(71, "NFO Only")
-                .mnuAllAutoPoster.Text = Master.eLang.GetString(72, "Posters Only")
+                .mnuAllAutoPoster.Text = Master.eLang.GetString(72, "Poster Only")
                 .mnuAllAutoFanart.Text = Master.eLang.GetString(73, "Fanart Only")
-                .mnuAllAutoExtra.Text = Master.eLang.GetString(74, "Extra Thumbs Only")
+                .mnuAllAutoExtra.Text = Master.eLang.GetString(74, "Extrathumbs Only")
                 .mnuAllAutoTrailer.Text = Master.eLang.GetString(75, "Trailer Only")
-                .mnuAllAutoMI.Text = Master.eLang.GetString(76, "Media Tags Only")
+                .mnuAllAutoMI.Text = Master.eLang.GetString(76, "Meta Data Only")
                 .FullAskToolStripMenuItem.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
                 .mnuAllAskAll.Text = mnuAllAutoAll.Text
                 .mnuAllAskNfo.Text = .mnuAllAutoNfo.Text

@@ -54,7 +54,7 @@ Public Class dlgTrailer
         Me.btnPlayTrailer.Enabled = False
         Me.lbTrailers.Enabled = False
         Me.txtYouTube.Enabled = False
-        Me.lblStatus.Text = "Downloading selected trailer..."
+        Me.lblStatus.Text = Master.eLang.GetString(380, "Downloading selected trailer...")
         Me.pbStatus.Style = ProgressBarStyle.Continuous
         Me.pbStatus.Value = 0
         Me.pnlStatus.Visible = True
@@ -179,7 +179,20 @@ Public Class dlgTrailer
     End Function
 
     Private Sub dlgTrailer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
         AddHandler cTrailer.ProgressUpdated, AddressOf DownloadProgressUpdated
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(372, "Select Trailer")
+        Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.GroupBox1.Text = Master.eLang.GetString(374, "Select Trailer to Download")
+        Me.GroupBox2.Text = Master.eLang.GetString(375, "Manual Trailer Entry")
+        Me.Label1.Text = Master.eLang.GetString(376, "YouTube URL:")
+        Me.lblStatus.Text = Master.eLang.GetString(377, "Compiling trailer list...")
+        Me.btnPlayTrailer.Text = Master.eLang.GetString(378, "Preview Trailer")
+        Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
     End Sub
 
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -198,7 +211,7 @@ Public Class dlgTrailer
             Me.btnSetNfo.Enabled = False
             Me.Cancel_Button.Enabled = False
 
-            Me.lblStatus.Text = "Downloading preview..."
+            Me.lblStatus.Text = Master.eLang.GetString(381, "Downloading preview...")
             Me.pbStatus.Style = ProgressBarStyle.Continuous
             Me.pbStatus.Value = 0
             Me.pnlStatus.Visible = True
@@ -208,7 +221,7 @@ Public Class dlgTrailer
             Me.bwDownloadTrailer.WorkerReportsProgress = True
             Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = Me.lbTrailers.SelectedItem.ToString, .iIndex = lbTrailers.SelectedIndex, .bType = False})
         Catch
-            MsgBox("The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.", MsgBoxStyle.Critical, "Error Playing Trailer")
+            MsgBox(Master.eLang.GetString(382, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(383, "Error Playing Trailer"))
         End Try
     End Sub
 

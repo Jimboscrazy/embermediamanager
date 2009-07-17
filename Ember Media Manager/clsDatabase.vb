@@ -166,6 +166,7 @@ Public Class Database
                                 "MovieID INTEGER NOT NULL, " & _
                                 "StreamID INTEGER NOT NULL, " & _
                                 "Audio_Language TEXT, " & _
+                                "Audio_LongLanguage TEXT, " & _
                                 "Audio_Codec TEXT, " & _
                                 "Audio_Channel TEXT, " & _
                                 "PRIMARY KEY (MovieID,StreamID) " & _
@@ -177,7 +178,8 @@ Public Class Database
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesSubs(" & _
                                 "MovieID INTEGER NOT NULL, " & _
                                 "StreamID INTEGER NOT NULL, " & _
-                                "subs TEXT, " & _
+                                "Subs_Language TEXT, " & _
+                                "Subs_LongLanguage TEXT, " & _
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                  ");"
                     SQLcommand.ExecuteNonQuery()
@@ -331,6 +333,7 @@ Public Class Database
                     While SQLreader.Read
                         audio = New MediaInfo.Audio
                         If Not DBNull.Value.Equals(SQLreader("Audio_Language")) Then audio.Language = SQLreader("Audio_Language")
+                        If Not DBNull.Value.Equals(SQLreader("Audio_LongLanguage")) Then audio.LongLanguage = SQLreader("Audio_LongLanguage")
                         If Not DBNull.Value.Equals(SQLreader("Audio_Codec")) Then audio.Codec = SQLreader("Audio_Codec")
                         If Not DBNull.Value.Equals(SQLreader("Audio_Channel")) Then audio.Channels = SQLreader("Audio_Channel")
                         _movieDB.Movie.FileInfo.StreamDetails.Audio.Add(audio)
@@ -343,7 +346,8 @@ Public Class Database
                     Dim subtitle As MediaInfo.Subtitle
                     While SQLreader.Read
                         subtitle = New MediaInfo.Subtitle
-                        If Not DBNull.Value.Equals(SQLreader("subs")) Then subtitle.Language = SQLreader("subs")
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language")
+                        If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage")
                         _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Add(subtitle)
                     End While
                 End Using
@@ -637,17 +641,19 @@ Public Class Database
                     End Using
                     Using SQLcommandMoviesAStreams As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommandMoviesAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesAStreams (", _
-                                "MovieID, StreamID, Audio_Language, Audio_Codec, Audio_Channel", _
-                                ") VALUES (?,?,?,?,?);")
+                                "MovieID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel", _
+                                ") VALUES (?,?,?,?,?,?);")
                         Dim parAudio_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_MovieID", DbType.String, 0, "MovieID")
                         Dim parAudio_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_StreamID", DbType.String, 0, "StreamID")
                         Dim parAudio_Language As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Language", DbType.String, 0, "Audio_Language")
+                        Dim parAudio_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_LongLanguage", DbType.String, 0, "Audio_LongLanguage")
                         Dim parAudio_Codec As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Codec", DbType.String, 0, "Audio_Codec")
                         Dim parAudio_Channel As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Channel", DbType.String, 0, "Audio_Channel")
                         For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Audio.Count - 1
                             parAudio_MovieID.Value = _movieDB.ID
                             parAudio_StreamID.Value = i
                             parAudio_Language.Value = _movieDB.Movie.FileInfo.StreamDetails.Audio(i).Language
+                            parAudio_LongLanguage.Value = _movieDB.Movie.FileInfo.StreamDetails.Audio(i).LongLanguage
                             parAudio_Codec.Value = _movieDB.Movie.FileInfo.StreamDetails.Audio(i).Codec
                             parAudio_Channel.Value = _movieDB.Movie.FileInfo.StreamDetails.Audio(i).Channels
                             SQLcommandMoviesAStreams.ExecuteNonQuery()
@@ -655,15 +661,17 @@ Public Class Database
                     End Using
                     Using SQLcommandMoviesSubs As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (", _
-                                "MovieID, StreamID, subs", _
-                                ") VALUES (?,?,?);")
+                                "MovieID, StreamID, Subs_Language, Subs_LongLanguage", _
+                                ") VALUES (?,?,?,?);")
                         Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.String, 0, "MovieID")
                         Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.String, 0, "StreamID")
-                        Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "subs")
+                        Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
+                        Dim parSubs_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
                         For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
                             parSubs_MovieID.Value = _movieDB.ID
                             parSubs_StreamID.Value = i
                             parSubs_Language.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).Language
+                            parSubs_LongLanguage.Value = _movieDB.Movie.FileInfo.StreamDetails.Subtitle(i).LongLanguage
                             SQLcommandMoviesSubs.ExecuteNonQuery()
                         Next
                     End Using

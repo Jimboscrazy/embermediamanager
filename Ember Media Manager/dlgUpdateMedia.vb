@@ -28,6 +28,7 @@ Public Class dlgUpdateMedia
     Private Sub dlgUpdateMedia_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         Try
+            Me.SetUp()
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -55,6 +56,50 @@ Public Class dlgUpdateMedia
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(384, "Custom Scraper")
+        Me.OK_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(385, "Create a custom scraper")
+        Me.Label4.Text = Me.Text
+        Me.rbUpdateModifier_All.Text = Master.eLang.GetString(68, "All Movies")
+        Me.gbUpdateModifier.Text = Master.eLang.GetString(386, "Selection Filter")
+        Me.rbUpdateModifier_Marked.Text = Master.eLang.GetString(80, "Marked Movies")
+        Me.rbUpdateModifier_New.Text = Master.eLang.GetString(79, "New Movies")
+        Me.rbUpdateModifier_Missing.Text = Master.eLang.GetString(78, "Movies Missing Items")
+        Me.gbUpdateType.Text = Master.eLang.GetString(387, "Update Mode")
+        Me.rbUpdate_Ask.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+        Me.rbUpdate_Auto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+        Me.gbUpdateItems.Text = Master.eLang.GetString(388, "Modifiers")
+        Me.rbMediaInfo.Text = Master.eLang.GetString(76, "Meta Data Only")
+        Me.rbTrailer.Text = Master.eLang.GetString(75, "Trailer Only")
+        Me.rbExtra.Text = Master.eLang.GetString(74, "Extrathumbs Only")
+        Me.rbFanart.Text = Master.eLang.GetString(73, "Fanart Only")
+        Me.rbPoster.Text = Master.eLang.GetString(72, "Poster Only")
+        Me.rbNfo.Text = Master.eLang.GetString(71, "NFO Only")
+        Me.rbAll.Text = Master.eLang.GetString(70, "All Items")
+        Me.Update_Button.Text = Master.eLang.GetString(389, "Begin")
+        Me.gbOptions.Text = Master.eLang.GetString(390, "Options")
+        Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
+        Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
+        Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
+        Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
+        Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
+        Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
+        Me.chkGenre.Text = Master.eLang.GetString(20, "Genres")
+        Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
+        Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
+        Me.chkCast.Text = Master.eLang.GetString(398, "Cast")
+        Me.chkVotes.Text = Master.eLang.GetString(399, "Votes")
+        Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
+        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
+        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA/Cert")
+        Me.chkYear.Text = Master.eLang.GetString(278, "Year")
+        Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
     End Sub
 
     Private Sub CheckNewAndMark()
