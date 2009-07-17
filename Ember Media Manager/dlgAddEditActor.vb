@@ -63,17 +63,19 @@ Public Class dlgAddEditActor
         '\\
 
         Try
-            Me.Activate()
+            Me.SetUp()
 
             If Me.isNew Then
-                Me.Text = "New Actor"
+                Me.Text = Master.eLang.GetString(157, "New Actor")
             Else
-                Me.Text = "Edit Actor"
+                Me.Text = Master.eLang.GetString(158, "Edit Actor")
                 Me.txtName.Text = Me.eActor.Name
                 Me.txtRole.Text = Me.eActor.Role
                 Me.txtThumb.Text = Me.eActor.Thumb
 
             End If
+
+            Me.Activate()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -98,10 +100,10 @@ Public Class dlgAddEditActor
                     Me.bwDownloadPic.WorkerSupportsCancellation = True
                     Me.bwDownloadPic.RunWorkerAsync()
                 Else
-                    MsgBox("Specified URL is not valid.", MsgBoxStyle.Exclamation, "Invalid URL")
+                    MsgBox(Master.eLang.GetString(159, "Specified URL is not valid."), MsgBoxStyle.Exclamation, Master.eLang.GetString(160, "Invalid URL"))
                 End If
             Else
-                MsgBox("Please enter a URL to verify", MsgBoxStyle.Exclamation, "No Thumb URL Specified")
+                MsgBox(Master.eLang.GetString(161, "Please enter a URL to verify."), MsgBoxStyle.Exclamation, Master.eLang.GetString(162, "No Thumb URL Specified"))
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -160,4 +162,10 @@ Public Class dlgAddEditActor
             Return Nothing
         End If
     End Function
+
+    Public Sub SetUp()
+        Me.lblName.Text = Master.eLang.GetString(154, "Actor Name:")
+        Me.lblRole.Text = Master.eLang.GetString(155, "Actor Role:")
+        Me.lblThumb.Text = Master.eLang.GetString(156, "Actor Thumb (URL):")
+    End Sub
 End Class

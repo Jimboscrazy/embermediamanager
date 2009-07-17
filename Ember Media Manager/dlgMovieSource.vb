@@ -163,6 +163,8 @@ Public Class dlgMovieSource
 
 
     Private Sub dlgMovieSource_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
+
         If Me._id >= 0 Then
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT * FROM Sources WHERE ID = ", Me._id, ";")
@@ -175,6 +177,19 @@ Public Class dlgMovieSource
                 End Using
             End Using
         End If
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(198, "Movie Source")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label1.Text = Master.eLang.GetString(199, "Source Name:")
+        Me.Label2.Text = Master.eLang.GetString(200, "Source Path:")
+        Me.GroupBox1.Text = Master.eLang.GetString(201, "Source Options")
+        Me.chkSingle.Text = Master.eLang.GetString(202, "Only Detect One Movie From Each Folder")
+        Me.chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
+        Me.chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")
+        Me.fbdBrowse.Description = Master.eLang.GetString(205, "Select the parent folder for your movie folders/files.")
     End Sub
 
     Private Sub dlgMovieSource_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown

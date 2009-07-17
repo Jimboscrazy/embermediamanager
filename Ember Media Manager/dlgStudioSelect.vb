@@ -36,6 +36,8 @@ Public Class dlgStudioSelect
     End Sub
 
     Private Sub dlgStudioSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.SetUp()
+
         Dim IMDB As New IMDB.Scraper
         Dim alStudio As ArrayList = IMDB.GetMovieStudios(Me._imdbid)
 
@@ -44,6 +46,12 @@ Public Class dlgStudioSelect
             Dim lvItem As ListViewItem = lvStudios.Items.Add(alStudio(i).ToString, i)
         Next
 
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(223, "Select Studio")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
     Public Overloads Function ShowDialog(ByVal IMDBID As String) As String

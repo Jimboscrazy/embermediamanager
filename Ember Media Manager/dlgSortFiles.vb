@@ -37,7 +37,7 @@ Public Class dlgSortFiles
         '\\
 
         If Not String.IsNullOrEmpty(Me.txtPath.Text) AndAlso Directory.Exists(Me.txtPath.Text) Then
-            If MsgBox(String.Concat("WARNING: If you continue, all files will be sorted into separate folders.", vbNewLine, vbNewLine, "Are you sure you want to continue?"), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, "Are you sure?") = MsgBoxResult.Yes Then
+            If MsgBox(String.Concat(Master.eLang.GetString(220, "WARNING: If you continue, all files will be sorted into separate folders."), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
                 Me._hitgo = True
                 SortFiles(Me.txtPath.Text)
                 lblStatus.Text = "Done!"
@@ -46,7 +46,7 @@ Public Class dlgSortFiles
                 Master.eSettings.SortPath = Me.txtPath.Text
             End If
         Else
-            MsgBox("The folder you entered does not exist. Please enter a valid path.", MsgBoxStyle.Exclamation, "Directory Not Found")
+            MsgBox(Master.eLang.GetString(221, "The folder you entered does not exist. Please enter a valid path."), MsgBoxStyle.Exclamation, Master.eLang.GetString(222, "Directory Not Found"))
             Me.txtPath.Focus()
         End If
     End Sub
@@ -69,7 +69,7 @@ Public Class dlgSortFiles
                 pbStatus.Maximum = lFi.Count
 
                 For Each sFile As FileInfo In lFi
-                    lblStatus.Text = String.Concat("Moving ", sFile.Name)
+                    lblStatus.Text = String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name)
                     tmpName = StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sFile.Name))
                     tmpName = tmpName.Replace(".fanart", String.Empty)
                     tmpName = tmpName.Replace("-fanart", String.Empty)
@@ -104,10 +104,21 @@ Public Class dlgSortFiles
     End Sub
 
     Private Sub dlgSortFiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
         Me.txtPath.Text = Master.eSettings.SortPath
     End Sub
 
     Private Sub dlgSortFiles_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
+    End Sub
+
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(213, "Sort Files Into Folders")
+        Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
+        Me.btnGo.Text = Master.eLang.GetString(214, "Go")
+        Me.GroupBox1.Text = Master.eLang.GetString(215, "Status")
+        Me.lblStatus.Text = Master.eLang.GetString(216, "Enter Path and Press ""Go"" to Begin.")
+        Me.Label1.Text = Master.eLang.GetString(217, "Path to Sort:")
+        Me.fbdBrowse.Description = Master.eLang.GetString(218, "Select the folder which contains the files you wish to sort.")
     End Sub
 End Class

@@ -205,7 +205,7 @@ Public Class dlgManualEdit
                                     StrW.WriteLine(String.Concat(TabC, TagS))
 
                                 Else
-                                    MsgBox("This is not a proper XML document", MsgBoxStyle.Information)
+                                    MsgBox(Master.eLang.GetString(191, "This is not a proper XML document"), MsgBoxStyle.Information)
                                     IfErr = True
                                     Exit Do
 
@@ -252,7 +252,6 @@ Public Class dlgManualEdit
 
 
         If currFile Is Nothing Then
-            MsgBox("Please open an XML file for parsing", MsgBoxStyle.Information, "Error")
             Exit Sub
         End If
 
@@ -298,8 +297,8 @@ Public Class dlgManualEdit
 
                     ListBox1.Items.Add(ErrStr)
 
-                Catch eeex As Exception
-                    MsgBox("Some unexpected error occurred " + vbNewLine + eeex.Message, MsgBoxStyle.Information, "Error")
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     Exit Do
                 End Try
 
@@ -315,9 +314,9 @@ Public Class dlgManualEdit
 
 
         If IsValid = False Then
-            MsgBox("File is not valid", MsgBoxStyle.Exclamation, "Error")
+            MsgBox(Master.eLang.GetString(192, "File is not valid."), MsgBoxStyle.Exclamation, Master.eLang.GetString(194, "Not Valid"))
         Else
-            MsgBox("File is valid", MsgBoxStyle.Information, "OK")
+            MsgBox(Master.eLang.GetString(193, "File is valid."), MsgBoxStyle.Information, Master.eLang.GetString(195, "Valid"))
         End If
 
 
@@ -344,15 +343,26 @@ Public Class dlgManualEdit
 
 
     Private Sub Editor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Me.SetUp()
 
-        Me.Activate()
         currFile = Master.currMovie.NfoPath
         If File.Exists(currFile) Then
             RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
         End If
-        Me.Text = String.Concat("Manual NFO Editor | ", currFile.Substring(currFile.LastIndexOf("\") + 1))
+        Me.Text = String.Concat(Master.eLang.GetString(190, "Manual NFO Editor | "), currFile.Substring(currFile.LastIndexOf("\") + 1))
 
         Changed = False
+
+        Me.Activate()
+    End Sub
+
+    Private Sub SetUp()
+        Me.mnuFormat.Text = Master.eLang.GetString(187, "&Format / Indent")
+        Me.mnuParse.Text = Master.eLang.GetString(188, "&Parse")
+        Me.MenuItem19.Text = Master.eLang.GetString(8, "&Tools")
+        Me.mnuFile.Text = Master.eLang.GetString(1, "&File")
+        Me.mnuSave.Text = Master.eLang.GetString(189, "&Save")
+        Me.mnuExit.Text = Master.eLang.GetString(2, "E&xit")
     End Sub
 
     Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click
@@ -368,7 +378,7 @@ Public Class dlgManualEdit
     Private Sub Editor_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
         If Changed = True Then
             Dim DResult As DialogResult
-            DResult = MsgBox("Do you want to save changes?", MsgBoxStyle.YesNoCancel, "Save")
+            DResult = MsgBox(Master.eLang.GetString(196, "Do you want to save changes?"), MsgBoxStyle.YesNoCancel, Master.eLang.GetString(197, "Save?"))
             If DResult = MsgBoxResult.Yes Then
 
                 RichTextBox1.SaveFile(currFile, RichTextBoxStreamType.PlainText)
