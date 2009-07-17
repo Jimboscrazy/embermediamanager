@@ -269,7 +269,7 @@ Public Class NFO
         If strOutput.Length > 0 Then
             Return strOutput.ToString
         Else
-            Return "Media Info is not available for this movie. Try rescanning."
+            Return Master.eLang.GetString(419, "Meta Data is not available for this movie. Try rescanning.")
         End If
     End Function
 

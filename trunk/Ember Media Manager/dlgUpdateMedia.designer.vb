@@ -242,7 +242,7 @@ Partial Class dlgUpdateMedia
         Me.rbMediaInfo.Name = "rbMediaInfo"
         Me.rbMediaInfo.Size = New System.Drawing.Size(99, 17)
         Me.rbMediaInfo.TabIndex = 73
-        Me.rbMediaInfo.Text = "Media Info Only"
+        Me.rbMediaInfo.Text = "Meta Data Only"
         Me.rbMediaInfo.UseVisualStyleBackColor = True
         '
         'rbTrailer
@@ -314,7 +314,7 @@ Partial Class dlgUpdateMedia
         Me.Update_Button.Name = "Update_Button"
         Me.Update_Button.Size = New System.Drawing.Size(80, 23)
         Me.Update_Button.TabIndex = 63
-        Me.Update_Button.Text = "Update"
+        Me.Update_Button.Text = "Begin"
         '
         'gbOptions
         '

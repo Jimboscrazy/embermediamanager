@@ -271,7 +271,7 @@ Public Class dlgSetsManager
                 If Me.currSet.Movies.Count > 0 Then Me.LoadCurrSet()
 
             Else
-                Me.lblCurrentSet.Text = "None Selected"
+                Me.lblCurrentSet.Text = Master.eLang.GetString(368, "None Selected")
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -295,7 +295,7 @@ Public Class dlgSetsManager
     Private Sub LoadSets()
         Me.lbSets.Items.Clear()
         Me.lbMoviesInSet.Items.Clear()
-        Me.lblCurrentSet.Text = "None Selected"
+        Me.lblCurrentSet.Text = Master.eLang.GetString(368, "None Selected")
 
         For Each mSet As String In alSets
             Me.lbSets.Items.Add(mSet)
@@ -453,6 +453,16 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub SetUp()
-
+        Me.Text = Master.eLang.GetString(365, "Sets Manager")
+        Me.OK_Button.Text = Master.eLang.GetString(19, "Close")
+        Me.GroupBox1.Text = Master.eLang.GetString(36, "Movies")
+        Me.GroupBox2.Text = Master.eLang.GetString(366, "Sets")
+        Me.GroupBox3.Text = Master.eLang.GetString(367, "Movies In Set")
+        Me.lblCurrentSet.Text = Master.eLang.GetString(368, "None Selected")
+        Me.lblCompiling.Text = Master.eLang.GetString(369, "Loading Movies and Sets...")
+        Me.lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
+        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(370, "Add and configure movie boxed sets.")
+        Me.Label4.Text = Me.Text
     End Sub
 End Class

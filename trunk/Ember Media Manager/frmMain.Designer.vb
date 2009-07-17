@@ -475,7 +475,7 @@ Partial Class frmMain
         Me.mnuRevertStudioTags.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
                     Or System.Windows.Forms.Keys.T), System.Windows.Forms.Keys)
         Me.mnuRevertStudioTags.Size = New System.Drawing.Size(356, 22)
-        Me.mnuRevertStudioTags.Text = "Revert Media Info Studio &Tags"
+        Me.mnuRevertStudioTags.Text = "Revert Meta Data Studio &Tags"
         '
         'RenamerToolStripMenuItem
         '
@@ -1365,7 +1365,7 @@ Partial Class frmMain
         Me.lblMIHeader.Name = "lblMIHeader"
         Me.lblMIHeader.Size = New System.Drawing.Size(294, 17)
         Me.lblMIHeader.TabIndex = 35
-        Me.lblMIHeader.Text = "Media Info"
+        Me.lblMIHeader.Text = "Meta Data"
         Me.lblMIHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtMediaInfo
@@ -1955,7 +1955,7 @@ Partial Class frmMain
         '
         Me.mnuAllAutoPoster.Name = "mnuAllAutoPoster"
         Me.mnuAllAutoPoster.Size = New System.Drawing.Size(174, 22)
-        Me.mnuAllAutoPoster.Text = "Posters Only"
+        Me.mnuAllAutoPoster.Text = "Poster Only"
         '
         'mnuAllAutoFanart
         '
@@ -1967,7 +1967,7 @@ Partial Class frmMain
         '
         Me.mnuAllAutoExtra.Name = "mnuAllAutoExtra"
         Me.mnuAllAutoExtra.Size = New System.Drawing.Size(174, 22)
-        Me.mnuAllAutoExtra.Text = "Extra Thumbs Only"
+        Me.mnuAllAutoExtra.Text = "Extrathumbs Only"
         '
         'mnuAllAutoTrailer
         '
@@ -1979,7 +1979,7 @@ Partial Class frmMain
         '
         Me.mnuAllAutoMI.Name = "mnuAllAutoMI"
         Me.mnuAllAutoMI.Size = New System.Drawing.Size(174, 22)
-        Me.mnuAllAutoMI.Text = "Media Tags Only"
+        Me.mnuAllAutoMI.Text = "Meta Data Only"
         '
         'FullAskToolStripMenuItem
         '
@@ -2004,7 +2004,7 @@ Partial Class frmMain
         '
         Me.mnuAllAskPoster.Name = "mnuAllAskPoster"
         Me.mnuAllAskPoster.Size = New System.Drawing.Size(168, 22)
-        Me.mnuAllAskPoster.Text = "Posters Only"
+        Me.mnuAllAskPoster.Text = "Poster Only"
         '
         'mnuAllAskFanart
         '
@@ -2028,7 +2028,7 @@ Partial Class frmMain
         '
         Me.mnuAllAskMI.Name = "mnuAllAskMI"
         Me.mnuAllAskMI.Size = New System.Drawing.Size(168, 22)
-        Me.mnuAllAskMI.Text = "Media Tags Only"
+        Me.mnuAllAskMI.Text = "Meta Data Only"
         '
         'UpdateOnlyToolStripMenuItem
         '
@@ -2060,7 +2060,7 @@ Partial Class frmMain
         '
         Me.mnuMissAutoPoster.Name = "mnuMissAutoPoster"
         Me.mnuMissAutoPoster.Size = New System.Drawing.Size(168, 22)
-        Me.mnuMissAutoPoster.Text = "Posters Only"
+        Me.mnuMissAutoPoster.Text = "Poster Only"
         '
         'mnuMissAutoFanart
         '
@@ -2103,7 +2103,7 @@ Partial Class frmMain
         '
         Me.mnuMissAskPoster.Name = "mnuMissAskPoster"
         Me.mnuMissAskPoster.Size = New System.Drawing.Size(168, 22)
-        Me.mnuMissAskPoster.Text = "Posters Only"
+        Me.mnuMissAskPoster.Text = "Poster Only"
         '
         'mnuMissAskFanart
         '
@@ -2153,7 +2153,7 @@ Partial Class frmMain
         '
         Me.mnuNewAutoPoster.Name = "mnuNewAutoPoster"
         Me.mnuNewAutoPoster.Size = New System.Drawing.Size(168, 22)
-        Me.mnuNewAutoPoster.Text = "Posters Only"
+        Me.mnuNewAutoPoster.Text = "Poster Only"
         '
         'mnuNewAutoFanart
         '
@@ -2177,7 +2177,7 @@ Partial Class frmMain
         '
         Me.mnuNewAutoMI.Name = "mnuNewAutoMI"
         Me.mnuNewAutoMI.Size = New System.Drawing.Size(168, 22)
-        Me.mnuNewAutoMI.Text = "Media Tags Only"
+        Me.mnuNewAutoMI.Text = "Meta Data Only"
         '
         'AskRequireInputToolStripMenuItem
         '
@@ -2202,7 +2202,7 @@ Partial Class frmMain
         '
         Me.mnuNewAskPoster.Name = "mnuNewAskPoster"
         Me.mnuNewAskPoster.Size = New System.Drawing.Size(168, 22)
-        Me.mnuNewAskPoster.Text = "Posters Only"
+        Me.mnuNewAskPoster.Text = "Poster Only"
         '
         'mnuNewAskFanart
         '
@@ -2226,7 +2226,7 @@ Partial Class frmMain
         '
         Me.mnuNewAskMI.Name = "mnuNewAskMI"
         Me.mnuNewAskMI.Size = New System.Drawing.Size(168, 22)
-        Me.mnuNewAskMI.Text = "Media Tags Only"
+        Me.mnuNewAskMI.Text = "Meta Data Only"
         '
         'MarkedMoviesToolStripMenuItem
         '
@@ -2258,7 +2258,7 @@ Partial Class frmMain
         '
         Me.mnuMarkAutoPoster.Name = "mnuMarkAutoPoster"
         Me.mnuMarkAutoPoster.Size = New System.Drawing.Size(168, 22)
-        Me.mnuMarkAutoPoster.Text = "Posters Only"
+        Me.mnuMarkAutoPoster.Text = "Poster Only"
         '
         'mnuMarkAutoFanart
         '
@@ -2282,7 +2282,7 @@ Partial Class frmMain
         '
         Me.mnuMarkAutoMI.Name = "mnuMarkAutoMI"
         Me.mnuMarkAutoMI.Size = New System.Drawing.Size(168, 22)
-        Me.mnuMarkAutoMI.Text = "Media Tags Only"
+        Me.mnuMarkAutoMI.Text = "Meta Data Only"
         '
         'AskRequireInputIfNoExactMatchToolStripMenuItem
         '
@@ -2307,7 +2307,7 @@ Partial Class frmMain
         '
         Me.mnuMarkAskPoster.Name = "mnuMarkAskPoster"
         Me.mnuMarkAskPoster.Size = New System.Drawing.Size(168, 22)
-        Me.mnuMarkAskPoster.Text = "Posters Only"
+        Me.mnuMarkAskPoster.Text = "Poster Only"
         '
         'mnuMarkAskFanart
         '
@@ -2331,7 +2331,7 @@ Partial Class frmMain
         '
         Me.mnuMarkAskMI.Name = "mnuMarkAskMI"
         Me.mnuMarkAskMI.Size = New System.Drawing.Size(168, 22)
-        Me.mnuMarkAskMI.Text = "Media Tags Only"
+        Me.mnuMarkAskMI.Text = "Meta Data Only"
         '
         'CustomUpdaterToolStripMenuItem
         '
