@@ -394,12 +394,61 @@ Public Class frmMain
                             If Master.currMovie.Movie Is Nothing Then
                                 Master.currMovie.Movie = New Media.Movie
                                 Master.currMovie.Movie.Title = tmpTitle
+                                Dim sFile As New Master.FileAndSource
+                                Dim aContents() As String
+                                sFile.Filename = MoviePath
+                                aContents = Master.GetFolderContents(sFile.Filename, sFile.isSingle)
+                                sFile.Poster = aContents(0)
+                                sFile.Fanart = aContents(1)
+                                sFile.Nfo = aContents(2)
+                                sFile.Trailer = aContents(3)
+                                sFile.Subs = aContents(4)
+                                sFile.Extra = aContents(5)
+                                If Not String.IsNullOrEmpty(sFile.Nfo) Then
+                                    Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                                Else
+                                    Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
+                                End If
+                                If String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
+                                    'no title so assume it's an invalid nfo, clear nfo path if exists
+                                    sFile.Nfo = String.Empty
+                                    If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
+                                        Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                    Else
+                                        If sFile.UseFolder AndAlso sFile.isSingle Then
+                                            Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
+                                        Else
+                                            Master.currMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                        End If
+                                    End If
+                                Else
+                                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
+                                        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(Master.currMovie.Movie.Title), Master.currMovie.Movie.Year)
+                                    Else
+                                        Master.currMovie.ListTitle = StringManip.FilterTokens(Master.currMovie.Movie.Title)
+                                    End If
+                                End If
+
+                                If Not String.IsNullOrEmpty(Master.currMovie.ListTitle) Then
+                                    Master.currMovie.NfoPath = sFile.Nfo
+                                    Master.currMovie.PosterPath = sFile.Poster
+                                    Master.currMovie.FanartPath = sFile.Fanart
+                                    Master.currMovie.TrailerPath = sFile.Trailer
+                                    Master.currMovie.SubPath = sFile.Subs
+                                    Master.currMovie.ExtraPath = sFile.Extra
+                                    Master.currMovie.Filename = sFile.Filename
+                                    Master.currMovie.isSingle = sFile.isSingle
+                                    Master.currMovie.UseFolder = sFile.UseFolder
+                                    Master.currMovie.Source = sFile.Source
+                                End If
+                                Master.tmpMovie = Master.currMovie.Movie
                             End If
                             Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, Nothing, clAsk)
                         Else
                             Me.ScraperDone = True
                         End If
                     Catch ex As Exception
+                        Me.ScraperDone = True
                         Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
                 End If
@@ -409,7 +458,7 @@ Public Class frmMain
                 Loop
             End If
 
-
+            frmSplash.CloseForm()
             Me.Close()
 
         Else
