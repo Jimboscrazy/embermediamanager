@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -587,7 +587,7 @@ Partial Class frmMain
         Me.pnlFilterGenre.Controls.Add(Me.lblGFilClose)
         Me.pnlFilterGenre.Controls.Add(Me.Label4)
         Me.pnlFilterGenre.Controls.Add(Me.clbFilterGenres)
-        Me.pnlFilterGenre.Location = New System.Drawing.Point(172, 422)
+        Me.pnlFilterGenre.Location = New System.Drawing.Point(186, 422)
         Me.pnlFilterGenre.Name = "pnlFilterGenre"
         Me.pnlFilterGenre.Size = New System.Drawing.Size(166, 192)
         Me.pnlFilterGenre.TabIndex = 15
@@ -635,8 +635,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -859,9 +859,9 @@ Partial Class frmMain
         Me.btnMarkAll.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMarkAll.Image = CType(resources.GetObject("btnMarkAll.Image"), System.Drawing.Image)
         Me.btnMarkAll.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMarkAll.Location = New System.Drawing.Point(267, 1)
+        Me.btnMarkAll.Location = New System.Drawing.Point(252, 1)
         Me.btnMarkAll.Name = "btnMarkAll"
-        Me.btnMarkAll.Size = New System.Drawing.Size(81, 21)
+        Me.btnMarkAll.Size = New System.Drawing.Size(96, 21)
         Me.btnMarkAll.TabIndex = 13
         Me.btnMarkAll.Text = "Mark All"
         Me.btnMarkAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -907,7 +907,7 @@ Partial Class frmMain
         '
         Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
         Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters.Location = New System.Drawing.Point(15, 125)
+        Me.btnClearFilters.Location = New System.Drawing.Point(22, 125)
         Me.btnClearFilters.Name = "btnClearFilters"
         Me.btnClearFilters.Size = New System.Drawing.Size(92, 23)
         Me.btnClearFilters.TabIndex = 16
@@ -922,7 +922,7 @@ Partial Class frmMain
         Me.GroupBox3.Controls.Add(Me.chkFilterDupe)
         Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(117, 99)
+        Me.GroupBox3.Size = New System.Drawing.Size(131, 99)
         Me.GroupBox3.TabIndex = 37
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "General"
@@ -970,7 +970,7 @@ Partial Class frmMain
         Me.gbSpecific.Controls.Add(Me.Label2)
         Me.gbSpecific.Controls.Add(Me.Label3)
         Me.gbSpecific.Controls.Add(Me.cbFilterSource)
-        Me.gbSpecific.Location = New System.Drawing.Point(121, 22)
+        Me.gbSpecific.Location = New System.Drawing.Point(135, 22)
         Me.gbSpecific.Name = "gbSpecific"
         Me.gbSpecific.Size = New System.Drawing.Size(224, 129)
         Me.gbSpecific.TabIndex = 36

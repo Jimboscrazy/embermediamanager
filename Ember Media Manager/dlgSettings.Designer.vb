@@ -24,13 +24,13 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9})
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -398,9 +398,9 @@ Partial Class dlgSettings
         'txtPassword
         '
         Me.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPassword.Location = New System.Drawing.Point(213, 78)
+        Me.txtPassword.Location = New System.Drawing.Point(221, 78)
         Me.txtPassword.Name = "txtPassword"
-        Me.txtPassword.Size = New System.Drawing.Size(80, 20)
+        Me.txtPassword.Size = New System.Drawing.Size(72, 20)
         Me.txtPassword.TabIndex = 4
         Me.txtPassword.UseSystemPasswordChar = True
         '
@@ -419,9 +419,9 @@ Partial Class dlgSettings
         'txtUsername
         '
         Me.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtUsername.Location = New System.Drawing.Point(70, 78)
+        Me.txtUsername.Location = New System.Drawing.Point(83, 78)
         Me.txtUsername.Name = "txtUsername"
-        Me.txtUsername.Size = New System.Drawing.Size(80, 20)
+        Me.txtUsername.Size = New System.Drawing.Size(72, 20)
         Me.txtUsername.TabIndex = 3
         '
         'Label13
@@ -564,7 +564,7 @@ Partial Class dlgSettings
         '
         Me.cbLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbLanguages.FormattingEnabled = True
-        Me.cbLanguages.Location = New System.Drawing.Point(16, 123)
+        Me.cbLanguages.Location = New System.Drawing.Point(16, 129)
         Me.cbLanguages.Name = "cbLanguages"
         Me.cbLanguages.Size = New System.Drawing.Size(174, 21)
         Me.cbLanguages.Sorted = True
@@ -572,11 +572,12 @@ Partial Class dlgSettings
         '
         'Label31
         '
-        Me.Label31.Location = New System.Drawing.Point(3, 94)
+        Me.Label31.Location = New System.Drawing.Point(3, 91)
         Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(207, 26)
+        Me.Label31.Size = New System.Drawing.Size(207, 35)
         Me.Label31.TabIndex = 16
         Me.Label31.Text = "Display Overlay if Video Contains an Audio Stream With the Following Language:"
+        Me.Label31.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         '
         'GroupBox3
         '
@@ -1353,9 +1354,9 @@ Partial Class dlgSettings
         '
         'chkMovieNameMultiOnly
         '
-        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(186, 49)
+        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(186, 63)
         Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
-        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(165, 30)
+        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(165, 42)
         Me.chkMovieNameMultiOnly.TabIndex = 5
         Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
         Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
@@ -1397,7 +1398,7 @@ Partial Class dlgSettings
         '
         Me.chkVideoTSParent.Location = New System.Drawing.Point(186, 11)
         Me.chkVideoTSParent.Name = "chkVideoTSParent"
-        Me.chkVideoTSParent.Size = New System.Drawing.Size(165, 47)
+        Me.chkVideoTSParent.Size = New System.Drawing.Size(165, 48)
         Me.chkVideoTSParent.TabIndex = 1
         Me.chkVideoTSParent.Text = "YAMJ Compatible VIDEO_TS File Placement/Naming"
         Me.chkVideoTSParent.UseVisualStyleBackColor = True
@@ -1632,9 +1633,9 @@ Partial Class dlgSettings
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Location = New System.Drawing.Point(398, 6)
+        Me.GroupBox15.Location = New System.Drawing.Point(411, 6)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(125, 89)
+        Me.GroupBox15.Size = New System.Drawing.Size(179, 89)
         Me.GroupBox15.TabIndex = 2
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "OFDB"
@@ -1680,14 +1681,14 @@ Partial Class dlgSettings
         '
         'GroupBox14
         '
+        Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
+        Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
         Me.GroupBox14.Controls.Add(Me.lblPosterQual)
         Me.GroupBox14.Controls.Add(Me.tbPosterQual)
         Me.GroupBox14.Controls.Add(Me.Label24)
         Me.GroupBox14.Controls.Add(Me.Label11)
         Me.GroupBox14.Controls.Add(Me.Label12)
         Me.GroupBox14.Controls.Add(Me.chkResizePoster)
-        Me.GroupBox14.Controls.Add(Me.txtPosterWidth)
-        Me.GroupBox14.Controls.Add(Me.txtPosterHeight)
         Me.GroupBox14.Controls.Add(Me.lblPosterSize)
         Me.GroupBox14.Controls.Add(Me.cbPosterSize)
         Me.GroupBox14.Controls.Add(Me.chkOverwritePoster)
@@ -1805,6 +1806,8 @@ Partial Class dlgSettings
         '
         'GroupBox13
         '
+        Me.GroupBox13.Controls.Add(Me.txtFanartWidth)
+        Me.GroupBox13.Controls.Add(Me.txtFanartHeight)
         Me.GroupBox13.Controls.Add(Me.chkFanartOnly)
         Me.GroupBox13.Controls.Add(Me.lblFanartQual)
         Me.GroupBox13.Controls.Add(Me.tbFanartQual)
@@ -1812,8 +1815,6 @@ Partial Class dlgSettings
         Me.GroupBox13.Controls.Add(Me.Label9)
         Me.GroupBox13.Controls.Add(Me.Label10)
         Me.GroupBox13.Controls.Add(Me.chkResizeFanart)
-        Me.GroupBox13.Controls.Add(Me.txtFanartWidth)
-        Me.GroupBox13.Controls.Add(Me.txtFanartHeight)
         Me.GroupBox13.Controls.Add(Me.cbFanartSize)
         Me.GroupBox13.Controls.Add(Me.lblFanartSize)
         Me.GroupBox13.Controls.Add(Me.chkOverwriteFanart)
@@ -1949,9 +1950,9 @@ Partial Class dlgSettings
         Me.GroupBox10.Controls.Add(Me.chkLockTitle)
         Me.GroupBox10.Controls.Add(Me.chkLockOutline)
         Me.GroupBox10.Controls.Add(Me.chkLockPlot)
-        Me.GroupBox10.Location = New System.Drawing.Point(222, 6)
+        Me.GroupBox10.Location = New System.Drawing.Point(220, 6)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(170, 164)
+        Me.GroupBox10.Size = New System.Drawing.Size(187, 164)
         Me.GroupBox10.TabIndex = 1
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "Global Locks (Do not allow updates during scraping)"
@@ -2217,7 +2218,7 @@ Partial Class dlgSettings
         '
         Me.chkUseCertForMPAA.AutoSize = True
         Me.chkUseCertForMPAA.Enabled = False
-        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(34, 120)
+        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(20, 120)
         Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
         Me.chkUseCertForMPAA.Size = New System.Drawing.Size(151, 17)
         Me.chkUseCertForMPAA.TabIndex = 6
@@ -2271,7 +2272,7 @@ Partial Class dlgSettings
         Me.gbRTFormat.Controls.Add(Me.rbHM)
         Me.gbRTFormat.Controls.Add(Me.rbMins)
         Me.gbRTFormat.Enabled = False
-        Me.gbRTFormat.Location = New System.Drawing.Point(33, 52)
+        Me.gbRTFormat.Location = New System.Drawing.Point(18, 50)
         Me.gbRTFormat.Name = "gbRTFormat"
         Me.gbRTFormat.Size = New System.Drawing.Size(169, 39)
         Me.gbRTFormat.TabIndex = 9
@@ -2304,7 +2305,7 @@ Partial Class dlgSettings
         '
         Me.chkUseMIDuration.AutoSize = True
         Me.chkUseMIDuration.Enabled = False
-        Me.chkUseMIDuration.Location = New System.Drawing.Point(33, 33)
+        Me.chkUseMIDuration.Location = New System.Drawing.Point(18, 33)
         Me.chkUseMIDuration.Name = "chkUseMIDuration"
         Me.chkUseMIDuration.Size = New System.Drawing.Size(145, 17)
         Me.chkUseMIDuration.TabIndex = 8
@@ -2418,42 +2419,42 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode8.ImageIndex = 4
-        TreeNode8.Name = "nExts"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 4
-        TreeNode8.Text = "File System"
-        TreeNode9.ImageIndex = 1
-        TreeNode9.Name = "nXBMCCom"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 1
-        TreeNode9.Text = "XBMC Communication"
-        TreeNode10.ImageIndex = 0
-        TreeNode10.Name = "nGeneral"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 0
-        TreeNode10.Text = "General"
-        TreeNode11.ImageIndex = 5
-        TreeNode11.Name = "nSources"
-        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode11.SelectedImageIndex = 5
-        TreeNode11.Text = "Files and Sources"
-        TreeNode12.ImageIndex = 3
-        TreeNode12.Name = "nScraper"
-        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode12.SelectedImageIndex = 3
-        TreeNode12.Text = "Scraper - Data"
-        TreeNode13.ImageIndex = 6
-        TreeNode13.Name = "nImages"
-        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode13.SelectedImageIndex = 6
-        TreeNode13.Text = "Scraper - Images"
-        TreeNode14.ImageIndex = 2
-        TreeNode14.Name = "nMovies"
-        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode14.SelectedImageIndex = 2
-        TreeNode14.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode14})
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "File System"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "XBMC Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 5
+        TreeNode4.Name = "nSources"
+        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode4.SelectedImageIndex = 5
+        TreeNode4.Text = "Files and Sources"
+        TreeNode5.ImageIndex = 3
+        TreeNode5.Name = "nScraper"
+        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.SelectedImageIndex = 3
+        TreeNode5.Text = "Scraper - Data"
+        TreeNode6.ImageIndex = 6
+        TreeNode6.Name = "nImages"
+        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode6.SelectedImageIndex = 6
+        TreeNode6.Text = "Scraper - Images"
+        TreeNode7.ImageIndex = 2
+        TreeNode7.Name = "nMovies"
+        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode7.SelectedImageIndex = 2
+        TreeNode7.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2536,7 +2537,7 @@ Partial Class dlgSettings
         'chkAutoBD
         '
         Me.chkAutoBD.AutoSize = True
-        Me.chkAutoBD.Location = New System.Drawing.Point(326, 18)
+        Me.chkAutoBD.Location = New System.Drawing.Point(276, 19)
         Me.chkAutoBD.Name = "chkAutoBD"
         Me.chkAutoBD.Size = New System.Drawing.Size(251, 17)
         Me.chkAutoBD.TabIndex = 2
@@ -2545,7 +2546,7 @@ Partial Class dlgSettings
         '
         'btnBrowse
         '
-        Me.btnBrowse.Location = New System.Drawing.Point(290, 14)
+        Me.btnBrowse.Location = New System.Drawing.Point(248, 15)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(23, 23)
         Me.btnBrowse.TabIndex = 1
@@ -2557,7 +2558,7 @@ Partial Class dlgSettings
         Me.txtBDPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtBDPath.Location = New System.Drawing.Point(7, 16)
         Me.txtBDPath.Name = "txtBDPath"
-        Me.txtBDPath.Size = New System.Drawing.Size(281, 20)
+        Me.txtBDPath.Size = New System.Drawing.Size(237, 20)
         Me.txtBDPath.TabIndex = 0
         '
         'pnlScraper
@@ -2601,9 +2602,9 @@ Partial Class dlgSettings
         Me.GroupBox20.Controls.Add(Me.Label22)
         Me.GroupBox20.Controls.Add(Me.lbTrailerSites)
         Me.GroupBox20.Controls.Add(Me.chkDownloadTrailer)
-        Me.GroupBox20.Location = New System.Drawing.Point(222, 176)
+        Me.GroupBox20.Location = New System.Drawing.Point(220, 173)
         Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Size = New System.Drawing.Size(299, 169)
+        Me.GroupBox20.Size = New System.Drawing.Size(370, 169)
         Me.GroupBox20.TabIndex = 3
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
@@ -2621,10 +2622,11 @@ Partial Class dlgSettings
         '
         'chkOverwriteTrailer
         '
+        Me.chkOverwriteTrailer.AutoSize = True
         Me.chkOverwriteTrailer.Enabled = False
         Me.chkOverwriteTrailer.Location = New System.Drawing.Point(19, 122)
         Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
-        Me.chkOverwriteTrailer.Size = New System.Drawing.Size(148, 15)
+        Me.chkOverwriteTrailer.Size = New System.Drawing.Size(103, 17)
         Me.chkOverwriteTrailer.TabIndex = 4
         Me.chkOverwriteTrailer.Text = "Overwrite Trailer"
         Me.chkOverwriteTrailer.UseVisualStyleBackColor = True
@@ -2634,7 +2636,7 @@ Partial Class dlgSettings
         Me.chkNoDLTrailer.Enabled = False
         Me.chkNoDLTrailer.Location = New System.Drawing.Point(19, 62)
         Me.chkNoDLTrailer.Name = "chkNoDLTrailer"
-        Me.chkNoDLTrailer.Size = New System.Drawing.Size(145, 30)
+        Me.chkNoDLTrailer.Size = New System.Drawing.Size(206, 30)
         Me.chkNoDLTrailer.TabIndex = 2
         Me.chkNoDLTrailer.Text = "Only Get URLs During Scrapers"
         Me.chkNoDLTrailer.UseVisualStyleBackColor = True
@@ -2644,7 +2646,7 @@ Partial Class dlgSettings
         Me.chkSingleScrapeTrailer.Enabled = False
         Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(19, 92)
         Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
-        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(148, 31)
+        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(206, 31)
         Me.chkSingleScrapeTrailer.TabIndex = 3
         Me.chkSingleScrapeTrailer.Text = "Get Trailers During Single-Scrape"
         Me.chkSingleScrapeTrailer.UseVisualStyleBackColor = True
@@ -2652,7 +2654,7 @@ Partial Class dlgSettings
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(170, 135)
+        Me.Label23.Location = New System.Drawing.Point(228, 137)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(48, 13)
         Me.Label23.TabIndex = 64
@@ -2662,9 +2664,9 @@ Partial Class dlgSettings
         '
         Me.txtTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTimeout.Enabled = False
-        Me.txtTimeout.Location = New System.Drawing.Point(227, 133)
+        Me.txtTimeout.Location = New System.Drawing.Point(315, 133)
         Me.txtTimeout.Name = "txtTimeout"
-        Me.txtTimeout.Size = New System.Drawing.Size(66, 20)
+        Me.txtTimeout.Size = New System.Drawing.Size(36, 20)
         Me.txtTimeout.TabIndex = 7
         '
         'chkUpdaterTrailer
@@ -2672,7 +2674,7 @@ Partial Class dlgSettings
         Me.chkUpdaterTrailer.Enabled = False
         Me.chkUpdaterTrailer.Location = New System.Drawing.Point(19, 33)
         Me.chkUpdaterTrailer.Name = "chkUpdaterTrailer"
-        Me.chkUpdaterTrailer.Size = New System.Drawing.Size(148, 31)
+        Me.chkUpdaterTrailer.Size = New System.Drawing.Size(206, 31)
         Me.chkUpdaterTrailer.TabIndex = 1
         Me.chkUpdaterTrailer.Text = "Get Trailers During ""All Items"" Scrapers"
         Me.chkUpdaterTrailer.UseVisualStyleBackColor = True
@@ -2680,7 +2682,7 @@ Partial Class dlgSettings
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(172, 28)
+        Me.Label22.Location = New System.Drawing.Point(230, 28)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(117, 13)
         Me.Label22.TabIndex = 2
@@ -2692,7 +2694,7 @@ Partial Class dlgSettings
         Me.lbTrailerSites.Enabled = False
         Me.lbTrailerSites.FormattingEnabled = True
         Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/TMDB", "IMDB"})
-        Me.lbTrailerSites.Location = New System.Drawing.Point(173, 45)
+        Me.lbTrailerSites.Location = New System.Drawing.Point(231, 45)
         Me.lbTrailerSites.Name = "lbTrailerSites"
         Me.lbTrailerSites.Size = New System.Drawing.Size(120, 79)
         Me.lbTrailerSites.TabIndex = 6
@@ -2997,10 +2999,10 @@ Partial Class dlgSettings
         '
         'GroupBox23
         '
+        Me.GroupBox23.Controls.Add(Me.txtAutoThumbs)
         Me.GroupBox23.Controls.Add(Me.GroupBox24)
         Me.GroupBox23.Controls.Add(Me.chkAutoThumbs)
         Me.GroupBox23.Controls.Add(Me.chkUseETasFA)
-        Me.GroupBox23.Controls.Add(Me.txtAutoThumbs)
         Me.GroupBox23.Controls.Add(Me.Label17)
         Me.GroupBox23.Controls.Add(Me.Label15)
         Me.GroupBox23.Controls.Add(Me.chkNoSpoilers)
@@ -3013,11 +3015,11 @@ Partial Class dlgSettings
         '
         'GroupBox24
         '
+        Me.GroupBox24.Controls.Add(Me.txtETWidth)
+        Me.GroupBox24.Controls.Add(Me.txtETHeight)
         Me.GroupBox24.Controls.Add(Me.chkETPadding)
         Me.GroupBox24.Controls.Add(Me.Label28)
         Me.GroupBox24.Controls.Add(Me.Label29)
-        Me.GroupBox24.Controls.Add(Me.txtETWidth)
-        Me.GroupBox24.Controls.Add(Me.txtETHeight)
         Me.GroupBox24.Controls.Add(Me.rbETCustom)
         Me.GroupBox24.Controls.Add(Me.rbETNative)
         Me.GroupBox24.Location = New System.Drawing.Point(5, 132)
