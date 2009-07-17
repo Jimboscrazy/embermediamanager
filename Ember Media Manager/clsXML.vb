@@ -360,7 +360,7 @@ Public Class XML
                 MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, rPath), MsgBoxStyle.Critical, "File Not Found")
             End If
 
-            Dim lPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "Languages.xml")
+            Dim lPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "Languages.xml")
             If File.Exists(lPath) Then
                 LanguageXML = XDocument.Load(lPath)
             Else
