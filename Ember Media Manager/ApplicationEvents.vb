@@ -42,6 +42,7 @@ Namespace My
             Dim Args() As String = Environment.GetCommandLineArgs
             ' Check if is allready running
             If Args.Count = 1 Then
+                MsgBox("Ember Media Manager is already running.", MsgBoxStyle.OkOnly, "Ember Media Manager")
                 End
             End If
         End Sub
