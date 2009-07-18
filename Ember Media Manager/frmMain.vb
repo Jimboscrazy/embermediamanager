@@ -2772,27 +2772,6 @@ Public Class frmMain
                                     doSave = True
                                 End If
 
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
-                                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
-                                    Else
-                                        scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
-                                    End If
-                                Else
-                                    If Directory.GetParent(drvRow.Item(1)).Name.ToLower = "video_ts" Then
-                                        scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1)).FullName).Name)
-                                    Else
-                                        If drvRow.Item(46) AndAlso drvRow.Item(2) Then
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1)).Name)
-                                        Else
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1)))
-                                        End If
-                                    End If
-                                End If
-
-                                Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
-
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -2902,6 +2881,26 @@ Public Class frmMain
                                     Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
                                 End If
 
+                                If Me.bwScraper.CancellationPending Then GoTo doCancel
+                                If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
+                                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
+                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
+                                    Else
+                                        scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
+                                    End If
+                                Else
+                                    If Directory.GetParent(drvRow.Item(1)).Name.ToLower = "video_ts" Then
+                                        scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1)).FullName).Name)
+                                    Else
+                                        If drvRow.Item(46) AndAlso drvRow.Item(2) Then
+                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1)).Name)
+                                        Else
+                                            scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1)))
+                                        End If
+                                    End If
+                                End If
+
+                                Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
 
                                 Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
 
@@ -2939,26 +2938,6 @@ Public Class frmMain
                                             UpdateMediaInfo(scrapeMovie)
                                         End If
 
-                                        If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
-                                            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                                scrapeMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
-                                            Else
-                                                scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
-                                            End If
-                                        Else
-                                            If Directory.GetParent(drvRow.Item(1)).Name.ToLower = "video_ts" Then
-                                                scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1)).FullName).Name)
-                                            Else
-                                                If drvRow.Item(46) AndAlso drvRow.Item(2) Then
-                                                    scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1)).Name)
-                                                Else
-                                                    scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1)))
-                                                End If
-                                            End If
-                                        End If
-
-                                        Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
-                                        Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
                                         doSave = True
                                     End If
 
@@ -3055,6 +3034,27 @@ Public Class frmMain
                                             End If
                                         End If
                                     End If
+
+                                    If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
+                                        If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
+                                            scrapeMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
+                                        Else
+                                            scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
+                                        End If
+                                    Else
+                                        If Directory.GetParent(drvRow.Item(1)).Name.ToLower = "video_ts" Then
+                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1)).FullName).Name)
+                                        Else
+                                            If drvRow.Item(46) AndAlso drvRow.Item(2) Then
+                                                scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1)).Name)
+                                            Else
+                                                scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1)))
+                                            End If
+                                        End If
+                                    End If
+
+                                    Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
+                                    If doSave Then Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
