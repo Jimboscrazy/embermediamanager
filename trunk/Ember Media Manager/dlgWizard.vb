@@ -170,7 +170,7 @@ Public Class dlgWizard
         Me.chkMovieNFO.Checked = Master.eSettings.MovieNFO
         Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
         Me.chkMovieNameMultiOnly.Checked = Master.eSettings.MovieNameMultiOnly
-        Me.cbIntLang.SelectedItem = Master.eSettings.Language
+        Me.cbIntLang.Text = Master.eSettings.Language
     End Sub
 
     Private Sub RefreshSources()

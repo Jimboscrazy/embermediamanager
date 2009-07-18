@@ -1113,7 +1113,7 @@ Public Class dlgEditMovie
         ' Read all the genres from the xml and load into the list
         '\\
 
-        Me.lbGenre.Items.Add("[none]")
+        Me.lbGenre.Items.Add(Master.eLang.None)
 
         Me.lbGenre.Items.AddRange(XML.GetGenreList)
 
@@ -1125,7 +1125,7 @@ Public Class dlgEditMovie
         ' Read all the ratings from the xml and load into the list
         '\\
 
-        Me.lbMPAA.Items.Add("[none]")
+        Me.lbMPAA.Items.Add(Master.eLang.None)
 
         Me.lbMPAA.Items.AddRange(XML.GetRatingList)
 
