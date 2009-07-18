@@ -1345,7 +1345,7 @@ Partial Class dlgSettings
         Me.GroupBox8.Controls.Add(Me.GroupBox7)
         Me.GroupBox8.Controls.Add(Me.GroupBox6)
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
-        Me.GroupBox8.Location = New System.Drawing.Point(229, 113)
+        Me.GroupBox8.Location = New System.Drawing.Point(232, 113)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(356, 187)
         Me.GroupBox8.TabIndex = 5
@@ -1607,7 +1607,7 @@ Partial Class dlgSettings
         '
         Me.btnMovieRem.Image = CType(resources.GetObject("btnMovieRem.Image"), System.Drawing.Image)
         Me.btnMovieRem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieRem.Location = New System.Drawing.Point(481, 88)
+        Me.btnMovieRem.Location = New System.Drawing.Point(485, 88)
         Me.btnMovieRem.Name = "btnMovieRem"
         Me.btnMovieRem.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieRem.TabIndex = 3
@@ -1619,7 +1619,7 @@ Partial Class dlgSettings
         '
         Me.btnMovieAddFolder.Image = CType(resources.GetObject("btnMovieAddFolder.Image"), System.Drawing.Image)
         Me.btnMovieAddFolder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieAddFolder.Location = New System.Drawing.Point(481, 6)
+        Me.btnMovieAddFolder.Location = New System.Drawing.Point(485, 6)
         Me.btnMovieAddFolder.Name = "btnMovieAddFolder"
         Me.btnMovieAddFolder.Size = New System.Drawing.Size(104, 23)
         Me.btnMovieAddFolder.TabIndex = 1
@@ -2915,7 +2915,7 @@ Partial Class dlgSettings
         '
         Me.btnEditSource.Image = CType(resources.GetObject("btnEditSource.Image"), System.Drawing.Image)
         Me.btnEditSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditSource.Location = New System.Drawing.Point(481, 35)
+        Me.btnEditSource.Location = New System.Drawing.Point(485, 35)
         Me.btnEditSource.Name = "btnEditSource"
         Me.btnEditSource.Size = New System.Drawing.Size(104, 23)
         Me.btnEditSource.TabIndex = 2
@@ -3170,13 +3170,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

@@ -50,13 +50,6 @@ Partial Class dlgWizard
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.Panel2 = New System.Windows.Forms.Panel
-        Me.btnMovieRem = New System.Windows.Forms.Button
-        Me.btnMovieAddFolder = New System.Windows.Forms.Button
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Panel4 = New System.Windows.Forms.Panel
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.Label7 = New System.Windows.Forms.Label
         Me.lvMovies = New System.Windows.Forms.ListView
         Me.colID = New System.Windows.Forms.ColumnHeader
         Me.colName = New System.Windows.Forms.ColumnHeader
@@ -64,6 +57,16 @@ Partial Class dlgWizard
         Me.colRecur = New System.Windows.Forms.ColumnHeader
         Me.colFolder = New System.Windows.Forms.ColumnHeader
         Me.colSingle = New System.Windows.Forms.ColumnHeader
+        Me.btnMovieRem = New System.Windows.Forms.Button
+        Me.btnMovieAddFolder = New System.Windows.Forms.Button
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.Panel4 = New System.Windows.Forms.Panel
+        Me.Label8 = New System.Windows.Forms.Label
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.Label7 = New System.Windows.Forms.Label
+        Me.chkMovieNameMultiOnly = New System.Windows.Forms.CheckBox
+        Me.Label32 = New System.Windows.Forms.Label
+        Me.cbIntLang = New System.Windows.Forms.ComboBox
         Me.Panel1.SuspendLayout()
         Me.Panel3.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -118,6 +121,8 @@ Partial Class dlgWizard
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.Label32)
+        Me.Panel1.Controls.Add(Me.cbIntLang)
         Me.Panel1.Controls.Add(Me.Label2)
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Location = New System.Drawing.Point(164, 7)
@@ -127,9 +132,9 @@ Partial Class dlgWizard
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(18, 80)
+        Me.Label2.Location = New System.Drawing.Point(17, 46)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(337, 212)
+        Me.Label2.Size = New System.Drawing.Size(337, 201)
         Me.Label2.TabIndex = 1
         Me.Label2.Text = resources.GetString("Label2.Text")
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -148,6 +153,7 @@ Partial Class dlgWizard
         '
         Me.Panel3.BackColor = System.Drawing.Color.White
         Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel3.Controls.Add(Me.chkMovieNameMultiOnly)
         Me.Panel3.Controls.Add(Me.GroupBox7)
         Me.Panel3.Controls.Add(Me.GroupBox6)
         Me.Panel3.Controls.Add(Me.GroupBox5)
@@ -241,7 +247,7 @@ Partial Class dlgWizard
         Me.GroupBox5.Controls.Add(Me.chkMovieJPG)
         Me.GroupBox5.Controls.Add(Me.chkMovieNameTBN)
         Me.GroupBox5.Controls.Add(Me.chkMovieTBN)
-        Me.GroupBox5.Location = New System.Drawing.Point(19, 124)
+        Me.GroupBox5.Location = New System.Drawing.Point(19, 111)
         Me.GroupBox5.Name = "GroupBox5"
         Me.GroupBox5.Size = New System.Drawing.Size(199, 126)
         Me.GroupBox5.TabIndex = 66
@@ -321,7 +327,7 @@ Partial Class dlgWizard
         'Label5
         '
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(45, 277)
+        Me.Label5.Location = New System.Drawing.Point(45, 281)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(286, 30)
         Me.Label5.TabIndex = 2
@@ -363,6 +369,45 @@ Partial Class dlgWizard
         Me.Panel2.Size = New System.Drawing.Size(372, 323)
         Me.Panel2.TabIndex = 5
         Me.Panel2.Visible = False
+        '
+        'lvMovies
+        '
+        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colPath, Me.colRecur, Me.colFolder, Me.colSingle})
+        Me.lvMovies.FullRowSelect = True
+        Me.lvMovies.HideSelection = False
+        Me.lvMovies.Location = New System.Drawing.Point(5, 124)
+        Me.lvMovies.Name = "lvMovies"
+        Me.lvMovies.Size = New System.Drawing.Size(362, 105)
+        Me.lvMovies.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvMovies.TabIndex = 57
+        Me.lvMovies.UseCompatibleStateImageBehavior = False
+        Me.lvMovies.View = System.Windows.Forms.View.Details
+        '
+        'colID
+        '
+        Me.colID.Width = 0
+        '
+        'colName
+        '
+        Me.colName.Text = "Name"
+        Me.colName.Width = 50
+        '
+        'colPath
+        '
+        Me.colPath.Text = "Path"
+        Me.colPath.Width = 125
+        '
+        'colRecur
+        '
+        Me.colRecur.Text = "Recursive"
+        '
+        'colFolder
+        '
+        Me.colFolder.Text = "Use Folder Name"
+        '
+        'colSingle
+        '
+        Me.colSingle.Text = "Single Video"
         '
         'btnMovieRem
         '
@@ -439,44 +484,32 @@ Partial Class dlgWizard
         Me.Label7.Text = "That's it!" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Ember Media Manager is Ready!"
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'lvMovies
+        'chkMovieNameMultiOnly
         '
-        Me.lvMovies.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colPath, Me.colRecur, Me.colFolder, Me.colSingle})
-        Me.lvMovies.FullRowSelect = True
-        Me.lvMovies.HideSelection = False
-        Me.lvMovies.Location = New System.Drawing.Point(5, 124)
-        Me.lvMovies.Name = "lvMovies"
-        Me.lvMovies.Size = New System.Drawing.Size(362, 105)
-        Me.lvMovies.Sorting = System.Windows.Forms.SortOrder.Ascending
-        Me.lvMovies.TabIndex = 57
-        Me.lvMovies.UseCompatibleStateImageBehavior = False
-        Me.lvMovies.View = System.Windows.Forms.View.Details
+        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(19, 237)
+        Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
+        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(199, 42)
+        Me.chkMovieNameMultiOnly.TabIndex = 69
+        Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
+        Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
         '
-        'colID
+        'Label32
         '
-        Me.colID.Width = 0
+        Me.Label32.AutoSize = True
+        Me.Label32.Location = New System.Drawing.Point(107, 241)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(103, 13)
+        Me.Label32.TabIndex = 19
+        Me.Label32.Text = "Interface Language:"
         '
-        'colName
+        'cbIntLang
         '
-        Me.colName.Text = "Name"
-        Me.colName.Width = 50
-        '
-        'colPath
-        '
-        Me.colPath.Text = "Path"
-        Me.colPath.Width = 125
-        '
-        'colRecur
-        '
-        Me.colRecur.Text = "Recursive"
-        '
-        'colFolder
-        '
-        Me.colFolder.Text = "Use Folder Name"
-        '
-        'colSingle
-        '
-        Me.colSingle.Text = "Single Video"
+        Me.cbIntLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbIntLang.FormattingEnabled = True
+        Me.cbIntLang.Location = New System.Drawing.Point(110, 258)
+        Me.cbIntLang.Name = "cbIntLang"
+        Me.cbIntLang.Size = New System.Drawing.Size(148, 21)
+        Me.cbIntLang.TabIndex = 18
         '
         'dlgWizard
         '
@@ -490,10 +523,10 @@ Partial Class dlgWizard
         Me.Controls.Add(Me.btnNext)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
-        Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Panel4)
         Me.Controls.Add(Me.Panel3)
+        Me.Controls.Add(Me.Panel2)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -558,5 +591,8 @@ Partial Class dlgWizard
     Friend WithEvents colRecur As System.Windows.Forms.ColumnHeader
     Friend WithEvents colFolder As System.Windows.Forms.ColumnHeader
     Friend WithEvents colSingle As System.Windows.Forms.ColumnHeader
+    Friend WithEvents chkMovieNameMultiOnly As System.Windows.Forms.CheckBox
+    Friend WithEvents Label32 As System.Windows.Forms.Label
+    Friend WithEvents cbIntLang As System.Windows.Forms.ComboBox
 
 End Class
