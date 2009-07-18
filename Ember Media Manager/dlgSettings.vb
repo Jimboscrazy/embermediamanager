@@ -1466,7 +1466,7 @@ Public Class dlgSettings
 
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
             Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
-            Master.eSettings.FlagLang = If(Me.cbLanguages.Text = "[Disabled]", String.Empty, Me.cbLanguages.Text)
+            Master.eSettings.FlagLang = If(Me.cbLanguages.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
             If Not cbIntLang.Text = Master.eSettings.Language Then Master.eLang.LoadLanguage(cbIntLang.Text)
             Master.eSettings.Language = Me.cbIntLang.Text
 
@@ -1660,7 +1660,7 @@ Public Class dlgSettings
                 Me.txtCheckTitleTol.Text = Master.eSettings.LevTolerance.ToString
             End If
             Me.chkAutoDetectVTS.Checked = Master.eSettings.AutoDetectVTS
-            Me.cbLanguages.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.FlagLang), "[Disabled]", Master.eSettings.FlagLang)
+            Me.cbLanguages.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.FlagLang), Master.eLang.Disabled, Master.eSettings.FlagLang)
             Me.cbIntLang.SelectedItem = Master.eSettings.Language
 
             Me.RefreshSources()
@@ -1685,7 +1685,7 @@ Public Class dlgSettings
 
     Private Sub LoadLangs()
 
-        Me.cbLanguages.Items.Add("[Disabled]")
+        Me.cbLanguages.Items.Add(Master.eLang.Disabled)
         Me.cbLanguages.Items.AddRange(XML.GetLanguageList)
 
     End Sub

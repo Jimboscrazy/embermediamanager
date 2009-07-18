@@ -27,6 +27,47 @@ Imports System.Xml.Serialization
 Public Class Localization
     Private Shared htStrings As New Hashtable
 
+    Private _all As String
+    Private _none As String
+    Private _disabled As String
+
+    Public Property All() As String
+        Get
+            Return _all
+        End Get
+        Set(ByVal value As String)
+            _all = value
+        End Set
+    End Property
+
+    Public Property None() As String
+        Get
+            Return _none
+        End Get
+        Set(ByVal value As String)
+            _none = value
+        End Set
+    End Property
+
+    Public Property Disabled() As String
+        Get
+            Return _disabled
+        End Get
+        Set(ByVal value As String)
+            _disabled = value
+        End Set
+    End Property
+
+    Public Sub New()
+        Me.Clear()
+    End Sub
+
+    Public Sub Clear()
+        _all = "All"
+        _none = "[none]"
+        _disabled = "[Disabled]"
+    End Sub
+
     Public Sub LoadLanguage(ByVal Language As String)
         htStrings.Clear()
         Try
@@ -39,6 +80,10 @@ Public Class Localization
                         For i As Integer = 0 To xLanguage.Count - 1
                             htStrings.Add(Convert.ToInt32(xLanguage(i).id), xLanguage(i).Value)
                         Next
+
+                        _all = GetString(569, Master.eLang.All)
+                        _none = GetString(570, Master.eLang.None)
+                        _disabled = GetString(571, Master.eLang.Disabled)
                     End If
                 Else
                     MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")

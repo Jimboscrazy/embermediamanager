@@ -1159,8 +1159,8 @@ Public Class frmMain
             Me.FilterArray.Add(Me.filGenre)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = "All" OrElse _
+        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
+        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = Master.eLang.All OrElse _
         Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked Then Me.RunFilter()
     End Sub
 
@@ -1184,8 +1184,8 @@ Public Class frmMain
             Me.FilterArray.Add(Me.filGenre)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = "All") OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = "All" OrElse _
+        If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
+        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = Master.eLang.All OrElse _
         Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked Then Me.RunFilter()
     End Sub
 
@@ -1941,7 +1941,7 @@ Public Class frmMain
                 End If
             Next
 
-            If Not cbFilterSource.Text = "All" Then
+            If Not cbFilterSource.Text = Master.eLang.All Then
                 Me.FilterArray.Add(String.Format("source = '{0}'", cbFilterSource.Text))
             End If
             Me.RunFilter()
@@ -2163,7 +2163,7 @@ Public Class frmMain
 
     Private Sub cbFilterYearMod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYearMod.SelectedIndexChanged
         Try
-            If Not String.IsNullOrEmpty(cbFilterYear.Text) AndAlso Not cbFilterYear.Text = "All" Then
+            If Not String.IsNullOrEmpty(cbFilterYear.Text) AndAlso Not cbFilterYear.Text = Master.eLang.All Then
                 Me.FilterArray.Remove(Me.filYear)
                 Me.filYear = String.Empty
 
@@ -2184,7 +2184,7 @@ Public Class frmMain
 
     Private Sub cbFilterYear_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterYear.SelectedIndexChanged
         Try
-            If Not String.IsNullOrEmpty(cbFilterYearMod.Text) AndAlso Not cbFilterYear.Text = "All" Then
+            If Not String.IsNullOrEmpty(cbFilterYearMod.Text) AndAlso Not cbFilterYear.Text = Master.eLang.All Then
                 Me.FilterArray.Remove(Me.filYear)
                 Me.filYear = String.Empty
 
@@ -2199,7 +2199,7 @@ Public Class frmMain
                     Me.RunFilter()
                 End If
 
-                If cbFilterYear.Text = "All" Then
+                If cbFilterYear.Text = Master.eLang.All Then
                     Me.cbFilterYearMod.Text = String.Empty
                 End If
             End If
@@ -4491,7 +4491,7 @@ doCancel:
 
                     RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
                     cbFilterSource.Items.Clear()
-                    cbFilterSource.Items.Add("All")
+                    cbFilterSource.Items.Add(Master.eLang.All)
                     Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                         SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
@@ -4505,7 +4505,7 @@ doCancel:
 
                     RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
                     Me.cbFilterYear.Items.Clear()
-                    cbFilterYear.Items.Add("All")
+                    cbFilterYear.Items.Add(Master.eLang.All)
                     For i As Integer = (Year(Today) + 1) To 1888 Step -1
                         Me.cbFilterYear.Items.Add(i)
                     Next
