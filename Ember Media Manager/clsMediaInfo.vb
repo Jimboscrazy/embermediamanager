@@ -330,6 +330,8 @@ Public Class MediaInfo
                     Else
                         Return "mpeg"
                     End If
+                Case tFormat = "mpeg-4 video"
+                    Return "mpeg4"
                 Case Else
                     Return tFormat
             End Select
