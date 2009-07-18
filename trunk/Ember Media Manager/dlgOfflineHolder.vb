@@ -254,7 +254,10 @@ Public Class dlgOfflineHolder
     End Sub
 
     Private Sub cbSources_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSources.SelectedIndexChanged
-        CheckConditions()
+        If Not String.IsNullOrEmpty(cbSources.Text) Then
+            tMovie.Source = cbSources.Text
+            CheckConditions()
+        End If
     End Sub
 
     Sub CheckConditions()
@@ -456,7 +459,7 @@ Public Class dlgOfflineHolder
             ffmpeg.StartInfo.CreateNoWindow = True
             ffmpeg.StartInfo.RedirectStandardOutput = True
             ffmpeg.StartInfo.RedirectStandardError = True
-            ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -i ""{0}\image%d.jpg"" ""{1}""", buildPath, tMovie.Filename)
+            ffmpeg.StartInfo.Arguments = String.Format(" -qscale 5 -r 25 -b 1200 -an -i ""{0}\image%d.jpg"" ""{1}""", buildPath, tMovie.Filename)
             ffmpeg.Start()
             ffmpeg.WaitForExit()
             ffmpeg.Close()
