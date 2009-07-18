@@ -342,6 +342,7 @@ Public Class Master
             Dim SkipStack As Boolean = False
             Dim fList As New List(Of FileAndSource)
             Dim tSingle As Boolean = False
+            Dim tFile As String = String.Empty
 
             If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
                 di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
@@ -357,47 +358,55 @@ Public Class Master
 
             If lFi.Count > 0 Then
 
-                'Check folder if it contains ifo, vob, and bup, consider it a video_ts folder (if bSingle is not already true)
-                If eSettings.AutoDetectVTS AndAlso Not bSingle Then
+                tFile = String.Empty
+                If eSettings.AutoDetectVTS Then
                     Dim hasIfo As Integer = 0
                     Dim hasVob As Integer = 0
                     Dim hasBup As Integer = 0
                     For Each lfile As FileInfo In lFi
-                        If Path.GetExtension(lfile.FullName).ToLower = ".ifo" Then
-                            hasIfo = 1
-                        End If
-                        If Path.GetExtension(lfile.FullName).ToLower = ".vob" Then
-                            hasVob = 1
-                        End If
-                        If Path.GetExtension(lfile.FullName).ToLower = ".bup" Then
-                            hasBup = 1
-                        End If
-                        If (hasIfo + hasVob + hasBup) > 1 Then Exit For
+                        If Path.GetExtension(lfile.FullName).ToLower = ".ifo" Then hasIfo = 1
+                        If Path.GetExtension(lfile.FullName).ToLower = ".vob" Then hasVob = 1
+                        If Path.GetExtension(lfile.FullName).ToLower = ".bup" Then hasBup = 1
+                        If Path.GetFileName(lfile.FullName).ToLower = "video_ts.vob" Then tFile = lfile.FullName
+                        If (hasIfo + hasVob + hasBup) > 1 AndAlso Not String.IsNullOrEmpty(tFile) Then Exit For
                     Next
                     bSingle = (hasIfo + hasVob + hasBup) > 1
                 End If
 
-                lFi.Sort(AddressOf SortFileNames)
-
-                For Each lFile As FileInfo In lFi
-
-                    If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
-                    Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
-                    ((eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
-                        If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
-                            tmpList.Add(lFile.FullName.ToLower)
-                            SkipStack = True
+                If bSingle AndAlso Not String.IsNullOrEmpty(tFile) Then
+                    If Not tmpList.Contains(StringManip.CleanStackingMarkers(tFile).ToLower) AndAlso _
+                    Not Path.GetFileName(tFile).ToLower.Contains("-trailer") AndAlso Not Path.GetFileName(tFile).ToLower.Contains("[trailer") AndAlso _
+                    Not Path.GetFileName(tFile).ToLower.Contains("sample") Then
+                        tmpList.Add(StringManip.CleanStackingMarkers(tFile).ToLower)
+                        If alMoviePaths.Contains(tFile.ToLower) Then
+                            fList.Add(New FileAndSource With {.Filename = tFile, .Source = "[!FROMDB!]"})
                         Else
-                            tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
+                            fList.Add(New FileAndSource With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder, .Contents = lFi})
                         End If
-                        If alMoviePaths.Contains(lFile.FullName.ToLower) Then
-                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
-                        Else
-                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
-                        End If
-                        If bSingle AndAlso Not SkipStack Then Exit For
                     End If
-                Next
+                Else
+                    lFi.Sort(AddressOf SortFileNames)
+
+                    For Each lFile As FileInfo In lFi
+
+                        If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
+                        Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
+                        ((eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
+                            If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
+                                tmpList.Add(lFile.FullName.ToLower)
+                                SkipStack = True
+                            Else
+                                tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
+                            End If
+                            If alMoviePaths.Contains(lFile.FullName.ToLower) Then
+                                fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
+                            Else
+                                fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
+                            End If
+                            If bSingle AndAlso Not SkipStack Then Exit For
+                        End If
+                    Next
+                End If
 
                 If fList.Count = 1 Then tSingle = True
 
