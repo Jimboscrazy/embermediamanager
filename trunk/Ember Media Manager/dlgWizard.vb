@@ -108,7 +108,23 @@ Public Class dlgWizard
 
     Private Sub dlgWizard_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
+        Me.LoadIntLangs()
         Me.FillSettings()
+    End Sub
+
+    Private Sub LoadIntLangs()
+
+        If Directory.Exists(Path.Combine(Application.StartupPath, "Langs")) Then
+            Dim alL As New ArrayList
+            Dim alLangs As New ArrayList
+            Try
+                alL.AddRange(Directory.GetFiles(Path.Combine(Application.StartupPath, "Langs"), "*).xml"))
+            Catch
+            End Try
+            alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)
+            Me.cbIntLang.Items.AddRange(alLangs.ToArray)
+        End If
+
     End Sub
 
     Private Sub SetUp()
@@ -134,6 +150,8 @@ Public Class dlgWizard
         Me.Label4.Text = Master.eLang.GetString(416, "Now that Ember Media Manager knows WHERE to look for the files, we need to tell it WHAT files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.")
         Me.Label3.Text = Master.eLang.GetString(414, "First, let's tell Ember Media Manager where all our movies are.  If each of your movie files are in a separate folder, add a Folder Path pointing to the parent folder.  If all your movie files are in the same folder, add a Files Path pointing to the parent folder. You can select as many Folder Paths, File Paths, or any combination of both that you wish.")
         Me.Label8.Text = String.Format(Master.eLang.GetString(417, "Some options you may be interested in:{0}{0}Custom Filters - If your movie files have things like ""DVDRip"", ""BluRay"", ""x264"", etc in their folder or file name and you wish to filter the names when loading into the media list, you can utilize the Custom Filter option.  The custom filter is RegEx compatible for maximum usability.{0}{0}Images - This section allows you to select which websites to ""scrape"" images from as well as select a preferred size for the images Ember Media Manager selects.{0}{0}Locks - This section allows you to ""lock"" certain information so it does not get updated even if you re-scrape the movie. This is useful if you manually edit the title, outline, or plot of a movie and wish to keep your changes."), vbNewLine)
+        Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
+        Me.Label32.Text = Master.eLang.GetString(430, "Interface Language")
     End Sub
 
     Private Sub FillSettings()
@@ -151,6 +169,8 @@ Public Class dlgWizard
         Me.chkMovieNameDotFanartJPG.Checked = Master.eSettings.MovieNameDotFanartJPG
         Me.chkMovieNFO.Checked = Master.eSettings.MovieNFO
         Me.chkMovieNameNFO.Checked = Master.eSettings.MovieNameNFO
+        Me.chkMovieNameMultiOnly.Checked = Master.eSettings.MovieNameMultiOnly
+        Me.cbIntLang.SelectedItem = Master.eSettings.Language
     End Sub
 
     Private Sub RefreshSources()
@@ -173,7 +193,6 @@ Public Class dlgWizard
     End Sub
 
     Private Sub SaveSettings()
-
         Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked
         Master.eSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
         Master.eSettings.MovieJPG = Me.chkMovieJPG.Checked
@@ -186,6 +205,8 @@ Public Class dlgWizard
         Master.eSettings.MovieNameDotFanartJPG = Me.chkMovieNameDotFanartJPG.Checked
         Master.eSettings.MovieNFO = Me.chkMovieNFO.Checked
         Master.eSettings.MovieNameNFO = Me.chkMovieNameNFO.Checked
+        Master.eSettings.MovieNameMultiOnly = Me.chkMovieNameMultiOnly.Checked
+        Master.eSettings.Language = Me.cbIntLang.Text
     End Sub
 
     Private Sub dlgWizard_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -199,6 +220,13 @@ Public Class dlgWizard
                     Me.RefreshSources()
                 End If
             End Using
+        End If
+    End Sub
+
+    Private Sub cbIntLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIntLang.SelectedIndexChanged
+        If Not String.IsNullOrEmpty(Me.cbIntLang.SelectedItem) Then
+            Master.eLang.LoadLanguage(Me.cbIntLang.SelectedItem)
+            Me.SetUp()
         End If
     End Sub
 End Class

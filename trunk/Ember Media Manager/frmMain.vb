@@ -525,6 +525,7 @@ Public Class frmMain
                     Master.DB.Connect(True, False)
                     Me.SetMenus(True)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
+                        Me.SetUp() 'just in case user changed languages
                         Me.Visible = True
                         Me.LoadMedia(1)
                     Else
