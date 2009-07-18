@@ -223,7 +223,7 @@ Public Class MediaInfo
 
                 Me.Handle = MediaInfo_New()
 
-                Me.Open(String.Format("""{0}""", sPath))
+                Me.Open(sPath)
 
                 VideoStreams = Me.Count_Get(StreamKind.Visual)
                 Dim vCodec As String = String.Empty

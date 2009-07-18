@@ -270,7 +270,7 @@ Public Class NFO
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        If strOutput.Length > 0 Then
+        If strOutput.ToString.Trim.Length > 0 Then
             Return strOutput.ToString
         Else
             Return Master.eLang.GetString(419, "Meta Data is not available for this movie. Try rescanning.")
