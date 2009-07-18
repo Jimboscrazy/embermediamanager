@@ -32,7 +32,7 @@ Public Class dlgNewVersion
         ' Overload to pass data
         '\\
 
-        Me.lblNew.Text = String.Format(Me.lblNew.Text, iNew)
+        Me.lblNew.Text = String.Format(Master.eLang.GetString(210, "Version r{0} is now available on Ember Media Manager's Google Code page."), iNew)
         Me.txtChangelog.Text = Master.GetChangelog.Replace("\n", vbNewLine)
 
         Return MyBase.ShowDialog()
@@ -49,7 +49,6 @@ Public Class dlgNewVersion
     Private Sub SetUp()
         Me.Text = Master.eLang.GetString(209, "A New Version Is Available")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.lblNew.Text = Master.eLang.GetString(210, "Version r{0} is now available on Ember Media Manager's Google Code page.")
         Me.llClick.Text = Master.eLang.GetString(211, "Click Here")
         Me.Label2.Text = Master.eLang.GetString(212, "to visit the Google Code page.")
     End Sub
