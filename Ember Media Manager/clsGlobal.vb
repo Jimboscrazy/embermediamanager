@@ -342,6 +342,7 @@ Public Class Master
             Dim SkipStack As Boolean = False
             Dim fList As New List(Of FileAndSource)
             Dim tSingle As Boolean = False
+            Dim vtsSingle As Boolean = False
             Dim tFile As String = String.Empty
 
             If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
@@ -367,12 +368,12 @@ Public Class Master
                         If Path.GetExtension(lfile.FullName).ToLower = ".vob" Then hasVob = 1
                         If Path.GetExtension(lfile.FullName).ToLower = ".bup" Then hasBup = 1
                         If Path.GetFileName(lfile.FullName).ToLower = "video_ts.vob" Then tFile = lfile.FullName
-                        bSingle = (hasIfo + hasVob + hasBup) > 1
-                        If bSingle AndAlso Not String.IsNullOrEmpty(tFile) Then Exit For
+                        vtsSingle = (hasIfo + hasVob + hasBup) > 1
+                        If vtsSingle AndAlso Not String.IsNullOrEmpty(tFile) Then Exit For
                     Next
                 End If
 
-                If bSingle AndAlso Not String.IsNullOrEmpty(tFile) Then
+                If vtsSingle AndAlso Not String.IsNullOrEmpty(tFile) Then
                     If Not tmpList.Contains(StringManip.CleanStackingMarkers(tFile).ToLower) AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("-trailer") AndAlso Not Path.GetFileName(tFile).ToLower.Contains("[trailer") AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("sample") Then
@@ -722,8 +723,8 @@ Public Class Master
         '\\
 
         Try
-            Using SourceStream As FileStream = New FileStream(sPathFrom, FileMode.Open, FileAccess.Read)
-                Using DestinationStream As FileStream = New FileStream(sPathTo, FileMode.Create, FileAccess.Write)
+            Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
+                Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
                     Dim StreamBuffer(SourceStream.Length - 1) As Byte
 
                     SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
