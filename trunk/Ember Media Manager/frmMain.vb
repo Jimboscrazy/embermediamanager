@@ -3078,7 +3078,10 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
                                 scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
-                                If Master.DeleteFiles(True, scrapeMovie) Then Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, False)
+                                If Master.DeleteFiles(True, scrapeMovie) Then
+                                    Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, False)
+                                    Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
+                                End If
                             Next
 
                         Case Master.ScrapeType.CopyBD
@@ -4210,7 +4213,7 @@ doCancel:
                     Using dImgSelectFanart As New dlgImgSelect
                         Dim AllowFA As Boolean = tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart, True)
 
-                        If AllowFA Then dImgSelectFanart.ShowDialog(Master.currMovie, Master.ImageType.Fanart, True, True)
+                        If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Master.ImageType.Fanart, True)
 
                         If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters, True) Then
                             Using dImgSelect As New dlgImgSelect

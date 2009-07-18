@@ -93,7 +93,7 @@ Public Class dlgIMDBSearchResults
         Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
         Me.lblIMDBHeader.Text = Master.eLang.GetString(289, "IMDB ID:")
         Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
+        Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
     End Sub
 
     Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
@@ -148,6 +148,7 @@ Public Class dlgIMDBSearchResults
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
             If Not String.IsNullOrEmpty(e.Node.Tag) Then
+                Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
                 Me.pnlLoading.Visible = True
                 IMDB.GetSearchMovieInfoAsync(e.Node.Tag, Master.tmpMovie, Master.DefaultOptions)
             End If
@@ -269,6 +270,10 @@ Public Class dlgIMDBSearchResults
 
     Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
         If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
+            Me.OK_Button.Enabled = False
+            Me.ClearInfo()
+            Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
+            Me.pnlLoading.Visible = True
             IMDB.SearchMovieAsync(Me.txtSearch.Text)
         End If
     End Sub
@@ -329,6 +334,7 @@ Public Class dlgIMDBSearchResults
                     Me.tvResults.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(300, "No Matches Found")})
                 End If
             End If
+            Me.pnlLoading.Visible = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
