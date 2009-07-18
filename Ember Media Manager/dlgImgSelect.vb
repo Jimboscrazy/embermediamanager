@@ -38,6 +38,7 @@ Public Class dlgImgSelect
     Private isEdit As Boolean = False
     Private DLType As Master.ImageType
     Private PreDL As Boolean = False
+    Private isShown As Boolean = False
 
     Private iCounter As Integer = 0
     Private iTop As Integer = 5
@@ -49,6 +50,7 @@ Public Class dlgImgSelect
     Private chkImage() As CheckBox
     Private tmpImage As New Images
     Private selIndex As Integer = -1
+    Private noImages As Boolean = False
 
     Private IMPAPosters As New List(Of Media.Image)
     Private TMDBPosters As New List(Of Media.Image)
@@ -320,13 +322,17 @@ Public Class dlgImgSelect
                     End If
                 Next
             Else
-                If Me.DLType = Master.ImageType.Fanart Then
-                    MsgBox(Master.eLang.GetString(310, "No Fanart found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(311, "No Fanart Found"))
+                If Not Me.PreDL OrElse isShown Then
+                    If Me.DLType = Master.ImageType.Fanart Then
+                        MsgBox(Master.eLang.GetString(310, "No Fanart found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(311, "No Fanart Found"))
+                    Else
+                        MsgBox(Master.eLang.GetString(312, "No Posters found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(313, "No Posters Found"))
+                    End If
+                    Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+                    Me.Close()
                 Else
-                    MsgBox(Master.eLang.GetString(312, "No Posters found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(313, "No Posters Found"))
+                    noImages = True
                 End If
-                Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-                Me.Close()
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -805,7 +811,17 @@ Public Class dlgImgSelect
         Try
 
             Me.Activate()
-            If Not PreDL Then StartDownload()
+            If Not PreDL Then
+                StartDownload()
+            ElseIf noImages Then
+                If Me.DLType = Master.ImageType.Fanart Then
+                    MsgBox(Master.eLang.GetString(310, "No Fanart found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(311, "No Fanart Found"))
+                Else
+                    MsgBox(Master.eLang.GetString(312, "No Posters found for this movie."), MsgBoxStyle.Information, Master.eLang.GetString(313, "No Posters Found"))
+                End If
+                Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+                Me.Close()
+            End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1032,7 +1048,16 @@ Public Class dlgImgSelect
         Me.btnPreview.Enabled = True
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False, Optional ByVal _PreDL As Boolean = False) As String
+    Public Sub PreLoad(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False)
+        Me.tMovie = mMovie
+        Me.DLType = _DLType
+        Me.isEdit = _isEdit
+        Me.PreDL = True
+        Me.SetUp()
+        Me.StartDownload()
+    End Sub
+
+    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As String
 
         '//
         ' Overload to pass data
@@ -1041,23 +1066,19 @@ Public Class dlgImgSelect
         Me.tMovie = mMovie
         Me.DLType = _DLType
         Me.isEdit = _isEdit
-        Me.PreDL = _PreDL
 
-        If Not _PreDL Then
-            MyBase.ShowDialog()
-            Return OutPath
-        Else
-            Me.SetUp()
-            Me.StartDownload()
-            Return Nothing
-        End If
+        MyBase.ShowDialog()
+        Return OutPath
 
     End Function
 
     Public Overloads Function ShowDialog() As String
 
-            MyBase.ShowDialog()
-            Return OutPath
+
+        Me.isShown = True
+        MyBase.ShowDialog()
+
+        Return OutPath
 
     End Function
 

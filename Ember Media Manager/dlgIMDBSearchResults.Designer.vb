@@ -338,16 +338,15 @@ Partial Class dlgIMDBSearchResults
         Me.pnlLoading.Name = "pnlLoading"
         Me.pnlLoading.Size = New System.Drawing.Size(200, 54)
         Me.pnlLoading.TabIndex = 68
-        Me.pnlLoading.Visible = False
         '
         'Label3
         '
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(3, 10)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(111, 13)
+        Me.Label3.Size = New System.Drawing.Size(94, 13)
         Me.Label3.TabIndex = 1
-        Me.Label3.Text = "Downloading details..."
+        Me.Label3.Text = "Searching IMDB..."
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'ProgressBar1
