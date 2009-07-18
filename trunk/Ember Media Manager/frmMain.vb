@@ -3133,7 +3133,7 @@ Public Class frmMain
             End Try
 
 doCancel:
-            If Not Args.scrapeType = Master.ScrapeType.CopyBD AndAlso Not Args.scrapeType = Master.ScrapeType.CleanFolders Then
+            If Not Args.scrapeType = Master.ScrapeType.CopyBD Then
                 SQLtransaction.Commit()
             End If
         End Using
