@@ -247,7 +247,7 @@ Partial Class dlgOfflineHolder
         Me.txtTagline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTagline.Location = New System.Drawing.Point(9, 312)
         Me.txtTagline.Name = "txtTagline"
-        Me.txtTagline.Size = New System.Drawing.Size(197, 20)
+        Me.txtTagline.Size = New System.Drawing.Size(220, 20)
         Me.txtTagline.TabIndex = 69
         Me.txtTagline.Text = "Insert DVD"
         '
@@ -311,16 +311,16 @@ Partial Class dlgOfflineHolder
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(136, 13)
         Me.Label6.TabIndex = 83
-        Me.Label6.Text = "Place Holder Video Fromat:"
+        Me.Label6.Text = "Place Holder Video Format:"
         '
         'cbFormat
         '
         Me.cbFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFormat.FormattingEnabled = True
-        Me.cbFormat.Items.AddRange(New Object() {"HDV", "DV PAL"})
+        Me.cbFormat.Items.AddRange(New Object() {"Standard", "HDV", "DV PAL"})
         Me.cbFormat.Location = New System.Drawing.Point(142, 333)
         Me.cbFormat.Name = "cbFormat"
-        Me.cbFormat.Size = New System.Drawing.Size(64, 21)
+        Me.cbFormat.Size = New System.Drawing.Size(87, 21)
         Me.cbFormat.TabIndex = 70
         '
         'chkBackground

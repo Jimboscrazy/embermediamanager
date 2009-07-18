@@ -175,7 +175,7 @@ Public Class dlgOfflineHolder
         Me.txtTagline.Text = Master.eLang.GetString(341, "Insert DVD")
         Me.Label1.Text = Master.eLang.GetString(342, "Text Color:")
         Me.GroupBox1.Text = Master.eLang.GetString(180, "Preview")
-        Me.Label6.Text = Master.eLang.GetString(343, "Place Holder Video Fromat:")
+        Me.Label6.Text = Master.eLang.GetString(343, "Place Holder Video Format:")
         Me.chkBackground.Text = Master.eLang.GetString(344, "Use Tagline Background")
         Me.Label5.Text = Master.eLang.GetString(345, "Tagline background Color:")
         Me.chkOverlay.Text = Master.eLang.GetString(346, "Use Ember Overlay")
@@ -474,8 +474,8 @@ Public Class dlgOfflineHolder
         DirectoryCopy(WorkingPath, destPath)
 
         tMovie.Filename = Path.Combine(destPath, String.Concat(MovieName, ".avi"))
-        tMovie.PosterPath = Path.Combine(destPath, Path.GetFileName(tMovie.PosterPath).ToString)
-        tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
+        If Not String.IsNullOrEmpty(tMovie.PosterPath) Then tMovie.PosterPath = Path.Combine(destPath, Path.GetFileName(tMovie.PosterPath).ToString)
+        If Not String.IsNullOrEmpty(tMovie.FanartPath) Then tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
 
         If Not String.IsNullOrEmpty(tMovie.Movie.Title) Then
             tMovie.ListTitle = tMovie.Movie.Title
@@ -674,15 +674,18 @@ Public Class dlgOfflineHolder
     Private Sub cbFormat_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFormat.SelectedIndexChanged
         Select Case (sender.selectedindex)
             Case 0
+                Video_Width = 640
+                Video_Height = 480
+            Case 1
                 Video_Width = 1280
                 Video_Height = 720
-            Case 1
+            Case 2
                 Video_Width = 720
                 Video_Height = 576
         End Select
         SetPreview(Not chkUseFanart.Checked, String.Empty)
         'tbTagLine.Maximum = Preview.Height - textHeight.Height
-        If Not chkUseFanart.Checked AndAlso Not Preview Is Nothing Then
+        If Not chkUseFanart.Checked AndAlso Not IsNothing(Preview) Then
             txtTop.Text = Convert.ToUInt16((Preview.Height - 150 / (1280 / Video_Width))).ToString
             'txtTopPos = Convert.ToUInt16(txtTop.Text)
         End If
