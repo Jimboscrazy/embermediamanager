@@ -162,18 +162,20 @@ Partial Class dlgSettings
         Me.chkOFDBOutline = New System.Windows.Forms.CheckBox
         Me.chkOFDBTitle = New System.Windows.Forms.CheckBox
         Me.GroupBox14 = New System.Windows.Forms.GroupBox
+        Me.txtPosterWidth = New System.Windows.Forms.TextBox
+        Me.txtPosterHeight = New System.Windows.Forms.TextBox
         Me.lblPosterQual = New System.Windows.Forms.Label
         Me.tbPosterQual = New System.Windows.Forms.TrackBar
         Me.Label24 = New System.Windows.Forms.Label
         Me.Label11 = New System.Windows.Forms.Label
         Me.Label12 = New System.Windows.Forms.Label
         Me.chkResizePoster = New System.Windows.Forms.CheckBox
-        Me.txtPosterWidth = New System.Windows.Forms.TextBox
-        Me.txtPosterHeight = New System.Windows.Forms.TextBox
         Me.lblPosterSize = New System.Windows.Forms.Label
         Me.cbPosterSize = New System.Windows.Forms.ComboBox
         Me.chkOverwritePoster = New System.Windows.Forms.CheckBox
         Me.GroupBox13 = New System.Windows.Forms.GroupBox
+        Me.txtFanartWidth = New System.Windows.Forms.TextBox
+        Me.txtFanartHeight = New System.Windows.Forms.TextBox
         Me.chkFanartOnly = New System.Windows.Forms.CheckBox
         Me.lblFanartQual = New System.Windows.Forms.Label
         Me.tbFanartQual = New System.Windows.Forms.TrackBar
@@ -181,8 +183,6 @@ Partial Class dlgSettings
         Me.Label9 = New System.Windows.Forms.Label
         Me.Label10 = New System.Windows.Forms.Label
         Me.chkResizeFanart = New System.Windows.Forms.CheckBox
-        Me.txtFanartWidth = New System.Windows.Forms.TextBox
-        Me.txtFanartHeight = New System.Windows.Forms.TextBox
         Me.cbFanartSize = New System.Windows.Forms.ComboBox
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteFanart = New System.Windows.Forms.CheckBox
@@ -284,11 +284,11 @@ Partial Class dlgSettings
         Me.pnlImages = New System.Windows.Forms.Panel
         Me.GroupBox23 = New System.Windows.Forms.GroupBox
         Me.GroupBox24 = New System.Windows.Forms.GroupBox
+        Me.txtETWidth = New System.Windows.Forms.TextBox
+        Me.txtETHeight = New System.Windows.Forms.TextBox
         Me.chkETPadding = New System.Windows.Forms.CheckBox
         Me.Label28 = New System.Windows.Forms.Label
         Me.Label29 = New System.Windows.Forms.Label
-        Me.txtETWidth = New System.Windows.Forms.TextBox
-        Me.txtETHeight = New System.Windows.Forms.TextBox
         Me.rbETCustom = New System.Windows.Forms.RadioButton
         Me.rbETNative = New System.Windows.Forms.RadioButton
         Me.GroupBox17 = New System.Windows.Forms.GroupBox
@@ -1699,6 +1699,24 @@ Partial Class dlgSettings
         Me.GroupBox14.TabStop = False
         Me.GroupBox14.Text = "Poster"
         '
+        'txtPosterWidth
+        '
+        Me.txtPosterWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPosterWidth.Enabled = False
+        Me.txtPosterWidth.Location = New System.Drawing.Point(65, 94)
+        Me.txtPosterWidth.Name = "txtPosterWidth"
+        Me.txtPosterWidth.Size = New System.Drawing.Size(38, 20)
+        Me.txtPosterWidth.TabIndex = 3
+        '
+        'txtPosterHeight
+        '
+        Me.txtPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPosterHeight.Enabled = False
+        Me.txtPosterHeight.Location = New System.Drawing.Point(172, 94)
+        Me.txtPosterHeight.Name = "txtPosterHeight"
+        Me.txtPosterHeight.Size = New System.Drawing.Size(38, 20)
+        Me.txtPosterHeight.TabIndex = 4
+        '
         'lblPosterQual
         '
         Me.lblPosterQual.AutoSize = True
@@ -1758,24 +1776,6 @@ Partial Class dlgSettings
         Me.chkResizePoster.Text = "Automatically Resize Poster:"
         Me.chkResizePoster.UseVisualStyleBackColor = True
         '
-        'txtPosterWidth
-        '
-        Me.txtPosterWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPosterWidth.Enabled = False
-        Me.txtPosterWidth.Location = New System.Drawing.Point(65, 94)
-        Me.txtPosterWidth.Name = "txtPosterWidth"
-        Me.txtPosterWidth.Size = New System.Drawing.Size(38, 20)
-        Me.txtPosterWidth.TabIndex = 3
-        '
-        'txtPosterHeight
-        '
-        Me.txtPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPosterHeight.Enabled = False
-        Me.txtPosterHeight.Location = New System.Drawing.Point(172, 94)
-        Me.txtPosterHeight.Name = "txtPosterHeight"
-        Me.txtPosterHeight.Size = New System.Drawing.Size(38, 20)
-        Me.txtPosterHeight.TabIndex = 4
-        '
         'lblPosterSize
         '
         Me.lblPosterSize.AutoSize = True
@@ -1824,6 +1824,24 @@ Partial Class dlgSettings
         Me.GroupBox13.TabIndex = 3
         Me.GroupBox13.TabStop = False
         Me.GroupBox13.Text = "Fanart"
+        '
+        'txtFanartWidth
+        '
+        Me.txtFanartWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFanartWidth.Enabled = False
+        Me.txtFanartWidth.Location = New System.Drawing.Point(65, 93)
+        Me.txtFanartWidth.Name = "txtFanartWidth"
+        Me.txtFanartWidth.Size = New System.Drawing.Size(38, 20)
+        Me.txtFanartWidth.TabIndex = 4
+        '
+        'txtFanartHeight
+        '
+        Me.txtFanartHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFanartHeight.Enabled = False
+        Me.txtFanartHeight.Location = New System.Drawing.Point(172, 93)
+        Me.txtFanartHeight.Name = "txtFanartHeight"
+        Me.txtFanartHeight.Size = New System.Drawing.Size(38, 20)
+        Me.txtFanartHeight.TabIndex = 5
         '
         'chkFanartOnly
         '
@@ -1893,24 +1911,6 @@ Partial Class dlgSettings
         Me.chkResizeFanart.TabIndex = 3
         Me.chkResizeFanart.Text = "Automatically Resize Fanart:"
         Me.chkResizeFanart.UseVisualStyleBackColor = True
-        '
-        'txtFanartWidth
-        '
-        Me.txtFanartWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFanartWidth.Enabled = False
-        Me.txtFanartWidth.Location = New System.Drawing.Point(65, 93)
-        Me.txtFanartWidth.Name = "txtFanartWidth"
-        Me.txtFanartWidth.Size = New System.Drawing.Size(38, 20)
-        Me.txtFanartWidth.TabIndex = 4
-        '
-        'txtFanartHeight
-        '
-        Me.txtFanartHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFanartHeight.Enabled = False
-        Me.txtFanartHeight.Location = New System.Drawing.Point(172, 93)
-        Me.txtFanartHeight.Name = "txtFanartHeight"
-        Me.txtFanartHeight.Size = New System.Drawing.Size(38, 20)
-        Me.txtFanartHeight.TabIndex = 5
         '
         'cbFanartSize
         '
@@ -3029,6 +3029,24 @@ Partial Class dlgSettings
         Me.GroupBox24.TabStop = False
         Me.GroupBox24.Text = "Sizing (Extracted Frames)"
         '
+        'txtETWidth
+        '
+        Me.txtETWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtETWidth.Enabled = False
+        Me.txtETWidth.Location = New System.Drawing.Point(57, 49)
+        Me.txtETWidth.Name = "txtETWidth"
+        Me.txtETWidth.Size = New System.Drawing.Size(38, 20)
+        Me.txtETWidth.TabIndex = 44
+        '
+        'txtETHeight
+        '
+        Me.txtETHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtETHeight.Enabled = False
+        Me.txtETHeight.Location = New System.Drawing.Point(143, 49)
+        Me.txtETHeight.Name = "txtETHeight"
+        Me.txtETHeight.Size = New System.Drawing.Size(38, 20)
+        Me.txtETHeight.TabIndex = 45
+        '
         'chkETPadding
         '
         Me.chkETPadding.AutoSize = True
@@ -3057,24 +3075,6 @@ Partial Class dlgSettings
         Me.Label29.Size = New System.Drawing.Size(41, 13)
         Me.Label29.TabIndex = 46
         Me.Label29.Text = "Height:"
-        '
-        'txtETWidth
-        '
-        Me.txtETWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtETWidth.Enabled = False
-        Me.txtETWidth.Location = New System.Drawing.Point(57, 49)
-        Me.txtETWidth.Name = "txtETWidth"
-        Me.txtETWidth.Size = New System.Drawing.Size(38, 20)
-        Me.txtETWidth.TabIndex = 44
-        '
-        'txtETHeight
-        '
-        Me.txtETHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtETHeight.Enabled = False
-        Me.txtETHeight.Location = New System.Drawing.Point(143, 49)
-        Me.txtETHeight.Name = "txtETHeight"
-        Me.txtETHeight.Size = New System.Drawing.Size(38, 20)
-        Me.txtETHeight.TabIndex = 45
         '
         'rbETCustom
         '
@@ -3170,13 +3170,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
