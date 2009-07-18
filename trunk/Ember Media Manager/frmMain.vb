@@ -4113,7 +4113,8 @@ doCancel:
                     Else
                         Master.tmpMovie.Clear()
                         If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) AndAlso doSearch = False Then
-                            IMDB.GetMovieInfoAsync(Master.currMovie.Movie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
+                            Master.tmpMovie = Master.currMovie.Movie
+                            IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                         Else
                             Using dSearch As New dlgIMDBSearchResults
                                 If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
