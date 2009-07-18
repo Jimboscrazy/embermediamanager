@@ -358,7 +358,6 @@ Public Class Master
 
             If lFi.Count > 0 Then
 
-                tFile = String.Empty
                 If eSettings.AutoDetectVTS Then
                     Dim hasIfo As Integer = 0
                     Dim hasVob As Integer = 0
@@ -368,9 +367,9 @@ Public Class Master
                         If Path.GetExtension(lfile.FullName).ToLower = ".vob" Then hasVob = 1
                         If Path.GetExtension(lfile.FullName).ToLower = ".bup" Then hasBup = 1
                         If Path.GetFileName(lfile.FullName).ToLower = "video_ts.vob" Then tFile = lfile.FullName
-                        If (hasIfo + hasVob + hasBup) > 1 AndAlso Not String.IsNullOrEmpty(tFile) Then Exit For
+                        bSingle = (hasIfo + hasVob + hasBup) > 1
+                        If bSingle AndAlso Not String.IsNullOrEmpty(tFile) Then Exit For
                     Next
-                    bSingle = (hasIfo + hasVob + hasBup) > 1
                 End If
 
                 If bSingle AndAlso Not String.IsNullOrEmpty(tFile) Then
