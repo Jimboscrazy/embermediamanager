@@ -266,7 +266,7 @@
   <string id="264">Clear Cache</string>
   <string id="265">Change Poster (Download)</string>
   <string id="266">Change Fanart (Download)</string>
-  <string id="267">Master.eLang.GetString(148, "One or more cache resources is currently in use and cannot be deleted at the moment.</string>
+  <string id="267">One or more cache resources is currently in use and cannot be deleted at the moment.</string>
   <string id="268">Cannot Clear Cache</string>
   <string id="269">Size: {0}x{1}</string>
   <string id="270">The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type.</string>
@@ -342,7 +342,7 @@
   <string id="340">Place Holder Video Tagline:</string>
   <string id="341">Insert DVD</string>
   <string id="342">Text Color:</string>
-  <string id="343">Place Holder Video Fromat:</string>
+  <string id="343">Place Holder Video Format:</string>
   <string id="344">Use Tagline Background</string>
   <string id="345">Tagline background Color:</string>
   <string id="346">Use Ember Overlay</string>
