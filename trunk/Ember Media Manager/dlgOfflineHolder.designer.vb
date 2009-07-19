@@ -264,12 +264,12 @@ Partial Class dlgOfflineHolder
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(277, 321)
+        Me.Label1.Location = New System.Drawing.Point(235, 321)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(58, 13)
+        Me.Label1.Size = New System.Drawing.Size(100, 13)
         Me.Label1.TabIndex = 72
         Me.Label1.Text = "Text Color:"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'pbPreview
         '
@@ -369,9 +369,9 @@ Partial Class dlgOfflineHolder
         '
         'btnFont
         '
-        Me.btnFont.Location = New System.Drawing.Point(280, 341)
+        Me.btnFont.Location = New System.Drawing.Point(235, 341)
         Me.btnFont.Name = "btnFont"
-        Me.btnFont.Size = New System.Drawing.Size(82, 23)
+        Me.btnFont.Size = New System.Drawing.Size(127, 23)
         Me.btnFont.TabIndex = 78
         Me.btnFont.Text = "Select Font..."
         Me.btnFont.UseVisualStyleBackColor = True
@@ -388,12 +388,12 @@ Partial Class dlgOfflineHolder
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(259, 296)
+        Me.Label3.Location = New System.Drawing.Point(238, 296)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(67, 13)
+        Me.Label3.Size = New System.Drawing.Size(88, 13)
         Me.Label3.TabIndex = 77
         Me.Label3.Text = "Tagline Top:"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'tmrName
         '

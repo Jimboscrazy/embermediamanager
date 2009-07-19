@@ -104,15 +104,15 @@ Partial Class dlgExportMovies
         Me.pnlSearch.Controls.Add(Me.cbSearch)
         Me.pnlSearch.Controls.Add(Me.txtSearch)
         Me.pnlSearch.Enabled = False
-        Me.pnlSearch.Location = New System.Drawing.Point(309, 9)
+        Me.pnlSearch.Location = New System.Drawing.Point(230, 9)
         Me.pnlSearch.Name = "pnlSearch"
-        Me.pnlSearch.Size = New System.Drawing.Size(394, 28)
+        Me.pnlSearch.Size = New System.Drawing.Size(473, 28)
         Me.pnlSearch.TabIndex = 6
         '
         'Reset_Button
         '
         Me.Reset_Button.Enabled = False
-        Me.Reset_Button.Location = New System.Drawing.Point(323, 3)
+        Me.Reset_Button.Location = New System.Drawing.Point(402, 2)
         Me.Reset_Button.Name = "Reset_Button"
         Me.Reset_Button.Size = New System.Drawing.Size(67, 23)
         Me.Reset_Button.TabIndex = 6
@@ -120,17 +120,17 @@ Partial Class dlgExportMovies
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(2, 7)
+        Me.Label1.Location = New System.Drawing.Point(9, 6)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(29, 13)
+        Me.Label1.Size = New System.Drawing.Size(77, 13)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "Filter"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Search_Button
         '
         Me.Search_Button.Enabled = False
-        Me.Search_Button.Location = New System.Drawing.Point(248, 3)
+        Me.Search_Button.Location = New System.Drawing.Point(327, 2)
         Me.Search_Button.Name = "Search_Button"
         Me.Search_Button.Size = New System.Drawing.Size(67, 23)
         Me.Search_Button.TabIndex = 5
@@ -138,26 +138,26 @@ Partial Class dlgExportMovies
         '
         'lblIn
         '
-        Me.lblIn.AutoSize = True
-        Me.lblIn.Location = New System.Drawing.Point(144, 6)
+        Me.lblIn.Location = New System.Drawing.Point(203, 7)
         Me.lblIn.Name = "lblIn"
-        Me.lblIn.Size = New System.Drawing.Size(15, 13)
+        Me.lblIn.Size = New System.Drawing.Size(34, 13)
         Me.lblIn.TabIndex = 3
         Me.lblIn.Text = "in"
+        Me.lblIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'cbSearch
         '
         Me.cbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSearch.FormattingEnabled = True
         Me.cbSearch.Items.AddRange(New Object() {"Title", "Year", "Video Flag", "Audio Flag"})
-        Me.cbSearch.Location = New System.Drawing.Point(162, 4)
+        Me.cbSearch.Location = New System.Drawing.Point(241, 3)
         Me.cbSearch.Name = "cbSearch"
         Me.cbSearch.Size = New System.Drawing.Size(83, 21)
         Me.cbSearch.TabIndex = 4
         '
         'txtSearch
         '
-        Me.txtSearch.Location = New System.Drawing.Point(36, 4)
+        Me.txtSearch.Location = New System.Drawing.Point(93, 4)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(104, 20)
         Me.txtSearch.TabIndex = 1
