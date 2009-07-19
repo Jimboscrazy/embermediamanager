@@ -280,7 +280,7 @@ Public Class dlgOfflineHolder
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         If SQLReader.Read Then
                             destPath = Path.Combine(SQLReader("Path"), MovieName)
-                            lvStatus.Items(idxStsSource).SubItems(1).Text = "Valid"
+                            lvStatus.Items(idxStsSource).SubItems(1).Text = Master.eLang.GetString(195, "Valid")
                             lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Green
                         End If
                     End Using
