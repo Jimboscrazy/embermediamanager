@@ -208,13 +208,7 @@ Public Class dlgIMDBSearchResults
         Me.lblIMDB.Text = String.Empty
         Me.pbPoster.Image = Nothing
 
-        Master.tmpMovie.Title = String.Empty
-        Master.tmpMovie.Tagline = String.Empty
-        Master.tmpMovie.Year = String.Empty
-        Master.tmpMovie.Director = String.Empty
-        Master.tmpMovie.Genre = String.Empty
-        Master.tmpMovie.Outline = String.Empty
-        Master.tmpMovie.IMDBID = String.Empty
+        Master.tmpMovie.Clear()
 
         IMDB.CancelAsync()
     End Sub
