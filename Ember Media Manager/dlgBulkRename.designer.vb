@@ -248,25 +248,25 @@ Partial Class dlgBulkRenamer
         '
         'lblFolderPattern
         '
-        Me.lblFolderPattern.AutoSize = True
-        Me.lblFolderPattern.Location = New System.Drawing.Point(26, 398)
+        Me.lblFolderPattern.Location = New System.Drawing.Point(12, 401)
         Me.lblFolderPattern.Name = "lblFolderPattern"
-        Me.lblFolderPattern.Size = New System.Drawing.Size(200, 13)
+        Me.lblFolderPattern.Size = New System.Drawing.Size(298, 13)
         Me.lblFolderPattern.TabIndex = 70
         Me.lblFolderPattern.Text = "Folder Pattern (for Single movie in Folder)"
+        Me.lblFolderPattern.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblFilePattern
         '
-        Me.lblFilePattern.AutoSize = True
-        Me.lblFilePattern.Location = New System.Drawing.Point(441, 398)
+        Me.lblFilePattern.Location = New System.Drawing.Point(522, 401)
         Me.lblFilePattern.Name = "lblFilePattern"
-        Me.lblFilePattern.Size = New System.Drawing.Size(60, 13)
+        Me.lblFilePattern.Size = New System.Drawing.Size(140, 13)
         Me.lblFilePattern.TabIndex = 71
         Me.lblFilePattern.Text = "File Pattern"
+        Me.lblFilePattern.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtFile
         '
-        Me.txtFile.Location = New System.Drawing.Point(504, 395)
+        Me.txtFile.Location = New System.Drawing.Point(668, 398)
         Me.txtFile.Name = "txtFile"
         Me.txtFile.Size = New System.Drawing.Size(224, 20)
         Me.txtFile.TabIndex = 72
@@ -274,7 +274,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFolder
         '
-        Me.txtFolder.Location = New System.Drawing.Point(227, 395)
+        Me.txtFolder.Location = New System.Drawing.Point(316, 398)
         Me.txtFolder.Name = "txtFolder"
         Me.txtFolder.Size = New System.Drawing.Size(200, 20)
         Me.txtFolder.TabIndex = 73
@@ -284,7 +284,7 @@ Partial Class dlgBulkRenamer
         '
         Me.lblLabel.AutoSize = True
         Me.lblLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblLabel.Location = New System.Drawing.Point(15, 440)
+        Me.lblLabel.Location = New System.Drawing.Point(13, 447)
         Me.lblLabel.Name = "lblLabel"
         Me.lblLabel.Size = New System.Drawing.Size(35, 15)
         Me.lblLabel.TabIndex = 74
@@ -294,7 +294,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFolderNotSingle
         '
-        Me.txtFolderNotSingle.Location = New System.Drawing.Point(227, 416)
+        Me.txtFolderNotSingle.Location = New System.Drawing.Point(316, 419)
         Me.txtFolderNotSingle.Name = "txtFolderNotSingle"
         Me.txtFolderNotSingle.Size = New System.Drawing.Size(200, 20)
         Me.txtFolderNotSingle.TabIndex = 76
@@ -302,12 +302,12 @@ Partial Class dlgBulkRenamer
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 419)
+        Me.Label1.Location = New System.Drawing.Point(12, 422)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(212, 13)
+        Me.Label1.Size = New System.Drawing.Size(296, 13)
         Me.Label1.TabIndex = 75
         Me.Label1.Text = "Folder Pattern (for Multiple movies in Folder)"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'dlgBulkRenamer
         '
@@ -316,13 +316,13 @@ Partial Class dlgBulkRenamer
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(992, 477)
         Me.Controls.Add(Me.txtFolderNotSingle)
-        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.lblLabel)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtFolder)
-        Me.Controls.Add(Me.txtFile)
-        Me.Controls.Add(Me.lblFilePattern)
-        Me.Controls.Add(Me.lblFolderPattern)
         Me.Controls.Add(Me.pnlCancel)
+        Me.Controls.Add(Me.lblFolderPattern)
+        Me.Controls.Add(Me.lblFilePattern)
+        Me.Controls.Add(Me.txtFile)
         Me.Controls.Add(Me.dgvMoviesList)
         Me.Controls.Add(Me.Rename_Button)
         Me.Controls.Add(Me.pnlTop)
