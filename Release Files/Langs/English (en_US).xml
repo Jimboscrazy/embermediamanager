@@ -568,4 +568,7 @@
   <string id="566">Please Enter a Unique Name</string>
   <string id="567">Renaming...</string>
   <string id="568">Searching IMDB...</string>
+  <string id="569">All</string>
+  <string id="570">[none]</string>
+  <string id="571">[Disabled]</string>
 </strings>

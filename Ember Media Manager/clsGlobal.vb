@@ -109,6 +109,7 @@ Public Class Master
         Dim ExtraPath As String
         Dim Source As String
         Dim OutOfTolerance As Boolean
+        Dim ClearExtras As Boolean
     End Structure
 
     Public Structure ScrapeOptions
@@ -695,12 +696,10 @@ Public Class Master
         Dim lThumbs As New ArrayList
 
         Try
-            Dim extraPath As String = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
-
-            If Directory.Exists(extraPath) Then
+            If Directory.Exists(sPath) Then
 
                 Try
-                    lThumbs.AddRange(Directory.GetFiles(extraPath, "thumb*.jpg"))
+                    lThumbs.AddRange(Directory.GetFiles(sPath, "thumb*.jpg"))
                 Catch
                 End Try
 
@@ -985,7 +984,7 @@ Public Class Master
         Return bReturn
     End Function
 
-    Public Shared Function CreateRandomThumbs(ByVal mMovie As DBMovie, ByVal ThumbCount As Integer) As String
+    Public Shared Function CreateRandomThumbs(ByVal mMovie As DBMovie, ByVal ThumbCount As Integer, ByVal isEdit As Boolean) As String
 
         Dim SetFA As String = String.Empty
 
@@ -1000,10 +999,15 @@ Public Class Master
                     Dim tPath As String = String.Empty
                     Dim exImage As New Images
 
-                    If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
-                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, "extrathumbs")
+                    If isEdit Then
+                        tPath = Path.Combine(Master.TempPath, "extrathumbs")
                     Else
-                        tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "extrathumbs")
+                        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, "extrathumbs")
+                        Else
+                            tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "extrathumbs")
+                        End If
+
                     End If
 
                     If Not Directory.Exists(tPath) Then

@@ -150,8 +150,12 @@ Public Class dlgImgSelect
                     If isEdit Then
                         extraPath = Path.Combine(Master.TempPath, "extrathumbs")
                     Else
-                        extraPath = Path.Combine(Directory.GetParent(Me.tMovie.Filename).FullName, "extrathumbs")
-                        iMod = Master.GetExtraModifier(Me.tMovie.Filename)
+                        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Me.tMovie.Filename).Name.ToLower = "video_ts" Then
+                            extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(Me.tMovie.Filename).FullName).FullName, "extrathumbs")
+                        Else
+                            extraPath = Path.Combine(Directory.GetParent(Me.tMovie.Filename).FullName, "extrathumbs")
+                        End If
+                        iMod = Master.GetExtraModifier(extraPath)
                         iVal = iMod + 1
                     End If
 

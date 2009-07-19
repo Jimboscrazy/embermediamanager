@@ -94,17 +94,9 @@ Public Class Images
         End Try
     End Sub
 
-    Public Sub Delete(ByVal sPath As String, ByVal fType As Master.ImageType)
-        Dim tPath As String = String.Empty
-
-        If fType = Master.ImageType.Fanart Then
-            If Not String.IsNullOrEmpty(sPath) Then
-                File.Delete(sPath)
-            End If
-        Else
-            If Not String.IsNullOrEmpty(sPath) Then
-                File.Delete(sPath)
-            End If
+    Public Sub Delete(ByVal sPath As String)
+        If Not String.IsNullOrEmpty(sPath) Then
+            File.Delete(sPath)
         End If
     End Sub
 
@@ -964,4 +956,60 @@ foundIT:
             Return 0
         End Try
     End Function
+
+    Public Sub DeletePosters(ByVal mMovie As Master.DBMovie)
+        Try
+            Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
+
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".jpg"))
+                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".tbn"))
+            Else
+
+                If mMovie.isSingle Then
+                    Delete(Path.Combine(tPath, "movie.tbn"))
+                    Delete(Path.Combine(tPath, "movie.jpg"))
+                    Delete(Path.Combine(tPath, "poster.tbn"))
+                    Delete(Path.Combine(tPath, "poster.jpg"))
+                    Delete(Path.Combine(tPath, "folder.jpg"))
+                End If
+
+                If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                    Delete(Path.Combine(tPath, "video_ts.tbn"))
+                    Delete(Path.Combine(tPath, "video_ts.jpg"))
+                Else
+                    Dim pPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
+                    Delete(String.Concat(pPath, ".tbn"))
+                    Delete(String.Concat(pPath, ".jpg"))
+                End If
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Sub DeleteFanart(ByVal mMovie As Master.DBMovie)
+        Try
+            Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
+
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
+            Else
+                If mMovie.isSingle Then Delete(Path.Combine(tPath, "fanart.jpg"))
+
+                If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                    Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
+                    Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
+                Else
+                    Dim fPath As String = Path.Combine(tPath, Path.GetFileNameWithoutExtension(mMovie.Filename))
+                    Delete(String.Concat(fPath, "-fanart.jpg"))
+                    Delete(String.Concat(fPath, ".fanart.jpg"))
+                End If
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class

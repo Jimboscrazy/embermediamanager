@@ -2866,7 +2866,7 @@ Public Class frmMain
 
                                 If (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
                                     If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) Then
-                                        Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs)
+                                        Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
                                         If Not String.IsNullOrEmpty(ETasFA) Then
                                             Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
                                             scrapeMovie.ExtraPath = "TRUE"
@@ -3024,7 +3024,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(scrapeMovie.Filename).FullName, "extrathumbs")) AndAlso _
                                     (Args.scrapeMod = Master.ScrapeModifier.All OrElse Args.scrapeMod = Master.ScrapeModifier.Extra) Then
-                                        Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs)
+                                        Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
                                         If Not String.IsNullOrEmpty(ETasFA) Then
 
                                             Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
@@ -4109,7 +4109,7 @@ doCancel:
                             End If
 
                             If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
-                                Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs)
+                                Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, False)
                             End If
                         Catch
                         End Try
@@ -4131,6 +4131,13 @@ doCancel:
                                         Me.ReportDownloadPercent = True
                                         Me.tslLoading.Visible = True
                                         Me.tspbLoading.Visible = True
+                                        Master.currMovie.ClearExtras = True
+                                        Master.currMovie.PosterPath = String.Empty
+                                        Master.currMovie.FanartPath = String.Empty
+                                        Master.currMovie.TrailerPath = String.Empty
+                                        Master.currMovie.ExtraPath = String.Empty
+                                        Master.currMovie.SubPath = String.Empty
+                                        Master.currMovie.NfoPath = String.Empty
                                         IMDB.GetMovieInfoAsync(Master.tmpMovie.IMDBID, Master.tmpMovie, Master.DefaultOptions, Master.eSettings.FullCrew, Master.eSettings.FullCast)
                                     End If
                                 Else
@@ -4246,8 +4253,9 @@ doCancel:
                 End If
 
                 If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
-                    Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs)
+                    Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
                 End If
+
                 If Not isCL Then
                     Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                     Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
@@ -4261,8 +4269,10 @@ doCancel:
                                     Me.FillList(0)
                                 End If
                             Case Windows.Forms.DialogResult.Retry
+                                Master.currMovie.ClearExtras = False
                                 Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID)
                             Case Windows.Forms.DialogResult.Abort
+                                Master.currMovie.ClearExtras = False
                                 Me.ScrapeData(Master.ScrapeType.SingleScrape, Nothing, Master.DefaultOptions, ID, True)
                             Case Else
                                 If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
@@ -4277,6 +4287,8 @@ doCancel:
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+
+        Master.currMovie.ClearExtras = False
 
         If isCL Then
             Me.ScraperDone = True
