@@ -35,6 +35,7 @@ Public Class dlgEditMovie
     Private DeleteList As New ArrayList
     Private ExtraIndex As Integer = 0
     Private CachePath As String = String.Empty
+    Private hasCleared As Boolean = False
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
@@ -533,8 +534,9 @@ Public Class dlgEditMovie
                         If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
                         pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" Then
                             TabControl1.TabPages.Remove(TabPage4)
+                        Else
+                            .bwThumbs.RunWorkerAsync()
                         End If
-                        .bwThumbs.RunWorkerAsync()
                     End If
 
                     Fanart.FromFile(Master.currMovie.FanartPath)
@@ -647,11 +649,16 @@ Public Class dlgEditMovie
                     Next
                 End If
 
+                If Master.currMovie.ClearExtras Then
+                    .Fanart.DeleteFanart(Master.currMovie)
+                    .Poster.DeletePosters(Master.currMovie)
+                End If
+
                 If Not IsNothing(.Fanart.Image) Then
                     Dim fPath As String = .Fanart.SaveAsFanart(Master.currMovie)
                     Master.currMovie.FanartPath = fPath
                 Else
-                    .Fanart.Delete(Master.currMovie.FanartPath, Master.ImageType.Fanart)
+                    .Fanart.DeleteFanart(Master.currMovie)
                     Master.currMovie.FanartPath = String.Empty
                 End If
 
@@ -659,7 +666,7 @@ Public Class dlgEditMovie
                     Dim pPath As String = .Poster.SaveAsPoster(Master.currMovie)
                     Master.currMovie.PosterPath = pPath
                 Else
-                    .Poster.Delete(Master.currMovie.PosterPath, Master.ImageType.Posters)
+                    .Poster.DeletePosters(Master.currMovie)
                     Master.currMovie.PosterPath = String.Empty
                 End If
 
@@ -942,27 +949,19 @@ Public Class dlgEditMovie
 
     Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
         Try
-            Dim tPath As String = Path.Combine(Master.TempPath, "frame.jpg")
-            Dim sPath As String = String.Empty
+            Dim tPath As String = Path.Combine(Master.TempPath, "extrathumbs")
 
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currMovie.Filename).Name.ToLower = "video_ts" Then
-                sPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
-            Else
-                sPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+            If Not Directory.Exists(tPath) Then
+                Directory.CreateDirectory(tPath)
             End If
 
-            If Not Directory.Exists(sPath) Then
-                Directory.CreateDirectory(sPath)
-            End If
-
-            Dim iMod As Integer = Master.GetExtraModifier(Master.currMovie.Filename)
+            Dim iMod As Integer = Master.GetExtraModifier(tPath)
 
             Dim exImage As New Images
-            exImage.ResizeExtraThumb(tPath, Path.Combine(sPath, String.Concat("thumb", (iMod + 1), ".jpg")))
+            exImage.ResizeExtraThumb(Path.Combine(Master.TempPath, "frame.jpg"), Path.Combine(tPath, String.Concat("thumb", (iMod + 1), ".jpg")))
             exImage.Dispose()
             exImage = Nothing
 
-            Me.RefreshExtraThumbs()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1043,23 +1042,34 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SaveExtraThumbsList()
-        Dim tPath As String = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
 
-        'first delete the ones from the delete list
+        Dim tPath As String = String.Empty
         Try
-            For Each del As String In DeleteList
-                File.Delete(Path.Combine(tPath, del))
-            Next
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currMovie.Filename).Name.ToLower = "video_ts" Then
+                tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
+            Else
+                tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+            End If
 
-            'now name the rest something arbitrary so we don't get any conflicts
-            For Each lItem As ListViewItem In lvThumbs.Items
-                FileSystem.Rename(Path.Combine(tPath, lItem.Name), Path.Combine(tPath, String.Concat("temp", lItem.Name)))
-            Next
+            If Master.currMovie.ClearExtras AndAlso Not hasCleared Then
+                Master.DeleteDirectory(tPath)
+                hasCleared = True
+            Else
+                'first delete the ones from the delete list
+                For Each del As String In DeleteList
+                    File.Delete(Path.Combine(tPath, del))
+                Next
 
-            'now rename them properly
-            For Each lItem As ListViewItem In lvThumbs.Items
-                FileSystem.Rename(Path.Combine(tPath, String.Concat("temp", lItem.Name)), Path.Combine(tPath, String.Concat("thumb", lItem.Text.Trim, ".jpg")))
-            Next
+                'now name the rest something arbitrary so we don't get any conflicts
+                For Each lItem As ListViewItem In lvThumbs.Items
+                    FileSystem.Rename(Path.Combine(tPath, lItem.Name), Path.Combine(tPath, String.Concat("temp", lItem.Name)))
+                Next
+
+                'now rename them properly
+                For Each lItem As ListViewItem In lvThumbs.Items
+                    FileSystem.Rename(Path.Combine(tPath, String.Concat("temp", lItem.Name)), Path.Combine(tPath, String.Concat("thumb", lItem.Text.Trim, ".jpg")))
+                Next
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1090,7 +1100,7 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub bwThumbs_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwThumbs.DoWork
-        LoadThumbs()
+        If Not Master.currMovie.ClearExtras OrElse hasCleared Then LoadThumbs()
     End Sub
 
     Private Sub bwThumbs_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwThumbs.RunWorkerCompleted
@@ -1194,7 +1204,7 @@ Public Class dlgEditMovie
             If Convert.ToInt32(txtThumbCount.Text) > 0 Then
                 pnlFrameProgress.Visible = True
                 Me.Refresh()
-                Master.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text))
+                Master.CreateRandomThumbs(Master.currMovie, Convert.ToInt32(txtThumbCount.Text), True)
                 pnlFrameProgress.Visible = False
                 Me.RefreshExtraThumbs()
             End If
@@ -1303,7 +1313,17 @@ Public Class dlgEditMovie
     Private Sub TransferETs()
         Try
             If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-                Dim ePath As String = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+                Dim ePath As String = String.Empty
+                If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currMovie.Filename).Name.ToLower = "video_ts" Then
+                    ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
+                Else
+                    ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
+                End If
+
+                If Master.currMovie.ClearExtras AndAlso Not hasCleared Then
+                    Master.DeleteDirectory(ePath)
+                    hasCleared = True
+                End If
 
                 Dim iMod As Integer = Master.GetExtraModifier(ePath)
                 Dim iVal As Integer = iMod + 1
