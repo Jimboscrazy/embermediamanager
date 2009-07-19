@@ -282,11 +282,10 @@ Partial Class dlgBulkRenamer
         '
         'lblLabel
         '
-        Me.lblLabel.AutoSize = True
         Me.lblLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblLabel.Location = New System.Drawing.Point(13, 447)
         Me.lblLabel.Name = "lblLabel"
-        Me.lblLabel.Size = New System.Drawing.Size(35, 15)
+        Me.lblLabel.Size = New System.Drawing.Size(793, 30)
         Me.lblLabel.TabIndex = 74
         Me.lblLabel.Tag = ""
         Me.lblLabel.Text = "Label"
