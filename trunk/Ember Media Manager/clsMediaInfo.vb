@@ -163,6 +163,10 @@ Public Class MediaInfo
                         Dim tInfo As New Fileinfo
                         Dim tVideo As New Video
                         Dim tAudio As New Audio
+
+                        miVideo.Width = 0
+                        miAudio.Channels = 0
+
                         For Each File As String In sFile
                             If Master.eSettings.ValidExts.Contains(Path.GetExtension(File).ToLower) Then
                                 tInfo = ScanMI(File)
@@ -177,7 +181,7 @@ Public Class MediaInfo
                                 End If
 
                                 If String.IsNullOrEmpty(miAudio.Codec) OrElse Not String.IsNullOrEmpty(tAudio.Codec) Then
-                                    If Not String.IsNullOrEmpty(tAudio.Channels) AndAlso Master.ConvertToSingle(tAudio.Channels) >= Master.ConvertToSingle(miAudio.Channels) Then
+                                    If Not String.IsNullOrEmpty(tAudio.Channels) AndAlso Convert.ToInt32(tAudio.Channels) >= Convert.ToInt32(miAudio.Channels) Then
                                         miAudio = tAudio
                                     End If
                                 End If
