@@ -4212,7 +4212,7 @@ doCancel:
                     Me.tspbLoading.Value = Me.tspbLoading.Maximum
                     Me.tspbLoading.Style = ProgressBarStyle.Marquee
                     Me.tspbLoading.MarqueeAnimationSpeed = 25
-                    Me.Refresh()
+                    Application.DoEvents()
                     Me.UpdateMediaInfo(Master.currMovie)
                 End If
                 If Master.eSettings.SingleScrapeImages Then
@@ -4223,6 +4223,8 @@ doCancel:
                         If AllowFA Then dImgSelectFanart.PreLoad(Master.currMovie, Master.ImageType.Fanart, True)
 
                         If tmpImages.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters, True) Then
+                            Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
+                            Application.DoEvents()
                             Using dImgSelect As New dlgImgSelect
                                 Dim pPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)
                                 If Not String.IsNullOrEmpty(pPath) Then
@@ -4232,6 +4234,8 @@ doCancel:
                         End If
 
                         If AllowFA Then
+                            Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
+                            Application.DoEvents()
                             Dim fPath As String = dImgSelectFanart.ShowDialog
                             If Not String.IsNullOrEmpty(fPath) Then
                                 Master.currMovie.FanartPath = fPath
@@ -4244,6 +4248,8 @@ doCancel:
                 End If
 
                 If Master.eSettings.SingleScrapeTrailer Then
+                    Me.tslLoading.Text = Master.eLang.GetString(574, "Scraping Trailers:")
+                    Application.DoEvents()
                     Dim cTrailer As New Trailers
                     Dim tURL As String = cTrailer.ShowTDialog(Master.currMovie.Movie.IMDBID, Master.currMovie.Filename, Master.currMovie.Movie.Trailer)
                     If Not String.IsNullOrEmpty(tURL) AndAlso tURL.Substring(0, 7) = "http://" Then
@@ -4253,6 +4259,8 @@ doCancel:
                 End If
 
                 If Master.eSettings.AutoThumbs > 0 AndAlso Master.currMovie.isSingle Then
+                    Me.tslLoading.Text = Master.eLang.GetString(575, "Generating Extrathumbs:")
+                    Application.DoEvents()
                     Master.CreateRandomThumbs(Master.currMovie, Master.eSettings.AutoThumbs, True)
                 End If
 
@@ -4260,6 +4268,9 @@ doCancel:
                     Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                     Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
                     Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
+
+                    Me.tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
+                    Application.DoEvents()
 
                     Using dEditMovie As New dlgEditMovie
                         Select Case dEditMovie.ShowDialog()

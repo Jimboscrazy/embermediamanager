@@ -571,4 +571,9 @@
   <string id="569">All</string>
   <string id="570">[none]</string>
   <string id="571">[Disabled]</string>
+  <string id="572">Scraping Posters:</string>
+  <string id="573">Scraping Fanart:</string>
+  <string id="574">Scraping Trailers:</string>
+  <string id="575">Generating Extrathumbs:</string>
+  <string id="576">Verifying Movie Details:</string>
 </strings>
