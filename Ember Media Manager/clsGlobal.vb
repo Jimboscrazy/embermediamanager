@@ -745,7 +745,6 @@ Public Class Master
     Public Shared Function DeleteFiles(ByVal isCleaner As Boolean, ByVal mMovie As DBMovie) As Boolean
         Dim dPath As String = String.Empty
         Dim bReturn As Boolean = False
-        Dim fList As New ArrayList
         Try
             If eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
                 dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".ext")
@@ -768,8 +767,7 @@ Public Class Master
             If isCleaner And Master.eSettings.ExpertCleaner Then
 
                 For Each sFile As FileInfo In ioFi
-                    Dim test As String = sFile.Extension
-                    If Not Master.eSettings.CleanWhitelistExts.Contains(sFile.Extension) AndAlso ((Master.eSettings.CleanWhitelistVideo AndAlso Not Master.eSettings.ValidExts.Contains(sFile.Extension)) OrElse Not Master.eSettings.CleanWhitelistVideo) Then
+                    If Not Master.eSettings.CleanWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((Master.eSettings.CleanWhitelistVideo AndAlso Not Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower)) OrElse Not Master.eSettings.CleanWhitelistVideo) Then
                         File.Delete(sFile.FullName)
                         bReturn = True
                     End If
@@ -778,19 +776,14 @@ Public Class Master
             Else
 
                 If Not isCleaner Then
-                    Dim Fanart As New Images
                     Dim fPath As String = mMovie.FanartPath
                     Dim tPath As String = String.Empty
                     If Not String.IsNullOrEmpty(fPath) Then
                         If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
-                            If Master.eSettings.VideoTSParent Then
-                                tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fPath).FullName).Name), "-fanart.jpg"))
+                            If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
+                                tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
                             Else
-                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                    tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
-                                Else
-                                    tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
-                                End If
+                                tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
                             End If
                         Else
                             If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
@@ -800,10 +793,9 @@ Public Class Master
                             End If
                         End If
                     End If
-                    If Not String.IsNullOrEmpty(tPath) AndAlso File.Exists(tPath) Then
+                    If Not String.IsNullOrEmpty(tPath) Then
                         File.Delete(tPath)
                     End If
-                    Fanart = Nothing
                 End If
 
                 If Not isCleaner AndAlso mMovie.isSingle Then
@@ -814,139 +806,64 @@ Public Class Master
                     End If
                 Else
                     For Each lFI As FileInfo In ioFi
-                        fList.Add(lFI.FullName)
+                        If isCleaner Then
+                            If (Master.eSettings.CleanFolderJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "folder.jpg")) _
+                                OrElse (Master.eSettings.CleanFanartJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "fanart.jpg")) _
+                                OrElse (Master.eSettings.CleanMovieTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.tbn")) _
+                                OrElse (Master.eSettings.CleanMovieNFO AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.nfo")) _
+                                OrElse (Master.eSettings.CleanPosterTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.tbn")) _
+                                OrElse (Master.eSettings.CleanPosterJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.jpg")) _
+                                OrElse (Master.eSettings.CleanMovieJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.jpg")) Then
+                                File.Delete(lFI.FullName)
+                                bReturn = True
+                            End If
+                        End If
+
+                        If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
+                            If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".tbn") _
+                            OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.tbn") _
+                            OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".tbn") Then
+                                File.Delete(lFI.FullName)
+                                bReturn = True
+                            End If
+                        End If
+
+                        If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+                            If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, "-fanart.jpg") _
+                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts-fanart.jpg") _
+                                OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), "-fanart.jpg") Then
+                                File.Delete(lFI.FullName)
+                                bReturn = True
+                            End If
+                        End If
+
+                        If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
+                            If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".nfo") _
+                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.nfo") _
+                                OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".nfo") Then
+                                File.Delete(lFI.FullName)
+                                bReturn = True
+                            End If
+                        End If
+
+                        If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+                            If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".fanart.jpg") _
+                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.fanart.jpg") _
+                                OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".fanart.jpg") Then
+                                File.Delete(lFI.FullName)
+                                bReturn = True
+                            End If
+                        End If
+
+                        If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+                            If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".jpg") _
+                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.jpg") _
+                                OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".jpg") Then
+                                File.Delete(lFI.FullName)
+                                bReturn = True
+                            End If
+                        End If
                     Next
-
-                    If (Master.eSettings.CleanFolderJPG AndAlso isCleaner) Then
-                        If fList.Contains(Path.Combine(sPathShort, "folder.jpg")) Then
-                            File.Delete(Path.Combine(sPathShort, "folder.jpg"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanFanartJPG AndAlso isCleaner) Then
-                        If fList.Contains(Path.Combine(sPathShort, "fanart.jpg")) Then
-                            File.Delete(Path.Combine(sPathShort, "fanart.jpg"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanMovieTBN AndAlso isCleaner) Then
-                        If fList.Contains(Path.Combine(sPathShort, "movie.tbn")) Then
-                            File.Delete(Path.Combine(sPathShort, "movie.tbn"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanMovieNFO AndAlso isCleaner) Then
-                        If fList.Contains(Path.Combine(sPathShort, "movie.nfo")) Then
-                            File.Delete(Path.Combine(sPathShort, "movie.nfo"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanPosterTBN AndAlso isCleaner) Then
-                        If fList.Contains(Path.Combine(sPathShort, "poster.tbn")) Then
-                            File.Delete(Path.Combine(sPathShort, "poster.tbn"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanPosterJPG AndAlso isCleaner) Then
-                        If fList.Contains(Path.Combine(sPathShort, "poster.jpg")) Then
-                            File.Delete(Path.Combine(sPathShort, "poster.jpg"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanMovieJPG AndAlso isCleaner) Then
-                        If fList.Contains(Path.Combine(sPathShort, "movie.jpg")) Then
-                            File.Delete(Path.Combine(sPathShort, "movie.jpg"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanExtraThumbs AndAlso isCleaner) Then
-                        If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
-                            DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                        If fList.Contains(String.Concat(sPathNoExt, ".tbn")) Then
-                            File.Delete(String.Concat(sPathNoExt, ".tbn"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(Path.Combine(sPathShort, "video_ts.tbn")) Then
-                            File.Delete(Path.Combine(sPathShort, "video_ts.tbn"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".tbn")) Then
-                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".tbn"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                        If fList.Contains(String.Concat(sPathNoExt, "-fanart.jpg")) Then
-                            File.Delete(String.Concat(sPathNoExt, "-fanart.jpg"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(Path.Combine(sPathShort, "video_ts-fanart.jpg")) Then
-                            File.Delete(Path.Combine(sPathShort, "video_ts-fanart.jpg"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), "-fanart.jpg")) Then
-                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), "-fanart.jpg"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                        If fList.Contains(String.Concat(sPathNoExt, ".nfo")) Then
-                            File.Delete(String.Concat(sPathNoExt, ".nfo"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(Path.Combine(sPathShort, "video_ts.nfo")) Then
-                            File.Delete(Path.Combine(sPathShort, "video_ts.nfo"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".nfo")) Then
-                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".nfo"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                        If fList.Contains(String.Concat(sPathNoExt, ".fanart.jpg")) Then
-                            File.Delete(String.Concat(sPathNoExt, ".fanart.jpg"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(Path.Combine(sPathShort, "video_ts.fanart.jpg")) Then
-                            File.Delete(Path.Combine(sPathShort, "video_ts.fanart.jpg"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".fanart.jpg")) Then
-                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".fanart.jpg"))
-                            bReturn = True
-                        End If
-                    End If
-
-                    If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                        If fList.Contains(String.Concat(sPathNoExt, ".jpg")) Then
-                            File.Delete(String.Concat(sPathNoExt, ".jpg"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(Path.Combine(sPathShort, "video_ts.jpg")) Then
-                            File.Delete(Path.Combine(sPathShort, "video_ts.jpg"))
-                            bReturn = True
-                        End If
-                        If fList.Contains(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg")) Then
-                            File.Delete(String.Concat(Path.Combine(sPathShort, sOrName), ".jpg"))
-                            bReturn = True
-                        End If
-                    End If
 
                     If Not isCleaner Then
 
@@ -964,8 +881,15 @@ Public Class Master
                         For Each sFile As FileInfo In ioFi
                             File.Delete(sFile.FullName)
                         Next
-
                     End If
+
+                    If Master.eSettings.CleanExtraThumbs Then
+                        If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
+                            DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
+                            bReturn = True
+                        End If
+                    End If
+
                 End If
             End If
 
