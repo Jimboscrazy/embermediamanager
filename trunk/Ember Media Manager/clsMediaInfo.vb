@@ -147,66 +147,63 @@ Public Class MediaInfo
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
-            ElseIf Not sExt = ".ifo" AndAlso Not sExt = ".bup" Then
-
-                If StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) Then
+            ElseIf StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) Then
+                Try
+                    Dim tFile As New ArrayList
+                    Dim sFile As New ArrayList
+                    Dim useExt As String = Path.GetExtension(sPath)
+                    If sExt = ".ifo" OrElse sExt = ".bup" Then useExt = ".vob"
                     Try
-                        Dim tFile As New ArrayList
-                        Dim sFile As New ArrayList
-                        Try
-                            tFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath), True, True), Path.GetExtension(sPath))))
-                        Catch
-                        End Try
-                        sFile.AddRange(tFile.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+                        tFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath), True, True), useExt)))
+                    Catch
+                    End Try
+                    sFile.AddRange(tFile.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
 
-                        Dim TotalDur As Integer = 0
-                        Dim tInfo As New Fileinfo
-                        Dim tVideo As New Video
-                        Dim tAudio As New Audio
+                    Dim TotalDur As Integer = 0
+                    Dim tInfo As New Fileinfo
+                    Dim tVideo As New Video
+                    Dim tAudio As New Audio
 
-                        miVideo.Width = 0
-                        miAudio.Channels = 0
+                    miVideo.Width = 0
+                    miAudio.Channels = 0
 
-                        For Each File As String In sFile
-                            If Master.eSettings.ValidExts.Contains(Path.GetExtension(File).ToLower) Then
-                                tInfo = ScanMI(File)
+                    For Each File As String In sFile
+                        tInfo = ScanMI(File)
 
-                                tVideo = NFO.GetBestVideo(tInfo)
-                                tAudio = NFO.GetBestAudio(tInfo)
+                        tVideo = NFO.GetBestVideo(tInfo)
+                        tAudio = NFO.GetBestAudio(tInfo)
 
-                                If String.IsNullOrEmpty(miVideo.Codec) OrElse Not String.IsNullOrEmpty(tVideo.Codec) Then
-                                    If Not String.IsNullOrEmpty(tVideo.Width) AndAlso Convert.ToInt32(tVideo.Width) >= Convert.ToInt32(miVideo.Width) Then
-                                        miVideo = tVideo
-                                    End If
-                                End If
+                        If String.IsNullOrEmpty(miVideo.Codec) OrElse Not String.IsNullOrEmpty(tVideo.Codec) Then
+                            If Not String.IsNullOrEmpty(tVideo.Width) AndAlso Convert.ToInt32(tVideo.Width) >= Convert.ToInt32(miVideo.Width) Then
+                                miVideo = tVideo
+                            End If
+                        End If
 
-                                If String.IsNullOrEmpty(miAudio.Codec) OrElse Not String.IsNullOrEmpty(tAudio.Codec) Then
-                                    If Not String.IsNullOrEmpty(tAudio.Channels) AndAlso Convert.ToInt32(tAudio.Channels) >= Convert.ToInt32(miAudio.Channels) Then
-                                        miAudio = tAudio
-                                    End If
-                                End If
+                        If String.IsNullOrEmpty(miAudio.Codec) OrElse Not String.IsNullOrEmpty(tAudio.Codec) Then
+                            If Not String.IsNullOrEmpty(tAudio.Channels) AndAlso Convert.ToInt32(tAudio.Channels) >= Convert.ToInt32(miAudio.Channels) Then
+                                miAudio = tAudio
+                            End If
+                        End If
 
-                                If Not String.IsNullOrEmpty(tVideo.Duration) Then TotalDur += Convert.ToInt32(DurationToMins(tVideo.Duration, False))
+                        If Not String.IsNullOrEmpty(tVideo.Duration) Then TotalDur += Convert.ToInt32(DurationToMins(tVideo.Duration, False))
 
-                                For Each sSub As Subtitle In tInfo.StreamDetails.Subtitle
-                                    If Not fiOut.StreamDetails.Subtitle.Contains(sSub) Then
-                                        fiOut.StreamDetails.Subtitle.Add(sSub)
-                                    End If
-                                Next
+                        For Each sSub As Subtitle In tInfo.StreamDetails.Subtitle
+                            If Not fiOut.StreamDetails.Subtitle.Contains(sSub) Then
+                                fiOut.StreamDetails.Subtitle.Add(sSub)
                             End If
                         Next
+                    Next
 
-                        fiOut.StreamDetails.Video.Add(miVideo)
-                        fiOut.StreamDetails.Audio.Add(miAudio)
-                        fiOut.StreamDetails.Video(0).Duration = DurationToMins(TotalDur, True)
+                    fiOut.StreamDetails.Video.Add(miVideo)
+                    fiOut.StreamDetails.Audio.Add(miAudio)
+                    fiOut.StreamDetails.Video(0).Duration = DurationToMins(TotalDur, True)
 
-                        fiInfo = fiOut
-                    Catch ex As Exception
-                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                    End Try
-                Else
-                    fiInfo = ScanMI(sPath)
-                End If
+                    fiInfo = fiOut
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+            Else
+                fiInfo = ScanMI(sPath)
             End If
         End If
 
