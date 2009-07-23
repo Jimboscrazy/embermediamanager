@@ -149,6 +149,7 @@ Public Class MediaInfo
                 End Try
             ElseIf StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) Then
                 Try
+                    Dim oFile As String = StringManip.CleanStackingMarkers(sPath, False, True)
                     Dim tFile As New ArrayList
                     Dim sFile As New ArrayList
                     Dim useExt As String = Path.GetExtension(sPath)
@@ -168,30 +169,35 @@ Public Class MediaInfo
                     miAudio.Channels = 0
 
                     For Each File As String In sFile
-                        tInfo = ScanMI(File)
+                        'make sure the file is actually part of the stack
+                        'handles movie.cd1.ext, movie.cd2.ext and movie.extras.ext
+                        'disregards movie.extras.ext in this case
+                        If oFile = StringManip.CleanStackingMarkers(File, False, True) Then
+                            tInfo = ScanMI(File)
 
-                        tVideo = NFO.GetBestVideo(tInfo)
-                        tAudio = NFO.GetBestAudio(tInfo)
+                            tVideo = NFO.GetBestVideo(tInfo)
+                            tAudio = NFO.GetBestAudio(tInfo)
 
-                        If String.IsNullOrEmpty(miVideo.Codec) OrElse Not String.IsNullOrEmpty(tVideo.Codec) Then
-                            If Not String.IsNullOrEmpty(tVideo.Width) AndAlso Convert.ToInt32(tVideo.Width) >= Convert.ToInt32(miVideo.Width) Then
-                                miVideo = tVideo
+                            If String.IsNullOrEmpty(miVideo.Codec) OrElse Not String.IsNullOrEmpty(tVideo.Codec) Then
+                                If Not String.IsNullOrEmpty(tVideo.Width) AndAlso Convert.ToInt32(tVideo.Width) >= Convert.ToInt32(miVideo.Width) Then
+                                    miVideo = tVideo
+                                End If
                             End If
+
+                            If String.IsNullOrEmpty(miAudio.Codec) OrElse Not String.IsNullOrEmpty(tAudio.Codec) Then
+                                If Not String.IsNullOrEmpty(tAudio.Channels) AndAlso Convert.ToInt32(tAudio.Channels) >= Convert.ToInt32(miAudio.Channels) Then
+                                    miAudio = tAudio
+                                End If
+                            End If
+
+                            If Not String.IsNullOrEmpty(tVideo.Duration) Then TotalDur += Convert.ToInt32(DurationToMins(tVideo.Duration, False))
+
+                            For Each sSub As Subtitle In tInfo.StreamDetails.Subtitle
+                                If Not fiOut.StreamDetails.Subtitle.Contains(sSub) Then
+                                    fiOut.StreamDetails.Subtitle.Add(sSub)
+                                End If
+                            Next
                         End If
-
-                        If String.IsNullOrEmpty(miAudio.Codec) OrElse Not String.IsNullOrEmpty(tAudio.Codec) Then
-                            If Not String.IsNullOrEmpty(tAudio.Channels) AndAlso Convert.ToInt32(tAudio.Channels) >= Convert.ToInt32(miAudio.Channels) Then
-                                miAudio = tAudio
-                            End If
-                        End If
-
-                        If Not String.IsNullOrEmpty(tVideo.Duration) Then TotalDur += Convert.ToInt32(DurationToMins(tVideo.Duration, False))
-
-                        For Each sSub As Subtitle In tInfo.StreamDetails.Subtitle
-                            If Not fiOut.StreamDetails.Subtitle.Contains(sSub) Then
-                                fiOut.StreamDetails.Subtitle.Add(sSub)
-                            End If
-                        Next
                     Next
 
                     fiOut.StreamDetails.Video.Add(miVideo)
