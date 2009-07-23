@@ -368,7 +368,11 @@ Public Class Master
                         If Path.GetExtension(lfile.FullName).ToLower = ".ifo" Then hasIfo = 1
                         If Path.GetExtension(lfile.FullName).ToLower = ".vob" Then hasVob = 1
                         If Path.GetExtension(lfile.FullName).ToLower = ".bup" Then hasBup = 1
-                        If Path.GetFileName(lfile.FullName).ToLower = "video_ts.vob" Then tFile = lfile.FullName
+                        If Path.GetFileName(lfile.FullName).ToLower = "video_ts.vob" _
+                            OrElse Path.GetFileName(lfile.FullName).ToLower = "video_ts.ifo" _
+                            OrElse Path.GetFileName(lfile.FullName).ToLower = "video_ts.bup" Then
+                            tFile = lfile.FullName
+                        End If
                         vtsSingle = (hasIfo + hasVob + hasBup) > 1
                         If vtsSingle AndAlso Not String.IsNullOrEmpty(tFile) Then Exit For
                     Next
@@ -512,7 +516,7 @@ Public Class Master
                     End Try
                 Else
                     Try
-                        fList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)), "*")))
+                        fList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath), True))))
                     Catch
                     End Try
                 End If
