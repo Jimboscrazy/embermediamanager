@@ -4003,11 +4003,9 @@ doCancel:
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
 
-                    If Not bwScraper.IsBusy Then
-                        bwScraper.WorkerReportsProgress = True
-                        bwScraper.WorkerSupportsCancellation = True
-                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod, .Options = Options})
-                    End If
+                    bwScraper.WorkerReportsProgress = True
+                    bwScraper.WorkerSupportsCancellation = True
+                    bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod, .Options = Options})
 
                 Case Master.ScrapeType.NewAsk, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAsk, Master.ScrapeType.MarkAuto
                     For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -4036,11 +4034,9 @@ doCancel:
                         Me.tslLoading.Visible = True
                         Me.tspbLoading.Visible = True
 
-                        If Not bwScraper.IsBusy Then
-                            bwScraper.WorkerSupportsCancellation = True
-                            bwScraper.WorkerReportsProgress = True
-                            bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod, .Options = Options})
-                        End If
+                        bwScraper.WorkerSupportsCancellation = True
+                        bwScraper.WorkerReportsProgress = True
+                        bwScraper.RunWorkerAsync(New Arguments With {.scrapeType = sType, .scrapeMod = sMod, .Options = Options})
                     Else
                         If isCL Then
                             Me.ScraperDone = True
@@ -4054,6 +4050,8 @@ doCancel:
                             Me.mnuMediaList.Enabled = True
                             Me.tabsMain.Enabled = True
                             Me.EnableFilters(True)
+                            Me.btnMarkAll.Enabled = True
+                            Me.pnlCancel.Visible = False
                         End If
                     End If
                 Case Master.ScrapeType.SingleScrape
