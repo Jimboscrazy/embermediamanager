@@ -542,6 +542,7 @@ Public Class Master
                         OrElse (eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts-fanart.jpg")) _
                         OrElse (eSettings.MovieNameDotFanartJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.fanart.jpg")))) Then
                         FanartPath = fFile
+                        Continue For
                     End If
                 End If
 
@@ -560,6 +561,7 @@ Public Class Master
                         OrElse (eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.tbn")) _
                         OrElse (eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.jpg")))) Then
                         PosterPath = fFile
+                        Continue For
                     End If
                 End If
 
@@ -570,6 +572,7 @@ Public Class Master
                     ((eSettings.MovieNameNFO AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".nfo")) _
                     OrElse (eSettings.MovieNameNFO AndAlso fFile.ToLower = String.Concat(tmpName, ".nfo")))) Then
                         NfoPath = fFile
+                        Continue For
                     End If
                 End If
 
@@ -577,6 +580,7 @@ Public Class Master
                     If Regex.IsMatch(fFile, String.Concat("^", Regex.Escape(tmpNameNoStack), "(\.(.*?))?\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$"), RegexOptions.IgnoreCase) OrElse _
                                 Regex.IsMatch(fFile, String.Concat("^", Regex.Escape(tmpName), "(\.(.*?))?\.(sst|srt|sub|ssa|aqt|smi|sami|jss|mpl|rt|idx|ass)$"), RegexOptions.IgnoreCase) Then
                         SubPath = fFile
+                        Continue For
                     End If
                 End If
 
@@ -603,6 +607,12 @@ Public Class Master
                                 Exit For
                         End Select
                     Next
+                End If
+
+                If Not String.IsNullOrEmpty(PosterPath) AndAlso Not String.IsNullOrEmpty(FanartPath) _
+                AndAlso Not String.IsNullOrEmpty(NfoPath) AndAlso Not String.IsNullOrEmpty(TrailerPath) _
+                AndAlso Not String.IsNullOrEmpty(SubPath) AndAlso Not String.IsNullOrEmpty(ExtraPath) Then
+                    Exit For
                 End If
             Next
 
@@ -823,6 +833,7 @@ Public Class Master
                                 OrElse (Master.eSettings.CleanMovieJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.jpg")) Then
                                 File.Delete(lFI.FullName)
                                 bReturn = True
+                                Continue For
                             End If
                         End If
 
@@ -832,6 +843,7 @@ Public Class Master
                             OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".tbn") Then
                                 File.Delete(lFI.FullName)
                                 bReturn = True
+                                Continue For
                             End If
                         End If
 
@@ -841,6 +853,7 @@ Public Class Master
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), "-fanart.jpg") Then
                                 File.Delete(lFI.FullName)
                                 bReturn = True
+                                Continue For
                             End If
                         End If
 
@@ -850,6 +863,7 @@ Public Class Master
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".nfo") Then
                                 File.Delete(lFI.FullName)
                                 bReturn = True
+                                Continue For
                             End If
                         End If
 
@@ -859,6 +873,7 @@ Public Class Master
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".fanart.jpg") Then
                                 File.Delete(lFI.FullName)
                                 bReturn = True
+                                Continue For
                             End If
                         End If
 
@@ -868,6 +883,7 @@ Public Class Master
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".jpg") Then
                                 File.Delete(lFI.FullName)
                                 bReturn = True
+                                Continue For
                             End If
                         End If
                     Next

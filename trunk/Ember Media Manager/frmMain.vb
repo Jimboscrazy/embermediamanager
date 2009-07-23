@@ -3534,6 +3534,8 @@ doCancel:
 
         Try
             Me.tslStatus.Text = Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)...")
+            Application.DoEvents()
+
             If bwPrelim.IsBusy Then
                 bwPrelim.CancelAsync()
                 While bwPrelim.IsBusy
