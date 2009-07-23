@@ -516,7 +516,8 @@ Public Class Master
                     End Try
                 Else
                     Try
-                        fList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath), True))))
+                        Dim sName As String = StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath), True)
+                        fList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, If(sName.EndsWith("*"), sName, String.Concat(sName, "*"))))
                     Catch
                     End Try
                 End If
