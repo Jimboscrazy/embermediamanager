@@ -149,16 +149,24 @@ Public Class MediaInfo
                 End Try
             ElseIf StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) Then
                 Try
-                    Dim oFile As String = StringManip.CleanStackingMarkers(sPath, False, True)
-                    Dim tFile As New ArrayList
+                    Dim oFile As String = StringManip.CleanStackingMarkers(sPath, False)
                     Dim sFile As New ArrayList
-                    Dim useExt As String = Path.GetExtension(sPath)
-                    If sExt = ".ifo" OrElse sExt = ".bup" Then useExt = ".vob"
-                    Try
-                        tFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath), True, True), useExt)))
-                    Catch
-                    End Try
-                    sFile.AddRange(tFile.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+                    Dim bIsVTS As Boolean = False
+                    If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
+                        bIsVTS = True
+                    End If
+
+                    If bIsVTS Then
+                        Try
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "VTS*.VOB"))
+                        Catch
+                        End Try
+                    Else
+                        Try
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, StringManip.CleanStackingMarkers(Path.GetFileName(sPath), True)))
+                        Catch
+                        End Try
+                    End If
 
                     Dim TotalDur As Integer = 0
                     Dim tInfo As New Fileinfo
@@ -172,7 +180,7 @@ Public Class MediaInfo
                         'make sure the file is actually part of the stack
                         'handles movie.cd1.ext, movie.cd2.ext and movie.extras.ext
                         'disregards movie.extras.ext in this case
-                        If oFile = StringManip.CleanStackingMarkers(File, False, True) Then
+                        If bIsVTS OrElse (oFile = StringManip.CleanStackingMarkers(File, False)) Then
                             tInfo = ScanMI(File)
 
                             tVideo = NFO.GetBestVideo(tInfo)
