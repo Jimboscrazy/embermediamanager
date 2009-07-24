@@ -234,10 +234,9 @@ Public Class StringManip
         Return bReturn
     End Function
 
-    Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False, Optional ByVal VTS As Boolean = False) As String
+    Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False) As String
         If String.IsNullOrEmpty(sPath) Then Return String.Empty
         Dim sReturn As String = Regex.Replace(sPath, "[ _.-]+(cd|dvd|part|dis[ck])[ _.-]*([0-9a-d]+)", If(Asterisk, "*", " "), RegexOptions.IgnoreCase).Trim
-        If VTS Then sReturn = Regex.Replace(sReturn, "[0-9]+$", If(Asterisk, "*", " "), RegexOptions.IgnoreCase)
         Return Regex.Replace(sReturn, "\s\s(\s+)?", " ").Trim
     End Function
 
