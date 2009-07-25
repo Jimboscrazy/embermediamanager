@@ -37,13 +37,13 @@ Partial Class dlgUpdateMedia
         Me.rbUpdate_Ask = New System.Windows.Forms.RadioButton
         Me.rbUpdate_Auto = New System.Windows.Forms.RadioButton
         Me.gbUpdateItems = New System.Windows.Forms.GroupBox
-        Me.rbMediaInfo = New System.Windows.Forms.RadioButton
-        Me.rbTrailer = New System.Windows.Forms.RadioButton
-        Me.rbExtra = New System.Windows.Forms.RadioButton
-        Me.rbFanart = New System.Windows.Forms.RadioButton
-        Me.rbPoster = New System.Windows.Forms.RadioButton
-        Me.rbNfo = New System.Windows.Forms.RadioButton
-        Me.rbAll = New System.Windows.Forms.RadioButton
+        Me.chkTrailerMod = New System.Windows.Forms.CheckBox
+        Me.chkExtraMod = New System.Windows.Forms.CheckBox
+        Me.chkMetaMod = New System.Windows.Forms.CheckBox
+        Me.chkFanartMod = New System.Windows.Forms.CheckBox
+        Me.chkPosterMod = New System.Windows.Forms.CheckBox
+        Me.chkNFOMod = New System.Windows.Forms.CheckBox
+        Me.chkAllMod = New System.Windows.Forms.CheckBox
         Me.Update_Button = New System.Windows.Forms.Button
         Me.gbOptions = New System.Windows.Forms.GroupBox
         Me.chkCrew = New System.Windows.Forms.CheckBox
@@ -221,13 +221,13 @@ Partial Class dlgUpdateMedia
         '
         'gbUpdateItems
         '
-        Me.gbUpdateItems.Controls.Add(Me.rbMediaInfo)
-        Me.gbUpdateItems.Controls.Add(Me.rbTrailer)
-        Me.gbUpdateItems.Controls.Add(Me.rbExtra)
-        Me.gbUpdateItems.Controls.Add(Me.rbFanart)
-        Me.gbUpdateItems.Controls.Add(Me.rbPoster)
-        Me.gbUpdateItems.Controls.Add(Me.rbNfo)
-        Me.gbUpdateItems.Controls.Add(Me.rbAll)
+        Me.gbUpdateItems.Controls.Add(Me.chkTrailerMod)
+        Me.gbUpdateItems.Controls.Add(Me.chkExtraMod)
+        Me.gbUpdateItems.Controls.Add(Me.chkMetaMod)
+        Me.gbUpdateItems.Controls.Add(Me.chkFanartMod)
+        Me.gbUpdateItems.Controls.Add(Me.chkPosterMod)
+        Me.gbUpdateItems.Controls.Add(Me.chkNFOMod)
+        Me.gbUpdateItems.Controls.Add(Me.chkAllMod)
         Me.gbUpdateItems.Location = New System.Drawing.Point(6, 228)
         Me.gbUpdateItems.Name = "gbUpdateItems"
         Me.gbUpdateItems.Size = New System.Drawing.Size(220, 96)
@@ -235,81 +235,80 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.TabStop = False
         Me.gbUpdateItems.Text = "Modifiers"
         '
-        'rbMediaInfo
+        'chkTrailerMod
         '
-        Me.rbMediaInfo.AutoSize = True
-        Me.rbMediaInfo.Location = New System.Drawing.Point(91, 53)
-        Me.rbMediaInfo.Name = "rbMediaInfo"
-        Me.rbMediaInfo.Size = New System.Drawing.Size(99, 17)
-        Me.rbMediaInfo.TabIndex = 73
-        Me.rbMediaInfo.Text = "Meta Data Only"
-        Me.rbMediaInfo.UseVisualStyleBackColor = True
+        Me.chkTrailerMod.AutoSize = True
+        Me.chkTrailerMod.Location = New System.Drawing.Point(105, 54)
+        Me.chkTrailerMod.Name = "chkTrailerMod"
+        Me.chkTrailerMod.Size = New System.Drawing.Size(55, 17)
+        Me.chkTrailerMod.TabIndex = 6
+        Me.chkTrailerMod.Text = "Trailer"
+        Me.chkTrailerMod.UseVisualStyleBackColor = True
         '
-        'rbTrailer
+        'chkExtraMod
         '
-        Me.rbTrailer.AutoSize = True
-        Me.rbTrailer.Location = New System.Drawing.Point(91, 36)
-        Me.rbTrailer.Name = "rbTrailer"
-        Me.rbTrailer.Size = New System.Drawing.Size(78, 17)
-        Me.rbTrailer.TabIndex = 72
-        Me.rbTrailer.Text = "Trailer Only"
-        Me.rbTrailer.UseVisualStyleBackColor = True
+        Me.chkExtraMod.AutoSize = True
+        Me.chkExtraMod.Location = New System.Drawing.Point(105, 36)
+        Me.chkExtraMod.Name = "chkExtraMod"
+        Me.chkExtraMod.Size = New System.Drawing.Size(84, 17)
+        Me.chkExtraMod.TabIndex = 5
+        Me.chkExtraMod.Text = "Extrathumbs"
+        Me.chkExtraMod.UseVisualStyleBackColor = True
         '
-        'rbExtra
+        'chkMetaMod
         '
-        Me.rbExtra.AutoSize = True
-        Me.rbExtra.Location = New System.Drawing.Point(91, 19)
-        Me.rbExtra.Name = "rbExtra"
-        Me.rbExtra.Size = New System.Drawing.Size(107, 17)
-        Me.rbExtra.TabIndex = 71
-        Me.rbExtra.Text = "Extrathumbs Only"
-        Me.rbExtra.UseVisualStyleBackColor = True
+        Me.chkMetaMod.AutoSize = True
+        Me.chkMetaMod.Location = New System.Drawing.Point(105, 18)
+        Me.chkMetaMod.Name = "chkMetaMod"
+        Me.chkMetaMod.Size = New System.Drawing.Size(76, 17)
+        Me.chkMetaMod.TabIndex = 4
+        Me.chkMetaMod.Text = "Meta Data"
+        Me.chkMetaMod.UseVisualStyleBackColor = True
         '
-        'rbFanart
+        'chkFanartMod
         '
-        Me.rbFanart.AutoSize = True
-        Me.rbFanart.Location = New System.Drawing.Point(6, 70)
-        Me.rbFanart.Name = "rbFanart"
-        Me.rbFanart.Size = New System.Drawing.Size(79, 17)
-        Me.rbFanart.TabIndex = 70
-        Me.rbFanart.Text = "Fanart Only"
-        Me.rbFanart.UseVisualStyleBackColor = True
+        Me.chkFanartMod.AutoSize = True
+        Me.chkFanartMod.Location = New System.Drawing.Point(14, 72)
+        Me.chkFanartMod.Name = "chkFanartMod"
+        Me.chkFanartMod.Size = New System.Drawing.Size(56, 17)
+        Me.chkFanartMod.TabIndex = 3
+        Me.chkFanartMod.Text = "Fanart"
+        Me.chkFanartMod.UseVisualStyleBackColor = True
         '
-        'rbPoster
+        'chkPosterMod
         '
-        Me.rbPoster.AutoSize = True
-        Me.rbPoster.Location = New System.Drawing.Point(6, 53)
-        Me.rbPoster.Name = "rbPoster"
-        Me.rbPoster.Size = New System.Drawing.Size(79, 17)
-        Me.rbPoster.TabIndex = 69
-        Me.rbPoster.Text = "Poster Only"
-        Me.rbPoster.UseVisualStyleBackColor = True
+        Me.chkPosterMod.AutoSize = True
+        Me.chkPosterMod.Location = New System.Drawing.Point(14, 54)
+        Me.chkPosterMod.Name = "chkPosterMod"
+        Me.chkPosterMod.Size = New System.Drawing.Size(56, 17)
+        Me.chkPosterMod.TabIndex = 2
+        Me.chkPosterMod.Text = "Poster"
+        Me.chkPosterMod.UseVisualStyleBackColor = True
         '
-        'rbNfo
+        'chkNFOMod
         '
-        Me.rbNfo.AutoSize = True
-        Me.rbNfo.Location = New System.Drawing.Point(6, 36)
-        Me.rbNfo.Name = "rbNfo"
-        Me.rbNfo.Size = New System.Drawing.Size(71, 17)
-        Me.rbNfo.TabIndex = 68
-        Me.rbNfo.Text = "NFO Only"
-        Me.rbNfo.UseVisualStyleBackColor = True
+        Me.chkNFOMod.AutoSize = True
+        Me.chkNFOMod.Location = New System.Drawing.Point(14, 36)
+        Me.chkNFOMod.Name = "chkNFOMod"
+        Me.chkNFOMod.Size = New System.Drawing.Size(48, 17)
+        Me.chkNFOMod.TabIndex = 1
+        Me.chkNFOMod.Text = "NFO"
+        Me.chkNFOMod.UseVisualStyleBackColor = True
         '
-        'rbAll
+        'chkAllMod
         '
-        Me.rbAll.AutoSize = True
-        Me.rbAll.Checked = True
-        Me.rbAll.Location = New System.Drawing.Point(6, 19)
-        Me.rbAll.Name = "rbAll"
-        Me.rbAll.Size = New System.Drawing.Size(64, 17)
-        Me.rbAll.TabIndex = 67
-        Me.rbAll.TabStop = True
-        Me.rbAll.Text = "All Items"
-        Me.rbAll.UseVisualStyleBackColor = True
+        Me.chkAllMod.AutoSize = True
+        Me.chkAllMod.Location = New System.Drawing.Point(14, 18)
+        Me.chkAllMod.Name = "chkAllMod"
+        Me.chkAllMod.Size = New System.Drawing.Size(65, 17)
+        Me.chkAllMod.TabIndex = 0
+        Me.chkAllMod.Text = "All Items"
+        Me.chkAllMod.UseVisualStyleBackColor = True
         '
         'Update_Button
         '
         Me.Update_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Update_Button.Enabled = False
         Me.Update_Button.Location = New System.Drawing.Point(278, 330)
         Me.Update_Button.Name = "Update_Button"
         Me.Update_Button.Size = New System.Drawing.Size(80, 23)
@@ -337,6 +336,7 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.Controls.Add(Me.chkMPAA)
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
+        Me.gbOptions.Enabled = False
         Me.gbOptions.Location = New System.Drawing.Point(233, 70)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(213, 254)
@@ -602,12 +602,12 @@ Partial Class dlgUpdateMedia
     Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
-    Friend WithEvents rbMediaInfo As System.Windows.Forms.RadioButton
-    Friend WithEvents rbTrailer As System.Windows.Forms.RadioButton
-    Friend WithEvents rbExtra As System.Windows.Forms.RadioButton
-    Friend WithEvents rbFanart As System.Windows.Forms.RadioButton
-    Friend WithEvents rbPoster As System.Windows.Forms.RadioButton
-    Friend WithEvents rbNfo As System.Windows.Forms.RadioButton
-    Friend WithEvents rbAll As System.Windows.Forms.RadioButton
+    Friend WithEvents chkAllMod As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTrailerMod As System.Windows.Forms.CheckBox
+    Friend WithEvents chkExtraMod As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMetaMod As System.Windows.Forms.CheckBox
+    Friend WithEvents chkFanartMod As System.Windows.Forms.CheckBox
+    Friend WithEvents chkPosterMod As System.Windows.Forms.CheckBox
+    Friend WithEvents chkNFOMod As System.Windows.Forms.CheckBox
 
 End Class
