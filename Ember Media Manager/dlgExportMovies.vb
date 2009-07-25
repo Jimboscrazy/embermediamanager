@@ -87,24 +87,32 @@ Public Class dlgExportMovies
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
-            HTMLBody = New StringBuilder 'blank it
-            HTMLBody.Append(My.Resources.MovieListHeader)
-            HTMLBody.Append(My.Resources.MediaListLogo)
-            HTMLBody.Append(My.Resources.MovieListTableStart)
+            Dim pattern As String = File.ReadAllText(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "default-", Master.eSettings.Language, ".html"))
+            Dim movieheader As String = String.Empty
+            Dim moviefooter As String = String.Empty
+            Dim movierow As String = String.Empty
+            Dim s = pattern.IndexOf("<$MOVIE>")
+            If s >= 0 Then
+                Dim e = pattern.IndexOf("<$/MOVIE>")
+                If e >= 0 Then
+                    movieheader = pattern.Substring(0, s)
+                    movierow = pattern.Substring(s + 8, e - s - 8)
+                    moviefooter = pattern.Substring(e + 9, pattern.Length - e - 9)
+                Else
+                    'error
+                End If
+            Else
+                'error
+            End If
+
             If bSearch Then
                 bFiltered = True
             Else
                 bFiltered = False
             End If
-            ' For now fixed Cols
-            Dim rowHeader As New StringBuilder
-            rowHeader.Append(My.Resources.MovieListTableRowStart)
-            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, Master.eLang.GetString(21, "Title"))
-            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, Master.eLang.GetString(278, "Year"))
-            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, Master.eLang.GetString(281, "Video"))
-            rowHeader.AppendFormat(My.Resources.MovieListTableHeader, Master.eLang.GetString(282, "Audio"))
-            rowHeader.Append(My.Resources.MovieListTableRowEnd)
-            HTMLBody.Append(rowHeader)
+
+            HTMLBody.Append(movieheader)
+            Dim counter As Integer = 1
             For Each _curMovie As Master.DBMovie In _movies
                 Dim _vidDetails As String = String.Empty
                 Dim _audDetails As String = String.Empty
@@ -121,28 +129,31 @@ Public Class dlgExportMovies
                     End If
                 End If
 
-                Dim row As New StringBuilder
-                row.Append(My.Resources.MovieListTableRowStart)
-                row.AppendFormat(My.Resources.MovieListTableCol, Web.HttpUtility.HtmlEncode(_curMovie.ListTitle))
-                row.AppendFormat(My.Resources.MovieListTableCol, _curMovie.Movie.Year)
-                row.AppendFormat(My.Resources.MovieListTableCol, _vidDetails)
-                row.AppendFormat(My.Resources.MovieListTableCol, _audDetails)
-
+                Dim row As String = movierow
+                row = row.Replace("<$MOVIENAME>", Web.HttpUtility.HtmlEncode(_curMovie.ListTitle))
+                row = row.Replace("<$YEAR>", _curMovie.Movie.Year)
+                row = row.Replace("<$COUNT>", counter.ToString)
+                row = row.Replace("<$FILENAME>", Path.GetFileName(_curMovie.Filename))
+                row = row.Replace("<$DIRNAME>", Path.GetDirectoryName(_curMovie.Filename))
+                row = row.Replace("<$OUTLINE>", _curMovie.Movie.Outline)
+                row = row.Replace("<$PLOT>", _curMovie.Movie.Plot)
+                row = row.Replace("<$VIDEO>", _vidDetails)
+                row = row.Replace("<$AUDIO>", _audDetails)
                 If bSearch Then
                     If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso _vidDetails.Contains(strFilter)) OrElse _
                        (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso _audDetails.Contains(strFilter)) OrElse _
                        (strIn = Master.eLang.GetString(21, "Title") AndAlso _curMovie.Movie.Title.Contains(strFilter)) OrElse _
                        (strIn = Master.eLang.GetString(278, "Year") AndAlso _curMovie.Movie.Year.Contains(strFilter)) Then
-                        row.Append(My.Resources.MovieListTableRowEnd)
+
                         HTMLBody.Append(row)
                     End If
                 Else
-                    row.Append(My.Resources.MovieListTableRowEnd)
+
                     HTMLBody.Append(row)
                 End If
+                counter += 1
             Next
-            HTMLBody.Append(My.Resources.MovieListTableEnd)
-            HTMLBody.Append(My.Resources.MovieListFooter)
+            HTMLBody.Append(moviefooter)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
