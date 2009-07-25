@@ -3571,6 +3571,7 @@ doCancel:
             Me.bwPrelim.RunWorkerAsync(New Arguments With {.SourceName = SourceName})
 
         Catch ex As Exception
+            Me.LoadingDone = True
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
@@ -4684,40 +4685,52 @@ doCancel:
     End Sub
 
     Private Sub ClearFilters(Optional ByVal Reload As Boolean = False)
+        Try
+            Me.bsMedia.RemoveFilter()
+            Me.FilterArray.Clear()
+            Me.filSearch = String.Empty
+            Me.filGenre = String.Empty
+            Me.filYear = String.Empty
 
-        Me.bsMedia.RemoveFilter()
-        Me.FilterArray.Clear()
-        Me.filSearch = String.Empty
-        Me.filGenre = String.Empty
-        Me.filYear = String.Empty
+            RemoveHandler txtSearch.TextChanged, AddressOf txtSearch_TextChanged
+            Me.txtSearch.Text = String.Empty
+            AddHandler txtSearch.TextChanged, AddressOf txtSearch_TextChanged
+            If Me.cbSearch.Items.Count > 0 Then
+                Me.cbSearch.SelectedIndex = 0
+            End If
+            Me.chkFilterDupe.Checked = False
+            Me.chkFilterTolerance.Checked = False
+            Me.chkFilterMissing.Checked = False
+            Me.chkFilterMark.Checked = False
+            Me.chkFilterNew.Checked = False
+            Me.chkFilterLock.Checked = False
+            Me.rbFilterOr.Checked = False
+            Me.rbFilterAnd.Checked = True
+            Me.txtFilterGenre.Text = String.Empty
+            For i As Integer = 0 To Me.clbFilterGenres.Items.Count - 1
+                Me.clbFilterGenres.SetItemChecked(i, False)
+            Next
+            RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+            If Me.cbFilterSource.Items.Count > 0 Then
+                Me.cbFilterSource.SelectedIndex = 0
+            End If
+            AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+            RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+            If Me.cbFilterYear.Items.Count > 0 Then
+                Me.cbFilterYear.SelectedIndex = 0
+            End If
 
-        RemoveHandler txtSearch.TextChanged, AddressOf txtSearch_TextChanged
-        Me.txtSearch.Text = String.Empty
-        AddHandler txtSearch.TextChanged, AddressOf txtSearch_TextChanged
-        Me.cbSearch.SelectedIndex = 0
-        Me.chkFilterDupe.Checked = False
-        Me.chkFilterTolerance.Checked = False
-        Me.chkFilterMissing.Checked = False
-        Me.chkFilterMark.Checked = False
-        Me.chkFilterNew.Checked = False
-        Me.chkFilterLock.Checked = False
-        Me.rbFilterOr.Checked = False
-        Me.rbFilterAnd.Checked = True
-        Me.txtFilterGenre.Text = String.Empty
-        For i As Integer = 0 To Me.clbFilterGenres.Items.Count - 1
-            Me.clbFilterGenres.SetItemChecked(i, False)
-        Next
-        RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-        Me.cbFilterSource.SelectedIndex = 0
-        AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-        RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
-        Me.cbFilterYear.SelectedIndex = 0
-        AddHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
-        RemoveHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
-        Me.cbFilterYearMod.SelectedIndex = 0
-        AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+            AddHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+            RemoveHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+            If Me.cbFilterYearMod.Items.Count > 0 Then
+                Me.cbFilterYearMod.SelectedIndex = 0
+            End If
+            AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
 
-        If Reload Then Me.FillList(0)
+            If Reload Then Me.FillList(0)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub RunFilter(Optional ByVal doFill As Boolean = False)
@@ -4918,6 +4931,7 @@ doCancel:
                 End If
             End If
         Catch ex As Exception
+            Me.LoadingDone = True
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
