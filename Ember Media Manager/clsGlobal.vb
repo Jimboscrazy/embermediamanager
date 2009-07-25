@@ -33,6 +33,7 @@ Public Class Master
     Public Shared MediaList As New List(Of FileAndSource)
     Public Shared eLog As New ErrorLogger
     Public Shared DefaultOptions As New ScrapeOptions
+    Public Shared GlobalScrapeMod As New ScrapeModifier
     Public Shared alMoviePaths As New ArrayList
     Public Shared DB As New Database
     Public Shared TempPath As String = Path.Combine(Application.StartupPath, "Temp")
@@ -80,15 +81,24 @@ Public Class Master
         Imdb = 1
     End Enum
 
-    Public Enum ScrapeModifier As Integer
-        All = 0
-        NFO = 1
-        Poster = 2
-        Fanart = 3
-        Extra = 4
-        Trailer = 5
-        MI = 6
+    Public Enum ModType As Integer
+        NFO = 0
+        Poster = 1
+        Fanart = 2
+        Extra = 3
+        Trailer = 4
+        Meta = 5
+        All = 6
     End Enum
+
+    Public Structure ScrapeModifier
+        Dim NFO As Boolean
+        Dim Poster As Boolean
+        Dim Fanart As Boolean
+        Dim Extra As Boolean
+        Dim Trailer As Boolean
+        Dim Meta As Boolean
+    End Structure
 
     Public Structure DBMovie
         Dim ID As Integer
@@ -137,7 +147,6 @@ Public Class Master
     Public Structure CustomUpdaterStruct
         Dim Canceled As Boolean
         Dim ScrapeType As ScrapeType
-        Dim Modifier As ScrapeModifier
         Dim Options As ScrapeOptions
     End Structure
 
@@ -294,6 +303,50 @@ Public Class Master
             .bYear = True
         End With
     End Sub
+
+    Public Shared Sub SetScraperMod(ByVal MType As ModType, ByVal MValue As Boolean, Optional ByVal Clear As Boolean = False)
+        With GlobalScrapeMod
+            If Clear Then
+                .Extra = False
+                .Fanart = False
+                .Meta = False
+                .NFO = False
+                .Poster = False
+                .Trailer = False
+            End If
+
+            Select Case MType
+                Case ModType.All
+                    .Extra = MValue
+                    .Fanart = MValue
+                    .Meta = MValue
+                    .NFO = MValue
+                    .Poster = MValue
+                    .Trailer = If(eSettings.UpdaterTrailers, MValue, False)
+                Case ModType.Extra
+                    .Extra = MValue
+                Case ModType.Fanart
+                    .Fanart = MValue
+                Case ModType.Meta
+                    .Meta = MValue
+                Case ModType.NFO
+                    .NFO = MValue
+                Case ModType.Poster
+                    .Poster = MValue
+                Case ModType.Trailer
+                    .Trailer = MValue
+            End Select
+
+        End With
+    End Sub
+
+    Public Shared Function HasModifier() As Boolean
+        With GlobalScrapeMod
+            If .Extra OrElse .Fanart OrElse .Meta OrElse .NFO OrElse .Poster OrElse .Trailer Then Return True
+        End With
+
+        Return False
+    End Function
 
     Public Shared Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
 

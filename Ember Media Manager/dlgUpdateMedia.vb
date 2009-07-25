@@ -48,7 +48,7 @@ Public Class dlgUpdateMedia
 
             'set defaults
             CustomUpdater.ScrapeType = Master.ScrapeType.FullAuto
-            CustomUpdater.Modifier = Master.ScrapeModifier.All
+            Master.SetScraperMod(Master.ModType.All, True)
 
             'check if there are new or marked movies
             Me.CheckNewAndMark()
@@ -72,13 +72,13 @@ Public Class dlgUpdateMedia
         Me.rbUpdate_Ask.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
         Me.rbUpdate_Auto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
         Me.gbUpdateItems.Text = Master.eLang.GetString(388, "Modifiers")
-        Me.rbMediaInfo.Text = Master.eLang.GetString(76, "Meta Data Only")
-        Me.rbTrailer.Text = Master.eLang.GetString(75, "Trailer Only")
-        Me.rbExtra.Text = Master.eLang.GetString(74, "Extrathumbs Only")
-        Me.rbFanart.Text = Master.eLang.GetString(73, "Fanart Only")
-        Me.rbPoster.Text = Master.eLang.GetString(72, "Poster Only")
-        Me.rbNfo.Text = Master.eLang.GetString(71, "NFO Only")
-        Me.rbAll.Text = Master.eLang.GetString(70, "All Items")
+        Me.chkMetaMod.Text = Master.eLang.GetString(76, "Meta Data")
+        Me.chkTrailerMod.Text = Master.eLang.GetString(75, "Trailer")
+        Me.chkExtraMod.Text = Master.eLang.GetString(74, "Extrathumbs")
+        Me.chkFanartMod.Text = Master.eLang.GetString(73, "Fanart")
+        Me.chkPosterMod.Text = Master.eLang.GetString(72, "Poster")
+        Me.chkNFOMod.Text = Master.eLang.GetString(71, "NFO")
+        Me.chkAllMod.Text = Master.eLang.GetString(70, "All Items")
         Me.Update_Button.Text = Master.eLang.GetString(389, "Begin")
         Me.gbOptions.Text = Master.eLang.GetString(390, "Options")
         Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
@@ -119,41 +119,6 @@ Public Class dlgUpdateMedia
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
-    End Sub
-
-    Private Sub rbAll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbAll.CheckedChanged
-        Me.CustomUpdater.Modifier = Master.ScrapeModifier.All
-        Me.gbOptions.Enabled = True
-    End Sub
-
-    Private Sub rbNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbNfo.CheckedChanged
-        Me.CustomUpdater.Modifier = Master.ScrapeModifier.NFO
-        Me.gbOptions.Enabled = True
-    End Sub
-
-    Private Sub rbPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbPoster.CheckedChanged
-        Me.CustomUpdater.Modifier = Master.ScrapeModifier.Poster
-        Me.gbOptions.Enabled = False
-    End Sub
-
-    Private Sub rbFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFanart.CheckedChanged
-        Me.CustomUpdater.Modifier = Master.ScrapeModifier.Fanart
-        Me.gbOptions.Enabled = False
-    End Sub
-
-    Private Sub rbExtra_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbExtra.CheckedChanged
-        Me.CustomUpdater.Modifier = Master.ScrapeModifier.Extra
-        Me.gbOptions.Enabled = False
-    End Sub
-
-    Private Sub rbTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbTrailer.CheckedChanged
-        Me.CustomUpdater.Modifier = Master.ScrapeModifier.Trailer
-        Me.gbOptions.Enabled = False
-    End Sub
-
-    Private Sub rbMediaInfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbMediaInfo.CheckedChanged
-        Me.CustomUpdater.Modifier = Master.ScrapeModifier.MI
-        Me.gbOptions.Enabled = False
     End Sub
 
     Private Sub rbUpdateModifier_All_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_All.CheckedChanged
@@ -216,78 +181,97 @@ Public Class dlgUpdateMedia
 
     Private Sub chkTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitle.CheckedChanged
         CustomUpdater.Options.bTitle = chkTitle.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYear.CheckedChanged
         CustomUpdater.Options.bYear = chkYear.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMPAA.CheckedChanged
         CustomUpdater.Options.bMPAA = chkMPAA.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkRelease_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRelease.CheckedChanged
         CustomUpdater.Options.bRelease = chkRelease.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRuntime.CheckedChanged
         CustomUpdater.Options.bRuntime = chkRuntime.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRating.CheckedChanged
         CustomUpdater.Options.bRating = chkRating.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVotes.CheckedChanged
         CustomUpdater.Options.bVotes = chkVotes.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStudio.CheckedChanged
         CustomUpdater.Options.bStudio = chkStudio.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
         CustomUpdater.Options.bGenre = chkGenre.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTrailer.CheckedChanged
         CustomUpdater.Options.bTrailer = chkTrailer.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTagline.CheckedChanged
         CustomUpdater.Options.bTagline = chkTagline.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutline.CheckedChanged
         CustomUpdater.Options.bOutline = chkOutline.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
         CustomUpdater.Options.bPlot = chkPlot.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCast.CheckedChanged
         CustomUpdater.Options.bCast = chkCast.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDirector.CheckedChanged
         CustomUpdater.Options.bDirector = chkDirector.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkWriters.CheckedChanged
         CustomUpdater.Options.bWriters = chkWriters.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkProducers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProducers.CheckedChanged
         CustomUpdater.Options.bProducers = chkProducers.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkMusicBy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMusicBy.CheckedChanged
         CustomUpdater.Options.bMusicBy = chkMusicBy.Checked
+        CheckEnable()
     End Sub
 
     Private Sub chkCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCrew.CheckedChanged
         CustomUpdater.Options.bOtherCrew = chkCrew.Checked
+        CheckEnable()
     End Sub
 
     Public Overloads Function ShowDialog() As Master.CustomUpdaterStruct
@@ -311,5 +295,72 @@ Public Class dlgUpdateMedia
 
     Private Sub dlgUpdateMedia_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
+    End Sub
+
+    Private Sub chkAllMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkAllMod.Click
+        Master.SetScraperMod(Master.ModType.All, chkAllMod.Checked)
+        Me.gbOptions.Enabled = chkAllMod.Checked
+        chkNFOMod.Checked = chkAllMod.Checked
+        chkNFOMod.Enabled = Not chkAllMod.Checked
+        chkPosterMod.Checked = chkAllMod.Checked
+        chkPosterMod.Enabled = Not chkAllMod.Checked
+        chkFanartMod.Checked = chkAllMod.Checked
+        chkFanartMod.Enabled = Not chkAllMod.Checked
+        chkMetaMod.Checked = chkAllMod.Checked
+        chkMetaMod.Enabled = Not chkAllMod.Checked
+        chkExtraMod.Checked = chkAllMod.Checked
+        chkExtraMod.Enabled = Not chkAllMod.Checked
+        chkTrailerMod.Checked = chkAllMod.Checked
+        chkTrailerMod.Enabled = Not chkAllMod.Checked
+        CheckEnable()
+    End Sub
+
+    Private Sub chkNFOMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkNFOMod.Click
+        Master.SetScraperMod(Master.ModType.NFO, chkNFOMod.Checked)
+        Me.gbOptions.Enabled = chkNFOMod.Checked
+        CheckEnable()
+    End Sub
+
+    Private Sub chkPosterMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkPosterMod.Click
+        Master.SetScraperMod(Master.ModType.Poster, chkPosterMod.Checked)
+        CheckEnable()
+    End Sub
+
+    Private Sub chkFanartMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFanartMod.Click
+        Master.SetScraperMod(Master.ModType.Fanart, chkFanartMod.Checked)
+        CheckEnable()
+    End Sub
+
+    Private Sub chkMetaMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMetaMod.Click
+        Master.SetScraperMod(Master.ModType.Meta, chkMetaMod.Checked)
+        CheckEnable()
+    End Sub
+
+    Private Sub chkExtraMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkExtraMod.Click
+        Master.SetScraperMod(Master.ModType.Extra, chkExtraMod.Checked)
+        CheckEnable()
+    End Sub
+
+    Private Sub chkTrailerMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkTrailerMod.Click
+        Master.SetScraperMod(Master.ModType.Trailer, chkTrailerMod.Checked)
+        CheckEnable()
+    End Sub
+
+    Private Sub CheckEnable()
+        If chkAllMod.Checked OrElse chkNFOMod.Checked Then
+            If chkCast.Checked OrElse chkCrew.Checked OrElse chkDirector.Checked OrElse chkGenre.Checked OrElse _
+            chkMPAA.Checked OrElse chkMusicBy.Checked OrElse chkOutline.Checked OrElse chkPlot.Checked OrElse _
+            chkProducers.Checked OrElse chkRating.Checked OrElse chkRelease.Checked OrElse chkRuntime.Checked OrElse _
+            chkStudio.Checked OrElse chkTagline.Checked OrElse chkTitle.Checked OrElse chkTrailer.Checked OrElse _
+            chkVotes.Checked OrElse chkVotes.Checked OrElse chkWriters.Checked OrElse chkYear.Checked Then
+                Update_Button.Enabled = True
+            Else
+                Update_Button.Enabled = False
+            End If
+        ElseIf chkPosterMod.Checked OrElse chkFanartMod.Checked OrElse chkMetaMod.Checked OrElse chkExtraMod.Checked OrElse chkTrailerMod.Checked Then
+            Update_Button.Enabled = True
+        Else
+            Update_Button.Enabled = False
+        End If
     End Sub
 End Class
