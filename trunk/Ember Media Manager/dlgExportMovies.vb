@@ -153,6 +153,7 @@ Public Class dlgExportMovies
                 row = row.Replace("<$DIRNAME>", Path.GetDirectoryName(_curMovie.Filename))
                 row = row.Replace("<$OUTLINE>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Outline))
                 row = row.Replace("<$PLOT>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Plot))
+                row = row.Replace("<$GENRES>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Genre))
                 row = row.Replace("<$VIDEO>", _vidDetails)
                 row = row.Replace("<$AUDIO>", _audDetails)
                 If bSearch Then
