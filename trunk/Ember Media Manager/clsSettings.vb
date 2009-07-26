@@ -186,6 +186,12 @@ Public Class emmSettings
     Private _fieldcrew As Boolean
     Private _genrelimit As Integer
     Private _actorlimit As Integer
+    Private _missingfilterposter As Boolean
+    Private _missingfilterfanart As Boolean
+    Private _missingfilternfo As Boolean
+    Private _missingfiltertrailer As Boolean
+    Private _missingfiltersubs As Boolean
+    Private _missingfilterextras As Boolean
 
     Public Property Version() As String
         Get
@@ -1631,6 +1637,60 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property MissingFilterPoster() As Boolean
+        Get
+            Return Me._missingfilterposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._missingfilterposter = value
+        End Set
+    End Property
+
+    Public Property MissingFilterFanart() As Boolean
+        Get
+            Return Me._missingfilterfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._missingfilterfanart = value
+        End Set
+    End Property
+
+    Public Property MissingFilterNFO() As Boolean
+        Get
+            Return Me._missingfilternfo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._missingfilternfo = value
+        End Set
+    End Property
+
+    Public Property MissingFilterTrailer() As Boolean
+        Get
+            Return Me._missingfiltertrailer
+        End Get
+        Set(ByVal value As Boolean)
+            Me._missingfiltertrailer = value
+        End Set
+    End Property
+
+    Public Property MissingFilterSubs() As Boolean
+        Get
+            Return Me._missingfiltersubs
+        End Get
+        Set(ByVal value As Boolean)
+            Me._missingfiltersubs = value
+        End Set
+    End Property
+
+    Public Property MissingFilterExtras() As Boolean
+        Get
+            Return Me._missingfilterextras
+        End Get
+        Set(ByVal value As Boolean)
+            Me._missingfilterextras = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1797,6 +1857,12 @@ Public Class emmSettings
         Me._fieldcrew = True
         Me._genrelimit = 0
         Me._actorlimit = 0
+        Me._missingfilterposter = True
+        Me._missingfilterfanart = True
+        Me._missingfilternfo = True
+        Me._missingfiltertrailer = True
+        Me._missingfiltersubs = True
+        Me._missingfilterextras = True
     End Sub
 
     Public Sub Save()

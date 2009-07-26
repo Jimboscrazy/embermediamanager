@@ -24,13 +24,13 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9})
+        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -237,6 +237,13 @@ Partial Class dlgSettings
         Me.btnRemoveCom = New System.Windows.Forms.Button
         Me.lbXBMCCom = New System.Windows.Forms.ListBox
         Me.pnlMovies = New System.Windows.Forms.Panel
+        Me.GroupBox27 = New System.Windows.Forms.GroupBox
+        Me.chkMissingExtra = New System.Windows.Forms.CheckBox
+        Me.chkMissingSubs = New System.Windows.Forms.CheckBox
+        Me.chkMissingTrailer = New System.Windows.Forms.CheckBox
+        Me.chkMissingNFO = New System.Windows.Forms.CheckBox
+        Me.chkMissingFanart = New System.Windows.Forms.CheckBox
+        Me.chkMissingPoster = New System.Windows.Forms.CheckBox
         Me.GroupBox16 = New System.Windows.Forms.GroupBox
         Me.chkAutoBD = New System.Windows.Forms.CheckBox
         Me.btnBrowse = New System.Windows.Forms.Button
@@ -354,6 +361,7 @@ Partial Class dlgSettings
         Me.pnlGeneral.SuspendLayout()
         Me.pnlXBMCCom.SuspendLayout()
         Me.pnlMovies.SuspendLayout()
+        Me.GroupBox27.SuspendLayout()
         Me.GroupBox16.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -1114,7 +1122,7 @@ Partial Class dlgSettings
         Me.GroupBox12.Controls.Add(Me.chkShowDims)
         Me.GroupBox12.Controls.Add(Me.Label8)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
-        Me.GroupBox12.Location = New System.Drawing.Point(7, 8)
+        Me.GroupBox12.Location = New System.Drawing.Point(5, 8)
         Me.GroupBox12.Name = "GroupBox12"
         Me.GroupBox12.Size = New System.Drawing.Size(195, 280)
         Me.GroupBox12.TabIndex = 1
@@ -1214,7 +1222,7 @@ Partial Class dlgSettings
         Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
-        Me.GroupBox2.Location = New System.Drawing.Point(213, 8)
+        Me.GroupBox2.Location = New System.Drawing.Point(204, 8)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(218, 280)
         Me.GroupBox2.TabIndex = 4
@@ -2447,42 +2455,42 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode1.ImageIndex = 4
-        TreeNode1.Name = "nExts"
-        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode1.SelectedImageIndex = 4
-        TreeNode1.Text = "File System"
-        TreeNode2.ImageIndex = 1
-        TreeNode2.Name = "nXBMCCom"
-        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode2.SelectedImageIndex = 1
-        TreeNode2.Text = "XBMC Communication"
-        TreeNode3.ImageIndex = 0
-        TreeNode3.Name = "nGeneral"
-        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode3.SelectedImageIndex = 0
-        TreeNode3.Text = "General"
-        TreeNode4.ImageIndex = 5
-        TreeNode4.Name = "nSources"
-        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode4.SelectedImageIndex = 5
-        TreeNode4.Text = "Files and Sources"
-        TreeNode5.ImageIndex = 3
-        TreeNode5.Name = "nScraper"
-        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode5.SelectedImageIndex = 3
-        TreeNode5.Text = "Scraper - Data"
-        TreeNode6.ImageIndex = 6
-        TreeNode6.Name = "nImages"
-        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode6.SelectedImageIndex = 6
-        TreeNode6.Text = "Scraper - Images"
-        TreeNode7.ImageIndex = 2
-        TreeNode7.Name = "nMovies"
-        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode7.SelectedImageIndex = 2
-        TreeNode7.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
+        TreeNode8.ImageIndex = 4
+        TreeNode8.Name = "nExts"
+        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 4
+        TreeNode8.Text = "File System"
+        TreeNode9.ImageIndex = 1
+        TreeNode9.Name = "nXBMCCom"
+        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode9.SelectedImageIndex = 1
+        TreeNode9.Text = "XBMC Communication"
+        TreeNode10.ImageIndex = 0
+        TreeNode10.Name = "nGeneral"
+        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode10.SelectedImageIndex = 0
+        TreeNode10.Text = "General"
+        TreeNode11.ImageIndex = 5
+        TreeNode11.Name = "nSources"
+        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode11.SelectedImageIndex = 5
+        TreeNode11.Text = "Files and Sources"
+        TreeNode12.ImageIndex = 3
+        TreeNode12.Name = "nScraper"
+        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode12.SelectedImageIndex = 3
+        TreeNode12.Text = "Scraper - Data"
+        TreeNode13.ImageIndex = 6
+        TreeNode13.Name = "nImages"
+        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode13.SelectedImageIndex = 6
+        TreeNode13.Text = "Scraper - Images"
+        TreeNode14.ImageIndex = 2
+        TreeNode14.Name = "nMovies"
+        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode14.SelectedImageIndex = 2
+        TreeNode14.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode14})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2542,6 +2550,7 @@ Partial Class dlgSettings
         '
         Me.pnlMovies.BackColor = System.Drawing.Color.White
         Me.pnlMovies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovies.Controls.Add(Me.GroupBox27)
         Me.pnlMovies.Controls.Add(Me.GroupBox12)
         Me.pnlMovies.Controls.Add(Me.GroupBox2)
         Me.pnlMovies.Location = New System.Drawing.Point(208, 96)
@@ -2549,6 +2558,81 @@ Partial Class dlgSettings
         Me.pnlMovies.Size = New System.Drawing.Size(597, 353)
         Me.pnlMovies.TabIndex = 61
         Me.pnlMovies.Visible = False
+        '
+        'GroupBox27
+        '
+        Me.GroupBox27.Controls.Add(Me.chkMissingExtra)
+        Me.GroupBox27.Controls.Add(Me.chkMissingSubs)
+        Me.GroupBox27.Controls.Add(Me.chkMissingTrailer)
+        Me.GroupBox27.Controls.Add(Me.chkMissingNFO)
+        Me.GroupBox27.Controls.Add(Me.chkMissingFanart)
+        Me.GroupBox27.Controls.Add(Me.chkMissingPoster)
+        Me.GroupBox27.Location = New System.Drawing.Point(426, 8)
+        Me.GroupBox27.Name = "GroupBox27"
+        Me.GroupBox27.Size = New System.Drawing.Size(164, 123)
+        Me.GroupBox27.TabIndex = 5
+        Me.GroupBox27.TabStop = False
+        Me.GroupBox27.Text = "Missing Items Filter"
+        '
+        'chkMissingExtra
+        '
+        Me.chkMissingExtra.AutoSize = True
+        Me.chkMissingExtra.Location = New System.Drawing.Point(8, 98)
+        Me.chkMissingExtra.Name = "chkMissingExtra"
+        Me.chkMissingExtra.Size = New System.Drawing.Size(133, 17)
+        Me.chkMissingExtra.TabIndex = 11
+        Me.chkMissingExtra.Text = "Check for Extrathumbs"
+        Me.chkMissingExtra.UseVisualStyleBackColor = True
+        '
+        'chkMissingSubs
+        '
+        Me.chkMissingSubs.AutoSize = True
+        Me.chkMissingSubs.Location = New System.Drawing.Point(8, 82)
+        Me.chkMissingSubs.Name = "chkMissingSubs"
+        Me.chkMissingSubs.Size = New System.Drawing.Size(99, 17)
+        Me.chkMissingSubs.TabIndex = 10
+        Me.chkMissingSubs.Text = "Check for Subs"
+        Me.chkMissingSubs.UseVisualStyleBackColor = True
+        '
+        'chkMissingTrailer
+        '
+        Me.chkMissingTrailer.AutoSize = True
+        Me.chkMissingTrailer.Location = New System.Drawing.Point(8, 66)
+        Me.chkMissingTrailer.Name = "chkMissingTrailer"
+        Me.chkMissingTrailer.Size = New System.Drawing.Size(104, 17)
+        Me.chkMissingTrailer.TabIndex = 9
+        Me.chkMissingTrailer.Text = "Check for Trailer"
+        Me.chkMissingTrailer.UseVisualStyleBackColor = True
+        '
+        'chkMissingNFO
+        '
+        Me.chkMissingNFO.AutoSize = True
+        Me.chkMissingNFO.Location = New System.Drawing.Point(8, 50)
+        Me.chkMissingNFO.Name = "chkMissingNFO"
+        Me.chkMissingNFO.Size = New System.Drawing.Size(97, 17)
+        Me.chkMissingNFO.TabIndex = 8
+        Me.chkMissingNFO.Text = "Check for NFO"
+        Me.chkMissingNFO.UseVisualStyleBackColor = True
+        '
+        'chkMissingFanart
+        '
+        Me.chkMissingFanart.AutoSize = True
+        Me.chkMissingFanart.Location = New System.Drawing.Point(8, 34)
+        Me.chkMissingFanart.Name = "chkMissingFanart"
+        Me.chkMissingFanart.Size = New System.Drawing.Size(105, 17)
+        Me.chkMissingFanart.TabIndex = 7
+        Me.chkMissingFanart.Text = "Check for Fanart"
+        Me.chkMissingFanart.UseVisualStyleBackColor = True
+        '
+        'chkMissingPoster
+        '
+        Me.chkMissingPoster.AutoSize = True
+        Me.chkMissingPoster.Location = New System.Drawing.Point(8, 18)
+        Me.chkMissingPoster.Name = "chkMissingPoster"
+        Me.chkMissingPoster.Size = New System.Drawing.Size(105, 17)
+        Me.chkMissingPoster.TabIndex = 6
+        Me.chkMissingPoster.Text = "Check for Poster"
+        Me.chkMissingPoster.UseVisualStyleBackColor = True
         '
         'GroupBox16
         '
@@ -3507,13 +3591,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -3570,6 +3654,8 @@ Partial Class dlgSettings
         Me.pnlGeneral.ResumeLayout(False)
         Me.pnlXBMCCom.ResumeLayout(False)
         Me.pnlMovies.ResumeLayout(False)
+        Me.GroupBox27.ResumeLayout(False)
+        Me.GroupBox27.PerformLayout()
         Me.GroupBox16.ResumeLayout(False)
         Me.GroupBox16.PerformLayout()
         Me.pnlScraper.ResumeLayout(False)
@@ -3897,4 +3983,11 @@ Partial Class dlgSettings
     Friend WithEvents lblLimit2 As System.Windows.Forms.Label
     Friend WithEvents txtActorLimit As System.Windows.Forms.TextBox
     Friend WithEvents lblLimit As System.Windows.Forms.Label
+    Friend WithEvents GroupBox27 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkMissingExtra As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMissingSubs As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMissingTrailer As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMissingNFO As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMissingFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMissingPoster As System.Windows.Forms.CheckBox
 End Class
