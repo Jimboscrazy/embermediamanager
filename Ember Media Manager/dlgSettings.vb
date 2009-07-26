@@ -1375,6 +1375,30 @@ Public Class dlgSettings
     Private Sub txtGenreLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtGenreLimit.TextChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkMissingPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMissingPoster.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMissingFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMissingFanart.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMissingNFO_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMissingNFO.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMissingTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMissingTrailer.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMissingSubs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMissingSubs.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMissingExtra_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMissingExtra.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1631,6 +1655,13 @@ Public Class dlgSettings
                 Master.eSettings.GenreLimit = 0
             End If
 
+            Master.eSettings.MissingFilterPoster = Me.chkMissingPoster.Checked
+            Master.eSettings.MissingFilterFanart = Me.chkMissingFanart.Checked
+            Master.eSettings.MissingFilterNFO = Me.chkMissingNFO.Checked
+            Master.eSettings.MissingFilterTrailer = Me.chkMissingTrailer.Checked
+            Master.eSettings.MissingFilterSubs = Me.chkMissingSubs.Checked
+            Master.eSettings.MissingFilterExtras = Me.chkMissingExtra.Checked
+
             Master.eSettings.Save()
 
             Master.CreateDefaultOptions()
@@ -1849,6 +1880,13 @@ Public Class dlgSettings
             End If
             Me.txtActorLimit.Text = Master.eSettings.ActorLimit.ToString
             Me.txtGenreLimit.Text = Master.eSettings.GenreLimit.ToString
+
+            Me.chkMissingPoster.Checked = Master.eSettings.MissingFilterPoster
+            Me.chkMissingFanart.Checked = Master.eSettings.MissingFilterFanart
+            Me.chkMissingNFO.Checked = Master.eSettings.MissingFilterNFO
+            Me.chkMissingTrailer.Checked = Master.eSettings.MissingFilterTrailer
+            Me.chkMissingSubs.Checked = Master.eSettings.MissingFilterSubs
+            Me.chkMissingExtra.Checked = Master.eSettings.MissingFilterExtras
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -2092,6 +2130,13 @@ Public Class dlgSettings
         Me.GroupBox1.Text = Master.eLang.GetString(429, "Miscellaneous")
         Me.lblLimit.Text = Master.eLang.GetString(578, "Limit:")
         Me.lblLimit2.Text = Me.lblLimit.Text
+        Me.GroupBox27.Text = Master.eLang.GetString(581, "Missing Items Filter")
+        Me.chkMissingPoster.Text = Master.eLang.GetString(582, "Check for Poster")
+        Me.chkMissingFanart.Text = Master.eLang.GetString(583, "Check for Fanart")
+        Me.chkMissingNFO.Text = Master.eLang.GetString(584, "Check for NFO")
+        Me.chkMissingTrailer.Text = Master.eLang.GetString(585, "Check for Trailer")
+        Me.chkMissingSubs.Text = Master.eLang.GetString(586, "Check for Subs")
+        Me.chkMissingExtra.Text = Master.eLang.GetString(587, "Check for Extrathumbs")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")

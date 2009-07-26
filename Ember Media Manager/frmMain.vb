@@ -1083,12 +1083,12 @@ Public Class frmMain
             Dim MissingFilter As New ArrayList
             If Me.chkFilterMissing.Checked Then
                 With Master.eSettings
-                    If Not .MoviePosterCol Then MissingFilter.Add("HasPoster = 0")
-                    If Not .MovieFanartCol Then MissingFilter.Add("HasFanart = 0")
-                    If Not .MovieInfoCol Then MissingFilter.Add("HasNfo = 0")
-                    If Not .MovieTrailerCol Then MissingFilter.Add("HasTrailer = 0")
-                    If Not .MovieSubCol Then MissingFilter.Add("HasSub = 0")
-                    If Not .MovieExtraCol Then MissingFilter.Add("HasExtra = 0")
+                    If Not .MissingFilterPoster Then MissingFilter.Add("HasPoster = 0")
+                    If Not .MissingFilterFanart Then MissingFilter.Add("HasFanart = 0")
+                    If Not .MissingFilterNFO Then MissingFilter.Add("HasNfo = 0")
+                    If Not .MissingFilterTrailer Then MissingFilter.Add("HasTrailer = 0")
+                    If Not .MissingFilterSubs Then MissingFilter.Add("HasSub = 0")
+                    If Not .MissingFilterExtras Then MissingFilter.Add("HasExtra = 0")
                 End With
                 filMissing = Strings.Join(MissingFilter.ToArray, " OR ")
                 Me.FilterArray.Add(filMissing)
@@ -5128,4 +5128,7 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
+    Private Sub chkFilterMissing_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMissing.CheckedChanged
+
+    End Sub
 End Class
