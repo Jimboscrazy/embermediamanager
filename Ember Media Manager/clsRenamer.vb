@@ -26,21 +26,21 @@ Imports System.Text.RegularExpressions
 Public Class FileFolderRenamer
     Class FileRename
         Public ID As Integer = -1 ' support for bulkRenamer 
-        Private _title As String
-        Public Year As String
-        Public BasePath As String
-        Private _path As String
-        Private _fileName As String
-        Private _newPath As String
-        Private _newFileName As String
-        Private _islocked As Boolean ' support for bulkRenamer 
-        Private _dirExist As Boolean ' support for bulkRenamer 
-        Private _fileExist As Boolean ' support for bulkRenamer 
+        Private _title As String = String.Empty
+        Public Year As String = String.Empty
+        Public BasePath As String = String.Empty
+        Private _path As String = String.Empty
+        Private _fileName As String = String.Empty
+        Private _newPath As String = String.Empty
+        Private _newFileName As String = String.Empty
+        Private _islocked As Boolean = False ' support for bulkRenamer 
+        Private _dirExist As Boolean = True ' support for bulkRenamer 
+        Private _fileExist As Boolean = True ' support for bulkRenamer 
         Private _isSingle As Boolean = True
-        Public fType As Integer
-        Public Resolution As String
-        Public Audio As String
+        Public Resolution As String = String.Empty
+        Public Audio As String = String.Empty
         Public Source As String = String.Empty
+        Public OriginalTitle As String = String.Empty
 
 
         Public Property Title() As String
@@ -210,6 +210,7 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "D", f.Path)
                     strCond = ApplyPattern(strCond, "F", f.FileName)
                     strCond = ApplyPattern(strCond, "T", f.Title)
+                    strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "A", f.Audio)
@@ -232,6 +233,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "D", f.Path)
             pattern = ApplyPattern(pattern, "F", f.FileName)
             pattern = ApplyPattern(pattern, "T", f.Title)
+            pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "Y", f.Year)
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "A", f.Audio)
