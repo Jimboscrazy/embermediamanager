@@ -50,7 +50,6 @@ Public Class dlgExportMovies
 
     End Sub
 
-
     Private Sub dlgExportMovies_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         If Me.bwLoadInfo.IsBusy Then
             Me.DoCancel()
@@ -116,6 +115,133 @@ Public Class dlgExportMovies
             counter += 1
         Next
     End Sub
+
+
+    Private Function GetAVImages(ByVal AVMovie As Master.DBMovie, ByVal line As String) As String
+
+        '//
+        ' Parse the Flags XML and set the proper images
+        '\\
+
+        If XML.FlagsXML.Nodes.Count > 0 Then
+            'Dim mePath As String = ""
+            Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
+            Try
+                Dim fiAV As MediaInfo.Fileinfo = AVMovie.Movie.FileInfo
+                Dim atypeRef As String = String.Empty
+                Dim vresImage As String = String.Empty
+                Dim vsourceImage As String = String.Empty
+                Dim vtypeImage As String = String.Empty
+                Dim atypeImage As String = String.Empty
+                Dim achanImage As String = String.Empty
+                Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
+                Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV)
+                Dim sourceCheck As String = String.Empty
+
+                If Directory.GetParent(AVMovie.Filename).Name.ToLower = "video_ts" Then
+                    sourceCheck = Directory.GetParent(Directory.GetParent(AVMovie.Filename).FullName).Name.ToLower
+                Else
+                    sourceCheck = String.Concat(Directory.GetParent(AVMovie.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.Filename).ToLower)
+                End If
+
+                'video resolution
+                Dim xVResDefault = From xDef In XML.FlagsXML...<vres> Select xDef.Element("default").Element("icon").Value
+                If xVResDefault.Count > 0 Then
+                    vresImage = Path.Combine(mePath, xVResDefault(0).ToString)
+                End If
+
+                Dim strRes As String = NFO.GetResFromDimensions(tVideo).ToLower
+                If Not String.IsNullOrEmpty(strRes) Then
+                    Dim xVResFlag = From xVRes In XML.FlagsXML...<vres>...<name> Where Regex.IsMatch(strRes, xVRes.@searchstring) Select xVRes.<icon>.Value
+                    If xVResFlag.Count > 0 Then
+                        vresImage = Path.Combine(mePath, xVResFlag(0).ToString)
+                    End If
+                End If
+
+                'video source
+                Dim xVSourceDefault = From xDef In XML.FlagsXML...<vsource> Select xDef.Element("default").Element("icon").Value
+                If xVSourceDefault.Count > 0 Then
+                    vsourceImage = Path.Combine(mePath, xVSourceDefault(0).ToString)
+                End If
+
+                Dim xVSourceFlag = From xVSource In XML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.<icon>.Value
+                If xVSourceFlag.Count > 0 Then
+                    vsourceImage = Path.Combine(mePath, xVSourceFlag(0).ToString)
+                End If
+
+                'video type
+                Dim xVTypeDefault = From xDef In XML.FlagsXML...<vtype> Select xDef.Element("default").Element("icon").Value
+                If xVTypeDefault.Count > 0 Then
+                    vtypeImage = Path.Combine(mePath, xVTypeDefault(0).ToString)
+                End If
+
+                Dim vCodec As String = tVideo.Codec.ToLower
+                If Not String.IsNullOrEmpty(vCodec) Then
+                    Dim xVTypeFlag = From xVType In XML.FlagsXML...<vtype>...<name> Where Regex.IsMatch(vCodec, xVType.@searchstring) Select xVType.<icon>.Value
+                    If xVTypeFlag.Count > 0 Then
+                        vtypeImage = Path.Combine(mePath, xVTypeFlag(0).ToString)
+                    End If
+                End If
+
+                'audio type
+                Dim xATypeDefault = From xDef In XML.FlagsXML...<atype> Select xDef.Element("default").Element("icon").Value
+                If xATypeDefault.Count > 0 Then
+                    atypeImage = Path.Combine(mePath, xATypeDefault(0).ToString)
+                End If
+
+                Dim aCodec As String = tAudio.Codec.ToLower
+                If Not String.IsNullOrEmpty(aCodec) Then
+                    Dim xATypeFlag = From xAType In XML.FlagsXML...<atype>...<name> Where Regex.IsMatch(aCodec, xAType.@searchstring) Select xAType.<icon>.Value, xAType.<ref>.Value
+                    If xATypeFlag.Count > 0 Then
+                        atypeImage = Path.Combine(mePath, xATypeFlag(0).icon.ToString)
+                        If Not IsNothing(xATypeFlag(0).ref) Then
+                            atypeRef = xATypeFlag(0).ref.ToString
+                        End If
+                    End If
+                End If
+
+                'audio channels
+                Dim xAChanDefault = From xDef In XML.FlagsXML...<achan> Select xDef.Element("default").Element("icon").Value
+                If xAChanDefault.Count > 0 Then
+                    achanImage = Path.Combine(mePath, xAChanDefault(0).ToString)
+                End If
+
+                If Not String.IsNullOrEmpty(tAudio.Channels) Then
+                    Dim xAChanFlag = From xAChan In XML.FlagsXML...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
+                    If xAChanFlag.Count > 0 Then
+                        achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(vresImage) AndAlso XML.alFlags.Contains(vresImage.ToLower) Then
+                    line = line.Replace("<$FLAG_VRES>", Path.GetFileName(vresImage))
+                End If
+
+                If Not String.IsNullOrEmpty(vsourceImage) AndAlso XML.alFlags.Contains(vsourceImage.ToLower) Then
+                    line = line.Replace("<$FLAG_VSORCE>", Path.GetFileName(vsourceImage))
+                End If
+
+                If Not String.IsNullOrEmpty(vtypeImage) AndAlso XML.alFlags.Contains(vtypeImage.ToLower) Then
+                    line = line.Replace("<$FLAG_VTYPE>", Path.GetFileName(vtypeImage))
+                End If
+
+                If Not String.IsNullOrEmpty(atypeImage) AndAlso XML.alFlags.Contains(atypeImage.ToLower) Then
+                    line = line.Replace("<$FLAG_ATYPE>", Path.GetFileName(atypeImage))
+                End If
+
+                If Not String.IsNullOrEmpty(achanImage) AndAlso XML.alFlags.Contains(achanImage.ToLower) Then
+                    line = line.Replace("<$FLAG_ACHAN>", Path.GetFileName(achanImage))
+                End If
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End If
+        Return line
+    End Function
+
+
+
     Sub BuildHTML(Optional ByVal bSearch As Boolean = False, Optional ByVal strFilter As String = "", Optional ByVal strIn As String = "", Optional ByVal template As String = "template")
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
@@ -155,12 +281,12 @@ Public Class dlgExportMovies
                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                         tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
                         tRes = NFO.GetResFromDimensions(tVid)
-                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown"), tVid.Codec))
+                        _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown"), tVid.Codec)).ToUpper
                     End If
 
                     If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
                         tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
-                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
+                        _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels)).ToUpper
                     End If
                 End If
 
@@ -175,12 +301,14 @@ Public Class dlgExportMovies
                 row = row.Replace("<$GENRES>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Genre))
                 row = row.Replace("<$VIDEO>", _vidDetails)
                 row = row.Replace("<$AUDIO>", _audDetails)
+                If Me.isCL Then
+                    row = GetAVImages(_curMovie, row)
+                End If
                 If bSearch Then
                     If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso _vidDetails.Contains(strFilter)) OrElse _
                        (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso _audDetails.Contains(strFilter)) OrElse _
                        (strIn = Master.eLang.GetString(21, "Title") AndAlso _curMovie.Movie.Title.Contains(strFilter)) OrElse _
                        (strIn = Master.eLang.GetString(278, "Year") AndAlso _curMovie.Movie.Year.Contains(strFilter)) Then
-
                         HTMLBody.Append(row)
                     End If
                 Else

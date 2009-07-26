@@ -388,6 +388,7 @@ Public Class frmMain
                         'End If
                 End Select
             Next
+            XML.CacheXMLs()
             Master.DB.Connect(False, False)
             If clExport = True Then
                 dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportImages)
