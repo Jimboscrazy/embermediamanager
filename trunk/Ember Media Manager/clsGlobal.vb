@@ -282,25 +282,25 @@ Public Class Master
 
     Public Shared Sub CreateDefaultOptions()
         With DefaultOptions
-            .bCast = True
-            .bDirector = True
-            .bGenre = True
-            .bMPAA = True
-            .bMusicBy = True
-            .bOtherCrew = True
-            .bOutline = True
-            .bPlot = True
-            .bProducers = True
-            .bRating = True
-            .bRelease = True
-            .bRuntime = True
-            .bStudio = True
-            .bTagline = True
-            .bTitle = True
-            .bTrailer = True
-            .bVotes = True
-            .bWriters = True
-            .bYear = True
+            .bCast = eSettings.FieldCast
+            .bDirector = eSettings.FieldDirector
+            .bGenre = eSettings.FieldGenre
+            .bMPAA = eSettings.FieldMPAA
+            .bMusicBy = eSettings.FieldMusic
+            .bOtherCrew = eSettings.FieldCrew
+            .bOutline = eSettings.FieldOutline
+            .bPlot = eSettings.FieldPlot
+            .bProducers = eSettings.FieldProducers
+            .bRating = eSettings.FieldRating
+            .bRelease = eSettings.FieldRelease
+            .bRuntime = eSettings.FieldRuntime
+            .bStudio = eSettings.FieldStudio
+            .bTagline = eSettings.FieldTagline
+            .bTitle = eSettings.FieldTitle
+            .bTrailer = eSettings.FieldTrailer
+            .bVotes = eSettings.FieldVotes
+            .bWriters = eSettings.FieldWriters
+            .bYear = eSettings.FieldYear
         End With
     End Sub
 
