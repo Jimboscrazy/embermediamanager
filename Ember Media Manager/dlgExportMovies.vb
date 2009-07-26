@@ -34,6 +34,9 @@ Public Class dlgExportMovies
 
     Public Shared Sub CLExport(ByVal filename As String, Optional ByVal template As String = "template", Optional ByVal poster As Boolean = False)
         Dim MySelf As New dlgExportMovies
+        If Not Directory.Exists(Path.GetDirectoryName(filename)) Then
+            Return
+        End If
         MySelf.isCL = True
         MySelf.bwLoadInfo = New System.ComponentModel.BackgroundWorker
         MySelf.bwLoadInfo.WorkerSupportsCancellation = True
@@ -43,6 +46,8 @@ Public Class dlgExportMovies
             Application.DoEvents()
         Loop
         MySelf.BuildHTML(False, "", "", template)
+        Dim srcPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
+        CopyDirectory(srcPath, Path.GetDirectoryName(filename), True)
         If poster Then
             MySelf.ExportPoster(Path.GetDirectoryName(filename))
         End If
@@ -218,7 +223,7 @@ Public Class dlgExportMovies
                 End If
 
                 If Not String.IsNullOrEmpty(vsourceImage) AndAlso XML.alFlags.Contains(vsourceImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VSORCE>", Path.GetFileName(vsourceImage))
+                    line = line.Replace("<$FLAG_VSOURCE>", Path.GetFileName(vsourceImage))
                 End If
 
                 If Not String.IsNullOrEmpty(vtypeImage) AndAlso XML.alFlags.Contains(vtypeImage.ToLower) Then
@@ -248,7 +253,7 @@ Public Class dlgExportMovies
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
-            Dim pattern As String = File.ReadAllText(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, template, "-", Master.eSettings.Language, ".html"))
+            Dim pattern As String = File.ReadAllText(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html"))
             Dim movieheader As String = String.Empty
             Dim moviefooter As String = String.Empty
             Dim movierow As String = String.Empty
@@ -458,8 +463,52 @@ Public Class dlgExportMovies
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
 
         Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(278, "Year"), Master.eLang.GetString(279, "Video Flag"), Master.eLang.GetString(280, "Audio Flag")})
-
     End Sub
+    Private Shared Sub CopyDirectory(ByVal SourcePath As String, ByVal DestPath As String, Optional ByVal Overwrite As Boolean = False)
+        Dim SourceDir As DirectoryInfo = New DirectoryInfo(SourcePath)
+        Dim DestDir As DirectoryInfo = New DirectoryInfo(DestPath)
+
+        ' the source directory must exist, otherwise throw an exception
+        If SourceDir.Exists Then
+            ' if destination SubDir's parent SubDir does not exist throw an exception
+            If Not DestDir.Parent.Exists Then
+                Throw New DirectoryNotFoundException _
+                    ("Destination directory does not exist: " + DestDir.Parent.FullName)
+            End If
+
+            If Not DestDir.Exists Then
+                DestDir.Create()
+            End If
+
+            ' copy all the files of the current directory
+            Dim ChildFile As FileInfo
+            For Each ChildFile In SourceDir.GetFiles()
+                If Path.GetExtension(ChildFile.FullName) = ".html" Then
+                    Continue For
+                End If
+                If Overwrite Then
+                    ChildFile.CopyTo(Path.Combine(DestDir.FullName, ChildFile.Name), True)
+                Else
+                    ' if Overwrite = false, copy the file only if it does not exist
+                    ' this is done to avoid an IOException if a file already exists
+                    ' this way the other files can be copied anyway...
+                    If Not File.Exists(Path.Combine(DestDir.FullName, ChildFile.Name)) Then
+                        ChildFile.CopyTo(Path.Combine(DestDir.FullName, ChildFile.Name), False)
+                    End If
+                End If
+            Next
+
+            ' copy all the sub-directories by recursively calling this same routine
+            Dim SubDir As DirectoryInfo
+            For Each SubDir In SourceDir.GetDirectories()
+                CopyDirectory(SubDir.FullName, Path.Combine(DestDir.FullName, _
+                    SubDir.Name), Overwrite)
+            Next
+        Else
+            Throw New DirectoryNotFoundException("Source directory does not exist: " + SourceDir.FullName)
+        End If
+    End Sub
+
 End Class
 
 
