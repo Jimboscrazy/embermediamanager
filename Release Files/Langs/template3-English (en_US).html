@@ -11,7 +11,7 @@
 .top {position:relative;width:550px;}
 .header a {text-decoration:none; color:black;}
 .header a:hover {color:#1010f0;}
-.details {position:relative;display:none;border-top: 0px solid #000;background: silver;width:530px; padding-left: 10px; padding-right: 10px; text-align: justify; }
+.details {position:relative;display:none;border-top: 0px solid #000;background: silver;width:530px; padding-left: 10px; padding-right: 10px; text-align: justify; overflow:hidden;clear:both;}
 .details-s {display:none;white-space: nowrap;}
 </style>
 <script type="text/javascript">
@@ -85,12 +85,12 @@ Movie List<br><br>
    <td>
     <div class="top">
       <div id="name<$COUNT>" class="header"><a onclick="ShowDetails2(det<$COUNT>)" href="javascript:"><b><$MOVIENAME></b></a>
-              <div style="font-size:11px;position:absolute;top:0;right:0;text-align: right;"><b><$YEAR></b><br><div class="details-s" id="det<$COUNT>-s"><$VIDEO></div/></div>
+              <div style="font-size:11px;position:absolute;top:0;right:0;text-align: right;"><b><$YEAR></b><br><div class="details-s" id="det<$COUNT>-s"><$VIDEO> - <$AUDIO></div/></div>
       </div><br>
     <div id="<$COUNT>" class="detail">Filename: <$FILENAME></div>
     </div>
     <div class="details" id="det<$COUNT>">
-<div style="float:right;clear:left;padding-left:10px;padding-top:5px;"><img style="width:80px;" src="export/<$COUNT>.jpg"></div>
+<div style="float:right;clear:left;padding-left:10px;padding-top:5px;padding-bottom:5px;"><img style="width:80px;" src="export/<$COUNT>.jpg"></div>
          <b>Genres:</b>&nbsp;<$GENRES><br>
          <b>Plot:</b><br><$PLOT><br>&nbsp;
 
