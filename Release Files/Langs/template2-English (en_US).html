@@ -11,19 +11,19 @@
 .top {position:relative;width:550px;}
 .header a {text-decoration:none; color:black;}
 .header a:hover {color:#1010f0;}
-.details {display:none;border-top: 0px solid #000;background: silver;width:550px;}
+.details {display:none;border-top: 0px solid #000;background: silver;width:550px; padding-left: 10px; padding-right: 10px; text-align: justify; }
 </style>
 <script type="text/javascript">
 var previd;
 function ShowDetails2(id) {
 	if (document.getElementById) { // DOM3 = IE5, NS6
 		if (id.style.display == 'block') {
-			$(id).hide("slow");
-			// id.style.display == 'none';
+			//$(id).hide("slow");
+			$(id).slideUp("slow");
 		} else {
 			 hiddiv2();
-			$(id).show("slow");
-			// id.style.display == 'block';
+			//$(id).show("slow");
+			$(id).slideDown("slow");
 			previd = id;
 		}
 	
@@ -47,8 +47,8 @@ function hiddiv2() {
 		  
 	if (document.getElementById) { // DOM3 = IE5, NS6
 		if (previd) {
-			$(previd).hide("slow");
-			// previd.style.display = 'none';
+			//$(previd).hide("slow");
+			$(previd).slideUp("slow");
 		} 
 	}
 }
