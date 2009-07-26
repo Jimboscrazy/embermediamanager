@@ -11,19 +11,19 @@
 .top {position:relative;width:550px;}
 .header a {text-decoration:none; color:black;}
 .header a:hover {color:#1010f0;}
-.details {display:none;border-top: 0px solid #000;background: silver;width:550px; padding-left: 10px; padding-right: 10px; text-align: justify; }
+.details {position:relative;display:none;border-top: 0px solid #000;background: silver;width:530px; padding-left: 10px; padding-right: 10px; text-align: justify; }
 </style>
 <script type="text/javascript">
 var previd;
 function ShowDetails2(id) {
 	if (document.getElementById) { // DOM3 = IE5, NS6
 		if (id.style.display == 'block') {
-			//$(id).hide("slow");
-			$(id).slideUp("slow");
+			$(id).hide("slow");
+			//$(id).slideUp("slow");
 		} else {
-			 hiddiv2();
-			//$(id).show("slow");
-			$(id).slideDown("slow");
+	      		hiddiv2(id);
+			$(id).show("slow");
+			//$(id).slideDown("slow");
 			previd = id;
 		}
 	
@@ -42,13 +42,15 @@ function ShowDetails(id) {
 	
 	}
 }
-function hiddiv2() {
+function hiddiv2(id) {
 	//safe function to show an element with a specified id
 		  
 	if (document.getElementById) { // DOM3 = IE5, NS6
 		if (previd) {
-			//$(previd).hide("slow");
-			$(previd).slideUp("slow");
+		    if (previd != id) {
+			$(previd).hide("slow");
+			//$(previd).slideUp("slow");
+                    }
 		} 
 	}
 }
@@ -83,6 +85,7 @@ Movie List<br><br>
     <div class="details" id="det<$COUNT>">
          <b>Genres:</b>&nbsp;<$GENRES><br>
          <b>Plot:</b><br><$PLOT><br>&nbsp;
+
     </div>
    </td>
   </tr>
