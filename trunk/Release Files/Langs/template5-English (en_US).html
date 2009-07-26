@@ -12,6 +12,7 @@
 .header a:hover {color:#1010f0;}
 .details {position:relative;display:block;border-top: 0px solid #000;background: silver; padding-left: 10px; padding-right: 10px; text-align: justify; overflow:hidden;clear:both;}
 .details-s {display:block;white-space: nowrap;}
+.flags {height:25px;vertical-align:center;}
 </style>
 </head>
 <center>
@@ -25,7 +26,8 @@ Movie List<br><br>
    <td>
     <div class="top">
       <div id="name<$COUNT>" class="header"><b><$MOVIENAME></b>
-              <div style="font-size:11px;position:absolute;top:0;right:0;text-align: right;"><b><$YEAR></b><br><div class="details-s" id="det<$COUNT>-s"><$VIDEO> - <$AUDIO></div/></div>
+              <div style="font-size:11px;position:absolute;top:0;right:0;text-align: right;"><b><$YEAR></b><br>
+	      </div>
       </div><br>
     <div id="<$COUNT>" class="detail">Filename: <$FILENAME></div>
     </div>
@@ -33,8 +35,15 @@ Movie List<br><br>
 <div style="float:right;clear:left;padding-left:10px;padding-top:5px;padding-bottom:5px;"><img style="width:80px;" src="export/<$COUNT>.jpg"></div>
          <b>Genres:</b>&nbsp;<$GENRES><br>
          <b>Plot:</b><br><$PLOT><br>&nbsp;
-
+<div class="details-s" id="det<$COUNT>-s">
+<img class="flags" src="flags/<$FLAG_VRES>">
+<img class="flags" src="flags/<$FLAG_VSORCE>">
+<img class="flags" src="flags/<$FLAG_VTYPE>">
+<img class="flags" src="flags/<$FLAG_ATYPE>">
+<img class="flags" src="flags/<$FLAG_ACHAN>">
+</div/>
     </div>
+
    </td>
   </tr>
 <$/MOVIE>
