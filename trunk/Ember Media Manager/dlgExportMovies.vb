@@ -42,11 +42,8 @@ Public Class dlgExportMovies
             Application.DoEvents()
         Loop
         MySelf.BuildHTML()
-        Dim myStream As New StreamWriter(filename)
-        If Not IsNothing(myStream) Then
-            myStream.Write(System.Text.Encoding.ASCII.GetBytes(MySelf.wbMovieList.DocumentText))
-            myStream.Close()
-        End If
+        File.WriteAllText(filename, System.Text.Encoding.ASCII.GetString(System.Text.Encoding.ASCII.GetBytes(MySelf.wbMovieList.DocumentText)))
+
     End Sub
 
 
