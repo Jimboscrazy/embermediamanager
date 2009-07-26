@@ -184,6 +184,8 @@ Public Class emmSettings
     Private _fieldproducers As Boolean
     Private _fieldmusic As Boolean
     Private _fieldcrew As Boolean
+    Private _genrelimit As Integer
+    Private _actorlimit As Integer
 
     Public Property Version() As String
         Get
@@ -1611,6 +1613,24 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property GenreLimit() As Integer
+        Get
+            Return Me._genrelimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._genrelimit = value
+        End Set
+    End Property
+
+    Public Property ActorLimit() As Integer
+        Get
+            Return Me._actorlimit
+        End Get
+        Set(ByVal value As Integer)
+            Me._actorlimit = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1775,6 +1795,8 @@ Public Class emmSettings
         Me._fieldproducers = True
         Me._fieldmusic = True
         Me._fieldcrew = True
+        Me._genrelimit = 0
+        Me._actorlimit = 0
     End Sub
 
     Public Sub Save()
