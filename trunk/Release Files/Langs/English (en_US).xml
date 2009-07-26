@@ -177,7 +177,7 @@
   <string id="175">Filename</string>
   <string id="176">New Folder</string>
   <string id="177">New Filename</string>
-  <string id="178">$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source</string>
+  <string id="178">$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source</string>
   <string id="179">OK</string>
   <string id="180">Preview</string>
   <string id="181">Enter URL to Image:</string>

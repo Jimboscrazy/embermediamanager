@@ -125,6 +125,7 @@ Public Class dlgBulkRenamer
                                         Else
                                             MovieFile.Title = _curMovie.Movie.Title
                                         End If
+                                        MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle
                                         MovieFile.Year = _curMovie.Movie.Year
                                         MovieFile.IsLocked = _curMovie.IsLock
                                         MovieFile.BasePath = Path.GetDirectoryName(_curMovie.Filename)
@@ -403,7 +404,7 @@ Public Class dlgBulkRenamer
         End Using
 
         'testing proposes
-        Dim s As String = String.Format(Master.eLang.GetString(178, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source"), vbNewLine)
+        Dim s As String = String.Format(Master.eLang.GetString(178, "$T = Title{0}$X. (Replace Space with .){0}$D = Directory{0}$F = File Name{0}$O = OriginalTitle{0}$Y = Year{0}$R = Resolution{0}$A = Audio{0}$S = Source"), vbNewLine)
         lblLabel.Text = s.Replace(vbCrLf, "    ")
         frmToolTip.SetToolTip(txtFolder, s)
         frmToolTip.SetToolTip(txtFile, s)
