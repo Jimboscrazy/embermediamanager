@@ -291,6 +291,16 @@ Public Class dlgSettings
 
     Private Sub chkFullCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFullCrew.CheckedChanged
         Me.btnApply.Enabled = True
+
+        Me.chkProducers.Enabled = Me.chkFullCrew.Checked
+        Me.chkMusicBy.Enabled = Me.chkFullCrew.Checked
+        Me.chkCrew.Enabled = Me.chkFullCrew.Checked
+
+        If Not Me.chkFullCrew.Checked Then
+            Me.chkProducers.Checked = False
+            Me.chkMusicBy.Checked = False
+            Me.chkCrew.Checked = False
+        End If
     End Sub
 
     Private Sub chkMovieMediaCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -1245,6 +1255,104 @@ Public Class dlgSettings
     Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
+
+
+    Private Sub chkTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitle.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYear.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMPAA.CheckedChanged
+        Me.btnApply.Enabled = True
+
+        Me.chkCert.Enabled = Me.chkMPAA.Checked
+
+        If Not Me.chkMPAA.Checked Then
+            Me.chkCert.Checked = False
+            Me.cbCert.Enabled = False
+            Me.cbCert.SelectedIndex = -1
+            Me.chkUseCertForMPAA.Enabled = False
+            Me.chkUseCertForMPAA.Checked = False
+        End If
+    End Sub
+
+    Private Sub chkRelease_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRelease.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRuntime.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRating.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVotes.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkStudio_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStudio.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTrailer.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTagline.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOutline.CheckedChanged
+        Me.btnApply.Enabled = True
+
+        Me.chkOutlineForPlot.Enabled = Me.chkOutline.Checked
+        If Not Me.chkOutline.Checked Then Me.chkOutlineForPlot.Checked = False
+    End Sub
+
+    Private Sub chkPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCast.CheckedChanged
+        Me.btnApply.Enabled = True
+
+        Me.chkFullCast.Enabled = Me.chkCast.Checked
+        Me.chkCastWithImg.Enabled = Me.chkCast.Checked
+
+        If Not chkCast.Checked Then
+            Me.chkFullCast.Checked = False
+            Me.chkCastWithImg.Checked = False
+        End If
+    End Sub
+
+    Private Sub chkDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDirector.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkWriters.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkProducers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProducers.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkMusicBy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMusicBy.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCrew.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1470,7 +1578,29 @@ Public Class dlgSettings
             If Not cbIntLang.Text = Master.eSettings.Language Then Master.eLang.LoadLanguage(cbIntLang.Text)
             Master.eSettings.Language = Me.cbIntLang.Text
 
+            Master.eSettings.FieldTitle = Me.chkTitle.Checked
+            Master.eSettings.FieldYear = Me.chkYear.Checked
+            Master.eSettings.FieldMPAA = Me.chkMPAA.Checked
+            Master.eSettings.FieldRelease = Me.chkRelease.Checked
+            Master.eSettings.FieldRuntime = Me.chkRuntime.Checked
+            Master.eSettings.FieldRating = Me.chkRating.Checked
+            Master.eSettings.FieldVotes = Me.chkVotes.Checked
+            Master.eSettings.FieldStudio = Me.chkStudio.Checked
+            Master.eSettings.FieldGenre = Me.chkGenre.Checked
+            Master.eSettings.FieldTrailer = Me.chkTrailer.Checked
+            Master.eSettings.FieldTagline = Me.chkTagline.Checked
+            Master.eSettings.FieldOutline = Me.chkOutline.Checked
+            Master.eSettings.FieldPlot = Me.chkPlot.Checked
+            Master.eSettings.FieldCast = Me.chkCast.Checked
+            Master.eSettings.FieldDirector = Me.chkDirector.Checked
+            Master.eSettings.FieldWriters = Me.chkWriters.Checked
+            Master.eSettings.FieldProducers = Me.chkProducers.Checked
+            Master.eSettings.FieldMusic = Me.chkMusicBy.Checked
+            Master.eSettings.FieldCrew = Me.chkCrew.Checked
+
             Master.eSettings.Save()
+
+            Master.CreateDefaultOptions()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1663,6 +1793,28 @@ Public Class dlgSettings
             Me.cbLanguages.SelectedItem = If(String.IsNullOrEmpty(Master.eSettings.FlagLang), Master.eLang.Disabled, Master.eSettings.FlagLang)
             Me.cbIntLang.SelectedItem = Master.eSettings.Language
 
+            Me.chkTitle.Checked = Master.eSettings.FieldTitle
+            Me.chkYear.Checked = Master.eSettings.FieldYear
+            Me.chkMPAA.Checked = Master.eSettings.FieldMPAA
+            Me.chkRelease.Checked = Master.eSettings.FieldRelease
+            Me.chkRuntime.Checked = Master.eSettings.FieldRuntime
+            Me.chkRating.Checked = Master.eSettings.FieldRating
+            Me.chkVotes.Checked = Master.eSettings.FieldVotes
+            Me.chkStudio.Checked = Master.eSettings.FieldStudio
+            Me.chkGenre.Checked = Master.eSettings.FieldGenre
+            Me.chkTrailer.Checked = Master.eSettings.FieldTrailer
+            Me.chkTagline.Checked = Master.eSettings.FieldTagline
+            Me.chkOutline.Checked = Master.eSettings.FieldOutline
+            Me.chkPlot.Checked = Master.eSettings.FieldPlot
+            Me.chkCast.Checked = Master.eSettings.FieldCast
+            Me.chkDirector.Checked = Master.eSettings.FieldDirector
+            Me.chkWriters.Checked = Master.eSettings.FieldWriters
+            If Master.eSettings.FullCrew Then
+                Me.chkProducers.Checked = Master.eSettings.FieldProducers
+                Me.chkMusicBy.Checked = Master.eSettings.FieldMusic
+                Me.chkCrew.Checked = Master.eSettings.FieldCrew
+            End If
+
             Me.RefreshSources()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1829,7 +1981,6 @@ Public Class dlgSettings
         Me.chkNoSpoilers.Text = Master.eLang.GetString(505, "No Spoilers")
         Me.Label15.Text = Master.eLang.GetString(506, "Number To Create:")
         Me.chkAutoThumbs.Text = Master.eLang.GetString(507, "Automatically Extract Extrathumbs During Scrapers")
-        Me.GroupBox1.Text = Master.eLang.GetString(390, "Options")
         Me.chkOutlineForPlot.Text = Master.eLang.GetString(508, "Use Outline for Plot if Plot is Empty")
         Me.Label18.Text = Master.eLang.GetString(509, "IMDB Mirror:")
         Me.chkCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
@@ -1883,6 +2034,27 @@ Public Class dlgSettings
         Me.chkPersistImgCache.Text = Master.eLang.GetString(550, "Persistent Image Cache")
         Me.chkUseImgCache.Text = Master.eLang.GetString(551, "Use Image Cache")
         Me.fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops.")
+        Me.gbOptions.Text = Master.eLang.GetString(577, "Scraper Fields")
+        Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
+        Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
+        Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
+        Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
+        Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
+        Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
+        Me.chkGenre.Text = Master.eLang.GetString(20, "Genres")
+        Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
+        Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
+        Me.chkCast.Text = Master.eLang.GetString(398, "Cast")
+        Me.chkVotes.Text = Master.eLang.GetString(399, "Votes")
+        Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
+        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
+        Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA/Cert")
+        Me.chkYear.Text = Master.eLang.GetString(278, "Year")
+        Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.GroupBox1.Text = Master.eLang.GetString(429, "Miscellaneous")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
@@ -1891,6 +2063,9 @@ Public Class dlgSettings
         Me.tvSettings.Nodes(1).Nodes(0).Text = Master.eLang.GetString(555, "Files and Sources")
         Me.tvSettings.Nodes(1).Nodes(1).Text = Master.eLang.GetString(556, "Scraper - Data")
         Me.tvSettings.Nodes(1).Nodes(2).Text = Master.eLang.GetString(557, "Scraper - Images")
+
+        Me.TabPage1.Text = Master.eLang.GetString(38, "General")
+        Me.TabPage2.Text = Master.eLang.GetString(390, "Options")
 
         Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})

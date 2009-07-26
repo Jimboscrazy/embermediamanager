@@ -165,6 +165,25 @@ Public Class emmSettings
     Private _autodetectvts As Boolean
     Private _flaglang As String
     Private _language As String
+    Private _fieldtitle As Boolean
+    Private _fieldyear As Boolean
+    Private _fieldmpaa As Boolean
+    Private _fieldrelease As Boolean
+    Private _fieldruntime As Boolean
+    Private _fieldrating As Boolean
+    Private _fieldvotes As Boolean
+    Private _fieldstudio As Boolean
+    Private _fieldgenre As Boolean
+    Private _fieldtrailer As Boolean
+    Private _fieldtagline As Boolean
+    Private _fieldoutline As Boolean
+    Private _fieldplot As Boolean
+    Private _fieldcast As Boolean
+    Private _fielddirector As Boolean
+    Private _fieldwriters As Boolean
+    Private _fieldproducers As Boolean
+    Private _fieldmusic As Boolean
+    Private _fieldcrew As Boolean
 
     Public Property Version() As String
         Get
@@ -1421,6 +1440,177 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property FieldTitle() As Boolean
+        Get
+            Return Me._fieldtitle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldtitle = value
+        End Set
+    End Property
+
+    Public Property FieldYear() As Boolean
+        Get
+            Return Me._fieldyear
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldyear = value
+        End Set
+    End Property
+
+    Public Property FieldMPAA() As Boolean
+        Get
+            Return Me._fieldmpaa
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldmpaa = value
+        End Set
+    End Property
+
+    Public Property FieldRelease() As Boolean
+        Get
+            Return Me._fieldrelease
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldrelease = value
+        End Set
+    End Property
+
+    Public Property FieldRuntime() As Boolean
+        Get
+            Return Me._fieldruntime
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldruntime = value
+        End Set
+    End Property
+
+    Public Property FieldRating() As Boolean
+        Get
+            Return Me._fieldrating
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldrating = value
+        End Set
+    End Property
+
+    Public Property FieldVotes() As Boolean
+        Get
+            Return Me._fieldvotes
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldvotes = value
+        End Set
+    End Property
+
+    Public Property FieldStudio() As Boolean
+        Get
+            Return Me._fieldstudio
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldstudio = value
+        End Set
+    End Property
+
+    Public Property FieldGenre() As Boolean
+        Get
+            Return Me._fieldgenre
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldgenre = value
+        End Set
+    End Property
+
+    Public Property FieldTrailer() As Boolean
+        Get
+            Return Me._fieldtrailer
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldtrailer = value
+        End Set
+    End Property
+
+    Public Property FieldTagline() As Boolean
+        Get
+            Return Me._fieldtagline
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldtagline = value
+        End Set
+    End Property
+
+    Public Property FieldOutline() As Boolean
+        Get
+            Return Me._fieldoutline
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldoutline = value
+        End Set
+    End Property
+
+    Public Property FieldPlot() As Boolean
+        Get
+            Return Me._fieldplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldplot = value
+        End Set
+    End Property
+
+    Public Property FieldCast() As Boolean
+        Get
+            Return Me._fieldcast
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldcast = value
+        End Set
+    End Property
+
+    Public Property FieldDirector() As Boolean
+        Get
+            Return Me._fielddirector
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fielddirector = value
+        End Set
+    End Property
+
+    Public Property FieldWriters() As Boolean
+        Get
+            Return Me._fieldwriters
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldwriters = value
+        End Set
+    End Property
+
+    Public Property FieldProducers() As Boolean
+        Get
+            Return Me._fieldproducers
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldproducers = value
+        End Set
+    End Property
+
+    Public Property FieldMusic() As Boolean
+        Get
+            Return Me._fieldmusic
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldmusic = value
+        End Set
+    End Property
+
+    Public Property FieldCrew() As Boolean
+        Get
+            Return Me._fieldcrew
+        End Get
+        Set(ByVal value As Boolean)
+            Me._fieldcrew = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1566,6 +1756,25 @@ Public Class emmSettings
         Me._autodetectvts = True
         Me._flaglang = String.Empty
         Me._language = String.Empty
+        Me._fieldtitle = True
+        Me._fieldyear = True
+        Me._fieldmpaa = True
+        Me._fieldrelease = True
+        Me._fieldruntime = True
+        Me._fieldrating = True
+        Me._fieldvotes = True
+        Me._fieldstudio = True
+        Me._fieldgenre = True
+        Me._fieldtrailer = True
+        Me._fieldtagline = True
+        Me._fieldoutline = True
+        Me._fieldplot = True
+        Me._fieldcast = True
+        Me._fielddirector = True
+        Me._fieldwriters = True
+        Me._fieldproducers = True
+        Me._fieldmusic = True
+        Me._fieldcrew = True
     End Sub
 
     Public Sub Save()
