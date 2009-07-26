@@ -25,11 +25,30 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 
 Public Class dlgExportMovies
+    Private isCL As Boolean = False
     Dim HTMLBody As New StringBuilder
     Dim _movies As New List(Of Master.DBMovie)
     Dim bFiltered As Boolean = False
     Dim bCancelled As Boolean = False
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
+
+    Public Shared Sub CLExport(ByVal filename As String)
+        Dim MySelf As New dlgExportMovies
+        MySelf.bwLoadInfo = New System.ComponentModel.BackgroundWorker
+        MySelf.bwLoadInfo.WorkerSupportsCancellation = True
+        MySelf.bwLoadInfo.WorkerReportsProgress = True
+        MySelf.bwLoadInfo.RunWorkerAsync()
+        Do While MySelf.bwLoadInfo.IsBusy
+            Application.DoEvents()
+        Loop
+        MySelf.BuildHTML()
+        Dim myStream As New StreamWriter(filename)
+        If Not IsNothing(myStream) Then
+            myStream.Write(System.Text.Encoding.ASCII.GetBytes(MySelf.wbMovieList.DocumentText))
+            myStream.Close()
+        End If
+    End Sub
+
 
     Private Sub dlgExportMovies_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         If Me.bwLoadInfo.IsBusy Then
@@ -135,8 +154,8 @@ Public Class dlgExportMovies
                 row = row.Replace("<$COUNT>", counter.ToString)
                 row = row.Replace("<$FILENAME>", Path.GetFileName(_curMovie.Filename))
                 row = row.Replace("<$DIRNAME>", Path.GetDirectoryName(_curMovie.Filename))
-                row = row.Replace("<$OUTLINE>", _curMovie.Movie.Outline)
-                row = row.Replace("<$PLOT>", _curMovie.Movie.Plot)
+                row = row.Replace("<$OUTLINE>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Outline))
+                row = row.Replace("<$PLOT>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Plot))
                 row = row.Replace("<$VIDEO>", _vidDetails)
                 row = row.Replace("<$AUDIO>", _audDetails)
                 If bSearch Then
@@ -164,14 +183,15 @@ Public Class dlgExportMovies
         '//
         ' Thread finished: display it if not cancelled
         '\\
-        bCancelled = e.Cancelled
-        If Not e.Cancelled Then
-            wbMovieList.DocumentText = HTMLBody.ToString
-        Else
-            wbMovieList.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Cancelled"), "</h1></center>")
+        If Not Me.isCL Then
+            bCancelled = e.Cancelled
+            If Not e.Cancelled Then
+                wbMovieList.DocumentText = HTMLBody.ToString
+            Else
+                wbMovieList.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Cancelled"), "</h1></center>")
+            End If
+            Me.pnlCancel.Visible = False
         End If
-        Me.pnlCancel.Visible = False
-
     End Sub
 
     Private Sub bwLoadInfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadInfo.ProgressChanged
