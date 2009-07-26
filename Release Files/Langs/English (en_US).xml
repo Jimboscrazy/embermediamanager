@@ -578,4 +578,6 @@
   <string id="576">Verifying Movie Details:</string>
   <string id="577">Scraper Fields</string>
   <string id="578">Limit:</string>
+  <string id="579">File Source:</string>
+  <string id="580">Display only movies from the selected file source.</string>
 </strings>
