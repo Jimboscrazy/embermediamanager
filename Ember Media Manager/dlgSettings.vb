@@ -1301,6 +1301,10 @@ Public Class dlgSettings
 
     Private Sub chkGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
         Me.btnApply.Enabled = True
+
+        Me.txtGenreLimit.Enabled = Me.chkGenre.Checked
+
+        If Not Me.chkGenre.Checked Then Me.txtGenreLimit.Text = "0"
     End Sub
 
     Private Sub chkTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTrailer.CheckedChanged
@@ -1327,10 +1331,12 @@ Public Class dlgSettings
 
         Me.chkFullCast.Enabled = Me.chkCast.Checked
         Me.chkCastWithImg.Enabled = Me.chkCast.Checked
+        Me.txtActorLimit.Enabled = Me.chkCast.Checked
 
         If Not chkCast.Checked Then
             Me.chkFullCast.Checked = False
             Me.chkCastWithImg.Checked = False
+            Me.txtActorLimit.Text = "0"
         End If
     End Sub
 
@@ -1351,6 +1357,22 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCrew.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtActorLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtActorLimit.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtGenreLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtGenreLimit.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtActorLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtActorLimit.TextChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub txtGenreLimit_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtGenreLimit.TextChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -1598,6 +1620,17 @@ Public Class dlgSettings
             Master.eSettings.FieldMusic = Me.chkMusicBy.Checked
             Master.eSettings.FieldCrew = Me.chkCrew.Checked
 
+            If Not String.IsNullOrEmpty(Me.txtActorLimit.Text) Then
+                Master.eSettings.ActorLimit = Convert.ToInt32(Me.txtActorLimit.Text)
+            Else
+                Master.eSettings.ActorLimit = 0
+            End If
+            If Not String.IsNullOrEmpty(Me.txtGenreLimit.Text) Then
+                Master.eSettings.GenreLimit = Convert.ToInt32(Me.txtGenreLimit.Text)
+            Else
+                Master.eSettings.GenreLimit = 0
+            End If
+
             Master.eSettings.Save()
 
             Master.CreateDefaultOptions()
@@ -1814,6 +1847,8 @@ Public Class dlgSettings
                 Me.chkMusicBy.Checked = Master.eSettings.FieldMusic
                 Me.chkCrew.Checked = Master.eSettings.FieldCrew
             End If
+            Me.txtActorLimit.Text = Master.eSettings.ActorLimit.ToString
+            Me.txtGenreLimit.Text = Master.eSettings.GenreLimit.ToString
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -2055,6 +2090,8 @@ Public Class dlgSettings
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
         Me.GroupBox1.Text = Master.eLang.GetString(429, "Miscellaneous")
+        Me.lblLimit.Text = Master.eLang.GetString(578, "Limit:")
+        Me.lblLimit2.Text = Me.lblLimit.Text
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
@@ -2070,6 +2107,6 @@ Public Class dlgSettings
         Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
     End Sub
-#End Region'*** Routines/Functions
+#End Region '*** Routines/Functions
 
 End Class

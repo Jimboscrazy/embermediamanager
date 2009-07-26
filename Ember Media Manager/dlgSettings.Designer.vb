@@ -24,13 +24,13 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9})
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -258,6 +258,10 @@ Partial Class dlgSettings
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.gbOptions = New System.Windows.Forms.GroupBox
+        Me.txtGenreLimit = New System.Windows.Forms.TextBox
+        Me.lblLimit2 = New System.Windows.Forms.Label
+        Me.txtActorLimit = New System.Windows.Forms.TextBox
+        Me.lblLimit = New System.Windows.Forms.Label
         Me.chkCrew = New System.Windows.Forms.CheckBox
         Me.chkMusicBy = New System.Windows.Forms.CheckBox
         Me.chkProducers = New System.Windows.Forms.CheckBox
@@ -2194,7 +2198,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkFullCrew)
         Me.GroupBox1.Controls.Add(Me.cbCert)
         Me.GroupBox1.Controls.Add(Me.chkCert)
-        Me.GroupBox1.Location = New System.Drawing.Point(222, 4)
+        Me.GroupBox1.Location = New System.Drawing.Point(237, 4)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(211, 177)
         Me.GroupBox1.TabIndex = 0
@@ -2443,42 +2447,42 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode8.ImageIndex = 4
-        TreeNode8.Name = "nExts"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 4
-        TreeNode8.Text = "File System"
-        TreeNode9.ImageIndex = 1
-        TreeNode9.Name = "nXBMCCom"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 1
-        TreeNode9.Text = "XBMC Communication"
-        TreeNode10.ImageIndex = 0
-        TreeNode10.Name = "nGeneral"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 0
-        TreeNode10.Text = "General"
-        TreeNode11.ImageIndex = 5
-        TreeNode11.Name = "nSources"
-        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode11.SelectedImageIndex = 5
-        TreeNode11.Text = "Files and Sources"
-        TreeNode12.ImageIndex = 3
-        TreeNode12.Name = "nScraper"
-        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode12.SelectedImageIndex = 3
-        TreeNode12.Text = "Scraper - Data"
-        TreeNode13.ImageIndex = 6
-        TreeNode13.Name = "nImages"
-        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode13.SelectedImageIndex = 6
-        TreeNode13.Text = "Scraper - Images"
-        TreeNode14.ImageIndex = 2
-        TreeNode14.Name = "nMovies"
-        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode14.SelectedImageIndex = 2
-        TreeNode14.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode14})
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "File System"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "XBMC Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 5
+        TreeNode4.Name = "nSources"
+        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode4.SelectedImageIndex = 5
+        TreeNode4.Text = "Files and Sources"
+        TreeNode5.ImageIndex = 3
+        TreeNode5.Name = "nScraper"
+        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.SelectedImageIndex = 3
+        TreeNode5.Text = "Scraper - Data"
+        TreeNode6.ImageIndex = 6
+        TreeNode6.Name = "nImages"
+        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode6.SelectedImageIndex = 6
+        TreeNode6.Text = "Scraper - Images"
+        TreeNode7.ImageIndex = 2
+        TreeNode7.Name = "nMovies"
+        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode7.SelectedImageIndex = 2
+        TreeNode7.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2776,6 +2780,10 @@ Partial Class dlgSettings
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.txtGenreLimit)
+        Me.gbOptions.Controls.Add(Me.lblLimit2)
+        Me.gbOptions.Controls.Add(Me.txtActorLimit)
+        Me.gbOptions.Controls.Add(Me.lblLimit)
         Me.gbOptions.Controls.Add(Me.chkCrew)
         Me.gbOptions.Controls.Add(Me.chkMusicBy)
         Me.gbOptions.Controls.Add(Me.chkProducers)
@@ -2797,16 +2805,54 @@ Partial Class dlgSettings
         Me.gbOptions.Controls.Add(Me.chkTitle)
         Me.gbOptions.Location = New System.Drawing.Point(4, 4)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(213, 254)
+        Me.gbOptions.Size = New System.Drawing.Size(227, 288)
         Me.gbOptions.TabIndex = 67
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Scraper Fields"
+        '
+        'txtGenreLimit
+        '
+        Me.txtGenreLimit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtGenreLimit.Enabled = False
+        Me.txtGenreLimit.Location = New System.Drawing.Point(57, 223)
+        Me.txtGenreLimit.Name = "txtGenreLimit"
+        Me.txtGenreLimit.Size = New System.Drawing.Size(39, 20)
+        Me.txtGenreLimit.TabIndex = 21
+        '
+        'lblLimit2
+        '
+        Me.lblLimit2.AutoSize = True
+        Me.lblLimit2.Location = New System.Drawing.Point(22, 226)
+        Me.lblLimit2.Name = "lblLimit2"
+        Me.lblLimit2.Size = New System.Drawing.Size(31, 13)
+        Me.lblLimit2.TabIndex = 22
+        Me.lblLimit2.Text = "Limit:"
+        Me.lblLimit2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'txtActorLimit
+        '
+        Me.txtActorLimit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtActorLimit.Enabled = False
+        Me.txtActorLimit.Location = New System.Drawing.Point(179, 107)
+        Me.txtActorLimit.Name = "txtActorLimit"
+        Me.txtActorLimit.Size = New System.Drawing.Size(39, 20)
+        Me.txtActorLimit.TabIndex = 19
+        '
+        'lblLimit
+        '
+        Me.lblLimit.AutoSize = True
+        Me.lblLimit.Location = New System.Drawing.Point(144, 110)
+        Me.lblLimit.Name = "lblLimit"
+        Me.lblLimit.Size = New System.Drawing.Size(31, 13)
+        Me.lblLimit.TabIndex = 20
+        Me.lblLimit.Text = "Limit:"
+        Me.lblLimit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'chkCrew
         '
         Me.chkCrew.AutoSize = True
         Me.chkCrew.Enabled = False
-        Me.chkCrew.Location = New System.Drawing.Point(129, 203)
+        Me.chkCrew.Location = New System.Drawing.Point(129, 227)
         Me.chkCrew.Name = "chkCrew"
         Me.chkCrew.Size = New System.Drawing.Size(79, 17)
         Me.chkCrew.TabIndex = 18
@@ -2817,7 +2863,7 @@ Partial Class dlgSettings
         '
         Me.chkMusicBy.AutoSize = True
         Me.chkMusicBy.Enabled = False
-        Me.chkMusicBy.Location = New System.Drawing.Point(129, 180)
+        Me.chkMusicBy.Location = New System.Drawing.Point(129, 204)
         Me.chkMusicBy.Name = "chkMusicBy"
         Me.chkMusicBy.Size = New System.Drawing.Size(69, 17)
         Me.chkMusicBy.TabIndex = 17
@@ -2828,7 +2874,7 @@ Partial Class dlgSettings
         '
         Me.chkProducers.AutoSize = True
         Me.chkProducers.Enabled = False
-        Me.chkProducers.Location = New System.Drawing.Point(129, 157)
+        Me.chkProducers.Location = New System.Drawing.Point(129, 181)
         Me.chkProducers.Name = "chkProducers"
         Me.chkProducers.Size = New System.Drawing.Size(74, 17)
         Me.chkProducers.TabIndex = 16
@@ -2838,7 +2884,7 @@ Partial Class dlgSettings
         'chkWriters
         '
         Me.chkWriters.AutoSize = True
-        Me.chkWriters.Location = New System.Drawing.Point(129, 134)
+        Me.chkWriters.Location = New System.Drawing.Point(129, 158)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(59, 17)
         Me.chkWriters.TabIndex = 15
@@ -2898,7 +2944,7 @@ Partial Class dlgSettings
         'chkDirector
         '
         Me.chkDirector.AutoSize = True
-        Me.chkDirector.Location = New System.Drawing.Point(129, 111)
+        Me.chkDirector.Location = New System.Drawing.Point(129, 135)
         Me.chkDirector.Name = "chkDirector"
         Me.chkDirector.Size = New System.Drawing.Size(63, 17)
         Me.chkDirector.TabIndex = 9
@@ -2938,7 +2984,7 @@ Partial Class dlgSettings
         'chkTrailer
         '
         Me.chkTrailer.AutoSize = True
-        Me.chkTrailer.Location = New System.Drawing.Point(6, 227)
+        Me.chkTrailer.Location = New System.Drawing.Point(6, 249)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(55, 17)
         Me.chkTrailer.TabIndex = 5
@@ -3847,4 +3893,8 @@ Partial Class dlgSettings
     Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkYear As System.Windows.Forms.CheckBox
     Friend WithEvents chkTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents txtGenreLimit As System.Windows.Forms.TextBox
+    Friend WithEvents lblLimit2 As System.Windows.Forms.Label
+    Friend WithEvents txtActorLimit As System.Windows.Forms.TextBox
+    Friend WithEvents lblLimit As System.Windows.Forms.Label
 End Class

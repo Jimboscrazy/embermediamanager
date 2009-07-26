@@ -489,7 +489,7 @@ mResult:
                                 Select New Media.Person(Web.HttpUtility.HtmlDecode(m1.Groups("name").ToString.Trim), _
                                 Web.HttpUtility.HtmlDecode(m2.ToString.Trim), _
                                 If(Strings.InStr(m3.Groups("thumb").ToString, "addtiny") > 0, String.Empty, Strings.Replace(Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim), _
-                                "._SY30_SX23_.jpg", "._SY275_SX400_.jpg")))
+                                "._SY30_SX23_.jpg", "._SY275_SX400_.jpg"))) Take If(Master.eSettings.ActorLimit > 0, Master.eSettings.ActorLimit, 999999)
 
                     If Master.eSettings.CastImagesOnly Then
                         Cast1 = Cast1.Where(Function(p As Media.Person) (Not String.IsNullOrEmpty(p.Thumb)))
@@ -565,7 +565,7 @@ mResult:
                                 Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
 
                                 Dim Gen = From M As Match In rGenres _
-                                          Select N = Web.HttpUtility.HtmlDecode(M.Groups("name").ToString) Where Not N.Contains("more")
+                                          Select N = Web.HttpUtility.HtmlDecode(M.Groups("name").ToString) Where Not N.Contains("more") Take If(Master.eSettings.GenreLimit > 0, Master.eSettings.GenreLimit, 999999)
                                 If Gen.Count > 0 Then
                                     'force splitting of /ed genres
                                     Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
@@ -722,7 +722,7 @@ mPlot:
                                 Dim Pr = From Po In Regex.Matches(M.ToString, "<td\svalign=""top"">(.*?)</td>") _
                                 Where Not Po.ToString.Contains(String.Concat("http://", Master.eSettings.IMDBURL, "/Glossary/")) _
                                 Let P1 = Regex.Match(Po.ToString, HREF_PATTERN_2) _
-                                Where Not P1.Groups("name").ToString = String.Empty _
+                                Where Not String.IsNullOrEmpty(P1.Groups("name").ToString) _
                                 Select Producer = Web.HttpUtility.HtmlDecode(String.Concat(P1.Groups("name").ToString, " (producer)"))
 
                                 If Pr.Count > 0 Then
@@ -734,7 +734,7 @@ mPlot:
                             If Options.bMusicBy AndAlso M.ToString.Contains("Original Music by</a></h5>") Then
                                 Dim Mu = From Mo In Regex.Matches(M.ToString, "<td\svalign=""top"">(.*?)</td>") _
                                 Let M1 = Regex.Match(Mo.ToString, HREF_PATTERN) _
-                                Where Not M1.Groups("name").ToString = String.Empty _
+                                Where Not String.IsNullOrEmpty(M1.Groups("name").ToString) _
                                 Select Musician = Web.HttpUtility.HtmlDecode(String.Concat(M1.Groups("name").ToString, " (music by)"))
 
                                 If Mu.Count > 0 Then
@@ -757,7 +757,7 @@ mPlot:
                         If D > 0 Then W = HTML.IndexOf("</ul>", D)
                         If D > 0 AndAlso W > 0 Then
                             Dim Ps = From P1 As Match In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
-                                     Where Not P1.Groups("name").ToString = String.Empty _
+                                     Where Not String.IsNullOrEmpty(P1.Groups("name").ToString) _
                                      Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString)
                             If Ps.Count > 0 Then
                                 IMDBMovie.Credits = String.Concat(IMDBMovie.Credits, " / ", Strings.Join(Ps.ToArray, " / ").Trim)
