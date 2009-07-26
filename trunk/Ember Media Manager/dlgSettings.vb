@@ -1865,7 +1865,7 @@ Public Class dlgSettings
 
     Private Sub LoadGenreLangs()
 
-        Me.lbGenre.Items.Add("[All]")
+        Me.lbGenre.Items.Add(Master.eLang.All)
         Me.lbGenre.Items.AddRange(XML.GetGenreList(True))
 
     End Sub

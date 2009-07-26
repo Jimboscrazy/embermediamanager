@@ -120,6 +120,7 @@ Public Class Master
         Dim Source As String
         Dim OutOfTolerance As Boolean
         Dim ClearExtras As Boolean
+        Dim FileSource As String
     End Structure
 
     Public Structure ScrapeOptions

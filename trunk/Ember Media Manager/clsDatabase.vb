@@ -125,6 +125,7 @@ Public Class Database
                                 "FanartURL TEXT, " & _
                                 "UseFolder BOOL NOT NULL DEFAULT False, " & _
                                 "OutOfTolerance BOOL NOT NULL DEFAULT False, " & _
+                                "FileSource TEXT, " & _
                                 "NeedsSave BOOL NOT NULL DEFAULT False" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
@@ -143,9 +144,6 @@ Public Class Database
                                 "PRIMARY KEY (MovieID,SetName) " & _
                                  ");"
                     SQLcommand.ExecuteNonQuery()
-                    'SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesSets ON MoviesSets (MovieID);"
-
-
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesVStreams(" & _
                                 "MovieID INTEGER NOT NULL, " & _
@@ -159,8 +157,6 @@ Public Class Database
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
-                    'SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesVStreams ON MoviesVStreams (MovieID);"
-                    'SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesAStreams(" & _
                                 "MovieID INTEGER NOT NULL, " & _
@@ -172,8 +168,6 @@ Public Class Database
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
-                    'SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesAStreams ON MoviesAStreams (MovieID);"
-                    'SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesSubs(" & _
                                 "MovieID INTEGER NOT NULL, " & _
@@ -183,8 +177,6 @@ Public Class Database
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                  ");"
                     SQLcommand.ExecuteNonQuery()
-                    'SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesSubs ON MoviesSubs (MovieID);"
-                    'SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesPosters(" & _
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
@@ -260,6 +252,7 @@ Public Class Database
                     _movieDB.UseFolder = SQLreader("UseFolder")
                     _movieDB.OutOfTolerance = SQLreader("OutOfTolerance")
                     _movieDB.NeedsSave = SQLreader("NeedsSave")
+                    If Not DBNull.Value.Equals(SQLreader("FileSource")) Then _movieDB.FileSource = SQLreader("FileSource")
                     _movieDB.Movie = New Media.Movie
                     With _movieDB.Movie
                         .Clear()
@@ -428,15 +421,15 @@ Public Class Database
                         "MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, OutOfTolerance, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                 Else
                     SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO movies (", _
                         "ID, MoviePath, type, ListTitle, HasPoster, HasFanart, HasNfo, HasTrailer, HasSub, HasExtra, new, mark, source, imdb, lock,", _
                         "Title, OriginalTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, Genre,", _
                         "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Watched, Status, File, Path, FileNameAndPath, Trailer, ", _
-                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, OutOfTolerance, NeedsSave", _
-                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
+                        "PosterPath, FanartPath, NfoPath, TrailerPath, SubPath, ExtraPath, FanartURL, UseFolder, OutOfTolerance, FileSource, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movies;")
                     Dim parMovieID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieID", DbType.Int32, 0, "ID")
                     parMovieID.Value = _movieDB.ID
                 End If
@@ -490,6 +483,7 @@ Public Class Database
                 Dim parFanartURL As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartURL", DbType.String, 0, "FanartURL")
                 Dim parUseFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parUseFolder", DbType.Boolean, 0, "UseFolder")
                 Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
+                Dim parFileSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFileSource", DbType.String, 0, "FileSource")
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
 
                 ' First let's save it to NFO, even because we will need the NFO path
@@ -546,6 +540,7 @@ Public Class Database
 
                 parUseFolder.Value = _movieDB.UseFolder
                 parOutOfTolerance.Value = _movieDB.OutOfTolerance
+                parFileSource.Value = _movieDB.FileSource
                 parNeedsSave.Value = _movieDB.NeedsSave
 
                 parSource.Value = _movieDB.Source

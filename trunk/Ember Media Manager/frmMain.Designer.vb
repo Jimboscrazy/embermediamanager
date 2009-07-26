@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -98,6 +98,8 @@ Partial Class frmMain
         Me.chkFilterMissing = New System.Windows.Forms.CheckBox
         Me.chkFilterDupe = New System.Windows.Forms.CheckBox
         Me.gbSpecific = New System.Windows.Forms.GroupBox
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.cbFilterFileSource = New System.Windows.Forms.ComboBox
         Me.chkFilterLock = New System.Windows.Forms.CheckBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.rbFilterAnd = New System.Windows.Forms.RadioButton
@@ -587,7 +589,7 @@ Partial Class frmMain
         Me.pnlFilterGenre.Controls.Add(Me.lblGFilClose)
         Me.pnlFilterGenre.Controls.Add(Me.Label4)
         Me.pnlFilterGenre.Controls.Add(Me.clbFilterGenres)
-        Me.pnlFilterGenre.Location = New System.Drawing.Point(186, 422)
+        Me.pnlFilterGenre.Location = New System.Drawing.Point(186, 396)
         Me.pnlFilterGenre.Name = "pnlFilterGenre"
         Me.pnlFilterGenre.Size = New System.Drawing.Size(166, 192)
         Me.pnlFilterGenre.TabIndex = 15
@@ -635,8 +637,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -652,7 +654,7 @@ Partial Class frmMain
         Me.dgvMediaList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMediaList.ShowCellErrors = False
         Me.dgvMediaList.ShowRowErrors = False
-        Me.dgvMediaList.Size = New System.Drawing.Size(349, 477)
+        Me.dgvMediaList.Size = New System.Drawing.Size(349, 452)
         Me.dgvMediaList.TabIndex = 10
         '
         'mnuMediaList
@@ -898,16 +900,16 @@ Partial Class frmMain
         Me.pnlFilter.Controls.Add(Me.btnFilterUp)
         Me.pnlFilter.Controls.Add(Me.lblFilter)
         Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter.Location = New System.Drawing.Point(0, 533)
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 508)
         Me.pnlFilter.Name = "pnlFilter"
-        Me.pnlFilter.Size = New System.Drawing.Size(349, 155)
+        Me.pnlFilter.Size = New System.Drawing.Size(349, 180)
         Me.pnlFilter.TabIndex = 12
         '
         'btnClearFilters
         '
         Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
         Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters.Location = New System.Drawing.Point(22, 125)
+        Me.btnClearFilters.Location = New System.Drawing.Point(22, 154)
         Me.btnClearFilters.Name = "btnClearFilters"
         Me.btnClearFilters.Size = New System.Drawing.Size(92, 23)
         Me.btnClearFilters.TabIndex = 16
@@ -959,6 +961,8 @@ Partial Class frmMain
         '
         'gbSpecific
         '
+        Me.gbSpecific.Controls.Add(Me.Label6)
+        Me.gbSpecific.Controls.Add(Me.cbFilterFileSource)
         Me.gbSpecific.Controls.Add(Me.chkFilterLock)
         Me.gbSpecific.Controls.Add(Me.GroupBox2)
         Me.gbSpecific.Controls.Add(Me.chkFilterNew)
@@ -972,10 +976,28 @@ Partial Class frmMain
         Me.gbSpecific.Controls.Add(Me.cbFilterSource)
         Me.gbSpecific.Location = New System.Drawing.Point(135, 22)
         Me.gbSpecific.Name = "gbSpecific"
-        Me.gbSpecific.Size = New System.Drawing.Size(224, 129)
+        Me.gbSpecific.Size = New System.Drawing.Size(224, 152)
         Me.gbSpecific.TabIndex = 36
         Me.gbSpecific.TabStop = False
         Me.gbSpecific.Text = "Specific"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(6, 108)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(63, 13)
+        Me.Label6.TabIndex = 38
+        Me.Label6.Text = "File Source:"
+        '
+        'cbFilterFileSource
+        '
+        Me.cbFilterFileSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterFileSource.FormattingEnabled = True
+        Me.cbFilterFileSource.Location = New System.Drawing.Point(70, 104)
+        Me.cbFilterFileSource.Name = "cbFilterFileSource"
+        Me.cbFilterFileSource.Size = New System.Drawing.Size(146, 21)
+        Me.cbFilterFileSource.TabIndex = 39
         '
         'chkFilterLock
         '
@@ -1081,7 +1103,7 @@ Partial Class frmMain
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 107)
+        Me.Label2.Location = New System.Drawing.Point(6, 132)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(44, 13)
         Me.Label2.TabIndex = 29
@@ -1100,7 +1122,7 @@ Partial Class frmMain
         '
         Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFilterSource.FormattingEnabled = True
-        Me.cbFilterSource.Location = New System.Drawing.Point(50, 103)
+        Me.cbFilterSource.Location = New System.Drawing.Point(50, 128)
         Me.cbFilterSource.Name = "cbFilterSource"
         Me.cbFilterSource.Size = New System.Drawing.Size(166, 21)
         Me.cbFilterSource.TabIndex = 30
@@ -2710,4 +2732,6 @@ Partial Class frmMain
     Friend WithEvents chkFilterLock As System.Windows.Forms.CheckBox
     Friend WithEvents chkFilterMissing As System.Windows.Forms.CheckBox
     Friend WithEvents chkFilterTolerance As System.Windows.Forms.CheckBox
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents cbFilterFileSource As System.Windows.Forms.ComboBox
 End Class

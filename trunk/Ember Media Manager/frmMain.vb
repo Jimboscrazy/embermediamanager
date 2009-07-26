@@ -512,7 +512,7 @@ Public Class frmMain
 
                 Me.aniFilterRaise = Master.eSettings.FilterPanelState
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = 155
+                    Me.pnlFilter.Height = 180
                     Me.btnFilterDown.Enabled = True
                     Me.btnFilterUp.Enabled = False
                 Else
@@ -1170,7 +1170,7 @@ Public Class frmMain
 
         If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
         Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = Master.eLang.All OrElse _
-        Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked Then Me.RunFilter()
+        Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter()
     End Sub
 
     Private Sub rbFilterOr_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr.Click
@@ -1195,7 +1195,7 @@ Public Class frmMain
 
         If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
         Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = Master.eLang.All OrElse _
-        Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked Then Me.RunFilter()
+        Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter()
     End Sub
 
     Private Sub chkFilterDupe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.Click
@@ -1965,7 +1965,7 @@ Public Class frmMain
                 End If
             Else
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = 155
+                    Me.pnlFilter.Height = 180
                 Else
                     Me.pnlFilter.Height = 25
                 End If
@@ -1974,7 +1974,7 @@ Public Class frmMain
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = True
                 Me.btnFilterDown.Enabled = False
-            ElseIf Me.pnlFilter.Height = 155 Then
+            ElseIf Me.pnlFilter.Height = 180 Then
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = False
                 Me.btnFilterDown.Enabled = True
@@ -1985,14 +1985,14 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterSource.SelectedIndexChanged
         Try
             Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
                 Application.DoEvents()
             Loop
 
             For i As Integer = Me.FilterArray.Count - 1 To 0 Step -1
-                If Strings.Left(Me.FilterArray(i), 8) = "source =" Then
+                If Me.FilterArray(i).ToString.StartsWith("source =") Then
                     Me.FilterArray.RemoveAt(i)
                 End If
             Next
@@ -2000,6 +2000,28 @@ Public Class frmMain
             If Not cbFilterSource.Text = Master.eLang.All Then
                 Me.FilterArray.Add(String.Format("source = '{0}'", cbFilterSource.Text))
             End If
+            Me.RunFilter()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cbFilterFileSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource.SelectedIndexChanged
+        Try
+            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+                Application.DoEvents()
+            Loop
+
+            For i As Integer = Me.FilterArray.Count - 1 To 0 Step -1
+                If Me.FilterArray(i).ToString.StartsWith("FileSource =") Then
+                    Me.FilterArray.RemoveAt(i)
+                End If
+            Next
+
+            If Not cbFilterFileSource.Text = Master.eLang.All Then
+                Me.FilterArray.Add(String.Format("FileSource = '{0}'", cbFilterFileSource.Text.Replace(" | ", "|")))
+            End If
+
             Me.RunFilter()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2493,6 +2515,7 @@ Public Class frmMain
                             tmpMovieDB.isSingle = sFile.isSingle
                             tmpMovieDB.UseFolder = sFile.UseFolder
                             tmpMovieDB.Source = sFile.Source
+                            tmpMovieDB.FileSource = XML.GetFileSource(sFile.Filename)
                             tmpMovieDB.IsNew = True
                             tmpMovieDB.IsLock = False
                             tmpMovieDB.IsMark = Master.eSettings.MarkNew
@@ -3536,6 +3559,7 @@ doCancel:
                 .CustomUpdaterToolStripMenuItem.Text = Master.eLang.GetString(81, "Custom Scraper...")
                 .tsbRefreshMedia.Text = Master.eLang.GetString(82, "Update Library")
                 .tsbUpdateXBMC.Text = Master.eLang.GetString(83, "Initiate XBMC Update")
+                .Label6.Text = Master.eLang.GetString(579, "File Source:")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
@@ -3552,6 +3576,7 @@ doCancel:
                 TT.SetToolTip(.chkFilterMark, Master.eLang.GetString(95, "Display only marked movies."))
                 TT.SetToolTip(.chkFilterLock, Master.eLang.GetString(96, "Display only locked movies."))
                 TT.SetToolTip(.cbFilterSource, Master.eLang.GetString(97, "Display only movies from the selected source."))
+                TT.SetToolTip(.cbFilterFileSource, Master.eLang.GetString(580, "Display only movies from the selected file source."))
                 TT.Active = True
 
                 .cbSearch.Items.Clear()
@@ -4439,6 +4464,7 @@ doCancel:
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
                 tmpMovieDb.Filename = dRow(0).Item(1)
+                tmpMovieDb.FileSource = XML.GetFileSource(dRow(0).Item(1))
                 tmpMovieDb.isSingle = dRow(0).Item(2)
                 tmpMovieDb.UseFolder = dRow(0).Item(46)
                 tmpMovieDb.Source = dRow(0).Item(12)
@@ -4609,6 +4635,13 @@ doCancel:
                     cbFilterYearMod.SelectedIndex = 0
                     AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
 
+                    RemoveHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
+                    cbFilterFileSource.Items.Clear()
+                    cbFilterFileSource.Items.Add(Master.eLang.All)
+                    cbFilterFileSource.Items.AddRange(XML.GetSourceList)
+                    cbFilterFileSource.SelectedIndex = 0
+                    AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
+
                 End If
             End With
 
@@ -4747,6 +4780,7 @@ doCancel:
         Me.rbFilterOr.Enabled = isEnabled
         Me.rbFilterAnd.Enabled = isEnabled
         Me.cbFilterSource.Enabled = isEnabled
+        Me.cbFilterFileSource.Enabled = isEnabled
         Me.txtFilterGenre.Enabled = isEnabled
         Me.cbFilterYearMod.Enabled = isEnabled
         Me.cbFilterYear.Enabled = isEnabled
@@ -4784,17 +4818,24 @@ doCancel:
                 Me.cbFilterSource.SelectedIndex = 0
             End If
             AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+
             RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
             If Me.cbFilterYear.Items.Count > 0 Then
                 Me.cbFilterYear.SelectedIndex = 0
             End If
-
             AddHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
+
             RemoveHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
             If Me.cbFilterYearMod.Items.Count > 0 Then
                 Me.cbFilterYearMod.SelectedIndex = 0
             End If
             AddHandler cbFilterYearMod.SelectedIndexChanged, AddressOf cbFilterYearMod_SelectedIndexChanged
+
+            RemoveHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
+            If Me.cbFilterFileSource.Items.Count > 0 Then
+                Me.cbFilterFileSource.SelectedIndex = 0
+            End If
+            AddHandler cbFilterFileSource.SelectedIndexChanged, AddressOf cbFilterFileSource_SelectedIndexChanged
 
             If Reload Then Me.FillList(0)
         Catch ex As Exception
@@ -4806,6 +4847,8 @@ doCancel:
 
         Try
             If Me.Visible Then
+
+                Me.ClearInfo()
 
                 If FilterArray.Count > 0 Then
                     Dim FilterString As String = String.Empty

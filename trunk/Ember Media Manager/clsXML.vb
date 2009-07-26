@@ -404,12 +404,12 @@ Public Class XML
         Dim retRatings As New ArrayList
         Try
             If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso XML.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
-                Dim xRating = From xRat In XML.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
+                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
                     retRatings.AddRange(xRating.ToArray)
                 End If
             Else
-                Dim xRating = From xRat In XML.RatingXML...<usa>...<name> Select xRat.@searchstring
+                Dim xRating = From xRat In RatingXML...<usa>...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
                     retRatings.AddRange(xRating.ToArray)
                 End If
@@ -424,7 +424,7 @@ Public Class XML
     Public Shared Function GetLanguageList() As Object()
         Dim retLang As New ArrayList
         Try
-            Dim xLang = From xL In XML.LanguageXML.Descendants("Language") Select xL.Element("Name").Value
+            Dim xLang = From xL In LanguageXML.Descendants("Language") Select xL.Element("Name").Value
             If xLang.Count > 0 Then
                 retLang.AddRange(xLang.ToArray)
             End If
@@ -432,5 +432,41 @@ Public Class XML
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return retLang.ToArray
+    End Function
+
+    Public Shared Function GetFileSource(ByVal sPath As String) As String
+        Dim sourceCheck As String = String.Empty
+
+        Try
+            If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                sourceCheck = Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower
+            Else
+                sourceCheck = String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower)
+            End If
+
+            Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.@searchstring
+            If xVSourceFlag.Count > 0 Then
+                Return xVSourceFlag(0).ToString
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return String.Empty
+    End Function
+
+    Public Shared Function GetSourceList() As Object()
+        Dim retSources As New ArrayList
+        Try
+
+            Dim xSource = From xSrc In FlagsXML...<vsource>...<name> Select xSrc.@searchstring.ToString.Replace("|", " | ")
+            If xSource.Count > 0 Then
+                retSources.AddRange(xSource.ToArray)
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return retSources.ToArray
     End Function
 End Class
