@@ -10,38 +10,9 @@
 .top {position:relative;width:550px;}
 .header a {text-decoration:none; color:black;}
 .header a:hover {color:#1010f0;}
-.details {display:none;border-top: 0px solid #000;background: silver;width:530px; padding-left: 10px; padding-right: 10px;text-align: justify;}
+.details {position:relative;display:block;border-top: 0px solid #000;background: silver; padding-left: 10px; padding-right: 10px; text-align: justify; overflow:hidden;clear:both;}
+.details-s {display:block;white-space: nowrap;}
 </style>
-<script type="text/javascript">
-var previd;
-function ShowDetails2(id) {
-      $(id).show("slow");
-
-}
-function ShowDetails(id) {
-	if (document.getElementById) { // DOM3 = IE5, NS6
-		if (id.style.display == 'block') {
-			id.style.display = 'none';
-		} else {
-			 hiddiv();
-			id.style.display = 'block';
-			previd = id;
-		}
-	
-	}
-}
-function hiddiv() {
-	//safe function to show an element with a specified id
-		  
-	if (document.getElementById) { // DOM3 = IE5, NS6
-		if (previd) {
-			previd.style.display = 'none';
-		} 
-	}
-}
-
-
-</script>
 </head>
 <center>
 <div style="width:550px;">
@@ -53,14 +24,16 @@ Movie List<br><br>
   <tr class="boldrow">
    <td>
     <div class="top">
-      <div id="name<$COUNT>" class="header"><a onclick="ShowDetails(det<$COUNT>)" href="javascript:"><b><$MOVIENAME></b></a>
-              <div style="font-size:11px;position:absolute;top:0;right:0;"><b><$YEAR></b></div>
+      <div id="name<$COUNT>" class="header"><b><$MOVIENAME></b>
+              <div style="font-size:11px;position:absolute;top:0;right:0;text-align: right;"><b><$YEAR></b><br><div class="details-s" id="det<$COUNT>-s"><$VIDEO> - <$AUDIO></div/></div>
       </div><br>
-    <div id="$i" class="detail">Filename: <$FILENAME></div>
+    <div id="<$COUNT>" class="detail">Filename: <$FILENAME></div>
     </div>
     <div class="details" id="det<$COUNT>">
+<div style="float:right;clear:left;padding-left:10px;padding-top:5px;padding-bottom:5px;"><img style="width:80px;" src="export/<$COUNT>.jpg"></div>
          <b>Genres:</b>&nbsp;<$GENRES><br>
          <b>Plot:</b><br><$PLOT><br>&nbsp;
+
     </div>
    </td>
   </tr>
