@@ -301,6 +301,7 @@ Public Class frmMain
             Dim clScrapeType As Master.ScrapeType = Nothing
             isCL = True
             Dim clExport As Boolean = False
+            Dim clExportTemplate As String = "template"
             Dim clAsk As Boolean = False
             For i As Integer = 1 To Args.Count - 1
 
@@ -357,7 +358,12 @@ Public Class frmMain
                         If Args.Count - 1 > i Then
                             MoviePath = Args(i + 1).Replace("""", String.Empty)
                             clExport = True
+                        Else
                             Exit For
+                        End If
+                    Case "-template"
+                        If Args.Count - 1 > i Then
+                            clExportTemplate = Args(i + 1).Replace("""", String.Empty)
                         Else
                             Exit For
                         End If
@@ -381,7 +387,7 @@ Public Class frmMain
             Next
             Master.DB.Connect(False, False)
             If clExport = True Then
-                dlgExportMovies.CLExport(MoviePath)
+                dlgExportMovies.CLExport(MoviePath, clExportTemplate)
             End If
             If Not IsNothing(clScrapeType) Then
                 If Master.HasModifier AndAlso Not clScrapeType = Master.ScrapeType.SingleScrape Then

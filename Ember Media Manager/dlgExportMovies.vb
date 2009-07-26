@@ -32,8 +32,9 @@ Public Class dlgExportMovies
     Dim bCancelled As Boolean = False
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
 
-    Public Shared Sub CLExport(ByVal filename As String)
+    Public Shared Sub CLExport(ByVal filename As String, Optional ByVal template As String = "template")
         Dim MySelf As New dlgExportMovies
+        MySelf.isCL = True
         MySelf.bwLoadInfo = New System.ComponentModel.BackgroundWorker
         MySelf.bwLoadInfo.WorkerSupportsCancellation = True
         MySelf.bwLoadInfo.WorkerReportsProgress = True
@@ -41,8 +42,8 @@ Public Class dlgExportMovies
         Do While MySelf.bwLoadInfo.IsBusy
             Application.DoEvents()
         Loop
-        MySelf.BuildHTML()
-        File.WriteAllText(filename, System.Text.Encoding.ASCII.GetString(System.Text.Encoding.ASCII.GetBytes(MySelf.wbMovieList.DocumentText)))
+        MySelf.BuildHTML(False, "", "", template)
+        File.WriteAllText(filename, System.Text.Encoding.ASCII.GetString(System.Text.Encoding.ASCII.GetBytes(MySelf.HTMLBody.ToString)))
 
     End Sub
 
@@ -86,7 +87,10 @@ Public Class dlgExportMovies
                                 Return
                             End If
                         End While
-                        BuildHTML()
+                        If Not Me.isCL Then
+                            BuildHTML()
+                        End If
+
                         e.Result = True
                     Else
                         e.Cancel = True
@@ -97,13 +101,13 @@ Public Class dlgExportMovies
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-    Sub BuildHTML(Optional ByVal bSearch As Boolean = False, Optional ByVal strFilter As String = "", Optional ByVal strIn As String = "")
+    Sub BuildHTML(Optional ByVal bSearch As Boolean = False, Optional ByVal strFilter As String = "", Optional ByVal strIn As String = "", Optional ByVal template As String = "template")
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
-            Dim pattern As String = File.ReadAllText(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "template-", Master.eSettings.Language, ".html"))
+            Dim pattern As String = File.ReadAllText(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, template, "-", Master.eSettings.Language, ".html"))
             Dim movieheader As String = String.Empty
             Dim moviefooter As String = String.Empty
             Dim movierow As String = String.Empty
