@@ -32,7 +32,7 @@ Public Class dlgExportMovies
     Dim bCancelled As Boolean = False
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
 
-    Public Shared Sub CLExport(ByVal filename As String, Optional ByVal template As String = "template")
+    Public Shared Sub CLExport(ByVal filename As String, Optional ByVal template As String = "template", Optional ByVal poster As Boolean = False)
         Dim MySelf As New dlgExportMovies
         MySelf.isCL = True
         MySelf.bwLoadInfo = New System.ComponentModel.BackgroundWorker
@@ -43,6 +43,9 @@ Public Class dlgExportMovies
             Application.DoEvents()
         Loop
         MySelf.BuildHTML(False, "", "", template)
+        If poster Then
+            MySelf.ExportPoster(Path.GetDirectoryName(filename))
+        End If
         File.WriteAllText(filename, System.Text.Encoding.ASCII.GetString(System.Text.Encoding.ASCII.GetBytes(MySelf.HTMLBody.ToString)))
 
     End Sub
@@ -100,6 +103,18 @@ Public Class dlgExportMovies
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+    Sub ExportPoster(ByVal fpath As String)
+        Dim counter As Integer = 1
+        Dim finalpath As String = Path.Combine(fpath, "export")
+        Directory.CreateDirectory(finalpath)
+        For Each _curMovie As Master.DBMovie In _movies
+            Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, ".jpg"))
+            If File.Exists(_curMovie.PosterPath) Then
+                File.Copy(_curMovie.PosterPath, posterfile, True)
+            End If
+            counter += 1
+        Next
     End Sub
     Sub BuildHTML(Optional ByVal bSearch As Boolean = False, Optional ByVal strFilter As String = "", Optional ByVal strIn As String = "", Optional ByVal template As String = "template")
         Try

@@ -301,6 +301,7 @@ Public Class frmMain
             Dim clScrapeType As Master.ScrapeType = Nothing
             isCL = True
             Dim clExport As Boolean = False
+            Dim clExportImages As Boolean = False
             Dim clExportTemplate As String = "template"
             Dim clAsk As Boolean = False
             For i As Integer = 1 To Args.Count - 1
@@ -367,6 +368,8 @@ Public Class frmMain
                         Else
                             Exit For
                         End If
+                    Case "-images"
+                        clExportImages = True
                     Case "-all"
                         Master.SetScraperMod(Master.ModType.All, True)
                     Case "-nfo"
@@ -387,7 +390,7 @@ Public Class frmMain
             Next
             Master.DB.Connect(False, False)
             If clExport = True Then
-                dlgExportMovies.CLExport(MoviePath, clExportTemplate)
+                dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportImages)
             End If
             If Not IsNothing(clScrapeType) Then
                 If Master.HasModifier AndAlso Not clScrapeType = Master.ScrapeType.SingleScrape Then
