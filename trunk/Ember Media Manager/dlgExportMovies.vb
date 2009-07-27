@@ -26,17 +26,22 @@ Imports System.Text.RegularExpressions
 
 Public Class dlgExportMovies
     Private isCL As Boolean = False
+    Private bexportPosters As Boolean = False
+    Private bexportFanart As Boolean = False
+    Private bexportFlags As Boolean = False
     Dim HTMLBody As New StringBuilder
     Dim _movies As New List(Of Master.DBMovie)
     Dim bFiltered As Boolean = False
     Dim bCancelled As Boolean = False
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
 
-    Public Shared Sub CLExport(ByVal filename As String, Optional ByVal template As String = "template", Optional ByVal poster As Boolean = False)
+    Public Shared Sub CLExport(ByVal filename As String, Optional ByVal template As String = "template", Optional ByVal resizePoster As Integer = 0)
         Dim MySelf As New dlgExportMovies
         If Not Directory.Exists(Path.GetDirectoryName(filename)) Then
             Return
         End If
+        '        MySelf.exportPosters = needImages
+        '        MySelf.exportFanart = needImages
         MySelf.isCL = True
         MySelf.bwLoadInfo = New System.ComponentModel.BackgroundWorker
         MySelf.bwLoadInfo.WorkerSupportsCancellation = True
@@ -48,8 +53,16 @@ Public Class dlgExportMovies
         MySelf.BuildHTML(False, "", "", template)
         Dim srcPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
         CopyDirectory(srcPath, Path.GetDirectoryName(filename), True)
-        If poster Then
-            MySelf.ExportPoster(Path.GetDirectoryName(filename))
+        If MySelf.bexportFlags Then
+            srcPath = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
+            Directory.CreateDirectory(Path.Combine(Path.GetDirectoryName(filename), "Flags"))
+            CopyDirectory(srcPath, Path.Combine(Path.GetDirectoryName(filename), "Flags"), True)
+        End If
+        If MySelf.bexportPosters Then
+            MySelf.ExportPoster(Path.GetDirectoryName(filename), resizePoster)
+        End If
+        If MySelf.bexportFanart Then
+            MySelf.ExportFanart(Path.GetDirectoryName(filename))
         End If
         File.WriteAllText(filename, System.Text.Encoding.ASCII.GetString(System.Text.Encoding.ASCII.GetBytes(MySelf.HTMLBody.ToString)))
 
@@ -108,19 +121,38 @@ Public Class dlgExportMovies
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-    Sub ExportPoster(ByVal fpath As String)
+    Sub ExportPoster(ByVal fpath As String, ByVal new_width As Integer)
         Dim counter As Integer = 1
         Dim finalpath As String = Path.Combine(fpath, "export")
         Directory.CreateDirectory(finalpath)
         For Each _curMovie As Master.DBMovie In _movies
             Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, ".jpg"))
             If File.Exists(_curMovie.PosterPath) Then
-                File.Copy(_curMovie.PosterPath, posterfile, True)
+                If new_width > 0 Then
+                    Dim im As New Images
+                    im.FromFile(_curMovie.PosterPath)
+                    ImageManip.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
+                    im.Save(posterfile)
+                Else
+                    File.Copy(_curMovie.PosterPath, posterfile, True)
+                End If
             End If
             counter += 1
         Next
     End Sub
+    Sub ExportFanart(ByVal fpath As String)
+        Dim counter As Integer = 1
+        Dim finalpath As String = Path.Combine(fpath, "export")
+        Directory.CreateDirectory(finalpath)
+        For Each _curMovie As Master.DBMovie In _movies
+            Dim fanartfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-fanart.jpg"))
+            If File.Exists(_curMovie.FanartPath) Then
 
+                File.Copy(_curMovie.FanartPath, fanartfile, True)
+            End If
+            counter += 1
+        Next
+    End Sub
 
     Private Function GetAVImages(ByVal AVMovie As Master.DBMovie, ByVal line As String) As String
 
@@ -257,6 +289,18 @@ Public Class dlgExportMovies
             Dim movieheader As String = String.Empty
             Dim moviefooter As String = String.Empty
             Dim movierow As String = String.Empty
+            If pattern.Contains("<$NEED_POSTERS>") Then
+                Me.bexportPosters = True
+                pattern = pattern.Replace("<$NEED_POSTERS>", String.Empty)
+            End If
+            If pattern.Contains("<$NEED_FANART>") Then
+                Me.bexportFanart = True
+                pattern = pattern.Replace("<$NEED_FANART>", String.Empty)
+            End If
+            If pattern.Contains("<$NEED_FLAGS>") Then
+                Me.bexportFlags = True
+                pattern = pattern.Replace("<$NEED_FLAGS>", String.Empty)
+            End If
             Dim s = pattern.IndexOf("<$MOVIE>")
             If s >= 0 Then
                 Dim e = pattern.IndexOf("<$/MOVIE>")
