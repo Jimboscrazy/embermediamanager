@@ -2388,7 +2388,7 @@ Public Class frmMain
                             pExt = Path.GetExtension(mRow.Item(0)).ToLower
                             MLFind.SearchString = mRow.Item(0)
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
-                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2) = Args.SourceName)) OrElse (Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0)).ToLower) AndAlso (Not Master.eSettings.AutoDetectVTS OrElse (Master.eSettings.AutoDetectVTS AndAlso Not pExt = ".ifo" AndAlso Not pExt = ".vob" AndAlso Not pExt = ".ifo"))) Then
+                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2) = Args.SourceName)) OrElse (Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0)).ToLower) AndAlso (Not Master.eSettings.AutoDetectVTS OrElse (Master.eSettings.AutoDetectVTS AndAlso Not pExt = ".ifo" AndAlso Not pExt = ".vob" AndAlso Not pExt = ".bup"))) Then
                                 parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
 
