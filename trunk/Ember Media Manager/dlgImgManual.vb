@@ -32,19 +32,23 @@ Public Class dlgImgManual
 
         Dim tmpPathPlus As String = String.Empty
 
-        If DLType = Master.ImageType.Fanart Then
-            tmpPathPlus = Path.Combine(Master.TempPath, "fanart.jpg")
-        Else
-            tmpPathPlus = Path.Combine(Master.TempPath, "poster.jpg")
-        End If
+        Try
+            If DLType = Master.ImageType.Fanart Then
+                tmpPathPlus = Path.Combine(Master.TempPath, "fanart.jpg")
+            Else
+                tmpPathPlus = Path.Combine(Master.TempPath, "poster.jpg")
+            End If
 
-        If IsNothing(tImage.Image) Then
-            tImage.FromWeb(Me.txtURL.Text)
-        End If
+            If IsNothing(tImage.Image) Then
+                tImage.FromWeb(Me.txtURL.Text)
+            End If
 
-        If Not IsNothing(tImage.Image) Then
-            tImage.Save(tmpPathPlus)
-        End If
+            If Not IsNothing(tImage.Image) Then
+                tImage.Save(tmpPathPlus)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()

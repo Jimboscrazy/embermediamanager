@@ -153,7 +153,7 @@ Public Class XML
                 If Not String.IsNullOrEmpty(atypeImage) AndAlso alFlags.Contains(atypeImage.ToLower) Then
                     Using fsImage As New FileStream(atypeImage, FileMode.Open, FileAccess.Read)
                         If tAudio.HasPreferred Then
-                            frmMain.pbAudio.Image = ImageManip.SetOverlay(Image.FromStream(fsImage), 64, 44, My.Resources.heart, 4)
+                            frmMain.pbAudio.Image = ImageManip.SetOverlay(Image.FromStream(fsImage), 64, 44, My.Resources.haslanguage, 4)
                         Else
                             frmMain.pbAudio.Image = Image.FromStream(fsImage)
                         End If

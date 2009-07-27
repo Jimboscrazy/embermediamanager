@@ -194,7 +194,7 @@ Public Class Trailers
                 Me.GetTrailers(ImdbID, True)
 
                 If Me._TrailerList.Count > 0 Then
-                    tURL = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False)
+                    tURL = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False, "trailer")
                     If Not String.IsNullOrEmpty(tURL) Then
                         'delete any other trailer if enabled in settings and download successful
                         If Master.eSettings.DeleteAllTrailers Then
@@ -281,7 +281,7 @@ Public Class Trailers
         End If
 
         If Not String.IsNullOrEmpty(DLURL) Then
-            tURL = WebPage.DownloadFile(DLURL, sPath, True)
+            tURL = WebPage.DownloadFile(DLURL, sPath, True, "trailer")
 
             If Not String.IsNullOrEmpty(tURL) Then
                 'delete any other trailer if enabled in settings and download successful
@@ -295,7 +295,7 @@ Public Class Trailers
     End Function
 
     Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
-        Dim tURL As String = WebPage.DownloadFile(Me._TrailerList.Item(sIndex), sPath, True)
+        Dim tURL As String = WebPage.DownloadFile(Me._TrailerList.Item(sIndex), sPath, True, "trailer")
 
         If Not String.IsNullOrEmpty(tURL) Then
             'delete any other trailer if enabled in settings and download successful

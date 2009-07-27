@@ -1291,6 +1291,15 @@ Public Class dlgSettings
     Private Sub chkMissingExtra_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMissingExtra.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub btnDLTrans_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrans.Click
+        Using dTranslationDL As New dlgTranslationDL
+            If dTranslationDL.ShowDialog = Windows.Forms.DialogResult.OK Then
+                Me.LoadIntLangs()
+                Me.cbIntLang.SelectedItem = Master.eSettings.Language
+            End If
+        End Using
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1795,6 +1804,7 @@ Public Class dlgSettings
 
     Private Sub LoadIntLangs()
 
+        Me.cbIntLang.Items.Clear()
         If Directory.Exists(Path.Combine(Application.StartupPath, "Langs")) Then
             Dim alL As New ArrayList
             Dim alLangs As New ArrayList

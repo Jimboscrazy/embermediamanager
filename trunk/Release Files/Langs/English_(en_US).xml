@@ -442,11 +442,11 @@
   <string id="440">Whitelist Video Extensions</string>
   <string id="441">Whitelisted Extensions:</string>
   <string id="442">WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.</string>
-  <string id="443">!!AVAILABLE!!</string>
-  <string id="444">!!AVAILABLE!!</string>
-  <string id="445">!!AVAILABLE!!</string>
-  <string id="446">!!AVAILABLE!!</string>
-  <string id="447">!!AVAILABLE!!</string>
+  <string id="443">Download Translation</string>
+  <string id="444">Language</string>
+  <string id="445">Last Update</string>
+  <string id="446">Downloading available translations list...</string>
+  <string id="447">Downloading selected translations...</string>
   <string id="448">!!AVAILABLE!!</string>
   <string id="449">!!AVAILABLE!!</string>
   <string id="450">!!AVAILABLE!!</string>
