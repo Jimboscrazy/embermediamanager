@@ -27,13 +27,6 @@ Imports System.Xml.Serialization
 Public Class emmSettings
     Private _version As String
     Private _filterCustom As New ArrayList
-    Private _headerColor As String
-    Private _backgroundColor As String
-    Private _infopanelColor As String
-    Private _toppanelColor As String
-    Private _toppaneltextColor As String
-    Private _headertextColor As String
-    Private _paneltextColor As String
     Private _certificationLang As String
     Private _usecertformpaa As Boolean
     Private _scanmediainfo As Boolean
@@ -208,69 +201,6 @@ Public Class emmSettings
         End Get
         Set(ByVal value As ArrayList)
             Me._filterCustom = value
-        End Set
-    End Property
-
-    Public Property HeaderColor() As String
-        Get
-            Return Me._headerColor
-        End Get
-        Set(ByVal value As String)
-            Me._headerColor = value
-        End Set
-    End Property
-
-    Public Property BackgroundColor() As String
-        Get
-            Return Me._backgroundColor
-        End Get
-        Set(ByVal value As String)
-            Me._backgroundColor = value
-        End Set
-    End Property
-
-    Public Property InfoPanelColor() As String
-        Get
-            Return Me._infopanelColor
-        End Get
-        Set(ByVal value As String)
-            Me._infopanelColor = value
-        End Set
-    End Property
-
-    Public Property TopPanelColor() As String
-        Get
-            Return Me._toppanelColor
-        End Get
-        Set(ByVal value As String)
-            Me._toppanelColor = value
-        End Set
-    End Property
-
-    Public Property TopPanelTextColor() As String
-        Get
-            Return Me._toppaneltextColor
-        End Get
-        Set(ByVal value As String)
-            Me._toppaneltextColor = value
-        End Set
-    End Property
-
-    Public Property PanelTextColor() As String
-        Get
-            Return Me._paneltextColor
-        End Get
-        Set(ByVal value As String)
-            Me._paneltextColor = value
-        End Set
-    End Property
-
-    Public Property HeaderTextColor() As String
-        Get
-            Return Me._headertextColor
-        End Get
-        Set(ByVal value As String)
-            Me._headertextColor = value
         End Set
     End Property
 
@@ -1698,13 +1628,6 @@ Public Class emmSettings
     Public Sub Clear()
         Me._version = String.Empty
         Me._filterCustom.Clear()
-        Me._headerColor = Color.DimGray.ToArgb
-        Me._backgroundColor = Color.DimGray.ToArgb
-        Me._infopanelColor = Color.Gainsboro.ToArgb
-        Me._toppanelColor = Color.Gainsboro.ToArgb
-        Me._toppaneltextColor = Color.Black.ToArgb
-        Me._headertextColor = Color.White.ToArgb
-        Me._paneltextColor = Color.Black.ToArgb
         Me._certificationLang = String.Empty
         Me._usecertformpaa = False
         Me._scanmediainfo = True
