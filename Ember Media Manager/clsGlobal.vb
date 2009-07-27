@@ -422,21 +422,23 @@ Public Class Master
                         If Path.GetExtension(lfile.FullName).ToLower = ".ifo" Then hasIfo = 1
                         If Path.GetExtension(lfile.FullName).ToLower = ".vob" Then hasVob = 1
                         If Path.GetExtension(lfile.FullName).ToLower = ".bup" Then hasBup = 1
-                        If Path.GetFileName(lfile.FullName).ToLower = "video_ts.vob" _
-                            OrElse Path.GetFileName(lfile.FullName).ToLower = "video_ts.ifo" _
-                            OrElse Path.GetFileName(lfile.FullName).ToLower = "video_ts.bup" Then
+                        If Path.GetFileName(lfile.FullName).ToLower = "video_ts.vob" Then
+                            'video_ts.vob takes precedence
+                            tFile = lfile.FullName
+                        ElseIf String.IsNullOrEmpty(tFile) AndAlso (Path.GetFileName(lfile.FullName).ToLower = "video_ts.ifo" _
+                        OrElse Path.GetFileName(lfile.FullName).ToLower = "video_ts.bup") Then
                             tFile = lfile.FullName
                         End If
                         vtsSingle = (hasIfo + hasVob + hasBup) > 1
-                        If vtsSingle AndAlso Not String.IsNullOrEmpty(tFile) Then Exit For
+                        If vtsSingle AndAlso Path.GetFileName(tFile).ToLower = "video_ts.vob" Then Exit For
                     Next
                 End If
 
                 If vtsSingle AndAlso Not String.IsNullOrEmpty(tFile) Then
-                    If Not tmpList.Contains(StringManip.CleanStackingMarkers(tFile).ToLower) AndAlso _
+                    If Not tmpList.Contains(tFile.ToLower) AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("-trailer") AndAlso Not Path.GetFileName(tFile).ToLower.Contains("[trailer") AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("sample") Then
-                        tmpList.Add(StringManip.CleanStackingMarkers(tFile).ToLower)
+                        tmpList.Add(tFile.ToLower)
                         If alMoviePaths.Contains(tFile.ToLower) Then
                             fList.Add(New FileAndSource With {.Filename = tFile, .Source = "[!FROMDB!]"})
                         Else

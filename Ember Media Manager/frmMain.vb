@@ -226,7 +226,7 @@ Public Class frmMain
                 Dim dResult As Windows.Forms.DialogResult = dSettings.ShowDialog
                 If dResult = Windows.Forms.DialogResult.OK OrElse dResult = Windows.Forms.DialogResult.Retry Then
 
-                    Me.SetUp()
+                    Me.SetUp(False)
 
                     If Me.dgvMediaList.RowCount > 0 Then
                         Me.dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
@@ -492,7 +492,7 @@ Public Class frmMain
             Try
                 XML.CacheXMLs()
 
-                Me.SetUp()
+                Me.SetUp(True)
                 Me.cbSearch.SelectedIndex = 0
 
                 If Master.eSettings.CheckUpdates Then
@@ -554,7 +554,7 @@ Public Class frmMain
                     Master.DB.Connect(True, False)
                     Me.SetMenus(True)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
-                        Me.SetUp() 'just in case user changed languages
+                        Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True
                         Me.LoadMedia(1)
                     Else
@@ -2377,6 +2377,7 @@ Public Class frmMain
             Dim dtMediaList As New DataTable
             Dim MLFind As New MovieListFind
             Dim MLFound As New Master.FileAndSource
+            Dim pExt As String = String.Empty
             Master.DB.FillDataTable(dtMediaList, "SELECT MoviePath, Id, Source FROM movies ORDER BY ListTitle COLLATE NOCASE;")
             If dtMediaList.Rows.Count > 0 Then
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
@@ -2384,9 +2385,10 @@ Public Class frmMain
                         SQLcommand.CommandText = "DELETE FROM movies WHERE MoviePath = (?);"
                         Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMoviePath", DbType.String, 0, "MoviePath")
                         For Each mRow As DataRow In dtMediaList.Rows
+                            pExt = Path.GetExtension(mRow.Item(0)).ToLower
                             MLFind.SearchString = mRow.Item(0)
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
-                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2) = Args.SourceName)) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0)).ToLower) Then
+                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2) = Args.SourceName)) OrElse (Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0)).ToLower) AndAlso (Not Master.eSettings.AutoDetectVTS OrElse (Master.eSettings.AutoDetectVTS AndAlso Not pExt = ".ifo" AndAlso Not pExt = ".vob" AndAlso Not pExt = ".ifo"))) Then
                                 parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
 
@@ -3470,7 +3472,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub SetUp()
+    Private Sub SetUp(ByVal doTheme As Boolean)
 
         Try
             With Me
@@ -3634,7 +3636,7 @@ doCancel:
                 .cbSearch.Items.Clear()
                 .cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(62, "Director")})
 
-                .LoadTheme("Movie")
+                If doTheme Then .LoadTheme("Movie")
 
             End With
         Catch ex As Exception
