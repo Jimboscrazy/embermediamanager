@@ -147,12 +147,14 @@ Public Class frmMain
             Dim doSave As Boolean = True
 
             Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
-            Master.eSettings.WindowLoc = Me.Location
-            Master.eSettings.WindowSize = Me.Size
-            Master.eSettings.WindowState = Me.WindowState
-            Master.eSettings.InfoPanelState = Me.aniType
-            Master.eSettings.FilterPanelState = Me.aniFilterRaise
-            Master.eSettings.SpliterPanelState = Me.scMain.SplitterDistance
+            If Not isCL Then
+                Master.eSettings.WindowLoc = Me.Location
+                Master.eSettings.WindowSize = Me.Size
+                Master.eSettings.WindowState = Me.WindowState
+                Master.eSettings.InfoPanelState = Me.aniType
+                Master.eSettings.FilterPanelState = Me.aniFilterRaise
+                Master.eSettings.SpliterPanelState = Me.scMain.SplitterDistance
+            End If
             Master.eSettings.Save()
 
             If Me.bwPrelim.IsBusy OrElse Me.bwFolderData.IsBusy OrElse isCL Then
