@@ -102,7 +102,7 @@ Public Class HTTP
         Return True
     End Function
 
-    Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean) As String
+    Public Function DownloadFile(ByVal URL As String, ByVal LocalFile As String, ByVal ReportUpdate As Boolean, ByVal Type As String) As String
         Dim outFile As String = String.Empty
 
         Try
@@ -113,12 +113,14 @@ Public Class HTTP
             Dim wrResponse As HttpWebResponse = wrRequest.GetResponse()
 
             Select Case True
-                Case wrResponse.ContentType.Contains("mp4")
+                Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("mp4")
                     outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.mp4", "[trailer].mp4")))
-                Case wrResponse.ContentType.Contains("flv"), URL.ToLower.Contains("mattfind.com") AndAlso wrResponse.ContentType.Contains("plain") 'matttrailer reports "text/plain" for flv files
+                Case Type = "trailer" AndAlso (wrResponse.ContentType.Contains("flv") OrElse (URL.ToLower.Contains("mattfind.com") AndAlso wrResponse.ContentType.Contains("plain"))) 'matttrailer reports "text/plain" for flv files
                     outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.flv", "[trailer].flv")))
-                Case wrResponse.ContentType.Contains("shockwave"), wrResponse.ContentType.Contains("flash")
+                Case Type = "trailer" AndAlso (wrResponse.ContentType.Contains("shockwave") OrElse wrResponse.ContentType.Contains("flash"))
                     outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.swf", "[trailer].swf")))
+                Case Type = "translation"
+                    outFile = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
             End Select
 
             If Not String.IsNullOrEmpty(outFile) AndAlso wrResponse.ContentLength > 0 Then

@@ -116,7 +116,7 @@ Public Class dlgTrailer
                     tURL = cTrailer.DownloadYouTubeTrailer(Me.sPath, Args.Parameter)
                 Else
                     Dim sHTTP As New HTTP
-                    Me.prePath = sHTTP.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True)
+                    Me.prePath = sHTTP.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True, "trailer")
                     sHTTP = Nothing
                 End If
             End If

@@ -233,6 +233,12 @@
     <Compile Include="dlgStudioSelect.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgTranslationDL.Designer.vb">
+      <DependentUpon>dlgTranslationDL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgTranslationDL.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgUpdateMedia.designer.vb">
       <DependentUpon>dlgUpdateMedia.vb</DependentUpon>
     </Compile>
@@ -369,6 +375,9 @@
     <EmbeddedResource Include="dlgTrailer.resx">
       <DependentUpon>dlgTrailer.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgTranslationDL.resx">
+      <DependentUpon>dlgTranslationDL.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgUpdateMedia.resx">
       <DependentUpon>dlgUpdateMedia.vb</DependentUpon>
