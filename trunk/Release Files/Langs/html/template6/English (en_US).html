@@ -1,6 +1,12 @@
 <$NEED_POSTERS>
+<$NEED_FANART>
+<$NEED_FLAGS>
 <head>
 <script src="jquery.js" type="text/javascript" language="javascript"></script>
+<script src="prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
+
+
 <style>
 .boldrow td {border-top: 1px solid #000; border-bottom: 0px solid #000;border-spacing:0px;  margin: 0px; padding: 0em; }
 .botowmrow td {border-top: 0px solid #000; border-bottom: 1px solid #000;border-spacing:0px;  margin: 0px; padding: 0em; }
@@ -13,7 +19,8 @@
 .header a {text-decoration:none; color:black;}
 .header a:hover {color:#1010f0;}
 .details {position:relative;display:none;border-top: 0px solid #000;background: silver;width:530px; padding-left: 10px; padding-right: 10px; text-align: justify; overflow:hidden;clear:both;}
-.details-s {display:none;white-space: nowrap;}
+.details-s {display:block;white-space: nowrap;font-size:9px;vertical-align:bottom;}
+.flags {height:25px;vertical-align:center;}
 </style>
 <script type="text/javascript">
 var previd;
@@ -23,12 +30,12 @@ function ShowDetails2(id) {
 			$(id).hide("slow");
 			//$(id).slideUp("slow");
 var sdet = "#"+id.id +"-s";
-$(sdet).hide("slow");
+$(sdet).show("slow");
 		} else {
 	      		hiddiv2(id);
 			$(id).show("slow");
 var sdet = "#"+id.id +"-s";
-$(sdet).show("slow");
+$(sdet).hide("slow");
 			//$(id).slideDown("slow");
 			previd = id;
 		}
@@ -57,7 +64,7 @@ function hiddiv2(id) {
 			$(previd).hide("slow");
 			//$(previd).slideUp("slow");
 var sdet = "#"+previd.id +"-s";
-$(sdet).hide("slow");
+$(sdet).show("slow");
                     }
 		} 
 	}
@@ -91,10 +98,16 @@ Movie List<br><br>
     <div id="<$COUNT>" class="detail">Filename: <$FILENAME></div>
     </div>
     <div class="details" id="det<$COUNT>">
-<div style="float:right;clear:left;padding-left:10px;padding-top:5px;padding-bottom:5px;"><img style="width:80px;" src="export/<$COUNT>.jpg"></div>
+<div style="float:right;clear:left;padding-left:10px;padding-top:5px;padding-bottom:5px;"> <a href="export/<$COUNT>-fanart.jpg" rel="prettyPhoto"> <img style="width:80px;" src="export/<$COUNT>.jpg"></a></div>
          <b>Genres:</b>&nbsp;<$GENRES><br>
          <b>Plot:</b><br><$PLOT><br>&nbsp;
-
+<div class="details-s" id="det<$COUNT>-s">
+<img class="flags" src="flags/<$FLAG_VRES>">
+<img class="flags" src="flags/<$FLAG_VSOURCE>">
+<img class="flags" src="flags/<$FLAG_VTYPE>">
+<img class="flags" src="flags/<$FLAG_ATYPE>">
+<img class="flags" src="flags/<$FLAG_ACHAN>">
+</div/>
     </div>
    </td>
   </tr>
@@ -107,3 +120,9 @@ Movie List<br><br>
 </table>
 </div>
 </center>
+
+	<script type="text/javascript" charset="utf-8">
+		$(document).ready(function(){
+			$("a[rel^='prettyPhoto']").prettyPhoto();
+		});
+	</script>
