@@ -35,114 +35,6 @@ Public Class dlgSettings
     ' ############ FORMS/CONTROLS ############
     ' ########################################
 
-    Private Sub btnInfoPanelText_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnInfoPanelText.Click
-
-        Try
-            With Me.cdColor
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not .Color = Nothing Then
-                        Me.btnInfoPanelText.BackColor = .Color
-                        Me.btnApply.Enabled = True
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
-
-    Private Sub btnHeaderText_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHeaderText.Click
-
-        Try
-            With Me.cdColor
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not .Color = Nothing Then
-                        Me.btnHeaderText.BackColor = .Color
-                        Me.btnApply.Enabled = True
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub btnTopPanelText_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTopPanelText.Click
-        Try
-            With Me.cdColor
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not .Color = Nothing Then
-                        Me.btnTopPanelText.BackColor = .Color
-                        Me.btnApply.Enabled = True
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub btnHeaders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHeaders.Click
-        Try
-            With Me.cdColor
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not .Color = Nothing Then
-                        Me.btnHeaders.BackColor = .Color
-                        Me.btnApply.Enabled = True
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub btnBackground_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBackground.Click
-        Try
-            With Me.cdColor
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not .Color = Nothing Then
-                        Me.btnBackground.BackColor = .Color
-                        Me.btnApply.Enabled = True
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub btnInfoPanel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnInfoPanel.Click
-        Try
-            With Me.cdColor
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not .Color = Nothing Then
-                        Me.btnInfoPanel.BackColor = .Color
-                        Me.btnApply.Enabled = True
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub btnTopPanel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTopPanel.Click
-        Try
-            With Me.cdColor
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not .Color = Nothing Then
-                        Me.btnTopPanel.BackColor = .Color
-                        Me.btnApply.Enabled = True
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
     Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
         Try
             Me.SaveSettings()
@@ -1416,13 +1308,6 @@ Public Class dlgSettings
             Master.eSettings.FilterCustom.AddRange(Me.lstFilters.Items)
             If Master.eSettings.FilterCustom.Count <= 0 Then Master.eSettings.NoFilters = True
 
-            Master.eSettings.HeaderColor = Me.btnHeaders.BackColor.ToArgb
-            Master.eSettings.BackgroundColor = Me.btnBackground.BackColor.ToArgb
-            Master.eSettings.InfoPanelColor = Me.btnInfoPanel.BackColor.ToArgb
-            Master.eSettings.TopPanelColor = Me.btnTopPanel.BackColor.ToArgb
-            Master.eSettings.PanelTextColor = Me.btnInfoPanelText.BackColor.ToArgb()
-            Master.eSettings.TopPanelTextColor = Me.btnTopPanelText.BackColor.ToArgb
-            Master.eSettings.HeaderTextColor = Me.btnHeaderText.BackColor.ToArgb
             If Me.tcCleaner.SelectedTab.Name = "tpExpert" Then
                 Master.eSettings.ExpertCleaner = True
                 Master.eSettings.CleanFolderJPG = False
@@ -1675,13 +1560,6 @@ Public Class dlgSettings
         Try
             '######## GENERAL TAB ########
             Me.lstFilters.Items.AddRange(Master.eSettings.FilterCustom.ToArray)
-            Me.btnHeaders.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-            Me.btnBackground.BackColor = Color.FromArgb(Master.eSettings.BackgroundColor)
-            Me.btnInfoPanel.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-            Me.btnTopPanel.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-            Me.btnInfoPanelText.BackColor = Color.FromArgb(Master.eSettings.PanelTextColor)
-            Me.btnTopPanelText.BackColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
-            Me.btnHeaderText.BackColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
             Me.chkCleanFolderJPG.Checked = Master.eSettings.CleanFolderJPG
             Me.chkCleanMovieTBN.Checked = Master.eSettings.CleanMovieTBN
             Me.chkCleanMovieTBNb.Checked = Master.eSettings.CleanMovieTBNB
@@ -1973,14 +1851,6 @@ Public Class dlgSettings
         Me.chkWhitelistVideo.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
         Me.Label27.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
         Me.Label25.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
-        Me.gbColors.Text = Master.eLang.GetString(443, "Colors")
-        Me.Label3.Text = Master.eLang.GetString(444, "Background Color:")
-        Me.lblTopPanelText.Text = Master.eLang.GetString(445, "Top Panel Text Color:")
-        Me.Label1.Text = Master.eLang.GetString(446, "Top Panel Background Color:")
-        Me.lblInfoPanelText.Text = Master.eLang.GetString(447, "Info Panel Text Color:")
-        Me.lblPanel.Text = Master.eLang.GetString(448, "Info Panel Background Color:")
-        Me.lblHeaderText.Text = Master.eLang.GetString(449, "Info Panel Header Text Color:")
-        Me.lblHeader.Text = Master.eLang.GetString(450, "Info Panel Header Color:")
         Me.gbFilters.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
         Me.chkProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         Me.GroupBox12.Text = Me.GroupBox4.Text

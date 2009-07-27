@@ -67,6 +67,10 @@ Public Class frmMain
     Private isCL As Boolean = False
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
+    Private ThemeXML As New XDocument
+    Private PosterMaxHeight As Integer = 160
+    Private PosterMaxWidth As Integer = 160
+    Private GenrePanelColor As Color = Color.Gainsboro
 
     'filters
     Private filSearch As String = String.Empty
@@ -486,6 +490,10 @@ Public Class frmMain
 
         Else
             Try
+                XML.CacheXMLs()
+
+                Me.SetUp()
+                Me.cbSearch.SelectedIndex = 0
 
                 If Master.eSettings.CheckUpdates Then
                     Dim tmpNew As Integer = Master.CheckUpdate
@@ -500,10 +508,6 @@ Public Class frmMain
                 Me.Size = Master.eSettings.WindowSize
                 Me.WindowState = Master.eSettings.WindowState
 
-                XML.CacheXMLs()
-
-                Me.SetUp()
-                Me.cbSearch.SelectedIndex = 0
 
                 Me.aniType = Master.eSettings.InfoPanelState
                 Select Case Me.aniType
@@ -538,6 +542,8 @@ Public Class frmMain
                 Me.scMain.SplitterDistance = Master.eSettings.SpliterPanelState
 
                 Me.ClearInfo()
+
+                Application.DoEvents()
 
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     Master.DB.Connect(False, False)
@@ -712,7 +718,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub btnMIRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMIRefresh.Click
+    Private Sub btnMIRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
 
         '//
         ' Refresh Media Info
@@ -2611,7 +2617,7 @@ Public Class frmMain
             Try
                 If Not Res.fileInfo = "error" Then
                     Me.pbMILoading.Visible = False
-                    Me.txtMediaInfo.Text = Res.fileInfo
+                    Me.txtMetaData.Text = Res.fileInfo
                     If Master.eSettings.ScanMediaInfo Then
                         XML.GetAVImages(Res.Movie)
                         Me.pnlInfoIcons.Width = 390
@@ -2625,7 +2631,7 @@ Public Class frmMain
                             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(112, "Runtime: {0}"), Res.Movie.Movie.Runtime)
                         End If
                     End If
-                    Me.btnMIRefresh.Focus()
+                    Me.btnMetaDataRefresh.Focus()
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2764,7 +2770,7 @@ Public Class frmMain
 
                 If Not IsNothing(Me.MainPoster.Image) Then
                     Me.pbPosterCache.Image = Me.MainPoster.Image
-                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, 160, 160)
+                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, PosterMaxHeight, PosterMaxWidth)
                     ImageManip.SetGlassOverlay(Me.pbPoster)
                     Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
@@ -3027,7 +3033,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If (Not drvRow.Item(4) AndAlso Master.GlobalScrapeMod.Poster) OrElse (Not drvRow.Item(5) AndAlso Master.GlobalScrapeMod.Fanart) OrElse _
-                                (Not drvRow.Item(6) AndAlso Master.GlobalScrapeMod.NFO) OrElse (Not drvRow.Item(7) AndAlso Master.GlobalScrapeMod.Trailer)  Then
+                                (Not drvRow.Item(6) AndAlso Master.GlobalScrapeMod.NFO) OrElse (Not drvRow.Item(7) AndAlso Master.GlobalScrapeMod.Trailer) Then
 
                                     doSave = False
 
@@ -3363,79 +3369,111 @@ doCancel:
     ' ###### GENERAL ROUTINES/FUNCTIONS ######
     ' ########################################
 
-    Public Sub SetUp()
+    Private Sub LoadTheme(ByVal tType As String)
+        Dim tPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Themes", Path.DirectorySeparatorChar, tType, ".xml")
+        If File.Exists(tPath) Then
+            ThemeXML = XDocument.Load(tPath)
+
+            'top panel
+            Try
+                Dim xTop = From xTheme In ThemeXML...<theme>...<toppanel>
+                If xTop.Count > 0 Then
+                    If Not String.IsNullOrEmpty(xTop.<backcolor>.Value) Then Me.pnlTop.BackColor = Color.FromArgb(xTop.<backcolor>.Value)
+                    Me.pnlInfoIcons.BackColor = Me.pnlTop.BackColor
+                    Me.pnlRating.BackColor = Me.pnlTop.BackColor
+                    Me.pbVideo.BackColor = Me.pnlTop.BackColor
+                    Me.pbResolution.BackColor = Me.pnlTop.BackColor
+                    Me.pbAudio.BackColor = Me.pnlTop.BackColor
+                    Me.pbChannels.BackColor = Me.pnlTop.BackColor
+                    Me.pbStudio.BackColor = Me.pnlTop.BackColor
+                    Me.pbStar1.BackColor = Me.pnlTop.BackColor
+                    Me.pbStar2.BackColor = Me.pnlTop.BackColor
+                    Me.pbStar3.BackColor = Me.pnlTop.BackColor
+                    Me.pbStar4.BackColor = Me.pnlTop.BackColor
+                    Me.pbStar5.BackColor = Me.pnlTop.BackColor
+
+                    If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then Me.lblTitle.ForeColor = Color.FromArgb(xTop.<forecolor>.Value)
+                    Me.lblVotes.ForeColor = Me.lblTitle.ForeColor
+                    Me.lblRuntime.ForeColor = Me.lblTitle.ForeColor
+                    Me.lblTagline.ForeColor = Me.lblTitle.ForeColor
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            'images
+            Try
+                Dim xImages = From xTheme In ThemeXML...<theme>...<images>
+                If xImages.Count > 0 Then
+                    If Not String.IsNullOrEmpty(xImages.<fanartbackcolor>.Value) Then Me.scMain.Panel2.BackColor = Color.FromArgb(xImages.<fanartbackcolor>.Value)
+                    Me.pbFanart.BackColor = Me.scMain.Panel2.BackColor
+                    If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then Me.pbPoster.BackColor = Color.FromArgb(xImages.<posterbackcolor>.Value)
+                    If Not String.IsNullOrEmpty(xImages.<postermaxheight>.Value) Then Me.PosterMaxHeight = xImages.<postermaxheight>.Value
+                    If Not String.IsNullOrEmpty(xImages.<postermaxwidth>.Value) Then Me.PosterMaxWidth = xImages.<postermaxwidth>.Value
+                    If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then Me.pnlMPAA.BackColor = Color.FromArgb(xImages.<mpaabackcolor>.Value)
+                    Me.pbMPAA.BackColor = Me.pnlMPAA.BackColor
+                    If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then Me.GenrePanelColor = Color.FromArgb(xImages.<genrebackcolor>.Value)
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            'info panel
+            SetIPTheme(pnlInfoPanel)
+        End If
+    End Sub
+
+    Private Sub SetIPTheme(ByVal cControl As Control)
+        Try
+            Dim ControlName As String
+
+            Dim cFont As String = "Microsoft Sans Serif"
+            Dim cFontSize As Integer = 8
+            Dim cFontStyle As FontStyle = FontStyle.Bold
+
+            'info panel
+            Dim xIPMain = From xTheme In ThemeXML...<theme>...<infopanel> Select xTheme.<backcolor>.Value
+            If xIPMain.Count > 0 Then
+                Me.pnlInfoPanel.BackColor = Color.FromArgb(xIPMain(0).ToString)
+            End If
+
+            For Each xControl As Control In cControl.Controls
+                Try
+                    ControlName = xControl.Name
+                    Dim xIP = From xTheme In ThemeXML...<theme>...<infopanel>...<object> Where ControlName = xTheme.@name
+                    If xIP.Count > 0 Then
+                        If Not String.IsNullOrEmpty(xIP.<width>.Value) Then xControl.Width = xIP.<width>.Value
+                        If Not String.IsNullOrEmpty(xIP.<height>.Value) Then xControl.Height = xIP.<height>.Value
+                        If Not String.IsNullOrEmpty(xIP.<left>.Value) Then xControl.Left = xIP.<left>.Value
+                        If Not String.IsNullOrEmpty(xIP.<top>.Value) Then xControl.Top = xIP.<top>.Value
+                        If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then xControl.BackColor = Color.FromArgb(xIP.<backcolor>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then xControl.ForeColor = Color.FromArgb(xIP.<forecolor>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then xControl.Anchor = xIP.<anchor>.Value
+                        If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then xControl.Anchor = xIP.<anchor>.Value
+
+                        cFont = "Microsoft Sans Serif"
+                        cFontSize = 8
+                        cFontStyle = FontStyle.Regular
+
+                        If Not String.IsNullOrEmpty(xIP.<font>.Value) Then cFont = xIP.<font>.Value
+                        If Not String.IsNullOrEmpty(xIP.<fontsize>.Value) Then cFontSize = xIP.<fontsize>.Value
+                        If Not String.IsNullOrEmpty(xIP.<fontstyle>.Value) Then cFontStyle = xIP.<fontstyle>.Value
+                        xControl.Font = New Font(cFont, cFontSize, cFontStyle)
+                    End If
+                    If xControl.HasChildren Then SetIPTheme(xControl)
+                Catch ex As Exception
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub SetUp()
 
         Try
             With Me
-                'top panel
-                .pnlTop.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pnlInfoIcons.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pnlRating.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbVideo.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbResolution.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbAudio.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbChannels.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbStudio.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbStar1.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbStar2.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbStar3.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbStar4.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .pbStar5.BackColor = Color.FromArgb(Master.eSettings.TopPanelColor)
-                .lblTitle.ForeColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
-                .lblVotes.ForeColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
-                .lblRuntime.ForeColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
-                .lblTagline.ForeColor = Color.FromArgb(Master.eSettings.TopPanelTextColor)
-
-                'background
-                .scMain.Panel2.BackColor = Color.FromArgb(Master.eSettings.BackgroundColor)
-                .pbFanart.BackColor = Color.FromArgb(Master.eSettings.BackgroundColor)
-
-                'info panel
-                .pnlInfoPanel.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .txtMediaInfo.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .txtMediaInfo.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
-                .txtPlot.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .txtPlot.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
-                .txtOutline.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .txtOutline.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
-                .pnlActors.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .lstActors.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .lstActors.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
-                .lblDirector.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .lblDirector.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
-                .lblReleaseDate.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .lblReleaseDate.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
-                .pnlTop250.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .lblTop250.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .lblTop250.ForeColor = Color.FromArgb(Master.eSettings.PanelTextColor)
-
-                .lblMIHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblMIHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-                .lblPlotHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblPlotHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-                .lblOutlineHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblOutlineHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-                .lblActorsHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblActorsHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-                .lblFilePathHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblFilePathHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-                .lblIMDBHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblIMDBHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-                .lblDirectorHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblDirectorHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-                .lblReleaseDateHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblReleaseDateHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-                .lblCertsHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblCertsHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-                .lblInfoPanelHeader.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblInfoPanelHeader.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
-
-                'left panel
-                .scMain.Panel1.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .pnlSearch.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .pnlFilter.BackColor = Color.FromArgb(Master.eSettings.InfoPanelColor)
-                .lblFilter.BackColor = Color.FromArgb(Master.eSettings.HeaderColor)
-                .lblFilter.ForeColor = Color.FromArgb(Master.eSettings.HeaderTextColor)
 
                 .FileToolStripMenuItem.Text = Master.eLang.GetString(1, "&File")
                 .ExitToolStripMenuItem.Text = Master.eLang.GetString(2, "E&xit")
@@ -3494,8 +3532,8 @@ doCancel:
                 .Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
                 .lblCertsHeader.Text = Master.eLang.GetString(56, "Certification(s)")
                 .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
-                .btnMIRefresh.Text = Master.eLang.GetString(58, "Refresh")
-                .lblMIHeader.Text = Master.eLang.GetString(59, "Meta Data")
+                .btnMetaDataRefresh.Text = Master.eLang.GetString(58, "Refresh")
+                .lblMetaDataHeader.Text = Master.eLang.GetString(59, "Meta Data")
                 .lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
                 .lblIMDBHeader.Text = Master.eLang.GetString(61, "IMDB ID")
                 .lblDirectorHeader.Text = Master.eLang.GetString(62, "Director")
@@ -3582,7 +3620,7 @@ doCancel:
                 TT.SetToolTip(.btnMarkAll, Master.eLang.GetString(87, "Mark or Unmark all movies in the list."))
                 TT.SetToolTip(.txtSearch, Master.eLang.GetString(88, "Search the movie titles by entering text here."))
                 TT.SetToolTip(.btnPlay, Master.eLang.GetString(89, "Play the movie file with the system default media player."))
-                TT.SetToolTip(.btnMIRefresh, Master.eLang.GetString(90, "Rescan and save the meta data for the selected movie."))
+                TT.SetToolTip(.btnMetaDataRefresh, Master.eLang.GetString(90, "Rescan and save the meta data for the selected movie."))
                 TT.SetToolTip(.chkFilterDupe, Master.eLang.GetString(91, "Display only movies that have duplicate IMDB IDs."))
                 TT.SetToolTip(.chkFilterTolerance, Master.eLang.GetString(92, "Display only movies whose title matching is out of tolerance."))
                 TT.SetToolTip(.chkFilterMissing, Master.eLang.GetString(93, "Display only movies that have items missing."))
@@ -3595,6 +3633,8 @@ doCancel:
 
                 .cbSearch.Items.Clear()
                 .cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(62, "Director")})
+
+                .LoadTheme("Movie")
 
             End With
         Catch ex As Exception
@@ -3723,7 +3763,7 @@ doCancel:
                         Application.DoEvents()
                     End While
                 End If
-                Me.txtMediaInfo.Clear()
+                Me.txtMetaData.Clear()
                 Me.pbMILoading.Visible = True
             End If
 
@@ -3819,7 +3859,7 @@ doCancel:
                 .MainPoster.Clear()
                 .MainFanart.Clear()
 
-                .txtMediaInfo.Text = String.Empty
+                .txtMetaData.Text = String.Empty
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3927,7 +3967,7 @@ doCancel:
             Me.lblReleaseDate.Text = Master.currMovie.Movie.ReleaseDate
             Me.txtCerts.Text = Master.currMovie.Movie.Certification
 
-            Me.txtMediaInfo.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo)
+            Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4018,7 +4058,8 @@ doCancel:
                 Me.pbGenre(i).Name = genreArray(i).Trim.ToUpper
                 Me.pnlGenre(i).Size = New Size(68, 100)
                 Me.pbGenre(i).Size = New Size(62, 94)
-                Me.pnlGenre(i).BackColor = Color.Gainsboro
+                Me.pnlGenre(i).BackColor = Me.GenrePanelColor
+                Me.pbGenre(i).BackColor = Me.GenrePanelColor
                 Me.pnlGenre(i).BorderStyle = BorderStyle.FixedSingle
                 Me.pbGenre(i).SizeMode = PictureBoxSizeMode.StretchImage
                 Me.pbGenre(i).Image = XML.GetGenreImage(genreArray(i).Trim)
