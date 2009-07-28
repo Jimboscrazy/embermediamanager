@@ -186,7 +186,7 @@ Public Class dlgExportMovies
         '\\
         Dim base_path As String = "Flags/"
         If Not to_save Then
-            base_path = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
+            base_path = String.Concat("file:///", Web.HttpUtility.UrlPathEncode(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)))
         End If
 
         If XML.FlagsXML.Nodes.Count > 0 Then
@@ -280,23 +280,23 @@ Public Class dlgExportMovies
                 End If
 
                 If Not String.IsNullOrEmpty(vresImage) AndAlso XML.alFlags.Contains(vresImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VRES>", String.Concat("file:///", Web.HttpUtility.UrlPathEncode(String.Concat(base_path, Path.GetFileName(vresImage)))))
+                    line = line.Replace("<$FLAG_VRES>", String.Concat(base_path, Path.GetFileName(vresImage)))
                 End If
 
                 If Not String.IsNullOrEmpty(vsourceImage) AndAlso XML.alFlags.Contains(vsourceImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VSOURCE>", String.Concat("file:///", Web.HttpUtility.UrlPathEncode(String.Concat(base_path, Path.GetFileName(vsourceImage)))))
+                    line = line.Replace("<$FLAG_VSOURCE>", String.Concat(base_path, Path.GetFileName(vsourceImage)))
                 End If
 
                 If Not String.IsNullOrEmpty(vtypeImage) AndAlso XML.alFlags.Contains(vtypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VTYPE>", String.Concat("file:///", Web.HttpUtility.UrlPathEncode(String.Concat(base_path, Path.GetFileName(vtypeImage)))))
+                    line = line.Replace("<$FLAG_VTYPE>", String.Concat(base_path, Path.GetFileName(vtypeImage)))
                 End If
 
                 If Not String.IsNullOrEmpty(atypeImage) AndAlso XML.alFlags.Contains(atypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ATYPE>", String.Concat("file:///", Web.HttpUtility.UrlPathEncode(String.Concat(base_path, Path.GetFileName(atypeImage)))))
+                    line = line.Replace("<$FLAG_ATYPE>", String.Concat(base_path, Path.GetFileName(atypeImage)))
                 End If
 
                 If Not String.IsNullOrEmpty(achanImage) AndAlso XML.alFlags.Contains(achanImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ACHAN>", String.Concat("file:///", Web.HttpUtility.UrlPathEncode(String.Concat(base_path, Path.GetFileName(achanImage)))))
+                    line = line.Replace("<$FLAG_ACHAN>", String.Concat(base_path, Path.GetFileName(achanImage)))
                 End If
 
             Catch ex As Exception
