@@ -29,28 +29,13 @@ Public Class dlgExportMovies
     Private bexportPosters As Boolean = False
     Private bexportFanart As Boolean = False
     Private bexportFlags As Boolean = False
-    Private base_template As String
-    Private use_filter As Boolean = False
     Dim HTMLBody As New StringBuilder
     Dim _movies As New List(Of Master.DBMovie)
     Dim bFiltered As Boolean = False
     Dim bCancelled As Boolean = False
+    Dim sTemplate As String = String.Empty
+    Dim TempPath As String = Path.Combine(Master.TempPath, "Export")
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
-
-    Sub Warning(ByVal show As Boolean, Optional ByVal txt As String = "")
-        btnCancel.Visible = False
-        lblCompiling.Visible = True
-        pbCompile.Visible = False
-        pbCompile.Style = ProgressBarStyle.Continuous
-        lblCanceling.Visible = False
-        pnlCancel.Visible = show
-        lblFile.Visible = False
-        lblCompiling.Text = txt
-        If show = True Then
-            tmrReady.Enabled = True
-        End If
-        Application.DoEvents()
-    End Sub
 
     Public Shared Sub CLExport(ByVal filename As String, Optional ByVal template As String = "template", Optional ByVal resizePoster As Integer = 0)
         Dim MySelf As New dlgExportMovies
@@ -67,29 +52,9 @@ Public Class dlgExportMovies
         Do While MySelf.bwLoadInfo.IsBusy
             Application.DoEvents()
         Loop
-        MySelf.BuildHTML(False, "", "", template, True)
+        MySelf.BuildHTML(False, "", "", template)
         Dim srcPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
-        CopyDirectory(srcPath, Path.GetDirectoryName(filename), True)
-        If MySelf.bexportFlags Then
-            srcPath = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
-            Directory.CreateDirectory(Path.Combine(Path.GetDirectoryName(filename), "Flags"))
-            CopyDirectory(srcPath, Path.Combine(Path.GetDirectoryName(filename), "Flags"), True)
-        End If
-        If MySelf.bexportPosters Then
-            MySelf.ExportPoster(Path.GetDirectoryName(filename), resizePoster)
-        End If
-        If MySelf.bexportFanart Then
-            MySelf.ExportFanart(Path.GetDirectoryName(filename))
-        End If
-        File.WriteAllText(filename, System.Text.Encoding.ASCII.GetString(System.Text.Encoding.ASCII.GetBytes(MySelf.HTMLBody.ToString)))
-
-    End Sub
-
-    Sub LoadHTML()
-        Warning(True, "Loading please wait...")
-        Dim tmphtml As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, "worktemplate.htm")
-        File.WriteAllText(tmphtml, System.Text.Encoding.ASCII.GetString(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString)))
-        wbMovieList.Navigate(New Uri(tmphtml))
+        MySelf.SaveAll(srcPath, filename, resizePoster)
     End Sub
 
     Private Sub dlgExportMovies_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
@@ -99,6 +64,8 @@ Public Class dlgExportMovies
                 Application.DoEvents()
             Loop
         End If
+
+        Master.DeleteDirectory(TempPath)
     End Sub
 
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
@@ -131,11 +98,6 @@ Public Class dlgExportMovies
                                 Return
                             End If
                         End While
-                        If Not Me.isCL Then
-
-                            BuildHTML(False, "", "", base_template)
-                        End If
-
                         e.Result = True
                     Else
                         e.Cancel = True
@@ -146,6 +108,7 @@ Public Class dlgExportMovies
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
     Sub ExportPoster(ByVal fpath As String, ByVal new_width As Integer)
         Dim counter As Integer = 1
         Dim finalpath As String = Path.Combine(fpath, "export")
@@ -165,6 +128,7 @@ Public Class dlgExportMovies
             counter += 1
         Next
     End Sub
+
     Sub ExportFanart(ByVal fpath As String)
         Dim counter As Integer = 1
         Dim finalpath As String = Path.Combine(fpath, "export")
@@ -179,15 +143,11 @@ Public Class dlgExportMovies
         Next
     End Sub
 
-    Private Function GetAVImages(ByVal AVMovie As Master.DBMovie, ByVal line As String, Optional ByVal to_save As Boolean = False) As String
+    Private Function GetAVImages(ByVal AVMovie As Master.DBMovie, ByVal line As String) As String
 
         '//
         ' Parse the Flags XML and set the proper images
         '\\
-        Dim base_path As String = "Flags/"
-        If Not to_save Then
-            base_path = String.Concat("file:///", Web.HttpUtility.UrlPathEncode(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)))
-        End If
 
         If XML.FlagsXML.Nodes.Count > 0 Then
             'Dim mePath As String = ""
@@ -280,23 +240,23 @@ Public Class dlgExportMovies
                 End If
 
                 If Not String.IsNullOrEmpty(vresImage) AndAlso XML.alFlags.Contains(vresImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VRES>", String.Concat(base_path, Path.GetFileName(vresImage)))
+                    line = line.Replace("<$FLAG_VRES>", Path.GetFileName(vresImage))
                 End If
 
                 If Not String.IsNullOrEmpty(vsourceImage) AndAlso XML.alFlags.Contains(vsourceImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VSOURCE>", String.Concat(base_path, Path.GetFileName(vsourceImage)))
+                    line = line.Replace("<$FLAG_VSOURCE>", Path.GetFileName(vsourceImage))
                 End If
 
                 If Not String.IsNullOrEmpty(vtypeImage) AndAlso XML.alFlags.Contains(vtypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VTYPE>", String.Concat(base_path, Path.GetFileName(vtypeImage)))
+                    line = line.Replace("<$FLAG_VTYPE>", Path.GetFileName(vtypeImage))
                 End If
 
                 If Not String.IsNullOrEmpty(atypeImage) AndAlso XML.alFlags.Contains(atypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ATYPE>", String.Concat(base_path, Path.GetFileName(atypeImage)))
+                    line = line.Replace("<$FLAG_ATYPE>", Path.GetFileName(atypeImage))
                 End If
 
                 If Not String.IsNullOrEmpty(achanImage) AndAlso XML.alFlags.Contains(achanImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ACHAN>", String.Concat(base_path, Path.GetFileName(achanImage)))
+                    line = line.Replace("<$FLAG_ACHAN>", Path.GetFileName(achanImage))
                 End If
 
             Catch ex As Exception
@@ -306,26 +266,19 @@ Public Class dlgExportMovies
         Return line
     End Function
 
-
-
-    Sub BuildHTML(Optional ByVal bSearch As Boolean = False, Optional ByVal strFilter As String = "", Optional ByVal strIn As String = "", Optional ByVal template As String = "template", Optional ByVal to_save As Boolean = False)
+    Private Sub BuildHTML(ByVal bSearch As Boolean, ByVal strFilter As String, ByVal strIn As String, ByVal template As String)
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
+            HTMLBody.Length = 0
+            Master.DeleteDirectory(TempPath)
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
-            Dim pattern As String = File.ReadAllText(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html"))
+            Dim htmlPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html")
+            Dim pattern As String = File.ReadAllText(htmlPath)
             Dim movieheader As String = String.Empty
             Dim moviefooter As String = String.Empty
             Dim movierow As String = String.Empty
-            Dim template_path As String = String.Empty
-            HTMLBody = Nothing
-            HTMLBody = New StringBuilder
-            If Not to_save Then
-                template_path = Web.HttpUtility.UrlPathEncode(String.Concat("file:///", Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar))
-                'template_path = template_path.Replace(" ", "%20").Replace("\", "/")
-            End If
-            pattern = pattern.Replace("<$TEMPLATE_PATH>", template_path)
             If pattern.Contains("<$NEED_POSTERS>") Then
                 Me.bexportPosters = True
                 pattern = pattern.Replace("<$NEED_POSTERS>", String.Empty)
@@ -377,15 +330,6 @@ Public Class dlgExportMovies
                 End If
 
                 Dim row As String = movierow
-                If to_save Then
-                    row = row.Replace("<$MOVIE_PATH>", String.Empty)
-                    row = row.Replace("<$POSTER_FILE>", String.Concat("export/", counter.ToString, ".jpg"))
-                    row = row.Replace("<$FANART_FILE>", String.Concat("export/", counter.ToString, "-fanart.jpg"))
-                Else
-                    row = row.Replace("<$MOVIE_PATH>", String.Concat(Path.GetDirectoryName(_curMovie.Filename), Path.DirectorySeparatorChar))
-                    row = row.Replace("<$POSTER_FILE>", String.Concat("file:///", Web.HttpUtility.UrlPathEncode(_curMovie.PosterPath)))
-                    row = row.Replace("<$FANART_FILE>", String.Concat("file:///", Web.HttpUtility.UrlPathEncode(_curMovie.FanartPath)))
-                End If
                 row = row.Replace("<$MOVIENAME>", Web.HttpUtility.HtmlEncode(_curMovie.ListTitle))
                 row = row.Replace("<$YEAR>", _curMovie.Movie.Year)
                 row = row.Replace("<$COUNT>", counter.ToString)
@@ -396,9 +340,7 @@ Public Class dlgExportMovies
                 row = row.Replace("<$GENRES>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Genre))
                 row = row.Replace("<$VIDEO>", _vidDetails)
                 row = row.Replace("<$AUDIO>", _audDetails)
-                'If Me.isCL Then
-                row = GetAVImages(_curMovie, row, to_save)
-                'End If
+                row = GetAVImages(_curMovie, row)
                 If bSearch Then
                     If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso _vidDetails.Contains(strFilter)) OrElse _
                        (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso _audDetails.Contains(strFilter)) OrElse _
@@ -413,11 +355,17 @@ Public Class dlgExportMovies
                 counter += 1
             Next
             HTMLBody.Append(moviefooter)
+
+            If Not isCL Then
+                Dim outFile As String = Path.Combine(Me.TempPath, String.Concat(Master.eSettings.Language, ".html"))
+                Me.SaveAll(Path.GetDirectoryName(htmlPath), outFile)
+                wbMovieList.Navigate(outFile)
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
 
     Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
         '//
@@ -426,8 +374,7 @@ Public Class dlgExportMovies
         If Not Me.isCL Then
             bCancelled = e.Cancelled
             If Not e.Cancelled Then
-                'wbMovieList.DocumentText = HTMLBody.ToString
-                LoadHTML()
+                wbMovieList.DocumentText = HTMLBody.ToString
             Else
                 wbMovieList.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Cancelled"), "</h1></center>")
             End If
@@ -466,51 +413,46 @@ Public Class dlgExportMovies
             pnlSearch.Enabled = True
             Reset_Button.Enabled = bFiltered
         End If
-        Warning(False)
     End Sub
 
+    Private Sub SaveAll(ByVal srcPath As String, ByVal destPath As String, Optional ByVal resizePoster As Integer = 0)
+        Dim destPathShort As String = Path.GetDirectoryName(destPath)
+        CopyDirectory(srcPath, destPathShort, True)
+        If Me.bexportFlags Then
+            srcPath = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
+            Directory.CreateDirectory(Path.Combine(destPathShort, "Flags"))
+            CopyDirectory(srcPath, Path.Combine(destPathShort, "Flags"), True)
+        End If
+        If Me.bexportPosters Then
+            Me.ExportPoster(destPathShort, resizePoster)
+        End If
+        If Me.bexportFanart Then
+            Me.ExportFanart(destPathShort)
+        End If
+
+        Dim myStream As Stream = File.OpenWrite(destPath)
+        If Not IsNothing(myStream) Then
+            myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
+            myStream.Close()
+        End If
+    End Sub
 
     Private Sub Save_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save_Button.Click
         Dim saveHTML As New SaveFileDialog()
-        Dim myStream As Stream
         saveHTML.Filter = "HTML files (*.htm)|*.htm"
         saveHTML.FilterIndex = 2
         saveHTML.RestoreDirectory = True
+
         If saveHTML.ShowDialog() = DialogResult.OK Then
-            myStream = saveHTML.OpenFile()
-            If Not IsNothing(myStream) Then
-                Warning(True, "Saving all files, please wait")
-                bexportPosters = False
-                bexportFanart = False
-                bexportFlags = False
-                BuildHTML(use_filter, txtSearch.Text, cbSearch.Text, base_template, True)
-                myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
-                myStream.Close()
-                Dim srcPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, base_template, Path.DirectorySeparatorChar)
-                CopyDirectory(srcPath, Path.GetDirectoryName(saveHTML.FileName), True)
-                If Me.bexportFlags Then
-                    srcPath = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
-                    Directory.CreateDirectory(Path.Combine(Path.GetDirectoryName(saveHTML.FileName), "Flags"))
-                    CopyDirectory(srcPath, Path.Combine(Path.GetDirectoryName(saveHTML.FileName), "Flags"), True)
-                End If
-                If Me.bexportPosters Then
-                    Me.ExportPoster(Path.GetDirectoryName(saveHTML.FileName), 200) 'resizePoster)
-                End If
-                If Me.bexportFanart Then
-                    Me.ExportFanart(Path.GetDirectoryName(saveHTML.FileName))
-                End If
-                Warning(False)
-            End If
+            Dim srcPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, Me.sTemplate, Path.DirectorySeparatorChar)
+            Me.SaveAll(srcPath, saveHTML.FileName, 0)
         End If
 
     End Sub
 
     Private Sub Search_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Search_Button.Click
         pnlSearch.Enabled = False
-        use_filter = True
-        BuildHTML(use_filter, txtSearch.Text, cbSearch.Text, base_template)
-        LoadHTML()
-        'wbMovieList.DocumentText = HTMLBody.ToString
+        BuildHTML(True, txtSearch.Text, cbSearch.Text, Me.sTemplate)
     End Sub
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
@@ -531,20 +473,13 @@ Public Class dlgExportMovies
 
     Private Sub Reset_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Reset_Button.Click
         pnlSearch.Enabled = False
-        use_filter = False
-        BuildHTML(use_filter, "", "", base_template)
-        LoadHTML()
-        'wbMovieList.DocumentText = HTMLBody.ToString
+        BuildHTML(False, String.Empty, String.Empty, Me.sTemplate)
     End Sub
 
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
-        Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html"))
-        For Each i As DirectoryInfo In di.GetDirectories
-            cbTemplate.Items.Add(i.Name)
-        Next
-        If cbTemplate.Items.Count > 0 Then
-            cbTemplate.SelectedIndex = 0
+        If Not isCL Then
+            Me.GetTemplates()
+            Me.SetUp()
         End If
     End Sub
 
@@ -581,9 +516,11 @@ Public Class dlgExportMovies
         Me.lblCompiling.Text = Master.eLang.GetString(165, "Compiling Movie List...")
         Me.lblCanceling.Text = Master.eLang.GetString(166, "Canceling Compilation...")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Me.lblTemplate.Text = Master.eLang.GetString(450, "Template")
 
         Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(278, "Year"), Master.eLang.GetString(279, "Video Flag"), Master.eLang.GetString(280, "Audio Flag")})
     End Sub
+
     Private Shared Sub CopyDirectory(ByVal SourcePath As String, ByVal DestPath As String, Optional ByVal Overwrite As Boolean = False)
         Dim SourceDir As DirectoryInfo = New DirectoryInfo(SourcePath)
         Dim DestDir As DirectoryInfo = New DirectoryInfo(DestPath)
@@ -629,18 +566,27 @@ Public Class dlgExportMovies
         End If
     End Sub
 
-    Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTemplate.SelectedIndexChanged
-        base_template = sender.text
-        BuildHTML(use_filter, txtSearch.Text, cbSearch.Text, base_template)
-        LoadHTML()
-        'wbMovieList.DocumentText = HTMLBody.ToString
+    Private Sub GetTemplates()
+        Dim alDirs As New ArrayList
+
+        Try
+            alDirs.AddRange(Directory.GetDirectories(String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html")))
+        Catch
+        End Try
+
+        If alDirs.Count > 0 Then
+            Dim PathSplit() As String
+            For Each sPath As String In alDirs
+                PathSplit = sPath.Split(Path.DirectorySeparatorChar)
+                Me.cbTemplates.Items.Add(PathSplit(PathSplit.Length - 1))
+            Next
+            Me.cbTemplates.SelectedIndex = 0
+        End If
     End Sub
 
-    Private Sub tmrReady_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrReady.Tick
-        If wbMovieList.ReadyState = WebBrowserReadyState.Loaded OrElse wbMovieList.ReadyState = WebBrowserReadyState.Interactive Then
-            'Warning(False)
-            tmrReady.Enabled = False
-        End If
+    Private Sub cbTemplates_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTemplates.SelectedIndexChanged
+        Me.sTemplate = Me.cbTemplates.Text
+        BuildHTML(False, Me.txtSearch.Text, Me.cbSearch.Text, Me.sTemplate)
     End Sub
 End Class
 

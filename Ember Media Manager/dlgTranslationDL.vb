@@ -90,7 +90,6 @@ Public Class dlgTranslationDL
                     If xTemp.Count > 0 Then
                         For Each Temp In xTemp
                             xTemplate = New Template
-                            xTemplate.Clear()
                             xTemplate.Language = Trans.@name
                             xTemplate.Name = Temp.@name
                             Dim xFile = From xFiles In Temp...<files>...<file>

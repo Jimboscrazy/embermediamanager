@@ -266,6 +266,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFile
         '
+        Me.txtFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFile.Location = New System.Drawing.Point(668, 398)
         Me.txtFile.Name = "txtFile"
         Me.txtFile.Size = New System.Drawing.Size(224, 20)
@@ -274,6 +275,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFolder
         '
+        Me.txtFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFolder.Location = New System.Drawing.Point(316, 398)
         Me.txtFolder.Name = "txtFolder"
         Me.txtFolder.Size = New System.Drawing.Size(200, 20)
@@ -293,6 +295,7 @@ Partial Class dlgBulkRenamer
         '
         'txtFolderNotSingle
         '
+        Me.txtFolderNotSingle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFolderNotSingle.Location = New System.Drawing.Point(316, 419)
         Me.txtFolderNotSingle.Name = "txtFolderNotSingle"
         Me.txtFolderNotSingle.Size = New System.Drawing.Size(200, 20)
