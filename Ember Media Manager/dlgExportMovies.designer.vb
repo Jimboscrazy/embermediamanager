@@ -22,14 +22,13 @@ Partial Class dlgExportMovies
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportMovies))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
         Me.Save_Button = New System.Windows.Forms.Button
         Me.Close_Button = New System.Windows.Forms.Button
         Me.pnlBottomMain = New System.Windows.Forms.Panel
         Me.pnlSearch = New System.Windows.Forms.Panel
-        Me.lblTemplate = New System.Windows.Forms.Label
-        Me.cbTemplates = New System.Windows.Forms.ComboBox
         Me.Reset_Button = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.Search_Button = New System.Windows.Forms.Button
@@ -44,6 +43,9 @@ Partial Class dlgExportMovies
         Me.btnCancel = New System.Windows.Forms.Button
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.wbMovieList = New System.Windows.Forms.WebBrowser
+        Me.cbTemplate = New System.Windows.Forms.ComboBox
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.tmrReady = New System.Windows.Forms.Timer(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
         Me.pnlSearch.SuspendLayout()
@@ -89,6 +91,8 @@ Partial Class dlgExportMovies
         '
         'pnlBottomMain
         '
+        Me.pnlBottomMain.Controls.Add(Me.Label2)
+        Me.pnlBottomMain.Controls.Add(Me.cbTemplate)
         Me.pnlBottomMain.Controls.Add(Me.pnlSearch)
         Me.pnlBottomMain.Controls.Add(Me.TableLayoutPanel1)
         Me.pnlBottomMain.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -99,8 +103,6 @@ Partial Class dlgExportMovies
         '
         'pnlSearch
         '
-        Me.pnlSearch.Controls.Add(Me.lblTemplate)
-        Me.pnlSearch.Controls.Add(Me.cbTemplates)
         Me.pnlSearch.Controls.Add(Me.Reset_Button)
         Me.pnlSearch.Controls.Add(Me.Label1)
         Me.pnlSearch.Controls.Add(Me.Search_Button)
@@ -108,34 +110,15 @@ Partial Class dlgExportMovies
         Me.pnlSearch.Controls.Add(Me.cbSearch)
         Me.pnlSearch.Controls.Add(Me.txtSearch)
         Me.pnlSearch.Enabled = False
-        Me.pnlSearch.Location = New System.Drawing.Point(3, 9)
+        Me.pnlSearch.Location = New System.Drawing.Point(230, 9)
         Me.pnlSearch.Name = "pnlSearch"
-        Me.pnlSearch.Size = New System.Drawing.Size(700, 28)
+        Me.pnlSearch.Size = New System.Drawing.Size(473, 28)
         Me.pnlSearch.TabIndex = 6
-        '
-        'lblTemplate
-        '
-        Me.lblTemplate.Location = New System.Drawing.Point(3, 8)
-        Me.lblTemplate.Name = "lblTemplate"
-        Me.lblTemplate.Size = New System.Drawing.Size(77, 13)
-        Me.lblTemplate.TabIndex = 8
-        Me.lblTemplate.Text = "Template"
-        Me.lblTemplate.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbTemplates
-        '
-        Me.cbTemplates.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTemplates.FormattingEnabled = True
-        Me.cbTemplates.Location = New System.Drawing.Point(84, 4)
-        Me.cbTemplates.Name = "cbTemplates"
-        Me.cbTemplates.Size = New System.Drawing.Size(116, 21)
-        Me.cbTemplates.Sorted = True
-        Me.cbTemplates.TabIndex = 7
         '
         'Reset_Button
         '
         Me.Reset_Button.Enabled = False
-        Me.Reset_Button.Location = New System.Drawing.Point(625, 3)
+        Me.Reset_Button.Location = New System.Drawing.Point(402, 2)
         Me.Reset_Button.Name = "Reset_Button"
         Me.Reset_Button.Size = New System.Drawing.Size(67, 23)
         Me.Reset_Button.TabIndex = 6
@@ -143,7 +126,7 @@ Partial Class dlgExportMovies
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(232, 7)
+        Me.Label1.Location = New System.Drawing.Point(9, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(77, 13)
         Me.Label1.TabIndex = 2
@@ -153,7 +136,7 @@ Partial Class dlgExportMovies
         'Search_Button
         '
         Me.Search_Button.Enabled = False
-        Me.Search_Button.Location = New System.Drawing.Point(550, 3)
+        Me.Search_Button.Location = New System.Drawing.Point(327, 2)
         Me.Search_Button.Name = "Search_Button"
         Me.Search_Button.Size = New System.Drawing.Size(67, 23)
         Me.Search_Button.TabIndex = 5
@@ -161,7 +144,7 @@ Partial Class dlgExportMovies
         '
         'lblIn
         '
-        Me.lblIn.Location = New System.Drawing.Point(426, 7)
+        Me.lblIn.Location = New System.Drawing.Point(203, 7)
         Me.lblIn.Name = "lblIn"
         Me.lblIn.Size = New System.Drawing.Size(34, 13)
         Me.lblIn.TabIndex = 3
@@ -173,15 +156,14 @@ Partial Class dlgExportMovies
         Me.cbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSearch.FormattingEnabled = True
         Me.cbSearch.Items.AddRange(New Object() {"Title", "Year", "Video Flag", "Audio Flag"})
-        Me.cbSearch.Location = New System.Drawing.Point(464, 4)
+        Me.cbSearch.Location = New System.Drawing.Point(241, 3)
         Me.cbSearch.Name = "cbSearch"
         Me.cbSearch.Size = New System.Drawing.Size(83, 21)
         Me.cbSearch.TabIndex = 4
         '
         'txtSearch
         '
-        Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSearch.Location = New System.Drawing.Point(316, 5)
+        Me.txtSearch.Location = New System.Drawing.Point(93, 4)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(104, 20)
         Me.txtSearch.TabIndex = 1
@@ -266,16 +248,35 @@ Partial Class dlgExportMovies
         '
         'wbMovieList
         '
-        Me.wbMovieList.AllowWebBrowserDrop = False
         Me.wbMovieList.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.wbMovieList.IsWebBrowserContextMenuEnabled = False
         Me.wbMovieList.Location = New System.Drawing.Point(0, 0)
         Me.wbMovieList.MinimumSize = New System.Drawing.Size(20, 20)
         Me.wbMovieList.Name = "wbMovieList"
         Me.wbMovieList.Size = New System.Drawing.Size(854, 495)
         Me.wbMovieList.TabIndex = 0
         Me.wbMovieList.Visible = False
-        Me.wbMovieList.WebBrowserShortcutsEnabled = False
+        '
+        'cbTemplate
+        '
+        Me.cbTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTemplate.FormattingEnabled = True
+        Me.cbTemplate.Location = New System.Drawing.Point(84, 13)
+        Me.cbTemplate.Name = "cbTemplate"
+        Me.cbTemplate.Size = New System.Drawing.Size(140, 21)
+        Me.cbTemplate.TabIndex = 7
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(27, 17)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(51, 13)
+        Me.Label2.TabIndex = 8
+        Me.Label2.Text = "Template"
+        '
+        'tmrReady
+        '
+        Me.tmrReady.Interval = 500
         '
         'dlgExportMovies
         '
@@ -296,6 +297,7 @@ Partial Class dlgExportMovies
         Me.Text = "Export Movies"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.pnlBottomMain.ResumeLayout(False)
+        Me.pnlBottomMain.PerformLayout()
         Me.pnlSearch.ResumeLayout(False)
         Me.pnlSearch.PerformLayout()
         Me.pnlCancel.ResumeLayout(False)
@@ -322,7 +324,8 @@ Partial Class dlgExportMovies
     Friend WithEvents Reset_Button As System.Windows.Forms.Button
     Friend WithEvents lblCompiling As System.Windows.Forms.Label
     Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
-    Friend WithEvents cbTemplates As System.Windows.Forms.ComboBox
-    Friend WithEvents lblTemplate As System.Windows.Forms.Label
+    Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents tmrReady As System.Windows.Forms.Timer
 
 End Class
