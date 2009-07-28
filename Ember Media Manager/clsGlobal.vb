@@ -151,6 +151,49 @@ Public Class Master
         Dim Options As ScrapeOptions
     End Structure
 
+    Public Class ImgResult
+        Dim _imagepath As String
+        Dim _posters As New List(Of String)
+        Dim _fanart As New Media.Fanart
+
+        Public Property ImagePath() As String
+            Get
+                Return _imagepath
+            End Get
+            Set(ByVal value As String)
+                _imagepath = value
+            End Set
+        End Property
+
+        Public Property Posters() As List(Of String)
+            Get
+                Return _posters
+            End Get
+            Set(ByVal value As List(Of String))
+                _posters = value
+            End Set
+        End Property
+
+        Public Property Fanart() As Media.Fanart
+            Get
+                Return _fanart
+            End Get
+            Set(ByVal value As Media.Fanart)
+                _fanart = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.clear()
+        End Sub
+
+        Public Sub Clear()
+            _imagepath = String.Empty
+            _posters.Clear()
+            _fanart.Clear()
+        End Sub
+    End Class
+
     Public Class FileAndSource
         Dim _filename As String
         Dim _source As String

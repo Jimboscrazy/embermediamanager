@@ -184,8 +184,6 @@ Public Class Database
                                 "thumbs TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesPosters ON MoviesPosters (MovieID);"
-                    SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesFanart(" & _
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
@@ -193,8 +191,6 @@ Public Class Database
                                 "preview TEXT, " & _
                                 "thumbs TEXT" & _
                                 ");"
-                    SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS Index_MoviesFanart ON MoviesFanart (MovieID);"
                     SQLcommand.ExecuteNonQuery()
 
                     SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS Actors(" & _
@@ -372,15 +368,8 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesPosters WHERE MovieID = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-
-                    Dim poster As Media.Posters
-                    If SQLreader.Read Then
-                        _movieDB.Movie.Thumbs = New Media.Poster
-                    End If
                     While SQLreader.Read
-                        poster = New Media.Posters
-                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then poster.URL = SQLreader("thumbs")
-                        _movieDB.Movie.Thumbs.Thumb.Add(poster)
+                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then _movieDB.Movie.Thumb.Add(SQLreader("thumbs"))
                     End While
                 End Using
             End Using
@@ -676,10 +665,10 @@ Public Class Database
                                 "MovieID, thumbs", _
                                 ") VALUES (?,?);")
                         Dim parPosters_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_MovieID", DbType.UInt64, 0, "MovieID")
-                        Dim parPosters_thumb As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_thumb", DbType.String, 0, "thumb")
-                        For Each p As Media.Posters In _movieDB.Movie.Thumbs.Thumb
+                        Dim parPosters_thumb As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_thumb", DbType.String, 0, "thumbs")
+                        For Each p As String In _movieDB.Movie.Thumb
                             parPosters_MovieID.Value = _movieDB.ID
-                            parPosters_thumb.Value = p.URL
+                            parPosters_thumb.Value = p
                             SQLcommandMoviesPosters.ExecuteNonQuery()
                         Next
                     End Using

@@ -36,6 +36,8 @@ Public Class dlgEditMovie
     Private ExtraIndex As Integer = 0
     Private CachePath As String = String.Empty
     Private hasCleared As Boolean = False
+    Private fResults As New Master.ImgResult
+    Private pResults As New Master.ImgResult
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
@@ -670,6 +672,9 @@ Public Class dlgEditMovie
                     Master.currMovie.PosterPath = String.Empty
                 End If
 
+                If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
+                If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = pResults.Fanart
+
                 .SaveExtraThumbsList()
 
                 .TransferETs()
@@ -790,7 +795,8 @@ Public Class dlgEditMovie
             Dim sPath As String = Path.Combine(Master.TempPath, "poster.jpg")
 
             Using dImgSelect As New dlgImgSelect
-                If Not String.IsNullOrEmpty(dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)) Then
+                pResults = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)
+                If Not String.IsNullOrEmpty(pResults.ImagePath) Then
 
                     Poster.FromFile(sPath)
                     pbPoster.Image = Poster.Image
@@ -813,7 +819,8 @@ Public Class dlgEditMovie
             Dim sPath As String = Path.Combine(Master.TempPath, "fanart.jpg")
 
             Using dImgSelect As New dlgImgSelect
-                If Not String.IsNullOrEmpty(dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Fanart, True)) Then
+                fResults = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Fanart, True)
+                If Not String.IsNullOrEmpty(fResults.ImagePath) Then
 
                     Fanart.FromFile(sPath)
                     pbFanart.Image = Fanart.Image
