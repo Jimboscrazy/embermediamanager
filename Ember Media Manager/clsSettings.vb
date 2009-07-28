@@ -177,6 +177,7 @@ Public Class emmSettings
     Private _fieldproducers As Boolean
     Private _fieldmusic As Boolean
     Private _fieldcrew As Boolean
+    Private _field250 As Boolean
     Private _genrelimit As Integer
     Private _actorlimit As Integer
     Private _missingfilterposter As Boolean
@@ -1549,6 +1550,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property Field250() As Boolean
+        Get
+            Return Me._field250
+        End Get
+        Set(ByVal value As Boolean)
+            Me._field250 = value
+        End Set
+    End Property
+
     Public Property GenreLimit() As Integer
         Get
             Return Me._genrelimit
@@ -1778,6 +1788,7 @@ Public Class emmSettings
         Me._fieldproducers = True
         Me._fieldmusic = True
         Me._fieldcrew = True
+        Me._field250 = True
         Me._genrelimit = 0
         Me._actorlimit = 0
         Me._missingfilterposter = True

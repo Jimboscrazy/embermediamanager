@@ -143,6 +143,7 @@ Public Class Master
         Dim bProducers As Boolean
         Dim bMusicBy As Boolean
         Dim bOtherCrew As Boolean
+        Dim bTop250 As Boolean
     End Structure
 
     Public Structure CustomUpdaterStruct
@@ -345,6 +346,7 @@ Public Class Master
             .bVotes = eSettings.FieldVotes
             .bWriters = eSettings.FieldWriters
             .bYear = eSettings.FieldYear
+            .bTop250 = eSettings.Field250
         End With
     End Sub
 

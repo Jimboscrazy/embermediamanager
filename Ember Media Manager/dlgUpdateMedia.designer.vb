@@ -65,6 +65,7 @@ Partial Class dlgUpdateMedia
         Me.chkMPAA = New System.Windows.Forms.CheckBox
         Me.chkYear = New System.Windows.Forms.CheckBox
         Me.chkTitle = New System.Windows.Forms.CheckBox
+        Me.chkTop250 = New System.Windows.Forms.CheckBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
@@ -76,7 +77,7 @@ Partial Class dlgUpdateMedia
         'OK_Button
         '
         Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.OK_Button.Location = New System.Drawing.Point(366, 330)
+        Me.OK_Button.Location = New System.Drawing.Point(481, 330)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(80, 23)
         Me.OK_Button.TabIndex = 0
@@ -92,7 +93,7 @@ Partial Class dlgUpdateMedia
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(453, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(570, 64)
         Me.pnlTop.TabIndex = 58
         '
         'Label2
@@ -149,7 +150,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateModifier.Controls.Add(Me.rbUpdateModifier_All)
         Me.gbUpdateModifier.Location = New System.Drawing.Point(6, 70)
         Me.gbUpdateModifier.Name = "gbUpdateModifier"
-        Me.gbUpdateModifier.Size = New System.Drawing.Size(220, 68)
+        Me.gbUpdateModifier.Size = New System.Drawing.Size(275, 68)
         Me.gbUpdateModifier.TabIndex = 60
         Me.gbUpdateModifier.TabStop = False
         Me.gbUpdateModifier.Text = "Selection Filter"
@@ -158,7 +159,7 @@ Partial Class dlgUpdateMedia
         '
         Me.rbUpdateModifier_Marked.AutoSize = True
         Me.rbUpdateModifier_Marked.Enabled = False
-        Me.rbUpdateModifier_Marked.Location = New System.Drawing.Point(91, 42)
+        Me.rbUpdateModifier_Marked.Location = New System.Drawing.Point(126, 42)
         Me.rbUpdateModifier_Marked.Name = "rbUpdateModifier_Marked"
         Me.rbUpdateModifier_Marked.Size = New System.Drawing.Size(98, 17)
         Me.rbUpdateModifier_Marked.TabIndex = 62
@@ -179,7 +180,7 @@ Partial Class dlgUpdateMedia
         'rbUpdateModifier_Missing
         '
         Me.rbUpdateModifier_Missing.AutoSize = True
-        Me.rbUpdateModifier_Missing.Location = New System.Drawing.Point(91, 20)
+        Me.rbUpdateModifier_Missing.Location = New System.Drawing.Point(126, 20)
         Me.rbUpdateModifier_Missing.Name = "rbUpdateModifier_Missing"
         Me.rbUpdateModifier_Missing.Size = New System.Drawing.Size(125, 17)
         Me.rbUpdateModifier_Missing.TabIndex = 60
@@ -192,7 +193,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateType.Controls.Add(Me.rbUpdate_Auto)
         Me.gbUpdateType.Location = New System.Drawing.Point(6, 147)
         Me.gbUpdateType.Name = "gbUpdateType"
-        Me.gbUpdateType.Size = New System.Drawing.Size(220, 75)
+        Me.gbUpdateType.Size = New System.Drawing.Size(275, 75)
         Me.gbUpdateType.TabIndex = 61
         Me.gbUpdateType.TabStop = False
         Me.gbUpdateType.Text = "Update Mode"
@@ -230,7 +231,7 @@ Partial Class dlgUpdateMedia
         Me.gbUpdateItems.Controls.Add(Me.chkAllMod)
         Me.gbUpdateItems.Location = New System.Drawing.Point(6, 228)
         Me.gbUpdateItems.Name = "gbUpdateItems"
-        Me.gbUpdateItems.Size = New System.Drawing.Size(220, 96)
+        Me.gbUpdateItems.Size = New System.Drawing.Size(275, 96)
         Me.gbUpdateItems.TabIndex = 62
         Me.gbUpdateItems.TabStop = False
         Me.gbUpdateItems.Text = "Modifiers"
@@ -238,7 +239,7 @@ Partial Class dlgUpdateMedia
         'chkTrailerMod
         '
         Me.chkTrailerMod.AutoSize = True
-        Me.chkTrailerMod.Location = New System.Drawing.Point(105, 54)
+        Me.chkTrailerMod.Location = New System.Drawing.Point(135, 54)
         Me.chkTrailerMod.Name = "chkTrailerMod"
         Me.chkTrailerMod.Size = New System.Drawing.Size(55, 17)
         Me.chkTrailerMod.TabIndex = 6
@@ -248,7 +249,7 @@ Partial Class dlgUpdateMedia
         'chkExtraMod
         '
         Me.chkExtraMod.AutoSize = True
-        Me.chkExtraMod.Location = New System.Drawing.Point(105, 36)
+        Me.chkExtraMod.Location = New System.Drawing.Point(135, 36)
         Me.chkExtraMod.Name = "chkExtraMod"
         Me.chkExtraMod.Size = New System.Drawing.Size(84, 17)
         Me.chkExtraMod.TabIndex = 5
@@ -258,7 +259,7 @@ Partial Class dlgUpdateMedia
         'chkMetaMod
         '
         Me.chkMetaMod.AutoSize = True
-        Me.chkMetaMod.Location = New System.Drawing.Point(105, 18)
+        Me.chkMetaMod.Location = New System.Drawing.Point(135, 18)
         Me.chkMetaMod.Name = "chkMetaMod"
         Me.chkMetaMod.Size = New System.Drawing.Size(76, 17)
         Me.chkMetaMod.TabIndex = 4
@@ -309,7 +310,7 @@ Partial Class dlgUpdateMedia
         '
         Me.Update_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.Update_Button.Enabled = False
-        Me.Update_Button.Location = New System.Drawing.Point(278, 330)
+        Me.Update_Button.Location = New System.Drawing.Point(393, 330)
         Me.Update_Button.Name = "Update_Button"
         Me.Update_Button.Size = New System.Drawing.Size(80, 23)
         Me.Update_Button.TabIndex = 63
@@ -317,6 +318,7 @@ Partial Class dlgUpdateMedia
         '
         'gbOptions
         '
+        Me.gbOptions.Controls.Add(Me.chkTop250)
         Me.gbOptions.Controls.Add(Me.chkCrew)
         Me.gbOptions.Controls.Add(Me.chkMusicBy)
         Me.gbOptions.Controls.Add(Me.chkProducers)
@@ -337,9 +339,9 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
         Me.gbOptions.Enabled = False
-        Me.gbOptions.Location = New System.Drawing.Point(233, 70)
+        Me.gbOptions.Location = New System.Drawing.Point(287, 70)
         Me.gbOptions.Name = "gbOptions"
-        Me.gbOptions.Size = New System.Drawing.Size(213, 254)
+        Me.gbOptions.Size = New System.Drawing.Size(274, 254)
         Me.gbOptions.TabIndex = 66
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Options"
@@ -347,7 +349,7 @@ Partial Class dlgUpdateMedia
         'chkCrew
         '
         Me.chkCrew.AutoSize = True
-        Me.chkCrew.Location = New System.Drawing.Point(129, 203)
+        Me.chkCrew.Location = New System.Drawing.Point(147, 203)
         Me.chkCrew.Name = "chkCrew"
         Me.chkCrew.Size = New System.Drawing.Size(79, 17)
         Me.chkCrew.TabIndex = 18
@@ -357,7 +359,7 @@ Partial Class dlgUpdateMedia
         'chkMusicBy
         '
         Me.chkMusicBy.AutoSize = True
-        Me.chkMusicBy.Location = New System.Drawing.Point(129, 180)
+        Me.chkMusicBy.Location = New System.Drawing.Point(147, 180)
         Me.chkMusicBy.Name = "chkMusicBy"
         Me.chkMusicBy.Size = New System.Drawing.Size(69, 17)
         Me.chkMusicBy.TabIndex = 17
@@ -367,7 +369,7 @@ Partial Class dlgUpdateMedia
         'chkProducers
         '
         Me.chkProducers.AutoSize = True
-        Me.chkProducers.Location = New System.Drawing.Point(129, 157)
+        Me.chkProducers.Location = New System.Drawing.Point(147, 157)
         Me.chkProducers.Name = "chkProducers"
         Me.chkProducers.Size = New System.Drawing.Size(74, 17)
         Me.chkProducers.TabIndex = 16
@@ -377,7 +379,7 @@ Partial Class dlgUpdateMedia
         'chkWriters
         '
         Me.chkWriters.AutoSize = True
-        Me.chkWriters.Location = New System.Drawing.Point(129, 134)
+        Me.chkWriters.Location = New System.Drawing.Point(147, 134)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(59, 17)
         Me.chkWriters.TabIndex = 15
@@ -407,7 +409,7 @@ Partial Class dlgUpdateMedia
         'chkPlot
         '
         Me.chkPlot.AutoSize = True
-        Me.chkPlot.Location = New System.Drawing.Point(129, 65)
+        Me.chkPlot.Location = New System.Drawing.Point(147, 65)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(44, 17)
         Me.chkPlot.TabIndex = 12
@@ -417,7 +419,7 @@ Partial Class dlgUpdateMedia
         'chkOutline
         '
         Me.chkOutline.AutoSize = True
-        Me.chkOutline.Location = New System.Drawing.Point(129, 42)
+        Me.chkOutline.Location = New System.Drawing.Point(147, 42)
         Me.chkOutline.Name = "chkOutline"
         Me.chkOutline.Size = New System.Drawing.Size(59, 17)
         Me.chkOutline.TabIndex = 11
@@ -437,7 +439,7 @@ Partial Class dlgUpdateMedia
         'chkDirector
         '
         Me.chkDirector.AutoSize = True
-        Me.chkDirector.Location = New System.Drawing.Point(129, 111)
+        Me.chkDirector.Location = New System.Drawing.Point(147, 111)
         Me.chkDirector.Name = "chkDirector"
         Me.chkDirector.Size = New System.Drawing.Size(63, 17)
         Me.chkDirector.TabIndex = 9
@@ -447,7 +449,7 @@ Partial Class dlgUpdateMedia
         'chkTagline
         '
         Me.chkTagline.AutoSize = True
-        Me.chkTagline.Location = New System.Drawing.Point(129, 19)
+        Me.chkTagline.Location = New System.Drawing.Point(147, 19)
         Me.chkTagline.Name = "chkTagline"
         Me.chkTagline.Size = New System.Drawing.Size(61, 17)
         Me.chkTagline.TabIndex = 8
@@ -457,7 +459,7 @@ Partial Class dlgUpdateMedia
         'chkCast
         '
         Me.chkCast.AutoSize = True
-        Me.chkCast.Location = New System.Drawing.Point(129, 88)
+        Me.chkCast.Location = New System.Drawing.Point(147, 88)
         Me.chkCast.Name = "chkCast"
         Me.chkCast.Size = New System.Drawing.Size(47, 17)
         Me.chkCast.TabIndex = 7
@@ -534,12 +536,22 @@ Partial Class dlgUpdateMedia
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
+        'chkTop250
+        '
+        Me.chkTop250.AutoSize = True
+        Me.chkTop250.Location = New System.Drawing.Point(147, 227)
+        Me.chkTop250.Name = "chkTop250"
+        Me.chkTop250.Size = New System.Drawing.Size(66, 17)
+        Me.chkTop250.TabIndex = 19
+        Me.chkTop250.Text = "Top 250"
+        Me.chkTop250.UseVisualStyleBackColor = True
+        '
         'dlgUpdateMedia
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(453, 358)
+        Me.ClientSize = New System.Drawing.Size(570, 358)
         Me.Controls.Add(Me.gbOptions)
         Me.Controls.Add(Me.Update_Button)
         Me.Controls.Add(Me.gbUpdateItems)
@@ -609,5 +621,6 @@ Partial Class dlgUpdateMedia
     Friend WithEvents chkFanartMod As System.Windows.Forms.CheckBox
     Friend WithEvents chkPosterMod As System.Windows.Forms.CheckBox
     Friend WithEvents chkNFOMod As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
 
 End Class

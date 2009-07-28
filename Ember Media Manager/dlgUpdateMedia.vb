@@ -100,6 +100,7 @@ Public Class dlgUpdateMedia
         Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA/Cert")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.chkTop250.Text = Master.eLang.GetString(591, "Top 250")
     End Sub
 
     Private Sub CheckNewAndMark()
@@ -274,6 +275,11 @@ Public Class dlgUpdateMedia
         CheckEnable()
     End Sub
 
+    Private Sub chkTop250_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTop250.CheckedChanged
+        CustomUpdater.Options.bTop250 = chkTop250.Checked
+        CheckEnable()
+    End Sub
+
     Public Overloads Function ShowDialog() As Master.CustomUpdaterStruct
 
         '//
@@ -352,7 +358,7 @@ Public Class dlgUpdateMedia
             chkMPAA.Checked OrElse chkMusicBy.Checked OrElse chkOutline.Checked OrElse chkPlot.Checked OrElse _
             chkProducers.Checked OrElse chkRating.Checked OrElse chkRelease.Checked OrElse chkRuntime.Checked OrElse _
             chkStudio.Checked OrElse chkTagline.Checked OrElse chkTitle.Checked OrElse chkTrailer.Checked OrElse _
-            chkVotes.Checked OrElse chkVotes.Checked OrElse chkWriters.Checked OrElse chkYear.Checked Then
+            chkVotes.Checked OrElse chkVotes.Checked OrElse chkWriters.Checked OrElse chkYear.Checked OrElse chkTop250.Checked Then
                 Update_Button.Enabled = True
             Else
                 Update_Button.Enabled = False
@@ -363,4 +369,5 @@ Public Class dlgUpdateMedia
             Update_Button.Enabled = False
         End If
     End Sub
+
 End Class

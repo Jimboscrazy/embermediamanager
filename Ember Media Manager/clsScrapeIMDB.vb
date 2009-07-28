@@ -472,9 +472,7 @@ mResult:
 
                 'Top250
                 'ie: <a href="/chart/top?tt0167260">Top 250: #13</a>
-                'regex guru need to validate this
-                'Also Options.Top250 dont exist yet
-                'If Options.Top250 Then IMDBMovie.Top250 = Regex.Match(HTML, String.Concat("/chart/top?tt", IMDBMovie.IMDBID, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
+                If Options.bTop250 Then IMDBMovie.Top250 = Regex.Match(HTML, String.Concat("/chart/top\?tt", IMDBMovie.IMDBID, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
 
                 If doProgress Then
                     bwIMDB.ReportProgress(4)
