@@ -1252,6 +1252,10 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
     End Sub
 
+    Private Sub chkTop250_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTop250.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
     Private Sub txtActorLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtActorLimit.KeyPress
         e.Handled = StringManip.NumericOnly(e.KeyChar)
     End Sub
@@ -1537,6 +1541,7 @@ Public Class dlgSettings
             Master.eSettings.FieldProducers = Me.chkProducers.Checked
             Master.eSettings.FieldMusic = Me.chkMusicBy.Checked
             Master.eSettings.FieldCrew = Me.chkCrew.Checked
+            Master.eSettings.Field250 = Me.chkTop250.Checked
 
             If Not String.IsNullOrEmpty(Me.txtActorLimit.Text) Then
                 Master.eSettings.ActorLimit = Convert.ToInt32(Me.txtActorLimit.Text)
@@ -1765,6 +1770,7 @@ Public Class dlgSettings
                 Me.chkMusicBy.Checked = Master.eSettings.FieldMusic
                 Me.chkCrew.Checked = Master.eSettings.FieldCrew
             End If
+            Me.chkTop250.Checked = Master.eSettings.Field250
             Me.txtActorLimit.Text = Master.eSettings.ActorLimit.ToString
             Me.txtGenreLimit.Text = Master.eSettings.GenreLimit.ToString
 
@@ -2017,6 +2023,7 @@ Public Class dlgSettings
         Me.chkMissingTrailer.Text = Master.eLang.GetString(585, "Check for Trailer")
         Me.chkMissingSubs.Text = Master.eLang.GetString(586, "Check for Subs")
         Me.chkMissingExtra.Text = Master.eLang.GetString(587, "Check for Extrathumbs")
+        Me.chkTop250.Text = Master.eLang.GetString(591, "Top 250")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
