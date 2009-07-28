@@ -89,6 +89,7 @@ Public Class dlgTranslationDL
                     Dim xTemp = From xTemps In Trans...<templates>...<template>
                     If xTemp.Count > 0 Then
                         For Each Temp In xTemp
+                            xTemplate = New Template
                             xTemplate.Clear()
                             xTemplate.Language = Trans.@name
                             xTemplate.Name = Temp.@name
@@ -169,7 +170,7 @@ Public Class dlgTranslationDL
         End Sub
 
         Public Function Find(ByVal xTemp As Template) As Boolean
-            If Not IsNothing(xTemp) AndAlso xTemp.Language = _searchlang Then
+            If Not IsNothing(xTemp) AndAlso xTemp.Language = _searchlang AndAlso xTemp.Name = _searchname Then
                 Return True
             Else
                 Return False
