@@ -5187,7 +5187,4 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
-    Private Sub chkFilterMissing_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMissing.CheckedChanged
-
-    End Sub
 End Class
