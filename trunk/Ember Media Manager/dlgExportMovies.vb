@@ -477,6 +477,7 @@ Public Class dlgExportMovies
         saveHTML.RestoreDirectory = True
         If saveHTML.ShowDialog() = DialogResult.OK Then
             myStream = saveHTML.OpenFile()
+            myStream.Close()
             If Not IsNothing(myStream) Then
                 Dim srcPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, base_template, Path.DirectorySeparatorChar)
                 Me.SaveAll(Master.eLang.GetString(589, "Saving all files. Please wait..."), srcPath, saveHTML.FileName)
