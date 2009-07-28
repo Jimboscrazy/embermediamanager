@@ -179,6 +179,7 @@ Partial Class dlgExportMovies
         '
         'txtSearch
         '
+        Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSearch.Location = New System.Drawing.Point(93, 4)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(104, 20)
