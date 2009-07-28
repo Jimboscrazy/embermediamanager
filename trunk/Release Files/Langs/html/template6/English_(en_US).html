@@ -1,8 +1,8 @@
+<html>
 <$NEED_POSTERS>
 <$NEED_FANART>
 <$NEED_FLAGS>
-<head>
-<script src="jquery.js" type="text/javascript" language="javascript"></script>
+<head><script src="jquery.js" type="text/javascript" language="javascript"></script>
 <script src="prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
 <link rel="stylesheet" href="prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
 
@@ -32,12 +32,15 @@ function ShowDetails2(id) {
 var sdet = "#"+id.id +"-s";
 $(sdet).show("slow");
 		} else {
+var sdet = "#"+id.id +"img";
+$(sdet).html('<img style="width:80px;" src="' + $(sdet).attr('src') + '">');
 	      		hiddiv2(id);
 			$(id).show("slow");
 var sdet = "#"+id.id +"-s";
 $(sdet).hide("slow");
 			//$(id).slideDown("slow");
 			previd = id;
+
 		}
 	
 	}
@@ -82,6 +85,7 @@ function hiddiv() {
 
 </script>
 </head>
+<body>
 <center>
 <div style="width:550px;">
 <br>
@@ -98,15 +102,15 @@ Movie List<br><br>
     <div id="<$COUNT>" class="detail">Filename: <$FILENAME></div>
     </div>
     <div class="details" id="det<$COUNT>">
-<div style="float:right;clear:left;padding-left:10px;padding-top:5px;padding-bottom:5px;"> <a href="export/<$COUNT>-fanart.jpg" rel="prettyPhoto"> <img style="width:80px;" src="export/<$COUNT>.jpg"></a></div>
+<div style="float:right;clear:left;padding-left:10px;padding-top:5px;padding-bottom:5px;"> <a href="<$FANART_FILE>" rel="prettyPhoto"><div id="det<$COUNT>img" src="<$POSTER_FILE>"></div></a></div>
          <b>Genres:</b>&nbsp;<$GENRES><br>
          <b>Plot:</b><br><$PLOT><br>&nbsp;
 <div class="details-s" id="det<$COUNT>-s">
-<img class="flags" src="flags/<$FLAG_VRES>">
-<img class="flags" src="flags/<$FLAG_VSOURCE>">
-<img class="flags" src="flags/<$FLAG_VTYPE>">
-<img class="flags" src="flags/<$FLAG_ATYPE>">
-<img class="flags" src="flags/<$FLAG_ACHAN>">
+<img class="flags" src="<$FLAG_VRES>">
+<img class="flags" src="<$FLAG_VSOURCE>">
+<img class="flags" src="<$FLAG_VTYPE>">
+<img class="flags" src="<$FLAG_ATYPE>">
+<img class="flags" src="<$FLAG_ACHAN>">
 </div/>
     </div>
    </td>
@@ -126,3 +130,5 @@ Movie List<br><br>
 			$("a[rel^='prettyPhoto']").prettyPhoto();
 		});
 	</script>
+<body>
+</html>
