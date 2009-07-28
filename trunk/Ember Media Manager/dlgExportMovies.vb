@@ -387,7 +387,8 @@ Public Class dlgExportMovies
                     If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso _vidDetails.Contains(strFilter)) OrElse _
                        (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso _audDetails.Contains(strFilter)) OrElse _
                        (strIn = Master.eLang.GetString(21, "Title") AndAlso _curMovie.Movie.Title.Contains(strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(278, "Year") AndAlso _curMovie.Movie.Year.Contains(strFilter)) Then
+                       (strIn = Master.eLang.GetString(278, "Year") AndAlso _curMovie.Movie.Year.Contains(strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(353, "Source Folder") AndAlso _curMovie.Source.Contains(strFilter)) Then
                         HTMLBody.Append(row)
                     End If
                 Else
@@ -534,7 +535,7 @@ Public Class dlgExportMovies
 
         cbSearch.Enabled = True
         cbTemplate.Enabled = True
-        Search_Button.Enabled = True
+        'Search_Button.Enabled = True
         Reset_Button.Enabled = True
         Save_Button.Enabled = True
         If pnlCancel.Visible Then Warning(False)
@@ -565,7 +566,7 @@ Public Class dlgExportMovies
     Private Sub Search_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Search_Button.Click
         pnlSearch.Enabled = False
         use_filter = True
-        BuildHTML(use_filter, txtSearch.Text, cbSearch.Text, base_template, True)
+        BuildHTML(use_filter, If(cbSearch.Text = Master.eLang.GetString(353, "Source Folder"), cbFilterSource.Text, txtSearch.Text), cbSearch.Text, base_template, True)
     End Sub
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
@@ -577,10 +578,17 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub cbSearch_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearch.SelectedIndexChanged
-        If txtSearch.Text <> "" And cbSearch.Text <> "" Then
+        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso cbFilterSource.Text <> "") OrElse txtSearch.Text <> "") And cbSearch.Text <> "" Then
             Search_Button.Enabled = True
         Else
             Search_Button.Enabled = False
+        End If
+        If cbSearch.Text = Master.eLang.GetString(353, "Source Folder") Then
+            cbFilterSource.Visible = True
+            txtSearch.Visible = False
+        Else
+            cbFilterSource.Visible = False
+            txtSearch.Visible = True
         End If
     End Sub
 
@@ -641,7 +649,16 @@ Public Class dlgExportMovies
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         Me.Label2.Text = Master.eLang.GetString(450, "Template")
 
-        Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(278, "Year"), Master.eLang.GetString(279, "Video Flag"), Master.eLang.GetString(280, "Audio Flag")})
+        Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(278, "Year"), Master.eLang.GetString(279, "Video Flag"), Master.eLang.GetString(280, "Audio Flag"), Master.eLang.GetString(353, "Source Folder")})
+        cbFilterSource.Items.Clear()
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
+            Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                While SQLReader.Read
+                    cbFilterSource.Items.Add(SQLReader("Name"))
+                End While
+            End Using
+        End Using
     End Sub
 
     Private Shared Sub CopyDirectory(ByVal SourcePath As String, ByVal DestPath As String, Optional ByVal Overwrite As Boolean = False)
@@ -692,7 +709,7 @@ Public Class dlgExportMovies
     Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTemplate.SelectedIndexChanged
         base_template = sender.text
         DontSaveExtra = False
-        BuildHTML(use_filter, txtSearch.Text, cbSearch.Text, base_template, True)
+        BuildHTML(use_filter, If(cbSearch.Text = Master.eLang.GetString(353, "Source Folder"), cbFilterSource.Text, txtSearch.Text), cbSearch.Text, base_template, True)
     End Sub
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
@@ -702,6 +719,14 @@ Public Class dlgExportMovies
         While bwSaveAll.IsBusy
             Application.DoEvents()
         End While
+    End Sub
+
+    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterSource.SelectedIndexChanged
+        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso cbFilterSource.Text <> "") OrElse txtSearch.Text <> "") And cbSearch.Text <> "" Then
+            Search_Button.Enabled = True
+        Else
+            Search_Button.Enabled = False
+        End If
     End Sub
 End Class
 

@@ -44,6 +44,7 @@ Partial Class dlgExportMovies
         Me.lblCanceling = New System.Windows.Forms.Label
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.wbMovieList = New System.Windows.Forms.WebBrowser
+        Me.cbFilterSource = New System.Windows.Forms.ComboBox
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
         Me.pnlSearch.SuspendLayout()
@@ -102,7 +103,7 @@ Partial Class dlgExportMovies
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(27, 17)
+        Me.Label2.Location = New System.Drawing.Point(11, 17)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(51, 13)
         Me.Label2.TabIndex = 8
@@ -113,13 +114,14 @@ Partial Class dlgExportMovies
         '
         Me.cbTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbTemplate.FormattingEnabled = True
-        Me.cbTemplate.Location = New System.Drawing.Point(84, 13)
+        Me.cbTemplate.Location = New System.Drawing.Point(68, 13)
         Me.cbTemplate.Name = "cbTemplate"
         Me.cbTemplate.Size = New System.Drawing.Size(140, 21)
         Me.cbTemplate.TabIndex = 7
         '
         'pnlSearch
         '
+        Me.pnlSearch.Controls.Add(Me.cbFilterSource)
         Me.pnlSearch.Controls.Add(Me.Reset_Button)
         Me.pnlSearch.Controls.Add(Me.Label1)
         Me.pnlSearch.Controls.Add(Me.Search_Button)
@@ -127,15 +129,15 @@ Partial Class dlgExportMovies
         Me.pnlSearch.Controls.Add(Me.cbSearch)
         Me.pnlSearch.Controls.Add(Me.txtSearch)
         Me.pnlSearch.Enabled = False
-        Me.pnlSearch.Location = New System.Drawing.Point(230, 9)
+        Me.pnlSearch.Location = New System.Drawing.Point(214, 9)
         Me.pnlSearch.Name = "pnlSearch"
-        Me.pnlSearch.Size = New System.Drawing.Size(473, 28)
+        Me.pnlSearch.Size = New System.Drawing.Size(489, 28)
         Me.pnlSearch.TabIndex = 6
         '
         'Reset_Button
         '
         Me.Reset_Button.Enabled = False
-        Me.Reset_Button.Location = New System.Drawing.Point(402, 2)
+        Me.Reset_Button.Location = New System.Drawing.Point(416, 2)
         Me.Reset_Button.Name = "Reset_Button"
         Me.Reset_Button.Size = New System.Drawing.Size(67, 23)
         Me.Reset_Button.TabIndex = 6
@@ -143,9 +145,9 @@ Partial Class dlgExportMovies
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(9, 6)
+        Me.Label1.Location = New System.Drawing.Point(17, 6)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(77, 13)
+        Me.Label1.Size = New System.Drawing.Size(51, 14)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "Filter"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -153,7 +155,7 @@ Partial Class dlgExportMovies
         'Search_Button
         '
         Me.Search_Button.Enabled = False
-        Me.Search_Button.Location = New System.Drawing.Point(327, 2)
+        Me.Search_Button.Location = New System.Drawing.Point(343, 2)
         Me.Search_Button.Name = "Search_Button"
         Me.Search_Button.Size = New System.Drawing.Size(67, 23)
         Me.Search_Button.TabIndex = 5
@@ -172,17 +174,16 @@ Partial Class dlgExportMovies
         '
         Me.cbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSearch.FormattingEnabled = True
-        Me.cbSearch.Location = New System.Drawing.Point(241, 3)
+        Me.cbSearch.Location = New System.Drawing.Point(243, 3)
         Me.cbSearch.Name = "cbSearch"
-        Me.cbSearch.Size = New System.Drawing.Size(83, 21)
+        Me.cbSearch.Size = New System.Drawing.Size(94, 21)
         Me.cbSearch.TabIndex = 4
         '
         'txtSearch
         '
-        Me.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSearch.Location = New System.Drawing.Point(93, 4)
+        Me.txtSearch.Location = New System.Drawing.Point(74, 4)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(104, 20)
+        Me.txtSearch.Size = New System.Drawing.Size(123, 20)
         Me.txtSearch.TabIndex = 1
         '
         'pnlCancel
@@ -273,6 +274,16 @@ Partial Class dlgExportMovies
         Me.wbMovieList.TabIndex = 0
         Me.wbMovieList.Visible = False
         '
+        'cbFilterSource
+        '
+        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterSource.FormattingEnabled = True
+        Me.cbFilterSource.Location = New System.Drawing.Point(74, 4)
+        Me.cbFilterSource.Name = "cbFilterSource"
+        Me.cbFilterSource.Size = New System.Drawing.Size(123, 21)
+        Me.cbFilterSource.TabIndex = 31
+        Me.cbFilterSource.Visible = False
+        '
         'dlgExportMovies
         '
         Me.AcceptButton = Me.Save_Button
@@ -321,5 +332,6 @@ Partial Class dlgExportMovies
     Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
     Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents cbFilterSource As System.Windows.Forms.ComboBox
 
 End Class
