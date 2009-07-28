@@ -399,7 +399,7 @@ Public Class Images
         Return tmpImage
     End Function
 
-    Public Function GetPreferredImage(ByVal IMDBID As String, ByVal iType As Master.ImageType, ByRef fArt As Media.Fanart, ByRef pThumbs As Media.Poster, Optional ByVal doAsk As Boolean = False) As Boolean
+    Public Function GetPreferredImage(ByVal IMDBID As String, ByVal iType As Master.ImageType, ByRef imgResult As Master.ImgResult, Optional ByVal doAsk As Boolean = False) As Boolean
 
         '//
         ' Try to get the best match between what the user selected in settings and the actual posters downloaded
@@ -462,7 +462,7 @@ Public Class Images
                                     tImage.Description = "poster"
                             End Select
                             tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
-                            If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = tImage.URL})
+                            If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(tImage.URL)
                             tmpListTMDB.Add(tImage)
                             Me.Clear()
                         Next
@@ -482,7 +482,7 @@ Public Class Images
                         For Each tmdbThumb As Media.Image In tmpListTMDB
                             tmdbThumb.WebImage = GenericFromWeb(tmdbThumb.URL)
                             If Not IsNothing(tmdbThumb.WebImage) Then
-                                If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = tmdbThumb.URL})
+                                If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(tmdbThumb.URL)
                                 _image = New Bitmap(tmdbThumb.WebImage)
                                 Save(Path.Combine(CachePath, String.Concat("poster_(", tmdbThumb.Description, ")_(url=", StringManip.CleanURL(tmdbThumb.URL), ").jpg")))
                             End If
@@ -524,7 +524,7 @@ Public Class Images
 
                             If Not Master.eSettings.NoSaveImagesToNfo Then
                                 For Each tmdbThumb As Media.Image In tmpListTMDB
-                                    pThumbs.Thumb.Add(New Media.Posters With {.URL = tmdbThumb.URL})
+                                    imgResult.Posters.Add(tmdbThumb.URL)
                                 Next
                             End If
 
@@ -568,7 +568,7 @@ Public Class Images
                                 For Each iImage As Media.Image In tmpListIMPA
                                     FromWeb(iImage.URL)
                                     If Not IsNothing(_image) Then
-                                        If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = iImage.URL})
+                                        If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
                                         Dim tmpSize As Master.PosterSize = GetImageDims(_image, Master.ImageType.Posters)
                                         If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                             'cache the first result from each type in case the preferred size is not available
@@ -616,7 +616,7 @@ Public Class Images
                                 For Each iImage As Media.Image In tmpListMPDB
                                     FromWeb(iImage.URL)
                                     If Not IsNothing(_image) Then
-                                        If Not Master.eSettings.NoSaveImagesToNfo Then pThumbs.Thumb.Add(New Media.Posters With {.URL = iImage.URL})
+                                        If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
                                         Dim tmpSize As Master.PosterSize = GetImageDims(_image, Master.ImageType.Posters)
                                         If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                             'cache the first result from each type in case the preferred size is not available
@@ -788,17 +788,23 @@ Public Class Images
 
                                 'setup fanart for nfo
                                 Dim thumbLink As String = String.Empty
+                                imgResult.Fanart.URL = "http://images.themoviedb.org"
                                 For Each miFanart As Media.Image In tmpListTMDB
-                                    If Not Master.eSettings.NoSaveImagesToNfo Then fArt.URL = "http://www.themoviedb.org"
-                                    thumbLink = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)
-                                    If Not Strings.InStr(miFanart.URL, "_thumb") > 0 Then
-                                        thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
-                                    End If
                                     miFanart.WebImage = GenericFromWeb(miFanart.URL)
                                     If Not IsNothing(miFanart.WebImage) Then
                                         _image = New Bitmap(miFanart.WebImage)
                                         Save(Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringManip.CleanURL(miFanart.URL), ").jpg")))
-                                        If Not Master.eSettings.NoSaveImagesToNfo Then fArt.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)})
+                                        If Not Master.eSettings.NoSaveImagesToNfo Then
+                                            If Not miFanart.URL.Contains("_thumb.") Then
+                                                thumbLink = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)
+                                                If thumbLink.Contains("_poster.") Then
+                                                    thumbLink = thumbLink.Replace("_poster.", "_thumb.")
+                                                Else
+                                                    thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
+                                                End If
+                                                imgResult.Fanart.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)})
+                                            End If
+                                        End If
                                     End If
                                     Me.Clear()
                                 Next
@@ -840,15 +846,20 @@ Public Class Images
 
                             'setup fanart for nfo
                             Dim thumbLink As String = String.Empty
-                            For Each miFanart As Media.Image In tmpListTMDB
-                                If Not Master.eSettings.NoSaveImagesToNfo Then fArt.URL = "http://www.themoviedb.org"
-                                thumbLink = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)
-                                If Not Strings.InStr(miFanart.URL, "_thumb") > 0 Then
-                                    thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
-                                End If
-                                If Not Master.eSettings.NoSaveImagesToNfo Then fArt.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Strings.Replace(miFanart.URL, "http://www.themoviedb.org", String.Empty)})
-                            Next
-
+                            If Not Master.eSettings.NoSaveImagesToNfo Then
+                                imgResult.Fanart.URL = "http://images.themoviedb.org"
+                                For Each miFanart As Media.Image In tmpListTMDB
+                                    If Not miFanart.URL.Contains("_thumb.") Then
+                                        thumbLink = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)
+                                        If thumbLink.Contains("_poster.") Then
+                                            thumbLink = thumbLink.Replace("_poster.", "_thumb.")
+                                        Else
+                                            thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
+                                        End If
+                                        imgResult.Fanart.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)})
+                                    End If
+                                Next
+                            End If
 
                             For Each iMovie As Media.Image In tmpListTMDB
                                 Select Case Master.eSettings.PreferredPosterSize

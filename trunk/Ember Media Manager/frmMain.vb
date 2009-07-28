@@ -553,7 +553,7 @@ Public Class frmMain
                     Me.FillList(0)
                     Me.Visible = True
                 Else
-                    Master.DB.Connect(True, False)
+                    Master.DB.Connect(True, True)
                     Me.SetMenus(True)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Me.SetUp(False) 'just in case user changed languages
@@ -2845,14 +2845,12 @@ Public Class frmMain
         Dim Trailer As New Trailers
         Dim iCount As Integer = 0
         Dim tURL As String = String.Empty
-        Dim fArt As New Media.Fanart
-        Dim pThumbs As New Media.Poster
         Dim Poster As New Images
         Dim Fanart As New Images
         Dim scrapeMovie As New Master.DBMovie
         Dim doSave As Boolean = False
-        Dim pPath As String = String.Empty
-        Dim fPath As String = String.Empty
+        Dim pResults As New Master.ImgResult
+        Dim fResults As New Master.ImgResult
 
         myDelegate = New MydtMediaUpdate(AddressOf dtMediaUpdate)
 
@@ -2900,28 +2898,28 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Master.GlobalScrapeMod.Poster Then
-                                        pThumbs.Clear()
                                         Poster.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
+                                            pResults = New Master.ImgResult
+                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
-                                                    pPath = Poster.SaveAsPoster(scrapeMovie)
-                                                    If Not String.IsNullOrEmpty(pPath) Then
-                                                        scrapeMovie.PosterPath = pPath
+                                                    pResults.ImagePath = Poster.SaveAsPoster(scrapeMovie)
+                                                    If Not String.IsNullOrEmpty(pResults.ImagePath) Then
+                                                        scrapeMovie.PosterPath = pResults.ImagePath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                        If Master.GlobalScrapeMod.NFO Then
-                                                            scrapeMovie.Movie.Thumbs = pThumbs
+                                                        If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                                            scrapeMovie.Movie.Thumb = pResults.Posters
                                                         End If
                                                     End If
                                                 ElseIf Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk Then
                                                     MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                                                     Using dImgSelect As New dlgImgSelect
-                                                        pPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
-                                                        If Not String.IsNullOrEmpty(pPath) Then
-                                                            scrapeMovie.PosterPath = pPath
+                                                        pResults = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
+                                                        If Not String.IsNullOrEmpty(pResults.ImagePath) Then
+                                                            scrapeMovie.PosterPath = pResults.ImagePath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                            If Master.GlobalScrapeMod.NFO Then
-                                                                scrapeMovie.Movie.Thumbs = pThumbs
+                                                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                                                scrapeMovie.Movie.Thumb = pResults.Posters
                                                             End If
                                                         End If
                                                     End Using
@@ -2932,29 +2930,29 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Master.GlobalScrapeMod.Fanart Then
-                                        fArt.Clear()
                                         Fanart.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
+                                            fResults = New Master.ImgResult
+                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Fanart.Image) Then
-                                                    fPath = Fanart.SaveAsFanart(scrapeMovie)
-                                                    If Not String.IsNullOrEmpty(fPath) Then
-                                                        scrapeMovie.FanartPath = fPath
+                                                    fResults.ImagePath = Fanart.SaveAsFanart(scrapeMovie)
+                                                    If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                                                        scrapeMovie.FanartPath = fResults.ImagePath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                        If Master.GlobalScrapeMod.NFO Then
-                                                            scrapeMovie.Movie.Fanart = fArt
+                                                        If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                                            scrapeMovie.Movie.Fanart = fResults.Fanart
                                                         End If
                                                     End If
                                                 ElseIf Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk Then
                                                     MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
 
                                                     Using dImgSelect As New dlgImgSelect
-                                                        fPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
-                                                        If Not String.IsNullOrEmpty(fPath) Then
-                                                            scrapeMovie.FanartPath = fPath
+                                                        fResults = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
+                                                        If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                                                            scrapeMovie.FanartPath = fResults.ImagePath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                            If Master.GlobalScrapeMod.NFO Then
-                                                                scrapeMovie.Movie.Fanart = fArt
+                                                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                                                scrapeMovie.Movie.Fanart = fResults.Fanart
                                                             End If
                                                         End If
                                                     End Using
@@ -3060,28 +3058,28 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not drvRow.Item(4) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Poster Then
-                                        pThumbs.Clear()
                                         Poster.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
+                                            pResults = New Master.ImgResult
+                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
-                                                    pPath = Poster.SaveAsPoster(scrapeMovie)
-                                                    If Not String.IsNullOrEmpty(pPath) Then
-                                                        scrapeMovie.PosterPath = pPath
+                                                    pResults.ImagePath = Poster.SaveAsPoster(scrapeMovie)
+                                                    If Not String.IsNullOrEmpty(pResults.ImagePath) Then
+                                                        scrapeMovie.PosterPath = pResults.ImagePath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                        If Master.GlobalScrapeMod.NFO Then
-                                                            scrapeMovie.Movie.Thumbs = pThumbs
+                                                        If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                                            scrapeMovie.Movie.Thumb = pResults.Posters
                                                         End If
                                                     End If
                                                 ElseIf Args.scrapeType = Master.ScrapeType.UpdateAsk Then
                                                     MsgBox(Master.eLang.GetString(113, "A poster of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                                                     Using dImgSelect As New dlgImgSelect
-                                                        pPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
-                                                        If Not String.IsNullOrEmpty(pPath) Then
-                                                            scrapeMovie.PosterPath = pPath
+                                                        pResults = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Posters)
+                                                        If Not String.IsNullOrEmpty(pResults.ImagePath) Then
+                                                            scrapeMovie.PosterPath = pResults.ImagePath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 4, True})
-                                                            If Master.GlobalScrapeMod.NFO Then
-                                                                scrapeMovie.Movie.Thumbs = pThumbs
+                                                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                                                scrapeMovie.Movie.Thumb = pResults.Posters
                                                             End If
                                                         End If
                                                     End Using
@@ -3092,29 +3090,29 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not drvRow.Item(5) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Fanart Then
-                                        fArt.Clear()
                                         Fanart.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fArt, Nothing, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
+                                            fResults = New Master.ImgResult
+                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
 
                                                 If Not IsNothing(Fanart.Image) Then
-                                                    fPath = Fanart.SaveAsFanart(scrapeMovie)
-                                                    If Not String.IsNullOrEmpty(fPath) Then
-                                                        scrapeMovie.FanartPath = fPath
+                                                    fResults.ImagePath = Fanart.SaveAsFanart(scrapeMovie)
+                                                    If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                                                        scrapeMovie.FanartPath = fResults.ImagePath
                                                         Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                        If Master.GlobalScrapeMod.NFO Then
-                                                            scrapeMovie.Movie.Fanart = fArt
+                                                        If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                                            scrapeMovie.Movie.Fanart = fResults.Fanart
                                                         End If
                                                     End If
                                                 ElseIf Args.scrapeType = Master.ScrapeType.UpdateAsk Then
                                                     MsgBox(Master.eLang.GetString(115, "Fanart of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(114, "No Preferred Size"))
                                                     Using dImgSelect As New dlgImgSelect
-                                                        fPath = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
-                                                        If Not String.IsNullOrEmpty(fPath) Then
-                                                            scrapeMovie.FanartPath = fPath
+                                                        fResults = dImgSelect.ShowDialog(scrapeMovie, Master.ImageType.Fanart)
+                                                        If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                                                            scrapeMovie.FanartPath = fResults.ImagePath
                                                             Me.Invoke(myDelegate, New Object() {drvRow, 5, True})
-                                                            If Master.GlobalScrapeMod.NFO Then
-                                                                scrapeMovie.Movie.Fanart = fArt
+                                                            If Master.GlobalScrapeMod.NFO AndAlso Not Master.eSettings.NoSaveImagesToNfo Then
+                                                                scrapeMovie.Movie.Fanart = fResults.Fanart
                                                             End If
                                                         End If
                                                     End Using
@@ -3258,8 +3256,8 @@ doCancel:
         End Using
         e.Result = Args.scrapeType
 
-        pThumbs = Nothing
-        fArt = Nothing
+        pResults = Nothing
+        fResults = Nothing
 
         TMDB = Nothing
         IMPA = Nothing
@@ -4224,8 +4222,8 @@ doCancel:
                     If isCL AndAlso doSearch = False Then
                         Dim Poster As New Images
                         Dim Fanart As New Images
-                        Dim fArt As New Media.Fanart
-                        Dim pThumbs As New Media.Poster
+                        Dim fResults As New Master.ImgResult
+                        Dim pResults As New Master.ImgResult
 
                         Try
                             If Not String.IsNullOrEmpty(Master.currMovie.Movie.IMDBID) Then
@@ -4240,24 +4238,24 @@ doCancel:
                                 End If
 
                                 If Poster.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters) Then
-                                    If Poster.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Posters, Nothing, pThumbs) Then
+                                    If Poster.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Posters, pResults) Then
                                         If Not IsNothing(Poster.Image) Then
-                                            Poster.SaveAsPoster(Master.currMovie)
-                                            Master.currMovie.Movie.Thumbs = pThumbs
+                                            Master.currMovie.PosterPath = Poster.SaveAsPoster(Master.currMovie)
+                                            If Not Master.eSettings.NoSaveImagesToNfo Then Master.currMovie.Movie.Thumb = pResults.Posters
                                         End If
                                     End If
                                 End If
-                                pThumbs = Nothing
+                                pResults = Nothing
 
                                 If Fanart.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart) Then
-                                    If Fanart.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Fanart, fArt, Nothing) Then
+                                    If Fanart.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults) Then
                                         If Not IsNothing(Fanart.Image) Then
-                                            Fanart.SaveAsFanart(Master.currMovie)
-                                            Master.currMovie.Movie.Fanart = fArt
+                                            Master.currMovie.FanartPath = Fanart.SaveAsFanart(Master.currMovie)
+                                            If Not Master.eSettings.NoSaveImagesToNfo Then Master.currMovie.Movie.Fanart = fResults.Fanart
                                         End If
                                     End If
                                 End If
-                                fArt = Nothing
+                                fResults = Nothing
 
                                 Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
                             End If
@@ -4380,20 +4378,24 @@ doCancel:
                             Me.tslLoading.Text = Master.eLang.GetString(572, "Scraping Posters:")
                             Application.DoEvents()
                             Using dImgSelect As New dlgImgSelect
-                                Dim pPath As String = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)
-                                If Not String.IsNullOrEmpty(pPath) Then
-                                    Master.currMovie.PosterPath = pPath
+                                Dim pResults As Master.ImgResult = dImgSelect.ShowDialog(Master.currMovie, Master.ImageType.Posters, True)
+                                If Not String.IsNullOrEmpty(pResults.ImagePath) Then
+                                    Master.currMovie.PosterPath = pResults.ImagePath
+                                    If Not Master.eSettings.NoSaveImagesToNfo AndAlso pResults.Posters.Count > 0 Then Master.currMovie.Movie.Thumb = pResults.Posters
                                 End If
+                                pResults = Nothing
                             End Using
                         End If
 
                         If AllowFA Then
                             Me.tslLoading.Text = Master.eLang.GetString(573, "Scraping Fanart:")
                             Application.DoEvents()
-                            Dim fPath As String = dImgSelectFanart.ShowDialog
-                            If Not String.IsNullOrEmpty(fPath) Then
-                                Master.currMovie.FanartPath = fPath
+                            Dim fResults As Master.ImgResult = dImgSelectFanart.ShowDialog
+                            If Not String.IsNullOrEmpty(fResults.ImagePath) Then
+                                Master.currMovie.FanartPath = fResults.ImagePath
+                                If Not Master.eSettings.NoSaveImagesToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Master.currMovie.Movie.Fanart = fResults.Fanart
                             End If
+                            fResults = Nothing
                         End If
 
                     End Using

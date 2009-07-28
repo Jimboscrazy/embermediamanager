@@ -65,7 +65,7 @@ Public Class dlgImgSelect
     Private Event MPDBDone()
 
     Private CachePath As String = String.Empty
-    Private OutPath As String = String.Empty
+    Private Results As New Master.ImgResult
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
@@ -81,12 +81,12 @@ Public Class dlgImgSelect
             If Not IsNothing(Me.tmpImage.Image) Then
                 If isEdit Then
                     Me.tmpImage.Save(tmpPathPlus)
-                    OutPath = tmpPathPlus
+                    Results.ImagePath = tmpPathPlus
                 Else
                     If Me.DLType = Master.ImageType.Fanart Then
-                        OutPath = Me.tmpImage.SaveAsFanart(tMovie)
+                        Results.ImagePath = Me.tmpImage.SaveAsFanart(tMovie)
                     Else
-                        OutPath = Me.tmpImage.SaveAsPoster(tMovie)
+                        Results.ImagePath = Me.tmpImage.SaveAsPoster(tMovie)
                     End If
                 End If
             Else
@@ -120,12 +120,12 @@ Public Class dlgImgSelect
                 If Not IsNothing(Me.tmpImage.Image) Then
                     If isEdit Then
                         Me.tmpImage.Save(tmpPathPlus)
-                        OutPath = tmpPathPlus
+                        Results.ImagePath = tmpPathPlus
                     Else
                         If Me.DLType = Master.ImageType.Fanart Then
-                            OutPath = Me.tmpImage.SaveAsFanart(Me.tMovie)
+                            Results.ImagePath = Me.tmpImage.SaveAsFanart(Me.tMovie)
                         Else
-                            OutPath = Me.tmpImage.SaveAsPoster(Me.tMovie)
+                            Results.ImagePath = Me.tmpImage.SaveAsPoster(Me.tMovie)
                         End If
                     End If
                 End If
@@ -861,17 +861,27 @@ Public Class dlgImgSelect
                 Me.bwIMPADownload.ReportProgress(i + 1, Me.IMPAPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.IMPAPosters.Item(i).URL)
                 wrRequest.Timeout = 10000
-                Using wrResponse As WebResponse = wrRequest.GetResponse()
-                    If wrResponse.ContentType.Contains("image") Then
-                        Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
-                        If Master.eSettings.UseImgCache Then
-                            Me.IMPAPosters.Item(i).URL = StringManip.CleanURL(Me.IMPAPosters.Item(i).URL)
-                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.IMPAPosters.Item(i).Description, ")_(url=", Me.IMPAPosters.Item(i).URL, ").jpg")), FileMode.Create, FileAccess.Write)
-                                Me.IMPAPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
-                            End Using
+                Try
+                    Using wrResponse As WebResponse = wrRequest.GetResponse()
+                        If wrResponse.ContentType.Contains("image") Then
+                            Try
+                                Me.IMPAPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                                If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.IMPAPosters.Item(i).URL)
+                                If Master.eSettings.UseImgCache Then
+                                    Try
+                                        Me.IMPAPosters.Item(i).URL = StringManip.CleanURL(Me.IMPAPosters.Item(i).URL)
+                                        Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.IMPAPosters.Item(i).Description, ")_(url=", Me.IMPAPosters.Item(i).URL, ").jpg")), FileMode.Create, FileAccess.Write)
+                                            Me.IMPAPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
+                                        End Using
+                                    Catch
+                                    End Try
+                                End If
+                            Catch
+                            End Try
                         End If
-                    End If
-                End Using
+                    End Using
+                Catch
+                End Try
                 wrRequest = Nothing
             Catch
             End Try
@@ -913,7 +923,7 @@ Public Class dlgImgSelect
         ' Thread to download tmdb posters from the internet (multi-threaded because sometimes
         ' the web server is slow to respond or not reachable, hanging the GUI)
         '\\
-
+        Dim thumbLink As String = String.Empty
         For i As Integer = 0 To Me.TMDBPosters.Count - 1
             Try
                 If Me.DLType = Master.ImageType.Fanart OrElse (Master.eSettings.UseImgCache OrElse Me.TMDBPosters.Item(i).Description = "cover") Then
@@ -924,17 +934,42 @@ Public Class dlgImgSelect
                     Me.bwTMDBDownload.ReportProgress(i + 1, Me.TMDBPosters.Item(i).URL)
                     Dim wrRequest As WebRequest = WebRequest.Create(Me.TMDBPosters.Item(i).URL)
                     wrRequest.Timeout = 10000
-                    Using wrResponse As WebResponse = wrRequest.GetResponse()
-                        If wrResponse.ContentType.Contains("image") Then
-                            Me.TMDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
-                            If Master.eSettings.UseImgCache Then
-                                Me.TMDBPosters.Item(i).URL = StringManip.CleanURL(Me.TMDBPosters.Item(i).URL)
-                                Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Me.TMDBPosters.Item(i).URL, ").jpg")), FileMode.Create, FileAccess.Write)
-                                    Me.TMDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
-                                End Using
+                    Try
+                        Using wrResponse As WebResponse = wrRequest.GetResponse()
+                            If wrResponse.ContentType.Contains("image") Then
+                                Try
+                                    Me.TMDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                                    If Not Master.eSettings.NoSaveImagesToNfo Then
+                                        If Me.DLType = Master.ImageType.Fanart Then
+                                            If Not Me.TMDBPosters.Item(i).URL.Contains("_thumb.") Then
+                                                Me.Results.Fanart.URL = "http://images.themoviedb.org"
+                                                thumbLink = Me.TMDBPosters.Item(i).URL.Replace("http://images.themoviedb.org", String.Empty)
+                                                If thumbLink.Contains("_poster.") Then
+                                                    thumbLink = thumbLink.Replace("_poster.", "_thumb.")
+                                                Else
+                                                    thumbLink = thumbLink.Insert(thumbLink.LastIndexOf("."), "_thumb")
+                                                End If
+                                                Me.Results.Fanart.Thumb.Add(New Media.Thumb With {.Preview = thumbLink, .Text = Me.TMDBPosters.Item(i).URL.Replace("http://images.themoviedb.org", String.Empty)})
+                                            End If
+                                        Else
+                                            Me.Results.Posters.Add(Me.TMDBPosters.Item(i).URL)
+                                        End If
+                                    End If
+                                    If Master.eSettings.UseImgCache Then
+                                        Try
+                                            Me.TMDBPosters.Item(i).URL = StringManip.CleanURL(Me.TMDBPosters.Item(i).URL)
+                                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Me.TMDBPosters.Item(i).URL, ").jpg")), FileMode.Create, FileAccess.Write)
+                                                Me.TMDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
+                                            End Using
+                                        Catch
+                                        End Try
+                                    End If
+                                Catch
+                                End Try
                             End If
-                        End If
-                    End Using
+                        End Using
+                    Catch
+                    End Try
                     wrRequest = Nothing
                 End If
             Catch
@@ -986,17 +1021,27 @@ Public Class dlgImgSelect
                 Me.bwMPDBDownload.ReportProgress(i + 1, Me.MPDBPosters.Item(i).URL)
                 Dim wrRequest As WebRequest = WebRequest.Create(Me.MPDBPosters.Item(i).URL)
                 wrRequest.Timeout = 10000
-                Using wrResponse As WebResponse = wrRequest.GetResponse()
-                    If wrResponse.ContentType.Contains("image") Then
-                        Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
-                        If Master.eSettings.UseImgCache Then
-                            Me.MPDBPosters.Item(i).URL = StringManip.CleanURL(Me.MPDBPosters.Item(i).URL)
-                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.MPDBPosters.Item(i).Description, ")_(url=", Me.MPDBPosters.Item(i).URL, ").jpg")), FileMode.Create, FileAccess.Write)
-                                Me.MPDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
-                            End Using
+                Try
+                    Using wrResponse As WebResponse = wrRequest.GetResponse()
+                        If wrResponse.ContentType.Contains("image") Then
+                            Try
+                                Me.MPDBPosters.Item(i).WebImage = Image.FromStream(wrResponse.GetResponseStream)
+                                If Not Master.eSettings.NoSaveImagesToNfo Then Me.Results.Posters.Add(Me.MPDBPosters.Item(i).URL)
+                                If Master.eSettings.UseImgCache Then
+                                    Try
+                                        Me.MPDBPosters.Item(i).URL = StringManip.CleanURL(Me.MPDBPosters.Item(i).URL)
+                                        Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat("poster_(", Me.MPDBPosters.Item(i).Description, ")_(url=", Me.MPDBPosters.Item(i).URL, ").jpg")), FileMode.Create, FileAccess.Write)
+                                            Me.MPDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
+                                        End Using
+                                    Catch
+                                    End Try
+                                End If
+                            Catch
+                            End Try
                         End If
-                    End If
-                End Using
+                    End Using
+                Catch
+                End Try
                 wrRequest = Nothing
             Catch
             End Try
@@ -1061,7 +1106,7 @@ Public Class dlgImgSelect
         Me.StartDownload()
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As String
+    Public Overloads Function ShowDialog(ByVal mMovie As Master.DBMovie, ByVal _DLType As Master.ImageType, Optional ByVal _isEdit As Boolean = False) As Master.ImgResult
 
         '//
         ' Overload to pass data
@@ -1072,17 +1117,17 @@ Public Class dlgImgSelect
         Me.isEdit = _isEdit
 
         MyBase.ShowDialog()
-        Return OutPath
+        Return Results
 
     End Function
 
-    Public Overloads Function ShowDialog() As String
+    Public Overloads Function ShowDialog() As Master.ImgResult
 
 
         Me.isShown = True
         MyBase.ShowDialog()
 
-        Return OutPath
+        Return Results
 
     End Function
 
