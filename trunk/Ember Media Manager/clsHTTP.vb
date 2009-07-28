@@ -121,6 +121,14 @@ Public Class HTTP
                     outFile = Path.Combine(Directory.GetParent(LocalFile).FullName, String.Concat(Path.GetFileNameWithoutExtension(LocalFile), If(Master.eSettings.DashTrailer, "-trailer.swf", "[trailer].swf")))
                 Case Type = "translation"
                     outFile = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
+                Case Type = "template"
+                    Dim basePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs")
+                    Dim folders() As String = URL.Replace("http://www.embermm.com/Updates/Translations/", String.Empty).Trim.Split(New Char() {"/"})
+                    For i As Integer = 0 To folders.Count - 2
+                        If Not Directory.Exists(Path.Combine(basePath, folders(i))) Then Directory.CreateDirectory(Path.Combine(basePath, folders(i)))
+                        basePath = Path.Combine(basePath, folders(i))
+                    Next
+                    outFile = Path.Combine(basePath, URL.Substring(URL.LastIndexOf("/") + 1))
             End Select
 
             If Not String.IsNullOrEmpty(outFile) AndAlso wrResponse.ContentLength > 0 Then

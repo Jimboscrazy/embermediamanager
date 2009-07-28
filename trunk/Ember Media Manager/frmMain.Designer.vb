@@ -924,7 +924,7 @@ Partial Class frmMain
         Me.GroupBox3.Controls.Add(Me.chkFilterDupe)
         Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(131, 99)
+        Me.GroupBox3.Size = New System.Drawing.Size(131, 73)
         Me.GroupBox3.TabIndex = 37
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "General"

@@ -43,7 +43,7 @@ Partial Class dlgTranslationDL
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(150, 181)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(228, 248)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -77,7 +77,7 @@ Partial Class dlgTranslationDL
         Me.lvDownload.FullRowSelect = True
         Me.lvDownload.Location = New System.Drawing.Point(12, 12)
         Me.lvDownload.Name = "lvDownload"
-        Me.lvDownload.Size = New System.Drawing.Size(280, 160)
+        Me.lvDownload.Size = New System.Drawing.Size(358, 230)
         Me.lvDownload.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvDownload.TabIndex = 1
         Me.lvDownload.UseCompatibleStateImageBehavior = False
@@ -85,13 +85,13 @@ Partial Class dlgTranslationDL
         '
         'ColumnHeader1
         '
-        Me.ColumnHeader1.Text = "Language"
-        Me.ColumnHeader1.Width = 140
+        Me.ColumnHeader1.Text = "File"
+        Me.ColumnHeader1.Width = 238
         '
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Last Update"
-        Me.ColumnHeader2.Width = 140
+        Me.ColumnHeader2.Width = 120
         '
         'pnlStatus
         '
@@ -99,9 +99,9 @@ Partial Class dlgTranslationDL
         Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlStatus.Controls.Add(Me.lblStatus)
         Me.pnlStatus.Controls.Add(Me.pbStatus)
-        Me.pnlStatus.Location = New System.Drawing.Point(51, 82)
+        Me.pnlStatus.Location = New System.Drawing.Point(56, 116)
         Me.pnlStatus.Name = "pnlStatus"
-        Me.pnlStatus.Size = New System.Drawing.Size(200, 54)
+        Me.pnlStatus.Size = New System.Drawing.Size(268, 54)
         Me.pnlStatus.TabIndex = 70
         '
         'lblStatus
@@ -119,7 +119,7 @@ Partial Class dlgTranslationDL
         Me.pbStatus.Location = New System.Drawing.Point(3, 32)
         Me.pbStatus.MarqueeAnimationSpeed = 25
         Me.pbStatus.Name = "pbStatus"
-        Me.pbStatus.Size = New System.Drawing.Size(192, 17)
+        Me.pbStatus.Size = New System.Drawing.Size(260, 17)
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.pbStatus.TabIndex = 0
         '
@@ -129,7 +129,7 @@ Partial Class dlgTranslationDL
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(303, 219)
+        Me.ClientSize = New System.Drawing.Size(381, 286)
         Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.lvDownload)
         Me.Controls.Add(Me.TableLayoutPanel1)
