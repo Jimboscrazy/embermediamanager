@@ -29,6 +29,8 @@ function ShowDetails2(id) {
 var sdet = "#"+id.id +"-s";
 $(sdet).hide("slow");
 		} else {
+var sdet = "#"+id.id +"img";
+$(sdet).html('<img style="width:80px;" src="' + $(sdet).attr('src') + '">');
 	      		hiddiv2(id);
 			$(id).show("slow");
 var sdet = "#"+id.id +"-s";
@@ -95,7 +97,7 @@ Movie List<br><br>
     <div id="<$COUNT>" class="detail">Filename: <$FILENAME></div>
     </div>
     <div class="details" id="det<$COUNT>">
-<div style="float:right;clear:left;padding-left:10px;padding-top:5px;padding-bottom:5px;"> <a href="export/<$COUNT>.jpg" rel="prettyPhoto"> <img style="width:80px;" src="export/<$COUNT>.jpg"></a></div>
+<div style="float:right;clear:left;padding-left:10px;padding-top:5px;padding-bottom:5px;"> <a href="<$FANART_FILE>" rel="prettyPhoto"> <div id="det<$COUNT>img" src="<$POSTER_FILE>"></div></a></div>
          <b>Genres:</b>&nbsp;<$GENRES><br>
          <b>Plot:</b><br><$PLOT><br>&nbsp;
 

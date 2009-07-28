@@ -22,12 +22,13 @@ Partial Class dlgExportMovies
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportMovies))
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
         Me.Save_Button = New System.Windows.Forms.Button
         Me.Close_Button = New System.Windows.Forms.Button
         Me.pnlBottomMain = New System.Windows.Forms.Panel
+        Me.Label2 = New System.Windows.Forms.Label
+        Me.cbTemplate = New System.Windows.Forms.ComboBox
         Me.pnlSearch = New System.Windows.Forms.Panel
         Me.Reset_Button = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
@@ -43,9 +44,6 @@ Partial Class dlgExportMovies
         Me.btnCancel = New System.Windows.Forms.Button
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.wbMovieList = New System.Windows.Forms.WebBrowser
-        Me.cbTemplate = New System.Windows.Forms.ComboBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.tmrReady = New System.Windows.Forms.Timer(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
         Me.pnlSearch.SuspendLayout()
@@ -100,6 +98,25 @@ Partial Class dlgExportMovies
         Me.pnlBottomMain.Name = "pnlBottomMain"
         Me.pnlBottomMain.Size = New System.Drawing.Size(854, 50)
         Me.pnlBottomMain.TabIndex = 5
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(27, 17)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(51, 13)
+        Me.Label2.TabIndex = 8
+        Me.Label2.Text = "Template"
+        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'cbTemplate
+        '
+        Me.cbTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTemplate.FormattingEnabled = True
+        Me.cbTemplate.Location = New System.Drawing.Point(84, 13)
+        Me.cbTemplate.Name = "cbTemplate"
+        Me.cbTemplate.Size = New System.Drawing.Size(140, 21)
+        Me.cbTemplate.TabIndex = 7
         '
         'pnlSearch
         '
@@ -172,11 +189,11 @@ Partial Class dlgExportMovies
         '
         Me.pnlCancel.BackColor = System.Drawing.Color.LightGray
         Me.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlCancel.Controls.Add(Me.btnCancel)
         Me.pnlCancel.Controls.Add(Me.pbCompile)
         Me.pnlCancel.Controls.Add(Me.lblCompiling)
         Me.pnlCancel.Controls.Add(Me.lblFile)
         Me.pnlCancel.Controls.Add(Me.lblCanceling)
-        Me.pnlCancel.Controls.Add(Me.btnCancel)
         Me.pnlCancel.Location = New System.Drawing.Point(242, 12)
         Me.pnlCancel.Name = "pnlCancel"
         Me.pnlCancel.Size = New System.Drawing.Size(403, 76)
@@ -196,10 +213,10 @@ Partial Class dlgExportMovies
         Me.lblCompiling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCompiling.Location = New System.Drawing.Point(3, 11)
         Me.lblCompiling.Name = "lblCompiling"
-        Me.lblCompiling.Size = New System.Drawing.Size(186, 20)
+        Me.lblCompiling.Size = New System.Drawing.Size(395, 20)
         Me.lblCompiling.TabIndex = 4
         Me.lblCompiling.Text = "Compiling Movie List..."
-        Me.lblCompiling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblCompiling.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblCompiling.Visible = False
         '
         'lblFile
@@ -256,28 +273,6 @@ Partial Class dlgExportMovies
         Me.wbMovieList.TabIndex = 0
         Me.wbMovieList.Visible = False
         '
-        'cbTemplate
-        '
-        Me.cbTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTemplate.FormattingEnabled = True
-        Me.cbTemplate.Location = New System.Drawing.Point(84, 13)
-        Me.cbTemplate.Name = "cbTemplate"
-        Me.cbTemplate.Size = New System.Drawing.Size(140, 21)
-        Me.cbTemplate.TabIndex = 7
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(27, 17)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(51, 13)
-        Me.Label2.TabIndex = 8
-        Me.Label2.Text = "Template"
-        '
-        'tmrReady
-        '
-        Me.tmrReady.Interval = 500
-        '
         'dlgExportMovies
         '
         Me.AcceptButton = Me.Save_Button
@@ -326,6 +321,5 @@ Partial Class dlgExportMovies
     Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
     Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents tmrReady As System.Windows.Forms.Timer
 
 End Class
