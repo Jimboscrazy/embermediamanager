@@ -3020,6 +3020,11 @@ Public Class frmMain
 
                                 Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
 
+                                If (doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID)) AndAlso (Master.GlobalScrapeMod.NFO OrElse Master.ScrapeType.SingleScrape) Then
+                                    FileFolderRenamer.RenameSingle(scrapeMovie.Filename, scrapeMovie.Movie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern)
+                                End If
+
+
                                 'use this one to check for need of load info
                                 Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 iCount += 1
@@ -3173,7 +3178,9 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
-
+                                    If doSave AndAlso (Master.GlobalScrapeMod.NFO OrElse Master.ScrapeType.SingleScrape) Then
+                                        FileFolderRenamer.RenameSingle(scrapeMovie.Filename, scrapeMovie.Movie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern)
+                                    End If
                                 End If
 
                                 'use this one to check for need of load info
