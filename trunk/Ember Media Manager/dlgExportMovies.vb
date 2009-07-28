@@ -503,6 +503,10 @@ Public Class dlgExportMovies
                     Return
                 End If
                 DontSaveExtra = True
+            Else
+                If File.Exists(Args.destPath) Then
+                    System.IO.File.Delete(Args.destPath)
+                End If
             End If
             Dim myStream As Stream = File.OpenWrite(Args.destPath)
             If Not IsNothing(myStream) Then
@@ -550,6 +554,7 @@ Public Class dlgExportMovies
             myStream = saveHTML.OpenFile()
             myStream.Close()
             If Not IsNothing(myStream) Then
+                DontSaveExtra = False 'Force Full Save
                 Dim srcPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, base_template, Path.DirectorySeparatorChar)
                 Me.SaveAll(Master.eLang.GetString(589, "Saving all files. Please wait..."), srcPath, saveHTML.FileName)
             End If
