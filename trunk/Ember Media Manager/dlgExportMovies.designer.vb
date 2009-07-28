@@ -172,7 +172,6 @@ Partial Class dlgExportMovies
         '
         Me.cbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSearch.FormattingEnabled = True
-        Me.cbSearch.Items.AddRange(New Object() {"Title", "Year", "Video Flag", "Audio Flag"})
         Me.cbSearch.Location = New System.Drawing.Point(241, 3)
         Me.cbSearch.Name = "cbSearch"
         Me.cbSearch.Size = New System.Drawing.Size(83, 21)
