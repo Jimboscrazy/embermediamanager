@@ -216,17 +216,21 @@ Public Class dlgOfflineHolder
                             Dim dResultsP As Master.ImgResult = dImgSelect.ShowDialog(tMovie, Master.ImageType.Posters)
                             If Not String.IsNullOrEmpty(dResultsP.ImagePath) Then
                                 tMovie.PosterPath = dResultsP.ImagePath
+                                If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Thumb = dResultsP.Posters
                             End If
                         End Using
                     End If
+
                     If tmpImages.IsAllowedToDownload(tMovie, Master.ImageType.Fanart) Then
                         Using dImgSelect As New dlgImgSelect
                             Dim dResultsF As Master.ImgResult = dImgSelect.ShowDialog(tMovie, Master.ImageType.Fanart)
                             If Not String.IsNullOrEmpty(dResultsF.ImagePath) Then
                                 tMovie.FanartPath = dResultsF.ImagePath
+                                If Not Master.eSettings.NoSaveImagesToNfo Then tMovie.Movie.Fanart = dResultsF.Fanart
                             End If
                         End Using
                     End If
+
                     tmpImages.Dispose()
                     tmpImages = Nothing
                 End If
