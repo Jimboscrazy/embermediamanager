@@ -37,18 +37,27 @@ Public Class dlgExportMovies
     Private bFiltered As Boolean = False
     Private bCancelled As Boolean = False
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
-
+    Friend WithEvents bwSaveAll As New System.ComponentModel.BackgroundWorker
+    Private Structure Arguments
+        Dim srcPath As String
+        Dim destPath As String
+        Dim resizePoster As Integer
+    End Structure
     Sub Warning(ByVal show As Boolean, Optional ByVal txt As String = "")
-        btnCancel.Visible = False
-        lblCompiling.Visible = True
-        pbCompile.Visible = True
-        pbCompile.Style = ProgressBarStyle.Marquee
-        pbCompile.MarqueeAnimationSpeed = 25
-        lblCanceling.Visible = False
-        pnlCancel.Visible = show
-        lblFile.Visible = False
-        lblCompiling.Text = txt
-        Application.DoEvents()
+        Try
+            btnCancel.Visible = False
+            lblCompiling.Visible = True
+            pbCompile.Visible = True
+            pbCompile.Style = ProgressBarStyle.Marquee
+            pbCompile.MarqueeAnimationSpeed = 25
+            lblCanceling.Visible = False
+            pnlCancel.Visible = show
+            lblFile.Visible = False
+            lblCompiling.Text = txt
+            Application.DoEvents()
+            pnlCancel.BringToFront()
+        Catch ex As Exception
+        End Try
     End Sub
 
     Public Shared Sub CLExport(ByVal filename As String, Optional ByVal template As String = "template", Optional ByVal resizePoster As Integer = 0)
@@ -116,10 +125,6 @@ Public Class dlgExportMovies
                                 Return
                             End If
                         End While
-                        If Not Me.isCL Then
-                            BuildHTML(False, String.Empty, String.Empty, base_template, False)
-                        End If
-
                         e.Result = True
                     Else
                         e.Cancel = True
@@ -401,6 +406,9 @@ Public Class dlgExportMovies
         If Not Me.isCL Then
             bCancelled = e.Cancelled
             If Not e.Cancelled Then
+                If Not Me.isCL Then
+                    BuildHTML(False, String.Empty, String.Empty, base_template, False)
+                End If
                 LoadHTML()
             Else
                 wbMovieList.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Cancelled"), "</h1></center>")
@@ -443,30 +451,46 @@ Public Class dlgExportMovies
         End If
         Warning(False)
     End Sub
+    Private Sub bwSaveAll_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwSaveAll.ProgressChanged
 
-    Private Sub SaveAll(ByVal sWarning As String, ByVal srcPath As String, ByVal destPath As String, Optional ByVal resizePoster As Integer = 200)
-        If Not String.IsNullOrEmpty(sWarning) Then Warning(True, sWarning)
-        Dim destPathShort As String = Path.GetDirectoryName(destPath)
-        CopyDirectory(srcPath, destPathShort, True)
+    End Sub
+    Private Sub bwSaveAll_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwSaveAll.RunWorkerCompleted
+
+    End Sub
+    Private Sub bwSaveAll_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwSaveAll.DoWork
+        Dim Args As Arguments = e.Argument
+        Dim destPathShort As String = Path.GetDirectoryName(Args.destPath)
+        CopyDirectory(Args.srcPath, destPathShort, True)
         If Me.bexportFlags Then
-            srcPath = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
+            Args.srcPath = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
             Directory.CreateDirectory(Path.Combine(destPathShort, "Flags"))
-            CopyDirectory(srcPath, Path.Combine(destPathShort, "Flags"), True)
+            CopyDirectory(Args.srcPath, Path.Combine(destPathShort, "Flags"), True)
         End If
         If Me.bexportPosters Then
-            Me.ExportPoster(destPathShort, resizePoster)
+            Me.ExportPoster(destPathShort, Args.resizePoster)
         End If
         If Me.bexportFanart Then
             Me.ExportFanart(destPathShort)
         End If
 
-        Dim myStream As Stream = File.OpenWrite(destPath)
+        Dim myStream As Stream = File.OpenWrite(Args.destPath)
         If Not IsNothing(myStream) Then
             myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
             myStream.Close()
         End If
-        If Not String.IsNullOrEmpty(sWarning) Then Warning(False)
-
+    End Sub
+    Private Sub SaveAll(ByVal sWarning As String, ByVal srcPath As String, ByVal destPath As String, Optional ByVal resizePoster As Integer = 200)
+        wbMovieList.Visible = False
+        If Not String.IsNullOrEmpty(sWarning) Then Warning(True, sWarning)
+        Me.bwSaveAll = New System.ComponentModel.BackgroundWorker
+        Me.bwSaveAll.WorkerReportsProgress = True
+        Me.bwSaveAll.WorkerSupportsCancellation = True
+        Me.bwSaveAll.RunWorkerAsync(New Arguments With {.srcPath = srcPath, .destPath = destPath, .resizePoster = resizePoster})
+        While bwSaveAll.IsBusy
+            Application.DoEvents()
+        End While
+        If pnlCancel.Visible Then Warning(False)
+        wbMovieList.Visible = True
     End Sub
 
     Private Sub Save_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save_Button.Click
