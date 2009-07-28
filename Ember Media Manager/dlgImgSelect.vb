@@ -632,7 +632,7 @@ Public Class dlgImgSelect
                 Me.chkImage(iIndex).Size = New Size(250, 30)
                 Me.chkImage(iIndex).AutoSize = False
                 Me.chkImage(iIndex).BackColor = Color.White
-                Me.chkImage(iIndex).TextAlign = ContentAlignment.MiddleCenter
+                Me.chkImage(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
                 Me.chkImage(iIndex).Text = String.Format("{0}x{1} ({2})", Me.pbImage(iIndex).Image.Width.ToString, Me.pbImage(iIndex).Image.Height.ToString, sDescription)
                 Me.chkImage(iIndex).Left = 0
                 Me.chkImage(iIndex).Top = 250
@@ -644,7 +644,7 @@ Public Class dlgImgSelect
                 Me.lblImage(iIndex).Size = New Size(250, 30)
                 Me.lblImage(iIndex).AutoSize = False
                 Me.lblImage(iIndex).BackColor = Color.White
-                Me.lblImage(iIndex).TextAlign = ContentAlignment.MiddleCenter
+                Me.lblImage(iIndex).TextAlign = System.Drawing.ContentAlignment.MiddleCenter
                 If sURL.ToLower.Contains("themoviedb.org") Then
                     Me.lblImage(iIndex).Text = Master.eLang.GetString(321, "Multiple")
                 Else
