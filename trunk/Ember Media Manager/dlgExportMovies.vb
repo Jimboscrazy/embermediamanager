@@ -38,6 +38,8 @@ Public Class dlgExportMovies
     Private bCancelled As Boolean = False
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwSaveAll As New System.ComponentModel.BackgroundWorker
+    Private workerCanceled As Boolean = False
+    Private DontSaveExtra As Boolean = False
     Private Structure Arguments
         Dim srcPath As String
         Dim destPath As String
@@ -45,7 +47,8 @@ Public Class dlgExportMovies
     End Structure
     Sub Warning(ByVal show As Boolean, Optional ByVal txt As String = "")
         Try
-            btnCancel.Visible = False
+            btnCancel.Visible = True
+            btnCancel.Enabled = True
             lblCompiling.Visible = True
             pbCompile.Visible = True
             pbCompile.Style = ProgressBarStyle.Marquee
@@ -153,6 +156,9 @@ Public Class dlgExportMovies
                 End If
             End If
             counter += 1
+            If bwSaveAll.CancellationPending Then
+                Return
+            End If
         Next
     End Sub
 
@@ -167,6 +173,9 @@ Public Class dlgExportMovies
                 File.Copy(_curMovie.FanartPath, fanartfile, True)
             End If
             counter += 1
+            If bwSaveAll.CancellationPending Then
+                Return
+            End If
         Next
     End Sub
 
@@ -298,7 +307,7 @@ Public Class dlgExportMovies
             ' Build HTML Documment in Code ... ugly but will work until new option
 
             HTMLBody.Length = 0
-            Master.DeleteDirectory(Me.TempPath)
+
 
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
@@ -439,12 +448,16 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Me.Close()
+        'Me.Close()
+        If bwSaveAll.IsBusy Then
+            bwSaveAll.CancelAsync()
+        End If
+        btnCancel.Enabled = False
     End Sub
 
     Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles wbMovieList.DocumentCompleted
         If Not bCancelled Then
-            wbMovieList.Visible = True
+            'wbMovieList.Visible = True
             Me.Save_Button.Enabled = True
             pnlSearch.Enabled = True
             Reset_Button.Enabled = bFiltered
@@ -455,33 +468,58 @@ Public Class dlgExportMovies
 
     End Sub
     Private Sub bwSaveAll_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwSaveAll.RunWorkerCompleted
-
+        workerCanceled = e.Cancelled
     End Sub
     Private Sub bwSaveAll_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwSaveAll.DoWork
-        Dim Args As Arguments = e.Argument
-        Dim destPathShort As String = Path.GetDirectoryName(Args.destPath)
-        CopyDirectory(Args.srcPath, destPathShort, True)
-        If Me.bexportFlags Then
-            Args.srcPath = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
-            Directory.CreateDirectory(Path.Combine(destPathShort, "Flags"))
-            CopyDirectory(Args.srcPath, Path.Combine(destPathShort, "Flags"), True)
-        End If
-        If Me.bexportPosters Then
-            Me.ExportPoster(destPathShort, Args.resizePoster)
-        End If
-        If Me.bexportFanart Then
-            Me.ExportFanart(destPathShort)
-        End If
+        Try
 
-        Dim myStream As Stream = File.OpenWrite(Args.destPath)
-        If Not IsNothing(myStream) Then
-            myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
-            myStream.Close()
-        End If
+            Dim Args As Arguments = e.Argument
+            Dim destPathShort As String = Path.GetDirectoryName(Args.destPath)
+            'Only create extra files once for each template... dont do it when applyng filters
+            If Not DontSaveExtra Then
+                Master.DeleteDirectory(Me.TempPath)
+                CopyDirectory(Args.srcPath, destPathShort, True)
+                If Me.bexportFlags Then
+                    Args.srcPath = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
+                    Directory.CreateDirectory(Path.Combine(destPathShort, "Flags"))
+                    CopyDirectory(Args.srcPath, Path.Combine(destPathShort, "Flags"), True)
+                End If
+                If bwSaveAll.CancellationPending Then
+                    e.Cancel = True
+                    Return
+                End If
+                If Me.bexportPosters Then
+                    Me.ExportPoster(destPathShort, Args.resizePoster)
+                End If
+                If bwSaveAll.CancellationPending Then
+                    e.Cancel = True
+                    Return
+                End If
+                If Me.bexportFanart Then
+                    Me.ExportFanart(destPathShort)
+                End If
+                If bwSaveAll.CancellationPending Then
+                    e.Cancel = True
+                    Return
+                End If
+                DontSaveExtra = True
+            End If
+            Dim myStream As Stream = File.OpenWrite(Args.destPath)
+            If Not IsNothing(myStream) Then
+                myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
+                myStream.Close()
+            End If
+        Catch ex As Exception
+        End Try
     End Sub
     Private Sub SaveAll(ByVal sWarning As String, ByVal srcPath As String, ByVal destPath As String, Optional ByVal resizePoster As Integer = 200)
         wbMovieList.Visible = False
         If Not String.IsNullOrEmpty(sWarning) Then Warning(True, sWarning)
+        cbSearch.Enabled = False
+        cbTemplate.Enabled = False
+        Search_Button.Enabled = False
+        Reset_Button.Enabled = False
+        Save_Button.Enabled = False
         Me.bwSaveAll = New System.ComponentModel.BackgroundWorker
         Me.bwSaveAll.WorkerReportsProgress = True
         Me.bwSaveAll.WorkerSupportsCancellation = True
@@ -489,8 +527,17 @@ Public Class dlgExportMovies
         While bwSaveAll.IsBusy
             Application.DoEvents()
         End While
+
+        cbSearch.Enabled = True
+        cbTemplate.Enabled = True
+        Search_Button.Enabled = True
+        Reset_Button.Enabled = True
+        Save_Button.Enabled = True
         If pnlCancel.Visible Then Warning(False)
-        wbMovieList.Visible = True
+        If Not workerCanceled Then
+            wbMovieList.Visible = True
+        End If
+
     End Sub
 
     Private Sub Save_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save_Button.Click
@@ -639,7 +686,17 @@ Public Class dlgExportMovies
 
     Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTemplate.SelectedIndexChanged
         base_template = sender.text
+        DontSaveExtra = False
         BuildHTML(use_filter, txtSearch.Text, cbSearch.Text, base_template, True)
+    End Sub
+
+    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
+        If bwSaveAll.IsBusy Then
+            bwSaveAll.CancelAsync()
+        End If
+        While bwSaveAll.IsBusy
+            Application.DoEvents()
+        End While
     End Sub
 End Class
 

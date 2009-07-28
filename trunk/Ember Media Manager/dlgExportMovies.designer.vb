@@ -37,11 +37,11 @@ Partial Class dlgExportMovies
         Me.cbSearch = New System.Windows.Forms.ComboBox
         Me.txtSearch = New System.Windows.Forms.TextBox
         Me.pnlCancel = New System.Windows.Forms.Panel
+        Me.btnCancel = New System.Windows.Forms.Button
         Me.pbCompile = New System.Windows.Forms.ProgressBar
         Me.lblCompiling = New System.Windows.Forms.Label
         Me.lblFile = New System.Windows.Forms.Label
         Me.lblCanceling = New System.Windows.Forms.Label
-        Me.btnCancel = New System.Windows.Forms.Button
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.wbMovieList = New System.Windows.Forms.WebBrowser
         Me.TableLayoutPanel1.SuspendLayout()
@@ -200,6 +200,19 @@ Partial Class dlgExportMovies
         Me.pnlCancel.TabIndex = 9
         Me.pnlCancel.Visible = False
         '
+        'btnCancel
+        '
+        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
+        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
+        Me.btnCancel.TabIndex = 0
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
         'pbCompile
         '
         Me.pbCompile.Location = New System.Drawing.Point(8, 36)
@@ -238,19 +251,6 @@ Partial Class dlgExportMovies
         Me.lblCanceling.Text = "Canceling Compilation..."
         Me.lblCanceling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblCanceling.Visible = False
-        '
-        'btnCancel
-        '
-        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
-        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
-        Me.btnCancel.TabIndex = 0
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCancel.UseVisualStyleBackColor = True
         '
         'pnlBG
         '
