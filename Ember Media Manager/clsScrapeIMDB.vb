@@ -13,7 +13,8 @@
 ' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
 ' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
 ' # GNU General Public License for more details.                                 #
-' #                                                                              #
+' #                                                                              #ing
+
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
@@ -468,6 +469,12 @@ mResult:
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 If Options.bVotes Then IMDBMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
+
+                'Top250
+                'ie: <a href="/chart/top?tt0167260">Top 250: #13</a>
+                'regex guru need to validate this
+                ' Also Options.Top250 dont exist yet
+                'If Options.Top250 Then IMDBMovie.Top250 = Regex.Match(HTML, String.Concat("/chart/top?tt", IMDBMovie.IMDBID, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
 
                 If doProgress Then
                     bwIMDB.ReportProgress(4)
