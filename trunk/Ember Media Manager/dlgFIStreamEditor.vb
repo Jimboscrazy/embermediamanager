@@ -1,8 +1,8 @@
 ﻿Imports System.Windows.Forms
 
-Public Class dlgFileInfo
+Public Class dlgFIStreamEditor
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
@@ -12,4 +12,7 @@ Public Class dlgFileInfo
         Me.Close()
     End Sub
 
+    Private Sub GroupBox2_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox2.Enter
+
+    End Sub
 End Class
