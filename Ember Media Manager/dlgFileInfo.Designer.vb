@@ -22,436 +22,164 @@ Partial Class dlgFileInfo
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-        Me.OK_Button = New System.Windows.Forms.Button
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Video Streams", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Audio Streams", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup3 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Subtitles Stream", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "H264", "Progressive"}, -1)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "AC3", "English"}, -1)
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgFileInfo))
         Me.Cancel_Button = New System.Windows.Forms.Button
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.txtARatio = New System.Windows.Forms.TextBox
-        Me.rbInterlaced = New System.Windows.Forms.RadioButton
-        Me.rbProgressive = New System.Windows.Forms.RadioButton
+        Me.lvStreams = New System.Windows.Forms.ListView
+        Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader4 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader5 = New System.Windows.Forms.ColumnHeader
+        Me.btnRemoveSet = New System.Windows.Forms.Button
+        Me.btnEditSet = New System.Windows.Forms.Button
+        Me.btnNewSet = New System.Windows.Forms.Button
         Me.Label4 = New System.Windows.Forms.Label
         Me.cbVideoCodec = New System.Windows.Forms.ComboBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.txtDuration = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.txtHeight = New System.Windows.Forms.TextBox
-        Me.txtWidth = New System.Windows.Forms.TextBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.cbAudioChannels = New System.Windows.Forms.ComboBox
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.cbAudioCodec = New System.Windows.Forms.ComboBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.cbAudioLanguage = New System.Windows.Forms.ComboBox
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.chbSubsExternal = New System.Windows.Forms.CheckBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.cbSubsLanguage = New System.Windows.Forms.ComboBox
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.cbVStream = New System.Windows.Forms.ComboBox
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.cbAStream = New System.Windows.Forms.ComboBox
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.cbSStream = New System.Windows.Forms.ComboBox
-        Me.TableLayoutPanel1.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'TableLayoutPanel1
-        '
-        Me.TableLayoutPanel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 2
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(452, 233)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(146, 29)
-        Me.TableLayoutPanel1.TabIndex = 0
-        '
-        'OK_Button
-        '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Location = New System.Drawing.Point(3, 3)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
         '
         'Cancel_Button
         '
         Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
+        Me.Cancel_Button.Location = New System.Drawing.Point(465, 241)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Cancel"
+        Me.Cancel_Button.Text = "Close"
         '
-        'GroupBox1
+        'lvStreams
         '
-        Me.GroupBox1.Controls.Add(Me.Label8)
-        Me.GroupBox1.Controls.Add(Me.cbVStream)
-        Me.GroupBox1.Controls.Add(Me.Label5)
-        Me.GroupBox1.Controls.Add(Me.txtARatio)
-        Me.GroupBox1.Controls.Add(Me.rbInterlaced)
-        Me.GroupBox1.Controls.Add(Me.rbProgressive)
-        Me.GroupBox1.Controls.Add(Me.Label4)
-        Me.GroupBox1.Controls.Add(Me.cbVideoCodec)
-        Me.GroupBox1.Controls.Add(Me.Label3)
-        Me.GroupBox1.Controls.Add(Me.txtDuration)
-        Me.GroupBox1.Controls.Add(Me.Label2)
-        Me.GroupBox1.Controls.Add(Me.Label1)
-        Me.GroupBox1.Controls.Add(Me.txtHeight)
-        Me.GroupBox1.Controls.Add(Me.txtWidth)
-        Me.GroupBox1.Location = New System.Drawing.Point(7, 11)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(191, 215)
-        Me.GroupBox1.TabIndex = 4
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Video Streams"
+        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
+        ListViewGroup1.Header = "Video Streams"
+        ListViewGroup1.Name = "VideoStreams"
+        ListViewGroup2.Header = "Audio Streams"
+        ListViewGroup2.Name = "AudioStreams"
+        ListViewGroup3.Header = "Subtitles Stream"
+        ListViewGroup3.Name = "SubtitlesStream"
+        Me.lvStreams.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1, ListViewGroup2, ListViewGroup3})
+        Me.lvStreams.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        ListViewItem1.Group = ListViewGroup1
+        ListViewItem2.Group = ListViewGroup2
+        Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1, ListViewItem2})
+        Me.lvStreams.Location = New System.Drawing.Point(4, 7)
+        Me.lvStreams.Name = "lvStreams"
+        Me.lvStreams.Size = New System.Drawing.Size(528, 230)
+        Me.lvStreams.TabIndex = 1
+        Me.lvStreams.UseCompatibleStateImageBehavior = False
+        Me.lvStreams.View = System.Windows.Forms.View.Details
         '
-        'Label5
+        'ColumnHeader1
         '
-        Me.Label5.Location = New System.Drawing.Point(7, 141)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(68, 19)
-        Me.Label5.TabIndex = 13
-        Me.Label5.Text = "Aspect Ratio"
-        Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ColumnHeader1.Width = 31
         '
-        'txtARatio
+        'ColumnHeader2
         '
-        Me.txtARatio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtARatio.Location = New System.Drawing.Point(78, 140)
-        Me.txtARatio.Name = "txtARatio"
-        Me.txtARatio.Size = New System.Drawing.Size(48, 20)
-        Me.txtARatio.TabIndex = 12
+        Me.ColumnHeader2.Width = 48
         '
-        'rbInterlaced
+        'ColumnHeader3
         '
-        Me.rbInterlaced.AutoSize = True
-        Me.rbInterlaced.Location = New System.Drawing.Point(113, 71)
-        Me.rbInterlaced.Name = "rbInterlaced"
-        Me.rbInterlaced.Size = New System.Drawing.Size(72, 17)
-        Me.rbInterlaced.TabIndex = 11
-        Me.rbInterlaced.TabStop = True
-        Me.rbInterlaced.Text = "Interlaced"
-        Me.rbInterlaced.UseVisualStyleBackColor = True
+        Me.ColumnHeader3.Width = 81
         '
-        'rbProgressive
+        'ColumnHeader4
         '
-        Me.rbProgressive.AutoSize = True
-        Me.rbProgressive.Location = New System.Drawing.Point(27, 70)
-        Me.rbProgressive.Name = "rbProgressive"
-        Me.rbProgressive.Size = New System.Drawing.Size(80, 17)
-        Me.rbProgressive.TabIndex = 10
-        Me.rbProgressive.TabStop = True
-        Me.rbProgressive.Text = "Progressive"
-        Me.rbProgressive.UseVisualStyleBackColor = True
+        Me.ColumnHeader4.Width = 96
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Width = 94
+        '
+        'btnRemoveSet
+        '
+        Me.btnRemoveSet.Enabled = False
+        Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
+        Me.btnRemoveSet.Location = New System.Drawing.Point(264, 241)
+        Me.btnRemoveSet.Name = "btnRemoveSet"
+        Me.btnRemoveSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveSet.TabIndex = 34
+        Me.btnRemoveSet.UseVisualStyleBackColor = True
+        '
+        'btnEditSet
+        '
+        Me.btnEditSet.Enabled = False
+        Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
+        Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditSet.Location = New System.Drawing.Point(235, 241)
+        Me.btnEditSet.Name = "btnEditSet"
+        Me.btnEditSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnEditSet.TabIndex = 33
+        Me.btnEditSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditSet.UseVisualStyleBackColor = True
+        '
+        'btnNewSet
+        '
+        Me.btnNewSet.Enabled = False
+        Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
+        Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNewSet.Location = New System.Drawing.Point(187, 241)
+        Me.btnNewSet.Name = "btnNewSet"
+        Me.btnNewSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnNewSet.TabIndex = 32
+        Me.btnNewSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNewSet.UseVisualStyleBackColor = True
         '
         'Label4
         '
-        Me.Label4.Location = New System.Drawing.Point(24, 46)
+        Me.Label4.Location = New System.Drawing.Point(7, 245)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(51, 15)
-        Me.Label4.TabIndex = 9
-        Me.Label4.Text = "Codec"
+        Me.Label4.Size = New System.Drawing.Size(78, 15)
+        Me.Label4.TabIndex = 36
+        Me.Label4.Text = "Stream Type"
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'cbVideoCodec
         '
         Me.cbVideoCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbVideoCodec.FormattingEnabled = True
-        Me.cbVideoCodec.Location = New System.Drawing.Point(78, 44)
+        Me.cbVideoCodec.Items.AddRange(New Object() {"Video", "Audio", "Subtitle"})
+        Me.cbVideoCodec.Location = New System.Drawing.Point(91, 243)
         Me.cbVideoCodec.Name = "cbVideoCodec"
         Me.cbVideoCodec.Size = New System.Drawing.Size(93, 21)
-        Me.cbVideoCodec.TabIndex = 8
-        '
-        'Label3
-        '
-        Me.Label3.Location = New System.Drawing.Point(19, 168)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(56, 13)
-        Me.Label3.TabIndex = 7
-        Me.Label3.Text = "Duration"
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'txtDuration
-        '
-        Me.txtDuration.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtDuration.Location = New System.Drawing.Point(78, 164)
-        Me.txtDuration.Name = "txtDuration"
-        Me.txtDuration.Size = New System.Drawing.Size(68, 20)
-        Me.txtDuration.TabIndex = 6
-        '
-        'Label2
-        '
-        Me.Label2.Location = New System.Drawing.Point(19, 118)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(56, 16)
-        Me.Label2.TabIndex = 5
-        Me.Label2.Text = "Height"
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'Label1
-        '
-        Me.Label1.Location = New System.Drawing.Point(22, 94)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(53, 19)
-        Me.Label1.TabIndex = 4
-        Me.Label1.Text = "Width"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'txtHeight
-        '
-        Me.txtHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtHeight.Location = New System.Drawing.Point(78, 116)
-        Me.txtHeight.Name = "txtHeight"
-        Me.txtHeight.Size = New System.Drawing.Size(48, 20)
-        Me.txtHeight.TabIndex = 3
-        '
-        'txtWidth
-        '
-        Me.txtWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtWidth.Location = New System.Drawing.Point(78, 93)
-        Me.txtWidth.Name = "txtWidth"
-        Me.txtWidth.Size = New System.Drawing.Size(48, 20)
-        Me.txtWidth.TabIndex = 2
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.Label11)
-        Me.GroupBox2.Controls.Add(Me.Label9)
-        Me.GroupBox2.Controls.Add(Me.cbAStream)
-        Me.GroupBox2.Controls.Add(Me.cbAudioChannels)
-        Me.GroupBox2.Controls.Add(Me.Label7)
-        Me.GroupBox2.Controls.Add(Me.cbAudioCodec)
-        Me.GroupBox2.Controls.Add(Me.Label6)
-        Me.GroupBox2.Controls.Add(Me.cbAudioLanguage)
-        Me.GroupBox2.Location = New System.Drawing.Point(208, 11)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(191, 215)
-        Me.GroupBox2.TabIndex = 5
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Audio Streams"
-        '
-        'Label9
-        '
-        Me.Label9.Location = New System.Drawing.Point(6, 102)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(68, 19)
-        Me.Label9.TabIndex = 20
-        Me.Label9.Text = "Channels"
-        Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbAudioChannels
-        '
-        Me.cbAudioChannels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbAudioChannels.FormattingEnabled = True
-        Me.cbAudioChannels.Location = New System.Drawing.Point(78, 100)
-        Me.cbAudioChannels.Name = "cbAudioChannels"
-        Me.cbAudioChannels.Size = New System.Drawing.Size(93, 21)
-        Me.cbAudioChannels.TabIndex = 19
-        '
-        'Label7
-        '
-        Me.Label7.Location = New System.Drawing.Point(6, 75)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(68, 19)
-        Me.Label7.TabIndex = 17
-        Me.Label7.Text = "Codec"
-        Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbAudioCodec
-        '
-        Me.cbAudioCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbAudioCodec.FormattingEnabled = True
-        Me.cbAudioCodec.Location = New System.Drawing.Point(78, 73)
-        Me.cbAudioCodec.Name = "cbAudioCodec"
-        Me.cbAudioCodec.Size = New System.Drawing.Size(93, 21)
-        Me.cbAudioCodec.TabIndex = 16
-        '
-        'Label6
-        '
-        Me.Label6.Location = New System.Drawing.Point(6, 48)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(68, 19)
-        Me.Label6.TabIndex = 15
-        Me.Label6.Text = "Language"
-        Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbAudioLanguage
-        '
-        Me.cbAudioLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbAudioLanguage.FormattingEnabled = True
-        Me.cbAudioLanguage.Location = New System.Drawing.Point(78, 46)
-        Me.cbAudioLanguage.Name = "cbAudioLanguage"
-        Me.cbAudioLanguage.Size = New System.Drawing.Size(93, 21)
-        Me.cbAudioLanguage.TabIndex = 14
-        '
-        'GroupBox3
-        '
-        Me.GroupBox3.Controls.Add(Me.Label12)
-        Me.GroupBox3.Controls.Add(Me.chbSubsExternal)
-        Me.GroupBox3.Controls.Add(Me.cbSStream)
-        Me.GroupBox3.Controls.Add(Me.Label10)
-        Me.GroupBox3.Controls.Add(Me.cbSubsLanguage)
-        Me.GroupBox3.Location = New System.Drawing.Point(407, 11)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(191, 215)
-        Me.GroupBox3.TabIndex = 6
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Subtitle  Streams"
-        '
-        'chbSubsExternal
-        '
-        Me.chbSubsExternal.AutoSize = True
-        Me.chbSubsExternal.Location = New System.Drawing.Point(78, 73)
-        Me.chbSubsExternal.Name = "chbSubsExternal"
-        Me.chbSubsExternal.Size = New System.Drawing.Size(64, 17)
-        Me.chbSubsExternal.TabIndex = 23
-        Me.chbSubsExternal.Text = "External"
-        Me.chbSubsExternal.UseVisualStyleBackColor = True
-        '
-        'Label10
-        '
-        Me.Label10.Location = New System.Drawing.Point(4, 46)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(71, 19)
-        Me.Label10.TabIndex = 22
-        Me.Label10.Text = "Language"
-        Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbSubsLanguage
-        '
-        Me.cbSubsLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbSubsLanguage.FormattingEnabled = True
-        Me.cbSubsLanguage.Location = New System.Drawing.Point(78, 46)
-        Me.cbSubsLanguage.Name = "cbSubsLanguage"
-        Me.cbSubsLanguage.Size = New System.Drawing.Size(93, 21)
-        Me.cbSubsLanguage.TabIndex = 21
-        '
-        'Label8
-        '
-        Me.Label8.Location = New System.Drawing.Point(24, 19)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(51, 15)
-        Me.Label8.TabIndex = 15
-        Me.Label8.Text = "Stream"
-        Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbVStream
-        '
-        Me.cbVStream.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbVStream.FormattingEnabled = True
-        Me.cbVStream.Location = New System.Drawing.Point(78, 17)
-        Me.cbVStream.Name = "cbVStream"
-        Me.cbVStream.Size = New System.Drawing.Size(93, 21)
-        Me.cbVStream.TabIndex = 14
-        '
-        'Label11
-        '
-        Me.Label11.Location = New System.Drawing.Point(24, 21)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(51, 15)
-        Me.Label11.TabIndex = 17
-        Me.Label11.Text = "Stream"
-        Me.Label11.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbAStream
-        '
-        Me.cbAStream.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbAStream.FormattingEnabled = True
-        Me.cbAStream.Location = New System.Drawing.Point(78, 19)
-        Me.cbAStream.Name = "cbAStream"
-        Me.cbAStream.Size = New System.Drawing.Size(93, 21)
-        Me.cbAStream.TabIndex = 16
-        '
-        'Label12
-        '
-        Me.Label12.Location = New System.Drawing.Point(24, 21)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(51, 15)
-        Me.Label12.TabIndex = 22
-        Me.Label12.Text = "Stream"
-        Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbSStream
-        '
-        Me.cbSStream.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbSStream.FormattingEnabled = True
-        Me.cbSStream.Location = New System.Drawing.Point(78, 19)
-        Me.cbSStream.Name = "cbSStream"
-        Me.cbSStream.Size = New System.Drawing.Size(93, 21)
-        Me.cbSStream.TabIndex = 21
+        Me.cbVideoCodec.TabIndex = 35
         '
         'dlgFileInfo
         '
-        Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(606, 268)
-        Me.Controls.Add(Me.GroupBox3)
-        Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.GroupBox1)
-        Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.ClientSize = New System.Drawing.Size(538, 269)
+        Me.Controls.Add(Me.Cancel_Button)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.cbVideoCodec)
+        Me.Controls.Add(Me.btnRemoveSet)
+        Me.Controls.Add(Me.btnEditSet)
+        Me.Controls.Add(Me.btnNewSet)
+        Me.Controls.Add(Me.lvStreams)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgFileInfo"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "File Info"
-        Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
+        Me.Text = "Metadata Editor"
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents txtHeight As System.Windows.Forms.TextBox
-    Friend WithEvents txtWidth As System.Windows.Forms.TextBox
+    Friend WithEvents lvStreams As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnRemoveSet As System.Windows.Forms.Button
+    Friend WithEvents btnEditSet As System.Windows.Forms.Button
+    Friend WithEvents btnNewSet As System.Windows.Forms.Button
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents cbVideoCodec As System.Windows.Forms.ComboBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents txtDuration As System.Windows.Forms.TextBox
-    Friend WithEvents rbInterlaced As System.Windows.Forms.RadioButton
-    Friend WithEvents rbProgressive As System.Windows.Forms.RadioButton
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents txtARatio As System.Windows.Forms.TextBox
-    Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents cbAudioCodec As System.Windows.Forms.ComboBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents cbAudioLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents cbAudioChannels As System.Windows.Forms.ComboBox
-    Friend WithEvents chbSubsExternal As System.Windows.Forms.CheckBox
-    Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents cbSubsLanguage As System.Windows.Forms.ComboBox
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents cbVStream As System.Windows.Forms.ComboBox
-    Friend WithEvents Label12 As System.Windows.Forms.Label
-    Friend WithEvents cbSStream As System.Windows.Forms.ComboBox
-    Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents cbAStream As System.Windows.Forms.ComboBox
 
 End Class
