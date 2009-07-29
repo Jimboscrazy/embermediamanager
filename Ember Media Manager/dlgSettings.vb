@@ -1304,6 +1304,14 @@ Public Class dlgSettings
             End If
         End Using
     End Sub
+
+    Private Sub chkRenameMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameMulti.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub chkRenameSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameSingle.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1561,6 +1569,9 @@ Public Class dlgSettings
             Master.eSettings.MissingFilterSubs = Me.chkMissingSubs.Checked
             Master.eSettings.MissingFilterExtras = Me.chkMissingExtra.Checked
 
+            Master.eSettings.AutoRenameMulti = Me.chkRenameMulti.Checked
+            Master.eSettings.AutoRenameSingle = Me.chkRenameSingle.Checked
+
             Master.eSettings.Save()
 
             Master.CreateDefaultOptions()
@@ -1780,6 +1791,9 @@ Public Class dlgSettings
             Me.chkMissingTrailer.Checked = Master.eSettings.MissingFilterTrailer
             Me.chkMissingSubs.Checked = Master.eSettings.MissingFilterSubs
             Me.chkMissingExtra.Checked = Master.eSettings.MissingFilterExtras
+
+            Me.chkRenameMulti.Checked = Master.eSettings.AutoRenameMulti
+            Me.chkRenameSingle.Checked = Master.eSettings.AutoRenameSingle
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -2024,6 +2038,8 @@ Public Class dlgSettings
         Me.chkMissingSubs.Text = Master.eLang.GetString(586, "Check for Subs")
         Me.chkMissingExtra.Text = Master.eLang.GetString(587, "Check for Extrathumbs")
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top 250")
+        Me.chkRenameMulti.Text = Master.eLang.GetString(592, "Automatically Rename Files During Multi-Scraper")
+        Me.chkRenameSingle.Text = Master.eLang.GetString(593, "Automatically Rename Files During Single-Scraper")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")

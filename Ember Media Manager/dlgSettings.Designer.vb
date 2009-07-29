@@ -318,6 +318,8 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
+        Me.chkRenameSingle = New System.Windows.Forms.CheckBox
+        Me.chkRenameMulti = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -1226,7 +1228,7 @@ Partial Class dlgSettings
         Me.GroupBox8.Controls.Add(Me.GroupBox5)
         Me.GroupBox8.Location = New System.Drawing.Point(232, 113)
         Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(356, 187)
+        Me.GroupBox8.Size = New System.Drawing.Size(356, 191)
         Me.GroupBox8.TabIndex = 5
         Me.GroupBox8.TabStop = False
         Me.GroupBox8.Text = "File Naming"
@@ -2478,9 +2480,9 @@ Partial Class dlgSettings
         Me.GroupBox16.Controls.Add(Me.chkAutoBD)
         Me.GroupBox16.Controls.Add(Me.btnBrowse)
         Me.GroupBox16.Controls.Add(Me.txtBDPath)
-        Me.GroupBox16.Location = New System.Drawing.Point(5, 303)
+        Me.GroupBox16.Location = New System.Drawing.Point(5, 307)
         Me.GroupBox16.Name = "GroupBox16"
-        Me.GroupBox16.Size = New System.Drawing.Size(583, 43)
+        Me.GroupBox16.Size = New System.Drawing.Size(583, 41)
         Me.GroupBox16.TabIndex = 6
         Me.GroupBox16.TabStop = False
         Me.GroupBox16.Text = "Backdrops Folder"
@@ -3023,9 +3025,9 @@ Partial Class dlgSettings
         Me.GroupBox22.Controls.Add(Me.btnAddNoStack)
         Me.GroupBox22.Controls.Add(Me.txtNoStack)
         Me.GroupBox22.Controls.Add(Me.lstNoStack)
-        Me.GroupBox22.Location = New System.Drawing.Point(209, 130)
+        Me.GroupBox22.Location = New System.Drawing.Point(210, 192)
         Me.GroupBox22.Name = "GroupBox22"
-        Me.GroupBox22.Size = New System.Drawing.Size(200, 156)
+        Me.GroupBox22.Size = New System.Drawing.Size(204, 156)
         Me.GroupBox22.TabIndex = 2
         Me.GroupBox22.TabStop = False
         Me.GroupBox22.Text = "No Stack Extensions"
@@ -3068,13 +3070,15 @@ Partial Class dlgSettings
         '
         'gbRenamerPatterns
         '
+        Me.gbRenamerPatterns.Controls.Add(Me.chkRenameSingle)
+        Me.gbRenamerPatterns.Controls.Add(Me.chkRenameMulti)
         Me.gbRenamerPatterns.Controls.Add(Me.lblFilePattern)
         Me.gbRenamerPatterns.Controls.Add(Me.lblFolderPattern)
         Me.gbRenamerPatterns.Controls.Add(Me.txtFilePattern)
         Me.gbRenamerPatterns.Controls.Add(Me.txtFolderPattern)
         Me.gbRenamerPatterns.Location = New System.Drawing.Point(209, 6)
         Me.gbRenamerPatterns.Name = "gbRenamerPatterns"
-        Me.gbRenamerPatterns.Size = New System.Drawing.Size(200, 118)
+        Me.gbRenamerPatterns.Size = New System.Drawing.Size(204, 176)
         Me.gbRenamerPatterns.TabIndex = 1
         Me.gbRenamerPatterns.TabStop = False
         Me.gbRenamerPatterns.Text = "Default Renaming Patterns"
@@ -3082,7 +3086,7 @@ Partial Class dlgSettings
         'lblFilePattern
         '
         Me.lblFilePattern.AutoSize = True
-        Me.lblFilePattern.Location = New System.Drawing.Point(11, 69)
+        Me.lblFilePattern.Location = New System.Drawing.Point(11, 55)
         Me.lblFilePattern.Name = "lblFilePattern"
         Me.lblFilePattern.Size = New System.Drawing.Size(65, 13)
         Me.lblFilePattern.TabIndex = 3
@@ -3091,7 +3095,7 @@ Partial Class dlgSettings
         'lblFolderPattern
         '
         Me.lblFolderPattern.AutoSize = True
-        Me.lblFolderPattern.Location = New System.Drawing.Point(11, 23)
+        Me.lblFolderPattern.Location = New System.Drawing.Point(11, 16)
         Me.lblFolderPattern.Name = "lblFolderPattern"
         Me.lblFolderPattern.Size = New System.Drawing.Size(78, 13)
         Me.lblFolderPattern.TabIndex = 2
@@ -3099,14 +3103,16 @@ Partial Class dlgSettings
         '
         'txtFilePattern
         '
-        Me.txtFilePattern.Location = New System.Drawing.Point(8, 87)
+        Me.txtFilePattern.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilePattern.Location = New System.Drawing.Point(8, 71)
         Me.txtFilePattern.Name = "txtFilePattern"
         Me.txtFilePattern.Size = New System.Drawing.Size(186, 20)
         Me.txtFilePattern.TabIndex = 1
         '
         'txtFolderPattern
         '
-        Me.txtFolderPattern.Location = New System.Drawing.Point(8, 39)
+        Me.txtFolderPattern.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFolderPattern.Location = New System.Drawing.Point(8, 32)
         Me.txtFolderPattern.Name = "txtFolderPattern"
         Me.txtFolderPattern.Size = New System.Drawing.Size(186, 20)
         Me.txtFolderPattern.TabIndex = 0
@@ -3198,7 +3204,7 @@ Partial Class dlgSettings
         Me.GroupBox19.Controls.Add(Me.Label20)
         Me.GroupBox19.Location = New System.Drawing.Point(5, 113)
         Me.GroupBox19.Name = "GroupBox19"
-        Me.GroupBox19.Size = New System.Drawing.Size(211, 187)
+        Me.GroupBox19.Size = New System.Drawing.Size(211, 191)
         Me.GroupBox19.TabIndex = 4
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
@@ -3427,6 +3433,28 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
+        'chkRenameSingle
+        '
+        Me.chkRenameSingle.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameSingle.Location = New System.Drawing.Point(8, 135)
+        Me.chkRenameSingle.Name = "chkRenameSingle"
+        Me.chkRenameSingle.Size = New System.Drawing.Size(189, 30)
+        Me.chkRenameSingle.TabIndex = 74
+        Me.chkRenameSingle.Text = "Automatically Rename Files During Single-Scraper"
+        Me.chkRenameSingle.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameSingle.UseVisualStyleBackColor = True
+        '
+        'chkRenameMulti
+        '
+        Me.chkRenameMulti.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameMulti.Location = New System.Drawing.Point(8, 97)
+        Me.chkRenameMulti.Name = "chkRenameMulti"
+        Me.chkRenameMulti.Size = New System.Drawing.Size(189, 30)
+        Me.chkRenameMulti.TabIndex = 73
+        Me.chkRenameMulti.Text = "Automatically Rename Files During Multi-Scraper"
+        Me.chkRenameMulti.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameMulti.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3441,13 +3469,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -3825,4 +3853,6 @@ Partial Class dlgSettings
     Friend WithEvents chkMissingPoster As System.Windows.Forms.CheckBox
     Friend WithEvents btnDLTrans As System.Windows.Forms.Button
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
+    Friend WithEvents chkRenameSingle As System.Windows.Forms.CheckBox
+    Friend WithEvents chkRenameMulti As System.Windows.Forms.CheckBox
 End Class
