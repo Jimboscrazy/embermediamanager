@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 ### Anchor Help ###
 0 = none
@@ -115,7 +116,7 @@ fontstyle code 5.
     </object>
     
     <object name="lblReleaseDate">
-      <width>138</width>
+      <width>105</width>
       <height>16</height>
       <left>147</left>
       <top>48</top>
@@ -171,7 +172,7 @@ fontstyle code 5.
       <fontstyle>1</fontstyle>
     </object>
     
-    <object name="txtOutline">
+    <object name="lblOutline">
       <width>341</width>
       <height>78</height>
       <left>3</left>

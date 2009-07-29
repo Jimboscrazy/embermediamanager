@@ -186,6 +186,8 @@ Public Class emmSettings
     Private _missingfiltertrailer As Boolean
     Private _missingfiltersubs As Boolean
     Private _missingfilterextras As Boolean
+    Private _autorenamemulti As Boolean
+    Private _autorenamesingle As Boolean
 
     Public Property Version() As String
         Get
@@ -1631,6 +1633,24 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property AutoRenameMulti() As Boolean
+        Get
+            Return Me._autorenamemulti
+        End Get
+        Set(ByVal value As Boolean)
+            Me._autorenamemulti = value
+        End Set
+    End Property
+
+    Public Property AutoRenameSingle() As Boolean
+        Get
+            Return Me._autorenamesingle
+        End Get
+        Set(ByVal value As Boolean)
+            Me._autorenamesingle = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1797,6 +1817,8 @@ Public Class emmSettings
         Me._missingfiltertrailer = True
         Me._missingfiltersubs = True
         Me._missingfilterextras = True
+        Me._autorenamemulti = False
+        Me._autorenamesingle = False
     End Sub
 
     Public Sub Save()

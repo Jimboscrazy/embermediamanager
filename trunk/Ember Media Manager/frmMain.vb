@@ -3018,12 +3018,11 @@ Public Class frmMain
 
                                 Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
 
-                                Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
-
-                                If (doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID)) AndAlso (Master.GlobalScrapeMod.NFO OrElse Master.ScrapeType.SingleScrape) Then
-                                    'FileFolderRenamer.RenameSingle(scrapeMovie.Filename, scrapeMovie.Movie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern)
+                                If doSave AndAlso Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
+                                    FileFolderRenamer.RenameSingle(scrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
+                                Else
+                                    Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
                                 End If
-
 
                                 'use this one to check for need of load info
                                 Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
@@ -3177,10 +3176,13 @@ Public Class frmMain
                                     If doSave Then Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
-                                    If doSave AndAlso (Master.GlobalScrapeMod.NFO OrElse Master.ScrapeType.SingleScrape) Then
-                                        'FileFolderRenamer.RenameSingle(scrapeMovie.Filename, scrapeMovie.Movie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern)
+
+                                    If doSave AndAlso Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
+                                        FileFolderRenamer.RenameSingle(scrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, doSave)
+                                    Else
+                                        Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
                                     End If
+
                                 End If
 
                                 'use this one to check for need of load info
@@ -3369,7 +3371,6 @@ doCancel:
     End Sub
 
 #End Region '*** Background Workers
-
 
 
 #Region "Routines/Functions"
@@ -4374,6 +4375,7 @@ doCancel:
                     Application.DoEvents()
                     Me.UpdateMediaInfo(Master.currMovie)
                 End If
+
                 If Master.eSettings.SingleScrapeImages Then
                     Dim tmpImages As New Images
                     Using dImgSelectFanart As New dlgImgSelect
@@ -4438,6 +4440,9 @@ doCancel:
                     Using dEditMovie As New dlgEditMovie
                         Select Case dEditMovie.ShowDialog()
                             Case Windows.Forms.DialogResult.OK
+                                If Master.eSettings.AutoRenameSingle Then
+                                    FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False)
+                                End If
                                 Me.SetListItemAfterEdit(ID, indX)
                                 If Me.RefreshMovie(ID) Then
                                     Me.FillList(0)
@@ -4452,8 +4457,13 @@ doCancel:
                                 If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
                         End Select
                     End Using
+
                 Else
-                    Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
+                    If Master.eSettings.AutoRenameSingle Then
+                        FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, True)
+                    Else
+                        Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
+                    End If
                 End If
             Else
                 MsgBox(Master.eLang.GetString(141, "Unable to retrieve movie details from the internet. Please check your connection and try again."), MsgBoxStyle.Exclamation, Master.eLang.GetString(142, "Error Retrieving Details"))
@@ -4482,7 +4492,6 @@ doCancel:
 
     Private Function RefreshMovie(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow
-        Dim sPath As String = dRow(0).Item(1)
         Dim aContents(6) As String
         Dim tmpMovie As New Media.Movie
         Dim tmpMovieDb As New Master.DBMovie
@@ -4491,52 +4500,49 @@ doCancel:
 
         Try
 
-            If Directory.Exists(Directory.GetParent(dRow(0).Item(1)).FullName) Then
+            tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
+
+            If Directory.Exists(Directory.GetParent(tmpMovieDb.Filename).FullName) Then
 
                 If FromNfo Then
-                    If String.IsNullOrEmpty(dRow(0).Item(42)) Then
-                        Dim sNFO As String = NFO.GetNfoPath(dRow(0).Item(1), dRow(0).Item(2))
+                    If String.IsNullOrEmpty(tmpMovieDb.NfoPath) Then
+                        Dim sNFO As String = NFO.GetNfoPath(tmpMovieDb.Filename, tmpMovieDb.isSingle)
                         tmpMovieDb.NfoPath = sNFO
-                        tmpMovie = NFO.LoadMovieFromNFO(sNFO, dRow(0).Item(2))
+                        tmpMovie = NFO.LoadMovieFromNFO(sNFO, tmpMovieDb.isSingle)
                     Else
-                        tmpMovie = NFO.LoadMovieFromNFO(dRow(0).Item(42), dRow(0).Item(2))
+                        tmpMovie = NFO.LoadMovieFromNFO(tmpMovieDb.NfoPath, tmpMovieDb.isSingle)
                     End If
-
-                    If String.IsNullOrEmpty(tmpMovie.Title) Then
-                        If Directory.GetParent(dRow(0).Item(1)).Name.ToLower = "video_ts" Then
-                            tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(dRow(0).Item(1)).FullName).Name)
-                        Else
-                            If dRow(0).Item(46) AndAlso dRow(0).Item(2) Then
-                                tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(dRow(0).Item(1)).Name)
-                            Else
-                                tmpMovieDb.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(dRow(0).Item(1)))
-                            End If
-                        End If
-                    Else
-                        If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovie.Year) Then
-                            tmpMovieDb.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(tmpMovie.Title), tmpMovie.Year)
-                        Else
-                            tmpMovieDb.ListTitle = StringManip.FilterTokens(tmpMovie.Title)
-                        End If
-                    End If
-
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
-                    Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovie.Title})
-
                     tmpMovieDb.Movie = tmpMovie
-                Else
-                    tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
                 End If
+
+                If String.IsNullOrEmpty(tmpMovieDb.Movie.Title) Then
+                    If Directory.GetParent(tmpMovieDb.Filename).Name.ToLower = "video_ts" Then
+                        tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name)
+                    Else
+                        If tmpMovieDb.UseFolder AndAlso tmpMovieDb.isSingle Then
+                            tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name)
+                        Else
+                            tmpMovieDb.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename))
+                        End If
+                    End If
+                Else
+                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDb.Movie.Year) Then
+                        tmpMovieDb.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(tmpMovieDb.Movie.Title), tmpMovieDb.Movie.Year)
+                    Else
+                        tmpMovieDb.ListTitle = StringManip.FilterTokens(tmpMovieDb.Movie.Title)
+                    End If
+                End If
+
+                Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
+                Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
+
+
 
                 'update genre
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
-                tmpMovieDb.Filename = dRow(0).Item(1)
-                tmpMovieDb.FileSource = XML.GetFileSource(dRow(0).Item(1))
-                tmpMovieDb.isSingle = dRow(0).Item(2)
-                tmpMovieDb.UseFolder = dRow(0).Item(46)
-                tmpMovieDb.Source = dRow(0).Item(12)
-                aContents = Master.GetFolderContents(dRow(0).Item(1), dRow(0).Item(2))
+                tmpMovieDb.FileSource = XML.GetFileSource(tmpMovieDb.Filename)
+                aContents = Master.GetFolderContents(tmpMovieDb.Filename, dRow(0).Item(2))
                 tmpMovieDb.PosterPath = aContents(0)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(aContents(0)), False, True)})
                 tmpMovieDb.FanartPath = aContents(1)
@@ -4551,7 +4557,6 @@ doCancel:
                 tmpMovieDb.ExtraPath = aContents(5)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(aContents(5)), False, True)})
 
-                tmpMovieDb.ID = dRow(0).Item(0)
                 tmpMovieDb.IsMark = dRow(0).Item(11)
                 tmpMovieDb.IsLock = dRow(0).Item(14)
 
@@ -4559,13 +4564,13 @@ doCancel:
 
                 aContents = Nothing
             Else
-                Master.DB.DeleteFromDB(dRow(0).Item(0), BatchMode)
+                Master.DB.DeleteFromDB(ID, BatchMode)
                 Return True
             End If
 
             If Not BatchMode Then
                 Me.SetFilterColors(True)
-                Me.LoadInfo(dRow(0).Item(0), dRow(0).Item(1), True, False)
+                Me.LoadInfo(ID, tmpMovieDb.Filename, True, False)
             End If
 
         Catch ex As Exception
@@ -5138,8 +5143,6 @@ doCancel:
                     dRow(0).Item(11) = SQLreader("mark")
                 End Using
             End Using
-
-            Me.SelectRow(iRow)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

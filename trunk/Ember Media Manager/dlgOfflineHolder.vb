@@ -497,7 +497,7 @@ Public Class dlgOfflineHolder
             Master.DeleteDirectory(buildPath)
         End If
         Try
-            FileFolderRenamer.RenameSingle(Path.Combine(destPath, Path.GetFileName(tMovie.Filename)), tMovie.Movie, "$D", "$D")
+            FileFolderRenamer.RenameSingle(tMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False)
         Catch ex As Exception
         End Try
 
