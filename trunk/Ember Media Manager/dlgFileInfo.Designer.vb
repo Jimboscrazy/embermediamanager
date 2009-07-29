@@ -126,7 +126,7 @@ Partial Class dlgFileInfo
         '
         'Label5
         '
-        Me.Label5.Location = New System.Drawing.Point(278, 75)
+        Me.Label5.Location = New System.Drawing.Point(505, 24)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(81, 19)
         Me.Label5.TabIndex = 13
@@ -135,7 +135,7 @@ Partial Class dlgFileInfo
         '
         'txtARatio
         '
-        Me.txtARatio.Location = New System.Drawing.Point(362, 74)
+        Me.txtARatio.Location = New System.Drawing.Point(589, 23)
         Me.txtARatio.Name = "txtARatio"
         Me.txtARatio.Size = New System.Drawing.Size(48, 20)
         Me.txtARatio.TabIndex = 12
@@ -143,7 +143,7 @@ Partial Class dlgFileInfo
         'rbInterlaced
         '
         Me.rbInterlaced.AutoSize = True
-        Me.rbInterlaced.Location = New System.Drawing.Point(569, 50)
+        Me.rbInterlaced.Location = New System.Drawing.Point(545, 50)
         Me.rbInterlaced.Name = "rbInterlaced"
         Me.rbInterlaced.Size = New System.Drawing.Size(72, 17)
         Me.rbInterlaced.TabIndex = 11
@@ -154,7 +154,7 @@ Partial Class dlgFileInfo
         'rbProgressive
         '
         Me.rbProgressive.AutoSize = True
-        Me.rbProgressive.Location = New System.Drawing.Point(475, 50)
+        Me.rbProgressive.Location = New System.Drawing.Point(451, 50)
         Me.rbProgressive.Name = "rbProgressive"
         Me.rbProgressive.Size = New System.Drawing.Size(80, 17)
         Me.rbProgressive.TabIndex = 10
@@ -164,7 +164,7 @@ Partial Class dlgFileInfo
         '
         'Label4
         '
-        Me.Label4.Location = New System.Drawing.Point(308, 51)
+        Me.Label4.Location = New System.Drawing.Point(284, 51)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(51, 15)
         Me.Label4.TabIndex = 9
@@ -175,14 +175,14 @@ Partial Class dlgFileInfo
         '
         Me.cbVideoCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbVideoCodec.FormattingEnabled = True
-        Me.cbVideoCodec.Location = New System.Drawing.Point(362, 49)
+        Me.cbVideoCodec.Location = New System.Drawing.Point(338, 49)
         Me.cbVideoCodec.Name = "cbVideoCodec"
         Me.cbVideoCodec.Size = New System.Drawing.Size(93, 21)
         Me.cbVideoCodec.TabIndex = 8
         '
         'Label3
         '
-        Me.Label3.Location = New System.Drawing.Point(532, 28)
+        Me.Label3.Location = New System.Drawing.Point(279, 80)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(56, 13)
         Me.Label3.TabIndex = 7
@@ -191,14 +191,14 @@ Partial Class dlgFileInfo
         '
         'txtDuration
         '
-        Me.txtDuration.Location = New System.Drawing.Point(591, 24)
+        Me.txtDuration.Location = New System.Drawing.Point(338, 76)
         Me.txtDuration.Name = "txtDuration"
-        Me.txtDuration.Size = New System.Drawing.Size(48, 20)
+        Me.txtDuration.Size = New System.Drawing.Size(68, 20)
         Me.txtDuration.TabIndex = 6
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(416, 26)
+        Me.Label2.Location = New System.Drawing.Point(392, 26)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(56, 16)
         Me.Label2.TabIndex = 5
@@ -207,7 +207,7 @@ Partial Class dlgFileInfo
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(306, 25)
+        Me.Label1.Location = New System.Drawing.Point(282, 25)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(53, 19)
         Me.Label1.TabIndex = 4
@@ -216,14 +216,14 @@ Partial Class dlgFileInfo
         '
         'txtHeight
         '
-        Me.txtHeight.Location = New System.Drawing.Point(475, 24)
+        Me.txtHeight.Location = New System.Drawing.Point(451, 24)
         Me.txtHeight.Name = "txtHeight"
         Me.txtHeight.Size = New System.Drawing.Size(48, 20)
         Me.txtHeight.TabIndex = 3
         '
         'txtWidth
         '
-        Me.txtWidth.Location = New System.Drawing.Point(362, 24)
+        Me.txtWidth.Location = New System.Drawing.Point(338, 24)
         Me.txtWidth.Name = "txtWidth"
         Me.txtWidth.Size = New System.Drawing.Size(48, 20)
         Me.txtWidth.TabIndex = 2
@@ -328,7 +328,7 @@ Partial Class dlgFileInfo
         Me.GroupBox3.Size = New System.Drawing.Size(647, 115)
         Me.GroupBox3.TabIndex = 6
         Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Subs  Streams"
+        Me.GroupBox3.Text = "Subtitle  Streams"
         '
         'chbSubsExternal
         '
