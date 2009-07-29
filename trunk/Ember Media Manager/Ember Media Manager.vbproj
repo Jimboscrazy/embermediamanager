@@ -167,6 +167,12 @@
     <Compile Include="clsStringManip.vb" />
     <Compile Include="clsTrailers.vb" />
     <Compile Include="clsXML.vb" />
+    <Compile Include="dlgFileInfo.Designer.vb">
+      <DependentUpon>dlgFileInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgFileInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgImgManual.Designer.vb">
       <DependentUpon>dlgImgManual.vb</DependentUpon>
     </Compile>
@@ -332,6 +338,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="dlgFileInfo.resx">
+      <DependentUpon>dlgFileInfo.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgImgManual.resx">
       <DependentUpon>dlgImgManual.vb</DependentUpon>
       <SubType>Designer</SubType>
