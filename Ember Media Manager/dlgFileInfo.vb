@@ -12,4 +12,7 @@ Public Class dlgFileInfo
         Me.Close()
     End Sub
 
+    Private Sub GroupBox2_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles GroupBox2.Enter
+
+    End Sub
 End Class

@@ -42,7 +42,6 @@ Partial Class dlgFileInfo
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.Label9 = New System.Windows.Forms.Label
         Me.cbAudioChannels = New System.Windows.Forms.ComboBox
-        Me.Label8 = New System.Windows.Forms.Label
         Me.Label7 = New System.Windows.Forms.Label
         Me.cbAudioCodec = New System.Windows.Forms.ComboBox
         Me.Label6 = New System.Windows.Forms.Label
@@ -117,25 +116,26 @@ Partial Class dlgFileInfo
         Me.GroupBox1.Controls.Add(Me.txtHeight)
         Me.GroupBox1.Controls.Add(Me.txtWidth)
         Me.GroupBox1.Controls.Add(Me.lvVideoStream)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 11)
+        Me.GroupBox1.Location = New System.Drawing.Point(7, 11)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(647, 115)
+        Me.GroupBox1.Size = New System.Drawing.Size(650, 115)
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Video Streams"
         '
         'Label5
         '
-        Me.Label5.Location = New System.Drawing.Point(505, 24)
+        Me.Label5.Location = New System.Drawing.Point(276, 66)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(81, 19)
+        Me.Label5.Size = New System.Drawing.Size(68, 19)
         Me.Label5.TabIndex = 13
         Me.Label5.Text = "Aspect Ratio"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtARatio
         '
-        Me.txtARatio.Location = New System.Drawing.Point(589, 23)
+        Me.txtARatio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtARatio.Location = New System.Drawing.Point(347, 65)
         Me.txtARatio.Name = "txtARatio"
         Me.txtARatio.Size = New System.Drawing.Size(48, 20)
         Me.txtARatio.TabIndex = 12
@@ -143,7 +143,7 @@ Partial Class dlgFileInfo
         'rbInterlaced
         '
         Me.rbInterlaced.AutoSize = True
-        Me.rbInterlaced.Location = New System.Drawing.Point(545, 50)
+        Me.rbInterlaced.Location = New System.Drawing.Point(566, 30)
         Me.rbInterlaced.Name = "rbInterlaced"
         Me.rbInterlaced.Size = New System.Drawing.Size(72, 17)
         Me.rbInterlaced.TabIndex = 11
@@ -154,7 +154,7 @@ Partial Class dlgFileInfo
         'rbProgressive
         '
         Me.rbProgressive.AutoSize = True
-        Me.rbProgressive.Location = New System.Drawing.Point(451, 50)
+        Me.rbProgressive.Location = New System.Drawing.Point(566, 13)
         Me.rbProgressive.Name = "rbProgressive"
         Me.rbProgressive.Size = New System.Drawing.Size(80, 17)
         Me.rbProgressive.TabIndex = 10
@@ -164,7 +164,7 @@ Partial Class dlgFileInfo
         '
         'Label4
         '
-        Me.Label4.Location = New System.Drawing.Point(284, 51)
+        Me.Label4.Location = New System.Drawing.Point(417, 21)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(51, 15)
         Me.Label4.TabIndex = 9
@@ -175,14 +175,14 @@ Partial Class dlgFileInfo
         '
         Me.cbVideoCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbVideoCodec.FormattingEnabled = True
-        Me.cbVideoCodec.Location = New System.Drawing.Point(338, 49)
+        Me.cbVideoCodec.Location = New System.Drawing.Point(471, 19)
         Me.cbVideoCodec.Name = "cbVideoCodec"
         Me.cbVideoCodec.Size = New System.Drawing.Size(93, 21)
         Me.cbVideoCodec.TabIndex = 8
         '
         'Label3
         '
-        Me.Label3.Location = New System.Drawing.Point(279, 80)
+        Me.Label3.Location = New System.Drawing.Point(288, 93)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(56, 13)
         Me.Label3.TabIndex = 7
@@ -191,14 +191,15 @@ Partial Class dlgFileInfo
         '
         'txtDuration
         '
-        Me.txtDuration.Location = New System.Drawing.Point(338, 76)
+        Me.txtDuration.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtDuration.Location = New System.Drawing.Point(347, 89)
         Me.txtDuration.Name = "txtDuration"
         Me.txtDuration.Size = New System.Drawing.Size(68, 20)
         Me.txtDuration.TabIndex = 6
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(392, 26)
+        Me.Label2.Location = New System.Drawing.Point(288, 43)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(56, 16)
         Me.Label2.TabIndex = 5
@@ -207,7 +208,7 @@ Partial Class dlgFileInfo
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(282, 25)
+        Me.Label1.Location = New System.Drawing.Point(291, 19)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(53, 19)
         Me.Label1.TabIndex = 4
@@ -216,14 +217,16 @@ Partial Class dlgFileInfo
         '
         'txtHeight
         '
-        Me.txtHeight.Location = New System.Drawing.Point(451, 24)
+        Me.txtHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtHeight.Location = New System.Drawing.Point(347, 41)
         Me.txtHeight.Name = "txtHeight"
         Me.txtHeight.Size = New System.Drawing.Size(48, 20)
         Me.txtHeight.TabIndex = 3
         '
         'txtWidth
         '
-        Me.txtWidth.Location = New System.Drawing.Point(338, 24)
+        Me.txtWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtWidth.Location = New System.Drawing.Point(347, 18)
         Me.txtWidth.Name = "txtWidth"
         Me.txtWidth.Size = New System.Drawing.Size(48, 20)
         Me.txtWidth.TabIndex = 2
@@ -232,24 +235,23 @@ Partial Class dlgFileInfo
         '
         Me.GroupBox2.Controls.Add(Me.Label9)
         Me.GroupBox2.Controls.Add(Me.cbAudioChannels)
-        Me.GroupBox2.Controls.Add(Me.Label8)
         Me.GroupBox2.Controls.Add(Me.Label7)
         Me.GroupBox2.Controls.Add(Me.cbAudioCodec)
         Me.GroupBox2.Controls.Add(Me.Label6)
         Me.GroupBox2.Controls.Add(Me.lvAudioStream)
         Me.GroupBox2.Controls.Add(Me.cbAudioLanguage)
-        Me.GroupBox2.Location = New System.Drawing.Point(12, 132)
+        Me.GroupBox2.Location = New System.Drawing.Point(7, 132)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(647, 115)
+        Me.GroupBox2.Size = New System.Drawing.Size(650, 115)
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Audio Streams"
         '
         'Label9
         '
-        Me.Label9.Location = New System.Drawing.Point(288, 75)
+        Me.Label9.Location = New System.Drawing.Point(275, 75)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(71, 19)
+        Me.Label9.Size = New System.Drawing.Size(68, 19)
         Me.Label9.TabIndex = 20
         Me.Label9.Text = "Channels"
         Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -258,25 +260,16 @@ Partial Class dlgFileInfo
         '
         Me.cbAudioChannels.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbAudioChannels.FormattingEnabled = True
-        Me.cbAudioChannels.Location = New System.Drawing.Point(362, 73)
+        Me.cbAudioChannels.Location = New System.Drawing.Point(347, 73)
         Me.cbAudioChannels.Name = "cbAudioChannels"
         Me.cbAudioChannels.Size = New System.Drawing.Size(93, 21)
         Me.cbAudioChannels.TabIndex = 19
         '
-        'Label8
-        '
-        Me.Label8.Location = New System.Drawing.Point(288, 48)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(71, 19)
-        Me.Label8.TabIndex = 18
-        Me.Label8.Text = "Codec"
-        Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
         'Label7
         '
-        Me.Label7.Location = New System.Drawing.Point(285, 48)
+        Me.Label7.Location = New System.Drawing.Point(275, 48)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(71, 19)
+        Me.Label7.Size = New System.Drawing.Size(68, 19)
         Me.Label7.TabIndex = 17
         Me.Label7.Text = "Codec"
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -285,16 +278,16 @@ Partial Class dlgFileInfo
         '
         Me.cbAudioCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbAudioCodec.FormattingEnabled = True
-        Me.cbAudioCodec.Location = New System.Drawing.Point(362, 46)
+        Me.cbAudioCodec.Location = New System.Drawing.Point(347, 46)
         Me.cbAudioCodec.Name = "cbAudioCodec"
         Me.cbAudioCodec.Size = New System.Drawing.Size(93, 21)
         Me.cbAudioCodec.TabIndex = 16
         '
         'Label6
         '
-        Me.Label6.Location = New System.Drawing.Point(285, 21)
+        Me.Label6.Location = New System.Drawing.Point(275, 21)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(71, 19)
+        Me.Label6.Size = New System.Drawing.Size(68, 19)
         Me.Label6.TabIndex = 15
         Me.Label6.Text = "Language"
         Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -312,7 +305,7 @@ Partial Class dlgFileInfo
         '
         Me.cbAudioLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbAudioLanguage.FormattingEnabled = True
-        Me.cbAudioLanguage.Location = New System.Drawing.Point(362, 19)
+        Me.cbAudioLanguage.Location = New System.Drawing.Point(347, 19)
         Me.cbAudioLanguage.Name = "cbAudioLanguage"
         Me.cbAudioLanguage.Size = New System.Drawing.Size(93, 21)
         Me.cbAudioLanguage.TabIndex = 14
@@ -323,9 +316,9 @@ Partial Class dlgFileInfo
         Me.GroupBox3.Controls.Add(Me.Label10)
         Me.GroupBox3.Controls.Add(Me.lvSubsStream)
         Me.GroupBox3.Controls.Add(Me.cbSubsLanguage)
-        Me.GroupBox3.Location = New System.Drawing.Point(12, 253)
+        Me.GroupBox3.Location = New System.Drawing.Point(7, 253)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(647, 115)
+        Me.GroupBox3.Size = New System.Drawing.Size(650, 115)
         Me.GroupBox3.TabIndex = 6
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Subtitle  Streams"
@@ -333,7 +326,7 @@ Partial Class dlgFileInfo
         'chbSubsExternal
         '
         Me.chbSubsExternal.AutoSize = True
-        Me.chbSubsExternal.Location = New System.Drawing.Point(474, 30)
+        Me.chbSubsExternal.Location = New System.Drawing.Point(459, 30)
         Me.chbSubsExternal.Name = "chbSubsExternal"
         Me.chbSubsExternal.Size = New System.Drawing.Size(64, 17)
         Me.chbSubsExternal.TabIndex = 23
@@ -342,7 +335,7 @@ Partial Class dlgFileInfo
         '
         'Label10
         '
-        Me.Label10.Location = New System.Drawing.Point(288, 28)
+        Me.Label10.Location = New System.Drawing.Point(273, 28)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(71, 19)
         Me.Label10.TabIndex = 22
@@ -362,7 +355,7 @@ Partial Class dlgFileInfo
         '
         Me.cbSubsLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSubsLanguage.FormattingEnabled = True
-        Me.cbSubsLanguage.Location = New System.Drawing.Point(362, 28)
+        Me.cbSubsLanguage.Location = New System.Drawing.Point(347, 28)
         Me.cbSubsLanguage.Name = "cbSubsLanguage"
         Me.cbSubsLanguage.Size = New System.Drawing.Size(93, 21)
         Me.cbSubsLanguage.TabIndex = 21
@@ -421,7 +414,6 @@ Partial Class dlgFileInfo
     Friend WithEvents cbAudioLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents cbAudioChannels As System.Windows.Forms.ComboBox
-    Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents chbSubsExternal As System.Windows.Forms.CheckBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents cbSubsLanguage As System.Windows.Forms.ComboBox
