@@ -24,13 +24,13 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9})
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -279,6 +279,19 @@ Partial Class dlgSettings
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlExtensions = New System.Windows.Forms.Panel
+        Me.GroupBox28 = New System.Windows.Forms.GroupBox
+        Me.txtDefFIExt = New System.Windows.Forms.TextBox
+        Me.Label34 = New System.Windows.Forms.Label
+        Me.btnRemoveSet = New System.Windows.Forms.Button
+        Me.btnEditSet = New System.Windows.Forms.Button
+        Me.btnNewSet = New System.Windows.Forms.Button
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.cbDefACodec = New System.Windows.Forms.ComboBox
+        Me.Label33 = New System.Windows.Forms.Label
+        Me.ListView1 = New System.Windows.Forms.ListView
+        Me.cbDefVCodec = New System.Windows.Forms.ComboBox
         Me.GroupBox22 = New System.Windows.Forms.GroupBox
         Me.btnRemoveNoStack = New System.Windows.Forms.Button
         Me.btnAddNoStack = New System.Windows.Forms.Button
@@ -320,19 +333,6 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
-        Me.GroupBox28 = New System.Windows.Forms.GroupBox
-        Me.btnRemoveSet = New System.Windows.Forms.Button
-        Me.btnEditSet = New System.Windows.Forms.Button
-        Me.btnNewSet = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.cbDefACodec = New System.Windows.Forms.ComboBox
-        Me.Label33 = New System.Windows.Forms.Label
-        Me.ListView1 = New System.Windows.Forms.ListView
-        Me.cbDefVCodec = New System.Windows.Forms.ComboBox
-        Me.Label34 = New System.Windows.Forms.Label
-        Me.txtDefFIExt = New System.Windows.Forms.TextBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -373,6 +373,7 @@ Partial Class dlgSettings
         Me.gbOptions.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlExtensions.SuspendLayout()
+        Me.GroupBox28.SuspendLayout()
         Me.GroupBox22.SuspendLayout()
         Me.gbRenamerPatterns.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
@@ -382,7 +383,6 @@ Partial Class dlgSettings
         Me.GroupBox23.SuspendLayout()
         Me.GroupBox24.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
-        Me.GroupBox28.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -2311,42 +2311,42 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode8.ImageIndex = 4
-        TreeNode8.Name = "nExts"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 4
-        TreeNode8.Text = "File System"
-        TreeNode9.ImageIndex = 1
-        TreeNode9.Name = "nXBMCCom"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 1
-        TreeNode9.Text = "XBMC Communication"
-        TreeNode10.ImageIndex = 0
-        TreeNode10.Name = "nGeneral"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 0
-        TreeNode10.Text = "General"
-        TreeNode11.ImageIndex = 5
-        TreeNode11.Name = "nSources"
-        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode11.SelectedImageIndex = 5
-        TreeNode11.Text = "Files and Sources"
-        TreeNode12.ImageIndex = 3
-        TreeNode12.Name = "nScraper"
-        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode12.SelectedImageIndex = 3
-        TreeNode12.Text = "Scraper - Data"
-        TreeNode13.ImageIndex = 6
-        TreeNode13.Name = "nImages"
-        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode13.SelectedImageIndex = 6
-        TreeNode13.Text = "Scraper - Images"
-        TreeNode14.ImageIndex = 2
-        TreeNode14.Name = "nMovies"
-        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode14.SelectedImageIndex = 2
-        TreeNode14.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode14})
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "File System"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "XBMC Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 5
+        TreeNode4.Name = "nSources"
+        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode4.SelectedImageIndex = 5
+        TreeNode4.Text = "Files and Sources"
+        TreeNode5.ImageIndex = 3
+        TreeNode5.Name = "nScraper"
+        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.SelectedImageIndex = 3
+        TreeNode5.Text = "Scraper - Data"
+        TreeNode6.ImageIndex = 6
+        TreeNode6.Name = "nImages"
+        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode6.SelectedImageIndex = 6
+        TreeNode6.Text = "Scraper - Images"
+        TreeNode7.ImageIndex = 2
+        TreeNode7.Name = "nMovies"
+        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode7.SelectedImageIndex = 2
+        TreeNode7.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -3034,6 +3034,142 @@ Partial Class dlgSettings
         Me.pnlExtensions.TabIndex = 66
         Me.pnlExtensions.Visible = False
         '
+        'GroupBox28
+        '
+        Me.GroupBox28.Controls.Add(Me.txtDefFIExt)
+        Me.GroupBox28.Controls.Add(Me.Label34)
+        Me.GroupBox28.Controls.Add(Me.btnRemoveSet)
+        Me.GroupBox28.Controls.Add(Me.btnEditSet)
+        Me.GroupBox28.Controls.Add(Me.btnNewSet)
+        Me.GroupBox28.Controls.Add(Me.Label1)
+        Me.GroupBox28.Controls.Add(Me.ComboBox1)
+        Me.GroupBox28.Controls.Add(Me.Label3)
+        Me.GroupBox28.Controls.Add(Me.cbDefACodec)
+        Me.GroupBox28.Controls.Add(Me.Label33)
+        Me.GroupBox28.Controls.Add(Me.ListView1)
+        Me.GroupBox28.Controls.Add(Me.cbDefVCodec)
+        Me.GroupBox28.Location = New System.Drawing.Point(416, 5)
+        Me.GroupBox28.Name = "GroupBox28"
+        Me.GroupBox28.Size = New System.Drawing.Size(176, 221)
+        Me.GroupBox28.TabIndex = 8
+        Me.GroupBox28.TabStop = False
+        Me.GroupBox28.Text = "Fileinfo Defaults by File Type"
+        '
+        'txtDefFIExt
+        '
+        Me.txtDefFIExt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtDefFIExt.Location = New System.Drawing.Point(103, 122)
+        Me.txtDefFIExt.Name = "txtDefFIExt"
+        Me.txtDefFIExt.Size = New System.Drawing.Size(50, 20)
+        Me.txtDefFIExt.TabIndex = 33
+        '
+        'Label34
+        '
+        Me.Label34.Location = New System.Drawing.Point(18, 123)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(78, 19)
+        Me.Label34.TabIndex = 32
+        Me.Label34.Text = "File Extension"
+        Me.Label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'btnRemoveSet
+        '
+        Me.btnRemoveSet.Enabled = False
+        Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
+        Me.btnRemoveSet.Location = New System.Drawing.Point(149, 90)
+        Me.btnRemoveSet.Name = "btnRemoveSet"
+        Me.btnRemoveSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveSet.TabIndex = 31
+        Me.btnRemoveSet.UseVisualStyleBackColor = True
+        '
+        'btnEditSet
+        '
+        Me.btnEditSet.Enabled = False
+        Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
+        Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditSet.Location = New System.Drawing.Point(31, 92)
+        Me.btnEditSet.Name = "btnEditSet"
+        Me.btnEditSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnEditSet.TabIndex = 30
+        Me.btnEditSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditSet.UseVisualStyleBackColor = True
+        '
+        'btnNewSet
+        '
+        Me.btnNewSet.Enabled = False
+        Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
+        Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNewSet.Location = New System.Drawing.Point(6, 92)
+        Me.btnNewSet.Name = "btnNewSet"
+        Me.btnNewSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnNewSet.TabIndex = 29
+        Me.btnNewSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNewSet.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.Location = New System.Drawing.Point(2, 195)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(94, 19)
+        Me.Label1.TabIndex = 28
+        Me.Label1.Text = "Audio Channels"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(102, 195)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(69, 21)
+        Me.ComboBox1.TabIndex = 27
+        '
+        'Label3
+        '
+        Me.Label3.Location = New System.Drawing.Point(18, 170)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(78, 19)
+        Me.Label3.TabIndex = 26
+        Me.Label3.Text = "Audio Codec"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'cbDefACodec
+        '
+        Me.cbDefACodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbDefACodec.FormattingEnabled = True
+        Me.cbDefACodec.Location = New System.Drawing.Point(102, 170)
+        Me.cbDefACodec.Name = "cbDefACodec"
+        Me.cbDefACodec.Size = New System.Drawing.Size(69, 21)
+        Me.cbDefACodec.TabIndex = 25
+        '
+        'Label33
+        '
+        Me.Label33.Location = New System.Drawing.Point(18, 146)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(78, 19)
+        Me.Label33.TabIndex = 15
+        Me.Label33.Text = "Video Codec"
+        Me.Label33.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'ListView1
+        '
+        Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        Me.ListView1.Location = New System.Drawing.Point(6, 19)
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(166, 70)
+        Me.ListView1.TabIndex = 24
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.ListView1.View = System.Windows.Forms.View.Details
+        '
+        'cbDefVCodec
+        '
+        Me.cbDefVCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbDefVCodec.FormattingEnabled = True
+        Me.cbDefVCodec.Location = New System.Drawing.Point(102, 146)
+        Me.cbDefVCodec.Name = "cbDefVCodec"
+        Me.cbDefVCodec.Size = New System.Drawing.Size(69, 21)
+        Me.cbDefVCodec.TabIndex = 14
+        '
         'GroupBox22
         '
         Me.GroupBox22.Controls.Add(Me.btnRemoveNoStack)
@@ -3470,141 +3606,6 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
-        'GroupBox28
-        '
-        Me.GroupBox28.Controls.Add(Me.txtDefFIExt)
-        Me.GroupBox28.Controls.Add(Me.Label34)
-        Me.GroupBox28.Controls.Add(Me.btnRemoveSet)
-        Me.GroupBox28.Controls.Add(Me.btnEditSet)
-        Me.GroupBox28.Controls.Add(Me.btnNewSet)
-        Me.GroupBox28.Controls.Add(Me.Label1)
-        Me.GroupBox28.Controls.Add(Me.ComboBox1)
-        Me.GroupBox28.Controls.Add(Me.Label3)
-        Me.GroupBox28.Controls.Add(Me.cbDefACodec)
-        Me.GroupBox28.Controls.Add(Me.Label33)
-        Me.GroupBox28.Controls.Add(Me.ListView1)
-        Me.GroupBox28.Controls.Add(Me.cbDefVCodec)
-        Me.GroupBox28.Location = New System.Drawing.Point(416, 5)
-        Me.GroupBox28.Name = "GroupBox28"
-        Me.GroupBox28.Size = New System.Drawing.Size(176, 221)
-        Me.GroupBox28.TabIndex = 8
-        Me.GroupBox28.TabStop = False
-        Me.GroupBox28.Text = "Fileinfo Defaults by File Type"
-        '
-        'btnRemoveSet
-        '
-        Me.btnRemoveSet.Enabled = False
-        Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
-        Me.btnRemoveSet.Location = New System.Drawing.Point(149, 90)
-        Me.btnRemoveSet.Name = "btnRemoveSet"
-        Me.btnRemoveSet.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveSet.TabIndex = 31
-        Me.btnRemoveSet.UseVisualStyleBackColor = True
-        '
-        'btnEditSet
-        '
-        Me.btnEditSet.Enabled = False
-        Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
-        Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditSet.Location = New System.Drawing.Point(31, 92)
-        Me.btnEditSet.Name = "btnEditSet"
-        Me.btnEditSet.Size = New System.Drawing.Size(23, 23)
-        Me.btnEditSet.TabIndex = 30
-        Me.btnEditSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEditSet.UseVisualStyleBackColor = True
-        '
-        'btnNewSet
-        '
-        Me.btnNewSet.Enabled = False
-        Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
-        Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewSet.Location = New System.Drawing.Point(6, 92)
-        Me.btnNewSet.Name = "btnNewSet"
-        Me.btnNewSet.Size = New System.Drawing.Size(23, 23)
-        Me.btnNewSet.TabIndex = 29
-        Me.btnNewSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnNewSet.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.Location = New System.Drawing.Point(2, 195)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(94, 19)
-        Me.Label1.TabIndex = 28
-        Me.Label1.Text = "Audio Channels"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'ComboBox1
-        '
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(102, 195)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(69, 21)
-        Me.ComboBox1.TabIndex = 27
-        '
-        'Label3
-        '
-        Me.Label3.Location = New System.Drawing.Point(18, 170)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(78, 19)
-        Me.Label3.TabIndex = 26
-        Me.Label3.Text = "Audio Codec"
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbDefACodec
-        '
-        Me.cbDefACodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbDefACodec.FormattingEnabled = True
-        Me.cbDefACodec.Location = New System.Drawing.Point(102, 170)
-        Me.cbDefACodec.Name = "cbDefACodec"
-        Me.cbDefACodec.Size = New System.Drawing.Size(69, 21)
-        Me.cbDefACodec.TabIndex = 25
-        '
-        'Label33
-        '
-        Me.Label33.Location = New System.Drawing.Point(18, 146)
-        Me.Label33.Name = "Label33"
-        Me.Label33.Size = New System.Drawing.Size(78, 19)
-        Me.Label33.TabIndex = 15
-        Me.Label33.Text = "Video Codec"
-        Me.Label33.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'ListView1
-        '
-        Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        Me.ListView1.Location = New System.Drawing.Point(6, 19)
-        Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(166, 70)
-        Me.ListView1.TabIndex = 24
-        Me.ListView1.UseCompatibleStateImageBehavior = False
-        Me.ListView1.View = System.Windows.Forms.View.Details
-        '
-        'cbDefVCodec
-        '
-        Me.cbDefVCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbDefVCodec.FormattingEnabled = True
-        Me.cbDefVCodec.Location = New System.Drawing.Point(102, 146)
-        Me.cbDefVCodec.Name = "cbDefVCodec"
-        Me.cbDefVCodec.Size = New System.Drawing.Size(69, 21)
-        Me.cbDefVCodec.TabIndex = 14
-        '
-        'Label34
-        '
-        Me.Label34.Location = New System.Drawing.Point(18, 123)
-        Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(78, 19)
-        Me.Label34.TabIndex = 32
-        Me.Label34.Text = "File Extension"
-        Me.Label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'txtDefFIExt
-        '
-        Me.txtDefFIExt.Location = New System.Drawing.Point(103, 122)
-        Me.txtDefFIExt.Name = "txtDefFIExt"
-        Me.txtDefFIExt.Size = New System.Drawing.Size(50, 20)
-        Me.txtDefFIExt.TabIndex = 33
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3697,6 +3698,8 @@ Partial Class dlgSettings
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlExtensions.ResumeLayout(False)
+        Me.GroupBox28.ResumeLayout(False)
+        Me.GroupBox28.PerformLayout()
         Me.GroupBox22.ResumeLayout(False)
         Me.GroupBox22.PerformLayout()
         Me.gbRenamerPatterns.ResumeLayout(False)
@@ -3713,8 +3716,6 @@ Partial Class dlgSettings
         Me.GroupBox24.PerformLayout()
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
-        Me.GroupBox28.ResumeLayout(False)
-        Me.GroupBox28.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
