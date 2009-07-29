@@ -285,6 +285,8 @@ Partial Class dlgSettings
         Me.txtNoStack = New System.Windows.Forms.TextBox
         Me.lstNoStack = New System.Windows.Forms.ListBox
         Me.gbRenamerPatterns = New System.Windows.Forms.GroupBox
+        Me.chkRenameSingle = New System.Windows.Forms.CheckBox
+        Me.chkRenameMulti = New System.Windows.Forms.CheckBox
         Me.lblFilePattern = New System.Windows.Forms.Label
         Me.lblFolderPattern = New System.Windows.Forms.Label
         Me.txtFilePattern = New System.Windows.Forms.TextBox
@@ -318,8 +320,19 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
-        Me.chkRenameSingle = New System.Windows.Forms.CheckBox
-        Me.chkRenameMulti = New System.Windows.Forms.CheckBox
+        Me.GroupBox28 = New System.Windows.Forms.GroupBox
+        Me.btnRemoveSet = New System.Windows.Forms.Button
+        Me.btnEditSet = New System.Windows.Forms.Button
+        Me.btnNewSet = New System.Windows.Forms.Button
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.cbDefACodec = New System.Windows.Forms.ComboBox
+        Me.Label33 = New System.Windows.Forms.Label
+        Me.ListView1 = New System.Windows.Forms.ListView
+        Me.cbDefVCodec = New System.Windows.Forms.ComboBox
+        Me.Label34 = New System.Windows.Forms.Label
+        Me.txtDefFIExt = New System.Windows.Forms.TextBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -369,6 +382,7 @@ Partial Class dlgSettings
         Me.GroupBox23.SuspendLayout()
         Me.GroupBox24.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
+        Me.GroupBox28.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -3010,6 +3024,7 @@ Partial Class dlgSettings
         '
         Me.pnlExtensions.BackColor = System.Drawing.Color.White
         Me.pnlExtensions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlExtensions.Controls.Add(Me.GroupBox28)
         Me.pnlExtensions.Controls.Add(Me.GroupBox22)
         Me.pnlExtensions.Controls.Add(Me.gbRenamerPatterns)
         Me.pnlExtensions.Controls.Add(Me.GroupBox18)
@@ -3082,6 +3097,28 @@ Partial Class dlgSettings
         Me.gbRenamerPatterns.TabIndex = 1
         Me.gbRenamerPatterns.TabStop = False
         Me.gbRenamerPatterns.Text = "Default Renaming Patterns"
+        '
+        'chkRenameSingle
+        '
+        Me.chkRenameSingle.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameSingle.Location = New System.Drawing.Point(8, 135)
+        Me.chkRenameSingle.Name = "chkRenameSingle"
+        Me.chkRenameSingle.Size = New System.Drawing.Size(189, 30)
+        Me.chkRenameSingle.TabIndex = 74
+        Me.chkRenameSingle.Text = "Automatically Rename Files During Single-Scraper"
+        Me.chkRenameSingle.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameSingle.UseVisualStyleBackColor = True
+        '
+        'chkRenameMulti
+        '
+        Me.chkRenameMulti.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameMulti.Location = New System.Drawing.Point(8, 97)
+        Me.chkRenameMulti.Name = "chkRenameMulti"
+        Me.chkRenameMulti.Size = New System.Drawing.Size(189, 30)
+        Me.chkRenameMulti.TabIndex = 73
+        Me.chkRenameMulti.Text = "Automatically Rename Files During Multi-Scraper"
+        Me.chkRenameMulti.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkRenameMulti.UseVisualStyleBackColor = True
         '
         'lblFilePattern
         '
@@ -3433,27 +3470,140 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
-        'chkRenameSingle
+        'GroupBox28
         '
-        Me.chkRenameSingle.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkRenameSingle.Location = New System.Drawing.Point(8, 135)
-        Me.chkRenameSingle.Name = "chkRenameSingle"
-        Me.chkRenameSingle.Size = New System.Drawing.Size(189, 30)
-        Me.chkRenameSingle.TabIndex = 74
-        Me.chkRenameSingle.Text = "Automatically Rename Files During Single-Scraper"
-        Me.chkRenameSingle.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkRenameSingle.UseVisualStyleBackColor = True
+        Me.GroupBox28.Controls.Add(Me.txtDefFIExt)
+        Me.GroupBox28.Controls.Add(Me.Label34)
+        Me.GroupBox28.Controls.Add(Me.btnRemoveSet)
+        Me.GroupBox28.Controls.Add(Me.btnEditSet)
+        Me.GroupBox28.Controls.Add(Me.btnNewSet)
+        Me.GroupBox28.Controls.Add(Me.Label1)
+        Me.GroupBox28.Controls.Add(Me.ComboBox1)
+        Me.GroupBox28.Controls.Add(Me.Label3)
+        Me.GroupBox28.Controls.Add(Me.cbDefACodec)
+        Me.GroupBox28.Controls.Add(Me.Label33)
+        Me.GroupBox28.Controls.Add(Me.ListView1)
+        Me.GroupBox28.Controls.Add(Me.cbDefVCodec)
+        Me.GroupBox28.Location = New System.Drawing.Point(416, 5)
+        Me.GroupBox28.Name = "GroupBox28"
+        Me.GroupBox28.Size = New System.Drawing.Size(176, 221)
+        Me.GroupBox28.TabIndex = 8
+        Me.GroupBox28.TabStop = False
+        Me.GroupBox28.Text = "Fileinfo Defaults by File Type"
         '
-        'chkRenameMulti
+        'btnRemoveSet
         '
-        Me.chkRenameMulti.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkRenameMulti.Location = New System.Drawing.Point(8, 97)
-        Me.chkRenameMulti.Name = "chkRenameMulti"
-        Me.chkRenameMulti.Size = New System.Drawing.Size(189, 30)
-        Me.chkRenameMulti.TabIndex = 73
-        Me.chkRenameMulti.Text = "Automatically Rename Files During Multi-Scraper"
-        Me.chkRenameMulti.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkRenameMulti.UseVisualStyleBackColor = True
+        Me.btnRemoveSet.Enabled = False
+        Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
+        Me.btnRemoveSet.Location = New System.Drawing.Point(149, 90)
+        Me.btnRemoveSet.Name = "btnRemoveSet"
+        Me.btnRemoveSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveSet.TabIndex = 31
+        Me.btnRemoveSet.UseVisualStyleBackColor = True
+        '
+        'btnEditSet
+        '
+        Me.btnEditSet.Enabled = False
+        Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
+        Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditSet.Location = New System.Drawing.Point(31, 92)
+        Me.btnEditSet.Name = "btnEditSet"
+        Me.btnEditSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnEditSet.TabIndex = 30
+        Me.btnEditSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditSet.UseVisualStyleBackColor = True
+        '
+        'btnNewSet
+        '
+        Me.btnNewSet.Enabled = False
+        Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
+        Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNewSet.Location = New System.Drawing.Point(6, 92)
+        Me.btnNewSet.Name = "btnNewSet"
+        Me.btnNewSet.Size = New System.Drawing.Size(23, 23)
+        Me.btnNewSet.TabIndex = 29
+        Me.btnNewSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNewSet.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.Location = New System.Drawing.Point(2, 195)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(94, 19)
+        Me.Label1.TabIndex = 28
+        Me.Label1.Text = "Audio Channels"
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(102, 195)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(69, 21)
+        Me.ComboBox1.TabIndex = 27
+        '
+        'Label3
+        '
+        Me.Label3.Location = New System.Drawing.Point(18, 170)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(78, 19)
+        Me.Label3.TabIndex = 26
+        Me.Label3.Text = "Audio Codec"
+        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'cbDefACodec
+        '
+        Me.cbDefACodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbDefACodec.FormattingEnabled = True
+        Me.cbDefACodec.Location = New System.Drawing.Point(102, 170)
+        Me.cbDefACodec.Name = "cbDefACodec"
+        Me.cbDefACodec.Size = New System.Drawing.Size(69, 21)
+        Me.cbDefACodec.TabIndex = 25
+        '
+        'Label33
+        '
+        Me.Label33.Location = New System.Drawing.Point(18, 146)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(78, 19)
+        Me.Label33.TabIndex = 15
+        Me.Label33.Text = "Video Codec"
+        Me.Label33.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'ListView1
+        '
+        Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
+        Me.ListView1.Location = New System.Drawing.Point(6, 19)
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(166, 70)
+        Me.ListView1.TabIndex = 24
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.ListView1.View = System.Windows.Forms.View.Details
+        '
+        'cbDefVCodec
+        '
+        Me.cbDefVCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbDefVCodec.FormattingEnabled = True
+        Me.cbDefVCodec.Location = New System.Drawing.Point(102, 146)
+        Me.cbDefVCodec.Name = "cbDefVCodec"
+        Me.cbDefVCodec.Size = New System.Drawing.Size(69, 21)
+        Me.cbDefVCodec.TabIndex = 14
+        '
+        'Label34
+        '
+        Me.Label34.Location = New System.Drawing.Point(18, 123)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(78, 19)
+        Me.Label34.TabIndex = 32
+        Me.Label34.Text = "Video Codec"
+        Me.Label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'txtDefFIExt
+        '
+        Me.txtDefFIExt.Location = New System.Drawing.Point(103, 122)
+        Me.txtDefFIExt.Name = "txtDefFIExt"
+        Me.txtDefFIExt.Size = New System.Drawing.Size(50, 20)
+        Me.txtDefFIExt.TabIndex = 33
         '
         'dlgSettings
         '
@@ -3563,6 +3713,8 @@ Partial Class dlgSettings
         Me.GroupBox24.PerformLayout()
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
+        Me.GroupBox28.ResumeLayout(False)
+        Me.GroupBox28.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -3855,4 +4007,17 @@ Partial Class dlgSettings
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
     Friend WithEvents chkRenameSingle As System.Windows.Forms.CheckBox
     Friend WithEvents chkRenameMulti As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox28 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnRemoveSet As System.Windows.Forms.Button
+    Friend WithEvents btnEditSet As System.Windows.Forms.Button
+    Friend WithEvents btnNewSet As System.Windows.Forms.Button
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents cbDefACodec As System.Windows.Forms.ComboBox
+    Friend WithEvents Label33 As System.Windows.Forms.Label
+    Friend WithEvents ListView1 As System.Windows.Forms.ListView
+    Friend WithEvents cbDefVCodec As System.Windows.Forms.ComboBox
+    Friend WithEvents txtDefFIExt As System.Windows.Forms.TextBox
+    Friend WithEvents Label34 As System.Windows.Forms.Label
 End Class
