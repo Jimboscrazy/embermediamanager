@@ -69,7 +69,7 @@ Public Class dlgFileInfo
             i.Text = ""
             i.SubItems.Add(Master.eLang.GetString(604, "Codec"))
             i.SubItems.Add(Master.eLang.GetString(610, "Language"))
-            i.SubItems.Add(Master.eLang.GetString(604, "Channels"))
+            i.SubItems.Add(Master.eLang.GetString(611, "Channels"))
             g.Items.Add(i)
             lvStreams.Items.Add(i)
             Dim a As MediaInfo.Audio
