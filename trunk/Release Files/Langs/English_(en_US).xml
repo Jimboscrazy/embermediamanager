@@ -620,4 +620,5 @@
   <string id="618">Audio Stream</string>
   <string id="619">Subtitle Stream</string>
   <string id="620">Movie Theme</string>
+  <string id="621">You must restart Ember before changes will take effect.</string>
 </strings>

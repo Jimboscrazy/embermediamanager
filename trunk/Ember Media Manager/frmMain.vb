@@ -230,7 +230,6 @@ Public Class frmMain
                 If dResult = Windows.Forms.DialogResult.OK OrElse dResult = Windows.Forms.DialogResult.Retry Then
 
                     Me.SetUp(False)
-                    Me.LoadTheme("movie")
 
                     If Me.dgvMediaList.RowCount > 0 Then
                         Me.dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
@@ -4838,6 +4837,8 @@ doCancel:
                         drvRow.Cells(47).Value = LevFail
                         parID.Value = drvRow.Cells(0).Value
                         SQLcommand.ExecuteNonQuery()
+                    ElseIf Master.eSettings.LevTolerance <= 0 Then
+                        LevFail = False
                     Else
                         LevFail = drvRow.Cells(47).Value
                     End If

@@ -2082,6 +2082,7 @@ Public Class dlgSettings
         Me.chkAutoETSize.Text = Master.eLang.GetString(599, "Download All Fanart Images of the Following Size as Extrathumbs")
         Me.Label35.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
         Me.btnDLTrans.Text = Master.eLang.GetString(443, "Download Addons")
+        Me.Label36.Text = Master.eLang.GetString(621, "You must restart Ember before changes will take effect.")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
