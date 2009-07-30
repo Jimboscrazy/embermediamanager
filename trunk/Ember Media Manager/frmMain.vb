@@ -111,7 +111,6 @@ Public Class frmMain
 #End Region '*** Declarations
 
 
-
 #Region "Form/Controls"
 
     ' ########################################
@@ -2329,8 +2328,24 @@ Public Class frmMain
         'stop enter key from selecting next list item
         e.Handled = e.KeyCode = Keys.Enter
     End Sub
-#End Region '*** Form/Controls
 
+    Private Sub MetadataToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MetadataToolStripMenuItem.Click
+        dlgFileInfo.ShowDialog()
+    End Sub
+
+    Private Sub btnSortDate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortDate.Click
+        If Me.btnSortDate.Tag = "DESC" Then
+            Me.btnSortDate.Tag = "ASC"
+            Me.btnSortDate.Image = My.Resources.desc
+            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(0), ComponentModel.ListSortDirection.Descending)
+        Else
+            Me.btnSortDate.Tag = "DESC"
+            Me.btnSortDate.Image = My.Resources.asc
+            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(0), ComponentModel.ListSortDirection.Ascending)
+        End If
+    End Sub
+
+#End Region '*** Form/Controls
 
 
 #Region "Background Workers"
@@ -3635,6 +3650,8 @@ doCancel:
                 .tsbRefreshMedia.Text = Master.eLang.GetString(82, "Update Library")
                 .tsbUpdateXBMC.Text = Master.eLang.GetString(83, "Initiate XBMC Update")
                 .Label6.Text = Master.eLang.GetString(579, "File Source:")
+                .GroupBox1.Text = Master.eLang.GetString(600, "Extra Sorting")
+                .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
@@ -5212,7 +5229,4 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
-    Private Sub MetadataToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MetadataToolStripMenuItem.Click
-        dlgFileInfo.ShowDialog()
-    End Sub
 End Class
