@@ -719,9 +719,10 @@ Partial Class frmMain
         '
         'MetadataToolStripMenuItem
         '
+        Me.MetadataToolStripMenuItem.Image = CType(resources.GetObject("MetadataToolStripMenuItem.Image"), System.Drawing.Image)
         Me.MetadataToolStripMenuItem.Name = "MetadataToolStripMenuItem"
         Me.MetadataToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
-        Me.MetadataToolStripMenuItem.Text = "Metadata"
+        Me.MetadataToolStripMenuItem.Text = "Edit Meta Data"
         '
         'GenresToolStripMenuItem
         '
