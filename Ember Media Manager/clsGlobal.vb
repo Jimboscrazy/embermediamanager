@@ -1049,7 +1049,6 @@ Public Class Master
                         Else
                             tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "extrathumbs")
                         End If
-
                     End If
 
                     If Not Directory.Exists(tPath) Then

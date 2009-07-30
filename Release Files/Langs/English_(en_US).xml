@@ -598,9 +598,5 @@
   <string id="596">Audio Streams</string>
   <string id="597">Subtitle Streams</string>
   <string id="598">Stream Type</string>
-  <string id="599">Video</string>
-  <string id="600">Audio</string>
-  <string id="601">Subtitle</string>
-
-
+  <string id="599">Download All Fanart Images of the Following Size as Extrathumbs</string>
 </strings>

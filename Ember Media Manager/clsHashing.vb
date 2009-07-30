@@ -70,19 +70,62 @@ Public Class HashFile
         Return hexBuilder.ToString()
     End Function
 
-    Public Shared Function CompareImageHashes(ByVal Image1Stream As Stream, ByVal Image2Stream As Stream) As Boolean
-        Dim MD5 As New MD5CryptoServiceProvider
-        Dim Image1Hash As Byte() = MD5.ComputeHash(Image1Stream)
-        Dim Image2Hash As Byte() = MD5.ComputeHash(Image2Stream)
+    Public Shared Function CurrentETHashes(ByVal sPath As String, ByVal isEdit As Boolean) As ArrayList
+        Dim ETHashes As New ArrayList
+        Dim tPath As String = String.Empty
 
-        Dim Hash1String As String = ASCII.GetString(Image1Hash)
-        Dim Hash2String As String = ASCII.GetString(Image2Hash)
-
-        If Hash1String = Hash2String Then
-            Return True
+        If isEdit Then
+            tPath = Path.Combine(Master.TempPath, "extrathumbs")
         Else
-            Return False
+            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
+            Else
+                tPath = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
+            End If
         End If
+
+        If Directory.Exists(tPath) Then
+            Dim fThumbs As New ArrayList
+
+            Try
+                fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
+            Catch
+            End Try
+
+            For Each fThumb As String In fThumbs
+                ETHashes.Add(HashCalcFile(fThumb))
+            Next
+        End If
+
+        Return ETHashes
     End Function
+
+    Public Shared Function HashCalcFile(ByVal filepath As String) As String
+
+        Using reader As New FileStream(filepath, FileMode.Open, FileAccess.Read)
+            Dim KeyValue As Byte() = (New System.Text.UnicodeEncoding).GetBytes("HashingKey")
+            Using HMA As New HMACSHA1(KeyValue, True)
+
+                Dim hash() As Byte = HMA.ComputeHash(reader)
+
+                Return ByteArrayToString(hash)
+
+            End Using
+        End Using
+
+    End Function
+
+    Private Shared Function ByteArrayToString(ByVal arrInput() As Byte) As String
+
+        Dim sb As New StringBuilder(arrInput.Length * 2)
+
+        For i As Integer = 0 To arrInput.Length - 1
+            sb.Append(arrInput(i).ToString("X2"))
+        Next
+
+        Return sb.ToString().ToLower
+
+    End Function
+
 
 End Class

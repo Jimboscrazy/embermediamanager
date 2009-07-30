@@ -1312,6 +1312,15 @@ Public Class dlgSettings
     Private Sub chkRenameSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenameSingle.CheckedChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub chkAutoETSize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoETSize.CheckedChanged
+        Me.btnApply.Enabled = True
+        Me.cbAutoETSize.Enabled = Me.chkAutoETSize.Checked
+    End Sub
+
+    Private Sub cbAutoETSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAutoETSize.SelectedIndexChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1399,6 +1408,8 @@ Public Class dlgSettings
             Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
             Master.eSettings.PreferredPosterSize = Me.cbPosterSize.SelectedIndex
             Master.eSettings.PreferredFanartSize = Me.cbFanartSize.SelectedIndex
+            Master.eSettings.AutoET = Me.chkAutoETSize.Checked
+            Master.eSettings.AutoETSize = Me.cbAutoETSize.SelectedIndex
             Master.eSettings.FanartPrefSizeOnly = Me.chkFanartOnly.Checked
             Master.eSettings.PosterQuality = Me.tbPosterQual.Value
             Master.eSettings.FanartQuality = Me.tbFanartQual.Value
@@ -1636,6 +1647,8 @@ Public Class dlgSettings
             Me.chkUseMPDB.Checked = Master.eSettings.UseMPDB
             Me.cbPosterSize.SelectedIndex = Master.eSettings.PreferredPosterSize
             Me.cbFanartSize.SelectedIndex = Master.eSettings.PreferredFanartSize
+            Me.chkAutoETSize.Checked = Master.eSettings.AutoET
+            Me.cbAutoETSize.SelectedIndex = Master.eSettings.AutoETSize
             Me.chkFanartOnly.Checked = Master.eSettings.FanartPrefSizeOnly
             Me.tbPosterQual.Value = Master.eSettings.PosterQuality
             Me.tbFanartQual.Value = Master.eSettings.FanartQuality
@@ -2040,6 +2053,7 @@ Public Class dlgSettings
         Me.chkTop250.Text = Master.eLang.GetString(591, "Top 250")
         Me.chkRenameMulti.Text = Master.eLang.GetString(592, "Automatically Rename Files During Multi-Scraper")
         Me.chkRenameSingle.Text = Master.eLang.GetString(593, "Automatically Rename Files During Single-Scraper")
+        Me.chkAutoETSize.Text = Master.eLang.GetString(599, "Download All Fanart Images of the Following Size as Extrathumbs")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
@@ -2054,6 +2068,7 @@ Public Class dlgSettings
 
         Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbAutoETSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
     End Sub
 #End Region '*** Routines/Functions
 
