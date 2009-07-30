@@ -6,7 +6,11 @@ Public Class dlgFileInfo
     Private SettingDefaults As Boolean = False
     Overloads Function ShowDialog(ByVal defaults As Boolean)
         SettingDefaults = True
-        Return MyBase.ShowDialog()
+        If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            Return _FileInfo
+        Else
+            Return Nothing
+        End If
     End Function
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
