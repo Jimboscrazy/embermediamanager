@@ -3560,8 +3560,11 @@ doCancel:
     Private Sub LoadTheme(ByVal tType As String)
         Dim tPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, Master.eSettings.MovieTheme))
         If File.Exists(tPath) Then
-            ThemeXML = XDocument.Load(tPath)
+            'Just to make sure Theme will setup ok (Issues r893,r894)
+            Me.Width = Me.MinimumSize.Width
+            Me.Height = Me.MinimumSize.Height
 
+            ThemeXML = XDocument.Load(tPath)
             'top panel
             Try
                 Dim xTop = From xTheme In ThemeXML...<theme>...<toppanel>
