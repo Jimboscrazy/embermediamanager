@@ -70,18 +70,14 @@ Public Class HashFile
         Return hexBuilder.ToString()
     End Function
 
-    Public Shared Function CurrentETHashes(ByVal sPath As String, ByVal isEdit As Boolean) As ArrayList
+    Public Shared Function CurrentETHashes(ByVal sPath As String) As ArrayList
         Dim ETHashes As New ArrayList
         Dim tPath As String = String.Empty
 
-        If isEdit Then
-            tPath = Path.Combine(Master.TempPath, "extrathumbs")
+        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
         Else
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
-            Else
-                tPath = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
-            End If
+            tPath = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
         End If
 
         If Directory.Exists(tPath) Then

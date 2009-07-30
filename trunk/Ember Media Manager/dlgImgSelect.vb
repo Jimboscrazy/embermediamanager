@@ -66,6 +66,8 @@ Public Class dlgImgSelect
 
     Private CachePath As String = String.Empty
     Private Results As New Master.ImgResult
+    Private ETHashes As New ArrayList
+
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
@@ -209,6 +211,11 @@ Public Class dlgImgSelect
         IMPAPosters = Nothing
         MPDBPosters = Nothing
         TMDBPosters = Nothing
+
+    End Sub
+
+    Private Sub dlgImgSelect_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        If Master.eSettings.AutoET AndAlso Not Master.eSettings.UseImgCache Then Master.DeleteDirectory(Me.CachePath)
     End Sub
 
     Private Sub dlgImgSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -235,6 +242,10 @@ Public Class dlgImgSelect
                 Me.pnlDLStatus.Visible = False
                 Me.pnlDLStatus.Height = 75
                 Me.pnlDLStatus.Top = 207
+
+                If Master.eSettings.AutoET Then
+                    ETHashes = HashFile.CurrentETHashes(tMovie.Filename)
+                End If
             End If
 
             CachePath = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, tMovie.Movie.IMDBID, Path.DirectorySeparatorChar, If(Me.DLType = Master.ImageType.Posters, "posters", "fanart"))
@@ -321,7 +332,7 @@ Public Class dlgImgSelect
 
                 For i As Integer = 0 To posters.Count - 1
                     If Not IsNothing(posters.Item(i).WebImage) AndAlso (Me.DLType = Master.ImageType.Fanart OrElse Not (posters.Item(i).URL.ToLower.Contains("themoviedb.org") AndAlso Not posters.Item(i).Description = "cover")) Then
-                        Me.AddImage(posters.Item(i).WebImage, posters.Item(i).Description, iIndex, posters.Item(i).URL)
+                        Me.AddImage(posters.Item(i).WebImage, posters.Item(i).Description, iIndex, posters.Item(i).URL, posters.Item(i).isChecked)
                         iIndex += 1
                     End If
                 Next
@@ -548,10 +559,25 @@ Public Class dlgImgSelect
                             Select Case True
                                 Case sFile.Name.Contains("(original)")
                                     tImage.Description = "original"
+                                    If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Master.FanartSize.Lrg Then
+                                        If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
+                                            tImage.isChecked = True
+                                        End If
+                                    End If
                                 Case sFile.Name.Contains("(mid)")
                                     tImage.Description = "mid"
+                                    If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Master.FanartSize.Mid Then
+                                        If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
+                                            tImage.isChecked = True
+                                        End If
+                                    End If
                                 Case sFile.Name.Contains("(thumb)")
                                     tImage.Description = "thumb"
+                                    If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Master.FanartSize.Small Then
+                                        If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
+                                            tImage.isChecked = True
+                                        End If
+                                    End If
                             End Select
                             tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
                             Me.TMDBPosters.Add(tImage)
@@ -572,6 +598,10 @@ Public Class dlgImgSelect
 
             If NoneFound Then
                 If Master.eSettings.UseTMDB Then
+                    If Master.eSettings.AutoET AndAlso Not Directory.Exists(CachePath) Then
+                        Directory.CreateDirectory(CachePath)
+                    End If
+
                     Me.lblDL1.Text = Master.eLang.GetString(315, "Retrieving data from TheMovieDB.com...")
                     Me.lblDL1Status.Text = String.Empty
                     Me.pbDL1.Maximum = 3
@@ -597,7 +627,7 @@ Public Class dlgImgSelect
         Return x.URL.CompareTo(y.URL)
     End Function
 
-    Private Sub AddImage(ByVal iImage As Image, ByVal sDescription As String, ByVal iIndex As Integer, ByVal sURL As String)
+    Private Sub AddImage(ByVal iImage As Image, ByVal sDescription As String, ByVal iIndex As Integer, ByVal sURL As String, ByVal isChecked As Boolean)
 
         Try
             ReDim Preserve Me.pnlImage(iIndex)
@@ -636,6 +666,7 @@ Public Class dlgImgSelect
                 Me.chkImage(iIndex).Text = String.Format("{0}x{1} ({2})", Me.pbImage(iIndex).Image.Width.ToString, Me.pbImage(iIndex).Image.Height.ToString, sDescription)
                 Me.chkImage(iIndex).Left = 0
                 Me.chkImage(iIndex).Top = 250
+                Me.chkImage(iIndex).Checked = isChecked
                 Me.pnlImage(iIndex).Controls.Add(Me.chkImage(iIndex))
             Else
                 ReDim Preserve Me.lblImage(iIndex)
@@ -924,6 +955,7 @@ Public Class dlgImgSelect
         ' the web server is slow to respond or not reachable, hanging the GUI)
         '\\
         Dim thumbLink As String = String.Empty
+        Dim savePath As String = String.Empty
         For i As Integer = 0 To Me.TMDBPosters.Count - 1
             Try
                 If Me.DLType = Master.ImageType.Fanart OrElse (Master.eSettings.UseImgCache OrElse Me.TMDBPosters.Item(i).Description = "cover") Then
@@ -955,12 +987,32 @@ Public Class dlgImgSelect
                                             Me.Results.Posters.Add(Me.TMDBPosters.Item(i).URL)
                                         End If
                                     End If
-                                    If Master.eSettings.UseImgCache Then
+                                    If Master.eSettings.UseImgCache OrElse Master.eSettings.AutoET Then
                                         Try
                                             Me.TMDBPosters.Item(i).URL = StringManip.CleanURL(Me.TMDBPosters.Item(i).URL)
-                                            Using fsImage As New FileStream(Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Me.TMDBPosters.Item(i).URL, ").jpg")), FileMode.Create, FileAccess.Write)
+
+                                            savePath = Path.Combine(CachePath, String.Concat(If(Me.DLType = Master.ImageType.Fanart, "fanart_(", "poster_("), Me.TMDBPosters.Item(i).Description, ")_(url=", Me.TMDBPosters.Item(i).URL, ").jpg"))
+                                            Using fsImage As New FileStream(savePath, FileMode.Create, FileAccess.Write)
                                                 Me.TMDBPosters.Item(i).WebImage.Save(fsImage, Imaging.ImageFormat.Jpeg)
                                             End Using
+
+                                            If Master.eSettings.AutoET Then
+                                                Dim tSize As New Master.FanartSize
+                                                Select Case Me.TMDBPosters.Item(i).Description.ToLower
+                                                    Case "original"
+                                                        tSize = Master.FanartSize.Lrg
+                                                    Case "mid"
+                                                        tSize = Master.FanartSize.Mid
+                                                    Case "thumb"
+                                                        tSize = Master.FanartSize.Small
+                                                End Select
+                                                If Master.eSettings.AutoETSize = tSize Then
+                                                    If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                        Me.TMDBPosters.Item(i).isChecked = True
+                                                    End If
+                                                End If
+                                            End If
+
                                         Catch
                                         End Try
                                     End If
