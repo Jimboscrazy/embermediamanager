@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -93,6 +93,8 @@ Partial Class frmMain
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.pnlFilter = New System.Windows.Forms.Panel
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnSortDate = New System.Windows.Forms.Button
         Me.btnClearFilters = New System.Windows.Forms.Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.chkFilterTolerance = New System.Windows.Forms.CheckBox
@@ -272,6 +274,7 @@ Partial Class frmMain
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tabsMain.SuspendLayout()
         Me.pnlFilter.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.gbSpecific.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -638,8 +641,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -900,6 +903,7 @@ Partial Class frmMain
         'pnlFilter
         '
         Me.pnlFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilter.Controls.Add(Me.GroupBox1)
         Me.pnlFilter.Controls.Add(Me.btnClearFilters)
         Me.pnlFilter.Controls.Add(Me.GroupBox3)
         Me.pnlFilter.Controls.Add(Me.gbSpecific)
@@ -911,6 +915,28 @@ Partial Class frmMain
         Me.pnlFilter.Name = "pnlFilter"
         Me.pnlFilter.Size = New System.Drawing.Size(349, 180)
         Me.pnlFilter.TabIndex = 12
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btnSortDate)
+        Me.GroupBox1.Location = New System.Drawing.Point(3, 98)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(131, 53)
+        Me.GroupBox1.TabIndex = 16
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Extra Sorting"
+        '
+        'btnSortDate
+        '
+        Me.btnSortDate.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
+        Me.btnSortDate.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSortDate.Location = New System.Drawing.Point(7, 13)
+        Me.btnSortDate.Name = "btnSortDate"
+        Me.btnSortDate.Size = New System.Drawing.Size(117, 20)
+        Me.btnSortDate.TabIndex = 42
+        Me.btnSortDate.Text = "Date Added"
+        Me.btnSortDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSortDate.UseVisualStyleBackColor = True
         '
         'btnClearFilters
         '
@@ -2463,6 +2489,7 @@ Partial Class frmMain
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tabsMain.ResumeLayout(False)
         Me.pnlFilter.ResumeLayout(False)
+        Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.gbSpecific.ResumeLayout(False)
@@ -2746,4 +2773,6 @@ Partial Class frmMain
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents cbFilterFileSource As System.Windows.Forms.ComboBox
     Friend WithEvents MetadataToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnSortDate As System.Windows.Forms.Button
 End Class

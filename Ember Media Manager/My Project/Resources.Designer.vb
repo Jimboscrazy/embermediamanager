@@ -67,6 +67,20 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property asc() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("asc", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property desc() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("desc", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property haslanguage() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("haslanguage", resourceCulture)
