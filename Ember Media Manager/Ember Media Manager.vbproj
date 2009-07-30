@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CD73BF4F-4765-42AE-9C11-16DFA2C7455F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -352,12 +352,15 @@
   <ItemGroup>
     <EmbeddedResource Include="dlgBulkOfflineHolder.resx">
       <DependentUpon>dlgBulkOfflineHolder.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgFileInfo.resx">
       <DependentUpon>dlgFileInfo.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgFIStreamEditor.resx">
       <DependentUpon>dlgFIStreamEditor.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgImgManual.resx">
       <DependentUpon>dlgImgManual.vb</DependentUpon>
