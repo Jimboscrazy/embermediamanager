@@ -1108,12 +1108,12 @@ Public Class frmMain
             Dim MissingFilter As New ArrayList
             If Me.chkFilterMissing.Checked Then
                 With Master.eSettings
-                    If Not .MissingFilterPoster Then MissingFilter.Add("HasPoster = 0")
-                    If Not .MissingFilterFanart Then MissingFilter.Add("HasFanart = 0")
-                    If Not .MissingFilterNFO Then MissingFilter.Add("HasNfo = 0")
-                    If Not .MissingFilterTrailer Then MissingFilter.Add("HasTrailer = 0")
-                    If Not .MissingFilterSubs Then MissingFilter.Add("HasSub = 0")
-                    If Not .MissingFilterExtras Then MissingFilter.Add("HasExtra = 0")
+                    If .MissingFilterPoster Then MissingFilter.Add("HasPoster = 0")
+                    If .MissingFilterFanart Then MissingFilter.Add("HasFanart = 0")
+                    If .MissingFilterNFO Then MissingFilter.Add("HasNfo = 0")
+                    If .MissingFilterTrailer Then MissingFilter.Add("HasTrailer = 0")
+                    If .MissingFilterSubs Then MissingFilter.Add("HasSub = 0")
+                    If .MissingFilterExtras Then MissingFilter.Add("HasExtra = 0")
                 End With
                 filMissing = Strings.Join(MissingFilter.ToArray, " OR ")
                 Me.FilterArray.Add(filMissing)
