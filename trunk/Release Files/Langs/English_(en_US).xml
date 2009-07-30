@@ -626,4 +626,5 @@
   <string id="624">Current Filter</string>
   <string id="625">Meta Data Defaults by File Type</string>
   <string id="626">File Type</string>
+  <string id="627">Selected Items: {0}</string>
 </strings>
