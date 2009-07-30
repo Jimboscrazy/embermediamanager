@@ -593,4 +593,11 @@
   <string id="591">Top 250</string>
   <string id="592">Automatically Rename Files During Multi-Scraper</string>
   <string id="593">Automatically Rename Files During Single-Scraper</string>
+  <string id="594">Metadata Editor</string>
+  <string id="595">Video streams</string>
+  <string id="596">Audio Streams</string>
+  <string id="597">Subtitle Streams</string>
+  <string id="598">Stream Type</string>
+
+
 </strings>
