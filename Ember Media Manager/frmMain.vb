@@ -533,7 +533,7 @@ Public Class frmMain
 
                 Me.aniFilterRaise = Master.eSettings.FilterPanelState
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = 180
+                    Me.pnlFilter.Height = Master.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
                     Me.btnFilterDown.Enabled = True
                     Me.btnFilterUp.Enabled = False
                 Else
@@ -1980,6 +1980,8 @@ Public Class frmMain
         '\\
 
         Try
+            Dim pHeight As Integer = Master.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
+
             If Master.eSettings.InfoPanelAnim Then
                 If Me.aniFilterRaise Then
                     Me.pnlFilter.Height += 5
@@ -1988,7 +1990,7 @@ Public Class frmMain
                 End If
             Else
                 If Me.aniFilterRaise Then
-                    Me.pnlFilter.Height = 180
+                    Me.pnlFilter.Height = pHeight
                 Else
                     Me.pnlFilter.Height = 25
                 End If
@@ -1997,7 +1999,7 @@ Public Class frmMain
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = True
                 Me.btnFilterDown.Enabled = False
-            ElseIf Me.pnlFilter.Height = 180 Then
+            ElseIf Me.pnlFilter.Height = pHeight Then
                 Me.tmrFilterAni.Stop()
                 Me.btnFilterUp.Enabled = False
                 Me.btnFilterDown.Enabled = True
