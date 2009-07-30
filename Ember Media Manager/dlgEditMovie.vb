@@ -103,9 +103,10 @@ Public Class dlgEditMovie
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
 
-            : Dim dFileInfoEdit As New dlgFileInfo
+            Dim dFileInfoEdit As New dlgFileInfo
             dFileInfoEdit.TopLevel = False
             dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
+            dFileInfoEdit.BackColor = Color.White
             dFileInfoEdit.Cancel_Button.Visible = False
             Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
             'dFileInfoEdit.Left = (pnlFileInfo.Width - dFileInfoEdit.Width) / 2
