@@ -39,7 +39,7 @@ Public Class dlgFIStreamEditor
                     stream_v.Aspect = txtARatio.Text
                     stream_v.Width = txtWidth.Text
                     stream_v.Height = txtHeight.Text
-                    stream_v.Scantype = If(rbProgressive.Checked, "Progressive", "Interlaced")
+                    stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
                     stream_v.Duration = txtDuration.Text
                     Return stream_v
                 End If
@@ -90,6 +90,27 @@ Public Class dlgFIStreamEditor
     End Sub
 
     Private Sub dlgFIStreamEditor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
+    End Sub
 
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(613, "Stream Editor")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.GroupBox1.Text = Master.eLang.GetString(595, "Video Streams")
+        Me.Label5.Text = Master.eLang.GetString(614, "Aspect Ratio")
+        Me.rbInterlaced.Text = Master.eLang.GetString(615, "Interlaced")
+        Me.rbProgressive.Text = Master.eLang.GetString(616, "Progressive")
+        Me.Label4.Text = Master.eLang.GetString(604, "Codec")
+        Me.Label3.Text = Master.eLang.GetString(609, "Duration")
+        Me.Label2.Text = Master.eLang.GetString(607, "Height")
+        Me.Label1.Text = Master.eLang.GetString(606, "Width")
+        Me.GroupBox2.Text = Master.eLang.GetString(596, "Audio Streams")
+        Me.Label9.Text = Master.eLang.GetString(611, "Channels")
+        Me.Label7.Text = Me.Label4.Text
+        Me.Label6.Text = Master.eLang.GetString(610, "Language")
+        Me.GroupBox3.Text = Master.eLang.GetString(597, "Subtitle  Streams")
+        Me.chbPrefered.Text = Master.eLang.GetString(612, "Preferred")
+        Me.Label10.Text = Me.Label6.Text
     End Sub
 End Class

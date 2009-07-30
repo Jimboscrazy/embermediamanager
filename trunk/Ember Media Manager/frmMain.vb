@@ -2362,7 +2362,7 @@ Public Class frmMain
         e.Handled = e.KeyCode = Keys.Enter
     End Sub
 
-    Private Sub MetadataToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MetadataToolStripMenuItem.Click
+    Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
         dlgFileInfo.ShowDialog()
     End Sub
 
@@ -3687,6 +3687,7 @@ doCancel:
                 .Label6.Text = Master.eLang.GetString(579, "File Source:")
                 .GroupBox1.Text = Master.eLang.GetString(600, "Extra Sorting")
                 .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
+                .cmnuMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
@@ -4819,12 +4820,10 @@ doCancel:
                     End If
 
                     If Master.eSettings.LevTolerance > 0 AndAlso DoTitleCheck Then
-                        Dim pExt As String = String.Empty
                         Dim pTitle As String = String.Empty
                         If Directory.GetParent(drvRow.Cells(1).Value).Name.ToLower = "video_ts" Then
                             pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value).FullName).Name
                         Else
-                            pExt = Path.GetExtension(drvRow.Cells(1).Value).ToLower
                             If drvRow.Cells(46).Value AndAlso drvRow.Cells(2).Value Then
                                 pTitle = Directory.GetParent(drvRow.Cells(1).Value).Name
                             Else
@@ -4832,8 +4831,7 @@ doCancel:
                             End If
                         End If
 
-                        LevFail = Not pExt = ".vob" AndAlso Not pExt = ".ifo" AndAlso _
-                                  StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
+                        LevFail = StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
 
                         parOutOfTolerance.Value = LevFail
                         drvRow.Cells(47).Value = LevFail

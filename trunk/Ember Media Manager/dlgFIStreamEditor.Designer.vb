@@ -309,7 +309,7 @@ Partial Class dlgFIStreamEditor
         Me.chbPrefered.Name = "chbPrefered"
         Me.chbPrefered.Size = New System.Drawing.Size(66, 17)
         Me.chbPrefered.TabIndex = 23
-        Me.chbPrefered.Text = "Prefered"
+        Me.chbPrefered.Text = "Preferred"
         Me.chbPrefered.UseVisualStyleBackColor = True
         '
         'Label10

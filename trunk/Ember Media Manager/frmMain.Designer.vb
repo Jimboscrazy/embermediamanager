@@ -74,7 +74,7 @@ Partial Class frmMain
         Me.cmnuLock = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuEditMovie = New System.Windows.Forms.ToolStripMenuItem
-        Me.MetadataToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuMetaData = New System.Windows.Forms.ToolStripMenuItem
         Me.GenresToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.LblGenreStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem
         Me.GenreListToolStripComboBox = New System.Windows.Forms.ToolStripComboBox
@@ -718,9 +718,9 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.MetadataToolStripMenuItem, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 276)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 298)
         '
         'cmnuTitle
         '
@@ -772,12 +772,12 @@ Partial Class frmMain
         Me.cmnuEditMovie.Size = New System.Drawing.Size(244, 22)
         Me.cmnuEditMovie.Text = "Edit Movie"
         '
-        'MetadataToolStripMenuItem
+        'cmnuMetaData
         '
-        Me.MetadataToolStripMenuItem.Image = CType(resources.GetObject("MetadataToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.MetadataToolStripMenuItem.Name = "MetadataToolStripMenuItem"
-        Me.MetadataToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
-        Me.MetadataToolStripMenuItem.Text = "Edit Meta Data"
+        Me.cmnuMetaData.Image = CType(resources.GetObject("cmnuMetaData.Image"), System.Drawing.Image)
+        Me.cmnuMetaData.Name = "cmnuMetaData"
+        Me.cmnuMetaData.Size = New System.Drawing.Size(244, 22)
+        Me.cmnuMetaData.Text = "Edit Meta Data"
         '
         'GenresToolStripMenuItem
         '
@@ -2829,7 +2829,7 @@ Partial Class frmMain
     Friend WithEvents chkFilterTolerance As System.Windows.Forms.CheckBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents cbFilterFileSource As System.Windows.Forms.ComboBox
-    Friend WithEvents MetadataToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMetaData As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents btnSortDate As System.Windows.Forms.Button
     Friend WithEvents pnlFilterSource As System.Windows.Forms.Panel

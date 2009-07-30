@@ -503,11 +503,11 @@
         70ylmFrpjgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="MetadataToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="cmnuMetaData.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEQAA
-        CxEBf2RfkQAAA7RJREFUOE+lk2tM02cUxk8FdzMBKXMWtmUmgwpUgRY2jCxuU9hAAoiyTLpwmahsuAEV
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDgAA
+        Cw4BQL7hQQAAA7RJREFUOE+lk2tM02cUxk8FdzMBKXMWtmUmgwpUgRY2jCxuU9hAAoiyTLpwmahsuAEV
         YWUUxzYBC5SKOhR0tEphLaUFm94s9n5Zg9VCKWRN1xvMIHILl8Xg5v77V7PN73vy/pLnfXLO+XLeF4Mg
         CPwvLcgk8CyLCjnGkZlaN44PZ3mO5VOmqiuKxyPDWY6UZMa8RPziimUEltYd8Ms8F1yLEoB5g/4/jAa/
         D5QTdy4LtwQj0rhoj/xtomVwKxYZeh2HSEjxr80oRLDy2AOOfwb4rEZ4lqlRI2ao9uiFn0pzZdJvyxuG

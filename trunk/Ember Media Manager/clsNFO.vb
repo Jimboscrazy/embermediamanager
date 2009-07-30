@@ -222,26 +222,26 @@ Public Class NFO
 
                 If Not IsNothing(miFI.StreamDetails) Then
                     If miFI.StreamDetails.Video.Count > 0 Then
-                        strOutput.AppendFormat("Video Streams: {0}{1}", miFI.StreamDetails.Video.Count.ToString, vbNewLine)
+                        strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(595, "Video Streams"), miFI.StreamDetails.Video.Count.ToString, vbNewLine)
                     End If
 
                     If miFI.StreamDetails.Audio.Count > 0 Then
-                        strOutput.AppendFormat("Audio Streams: {0}{1}", miFI.StreamDetails.Audio.Count.ToString, vbNewLine)
+                        strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(596, "Audio Streams"), miFI.StreamDetails.Audio.Count.ToString, vbNewLine)
                     End If
 
                     If miFI.StreamDetails.Subtitle.Count > 0 Then
-                        strOutput.AppendFormat("Subtitle Streams: {0}{1}", miFI.StreamDetails.Subtitle.Count.ToString, vbNewLine)
+                        strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(597, "Subtitle  Streams"), miFI.StreamDetails.Subtitle.Count.ToString, vbNewLine)
                     End If
 
                     For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
-                        strOutput.AppendFormat("{0}Video Stream {1}{0}", vbNewLine, iVS)
+                        strOutput.AppendFormat("{0}{1} {2}{0}", vbNewLine, Master.eLang.GetString(617, "Video Stream"), iVS)
                         If Not String.IsNullOrEmpty(miVideo.Width) AndAlso Not String.IsNullOrEmpty(miVideo.Height) Then
-                            strOutput.AppendFormat("- Size: {0}x{1}{2}", miVideo.Width, miVideo.Height, vbNewLine)
+                            strOutput.AppendFormat("- {0}{1}", String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), miVideo.Width, miVideo.Height), vbNewLine)
                         End If
-                        If Not String.IsNullOrEmpty(miVideo.Aspect) Then strOutput.AppendFormat("- Display Aspect Ratio: {0}{1}", miVideo.Aspect, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- Scan Type: {0}{1}", miVideo.Scantype, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miVideo.Codec, vbNewLine)
-                        If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- Duration: {0}", miVideo.Duration)
+                        If Not String.IsNullOrEmpty(miVideo.Aspect) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(614, "Aspect Ratio"), miVideo.Aspect, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, vbNewLine)
+                        If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(609, "Duration"), miVideo.Duration)
                         iVS += 1
                     Next
 
@@ -249,10 +249,10 @@ Public Class NFO
 
                     For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
                         'audio
-                        strOutput.AppendFormat("{0}Audio Stream {1}{0}", vbNewLine, iAS.ToString)
-                        If Not String.IsNullOrEmpty(miAudio.Codec) Then strOutput.AppendFormat("- Codec: {0}{1}", miAudio.Codec, vbNewLine)
-                        If Not String.IsNullOrEmpty(miAudio.Channels) Then strOutput.AppendFormat("- Channels: {0}{1}", miAudio.Channels, vbNewLine)
-                        If Not String.IsNullOrEmpty(miAudio.LongLanguage) Then strOutput.AppendFormat("- Language: {0}", miAudio.LongLanguage)
+                        strOutput.AppendFormat("{0}{1} {2}{0}", vbNewLine, Master.eLang.GetString(618, "Audio Stream"), iAS.ToString)
+                        If Not String.IsNullOrEmpty(miAudio.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miAudio.Codec, vbNewLine)
+                        If Not String.IsNullOrEmpty(miAudio.Channels) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(611, "Channels"), miAudio.Channels, vbNewLine)
+                        If Not String.IsNullOrEmpty(miAudio.LongLanguage) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miAudio.LongLanguage)
                         iAS += 1
                     Next
 
@@ -260,8 +260,8 @@ Public Class NFO
 
                     For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
                         'subtitles
-                        strOutput.AppendFormat("{0}Subtitle {1}{0}", vbNewLine, iSS.ToString)
-                        If Not String.IsNullOrEmpty(miSub.LongLanguage) Then strOutput.AppendFormat("- Language: {0}", miSub.LongLanguage)
+                        strOutput.AppendFormat("{0}{1} {2}{0}", vbNewLine, Master.eLang.GetString(619, "Subtitle Stream"), iSS.ToString)
+                        If Not String.IsNullOrEmpty(miSub.LongLanguage) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miSub.LongLanguage)
                         iSS += 1
                     Next
                 End If
