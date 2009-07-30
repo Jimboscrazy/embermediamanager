@@ -38,20 +38,22 @@ Public Class dlgFileInfo
             i.SubItems.Add("Duration")
             g.Items.Add(i)
             lvStreams.Items.Add(i)
-
-            For Each v As MediaInfo.Video In _movie.Movie.FileInfo.StreamDetails.Video
-                i = New ListViewItem
-                i.Tag = ""
-                i.Text = c
-                i.SubItems.Add(v.Codec)
-                i.SubItems.Add(v.Scantype)
-                i.SubItems.Add(v.Width)
-                i.SubItems.Add(v.Height)
-                i.SubItems.Add(v.Aspect)
-                i.SubItems.Add(v.Duration)
-                g.Items.Add(i)
-                lvStreams.Items.Add(i)
-                c += 1
+            Dim v As MediaInfo.Video
+            For c = 0 To _movie.Movie.FileInfo.StreamDetails.Video.Count - 1
+                v = _movie.Movie.FileInfo.StreamDetails.Video(c)
+                If Not v Is Nothing Then
+                    i = New ListViewItem
+                    i.Tag = Master.eLang.GetString(595, "Video Stream")
+                    i.Text = c
+                    i.SubItems.Add(v.Codec)
+                    i.SubItems.Add(v.Scantype)
+                    i.SubItems.Add(v.Width)
+                    i.SubItems.Add(v.Height)
+                    i.SubItems.Add(v.Aspect)
+                    i.SubItems.Add(v.Duration)
+                    g.Items.Add(i)
+                    lvStreams.Items.Add(i)
+                End If
             Next
         End If
         If _movie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
@@ -70,17 +72,19 @@ Public Class dlgFileInfo
             i.SubItems.Add("Channels")
             g.Items.Add(i)
             lvStreams.Items.Add(i)
-
-            For Each v As MediaInfo.Audio In _movie.Movie.FileInfo.StreamDetails.Audio
-                i = New ListViewItem
-                i.Tag = ""
-                i.Text = c
-                i.SubItems.Add(v.Codec)
-                i.SubItems.Add(v.LongLanguage)
-                i.SubItems.Add(v.Channels)
-                g.Items.Add(i)
-                lvStreams.Items.Add(i)
-                c += 1
+            Dim a As MediaInfo.Audio
+            For c = 0 To _movie.Movie.FileInfo.StreamDetails.Audio.Count - 1
+                a = _movie.Movie.FileInfo.StreamDetails.Audio(c)
+                If Not a Is Nothing Then
+                    i = New ListViewItem
+                    i.Tag = Master.eLang.GetString(596, "Audio Stream")
+                    i.Text = c
+                    i.SubItems.Add(a.Codec)
+                    i.SubItems.Add(a.LongLanguage)
+                    i.SubItems.Add(a.Channels)
+                    g.Items.Add(i)
+                    lvStreams.Items.Add(i)
+                End If
             Next
         End If
         If _movie.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 Then
@@ -98,25 +102,26 @@ Public Class dlgFileInfo
             i.SubItems.Add("Prefered")
             g.Items.Add(i)
             lvStreams.Items.Add(i)
-
-            For Each v As MediaInfo.Subtitle In _movie.Movie.FileInfo.StreamDetails.Subtitle
-                i = New ListViewItem
-                i.Tag = ""
-                i.Text = c
-                i.SubItems.Add(v.LongLanguage)
-                i.SubItems.Add(v.HasPreferred)
-
-                g.Items.Add(i)
-                lvStreams.Items.Add(i)
-                c += 1
+            Dim s As MediaInfo.Subtitle
+            For c = 0 To _movie.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
+                s = _movie.Movie.FileInfo.StreamDetails.Subtitle(c)
+                If Not s Is Nothing Then
+                    i = New ListViewItem
+                    i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
+                    i.Text = c
+                    i.SubItems.Add(s.LongLanguage)
+                    i.SubItems.Add(s.HasPreferred)
+                    g.Items.Add(i)
+                    lvStreams.Items.Add(i)
+                End If
             Next
         End If
     End Sub
     Private Sub SetUp()
         cbStreamType.Items.Clear()
-        cbStreamType.Items.Add(Master.eLang.GetString(599, "Video"))
-        cbStreamType.Items.Add(Master.eLang.GetString(600, "Audio"))
-        cbStreamType.Items.Add(Master.eLang.GetString(601, "Subtilte"))
+        cbStreamType.Items.Add(Master.eLang.GetString(595, "Video Stream"))
+        cbStreamType.Items.Add(Master.eLang.GetString(596, "Audio Stream"))
+        cbStreamType.Items.Add(Master.eLang.GetString(597, "Subtitle Stream"))
         Me.Text = Master.eLang.GetString(594, "Metadata Editor")
         Me.Label4.Text = Master.eLang.GetString(598, "Stream Type")
     End Sub
@@ -128,19 +133,83 @@ Public Class dlgFileInfo
                 btnNewSet.Enabled = True
                 btnEditSet.Enabled = False
                 btnRemoveSet.Enabled = False
-                cbStreamType.Enabled = True
             Else
                 btnNewSet.Enabled = False
                 btnEditSet.Enabled = True
                 btnRemoveSet.Enabled = True
-                cbStreamType.Enabled = False
+                cbStreamType.SelectedIndex = -1
             End If
 
         Else
             btnNewSet.Enabled = True
             btnEditSet.Enabled = False
             btnRemoveSet.Enabled = False
-            cbStreamType.Enabled = False
+        End If
+    End Sub
+
+    Private Sub cbStreamType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbStreamType.SelectedIndexChanged
+        If cbStreamType.SelectedIndex <> -1 Then
+            btnNewSet.Enabled = True
+            btnEditSet.Enabled = False
+            btnRemoveSet.Enabled = False
+            lvStreams.SelectedItems.Clear()
+        End If
+    End Sub
+
+    Private Sub btnRemoveSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSet.Click
+        If lvStreams.SelectedItems.Count > 0 Then
+            Dim i As ListViewItem = lvStreams.SelectedItems(0)
+            If i.Tag = Master.eLang.GetString(595, "Video Stream") Then
+                _movie.Movie.FileInfo.StreamDetails.Video.RemoveAt(Convert.ToInt16(i.Text))
+            End If
+            If i.Tag = Master.eLang.GetString(596, "Audio Stream") Then
+                _movie.Movie.FileInfo.StreamDetails.Audio.RemoveAt(Convert.ToInt16(i.Text))
+            End If
+            If i.Tag = Master.eLang.GetString(597, "Subtitle Stream") Then
+                _movie.Movie.FileInfo.StreamDetails.Subtitle.RemoveAt(Convert.ToInt16(i.Text))
+            End If
+        End If
+        LoadInfo()
+
+
+    End Sub
+
+    Private Sub btnEditSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSet.Click
+        If lvStreams.SelectedItems.Count > 0 Then
+            Dim i As ListViewItem = lvStreams.SelectedItems(0)
+            Using dEditStream As New dlgFIStreamEditor
+                Dim stream As Object = dEditStream.ShowDialog(i.Tag)
+                If i.Tag = Master.eLang.GetString(595, "Video Stream") Then
+                    _movie.Movie.FileInfo.StreamDetails.Video.RemoveAt(Convert.ToInt16(i.Text))
+                    _movie.Movie.FileInfo.StreamDetails.Video.Add(stream)
+                End If
+                If i.Tag = Master.eLang.GetString(596, "Audio Stream") Then
+                    _movie.Movie.FileInfo.StreamDetails.Audio.Add(stream)
+                End If
+                If i.Tag = Master.eLang.GetString(597, "Subtitle Stream") Then
+                    _movie.Movie.FileInfo.StreamDetails.Subtitle.Add(stream)
+                End If
+                LoadInfo()
+            End Using
+        End If
+    End Sub
+
+    Private Sub btnNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewSet.Click
+        If cbStreamType.SelectedIndex >= 0 Then
+            Using dEditStream As New dlgFIStreamEditor
+                Dim stream As New Object
+                stream = dEditStream.ShowDialog(cbStreamType.SelectedItem)
+                If cbStreamType.SelectedItem = Master.eLang.GetString(595, "Video Stream") Then
+                    _movie.Movie.FileInfo.StreamDetails.Video.Add(stream)
+                End If
+                If cbStreamType.SelectedItem = Master.eLang.GetString(596, "Audio Stream") Then
+                    _movie.Movie.FileInfo.StreamDetails.Audio.Add(stream)
+                End If
+                If cbStreamType.SelectedItem = Master.eLang.GetString(597, "Subtitle Stream") Then
+                    _movie.Movie.FileInfo.StreamDetails.Subtitle.Add(stream)
+                End If
+                LoadInfo()
+            End Using
         End If
     End Sub
 End Class

@@ -46,7 +46,7 @@ Partial Class dlgFIStreamEditor
         Me.Label6 = New System.Windows.Forms.Label
         Me.cbAudioLanguage = New System.Windows.Forms.ComboBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.chbSubsExternal = New System.Windows.Forms.CheckBox
+        Me.chbPrefered = New System.Windows.Forms.CheckBox
         Me.Label10 = New System.Windows.Forms.Label
         Me.cbSubsLanguage = New System.Windows.Forms.ComboBox
         Me.TableLayoutPanel1.SuspendLayout()
@@ -103,12 +103,13 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.txtHeight)
         Me.GroupBox1.Controls.Add(Me.txtWidth)
-        Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox1.Location = New System.Drawing.Point(8, 11)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(191, 178)
         Me.GroupBox1.TabIndex = 4
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Video Streams"
+        Me.GroupBox1.Visible = False
         '
         'Label5
         '
@@ -134,13 +135,13 @@ Partial Class dlgFIStreamEditor
         Me.rbInterlaced.Name = "rbInterlaced"
         Me.rbInterlaced.Size = New System.Drawing.Size(72, 17)
         Me.rbInterlaced.TabIndex = 11
-        Me.rbInterlaced.TabStop = True
         Me.rbInterlaced.Text = "Interlaced"
         Me.rbInterlaced.UseVisualStyleBackColor = True
         '
         'rbProgressive
         '
         Me.rbProgressive.AutoSize = True
+        Me.rbProgressive.Checked = True
         Me.rbProgressive.Location = New System.Drawing.Point(25, 45)
         Me.rbProgressive.Name = "rbProgressive"
         Me.rbProgressive.Size = New System.Drawing.Size(80, 17)
@@ -232,6 +233,7 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox2.TabIndex = 5
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Audio Streams"
+        Me.GroupBox2.Visible = False
         '
         'Label9
         '
@@ -289,8 +291,7 @@ Partial Class dlgFIStreamEditor
         '
         'GroupBox3
         '
-        Me.GroupBox3.Controls.Add(Me.GroupBox1)
-        Me.GroupBox3.Controls.Add(Me.chbSubsExternal)
+        Me.GroupBox3.Controls.Add(Me.chbPrefered)
         Me.GroupBox3.Controls.Add(Me.Label10)
         Me.GroupBox3.Controls.Add(Me.cbSubsLanguage)
         Me.GroupBox3.Location = New System.Drawing.Point(7, 12)
@@ -299,16 +300,17 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox3.TabIndex = 6
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Subtitle  Streams"
+        Me.GroupBox3.Visible = False
         '
-        'chbSubsExternal
+        'chbPrefered
         '
-        Me.chbSubsExternal.AutoSize = True
-        Me.chbSubsExternal.Location = New System.Drawing.Point(79, 48)
-        Me.chbSubsExternal.Name = "chbSubsExternal"
-        Me.chbSubsExternal.Size = New System.Drawing.Size(64, 17)
-        Me.chbSubsExternal.TabIndex = 23
-        Me.chbSubsExternal.Text = "External"
-        Me.chbSubsExternal.UseVisualStyleBackColor = True
+        Me.chbPrefered.AutoSize = True
+        Me.chbPrefered.Location = New System.Drawing.Point(79, 48)
+        Me.chbPrefered.Name = "chbPrefered"
+        Me.chbPrefered.Size = New System.Drawing.Size(66, 17)
+        Me.chbPrefered.TabIndex = 23
+        Me.chbPrefered.Text = "Prefered"
+        Me.chbPrefered.UseVisualStyleBackColor = True
         '
         'Label10
         '
@@ -335,6 +337,7 @@ Partial Class dlgFIStreamEditor
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(207, 231)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
@@ -378,7 +381,7 @@ Partial Class dlgFIStreamEditor
     Friend WithEvents cbAudioLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents cbAudioChannels As System.Windows.Forms.ComboBox
-    Friend WithEvents chbSubsExternal As System.Windows.Forms.CheckBox
+    Friend WithEvents chbPrefered As System.Windows.Forms.CheckBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents cbSubsLanguage As System.Windows.Forms.ComboBox
 

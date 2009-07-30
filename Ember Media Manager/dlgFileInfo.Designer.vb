@@ -22,11 +22,11 @@ Partial Class dlgFileInfo
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim ListViewGroup4 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Video Streams", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup5 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Audio Streams", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup6 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Subtitles Stream", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "H264", "Progressive"}, -1)
-        Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "AC3", "English"}, -1)
+        Dim ListViewGroup7 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Video Streams", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup8 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Audio Streams", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup9 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Subtitles Stream", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem5 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "H264", "Progressive"}, -1)
+        Dim ListViewItem6 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "AC3", "English"}, -1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgFileInfo))
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.lvStreams = New System.Windows.Forms.ListView
@@ -58,17 +58,17 @@ Partial Class dlgFileInfo
         '
         Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7})
         Me.lvStreams.FullRowSelect = True
-        ListViewGroup4.Header = "Video Streams"
-        ListViewGroup4.Name = "VideoStreams"
-        ListViewGroup5.Header = "Audio Streams"
-        ListViewGroup5.Name = "AudioStreams"
-        ListViewGroup6.Header = "Subtitles Stream"
-        ListViewGroup6.Name = "SubtitlesStream"
-        Me.lvStreams.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup4, ListViewGroup5, ListViewGroup6})
+        ListViewGroup7.Header = "Video Streams"
+        ListViewGroup7.Name = "VideoStreams"
+        ListViewGroup8.Header = "Audio Streams"
+        ListViewGroup8.Name = "AudioStreams"
+        ListViewGroup9.Header = "Subtitles Stream"
+        ListViewGroup9.Name = "SubtitlesStream"
+        Me.lvStreams.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup7, ListViewGroup8, ListViewGroup9})
         Me.lvStreams.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem3.Group = ListViewGroup4
-        ListViewItem4.Group = ListViewGroup5
-        Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3, ListViewItem4})
+        ListViewItem5.Group = ListViewGroup7
+        ListViewItem6.Group = ListViewGroup8
+        Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem5, ListViewItem6})
         Me.lvStreams.Location = New System.Drawing.Point(4, 7)
         Me.lvStreams.MultiSelect = False
         Me.lvStreams.Name = "lvStreams"
@@ -133,6 +133,7 @@ Partial Class dlgFileInfo
         '
         'btnNewSet
         '
+        Me.btnNewSet.Enabled = False
         Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
         Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnNewSet.Location = New System.Drawing.Point(187, 241)
@@ -175,6 +176,7 @@ Partial Class dlgFileInfo
         Me.Controls.Add(Me.btnNewSet)
         Me.Controls.Add(Me.lvStreams)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgFileInfo"
