@@ -28,9 +28,12 @@ Partial Class dlgWizard
         Me.btnBack = New System.Windows.Forms.Button
         Me.btnNext = New System.Windows.Forms.Button
         Me.Panel1 = New System.Windows.Forms.Panel
+        Me.Label32 = New System.Windows.Forms.Label
+        Me.cbIntLang = New System.Windows.Forms.ComboBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label1 = New System.Windows.Forms.Label
         Me.Panel3 = New System.Windows.Forms.Panel
+        Me.chkMovieNameMultiOnly = New System.Windows.Forms.CheckBox
         Me.GroupBox7 = New System.Windows.Forms.GroupBox
         Me.chkMovieNameNFO = New System.Windows.Forms.CheckBox
         Me.chkMovieNFO = New System.Windows.Forms.CheckBox
@@ -64,9 +67,6 @@ Partial Class dlgWizard
         Me.Label8 = New System.Windows.Forms.Label
         Me.Label6 = New System.Windows.Forms.Label
         Me.Label7 = New System.Windows.Forms.Label
-        Me.chkMovieNameMultiOnly = New System.Windows.Forms.CheckBox
-        Me.Label32 = New System.Windows.Forms.Label
-        Me.cbIntLang = New System.Windows.Forms.ComboBox
         Me.Panel1.SuspendLayout()
         Me.Panel3.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -130,6 +130,24 @@ Partial Class dlgWizard
         Me.Panel1.Size = New System.Drawing.Size(372, 323)
         Me.Panel1.TabIndex = 4
         '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Location = New System.Drawing.Point(107, 241)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(103, 13)
+        Me.Label32.TabIndex = 19
+        Me.Label32.Text = "Interface Language:"
+        '
+        'cbIntLang
+        '
+        Me.cbIntLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbIntLang.FormattingEnabled = True
+        Me.cbIntLang.Location = New System.Drawing.Point(110, 258)
+        Me.cbIntLang.Name = "cbIntLang"
+        Me.cbIntLang.Size = New System.Drawing.Size(148, 21)
+        Me.cbIntLang.TabIndex = 18
+        '
         'Label2
         '
         Me.Label2.Location = New System.Drawing.Point(17, 46)
@@ -164,6 +182,15 @@ Partial Class dlgWizard
         Me.Panel3.Size = New System.Drawing.Size(372, 323)
         Me.Panel3.TabIndex = 6
         Me.Panel3.Visible = False
+        '
+        'chkMovieNameMultiOnly
+        '
+        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(19, 237)
+        Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
+        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(199, 42)
+        Me.chkMovieNameMultiOnly.TabIndex = 69
+        Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
+        Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
         '
         'GroupBox7
         '
@@ -352,7 +379,7 @@ Partial Class dlgWizard
         Me.PictureBox1.Location = New System.Drawing.Point(3, 7)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(157, 353)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
@@ -483,33 +510,6 @@ Partial Class dlgWizard
         Me.Label7.TabIndex = 0
         Me.Label7.Text = "That's it!" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Ember Media Manager is Ready!"
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'chkMovieNameMultiOnly
-        '
-        Me.chkMovieNameMultiOnly.Location = New System.Drawing.Point(19, 237)
-        Me.chkMovieNameMultiOnly.Name = "chkMovieNameMultiOnly"
-        Me.chkMovieNameMultiOnly.Size = New System.Drawing.Size(199, 42)
-        Me.chkMovieNameMultiOnly.TabIndex = 69
-        Me.chkMovieNameMultiOnly.Text = "Use <movie> Only for Folders with Multiple Movies"
-        Me.chkMovieNameMultiOnly.UseVisualStyleBackColor = True
-        '
-        'Label32
-        '
-        Me.Label32.AutoSize = True
-        Me.Label32.Location = New System.Drawing.Point(107, 241)
-        Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(103, 13)
-        Me.Label32.TabIndex = 19
-        Me.Label32.Text = "Interface Language:"
-        '
-        'cbIntLang
-        '
-        Me.cbIntLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbIntLang.FormattingEnabled = True
-        Me.cbIntLang.Location = New System.Drawing.Point(110, 258)
-        Me.cbIntLang.Name = "cbIntLang"
-        Me.cbIntLang.Size = New System.Drawing.Size(148, 21)
-        Me.cbIntLang.TabIndex = 18
         '
         'dlgWizard
         '
