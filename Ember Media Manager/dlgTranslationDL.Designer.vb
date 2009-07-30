@@ -109,9 +109,9 @@ Partial Class dlgTranslationDL
         Me.lblStatus.AutoSize = True
         Me.lblStatus.Location = New System.Drawing.Point(3, 10)
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(194, 13)
+        Me.lblStatus.Size = New System.Drawing.Size(171, 13)
         Me.lblStatus.TabIndex = 1
-        Me.lblStatus.Text = "Downloading available translations list..."
+        Me.lblStatus.Text = "Downloading available addon list..."
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'pbStatus
@@ -139,7 +139,7 @@ Partial Class dlgTranslationDL
         Me.Name = "dlgTranslationDL"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Download Translation"
+        Me.Text = "Download Addons"
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlStatus.PerformLayout()

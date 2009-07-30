@@ -129,6 +129,8 @@ Public Class HTTP
                         basePath = Path.Combine(basePath, folders(i))
                     Next
                     outFile = Path.Combine(basePath, URL.Substring(URL.LastIndexOf("/") + 1))
+                Case Type = "movietheme"
+                    outFile = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Themes", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
             End Select
 
             If Not String.IsNullOrEmpty(outFile) AndAlso wrResponse.ContentLength > 0 Then

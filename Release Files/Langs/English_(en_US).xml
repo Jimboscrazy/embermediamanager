@@ -442,11 +442,11 @@
   <string id="440">Whitelist Video Extensions</string>
   <string id="441">Whitelisted Extensions:</string>
   <string id="442">WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.</string>
-  <string id="443">Download Translation</string>
+  <string id="443">Download Addons</string>
   <string id="444">File</string>
   <string id="445">Last Update</string>
-  <string id="446">Downloading available translations list...</string>
-  <string id="447">Downloading selected translation files...</string>
+  <string id="446">Downloading available addons list...</string>
+  <string id="447">Downloading selected addon files...</string>
   <string id="448">Translation File</string>
   <string id="449">Template File: </string>
   <string id="450">Template</string>
@@ -619,4 +619,5 @@
   <string id="617">Video Stream</string>
   <string id="618">Audio Stream</string>
   <string id="619">Subtitle Stream</string>
+  <string id="620">Movie Theme</string>
 </strings>

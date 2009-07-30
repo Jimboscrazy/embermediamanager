@@ -121,6 +121,7 @@ Public Class dlgSettings
             Me.LoadGenreLangs()
             Me.LoadIntLangs()
             Me.LoadLangs()
+            Me.LoadThemes()
             Me.FillSettings()
 
             Me.btnApply.Enabled = False
@@ -1301,6 +1302,9 @@ Public Class dlgSettings
             If dTranslationDL.ShowDialog = Windows.Forms.DialogResult.OK Then
                 Me.LoadIntLangs()
                 Me.cbIntLang.SelectedItem = Master.eSettings.Language
+
+                Me.LoadThemes()
+                Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
             End If
         End Using
     End Sub
@@ -1319,6 +1323,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub cbAutoETSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAutoETSize.SelectedIndexChanged
+        Me.btnApply.Enabled = True
+    End Sub
+
+    Private Sub cbMovieTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieTheme.SelectedIndexChanged
         Me.btnApply.Enabled = True
     End Sub
 #End Region '*** Form/Controls
@@ -1582,6 +1590,7 @@ Public Class dlgSettings
 
             Master.eSettings.AutoRenameMulti = Me.chkRenameMulti.Checked
             Master.eSettings.AutoRenameSingle = Me.chkRenameSingle.Checked
+            Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
 
             Master.eSettings.Save()
 
@@ -1807,6 +1816,7 @@ Public Class dlgSettings
 
             Me.chkRenameMulti.Checked = Master.eSettings.AutoRenameMulti
             Me.chkRenameSingle.Checked = Master.eSettings.AutoRenameSingle
+            Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -1847,6 +1857,22 @@ Public Class dlgSettings
             End Try
             alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)
             Me.cbIntLang.Items.AddRange(alLangs.ToArray)
+        End If
+
+    End Sub
+
+    Private Sub LoadThemes()
+
+        Me.cbMovieTheme.Items.Clear()
+        If Directory.Exists(Path.Combine(Application.StartupPath, "Themes")) Then
+            Dim alT As New ArrayList
+            Dim alThemes As New ArrayList
+            Try
+                alT.AddRange(Directory.GetFiles(Path.Combine(Application.StartupPath, "Themes"), "movie-*.xml"))
+            Catch
+            End Try
+            alThemes.AddRange(alT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movie-", String.Empty)).ToArray)
+            Me.cbMovieTheme.Items.AddRange(alThemes.ToArray)
         End If
 
     End Sub
@@ -2054,6 +2080,8 @@ Public Class dlgSettings
         Me.chkRenameMulti.Text = Master.eLang.GetString(592, "Automatically Rename Files During Multi-Scraper")
         Me.chkRenameSingle.Text = Master.eLang.GetString(593, "Automatically Rename Files During Single-Scraper")
         Me.chkAutoETSize.Text = Master.eLang.GetString(599, "Download All Fanart Images of the Following Size as Extrathumbs")
+        Me.Label35.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
+        Me.btnDLTrans.Text = Master.eLang.GetString(443, "Download Addons")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
