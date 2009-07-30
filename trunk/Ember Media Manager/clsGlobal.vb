@@ -1244,4 +1244,7 @@ Public Class Master
         End Try
     End Sub
 
+    Public Shared Function Quantize(ByVal iNumber As Integer, ByVal iMultiple As Integer) As Integer
+        Return System.Math.Round(iNumber / iMultiple, 0) * iMultiple
+    End Function
 End Class

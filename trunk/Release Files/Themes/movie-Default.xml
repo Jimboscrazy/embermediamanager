@@ -40,7 +40,7 @@ fontstyle code 5.
     <backcolor>-2302756</backcolor>
     
     <object name="lblInfoPanelHeader">
-      <width>655</width>
+      <width>647</width>
       <height>17</height>
       <left>3</left>
       <top>3</top>
@@ -55,7 +55,7 @@ fontstyle code 5.
     <object name="btnUp">
       <width>30</width>
       <height>22</height>
-      <left>560</left>
+      <left>552</left>
       <top>1</top>
       <anchor>9</anchor>
     </object>
@@ -63,7 +63,7 @@ fontstyle code 5.
     <object name="btnMid">
       <width>30</width>
       <height>22</height>
-      <left>592</left>
+      <left>584</left>
       <top>1</top>
       <anchor>9</anchor>
     </object>
@@ -71,13 +71,13 @@ fontstyle code 5.
     <object name="btnDown">
       <width>30</width>
       <height>22</height>
-      <left>624</left>
+      <left>616</left>
       <top>1</top>
       <anchor>9</anchor>
     </object>
     
     <object name="lblDirectorHeader">
-      <width>138</width>
+      <width>162</width>
       <height>17</height>
       <left>3</left>
       <top>27</top>
@@ -90,7 +90,7 @@ fontstyle code 5.
     </object>
     
     <object name="lblDirector">
-      <width>138</width>
+      <width>162</width>
       <height>16</height>
       <left>3</left>
       <top>48</top>
@@ -105,7 +105,7 @@ fontstyle code 5.
     <object name="lblReleaseDateHeader">
       <width>105</width>
       <height>17</height>
-      <left>147</left>
+      <left>170</left>
       <top>27</top>
       <backcolor>-9868951</backcolor>
       <forecolor>-1</forecolor>
@@ -129,8 +129,8 @@ fontstyle code 5.
     </object>
     
     <object name="pnlTop250">
-      <left>277</left>
-      <top>28</top>
+      <left>280</left>
+      <top>27</top>
       <backcolor>-2302756</backcolor>
       <anchor>9</anchor>
     </object>
@@ -160,7 +160,7 @@ fontstyle code 5.
     <!-- END INTERNAL TO PNLTOP250 -->
     
     <object name="lblOutlineHeader">
-      <width>341</width>
+      <width>333</width>
       <height>17</height>
       <left>3</left>
       <top>81</top>
@@ -173,7 +173,7 @@ fontstyle code 5.
     </object>
     
     <object name="txtOutline">
-      <width>341</width>
+      <width>333</width>
       <height>78</height>
       <left>3</left>
       <top>103</top>
@@ -212,9 +212,9 @@ fontstyle code 5.
     </object>
     
     <object name="lblCertsHeader">
-      <width>228</width>
+      <width>219</width>
       <height>17</height>
-      <left>116</left>
+      <left>117</left>
       <top>188</top>
       <backcolor>-9868951</backcolor>
       <forecolor>-1</forecolor>
@@ -225,9 +225,9 @@ fontstyle code 5.
     </object>
     
     <object name="txtCerts">
-      <width>228</width>
+      <width>219</width>
       <height>20</height>
-      <left>116</left>
+      <left>117</left>
       <top>208</top>
       <backcolor>-1</backcolor>
       <forecolor>-16777216</forecolor>
@@ -238,7 +238,7 @@ fontstyle code 5.
     </object>
     
     <object name="lblFilePathHeader">
-      <width>340</width>
+      <width>333</width>
       <height>17</height>
       <left>3</left>
       <top>234</top>
@@ -251,7 +251,7 @@ fontstyle code 5.
     </object>
     
     <object name="txtFilePath">
-      <width>319</width>
+      <width>311</width>
       <height>20</height>
       <left>3</left>
       <top>254</top>
@@ -266,7 +266,7 @@ fontstyle code 5.
     <object name="btnPlay">
       <width>20</width>
       <height>20</height>
-      <left>324</left>
+      <left>317</left>
       <top>254</top>
       <anchor>9</anchor>
     </object>
@@ -274,7 +274,7 @@ fontstyle code 5.
     <object name="pnlActors">
       <width>302</width>
       <height>244</height>
-      <left>356</left>
+      <left>348</left>
       <top>29</top>
       <backcolor>-2302756</backcolor>
       <anchor>9</anchor>
@@ -327,7 +327,7 @@ fontstyle code 5.
     <!-- END INTERNAL TO PNLACTORS -->
     
     <object name="lblPlotHeader">
-      <width>347</width>
+      <width>333</width>
       <height>17</height>
       <left>3</left>
       <top>282</top>
@@ -340,7 +340,7 @@ fontstyle code 5.
     </object>
     
     <object name="txtPlot">
-      <width>347</width>
+      <width>333</width>
       <height>184</height>
       <left>3</left>
       <top>303</top>
@@ -355,7 +355,7 @@ fontstyle code 5.
     <object name="lblMetaDataHeader">
       <width>294</width>
       <height>17</height>
-      <left>358</left>
+      <left>349</left>
       <top>282</top>
       <backcolor>-9868951</backcolor>
       <forecolor>-1</forecolor>
@@ -368,7 +368,7 @@ fontstyle code 5.
     <object name="btnMetaDataRefresh">
       <width>75</width>
       <height>23</height>
-      <left>582</left>
+      <left>574</left>
       <top>278</top>
       <anchor>9</anchor>
       <font>Microsoft Sans Serif</font>
@@ -379,7 +379,7 @@ fontstyle code 5.
     <object name="txtMetaData">
       <width>296</width>
       <height>184</height>
-      <left>360</left>
+      <left>349</left>
       <top>303</top>
       <backcolor>-2302756</backcolor>
       <forecolor>-16777216</forecolor>
