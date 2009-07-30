@@ -38,6 +38,8 @@ fontstyle code 5.
    
   <infopanel>
     <backcolor>-2302756</backcolor>
+    <ipup>500</ipup> <!-- Must be in multiples of 5!! -->
+    <ipmid>280</ipmid> <!-- Must be in multiples of 5!! -->
     
     <object name="lblInfoPanelHeader">
       <width>647</width>

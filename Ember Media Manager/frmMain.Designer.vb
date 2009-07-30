@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -264,6 +264,13 @@ Partial Class frmMain
         Me.mnuFilterAutoTrailer = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuFilterAutoMI = New System.Windows.Forms.ToolStripMenuItem
         Me.AskRequireInputIfNoExactMatchToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskExtra = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskMI = New System.Windows.Forms.ToolStripMenuItem
         Me.CustomUpdaterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripSplitButton
         Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripSplitButton
@@ -275,13 +282,6 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.mnuFilterAskAll = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuFilterAskNfo = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuFilterAskPoster = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuFilterAskFanart = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuFilterAskExtra = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuFilterAskMI = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -713,8 +713,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2521,6 +2521,48 @@ Partial Class frmMain
         Me.AskRequireInputIfNoExactMatchToolStripMenuItem1.Size = New System.Drawing.Size(271, 22)
         Me.AskRequireInputIfNoExactMatchToolStripMenuItem1.Text = "Ask (Require Input If No Exact Match)"
         '
+        'mnuFilterAskAll
+        '
+        Me.mnuFilterAskAll.Name = "mnuFilterAskAll"
+        Me.mnuFilterAskAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskAll.Text = "All Items"
+        '
+        'mnuFilterAskNfo
+        '
+        Me.mnuFilterAskNfo.Name = "mnuFilterAskNfo"
+        Me.mnuFilterAskNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskNfo.Text = "NFO Only"
+        '
+        'mnuFilterAskPoster
+        '
+        Me.mnuFilterAskPoster.Name = "mnuFilterAskPoster"
+        Me.mnuFilterAskPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskPoster.Text = "Poster Only"
+        '
+        'mnuFilterAskFanart
+        '
+        Me.mnuFilterAskFanart.Name = "mnuFilterAskFanart"
+        Me.mnuFilterAskFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskFanart.Text = "Fanart Only"
+        '
+        'mnuFilterAskExtra
+        '
+        Me.mnuFilterAskExtra.Name = "mnuFilterAskExtra"
+        Me.mnuFilterAskExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskExtra.Text = "Extrathumbs Only"
+        '
+        'mnuFilterAskTrailer
+        '
+        Me.mnuFilterAskTrailer.Name = "mnuFilterAskTrailer"
+        Me.mnuFilterAskTrailer.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskTrailer.Text = "Trailer Only"
+        '
+        'mnuFilterAskMI
+        '
+        Me.mnuFilterAskMI.Name = "mnuFilterAskMI"
+        Me.mnuFilterAskMI.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskMI.Text = "Meta Data Only"
+        '
         'CustomUpdaterToolStripMenuItem
         '
         Me.CustomUpdaterToolStripMenuItem.Name = "CustomUpdaterToolStripMenuItem"
@@ -2592,48 +2634,6 @@ Partial Class frmMain
         'tmrFilterAni
         '
         Me.tmrFilterAni.Interval = 1
-        '
-        'mnuFilterAskAll
-        '
-        Me.mnuFilterAskAll.Name = "mnuFilterAskAll"
-        Me.mnuFilterAskAll.Size = New System.Drawing.Size(168, 22)
-        Me.mnuFilterAskAll.Text = "All Items"
-        '
-        'mnuFilterAskNfo
-        '
-        Me.mnuFilterAskNfo.Name = "mnuFilterAskNfo"
-        Me.mnuFilterAskNfo.Size = New System.Drawing.Size(168, 22)
-        Me.mnuFilterAskNfo.Text = "NFO Only"
-        '
-        'mnuFilterAskPoster
-        '
-        Me.mnuFilterAskPoster.Name = "mnuFilterAskPoster"
-        Me.mnuFilterAskPoster.Size = New System.Drawing.Size(168, 22)
-        Me.mnuFilterAskPoster.Text = "Poster Only"
-        '
-        'mnuFilterAskFanart
-        '
-        Me.mnuFilterAskFanart.Name = "mnuFilterAskFanart"
-        Me.mnuFilterAskFanart.Size = New System.Drawing.Size(168, 22)
-        Me.mnuFilterAskFanart.Text = "Fanart Only"
-        '
-        'mnuFilterAskExtra
-        '
-        Me.mnuFilterAskExtra.Name = "mnuFilterAskExtra"
-        Me.mnuFilterAskExtra.Size = New System.Drawing.Size(168, 22)
-        Me.mnuFilterAskExtra.Text = "Extrathumbs Only"
-        '
-        'mnuFilterAskTrailer
-        '
-        Me.mnuFilterAskTrailer.Name = "mnuFilterAskTrailer"
-        Me.mnuFilterAskTrailer.Size = New System.Drawing.Size(168, 22)
-        Me.mnuFilterAskTrailer.Text = "Trailer Only"
-        '
-        'mnuFilterAskMI
-        '
-        Me.mnuFilterAskMI.Name = "mnuFilterAskMI"
-        Me.mnuFilterAskMI.Size = New System.Drawing.Size(168, 22)
-        Me.mnuFilterAskMI.Text = "Meta Data Only"
         '
         'frmMain
         '

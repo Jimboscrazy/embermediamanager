@@ -16,6 +16,7 @@
 ' #                                                                              #
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
 
 Public NotInheritable Class frmSplash
     Delegate Sub DelegateToCloseForm()
@@ -30,7 +31,7 @@ Public NotInheritable Class frmSplash
         End If
     End Sub
     Private Sub frmSplash_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.PictureBox1.Location = New Point(5, 5)
+        Me.PictureBox1.Location = New Point(4, 4)
         Me.PictureBox1.Size = New Size(Me.Width - 10, Me.Height - 10)
         Version.Text = String.Format("Version r{0}", My.Application.Info.Version.Revision)
     End Sub
