@@ -2901,7 +2901,7 @@ Public Class frmMain
                                         Poster.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
                                             pResults = New Master.ImgResult
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
+                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, scrapeMovie.Filename, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
                                                     pResults.ImagePath = Poster.SaveAsPoster(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(pResults.ImagePath) Then
@@ -2933,7 +2933,7 @@ Public Class frmMain
                                         Fanart.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
                                             fResults = New Master.ImgResult
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
+                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, scrapeMovie.Filename, If(Args.scrapeType = Master.ScrapeType.FullAsk OrElse Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAsk, True, False)) Then
                                                 If Not IsNothing(Fanart.Image) Then
                                                     fResults.ImagePath = Fanart.SaveAsFanart(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(fResults.ImagePath) Then
@@ -3065,7 +3065,7 @@ Public Class frmMain
                                         Poster.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
                                             pResults = New Master.ImgResult
-                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
+                                            If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, scrapeMovie.Filename, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
                                                     pResults.ImagePath = Poster.SaveAsPoster(scrapeMovie)
                                                     If Not String.IsNullOrEmpty(pResults.ImagePath) Then
@@ -3097,7 +3097,7 @@ Public Class frmMain
                                         Fanart.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
                                             fResults = New Master.ImgResult
-                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
+                                            If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, scrapeMovie.Filename, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
 
                                                 If Not IsNothing(Fanart.Image) Then
                                                     fResults.ImagePath = Fanart.SaveAsFanart(scrapeMovie)
@@ -4246,7 +4246,7 @@ doCancel:
                                 End If
 
                                 If Poster.IsAllowedToDownload(Master.currMovie, Master.ImageType.Posters) Then
-                                    If Poster.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Posters, pResults) Then
+                                    If Poster.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, Master.currMovie.Filename) Then
                                         If Not IsNothing(Poster.Image) Then
                                             Master.currMovie.PosterPath = Poster.SaveAsPoster(Master.currMovie)
                                             If Not Master.eSettings.NoSaveImagesToNfo Then Master.currMovie.Movie.Thumb = pResults.Posters
@@ -4256,7 +4256,7 @@ doCancel:
                                 pResults = Nothing
 
                                 If Fanart.IsAllowedToDownload(Master.currMovie, Master.ImageType.Fanart) Then
-                                    If Fanart.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults) Then
+                                    If Fanart.GetPreferredImage(Master.currMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, Master.currMovie.Filename) Then
                                         If Not IsNothing(Fanart.Image) Then
                                             Master.currMovie.FanartPath = Fanart.SaveAsFanart(Master.currMovie)
                                             If Not Master.eSettings.NoSaveImagesToNfo Then Master.currMovie.Movie.Fanart = fResults.Fanart

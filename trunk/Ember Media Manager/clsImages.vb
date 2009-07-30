@@ -258,6 +258,28 @@ Public Class Images
         Me.Save(toPath)
     End Sub
 
+    Public Sub SaveFAasET(ByVal faPath As String, ByVal inPath As String)
+        Dim iMod As Integer = 0
+        Dim iVal As Integer = 1
+        Dim extraPath As String = String.Empty
+
+        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(inPath).Name.ToLower = "video_ts" Then
+            extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(inPath).FullName).FullName, "extrathumbs")
+        Else
+            extraPath = Path.Combine(Directory.GetParent(inPath).FullName, "extrathumbs")
+        End If
+
+        iMod = Master.GetExtraModifier(extraPath)
+        iVal = iMod + 1
+
+        If Not Directory.Exists(extraPath) Then
+            Directory.CreateDirectory(extraPath)
+        End If
+
+        Master.MoveFileWithStream(faPath, Path.Combine(extraPath, String.Concat("thumb", iVal, ".jpg")))
+
+    End Sub
+
     Public Function SaveAsFanart(ByVal mMovie As Master.DBMovie) As String
 
         Dim strReturn As String = String.Empty
@@ -399,7 +421,7 @@ Public Class Images
         Return tmpImage
     End Function
 
-    Public Function GetPreferredImage(ByVal IMDBID As String, ByVal iType As Master.ImageType, ByRef imgResult As Master.ImgResult, Optional ByVal doAsk As Boolean = False) As Boolean
+    Public Function GetPreferredImage(ByVal IMDBID As String, ByVal iType As Master.ImageType, ByRef imgResult As Master.ImgResult, ByVal sPath As String, Optional ByVal doAsk As Boolean = False) As Boolean
 
         '//
         ' Try to get the best match between what the user selected in settings and the actual posters downloaded
@@ -748,6 +770,12 @@ Public Class Images
             Else 'fanart
 
                 If Master.eSettings.UseTMDB Then
+
+                    Dim ETHashes As New ArrayList
+                    If Master.eSettings.AutoET Then
+                        ETHashes = HashFile.CurrentETHashes(sPath, False)
+                    End If
+
                     If Master.eSettings.UseImgCache Then
                         Dim lFi As New List(Of FileInfo)
 
@@ -771,10 +799,25 @@ Public Class Images
                                 Select Case True
                                     Case sFile.Name.Contains("(original)")
                                         tImage.Description = "original"
+                                        If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Master.FanartSize.Lrg Then
+                                            If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
+                                                SaveFAasET(sFile.FullName, sPath)
+                                            End If
+                                        End If
                                     Case sFile.Name.Contains("(mid)")
                                         tImage.Description = "mid"
+                                        If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Master.FanartSize.Mid Then
+                                            If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
+                                                SaveFAasET(sFile.FullName, sPath)
+                                            End If
+                                        End If
                                     Case sFile.Name.Contains("(thumb)")
                                         tImage.Description = "thumb"
+                                        If Master.eSettings.AutoET AndAlso Master.eSettings.AutoETSize = Master.FanartSize.Small Then
+                                            If Not ETHashes.Contains(HashFile.HashCalcFile(sFile.FullName)) Then
+                                                SaveFAasET(sFile.FullName, sPath)
+                                            End If
+                                        End If
                                 End Select
                                 tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
                                 tmpListTMDB.Add(tImage)
@@ -793,7 +836,30 @@ Public Class Images
                                     miFanart.WebImage = GenericFromWeb(miFanart.URL)
                                     If Not IsNothing(miFanart.WebImage) Then
                                         _image = New Bitmap(miFanart.WebImage)
-                                        Save(Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringManip.CleanURL(miFanart.URL), ").jpg")))
+                                        Dim savePath As String = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringManip.CleanURL(miFanart.URL), ").jpg"))
+                                        Save(savePath)
+                                        If Master.eSettings.AutoET Then
+                                            Select Case miFanart.Description.ToLower
+                                                Case "original"
+                                                    If Master.eSettings.AutoETSize = Master.FanartSize.Lrg Then
+                                                        If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                            SaveFAasET(savePath, sPath)
+                                                        End If
+                                                    End If
+                                                Case "mid"
+                                                    If Master.eSettings.AutoETSize = Master.FanartSize.Mid Then
+                                                        If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                            SaveFAasET(savePath, sPath)
+                                                        End If
+                                                    End If
+                                                Case "thumb"
+                                                    If Master.eSettings.AutoETSize = Master.FanartSize.Small Then
+                                                        If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                            SaveFAasET(savePath, sPath)
+                                                        End If
+                                                    End If
+                                            End Select
+                                        End If
                                         If Not Master.eSettings.NoSaveImagesToNfo Then
                                             If Not miFanart.URL.Contains("_thumb.") Then
                                                 thumbLink = miFanart.URL.Replace("http://images.themoviedb.org", String.Empty)
@@ -861,24 +927,87 @@ Public Class Images
                                 Next
                             End If
 
+
+                            If Master.eSettings.AutoET Then
+
+                                If Not Directory.Exists(CachePath) Then
+                                    Directory.CreateDirectory(CachePath)
+                                End If
+
+                                Dim savePath As String = String.Empty
+                                For Each miFanart As Media.Image In tmpListTMDB
+                                    Select Case miFanart.Description.ToLower
+                                        Case "original"
+                                            If Master.eSettings.AutoETSize = Master.FanartSize.Lrg Then
+                                                miFanart.WebImage = GenericFromWeb(miFanart.URL)
+                                                If Not IsNothing(miFanart.WebImage) Then
+                                                    _image = New Bitmap(miFanart.WebImage)
+                                                    savePath = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringManip.CleanURL(miFanart.URL), ").jpg"))
+                                                    Save(savePath)
+                                                    If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                        SaveFAasET(savePath, sPath)
+                                                    End If
+                                                End If
+                                            End If
+                                        Case "mid"
+                                            If Master.eSettings.AutoETSize = Master.FanartSize.Mid Then
+                                                miFanart.WebImage = GenericFromWeb(miFanart.URL)
+                                                If Not IsNothing(miFanart.WebImage) Then
+                                                    _image = New Bitmap(miFanart.WebImage)
+                                                    savePath = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringManip.CleanURL(miFanart.URL), ").jpg"))
+                                                    Save(savePath)
+                                                    If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                        SaveFAasET(savePath, sPath)
+                                                    End If
+                                                End If
+                                            End If
+                                        Case "thumb"
+                                            If Master.eSettings.AutoETSize = Master.FanartSize.Small Then
+                                                miFanart.WebImage = GenericFromWeb(miFanart.URL)
+                                                If Not IsNothing(miFanart.WebImage) Then
+                                                    _image = New Bitmap(miFanart.WebImage)
+                                                    savePath = Path.Combine(CachePath, String.Concat("fanart_(", miFanart.Description, ")_(url=", StringManip.CleanURL(miFanart.URL), ").jpg"))
+                                                    Save(savePath)
+                                                    If Not ETHashes.Contains(HashFile.HashCalcFile(savePath)) Then
+                                                        SaveFAasET(savePath, sPath)
+                                                    End If
+                                                End If
+                                            End If
+                                    End Select
+                                Next
+
+                                _image = Nothing
+                            End If
+
                             For Each iMovie As Media.Image In tmpListTMDB
                                 Select Case Master.eSettings.PreferredPosterSize
                                     Case Master.FanartSize.Lrg
                                         If iMovie.Description.ToLower = "original" Then
-                                            FromWeb(iMovie.URL)
+                                            If Not IsNothing(iMovie.WebImage) Then
+                                                _image = New Bitmap(iMovie.WebImage)
+                                            Else
+                                                FromWeb(iMovie.URL)
+                                            End If
                                             GoTo foundIT
                                         End If
                                     Case Master.FanartSize.Mid
                                         If iMovie.Description.ToLower = "mid" Then
-                                            FromWeb(iMovie.URL)
+                                            If Not IsNothing(iMovie.WebImage) Then
+                                                _image = New Bitmap(iMovie.WebImage)
+                                            Else
+                                                FromWeb(iMovie.URL)
+                                            End If
                                             GoTo foundIT
                                         End If
                                     Case Master.FanartSize.Small
                                         If iMovie.Description.ToLower = "thumb" Then
-                                            FromWeb(iMovie.URL)
+                                            If Not IsNothing(iMovie.WebImage) Then
+                                                _image = New Bitmap(iMovie.WebImage)
+                                            Else
+                                                FromWeb(iMovie.URL)
+                                            End If
                                             GoTo foundIT
                                         End If
-                                        'no "wide" for TMDB
                                 End Select
                             Next
 
@@ -1023,4 +1152,5 @@ foundIT:
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
 End Class
