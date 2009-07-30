@@ -105,10 +105,16 @@ Public Class dlgEditMovie
 
             : Dim dFileInfoEdit As New dlgFileInfo
             dFileInfoEdit.TopLevel = False
-            dFileInfoEdit.FormBorderStyle = Forms.FormBorderStyle.None
+            dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
             dFileInfoEdit.Cancel_Button.Visible = False
             Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
-            dFileInfoEdit.Left = (pnlFileInfo.Width - dFileInfoEdit.Width) / 2
+            'dFileInfoEdit.Left = (pnlFileInfo.Width - dFileInfoEdit.Width) / 2
+            Dim oldwidth As Integer = dFileInfoEdit.Width
+            dFileInfoEdit.Width = pnlFileInfo.Width
+            dFileInfoEdit.Height = pnlFileInfo.Height
+            For Each c As Control In dFileInfoEdit.Controls
+                c.Left = c.Left + (dFileInfoEdit.Width - oldwidth) / 2
+            Next
             dFileInfoEdit.Show()
 
             Me.LoadGenres()

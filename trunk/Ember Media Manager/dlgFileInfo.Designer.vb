@@ -46,7 +46,6 @@ Partial Class dlgFileInfo
         '
         'Cancel_Button
         '
-        Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Location = New System.Drawing.Point(465, 328)
         Me.Cancel_Button.Name = "Cancel_Button"
