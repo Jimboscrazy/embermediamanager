@@ -179,18 +179,20 @@ Public Class dlgFileInfo
         If lvStreams.SelectedItems.Count > 0 Then
             Dim i As ListViewItem = lvStreams.SelectedItems(0)
             Using dEditStream As New dlgFIStreamEditor
-                Dim stream As Object = dEditStream.ShowDialog(i.Tag)
-                If i.Tag = Master.eLang.GetString(595, "Video Stream") Then
-                    _movie.Movie.FileInfo.StreamDetails.Video.RemoveAt(Convert.ToInt16(i.Text))
-                    _movie.Movie.FileInfo.StreamDetails.Video.Add(stream)
+                Dim stream As Object = dEditStream.ShowDialog(i.Tag, _movie.Movie.FileInfo, Convert.ToInt16(i.Text))
+                If Not stream Is Nothing Then
+                    If i.Tag = Master.eLang.GetString(595, "Video Stream") Then
+                        _movie.Movie.FileInfo.StreamDetails.Video(Convert.ToInt16(i.Text)) = stream
+
+                    End If
+                    If i.Tag = Master.eLang.GetString(596, "Audio Stream") Then
+                        _movie.Movie.FileInfo.StreamDetails.Audio(Convert.ToInt16(i.Text)) = stream
+                    End If
+                    If i.Tag = Master.eLang.GetString(597, "Subtitle Stream") Then
+                        _movie.Movie.FileInfo.StreamDetails.Subtitle(Convert.ToInt16(i.Text)) = stream
+                    End If
+                    LoadInfo()
                 End If
-                If i.Tag = Master.eLang.GetString(596, "Audio Stream") Then
-                    _movie.Movie.FileInfo.StreamDetails.Audio.Add(stream)
-                End If
-                If i.Tag = Master.eLang.GetString(597, "Subtitle Stream") Then
-                    _movie.Movie.FileInfo.StreamDetails.Subtitle.Add(stream)
-                End If
-                LoadInfo()
             End Using
         End If
     End Sub
@@ -199,17 +201,19 @@ Public Class dlgFileInfo
         If cbStreamType.SelectedIndex >= 0 Then
             Using dEditStream As New dlgFIStreamEditor
                 Dim stream As New Object
-                stream = dEditStream.ShowDialog(cbStreamType.SelectedItem)
-                If cbStreamType.SelectedItem = Master.eLang.GetString(595, "Video Stream") Then
-                    _movie.Movie.FileInfo.StreamDetails.Video.Add(stream)
+                stream = dEditStream.ShowDialog(cbStreamType.SelectedItem, Nothing, 0)
+                If Not stream Is Nothing Then
+                    If cbStreamType.SelectedItem = Master.eLang.GetString(595, "Video Stream") Then
+                        _movie.Movie.FileInfo.StreamDetails.Video.Add(stream)
+                    End If
+                    If cbStreamType.SelectedItem = Master.eLang.GetString(596, "Audio Stream") Then
+                        _movie.Movie.FileInfo.StreamDetails.Audio.Add(stream)
+                    End If
+                    If cbStreamType.SelectedItem = Master.eLang.GetString(597, "Subtitle Stream") Then
+                        _movie.Movie.FileInfo.StreamDetails.Subtitle.Add(stream)
+                    End If
+                    LoadInfo()
                 End If
-                If cbStreamType.SelectedItem = Master.eLang.GetString(596, "Audio Stream") Then
-                    _movie.Movie.FileInfo.StreamDetails.Audio.Add(stream)
-                End If
-                If cbStreamType.SelectedItem = Master.eLang.GetString(597, "Subtitle Stream") Then
-                    _movie.Movie.FileInfo.StreamDetails.Subtitle.Add(stream)
-                End If
-                LoadInfo()
             End Using
         End If
     End Sub

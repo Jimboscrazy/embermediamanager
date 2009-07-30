@@ -4,18 +4,31 @@ Public Class dlgFIStreamEditor
     Private stream_v As New MediaInfo.Video
     Private stream_a As New MediaInfo.Audio
     Private stream_s As New MediaInfo.Subtitle
-    Public Overloads Function ShowDialog(ByVal stream_type As String)
+    Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaInfo.Fileinfo, ByVal idx As Integer)
         Try
 
             GroupBox1.Visible = False
             GroupBox2.Visible = False
             GroupBox2.Visible = False
+
             If stream_type = Master.eLang.GetString(595, "Video Stream") Then
                 GroupBox1.Visible = True
                 Dim xVTypeFlag = From xVType In XML.FlagsXML...<vtype>...<name> Select xVType.@searchstring
                 For Each p() As String In xVTypeFlag.ToArray.Cast(Of String)().Select(Function(AL) AL.Split("|"))
                     cbVideoCodec.Items.AddRange(p)
                 Next
+                If Not movie Is Nothing Then
+                    cbVideoCodec.Text = movie.StreamDetails.Video(idx).Codec
+                    txtARatio.Text = movie.StreamDetails.Video(idx).Aspect
+                    txtWidth.Text = movie.StreamDetails.Video(idx).Width
+                    txtHeight.Text = movie.StreamDetails.Video(idx).Height
+                    If movie.StreamDetails.Video(idx).Scantype = Master.eLang.GetString(616, "Progressive") Then
+                        rbProgressive.Checked = True
+                    Else
+                        rbInterlaced.Checked = True
+                    End If
+                    txtDuration.Text = movie.StreamDetails.Video(idx).Duration
+                End If
             End If
             If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
                 GroupBox2.Visible = True
@@ -25,41 +38,49 @@ Public Class dlgFIStreamEditor
                 Next
                 Dim xShortLang = From xLang In XML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
                 cbAudioLanguage.Items.AddRange(xShortLang.ToArray)
+                If Not movie Is Nothing Then
+                    cbAudioCodec.Text = movie.StreamDetails.Audio(idx).Codec
+                    cbAudioLanguage.Text = movie.StreamDetails.Audio(idx).LongLanguage
+                    cbAudioChannels.Text = movie.StreamDetails.Audio(idx).Channels
+                End If
             End If
             If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
                 GroupBox3.Visible = True
                 Dim xShortLang = From xLang In XML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
                 cbSubsLanguage.Items.AddRange(xShortLang.ToArray)
+                If Not movie Is Nothing Then
+                    cbSubsLanguage.Text = movie.StreamDetails.Subtitle(idx).LongLanguage
+                    chbPrefered.Checked = movie.StreamDetails.Subtitle(idx).HasPreferred
+                End If
             End If
 
-
-            If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                If stream_type = Master.eLang.GetString(595, "Video Stream") Then
-                    stream_v.Codec = If(cbVideoCodec.SelectedItem Is Nothing, "", cbVideoCodec.SelectedItem)
-                    stream_v.Aspect = txtARatio.Text
-                    stream_v.Width = txtWidth.Text
-                    stream_v.Height = txtHeight.Text
-                    stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
-                    stream_v.Duration = txtDuration.Text
-                    Return stream_v
+                If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    If stream_type = Master.eLang.GetString(595, "Video Stream") Then
+                        stream_v.Codec = If(cbVideoCodec.SelectedItem Is Nothing, "", cbVideoCodec.SelectedItem)
+                        stream_v.Aspect = txtARatio.Text
+                        stream_v.Width = txtWidth.Text
+                        stream_v.Height = txtHeight.Text
+                        stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
+                        stream_v.Duration = txtDuration.Text
+                        Return stream_v
+                    End If
+                    If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
+                        stream_a.Codec = If(cbAudioCodec.SelectedItem Is Nothing, "", cbAudioCodec.SelectedItem)
+                        stream_a.LongLanguage = cbAudioLanguage.SelectedItem
+                        stream_a.Language = ConvertL(cbAudioLanguage.SelectedItem)
+                        stream_a.Channels = cbAudioChannels.SelectedItem
+                        Return stream_a
+                    End If
+                    If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
+                        stream_s.LongLanguage = If(cbSubsLanguage.SelectedItem Is Nothing, "", cbSubsLanguage.SelectedItem)
+                        stream_s.Language = ConvertL(cbSubsLanguage.SelectedItem)
+                        stream_s.HasPreferred = chbPrefered.Checked.ToString
+                        Return stream_s
+                    End If
+                    Return Nothing
+                Else
+                    Return Nothing
                 End If
-                If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
-                    stream_a.Codec = If(cbAudioCodec.SelectedItem Is Nothing, "", cbAudioCodec.SelectedItem)
-                    stream_a.LongLanguage = cbAudioLanguage.SelectedItem
-                    stream_a.Language = ConvertL(cbAudioLanguage.SelectedItem)
-                    stream_a.Channels = cbAudioChannels.SelectedItem
-                    Return stream_a
-                End If
-                If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
-                    stream_s.LongLanguage = If(cbSubsLanguage.SelectedItem Is Nothing, "", cbSubsLanguage.SelectedItem)
-                    stream_s.Language = ConvertL(cbSubsLanguage.SelectedItem)
-                    stream_s.HasPreferred = chbPrefered.Checked.ToString
-                    Return stream_s
-                End If
-                Return Nothing
-            Else
-                Return Nothing
-            End If
         Catch ex As Exception
             Return Nothing
         End Try
