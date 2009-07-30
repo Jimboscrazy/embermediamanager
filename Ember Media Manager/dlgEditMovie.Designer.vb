@@ -126,13 +126,13 @@ Partial Class dlgEditMovie
         Me.tbFrame = New System.Windows.Forms.TrackBar
         Me.btnFrameLoad = New System.Windows.Forms.Button
         Me.pbFrame = New System.Windows.Forms.PictureBox
+        Me.TabPage6 = New System.Windows.Forms.TabPage
+        Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog
         Me.chkMark = New System.Windows.Forms.CheckBox
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
-        Me.TabPage6 = New System.Windows.Forms.TabPage
-        Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -1224,6 +1224,24 @@ Partial Class dlgEditMovie
         Me.pbFrame.TabIndex = 8
         Me.pbFrame.TabStop = False
         '
+        'TabPage6
+        '
+        Me.TabPage6.Controls.Add(Me.pnlFileInfo)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage6.Name = "TabPage6"
+        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage6.Size = New System.Drawing.Size(836, 452)
+        Me.TabPage6.TabIndex = 5
+        Me.TabPage6.Text = "Meta Data"
+        Me.TabPage6.UseVisualStyleBackColor = True
+        '
+        'pnlFileInfo
+        '
+        Me.pnlFileInfo.Location = New System.Drawing.Point(-4, 0)
+        Me.pnlFileInfo.Name = "pnlFileInfo"
+        Me.pnlFileInfo.Size = New System.Drawing.Size(844, 452)
+        Me.pnlFileInfo.TabIndex = 0
+        '
         'chkMark
         '
         Me.chkMark.AutoSize = True
@@ -1270,24 +1288,6 @@ Partial Class dlgEditMovie
         Me.btnClearCache.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnClearCache.UseVisualStyleBackColor = True
         Me.btnClearCache.Visible = False
-        '
-        'TabPage6
-        '
-        Me.TabPage6.Controls.Add(Me.pnlFileInfo)
-        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage6.Name = "TabPage6"
-        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(836, 452)
-        Me.TabPage6.TabIndex = 5
-        Me.TabPage6.Text = "Meta Data"
-        Me.TabPage6.UseVisualStyleBackColor = True
-        '
-        'pnlFileInfo
-        '
-        Me.pnlFileInfo.Location = New System.Drawing.Point(6, 6)
-        Me.pnlFileInfo.Name = "pnlFileInfo"
-        Me.pnlFileInfo.Size = New System.Drawing.Size(824, 440)
-        Me.pnlFileInfo.TabIndex = 0
         '
         'dlgEditMovie
         '
