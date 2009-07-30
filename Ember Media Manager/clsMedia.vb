@@ -763,6 +763,7 @@ Namespace Media
         Private _url As String
         Private _description As String
         Private _webimage As System.Drawing.Image
+        Private _ischecked As Boolean
 
         Public Property URL() As String
             Get
@@ -791,6 +792,15 @@ Namespace Media
             End Set
         End Property
 
+        Public Property isChecked() As Boolean
+            Get
+                Return Me._ischecked
+            End Get
+            Set(ByVal value As Boolean)
+                Me._ischecked = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -799,6 +809,7 @@ Namespace Media
             Me._url = String.Empty
             Me._description = String.Empty
             Me._webimage = Nothing
+            Me._ischecked = False
         End Sub
 
     End Class
