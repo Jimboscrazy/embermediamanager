@@ -35,6 +35,8 @@ Partial Class dlgFileInfo
         Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader4 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader5 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader6 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader7 = New System.Windows.Forms.ColumnHeader
         Me.btnRemoveSet = New System.Windows.Forms.Button
         Me.btnEditSet = New System.Windows.Forms.Button
         Me.btnNewSet = New System.Windows.Forms.Button
@@ -54,7 +56,8 @@ Partial Class dlgFileInfo
         '
         'lvStreams
         '
-        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
+        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7})
+        Me.lvStreams.FullRowSelect = True
         ListViewGroup1.Header = "Video Streams"
         ListViewGroup1.Name = "VideoStreams"
         ListViewGroup2.Header = "Audio Streams"
@@ -67,6 +70,7 @@ Partial Class dlgFileInfo
         ListViewItem2.Group = ListViewGroup2
         Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1, ListViewItem2})
         Me.lvStreams.Location = New System.Drawing.Point(4, 7)
+        Me.lvStreams.MultiSelect = False
         Me.lvStreams.Name = "lvStreams"
         Me.lvStreams.Size = New System.Drawing.Size(528, 230)
         Me.lvStreams.TabIndex = 1
@@ -79,19 +83,27 @@ Partial Class dlgFileInfo
         '
         'ColumnHeader2
         '
-        Me.ColumnHeader2.Width = 48
+        Me.ColumnHeader2.Width = 77
         '
         'ColumnHeader3
         '
-        Me.ColumnHeader3.Width = 81
+        Me.ColumnHeader3.Width = 92
         '
         'ColumnHeader4
         '
-        Me.ColumnHeader4.Width = 96
+        Me.ColumnHeader4.Width = 64
         '
         'ColumnHeader5
         '
-        Me.ColumnHeader5.Width = 94
+        Me.ColumnHeader5.Width = 58
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Width = 80
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Width = 90
         '
         'btnRemoveSet
         '
@@ -181,5 +193,7 @@ Partial Class dlgFileInfo
     Friend WithEvents btnNewSet As System.Windows.Forms.Button
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents cbVideoCodec As System.Windows.Forms.ComboBox
+    Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
 
 End Class

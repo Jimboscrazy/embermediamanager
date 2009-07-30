@@ -5199,4 +5199,7 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
+    Private Sub MetadataToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MetadataToolStripMenuItem.Click
+        dlgFileInfo.ShowDialog()
+    End Sub
 End Class
