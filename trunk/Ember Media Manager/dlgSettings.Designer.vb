@@ -24,13 +24,13 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9})
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode11, TreeNode12, TreeNode13})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -240,6 +240,19 @@ Partial Class dlgSettings
         Me.txtBDPath = New System.Windows.Forms.TextBox
         Me.pnlScraper = New System.Windows.Forms.Panel
         Me.TabControl1 = New System.Windows.Forms.TabControl
+        Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.GroupBox26 = New System.Windows.Forms.GroupBox
+        Me.GroupBox20 = New System.Windows.Forms.GroupBox
+        Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox
+        Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox
+        Me.chkNoDLTrailer = New System.Windows.Forms.CheckBox
+        Me.chkSingleScrapeTrailer = New System.Windows.Forms.CheckBox
+        Me.Label23 = New System.Windows.Forms.Label
+        Me.txtTimeout = New System.Windows.Forms.TextBox
+        Me.chkUpdaterTrailer = New System.Windows.Forms.CheckBox
+        Me.Label22 = New System.Windows.Forms.Label
+        Me.lbTrailerSites = New System.Windows.Forms.CheckedListBox
+        Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
         Me.gbOptions = New System.Windows.Forms.GroupBox
         Me.chkTop250 = New System.Windows.Forms.CheckBox
@@ -266,19 +279,6 @@ Partial Class dlgSettings
         Me.chkMPAA = New System.Windows.Forms.CheckBox
         Me.chkYear = New System.Windows.Forms.CheckBox
         Me.chkTitle = New System.Windows.Forms.CheckBox
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.GroupBox26 = New System.Windows.Forms.GroupBox
-        Me.GroupBox20 = New System.Windows.Forms.GroupBox
-        Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox
-        Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox
-        Me.chkNoDLTrailer = New System.Windows.Forms.CheckBox
-        Me.chkSingleScrapeTrailer = New System.Windows.Forms.CheckBox
-        Me.Label23 = New System.Windows.Forms.Label
-        Me.txtTimeout = New System.Windows.Forms.TextBox
-        Me.chkUpdaterTrailer = New System.Windows.Forms.CheckBox
-        Me.Label22 = New System.Windows.Forms.Label
-        Me.lbTrailerSites = New System.Windows.Forms.CheckedListBox
-        Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
         Me.lblCurrent = New System.Windows.Forms.Label
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.Panel1 = New System.Windows.Forms.Panel
@@ -286,16 +286,10 @@ Partial Class dlgSettings
         Me.GroupBox28 = New System.Windows.Forms.GroupBox
         Me.txtDefFIExt = New System.Windows.Forms.TextBox
         Me.Label34 = New System.Windows.Forms.Label
-        Me.btnRemoveSet = New System.Windows.Forms.Button
-        Me.btnEditSet = New System.Windows.Forms.Button
-        Me.btnNewSet = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.cbDefACodec = New System.Windows.Forms.ComboBox
-        Me.Label33 = New System.Windows.Forms.Label
+        Me.btnRemoveMetaDataFT = New System.Windows.Forms.Button
+        Me.btnEditMetaDataFT = New System.Windows.Forms.Button
+        Me.btnNewMetaDataFT = New System.Windows.Forms.Button
         Me.ListView1 = New System.Windows.Forms.ListView
-        Me.cbDefVCodec = New System.Windows.Forms.ComboBox
         Me.GroupBox22 = New System.Windows.Forms.GroupBox
         Me.btnRemoveNoStack = New System.Windows.Forms.Button
         Me.btnAddNoStack = New System.Windows.Forms.Button
@@ -373,11 +367,11 @@ Partial Class dlgSettings
         Me.GroupBox16.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
         Me.TabControl1.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
-        Me.gbOptions.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox26.SuspendLayout()
         Me.GroupBox20.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
+        Me.gbOptions.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlExtensions.SuspendLayout()
         Me.GroupBox28.SuspendLayout()
@@ -2367,42 +2361,42 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode8.ImageIndex = 4
-        TreeNode8.Name = "nExts"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 4
-        TreeNode8.Text = "File System"
-        TreeNode9.ImageIndex = 1
-        TreeNode9.Name = "nXBMCCom"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 1
-        TreeNode9.Text = "XBMC Communication"
-        TreeNode10.ImageIndex = 0
-        TreeNode10.Name = "nGeneral"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 0
-        TreeNode10.Text = "General"
-        TreeNode11.ImageIndex = 5
-        TreeNode11.Name = "nSources"
-        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode11.SelectedImageIndex = 5
-        TreeNode11.Text = "Files and Sources"
-        TreeNode12.ImageIndex = 3
-        TreeNode12.Name = "nScraper"
-        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode12.SelectedImageIndex = 3
-        TreeNode12.Text = "Scraper - Data"
-        TreeNode13.ImageIndex = 6
-        TreeNode13.Name = "nImages"
-        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode13.SelectedImageIndex = 6
-        TreeNode13.Text = "Scraper - Images"
-        TreeNode14.ImageIndex = 2
-        TreeNode14.Name = "nMovies"
-        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode14.SelectedImageIndex = 2
-        TreeNode14.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode14})
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "File System"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "XBMC Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 5
+        TreeNode4.Name = "nSources"
+        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode4.SelectedImageIndex = 5
+        TreeNode4.Text = "Files and Sources"
+        TreeNode5.ImageIndex = 3
+        TreeNode5.Name = "nScraper"
+        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.SelectedImageIndex = 3
+        TreeNode5.Text = "Scraper - Data"
+        TreeNode6.ImageIndex = 6
+        TreeNode6.Name = "nImages"
+        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode6.SelectedImageIndex = 6
+        TreeNode6.Text = "Scraper - Images"
+        TreeNode7.ImageIndex = 2
+        TreeNode7.Name = "nMovies"
+        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode7.SelectedImageIndex = 2
+        TreeNode7.Text = "Movies"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2604,6 +2598,162 @@ Partial Class dlgSettings
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(591, 346)
         Me.TabControl1.TabIndex = 69
+        '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.GroupBox26)
+        Me.TabPage1.Controls.Add(Me.GroupBox10)
+        Me.TabPage1.Controls.Add(Me.GroupBox20)
+        Me.TabPage1.Controls.Add(Me.GroupBox15)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(583, 320)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "General"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'GroupBox26
+        '
+        Me.GroupBox26.Controls.Add(Me.cbLanguages)
+        Me.GroupBox26.Controls.Add(Me.Label31)
+        Me.GroupBox26.Controls.Add(Me.gbRTFormat)
+        Me.GroupBox26.Controls.Add(Me.chkScanMediaInfo)
+        Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
+        Me.GroupBox26.Location = New System.Drawing.Point(371, 5)
+        Me.GroupBox26.Name = "GroupBox26"
+        Me.GroupBox26.Size = New System.Drawing.Size(211, 164)
+        Me.GroupBox26.TabIndex = 63
+        Me.GroupBox26.TabStop = False
+        Me.GroupBox26.Text = "Meta Data"
+        '
+        'GroupBox20
+        '
+        Me.GroupBox20.Controls.Add(Me.chkDeleteAllTrailers)
+        Me.GroupBox20.Controls.Add(Me.chkOverwriteTrailer)
+        Me.GroupBox20.Controls.Add(Me.chkNoDLTrailer)
+        Me.GroupBox20.Controls.Add(Me.chkSingleScrapeTrailer)
+        Me.GroupBox20.Controls.Add(Me.Label23)
+        Me.GroupBox20.Controls.Add(Me.txtTimeout)
+        Me.GroupBox20.Controls.Add(Me.chkUpdaterTrailer)
+        Me.GroupBox20.Controls.Add(Me.Label22)
+        Me.GroupBox20.Controls.Add(Me.lbTrailerSites)
+        Me.GroupBox20.Controls.Add(Me.chkDownloadTrailer)
+        Me.GroupBox20.Location = New System.Drawing.Point(1, 173)
+        Me.GroupBox20.Name = "GroupBox20"
+        Me.GroupBox20.Size = New System.Drawing.Size(581, 145)
+        Me.GroupBox20.TabIndex = 3
+        Me.GroupBox20.TabStop = False
+        Me.GroupBox20.Text = "Trailers"
+        '
+        'chkDeleteAllTrailers
+        '
+        Me.chkDeleteAllTrailers.AutoSize = True
+        Me.chkDeleteAllTrailers.Enabled = False
+        Me.chkDeleteAllTrailers.Location = New System.Drawing.Point(19, 108)
+        Me.chkDeleteAllTrailers.Name = "chkDeleteAllTrailers"
+        Me.chkDeleteAllTrailers.Size = New System.Drawing.Size(147, 17)
+        Me.chkDeleteAllTrailers.TabIndex = 5
+        Me.chkDeleteAllTrailers.Text = "Delete All Existing Trailers"
+        Me.chkDeleteAllTrailers.UseVisualStyleBackColor = True
+        '
+        'chkOverwriteTrailer
+        '
+        Me.chkOverwriteTrailer.AutoSize = True
+        Me.chkOverwriteTrailer.Enabled = False
+        Me.chkOverwriteTrailer.Location = New System.Drawing.Point(19, 90)
+        Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
+        Me.chkOverwriteTrailer.Size = New System.Drawing.Size(103, 17)
+        Me.chkOverwriteTrailer.TabIndex = 4
+        Me.chkOverwriteTrailer.Text = "Overwrite Trailer"
+        Me.chkOverwriteTrailer.UseVisualStyleBackColor = True
+        '
+        'chkNoDLTrailer
+        '
+        Me.chkNoDLTrailer.AutoSize = True
+        Me.chkNoDLTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkNoDLTrailer.Enabled = False
+        Me.chkNoDLTrailer.Location = New System.Drawing.Point(19, 52)
+        Me.chkNoDLTrailer.Name = "chkNoDLTrailer"
+        Me.chkNoDLTrailer.Size = New System.Drawing.Size(176, 17)
+        Me.chkNoDLTrailer.TabIndex = 2
+        Me.chkNoDLTrailer.Text = "Only Get URLs During Scrapers"
+        Me.chkNoDLTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkNoDLTrailer.UseVisualStyleBackColor = True
+        '
+        'chkSingleScrapeTrailer
+        '
+        Me.chkSingleScrapeTrailer.AutoSize = True
+        Me.chkSingleScrapeTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkSingleScrapeTrailer.Enabled = False
+        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(19, 71)
+        Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
+        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(183, 17)
+        Me.chkSingleScrapeTrailer.TabIndex = 3
+        Me.chkSingleScrapeTrailer.Text = "Get Trailers During Single-Scrape"
+        Me.chkSingleScrapeTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkSingleScrapeTrailer.UseVisualStyleBackColor = True
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(427, 122)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(48, 13)
+        Me.Label23.TabIndex = 64
+        Me.Label23.Text = "Timeout:"
+        '
+        'txtTimeout
+        '
+        Me.txtTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTimeout.Enabled = False
+        Me.txtTimeout.Location = New System.Drawing.Point(514, 118)
+        Me.txtTimeout.Name = "txtTimeout"
+        Me.txtTimeout.Size = New System.Drawing.Size(36, 20)
+        Me.txtTimeout.TabIndex = 7
+        '
+        'chkUpdaterTrailer
+        '
+        Me.chkUpdaterTrailer.AutoSize = True
+        Me.chkUpdaterTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkUpdaterTrailer.Enabled = False
+        Me.chkUpdaterTrailer.Location = New System.Drawing.Point(19, 33)
+        Me.chkUpdaterTrailer.Name = "chkUpdaterTrailer"
+        Me.chkUpdaterTrailer.Size = New System.Drawing.Size(211, 17)
+        Me.chkUpdaterTrailer.TabIndex = 1
+        Me.chkUpdaterTrailer.Text = "Get Trailers During ""All Items"" Scrapers"
+        Me.chkUpdaterTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
+        Me.chkUpdaterTrailer.UseVisualStyleBackColor = True
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Location = New System.Drawing.Point(429, 13)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(117, 13)
+        Me.Label22.TabIndex = 2
+        Me.Label22.Text = "Supported Trailer Sites:"
+        '
+        'lbTrailerSites
+        '
+        Me.lbTrailerSites.CheckOnClick = True
+        Me.lbTrailerSites.Enabled = False
+        Me.lbTrailerSites.FormattingEnabled = True
+        Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/TMDB", "IMDB"})
+        Me.lbTrailerSites.Location = New System.Drawing.Point(430, 30)
+        Me.lbTrailerSites.Name = "lbTrailerSites"
+        Me.lbTrailerSites.Size = New System.Drawing.Size(120, 79)
+        Me.lbTrailerSites.TabIndex = 6
+        '
+        'chkDownloadTrailer
+        '
+        Me.chkDownloadTrailer.AutoSize = True
+        Me.chkDownloadTrailer.Location = New System.Drawing.Point(6, 17)
+        Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
+        Me.chkDownloadTrailer.Size = New System.Drawing.Size(156, 17)
+        Me.chkDownloadTrailer.TabIndex = 0
+        Me.chkDownloadTrailer.Text = "Enable Trailer Downloading"
+        Me.chkDownloadTrailer.UseVisualStyleBackColor = True
         '
         'TabPage2
         '
@@ -2891,162 +3041,6 @@ Partial Class dlgSettings
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
         '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.GroupBox26)
-        Me.TabPage1.Controls.Add(Me.GroupBox10)
-        Me.TabPage1.Controls.Add(Me.GroupBox20)
-        Me.TabPage1.Controls.Add(Me.GroupBox15)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(583, 320)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "General"
-        Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'GroupBox26
-        '
-        Me.GroupBox26.Controls.Add(Me.cbLanguages)
-        Me.GroupBox26.Controls.Add(Me.Label31)
-        Me.GroupBox26.Controls.Add(Me.gbRTFormat)
-        Me.GroupBox26.Controls.Add(Me.chkScanMediaInfo)
-        Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
-        Me.GroupBox26.Location = New System.Drawing.Point(371, 5)
-        Me.GroupBox26.Name = "GroupBox26"
-        Me.GroupBox26.Size = New System.Drawing.Size(211, 164)
-        Me.GroupBox26.TabIndex = 63
-        Me.GroupBox26.TabStop = False
-        Me.GroupBox26.Text = "Meta Data"
-        '
-        'GroupBox20
-        '
-        Me.GroupBox20.Controls.Add(Me.chkDeleteAllTrailers)
-        Me.GroupBox20.Controls.Add(Me.chkOverwriteTrailer)
-        Me.GroupBox20.Controls.Add(Me.chkNoDLTrailer)
-        Me.GroupBox20.Controls.Add(Me.chkSingleScrapeTrailer)
-        Me.GroupBox20.Controls.Add(Me.Label23)
-        Me.GroupBox20.Controls.Add(Me.txtTimeout)
-        Me.GroupBox20.Controls.Add(Me.chkUpdaterTrailer)
-        Me.GroupBox20.Controls.Add(Me.Label22)
-        Me.GroupBox20.Controls.Add(Me.lbTrailerSites)
-        Me.GroupBox20.Controls.Add(Me.chkDownloadTrailer)
-        Me.GroupBox20.Location = New System.Drawing.Point(1, 173)
-        Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Size = New System.Drawing.Size(581, 145)
-        Me.GroupBox20.TabIndex = 3
-        Me.GroupBox20.TabStop = False
-        Me.GroupBox20.Text = "Trailers"
-        '
-        'chkDeleteAllTrailers
-        '
-        Me.chkDeleteAllTrailers.AutoSize = True
-        Me.chkDeleteAllTrailers.Enabled = False
-        Me.chkDeleteAllTrailers.Location = New System.Drawing.Point(19, 108)
-        Me.chkDeleteAllTrailers.Name = "chkDeleteAllTrailers"
-        Me.chkDeleteAllTrailers.Size = New System.Drawing.Size(147, 17)
-        Me.chkDeleteAllTrailers.TabIndex = 5
-        Me.chkDeleteAllTrailers.Text = "Delete All Existing Trailers"
-        Me.chkDeleteAllTrailers.UseVisualStyleBackColor = True
-        '
-        'chkOverwriteTrailer
-        '
-        Me.chkOverwriteTrailer.AutoSize = True
-        Me.chkOverwriteTrailer.Enabled = False
-        Me.chkOverwriteTrailer.Location = New System.Drawing.Point(19, 90)
-        Me.chkOverwriteTrailer.Name = "chkOverwriteTrailer"
-        Me.chkOverwriteTrailer.Size = New System.Drawing.Size(103, 17)
-        Me.chkOverwriteTrailer.TabIndex = 4
-        Me.chkOverwriteTrailer.Text = "Overwrite Trailer"
-        Me.chkOverwriteTrailer.UseVisualStyleBackColor = True
-        '
-        'chkNoDLTrailer
-        '
-        Me.chkNoDLTrailer.AutoSize = True
-        Me.chkNoDLTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkNoDLTrailer.Enabled = False
-        Me.chkNoDLTrailer.Location = New System.Drawing.Point(19, 52)
-        Me.chkNoDLTrailer.Name = "chkNoDLTrailer"
-        Me.chkNoDLTrailer.Size = New System.Drawing.Size(176, 17)
-        Me.chkNoDLTrailer.TabIndex = 2
-        Me.chkNoDLTrailer.Text = "Only Get URLs During Scrapers"
-        Me.chkNoDLTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkNoDLTrailer.UseVisualStyleBackColor = True
-        '
-        'chkSingleScrapeTrailer
-        '
-        Me.chkSingleScrapeTrailer.AutoSize = True
-        Me.chkSingleScrapeTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkSingleScrapeTrailer.Enabled = False
-        Me.chkSingleScrapeTrailer.Location = New System.Drawing.Point(19, 71)
-        Me.chkSingleScrapeTrailer.Name = "chkSingleScrapeTrailer"
-        Me.chkSingleScrapeTrailer.Size = New System.Drawing.Size(183, 17)
-        Me.chkSingleScrapeTrailer.TabIndex = 3
-        Me.chkSingleScrapeTrailer.Text = "Get Trailers During Single-Scrape"
-        Me.chkSingleScrapeTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkSingleScrapeTrailer.UseVisualStyleBackColor = True
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(427, 122)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(48, 13)
-        Me.Label23.TabIndex = 64
-        Me.Label23.Text = "Timeout:"
-        '
-        'txtTimeout
-        '
-        Me.txtTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTimeout.Enabled = False
-        Me.txtTimeout.Location = New System.Drawing.Point(514, 118)
-        Me.txtTimeout.Name = "txtTimeout"
-        Me.txtTimeout.Size = New System.Drawing.Size(36, 20)
-        Me.txtTimeout.TabIndex = 7
-        '
-        'chkUpdaterTrailer
-        '
-        Me.chkUpdaterTrailer.AutoSize = True
-        Me.chkUpdaterTrailer.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUpdaterTrailer.Enabled = False
-        Me.chkUpdaterTrailer.Location = New System.Drawing.Point(19, 33)
-        Me.chkUpdaterTrailer.Name = "chkUpdaterTrailer"
-        Me.chkUpdaterTrailer.Size = New System.Drawing.Size(211, 17)
-        Me.chkUpdaterTrailer.TabIndex = 1
-        Me.chkUpdaterTrailer.Text = "Get Trailers During ""All Items"" Scrapers"
-        Me.chkUpdaterTrailer.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUpdaterTrailer.UseVisualStyleBackColor = True
-        '
-        'Label22
-        '
-        Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(429, 13)
-        Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(117, 13)
-        Me.Label22.TabIndex = 2
-        Me.Label22.Text = "Supported Trailer Sites:"
-        '
-        'lbTrailerSites
-        '
-        Me.lbTrailerSites.CheckOnClick = True
-        Me.lbTrailerSites.Enabled = False
-        Me.lbTrailerSites.FormattingEnabled = True
-        Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/TMDB", "IMDB"})
-        Me.lbTrailerSites.Location = New System.Drawing.Point(430, 30)
-        Me.lbTrailerSites.Name = "lbTrailerSites"
-        Me.lbTrailerSites.Size = New System.Drawing.Size(120, 79)
-        Me.lbTrailerSites.TabIndex = 6
-        '
-        'chkDownloadTrailer
-        '
-        Me.chkDownloadTrailer.AutoSize = True
-        Me.chkDownloadTrailer.Location = New System.Drawing.Point(6, 17)
-        Me.chkDownloadTrailer.Name = "chkDownloadTrailer"
-        Me.chkDownloadTrailer.Size = New System.Drawing.Size(156, 17)
-        Me.chkDownloadTrailer.TabIndex = 0
-        Me.chkDownloadTrailer.Text = "Enable Trailer Downloading"
-        Me.chkDownloadTrailer.UseVisualStyleBackColor = True
-        '
         'lblCurrent
         '
         Me.lblCurrent.AutoSize = True
@@ -3094,137 +3088,77 @@ Partial Class dlgSettings
         '
         Me.GroupBox28.Controls.Add(Me.txtDefFIExt)
         Me.GroupBox28.Controls.Add(Me.Label34)
-        Me.GroupBox28.Controls.Add(Me.btnRemoveSet)
-        Me.GroupBox28.Controls.Add(Me.btnEditSet)
-        Me.GroupBox28.Controls.Add(Me.btnNewSet)
-        Me.GroupBox28.Controls.Add(Me.Label1)
-        Me.GroupBox28.Controls.Add(Me.ComboBox1)
-        Me.GroupBox28.Controls.Add(Me.Label3)
-        Me.GroupBox28.Controls.Add(Me.cbDefACodec)
-        Me.GroupBox28.Controls.Add(Me.Label33)
+        Me.GroupBox28.Controls.Add(Me.btnRemoveMetaDataFT)
+        Me.GroupBox28.Controls.Add(Me.btnEditMetaDataFT)
+        Me.GroupBox28.Controls.Add(Me.btnNewMetaDataFT)
         Me.GroupBox28.Controls.Add(Me.ListView1)
-        Me.GroupBox28.Controls.Add(Me.cbDefVCodec)
         Me.GroupBox28.Location = New System.Drawing.Point(416, 5)
         Me.GroupBox28.Name = "GroupBox28"
-        Me.GroupBox28.Size = New System.Drawing.Size(176, 221)
+        Me.GroupBox28.Size = New System.Drawing.Size(176, 156)
         Me.GroupBox28.TabIndex = 8
         Me.GroupBox28.TabStop = False
-        Me.GroupBox28.Text = "Fileinfo Defaults by File Type"
+        Me.GroupBox28.Text = "Meta Data Defaults by File Type"
         '
         'txtDefFIExt
         '
         Me.txtDefFIExt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtDefFIExt.Location = New System.Drawing.Point(103, 122)
+        Me.txtDefFIExt.Location = New System.Drawing.Point(69, 132)
         Me.txtDefFIExt.Name = "txtDefFIExt"
-        Me.txtDefFIExt.Size = New System.Drawing.Size(50, 20)
+        Me.txtDefFIExt.Size = New System.Drawing.Size(35, 20)
         Me.txtDefFIExt.TabIndex = 33
         '
         'Label34
         '
-        Me.Label34.Location = New System.Drawing.Point(18, 123)
+        Me.Label34.Location = New System.Drawing.Point(4, 132)
         Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(78, 19)
+        Me.Label34.Size = New System.Drawing.Size(66, 19)
         Me.Label34.TabIndex = 32
-        Me.Label34.Text = "File Extension"
+        Me.Label34.Text = "File Type"
         Me.Label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'btnRemoveSet
+        'btnRemoveMetaDataFT
         '
-        Me.btnRemoveSet.Enabled = False
-        Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
-        Me.btnRemoveSet.Location = New System.Drawing.Point(149, 90)
-        Me.btnRemoveSet.Name = "btnRemoveSet"
-        Me.btnRemoveSet.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveSet.TabIndex = 31
-        Me.btnRemoveSet.UseVisualStyleBackColor = True
+        Me.btnRemoveMetaDataFT.Enabled = False
+        Me.btnRemoveMetaDataFT.Image = CType(resources.GetObject("btnRemoveMetaDataFT.Image"), System.Drawing.Image)
+        Me.btnRemoveMetaDataFT.Location = New System.Drawing.Point(149, 131)
+        Me.btnRemoveMetaDataFT.Name = "btnRemoveMetaDataFT"
+        Me.btnRemoveMetaDataFT.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveMetaDataFT.TabIndex = 31
+        Me.btnRemoveMetaDataFT.UseVisualStyleBackColor = True
         '
-        'btnEditSet
+        'btnEditMetaDataFT
         '
-        Me.btnEditSet.Enabled = False
-        Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
-        Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditSet.Location = New System.Drawing.Point(31, 92)
-        Me.btnEditSet.Name = "btnEditSet"
-        Me.btnEditSet.Size = New System.Drawing.Size(23, 23)
-        Me.btnEditSet.TabIndex = 30
-        Me.btnEditSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEditSet.UseVisualStyleBackColor = True
+        Me.btnEditMetaDataFT.Enabled = False
+        Me.btnEditMetaDataFT.Image = CType(resources.GetObject("btnEditMetaDataFT.Image"), System.Drawing.Image)
+        Me.btnEditMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditMetaDataFT.Location = New System.Drawing.Point(126, 131)
+        Me.btnEditMetaDataFT.Name = "btnEditMetaDataFT"
+        Me.btnEditMetaDataFT.Size = New System.Drawing.Size(23, 23)
+        Me.btnEditMetaDataFT.TabIndex = 30
+        Me.btnEditMetaDataFT.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditMetaDataFT.UseVisualStyleBackColor = True
         '
-        'btnNewSet
+        'btnNewMetaDataFT
         '
-        Me.btnNewSet.Enabled = False
-        Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
-        Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewSet.Location = New System.Drawing.Point(6, 92)
-        Me.btnNewSet.Name = "btnNewSet"
-        Me.btnNewSet.Size = New System.Drawing.Size(23, 23)
-        Me.btnNewSet.TabIndex = 29
-        Me.btnNewSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnNewSet.UseVisualStyleBackColor = True
-        '
-        'Label1
-        '
-        Me.Label1.Location = New System.Drawing.Point(2, 195)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(94, 19)
-        Me.Label1.TabIndex = 28
-        Me.Label1.Text = "Audio Channels"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'ComboBox1
-        '
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(102, 195)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(69, 21)
-        Me.ComboBox1.TabIndex = 27
-        '
-        'Label3
-        '
-        Me.Label3.Location = New System.Drawing.Point(18, 170)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(78, 19)
-        Me.Label3.TabIndex = 26
-        Me.Label3.Text = "Audio Codec"
-        Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbDefACodec
-        '
-        Me.cbDefACodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbDefACodec.FormattingEnabled = True
-        Me.cbDefACodec.Location = New System.Drawing.Point(102, 170)
-        Me.cbDefACodec.Name = "cbDefACodec"
-        Me.cbDefACodec.Size = New System.Drawing.Size(69, 21)
-        Me.cbDefACodec.TabIndex = 25
-        '
-        'Label33
-        '
-        Me.Label33.Location = New System.Drawing.Point(18, 146)
-        Me.Label33.Name = "Label33"
-        Me.Label33.Size = New System.Drawing.Size(78, 19)
-        Me.Label33.TabIndex = 15
-        Me.Label33.Text = "Video Codec"
-        Me.Label33.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNewMetaDataFT.Enabled = False
+        Me.btnNewMetaDataFT.Image = CType(resources.GetObject("btnNewMetaDataFT.Image"), System.Drawing.Image)
+        Me.btnNewMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNewMetaDataFT.Location = New System.Drawing.Point(104, 131)
+        Me.btnNewMetaDataFT.Name = "btnNewMetaDataFT"
+        Me.btnNewMetaDataFT.Size = New System.Drawing.Size(23, 23)
+        Me.btnNewMetaDataFT.TabIndex = 29
+        Me.btnNewMetaDataFT.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNewMetaDataFT.UseVisualStyleBackColor = True
         '
         'ListView1
         '
         Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.ListView1.Location = New System.Drawing.Point(6, 19)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(166, 70)
+        Me.ListView1.Size = New System.Drawing.Size(166, 107)
         Me.ListView1.TabIndex = 24
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
-        '
-        'cbDefVCodec
-        '
-        Me.cbDefVCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbDefVCodec.FormattingEnabled = True
-        Me.cbDefVCodec.Location = New System.Drawing.Point(102, 146)
-        Me.cbDefVCodec.Name = "cbDefVCodec"
-        Me.cbDefVCodec.Size = New System.Drawing.Size(69, 21)
-        Me.cbDefVCodec.TabIndex = 14
         '
         'GroupBox22
         '
@@ -3767,14 +3701,14 @@ Partial Class dlgSettings
         Me.GroupBox16.PerformLayout()
         Me.pnlScraper.ResumeLayout(False)
         Me.TabControl1.ResumeLayout(False)
-        Me.TabPage2.ResumeLayout(False)
-        Me.gbOptions.ResumeLayout(False)
-        Me.gbOptions.PerformLayout()
         Me.TabPage1.ResumeLayout(False)
         Me.GroupBox26.ResumeLayout(False)
         Me.GroupBox26.PerformLayout()
         Me.GroupBox20.ResumeLayout(False)
         Me.GroupBox20.PerformLayout()
+        Me.TabPage2.ResumeLayout(False)
+        Me.gbOptions.ResumeLayout(False)
+        Me.gbOptions.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlExtensions.ResumeLayout(False)
@@ -4089,16 +4023,10 @@ Partial Class dlgSettings
     Friend WithEvents chkRenameSingle As System.Windows.Forms.CheckBox
     Friend WithEvents chkRenameMulti As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox28 As System.Windows.Forms.GroupBox
-    Friend WithEvents btnRemoveSet As System.Windows.Forms.Button
-    Friend WithEvents btnEditSet As System.Windows.Forms.Button
-    Friend WithEvents btnNewSet As System.Windows.Forms.Button
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents cbDefACodec As System.Windows.Forms.ComboBox
-    Friend WithEvents Label33 As System.Windows.Forms.Label
+    Friend WithEvents btnRemoveMetaDataFT As System.Windows.Forms.Button
+    Friend WithEvents btnEditMetaDataFT As System.Windows.Forms.Button
+    Friend WithEvents btnNewMetaDataFT As System.Windows.Forms.Button
     Friend WithEvents ListView1 As System.Windows.Forms.ListView
-    Friend WithEvents cbDefVCodec As System.Windows.Forms.ComboBox
     Friend WithEvents txtDefFIExt As System.Windows.Forms.TextBox
     Friend WithEvents Label34 As System.Windows.Forms.Label
     Friend WithEvents cbAutoETSize As System.Windows.Forms.ComboBox
