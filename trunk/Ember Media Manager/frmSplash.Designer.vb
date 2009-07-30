@@ -31,10 +31,9 @@ Partial Class frmSplash
         '
         Me.Version.BackColor = System.Drawing.Color.White
         Me.Version.Font = New System.Drawing.Font("Arial", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Version.Location = New System.Drawing.Point(65, 209)
-        Me.Version.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Version.Location = New System.Drawing.Point(49, 170)
         Me.Version.Name = "Version"
-        Me.Version.Size = New System.Drawing.Size(337, 14)
+        Me.Version.Size = New System.Drawing.Size(253, 11)
         Me.Version.TabIndex = 2
         Me.Version.Text = "Version {0}.{1}.{2}"
         Me.Version.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -43,24 +42,22 @@ Partial Class frmSplash
         '
         Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PictureBox1.Image = Global.Ember_Media_Manager.My.Resources.Resources.Splash
-        Me.PictureBox1.Location = New System.Drawing.Point(5, 6)
-        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox1.Location = New System.Drawing.Point(4, 4)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(302, 302)
+        Me.PictureBox1.Size = New System.Drawing.Size(302, 304)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 2
         Me.PictureBox1.TabStop = False
         '
         'frmSplash
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(413, 384)
+        Me.ClientSize = New System.Drawing.Size(310, 312)
         Me.ControlBox = False
         Me.Controls.Add(Me.Version)
         Me.Controls.Add(Me.PictureBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmSplash"
