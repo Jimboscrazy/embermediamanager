@@ -289,7 +289,8 @@ Partial Class dlgSettings
         Me.btnRemoveMetaDataFT = New System.Windows.Forms.Button
         Me.btnEditMetaDataFT = New System.Windows.Forms.Button
         Me.btnNewMetaDataFT = New System.Windows.Forms.Button
-        Me.ListView1 = New System.Windows.Forms.ListView
+        Me.lstMetadata = New System.Windows.Forms.ListView
+        Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.GroupBox22 = New System.Windows.Forms.GroupBox
         Me.btnRemoveNoStack = New System.Windows.Forms.Button
         Me.btnAddNoStack = New System.Windows.Forms.Button
@@ -3091,7 +3092,7 @@ Partial Class dlgSettings
         Me.GroupBox28.Controls.Add(Me.btnRemoveMetaDataFT)
         Me.GroupBox28.Controls.Add(Me.btnEditMetaDataFT)
         Me.GroupBox28.Controls.Add(Me.btnNewMetaDataFT)
-        Me.GroupBox28.Controls.Add(Me.ListView1)
+        Me.GroupBox28.Controls.Add(Me.lstMetadata)
         Me.GroupBox28.Location = New System.Drawing.Point(416, 5)
         Me.GroupBox28.Name = "GroupBox28"
         Me.GroupBox28.Size = New System.Drawing.Size(176, 156)
@@ -3150,15 +3151,23 @@ Partial Class dlgSettings
         Me.btnNewMetaDataFT.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnNewMetaDataFT.UseVisualStyleBackColor = True
         '
-        'ListView1
+        'lstMetadata
         '
-        Me.ListView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        Me.ListView1.Location = New System.Drawing.Point(6, 19)
-        Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(166, 107)
-        Me.ListView1.TabIndex = 24
-        Me.ListView1.UseCompatibleStateImageBehavior = False
-        Me.ListView1.View = System.Windows.Forms.View.Details
+        Me.lstMetadata.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
+        Me.lstMetadata.FullRowSelect = True
+        Me.lstMetadata.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lstMetadata.Location = New System.Drawing.Point(4, 18)
+        Me.lstMetadata.MultiSelect = False
+        Me.lstMetadata.Name = "lstMetadata"
+        Me.lstMetadata.Size = New System.Drawing.Size(166, 107)
+        Me.lstMetadata.TabIndex = 24
+        Me.lstMetadata.UseCompatibleStateImageBehavior = False
+        Me.lstMetadata.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = "Type"
+        Me.ColumnHeader1.Width = 142
         '
         'GroupBox22
         '
@@ -3626,6 +3635,7 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
+        Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -3637,7 +3647,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -4026,7 +4035,7 @@ Partial Class dlgSettings
     Friend WithEvents btnRemoveMetaDataFT As System.Windows.Forms.Button
     Friend WithEvents btnEditMetaDataFT As System.Windows.Forms.Button
     Friend WithEvents btnNewMetaDataFT As System.Windows.Forms.Button
-    Friend WithEvents ListView1 As System.Windows.Forms.ListView
+    Friend WithEvents lstMetadata As System.Windows.Forms.ListView
     Friend WithEvents txtDefFIExt As System.Windows.Forms.TextBox
     Friend WithEvents Label34 As System.Windows.Forms.Label
     Friend WithEvents cbAutoETSize As System.Windows.Forms.ComboBox
@@ -4035,4 +4044,5 @@ Partial Class dlgSettings
     Friend WithEvents cbMovieTheme As System.Windows.Forms.ComboBox
     Friend WithEvents GroupBox29 As System.Windows.Forms.GroupBox
     Friend WithEvents Label36 As System.Windows.Forms.Label
+    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
 End Class

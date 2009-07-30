@@ -191,6 +191,12 @@ Public Class emmSettings
     Private _autorenamemulti As Boolean
     Private _autorenamesingle As Boolean
     Private _movietheme As String
+    Private _metadatapertype As List(Of MetadataPerType)
+
+    Structure MetadataPerType
+        Dim FileType As String
+        Dim Metadata As MediaInfo.Fileinfo
+    End Structure
 
     Public Property Version() As String
         Get
@@ -1680,7 +1686,14 @@ Public Class emmSettings
             Me._movietheme = value
         End Set
     End Property
-
+    Public Property MetadataPerFileType() As List(Of MetadataPerType)
+        Get
+            Return Me._metadatapertype
+        End Get
+        Set(ByVal value As List(Of MetadataPerType))
+            Me._metadatapertype = value
+        End Set
+    End Property
     Public Sub New()
         Me.Clear()
     End Sub
