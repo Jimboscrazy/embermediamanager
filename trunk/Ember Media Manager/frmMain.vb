@@ -78,6 +78,7 @@ Public Class frmMain
     Private filGenre As String = String.Empty
     Private filYear As String = String.Empty
     Private filMissing As String = String.Empty
+    Private filSource As String = String.Empty
 
     Private Enum PicType As Integer
         Actor = 0
@@ -210,6 +211,7 @@ Public Class frmMain
                 Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
                 Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
                 Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
+                Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -548,12 +550,10 @@ Public Class frmMain
 
                 If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     Master.DB.Connect(False, False)
-                    Me.SetMenus(True)
                     Me.FillList(0)
                     Me.Visible = True
                 Else
                     Master.DB.Connect(True, True)
-                    Me.SetMenus(True)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True
@@ -564,6 +564,7 @@ Public Class frmMain
                     End If
                 End If
 
+                Me.SetMenus(True)
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -883,6 +884,7 @@ Public Class frmMain
                 Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
                 Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
                 Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
+                Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1190,7 +1192,7 @@ Public Class frmMain
         End If
 
         If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = Master.eLang.All OrElse _
+        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
         Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter()
     End Sub
 
@@ -1215,7 +1217,7 @@ Public Class frmMain
         End If
 
         If (Not String.IsNullOrEmpty(Me.cbFilterYear.Text) AndAlso Not Me.cbFilterYear.Text = Master.eLang.All) OrElse Me.clbFilterGenres.CheckedItems.Count > 0 OrElse _
-        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.cbFilterSource.Text = Master.eLang.All OrElse _
+        Me.chkFilterMark.Checked OrElse Me.chkFilterNew.Checked OrElse Me.chkFilterLock.Checked OrElse Not Me.clbFilterSource.CheckedItems.Count > 0 OrElse _
         Me.chkFilterDupe.Checked OrElse Me.chkFilterMissing.Checked OrElse Me.chkFilterTolerance.Checked OrElse Not Me.cbFilterFileSource.Text = Master.eLang.All Then Me.RunFilter()
     End Sub
 
@@ -2006,27 +2008,6 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterSource.SelectedIndexChanged
-        Try
-            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
-                Application.DoEvents()
-            Loop
-
-            For i As Integer = Me.FilterArray.Count - 1 To 0 Step -1
-                If Me.FilterArray(i).ToString.StartsWith("source =") Then
-                    Me.FilterArray.RemoveAt(i)
-                End If
-            Next
-
-            If Not cbFilterSource.Text = Master.eLang.All Then
-                Me.FilterArray.Add(String.Format("source = '{0}'", cbFilterSource.Text))
-            End If
-            Me.RunFilter()
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
     Private Sub cbFilterFileSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource.SelectedIndexChanged
         Try
             Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
@@ -2252,6 +2233,40 @@ Public Class frmMain
         End Try
     End Sub
 
+    Private Sub clbFilterSource_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles clbFilterSource.LostFocus
+        Try
+            Me.pnlFilterSource.Visible = False
+            Me.pnlFilterSource.Tag = "NO"
+
+            If clbFilterSource.CheckedItems.Count > 0 Then
+                Me.txtFilterSource.Text = String.Empty
+                Me.FilterArray.Remove(Me.filSource)
+
+                Dim alSource As New ArrayList
+                alSource.AddRange(clbFilterSource.CheckedItems)
+
+                Me.txtFilterSource.Text = Strings.Join(alSource.ToArray, " | ")
+
+                For i As Integer = 0 To alSource.Count - 1
+                    alSource.Item(i) = String.Format("Source = '{0}'", alSource.Item(i))
+                Next
+
+                Me.filSource = Strings.Join(alSource.ToArray, " OR ")
+
+                Me.FilterArray.Add(Me.filSource)
+                Me.RunFilter()
+            Else
+                If Not String.IsNullOrEmpty(Me.filSource) Then
+                    Me.txtFilterSource.Text = String.Empty
+                    Me.FilterArray.Remove(Me.filSource)
+                    Me.filSource = String.Empty
+                    Me.RunFilter()
+                End If
+            End If
+        Catch
+        End Try
+    End Sub
+
     Private Sub txtFilterGenre_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterGenre.Click
         Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
         If Me.pnlFilterGenre.Visible Then
@@ -2265,9 +2280,27 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub txtFilterSource_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterSource.Click
+        Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
+        If Me.pnlFilterSource.Visible Then
+            Me.pnlFilterSource.Visible = False
+        ElseIf Not Me.pnlFilterSource.Tag = "NO" Then
+            Me.pnlFilterSource.Tag = String.Empty
+            Me.pnlFilterSource.Visible = True
+            Me.clbFilterSource.Focus()
+        Else
+            Me.pnlFilterSource.Tag = String.Empty
+        End If
+    End Sub
+
     Private Sub lblGFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblGFilClose.Click
         Me.txtFilterGenre.Focus()
         Me.pnlFilterGenre.Tag = String.Empty
+    End Sub
+
+    Private Sub lblSFilClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblSFilClose.Click
+        Me.txtFilterSource.Focus()
+        Me.pnlFilterSource.Tag = String.Empty
     End Sub
 
     Private Sub cbSearch_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearch.SelectedIndexChanged
@@ -3532,7 +3565,9 @@ doCancel:
                 .ClearAllCachesToolStripMenuItem.Text = Master.eLang.GetString(17, "Clear &All Caches")
                 .RefreshAllMoviesToolStripMenuItem.Text = Master.eLang.GetString(18, "Re&load All Movies")
                 .lblGFilClose.Text = Master.eLang.GetString(19, "Close")
+                .lblSFilClose.Text = Master.eLang.GetString(19, "Close")
                 .Label4.Text = Master.eLang.GetString(20, "Genres")
+                .Label8.Text = Master.eLang.GetString(602, "Sources")
                 .cmnuTitle.Text = Master.eLang.GetString(21, "Title")
                 .cmnuRefresh.Text = Master.eLang.GetString(22, "Reload")
                 .cmnuMark.Text = Master.eLang.GetString(23, "Mark")
@@ -3667,7 +3702,7 @@ doCancel:
                 TT.SetToolTip(.chkFilterNew, Master.eLang.GetString(94, "Display only new movies."))
                 TT.SetToolTip(.chkFilterMark, Master.eLang.GetString(95, "Display only marked movies."))
                 TT.SetToolTip(.chkFilterLock, Master.eLang.GetString(96, "Display only locked movies."))
-                TT.SetToolTip(.cbFilterSource, Master.eLang.GetString(97, "Display only movies from the selected source."))
+                TT.SetToolTip(.txtFilterSource, Master.eLang.GetString(97, "Display only movies from the selected source."))
                 TT.SetToolTip(.cbFilterFileSource, Master.eLang.GetString(580, "Display only movies from the selected file source."))
                 TT.Active = True
 
@@ -4711,19 +4746,15 @@ doCancel:
                 'not technically a menu, but it's a good place to put it
                 If ReloadFilters Then
 
-                    RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-                    cbFilterSource.Items.Clear()
-                    cbFilterSource.Items.Add(Master.eLang.All)
+                    clbFilterSource.Items.Clear()
                     Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                         SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
                         Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                             While SQLReader.Read
-                                cbFilterSource.Items.Add(SQLReader("Name"))
+                                clbFilterSource.Items.Add(SQLReader("Name"))
                             End While
                         End Using
                     End Using
-                    cbFilterSource.SelectedIndex = 0
-                    AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
 
                     RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
                     Me.cbFilterYear.Items.Clear()
@@ -4882,7 +4913,7 @@ doCancel:
         Me.chkFilterLock.Enabled = isEnabled
         Me.rbFilterOr.Enabled = isEnabled
         Me.rbFilterAnd.Enabled = isEnabled
-        Me.cbFilterSource.Enabled = isEnabled
+        Me.txtFilterSource.Enabled = isEnabled
         Me.cbFilterFileSource.Enabled = isEnabled
         Me.txtFilterGenre.Enabled = isEnabled
         Me.cbFilterYearMod.Enabled = isEnabled
@@ -4916,11 +4947,10 @@ doCancel:
             For i As Integer = 0 To Me.clbFilterGenres.Items.Count - 1
                 Me.clbFilterGenres.SetItemChecked(i, False)
             Next
-            RemoveHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
-            If Me.cbFilterSource.Items.Count > 0 Then
-                Me.cbFilterSource.SelectedIndex = 0
-            End If
-            AddHandler cbFilterSource.SelectedIndexChanged, AddressOf cbFilterSource_SelectedIndexChanged
+            Me.txtFilterSource.Text = String.Empty
+            For i As Integer = 0 To Me.clbFilterSource.Items.Count - 1
+                Me.clbFilterSource.SetItemChecked(i, False)
+            Next
 
             RemoveHandler cbFilterYear.SelectedIndexChanged, AddressOf cbFilterYear_SelectedIndexChanged
             If Me.cbFilterYear.Items.Count > 0 Then
