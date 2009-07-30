@@ -127,6 +127,14 @@ Public Class dlgFileInfo
         Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
     End Sub
 
+    Private Sub lvStreams_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvStreams.DoubleClick
+        If lvStreams.SelectedItems.Count > 0 Then
+            If lvStreams.SelectedItems.Item(0).Tag <> "Header" Then
+                EditStream()
+            End If
+        End If
+    End Sub
+
     Private Sub lvStreams_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvStreams.SelectedIndexChanged
         If lvStreams.SelectedItems.Count > 0 Then
             If lvStreams.SelectedItems.Item(0).Tag = "Header" Then
@@ -176,6 +184,9 @@ Public Class dlgFileInfo
     End Sub
 
     Private Sub btnEditSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSet.Click
+        EditStream()
+    End Sub
+    Sub EditStream()
         If lvStreams.SelectedItems.Count > 0 Then
             Dim i As ListViewItem = lvStreams.SelectedItems(0)
             Using dEditStream As New dlgFIStreamEditor
