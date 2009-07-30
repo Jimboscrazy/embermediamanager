@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -57,6 +57,10 @@ Partial Class frmMain
         Me.ClearAllCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RefreshAllMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
+        Me.pnlFilterSource = New System.Windows.Forms.Panel
+        Me.lblSFilClose = New System.Windows.Forms.Label
+        Me.Label8 = New System.Windows.Forms.Label
+        Me.clbFilterSource = New System.Windows.Forms.CheckedListBox
         Me.pnlFilterGenre = New System.Windows.Forms.Panel
         Me.lblGFilClose = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
@@ -101,6 +105,7 @@ Partial Class frmMain
         Me.chkFilterMissing = New System.Windows.Forms.CheckBox
         Me.chkFilterDupe = New System.Windows.Forms.CheckBox
         Me.gbSpecific = New System.Windows.Forms.GroupBox
+        Me.txtFilterSource = New System.Windows.Forms.TextBox
         Me.Label6 = New System.Windows.Forms.Label
         Me.cbFilterFileSource = New System.Windows.Forms.ComboBox
         Me.chkFilterLock = New System.Windows.Forms.CheckBox
@@ -115,7 +120,6 @@ Partial Class frmMain
         Me.txtFilterGenre = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
-        Me.cbFilterSource = New System.Windows.Forms.ComboBox
         Me.btnFilterDown = New System.Windows.Forms.Button
         Me.btnFilterUp = New System.Windows.Forms.Button
         Me.lblFilter = New System.Windows.Forms.Label
@@ -266,6 +270,7 @@ Partial Class frmMain
         Me.scMain.Panel1.SuspendLayout()
         Me.scMain.Panel2.SuspendLayout()
         Me.scMain.SuspendLayout()
+        Me.pnlFilterSource.SuspendLayout()
         Me.pnlFilterGenre.SuspendLayout()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.mnuMediaList.SuspendLayout()
@@ -562,6 +567,7 @@ Partial Class frmMain
         'scMain.Panel1
         '
         Me.scMain.Panel1.BackColor = System.Drawing.Color.Gainsboro
+        Me.scMain.Panel1.Controls.Add(Me.pnlFilterSource)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterGenre)
         Me.scMain.Panel1.Controls.Add(Me.dgvMediaList)
         Me.scMain.Panel1.Controls.Add(Me.Panel1)
@@ -586,6 +592,55 @@ Partial Class frmMain
         Me.scMain.Size = New System.Drawing.Size(1016, 688)
         Me.scMain.SplitterDistance = 349
         Me.scMain.TabIndex = 7
+        '
+        'pnlFilterSource
+        '
+        Me.pnlFilterSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlFilterSource.Controls.Add(Me.lblSFilClose)
+        Me.pnlFilterSource.Controls.Add(Me.Label8)
+        Me.pnlFilterSource.Controls.Add(Me.clbFilterSource)
+        Me.pnlFilterSource.Location = New System.Drawing.Point(186, 468)
+        Me.pnlFilterSource.Name = "pnlFilterSource"
+        Me.pnlFilterSource.Size = New System.Drawing.Size(166, 192)
+        Me.pnlFilterSource.TabIndex = 16
+        Me.pnlFilterSource.Visible = False
+        '
+        'lblSFilClose
+        '
+        Me.lblSFilClose.AutoSize = True
+        Me.lblSFilClose.BackColor = System.Drawing.Color.DimGray
+        Me.lblSFilClose.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblSFilClose.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSFilClose.ForeColor = System.Drawing.Color.White
+        Me.lblSFilClose.Location = New System.Drawing.Point(130, 2)
+        Me.lblSFilClose.Name = "lblSFilClose"
+        Me.lblSFilClose.Size = New System.Drawing.Size(33, 13)
+        Me.lblSFilClose.TabIndex = 24
+        Me.lblSFilClose.Text = "Close"
+        '
+        'Label8
+        '
+        Me.Label8.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label8.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.Label8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.Label8.Location = New System.Drawing.Point(1, 1)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(162, 17)
+        Me.Label8.TabIndex = 23
+        Me.Label8.Text = "Sources"
+        Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'clbFilterSource
+        '
+        Me.clbFilterSource.CheckOnClick = True
+        Me.clbFilterSource.FormattingEnabled = True
+        Me.clbFilterSource.Location = New System.Drawing.Point(1, 20)
+        Me.clbFilterSource.Name = "clbFilterSource"
+        Me.clbFilterSource.Size = New System.Drawing.Size(162, 169)
+        Me.clbFilterSource.TabIndex = 8
         '
         'pnlFilterGenre
         '
@@ -641,8 +696,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -995,6 +1050,7 @@ Partial Class frmMain
         '
         'gbSpecific
         '
+        Me.gbSpecific.Controls.Add(Me.txtFilterSource)
         Me.gbSpecific.Controls.Add(Me.Label6)
         Me.gbSpecific.Controls.Add(Me.cbFilterFileSource)
         Me.gbSpecific.Controls.Add(Me.chkFilterLock)
@@ -1007,13 +1063,21 @@ Partial Class frmMain
         Me.gbSpecific.Controls.Add(Me.txtFilterGenre)
         Me.gbSpecific.Controls.Add(Me.Label2)
         Me.gbSpecific.Controls.Add(Me.Label3)
-        Me.gbSpecific.Controls.Add(Me.cbFilterSource)
         Me.gbSpecific.Location = New System.Drawing.Point(135, 22)
         Me.gbSpecific.Name = "gbSpecific"
         Me.gbSpecific.Size = New System.Drawing.Size(224, 152)
         Me.gbSpecific.TabIndex = 36
         Me.gbSpecific.TabStop = False
         Me.gbSpecific.Text = "Specific"
+        '
+        'txtFilterSource
+        '
+        Me.txtFilterSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilterSource.Location = New System.Drawing.Point(50, 129)
+        Me.txtFilterSource.Name = "txtFilterSource"
+        Me.txtFilterSource.ReadOnly = True
+        Me.txtFilterSource.Size = New System.Drawing.Size(166, 20)
+        Me.txtFilterSource.TabIndex = 40
         '
         'Label6
         '
@@ -1151,15 +1215,6 @@ Partial Class frmMain
         Me.Label3.Size = New System.Drawing.Size(39, 13)
         Me.Label3.TabIndex = 31
         Me.Label3.Text = "Genre:"
-        '
-        'cbFilterSource
-        '
-        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterSource.FormattingEnabled = True
-        Me.cbFilterSource.Location = New System.Drawing.Point(50, 128)
-        Me.cbFilterSource.Name = "cbFilterSource"
-        Me.cbFilterSource.Size = New System.Drawing.Size(166, 21)
-        Me.cbFilterSource.TabIndex = 30
         '
         'btnFilterDown
         '
@@ -2480,6 +2535,8 @@ Partial Class frmMain
         Me.scMain.Panel2.ResumeLayout(False)
         Me.scMain.Panel2.PerformLayout()
         Me.scMain.ResumeLayout(False)
+        Me.pnlFilterSource.ResumeLayout(False)
+        Me.pnlFilterSource.PerformLayout()
         Me.pnlFilterGenre.ResumeLayout(False)
         Me.pnlFilterGenre.PerformLayout()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2722,7 +2779,6 @@ Partial Class frmMain
     Friend WithEvents btnFilterDown As System.Windows.Forms.Button
     Friend WithEvents btnFilterUp As System.Windows.Forms.Button
     Friend WithEvents tmrFilterAni As System.Windows.Forms.Timer
-    Friend WithEvents cbFilterSource As System.Windows.Forms.ComboBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents mnuRevertStudioTags As System.Windows.Forms.ToolStripMenuItem
@@ -2776,4 +2832,9 @@ Partial Class frmMain
     Friend WithEvents MetadataToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents btnSortDate As System.Windows.Forms.Button
+    Friend WithEvents pnlFilterSource As System.Windows.Forms.Panel
+    Friend WithEvents lblSFilClose As System.Windows.Forms.Label
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents clbFilterSource As System.Windows.Forms.CheckedListBox
+    Friend WithEvents txtFilterSource As System.Windows.Forms.TextBox
 End Class
