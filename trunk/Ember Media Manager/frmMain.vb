@@ -3611,9 +3611,9 @@ doCancel:
             'info panel
             Dim xIPMain = From xTheme In ThemeXML...<theme>...<infopanel> Select xTheme.<backcolor>.Value, xTheme.<ipup>.Value, xTheme.<ipmid>.Value
             If xIPMain.Count > 0 Then
-                Me.pnlInfoPanel.BackColor = Color.FromArgb(xIPMain(0).backcolor)
-                Me.IPUp = xIPMain(0).ipup
-                Me.IPMid = xIPMain(0).ipmid
+                If Not String.IsNullOrEmpty(xIPMain(0).backcolor) Then Me.pnlInfoPanel.BackColor = Color.FromArgb(xIPMain(0).backcolor)
+                If Not String.IsNullOrEmpty(xIPMain(0).ipup) Then Me.IPUp = xIPMain(0).ipup
+                If Not String.IsNullOrEmpty(xIPMain(0).ipmid) Then Me.IPMid = xIPMain(0).ipmid
             End If
 
             For Each xControl As Control In cControl.Controls
