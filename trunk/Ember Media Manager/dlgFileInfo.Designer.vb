@@ -55,6 +55,9 @@ Partial Class dlgFileInfo
         '
         'lvStreams
         '
+        Me.lvStreams.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7})
         Me.lvStreams.FullRowSelect = True
         ListViewGroup1.Header = "Video Streams"
@@ -110,6 +113,7 @@ Partial Class dlgFileInfo
         '
         'btnRemoveSet
         '
+        Me.btnRemoveSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnRemoveSet.Enabled = False
         Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
         Me.btnRemoveSet.Location = New System.Drawing.Point(269, 328)
@@ -120,6 +124,7 @@ Partial Class dlgFileInfo
         '
         'btnEditSet
         '
+        Me.btnEditSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnEditSet.Enabled = False
         Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
         Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -132,6 +137,7 @@ Partial Class dlgFileInfo
         '
         'btnNewSet
         '
+        Me.btnNewSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnNewSet.Enabled = False
         Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
         Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -144,6 +150,7 @@ Partial Class dlgFileInfo
         '
         'Label4
         '
+        Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label4.Location = New System.Drawing.Point(12, 332)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(78, 15)
@@ -153,6 +160,7 @@ Partial Class dlgFileInfo
         '
         'cbStreamType
         '
+        Me.cbStreamType.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cbStreamType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbStreamType.FormattingEnabled = True
         Me.cbStreamType.Items.AddRange(New Object() {"Video", "Audio", "Subtitle"})

@@ -113,7 +113,7 @@ Public Class dlgEditMovie
             dFileInfoEdit.Width = pnlFileInfo.Width
             dFileInfoEdit.Height = pnlFileInfo.Height
             For Each c As Control In dFileInfoEdit.Controls
-                c.Left = c.Left + (dFileInfoEdit.Width - oldwidth) / 2
+                'c.Left = c.Left + (dFileInfoEdit.Width - oldwidth) / 2
             Next
             dFileInfoEdit.Show()
 
