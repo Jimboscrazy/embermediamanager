@@ -624,4 +624,6 @@
   <string id="622">Scraping Media (Current Filter - Ask):</string>
   <string id="623">Scraping Media (Current Filter - Auto):</string>
   <string id="624">Current Filter</string>
+  <string id="625">Meta Data Defaults by File Type</string>
+  <string id="626">File Type</string>
 </strings>
