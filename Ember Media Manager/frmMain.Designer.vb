@@ -417,9 +417,9 @@ Partial Class frmMain
         '
         Me.StatusStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tslLoading, Me.tspbLoading})
-        Me.StatusStrip.Location = New System.Drawing.Point(0, 706)
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 701)
         Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(1008, 26)
+        Me.StatusStrip.Size = New System.Drawing.Size(1008, 31)
         Me.StatusStrip.TabIndex = 6
         Me.StatusStrip.Text = "StatusStrip"
         '
@@ -427,7 +427,7 @@ Partial Class frmMain
         '
         Me.tslStatus.AutoSize = False
         Me.tslStatus.Name = "tslStatus"
-        Me.tslStatus.Size = New System.Drawing.Size(525, 21)
+        Me.tslStatus.Size = New System.Drawing.Size(525, 26)
         Me.tslStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'tslLoading
@@ -436,7 +436,7 @@ Partial Class frmMain
         Me.tslLoading.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tslLoading.Name = "tslLoading"
         Me.tslLoading.Padding = New System.Windows.Forms.Padding(100, 0, 0, 0)
-        Me.tslLoading.Size = New System.Drawing.Size(300, 21)
+        Me.tslLoading.Size = New System.Drawing.Size(300, 26)
         Me.tslLoading.Text = "Loading Media:"
         Me.tslLoading.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.tslLoading.Visible = False
@@ -445,7 +445,7 @@ Partial Class frmMain
         '
         Me.tspbLoading.AutoSize = False
         Me.tspbLoading.Name = "tspbLoading"
-        Me.tspbLoading.Size = New System.Drawing.Size(150, 20)
+        Me.tspbLoading.Size = New System.Drawing.Size(150, 25)
         Me.tspbLoading.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         Me.tspbLoading.Visible = False
         '
@@ -589,7 +589,7 @@ Partial Class frmMain
         Me.scMain.Panel1.Controls.Add(Me.dgvMediaList)
         Me.scMain.Panel1.Controls.Add(Me.Panel1)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
-        Me.scMain.Panel1.Margin = New System.Windows.Forms.Padding(3)
+        Me.scMain.Panel1.Margin = New System.Windows.Forms.Padding(3, 3, 3, 3)
         Me.scMain.Panel1MinSize = 165
         '
         'scMain.Panel2
@@ -605,8 +605,8 @@ Partial Class frmMain
         Me.scMain.Panel2.Controls.Add(Me.tsMain)
         Me.scMain.Panel2.Controls.Add(Me.pbFanartCache)
         Me.scMain.Panel2.Controls.Add(Me.pbFanart)
-        Me.scMain.Panel2.Margin = New System.Windows.Forms.Padding(3)
-        Me.scMain.Size = New System.Drawing.Size(1008, 682)
+        Me.scMain.Panel2.Margin = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.scMain.Size = New System.Drawing.Size(1008, 677)
         Me.scMain.SplitterDistance = 349
         Me.scMain.TabIndex = 7
         '
@@ -656,7 +656,7 @@ Partial Class frmMain
         Me.clbFilterSource.FormattingEnabled = True
         Me.clbFilterSource.Location = New System.Drawing.Point(1, 20)
         Me.clbFilterSource.Name = "clbFilterSource"
-        Me.clbFilterSource.Size = New System.Drawing.Size(162, 154)
+        Me.clbFilterSource.Size = New System.Drawing.Size(162, 139)
         Me.clbFilterSource.TabIndex = 8
         '
         'pnlFilterGenre
@@ -705,7 +705,7 @@ Partial Class frmMain
         Me.clbFilterGenres.FormattingEnabled = True
         Me.clbFilterGenres.Location = New System.Drawing.Point(1, 20)
         Me.clbFilterGenres.Name = "clbFilterGenres"
-        Me.clbFilterGenres.Size = New System.Drawing.Size(162, 154)
+        Me.clbFilterGenres.Size = New System.Drawing.Size(162, 139)
         Me.clbFilterGenres.TabIndex = 8
         '
         'dgvMediaList
@@ -730,7 +730,7 @@ Partial Class frmMain
         Me.dgvMediaList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMediaList.ShowCellErrors = False
         Me.dgvMediaList.ShowRowErrors = False
-        Me.dgvMediaList.Size = New System.Drawing.Size(349, 446)
+        Me.dgvMediaList.Size = New System.Drawing.Size(349, 441)
         Me.dgvMediaList.TabIndex = 10
         '
         'mnuMediaList
@@ -967,7 +967,7 @@ Partial Class frmMain
         '
         Me.tabMovies.Location = New System.Drawing.Point(4, 22)
         Me.tabMovies.Name = "tabMovies"
-        Me.tabMovies.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabMovies.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
         Me.tabMovies.Size = New System.Drawing.Size(339, 9)
         Me.tabMovies.TabIndex = 0
         Me.tabMovies.Text = "Movies"
@@ -984,7 +984,7 @@ Partial Class frmMain
         Me.pnlFilter.Controls.Add(Me.btnFilterUp)
         Me.pnlFilter.Controls.Add(Me.lblFilter)
         Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFilter.Location = New System.Drawing.Point(0, 502)
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 497)
         Me.pnlFilter.Name = "pnlFilter"
         Me.pnlFilter.Size = New System.Drawing.Size(349, 180)
         Me.pnlFilter.TabIndex = 12
@@ -1392,7 +1392,7 @@ Partial Class frmMain
         Me.pnlInfoPanel.Controls.Add(Me.btnUp)
         Me.pnlInfoPanel.Controls.Add(Me.lblInfoPanelHeader)
         Me.pnlInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 340)
+        Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 335)
         Me.pnlInfoPanel.Name = "pnlInfoPanel"
         Me.pnlInfoPanel.Size = New System.Drawing.Size(655, 342)
         Me.pnlInfoPanel.TabIndex = 10
@@ -1474,7 +1474,7 @@ Partial Class frmMain
         'btnMetaDataRefresh
         '
         Me.btnMetaDataRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnMetaDataRefresh.Location = New System.Drawing.Point(574, 278)
+        Me.btnMetaDataRefresh.Location = New System.Drawing.Point(573, 278)
         Me.btnMetaDataRefresh.Name = "btnMetaDataRefresh"
         Me.btnMetaDataRefresh.Size = New System.Drawing.Size(75, 23)
         Me.btnMetaDataRefresh.TabIndex = 34
@@ -1589,7 +1589,7 @@ Partial Class frmMain
         Me.lblDirectorHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblDirectorHeader.Location = New System.Drawing.Point(3, 27)
         Me.lblDirectorHeader.Name = "lblDirectorHeader"
-        Me.lblDirectorHeader.Size = New System.Drawing.Size(162, 17)
+        Me.lblDirectorHeader.Size = New System.Drawing.Size(161, 17)
         Me.lblDirectorHeader.TabIndex = 21
         Me.lblDirectorHeader.Text = "Director"
         Me.lblDirectorHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1689,7 +1689,7 @@ Partial Class frmMain
         Me.pnlTop250.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlTop250.Controls.Add(Me.lblTop250)
         Me.pnlTop250.Controls.Add(Me.pbTop250)
-        Me.pnlTop250.Location = New System.Drawing.Point(280, 27)
+        Me.pnlTop250.Location = New System.Drawing.Point(279, 27)
         Me.pnlTop250.Name = "pnlTop250"
         Me.pnlTop250.Size = New System.Drawing.Size(56, 48)
         Me.pnlTop250.TabIndex = 15
@@ -1751,7 +1751,7 @@ Partial Class frmMain
         '
         Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnDown.BackColor = System.Drawing.SystemColors.Control
-        Me.btnDown.Location = New System.Drawing.Point(616, 1)
+        Me.btnDown.Location = New System.Drawing.Point(615, 1)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(30, 22)
         Me.btnDown.TabIndex = 6
