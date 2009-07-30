@@ -731,6 +731,22 @@ Public Class frmMain
         Me.LoadInfo(Master.currMovie.ID, Master.currMovie.Filename, False, True, True)
 
     End Sub
+
+    Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
+        If Me.dgvMediaList.RowCount > 0 Then
+            If Me.dgvMediaList.SelectedRows.Count > 1 Then
+                Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
+            ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
+                Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value
+            End If
+        End If
+
+        Me.currRow = e.RowIndex
+        Me.tmrWait.Enabled = False
+        Me.tmrLoad.Enabled = False
+        Me.tmrWait.Enabled = True
+
+    End Sub
     Private Sub dgvMediaList_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellDoubleClick
 
         '//
@@ -987,7 +1003,7 @@ Public Class frmMain
                         Application.DoEvents()
                     Loop
                 End If
-                Me.SelectRow(Me.currRow)
+                Me.SelectRow(Me.dgvMediaList.SelectedRows(0).Index)
             End If
         Catch
         End Try
@@ -5369,7 +5385,6 @@ doCancel:
                 Me.ClearInfo()
                 Me.pnlNoInfo.Visible = True
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMediaList.Item(0, iRow).Value))
-                Me.tslStatus.Text = Master.currMovie.Filename
             Else
                 Me.pnlNoInfo.Visible = False
 
