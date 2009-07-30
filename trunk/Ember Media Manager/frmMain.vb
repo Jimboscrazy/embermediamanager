@@ -230,6 +230,7 @@ Public Class frmMain
                 If dResult = Windows.Forms.DialogResult.OK OrElse dResult = Windows.Forms.DialogResult.Retry Then
 
                     Me.SetUp(False)
+                    Me.LoadTheme("movie")
 
                     If Me.dgvMediaList.RowCount > 0 Then
                         Me.dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
@@ -3441,7 +3442,7 @@ doCancel:
     ' ########################################
 
     Private Sub LoadTheme(ByVal tType As String)
-        Dim tPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Themes", Path.DirectorySeparatorChar, tType, ".xml")
+        Dim tPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, Master.eSettings.MovieTheme))
         If File.Exists(tPath) Then
             ThemeXML = XDocument.Load(tPath)
 
@@ -3710,7 +3711,7 @@ doCancel:
                 .cbSearch.Items.Clear()
                 .cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(62, "Director")})
 
-                If doTheme Then .LoadTheme("Movie")
+                If doTheme Then .LoadTheme("movie")
 
             End With
         Catch ex As Exception

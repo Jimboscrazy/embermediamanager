@@ -190,6 +190,7 @@ Public Class emmSettings
     Private _missingfilterextras As Boolean
     Private _autorenamemulti As Boolean
     Private _autorenamesingle As Boolean
+    Private _movietheme As String
 
     Public Property Version() As String
         Get
@@ -1671,6 +1672,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property MovieTheme() As String
+        Get
+            Return Me._movietheme
+        End Get
+        Set(ByVal value As String)
+            Me._movietheme = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1841,6 +1851,7 @@ Public Class emmSettings
         Me._missingfilterextras = True
         Me._autorenamemulti = False
         Me._autorenamesingle = False
+        Me._movietheme = String.Empty
     End Sub
 
     Public Sub Save()

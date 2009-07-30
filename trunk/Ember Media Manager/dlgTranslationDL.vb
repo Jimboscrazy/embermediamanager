@@ -16,7 +16,7 @@ Public Class dlgTranslationDL
     End Sub
 
     Private Sub DownloadSelected()
-        Me.lblStatus.Text = Master.eLang.GetString(447, "Downloading selected translation files...")
+        Me.lblStatus.Text = Master.eLang.GetString(447, "Downloading selected addon files...")
         Me.pnlStatus.Visible = True
         Application.DoEvents()
 
@@ -26,17 +26,20 @@ Public Class dlgTranslationDL
         Try
             For Each lItem As ListViewItem In lvDownload.Items
                 If lItem.Checked Then
-                    If Not String.IsNullOrEmpty(lItem.Tag) Then 'must be a translation file
-                        sHTTP.DownloadFile(lItem.Tag, String.Empty, False, "translation")
-                    Else 'must be a template
-                        tFind.SetSearchString(lItem.Group.Header.ToString, lItem.Text.Replace(Master.eLang.GetString(449, "Export Template: "), String.Empty).Trim)
-                        tFound = Templates.Find(AddressOf tFind.Find)
-                        If Not IsNothing(tFound) Then
-                            For Each sFile As String In tFound.Files
-                                sHTTP.DownloadFile(sFile, String.Empty, False, "template")
-                            Next
-                        End If
-                    End If
+                    Select Case lItem.Tag
+                        Case "translation"
+                            sHTTP.DownloadFile(lItem.SubItems(0).Tag, String.Empty, False, "translation")
+                        Case "template"
+                            tFind.SetSearchString(lItem.Group.Header.ToString, lItem.Text.Replace(Master.eLang.GetString(449, "Export Template: "), String.Empty).Trim)
+                            tFound = Templates.Find(AddressOf tFind.Find)
+                            If Not IsNothing(tFound) Then
+                                For Each sFile As String In tFound.Files
+                                    sHTTP.DownloadFile(sFile, String.Empty, False, "template")
+                                Next
+                            End If
+                        Case "movietheme"
+                            sHTTP.DownloadFile(lItem.SubItems(0).Tag, String.Empty, False, "movietheme")
+                    End Select
                 End If
             Next
         Catch ex As Exception
@@ -50,12 +53,12 @@ Public Class dlgTranslationDL
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(443, "Download Translation")
+        Me.Text = Master.eLang.GetString(443, "Download Addons")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.lvDownload.Columns(0).Text = Master.eLang.GetString(444, "File")
         Me.lvDownload.Columns(1).Text = Master.eLang.GetString(445, "Last Update")
-        Me.lblStatus.Text = Master.eLang.GetString(446, "Downloading available translations list...")
+        Me.lblStatus.Text = Master.eLang.GetString(446, "Downloading available addons list...")
     End Sub
 
     Private Sub dlgTranslationDL_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -67,12 +70,28 @@ Public Class dlgTranslationDL
     Private Sub DownloadList()
         Dim sHTTP As New HTTP
         Try
-            Dim transXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Translations/Download.xml")
+            Dim transXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Download.xml")
             sHTTP = Nothing
 
             Dim xmlTrans As XDocument = XDocument.Parse(transXML)
 
-            Dim xTrans = From xTran In xmlTrans...<translations>...<language>
+            Dim xTheme = From xThemes In xmlTrans...<addons>...<themes>...<movie>...<theme>
+            If xTheme.Count > 0 Then
+                Dim tGroup As New ListViewGroup
+                Dim lItem As New ListViewItem
+                tGroup = New ListViewGroup
+                tGroup.Header = Master.eLang.GetString(620, "Movie Theme")
+                lvDownload.Groups.Add(tGroup)
+                For Each Theme In xTheme
+                    lItem = lvDownload.Items.Add(Theme.@name)
+                    lItem.Tag = "movietheme"
+                    lItem.SubItems.Add(Theme.<lastupdate>.Value)
+                    lItem.SubItems(0).Tag = Theme.<url>.Value
+                    tGroup.Items.Add(lItem)
+                Next
+            End If
+
+            Dim xTrans = From xTran In xmlTrans...<addons>...<translations>...<language>
             If xTrans.Count > 0 Then
                 Dim lGroup As New ListViewGroup
                 Dim lItem As New ListViewItem
@@ -83,8 +102,9 @@ Public Class dlgTranslationDL
                     lGroup.Header = Trans.@name
                     lvDownload.Groups.Add(lGroup)
                     lItem = lvDownload.Items.Add(Master.eLang.GetString(448, "Translation File"))
+                    lItem.Tag = "translation"
                     lItem.SubItems.Add(Trans.<lastupdate>.Value)
-                    lItem.Tag = Trans.<url>.Value
+                    lItem.SubItems(0).Tag = Trans.<url>.Value
                     lGroup.Items.Add(lItem)
                     Dim xTemp = From xTemps In Trans...<templates>...<template>
                     If xTemp.Count > 0 Then
@@ -99,6 +119,7 @@ Public Class dlgTranslationDL
                                 Next
                                 Templates.Add(xTemplate)
                                 lItemTemplate = lvDownload.Items.Add(String.Concat(Master.eLang.GetString(449, "Export Template: "), Temp.@name))
+                                lItemTemplate.Tag = "template"
                                 lItemTemplate.SubItems.Add(Temp.<lastupdate>.Value)
                                 lGroup.Items.Add(lItemTemplate)
                             End If
