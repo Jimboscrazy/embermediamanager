@@ -30,12 +30,12 @@ Public Class dlgFileInfo
             i.ForeColor = Color.DarkBlue
             i.Tag = "Header"
             i.Text = ""
-            i.SubItems.Add("Codec")
-            i.SubItems.Add("Scan Type")
-            i.SubItems.Add("Width")
-            i.SubItems.Add("Height")
-            i.SubItems.Add("Aspect")
-            i.SubItems.Add("Duration")
+            i.SubItems.Add(Master.eLang.GetString(604, "Codec"))
+            i.SubItems.Add(Master.eLang.GetString(605, "Scan Type"))
+            i.SubItems.Add(Master.eLang.GetString(606, "Width"))
+            i.SubItems.Add(Master.eLang.GetString(607, "Height"))
+            i.SubItems.Add(Master.eLang.GetString(608, "Aspect"))
+            i.SubItems.Add(Master.eLang.GetString(609, "Duration"))
             g.Items.Add(i)
             lvStreams.Items.Add(i)
             Dim v As MediaInfo.Video
@@ -67,9 +67,9 @@ Public Class dlgFileInfo
             i.ForeColor = Color.DarkBlue
             i.Tag = "Header"
             i.Text = ""
-            i.SubItems.Add("Codec")
-            i.SubItems.Add("Language")
-            i.SubItems.Add("Channels")
+            i.SubItems.Add(Master.eLang.GetString(604, "Codec"))
+            i.SubItems.Add(Master.eLang.GetString(610, "Language"))
+            i.SubItems.Add(Master.eLang.GetString(604, "Channels"))
             g.Items.Add(i)
             lvStreams.Items.Add(i)
             Dim a As MediaInfo.Audio
@@ -98,8 +98,8 @@ Public Class dlgFileInfo
             i.ForeColor = Color.DarkBlue
             i.Tag = "Header"
             i.Text = ""
-            i.SubItems.Add("Language")
-            i.SubItems.Add("Prefered")
+            i.SubItems.Add(Master.eLang.GetString(610, "Language"))
+            i.SubItems.Add(Master.eLang.GetString(612, "Preferred"))
             g.Items.Add(i)
             lvStreams.Items.Add(i)
             Dim s As MediaInfo.Subtitle
@@ -124,6 +124,7 @@ Public Class dlgFileInfo
         cbStreamType.Items.Add(Master.eLang.GetString(597, "Subtitle Stream"))
         Me.Text = Master.eLang.GetString(594, "Metadata Editor")
         Me.Label4.Text = Master.eLang.GetString(598, "Stream Type")
+        Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
     End Sub
 
     Private Sub lvStreams_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvStreams.SelectedIndexChanged
@@ -211,5 +212,9 @@ Public Class dlgFileInfo
                 LoadInfo()
             End Using
         End If
+    End Sub
+
+    Private Sub dlgFileInfo_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+        Me.Activate()
     End Sub
 End Class

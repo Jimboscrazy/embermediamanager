@@ -602,4 +602,21 @@
   <string id="600">Extra Sorting</string>
   <string id="601">Date Added</string>
   <string id="602">Sources</string>
+  <string id="603">Edit Meta Data</string>
+  <string id="604">Codec</string>
+  <string id="605">Scan Type</string>
+  <string id="606">Width</string>
+  <string id="607">Height</string>
+  <string id="608">Aspect</string>
+  <string id="609">Duration</string>
+  <string id="610">Language</string>
+  <string id="611">Channels</string>
+  <string id="612">Preferred</string>
+  <string id="613">Stream Editor</string>
+  <string id="614">Aspect Ratio</string>
+  <string id="615">Interlaced</string>
+  <string id="616">Progressive</string>
+  <string id="617">Video Stream</string>
+  <string id="618">Audio Stream</string>
+  <string id="619">Subtitle Stream</string>
 </strings>

@@ -172,7 +172,7 @@ fontstyle code 5.
       <fontstyle>1</fontstyle>
     </object>
     
-    <object name="lblOutline">
+    <object name="txtOutline">
       <width>341</width>
       <height>78</height>
       <left>3</left>

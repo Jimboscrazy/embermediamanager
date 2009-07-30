@@ -129,9 +129,9 @@ Partial Class dlgMovieSource
         Me.GroupBox1.Controls.Add(Me.chkSingle)
         Me.GroupBox1.Controls.Add(Me.chkUseFolderName)
         Me.GroupBox1.Controls.Add(Me.chkScanRecursive)
-        Me.GroupBox1.Location = New System.Drawing.Point(193, 8)
+        Me.GroupBox1.Location = New System.Drawing.Point(175, 8)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(230, 85)
+        Me.GroupBox1.Size = New System.Drawing.Size(248, 85)
         Me.GroupBox1.TabIndex = 6
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Source Options"
