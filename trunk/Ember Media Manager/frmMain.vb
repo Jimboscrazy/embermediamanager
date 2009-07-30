@@ -71,6 +71,8 @@ Public Class frmMain
     Private PosterMaxHeight As Integer = 160
     Private PosterMaxWidth As Integer = 160
     Private GenrePanelColor As Color = Color.Gainsboro
+    Private IPUp As Integer = 500
+    Private IPMid As Integer = 280
 
     'filters
     Private filSearch As String = String.Empty
@@ -520,12 +522,12 @@ Public Class frmMain
                         Me.btnMid.Enabled = True
                         Me.btnUp.Enabled = True
                     Case 1
-                        Me.pnlInfoPanel.Height = 280
+                        Me.pnlInfoPanel.Height = IPMid
                         Me.btnMid.Enabled = False
                         Me.btnDown.Enabled = True
                         Me.btnUp.Enabled = True
                     Case 2
-                        Me.pnlInfoPanel.Height = 500
+                        Me.pnlInfoPanel.Height = IPUp
                         Me.btnUp.Enabled = False
                         Me.btnDown.Enabled = True
                         Me.btnMid.Enabled = True
@@ -637,7 +639,7 @@ Public Class frmMain
         ' Begin animation to raise/lower panel to mid point
         '\\
 
-        If Me.pnlInfoPanel.Height = 500 Then
+        If Me.pnlInfoPanel.Height = IPUp Then
             Me.aniRaise = False
         Else
             Me.aniRaise = True
@@ -678,10 +680,10 @@ Public Class frmMain
                         Me.pnlInfoPanel.Height = 25
      
                     Case 1
-                        Me.pnlInfoPanel.Height = 280
+                        Me.pnlInfoPanel.Height = IPMid
 
                     Case 2
-                        Me.pnlInfoPanel.Height = 500
+                        Me.pnlInfoPanel.Height = IPUp
 
                 End Select
             End If
@@ -698,14 +700,14 @@ Public Class frmMain
                     Me.btnUp.Enabled = True
                 End If
             ElseIf Me.aniType = 1 Then
-                If Me.pnlInfoPanel.Height = 280 Then
+                If Me.pnlInfoPanel.Height = IPMid Then
                     Me.tmrAni.Stop()
                     Me.btnMid.Enabled = False
                     Me.btnDown.Enabled = True
                     Me.btnUp.Enabled = True
                 End If
             ElseIf Me.aniType = 2 Then
-                If Me.pnlInfoPanel.Height = 500 Then
+                If Me.pnlInfoPanel.Height = IPUp Then
                     Me.tmrAni.Stop()
                     Me.btnUp.Enabled = False
                     Me.btnDown.Enabled = True
@@ -3607,9 +3609,11 @@ doCancel:
             Dim cFontStyle As FontStyle = FontStyle.Bold
 
             'info panel
-            Dim xIPMain = From xTheme In ThemeXML...<theme>...<infopanel> Select xTheme.<backcolor>.Value
+            Dim xIPMain = From xTheme In ThemeXML...<theme>...<infopanel> Select xTheme.<backcolor>.Value, xTheme.<ipup>.Value, xTheme.<ipmid>.Value
             If xIPMain.Count > 0 Then
-                Me.pnlInfoPanel.BackColor = Color.FromArgb(xIPMain(0).ToString)
+                Me.pnlInfoPanel.BackColor = Color.FromArgb(xIPMain(0).backcolor)
+                Me.IPUp = xIPMain(0).ipup
+                Me.IPMid = xIPMain(0).ipmid
             End If
 
             For Each xControl As Control In cControl.Controls
