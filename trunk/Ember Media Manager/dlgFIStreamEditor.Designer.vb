@@ -307,7 +307,7 @@ Partial Class dlgFIStreamEditor
         Me.chbPrefered.AutoSize = True
         Me.chbPrefered.Location = New System.Drawing.Point(79, 48)
         Me.chbPrefered.Name = "chbPrefered"
-        Me.chbPrefered.Size = New System.Drawing.Size(66, 17)
+        Me.chbPrefered.Size = New System.Drawing.Size(69, 17)
         Me.chbPrefered.TabIndex = 23
         Me.chbPrefered.Text = "Preferred"
         Me.chbPrefered.UseVisualStyleBackColor = True
@@ -337,10 +337,10 @@ Partial Class dlgFIStreamEditor
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(207, 231)
-        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.GroupBox3)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False

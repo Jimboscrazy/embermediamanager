@@ -102,7 +102,15 @@ Public Class dlgEditMovie
                 g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
                 Me.pnlTop.BackgroundImage = iBackground
             End Using
-            
+
+            : Dim dFileInfoEdit As New dlgFileInfo
+            dFileInfoEdit.TopLevel = False
+            dFileInfoEdit.FormBorderStyle = Forms.FormBorderStyle.None
+            dFileInfoEdit.Cancel_Button.Visible = False
+            Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
+            dFileInfoEdit.Left = (pnlFileInfo.Width - dFileInfoEdit.Width) / 2
+            dFileInfoEdit.Show()
+
             Me.LoadGenres()
             Me.LoadRatings()
 

@@ -86,12 +86,14 @@ Partial Class dlgEditMovie
         Me.lblTitle = New System.Windows.Forms.Label
         Me.txtTitle = New System.Windows.Forms.TextBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.btnSetPosterDL = New System.Windows.Forms.Button
         Me.btnRemovePoster = New System.Windows.Forms.Button
         Me.lblPosterSize = New System.Windows.Forms.Label
         Me.btnSetPosterScrape = New System.Windows.Forms.Button
         Me.btnSetPoster = New System.Windows.Forms.Button
         Me.pbPoster = New System.Windows.Forms.PictureBox
         Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.btnSetFanartDL = New System.Windows.Forms.Button
         Me.btnRemoveFanart = New System.Windows.Forms.Button
         Me.lblFanartSize = New System.Windows.Forms.Label
         Me.btnSetFanartScrape = New System.Windows.Forms.Button
@@ -129,8 +131,8 @@ Partial Class dlgEditMovie
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
-        Me.btnSetPosterDL = New System.Windows.Forms.Button
-        Me.btnSetFanartDL = New System.Windows.Forms.Button
+        Me.TabPage6 = New System.Windows.Forms.TabPage
+        Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -153,6 +155,7 @@ Partial Class dlgEditMovie
         Me.pnlFrameProgress.SuspendLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage6.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -228,6 +231,7 @@ Partial Class dlgEditMovie
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage5)
         Me.TabControl1.Controls.Add(Me.TabPage4)
+        Me.TabControl1.Controls.Add(Me.TabPage6)
         Me.TabControl1.Location = New System.Drawing.Point(4, 70)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -769,6 +773,18 @@ Partial Class dlgEditMovie
         Me.TabPage2.Text = "Poster"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'btnSetPosterDL
+        '
+        Me.btnSetPosterDL.Image = CType(resources.GetObject("btnSetPosterDL.Image"), System.Drawing.Image)
+        Me.btnSetPosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetPosterDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetPosterDL.Name = "btnSetPosterDL"
+        Me.btnSetPosterDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetPosterDL.TabIndex = 27
+        Me.btnSetPosterDL.Text = "Change Poster (Download)"
+        Me.btnSetPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetPosterDL.UseVisualStyleBackColor = True
+        '
         'btnRemovePoster
         '
         Me.btnRemovePoster.Image = CType(resources.GetObject("btnRemovePoster.Image"), System.Drawing.Image)
@@ -841,6 +857,18 @@ Partial Class dlgEditMovie
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "Fanart"
         Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'btnSetFanartDL
+        '
+        Me.btnSetFanartDL.Image = CType(resources.GetObject("btnSetFanartDL.Image"), System.Drawing.Image)
+        Me.btnSetFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetFanartDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetFanartDL.Name = "btnSetFanartDL"
+        Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetFanartDL.TabIndex = 29
+        Me.btnSetFanartDL.Text = "Change Fanart (Download)"
+        Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetFanartDL.UseVisualStyleBackColor = True
         '
         'btnRemoveFanart
         '
@@ -1243,29 +1271,23 @@ Partial Class dlgEditMovie
         Me.btnClearCache.UseVisualStyleBackColor = True
         Me.btnClearCache.Visible = False
         '
-        'btnSetPosterDL
+        'TabPage6
         '
-        Me.btnSetPosterDL.Image = CType(resources.GetObject("btnSetPosterDL.Image"), System.Drawing.Image)
-        Me.btnSetPosterDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetPosterDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetPosterDL.Name = "btnSetPosterDL"
-        Me.btnSetPosterDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetPosterDL.TabIndex = 27
-        Me.btnSetPosterDL.Text = "Change Poster (Download)"
-        Me.btnSetPosterDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetPosterDL.UseVisualStyleBackColor = True
+        Me.TabPage6.Controls.Add(Me.pnlFileInfo)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage6.Name = "TabPage6"
+        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage6.Size = New System.Drawing.Size(836, 452)
+        Me.TabPage6.TabIndex = 5
+        Me.TabPage6.Text = "Meta Data"
+        Me.TabPage6.UseVisualStyleBackColor = True
         '
-        'btnSetFanartDL
+        'pnlFileInfo
         '
-        Me.btnSetFanartDL.Image = CType(resources.GetObject("btnSetFanartDL.Image"), System.Drawing.Image)
-        Me.btnSetFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetFanartDL.Location = New System.Drawing.Point(735, 180)
-        Me.btnSetFanartDL.Name = "btnSetFanartDL"
-        Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetFanartDL.TabIndex = 29
-        Me.btnSetFanartDL.Text = "Change Fanart (Download)"
-        Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetFanartDL.UseVisualStyleBackColor = True
+        Me.pnlFileInfo.Location = New System.Drawing.Point(6, 6)
+        Me.pnlFileInfo.Name = "pnlFileInfo"
+        Me.pnlFileInfo.Size = New System.Drawing.Size(824, 440)
+        Me.pnlFileInfo.TabIndex = 0
         '
         'dlgEditMovie
         '
@@ -1316,6 +1338,7 @@ Partial Class dlgEditMovie
         Me.pnlFrameProgress.PerformLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage6.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1427,5 +1450,7 @@ Partial Class dlgEditMovie
     Friend WithEvents btnTransferNow As System.Windows.Forms.Button
     Friend WithEvents btnSetPosterDL As System.Windows.Forms.Button
     Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
+    Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
+    Friend WithEvents pnlFileInfo As System.Windows.Forms.Panel
 
 End Class

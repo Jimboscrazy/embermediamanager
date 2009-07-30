@@ -1,5 +1,5 @@
 ﻿Imports System.Windows.Forms
-
+Imports System.Text.RegularExpressions
 Public Class dlgFIStreamEditor
     Private stream_v As New MediaInfo.Video
     Private stream_a As New MediaInfo.Audio
@@ -38,6 +38,7 @@ Public Class dlgFIStreamEditor
                 Next
                 Dim xShortLang = From xLang In XML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
                 cbAudioLanguage.Items.AddRange(xShortLang.ToArray)
+                cbAudioChannels.Items.AddRange(New String() {"8", "6", "2", "1"})
                 If Not movie Is Nothing Then
                     cbAudioCodec.Text = movie.StreamDetails.Audio(idx).Codec
                     cbAudioLanguage.Text = movie.StreamDetails.Audio(idx).LongLanguage
@@ -133,5 +134,12 @@ Public Class dlgFIStreamEditor
         Me.GroupBox3.Text = Master.eLang.GetString(597, "Subtitle  Streams")
         Me.chbPrefered.Text = Master.eLang.GetString(612, "Preferred")
         Me.Label10.Text = Me.Label6.Text
+    End Sub
+
+    Private Sub cbAudioCodec_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAudioCodec.SelectedIndexChanged
+        'If cbAudioCodec.SelectedIndex >= 0 Then
+        'Dim xAChanFlag = From xAChan In XML.FlagsXML...<achan>...<name> Where Regex.IsMatch(cbAudioCodec.SelectedItem, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.@searchstring
+        'End If
+
     End Sub
 End Class

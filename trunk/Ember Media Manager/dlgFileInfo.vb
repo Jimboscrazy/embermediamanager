@@ -169,9 +169,9 @@ Public Class dlgFileInfo
             If i.Tag = Master.eLang.GetString(597, "Subtitle Stream") Then
                 _movie.Movie.FileInfo.StreamDetails.Subtitle.RemoveAt(Convert.ToInt16(i.Text))
             End If
+            Master.DB.SaveMovieToDB(_movie, False, False, True)
+            LoadInfo()
         End If
-        LoadInfo()
-
 
     End Sub
 
@@ -183,7 +183,6 @@ Public Class dlgFileInfo
                 If Not stream Is Nothing Then
                     If i.Tag = Master.eLang.GetString(595, "Video Stream") Then
                         _movie.Movie.FileInfo.StreamDetails.Video(Convert.ToInt16(i.Text)) = stream
-
                     End If
                     If i.Tag = Master.eLang.GetString(596, "Audio Stream") Then
                         _movie.Movie.FileInfo.StreamDetails.Audio(Convert.ToInt16(i.Text)) = stream
@@ -191,6 +190,7 @@ Public Class dlgFileInfo
                     If i.Tag = Master.eLang.GetString(597, "Subtitle Stream") Then
                         _movie.Movie.FileInfo.StreamDetails.Subtitle(Convert.ToInt16(i.Text)) = stream
                     End If
+                    Master.DB.SaveMovieToDB(_movie, False, False, True)
                     LoadInfo()
                 End If
             End Using
@@ -212,6 +212,7 @@ Public Class dlgFileInfo
                     If cbStreamType.SelectedItem = Master.eLang.GetString(597, "Subtitle Stream") Then
                         _movie.Movie.FileInfo.StreamDetails.Subtitle.Add(stream)
                     End If
+                    Master.DB.SaveMovieToDB(_movie, False, False, True)
                     LoadInfo()
                 End If
             End Using
