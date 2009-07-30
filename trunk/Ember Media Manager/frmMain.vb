@@ -2465,7 +2465,18 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
-        dlgFileInfo.ShowDialog()
+        Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
+        Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
+        Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
+        Using dEditMeta As New dlgFileInfo
+            Select Case dEditMeta.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    Me.SetListItemAfterEdit(ID, indX)
+                    If Me.RefreshMovie(ID) Then
+                        Me.FillList(0)
+                    End If
+            End Select
+        End Using
     End Sub
 
     Private Sub btnSortDate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortDate.Click

@@ -1,9 +1,13 @@
 ﻿Imports System.Windows.Forms
 
 Public Class dlgFileInfo
-
+    Private NeedToRefresh As Boolean = False
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        If NeedToRefresh Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Else
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        End If
         Me.Close()
     End Sub
 
@@ -177,6 +181,7 @@ Public Class dlgFileInfo
             End If
             If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
                 Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
+                NeedToRefresh = True
             End If
             LoadInfo()
         End If
@@ -203,6 +208,7 @@ Public Class dlgFileInfo
                     End If
                     If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
                         Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
+                        NeedToRefresh = True
                     End If
                     LoadInfo()
                 End If
@@ -227,6 +233,7 @@ Public Class dlgFileInfo
                     End If
                     If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
                         Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
+                        NeedToRefresh = True
                     End If
                     LoadInfo()
                 End If
