@@ -1,7 +1,6 @@
 ﻿Imports System.Windows.Forms
 
 Public Class dlgFileInfo
-    Private _movie As Master.DBMovie
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -10,7 +9,6 @@ Public Class dlgFileInfo
 
     Private Sub dlgFileInfo_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUp()
-        _movie = Master.currMovie
         LoadInfo()
     End Sub
     Sub LoadInfo()
@@ -19,7 +17,7 @@ Public Class dlgFileInfo
         Dim i As ListViewItem
         lvStreams.Groups.Clear()
         lvStreams.Items.Clear()
-        If _movie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+        If Master.currMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
             g = New ListViewGroup
             g.Header = Master.eLang.GetString(595, "Video Stream")
             lvStreams.Groups.Add(g)
@@ -39,8 +37,8 @@ Public Class dlgFileInfo
             g.Items.Add(i)
             lvStreams.Items.Add(i)
             Dim v As MediaInfo.Video
-            For c = 0 To _movie.Movie.FileInfo.StreamDetails.Video.Count - 1
-                v = _movie.Movie.FileInfo.StreamDetails.Video(c)
+            For c = 0 To Master.currMovie.Movie.FileInfo.StreamDetails.Video.Count - 1
+                v = Master.currMovie.Movie.FileInfo.StreamDetails.Video(c)
                 If Not v Is Nothing Then
                     i = New ListViewItem
                     i.Tag = Master.eLang.GetString(595, "Video Stream")
@@ -56,7 +54,7 @@ Public Class dlgFileInfo
                 End If
             Next
         End If
-        If _movie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+        If Master.currMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
             g = New ListViewGroup
             g.Header = Master.eLang.GetString(596, "Audio Stream")
             lvStreams.Groups.Add(g)
@@ -73,8 +71,8 @@ Public Class dlgFileInfo
             g.Items.Add(i)
             lvStreams.Items.Add(i)
             Dim a As MediaInfo.Audio
-            For c = 0 To _movie.Movie.FileInfo.StreamDetails.Audio.Count - 1
-                a = _movie.Movie.FileInfo.StreamDetails.Audio(c)
+            For c = 0 To Master.currMovie.Movie.FileInfo.StreamDetails.Audio.Count - 1
+                a = Master.currMovie.Movie.FileInfo.StreamDetails.Audio(c)
                 If Not a Is Nothing Then
                     i = New ListViewItem
                     i.Tag = Master.eLang.GetString(596, "Audio Stream")
@@ -87,7 +85,7 @@ Public Class dlgFileInfo
                 End If
             Next
         End If
-        If _movie.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 Then
+        If Master.currMovie.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 Then
             g = New ListViewGroup
             g.Header = Master.eLang.GetString(597, "Subtitle Stream")
             lvStreams.Groups.Add(g)
@@ -103,8 +101,8 @@ Public Class dlgFileInfo
             g.Items.Add(i)
             lvStreams.Items.Add(i)
             Dim s As MediaInfo.Subtitle
-            For c = 0 To _movie.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
-                s = _movie.Movie.FileInfo.StreamDetails.Subtitle(c)
+            For c = 0 To Master.currMovie.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
+                s = Master.currMovie.Movie.FileInfo.StreamDetails.Subtitle(c)
                 If Not s Is Nothing Then
                     i = New ListViewItem
                     i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
@@ -169,16 +167,16 @@ Public Class dlgFileInfo
         If lvStreams.SelectedItems.Count > 0 Then
             Dim i As ListViewItem = lvStreams.SelectedItems(0)
             If i.Tag = Master.eLang.GetString(595, "Video Stream") Then
-                _movie.Movie.FileInfo.StreamDetails.Video.RemoveAt(Convert.ToInt16(i.Text))
+                Master.currMovie.Movie.FileInfo.StreamDetails.Video.RemoveAt(Convert.ToInt16(i.Text))
             End If
             If i.Tag = Master.eLang.GetString(596, "Audio Stream") Then
-                _movie.Movie.FileInfo.StreamDetails.Audio.RemoveAt(Convert.ToInt16(i.Text))
+                Master.currMovie.Movie.FileInfo.StreamDetails.Audio.RemoveAt(Convert.ToInt16(i.Text))
             End If
             If i.Tag = Master.eLang.GetString(597, "Subtitle Stream") Then
-                _movie.Movie.FileInfo.StreamDetails.Subtitle.RemoveAt(Convert.ToInt16(i.Text))
+                Master.currMovie.Movie.FileInfo.StreamDetails.Subtitle.RemoveAt(Convert.ToInt16(i.Text))
             End If
             If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
-                Master.DB.SaveMovieToDB(_movie, False, False, True)
+                Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
             End If
             LoadInfo()
         End If
@@ -192,19 +190,19 @@ Public Class dlgFileInfo
         If lvStreams.SelectedItems.Count > 0 Then
             Dim i As ListViewItem = lvStreams.SelectedItems(0)
             Using dEditStream As New dlgFIStreamEditor
-                Dim stream As Object = dEditStream.ShowDialog(i.Tag, _movie.Movie.FileInfo, Convert.ToInt16(i.Text))
+                Dim stream As Object = dEditStream.ShowDialog(i.Tag, Master.currMovie.Movie.FileInfo, Convert.ToInt16(i.Text))
                 If Not stream Is Nothing Then
                     If i.Tag = Master.eLang.GetString(595, "Video Stream") Then
-                        _movie.Movie.FileInfo.StreamDetails.Video(Convert.ToInt16(i.Text)) = stream
+                        Master.currMovie.Movie.FileInfo.StreamDetails.Video(Convert.ToInt16(i.Text)) = stream
                     End If
                     If i.Tag = Master.eLang.GetString(596, "Audio Stream") Then
-                        _movie.Movie.FileInfo.StreamDetails.Audio(Convert.ToInt16(i.Text)) = stream
+                        Master.currMovie.Movie.FileInfo.StreamDetails.Audio(Convert.ToInt16(i.Text)) = stream
                     End If
                     If i.Tag = Master.eLang.GetString(597, "Subtitle Stream") Then
-                        _movie.Movie.FileInfo.StreamDetails.Subtitle(Convert.ToInt16(i.Text)) = stream
+                        Master.currMovie.Movie.FileInfo.StreamDetails.Subtitle(Convert.ToInt16(i.Text)) = stream
                     End If
                     If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
-                        Master.DB.SaveMovieToDB(_movie, False, False, True)
+                        Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
                     End If
                     LoadInfo()
                 End If
@@ -219,16 +217,16 @@ Public Class dlgFileInfo
                 stream = dEditStream.ShowDialog(cbStreamType.SelectedItem, Nothing, 0)
                 If Not stream Is Nothing Then
                     If cbStreamType.SelectedItem = Master.eLang.GetString(595, "Video Stream") Then
-                        _movie.Movie.FileInfo.StreamDetails.Video.Add(stream)
+                        Master.currMovie.Movie.FileInfo.StreamDetails.Video.Add(stream)
                     End If
                     If cbStreamType.SelectedItem = Master.eLang.GetString(596, "Audio Stream") Then
-                        _movie.Movie.FileInfo.StreamDetails.Audio.Add(stream)
+                        Master.currMovie.Movie.FileInfo.StreamDetails.Audio.Add(stream)
                     End If
                     If cbStreamType.SelectedItem = Master.eLang.GetString(597, "Subtitle Stream") Then
-                        _movie.Movie.FileInfo.StreamDetails.Subtitle.Add(stream)
+                        Master.currMovie.Movie.FileInfo.StreamDetails.Subtitle.Add(stream)
                     End If
                     If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
-                        Master.DB.SaveMovieToDB(_movie, False, False, True)
+                        Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
                     End If
                     LoadInfo()
                 End If
