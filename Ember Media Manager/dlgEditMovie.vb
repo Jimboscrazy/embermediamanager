@@ -57,7 +57,7 @@ Public Class dlgEditMovie
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.CleanUp()
-
+        Master.currMovie = Master.DB.LoadMovieFromDB(Master.currMovie.ID)
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
@@ -108,6 +108,7 @@ Public Class dlgEditMovie
             dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
             dFileInfoEdit.Cancel_Button.Visible = False
             Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
+            'dFileInfoEdit.Left = (pnlFileInfo.Width - dFileInfoEdit.Width) / 2
             Dim oldwidth As Integer = dFileInfoEdit.Width
             dFileInfoEdit.Width = pnlFileInfo.Width
             dFileInfoEdit.Height = pnlFileInfo.Height

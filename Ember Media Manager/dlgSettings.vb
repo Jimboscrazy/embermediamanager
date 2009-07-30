@@ -2083,6 +2083,8 @@ Public Class dlgSettings
         Me.Label35.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
         Me.btnDLTrans.Text = Master.eLang.GetString(443, "Download Addons")
         Me.Label36.Text = Master.eLang.GetString(621, "You must restart Ember before changes will take effect.")
+        Me.GroupBox28.Text = Master.eLang.GetString(621, "Meta Data Defaults by File Type")
+        Me.Label34.Text = Master.eLang.GetString(621, "File Type")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
@@ -2101,4 +2103,24 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub txtDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDefFIExt.TextChanged
+        btnNewMetaDataFT.Enabled = Not String.IsNullOrEmpty(txtDefFIExt.Text)
+
+    End Sub
+
+    Private Sub btnNewMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewMetaDataFT.Click
+        Using dEditMeta As New dlgFileInfo
+            Select Case dEditMeta.ShowDialog(True)
+                Case Windows.Forms.DialogResult.OK
+            End Select
+        End Using
+    End Sub
+
+    Private Sub btnEditMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditMetaDataFT.Click
+        Using dEditMeta As New dlgFileInfo
+            Select Case dEditMeta.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+            End Select
+        End Using
+    End Sub
 End Class
