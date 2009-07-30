@@ -67,8 +67,10 @@ Public Class Master
         NewAsk = 8
         MarkAuto = 9
         MarkAsk = 10
-        CopyBD = 11
-        RevertStudios = 12
+        FilterAuto = 11
+        FilterAsk = 12
+        CopyBD = 13
+        RevertStudios = 14
     End Enum
 
     Public Enum ImageType As Integer

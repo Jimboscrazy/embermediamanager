@@ -254,6 +254,16 @@ Partial Class frmMain
         Me.mnuMarkAskExtra = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuMarkAskTrailer = New System.Windows.Forms.ToolStripMenuItem
         Me.mnuMarkAskMI = New System.Windows.Forms.ToolStripMenuItem
+        Me.CurrentFilterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.AutomaticForceBestMatchToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAutoAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAutoNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAutoPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAutoFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAutoExtra = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAutoTrailer = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAutoMI = New System.Windows.Forms.ToolStripMenuItem
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
         Me.CustomUpdaterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripSplitButton
         Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripSplitButton
@@ -265,6 +275,13 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
+        Me.mnuFilterAskAll = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskNfo = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskPoster = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskFanart = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskExtra = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskTrailer = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuFilterAskMI = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -572,7 +589,7 @@ Partial Class frmMain
         Me.scMain.Panel1.Controls.Add(Me.dgvMediaList)
         Me.scMain.Panel1.Controls.Add(Me.Panel1)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
-        Me.scMain.Panel1.Margin = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.scMain.Panel1.Margin = New System.Windows.Forms.Padding(3)
         Me.scMain.Panel1MinSize = 165
         '
         'scMain.Panel2
@@ -588,7 +605,7 @@ Partial Class frmMain
         Me.scMain.Panel2.Controls.Add(Me.tsMain)
         Me.scMain.Panel2.Controls.Add(Me.pbFanartCache)
         Me.scMain.Panel2.Controls.Add(Me.pbFanart)
-        Me.scMain.Panel2.Margin = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.scMain.Panel2.Margin = New System.Windows.Forms.Padding(3)
         Me.scMain.Size = New System.Drawing.Size(1008, 682)
         Me.scMain.SplitterDistance = 349
         Me.scMain.TabIndex = 7
@@ -950,7 +967,7 @@ Partial Class frmMain
         '
         Me.tabMovies.Location = New System.Drawing.Point(4, 22)
         Me.tabMovies.Name = "tabMovies"
-        Me.tabMovies.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tabMovies.Padding = New System.Windows.Forms.Padding(3)
         Me.tabMovies.Size = New System.Drawing.Size(339, 9)
         Me.tabMovies.TabIndex = 0
         Me.tabMovies.Text = "Movies"
@@ -2026,7 +2043,7 @@ Partial Class frmMain
         '
         'tsbAutoPilot
         '
-        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem, Me.NewMoviesToolStripMenuItem, Me.MarkedMoviesToolStripMenuItem, Me.CustomUpdaterToolStripMenuItem})
+        Me.tsbAutoPilot.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FullToolStripMenuItem, Me.UpdateOnlyToolStripMenuItem, Me.NewMoviesToolStripMenuItem, Me.MarkedMoviesToolStripMenuItem, Me.CurrentFilterToolStripMenuItem, Me.CustomUpdaterToolStripMenuItem})
         Me.tsbAutoPilot.Image = CType(resources.GetObject("tsbAutoPilot.Image"), System.Drawing.Image)
         Me.tsbAutoPilot.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbAutoPilot.Name = "tsbAutoPilot"
@@ -2441,6 +2458,69 @@ Partial Class frmMain
         Me.mnuMarkAskMI.Size = New System.Drawing.Size(168, 22)
         Me.mnuMarkAskMI.Text = "Meta Data Only"
         '
+        'CurrentFilterToolStripMenuItem
+        '
+        Me.CurrentFilterToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AutomaticForceBestMatchToolStripMenuItem2, Me.AskRequireInputIfNoExactMatchToolStripMenuItem1})
+        Me.CurrentFilterToolStripMenuItem.Name = "CurrentFilterToolStripMenuItem"
+        Me.CurrentFilterToolStripMenuItem.Size = New System.Drawing.Size(188, 22)
+        Me.CurrentFilterToolStripMenuItem.Text = "Current Filter"
+        '
+        'AutomaticForceBestMatchToolStripMenuItem2
+        '
+        Me.AutomaticForceBestMatchToolStripMenuItem2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFilterAutoAll, Me.mnuFilterAutoNfo, Me.mnuFilterAutoPoster, Me.mnuFilterAutoFanart, Me.mnuFilterAutoExtra, Me.mnuFilterAutoTrailer, Me.mnuFilterAutoMI})
+        Me.AutomaticForceBestMatchToolStripMenuItem2.Name = "AutomaticForceBestMatchToolStripMenuItem2"
+        Me.AutomaticForceBestMatchToolStripMenuItem2.Size = New System.Drawing.Size(271, 22)
+        Me.AutomaticForceBestMatchToolStripMenuItem2.Text = "Automatic (Force Best Match)"
+        '
+        'mnuFilterAutoAll
+        '
+        Me.mnuFilterAutoAll.Name = "mnuFilterAutoAll"
+        Me.mnuFilterAutoAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAutoAll.Text = "All Items"
+        '
+        'mnuFilterAutoNfo
+        '
+        Me.mnuFilterAutoNfo.Name = "mnuFilterAutoNfo"
+        Me.mnuFilterAutoNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAutoNfo.Text = "NFO Only"
+        '
+        'mnuFilterAutoPoster
+        '
+        Me.mnuFilterAutoPoster.Name = "mnuFilterAutoPoster"
+        Me.mnuFilterAutoPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAutoPoster.Text = "Poster Only"
+        '
+        'mnuFilterAutoFanart
+        '
+        Me.mnuFilterAutoFanart.Name = "mnuFilterAutoFanart"
+        Me.mnuFilterAutoFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAutoFanart.Text = "Fanart Only"
+        '
+        'mnuFilterAutoExtra
+        '
+        Me.mnuFilterAutoExtra.Name = "mnuFilterAutoExtra"
+        Me.mnuFilterAutoExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAutoExtra.Text = "Extrathumbs Only"
+        '
+        'mnuFilterAutoTrailer
+        '
+        Me.mnuFilterAutoTrailer.Name = "mnuFilterAutoTrailer"
+        Me.mnuFilterAutoTrailer.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAutoTrailer.Text = "Trailer Only"
+        '
+        'mnuFilterAutoMI
+        '
+        Me.mnuFilterAutoMI.Name = "mnuFilterAutoMI"
+        Me.mnuFilterAutoMI.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAutoMI.Text = "Meta Data Only"
+        '
+        'AskRequireInputIfNoExactMatchToolStripMenuItem1
+        '
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFilterAskAll, Me.mnuFilterAskNfo, Me.mnuFilterAskPoster, Me.mnuFilterAskFanart, Me.mnuFilterAskExtra, Me.mnuFilterAskTrailer, Me.mnuFilterAskMI})
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem1.Name = "AskRequireInputIfNoExactMatchToolStripMenuItem1"
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem1.Size = New System.Drawing.Size(271, 22)
+        Me.AskRequireInputIfNoExactMatchToolStripMenuItem1.Text = "Ask (Require Input If No Exact Match)"
+        '
         'CustomUpdaterToolStripMenuItem
         '
         Me.CustomUpdaterToolStripMenuItem.Name = "CustomUpdaterToolStripMenuItem"
@@ -2512,6 +2592,48 @@ Partial Class frmMain
         'tmrFilterAni
         '
         Me.tmrFilterAni.Interval = 1
+        '
+        'mnuFilterAskAll
+        '
+        Me.mnuFilterAskAll.Name = "mnuFilterAskAll"
+        Me.mnuFilterAskAll.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskAll.Text = "All Items"
+        '
+        'mnuFilterAskNfo
+        '
+        Me.mnuFilterAskNfo.Name = "mnuFilterAskNfo"
+        Me.mnuFilterAskNfo.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskNfo.Text = "NFO Only"
+        '
+        'mnuFilterAskPoster
+        '
+        Me.mnuFilterAskPoster.Name = "mnuFilterAskPoster"
+        Me.mnuFilterAskPoster.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskPoster.Text = "Poster Only"
+        '
+        'mnuFilterAskFanart
+        '
+        Me.mnuFilterAskFanart.Name = "mnuFilterAskFanart"
+        Me.mnuFilterAskFanart.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskFanart.Text = "Fanart Only"
+        '
+        'mnuFilterAskExtra
+        '
+        Me.mnuFilterAskExtra.Name = "mnuFilterAskExtra"
+        Me.mnuFilterAskExtra.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskExtra.Text = "Extrathumbs Only"
+        '
+        'mnuFilterAskTrailer
+        '
+        Me.mnuFilterAskTrailer.Name = "mnuFilterAskTrailer"
+        Me.mnuFilterAskTrailer.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskTrailer.Text = "Trailer Only"
+        '
+        'mnuFilterAskMI
+        '
+        Me.mnuFilterAskMI.Name = "mnuFilterAskMI"
+        Me.mnuFilterAskMI.Size = New System.Drawing.Size(168, 22)
+        Me.mnuFilterAskMI.Text = "Meta Data Only"
         '
         'frmMain
         '
@@ -2837,4 +2959,21 @@ Partial Class frmMain
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents clbFilterSource As System.Windows.Forms.CheckedListBox
     Friend WithEvents txtFilterSource As System.Windows.Forms.TextBox
+    Friend WithEvents CurrentFilterToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AutomaticForceBestMatchToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AskRequireInputIfNoExactMatchToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAutoAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAutoNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAutoPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAutoFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAutoExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAutoTrailer As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAutoMI As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAskAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAskNfo As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAskPoster As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAskFanart As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAskExtra As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAskTrailer As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuFilterAskMI As System.Windows.Forms.ToolStripMenuItem
 End Class

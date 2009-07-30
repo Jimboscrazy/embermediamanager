@@ -621,4 +621,7 @@
   <string id="619">Subtitle Stream</string>
   <string id="620">Movie Theme</string>
   <string id="621">You must restart Ember before changes will take effect.</string>
+  <string id="622">Scraping Media (Current Filter - Ask):</string>
+  <string id="623">Scraping Media (Current Filter - Auto):</string>
+  <string id="624">Current Filter</string>
 </strings>
