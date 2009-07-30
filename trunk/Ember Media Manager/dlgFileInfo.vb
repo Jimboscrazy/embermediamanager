@@ -4,8 +4,9 @@ Public Class dlgFileInfo
     Private NeedToRefresh As Boolean = False
     Private _FileInfo As MediaInfo.Fileinfo
     Private SettingDefaults As Boolean = False
-    Overloads Function ShowDialog(ByVal defaults As Boolean)
+    Overloads Function ShowDialog(ByVal fi As MediaInfo.Fileinfo)
         SettingDefaults = True
+        _FileInfo = fi
         If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Return _FileInfo
         Else
@@ -24,17 +25,15 @@ Public Class dlgFileInfo
 
     Private Sub dlgFileInfo_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUp()
-        If SettingDefaults Then
-            _FileInfo = New MediaInfo.Fileinfo
-        Else
+        If Not SettingDefaults Then
             _FileInfo = Master.currMovie.Movie.FileInfo
         End If
         LoadInfo()
     End Sub
     Sub LoadInfo()
         Dim c As Integer
-        Dim g As ListViewGroup
-        Dim i As ListViewItem
+        Dim g As New ListViewGroup
+        Dim i As New ListViewItem
         lvStreams.Groups.Clear()
         lvStreams.Items.Clear()
         If _FileInfo.StreamDetails.Video.Count > 0 Then

@@ -30,6 +30,7 @@ Public Class dlgSettings
 #Region "Form/Controls"
 
     Private XComs As List(Of emmSettings.XBMCCom)
+    Private Meta As List(Of emmSettings.MetadataPerType)
 
     ' ########################################
     ' ############ FORMS/CONTROLS ############
@@ -1817,6 +1818,8 @@ Public Class dlgSettings
             Me.chkRenameMulti.Checked = Master.eSettings.AutoRenameMulti
             Me.chkRenameSingle.Checked = Master.eSettings.AutoRenameSingle
             Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
+            Me.Meta = Master.eSettings.MetadataPerFileType
+            Me.LoadMetadata()
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -1876,7 +1879,12 @@ Public Class dlgSettings
         End If
 
     End Sub
-
+    Private Sub LoadMetadata()
+        Me.lstMetadata.Items.Clear()
+        For Each x As emmSettings.MetadataPerType In Meta
+            Me.lstMetadata.Items.Add(x.FileType)
+        Next
+    End Sub
     Private Sub RefreshSources()
         lvMovies.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -2105,26 +2113,65 @@ Public Class dlgSettings
 
     Private Sub txtDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDefFIExt.TextChanged
         btnNewMetaDataFT.Enabled = Not String.IsNullOrEmpty(txtDefFIExt.Text)
-
+        If btnNewMetaDataFT.Enabled Then
+            btnEditMetaDataFT.Enabled = False
+            btnRemoveMetaDataFT.Enabled = False
+        End If
     End Sub
 
     Private Sub btnNewMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewMetaDataFT.Click
         Using dEditMeta As New dlgFileInfo
-            Dim fi As New MediaInfo
-            fi = dEditMeta.ShowDialog(True)
+            Dim fi As New MediaInfo.Fileinfo
+            fi = dEditMeta.ShowDialog(fi)
             If Not fi Is Nothing Then
-
+                Dim m As New emmSettings.MetadataPerType
+                m.FileType = txtDefFIExt.Text
+                m.Metadata = New MediaInfo.Fileinfo
+                m.Metadata = fi
+                Meta.Add(m)
+                LoadMetadata()
             End If
         End Using
     End Sub
 
     Private Sub btnEditMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditMetaDataFT.Click
         Using dEditMeta As New dlgFileInfo
-            Dim fi As New MediaInfo
-            fi = dEditMeta.ShowDialog(True)
-            If Not fi Is Nothing Then
-
-            End If
+            Dim fi As New MediaInfo.Fileinfo
+            For Each x As emmSettings.MetadataPerType In Meta
+                If x.FileType = lstMetadata.SelectedItems(0).Text Then
+                    fi = dEditMeta.ShowDialog(x.Metadata)
+                    If Not fi Is Nothing Then
+                        Dim m As New emmSettings.MetadataPerType
+                        m.FileType = txtDefFIExt.Text
+                        m.Metadata = New MediaInfo.Fileinfo
+                        m.Metadata = fi
+                        Meta.Add(m)
+                        LoadMetadata()
+                    End If
+                    Exit For
+                End If
+            Next
         End Using
+    End Sub
+
+    Private Sub btnRemoveMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMetaDataFT.Click
+        For Each x As emmSettings.MetadataPerType In Meta
+            If x.FileType = lstMetadata.SelectedItems(0).Text Then
+                Meta.Remove(x)
+                LoadMetadata()
+                Exit For
+            End If
+        Next
+    End Sub
+
+    Private Sub lstMetadata_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstMetadata.SelectedIndexChanged
+        If lstMetadata.SelectedItems.Count > 0 Then
+            btnEditMetaDataFT.Enabled = True
+            btnRemoveMetaDataFT.Enabled = True
+            txtDefFIExt.Text = ""
+        Else
+            btnEditMetaDataFT.Enabled = False
+            btnRemoveMetaDataFT.Enabled = False
+        End If
     End Sub
 End Class
