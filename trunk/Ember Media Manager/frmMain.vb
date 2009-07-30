@@ -1864,6 +1864,104 @@ Public Class frmMain
 
     End Sub
 
+    Private Sub mnuFilterAutoAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoAll.Click
+
+        Master.SetScraperMod(Master.ModType.All, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoNfo.Click
+
+        Master.SetScraperMod(Master.ModType.NFO, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoPoster.Click
+
+        Master.SetScraperMod(Master.ModType.Poster, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoFanart.Click
+
+        Master.SetScraperMod(Master.ModType.Fanart, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoExtra.Click
+
+        Master.SetScraperMod(Master.ModType.Extra, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoTrailer.Click
+
+        Master.SetScraperMod(Master.ModType.Trailer, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAutoMI.Click
+
+        Master.SetScraperMod(Master.ModType.Meta, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAuto, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAskAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskAll.Click
+
+        Master.SetScraperMod(Master.ModType.All, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskNfo.Click
+
+        Master.SetScraperMod(Master.ModType.NFO, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskPoster.Click
+
+        Master.SetScraperMod(Master.ModType.Poster, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskFanart.Click
+
+        Master.SetScraperMod(Master.ModType.Fanart, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskExtra.Click
+
+        Master.SetScraperMod(Master.ModType.Extra, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskTrailer.Click
+
+        Master.SetScraperMod(Master.ModType.Trailer, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+
+    End Sub
+
+    Private Sub mnuFilterAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFilterAskMI.Click
+
+        Master.SetScraperMod(Master.ModType.Meta, True)
+        Me.ScrapeData(Master.ScrapeType.FilterAsk, Master.DefaultOptions)
+
+    End Sub
+
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         btnCancel.Visible = False
         lblCanceling.Visible = True
@@ -2911,14 +3009,18 @@ Public Class frmMain
                 If Me.dtMedia.Rows.Count > 0 Then
 
                     Select Case Args.scrapeType
-                        Case Master.ScrapeType.FullAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto, Master.ScrapeType.FullAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk
+                        Case Master.ScrapeType.FullAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto, Master.ScrapeType.FullAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk, Master.ScrapeType.FilterAsk, Master.ScrapeType.FilterAuto
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
-                                If Args.scrapeType = Master.ScrapeType.NewAsk OrElse Args.scrapeType = Master.ScrapeType.NewAuto Then
-                                    If Not drvRow.Item(10) Then Continue For
-                                ElseIf Args.scrapeType = Master.ScrapeType.MarkAsk OrElse Args.scrapeType = Master.ScrapeType.MarkAuto Then
-                                    If Not drvRow.Item(11) Then Continue For
-                                End If
+                                Select Case Args.scrapeType
+                                    Case Master.ScrapeType.NewAsk, Master.ScrapeType.NewAuto
+                                        If Not drvRow.Item(10) Then Continue For
+                                    Case Master.ScrapeType.MarkAsk, Master.ScrapeType.MarkAuto
+                                        If Not drvRow.Item(11) Then Continue For
+                                    Case Master.ScrapeType.FilterAsk, Master.ScrapeType.FilterAuto
+                                        Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
+                                        If Not index >= 0 Then Continue For
+                                End Select
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
@@ -3683,6 +3785,23 @@ doCancel:
                 .mnuMarkAskExtra.Text = .mnuAllAutoExtra.Text
                 .mnuMarkAskTrailer.Text = .mnuAllAutoTrailer.Text
                 .mnuMarkAskMI.Text = .mnuAllAutoMI.Text
+                .CurrentFilterToolStripMenuItem.Text = Master.eLang.GetString(624, "Current Filter")
+                .AutomaticForceBestMatchToolStripMenuItem2.Text = .FullAutoToolStripMenuItem.Text
+                .mnuFilterAutoAll.Text = .mnuAllAutoAll.Text
+                .mnuFilterAutoNfo.Text = .mnuAllAutoNfo.Text
+                .mnuFilterAutoPoster.Text = .mnuAllAutoPoster.Text
+                .mnuFilterAutoFanart.Text = .mnuAllAutoFanart.Text
+                .mnuFilterAutoExtra.Text = .mnuAllAutoExtra.Text
+                .mnuFilterAutoTrailer.Text = .mnuAllAutoTrailer.Text
+                .mnuFilterAutoMI.Text = .mnuAllAutoMI.Text
+                .AskRequireInputIfNoExactMatchToolStripMenuItem1.Text = .FullAskToolStripMenuItem.Text
+                .mnuFilterAskAll.Text = .mnuAllAutoAll.Text
+                .mnuFilterAskNfo.Text = .mnuAllAutoNfo.Text
+                .mnuFilterAskPoster.Text = .mnuAllAutoPoster.Text
+                .mnuFilterAskFanart.Text = .mnuAllAutoFanart.Text
+                .mnuFilterAskExtra.Text = .mnuAllAutoExtra.Text
+                .mnuFilterAskTrailer.Text = .mnuAllAutoTrailer.Text
+                .mnuFilterAskMI.Text = .mnuAllAutoMI.Text
                 .CustomUpdaterToolStripMenuItem.Text = Master.eLang.GetString(81, "Custom Scraper...")
                 .tsbRefreshMedia.Text = Master.eLang.GetString(82, "Update Library")
                 .tsbUpdateXBMC.Text = Master.eLang.GetString(83, "Initiate XBMC Update")
@@ -4212,7 +4331,7 @@ doCancel:
             End If
 
             Select Case sType
-                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD, Master.ScrapeType.RevertStudios, Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto
+                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD, Master.ScrapeType.RevertStudios, Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto, Master.ScrapeType.FilterAsk, Master.ScrapeType.FilterAuto
                     Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
                     Select Case sType
                         Case Master.ScrapeType.FullAsk
@@ -4229,6 +4348,10 @@ doCancel:
                             Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
                         Case Master.ScrapeType.UpdateAsk
                             Me.tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+                        Case Master.ScrapeType.FilterAsk
+                            Me.tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+                        Case Master.ScrapeType.FilterAuto
+                            Me.tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
                     End Select
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
