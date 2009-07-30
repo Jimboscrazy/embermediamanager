@@ -22,11 +22,11 @@ Partial Class dlgFileInfo
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Video Streams", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Audio Streams", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewGroup3 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Subtitles Stream", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "H264", "Progressive"}, -1)
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "AC3", "English"}, -1)
+        Dim ListViewGroup4 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Video Streams", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup5 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Audio Streams", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewGroup6 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Subtitles Stream", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem3 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "H264", "Progressive"}, -1)
+        Dim ListViewItem4 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem(New String() {"1", "AC3", "English"}, -1)
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgFileInfo))
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.lvStreams = New System.Windows.Forms.ListView
@@ -41,7 +41,7 @@ Partial Class dlgFileInfo
         Me.btnEditSet = New System.Windows.Forms.Button
         Me.btnNewSet = New System.Windows.Forms.Button
         Me.Label4 = New System.Windows.Forms.Label
-        Me.cbVideoCodec = New System.Windows.Forms.ComboBox
+        Me.cbStreamType = New System.Windows.Forms.ComboBox
         Me.SuspendLayout()
         '
         'Cancel_Button
@@ -58,17 +58,17 @@ Partial Class dlgFileInfo
         '
         Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7})
         Me.lvStreams.FullRowSelect = True
-        ListViewGroup1.Header = "Video Streams"
-        ListViewGroup1.Name = "VideoStreams"
-        ListViewGroup2.Header = "Audio Streams"
-        ListViewGroup2.Name = "AudioStreams"
-        ListViewGroup3.Header = "Subtitles Stream"
-        ListViewGroup3.Name = "SubtitlesStream"
-        Me.lvStreams.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1, ListViewGroup2, ListViewGroup3})
+        ListViewGroup4.Header = "Video Streams"
+        ListViewGroup4.Name = "VideoStreams"
+        ListViewGroup5.Header = "Audio Streams"
+        ListViewGroup5.Name = "AudioStreams"
+        ListViewGroup6.Header = "Subtitles Stream"
+        ListViewGroup6.Name = "SubtitlesStream"
+        Me.lvStreams.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup4, ListViewGroup5, ListViewGroup6})
         Me.lvStreams.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem1.Group = ListViewGroup1
-        ListViewItem2.Group = ListViewGroup2
-        Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1, ListViewItem2})
+        ListViewItem3.Group = ListViewGroup4
+        ListViewItem4.Group = ListViewGroup5
+        Me.lvStreams.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem3, ListViewItem4})
         Me.lvStreams.Location = New System.Drawing.Point(4, 7)
         Me.lvStreams.MultiSelect = False
         Me.lvStreams.Name = "lvStreams"
@@ -91,18 +91,22 @@ Partial Class dlgFileInfo
         '
         'ColumnHeader4
         '
+        Me.ColumnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ColumnHeader4.Width = 64
         '
         'ColumnHeader5
         '
+        Me.ColumnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ColumnHeader5.Width = 58
         '
         'ColumnHeader6
         '
+        Me.ColumnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ColumnHeader6.Width = 80
         '
         'ColumnHeader7
         '
+        Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ColumnHeader7.Width = 90
         '
         'btnRemoveSet
@@ -129,7 +133,6 @@ Partial Class dlgFileInfo
         '
         'btnNewSet
         '
-        Me.btnNewSet.Enabled = False
         Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
         Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnNewSet.Location = New System.Drawing.Point(187, 241)
@@ -148,15 +151,15 @@ Partial Class dlgFileInfo
         Me.Label4.Text = "Stream Type"
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'cbVideoCodec
+        'cbStreamType
         '
-        Me.cbVideoCodec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbVideoCodec.FormattingEnabled = True
-        Me.cbVideoCodec.Items.AddRange(New Object() {"Video", "Audio", "Subtitle"})
-        Me.cbVideoCodec.Location = New System.Drawing.Point(91, 243)
-        Me.cbVideoCodec.Name = "cbVideoCodec"
-        Me.cbVideoCodec.Size = New System.Drawing.Size(93, 21)
-        Me.cbVideoCodec.TabIndex = 35
+        Me.cbStreamType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbStreamType.FormattingEnabled = True
+        Me.cbStreamType.Items.AddRange(New Object() {"Video", "Audio", "Subtitle"})
+        Me.cbStreamType.Location = New System.Drawing.Point(91, 243)
+        Me.cbStreamType.Name = "cbStreamType"
+        Me.cbStreamType.Size = New System.Drawing.Size(93, 21)
+        Me.cbStreamType.TabIndex = 35
         '
         'dlgFileInfo
         '
@@ -166,7 +169,7 @@ Partial Class dlgFileInfo
         Me.ClientSize = New System.Drawing.Size(538, 269)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.cbVideoCodec)
+        Me.Controls.Add(Me.cbStreamType)
         Me.Controls.Add(Me.btnRemoveSet)
         Me.Controls.Add(Me.btnEditSet)
         Me.Controls.Add(Me.btnNewSet)
@@ -192,7 +195,7 @@ Partial Class dlgFileInfo
     Friend WithEvents btnEditSet As System.Windows.Forms.Button
     Friend WithEvents btnNewSet As System.Windows.Forms.Button
     Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents cbVideoCodec As System.Windows.Forms.ComboBox
+    Friend WithEvents cbStreamType As System.Windows.Forms.ComboBox
     Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
 

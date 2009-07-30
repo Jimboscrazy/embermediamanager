@@ -21,7 +21,7 @@ Public Class dlgFileInfo
         lvStreams.Items.Clear()
         If _movie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
             g = New ListViewGroup
-            g.Header = Master.eLang.GetString(592, "Video Stream")
+            g.Header = Master.eLang.GetString(595, "Video Stream")
             lvStreams.Groups.Add(g)
             c = 1
             ' Fake Group Header
@@ -56,7 +56,7 @@ Public Class dlgFileInfo
         End If
         If _movie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
             g = New ListViewGroup
-            g.Header = Master.eLang.GetString(593, "Audio Stream")
+            g.Header = Master.eLang.GetString(596, "Audio Stream")
             lvStreams.Groups.Add(g)
             c = 1
             ' Fake Group Header
@@ -85,7 +85,7 @@ Public Class dlgFileInfo
         End If
         If _movie.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 Then
             g = New ListViewGroup
-            g.Header = Master.eLang.GetString(594, "Subtitle Stream")
+            g.Header = Master.eLang.GetString(597, "Subtitle Stream")
             lvStreams.Groups.Add(g)
             c = 1
             ' Fake Group Header
@@ -113,15 +113,34 @@ Public Class dlgFileInfo
         End If
     End Sub
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(591, "Metadata Editor")
-        Me.Label4.Text = Master.eLang.GetString(595, "Stream Type")
+        cbStreamType.Items.Clear()
+        cbStreamType.Items.Add(Master.eLang.GetString(599, "Video"))
+        cbStreamType.Items.Add(Master.eLang.GetString(600, "Audio"))
+        cbStreamType.Items.Add(Master.eLang.GetString(601, "Subtilte"))
+        Me.Text = Master.eLang.GetString(594, "Metadata Editor")
+        Me.Label4.Text = Master.eLang.GetString(598, "Stream Type")
     End Sub
 
     Private Sub lvStreams_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvStreams.SelectedIndexChanged
         If lvStreams.SelectedItems.Count > 0 Then
             If lvStreams.SelectedItems.Item(0).Tag = "Header" Then
                 lvStreams.SelectedItems.Clear()
+                btnNewSet.Enabled = True
+                btnEditSet.Enabled = False
+                btnRemoveSet.Enabled = False
+                cbStreamType.Enabled = True
+            Else
+                btnNewSet.Enabled = False
+                btnEditSet.Enabled = True
+                btnRemoveSet.Enabled = True
+                cbStreamType.Enabled = False
             End If
+
+        Else
+            btnNewSet.Enabled = True
+            btnEditSet.Enabled = False
+            btnRemoveSet.Enabled = False
+            cbStreamType.Enabled = False
         End If
     End Sub
 End Class
