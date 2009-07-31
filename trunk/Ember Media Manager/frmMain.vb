@@ -3736,6 +3736,7 @@ doCancel:
                 .cmnuMark.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuEditMovie.Text = Master.eLang.GetString(25, "Edit Movie")
+                .cmuRenamer.Text = Master.eLang.GetString(168, "Rename")
                 .GenresToolStripMenuItem.Text = Master.eLang.GetString(20, "Genres")
                 .LblGenreStripMenuItem2.Text = Master.eLang.GetString(27, ">> Select Genre <<")
                 .AddGenreToolStripMenuItem.Text = Master.eLang.GetString(28, "Add")
