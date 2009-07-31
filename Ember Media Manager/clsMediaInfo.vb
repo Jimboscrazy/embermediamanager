@@ -92,7 +92,7 @@ Public Class MediaInfo
             Dim ifoVideo(2) As String
             Dim ifoAudio(2) As String
 
-            If (sExt = ".ifo" OrElse sExt = ".vob" OrElse sExt = ".bup") AndAlso cDVD.fctOpenIFOFile(sPath) Then
+            If Master.eSettings.EnableIFOScan AndAlso (sExt = ".ifo" OrElse sExt = ".vob" OrElse sExt = ".bup") AndAlso cDVD.fctOpenIFOFile(sPath) Then
                 Try
                     ifoVideo = cDVD.GetIFOVideo
                     Dim vRes() As String = ifoVideo(1).Split(New Char() {"x"})
@@ -147,11 +147,12 @@ Public Class MediaInfo
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
-            ElseIf StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) Then
+            ElseIf StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) OrElse Path.GetFileNameWithoutExtension(sPath).ToLower = "video_ts" Then
                 Try
                     Dim oFile As String = StringManip.CleanStackingMarkers(sPath, False)
                     Dim sFile As New ArrayList
                     Dim bIsVTS As Boolean = False
+
                     If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
                         bIsVTS = True
                     End If

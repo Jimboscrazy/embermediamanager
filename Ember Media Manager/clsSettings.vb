@@ -192,6 +192,7 @@ Public Class emmSettings
     Private _autorenamesingle As Boolean
     Private _movietheme As String
     Private _metadatapertype As List(Of MetadataPerType)
+    Private _enableifoscan As Boolean
 
     Structure MetadataPerType
         Dim FileType As String
@@ -1686,6 +1687,7 @@ Public Class emmSettings
             Me._movietheme = value
         End Set
     End Property
+
     Public Property MetadataPerFileType() As List(Of MetadataPerType)
         Get
             Return Me._metadatapertype
@@ -1694,6 +1696,16 @@ Public Class emmSettings
             Me._metadatapertype = value
         End Set
     End Property
+
+    Public Property EnableIFOScan() As Boolean
+        Get
+            Return Me._enableifoscan
+        End Get
+        Set(ByVal value As Boolean)
+            Me._enableifoscan = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1865,6 +1877,7 @@ Public Class emmSettings
         Me._autorenamemulti = False
         Me._autorenamesingle = False
         Me._movietheme = String.Empty
+        Me._enableifoscan = True
     End Sub
 
     Public Sub Save()

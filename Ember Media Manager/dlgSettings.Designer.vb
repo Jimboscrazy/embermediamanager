@@ -334,6 +334,7 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
+        Me.chkIFOScan = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -661,7 +662,7 @@ Partial Class dlgSettings
         '
         Me.cbLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbLanguages.FormattingEnabled = True
-        Me.cbLanguages.Location = New System.Drawing.Point(16, 134)
+        Me.cbLanguages.Location = New System.Drawing.Point(16, 146)
         Me.cbLanguages.Name = "cbLanguages"
         Me.cbLanguages.Size = New System.Drawing.Size(174, 21)
         Me.cbLanguages.Sorted = True
@@ -669,7 +670,7 @@ Partial Class dlgSettings
         '
         'Label31
         '
-        Me.Label31.Location = New System.Drawing.Point(3, 96)
+        Me.Label31.Location = New System.Drawing.Point(3, 104)
         Me.Label31.Name = "Label31"
         Me.Label31.Size = New System.Drawing.Size(207, 35)
         Me.Label31.TabIndex = 16
@@ -1894,14 +1895,14 @@ Partial Class dlgSettings
         Me.GroupBox10.Controls.Add(Me.chkLockTitle)
         Me.GroupBox10.Location = New System.Drawing.Point(1, 5)
         Me.GroupBox10.Name = "GroupBox10"
-        Me.GroupBox10.Size = New System.Drawing.Size(187, 164)
+        Me.GroupBox10.Size = New System.Drawing.Size(187, 173)
         Me.GroupBox10.TabIndex = 1
         Me.GroupBox10.TabStop = False
         Me.GroupBox10.Text = "Global Locks (Do not allow updates during scraping)"
         '
         'chkLockOutline
         '
-        Me.chkLockOutline.Location = New System.Drawing.Point(6, 63)
+        Me.chkLockOutline.Location = New System.Drawing.Point(6, 71)
         Me.chkLockOutline.Name = "chkLockOutline"
         Me.chkLockOutline.Size = New System.Drawing.Size(177, 17)
         Me.chkLockOutline.TabIndex = 1
@@ -1910,7 +1911,7 @@ Partial Class dlgSettings
         '
         'chkLockPlot
         '
-        Me.chkLockPlot.Location = New System.Drawing.Point(6, 47)
+        Me.chkLockPlot.Location = New System.Drawing.Point(6, 55)
         Me.chkLockPlot.Name = "chkLockPlot"
         Me.chkLockPlot.Size = New System.Drawing.Size(177, 17)
         Me.chkLockPlot.TabIndex = 0
@@ -1919,7 +1920,7 @@ Partial Class dlgSettings
         '
         'chkLockTrailer
         '
-        Me.chkLockTrailer.Location = New System.Drawing.Point(6, 143)
+        Me.chkLockTrailer.Location = New System.Drawing.Point(6, 151)
         Me.chkLockTrailer.Name = "chkLockTrailer"
         Me.chkLockTrailer.Size = New System.Drawing.Size(177, 17)
         Me.chkLockTrailer.TabIndex = 46
@@ -1928,7 +1929,7 @@ Partial Class dlgSettings
         '
         'chkLockGenre
         '
-        Me.chkLockGenre.Location = New System.Drawing.Point(6, 127)
+        Me.chkLockGenre.Location = New System.Drawing.Point(6, 135)
         Me.chkLockGenre.Name = "chkLockGenre"
         Me.chkLockGenre.Size = New System.Drawing.Size(177, 17)
         Me.chkLockGenre.TabIndex = 7
@@ -1937,7 +1938,7 @@ Partial Class dlgSettings
         '
         'chkLockRealStudio
         '
-        Me.chkLockRealStudio.Location = New System.Drawing.Point(6, 111)
+        Me.chkLockRealStudio.Location = New System.Drawing.Point(6, 119)
         Me.chkLockRealStudio.Name = "chkLockRealStudio"
         Me.chkLockRealStudio.Size = New System.Drawing.Size(177, 17)
         Me.chkLockRealStudio.TabIndex = 5
@@ -1946,7 +1947,7 @@ Partial Class dlgSettings
         '
         'chkLockRating
         '
-        Me.chkLockRating.Location = New System.Drawing.Point(6, 95)
+        Me.chkLockRating.Location = New System.Drawing.Point(6, 103)
         Me.chkLockRating.Name = "chkLockRating"
         Me.chkLockRating.Size = New System.Drawing.Size(177, 17)
         Me.chkLockRating.TabIndex = 4
@@ -1955,7 +1956,7 @@ Partial Class dlgSettings
         '
         'chkLockTagline
         '
-        Me.chkLockTagline.Location = New System.Drawing.Point(6, 79)
+        Me.chkLockTagline.Location = New System.Drawing.Point(6, 87)
         Me.chkLockTagline.Name = "chkLockTagline"
         Me.chkLockTagline.Size = New System.Drawing.Size(177, 17)
         Me.chkLockTagline.TabIndex = 3
@@ -1964,7 +1965,7 @@ Partial Class dlgSettings
         '
         'chkLockTitle
         '
-        Me.chkLockTitle.Location = New System.Drawing.Point(6, 31)
+        Me.chkLockTitle.Location = New System.Drawing.Point(6, 39)
         Me.chkLockTitle.Name = "chkLockTitle"
         Me.chkLockTitle.Size = New System.Drawing.Size(177, 17)
         Me.chkLockTitle.TabIndex = 2
@@ -2215,7 +2216,7 @@ Partial Class dlgSettings
         Me.gbRTFormat.Controls.Add(Me.rbHM)
         Me.gbRTFormat.Controls.Add(Me.rbMins)
         Me.gbRTFormat.Enabled = False
-        Me.gbRTFormat.Location = New System.Drawing.Point(18, 50)
+        Me.gbRTFormat.Location = New System.Drawing.Point(18, 66)
         Me.gbRTFormat.Name = "gbRTFormat"
         Me.gbRTFormat.Size = New System.Drawing.Size(169, 39)
         Me.gbRTFormat.TabIndex = 9
@@ -2248,7 +2249,7 @@ Partial Class dlgSettings
         '
         Me.chkUseMIDuration.AutoSize = True
         Me.chkUseMIDuration.Enabled = False
-        Me.chkUseMIDuration.Location = New System.Drawing.Point(18, 33)
+        Me.chkUseMIDuration.Location = New System.Drawing.Point(18, 49)
         Me.chkUseMIDuration.Name = "chkUseMIDuration"
         Me.chkUseMIDuration.Size = New System.Drawing.Size(145, 17)
         Me.chkUseMIDuration.TabIndex = 8
@@ -2616,6 +2617,7 @@ Partial Class dlgSettings
         '
         'GroupBox26
         '
+        Me.GroupBox26.Controls.Add(Me.chkIFOScan)
         Me.GroupBox26.Controls.Add(Me.cbLanguages)
         Me.GroupBox26.Controls.Add(Me.Label31)
         Me.GroupBox26.Controls.Add(Me.gbRTFormat)
@@ -2623,7 +2625,7 @@ Partial Class dlgSettings
         Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
         Me.GroupBox26.Location = New System.Drawing.Point(371, 5)
         Me.GroupBox26.Name = "GroupBox26"
-        Me.GroupBox26.Size = New System.Drawing.Size(211, 164)
+        Me.GroupBox26.Size = New System.Drawing.Size(211, 173)
         Me.GroupBox26.TabIndex = 63
         Me.GroupBox26.TabStop = False
         Me.GroupBox26.Text = "Meta Data"
@@ -2640,9 +2642,9 @@ Partial Class dlgSettings
         Me.GroupBox20.Controls.Add(Me.Label22)
         Me.GroupBox20.Controls.Add(Me.lbTrailerSites)
         Me.GroupBox20.Controls.Add(Me.chkDownloadTrailer)
-        Me.GroupBox20.Location = New System.Drawing.Point(1, 173)
+        Me.GroupBox20.Location = New System.Drawing.Point(1, 181)
         Me.GroupBox20.Name = "GroupBox20"
-        Me.GroupBox20.Size = New System.Drawing.Size(581, 145)
+        Me.GroupBox20.Size = New System.Drawing.Size(581, 137)
         Me.GroupBox20.TabIndex = 3
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
@@ -2698,7 +2700,7 @@ Partial Class dlgSettings
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(427, 122)
+        Me.Label23.Location = New System.Drawing.Point(427, 116)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(48, 13)
         Me.Label23.TabIndex = 64
@@ -2708,7 +2710,7 @@ Partial Class dlgSettings
         '
         Me.txtTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTimeout.Enabled = False
-        Me.txtTimeout.Location = New System.Drawing.Point(514, 118)
+        Me.txtTimeout.Location = New System.Drawing.Point(514, 112)
         Me.txtTimeout.Name = "txtTimeout"
         Me.txtTimeout.Size = New System.Drawing.Size(36, 20)
         Me.txtTimeout.TabIndex = 7
@@ -3596,7 +3598,7 @@ Partial Class dlgSettings
         'Label19
         '
         Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(32, 86)
+        Me.Label19.Location = New System.Drawing.Point(32, 85)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(129, 48)
         Me.Label19.TabIndex = 2
@@ -3628,6 +3630,17 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
+        'chkIFOScan
+        '
+        Me.chkIFOScan.AutoSize = True
+        Me.chkIFOScan.Enabled = False
+        Me.chkIFOScan.Location = New System.Drawing.Point(18, 33)
+        Me.chkIFOScan.Name = "chkIFOScan"
+        Me.chkIFOScan.Size = New System.Drawing.Size(117, 17)
+        Me.chkIFOScan.TabIndex = 18
+        Me.chkIFOScan.Text = "Enable IFO Parsing"
+        Me.chkIFOScan.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3635,7 +3648,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
-        Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -3649,6 +3661,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlExtensions)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -4045,4 +4058,5 @@ Partial Class dlgSettings
     Friend WithEvents GroupBox29 As System.Windows.Forms.GroupBox
     Friend WithEvents Label36 As System.Windows.Forms.Label
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents chkIFOScan As System.Windows.Forms.CheckBox
 End Class
