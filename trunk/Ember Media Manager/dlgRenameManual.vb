@@ -3,10 +3,12 @@ Imports System.IO
 Public Class dlgRenameManual
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Cursor.Current = Cursors.WaitCursor
         OK_Button.Enabled = False
         Cancel_Button.Enabled = False
         Application.DoEvents()
         FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True)
+        Cursor.Current = Cursors.Default
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
