@@ -4575,7 +4575,9 @@ doCancel:
                 End If
                 MI = Nothing
             End If
-
+            If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+                miMovie.Movie.FileInfo = MediaInfo.ApplyDefaults(pExt)
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
