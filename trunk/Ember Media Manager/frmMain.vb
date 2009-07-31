@@ -1493,7 +1493,24 @@ Public Class frmMain
 
         Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, Me.dgvMediaList.SelectedRows(0).Cells(0).Value, True)
     End Sub
+    Private Sub cmuRenamer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmuRenamer.Click
 
+        Try
+            Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
+            Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
+            FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, True)
+            Me.SetListItemAfterEdit(ID, indX)
+            If Me.RefreshMovie(ID) Then
+                Me.FillList(0)
+            End If
+            Me.tslStatus.Text = Master.currMovie.Filename
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+
+
+    End Sub
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
 
         '//
@@ -4789,6 +4806,7 @@ doCancel:
                 tmpMovieDb.ExtraPath = aContents(5)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(aContents(5)), False, True)})
 
+                Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
                 tmpMovieDb.IsMark = dRow(0).Item(11)
                 tmpMovieDb.IsLock = dRow(0).Item(14)
 
@@ -5424,5 +5442,6 @@ doCancel:
     End Class
 
 #End Region '*** Routines/Functions
+
 
 End Class
