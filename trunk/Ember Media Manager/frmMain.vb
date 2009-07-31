@@ -1570,6 +1570,7 @@ Public Class frmMain
                         Me.cmnuEditMovie.Visible = True
                         Me.cmnuRescrape.Visible = True
                         Me.cmnuSearchNew.Visible = True
+                        Me.cmuRenamer.Visible = True
                         Me.cmnuSep.Visible = True
                         Me.cmnuSep2.Visible = True
 
