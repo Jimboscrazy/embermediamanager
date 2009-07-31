@@ -629,4 +629,9 @@
   <string id="627">Selected Items: {0}</string>
   <string id="628">Enable IFO Parsing</string>
   <string id="629">Themes</string>
+  <string id="630">Auto</string>
+  <string id="631">Manual</string>
+  <string id="632">Manual Rename</string>
+  <string id="633">Folder Name</string>
+  <string id="634">File Name</string>
 </strings>
