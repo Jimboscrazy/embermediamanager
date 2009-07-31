@@ -1540,6 +1540,7 @@ Public Class frmMain
                         Me.cmnuRescrape.Visible = False
                         Me.cmnuSearchNew.Visible = False
                         Me.cmuRenamer.Visible = False
+                        Me.cmnuMetaData.Visible = False
                         Me.cmnuSep.Visible = False
                         Me.cmnuSep2.Visible = False
 
@@ -1571,6 +1572,7 @@ Public Class frmMain
                         Me.cmnuRescrape.Visible = True
                         Me.cmnuSearchNew.Visible = True
                         Me.cmuRenamer.Visible = True
+                        Me.cmnuMetaData.Visible = True
                         Me.cmnuSep.Visible = True
                         Me.cmnuSep2.Visible = True
 
@@ -2492,6 +2494,7 @@ Public Class frmMain
     Private Sub cmnuRenameAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenameAuto.Click
 
         Try
+            Cursor.Current = Cursors.WaitCursor
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
             FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, True)
@@ -2503,6 +2506,7 @@ Public Class frmMain
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+        Cursor.Current = Cursors.Default
     End Sub
     Private Sub cmnuRenameManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenameManual.Click
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
@@ -4616,7 +4620,7 @@ doCancel:
                 MI = Nothing
             End If
             If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
-                miMovie.Movie.FileInfo = MediaInfo.ApplyDefaults(pExt)
+                'miMovie.Movie.FileInfo = MediaInfo.ApplyDefaults(pExt)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
