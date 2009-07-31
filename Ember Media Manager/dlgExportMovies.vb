@@ -276,23 +276,23 @@ Public Class dlgExportMovies
                 End If
 
                 If Not String.IsNullOrEmpty(vresImage) AndAlso XML.alFlags.Contains(vresImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VRES>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresImage))))
+                    line = line.Replace("<$FLAG_VRES>", Web.HttpUtility.UrlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresImage))))
                 End If
 
                 If Not String.IsNullOrEmpty(vsourceImage) AndAlso XML.alFlags.Contains(vsourceImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VSOURCE>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceImage))))
+                    line = line.Replace("<$FLAG_VSOURCE>", Web.HttpUtility.UrlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceImage))))
                 End If
 
                 If Not String.IsNullOrEmpty(vtypeImage) AndAlso XML.alFlags.Contains(vtypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VTYPE>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vtypeImage))))
+                    line = line.Replace("<$FLAG_VTYPE>", Web.HttpUtility.UrlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vtypeImage))))
                 End If
 
                 If Not String.IsNullOrEmpty(atypeImage) AndAlso XML.alFlags.Contains(atypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ATYPE>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(atypeImage))))
+                    line = line.Replace("<$FLAG_ATYPE>", Web.HttpUtility.UrlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(atypeImage))))
                 End If
 
                 If Not String.IsNullOrEmpty(achanImage) AndAlso XML.alFlags.Contains(achanImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ACHAN>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanImage))))
+                    line = line.Replace("<$FLAG_ACHAN>", Web.HttpUtility.UrlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanImage))))
                 End If
 
             Catch ex As Exception
@@ -313,11 +313,14 @@ Public Class dlgExportMovies
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
             Dim htmlPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html")
-            Dim pattern As String = File.ReadAllText(htmlPath)
+            Dim pattern As String
             Dim movieheader As String = String.Empty
             Dim moviefooter As String = String.Empty
             Dim movierow As String = String.Empty
-
+            If Not File.Exists(htmlPath) Then
+                htmlPath = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, "English_(en_US).html")
+            End If
+            pattern = File.ReadAllText(htmlPath)
             If pattern.Contains("<$NEED_POSTERS>") Then
                 Me.bexportPosters = True
                 pattern = pattern.Replace("<$NEED_POSTERS>", String.Empty)
