@@ -276,23 +276,23 @@ Public Class dlgExportMovies
                 End If
 
                 If Not String.IsNullOrEmpty(vresImage) AndAlso XML.alFlags.Contains(vresImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VRES>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresImage)))
+                    line = line.Replace("<$FLAG_VRES>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vresImage))))
                 End If
 
                 If Not String.IsNullOrEmpty(vsourceImage) AndAlso XML.alFlags.Contains(vsourceImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VSOURCE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceImage)))
+                    line = line.Replace("<$FLAG_VSOURCE>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceImage))))
                 End If
 
                 If Not String.IsNullOrEmpty(vtypeImage) AndAlso XML.alFlags.Contains(vtypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_VTYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vtypeImage)))
+                    line = line.Replace("<$FLAG_VTYPE>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(vtypeImage))))
                 End If
 
                 If Not String.IsNullOrEmpty(atypeImage) AndAlso XML.alFlags.Contains(atypeImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ATYPE>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(atypeImage)))
+                    line = line.Replace("<$FLAG_ATYPE>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(atypeImage))))
                 End If
 
                 If Not String.IsNullOrEmpty(achanImage) AndAlso XML.alFlags.Contains(achanImage.ToLower) Then
-                    line = line.Replace("<$FLAG_ACHAN>", String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanImage)))
+                    line = line.Replace("<$FLAG_ACHAN>", Web.HttpUtility.HtmlEncode(String.Concat("Flags", Path.DirectorySeparatorChar, Path.GetFileName(achanImage))))
                 End If
 
             Catch ex As Exception
