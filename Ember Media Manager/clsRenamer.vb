@@ -173,7 +173,7 @@ Public Class FileFolderRenamer
                     localForderPattern = folderPatternIsNotSingle
                 End If
                 f.NewFileName = ProccessPattern(f, filePattern).Trim
-                f.NewPath = ProccessPattern(f, localForderPattern).Trim
+                f.NewPath = Path.Combine(Path.GetDirectoryName(f.Path), ProccessPattern(f, localForderPattern).Trim)
                 f.FileExist = File.Exists(Path.Combine(f.Source, f.NewFileName)) AndAlso Not (f.FileExist = f.NewFileName)
                 f.DirExist = File.Exists(Path.Combine(f.Source, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
 
