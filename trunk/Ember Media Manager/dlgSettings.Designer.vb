@@ -662,7 +662,7 @@ Partial Class dlgSettings
         '
         Me.cbLanguages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbLanguages.FormattingEnabled = True
-        Me.cbLanguages.Location = New System.Drawing.Point(16, 146)
+        Me.cbLanguages.Location = New System.Drawing.Point(16, 147)
         Me.cbLanguages.Name = "cbLanguages"
         Me.cbLanguages.Size = New System.Drawing.Size(174, 21)
         Me.cbLanguages.Sorted = True
@@ -670,7 +670,7 @@ Partial Class dlgSettings
         '
         'Label31
         '
-        Me.Label31.Location = New System.Drawing.Point(3, 104)
+        Me.Label31.Location = New System.Drawing.Point(3, 105)
         Me.Label31.Name = "Label31"
         Me.Label31.Size = New System.Drawing.Size(207, 35)
         Me.Label31.TabIndex = 16
@@ -1579,9 +1579,9 @@ Partial Class dlgSettings
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Location = New System.Drawing.Point(191, 5)
+        Me.GroupBox15.Location = New System.Drawing.Point(306, 203)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(177, 89)
+        Me.GroupBox15.Size = New System.Drawing.Size(269, 89)
         Me.GroupBox15.TabIndex = 2
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "OFDB"
@@ -2606,7 +2606,6 @@ Partial Class dlgSettings
         Me.TabPage1.Controls.Add(Me.GroupBox26)
         Me.TabPage1.Controls.Add(Me.GroupBox10)
         Me.TabPage1.Controls.Add(Me.GroupBox20)
-        Me.TabPage1.Controls.Add(Me.GroupBox15)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
@@ -2617,15 +2616,16 @@ Partial Class dlgSettings
         '
         'GroupBox26
         '
+        Me.GroupBox26.Controls.Add(Me.GroupBox28)
         Me.GroupBox26.Controls.Add(Me.chkIFOScan)
         Me.GroupBox26.Controls.Add(Me.cbLanguages)
         Me.GroupBox26.Controls.Add(Me.Label31)
         Me.GroupBox26.Controls.Add(Me.gbRTFormat)
         Me.GroupBox26.Controls.Add(Me.chkScanMediaInfo)
         Me.GroupBox26.Controls.Add(Me.chkUseMIDuration)
-        Me.GroupBox26.Location = New System.Drawing.Point(371, 5)
+        Me.GroupBox26.Location = New System.Drawing.Point(191, 5)
         Me.GroupBox26.Name = "GroupBox26"
-        Me.GroupBox26.Size = New System.Drawing.Size(211, 173)
+        Me.GroupBox26.Size = New System.Drawing.Size(391, 173)
         Me.GroupBox26.TabIndex = 63
         Me.GroupBox26.TabStop = False
         Me.GroupBox26.Text = "Meta Data"
@@ -2773,6 +2773,7 @@ Partial Class dlgSettings
         '
         Me.TabPage2.Controls.Add(Me.gbOptions)
         Me.TabPage2.Controls.Add(Me.GroupBox1)
+        Me.TabPage2.Controls.Add(Me.GroupBox15)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -3088,7 +3089,6 @@ Partial Class dlgSettings
         '
         Me.pnlExtensions.BackColor = System.Drawing.Color.White
         Me.pnlExtensions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlExtensions.Controls.Add(Me.GroupBox28)
         Me.pnlExtensions.Controls.Add(Me.GroupBox22)
         Me.pnlExtensions.Controls.Add(Me.gbRenamerPatterns)
         Me.pnlExtensions.Controls.Add(Me.GroupBox18)
@@ -3106,7 +3106,7 @@ Partial Class dlgSettings
         Me.GroupBox28.Controls.Add(Me.btnEditMetaDataFT)
         Me.GroupBox28.Controls.Add(Me.btnNewMetaDataFT)
         Me.GroupBox28.Controls.Add(Me.lstMetadata)
-        Me.GroupBox28.Location = New System.Drawing.Point(416, 5)
+        Me.GroupBox28.Location = New System.Drawing.Point(210, 11)
         Me.GroupBox28.Name = "GroupBox28"
         Me.GroupBox28.Size = New System.Drawing.Size(176, 156)
         Me.GroupBox28.TabIndex = 8
@@ -3655,13 +3655,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlExtensions)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
