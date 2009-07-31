@@ -2166,8 +2166,8 @@ Public Class dlgSettings
         Me.Label35.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
         Me.btnDLTrans.Text = Master.eLang.GetString(443, "Download Addons")
         Me.Label36.Text = Master.eLang.GetString(621, "You must restart Ember before changes will take effect.")
-        Me.GroupBox28.Text = Master.eLang.GetString(621, "Meta Data Defaults by File Type")
-        Me.Label34.Text = Master.eLang.GetString(622, "File Type")
+        Me.GroupBox28.Text = Master.eLang.GetString(625, "Meta Data Defaults by File Type")
+        Me.Label34.Text = Master.eLang.GetString(626, "File Type")
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
 
