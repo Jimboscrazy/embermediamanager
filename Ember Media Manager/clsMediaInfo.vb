@@ -724,5 +724,14 @@ Public Class MediaInfo
             End Set
         End Property
     End Class
-
+    Public Shared Function ApplyDefaults(ByVal ext As String) As Fileinfo
+        Dim fi As New Fileinfo
+        For Each m As emmSettings.MetadataPerType In Master.eSettings.MetadataPerFileType
+            If m.FileType = ext Then
+                fi = m.Metadata
+                Return fi
+            End If
+        Next
+        Return Nothing
+    End Function
 End Class
