@@ -1493,24 +1493,7 @@ Public Class frmMain
 
         Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, Me.dgvMediaList.SelectedRows(0).Cells(0).Value, True)
     End Sub
-    Private Sub cmuRenamer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmuRenamer.Click
 
-        Try
-            Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-            Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
-            FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, True)
-            Me.SetListItemAfterEdit(ID, indX)
-            If Me.RefreshMovie(ID) Then
-                Me.FillList(0)
-            End If
-            Me.tslStatus.Text = Master.currMovie.Filename
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-
-
-    End Sub
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
 
         '//
@@ -2502,6 +2485,38 @@ Public Class frmMain
     Private Sub dgvMediaList_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMediaList.KeyDown
         'stop enter key from selecting next list item
         e.Handled = e.KeyCode = Keys.Enter
+    End Sub
+
+
+    Private Sub cmnuRenameAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenameAuto.Click
+
+        Try
+            Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
+            Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
+            FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, True)
+            Me.SetListItemAfterEdit(ID, indX)
+            If Me.RefreshMovie(ID) Then
+                Me.FillList(0)
+            End If
+            Me.tslStatus.Text = Master.currMovie.Filename
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+    Private Sub cmnuRenameManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenameManual.Click
+        Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
+        Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
+        Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
+        Using dRenameManual As New dlgRenameManual
+            Select Case dRenameManual.ShowDialog()
+                Case Windows.Forms.DialogResult.OK
+                    Me.SetListItemAfterEdit(ID, indX)
+                    If Me.RefreshMovie(ID) Then
+                        Me.FillList(0)
+                    End If
+                    Me.tslStatus.Text = Master.currMovie.Filename
+            End Select
+        End Using
     End Sub
 
     Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
@@ -3738,6 +3753,8 @@ doCancel:
                 .cmnuLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuEditMovie.Text = Master.eLang.GetString(25, "Edit Movie")
                 .cmuRenamer.Text = Master.eLang.GetString(168, "Rename")
+                .cmnuRenameAuto.Text = Master.eLang.GetString(630, "Auto")
+                .cmnuRenameManual.Text = Master.eLang.GetString(631, "Manual")
                 .GenresToolStripMenuItem.Text = Master.eLang.GetString(20, "Genres")
                 .LblGenreStripMenuItem2.Text = Master.eLang.GetString(27, ">> Select Genre <<")
                 .AddGenreToolStripMenuItem.Text = Master.eLang.GetString(28, "Add")
@@ -5444,6 +5461,5 @@ doCancel:
     End Class
 
 #End Region '*** Routines/Functions
-
 
 End Class

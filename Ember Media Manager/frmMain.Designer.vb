@@ -76,6 +76,8 @@ Partial Class frmMain
         Me.cmnuEditMovie = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuMetaData = New System.Windows.Forms.ToolStripMenuItem
         Me.cmuRenamer = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuRenameAuto = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuRenameManual = New System.Windows.Forms.ToolStripMenuItem
         Me.GenresToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.LblGenreStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem
         Me.GenreListToolStripComboBox = New System.Windows.Forms.ToolStripComboBox
@@ -800,11 +802,24 @@ Partial Class frmMain
         '
         'cmuRenamer
         '
+        Me.cmuRenamer.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuRenameAuto, Me.cmnuRenameManual})
         Me.cmuRenamer.Image = CType(resources.GetObject("cmuRenamer.Image"), System.Drawing.Image)
         Me.cmuRenamer.Name = "cmuRenamer"
         Me.cmuRenamer.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
         Me.cmuRenamer.Size = New System.Drawing.Size(244, 22)
         Me.cmuRenamer.Text = "Rename"
+        '
+        'cmnuRenameAuto
+        '
+        Me.cmnuRenameAuto.Name = "cmnuRenameAuto"
+        Me.cmnuRenameAuto.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuRenameAuto.Text = "Auto"
+        '
+        'cmnuRenameManual
+        '
+        Me.cmnuRenameManual.Name = "cmnuRenameManual"
+        Me.cmnuRenameManual.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuRenameManual.Text = "Manual"
         '
         'GenresToolStripMenuItem
         '
@@ -2987,4 +3002,6 @@ Partial Class frmMain
     Friend WithEvents mnuFilterAskTrailer As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuFilterAskMI As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmuRenamer As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuRenameAuto As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuRenameManual As System.Windows.Forms.ToolStripMenuItem
 End Class
