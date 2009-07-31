@@ -761,7 +761,6 @@ Public Class frmMain
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
             Master.currMovie = Master.DB.LoadMovieFromDB(ID)
-            Me.tslStatus.Text = Master.currMovie.Filename
             Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
 
             Using dEditMovie As New dlgEditMovie
@@ -997,6 +996,13 @@ Public Class frmMain
         Me.tmrLoad.Enabled = False
         Try
             If Me.dgvMediaList.SelectedRows.Count > 0 Then
+
+                If Me.dgvMediaList.SelectedRows.Count > 1 Then
+                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
+                ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
+                    Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value
+                End If
+
                 If Me.bwLoadInfo.IsBusy Then
                     Me.bwLoadInfo.CancelAsync()
                     Do While Me.bwLoadInfo.IsBusy
@@ -3971,9 +3977,6 @@ doCancel:
             Me.tsbRefreshMedia.Enabled = False
             Me.tabsMain.Enabled = False
             Me.pnlNoInfo.Visible = False
-
-            'set status bar text to movie path
-            Me.tslStatus.Text = sPath
 
             If Me.bwDownloadPic.IsBusy Then
                 Me.bwDownloadPic.CancelAsync()
