@@ -2004,13 +2004,20 @@ Public Class frmMain
     End Sub
 
     Private Sub OpenContainingFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenContainingFolderToolStripMenuItem.Click
-        For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-            Using Explorer As New Diagnostics.Process
-                Explorer.StartInfo.FileName = "explorer.exe"
-                Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells(1).Value)
-                Explorer.Start()
-            End Using
-        Next
+        Dim doOpen As Boolean = True
+        If Me.dgvMediaList.SelectedRows.Count > 10 Then
+            If Not MsgBox(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), Me.dgvMediaList.SelectedRows.Count), MsgBoxStyle.YesNo Or MsgBoxStyle.Question, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then doOpen = False
+        End If
+
+        If doOpen Then
+            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                Using Explorer As New Diagnostics.Process
+                    Explorer.StartInfo.FileName = "explorer.exe"
+                    Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells(1).Value)
+                    Explorer.Start()
+                End Using
+            Next
+        End If
     End Sub
 
     Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
