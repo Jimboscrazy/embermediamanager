@@ -70,6 +70,7 @@ Partial Class dlgRenameManual
         'txtFolder
         '
         Me.txtFolder.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFolder.Location = New System.Drawing.Point(89, 12)
         Me.txtFolder.Name = "txtFolder"
         Me.txtFolder.Size = New System.Drawing.Size(318, 20)
@@ -96,6 +97,7 @@ Partial Class dlgRenameManual
         'txtFile
         '
         Me.txtFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFile.Location = New System.Drawing.Point(89, 38)
         Me.txtFile.Name = "txtFile"
         Me.txtFile.Size = New System.Drawing.Size(318, 20)
