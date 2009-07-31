@@ -129,11 +129,20 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(25, "Edit Movie")
+        Dim mTitle As String = Master.currMovie.Movie.Title
+        Dim mPathPieces() As String = Master.currMovie.Filename.Split(Path.DirectorySeparatorChar)
+        Dim mShortPath As String = Master.currMovie.Filename
+        If Not String.IsNullOrEmpty(mShortPath) AndAlso Directory.GetParent(mShortPath).Name.ToLower = "video_ts" Then
+            mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 3), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
+        Else
+            mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
+        End If
+        Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)), If(String.IsNullOrEmpty(mShortPath), String.Empty, String.Concat(" | ", mShortPath)))
+        Me.Text = sTitle
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.Label2.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
-        Me.Label1.Text = Me.Text
+        Me.Label1.Text = Master.eLang.GetString(25, "Edit Movie")
         Me.TabPage1.Text = Master.eLang.GetString(26, "Details")
         Me.lblLocalTrailer.Text = Master.eLang.GetString(225, "Local Trailer Found")
         Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
