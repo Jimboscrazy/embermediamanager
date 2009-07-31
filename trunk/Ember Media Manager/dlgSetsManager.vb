@@ -67,7 +67,7 @@ Public Class dlgSetsManager
 
     End Class
 
-    Friend Class Movies:Implements IComparable(Of Movies)
+    Friend Class Movies : Implements IComparable(Of Movies)
         Private _dbmovie As Master.DBMovie
         Private _order As Integer
 

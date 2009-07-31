@@ -287,8 +287,9 @@ Public Class dlgIMDBSearchResults
                     Dim selNode As New TreeNode
 
                     If M.PartialMatches.Count > 0 Then
+                        M.PartialMatches.Sort()
                         For Each Movie As Media.Movie In M.PartialMatches
-                            TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
+                            TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
                         Next
                         TnP.Expand()
                         Me.tvResults.Nodes.Add(TnP)
@@ -296,12 +297,13 @@ Public Class dlgIMDBSearchResults
                     End If
 
                     If M.ExactMatches.Count > 0 Then
+                        M.ExactMatches.Sort()
                         If M.PartialMatches.Count > 0 Then
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(Master.eLang.GetString(298, "Exact Matches"))
                         For Each Movie As Media.Movie In M.ExactMatches
-                            TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
+                            TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
                         Next
                         TnP.Expand()
                         Me.tvResults.Nodes.Add(TnP)
@@ -309,13 +311,14 @@ Public Class dlgIMDBSearchResults
                     End If
 
                     If M.PopularTitles.Count > 0 Then
+                        M.PopularTitles.Sort()
                         If M.PartialMatches.Count > 0 OrElse M.ExactMatches.Count > 0 Then
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
 
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(299, "Popular Titles ({0})"), M.PopularTitles.Count))
                         For Each Movie As Media.Movie In M.PopularTitles
-                            TnP.Nodes.Add(New TreeNode() With {.Text = Movie.Title, .Tag = Movie.IMDBID})
+                            TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
                         Next
                         TnP.Expand()
                         Me.tvResults.Nodes.Add(TnP)
