@@ -2169,6 +2169,7 @@ Public Class dlgSettings
         Me.GroupBox28.Text = Master.eLang.GetString(621, "Meta Data Defaults by File Type")
         Me.Label34.Text = Master.eLang.GetString(622, "File Type")
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
+        Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
