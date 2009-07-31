@@ -76,7 +76,7 @@ Namespace IMDB
         Private Const TABLE_PATTERN As String = "<table.*?>(.*?)</table>"
         Private Const HREF_PATTERN As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_2 As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>"
-        Private Const TITLE_PATTERN As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>((\s)+?(\(\d{4}\)))?((\s)+?(\((?<type>.*?)\)))?"
+        Private Const TITLE_PATTERN As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>((\s)+?(\((?<year>\d{4})\)))?((\s)+?(\((?<type>.*?)\)))?"
         Private Const HREF_PATTERN_3 As String = "<a href=""/List\?certificates=[^""]*"">([^<]*):([^<]*)</a>[^<]*(<i>([^<]*)</i>)?"
         Private Const IMG_PATTERN As String = "<img src=""(?<thumb>.*?)"" width=""\d{1,3}"" height=""\d{1,3}"" border="".{1,3}"">"
         Private Const TR_PATTERN As String = "<tr\sclass="".*?"">(.*?)</tr>"
@@ -120,9 +120,13 @@ Namespace IMDB
             Try
                 Select Case iType
                     Case Master.ScrapeType.FullAsk, Master.ScrapeType.UpdateAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk
-                        If r.PopularTitles.Count = 1 Then
+                        r.ExactMatches.Sort()
+                        r.PopularTitles.Sort()
+                        If r.ExactMatches.Count = 1 AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count Then 'redirected to imdb info page
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
+                        ElseIf r.PopularTitles.Count > 0 AndAlso r.PopularTitles(0).Lev < 2 Then
                             b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
-                        ElseIf r.ExactMatches.Count > 0 Then
+                        ElseIf r.ExactMatches.Count > 0 AndAlso r.ExactMatches(0).Lev < 2 Then
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                         Else
                             Master.tmpMovie.Clear()
@@ -140,10 +144,15 @@ Namespace IMDB
                         End If
                     Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto, Master.ScrapeType.SingleScrape
                         'it seems "popular matches" is a better result than "exact matches"
-                        If r.PopularTitles.Count > 0 Then
+                        r.PopularTitles.Sort()
+                        r.ExactMatches.Sort()
+                        r.PartialMatches.Sort()
+                        If r.ExactMatches.Count = 1 AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count Then 'redirected to imdb info page
+                            b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
+                        ElseIf r.PopularTitles.Count > 0 AndAlso r.PopularTitles(0).Lev < 2 Then
                             b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                             'no popular matches, try exact matches
-                        ElseIf r.ExactMatches.Count > 0 Then
+                        ElseIf r.ExactMatches.Count > 0 AndAlso r.ExactMatches(0).Lev < 2 Then
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                             'no populartitles, get partial matches
                         ElseIf r.PartialMatches.Count > 0 Then
@@ -188,7 +197,7 @@ Namespace IMDB
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = True
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Details, _
-                                           .Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = FullCrew, .FullCast = FullCast, .Options = options})
+                                           .Parameter = imdbID, .IMDBMovie = IMDBMovie, .FullCrew = FullCrew, .FullCast = FullCast, .Options = Options})
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -220,52 +229,52 @@ Namespace IMDB
                 'Check if we've been redirected straight to the movie page
                 If Regex.Match(rUri, IMDB_ID_REGEX).Success Then
                     Dim lNewMovie As Media.Movie = New Media.Movie(Regex.Match(rUri, IMDB_ID_REGEX).ToString, _
-                                                                CapitalizeAll(sMovie))
+                                                                CapitalizeAll(sMovie), Regex.Match(Regex.Match(rUri, MOVIE_TITLE_PATTERN).ToString, "(?<=\()\d+(?=.*\))").ToString, 0)
                     R.ExactMatches.Add(lNewMovie)
                     Return R
                     Exit Function
                 End If
 
-                D = Html.IndexOf("<b>Popular Titles</b>")
+                D = HTML.IndexOf("<b>Popular Titles</b>")
                 If D <= 0 Then GoTo mPartial
-                W = Html.IndexOf("</p>", D)
+                W = HTML.IndexOf("</p>", D)
 
-                Dim Table As String = Regex.Match(Html.Substring(D, W - D), TABLE_PATTERN).ToString
+                Dim Table As String = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
                 Dim qPopular = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
                                Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                                Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                                                Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString))
+                                                Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(sMovie, Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString)))
 
                 R.PopularTitles = qPopular.ToList
 mPartial:
 
 
-                D = Html.IndexOf("Titles (Partial Matches)")
+                D = HTML.IndexOf("Titles (Partial Matches)")
                 If D <= 0 Then GoTo mApprox
-                W = Html.IndexOf("</p>", D)
+                W = HTML.IndexOf("</p>", D)
 
-                Table = Regex.Match(Html.Substring(D, W - D), TABLE_PATTERN).ToString
+                Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
                 Dim qpartial = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
                     Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString))
+                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(sMovie, Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString)))
 
 
                 R.PartialMatches = qpartial.ToList
 mApprox:
 
                 'Now process "Approx Matches" and merge both Partial and Approx matches
-                D = Html.IndexOf("Titles (Approx Matches)")
+                D = HTML.IndexOf("Titles (Approx Matches)")
                 If D <= 0 Then GoTo mExact
-                W = Html.IndexOf("</p", D)
+                W = HTML.IndexOf("</p", D)
 
-                Table = Regex.Match(Html.Substring(D, W - D), TABLE_PATTERN).ToString
+                Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
                 Dim qApprox = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
                     Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString))
+                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(sMovie, Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString)))
 
                 If Not IsNothing(R.PartialMatches) Then
                     R.PartialMatches = R.PartialMatches.Union(qApprox.ToList).ToList
@@ -276,17 +285,17 @@ mApprox:
 mExact:
 
 
-                D = Html.IndexOf("Titles (Exact Matches)")
+                D = HTML.IndexOf("Titles (Exact Matches)")
                 If D <= 0 Then GoTo mResult
-                W = Html.IndexOf("</p>", D)
+                W = HTML.IndexOf("</p>", D)
 
                 Table = String.Empty
-                Table = Regex.Match(Html.Substring(D, W - D), TABLE_PATTERN).ToString
+                Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
                 Dim qExact = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
                                Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                                Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                            Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString.ToString))
+                            Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString.ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(sMovie, Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString)))
 
                 R.ExactMatches = qExact.ToList
 

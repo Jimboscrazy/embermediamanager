@@ -25,7 +25,7 @@ Imports System.Xml.Serialization
 
 Namespace Media
     <XmlRoot("movie")> _
-    Public Class Movie
+    Public Class Movie : Implements IComparable(Of Movie)
         Private _imdbid As String
         Private _title As String
         Private _originaltitle As String
@@ -56,6 +56,7 @@ Namespace Media
         Private _actors As New List(Of Person)
         Private _fileInfo As New MediaInfo.Fileinfo
         Private _sets As New List(Of [Set])
+        Private _lev As Integer
 
         <XmlIgnore()> _
         Public Property IMDBID() As String
@@ -583,6 +584,20 @@ Namespace Media
             End Get
         End Property
 
+        <XmlIgnore()> _
+        Public Property Lev() As Integer
+            Get
+                Return Me._lev
+            End Get
+            Set(ByVal value As Integer)
+                Me._lev = value
+            End Set
+        End Property
+
+        Public Function CompareTo(ByVal other As Movie) As Integer Implements IComparable(Of Movie).CompareTo
+            Return (Me.Lev).CompareTo(other.Lev)
+        End Function
+
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
             Dim tSet = From bSet As [Set] In _sets Where bSet.SetContainer.Set = SetName
             If tSet.Count > 0 Then
@@ -603,10 +618,12 @@ Namespace Media
             Me.Clear()
         End Sub
 
-        Public Sub New(ByVal sID As String, ByVal sTitle As String)
+        Public Sub New(ByVal sID As String, ByVal sTitle As String, ByVal sYear As String, ByVal iLev As Integer)
             Me.Clear()
             Me._imdbid = sID
             Me._title = sTitle
+            Me._year = sYear
+            Me._lev = iLev
         End Sub
 
         Public Sub Clear()
@@ -640,6 +657,7 @@ Namespace Media
             Me._actors.Clear()
             Me._fileInfo = New MediaInfo.Fileinfo
             Me._sets.Clear()
+            Me._lev = 0
         End Sub
     End Class
 
