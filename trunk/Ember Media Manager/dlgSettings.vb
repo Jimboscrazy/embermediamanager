@@ -158,10 +158,12 @@ Public Class dlgSettings
         Me.btnApply.Enabled = True
         Me.chkUseMIDuration.Enabled = Me.chkScanMediaInfo.Checked
         Me.cbLanguages.Enabled = Me.chkScanMediaInfo.Checked
+        Me.chkIFOScan.Enabled = Me.chkScanMediaInfo.Checked
         If Not Me.chkScanMediaInfo.Checked Then
             Me.chkUseMIDuration.Checked = False
             Me.gbRTFormat.Enabled = False
             Me.rbMins.Checked = True
+            Me.chkIFOScan.Checked = False
         End If
     End Sub
 
@@ -1330,6 +1332,77 @@ Public Class dlgSettings
     Private Sub cbMovieTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieTheme.SelectedIndexChanged
         Me.btnApply.Enabled = True
     End Sub
+
+    Private Sub txtDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDefFIExt.TextChanged
+        btnNewMetaDataFT.Enabled = Not String.IsNullOrEmpty(txtDefFIExt.Text)
+        If btnNewMetaDataFT.Enabled Then
+            btnEditMetaDataFT.Enabled = False
+            btnRemoveMetaDataFT.Enabled = False
+        End If
+    End Sub
+
+    Private Sub btnNewMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewMetaDataFT.Click
+        Using dEditMeta As New dlgFileInfo
+            Dim fi As New MediaInfo.Fileinfo
+            fi = dEditMeta.ShowDialog(fi)
+            If Not fi Is Nothing Then
+                Dim m As New emmSettings.MetadataPerType
+                m.FileType = txtDefFIExt.Text
+                m.Metadata = New MediaInfo.Fileinfo
+                m.Metadata = fi
+                Meta.Add(m)
+                LoadMetadata()
+                Me.btnApply.Enabled = True
+            End If
+        End Using
+    End Sub
+
+    Private Sub btnEditMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditMetaDataFT.Click
+        Using dEditMeta As New dlgFileInfo
+            Dim fi As New MediaInfo.Fileinfo
+            For Each x As emmSettings.MetadataPerType In Meta
+                If x.FileType = lstMetadata.SelectedItems(0).Text Then
+                    fi = dEditMeta.ShowDialog(x.Metadata)
+                    If Not fi Is Nothing Then
+                        Dim m As New emmSettings.MetadataPerType
+                        m.FileType = txtDefFIExt.Text
+                        m.Metadata = New MediaInfo.Fileinfo
+                        m.Metadata = fi
+                        Meta.Add(m)
+                        LoadMetadata()
+                        Me.btnApply.Enabled = True
+                    End If
+                    Exit For
+                End If
+            Next
+        End Using
+    End Sub
+
+    Private Sub btnRemoveMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMetaDataFT.Click
+        For Each x As emmSettings.MetadataPerType In Meta
+            If x.FileType = lstMetadata.SelectedItems(0).Text Then
+                Meta.Remove(x)
+                LoadMetadata()
+                Me.btnApply.Enabled = True
+                Exit For
+            End If
+        Next
+    End Sub
+
+    Private Sub lstMetadata_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstMetadata.SelectedIndexChanged
+        If lstMetadata.SelectedItems.Count > 0 Then
+            btnEditMetaDataFT.Enabled = True
+            btnRemoveMetaDataFT.Enabled = True
+            txtDefFIExt.Text = ""
+        Else
+            btnEditMetaDataFT.Enabled = False
+            btnRemoveMetaDataFT.Enabled = False
+        End If
+    End Sub
+
+    Private Sub chkIFOScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkIFOScan.CheckedChanged
+        Me.btnApply.Enabled = True
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1592,6 +1665,7 @@ Public Class dlgSettings
             Master.eSettings.AutoRenameMulti = Me.chkRenameMulti.Checked
             Master.eSettings.AutoRenameSingle = Me.chkRenameSingle.Checked
             Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
+            Master.eSettings.EnableIFOScan = Me.chkIFOScan.Checked
 
             Master.eSettings.Save()
 
@@ -1820,6 +1894,7 @@ Public Class dlgSettings
             Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
             Me.Meta = Master.eSettings.MetadataPerFileType
             Me.LoadMetadata()
+            Me.chkIFOScan.Checked = Master.eSettings.EnableIFOScan
 
             Me.RefreshSources()
         Catch ex As Exception
@@ -2093,6 +2168,7 @@ Public Class dlgSettings
         Me.Label36.Text = Master.eLang.GetString(621, "You must restart Ember before changes will take effect.")
         Me.GroupBox28.Text = Master.eLang.GetString(621, "Meta Data Defaults by File Type")
         Me.Label34.Text = Master.eLang.GetString(622, "File Type")
+        Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
@@ -2111,67 +2187,4 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub txtDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDefFIExt.TextChanged
-        btnNewMetaDataFT.Enabled = Not String.IsNullOrEmpty(txtDefFIExt.Text)
-        If btnNewMetaDataFT.Enabled Then
-            btnEditMetaDataFT.Enabled = False
-            btnRemoveMetaDataFT.Enabled = False
-        End If
-    End Sub
-
-    Private Sub btnNewMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewMetaDataFT.Click
-        Using dEditMeta As New dlgFileInfo
-            Dim fi As New MediaInfo.Fileinfo
-            fi = dEditMeta.ShowDialog(fi)
-            If Not fi Is Nothing Then
-                Dim m As New emmSettings.MetadataPerType
-                m.FileType = txtDefFIExt.Text
-                m.Metadata = New MediaInfo.Fileinfo
-                m.Metadata = fi
-                Meta.Add(m)
-                LoadMetadata()
-            End If
-        End Using
-    End Sub
-
-    Private Sub btnEditMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditMetaDataFT.Click
-        Using dEditMeta As New dlgFileInfo
-            Dim fi As New MediaInfo.Fileinfo
-            For Each x As emmSettings.MetadataPerType In Meta
-                If x.FileType = lstMetadata.SelectedItems(0).Text Then
-                    fi = dEditMeta.ShowDialog(x.Metadata)
-                    If Not fi Is Nothing Then
-                        Dim m As New emmSettings.MetadataPerType
-                        m.FileType = txtDefFIExt.Text
-                        m.Metadata = New MediaInfo.Fileinfo
-                        m.Metadata = fi
-                        Meta.Add(m)
-                        LoadMetadata()
-                    End If
-                    Exit For
-                End If
-            Next
-        End Using
-    End Sub
-
-    Private Sub btnRemoveMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMetaDataFT.Click
-        For Each x As emmSettings.MetadataPerType In Meta
-            If x.FileType = lstMetadata.SelectedItems(0).Text Then
-                Meta.Remove(x)
-                LoadMetadata()
-                Exit For
-            End If
-        Next
-    End Sub
-
-    Private Sub lstMetadata_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstMetadata.SelectedIndexChanged
-        If lstMetadata.SelectedItems.Count > 0 Then
-            btnEditMetaDataFT.Enabled = True
-            btnRemoveMetaDataFT.Enabled = True
-            txtDefFIExt.Text = ""
-        Else
-            btnEditMetaDataFT.Enabled = False
-            btnRemoveMetaDataFT.Enabled = False
-        End If
-    End Sub
 End Class
