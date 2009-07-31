@@ -5094,6 +5094,7 @@ doCancel:
             Me.filSearch = String.Empty
             Me.filGenre = String.Empty
             Me.filYear = String.Empty
+            Me.filSource = String.Empty
 
             RemoveHandler txtSearch.TextChanged, AddressOf txtSearch_TextChanged
             Me.txtSearch.Text = String.Empty
