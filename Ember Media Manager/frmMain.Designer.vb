@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -716,8 +716,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -738,7 +738,7 @@ Partial Class frmMain
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.cmuRenamer, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.DeleteMovieToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
         Me.mnuMediaList.Size = New System.Drawing.Size(245, 320)
         '
