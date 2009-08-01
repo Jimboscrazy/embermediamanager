@@ -595,7 +595,11 @@ Namespace Media
         End Property
 
         Public Function CompareTo(ByVal other As Movie) As Integer Implements IComparable(Of Movie).CompareTo
-            Return (Me.Lev).CompareTo(other.Lev)
+            Dim retVal As Integer = (Me.Lev).CompareTo(other.Lev)
+            If retVal = 0 Then
+                retVal = (Me.Year).CompareTo(other.Year) * -1
+            End If
+            Return retVal
         End Function
 
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
