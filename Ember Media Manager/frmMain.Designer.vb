@@ -812,7 +812,7 @@ Partial Class frmMain
         '
         Me.LblGenreStripMenuItem2.Enabled = False
         Me.LblGenreStripMenuItem2.Name = "LblGenreStripMenuItem2"
-        Me.LblGenreStripMenuItem2.Size = New System.Drawing.Size(181, 22)
+        Me.LblGenreStripMenuItem2.Size = New System.Drawing.Size(195, 22)
         Me.LblGenreStripMenuItem2.Text = ">> Select Genre <<"
         '
         'GenreListToolStripComboBox
@@ -820,25 +820,25 @@ Partial Class frmMain
         Me.GenreListToolStripComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.GenreListToolStripComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Standard
         Me.GenreListToolStripComboBox.Name = "GenreListToolStripComboBox"
-        Me.GenreListToolStripComboBox.Size = New System.Drawing.Size(121, 23)
+        Me.GenreListToolStripComboBox.Size = New System.Drawing.Size(135, 23)
         Me.GenreListToolStripComboBox.Sorted = True
         '
         'AddGenreToolStripMenuItem
         '
         Me.AddGenreToolStripMenuItem.Name = "AddGenreToolStripMenuItem"
-        Me.AddGenreToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.AddGenreToolStripMenuItem.Size = New System.Drawing.Size(195, 22)
         Me.AddGenreToolStripMenuItem.Text = "Add"
         '
         'SetGenreToolStripMenuItem
         '
         Me.SetGenreToolStripMenuItem.Name = "SetGenreToolStripMenuItem"
-        Me.SetGenreToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.SetGenreToolStripMenuItem.Size = New System.Drawing.Size(195, 22)
         Me.SetGenreToolStripMenuItem.Text = "Set"
         '
         'RemoveGenreToolStripMenuItem
         '
         Me.RemoveGenreToolStripMenuItem.Name = "RemoveGenreToolStripMenuItem"
-        Me.RemoveGenreToolStripMenuItem.Size = New System.Drawing.Size(181, 22)
+        Me.RemoveGenreToolStripMenuItem.Size = New System.Drawing.Size(195, 22)
         Me.RemoveGenreToolStripMenuItem.Text = "Remove"
         '
         'cmnuSep
