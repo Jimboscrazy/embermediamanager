@@ -124,9 +124,9 @@ Namespace IMDB
                         r.PopularTitles.Sort()
                         If r.ExactMatches.Count = 1 AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count Then 'redirected to imdb info page
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
-                        ElseIf r.PopularTitles.Count > 0 AndAlso r.PopularTitles(0).Lev < 2 Then
+                        ElseIf r.PopularTitles.Count = 1 AndAlso r.PopularTitles(0).Lev < 5 Then
                             b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
-                        ElseIf r.ExactMatches.Count > 0 AndAlso r.ExactMatches(0).Lev < 2 Then
+                        ElseIf r.ExactMatches.Count = 1 AndAlso r.ExactMatches(0).Lev < 5 Then
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                         Else
                             Master.tmpMovie.Clear()
@@ -149,12 +149,10 @@ Namespace IMDB
                         r.PartialMatches.Sort()
                         If r.ExactMatches.Count = 1 AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count Then 'redirected to imdb info page
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
-                        ElseIf r.PopularTitles.Count > 0 AndAlso r.PopularTitles(0).Lev < 2 Then
+                        ElseIf r.PopularTitles.Count > 0 AndAlso r.PopularTitles(0).Lev < 5 Then
                             b = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
-                            'no popular matches, try exact matches
-                        ElseIf r.ExactMatches.Count > 0 AndAlso r.ExactMatches(0).Lev < 2 Then
+                        ElseIf r.ExactMatches.Count > 0 AndAlso r.ExactMatches(0).Lev < 5 Then
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
-                            'no populartitles, get partial matches
                         ElseIf r.PartialMatches.Count > 0 Then
                             b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
                         End If
@@ -244,7 +242,7 @@ Namespace IMDB
                 Dim qPopular = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
                                Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                                Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                                                Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty), Regex.Replace(Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), YEAR_FILTER, String.Empty)))
+                                                Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
 
                 R.PopularTitles = qPopular.ToList
 mPartial:
@@ -258,7 +256,7 @@ mPartial:
                 Dim qpartial = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
                     Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty), Regex.Replace(Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), YEAR_FILTER, String.Empty)))
+                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
 
 
                 R.PartialMatches = qpartial.ToList
@@ -274,7 +272,7 @@ mApprox:
                 Dim qApprox = From Mtr As Match In Regex.Matches(Table, TITLE_PATTERN) _
                     Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty), Regex.Replace(Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), YEAR_FILTER, String.Empty)))
+                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
 
                 If Not IsNothing(R.PartialMatches) Then
                     R.PartialMatches = R.PartialMatches.Union(qApprox.ToList).ToList
