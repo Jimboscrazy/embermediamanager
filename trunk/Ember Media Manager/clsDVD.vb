@@ -131,6 +131,9 @@ Public Class clsDVD
 
                 ParsedIFOFile = tIFOFile
                 Return True
+            ElseIf IFOFiles.Count = 1 Then
+                ParsedIFOFile = fctParseIFO_VSTFile(IFOFiles(0))
+                Return True
             ElseIf Path.GetExtension(strPath).ToLower = ".ifo" AndAlso Not Path.GetFileName(strPath).ToLower = "video_ts.ifo" Then
                 ParsedIFOFile = fctParseIFO_VSTFile(strPath)
                 Return True
