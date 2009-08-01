@@ -210,7 +210,7 @@ Public Class StringManip
 
     End Function
 
-    Private Shared Function ProperCase(ByVal sString As String) As String
+    Public Shared Function ProperCase(ByVal sString As String) As String
         If String.IsNullOrEmpty(sString) Then Return String.Empty
         Dim sReturn As String = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(sString)
         Dim toUpper As String = "\b(hd|cd|dvd|bc|b\.c\.|ad|a\.d\.|sw|nw|se|sw|ii|iii|iv|vi|vii|viii|ix|x)\b"
