@@ -198,11 +198,15 @@ Public Class clsDVD
                         ReturnArray(2) = "1.78"
                     Else
                         Dim strAspect() As String = ReturnArray(1).Split(New Char() {"x"})
-                        Dim sinAspect As Single = Master.ConvertToSingle(strAspect(0)) / Convert.ToSingle(strAspect(1))
-                        ReturnArray(2) = FormatNumber(sinAspect, 2, TriState.False)
+                        Dim strReturn As String = Master.ConvertToSingle(FormatNumber(Master.ConvertToSingle(strAspect(0)) / Convert.ToSingle(strAspect(1)), 2, TriState.False))
+                        If strReturn.EndsWith("0") Then
+                            ReturnArray(2) = strReturn.Substring(0, strReturn.Length - 1)
+                        Else
+                            ReturnArray(2) = strReturn
+                        End If
                     End If
                 Else
-                    ReturnArray(2) = String.Empty
+                        ReturnArray(2) = String.Empty
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

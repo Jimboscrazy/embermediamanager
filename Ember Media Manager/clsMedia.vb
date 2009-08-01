@@ -81,7 +81,7 @@ Namespace Media
         <XmlIgnore()> _
         Public ReadOnly Property IDSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._imdbid)
+                Return Not String.IsNullOrEmpty(Me._imdbid) AndAlso Not Me._imdbid = "tt"
             End Get
         End Property
 
