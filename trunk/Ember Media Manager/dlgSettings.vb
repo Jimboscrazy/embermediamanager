@@ -1334,7 +1334,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub txtDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDefFIExt.TextChanged
-        btnNewMetaDataFT.Enabled = Not String.IsNullOrEmpty(txtDefFIExt.Text)
+        btnNewMetaDataFT.Enabled = Not String.IsNullOrEmpty(txtDefFIExt.Text) AndAlso Not Me.lstMetaData.Items.Contains(If(txtDefFIExt.Text.StartsWith("."), txtDefFIExt.Text, String.Concat(".", txtDefFIExt.Text)))
         If btnNewMetaDataFT.Enabled Then
             btnEditMetaDataFT.Enabled = False
             btnRemoveMetaDataFT.Enabled = False
@@ -1342,6 +1342,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnNewMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewMetaDataFT.Click
+        If Not txtDefFIExt.Text.StartsWith(".") Then txtDefFIExt.Text = String.Concat(".", txtDefFIExt.Text)
         Using dEditMeta As New dlgFileInfo
             Dim fi As New MediaInfo.Fileinfo
             fi = dEditMeta.ShowDialog(fi)
@@ -1353,6 +1354,8 @@ Public Class dlgSettings
                 Meta.Add(m)
                 LoadMetadata()
                 Me.btnApply.Enabled = True
+                Me.txtDefFIExt.Text = String.Empty
+                Me.txtDefFIExt.Focus()
             End If
         End Using
     End Sub
@@ -1361,11 +1364,12 @@ Public Class dlgSettings
         Using dEditMeta As New dlgFileInfo
             Dim fi As New MediaInfo.Fileinfo
             For Each x As emmSettings.MetadataPerType In Meta
-                If x.FileType = lstMetadata.SelectedItems(0).Text Then
+                If x.FileType = lstMetaData.SelectedItems(0) Then
                     fi = dEditMeta.ShowDialog(x.Metadata)
                     If Not fi Is Nothing Then
+                        Meta.Remove(x)
                         Dim m As New emmSettings.MetadataPerType
-                        m.FileType = txtDefFIExt.Text
+                        m.FileType = x.FileType
                         m.Metadata = New MediaInfo.Fileinfo
                         m.Metadata = fi
                         Meta.Add(m)
@@ -1380,7 +1384,7 @@ Public Class dlgSettings
 
     Private Sub btnRemoveMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMetaDataFT.Click
         For Each x As emmSettings.MetadataPerType In Meta
-            If x.FileType = lstMetadata.SelectedItems(0).Text Then
+            If x.FileType = lstMetaData.SelectedItems(0) Then
                 Meta.Remove(x)
                 LoadMetadata()
                 Me.btnApply.Enabled = True
@@ -1389,8 +1393,32 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub lstMetadata_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstMetadata.SelectedIndexChanged
-        If lstMetadata.SelectedItems.Count > 0 Then
+    Private Sub lstMetaData_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstMetaData.DoubleClick
+        If Me.lstMetaData.SelectedItems.Count > 0 Then
+            Using dEditMeta As New dlgFileInfo
+                Dim fi As New MediaInfo.Fileinfo
+                For Each x As emmSettings.MetadataPerType In Meta
+                    If x.FileType = lstMetaData.SelectedItems(0) Then
+                        fi = dEditMeta.ShowDialog(x.Metadata)
+                        If Not fi Is Nothing Then
+                            Meta.Remove(x)
+                            Dim m As New emmSettings.MetadataPerType
+                            m.FileType = x.FileType
+                            m.Metadata = New MediaInfo.Fileinfo
+                            m.Metadata = fi
+                            Meta.Add(m)
+                            LoadMetadata()
+                            Me.btnApply.Enabled = True
+                        End If
+                        Exit For
+                    End If
+                Next
+            End Using
+        End If
+    End Sub
+
+    Private Sub lstMetadata_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstMetaData.SelectedIndexChanged
+        If lstMetaData.SelectedItems.Count > 0 Then
             btnEditMetaDataFT.Enabled = True
             btnRemoveMetaDataFT.Enabled = True
             txtDefFIExt.Text = ""

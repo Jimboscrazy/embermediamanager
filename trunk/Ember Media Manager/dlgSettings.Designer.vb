@@ -242,6 +242,12 @@ Partial Class dlgSettings
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.GroupBox26 = New System.Windows.Forms.GroupBox
+        Me.GroupBox28 = New System.Windows.Forms.GroupBox
+        Me.txtDefFIExt = New System.Windows.Forms.TextBox
+        Me.Label34 = New System.Windows.Forms.Label
+        Me.btnRemoveMetaDataFT = New System.Windows.Forms.Button
+        Me.btnEditMetaDataFT = New System.Windows.Forms.Button
+        Me.btnNewMetaDataFT = New System.Windows.Forms.Button
         Me.chkIFOScan = New System.Windows.Forms.CheckBox
         Me.GroupBox20 = New System.Windows.Forms.GroupBox
         Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox
@@ -284,14 +290,6 @@ Partial Class dlgSettings
         Me.pnlCurrent = New System.Windows.Forms.Panel
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlExtensions = New System.Windows.Forms.Panel
-        Me.GroupBox28 = New System.Windows.Forms.GroupBox
-        Me.txtDefFIExt = New System.Windows.Forms.TextBox
-        Me.Label34 = New System.Windows.Forms.Label
-        Me.btnRemoveMetaDataFT = New System.Windows.Forms.Button
-        Me.btnEditMetaDataFT = New System.Windows.Forms.Button
-        Me.btnNewMetaDataFT = New System.Windows.Forms.Button
-        Me.lstMetadata = New System.Windows.Forms.ListView
-        Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.GroupBox22 = New System.Windows.Forms.GroupBox
         Me.btnRemoveNoStack = New System.Windows.Forms.Button
         Me.btnAddNoStack = New System.Windows.Forms.Button
@@ -335,6 +333,7 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
+        Me.lstMetaData = New System.Windows.Forms.ListBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -371,12 +370,12 @@ Partial Class dlgSettings
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox26.SuspendLayout()
+        Me.GroupBox28.SuspendLayout()
         Me.GroupBox20.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.gbOptions.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.pnlExtensions.SuspendLayout()
-        Me.GroupBox28.SuspendLayout()
         Me.GroupBox22.SuspendLayout()
         Me.gbRenamerPatterns.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
@@ -2630,6 +2629,72 @@ Partial Class dlgSettings
         Me.GroupBox26.TabStop = False
         Me.GroupBox26.Text = "Meta Data"
         '
+        'GroupBox28
+        '
+        Me.GroupBox28.Controls.Add(Me.lstMetaData)
+        Me.GroupBox28.Controls.Add(Me.txtDefFIExt)
+        Me.GroupBox28.Controls.Add(Me.Label34)
+        Me.GroupBox28.Controls.Add(Me.btnRemoveMetaDataFT)
+        Me.GroupBox28.Controls.Add(Me.btnEditMetaDataFT)
+        Me.GroupBox28.Controls.Add(Me.btnNewMetaDataFT)
+        Me.GroupBox28.Location = New System.Drawing.Point(210, 11)
+        Me.GroupBox28.Name = "GroupBox28"
+        Me.GroupBox28.Size = New System.Drawing.Size(176, 156)
+        Me.GroupBox28.TabIndex = 8
+        Me.GroupBox28.TabStop = False
+        Me.GroupBox28.Text = "Meta Data Defaults by File Type"
+        '
+        'txtDefFIExt
+        '
+        Me.txtDefFIExt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtDefFIExt.Location = New System.Drawing.Point(69, 132)
+        Me.txtDefFIExt.Name = "txtDefFIExt"
+        Me.txtDefFIExt.Size = New System.Drawing.Size(35, 20)
+        Me.txtDefFIExt.TabIndex = 33
+        '
+        'Label34
+        '
+        Me.Label34.Location = New System.Drawing.Point(4, 132)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(66, 19)
+        Me.Label34.TabIndex = 32
+        Me.Label34.Text = "File Type"
+        Me.Label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'btnRemoveMetaDataFT
+        '
+        Me.btnRemoveMetaDataFT.Enabled = False
+        Me.btnRemoveMetaDataFT.Image = CType(resources.GetObject("btnRemoveMetaDataFT.Image"), System.Drawing.Image)
+        Me.btnRemoveMetaDataFT.Location = New System.Drawing.Point(149, 131)
+        Me.btnRemoveMetaDataFT.Name = "btnRemoveMetaDataFT"
+        Me.btnRemoveMetaDataFT.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveMetaDataFT.TabIndex = 31
+        Me.btnRemoveMetaDataFT.UseVisualStyleBackColor = True
+        '
+        'btnEditMetaDataFT
+        '
+        Me.btnEditMetaDataFT.Enabled = False
+        Me.btnEditMetaDataFT.Image = CType(resources.GetObject("btnEditMetaDataFT.Image"), System.Drawing.Image)
+        Me.btnEditMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditMetaDataFT.Location = New System.Drawing.Point(126, 131)
+        Me.btnEditMetaDataFT.Name = "btnEditMetaDataFT"
+        Me.btnEditMetaDataFT.Size = New System.Drawing.Size(23, 23)
+        Me.btnEditMetaDataFT.TabIndex = 30
+        Me.btnEditMetaDataFT.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditMetaDataFT.UseVisualStyleBackColor = True
+        '
+        'btnNewMetaDataFT
+        '
+        Me.btnNewMetaDataFT.Enabled = False
+        Me.btnNewMetaDataFT.Image = CType(resources.GetObject("btnNewMetaDataFT.Image"), System.Drawing.Image)
+        Me.btnNewMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNewMetaDataFT.Location = New System.Drawing.Point(104, 131)
+        Me.btnNewMetaDataFT.Name = "btnNewMetaDataFT"
+        Me.btnNewMetaDataFT.Size = New System.Drawing.Size(23, 23)
+        Me.btnNewMetaDataFT.TabIndex = 29
+        Me.btnNewMetaDataFT.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNewMetaDataFT.UseVisualStyleBackColor = True
+        '
         'chkIFOScan
         '
         Me.chkIFOScan.AutoSize = True
@@ -3098,90 +3163,6 @@ Partial Class dlgSettings
         Me.pnlExtensions.TabIndex = 66
         Me.pnlExtensions.Visible = False
         '
-        'GroupBox28
-        '
-        Me.GroupBox28.Controls.Add(Me.txtDefFIExt)
-        Me.GroupBox28.Controls.Add(Me.Label34)
-        Me.GroupBox28.Controls.Add(Me.btnRemoveMetaDataFT)
-        Me.GroupBox28.Controls.Add(Me.btnEditMetaDataFT)
-        Me.GroupBox28.Controls.Add(Me.btnNewMetaDataFT)
-        Me.GroupBox28.Controls.Add(Me.lstMetadata)
-        Me.GroupBox28.Location = New System.Drawing.Point(210, 11)
-        Me.GroupBox28.Name = "GroupBox28"
-        Me.GroupBox28.Size = New System.Drawing.Size(176, 156)
-        Me.GroupBox28.TabIndex = 8
-        Me.GroupBox28.TabStop = False
-        Me.GroupBox28.Text = "Meta Data Defaults by File Type"
-        '
-        'txtDefFIExt
-        '
-        Me.txtDefFIExt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtDefFIExt.Location = New System.Drawing.Point(69, 132)
-        Me.txtDefFIExt.Name = "txtDefFIExt"
-        Me.txtDefFIExt.Size = New System.Drawing.Size(35, 20)
-        Me.txtDefFIExt.TabIndex = 33
-        '
-        'Label34
-        '
-        Me.Label34.Location = New System.Drawing.Point(4, 132)
-        Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(66, 19)
-        Me.Label34.TabIndex = 32
-        Me.Label34.Text = "File Type"
-        Me.Label34.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'btnRemoveMetaDataFT
-        '
-        Me.btnRemoveMetaDataFT.Enabled = False
-        Me.btnRemoveMetaDataFT.Image = CType(resources.GetObject("btnRemoveMetaDataFT.Image"), System.Drawing.Image)
-        Me.btnRemoveMetaDataFT.Location = New System.Drawing.Point(149, 131)
-        Me.btnRemoveMetaDataFT.Name = "btnRemoveMetaDataFT"
-        Me.btnRemoveMetaDataFT.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveMetaDataFT.TabIndex = 31
-        Me.btnRemoveMetaDataFT.UseVisualStyleBackColor = True
-        '
-        'btnEditMetaDataFT
-        '
-        Me.btnEditMetaDataFT.Enabled = False
-        Me.btnEditMetaDataFT.Image = CType(resources.GetObject("btnEditMetaDataFT.Image"), System.Drawing.Image)
-        Me.btnEditMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditMetaDataFT.Location = New System.Drawing.Point(126, 131)
-        Me.btnEditMetaDataFT.Name = "btnEditMetaDataFT"
-        Me.btnEditMetaDataFT.Size = New System.Drawing.Size(23, 23)
-        Me.btnEditMetaDataFT.TabIndex = 30
-        Me.btnEditMetaDataFT.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnEditMetaDataFT.UseVisualStyleBackColor = True
-        '
-        'btnNewMetaDataFT
-        '
-        Me.btnNewMetaDataFT.Enabled = False
-        Me.btnNewMetaDataFT.Image = CType(resources.GetObject("btnNewMetaDataFT.Image"), System.Drawing.Image)
-        Me.btnNewMetaDataFT.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewMetaDataFT.Location = New System.Drawing.Point(104, 131)
-        Me.btnNewMetaDataFT.Name = "btnNewMetaDataFT"
-        Me.btnNewMetaDataFT.Size = New System.Drawing.Size(23, 23)
-        Me.btnNewMetaDataFT.TabIndex = 29
-        Me.btnNewMetaDataFT.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnNewMetaDataFT.UseVisualStyleBackColor = True
-        '
-        'lstMetadata
-        '
-        Me.lstMetadata.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
-        Me.lstMetadata.FullRowSelect = True
-        Me.lstMetadata.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        Me.lstMetadata.Location = New System.Drawing.Point(4, 18)
-        Me.lstMetadata.MultiSelect = False
-        Me.lstMetadata.Name = "lstMetadata"
-        Me.lstMetadata.Size = New System.Drawing.Size(166, 107)
-        Me.lstMetadata.TabIndex = 24
-        Me.lstMetadata.UseCompatibleStateImageBehavior = False
-        Me.lstMetadata.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader1
-        '
-        Me.ColumnHeader1.Text = "Type"
-        Me.ColumnHeader1.Width = 142
-        '
         'GroupBox22
         '
         Me.GroupBox22.Controls.Add(Me.btnRemoveNoStack)
@@ -3641,6 +3622,14 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
+        'lstMetaData
+        '
+        Me.lstMetaData.FormattingEnabled = True
+        Me.lstMetaData.Location = New System.Drawing.Point(6, 15)
+        Me.lstMetaData.Name = "lstMetaData"
+        Me.lstMetaData.Size = New System.Drawing.Size(165, 108)
+        Me.lstMetaData.TabIndex = 34
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3726,6 +3715,8 @@ Partial Class dlgSettings
         Me.TabPage1.ResumeLayout(False)
         Me.GroupBox26.ResumeLayout(False)
         Me.GroupBox26.PerformLayout()
+        Me.GroupBox28.ResumeLayout(False)
+        Me.GroupBox28.PerformLayout()
         Me.GroupBox20.ResumeLayout(False)
         Me.GroupBox20.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
@@ -3734,8 +3725,6 @@ Partial Class dlgSettings
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.pnlExtensions.ResumeLayout(False)
-        Me.GroupBox28.ResumeLayout(False)
-        Me.GroupBox28.PerformLayout()
         Me.GroupBox22.ResumeLayout(False)
         Me.GroupBox22.PerformLayout()
         Me.gbRenamerPatterns.ResumeLayout(False)
@@ -4048,7 +4037,6 @@ Partial Class dlgSettings
     Friend WithEvents btnRemoveMetaDataFT As System.Windows.Forms.Button
     Friend WithEvents btnEditMetaDataFT As System.Windows.Forms.Button
     Friend WithEvents btnNewMetaDataFT As System.Windows.Forms.Button
-    Friend WithEvents lstMetadata As System.Windows.Forms.ListView
     Friend WithEvents txtDefFIExt As System.Windows.Forms.TextBox
     Friend WithEvents Label34 As System.Windows.Forms.Label
     Friend WithEvents cbAutoETSize As System.Windows.Forms.ComboBox
@@ -4057,6 +4045,6 @@ Partial Class dlgSettings
     Friend WithEvents cbMovieTheme As System.Windows.Forms.ComboBox
     Friend WithEvents GroupBox29 As System.Windows.Forms.GroupBox
     Friend WithEvents Label36 As System.Windows.Forms.Label
-    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
     Friend WithEvents chkIFOScan As System.Windows.Forms.CheckBox
+    Friend WithEvents lstMetaData As System.Windows.Forms.ListBox
 End Class
