@@ -15,7 +15,6 @@ Public Class clsDVD
     'Variables
     Dim mLanguages As New Hashtable
     Dim mAudioModes As New Hashtable
-    Dim mVideoAspect As New Hashtable
     Dim mVideoCodingMode As New Hashtable
     Dim mVideoResolution(1) As Object
 
@@ -43,12 +42,16 @@ Public Class clsDVD
     Private Structure struct_SRPT
         Dim Coding_Mode As Byte
         Dim Resolution As Byte
+        Dim LetterBoxed As Boolean
+        Dim Aspect_Ratio As Byte
     End Structure
 
     Private Structure struct_VideoAttributes_VTS_VOBS
         Dim Video_Standard As Byte
         Dim Coding_Mode As Byte
         Dim Resolution As Byte
+        Dim LetterBoxed As Boolean
+        Dim Aspect_Ratio As Byte
     End Structure
 
     'Audio Type
@@ -189,9 +192,15 @@ Public Class clsDVD
                 End If
                 ReturnArray(1) = mVideoResolution(ParsedIFOFile.VideoAtt_VTS_VOBS.Video_Standard)(ParsedIFOFile.VideoAtt_VTS_VOBS.Resolution)
                 If ReturnArray(1).Contains("x") Then
-                    Dim sinAspect() As String
-                    sinAspect = ReturnArray(1).Split(New Char() {"x"})
-                    ReturnArray(2) = Master.ConvertToSingle(sinAspect(0)) / Convert.ToSingle(sinAspect(1))
+                    If ParsedIFOFile.VideoAtt_VTS_VOBS.Aspect_Ratio = 3 AndAlso ParsedIFOFile.VideoAtt_VTS_VOBS.LetterBoxed Then
+                        ReturnArray(2) = "1.85"
+                    ElseIf ParsedIFOFile.VideoAtt_VTS_VOBS.Aspect_Ratio = 3 OrElse ParsedIFOFile.VideoAtt_VTS_VOBS.LetterBoxed Then
+                        ReturnArray(2) = "1.78"
+                    Else
+                        Dim strAspect() As String = ReturnArray(1).Split(New Char() {"x"})
+                        Dim sinAspect As Single = Master.ConvertToSingle(strAspect(0)) / Convert.ToSingle(strAspect(1))
+                        ReturnArray(2) = FormatNumber(sinAspect, 2, TriState.False)
+                    End If
                 Else
                     ReturnArray(2) = String.Empty
                 End If
@@ -489,9 +498,16 @@ Public Class clsDVD
             byte2 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
 
             bytTmpValue = 0
+            If (byte1 And 4) = 4 Then bytTmpValue = 1
+            If (byte1 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
+            fctSRPT.Aspect_Ratio = bytTmpValue
+
+            bytTmpValue = 0
             If (byte1 And 64) = 64 Then bytTmpValue = 1
             If (byte1 And 128) = 128 Then bytTmpValue = bytTmpValue + 2
             tSRPT.Coding_Mode = bytTmpValue
+
+            fctSRPT.LetterBoxed = (byte2 And 2)
 
             bytTmpValue = 0
             If (byte2 And 4) = 4 Then bytTmpValue = 1
@@ -514,8 +530,10 @@ Public Class clsDVD
             byte1 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(0, 1)).Chars(0))(0))
             byte2 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
 
-            'BYTE 1
-            'Revers bits
+            bytTmpValue = 0
+            If (byte1 And 4) = 4 Then bytTmpValue = 1
+            If (byte1 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
+            fctVideoAtt_VTS_VOBS.Aspect_Ratio = bytTmpValue
 
             bytTmpValue = 0
             If (byte1 And 16) = 16 Then bytTmpValue = 1
@@ -526,6 +544,8 @@ Public Class clsDVD
             If (byte1 And 64) = 64 Then bytTmpValue = 1
             If (byte1 And 128) = 128 Then bytTmpValue = bytTmpValue + 2
             tVTSVOB.Coding_Mode = bytTmpValue
+
+            fctVideoAtt_VTS_VOBS.LetterBoxed = (byte2 And 2)
 
             bytTmpValue = 0
             If (byte2 And 4) = 4 Then bytTmpValue = 1
@@ -747,12 +767,6 @@ Public Class clsDVD
         mAudioModes.Add("6", "dca")
         mAudioModes.Add("7", String.Empty)
 
-        'Video
-        mVideoAspect.Add("0", "4:3")
-        mVideoAspect.Add("1", String.Empty)
-        mVideoAspect.Add("2", String.Empty)
-        mVideoAspect.Add("3", "16:9")
-
         mVideoCodingMode.Add("0", "mpeg1")
         mVideoCodingMode.Add("1", "mpeg2")
 
@@ -763,7 +777,6 @@ Public Class clsDVD
     Protected Overrides Sub Finalize()
         mLanguages = Nothing
         mAudioModes = Nothing
-        mVideoAspect = Nothing
         mVideoCodingMode = Nothing
         mVideoResolution = Nothing
         oEnc = Nothing
