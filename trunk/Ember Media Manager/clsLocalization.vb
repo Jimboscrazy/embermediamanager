@@ -81,7 +81,7 @@ Public Class Localization
                             htStrings.Add(Convert.ToInt32(xLanguage(i).id), xLanguage(i).Value)
                         Next
 
-                        _all = GetString(569, Master.eLang.All)
+                        _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
                         _none = GetString(570, Master.eLang.None)
                         _disabled = GetString(571, Master.eLang.Disabled)
                     End If
