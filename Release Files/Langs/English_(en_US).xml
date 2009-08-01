@@ -297,7 +297,7 @@
   <string id="295">Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again.</string>
   <string id="296">Verification Failed</string>
   <string id="297">Partial Matches ({0})</string>
-  <string id="298">Exact Matches</string>
+  <string id="298">Exact Matches ({0})</string>
   <string id="299">Popular Titles ({0})</string>
   <string id="300">No Matches Found</string>
   <string id="301">Search Results - </string>

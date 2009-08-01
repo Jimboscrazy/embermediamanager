@@ -301,7 +301,7 @@ Public Class dlgIMDBSearchResults
                         If M.PartialMatches.Count > 0 Then
                             Me.tvResults.Nodes(TnP.Index).Collapse()
                         End If
-                        TnP = New TreeNode(Master.eLang.GetString(298, "Exact Matches"))
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(298, "Exact Matches ({0})"), M.ExactMatches.Count))
                         For Each Movie As Media.Movie In M.ExactMatches
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDBID})
                         Next
