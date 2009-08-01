@@ -227,7 +227,7 @@ Namespace IMDB
                 'Check if we've been redirected straight to the movie page
                 If Regex.Match(rUri, IMDB_ID_REGEX).Success Then
                     Dim lNewMovie As Media.Movie = New Media.Movie(Regex.Match(rUri, IMDB_ID_REGEX).ToString, _
-                                                                CapitalizeAll(sMovie), Regex.Match(Regex.Match(rUri, MOVIE_TITLE_PATTERN).ToString, "(?<=\()\d+(?=.*\))").ToString, 0)
+                                                                StringManip.ProperCase(sMovie), Regex.Match(Regex.Match(rUri, MOVIE_TITLE_PATTERN).ToString, "(?<=\()\d+(?=.*\))").ToString, 0)
                     R.ExactMatches.Add(lNewMovie)
                     Return R
                     Exit Function
@@ -845,14 +845,6 @@ mPlot:
             Return CleanString
         End Function
 
-        Private Function CapitalizeAll(ByVal sString As String) As String
-            Try
-                Return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(sString)
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                Return String.Empty
-            End Try
-        End Function
     End Class
 
 End Namespace
