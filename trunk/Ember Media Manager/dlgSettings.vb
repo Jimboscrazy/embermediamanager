@@ -37,7 +37,7 @@ Public Class dlgSettings
     ' ########################################
     Sub SetApplyButton(ByVal v As Boolean)
         Me.btnApply.Enabled = v
-        Me.btnCancel.Enabled = v
+        'Me.btnCancel.Enabled = v
     End Sub
     Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
         Try
