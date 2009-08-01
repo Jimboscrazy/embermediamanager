@@ -119,7 +119,7 @@ Namespace IMDB
 
             Try
                 Select Case iType
-                    Case Master.ScrapeType.FullAsk, Master.ScrapeType.UpdateAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk
+                    Case Master.ScrapeType.FullAsk, Master.ScrapeType.UpdateAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk, Master.ScrapeType.FilterAsk
                         r.ExactMatches.Sort()
                         r.PopularTitles.Sort()
                         If r.ExactMatches.Count = 1 AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count Then 'redirected to imdb info page
@@ -142,7 +142,7 @@ Namespace IMDB
                                 End If
                             End Using
                         End If
-                    Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto, Master.ScrapeType.SingleScrape
+                    Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto, Master.ScrapeType.SingleScrape, Master.ScrapeType.FilterAuto
                         'it seems "popular matches" is a better result than "exact matches"
                         r.PopularTitles.Sort()
                         r.ExactMatches.Sort()
