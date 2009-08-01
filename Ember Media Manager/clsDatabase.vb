@@ -198,6 +198,7 @@ Public Class Database
                                 "thumb TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
+
                     SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS MoviesActors(" & _
                                 "MovieID INTEGER NOT NULL, " & _
                                 "ActorName TEXT NOT NULL, " & _
@@ -205,7 +206,6 @@ Public Class Database
                                 "PRIMARY KEY (MovieID,ActorName) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
-
 
                     If Not NewDB AndAlso Reset Then
                         SQLcommand.CommandText = String.Concat("INSERT INTO Movies ", cQuery, " SELECT * FROM tmp_movies;")
