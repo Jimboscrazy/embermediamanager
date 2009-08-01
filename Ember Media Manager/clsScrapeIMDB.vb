@@ -121,12 +121,6 @@ Namespace IMDB
             r.ExactMatches.Sort()
             r.PartialMatches.Sort()
 
-            'check if ALL results are over lev value
-            Dim useAnyway As Boolean = False
-            If (r.PopularTitles.Count > 0 AndAlso r.PopularTitles(0).Lev > 5) AndAlso (r.ExactMatches.Count > 0 AndAlso r.ExactMatches(0).Lev > 5) AndAlso (r.PartialMatches.Count > 0 AndAlso r.PartialMatches(0).Lev > 5) Then
-                useAnyway = True
-            End If
-
             Try
                 Select Case iType
                     Case Master.ScrapeType.FullAsk, Master.ScrapeType.UpdateAsk, Master.ScrapeType.NewAsk, Master.ScrapeType.MarkAsk, Master.ScrapeType.FilterAsk
@@ -153,6 +147,15 @@ Namespace IMDB
                             End Using
                         End If
                     Case Master.ScrapeType.FullAuto, Master.ScrapeType.UpdateAuto, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAuto, Master.ScrapeType.SingleScrape, Master.ScrapeType.FilterAuto
+
+                        'check if ALL results are over lev value
+                        Dim useAnyway As Boolean = False
+                        If ((r.PopularTitles.Count > 0 AndAlso r.PopularTitles(0).Lev > 5) OrElse r.PopularTitles.Count = 0) AndAlso _
+                        ((r.ExactMatches.Count > 0 AndAlso r.ExactMatches(0).Lev > 5) OrElse r.ExactMatches.Count = 0) AndAlso _
+                        ((r.PartialMatches.Count > 0 AndAlso r.PartialMatches(0).Lev > 5) OrElse r.PartialMatches.Count = 0) Then
+                            useAnyway = True
+                        End If
+
                         'it seems "popular matches" is a better result than "exact matches"
                         If r.ExactMatches.Count = 1 AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count Then 'redirected to imdb info page
                             b = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options)
