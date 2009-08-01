@@ -197,7 +197,7 @@ Public Class clsDVD
                     ReturnArray(2) = "1.78"
                 ElseIf ReturnArray(1).Contains("x") Then
                     Dim strAspect() As String = ReturnArray(1).Split(New Char() {"x"})
-                    Dim strReturn As String = Master.ConvertToSingle(FormatNumber(Master.ConvertToSingle(strAspect(0)) / Master.ConvertToSingle(strAspect(1)), 2, TriState.False))
+                    Dim strReturn As String = FormatNumber(Master.ConvertToSingle(strAspect(0)) / Master.ConvertToSingle(strAspect(1)), 2, TriState.False).Replace(",", ".")
                     If strReturn.EndsWith("0") Then
                         ReturnArray(2) = strReturn.Substring(0, strReturn.Length - 1)
                     Else
