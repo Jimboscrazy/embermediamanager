@@ -1913,7 +1913,7 @@ Public Class emmSettings
 
     Public Sub SetDefaultsForLists()
         If Master.eSettings.FilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoFilters Then
-            Master.eSettings.FilterCustom.Add("(?i)[ _.-]\(?\d{4}\)?.*")
+            Master.eSettings.FilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]blu[ _.-]?ray.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]bd[ _.-]?rip.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]dvd.*")
