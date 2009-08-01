@@ -243,6 +243,7 @@ Partial Class dlgSettings
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.GroupBox26 = New System.Windows.Forms.GroupBox
         Me.GroupBox28 = New System.Windows.Forms.GroupBox
+        Me.lstMetaData = New System.Windows.Forms.ListBox
         Me.txtDefFIExt = New System.Windows.Forms.TextBox
         Me.Label34 = New System.Windows.Forms.Label
         Me.btnRemoveMetaDataFT = New System.Windows.Forms.Button
@@ -333,7 +334,6 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
-        Me.lstMetaData = New System.Windows.Forms.ListBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -2644,6 +2644,14 @@ Partial Class dlgSettings
         Me.GroupBox28.TabStop = False
         Me.GroupBox28.Text = "Meta Data Defaults by File Type"
         '
+        'lstMetaData
+        '
+        Me.lstMetaData.FormattingEnabled = True
+        Me.lstMetaData.Location = New System.Drawing.Point(6, 15)
+        Me.lstMetaData.Name = "lstMetaData"
+        Me.lstMetaData.Size = New System.Drawing.Size(165, 108)
+        Me.lstMetaData.TabIndex = 34
+        '
         'txtDefFIExt
         '
         Me.txtDefFIExt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -3622,14 +3630,6 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
-        'lstMetaData
-        '
-        Me.lstMetaData.FormattingEnabled = True
-        Me.lstMetaData.Location = New System.Drawing.Point(6, 15)
-        Me.lstMetaData.Name = "lstMetaData"
-        Me.lstMetaData.Size = New System.Drawing.Size(165, 108)
-        Me.lstMetaData.TabIndex = 34
-        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3644,13 +3644,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
