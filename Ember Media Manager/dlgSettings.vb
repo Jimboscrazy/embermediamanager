@@ -1648,9 +1648,14 @@ Public Class dlgSettings
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
             Master.eSettings.AutoDetectVTS = Me.chkAutoDetectVTS.Checked
             Master.eSettings.FlagLang = If(Me.cbLanguages.Text = Master.eLang.Disabled, String.Empty, Me.cbLanguages.Text)
+            ' Save Some old setting to apply just after loading Language
+            Dim _old_all As String = Master.eLang.All
             If Not cbIntLang.Text = Master.eSettings.Language Then Master.eLang.LoadLanguage(cbIntLang.Text)
             Master.eSettings.Language = Me.cbIntLang.Text
-
+            'Need to Aplpy some General Language setting Now
+            For i = 0 To Me.lbGenre.Items.Count - 1
+                Me.lbGenre.Items(i) = Me.lbGenre.Items(i).replace(_old_all, String.Format("[{0}]", Master.eLang.GetString(569, Master.eLang.All)))
+            Next
             Master.eSettings.FieldTitle = Me.chkTitle.Checked
             Master.eSettings.FieldYear = Me.chkYear.Checked
             Master.eSettings.FieldMPAA = Me.chkMPAA.Checked
