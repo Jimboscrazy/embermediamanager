@@ -397,7 +397,7 @@ Public Class dlgSetsManager
                     Dim strSet As String = dNewSet.ShowDialog(Me.lbSets.SelectedItem.ToString)
                     If Not String.IsNullOrEmpty(strSet) AndAlso Not Me.alSets.Contains(strSet) Then
                         For i As Integer = 0 To Me.alSets.Count - 1
-                            If Me.alSets(i) = Me.lbSets.SelectedItem.ToString Then
+                            If Me.alSets(i).ToString = Me.lbSets.SelectedItem.ToString Then
                                 'remove the old set from each movie.
                                 If lbMoviesInSet.Items.Count > 0 Then
                                     For b As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
@@ -431,7 +431,7 @@ Public Class dlgSetsManager
             End If
 
             For i As Integer = 0 To Me.alSets.Count - 1
-                If Me.alSets(i) = Me.lbSets.SelectedItem.ToString Then
+                If Me.alSets(i).ToString = Me.lbSets.SelectedItem.ToString Then
                     Me.alSets.RemoveAt(i)
                     Exit For
                 End If
