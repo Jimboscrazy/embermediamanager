@@ -1585,7 +1585,6 @@ Public Class dlgSettings
             End If
 
             If Me.lbGenre.CheckedItems.Count > 0 Then
-
                 If Me.lbGenre.CheckedItems.Contains(String.Format("[{0}]", Master.eLang.GetString(569, Master.eLang.All))) Then
                     Master.eSettings.GenreFilter = String.Format("[{0}]", Master.eLang.GetString(569, Master.eLang.All))
                 Else
@@ -1630,6 +1629,7 @@ Public Class dlgSettings
             Master.eSettings.Language = Me.cbIntLang.Text
             Me.lbGenre.Items.Clear()
             LoadGenreLangs()
+            FillGenres()
             Master.eSettings.FieldTitle = Me.chkTitle.Checked
             Master.eSettings.FieldYear = Me.chkYear.Checked
             Master.eSettings.FieldMPAA = Me.chkMPAA.Checked
@@ -1819,19 +1819,7 @@ Public Class dlgSettings
                 Next
             End If
 
-            If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
-                Dim genreArray() As String
-                genreArray = Strings.Split(Master.eSettings.GenreFilter, ",")
-                For g As Integer = 0 To UBound(genreArray)
-                    If Me.lbGenre.FindString(Strings.Trim(genreArray(g))) > 0 Then Me.lbGenre.SetItemChecked(Me.lbGenre.FindString(Strings.Trim(genreArray(g))), True)
-                Next
-
-                If Me.lbGenre.CheckedItems.Count = 0 Then
-                    Me.lbGenre.SetItemChecked(0, True)
-                End If
-            Else
-                Me.lbGenre.SetItemChecked(0, True)
-            End If
+            FillGenres()
 
             Me.chkShowDims.Checked = Master.eSettings.ShowDims
             Me.chkNoDisplayFanart.Checked = Master.eSettings.NoDisplayFanart
@@ -1907,6 +1895,21 @@ Public Class dlgSettings
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+    Private Sub FillGenres()
+        If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
+            Dim genreArray() As String
+            genreArray = Strings.Split(Master.eSettings.GenreFilter, ",")
+            For g As Integer = 0 To UBound(genreArray)
+                If Me.lbGenre.FindString(Strings.Trim(genreArray(g))) > 0 Then Me.lbGenre.SetItemChecked(Me.lbGenre.FindString(Strings.Trim(genreArray(g))), True)
+            Next
+
+            If Me.lbGenre.CheckedItems.Count = 0 Then
+                Me.lbGenre.SetItemChecked(0, True)
+            End If
+        Else
+            Me.lbGenre.SetItemChecked(0, True)
+        End If
     End Sub
 
     Private Sub LoadXComs()
