@@ -871,7 +871,7 @@ Public Class dlgEditMovie
         Try
             Using ffmpeg As New Process()
 
-                ffmpeg.StartInfo.FileName = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                ffmpeg.StartInfo.FileName = String.Concat(Master.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
                 ffmpeg.StartInfo.Arguments = String.Format("-ss 0 -i ""{0}"" -an -f rawvideo -vframes 1 -s 1280x720 -vcodec mjpeg -y ""{1}""", Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False
@@ -939,7 +939,7 @@ Public Class dlgEditMovie
 
             Using ffmpeg As New Process()
 
-                ffmpeg.StartInfo.FileName = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                ffmpeg.StartInfo.FileName = String.Concat(Master.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
                 ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg -y ""{2}""", tbFrame.Value, Master.currMovie.Filename, Path.Combine(Master.TempPath, "frame.jpg"))
                 ffmpeg.EnableRaisingEvents = False
                 ffmpeg.StartInfo.UseShellExecute = False

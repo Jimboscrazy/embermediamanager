@@ -80,7 +80,7 @@ Public Class dlgExportMovies
                 Application.DoEvents()
             Loop
             MySelf.BuildHTML(False, String.Empty, String.Empty, template, False)
-            Dim srcPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
+            Dim srcPath As String = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
             MySelf.SaveAll(String.Empty, srcPath, filename, resizePoster)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -210,7 +210,7 @@ Public Class dlgExportMovies
 
         If XML.FlagsXML.Nodes.Count > 0 Then
             'Dim mePath As String = ""
-            Dim mePath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Flags")
+            Dim mePath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
             Try
                 Dim fiAV As MediaInfo.Fileinfo = AVMovie.Movie.FileInfo
                 Dim atypeRef As String = String.Empty
@@ -335,13 +335,13 @@ Public Class dlgExportMovies
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
             Dim tRes As String = String.Empty
-            Dim htmlPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html")
+            Dim htmlPath As String = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, Master.eSettings.Language, ".html")
             Dim pattern As String
             Dim movieheader As String = String.Empty
             Dim moviefooter As String = String.Empty
             Dim movierow As String = String.Empty
             If Not File.Exists(htmlPath) Then
-                htmlPath = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, "English_(en_US).html")
+                htmlPath = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar, "English_(en_US).html")
             End If
             pattern = File.ReadAllText(htmlPath)
             If pattern.Contains("<$NEED_POSTERS>") Then
@@ -506,7 +506,7 @@ Public Class dlgExportMovies
                 Master.DeleteDirectory(Me.TempPath)
                 CopyDirectory(Args.srcPath, destPathShort, True)
                 If Me.bexportFlags Then
-                    Args.srcPath = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
+                    Args.srcPath = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
                     Directory.CreateDirectory(Path.Combine(destPathShort, "Flags"))
                     CopyDirectory(Args.srcPath, Path.Combine(destPathShort, "Flags"), True)
                 End If
@@ -583,7 +583,7 @@ Public Class dlgExportMovies
             myStream.Close()
             If Not IsNothing(myStream) Then
                 DontSaveExtra = False 'Force Full Save
-                Dim srcPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, base_template, Path.DirectorySeparatorChar)
+                Dim srcPath As String = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, base_template, Path.DirectorySeparatorChar)
                 Me.SaveAll(Master.eLang.GetString(589, "Saving all files. Please wait..."), srcPath, saveHTML.FileName)
             End If
         End If
@@ -628,7 +628,7 @@ Public Class dlgExportMovies
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If Not Me.isCL Then
             Me.SetUp()
-            Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Langs", Path.DirectorySeparatorChar, "html"))
+            Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html"))
             For Each i As DirectoryInfo In di.GetDirectories
                 cbTemplate.Items.Add(i.Name)
             Next

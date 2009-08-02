@@ -36,7 +36,7 @@ Public Class Master
     Public Shared GlobalScrapeMod As New ScrapeModifier
     Public Shared alMoviePaths As New ArrayList
     Public Shared DB As New Database
-    Public Shared TempPath As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Temp")
+    Public Shared TempPath As String = Path.Combine(Master.AppPath, "Temp")
     Public Shared currMovie As New DBMovie
 
     Public Shared tmpMovie As New Media.Movie
@@ -1057,7 +1057,7 @@ Public Class Master
                         Directory.CreateDirectory(tPath)
                     End If
 
-                    ffmpeg.StartInfo.FileName = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                    ffmpeg.StartInfo.FileName = String.Concat(Master.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
                     ffmpeg.EnableRaisingEvents = False
                     ffmpeg.StartInfo.UseShellExecute = False
                     ffmpeg.StartInfo.CreateNoWindow = True
@@ -1254,5 +1254,9 @@ Public Class Master
 
     Public Shared Function Quantize(ByVal iNumber As Integer, ByVal iMultiple As Integer) As Integer
         Return Convert.ToInt32(System.Math.Round(iNumber / iMultiple, 0) * iMultiple)
+    End Function
+
+    Public Shared Function AppPath() As String
+        Return Master.AppPath
     End Function
 End Class
