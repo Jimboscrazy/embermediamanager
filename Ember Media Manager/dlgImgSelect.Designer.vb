@@ -263,6 +263,7 @@ Partial Class dlgImgSelect
         Me.pnlDLStatus.Name = "pnlDLStatus"
         Me.pnlDLStatus.Size = New System.Drawing.Size(323, 223)
         Me.pnlDLStatus.TabIndex = 0
+        Me.pnlDLStatus.Visible = False
         '
         'pnlMPDB
         '
