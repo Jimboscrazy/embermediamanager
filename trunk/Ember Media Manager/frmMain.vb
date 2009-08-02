@@ -3447,7 +3447,7 @@ Public Class frmMain
 
                                 scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
                                 If Master.DeleteFiles(True, scrapeMovie) Then
-                                    Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, False)
+                                    Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
                                     Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 End If
                             Next
@@ -3555,7 +3555,7 @@ doCancel:
                     If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
                         Me.LoadMedia(1)
                     Else
-                        Me.dgvMediaList.Refresh()
+                        Me.FillList(0)
                     End If
                 Else
                     If Me.dgvMediaList.SelectedRows.Count > 0 Then
