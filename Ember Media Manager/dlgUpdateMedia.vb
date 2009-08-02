@@ -58,6 +58,8 @@ Public Class dlgUpdateMedia
             CustomUpdater.ScrapeType = Master.ScrapeType.FullAuto
             Master.SetScraperMod(Master.ModType.All, True)
 
+            Me.CheckEnable()
+
             'check if there are new or marked movies
             Me.CheckNewAndMark()
 
@@ -139,8 +141,10 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub rbUpdateModifier_Missing_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_Missing.CheckedChanged
-        Me.chkMetaMod.Enabled = Not Me.rbUpdateModifier_Missing.Checked
-        If Me.rbUpdateModifier_Missing.Checked Then Me.chkMetaMod.Checked = False
+        If Me.rbUpdateModifier_Missing.Checked Then
+            Me.chkMetaMod.Checked = False
+            Me.chkMetaMod.Enabled = False
+        End If
 
 
         If Me.rbUpdate_Auto.Checked Then
@@ -319,25 +323,11 @@ Public Class dlgUpdateMedia
 
     Private Sub chkAllMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkAllMod.Click
         Master.SetScraperMod(Master.ModType.All, chkAllMod.Checked)
-        Me.gbOptions.Enabled = chkAllMod.Checked
-        chkNFOMod.Checked = chkAllMod.Checked
-        chkNFOMod.Enabled = Not chkAllMod.Checked
-        chkPosterMod.Checked = chkAllMod.Checked
-        chkPosterMod.Enabled = Not chkAllMod.Checked
-        chkFanartMod.Checked = chkAllMod.Checked
-        chkFanartMod.Enabled = Not chkAllMod.Checked
-        chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked
-        chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked
-        chkExtraMod.Checked = chkAllMod.Checked
-        chkExtraMod.Enabled = Not chkAllMod.Checked
-        chkTrailerMod.Checked = chkAllMod.Checked
-        chkTrailerMod.Enabled = Not chkAllMod.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkNFOMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkNFOMod.Click
         Master.SetScraperMod(Master.ModType.NFO, chkNFOMod.Checked)
-        Me.gbOptions.Enabled = chkNFOMod.Checked
         CheckEnable()
     End Sub
 
@@ -367,6 +357,24 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub CheckEnable()
+        Me.gbOptions.Enabled = chkAllMod.Checked OrElse chkNFOMod.Checked
+
+        If chkAllMod.Checked Then
+            chkNFOMod.Checked = chkAllMod.Checked
+            chkPosterMod.Checked = chkAllMod.Checked AndAlso (Master.eSettings.UseTMDB OrElse Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB)
+            chkFanartMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.UseTMDB
+            chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo
+            chkExtraMod.Checked = chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0 OrElse Master.eSettings.AutoET)
+            chkTrailerMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.DownloadTrailers
+        End If
+
+        chkNFOMod.Enabled = Not chkAllMod.Checked
+        chkPosterMod.Enabled = Not chkAllMod.Checked AndAlso (Master.eSettings.UseTMDB OrElse Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB)
+        chkFanartMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.UseTMDB
+        chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo
+        chkExtraMod.Enabled = Not chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0 OrElse Master.eSettings.AutoET)
+        chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.DownloadTrailers
+
         If chkAllMod.Checked OrElse chkNFOMod.Checked Then
             If chkCast.Checked OrElse chkCrew.Checked OrElse chkDirector.Checked OrElse chkGenre.Checked OrElse _
             chkMPAA.Checked OrElse chkMusicBy.Checked OrElse chkOutline.Checked OrElse chkPlot.Checked OrElse _
