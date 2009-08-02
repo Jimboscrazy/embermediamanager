@@ -86,7 +86,7 @@ Public Class StringManip
         Return String.Empty
     End Function
 
-    Public Shared Function CleanURL(ByVal sURL As String)
+    Public Shared Function CleanURL(ByVal sURL As String) As String
         If sURL.ToLower.Contains("themoviedb.org") Then
             Dim tURL As String = sURL.Replace("http://images.themoviedb.org/posters/", String.Empty)
             tURL = tURL.Replace("http://images.themoviedb.org/backdrops/", String.Empty)

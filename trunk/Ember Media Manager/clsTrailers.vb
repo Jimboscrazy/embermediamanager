@@ -87,7 +87,7 @@ Public Class Trailers
             TrailerNumber = Convert.ToInt32(Link.Value.Substring(3))
 
             If TrailerNumber > 0 Then
-                currPage = (TrailerNumber / 10)
+                currPage = Convert.ToInt32((TrailerNumber / 10))
 
                 For i As Integer = 1 To currPage
                     If Not i = 1 Then
@@ -194,7 +194,7 @@ Public Class Trailers
                 Me.GetTrailers(ImdbID, True)
 
                 If Me._TrailerList.Count > 0 Then
-                    tURL = WebPage.DownloadFile(Me._TrailerList.Item(0), sPath, False, "trailer")
+                    tURL = WebPage.DownloadFile(Me._TrailerList.Item(0).ToString, sPath, False, "trailer")
                     If Not String.IsNullOrEmpty(tURL) Then
                         'delete any other trailer if enabled in settings and download successful
                         If Master.eSettings.DeleteAllTrailers Then
@@ -206,7 +206,7 @@ Public Class Trailers
                 Me.GetTrailers(ImdbID, True)
 
                 If Me._TrailerList.Count > 0 Then
-                    tURL = Me._TrailerList.Item(0)
+                    tURL = Me._TrailerList.Item(0).ToString
                 End If
             End If
         Catch ex As Exception
@@ -295,7 +295,7 @@ Public Class Trailers
     End Function
 
     Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
-        Dim tURL As String = WebPage.DownloadFile(Me._TrailerList.Item(sIndex), sPath, True, "trailer")
+        Dim tURL As String = WebPage.DownloadFile(Me._TrailerList.Item(sIndex).ToString, sPath, True, "trailer")
 
         If Not String.IsNullOrEmpty(tURL) Then
             'delete any other trailer if enabled in settings and download successful

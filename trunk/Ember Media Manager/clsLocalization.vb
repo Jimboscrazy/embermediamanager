@@ -99,7 +99,7 @@ Public Class Localization
 
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
         If htStrings.ContainsKey(ID) Then
-            Return htStrings.Item(ID)
+            Return htStrings.Item(ID).ToString
         Else
             Return strDefault
         End If

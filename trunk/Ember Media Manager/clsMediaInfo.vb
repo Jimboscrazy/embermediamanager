@@ -45,7 +45,7 @@ Public Class MediaInfo
     Private Declare Unicode Function MediaInfo_Open Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal FileName As String) As UIntPtr
     Private Declare Unicode Sub MediaInfo_Close Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr)
     Private Declare Unicode Function MediaInfo_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
-    Private Declare Unicode Function MediaInfo_Count_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As UIntPtr
+    Private Declare Unicode Function MediaInfo_Count_Get Lib "Bin\MediaInfo.DLL" (ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As Integer
 
     Private Handle As IntPtr
 
@@ -64,14 +64,14 @@ Public Class MediaInfo
     End Sub
 
     Private Function Get_(ByVal StreamKind As StreamKind, ByVal StreamNumber As Integer, ByVal Parameter As String, Optional ByVal KindOfInfo As InfoKind = InfoKind.Text, Optional ByVal KindOfSearch As InfoKind = InfoKind.Name) As String
-        Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, StreamKind, StreamNumber, Parameter, KindOfInfo, KindOfSearch))
+        Return Marshal.PtrToStringUni(MediaInfo_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, UIntPtr), Parameter, CType(KindOfInfo, UIntPtr), CType(KindOfSearch, UIntPtr)))
     End Function
 
     Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
         If StreamNumber = UInteger.MaxValue Then
-            Return MediaInfo_Count_Get(Handle, StreamKind, -1)
+            Return MediaInfo_Count_Get(Handle, CType(StreamKind, UIntPtr), CType(-1, IntPtr))
         Else
-            Return MediaInfo_Count_Get(Handle, StreamKind, StreamNumber)
+            Return MediaInfo_Count_Get(Handle, CType(StreamKind, UIntPtr), CType(StreamNumber, IntPtr))
         End If
     End Function
 
@@ -95,7 +95,7 @@ Public Class MediaInfo
             If Master.eSettings.EnableIFOScan AndAlso (sExt = ".ifo" OrElse sExt = ".vob" OrElse sExt = ".bup") AndAlso cDVD.fctOpenIFOFile(sPath) Then
                 Try
                     ifoVideo = cDVD.GetIFOVideo
-                    Dim vRes() As String = ifoVideo(1).Split(New Char() {"x"})
+                    Dim vRes() As String = ifoVideo(1).Split(Convert.ToChar("x"))
                     miVideo.Width = vRes(0)
                     miVideo.Height = vRes(1)
                     miVideo.Codec = ifoVideo(0)
@@ -174,8 +174,8 @@ Public Class MediaInfo
                     Dim tVideo As New Video
                     Dim tAudio As New Audio
 
-                    miVideo.Width = 0
-                    miAudio.Channels = 0
+                    miVideo.Width = "0"
+                    miAudio.Channels = "0"
 
                     For Each File As String In sFile
                         'make sure the file is actually part of the stack
@@ -211,7 +211,7 @@ Public Class MediaInfo
 
                     fiOut.StreamDetails.Video.Add(miVideo)
                     fiOut.StreamDetails.Audio.Add(miAudio)
-                    fiOut.StreamDetails.Video(0).Duration = DurationToMins(TotalDur, True)
+                    fiOut.StreamDetails.Video(0).Duration = DurationToMins(TotalDur.ToString, True)
 
                     fiInfo = fiOut
                 Catch ex As Exception
@@ -320,10 +320,10 @@ Public Class MediaInfo
                 Dim sDuration As Match = Regex.Match(Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?")
                 Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
                 Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
-                Return ((sHour * 60) + sMin)
+                Return ((sHour * 60) + sMin).ToString
             End If
         End If
-        Return 0
+        Return "0"
     End Function
 
     Private Function ConvertVFormat(ByVal sFormat As String, Optional ByVal sModifier As String = "") As String

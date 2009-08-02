@@ -118,7 +118,7 @@ Public Class dlgExportMovies
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
-                            _ID = SQLreader("ID")
+                            _ID = Convert.ToInt32(SQLreader("ID"))
                             _tmpMovie = Master.DB.LoadMovieFromDB(_ID)
                             _movies.Add(_tmpMovie)
                             Me.bwLoadInfo.ReportProgress(iProg, _tmpMovie.ListTitle) '  show File
@@ -434,7 +434,7 @@ Public Class dlgExportMovies
         If Not Me.isCL Then
             If e.ProgressPercentage >= 0 Then
                 Me.pbCompile.Value = e.ProgressPercentage
-                Me.lblFile.Text = e.UserState
+                Me.lblFile.Text = e.UserState.ToString
             Else
                 Me.pbCompile.Maximum = Convert.ToInt32(e.UserState)
             End If
@@ -477,7 +477,7 @@ Public Class dlgExportMovies
     Private Sub bwSaveAll_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwSaveAll.DoWork
         Try
 
-            Dim Args As Arguments = e.Argument
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Dim destPathShort As String = Path.GetDirectoryName(Args.destPath)
             'Only create extra files once for each template... dont do it when applyng filters
             If Not DontSaveExtra Then
@@ -710,7 +710,7 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTemplate.SelectedIndexChanged
-        base_template = sender.text
+        base_template = cbTemplate.Text
         DontSaveExtra = False
         BuildHTML(use_filter, If(cbSearch.Text = Master.eLang.GetString(353, "Source Folder"), cbFilterSource.Text, txtSearch.Text), cbSearch.Text, base_template, True)
     End Sub

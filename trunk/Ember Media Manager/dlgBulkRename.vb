@@ -71,7 +71,7 @@ Public Class dlgBulkRenamer
                 .Columns(8).Visible = False
                 If run_once Then
                     For Each c As DataGridViewColumn In .Columns
-                        c.MinimumWidth = .Width / 5
+                        c.MinimumWidth = Convert.ToInt32(.Width / 5)
                     Next
                     .AutoResizeColumns()
                     .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
@@ -117,7 +117,7 @@ Public Class dlgBulkRenamer
                                 _tmpPath = SQLreader("NfoPath").ToString
                                 If Not String.IsNullOrEmpty(_tmpPath) Then
                                     MovieFile = New FileFolderRenamer.FileRename
-                                    MovieFile.ID = SQLreader("id")
+                                    MovieFile.ID = Convert.ToInt32(SQLreader("id"))
                                     _curMovie = Master.DB.LoadMovieFromDB(MovieFile.ID)
                                     If Not _curMovie.ID = -1 Then
                                         If _curMovie.Movie.Title = String.Empty Then
@@ -192,7 +192,7 @@ Public Class dlgBulkRenamer
     Private Sub bwLoadInfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadInfo.ProgressChanged
         If e.ProgressPercentage >= 0 Then
             Me.pbCompile.Value = e.ProgressPercentage
-            Me.lblFile.Text = e.UserState
+            Me.lblFile.Text = e.UserState.ToString
         Else
             Me.pbCompile.Maximum = Convert.ToInt32(e.UserState)
         End If
@@ -259,6 +259,7 @@ Public Class dlgBulkRenamer
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
     Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
         Try
             If e.RowIndex = -1 AndAlso e.ColumnIndex >= 0 AndAlso e.ColumnIndex <= 4 Then
@@ -271,7 +272,7 @@ Public Class dlgBulkRenamer
                 e.Handled = True
             End If
             If dgvMoviesList.ColumnCount > 5 AndAlso e.RowIndex >= 0 Then
-                If dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then ' Locked
+                If Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(5).Value) Then ' Locked
                     Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
                         e.CellBounds.Width - 4, e.CellBounds.Height - 4)
                     Dim backColorBrush As New SolidBrush(e.CellStyle.BackColor)
@@ -279,7 +280,7 @@ Public Class dlgBulkRenamer
                     Dim gridLinePen As New Pen(gridBrush)
                     Try
                         ' Erase the cell.
-                        If e.State And DataGridViewElementStates.Selected Then
+                        If (e.State And DataGridViewElementStates.Selected) = DataGridViewElementStates.Selected Then
                             e.Graphics.FillRectangle(New SolidBrush(e.CellStyle.SelectionBackColor), e.CellBounds)
                         Else
                             e.Graphics.FillRectangle(backColorBrush, e.CellBounds)
@@ -313,8 +314,8 @@ Public Class dlgBulkRenamer
                     End Try
                 End If
             End If
-            If ((e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(5).Value Then
-                If Not IsNothing(e.Value) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value = e.Value Then
+            If ((e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0) AndAlso Not Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(5).Value) Then
+                If Not IsNothing(e.Value) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value.ToString = e.Value.ToString Then
                     Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
                         e.CellBounds.Width - 4, e.CellBounds.Height - 4)
                     Dim backColorBrush As New SolidBrush(e.CellStyle.BackColor)
@@ -322,7 +323,7 @@ Public Class dlgBulkRenamer
                     Dim gridLinePen As New Pen(gridBrush)
                     Try
                         ' Erase the cell.
-                        If e.State And DataGridViewElementStates.Selected Then
+                        If (e.State And DataGridViewElementStates.Selected) = DataGridViewElementStates.Selected Then
                             e.Graphics.FillRectangle(New SolidBrush(e.CellStyle.SelectionBackColor), e.CellBounds)
                         Else
                             e.Graphics.FillRectangle(backColorBrush, e.CellBounds)
@@ -339,7 +340,7 @@ Public Class dlgBulkRenamer
 
                         If Not IsNothing(e.Value) Then
                             Dim tb As Brush
-                            If (dgvMoviesList.Rows(e.RowIndex).Cells(6).Value AndAlso e.ColumnIndex = 3) OrElse (dgvMoviesList.Rows(e.RowIndex).Cells(7).Value AndAlso e.ColumnIndex = 4) Then
+                            If (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(6).Value) AndAlso e.ColumnIndex = 3) OrElse (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(7).Value) AndAlso e.ColumnIndex = 4) Then
                                 tb = Brushes.Red
                             Else
                                 tb = Brushes.Purple
@@ -443,18 +444,22 @@ Public Class dlgBulkRenamer
         Me.bwDoRename.WorkerReportsProgress = True
         Me.bwDoRename.RunWorkerAsync()
     End Sub
-    Function ShowProgressRename(ByVal mov As String, ByVal iProg As Integer)
+
+    Private Function ShowProgressRename(ByVal mov As String, ByVal iProg As Integer) As Boolean
         Me.bwDoRename.ReportProgress(iProg, mov.ToString)
         If CancelRename Then Return False
         Return True
     End Function
+
     Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
         FFRenamer.DoRename(AddressOf ShowProgressRename)
     End Sub
+
     Private Sub bwDoRename_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDoRename.ProgressChanged
         pbCompile.Value = e.ProgressPercentage
-        lblFile.Text = e.UserState
+        lblFile.Text = e.UserState.ToString
     End Sub
+
     Private Sub bwbwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
         pnlCancel.Visible = False
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -477,8 +482,6 @@ Public Class dlgBulkRenamer
         End Try
     End Sub
 
-
-
     Private Sub tsmUnlockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockAll.Click
         setLockAll(False)
     End Sub
@@ -486,6 +489,7 @@ Public Class dlgBulkRenamer
     Private Sub tsmLockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockAll.Click
         setLockAll(True)
     End Sub
+
     Private Sub cmsMovieList_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsMovieList.Opening
         Dim count As Integer = FFRenamer.GetCount
         Dim lockcount As Integer = FFRenamer.GetCountLocked
@@ -512,7 +516,7 @@ Public Class dlgBulkRenamer
         tsmLockMovie.Visible = False
         tsmUnlockMovie.Visible = False
         For Each row As DataGridViewRow In dgvMoviesList.SelectedRows
-            If row.Cells(5).Value Then
+            If Convert.ToBoolean(row.Cells(5).Value) Then
                 tsmUnlockMovie.Visible = True
             Else
                 tsmLockMovie.Visible = True
@@ -528,6 +532,7 @@ Public Class dlgBulkRenamer
     Private Sub tsmUnlockMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockMovie.Click
         setLock(False)
     End Sub
+
     Sub setLockAll(ByVal lock As Boolean)
         Try
             FFRenamer.SetIsLocked(String.Empty, String.Empty, False)
@@ -539,17 +544,17 @@ Public Class dlgBulkRenamer
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
     Sub setLock(ByVal lock As Boolean)
         For Each row As DataGridViewRow In dgvMoviesList.SelectedRows
-            FFRenamer.SetIsLocked(row.Cells(1).Value, row.Cells(2).Value, lock)
+            FFRenamer.SetIsLocked(row.Cells(1).Value.ToString, row.Cells(2).Value.ToString, lock)
             row.Cells(5).Value = lock
         Next
         dgvMoviesList.Refresh()
     End Sub
 
-
     Private Sub dgvMoviesList_ColumnWidthChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewColumnEventArgs) Handles dgvMoviesList.ColumnWidthChanged
-        If Not dgvMoviesList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None OrElse dgvMoviesList.Columns.Count < 9 OrElse dgvMoviesList.Tag Then Return
+        If Not dgvMoviesList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None OrElse dgvMoviesList.Columns.Count < 9 OrElse Convert.ToBoolean(dgvMoviesList.Tag) Then Return
         Dim sum As Integer = 0
         For Each c As DataGridViewColumn In dgvMoviesList.Columns
             If c.Visible Then sum += c.Width

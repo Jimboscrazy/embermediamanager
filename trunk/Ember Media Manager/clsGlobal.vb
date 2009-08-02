@@ -103,7 +103,7 @@ Public Class Master
     End Structure
 
     Public Structure DBMovie
-        Dim ID As Integer
+        Dim ID As Long
         Dim ListTitle As String
         Dim Movie As Media.Movie
         Dim IsNew As Boolean
@@ -569,7 +569,7 @@ Public Class Master
     End Function
 
 
-    Public Shared Function RemoveExtFromPath(ByVal sPath As String)
+    Public Shared Function RemoveExtFromPath(ByVal sPath As String) As String
 
         '//
         ' Get the entire path without the extension
@@ -818,7 +818,7 @@ Public Class Master
                 End Try
 
                 If lThumbs.Count > 0 Then
-                    iMod = Convert.ToInt32(Regex.Match(lThumbs.Item(lThumbs.Count - 1), "(\d+).jpg").Groups(1).ToString)
+                    iMod = Convert.ToInt32(Regex.Match(lThumbs.Item(lThumbs.Count - 1).ToString, "(\d+).jpg").Groups(1).ToString)
                 End If
             End If
 
@@ -838,7 +838,7 @@ Public Class Master
         Try
             Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
                 Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
-                    Dim StreamBuffer(SourceStream.Length - 1) As Byte
+                    Dim StreamBuffer(Convert.ToInt32(SourceStream.Length - 1)) As Byte
 
                     SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
                     DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
@@ -1084,11 +1084,11 @@ Public Class Master
 
                     If intSeconds > 0 AndAlso ((Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds / 2 > ThumbCount + 300) OrElse (Not Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds > ThumbCount + 2)) Then
                         If Master.eSettings.AutoThumbsNoSpoilers Then
-                            intSeconds = ((intSeconds / 2) - 300) / ThumbCount
+                            intSeconds = Convert.ToInt32(((intSeconds / 2) - 300) / ThumbCount)
                             intAdd = intSeconds
                             intSeconds += intAdd + 300
                         Else
-                            intSeconds = intSeconds / (ThumbCount + 2)
+                            intSeconds = Convert.ToInt32(intSeconds / (ThumbCount + 2))
                             intAdd = intSeconds
                             intSeconds += intAdd
                         End If
@@ -1194,10 +1194,10 @@ Public Class Master
                 Dim SubKeyNames As String() = masterKey.GetSubKeyNames()
                 For i As Integer = 0 To SubKeyNames.Count - 1
                     tempKey = Registry.LocalMachine.OpenSubKey(String.Concat(regLocation, "\\", SubKeyNames(i)))
-                    sVersion = tempKey.GetValue("Version")
+                    sVersion = tempKey.GetValue("Version").ToString
                     If Not String.IsNullOrEmpty(sVersion) Then
-                        Dim tVersion() As String = sVersion.Split(New Char() {"."})
-                        If tVersion(0) >= 3 AndAlso tVersion(1) >= 5 Then
+                        Dim tVersion() As String = sVersion.Split(Convert.ToChar("."))
+                        If Convert.ToDouble(tVersion(0)) >= 3 AndAlso Convert.ToDouble(tVersion(1)) >= 5 Then
                             Return True
                         End If
                     End If
@@ -1247,6 +1247,6 @@ Public Class Master
     End Sub
 
     Public Shared Function Quantize(ByVal iNumber As Integer, ByVal iMultiple As Integer) As Integer
-        Return System.Math.Round(iNumber / iMultiple, 0) * iMultiple
+        Return Convert.ToInt32(System.Math.Round(iNumber / iMultiple, 0) * iMultiple)
     End Function
 End Class

@@ -163,11 +163,11 @@ Public Class OFDB
                             W = HTML.IndexOf("</table>", D)
                             If W > 0 Then
                                 Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>")
-                                Dim Gen = From M As Match In rGenres _
+                                Dim Gen = From M In rGenres _
                                       Select N = Web.HttpUtility.HtmlDecode(M.Groups("name").ToString)
                                 If Gen.Count > 0 Then
                                     Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
-                                    _genre = Strings.Join(tGenre.Split(New Char() {"/"}), " / ").Trim
+                                    _genre = Strings.Join(tGenre.Split(Convert.ToChar("/")), " / ").Trim
                                 End If
                             End If
                         End If

@@ -190,7 +190,7 @@ Public Class dlgSetsManager
 
         If e.ProgressPercentage >= 0 Then
             Me.pbCompile.Value = e.ProgressPercentage
-            Me.lblFile.Text = e.UserState
+            Me.lblFile.Text = e.UserState.ToString
         Else
             Me.pbCompile.Maximum = Convert.ToInt32(e.UserState)
         End If

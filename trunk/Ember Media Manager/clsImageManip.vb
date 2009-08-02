@@ -114,8 +114,8 @@ Public Class ImageManip
                         Dim grOverlay As Graphics = Graphics.FromImage(bgBMP)
                         grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                         grOverlay.FillRectangle(New SolidBrush(Color.FromArgb(PaddingARGB)), New RectangleF(0, 0, maxWidth, maxHeight))
-                        Dim iLeft As Integer = If(bmDest.Width = maxWidth, 0, (maxWidth - bmDest.Width) / 2)
-                        Dim iTop As Integer = If(bmDest.Height = maxHeight, 0, (maxHeight - bmDest.Height) / 2)
+                        Dim iLeft As Integer = Convert.ToInt32(If(bmDest.Width = maxWidth, 0, (maxWidth - bmDest.Width) / 2))
+                        Dim iTop As Integer = Convert.ToInt32(If(bmDest.Height = maxHeight, 0, (maxHeight - bmDest.Height) / 2))
                         grOverlay.DrawImage(bmDest, iLeft, iTop, bmDest.Width, bmDest.Height)
                         bmDest = bgBMP
                     End If
@@ -181,7 +181,7 @@ Public Class ImageManip
         Try
             Dim bmOverlay As New Bitmap(pbUnderlay.Image)
             Dim grOverlay As Graphics = Graphics.FromImage(bmOverlay)
-            Dim bmHeight As Integer = pbUnderlay.Image.Height * 0.65
+            Dim bmHeight As Integer = Convert.ToInt32(pbUnderlay.Image.Height * 0.65)
 
             grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
 

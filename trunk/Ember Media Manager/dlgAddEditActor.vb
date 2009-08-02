@@ -138,7 +138,7 @@ Public Class dlgAddEditActor
 
         Me.pbActLoad.Visible = False
 
-        Me.pbActors.Image = e.Result
+        Me.pbActors.Image = DirectCast(e.Result, Image)
 
     End Sub
 

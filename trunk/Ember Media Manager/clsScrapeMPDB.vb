@@ -101,7 +101,7 @@ Namespace MPDB
         End Function
 
         Private Sub bwMPDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMPDB.DoWork
-            Dim Args As Arguments = e.Argument
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Try
                 e.Result = GetMPDBPosters(Args.Parameter)
             Catch ex As Exception
@@ -118,7 +118,7 @@ Namespace MPDB
 
         Private Sub bwMPDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMPDB.RunWorkerCompleted
             If Not IsNothing(e.Result) Then
-                RaiseEvent PostersDownloaded(e.Result)
+                RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of Media.Image)))
             End If
         End Sub
     End Class

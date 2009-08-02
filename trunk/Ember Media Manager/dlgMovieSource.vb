@@ -171,9 +171,9 @@ Public Class dlgMovieSource
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Me.txtSourceName.Text = SQLreader("Name").ToString
                     Me.txtSourcePath.Text = SQLreader("Path").ToString
-                    Me.chkScanRecursive.Checked = SQLreader("Recursive")
-                    Me.chkSingle.Checked = SQLreader("Single")
-                    Me.chkUseFolderName.Checked = SQLreader("Foldername")
+                    Me.chkScanRecursive.Checked = Convert.ToBoolean(SQLreader("Recursive"))
+                    Me.chkSingle.Checked = Convert.ToBoolean(SQLreader("Single"))
+                    Me.chkUseFolderName.Checked = Convert.ToBoolean(SQLreader("Foldername"))
                 End Using
             End Using
         End If

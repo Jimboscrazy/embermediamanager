@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CD73BF4F-4765-42AE-9C11-16DFA2C7455F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -51,7 +51,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
     <Optimize>true</Optimize>
   </PropertyGroup>
@@ -63,7 +63,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,7 +74,7 @@
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
@@ -84,7 +84,7 @@
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
     <DebugType>None</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
@@ -98,7 +98,7 @@
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -108,7 +108,7 @@
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
     <DebugType>None</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
@@ -529,8 +529,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>call "$(SolutionDir)ON-Build-Release" $(OutDir) "$(ProjectDir)" "$(SolutionDir)" $(PlatformName)</PostBuildEvent>
     <PreBuildEvent>call "$(SolutionDir)svnrev.bat"</PreBuildEvent>
   </PropertyGroup>
 </Project>

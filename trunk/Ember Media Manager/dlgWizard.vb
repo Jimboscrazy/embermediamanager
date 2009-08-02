@@ -182,9 +182,9 @@ Public Class dlgWizard
                     Dim lvItem As New ListViewItem(SQLreader("ID").ToString)
                     lvItem.SubItems.Add(SQLreader("Name").ToString)
                     lvItem.SubItems.Add(SQLreader("Path").ToString)
-                    lvItem.SubItems.Add(If(SQLreader("Recursive"), "Yes", "No"))
-                    lvItem.SubItems.Add(If(SQLreader("Foldername"), "Yes", "No"))
-                    lvItem.SubItems.Add(If(SQLreader("Single"), "Yes", "No"))
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Recursive")), "Yes", "No"))
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Foldername")), "Yes", "No"))
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Single")), "Yes", "No"))
                     lvMovies.Items.Add(lvItem)
                 End While
             End Using
@@ -224,8 +224,8 @@ Public Class dlgWizard
     End Sub
 
     Private Sub cbIntLang_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIntLang.SelectedIndexChanged
-        If Not String.IsNullOrEmpty(Me.cbIntLang.SelectedItem) Then
-            Master.eLang.LoadLanguage(Me.cbIntLang.SelectedItem)
+        If Not String.IsNullOrEmpty(Me.cbIntLang.SelectedItem.ToString) Then
+            Master.eLang.LoadLanguage(Me.cbIntLang.SelectedItem.ToString)
             Me.SetUp()
         End If
     End Sub
