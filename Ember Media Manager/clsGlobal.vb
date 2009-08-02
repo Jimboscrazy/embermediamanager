@@ -1198,6 +1198,7 @@ Public Class Master
                         Try
                             sVersion = tempKey.GetValue("Version").ToString
                         Catch ex As Exception
+                            ' GetValue can Raise Exceptions  when some key are Close or Marked for Deletion
                         End Try
                         If Not String.IsNullOrEmpty(sVersion) Then
                             Dim tVersion() As String = sVersion.Split(Convert.ToChar("."))
