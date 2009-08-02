@@ -44,7 +44,7 @@ Public Class XML
         '\\
 
         If FlagsXML.Nodes.Count > 0 Then
-            Dim mePath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Flags")
+            Dim mePath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
             Try
                 Dim fiAV As MediaInfo.Fileinfo = AVMovie.Movie.FileInfo
                 Dim atypeRef As String = String.Empty
@@ -180,7 +180,7 @@ Public Class XML
 
         Dim imgStudioStr As String = String.Empty
         Dim imgStudio As Image = Nothing
-        Dim mePath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Studios")
+        Dim mePath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Studios")
 
         If alStudios.Contains(Path.Combine(mePath, String.Concat(strStudio, ".png")).ToLower) Then
             Using fsImage As New FileStream(Path.Combine(mePath, String.Concat(strStudio, ".png")), FileMode.Open, FileAccess.Read)
@@ -225,7 +225,7 @@ Public Class XML
 
         If GenreXML.Nodes.Count > 0 Then
 
-            Dim mePath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Genres")
+            Dim mePath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Genres")
 
             Try
 
@@ -263,7 +263,7 @@ Public Class XML
         Dim imgRatingStr As String = String.Empty
 
         If RatingXML.Nodes.Count > 0 Then
-            Dim mePath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Ratings")
+            Dim mePath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
 
 
             Try
@@ -305,7 +305,7 @@ Public Class XML
     Public Shared Sub CacheXMLs()
 
         Try
-            Dim fPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
+            Dim fPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar, "Flags.xml")
             If File.Exists(fPath) Then
                 FlagsXML = XDocument.Load(fPath)
             Else
@@ -321,7 +321,7 @@ Public Class XML
                 alFlags.AddRange(alF.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
             End If
 
-            Dim gPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
+            Dim gPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
             If File.Exists(gPath) Then
                 GenreXML = XDocument.Load(gPath)
             Else
@@ -337,7 +337,7 @@ Public Class XML
                 alGenres.AddRange(alG.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
             End If
 
-            Dim sPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
+            Dim sPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
             If File.Exists(sPath) Then
                 StudioXML = XDocument.Load(sPath)
             Else
@@ -353,14 +353,14 @@ Public Class XML
                 alStudios.AddRange(alS.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
             End If
 
-            Dim rPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
+            Dim rPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")
             If File.Exists(rPath) Then
                 RatingXML = XDocument.Load(rPath)
             Else
                 MsgBox(String.Concat("Cannot find Ratings.xml.", vbNewLine, vbNewLine, "Expected path:", vbNewLine, rPath), MsgBoxStyle.Critical, "File Not Found")
             End If
 
-            Dim lPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Langs", Path.DirectorySeparatorChar, "Languages.xml")
+            Dim lPath As String = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "Languages.xml")
             If File.Exists(lPath) Then
                 LanguageXML = XDocument.Load(lPath)
             Else

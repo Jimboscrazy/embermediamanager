@@ -35,8 +35,8 @@ Public Class dlgOfflineHolder
     Private idxStsImage As Integer = -1
     Private Preview As Bitmap
     Private Overlay As New Images
-    Private PreviewPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "OfflineDefault.jpg")
-    Private OverlayPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Offlineoverlay.png")
+    Private PreviewPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "OfflineDefault.jpg")
+    Private OverlayPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Offlineoverlay.png")
     Private currText As String = Master.eLang.GetString(350, "Insert DVD")
     Private prevText As String = String.Empty
     Private currNameText As String = String.Empty
@@ -456,7 +456,7 @@ Public Class dlgOfflineHolder
         End If
         Me.bwCreateHolder.ReportProgress(2, Master.eLang.GetString(358, "Building Movie"))
         Using ffmpeg As New Process()
-            ffmpeg.StartInfo.FileName = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+            ffmpeg.StartInfo.FileName = String.Concat(Master.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
             ffmpeg.EnableRaisingEvents = False
             ffmpeg.StartInfo.UseShellExecute = False
             ffmpeg.StartInfo.CreateNoWindow = True
