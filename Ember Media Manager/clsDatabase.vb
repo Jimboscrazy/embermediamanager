@@ -49,14 +49,14 @@ Public Class Database
         Try
             Dim NewDB As Boolean = False
             'create database if it doesn't exist
-            If Not File.Exists(Path.Combine(Application.StartupPath, "Media.emm")) Then
+            If Not File.Exists(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Media.emm")) Then
                 NewDB = True
             ElseIf Delete Then
                 NewDB = True
-                File.Delete(Path.Combine(Application.StartupPath, "Media.emm"))
+                File.Delete(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Media.emm"))
             End If
 
-            SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Application.StartupPath, "Media.emm"))
+            SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Media.emm"))
             SQLcn.Open()
             Dim cQuery As String = String.Empty
             Using SQLtransaction As SQLite.SQLiteTransaction = SQLcn.BeginTransaction

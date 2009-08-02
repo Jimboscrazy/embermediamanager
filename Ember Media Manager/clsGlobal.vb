@@ -36,7 +36,7 @@ Public Class Master
     Public Shared GlobalScrapeMod As New ScrapeModifier
     Public Shared alMoviePaths As New ArrayList
     Public Shared DB As New Database
-    Public Shared TempPath As String = Path.Combine(Application.StartupPath, "Temp")
+    Public Shared TempPath As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Temp")
     Public Shared currMovie As New DBMovie
 
     Public Shared tmpMovie As New Media.Movie
@@ -187,7 +187,7 @@ Public Class Master
         End Property
 
         Public Sub New()
-            Me.clear()
+            Me.Clear()
         End Sub
 
         Public Sub Clear()
@@ -1057,7 +1057,7 @@ Public Class Master
                         Directory.CreateDirectory(tPath)
                     End If
 
-                    ffmpeg.StartInfo.FileName = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                    ffmpeg.StartInfo.FileName = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
                     ffmpeg.EnableRaisingEvents = False
                     ffmpeg.StartInfo.UseShellExecute = False
                     ffmpeg.StartInfo.CreateNoWindow = True

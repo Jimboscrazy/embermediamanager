@@ -1933,11 +1933,11 @@ Public Class dlgSettings
     Private Sub LoadIntLangs()
 
         Me.cbIntLang.Items.Clear()
-        If Directory.Exists(Path.Combine(Application.StartupPath, "Langs")) Then
+        If Directory.Exists(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Langs")) Then
             Dim alL As New ArrayList
             Dim alLangs As New ArrayList
             Try
-                alL.AddRange(Directory.GetFiles(Path.Combine(Application.StartupPath, "Langs"), "*).xml"))
+                alL.AddRange(Directory.GetFiles(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Langs"), "*).xml"))
             Catch
             End Try
             alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)
@@ -1949,11 +1949,11 @@ Public Class dlgSettings
     Private Sub LoadThemes()
 
         Me.cbMovieTheme.Items.Clear()
-        If Directory.Exists(Path.Combine(Application.StartupPath, "Themes")) Then
+        If Directory.Exists(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Themes")) Then
             Dim alT As New ArrayList
             Dim alThemes As New ArrayList
             Try
-                alT.AddRange(Directory.GetFiles(Path.Combine(Application.StartupPath, "Themes"), "movie-*.xml"))
+                alT.AddRange(Directory.GetFiles(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Themes"), "movie-*.xml"))
             Catch
             End Try
             alThemes.AddRange(alT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movie-", String.Empty)).ToArray)
