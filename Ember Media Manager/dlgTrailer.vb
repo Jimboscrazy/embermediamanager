@@ -107,7 +107,7 @@ Public Class dlgTrailer
 
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
 
-        Dim Args As Arguments = e.Argument
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
             If Args.bType AndAlso Args.iIndex >= 0 Then
                 tURL = cTrailer.DownloadSelectedTrailer(Me.sPath, Args.iIndex)
@@ -132,7 +132,7 @@ Public Class dlgTrailer
 
     Private Sub bwDownloadTrailer_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadTrailer.RunWorkerCompleted
 
-        If e.Result Then
+        If Convert.ToBoolean(e.Result) Then
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         Else

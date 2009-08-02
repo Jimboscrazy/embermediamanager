@@ -144,14 +144,14 @@ Public Class dlgImgView
             Else
                 Me.Height = pbPicture.Height + 32
             End If
-            Me.Top = (screenHeight - Me.Height) / 2
+            Me.Top = Convert.ToInt32((screenHeight - Me.Height) / 2)
 
             If Me.pbPicture.Width >= (screenWidth - 25) Then
                 Me.Width = screenWidth
             Else
                 Me.Width = Me.pbPicture.Width + 25
             End If
-            Me.Left = (screenWidth - Me.Width) / 2
+            Me.Left = Convert.ToInt32((screenWidth - Me.Width) / 2)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -176,8 +176,8 @@ Public Class dlgImgView
 
             Me.Width = Me.pbPicture.Width
             Me.Height = Me.pbPicture.Height + 53
-            Me.Left = (My.Computer.Screen.Bounds.Width - Me.Width) / 2
-            Me.Top = (My.Computer.Screen.Bounds.Height - Me.Height) / 2
+            Me.Left = Convert.ToInt32((My.Computer.Screen.Bounds.Width - Me.Width) / 2)
+            Me.Top = Convert.ToInt32((My.Computer.Screen.Bounds.Height - Me.Height) / 2)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

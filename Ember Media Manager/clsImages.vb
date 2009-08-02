@@ -366,7 +366,7 @@ Public Class Images
         Return strReturn
     End Function
 
-    Public Shared Function GetImageDims(ByVal imgImage As Image, ByVal imgType As Master.ImageType) As Integer
+    Public Shared Function GetPosterDims(ByVal imgImage As Image) As Master.PosterSize
 
         '//
         ' Check the size of the image and return a generic name for the size
@@ -376,27 +376,39 @@ Public Class Images
         Dim y As Integer = imgImage.Height
 
         Try
-            If imgType = Master.ImageType.Posters Then
-                If (x > y) AndAlso (x > (y * 2)) AndAlso (x > 300) Then
-                    'at least twice as wide than tall... consider it wide (also make sure it's big enough)
-                    Return Master.PosterSize.Wide
-                ElseIf (y > 1000 AndAlso x > 750) OrElse (x > 1000 AndAlso y > 750) Then
-                    Return Master.PosterSize.Xlrg
-                ElseIf (y > 700 AndAlso x > 500) OrElse (x > 700 AndAlso y > 500) Then
-                    Return Master.PosterSize.Lrg
-                ElseIf (y > 250 AndAlso x > 150) OrElse (x > 250 AndAlso y > 150) Then
-                    Return Master.PosterSize.Mid
-                Else
-                    Return Master.PosterSize.Small
-                End If
+            If (x > y) AndAlso (x > (y * 2)) AndAlso (x > 300) Then
+                'at least twice as wide than tall... consider it wide (also make sure it's big enough)
+                Return Master.PosterSize.Wide
+            ElseIf (y > 1000 AndAlso x > 750) OrElse (x > 1000 AndAlso y > 750) Then
+                Return Master.PosterSize.Xlrg
+            ElseIf (y > 700 AndAlso x > 500) OrElse (x > 700 AndAlso y > 500) Then
+                Return Master.PosterSize.Lrg
+            ElseIf (y > 250 AndAlso x > 150) OrElse (x > 250 AndAlso y > 150) Then
+                Return Master.PosterSize.Mid
             Else
-                If (y > 1000 AndAlso x > 750) OrElse (x > 1000 AndAlso y > 750) Then
-                    Return Master.FanartSize.Lrg
-                ElseIf (y > 700 AndAlso x > 400) OrElse (x > 700 AndAlso y > 400) Then
-                    Return Master.FanartSize.Mid
-                Else
-                    Return Master.FanartSize.Small
-                End If
+                Return Master.PosterSize.Small
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Function
+
+    Public Shared Function GetFanartDims(ByVal imgImage As Image) As Master.FanartSize
+
+        '//
+        ' Check the size of the image and return a generic name for the size
+        '\\
+
+        Dim x As Integer = imgImage.Width
+        Dim y As Integer = imgImage.Height
+
+        Try
+            If (y > 1000 AndAlso x > 750) OrElse (x > 1000 AndAlso y > 750) Then
+                Return Master.FanartSize.Lrg
+            ElseIf (y > 700 AndAlso x > 400) OrElse (x > 700 AndAlso y > 400) Then
+                Return Master.FanartSize.Mid
+            Else
+                Return Master.FanartSize.Small
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -523,7 +535,7 @@ Public Class Images
                         Next
 
                         For Each iMovie As Media.Image In tmpListTMDB
-                            If GetImageDims(iMovie.WebImage, Master.ImageType.Posters) = Master.eSettings.PreferredPosterSize Then
+                            If GetPosterDims(iMovie.WebImage) = Master.eSettings.PreferredPosterSize Then
                                 _image = New Bitmap(iMovie.WebImage)
                                 GoTo foundit
                             End If
@@ -591,7 +603,7 @@ Public Class Images
                                     FromWeb(iImage.URL)
                                     If Not IsNothing(_image) Then
                                         If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
-                                        Dim tmpSize As Master.PosterSize = GetImageDims(_image, Master.ImageType.Posters)
+                                        Dim tmpSize As Master.PosterSize = GetPosterDims(_image)
                                         If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                             'cache the first result from each type in case the preferred size is not available
                                             Select Case tmpSize
@@ -639,7 +651,7 @@ Public Class Images
                                     FromWeb(iImage.URL)
                                     If Not IsNothing(_image) Then
                                         If Not Master.eSettings.NoSaveImagesToNfo Then imgResult.Posters.Add(iImage.URL)
-                                        Dim tmpSize As Master.PosterSize = GetImageDims(_image, Master.ImageType.Posters)
+                                        Dim tmpSize As Master.PosterSize = GetPosterDims(_image)
                                         If Not tmpSize = Master.eSettings.PreferredPosterSize Then
                                             'cache the first result from each type in case the preferred size is not available
                                             Select Case tmpSize
@@ -887,7 +899,7 @@ Public Class Images
                             Next
 
                             For Each iMovie As Media.Image In tmpListTMDB
-                                If GetImageDims(iMovie.WebImage, Master.ImageType.Fanart) = Master.eSettings.PreferredFanartSize Then
+                                If GetFanartDims(iMovie.WebImage) = Master.eSettings.PreferredFanartSize Then
                                     _image = New Bitmap(iMovie.WebImage)
                                     GoTo foundit
                                 End If
@@ -981,7 +993,7 @@ Public Class Images
                             End If
 
                             For Each iMovie As Media.Image In tmpListTMDB
-                                Select Case Master.eSettings.PreferredPosterSize
+                                Select Case Master.eSettings.PreferredFanartSize
                                     Case Master.FanartSize.Lrg
                                         If iMovie.Description.ToLower = "original" Then
                                             If Not IsNothing(iMovie.WebImage) Then

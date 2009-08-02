@@ -377,7 +377,7 @@ Public Class dlgManualEdit
 
     Private Sub Editor_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
         If Changed = True Then
-            Dim DResult As DialogResult
+            Dim DResult As MsgBoxResult
             DResult = MsgBox(Master.eLang.GetString(196, "Do you want to save changes?"), MsgBoxStyle.YesNoCancel, Master.eLang.GetString(197, "Save?"))
             If DResult = MsgBoxResult.Yes Then
 

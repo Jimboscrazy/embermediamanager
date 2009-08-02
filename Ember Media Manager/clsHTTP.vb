@@ -52,11 +52,11 @@ Public Class HTTP
 
         Try
 
-            Dim wrRequest As HttpWebRequest = HttpWebRequest.Create(URL)
+            Dim wrRequest As WebRequest = HttpWebRequest.Create(URL)
             wrRequest.Method = "GET"
             wrRequest.Timeout = 10000
             wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
-            Dim wrResponse As HttpWebResponse = wrRequest.GetResponse()
+            Dim wrResponse As WebResponse = wrRequest.GetResponse()
             Dim contentEncoding As String = String.Empty
             For Each resKey As String In wrResponse.Headers.Keys
                 If Not IsNothing(resKey) Then
@@ -86,8 +86,8 @@ Public Class HTTP
     End Function
 
     Public Function IsValidURL(ByVal URL As String) As Boolean
-        Dim wrRequest As HttpWebRequest
-        Dim wrResponse As HttpWebResponse
+        Dim wrRequest As WebRequest
+        Dim wrResponse As WebResponse
         Try
             wrRequest = HttpWebRequest.Create(URL)
             wrRequest.Method = "GET"
@@ -106,11 +106,10 @@ Public Class HTTP
         Dim outFile As String = String.Empty
 
         Try
-            Dim wrRequest As HttpWebRequest = HttpWebRequest.Create(URL)
-            wrRequest.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022)"
+            Dim wrRequest As WebRequest = HttpWebRequest.Create(URL)
             wrRequest.Method = "GET"
             wrRequest.Timeout = 10000
-            Dim wrResponse As HttpWebResponse = wrRequest.GetResponse()
+            Dim wrResponse As WebResponse = wrRequest.GetResponse()
 
             Select Case True
                 Case Type = "trailer" AndAlso wrResponse.ContentType.Contains("mp4")
@@ -123,7 +122,7 @@ Public Class HTTP
                     outFile = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
                 Case Type = "template"
                     Dim basePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs")
-                    Dim folders() As String = URL.Replace("http://www.embermm.com/Updates/Translations/", String.Empty).Trim.Split(New Char() {"/"})
+                    Dim folders() As String = URL.Replace("http://www.embermm.com/Updates/Translations/", String.Empty).Trim.Split(Convert.ToChar("/"))
                     For i As Integer = 0 To folders.Count - 2
                         If Not Directory.Exists(Path.Combine(basePath, folders(i))) Then Directory.CreateDirectory(Path.Combine(basePath, folders(i)))
                         basePath = Path.Combine(basePath, folders(i))
@@ -149,7 +148,7 @@ Public Class HTTP
                             If BlockSize > 0 Then
                                 mStream.Write(StreamBuffer, 0, BlockSize)
                                 If ReportUpdate Then
-                                    iProgress = (iCurrent / wrResponse.ContentLength) * 100
+                                    iProgress = Convert.ToInt32((iCurrent / wrResponse.ContentLength) * 100)
                                     RaiseEvent ProgressUpdated(iProgress)
                                 End If
                             End If

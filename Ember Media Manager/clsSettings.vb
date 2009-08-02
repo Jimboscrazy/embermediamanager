@@ -64,8 +64,8 @@ Public Class emmSettings
     Private _autoET As Boolean
     Private _autoETsize As Master.FanartSize
     Private _fanartprefsizeonly As Boolean
-    Private _posterQuality As Long
-    Private _fanartQuality As Long
+    Private _posterQuality As Integer
+    Private _fanartQuality As Integer
     Private _overwritePoster As Boolean
     Private _overwriteFanart As Boolean
     Private _logerrors As Boolean
@@ -550,20 +550,20 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property PosterQuality() As Long
+    Public Property PosterQuality() As Integer
         Get
             Return Me._posterQuality
         End Get
-        Set(ByVal value As Long)
+        Set(ByVal value As Integer)
             Me._posterQuality = value
         End Set
     End Property
 
-    Public Property FanartQuality() As Long
+    Public Property FanartQuality() As Integer
         Get
             Return Me._fanartQuality
         End Get
-        Set(ByVal value As Long)
+        Set(ByVal value As Integer)
             Me._fanartQuality = value
         End Set
     End Property
@@ -865,20 +865,20 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property FanartWidth() As Long
+    Public Property FanartWidth() As Integer
         Get
             Return Me._fanartwidth
         End Get
-        Set(ByVal value As Long)
+        Set(ByVal value As Integer)
             Me._fanartwidth = value
         End Set
     End Property
 
-    Public Property FanartHeight() As Long
+    Public Property FanartHeight() As Integer
         Get
             Return Me._fanartheight
         End Get
-        Set(ByVal value As Long)
+        Set(ByVal value As Integer)
             Me._fanartheight = value
         End Set
     End Property
@@ -892,20 +892,20 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property PosterWidth() As Long
+    Public Property PosterWidth() As Integer
         Get
             Return Me._posterwidth
         End Get
-        Set(ByVal value As Long)
+        Set(ByVal value As Integer)
             Me._posterwidth = value
         End Set
     End Property
 
-    Public Property PosterHeight() As Long
+    Public Property PosterHeight() As Integer
         Get
             Return Me._posterheight
         End Get
-        Set(ByVal value As Long)
+        Set(ByVal value As Integer)
             Me._posterheight = value
         End Set
     End Property
@@ -1346,11 +1346,11 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property ETPadding() As Integer
+    Public Property ETPadding() As Boolean
         Get
             Return Me._etpadding
         End Get
-        Set(ByVal value As Integer)
+        Set(ByVal value As Boolean)
             Me._etpadding = value
         End Set
     End Property

@@ -882,9 +882,9 @@ Public Class dlgSettings
                 Case tbPosterQual.Value >= 80 AndAlso tbPosterQual.Value <= 85
                     .ForeColor = Color.Blue
                 Case tbPosterQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, 8.5 * (tbPosterQual.Value - 20), 0)
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbPosterQual.Value - 20)), 0)
                 Case tbPosterQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, 255 - (8.5 * (tbPosterQual.Value - 50)), 255, 0)
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbPosterQual.Value - 50))), 255, 0)
             End Select
         End With
     End Sub
@@ -904,9 +904,9 @@ Public Class dlgSettings
                 Case tbFanartQual.Value >= 80 AndAlso tbFanartQual.Value <= 85
                     .ForeColor = Color.Blue
                 Case tbFanartQual.Value <= 50
-                    .ForeColor = Color.FromArgb(255, 255, 8.5 * (tbFanartQual.Value - 20), 0)
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbFanartQual.Value - 20)), 0)
                 Case tbFanartQual.Value < 80
-                    .ForeColor = Color.FromArgb(255, 255 - (8.5 * (tbFanartQual.Value - 50)), 255, 0)
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbFanartQual.Value - 50))), 255, 0)
             End Select
         End With
     End Sub
@@ -1524,10 +1524,10 @@ Public Class dlgSettings
             Master.eSettings.UseTMDB = Me.chkUseTMDB.Checked
             Master.eSettings.UseIMPA = Me.chkUseIMPA.Checked
             Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
-            Master.eSettings.PreferredPosterSize = Me.cbPosterSize.SelectedIndex
-            Master.eSettings.PreferredFanartSize = Me.cbFanartSize.SelectedIndex
+            Master.eSettings.PreferredPosterSize = DirectCast(Me.cbPosterSize.SelectedIndex, Master.PosterSize)
+            Master.eSettings.PreferredFanartSize = DirectCast(Me.cbFanartSize.SelectedIndex, Master.FanartSize)
             Master.eSettings.AutoET = Me.chkAutoETSize.Checked
-            Master.eSettings.AutoETSize = Me.cbAutoETSize.SelectedIndex
+            Master.eSettings.AutoETSize = DirectCast(Me.cbAutoETSize.SelectedIndex, Master.FanartSize)
             Master.eSettings.FanartPrefSizeOnly = Me.chkFanartOnly.Checked
             Master.eSettings.PosterQuality = Me.tbPosterQual.Value
             Master.eSettings.FanartQuality = Me.tbFanartQual.Value
@@ -1559,11 +1559,11 @@ Public Class dlgSettings
             Master.eSettings.SingleScrapeImages = Me.chkSingleScrapeImages.Checked
             Master.eSettings.MarkNew = Me.chkMarkNew.Checked
             Master.eSettings.ResizeFanart = Me.chkResizeFanart.Checked
-            Master.eSettings.FanartHeight = If(Not String.IsNullOrEmpty(Me.txtFanartHeight.Text), CLng(Me.txtFanartHeight.Text), 0)
-            Master.eSettings.FanartWidth = If(Not String.IsNullOrEmpty(Me.txtFanartWidth.Text), CLng(Me.txtFanartWidth.Text), 0)
+            Master.eSettings.FanartHeight = If(Not String.IsNullOrEmpty(Me.txtFanartHeight.Text), Convert.ToInt32(Me.txtFanartHeight.Text), 0)
+            Master.eSettings.FanartWidth = If(Not String.IsNullOrEmpty(Me.txtFanartWidth.Text), Convert.ToInt32(Me.txtFanartWidth.Text), 0)
             Master.eSettings.ResizePoster = Me.chkResizePoster.Checked
-            Master.eSettings.PosterHeight = If(Not String.IsNullOrEmpty(Me.txtPosterHeight.Text), CLng(Me.txtPosterHeight.Text), 0)
-            Master.eSettings.PosterWidth = If(Not String.IsNullOrEmpty(Me.txtPosterWidth.Text), CLng(Me.txtPosterWidth.Text), 0)
+            Master.eSettings.PosterHeight = If(Not String.IsNullOrEmpty(Me.txtPosterHeight.Text), Convert.ToInt32(Me.txtPosterHeight.Text), 0)
+            Master.eSettings.PosterWidth = If(Not String.IsNullOrEmpty(Me.txtPosterWidth.Text), Convert.ToInt32(Me.txtPosterWidth.Text), 0)
             Master.eSettings.UseOFDBTitle = Me.chkOFDBTitle.Checked
             Master.eSettings.UseOFDBOutline = Me.chkOFDBOutline.Checked
             Master.eSettings.UseOFDBPlot = Me.chkOFDBPlot.Checked
@@ -1596,7 +1596,7 @@ Public Class dlgSettings
             Master.eSettings.TrailerSites.Clear()
             If Me.lbTrailerSites.CheckedItems.Count > 0 Then
                 For Each iTrailer As Integer In Me.lbTrailerSites.CheckedIndices
-                    Master.eSettings.TrailerSites.Add(iTrailer)
+                    Master.eSettings.TrailerSites.Add(DirectCast(iTrailer, Master.TrailerPages))
                 Next
                 Master.eSettings.DownloadTrailers = Me.chkDownloadTrailer.Checked
                 Master.eSettings.UpdaterTrailers = Me.chkUpdaterTrailer.Checked
@@ -1804,13 +1804,13 @@ Public Class dlgSettings
             Me.chkMarkNew.Checked = Master.eSettings.MarkNew
             Me.chkResizeFanart.Checked = Master.eSettings.ResizeFanart
             If Master.eSettings.ResizeFanart Then
-                Me.txtFanartWidth.Text = Master.eSettings.FanartWidth
-                Me.txtFanartHeight.Text = Master.eSettings.FanartHeight
+                Me.txtFanartWidth.Text = Master.eSettings.FanartWidth.ToString
+                Me.txtFanartHeight.Text = Master.eSettings.FanartHeight.ToString
             End If
             Me.chkResizePoster.Checked = Master.eSettings.ResizePoster
             If Master.eSettings.ResizePoster Then
-                Me.txtPosterWidth.Text = Master.eSettings.PosterWidth
-                Me.txtPosterHeight.Text = Master.eSettings.PosterHeight
+                Me.txtPosterWidth.Text = Master.eSettings.PosterWidth.ToString
+                Me.txtPosterHeight.Text = Master.eSettings.PosterHeight.ToString
             End If
             Me.chkOFDBTitle.Checked = Master.eSettings.UseOFDBTitle
             Me.chkOFDBOutline.Checked = Master.eSettings.UseOFDBOutline
@@ -1877,8 +1877,8 @@ Public Class dlgSettings
             Me.rbETNative.Checked = Master.eSettings.ETNative
             If Not Master.eSettings.ETNative AndAlso Master.eSettings.ETWidth > 0 AndAlso Master.eSettings.ETHeight > 0 Then
                 Me.rbETCustom.Checked = True
-                Me.txtETHeight.Text = Master.eSettings.ETHeight
-                Me.txtETWidth.Text = Master.eSettings.ETWidth
+                Me.txtETHeight.Text = Master.eSettings.ETHeight.ToString
+                Me.txtETWidth.Text = Master.eSettings.ETWidth.ToString
                 Me.chkETPadding.Checked = Master.eSettings.ETPadding
             Else
                 Me.rbETNative.Checked = True
@@ -1998,6 +1998,7 @@ Public Class dlgSettings
             Me.lstMetadata.Items.Add(x.FileType)
         Next
     End Sub
+
     Private Sub RefreshSources()
         lvMovies.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -2007,9 +2008,9 @@ Public Class dlgSettings
                     Dim lvItem As New ListViewItem(SQLreader("ID").ToString)
                     lvItem.SubItems.Add(SQLreader("Name").ToString)
                     lvItem.SubItems.Add(SQLreader("Path").ToString)
-                    lvItem.SubItems.Add(If(SQLreader("Recursive"), "Yes", "No"))
-                    lvItem.SubItems.Add(If(SQLreader("Foldername"), "Yes", "No"))
-                    lvItem.SubItems.Add(If(SQLreader("Single"), "Yes", "No"))
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Recursive")), "Yes", "No"))
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Foldername")), "Yes", "No"))
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Single")), "Yes", "No"))
                     lvMovies.Items.Add(lvItem)
                 End While
             End Using

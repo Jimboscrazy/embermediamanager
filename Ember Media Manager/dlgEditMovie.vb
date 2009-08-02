@@ -198,8 +198,8 @@ Public Class dlgEditMovie
 
     Private Sub pbStar1_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar1.MouseLeave
         Try
-            Dim tmpDBL As Double = 0
-            Double.TryParse(Me.tmpRating, tmpDBL)
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -222,8 +222,8 @@ Public Class dlgEditMovie
 
     Private Sub pbStar2_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar2.MouseLeave
         Try
-            Dim tmpDBL As Double = 0
-            Double.TryParse(Me.tmpRating, tmpDBL)
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -246,8 +246,8 @@ Public Class dlgEditMovie
 
     Private Sub pbStar3_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar3.MouseLeave
         Try
-            Dim tmpDBL As Double = 0
-            Double.TryParse(Me.tmpRating, tmpDBL)
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -270,8 +270,8 @@ Public Class dlgEditMovie
 
     Private Sub pbStar4_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar4.MouseLeave
         Try
-            Dim tmpDBL As Double = 0
-            Double.TryParse(Me.tmpRating, tmpDBL)
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -294,8 +294,8 @@ Public Class dlgEditMovie
 
     Private Sub pbStar5_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar5.MouseLeave
         Try
-            Dim tmpDBL As Double = 0
-            Double.TryParse(Me.tmpRating, tmpDBL)
+            Dim tmpDBL As Single = 0
+            Single.TryParse(Me.tmpRating, tmpDBL)
             Me.BuildStars(tmpDBL)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -317,23 +317,23 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar1.Click
-        Me.tmpRating = Me.pbStar1.Tag
+        Me.tmpRating = Me.pbStar1.Tag.ToString
     End Sub
 
     Private Sub pbStar2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar2.Click
-        Me.tmpRating = Me.pbStar2.Tag
+        Me.tmpRating = Me.pbStar2.Tag.ToString
     End Sub
 
     Private Sub pbStar3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar3.Click
-        Me.tmpRating = Me.pbStar3.Tag
+        Me.tmpRating = Me.pbStar3.Tag.ToString
     End Sub
 
     Private Sub pbStar4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar4.Click
-        Me.tmpRating = Me.pbStar4.Tag
+        Me.tmpRating = Me.pbStar4.Tag.ToString
     End Sub
 
     Private Sub pbStar5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar5.Click
-        Me.tmpRating = Me.pbStar5.Tag
+        Me.tmpRating = Me.pbStar5.Tag.ToString
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
@@ -487,7 +487,7 @@ Public Class dlgEditMovie
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Certification) Then
                     If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
-                        Dim lCert() As String = Master.currMovie.Movie.Certification.Trim.Split(New Char() {"/"})
+                        Dim lCert() As String = Master.currMovie.Movie.Certification.Trim.Split(Convert.ToChar("/"))
                         Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.CertificationLang), "\:(.*?)"))
                         If fCert.Count > 0 Then
                             .txtCerts.Text = fCert(0).ToString.Trim
@@ -542,7 +542,7 @@ Public Class dlgEditMovie
                 Next
 
                 Dim tRating As Single = Master.ConvertToSingle(Master.currMovie.Movie.Rating)
-                .tmpRating = tRating
+                .tmpRating = tRating.ToString
                 .pbStar1.Tag = tRating
                 .pbStar2.Tag = tRating
                 .pbStar3.Tag = tRating
@@ -589,7 +589,7 @@ Public Class dlgEditMovie
                     End If
 
                     If Master.eSettings.AutoThumbs > 0 Then
-                        .txtThumbCount.Text = Master.eSettings.AutoThumbs
+                        .txtThumbCount.Text = Master.eSettings.AutoThumbs.ToString
                     End If
                 End If
 
@@ -630,7 +630,7 @@ Public Class dlgEditMovie
                     Master.currMovie.Movie.MPAA = String.Concat(.lbMPAA.SelectedItem.ToString, " ", .txtMPAADesc.Text).Trim
                 Else
                     If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso .lbMPAA.SelectedIndex = 0)) Then
-                        Dim lCert() As String = .txtCerts.Text.Trim.Split(New Char() {"/"})
+                        Dim lCert() As String = .txtCerts.Text.Trim.Split(Convert.ToChar("/"))
                         Dim fCert = From eCert In lCert Where Regex.IsMatch(eCert, String.Concat(Regex.Escape(Master.eSettings.CertificationLang), "\:(.*?)"))
                         If fCert.Count > 0 Then
                             Master.currMovie.Movie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringManip.USACertToMPAA(fCert(0).ToString.Trim), fCert(0).ToString.Trim)
@@ -1036,8 +1036,8 @@ Public Class dlgEditMovie
     Private Sub lvThumbs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThumbs.SelectedIndexChanged
         If Me.lvThumbs.SelectedIndices.Count > 0 Then
             Try
-                Me.pbExtraThumbs.Image = Me.Thumbs.Item(Me.lvThumbs.SelectedItems(0).Tag).Image
-                Me.ExtraIndex = Me.lvThumbs.SelectedItems(0).Tag
+                Me.pbExtraThumbs.Image = Me.Thumbs.Item(Convert.ToInt32(Me.lvThumbs.SelectedItems(0).Tag)).Image
+                Me.ExtraIndex = Convert.ToInt32(Me.lvThumbs.SelectedItems(0).Tag)
                 Me.btnSetAsFanart.Enabled = True
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1479,11 +1479,11 @@ Public Class dlgEditMovie
             End Set
         End Property
 
-        Friend Property Index() As String
+        Friend Property Index() As Integer
             Get
                 Return _index
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _index = value
             End Set
         End Property

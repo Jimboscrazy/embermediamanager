@@ -101,13 +101,13 @@ Public Class dlgImgSelect
                         If Master.eSettings.UseImgCache Then
                             Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(original)_(url=", Me.rbXLarge.Tag, ").jpg")))
                         Else
-                            Me.tmpImage.FromWeb(Me.rbXLarge.Tag)
+                            Me.tmpImage.FromWeb(Me.rbXLarge.Tag.ToString)
                         End If
                     Case Me.rbLarge.Checked
                         If Master.eSettings.UseImgCache Then
                             Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(mid)_(url=", Me.rbLarge.Tag, ").jpg")))
                         Else
-                            Me.tmpImage.FromWeb(Me.rbLarge.Tag)
+                            Me.tmpImage.FromWeb(Me.rbLarge.Tag.ToString)
                         End If
                     Case Me.rbMedium.Checked
                         Me.tmpImage.Image = Me.pbImage(selIndex).Image
@@ -115,7 +115,7 @@ Public Class dlgImgSelect
                         If Master.eSettings.UseImgCache Then
                             Me.tmpImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(thumb)_(url=", Me.rbSmall.Tag, ").jpg")))
                         Else
-                            Me.tmpImage.FromWeb(Me.rbSmall.Tag)
+                            Me.tmpImage.FromWeb(Me.rbSmall.Tag.ToString)
                         End If
                 End Select
 
@@ -634,8 +634,8 @@ Public Class dlgImgSelect
             ReDim Preserve Me.pbImage(iIndex)
             Me.pnlImage(iIndex) = New Panel()
             Me.pbImage(iIndex) = New PictureBox()
-            Me.pbImage(iIndex).Name = iIndex
-            Me.pnlImage(iIndex).Name = iIndex
+            Me.pbImage(iIndex).Name = iIndex.ToString
+            Me.pnlImage(iIndex).Name = iIndex.ToString
             Me.pnlImage(iIndex).Size = New Size(256, 286)
             Me.pbImage(iIndex).Size = New Size(250, 250)
             Me.pnlImage(iIndex).BackColor = Color.White
@@ -658,7 +658,7 @@ Public Class dlgImgSelect
             If Me.DLType = Master.ImageType.Fanart Then
                 ReDim Preserve Me.chkImage(iIndex)
                 Me.chkImage(iIndex) = New CheckBox()
-                Me.chkImage(iIndex).Name = iIndex
+                Me.chkImage(iIndex).Name = iIndex.ToString
                 Me.chkImage(iIndex).Size = New Size(250, 30)
                 Me.chkImage(iIndex).AutoSize = False
                 Me.chkImage(iIndex).BackColor = Color.White
@@ -671,7 +671,7 @@ Public Class dlgImgSelect
             Else
                 ReDim Preserve Me.lblImage(iIndex)
                 Me.lblImage(iIndex) = New Label()
-                Me.lblImage(iIndex).Name = iIndex
+                Me.lblImage(iIndex).Name = iIndex.ToString
                 Me.lblImage(iIndex).Size = New Size(250, 30)
                 Me.lblImage(iIndex).AutoSize = False
                 Me.lblImage(iIndex).BackColor = Color.White
@@ -821,7 +821,7 @@ Public Class dlgImgSelect
 
     Private Sub pbImage_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
-            If Me.DLType = Master.ImageType.Fanart OrElse Not sender.tag.contains("themoviedb.org") Then
+            If Me.DLType = Master.ImageType.Fanart OrElse Not sender.tag.ToString.Contains("themoviedb.org") Then
                 Using dImgView As New dlgImgView
                     dImgView.ShowDialog(sender.image)
                 End Using
@@ -831,15 +831,15 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub pbImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag)
+        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag.ToString)
     End Sub
 
     Private Sub pnlImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag)
+        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag.ToString)
     End Sub
 
     Private Sub lblImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag)
+        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag.ToString)
     End Sub
 
     Private Sub dlgImgSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -1218,25 +1218,25 @@ Public Class dlgImgSelect
                     If Master.eSettings.UseImgCache Then
                         tImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(original)_(url=", Me.rbXLarge.Tag, ").jpg")))
                     Else
-                        tImage.FromWeb(Me.rbXLarge.Tag)
+                        tImage.FromWeb(Me.rbXLarge.Tag.ToString)
                     End If
                 Case rbLarge.Checked
                     If Master.eSettings.UseImgCache Then
                         tImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(mid)_(url=", Me.rbLarge.Tag, ").jpg")))
                     Else
-                        tImage.FromWeb(Me.rbLarge.Tag)
+                        tImage.FromWeb(Me.rbLarge.Tag.ToString)
                     End If
                 Case rbMedium.Checked
                     If Master.eSettings.UseImgCache Then
                         tImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(cover)_(url=", Me.rbMedium.Tag, ").jpg")))
                     Else
-                        tImage.FromWeb(Me.rbMedium.Tag)
+                        tImage.FromWeb(Me.rbMedium.Tag.ToString)
                     End If
                 Case rbSmall.Checked
                     If Master.eSettings.UseImgCache Then
                         tImage.FromFile(Path.Combine(CachePath, String.Concat("poster_(thumb)_(url=", Me.rbSmall.Tag, ").jpg")))
                     Else
-                        tImage.FromWeb(Me.rbSmall.Tag)
+                        tImage.FromWeb(Me.rbSmall.Tag.ToString)
                     End If
             End Select
 

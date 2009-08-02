@@ -26,9 +26,9 @@ Public Class dlgTranslationDL
         Try
             For Each lItem As ListViewItem In lvDownload.Items
                 If lItem.Checked Then
-                    Select Case lItem.Tag
+                    Select Case lItem.Tag.ToString
                         Case "translation"
-                            sHTTP.DownloadFile(lItem.SubItems(0).Tag, String.Empty, False, "translation")
+                            sHTTP.DownloadFile(lItem.SubItems(0).Tag.ToString, String.Empty, False, "translation")
                         Case "template"
                             tFind.SetSearchString(lItem.Group.Header.ToString, lItem.Text.Replace(Master.eLang.GetString(449, "Export Template: "), String.Empty).Trim)
                             tFound = Templates.Find(AddressOf tFind.Find)
@@ -38,7 +38,7 @@ Public Class dlgTranslationDL
                                 Next
                             End If
                         Case "movietheme"
-                            sHTTP.DownloadFile(lItem.SubItems(0).Tag, String.Empty, False, "movietheme")
+                            sHTTP.DownloadFile(lItem.SubItems(0).Tag.ToString, String.Empty, False, "movietheme")
                     End Select
                 End If
             Next

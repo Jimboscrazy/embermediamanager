@@ -174,7 +174,7 @@ Public Class FileFolderRenamer
                 End If
                 f.NewFileName = ProccessPattern(f, filePattern).Trim
                 f.NewPath = Path.Combine(Path.GetDirectoryName(f.Path), ProccessPattern(f, localForderPattern).Trim)
-                f.FileExist = File.Exists(Path.Combine(f.Source, f.NewFileName)) AndAlso Not (f.FileExist = f.NewFileName)
+                f.FileExist = File.Exists(Path.Combine(f.Source, f.NewFileName)) AndAlso Not (f.FileName = f.NewFileName)
                 f.DirExist = File.Exists(Path.Combine(f.Source, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
 
             Next
@@ -485,7 +485,7 @@ Public Class FileFolderRenamer
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
-                    mFolder = SQLReader("Path")
+                    mFolder = SQLReader("Path").ToString
                     If MovieFile.Path.StartsWith(mFolder) Then
                         MovieFile.Path = MovieFile.Path.Substring(mFolder.Length)
                         If MovieFile.Path.Substring(0, 1) = Path.DirectorySeparatorChar Then
@@ -501,7 +501,7 @@ Public Class FileFolderRenamer
         MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_tmpMovie.Filename))
         MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern).Trim
         MovieFile.NewPath = ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim
-        MovieFile.FileExist = File.Exists(Path.Combine(MovieFile.Source, MovieFile.NewFileName)) AndAlso Not (MovieFile.FileExist = MovieFile.NewFileName)
+        MovieFile.FileExist = File.Exists(Path.Combine(MovieFile.Source, MovieFile.NewFileName)) AndAlso Not (MovieFile.FileName = MovieFile.NewFileName)
         MovieFile.DirExist = File.Exists(Path.Combine(MovieFile.Source, MovieFile.NewPath)) AndAlso Not (MovieFile.Path = MovieFile.NewPath)
         DoRenameSingle(MovieFile, _tmpMovie, BatchMode, toNfo)
     End Sub

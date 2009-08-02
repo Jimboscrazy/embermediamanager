@@ -233,51 +233,51 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT * FROM movies WHERE id = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
 
-                    If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle")
-                    If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath")
-                    _movieDB.isSingle = SQLreader("type")
-                    If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _movieDB.FanartPath = SQLreader("FanartPath")
-                    If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _movieDB.PosterPath = SQLreader("PosterPath")
-                    If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.TrailerPath = SQLreader("TrailerPath")
-                    If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.NfoPath = SQLreader("NfoPath")
-                    If Not DBNull.Value.Equals(SQLreader("SubPath")) Then _movieDB.SubPath = SQLreader("SubPath")
-                    If Not DBNull.Value.Equals(SQLreader("ExtraPath")) Then _movieDB.ExtraPath = SQLreader("ExtraPath")
-                    If Not DBNull.Value.Equals(SQLreader("source")) Then _movieDB.Source = SQLreader("source")
-                    _movieDB.IsMark = SQLreader("mark")
-                    _movieDB.IsLock = SQLreader("lock")
-                    _movieDB.UseFolder = SQLreader("UseFolder")
-                    _movieDB.OutOfTolerance = SQLreader("OutOfTolerance")
-                    _movieDB.NeedsSave = SQLreader("NeedsSave")
-                    If Not DBNull.Value.Equals(SQLreader("FileSource")) Then _movieDB.FileSource = SQLreader("FileSource")
+                    If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle").ToString
+                    If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath").ToString
+                    _movieDB.isSingle = Convert.ToBoolean(SQLreader("type"))
+                    If Not DBNull.Value.Equals(SQLreader("FanartPath")) Then _movieDB.FanartPath = SQLreader("FanartPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("PosterPath")) Then _movieDB.PosterPath = SQLreader("PosterPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.TrailerPath = SQLreader("TrailerPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.NfoPath = SQLreader("NfoPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("SubPath")) Then _movieDB.SubPath = SQLreader("SubPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("ExtraPath")) Then _movieDB.ExtraPath = SQLreader("ExtraPath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("source")) Then _movieDB.Source = SQLreader("source").ToString
+                    _movieDB.IsMark = Convert.ToBoolean(SQLreader("mark"))
+                    _movieDB.IsLock = Convert.ToBoolean(SQLreader("lock"))
+                    _movieDB.UseFolder = Convert.ToBoolean(SQLreader("UseFolder"))
+                    _movieDB.OutOfTolerance = Convert.ToBoolean(SQLreader("OutOfTolerance"))
+                    _movieDB.NeedsSave = Convert.ToBoolean(SQLreader("NeedsSave"))
+                    If Not DBNull.Value.Equals(SQLreader("FileSource")) Then _movieDB.FileSource = SQLreader("FileSource").ToString
                     _movieDB.Movie = New Media.Movie
                     With _movieDB.Movie
                         .Clear()
-                        If Not DBNull.Value.Equals(SQLreader("IMDB")) Then .ID = SQLreader("IMDB")
-                        If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title")
-                        If Not DBNull.Value.Equals(SQLreader("OriginalTitle")) Then .OriginalTitle = SQLreader("OriginalTitle")
-                        If Not DBNull.Value.Equals(SQLreader("Year")) Then .Year = SQLreader("Year")
-                        If Not DBNull.Value.Equals(SQLreader("Rating")) Then .Rating = SQLreader("Rating")
-                        If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes")
-                        If Not DBNull.Value.Equals(SQLreader("MPAA")) Then .MPAA = SQLreader("MPAA")
-                        If Not DBNull.Value.Equals(SQLreader("Top250")) Then .Top250 = SQLreader("Top250")
-                        If Not DBNull.Value.Equals(SQLreader("Outline")) Then .Outline = SQLreader("Outline")
-                        If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot")
-                        If Not DBNull.Value.Equals(SQLreader("Tagline")) Then .Tagline = SQLreader("Tagline")
-                        If Not DBNull.Value.Equals(SQLreader("Trailer")) Then .Trailer = SQLreader("Trailer")
-                        If Not DBNull.Value.Equals(SQLreader("Certification")) Then .Certification = SQLreader("Certification")
-                        If Not DBNull.Value.Equals(SQLreader("Genre")) Then .Genre = SQLreader("Genre")
-                        If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime")
-                        If Not DBNull.Value.Equals(SQLreader("ReleaseDate")) Then .ReleaseDate = SQLreader("ReleaseDate")
-                        If Not DBNull.Value.Equals(SQLreader("Studio")) Then .Studio = SQLreader("Studio")
-                        If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director")
-                        If Not DBNull.Value.Equals(SQLreader("Credits")) Then .Credits = SQLreader("Credits")
-                        If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount")
-                        If Not DBNull.Value.Equals(SQLreader("Watched")) Then .Watched = SQLreader("Watched")
-                        If Not DBNull.Value.Equals(SQLreader("File")) Then .File = SQLreader("File")
-                        If Not DBNull.Value.Equals(SQLreader("Path")) Then .Path = SQLreader("Path")
-                        If Not DBNull.Value.Equals(SQLreader("FileNameAndPath")) Then .FileNameAndPath = SQLreader("FileNameAndPath")
-                        If Not DBNull.Value.Equals(SQLreader("Status")) Then .Status = SQLreader("Status")
-                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) Then .Fanart.URL = SQLreader("FanartURL")
+                        If Not DBNull.Value.Equals(SQLreader("IMDB")) Then .ID = SQLreader("IMDB").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
+                        If Not DBNull.Value.Equals(SQLreader("OriginalTitle")) Then .OriginalTitle = SQLreader("OriginalTitle").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Year")) Then .Year = SQLreader("Year").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Rating")) Then .Rating = SQLreader("Rating").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
+                        If Not DBNull.Value.Equals(SQLreader("MPAA")) Then .MPAA = SQLreader("MPAA").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Top250")) Then .Top250 = SQLreader("Top250").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Outline")) Then .Outline = SQLreader("Outline").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Tagline")) Then .Tagline = SQLreader("Tagline").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Trailer")) Then .Trailer = SQLreader("Trailer").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Certification")) Then .Certification = SQLreader("Certification").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Genre")) Then .Genre = SQLreader("Genre").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
+                        If Not DBNull.Value.Equals(SQLreader("ReleaseDate")) Then .ReleaseDate = SQLreader("ReleaseDate").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Studio")) Then .Studio = SQLreader("Studio").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Credits")) Then .Credits = SQLreader("Credits").ToString
+                        If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = SQLreader("PlayCount").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Watched")) Then .Watched = SQLreader("Watched").ToString
+                        If Not DBNull.Value.Equals(SQLreader("File")) Then .File = SQLreader("File").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Path")) Then .Path = SQLreader("Path").ToString
+                        If Not DBNull.Value.Equals(SQLreader("FileNameAndPath")) Then .FileNameAndPath = SQLreader("FileNameAndPath").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Status")) Then .Status = SQLreader("Status").ToString
+                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) Then .Fanart.URL = SQLreader("FanartURL").ToString
                     End With
 
                 End Using
@@ -290,9 +290,9 @@ Public Class Database
                     Dim person As Media.Person
                     While SQLreader.Read
                         person = New Media.Person
-                        person.Name = SQLreader("ActorName")
-                        person.Role = SQLreader("Role")
-                        person.Thumb = SQLreader("thumb")
+                        person.Name = SQLreader("ActorName").ToString
+                        person.Role = SQLreader("Role").ToString
+                        person.Thumb = SQLreader("thumb").ToString
                         _movieDB.Movie.Actors.Add(person)
                     End While
                 End Using
@@ -304,12 +304,12 @@ Public Class Database
                     Dim video As MediaInfo.Video
                     While SQLreader.Read
                         video = New MediaInfo.Video
-                        If Not DBNull.Value.Equals(SQLreader("Video_Width")) Then video.Width = SQLreader("Video_Width")
-                        If Not DBNull.Value.Equals(SQLreader("Video_Height")) Then video.Height = SQLreader("Video_Height")
-                        If Not DBNull.Value.Equals(SQLreader("Video_Codec")) Then video.Codec = SQLreader("Video_Codec")
-                        If Not DBNull.Value.Equals(SQLreader("Video_Duration")) Then video.Duration = SQLreader("Video_Duration")
-                        If Not DBNull.Value.Equals(SQLreader("Video_ScanType")) Then video.Scantype = SQLreader("Video_ScanType")
-                        If Not DBNull.Value.Equals(SQLreader("Video_AspectDisplayRatio")) Then video.Aspect = SQLreader("Video_AspectDisplayRatio")
+                        If Not DBNull.Value.Equals(SQLreader("Video_Width")) Then video.Width = SQLreader("Video_Width").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_Height")) Then video.Height = SQLreader("Video_Height").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_Codec")) Then video.Codec = SQLreader("Video_Codec").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_Duration")) Then video.Duration = SQLreader("Video_Duration").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_ScanType")) Then video.Scantype = SQLreader("Video_ScanType").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_AspectDisplayRatio")) Then video.Aspect = SQLreader("Video_AspectDisplayRatio").ToString
                         _movieDB.Movie.FileInfo.StreamDetails.Video.Add(video)
                     End While
                 End Using
@@ -321,10 +321,10 @@ Public Class Database
                     Dim audio As MediaInfo.Audio
                     While SQLreader.Read
                         audio = New MediaInfo.Audio
-                        If Not DBNull.Value.Equals(SQLreader("Audio_Language")) Then audio.Language = SQLreader("Audio_Language")
-                        If Not DBNull.Value.Equals(SQLreader("Audio_LongLanguage")) Then audio.LongLanguage = SQLreader("Audio_LongLanguage")
-                        If Not DBNull.Value.Equals(SQLreader("Audio_Codec")) Then audio.Codec = SQLreader("Audio_Codec")
-                        If Not DBNull.Value.Equals(SQLreader("Audio_Channel")) Then audio.Channels = SQLreader("Audio_Channel")
+                        If Not DBNull.Value.Equals(SQLreader("Audio_Language")) Then audio.Language = SQLreader("Audio_Language").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Audio_LongLanguage")) Then audio.LongLanguage = SQLreader("Audio_LongLanguage").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Audio_Codec")) Then audio.Codec = SQLreader("Audio_Codec").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Audio_Channel")) Then audio.Channels = SQLreader("Audio_Channel").ToString
                         _movieDB.Movie.FileInfo.StreamDetails.Audio.Add(audio)
                     End While
                 End Using
@@ -335,8 +335,8 @@ Public Class Database
                     Dim subtitle As MediaInfo.Subtitle
                     While SQLreader.Read
                         subtitle = New MediaInfo.Subtitle
-                        If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language")
-                        If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage")
+                        If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
                         _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Add(subtitle)
                     End While
                 End Using
@@ -347,8 +347,8 @@ Public Class Database
                     Dim sets As Media.Set
                     While SQLreader.Read
                         sets = New Media.Set
-                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.SetContainer.Set = SQLreader("SetName")
-                        If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.SetContainer.Order = SQLreader("SetOrder")
+                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.SetContainer.Set = SQLreader("SetName").ToString
+                        If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.SetContainer.Order = SQLreader("SetOrder").ToString
                         _movieDB.Movie.Sets.Add(sets)
                     End While
                 End Using
@@ -359,8 +359,8 @@ Public Class Database
                     Dim thumb As Media.Thumb
                     While SQLreader.Read
                         thumb = New Media.Thumb
-                        If Not DBNull.Value.Equals(SQLreader("preview")) Then thumb.Preview = SQLreader("preview")
-                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then thumb.Text = SQLreader("thumbs")
+                        If Not DBNull.Value.Equals(SQLreader("preview")) Then thumb.Preview = SQLreader("preview").ToString
+                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then thumb.Text = SQLreader("thumbs").ToString
                         _movieDB.Movie.Fanart.Thumb.Add(thumb)
                     End While
                 End Using
@@ -369,7 +369,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesPosters WHERE MovieID = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then _movieDB.Movie.Thumb.Add(SQLreader("thumbs"))
+                        If Not DBNull.Value.Equals(SQLreader("thumbs")) Then _movieDB.Movie.Thumb.Add(SQLreader("thumbs").ToString)
                     End While
                 End Using
             End Using
@@ -387,7 +387,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("SELECT ID FROM movies WHERE MoviePath = ", sPath, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.Read Then
-                        Return LoadMovieFromDB(SQLreader("ID"))
+                        Return LoadMovieFromDB(Convert.ToInt64(SQLreader("ID")))
                     Else
                         Return New Master.DBMovie With {.Id = -1} ' No Movie Found
                     End If
@@ -541,7 +541,7 @@ Public Class Database
                     End If
                     Using rdrMovie As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         If rdrMovie.Read Then
-                            _movieDB.ID = rdrMovie(0)
+                            _movieDB.ID = Convert.ToInt64(rdrMovie(0))
                         Else
                             Master.eLog.WriteToErrorLog("Something very wrong here: SaveMovieToDB", _movieDB.ToString, "Error")
                             _movieDB.ID = -1
@@ -741,7 +741,7 @@ Public Class Database
     '    Return _movieDB
     'End Function
 
-    Public Function DeleteFromDB(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False) As Boolean
+    Public Function DeleteFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = Master.DB.BeginTransaction

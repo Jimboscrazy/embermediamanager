@@ -147,10 +147,10 @@ Public Class dlgIMDBSearchResults
         Try
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
-            If Not String.IsNullOrEmpty(e.Node.Tag) Then
+            If Not String.IsNullOrEmpty(e.Node.Tag.ToString) Then
                 Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
                 Me.pnlLoading.Visible = True
-                IMDB.GetSearchMovieInfoAsync(e.Node.Tag, Master.tmpMovie, Master.DefaultOptions)
+                IMDB.GetSearchMovieInfoAsync(e.Node.Tag.ToString, Master.tmpMovie, Master.DefaultOptions)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -164,7 +164,7 @@ Public Class dlgIMDBSearchResults
         ' the web server is slow to respond or not reachable, hanging the GUI)
         '\\
 
-        Dim Args As Arguments = e.Argument
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim tImage As Image = Nothing
         Try
             Dim wrRequest As System.Net.WebRequest = System.Net.WebRequest.Create(Args.pURL)
@@ -187,7 +187,7 @@ Public Class dlgIMDBSearchResults
         ' Thread finished: display pic if it was able to get one
         '\\
 
-        Dim Res As Results = e.Result
+        Dim Res As Results = DirectCast(e.Result, Results)
 
         Try
             Me.pbPoster.Image = Res.Result

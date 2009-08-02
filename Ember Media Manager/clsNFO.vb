@@ -391,7 +391,7 @@ Public Class NFO
                     If sinChans > sinMostChannels Then
                         sinMostChannels = sinChans
                         fiaOut.Codec = miAudio.Codec
-                        fiaOut.Channels = sinChans
+                        fiaOut.Channels = sinChans.ToString
                         fiaOut.Language = miAudio.Language
                     End If
                 End If
@@ -414,8 +414,8 @@ Public Class NFO
         Dim resOut As String = String.Empty
         Try
             If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then
-                Dim iWidth As Integer = fiRes.Width
-                Dim iHeight As Integer = fiRes.Height
+                Dim iWidth As Integer = Convert.ToInt32(fiRes.Width)
+                Dim iHeight As Integer = Convert.ToInt32(fiRes.Height)
                 Dim sinADR As Single = Master.ConvertToSingle(fiRes.Aspect)
 
                 Select Case True

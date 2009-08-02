@@ -205,7 +205,7 @@ Namespace TMDB
         End Function
 
         Private Sub bwTMDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTMDB.DoWork
-            Dim Args As Arguments = e.Argument
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Try
                 e.Result = GetTMDBImages(Args.Parameter, Args.sType)
             Catch ex As Exception
@@ -222,7 +222,7 @@ Namespace TMDB
 
         Private Sub bwTMDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTMDB.RunWorkerCompleted
             If Not IsNothing(e.Result) Then
-                RaiseEvent PostersDownloaded(e.Result)
+                RaiseEvent PostersDownloaded(DirectCast(e.Result, List(Of Media.Image)))
             End If
         End Sub
     End Class

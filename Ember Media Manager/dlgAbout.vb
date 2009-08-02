@@ -42,12 +42,12 @@ Public NotInheritable Class dlgAbout
 
         Using g As Graphics = Graphics.FromImage(iBackground)
             g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-            Dim DrawRect As New Rectangle(0, 0, picDisplay.ClientSize.Width, picDisplay.ClientSize.Height * 0.735)
+            Dim DrawRect As New Rectangle(0, 0, picDisplay.ClientSize.Width, Convert.ToInt32(picDisplay.ClientSize.Height * 0.735))
             g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.FromArgb(255, 200, 200, 255), Color.FromArgb(255, 250, 250, 250), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-            DrawRect = New Rectangle(0, picDisplay.ClientSize.Height * 0.735, picDisplay.ClientSize.Width, picDisplay.ClientSize.Height * 0.265)
+            DrawRect = New Rectangle(0, Convert.ToInt32(picDisplay.ClientSize.Height * 0.735), picDisplay.ClientSize.Width, Convert.ToInt32(picDisplay.ClientSize.Height * 0.265))
             g.FillRectangle(New Drawing2D.LinearGradientBrush(DrawRect, Color.White, Color.FromArgb(255, 230, 230, 230), Drawing2D.LinearGradientMode.Vertical), DrawRect)
-            Dim x As Integer = (picDisplay.Width - My.Resources.Logo.Width) / 2
-            Dim y As Integer = (picDisplay.Height - My.Resources.Logo.Height) / 2
+            Dim x As Integer = Convert.ToInt32((picDisplay.Width - My.Resources.Logo.Width) / 2)
+            Dim y As Integer = Convert.ToInt32((picDisplay.Height - My.Resources.Logo.Height) / 2)
             g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
             Me.picDisplay.BackgroundImage = iBackground
         End Using

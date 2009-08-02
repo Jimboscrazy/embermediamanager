@@ -740,7 +740,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 320)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 298)
         '
         'cmnuTitle
         '
@@ -1429,6 +1429,7 @@ Partial Class frmMain
         Me.txtCerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtCerts.Location = New System.Drawing.Point(117, 208)
         Me.txtCerts.Name = "txtCerts"
+        Me.txtCerts.ReadOnly = True
         Me.txtCerts.Size = New System.Drawing.Size(219, 20)
         Me.txtCerts.TabIndex = 41
         '
@@ -1553,6 +1554,7 @@ Partial Class frmMain
         Me.txtFilePath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFilePath.Location = New System.Drawing.Point(3, 254)
         Me.txtFilePath.Name = "txtFilePath"
+        Me.txtFilePath.ReadOnly = True
         Me.txtFilePath.Size = New System.Drawing.Size(311, 20)
         Me.txtFilePath.TabIndex = 31
         '
@@ -1576,6 +1578,7 @@ Partial Class frmMain
         Me.txtIMDBID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtIMDBID.Location = New System.Drawing.Point(3, 208)
         Me.txtIMDBID.Name = "txtIMDBID"
+        Me.txtIMDBID.ReadOnly = True
         Me.txtIMDBID.Size = New System.Drawing.Size(108, 20)
         Me.txtIMDBID.TabIndex = 29
         '

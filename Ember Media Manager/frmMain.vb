@@ -133,8 +133,8 @@ Public Class frmMain
             RemoveGenreToolStripMenuItem.Enabled = True
             AddGenreToolStripMenuItem.Enabled = True
         Else
-            RemoveGenreToolStripMenuItem.Enabled = GenreListToolStripComboBox.Tag.contains(GenreListToolStripComboBox.Text)
-            AddGenreToolStripMenuItem.Enabled = Not GenreListToolStripComboBox.Tag.contains(GenreListToolStripComboBox.Text)
+            RemoveGenreToolStripMenuItem.Enabled = GenreListToolStripComboBox.Tag.ToString.Contains(GenreListToolStripComboBox.Text)
+            AddGenreToolStripMenuItem.Enabled = Not GenreListToolStripComboBox.Tag.ToString.Contains(GenreListToolStripComboBox.Text)
         End If
         SetGenreToolStripMenuItem.Enabled = True
     End Sub
@@ -209,9 +209,9 @@ Public Class frmMain
                 Me.MoveMPAA()
                 Me.MoveGenres()
                 ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
-                Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
-                Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
+                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+                Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
+                Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
                 Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
                 Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
             End If
@@ -413,7 +413,7 @@ Public Class frmMain
                         Do While Not Me.LoadingDone
                             Application.DoEvents()
                         Loop
-                        ScrapeData(clScrapeType, Master.DefaultOptions, clAsk)
+                        ScrapeData(clScrapeType, Master.DefaultOptions, Nothing, clAsk)
                     Catch ex As Exception
                         Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                     End Try
@@ -583,7 +583,7 @@ Public Class frmMain
         ' Begin thread to download actor image if one exists
         '\\
         Try
-            If Not Me.alActors.Item(Me.lstActors.SelectedIndex) = "none" Then
+            If Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString = "none" Then
 
                 If Not IsNothing(Me.pbActors.Image) Then
                     Me.pbActors.Image.Dispose()
@@ -599,7 +599,7 @@ Public Class frmMain
 
                 Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadPic.WorkerSupportsCancellation = True
-                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pType = PicType.Actor, .pURL = Me.alActors.Item(Me.lstActors.SelectedIndex)})
+                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pType = PicType.Actor, .pURL = Me.alActors.Item(Me.lstActors.SelectedIndex).ToString})
 
             Else
                 Me.pbActors.Image = My.Resources.actor_silhouette
@@ -728,7 +728,7 @@ Public Class frmMain
         ' Refresh Media Info
         '\\
 
-        Me.LoadInfo(Master.currMovie.ID, Master.currMovie.Filename, False, True, True)
+        Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
 
     End Sub
 
@@ -737,7 +737,7 @@ Public Class frmMain
             If Me.dgvMediaList.SelectedRows.Count > 1 Then
                 Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
             ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
-                Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value
+                Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
             End If
         End If
 
@@ -759,9 +759,9 @@ Public Class frmMain
             Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-            Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
+            Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
             Master.currMovie = Master.DB.LoadMovieFromDB(ID)
-            Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
+            Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
 
             Using dEditMovie As New dlgEditMovie
 
@@ -775,7 +775,7 @@ Public Class frmMain
                     Case Windows.Forms.DialogResult.Abort
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                     Case Else
-                        If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
+                        If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                 End Select
 
             End Using
@@ -807,17 +807,17 @@ Public Class frmMain
         Try
             If Master.eSettings.AllwaysDisplayGenresText Then Return
             Dim iLeft As Integer = 0
-            Me.GenreImage = sender.image
+            Me.GenreImage = DirectCast(sender.image, Image)
             Dim bmGenre As New Bitmap(Me.GenreImage)
             Dim grGenre As Graphics = Graphics.FromImage(bmGenre)
-            Dim drawString As String = sender.Name
+            Dim drawString As String = sender.Name.ToString
             Dim drawFont As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
             Dim drawBrush As New SolidBrush(Color.White)
             Dim drawWidth As Single = grGenre.MeasureString(drawString, drawFont).Width
-            Dim drawSize As Integer = (14 * (bmGenre.Width / drawWidth)) - 0.5
+            Dim drawSize As Integer = Convert.ToInt32((14 * (bmGenre.Width / drawWidth)) - 0.5)
             drawFont = New Font("Microsoft Sans Serif", If(drawSize > 14, 14, drawSize), FontStyle.Bold, GraphicsUnit.Pixel)
             Dim drawHeight As Single = grGenre.MeasureString(drawString, drawFont).Height
-            iLeft = (bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2
+            iLeft = Convert.ToInt32((bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2)
             grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
             sender.Image = bmGenre
         Catch ex As Exception
@@ -897,9 +897,9 @@ Public Class frmMain
                 Me.MoveGenres()
 
                 ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
-                Me.pnlNoInfo.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, (Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2)
-                Me.pnlCancel.Location = New Point((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2, 100)
+                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+                Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
+                Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 100)
                 Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
                 Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
             End If
@@ -950,7 +950,7 @@ Public Class frmMain
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
-                Dim offset As Integer = (e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2
+                Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
 
                 pt.X += offset
                 pt.Y = 1
@@ -1000,7 +1000,7 @@ Public Class frmMain
                 If Me.dgvMediaList.SelectedRows.Count > 1 Then
                     Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
                 ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value
+                    Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
                 End If
 
                 If Me.bwLoadInfo.IsBusy Then
@@ -1271,10 +1271,10 @@ Public Class frmMain
                 Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-                Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
+                Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
                 Master.currMovie = Master.DB.LoadMovieFromDB(ID)
                 Me.tslStatus.Text = Master.currMovie.Filename
-                Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
+                Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
 
                 Using dEditMovie As New dlgEditMovie
 
@@ -1289,7 +1289,7 @@ Public Class frmMain
                         Case Windows.Forms.DialogResult.Abort
                             Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                         Case Else
-                            If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
+                            If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                     End Select
 
                 End Using
@@ -1308,7 +1308,7 @@ Public Class frmMain
                 For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                     'if any one item is set as unmarked, set menu to mark
                     'else they are all marked, so set menu to unmark
-                    If Not sRow.Cells(11).Value Then
+                    If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
                         setMark = True
                         Exit For
                     End If
@@ -1332,7 +1332,7 @@ Public Class frmMain
 
             setMark = False
             For Each sRow As DataGridViewRow In Me.dgvMediaList.Rows
-                If sRow.Cells(11).Value Then
+                If Convert.ToBoolean(sRow.Cells(11).Value) Then
                     setMark = True
                     Exit For
                 End If
@@ -1352,7 +1352,7 @@ Public Class frmMain
                 For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                     'if any one item is set as unlocked, set menu to lock
                     'else they are all locked so set menu to unlock
-                    If Not sRow.Cells(14).Value Then
+                    If Not Convert.ToBoolean(sRow.Cells(14).Value) Then
                         setLock = True
                         Exit For
                     End If
@@ -1387,8 +1387,8 @@ Public Class frmMain
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                     SQLcommand.CommandText = "UPDATE movies SET Genre = (?) WHERE id = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                        If Not sRow.Cells(26).Value.contains(Me.GenreListToolStripComboBox.Text) Then
-                            If Not String.IsNullOrEmpty(sRow.Cells(26).Value) Then
+                        If Not sRow.Cells(26).Value.ToString.Contains(Me.GenreListToolStripComboBox.Text) Then
+                            If Not String.IsNullOrEmpty(sRow.Cells(26).Value.ToString) Then
                                 parGenre.Value = String.Format("{0} / {1}", sRow.Cells(26).Value, Me.GenreListToolStripComboBox.Text).Trim
                             Else
                                 parGenre.Value = Me.GenreListToolStripComboBox.Text.Trim
@@ -1408,7 +1408,7 @@ Public Class frmMain
                 SQLtransaction.Commit()
             End Using
 
-            Me.LoadInfo(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value, Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value, True, False)
+            Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value), Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1438,7 +1438,7 @@ Public Class frmMain
                 SQLtransaction.Commit()
             End Using
 
-            Me.LoadInfo(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value, Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value, True, False)
+            Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value), Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1452,7 +1452,7 @@ Public Class frmMain
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                     SQLcommand.CommandText = "UPDATE movies SET Genre = (?) WHERE id = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                        If sRow.Cells(26).Value.contains(Me.GenreListToolStripComboBox.Text) Then
+                        If sRow.Cells(26).Value.ToString.Contains(Me.GenreListToolStripComboBox.Text) Then
                             parGenre.Value = sRow.Cells(26).Value.ToString.Replace(String.Concat(" / ", Me.GenreListToolStripComboBox.Text), String.Empty).Replace(String.Concat(Me.GenreListToolStripComboBox.Text, " / "), String.Empty).Replace(Me.GenreListToolStripComboBox.Text, String.Empty).Trim
                             parID.Value = sRow.Cells(0).Value
                             SQLcommand.ExecuteNonQuery()
@@ -1469,7 +1469,7 @@ Public Class frmMain
                 SQLtransaction.Commit()
             End Using
 
-            Me.LoadInfo(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value, Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value, True, False)
+            Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, Me.dgvMediaList.CurrentCell.RowIndex).Value), Me.dgvMediaList.Item(1, Me.dgvMediaList.CurrentCell.RowIndex).Value.ToString, True, False)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1482,7 +1482,7 @@ Public Class frmMain
         ' Begin the process to scrape IMDB with the current ID
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, Me.dgvMediaList.SelectedRows(0).Cells(0).Value)
+        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value))
     End Sub
 
     Private Sub cmnuSearchNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSearchNew.Click
@@ -1491,7 +1491,7 @@ Public Class frmMain
         ' Begin the process to search IMDB for data
         '\\
 
-        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, Me.dgvMediaList.SelectedRows(0).Cells(0).Value, True)
+        Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), True)
     End Sub
 
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
@@ -1502,8 +1502,8 @@ Public Class frmMain
 
         Try
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-            Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
-            Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
+            Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
+            Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
 
             Using dEditMovie As New dlgEditMovie
                 Select Case dEditMovie.ShowDialog()
@@ -1517,7 +1517,7 @@ Public Class frmMain
                     Case Windows.Forms.DialogResult.Abort
                         Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                     Case Else
-                        If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
+                        If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                 End Select
             End Using
         Catch ex As Exception
@@ -1528,7 +1528,7 @@ Public Class frmMain
     Private Sub dgvMediaList_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMediaList.MouseDown
         Try
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMediaList.RowCount > 0 Then
-                Dim dgvHTI As DataGridView.HitTestInfo = sender.HitTest(e.X, e.Y)
+                Dim dgvHTI As DataGridView.HitTestInfo = dgvMediaList.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
                     If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
@@ -1547,13 +1547,13 @@ Public Class frmMain
                         For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                             'if any one item is set as unmarked, set menu to mark
                             'else they are all marked, so set menu to unmark
-                            If Not sRow.Cells(11).Value Then
+                            If Not Convert.ToBoolean(sRow.Cells(11).Value) Then
                                 setMark = True
                                 If setLock Then Exit For
                             End If
                             'if any one item is set as unlocked, set menu to lock
                             'else they are all locked so set menu to unlock
-                            If Not sRow.Cells(14).Value Then
+                            If Not Convert.ToBoolean(sRow.Cells(14).Value) Then
                                 setLock = True
                                 If setMark Then Exit For
                             End If
@@ -1595,8 +1595,8 @@ Public Class frmMain
                             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Item(3, dgvHTI.RowIndex)
                         End If
 
-                        Me.cmnuMark.Text = If(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value, Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                        Me.cmnuLock.Text = If(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value, Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                        Me.cmnuMark.Text = If(Convert.ToBoolean(Me.dgvMediaList.Item(11, dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                        Me.cmnuLock.Text = If(Convert.ToBoolean(Me.dgvMediaList.Item(14, dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
 
                         Me.GenreListToolStripComboBox.Tag = Me.dgvMediaList.Item(26, dgvHTI.RowIndex).Value
                         Me.GenreListToolStripComboBox.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
@@ -2281,7 +2281,7 @@ Public Class frmMain
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                    doFill = Me.RefreshMovie(sRow.Cells(0).Value, doBatch)
+                    doFill = Me.RefreshMovie(Convert.ToInt64(sRow.Cells(0).Value), doBatch)
                 Next
                 SQLtransaction.Commit()
             End Using
@@ -2406,7 +2406,7 @@ Public Class frmMain
         Me.pnlFilterGenre.Location = New Point(Me.gbSpecific.Left + Me.txtFilterGenre.Left, (Me.pnlFilter.Top + Me.txtFilterGenre.Top + Me.gbSpecific.Top) - Me.pnlFilterGenre.Height)
         If Me.pnlFilterGenre.Visible Then
             Me.pnlFilterGenre.Visible = False
-        ElseIf Not Me.pnlFilterGenre.Tag = "NO" Then
+        ElseIf Not Me.pnlFilterGenre.Tag.ToString = "NO" Then
             Me.pnlFilterGenre.Tag = String.Empty
             Me.pnlFilterGenre.Visible = True
             Me.clbFilterGenres.Focus()
@@ -2419,7 +2419,7 @@ Public Class frmMain
         Me.pnlFilterSource.Location = New Point(Me.gbSpecific.Left + Me.txtFilterSource.Left, (Me.pnlFilter.Top + Me.txtFilterSource.Top + Me.gbSpecific.Top) - Me.pnlFilterSource.Height)
         If Me.pnlFilterSource.Visible Then
             Me.pnlFilterSource.Visible = False
-        ElseIf Not Me.pnlFilterSource.Tag = "NO" Then
+        ElseIf Not Me.pnlFilterSource.Tag.ToString = "NO" Then
             Me.pnlFilterSource.Tag = String.Empty
             Me.pnlFilterSource.Visible = True
             Me.clbFilterSource.Focus()
@@ -2503,7 +2503,7 @@ Public Class frmMain
         Try
             Cursor.Current = Cursors.WaitCursor
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-            Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
+            Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
             FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, True)
             Me.SetListItemAfterEdit(ID, indX)
             If Me.RefreshMovie(ID) Then
@@ -2517,8 +2517,8 @@ Public Class frmMain
     End Sub
     Private Sub cmnuRenameManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenameManual.Click
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-        Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
-        Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
+        Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
+        Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
         Using dRenameManual As New dlgRenameManual
             Select Case dRenameManual.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
@@ -2533,8 +2533,8 @@ Public Class frmMain
 
     Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-        Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
-        Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
+        Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
+        Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
         Using dEditMeta As New dlgFileInfo
             Select Case dEditMeta.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
@@ -2573,7 +2573,7 @@ Public Class frmMain
         ' Thread to count directories to prepare for loading media
         '\\
 
-        Dim Args As Arguments = e.Argument
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
             Master.alMoviePaths.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -2594,7 +2594,7 @@ Public Class frmMain
                 End If
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        Master.ScanSourceDir(SQLreader("Name"), SQLreader("Path"), SQLreader("Recursive"), SQLreader("Foldername"), SQLreader("Single"))
+                        Master.ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")))
                         If Me.bwPrelim.CancellationPending Then
                             e.Cancel = True
                             Return
@@ -2615,10 +2615,10 @@ Public Class frmMain
                         SQLcommand.CommandText = "DELETE FROM movies WHERE MoviePath = (?);"
                         Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMoviePath", DbType.String, 0, "MoviePath")
                         For Each mRow As DataRow In dtMediaList.Rows
-                            pExt = Path.GetExtension(mRow.Item(0)).ToLower
-                            MLFind.SearchString = mRow.Item(0)
+                            pExt = Path.GetExtension(mRow.Item(0).ToString).ToLower
+                            MLFind.SearchString = mRow.Item(0).ToString
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
-                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2) = Args.SourceName)) OrElse (Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0)).ToLower) AndAlso (Not Master.eSettings.AutoDetectVTS OrElse (Master.eSettings.AutoDetectVTS AndAlso Not pExt = ".ifo" AndAlso Not pExt = ".vob" AndAlso Not pExt = ".bup"))) Then
+                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2) = Args.SourceName)) OrElse (Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0).ToString).ToLower) AndAlso (Not Master.eSettings.AutoDetectVTS OrElse (Master.eSettings.AutoDetectVTS AndAlso Not pExt = ".ifo" AndAlso Not pExt = ".vob" AndAlso Not pExt = ".bup"))) Then
                                 parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
 
@@ -2819,7 +2819,7 @@ Public Class frmMain
         '//
         ' Thread to procure technical and tag information about media via MediaInfo.dll
         '\\
-        Dim Args As Arguments = e.Argument
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
 
         Try
             Me.UpdateMediaInfo(Args.Movie)
@@ -2844,7 +2844,7 @@ Public Class frmMain
         '\\
 
         If Not e.Cancelled Then
-            Dim Res As Results = e.Result
+            Dim Res As Results = DirectCast(e.Result, Results)
 
             Try
                 If Not Res.fileInfo = "error" Then
@@ -2888,7 +2888,7 @@ Public Class frmMain
         ' the web server is slow to respond or not reachable, hanging the GUI)
         '\\
 
-        Dim Args As Arguments = e.Argument
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
             Dim tImage As Image = Nothing
 
@@ -2910,7 +2910,7 @@ Public Class frmMain
         ' Thread finished: display pic if it was able to get one
         '\\
 
-        Dim Res As Results = e.Result
+        Dim Res As Results = DirectCast(e.Result, Results)
 
         Select Case Res.ResultType
             Case PicType.Actor
@@ -2929,7 +2929,7 @@ Public Class frmMain
 
         Try
 
-            Dim Args As Arguments = e.Argument
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Me.MainFanart.Clear()
             Me.MainPoster.Clear()
 
@@ -2997,7 +2997,7 @@ Public Class frmMain
 
                 Dim g As Graphics
                 Dim strSize As String
-                Dim lenSize
+                Dim lenSize As Integer
                 Dim rect As Rectangle
 
                 If Not IsNothing(Me.MainPoster.Image) Then
@@ -3010,10 +3010,10 @@ Public Class frmMain
                         g = Graphics.FromImage(pbPoster.Image)
                         g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                         strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                        lenSize = g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width
-                        rect = New Rectangle((pbPoster.Image.Width - lenSize) / 2 - 15, Me.pbPoster.Height - 25, lenSize + 30, 25)
+                        lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                        rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
                         ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                        g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbPoster.Image.Width - lenSize) / 2, Me.pbPoster.Height - 20)
+                        g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
                     End If
 
                     Me.pbPoster.Location = New Point(4, 4)
@@ -3027,13 +3027,13 @@ Public Class frmMain
                 End If
 
                 ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = (Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2
+                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
 
                 If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
                     g = Graphics.FromImage(pbFanart.Image)
                     g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                     strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                    lenSize = g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
                     rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
                     ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
@@ -3067,7 +3067,7 @@ Public Class frmMain
         '\\
 
         Dim myDelegate As MydtMediaUpdate
-        Dim Args As Arguments = e.Argument
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim TMDB As New TMDB.Scraper
         Dim IMPA As New IMPA.Scraper
         Dim Trailer As New Trailers
@@ -3094,9 +3094,9 @@ Public Class frmMain
 
                                 Select Case Args.scrapeType
                                     Case Master.ScrapeType.NewAsk, Master.ScrapeType.NewAuto
-                                        If Not drvRow.Item(10) Then Continue For
+                                        If Not Convert.ToBoolean(drvRow.Item(10)) Then Continue For
                                     Case Master.ScrapeType.MarkAsk, Master.ScrapeType.MarkAuto
-                                        If Not drvRow.Item(11) Then Continue For
+                                        If Not Convert.ToBoolean(drvRow.Item(11)) Then Continue For
                                     Case Master.ScrapeType.FilterAsk, Master.ScrapeType.FilterAuto
                                         Dim index As Integer = Me.bsMedia.Find("id", drvRow.Item(0))
                                         If Not index >= 0 Then Continue For
@@ -3106,7 +3106,7 @@ Public Class frmMain
 
                                 Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
 
-                                If drvRow.Item(14) Then Continue For
+                                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
                                 doSave = False
 
@@ -3198,7 +3198,7 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Master.GlobalScrapeMod.Trailer Then
-                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.Filename, scrapeMovie.Movie.IMDBID, drvRow.Item(2), scrapeMovie.Movie.Trailer)
+                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.Filename, scrapeMovie.Movie.IMDBID, Convert.ToBoolean(drvRow.Item(2)), scrapeMovie.Movie.Trailer)
                                         If Not String.IsNullOrEmpty(tURL) Then
                                             If tURL.Substring(0, 7) = "http://" Then
                                                 scrapeMovie.Movie.Trailer = tURL
@@ -3218,7 +3218,7 @@ Public Class frmMain
                                     If Master.eSettings.AutoET AndAlso Not didEts Then
                                         Fanart.GetPreferredFAasET(scrapeMovie.Movie.IMDBID, scrapeMovie.Filename)
                                     End If
-                                    If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) Then
+                                    If Master.eSettings.AutoThumbs > 0 AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
                                         Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
                                         If Not String.IsNullOrEmpty(ETasFA) Then
                                             Me.Invoke(myDelegate, New Object() {drvRow, 9, True})
@@ -3243,13 +3243,13 @@ Public Class frmMain
                                         scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
                                     End If
                                 Else
-                                    If Directory.GetParent(drvRow.Item(1)).Name.ToLower = "video_ts" Then
-                                        scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1)).FullName).Name)
+                                    If Directory.GetParent(drvRow.Item(1).ToString).Name.ToLower = "video_ts" Then
+                                        scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
                                     Else
-                                        If drvRow.Item(46) AndAlso drvRow.Item(2) Then
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1)).Name)
+                                        If Convert.ToBoolean(drvRow.Item(46)) AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
+                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
                                         Else
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1)))
+                                            scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
                                         End If
                                     End If
                                 End If
@@ -3273,11 +3273,11 @@ Public Class frmMain
 
                                 Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
 
-                                If drvRow.Item(14) Then Continue For
+                                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                If (Not drvRow.Item(4) AndAlso Master.GlobalScrapeMod.Poster) OrElse (Not drvRow.Item(5) AndAlso Master.GlobalScrapeMod.Fanart) OrElse _
-                                (Not drvRow.Item(6) AndAlso Master.GlobalScrapeMod.NFO) OrElse (Not drvRow.Item(7) AndAlso Master.GlobalScrapeMod.Trailer) Then
+                                If (Not Convert.ToBoolean(drvRow.Item(4)) AndAlso Master.GlobalScrapeMod.Poster) OrElse (Not Convert.ToBoolean(drvRow.Item(5)) AndAlso Master.GlobalScrapeMod.Fanart) OrElse _
+                                (Not Convert.ToBoolean(drvRow.Item(6)) AndAlso Master.GlobalScrapeMod.NFO) OrElse (Not Convert.ToBoolean(drvRow.Item(7)) AndAlso Master.GlobalScrapeMod.Trailer) Then
 
                                     doSave = False
 
@@ -3285,7 +3285,7 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                                    If Not drvRow.Item(6) AndAlso Master.GlobalScrapeMod.NFO Then
+                                    If Not Convert.ToBoolean(drvRow.Item(6)) AndAlso Master.GlobalScrapeMod.NFO Then
 
                                         If String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) OrElse Not IMDB.GetMovieInfo(scrapeMovie.Movie.IMDBID, scrapeMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Args.Options) Then
                                             scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType, Args.Options)
@@ -3300,7 +3300,7 @@ Public Class frmMain
 
                                     didEts = False
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Not drvRow.Item(4) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Poster Then
+                                    If Not Convert.ToBoolean(drvRow.Item(4)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Poster Then
                                         Poster.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
                                             pResults = New Master.ImgResult
@@ -3333,7 +3333,7 @@ Public Class frmMain
                                     End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Not drvRow.Item(5) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Fanart Then
+                                    If Not Convert.ToBoolean(drvRow.Item(5)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Fanart Then
                                         Fanart.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
                                             fResults = New Master.ImgResult
@@ -3365,8 +3365,8 @@ Public Class frmMain
                                     End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                    If Not drvRow.Item(7) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Trailer Then
-                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.Filename, scrapeMovie.Movie.IMDBID, drvRow.Item(2), scrapeMovie.Movie.Trailer)
+                                    If Not Convert.ToBoolean(drvRow.Item(7)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Trailer Then
+                                        tURL = Trailer.DownloadSingleTrailer(scrapeMovie.Filename, scrapeMovie.Movie.IMDBID, Convert.ToBoolean(drvRow.Item(2)), scrapeMovie.Movie.Trailer)
                                         If Not String.IsNullOrEmpty(tURL) Then
                                             If tURL.Substring(0, 7) = "http://" Then
                                                 scrapeMovie.Movie.Trailer = tURL
@@ -3380,12 +3380,12 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                                    If Not drvRow.Item(9) AndAlso Master.GlobalScrapeMod.Extra Then
+                                    If Not Convert.ToBoolean(drvRow.Item(9)) AndAlso Master.GlobalScrapeMod.Extra Then
                                         If Master.eSettings.AutoET AndAlso Not didEts Then
                                             Fanart.GetPreferredFAasET(scrapeMovie.Movie.IMDBID, scrapeMovie.Filename)
                                         End If
 
-                                        If Master.eSettings.AutoThumbs > 0 AndAlso drvRow.Item(2) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(scrapeMovie.Filename).FullName, "extrathumbs")) Then
+                                        If Master.eSettings.AutoThumbs > 0 AndAlso Convert.ToBoolean(drvRow.Item(2)) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(scrapeMovie.Filename).FullName, "extrathumbs")) Then
                                             Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
                                             If Not String.IsNullOrEmpty(ETasFA) Then
 
@@ -3406,13 +3406,13 @@ Public Class frmMain
                                             scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
                                         End If
                                     Else
-                                        If Directory.GetParent(drvRow.Item(1)).Name.ToLower = "video_ts" Then
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1)).FullName).Name)
+                                        If Directory.GetParent(drvRow.Item(1).ToString).Name.ToLower = "video_ts" Then
+                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
                                         Else
-                                            If drvRow.Item(46) AndAlso drvRow.Item(2) Then
-                                                scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1)).Name)
+                                            If Convert.ToBoolean(drvRow.Item(46)) AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
+                                                scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
                                             Else
-                                                scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1)))
+                                                scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
                                             End If
                                         End If
                                     End If
@@ -3441,7 +3441,7 @@ Public Class frmMain
 
                                 Me.bwScraper.ReportProgress(iCount, drvRow.Item(3))
                                 iCount += 1
-                                If drvRow.Item(14) Then Continue For
+                                If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
@@ -3460,7 +3460,7 @@ Public Class frmMain
                                 iCount += 1
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
-                                sPath = drvRow.Item(40)
+                                sPath = drvRow.Item(40).ToString
                                 If Not String.IsNullOrEmpty(sPath) Then
                                     If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                                         If Master.eSettings.VideoTSParent Then
@@ -3525,7 +3525,7 @@ doCancel:
         If Not isCL Then
             If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") Then
                 If Me.dgvMediaList.SelectedRows(0).Cells(0).Value = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
-                    Me.LoadInfo(Me.dgvMediaList.SelectedRows(0).Cells(0).Value, Me.dgvMediaList.SelectedRows(0).Cells(1).Value, True, False)
+                    Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
                 End If
             Else
                 SetFilterColors(False)
@@ -3547,23 +3547,21 @@ doCancel:
             Else
                 Me.pnlCancel.Visible = False
 
-                Select Case e.Result
-                    Case Master.ScrapeType.CleanFolders
-                        'only rescan media if expert cleaner and videos are not whitelisted 
-                        'since the db is updated during cleaner now.
-                        If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
-                            Me.LoadMedia(1)
-                        Else
-                            Me.dgvMediaList.Refresh()
-                        End If
-
-                    Case Else
-                        If Me.dgvMediaList.SelectedRows.Count > 0 Then
-                            Me.FillList(Me.dgvMediaList.SelectedRows(0).Index)
-                        Else
-                            Me.FillList(0)
-                        End If
-                End Select
+                If e.Result = Master.ScrapeType.CleanFolders Then
+                    'only rescan media if expert cleaner and videos are not whitelisted 
+                    'since the db is updated during cleaner now.
+                    If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
+                        Me.LoadMedia(1)
+                    Else
+                        Me.dgvMediaList.Refresh()
+                    End If
+                Else
+                    If Me.dgvMediaList.SelectedRows.Count > 0 Then
+                        Me.FillList(Me.dgvMediaList.SelectedRows(0).Index)
+                    Else
+                        Me.FillList(0)
+                    End If
+                End If
             End If
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
@@ -3588,7 +3586,7 @@ doCancel:
             For Each sRow As DataRow In Me.dtMedia.Rows
                 If Me.bwScraper.CancellationPending Then Return
                 Me.bwRefreshMovies.ReportProgress(iCount, sRow.Item(1))
-                Me.RefreshMovie(sRow.Item(0), True)
+                Me.RefreshMovie(Convert.ToInt64(sRow.Item(0)), True)
                 iCount += 1
             Next
             SQLtransaction.Commit()
@@ -3638,7 +3636,7 @@ doCancel:
             Try
                 Dim xTop = From xTheme In ThemeXML...<theme>...<toppanel>
                 If xTop.Count > 0 Then
-                    If Not String.IsNullOrEmpty(xTop.<backcolor>.Value) Then Me.pnlTop.BackColor = Color.FromArgb(xTop.<backcolor>.Value)
+                    If Not String.IsNullOrEmpty(xTop.<backcolor>.Value) Then Me.pnlTop.BackColor = Color.FromArgb(Convert.ToInt32(xTop.<backcolor>.Value))
                     Me.pnlInfoIcons.BackColor = Me.pnlTop.BackColor
                     Me.pnlRating.BackColor = Me.pnlTop.BackColor
                     Me.pbVideo.BackColor = Me.pnlTop.BackColor
@@ -3652,7 +3650,7 @@ doCancel:
                     Me.pbStar4.BackColor = Me.pnlTop.BackColor
                     Me.pbStar5.BackColor = Me.pnlTop.BackColor
 
-                    If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then Me.lblTitle.ForeColor = Color.FromArgb(xTop.<forecolor>.Value)
+                    If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then Me.lblTitle.ForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
                     Me.lblVotes.ForeColor = Me.lblTitle.ForeColor
                     Me.lblRuntime.ForeColor = Me.lblTitle.ForeColor
                     Me.lblTagline.ForeColor = Me.lblTitle.ForeColor
@@ -3665,14 +3663,14 @@ doCancel:
             Try
                 Dim xImages = From xTheme In ThemeXML...<theme>...<images>
                 If xImages.Count > 0 Then
-                    If Not String.IsNullOrEmpty(xImages.<fanartbackcolor>.Value) Then Me.scMain.Panel2.BackColor = Color.FromArgb(xImages.<fanartbackcolor>.Value)
+                    If Not String.IsNullOrEmpty(xImages.<fanartbackcolor>.Value) Then Me.scMain.Panel2.BackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartbackcolor>.Value))
                     Me.pbFanart.BackColor = Me.scMain.Panel2.BackColor
-                    If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then Me.pbPoster.BackColor = Color.FromArgb(xImages.<posterbackcolor>.Value)
-                    If Not String.IsNullOrEmpty(xImages.<postermaxheight>.Value) Then Me.PosterMaxHeight = xImages.<postermaxheight>.Value
-                    If Not String.IsNullOrEmpty(xImages.<postermaxwidth>.Value) Then Me.PosterMaxWidth = xImages.<postermaxwidth>.Value
-                    If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then Me.pnlMPAA.BackColor = Color.FromArgb(xImages.<mpaabackcolor>.Value)
+                    If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then Me.pbPoster.BackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbackcolor>.Value))
+                    If Not String.IsNullOrEmpty(xImages.<postermaxheight>.Value) Then Me.PosterMaxHeight = Convert.ToInt32(xImages.<postermaxheight>.Value)
+                    If Not String.IsNullOrEmpty(xImages.<postermaxwidth>.Value) Then Me.PosterMaxWidth = Convert.ToInt32(xImages.<postermaxwidth>.Value)
+                    If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then Me.pnlMPAA.BackColor = Color.FromArgb(Convert.ToInt32(xImages.<mpaabackcolor>.Value))
                     Me.pbMPAA.BackColor = Me.pnlMPAA.BackColor
-                    If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then Me.GenrePanelColor = Color.FromArgb(xImages.<genrebackcolor>.Value)
+                    If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then Me.GenrePanelColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3694,9 +3692,9 @@ doCancel:
             'info panel
             Dim xIPMain = From xTheme In ThemeXML...<theme>...<infopanel> Select xTheme.<backcolor>.Value, xTheme.<ipup>.Value, xTheme.<ipmid>.Value
             If xIPMain.Count > 0 Then
-                If Not String.IsNullOrEmpty(xIPMain(0).backcolor) Then Me.pnlInfoPanel.BackColor = Color.FromArgb(xIPMain(0).backcolor)
-                If Not String.IsNullOrEmpty(xIPMain(0).ipup) Then Me.IPUp = xIPMain(0).ipup
-                If Not String.IsNullOrEmpty(xIPMain(0).ipmid) Then Me.IPMid = xIPMain(0).ipmid
+                If Not String.IsNullOrEmpty(xIPMain(0).backcolor) Then Me.pnlInfoPanel.BackColor = Color.FromArgb(Convert.ToInt32(xIPMain(0).backcolor))
+                If Not String.IsNullOrEmpty(xIPMain(0).ipup) Then Me.IPUp = Convert.ToInt32(xIPMain(0).ipup)
+                If Not String.IsNullOrEmpty(xIPMain(0).ipmid) Then Me.IPMid = Convert.ToInt32(xIPMain(0).ipmid)
             End If
 
             For Each xControl As Control In cControl.Controls
@@ -3704,22 +3702,22 @@ doCancel:
                     ControlName = xControl.Name
                     Dim xIP = From xTheme In ThemeXML...<theme>...<infopanel>...<object> Where ControlName = xTheme.@name
                     If xIP.Count > 0 Then
-                        If Not String.IsNullOrEmpty(xIP.<width>.Value) Then xControl.Width = xIP.<width>.Value
-                        If Not String.IsNullOrEmpty(xIP.<height>.Value) Then xControl.Height = xIP.<height>.Value
-                        If Not String.IsNullOrEmpty(xIP.<left>.Value) Then xControl.Left = xIP.<left>.Value
-                        If Not String.IsNullOrEmpty(xIP.<top>.Value) Then xControl.Top = xIP.<top>.Value
-                        If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then xControl.BackColor = Color.FromArgb(xIP.<backcolor>.Value)
-                        If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then xControl.ForeColor = Color.FromArgb(xIP.<forecolor>.Value)
-                        If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then xControl.Anchor = xIP.<anchor>.Value
-                        If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then xControl.Anchor = xIP.<anchor>.Value
+                        If Not String.IsNullOrEmpty(xIP.<width>.Value) Then xControl.Width = Convert.ToInt32(xIP.<width>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<height>.Value) Then xControl.Height = Convert.ToInt32(xIP.<height>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<left>.Value) Then xControl.Left = Convert.ToInt32(xIP.<left>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<top>.Value) Then xControl.Top = Convert.ToInt32(xIP.<top>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then xControl.BackColor = Color.FromArgb(Convert.ToInt32(xIP.<backcolor>.Value))
+                        If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then xControl.ForeColor = Color.FromArgb(Convert.ToInt32(xIP.<forecolor>.Value))
+                        If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then xControl.Anchor = DirectCast(Convert.ToInt32(xIP.<anchor>.Value), AnchorStyles)
+                        If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then xControl.Anchor = DirectCast(Convert.ToInt32(xIP.<anchor>.Value), AnchorStyles)
 
                         cFont = "Microsoft Sans Serif"
                         cFontSize = 8
                         cFontStyle = FontStyle.Regular
 
                         If Not String.IsNullOrEmpty(xIP.<font>.Value) Then cFont = xIP.<font>.Value
-                        If Not String.IsNullOrEmpty(xIP.<fontsize>.Value) Then cFontSize = xIP.<fontsize>.Value
-                        If Not String.IsNullOrEmpty(xIP.<fontstyle>.Value) Then cFontStyle = xIP.<fontstyle>.Value
+                        If Not String.IsNullOrEmpty(xIP.<fontsize>.Value) Then cFontSize = Convert.ToInt32(xIP.<fontsize>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<fontstyle>.Value) Then cFontStyle = DirectCast(Convert.ToInt32(xIP.<fontstyle>.Value), FontStyle)
                         xControl.Font = New Font(cFont, cFontSize, cFontStyle)
                     End If
                     If xControl.HasChildren Then SetIPTheme(xControl)
@@ -4365,10 +4363,10 @@ doCancel:
                     Dim drawFont As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
                     Dim drawBrush As New SolidBrush(Color.White)
                     Dim drawWidth As Single = grGenre.MeasureString(drawString, drawFont).Width
-                    Dim drawSize As Integer = (14 * (bmGenre.Width / drawWidth)) - 0.5
+                    Dim drawSize As Integer = Convert.ToInt32((14 * (bmGenre.Width / drawWidth)) - 0.5)
                     drawFont = New Font("Microsoft Sans Serif", If(drawSize > 14, 14, drawSize), FontStyle.Bold, GraphicsUnit.Pixel)
                     Dim drawHeight As Single = grGenre.MeasureString(drawString, drawFont).Height
-                    iLeft = (bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2
+                    iLeft = Convert.ToInt32((bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2)
                     grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
                     pbGenre(i).Image = bmGenre
                 End If
@@ -4449,10 +4447,10 @@ doCancel:
 
                 Case Master.ScrapeType.NewAsk, Master.ScrapeType.NewAuto, Master.ScrapeType.MarkAsk, Master.ScrapeType.MarkAuto
                     For Each drvRow As DataRow In Me.dtMedia.Rows
-                        If drvRow.Item(10) AndAlso (sType = Master.ScrapeType.NewAsk OrElse sType = Master.ScrapeType.NewAuto) Then
+                        If Convert.ToBoolean(drvRow.Item(10)) AndAlso (sType = Master.ScrapeType.NewAsk OrElse sType = Master.ScrapeType.NewAuto) Then
                             chkCount += 1
                         End If
-                        If drvRow.Item(11) AndAlso (sType = Master.ScrapeType.MarkAsk OrElse sType = Master.ScrapeType.MarkAuto) Then
+                        If Convert.ToBoolean(drvRow.Item(11)) AndAlso (sType = Master.ScrapeType.MarkAsk OrElse sType = Master.ScrapeType.MarkAuto) Then
                             chkCount += 1
                         End If
                     Next
@@ -4713,8 +4711,8 @@ doCancel:
 
                 If Not isCL Then
                     Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
-                    Dim ID As Integer = Me.dgvMediaList.Item(0, indX).Value
-                    Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value
+                    Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
+                    Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
 
                     Me.tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
                     Application.DoEvents()
@@ -4736,7 +4734,7 @@ doCancel:
                                 Master.currMovie.ClearExtras = False
                                 Me.ScrapeData(Master.ScrapeType.SingleScrape, Master.DefaultOptions, ID, True)
                             Case Else
-                                If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value, True, False)
+                                If Me.InfoCleared Then Me.LoadInfo(ID, Me.dgvMediaList.Item(1, indX).Value.ToString, True, False)
                         End Select
                     End Using
 
@@ -4772,8 +4770,8 @@ doCancel:
         End If
     End Sub
 
-    Private Function RefreshMovie(ByVal ID As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
-        Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = ID Select drvRow
+    Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
+        Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(drvRow.Item(0)) = ID Select drvRow
         Dim aContents(6) As String
         Dim tmpMovie As New Media.Movie
         Dim tmpMovieDb As New Master.DBMovie
@@ -4824,7 +4822,7 @@ doCancel:
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
                 tmpMovieDb.FileSource = XML.GetFileSource(tmpMovieDb.Filename)
-                aContents = Master.GetFolderContents(tmpMovieDb.Filename, dRow(0).Item(2))
+                aContents = Master.GetFolderContents(tmpMovieDb.Filename, Convert.ToBoolean(dRow(0).Item(2)))
                 tmpMovieDb.PosterPath = aContents(0)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(aContents(0)), False, True)})
                 tmpMovieDb.FanartPath = aContents(1)
@@ -4840,8 +4838,8 @@ doCancel:
                 Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(aContents(5)), False, True)})
 
                 Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
-                tmpMovieDb.IsMark = dRow(0).Item(11)
-                tmpMovieDb.IsLock = dRow(0).Item(14)
+                tmpMovieDb.IsMark = Convert.ToBoolean(dRow(0).Item(11))
+                tmpMovieDb.IsLock = Convert.ToBoolean(dRow(0).Item(14))
 
                 Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
 
@@ -4853,7 +4851,7 @@ doCancel:
 
             If Not BatchMode Then
                 Me.SetFilterColors(True)
-                Me.LoadInfo(ID, tmpMovieDb.Filename, True, False)
+                Me.LoadInfo(Convert.ToInt32(ID), tmpMovieDb.Filename, True, False)
             End If
 
         Catch ex As Exception
@@ -5016,11 +5014,11 @@ doCancel:
                 Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
                 For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
 
-                    If drvRow.Cells(11).Value Then
+                    If Convert.ToBoolean(drvRow.Cells(11).Value) Then
                         drvRow.Cells(3).Style.ForeColor = Color.Crimson
                         drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
                         drvRow.Cells(3).Style.SelectionForeColor = Color.Crimson
-                    ElseIf drvRow.Cells(10).Value Then
+                    ElseIf Convert.ToBoolean(drvRow.Cells(10).Value) Then
                         drvRow.Cells(3).Style.ForeColor = Color.Green
                         drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
                         drvRow.Cells(3).Style.SelectionForeColor = Color.Green
@@ -5038,17 +5036,17 @@ doCancel:
 
                     If Master.eSettings.LevTolerance > 0 AndAlso DoTitleCheck Then
                         Dim pTitle As String = String.Empty
-                        If Directory.GetParent(drvRow.Cells(1).Value).Name.ToLower = "video_ts" Then
-                            pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value).FullName).Name
+                        If Directory.GetParent(drvRow.Cells(1).Value.ToString).Name.ToLower = "video_ts" Then
+                            pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).Name
                         Else
-                            If drvRow.Cells(46).Value AndAlso drvRow.Cells(2).Value Then
-                                pTitle = Directory.GetParent(drvRow.Cells(1).Value).Name
+                            If Convert.ToBoolean(drvRow.Cells(46).Value) AndAlso Convert.ToBoolean(drvRow.Cells(2).Value) Then
+                                pTitle = Directory.GetParent(drvRow.Cells(1).Value.ToString).Name
                             Else
-                                pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value)
+                                pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value.ToString)
                             End If
                         End If
 
-                        LevFail = StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
+                        LevFail = StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value.ToString, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
 
                         parOutOfTolerance.Value = LevFail
                         drvRow.Cells(47).Value = LevFail
@@ -5057,10 +5055,10 @@ doCancel:
                     ElseIf Master.eSettings.LevTolerance <= 0 Then
                         LevFail = False
                     Else
-                        LevFail = drvRow.Cells(47).Value
+                        LevFail = Convert.ToBoolean(drvRow.Cells(47).Value)
                     End If
 
-                    If drvRow.Cells(14).Value Then
+                    If Convert.ToBoolean(drvRow.Cells(14).Value) Then
                         drvRow.Cells(3).Style.BackColor = Color.LightSteelBlue
                         drvRow.Cells(4).Style.BackColor = Color.LightSteelBlue
                         drvRow.Cells(5).Style.BackColor = Color.LightSteelBlue
@@ -5252,13 +5250,13 @@ doCancel:
 
     Private Sub DoXCom(ByVal xCom As emmSettings.XBMCCom)
         Try
-            Dim Wr As HttpWebRequest = HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port))
+            Dim Wr As WebRequest = HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port))
             Wr.Method = "GET"
             Wr.Timeout = 2500
             If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
                 Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
             End If
-            Using Wres As HttpWebResponse = Wr.GetResponse
+            Using Wres As WebResponse = Wr.GetResponse
                 Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
                 If Not Sr.Contains("OK") Then
                     MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))
@@ -5317,50 +5315,47 @@ doCancel:
                         .bsMedia.DataSource = .dtMedia
                         .dgvMediaList.DataSource = .bsMedia
 
-                        'why did the resizable property all the sudden become opposite? resizable = false now means it IS resizable
-                        'wasn't like that before and was reported (after release of v alpha 022, but no telling how long it's been
-                        'like that) that the info columns were resizable
                         .dgvMediaList.Columns(0).Visible = False
                         .dgvMediaList.Columns(1).Visible = False
                         .dgvMediaList.Columns(2).Visible = False
-                        .dgvMediaList.Columns(3).Resizable = False
+                        .dgvMediaList.Columns(3).Resizable = DataGridViewTriState.True
                         .dgvMediaList.Columns(3).ReadOnly = True
                         .dgvMediaList.Columns(3).MinimumWidth = 83
                         .dgvMediaList.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
                         .dgvMediaList.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
                         .dgvMediaList.Columns(4).Width = 20
-                        .dgvMediaList.Columns(4).Resizable = True
+                        .dgvMediaList.Columns(4).Resizable = DataGridViewTriState.False
                         .dgvMediaList.Columns(4).ReadOnly = True
                         .dgvMediaList.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
                         .dgvMediaList.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
                         .dgvMediaList.Columns(5).Width = 20
-                        .dgvMediaList.Columns(5).Resizable = True
+                        .dgvMediaList.Columns(5).Resizable = DataGridViewTriState.False
                         .dgvMediaList.Columns(5).ReadOnly = True
                         .dgvMediaList.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(5).Visible = Not Master.eSettings.MovieFanartCol
                         .dgvMediaList.Columns(5).ToolTipText = Master.eLang.GetString(149, "Fanart")
                         .dgvMediaList.Columns(6).Width = 20
-                        .dgvMediaList.Columns(6).Resizable = True
+                        .dgvMediaList.Columns(6).Resizable = DataGridViewTriState.False
                         .dgvMediaList.Columns(6).ReadOnly = True
                         .dgvMediaList.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
                         .dgvMediaList.Columns(6).ToolTipText = Master.eLang.GetString(150, "Nfo")
                         .dgvMediaList.Columns(7).Width = 20
-                        .dgvMediaList.Columns(7).Resizable = True
+                        .dgvMediaList.Columns(7).Resizable = DataGridViewTriState.False
                         .dgvMediaList.Columns(7).ReadOnly = True
                         .dgvMediaList.Columns(7).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
                         .dgvMediaList.Columns(7).ToolTipText = Master.eLang.GetString(151, "Trailer")
                         .dgvMediaList.Columns(8).Width = 20
-                        .dgvMediaList.Columns(8).Resizable = True
+                        .dgvMediaList.Columns(8).Resizable = DataGridViewTriState.False
                         .dgvMediaList.Columns(8).ReadOnly = True
                         .dgvMediaList.Columns(8).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(8).Visible = Not Master.eSettings.MovieSubCol
                         .dgvMediaList.Columns(8).ToolTipText = Master.eLang.GetString(152, "Subtitles")
                         .dgvMediaList.Columns(9).Width = 20
-                        .dgvMediaList.Columns(9).Resizable = True
+                        .dgvMediaList.Columns(9).Resizable = DataGridViewTriState.False
                         .dgvMediaList.Columns(9).ReadOnly = True
                         .dgvMediaList.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
                         .dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
@@ -5413,7 +5408,7 @@ doCancel:
     Public Sub SetListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
 
         Try
-            Dim dRow = From drvRow As DataRow In dtMedia.Rows Where drvRow.Item(0) = iID Select drvRow
+            Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt32(drvRow.Item(0)) = iID Select drvRow
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", iID, ";")
@@ -5438,14 +5433,14 @@ doCancel:
             End If
 
             Me.tmpTitle = Me.dgvMediaList.Item(3, iRow).Value.ToString
-            If Not Me.dgvMediaList.Item(4, iRow).Value AndAlso Not Me.dgvMediaList.Item(5, iRow).Value AndAlso Not Me.dgvMediaList.Item(6, iRow).Value Then
+            If Not Convert.ToBoolean(Me.dgvMediaList.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(6, iRow).Value) Then
                 Me.ClearInfo()
                 Me.pnlNoInfo.Visible = True
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMediaList.Item(0, iRow).Value))
             Else
                 Me.pnlNoInfo.Visible = False
 
-                Me.LoadInfo(Me.dgvMediaList.Item(0, iRow).Value, Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
+                Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, iRow).Value), Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
             ''''
             Me.mnuMediaList.Enabled = True

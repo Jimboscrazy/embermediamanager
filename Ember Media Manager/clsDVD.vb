@@ -213,7 +213,7 @@ Public Class clsDVD
         End Get
     End Property
 
-    Public ReadOnly Property GetIFOAudio(ByVal bytAudioIndex As Byte) As String()
+    Public ReadOnly Property GetIFOAudio(ByVal bytAudioIndex As Integer) As String()
         Get
             Dim ReturnArray(2) As String
             Try
@@ -235,7 +235,7 @@ Public Class clsDVD
         End Get
     End Property
 
-    Public ReadOnly Property GetIFOSubPic(ByVal bytSubPicIndex As Byte) As String
+    Public ReadOnly Property GetIFOSubPic(ByVal bytSubPicIndex As Integer) As String
         Get
             Try
                 If bytSubPicIndex <= ParsedIFOFile.NumSubPictureStreams_VTS_VOBS AndAlso bytSubPicIndex > 0 Then
