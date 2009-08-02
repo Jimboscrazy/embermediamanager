@@ -3298,13 +3298,11 @@ Public Class frmMain
                                         doSave = True
                                     End If
 
-                                    didEts = False
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not Convert.ToBoolean(drvRow.Item(4)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Poster Then
                                         Poster.Clear()
                                         If Poster.IsAllowedToDownload(scrapeMovie, Master.ImageType.Posters) Then
                                             pResults = New Master.ImgResult
-                                            didEts = True
                                             If Poster.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Posters, pResults, scrapeMovie.Filename, False, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
                                                 If Not IsNothing(Poster.Image) Then
                                                     pResults.ImagePath = Poster.SaveAsPoster(scrapeMovie)
@@ -3332,11 +3330,13 @@ Public Class frmMain
                                         End If
                                     End If
 
+                                    didEts = False
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
                                     If Not Convert.ToBoolean(drvRow.Item(5)) AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Fanart Then
                                         Fanart.Clear()
                                         If Fanart.IsAllowedToDownload(scrapeMovie, Master.ImageType.Fanart) Then
                                             fResults = New Master.ImgResult
+                                            didEts = True
                                             If Fanart.GetPreferredImage(scrapeMovie.Movie.IMDBID, Master.ImageType.Fanart, fResults, scrapeMovie.Filename, Master.GlobalScrapeMod.Extra, If(Args.scrapeType = Master.ScrapeType.UpdateAsk, True, False)) Then
                                                 If Not IsNothing(Fanart.Image) Then
                                                     fResults.ImagePath = Fanart.SaveAsFanart(scrapeMovie)
@@ -3380,12 +3380,12 @@ Public Class frmMain
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                                    If Not Convert.ToBoolean(drvRow.Item(9)) AndAlso Master.GlobalScrapeMod.Extra Then
+                                    If Not Convert.ToBoolean(drvRow.Item(9)) AndAlso Master.GlobalScrapeMod.Extra AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
                                         If Master.eSettings.AutoET AndAlso Not didEts Then
                                             Fanart.GetPreferredFAasET(scrapeMovie.Movie.IMDBID, scrapeMovie.Filename)
                                         End If
 
-                                        If Master.eSettings.AutoThumbs > 0 AndAlso Convert.ToBoolean(drvRow.Item(2)) AndAlso Not Directory.Exists(Path.Combine(Directory.GetParent(scrapeMovie.Filename).FullName, "extrathumbs")) Then
+                                        If Master.eSettings.AutoThumbs > 0 Then
                                             Dim ETasFA As String = Master.CreateRandomThumbs(scrapeMovie, Master.eSettings.AutoThumbs, False)
                                             If Not String.IsNullOrEmpty(ETasFA) Then
 
@@ -4890,15 +4890,16 @@ doCancel:
 
                 Me.ClearAllCachesToolStripMenuItem.Enabled = .UseImgCache
 
-                Me.mnuAllAutoExtra.Enabled = .AutoThumbs > 0
-                Me.mnuAllAskExtra.Enabled = .AutoThumbs > 0
-                Me.mnuMissAutoExtra.Enabled = .AutoThumbs > 0
-                Me.mnuMissAskExtra.Enabled = .AutoThumbs > 0
-                Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0
-                Me.mnuMarkAskExtra.Enabled = .AutoThumbs > 0
-                Me.mnuNewAutoExtra.Enabled = .AutoThumbs > 0
-                Me.mnuNewAskExtra.Enabled = .AutoThumbs > 0
-                Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0
+                Me.mnuAllAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
+                Me.mnuAllAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
+                Me.mnuMissAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
+                Me.mnuMissAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
+                Me.mnuMarkAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
+                Me.mnuMarkAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
+                Me.mnuNewAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
+                Me.mnuNewAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
+                Me.mnuFilterAutoExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
+                Me.mnuFilterAskExtra.Enabled = .AutoThumbs > 0 OrElse .AutoET
 
                 Me.mnuAllAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
                 Me.mnuAllAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
@@ -4908,6 +4909,8 @@ doCancel:
                 Me.mnuMarkAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
                 Me.mnuNewAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
                 Me.mnuNewAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuFilterAutoPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
+                Me.mnuFilterAskPoster.Enabled = .UseTMDB OrElse .UseIMPA OrElse .UseMPDB
 
                 Me.mnuAllAutoFanart.Enabled = .UseTMDB
                 Me.mnuAllAskFanart.Enabled = .UseTMDB
@@ -4917,6 +4920,8 @@ doCancel:
                 Me.mnuMarkAskFanart.Enabled = .UseTMDB
                 Me.mnuNewAutoFanart.Enabled = .UseTMDB
                 Me.mnuNewAskFanart.Enabled = .UseTMDB
+                Me.mnuFilterAutoFanart.Enabled = .UseTMDB
+                Me.mnuFilterAskFanart.Enabled = .UseTMDB
 
                 Me.mnuAllAskMI.Enabled = .ScanMediaInfo
                 Me.mnuAllAutoMI.Enabled = .ScanMediaInfo
@@ -4924,6 +4929,8 @@ doCancel:
                 Me.mnuNewAutoMI.Enabled = .ScanMediaInfo
                 Me.mnuMarkAskMI.Enabled = .ScanMediaInfo
                 Me.mnuMarkAutoMI.Enabled = .ScanMediaInfo
+                Me.mnuFilterAskMI.Enabled = .ScanMediaInfo
+                Me.mnuFilterAutoMI.Enabled = .ScanMediaInfo
 
                 Me.mnuAllAutoTrailer.Enabled = .DownloadTrailers
                 Me.mnuAllAskTrailer.Enabled = .DownloadTrailers
@@ -4933,6 +4940,8 @@ doCancel:
                 Me.mnuNewAskTrailer.Enabled = .DownloadTrailers
                 Me.mnuMarkAutoTrailer.Enabled = .DownloadTrailers
                 Me.mnuMarkAskTrailer.Enabled = .DownloadTrailers
+                Me.mnuFilterAutoTrailer.Enabled = .DownloadTrailers
+                Me.mnuFilterAskTrailer.Enabled = .DownloadTrailers
 
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
