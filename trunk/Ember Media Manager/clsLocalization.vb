@@ -73,7 +73,7 @@ Public Class Localization
         Dim _old_all As String = _all
         Try
             If Not String.IsNullOrEmpty(Language) Then
-                Dim lPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, String.Concat(Language, ".xml"))
+                Dim lPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Langs", Path.DirectorySeparatorChar, String.Concat(Language, ".xml"))
                 If File.Exists(lPath) Then
                     Dim LangXML As XDocument = XDocument.Load(lPath)
                     Dim xLanguage = From xLang In LangXML...<strings>...<string> Select xLang.@id, xLang.Value

@@ -293,7 +293,7 @@ Public Class frmMain
         AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
         AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
 
-        Dim sPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Log", Path.DirectorySeparatorChar, "errlog.txt")
+        Dim sPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Log", Path.DirectorySeparatorChar, "errlog.txt")
         If File.Exists(sPath) Then
             If File.Exists(sPath.Insert(sPath.LastIndexOf("."), "-old")) Then File.Delete(sPath.Insert(sPath.LastIndexOf("."), "-old"))
             Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
@@ -678,7 +678,7 @@ Public Class frmMain
                 Select Case Me.aniType
                     Case 0
                         Me.pnlInfoPanel.Height = 25
-     
+
                     Case 1
                         Me.pnlInfoPanel.Height = IPMid
 
@@ -3625,7 +3625,7 @@ doCancel:
     ' ########################################
 
     Private Sub LoadTheme(ByVal tType As String)
-        Dim tPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, Master.eSettings.MovieTheme))
+        Dim tPath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, Master.eSettings.MovieTheme))
         If File.Exists(tPath) Then
 
             'Just to make sure Theme will setup ok (Issues r893,r894)

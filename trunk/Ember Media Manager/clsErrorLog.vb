@@ -34,7 +34,7 @@ Public Class ErrorLogger
 
         Try
             If Master.eSettings.LogErrors Then
-                Dim sPath As String = Path.Combine(Application.StartupPath, "Log")
+                Dim sPath As String = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Log")
 
                 If Not System.IO.Directory.Exists(sPath) Then
                     System.IO.Directory.CreateDirectory(sPath)

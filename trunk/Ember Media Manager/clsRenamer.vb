@@ -138,7 +138,7 @@ Public Class FileFolderRenamer
     End Sub
 
     Public Sub New()
-        Dim mePath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Images", Path.DirectorySeparatorChar, "Flags")
+        Dim mePath As String = String.Concat(System.AppDomain.CurrentDomain.BaseDirectory, "Images", Path.DirectorySeparatorChar, "Flags")
 
         _movies.Clear()
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
