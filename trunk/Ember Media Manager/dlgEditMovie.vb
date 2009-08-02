@@ -337,6 +337,10 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
+        Me.DeleteActors()
+    End Sub
+
+    Private Sub DeleteActors()
         Try
             If Me.lvActors.Items.Count > 0 Then
                 For i As Integer = Me.lvActors.SelectedItems.Count - 1 To 0 Step -1
@@ -1033,6 +1037,10 @@ Public Class dlgEditMovie
         End If
     End Sub
 
+    Private Sub lvThumbs_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvThumbs.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.DeleteExtraThumbs()
+    End Sub
+
     Private Sub lvThumbs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThumbs.SelectedIndexChanged
         If Me.lvThumbs.SelectedIndices.Count > 0 Then
             Try
@@ -1108,6 +1116,10 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnRemoveThumb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveThumb.Click
+        Me.DeleteExtraThumbs()
+    End Sub
+
+    Private Sub DeleteExtraThumbs()
         Try
             Dim iIndex As Integer = 0
             For i As Integer = (lvThumbs.SelectedItems.Count - 1) To 0 Step -1
@@ -1511,5 +1523,9 @@ Public Class dlgEditMovie
 
     Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
+    End Sub
+
+    Private Sub lvActors_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvActors.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.DeleteActors()
     End Sub
 End Class

@@ -242,6 +242,10 @@ Public Class dlgSetsManager
         Me.EditSet()
     End Sub
 
+    Private Sub lbSets_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lbSets.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveSet()
+    End Sub
+
     Private Sub lbSets_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbSets.SelectedIndexChanged
         Try
             Dim tOrder As Integer = 0
@@ -352,8 +356,14 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
-        Me.RemoveFromSet(Me.lbMoviesInSet.SelectedIndex, False)
-        Me.LoadCurrSet()
+        Me.DeleteFromSet()
+    End Sub
+
+    Private Sub DeleteFromSet()
+        If Me.lbMoviesInSet.SelectedItems.Count > 0 Then
+            Me.RemoveFromSet(Me.lbMoviesInSet.SelectedIndex, False)
+            Me.LoadCurrSet()
+        End If
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
@@ -423,6 +433,10 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub btnRemoveSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSet.Click
+        Me.RemoveSet()
+    End Sub
+
+    Private Sub RemoveSet()
         Try
             If lbMoviesInSet.Items.Count > 0 Then
                 For i As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
@@ -465,4 +479,9 @@ Public Class dlgSetsManager
         Me.Label2.Text = Master.eLang.GetString(370, "Add and configure movie boxed sets.")
         Me.Label4.Text = Me.Text
     End Sub
+
+    Private Sub lbMoviesInSet_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lbMoviesInSet.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.DeleteFromSet()
+    End Sub
+
 End Class

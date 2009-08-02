@@ -40,12 +40,14 @@ Public Class dlgExportMovies
     Friend WithEvents bwSaveAll As New System.ComponentModel.BackgroundWorker
     Private workerCanceled As Boolean = False
     Private DontSaveExtra As Boolean = False
+
     Private Structure Arguments
         Dim srcPath As String
         Dim destPath As String
         Dim resizePoster As Integer
     End Structure
-    Sub Warning(ByVal show As Boolean, Optional ByVal txt As String = "")
+
+    Private Sub Warning(ByVal show As Boolean, Optional ByVal txt As String = "")
         Try
             btnCancel.Visible = True
             btnCancel.Enabled = True
@@ -64,25 +66,29 @@ Public Class dlgExportMovies
     End Sub
 
     Public Shared Sub CLExport(ByVal filename As String, Optional ByVal template As String = "template", Optional ByVal resizePoster As Integer = 0)
-        Dim MySelf As New dlgExportMovies
-        If Not Directory.Exists(Path.GetDirectoryName(filename)) Then
-            Return
-        End If
-        MySelf.isCL = True
-        MySelf.bwLoadInfo = New System.ComponentModel.BackgroundWorker
-        MySelf.bwLoadInfo.WorkerSupportsCancellation = True
-        MySelf.bwLoadInfo.WorkerReportsProgress = True
-        MySelf.bwLoadInfo.RunWorkerAsync()
-        Do While MySelf.bwLoadInfo.IsBusy
-            Application.DoEvents()
-        Loop
-        MySelf.BuildHTML(False, String.Empty, String.Empty, template, False)
-        Dim srcPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
-        MySelf.SaveAll(String.Empty, srcPath, filename, resizePoster)
+        Try
+            Dim MySelf As New dlgExportMovies
+            If Not Directory.Exists(Path.GetDirectoryName(filename)) Then
+                Return
+            End If
+            MySelf.isCL = True
+            MySelf.bwLoadInfo = New System.ComponentModel.BackgroundWorker
+            MySelf.bwLoadInfo.WorkerSupportsCancellation = True
+            MySelf.bwLoadInfo.WorkerReportsProgress = True
+            MySelf.bwLoadInfo.RunWorkerAsync()
+            Do While MySelf.bwLoadInfo.IsBusy
+                Application.DoEvents()
+            Loop
+            MySelf.BuildHTML(False, String.Empty, String.Empty, template, False)
+            Dim srcPath As String = String.Concat(Application.StartupPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
+            MySelf.SaveAll(String.Empty, srcPath, filename, resizePoster)
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
     End Sub
 
-    Sub LoadHTML()
+    Private Sub LoadHTML()
         Warning(True, Master.eLang.GetString(588, "Loading. Please wait..."))
         Dim tmphtml As String = Path.Combine(Me.TempPath, String.Concat(Master.eSettings.Language, ".html"))
         wbMovieList.Navigate(tmphtml)
@@ -139,44 +145,61 @@ Public Class dlgExportMovies
         End Try
     End Sub
 
-    Sub ExportPoster(ByVal fpath As String, ByVal new_width As Integer)
-        Dim counter As Integer = 1
-        Dim finalpath As String = Path.Combine(fpath, "export")
-        Directory.CreateDirectory(finalpath)
-        For Each _curMovie As Master.DBMovie In _movies
-            Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, ".jpg"))
-            If File.Exists(_curMovie.PosterPath) Then
-                If new_width > 0 Then
-                    Dim im As New Images
-                    im.FromFile(_curMovie.PosterPath)
-                    ImageManip.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
-                    im.Save(posterfile)
-                Else
-                    File.Copy(_curMovie.PosterPath, posterfile, True)
+    Private Sub ExportPoster(ByVal fpath As String, ByVal new_width As Integer)
+        Try
+            Dim counter As Integer = 1
+            Dim finalpath As String = Path.Combine(fpath, "export")
+            Directory.CreateDirectory(finalpath)
+            For Each _curMovie As Master.DBMovie In _movies
+                Try
+                    Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, ".jpg"))
+                    If File.Exists(_curMovie.PosterPath) Then
+                        If new_width > 0 Then
+                            Dim im As New Images
+                            im.FromFile(_curMovie.PosterPath)
+                            ImageManip.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
+                            im.Save(posterfile)
+                        Else
+                            File.Copy(_curMovie.PosterPath, posterfile, True)
+                        End If
+                    End If
+                    counter += 1
+                Catch
+                End Try
+
+                If bwSaveAll.CancellationPending Then
+                    Return
                 End If
-            End If
-            counter += 1
-            If bwSaveAll.CancellationPending Then
-                Return
-            End If
-        Next
+
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
-    Sub ExportFanart(ByVal fpath As String)
-        Dim counter As Integer = 1
-        Dim finalpath As String = Path.Combine(fpath, "export")
-        Directory.CreateDirectory(finalpath)
-        For Each _curMovie As Master.DBMovie In _movies
-            Dim fanartfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-fanart.jpg"))
-            If File.Exists(_curMovie.FanartPath) Then
+    Private Sub ExportFanart(ByVal fpath As String)
+        Try
+            Dim counter As Integer = 1
+            Dim finalpath As String = Path.Combine(fpath, "export")
+            Directory.CreateDirectory(finalpath)
+            For Each _curMovie As Master.DBMovie In _movies
+                Try
+                    Dim fanartfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-fanart.jpg"))
+                    If File.Exists(_curMovie.FanartPath) Then
 
-                File.Copy(_curMovie.FanartPath, fanartfile, True)
-            End If
-            counter += 1
-            If bwSaveAll.CancellationPending Then
-                Return
-            End If
-        Next
+                        File.Copy(_curMovie.FanartPath, fanartfile, True)
+                    End If
+                    counter += 1
+                Catch
+                End Try
+
+                If bwSaveAll.CancellationPending Then
+                    Return
+                End If
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Function GetAVImages(ByVal AVMovie As Master.DBMovie, ByVal line As String) As String
@@ -302,7 +325,7 @@ Public Class dlgExportMovies
         Return line
     End Function
 
-    Sub BuildHTML(ByVal bSearch As Boolean, ByVal strFilter As String, ByVal strIn As String, ByVal template As String, ByVal doNavigate As Boolean)
+    Private Sub BuildHTML(ByVal bSearch As Boolean, ByVal strFilter As String, ByVal strIn As String, ByVal template As String, ByVal doNavigate As Boolean)
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
 
@@ -468,12 +491,11 @@ Public Class dlgExportMovies
         End If
         Warning(False)
     End Sub
-    Private Sub bwSaveAll_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwSaveAll.ProgressChanged
 
-    End Sub
     Private Sub bwSaveAll_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwSaveAll.RunWorkerCompleted
         workerCanceled = e.Cancelled
     End Sub
+
     Private Sub bwSaveAll_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwSaveAll.DoWork
         Try
 
@@ -518,8 +540,10 @@ Public Class dlgExportMovies
                 myStream.Close()
             End If
         Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
     Private Sub SaveAll(ByVal sWarning As String, ByVal srcPath As String, ByVal destPath As String, Optional ByVal resizePoster As Integer = 200)
         wbMovieList.Visible = False
         If Not String.IsNullOrEmpty(sWarning) Then Warning(True, sWarning)

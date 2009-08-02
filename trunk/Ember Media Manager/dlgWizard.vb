@@ -76,6 +76,10 @@ Public Class dlgWizard
     End Sub
 
     Private Sub btnMovieRem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRem.Click
+        Me.RemoveSource()
+    End Sub
+
+    Private Sub RemoveSource()
         Try
             If Me.lvMovies.SelectedItems.Count > 0 Then
                 If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
@@ -229,4 +233,9 @@ Public Class dlgWizard
             Me.SetUp()
         End If
     End Sub
+
+    Private Sub lvMovies_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvMovies.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveSource()
+    End Sub
+
 End Class

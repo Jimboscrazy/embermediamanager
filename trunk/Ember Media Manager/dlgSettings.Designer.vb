@@ -1175,7 +1175,7 @@ Partial Class dlgSettings
         'btnRemoveToken
         '
         Me.btnRemoveToken.Image = CType(resources.GetObject("btnRemoveToken.Image"), System.Drawing.Image)
-        Me.btnRemoveToken.Location = New System.Drawing.Point(167, 72)
+        Me.btnRemoveToken.Location = New System.Drawing.Point(168, 72)
         Me.btnRemoveToken.Name = "btnRemoveToken"
         Me.btnRemoveToken.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveToken.TabIndex = 3
