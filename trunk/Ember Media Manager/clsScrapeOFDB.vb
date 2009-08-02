@@ -164,7 +164,7 @@ Public Class OFDB
                             If W > 0 Then
                                 Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>")
                                 Dim Gen = From M In rGenres _
-                                      Select N = Web.HttpUtility.HtmlDecode(M.Groups("name").ToString)
+                                      Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
                                 If Gen.Count > 0 Then
                                     Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
                                     _genre = Strings.Join(tGenre.Split(Convert.ToChar("/")), " / ").Trim

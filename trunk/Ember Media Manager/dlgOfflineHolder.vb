@@ -349,7 +349,7 @@ Public Class dlgOfflineHolder
 
     Private Sub lvStatus_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvStatus.SelectedIndexChanged
         'no selection in here please :)
-        sender.SelectedItems.Clear()
+        lvStatus.SelectedItems.Clear()
     End Sub
 
     Private Sub txtMovieName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieName.TextChanged
@@ -372,8 +372,8 @@ Public Class dlgOfflineHolder
         Me.tmrName.Enabled = False
     End Sub
 
-    Private Sub cbUseFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFanart.CheckedChanged
-        If Not Convert.ToBoolean(sender.checked) Then
+    Private Sub chkUseFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseFanart.CheckedChanged
+        If Not chkUseFanart.Checked Then
             If File.Exists(PreviewPath) Then
                 SetPreview(True, PreviewPath)
                 txtTop.Text = (Preview.Height - 150 / (1280 / Video_Width)).ToString
@@ -384,8 +384,8 @@ Public Class dlgOfflineHolder
                 SetPreview(False, fPath)
             End If
         End If
-        chkOverlay.Enabled = Convert.ToBoolean(sender.checked)
-        chkBackground.Enabled = Convert.ToBoolean(sender.checked)
+        chkOverlay.Enabled = chkUseFanart.Checked
+        chkBackground.Enabled = chkUseFanart.Checked
         If chkOverlay.Enabled Then
             chkOverlay.CheckState = CheckState.Checked
             chkBackground.CheckState = CheckState.Checked
@@ -511,7 +511,7 @@ Public Class dlgOfflineHolder
         If lvStatus.Items.Count > 0 Then
             lvStatus.Items(lvStatus.Items.Count - 1).SubItems.Add(Master.eLang.GetString(362, "Done"))
         End If
-        lvStatus.Items.Add(e.UserState)
+        lvStatus.Items.Add(e.UserState.ToString)
     End Sub
 
     Private Sub bwCreateHolder_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCreateHolder.RunWorkerCompleted

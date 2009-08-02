@@ -15,7 +15,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
-    <OptionStrict>Off</OptionStrict>
+    <OptionStrict>On</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
@@ -51,9 +51,11 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
-    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
     <Optimize>true</Optimize>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -63,7 +65,9 @@
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
-    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,9 +78,11 @@
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DefineTrace>false</DefineTrace>
@@ -84,10 +90,12 @@
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <DebugType>None</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,9 +106,11 @@
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>false</DefineTrace>
@@ -108,10 +118,12 @@
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
-    <NoWarn>42017,42018,42019,42032,42036</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <DebugType>None</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

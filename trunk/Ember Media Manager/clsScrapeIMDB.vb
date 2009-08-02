@@ -250,9 +250,9 @@ Namespace IMDB
                 Dim Table As String = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
                 Dim qPopular = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
-                               Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
-                               Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                                                Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
+                               Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                               Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
+                                                Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
 
                 R.PopularTitles = qPopular.ToList
 mPartial:
@@ -264,9 +264,9 @@ mPartial:
 
                 Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
                 Dim qpartial = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
-                    Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
-                    Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
+                    Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                    Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
+                                     Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
 
 
                 R.PartialMatches = qpartial.ToList
@@ -280,9 +280,9 @@ mApprox:
                 Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
                 Dim qApprox = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
-                    Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
-                    Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                                     Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
+                    Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                    Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
+                                     Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
 
                 If Not IsNothing(R.PartialMatches) Then
                     R.PartialMatches = R.PartialMatches.Union(qApprox.ToList).ToList
@@ -301,9 +301,9 @@ mExact:
                 Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
                 Dim qExact = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
-                               Where Not Mtr.Groups("name").ToString.Contains("<img") And Not Mtr.Groups("type").ToString.Contains("VG") _
-                               Select New Media.Movie(GetMovieID(Mtr.Groups("url").ToString), _
-                            Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString.ToString), Web.HttpUtility.HtmlDecode(Mtr.Groups("year").ToString), StringManip.ComputeLevenshtein(sMovie, Web.HttpUtility.HtmlDecode(Mtr.Groups("name").ToString)))
+                               Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                               Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
+                            Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString.ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(sMovie, Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)))
 
                 R.ExactMatches = qExact.ToList
 
@@ -328,8 +328,8 @@ mResult:
             If D > 0 Then W = HTML.IndexOf("</ul>", D)
             If D > 0 AndAlso W > 0 Then
                 Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
-                         Where Not P1.Groups("name").ToString = String.Empty _
-                         Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString)
+                         Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty _
+                         Select Studio = Web.HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString)
                 alStudio.AddRange(Ps.ToArray)
             End If
 
@@ -416,7 +416,7 @@ mResult:
                         W = HTML.IndexOf("</div>", D)
                         Dim rCert As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN_3)
 
-                        Dim Cert = From M In rCert Select N = String.Format("{0}:{1}", M.Groups(1).ToString.Trim, M.Groups(2).ToString.Trim) Order By N Descending Where N.Contains(Master.eSettings.CertificationLang)
+                        Dim Cert = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Descending Where N.Contains(Master.eSettings.CertificationLang)
 
                         If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                             If Cert.Count > 0 Then
@@ -557,8 +557,8 @@ mResult:
                     If D > 0 AndAlso Not W <= 0 Then
                         'get only the first director's name
                         Dim rDir As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
-                        Dim Dir = From M In rDir Where Not M.Groups("name").ToString.Contains("more") _
-                                  Select Web.HttpUtility.HtmlDecode(M.Groups("name").ToString)
+                        Dim Dir = From M In rDir Where Not DirectCast(M, Match).Groups("name").ToString.Contains("more") _
+                                  Select Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
 
                         If Dir.Count > 0 Then
                             IMDBMovie.Director = Strings.Join(Dir.ToArray, " / ").Trim
@@ -587,7 +587,7 @@ mResult:
                                 Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
 
                                 Dim Gen = From M In rGenres _
-                                          Select N = Web.HttpUtility.HtmlDecode(M.Groups("name").ToString) Where Not N.Contains("more") Take If(Master.eSettings.GenreLimit > 0, Master.eSettings.GenreLimit, 999999)
+                                          Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString) Where Not N.Contains("more") Take If(Master.eSettings.GenreLimit > 0, Master.eSettings.GenreLimit, 999999)
                                 If Gen.Count > 0 Then
                                     'force splitting of /ed genres
                                     Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
@@ -683,8 +683,8 @@ mPlot:
                         If D > 0 AndAlso W > 0 Then
                             'only get the first one
                             Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
-                                     Where Not P1.Groups("name").ToString = String.Empty _
-                                     Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString) Take 1
+                                     Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty _
+                                     Select Studio = Web.HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString) Take 1
                             IMDBMovie.Studio = Ps(0).ToString.Trim
                         End If
                     Else
@@ -709,10 +709,10 @@ mPlot:
                     If D > 0 Then W = HTML.IndexOf("</div>", D)
                     If D > 0 AndAlso W > 0 Then
                         Dim q = From M In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
-                                Where Not M.Groups("name").ToString = "more" _
-                                AndAlso Not M.Groups("name").ToString = "(more)" _
-                                AndAlso Not M.Groups("name").ToString = "(WGA)" _
-                                Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(M.Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
+                                Where Not DirectCast(M, Match).Groups("name").ToString = "more" _
+                                AndAlso Not DirectCast(M, Match).Groups("name").ToString = "(more)" _
+                                AndAlso Not DirectCast(M, Match).Groups("name").ToString = "(WGA)" _
+                                Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(DirectCast(M, Match).Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
 
                         If q.Count > 0 Then
                             IMDBMovie.Credits = Strings.Join(q.ToArray, " / ").Trim
@@ -779,8 +779,8 @@ mPlot:
                         If D > 0 Then W = HTML.IndexOf("</ul>", D)
                         If D > 0 AndAlso W > 0 Then
                             Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
-                                     Where Not String.IsNullOrEmpty(P1.Groups("name").ToString) _
-                                     Select Studio = Web.HttpUtility.HtmlDecode(P1.Groups("name").ToString)
+                                     Where Not String.IsNullOrEmpty(DirectCast(P1, Match).Groups("name").ToString) _
+                                     Select Studio = Web.HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString)
                             If Ps.Count > 0 Then
                                 IMDBMovie.Credits = String.Concat(IMDBMovie.Credits, " / ", Strings.Join(Ps.ToArray, " / ").Trim)
                             End If
