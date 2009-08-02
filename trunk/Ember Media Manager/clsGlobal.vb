@@ -36,7 +36,7 @@ Public Class Master
     Public Shared GlobalScrapeMod As New ScrapeModifier
     Public Shared alMoviePaths As New ArrayList
     Public Shared DB As New Database
-    Public Shared TempPath As String = Path.Combine(Master.AppPath, "Temp")
+    Public Shared TempPath As String = Path.Combine(AppPath, "Temp")
     Public Shared currMovie As New DBMovie
 
     Public Shared tmpMovie As New Media.Movie
@@ -500,7 +500,7 @@ Public Class Master
                         If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
                         Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                         ((eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
-                            If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
+                            If eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
                                 tmpList.Add(lFile.FullName.ToLower)
                                 SkipStack = True
                             Else
@@ -602,7 +602,7 @@ Public Class Master
         Dim parPath As String = String.Empty
         Dim fList As New ArrayList
         Try
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+            If eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                 Try
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName))
                 Catch
@@ -638,7 +638,7 @@ Public Class Master
                 'fanart
                 If String.IsNullOrEmpty(FanartPath) Then
                     If (bSingle AndAlso eSettings.FanartJPG AndAlso fFile.ToLower = Path.Combine(parPath, "fanart.jpg")) _
-                        OrElse ((Not bSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
+                        OrElse ((Not bSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
                         ((eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, "-fanart.jpg")) _
                         OrElse (eSettings.MovieNameDotFanartJPG AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".fanart.jpg")) _
                         OrElse (eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpName, "-fanart.jpg")) _
@@ -657,7 +657,7 @@ Public Class Master
                         OrElse (eSettings.MovieJPG AndAlso fFile.ToLower = Path.Combine(parPath, "movie.jpg")) _
                         OrElse (eSettings.PosterJPG AndAlso fFile.ToLower = Path.Combine(parPath, "poster.jpg")) _
                         OrElse (eSettings.FolderJPG AndAlso fFile.ToLower = Path.Combine(parPath, "folder.jpg"))) _
-                        OrElse ((Not bSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
+                        OrElse ((Not bSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
                         ((eSettings.MovieNameTBN AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".tbn")) _
                         OrElse (eSettings.MovieNameTBN AndAlso fFile.ToLower = String.Concat(tmpName, ".tbn")) _
                         OrElse (eSettings.MovieNameJPG AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".jpg")) _
@@ -672,7 +672,7 @@ Public Class Master
                 'nfo
                 If String.IsNullOrEmpty(NfoPath) Then
                     If (bSingle AndAlso eSettings.MovieNFO AndAlso fFile.ToLower = Path.Combine(parPath, "movie.nfo")) _
-                    OrElse ((Not bSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
+                    OrElse ((Not bSingle OrElse Not eSettings.MovieNameMultiOnly) AndAlso _
                     ((eSettings.MovieNameNFO AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".nfo")) _
                     OrElse (eSettings.MovieNameNFO AndAlso fFile.ToLower = String.Concat(tmpName, ".nfo")))) Then
                         NfoPath = fFile
@@ -689,7 +689,7 @@ Public Class Master
                 End If
 
                 If String.IsNullOrEmpty(TrailerPath) Then
-                    For Each t As String In Master.eSettings.ValidExts
+                    For Each t As String In eSettings.ValidExts
                         Select Case True
                             Case fFile.ToLower = String.Concat(tmpNameNoStack, "-trailer", t.ToLower)
                                 TrailerPath = fFile
@@ -744,7 +744,7 @@ Public Class Master
         Dim parPath As String = Directory.GetParent(sPath).FullName
         Dim tmpName As String = Path.Combine(parPath, StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)))
         Dim tmpNameNoStack As String = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath))
-        For Each t As String In Master.eSettings.ValidExts
+        For Each t As String In eSettings.ValidExts
             If File.Exists(String.Concat(tmpName, "-trailer", t)) Then
                 tFile = String.Concat(tmpName, "-trailer", t)
                 Exit For
@@ -885,10 +885,10 @@ Public Class Master
             Catch
             End Try
 
-            If isCleaner And Master.eSettings.ExpertCleaner Then
+            If isCleaner And eSettings.ExpertCleaner Then
 
                 For Each sFile As FileInfo In ioFi
-                    If Not Master.eSettings.CleanWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((Master.eSettings.CleanWhitelistVideo AndAlso Not Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower)) OrElse Not Master.eSettings.CleanWhitelistVideo) Then
+                    If Not eSettings.CleanWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((eSettings.CleanWhitelistVideo AndAlso Not eSettings.ValidExts.Contains(sFile.Extension.ToLower)) OrElse Not eSettings.CleanWhitelistVideo) Then
                         File.Delete(sFile.FullName)
                         bReturn = True
                     End If
@@ -902,15 +902,15 @@ Public Class Master
                     If Not String.IsNullOrEmpty(fPath) Then
                         If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
                             If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
+                                tPath = Path.Combine(eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
                             Else
-                                tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
+                                tPath = Path.Combine(eSettings.BDPath, Path.GetFileName(fPath))
                             End If
                         Else
                             If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), "-fanart.jpg"))
+                                tPath = Path.Combine(eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), "-fanart.jpg"))
                             Else
-                                tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
+                                tPath = Path.Combine(eSettings.BDPath, Path.GetFileName(fPath))
                             End If
                         End If
                     End If
@@ -928,20 +928,20 @@ Public Class Master
                 Else
                     For Each lFI As FileInfo In ioFi
                         If isCleaner Then
-                            If (Master.eSettings.CleanFolderJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "folder.jpg")) _
-                                OrElse (Master.eSettings.CleanFanartJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "fanart.jpg")) _
-                                OrElse (Master.eSettings.CleanMovieTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.tbn")) _
-                                OrElse (Master.eSettings.CleanMovieNFO AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.nfo")) _
-                                OrElse (Master.eSettings.CleanPosterTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.tbn")) _
-                                OrElse (Master.eSettings.CleanPosterJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.jpg")) _
-                                OrElse (Master.eSettings.CleanMovieJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.jpg")) Then
+                            If (eSettings.CleanFolderJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "folder.jpg")) _
+                                OrElse (eSettings.CleanFanartJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "fanart.jpg")) _
+                                OrElse (eSettings.CleanMovieTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.tbn")) _
+                                OrElse (eSettings.CleanMovieNFO AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.nfo")) _
+                                OrElse (eSettings.CleanPosterTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.tbn")) _
+                                OrElse (eSettings.CleanPosterJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.jpg")) _
+                                OrElse (eSettings.CleanMovieJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.jpg")) Then
                                 File.Delete(lFI.FullName)
                                 bReturn = True
                                 Continue For
                             End If
                         End If
 
-                        If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If (eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
                             If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".tbn") _
                             OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.tbn") _
                             OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".tbn") Then
@@ -951,7 +951,7 @@ Public Class Master
                             End If
                         End If
 
-                        If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If (eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
                             If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, "-fanart.jpg") _
                                 OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts-fanart.jpg") _
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), "-fanart.jpg") Then
@@ -961,7 +961,7 @@ Public Class Master
                             End If
                         End If
 
-                        If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If (eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
                             If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".nfo") _
                                 OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.nfo") _
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".nfo") Then
@@ -971,7 +971,7 @@ Public Class Master
                             End If
                         End If
 
-                        If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If (eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
                             If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".fanart.jpg") _
                                 OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.fanart.jpg") _
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".fanart.jpg") Then
@@ -981,7 +981,7 @@ Public Class Master
                             End If
                         End If
 
-                        If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+                        If (eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
                             If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".jpg") _
                                 OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.jpg") _
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".jpg") Then
@@ -1010,7 +1010,7 @@ Public Class Master
                         Next
                     End If
 
-                    If Master.eSettings.CleanExtraThumbs Then
+                    If eSettings.CleanExtraThumbs Then
                         If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
                             DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
                             bReturn = True
@@ -1044,9 +1044,9 @@ Public Class Master
                     Dim exImage As New Images
 
                     If isEdit Then
-                        tPath = Path.Combine(Master.TempPath, "extrathumbs")
+                        tPath = Path.Combine(TempPath, "extrathumbs")
                     Else
-                        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                        If eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
                             tPath = Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, "extrathumbs")
                         Else
                             tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "extrathumbs")
@@ -1057,7 +1057,7 @@ Public Class Master
                         Directory.CreateDirectory(tPath)
                     End If
 
-                    ffmpeg.StartInfo.FileName = String.Concat(Master.AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
+                    ffmpeg.StartInfo.FileName = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
                     ffmpeg.EnableRaisingEvents = False
                     ffmpeg.StartInfo.UseShellExecute = False
                     ffmpeg.StartInfo.CreateNoWindow = True
@@ -1082,8 +1082,8 @@ Public Class Master
                     ffmpeg.WaitForExit()
                     ffmpeg.Close()
 
-                    If intSeconds > 0 AndAlso ((Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds / 2 > ThumbCount + 300) OrElse (Not Master.eSettings.AutoThumbsNoSpoilers AndAlso intSeconds > ThumbCount + 2)) Then
-                        If Master.eSettings.AutoThumbsNoSpoilers Then
+                    If intSeconds > 0 AndAlso ((eSettings.AutoThumbsNoSpoilers AndAlso intSeconds / 2 > ThumbCount + 300) OrElse (Not eSettings.AutoThumbsNoSpoilers AndAlso intSeconds > ThumbCount + 2)) Then
+                        If eSettings.AutoThumbsNoSpoilers Then
                             intSeconds = Convert.ToInt32(((intSeconds / 2) - 300) / ThumbCount)
                             intAdd = intSeconds
                             intSeconds += intAdd + 300
@@ -1124,7 +1124,7 @@ Public Class Master
                         Dim exFanart As New Images
                         'always set to something if extrathumbs are created so we know during scrapers
                         SetFA = "TRUE"
-                        If Master.eSettings.UseETasFA AndAlso String.IsNullOrEmpty(mMovie.FanartPath) Then
+                        If eSettings.UseETasFA AndAlso String.IsNullOrEmpty(mMovie.FanartPath) Then
                             exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
                             SetFA = exFanart.SaveAsFanart(mMovie)
                         End If
@@ -1137,7 +1137,7 @@ Public Class Master
             End If
 
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
         Return SetFA
@@ -1163,7 +1163,7 @@ Public Class Master
                 Return 0
             End If
         Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return 0
         End Try
     End Function
@@ -1257,6 +1257,6 @@ Public Class Master
     End Function
 
     Public Shared Function AppPath() As String
-        Return Master.AppPath
+        Return System.AppDomain.CurrentDomain.BaseDirectory
     End Function
 End Class
