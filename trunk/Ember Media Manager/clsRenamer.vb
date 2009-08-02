@@ -37,6 +37,7 @@ Public Class FileFolderRenamer
         Private _dirExist As Boolean = True ' support for bulkRenamer 
         Private _fileExist As Boolean = True ' support for bulkRenamer 
         Private _isSingle As Boolean = True
+        Public MPAARate As String = String.Empty
         Public Resolution As String = String.Empty
         Public Audio As String = String.Empty
         Public Source As String = String.Empty
@@ -173,7 +174,12 @@ Public Class FileFolderRenamer
                     localForderPattern = folderPatternIsNotSingle
                 End If
                 f.NewFileName = ProccessPattern(f, filePattern).Trim
-                f.NewPath = Path.Combine(Path.GetDirectoryName(f.Path), ProccessPattern(f, localForderPattern).Trim)
+                If HaveBase(localForderPattern) Then
+                    f.NewPath = ProccessPattern(f, localForderPattern).Trim
+                Else
+                    f.NewPath = Path.Combine(Path.GetDirectoryName(f.Path), ProccessPattern(f, localForderPattern).Trim)
+                End If
+
                 f.FileExist = File.Exists(Path.Combine(f.Source, f.NewFileName)) AndAlso Not (f.FileName = f.NewFileName)
                 f.DirExist = File.Exists(Path.Combine(f.Source, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
 
@@ -182,6 +188,39 @@ Public Class FileFolderRenamer
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+    Public Shared Function HaveBase(ByVal fpath As String) As Boolean
+        If fpath.Contains("$B") Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function SelectMPAA(ByVal _movies As Media.Movie) As String
+        If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
+            Try
+                Dim strMPAA As String = Master.currMovie.Movie.MPAA
+                If strMPAA.ToLower.StartsWith("rated g") Then
+                    Return "0"
+                ElseIf strMPAA.ToLower.StartsWith("rated pg-13") Then
+                    Return "13"
+                ElseIf strMPAA.ToLower.StartsWith("rated pg") Then
+                    Return "6"
+                ElseIf strMPAA.ToLower.StartsWith("rated r") Then
+                    Return "17"
+                ElseIf strMPAA.ToLower.StartsWith("rated nc-17") Then
+                    Return "17+"
+                Else
+                    Return String.Empty
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        Else
+            Return String.Empty
+        End If
+        Return String.Empty
+    End Function
 
     Public Shared Function ProccessPattern(ByVal f As FileRename, ByVal opattern As String) As String
         Try
@@ -207,14 +246,16 @@ Public Class FileFolderRenamer
                     strCond = pattern.Substring(nextIB, nextEB - nextIB + 1)
                     strNoFlags = strCond
                     strBase = strCond
-                    strCond = ApplyPattern(strCond, "D", f.Path)
-                    strCond = ApplyPattern(strCond, "F", f.FileName)
+                    strCond = ApplyPattern(strCond, "D", f.Path.Replace("\", String.Empty))
+                    strCond = ApplyPattern(strCond, "F", f.FileName.Replace("\", String.Empty))
                     strCond = ApplyPattern(strCond, "T", f.Title)
                     strCond = ApplyPattern(strCond, "O", f.OriginalTitle)
                     strCond = ApplyPattern(strCond, "Y", f.Year)
                     strCond = ApplyPattern(strCond, "R", f.Resolution)
                     strCond = ApplyPattern(strCond, "A", f.Audio)
                     strCond = ApplyPattern(strCond, "S", strSource)
+                    strCond = ApplyPattern(strCond, "M", f.MPAARate)
+                    strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
 
                     strNoFlags = Regex.Replace(strNoFlags, "\$((?:[DFTYRAS]))", "") '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
@@ -230,14 +271,16 @@ Public Class FileFolderRenamer
                 nextIB = pattern.IndexOf("{")
                 nextEB = pattern.IndexOf("}")
             End While
-            pattern = ApplyPattern(pattern, "D", f.Path)
-            pattern = ApplyPattern(pattern, "F", f.FileName)
+            pattern = ApplyPattern(pattern, "D", f.Path.Replace("\", String.Empty))
+            pattern = ApplyPattern(pattern, "F", f.FileName.Replace("\", String.Empty))
             pattern = ApplyPattern(pattern, "T", f.Title)
             pattern = ApplyPattern(pattern, "O", f.OriginalTitle)
             pattern = ApplyPattern(pattern, "Y", f.Year)
             pattern = ApplyPattern(pattern, "R", f.Resolution)
             pattern = ApplyPattern(pattern, "A", f.Audio)
             pattern = ApplyPattern(pattern, "S", strSource)
+            pattern = ApplyPattern(pattern, "M", f.MPAARate)
+            pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
             nextC = pattern.IndexOf("$X")
             If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
                 strCond = pattern.Substring(nextC + 2, 1)
@@ -263,7 +306,7 @@ Public Class FileFolderRenamer
 
             pattern = pattern.Replace(":", " -")
             pattern = pattern.Replace("/", String.Empty)
-            pattern = pattern.Replace("\", String.Empty)
+            'pattern = pattern.Replace("\", String.Empty)
             pattern = pattern.Replace("|", String.Empty)
             pattern = pattern.Replace("<", String.Empty)
             pattern = pattern.Replace(">", String.Empty)
@@ -363,9 +406,15 @@ Public Class FileFolderRenamer
                                     System.IO.Directory.CreateDirectory(destDir)
                                 Else
                                     If f.NewPath.ToLower = f.Path.ToLower Then
+                                        If Not Directory.Exists(Path.GetDirectoryName(String.Concat(destDir, ".$emm"))) Then
+                                            System.IO.Directory.CreateDirectory(Path.GetDirectoryName(String.Concat(destDir, ".$emm")))
+                                        End If
                                         System.IO.Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
                                         System.IO.Directory.Move(String.Concat(destDir, ".$emm"), destDir)
                                     Else
+                                        If Not Directory.Exists(Path.GetDirectoryName(destDir)) Then
+                                            System.IO.Directory.CreateDirectory(Path.GetDirectoryName(destDir))
+                                        End If
                                         System.IO.Directory.Move(srcDir, destDir)
                                     End If
                                 End If
