@@ -807,10 +807,10 @@ Public Class frmMain
         Try
             If Master.eSettings.AllwaysDisplayGenresText Then Return
             Dim iLeft As Integer = 0
-            Me.GenreImage = DirectCast(sender.image, Image)
+            Me.GenreImage = DirectCast(sender, PictureBox).Image
             Dim bmGenre As New Bitmap(Me.GenreImage)
             Dim grGenre As Graphics = Graphics.FromImage(bmGenre)
-            Dim drawString As String = sender.Name.ToString
+            Dim drawString As String = DirectCast(sender, PictureBox).Name.ToString
             Dim drawFont As New Font("Microsoft Sans Serif", 14, FontStyle.Bold, GraphicsUnit.Pixel)
             Dim drawBrush As New SolidBrush(Color.White)
             Dim drawWidth As Single = grGenre.MeasureString(drawString, drawFont).Width
@@ -819,7 +819,7 @@ Public Class frmMain
             Dim drawHeight As Single = grGenre.MeasureString(drawString, drawFont).Height
             iLeft = Convert.ToInt32((bmGenre.Width - grGenre.MeasureString(drawString, drawFont).Width) / 2)
             grGenre.DrawString(drawString, drawFont, drawBrush, iLeft, (bmGenre.Height - drawHeight))
-            sender.Image = bmGenre
+            DirectCast(sender, PictureBox).Image = bmGenre
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -834,7 +834,7 @@ Public Class frmMain
 
         Try
             If Master.eSettings.AllwaysDisplayGenresText Then Return
-            sender.image = GenreImage
+            DirectCast(sender, PictureBox).Image = GenreImage
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4771,7 +4771,7 @@ doCancel:
     End Sub
 
     Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
-        Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(drvRow.Item(0)) = ID Select drvRow
+        Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
         Dim aContents(6) As String
         Dim tmpMovie As New Media.Movie
         Dim tmpMovieDb As New Master.DBMovie
@@ -4822,7 +4822,7 @@ doCancel:
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
                 tmpMovieDb.FileSource = XML.GetFileSource(tmpMovieDb.Filename)
-                aContents = Master.GetFolderContents(tmpMovieDb.Filename, Convert.ToBoolean(dRow(0).Item(2)))
+                aContents = Master.GetFolderContents(tmpMovieDb.Filename, Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(2)))
                 tmpMovieDb.PosterPath = aContents(0)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(aContents(0)), False, True)})
                 tmpMovieDb.FanartPath = aContents(1)
@@ -4838,8 +4838,8 @@ doCancel:
                 Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(aContents(5)), False, True)})
 
                 Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
-                tmpMovieDb.IsMark = Convert.ToBoolean(dRow(0).Item(11))
-                tmpMovieDb.IsLock = Convert.ToBoolean(dRow(0).Item(14))
+                tmpMovieDb.IsMark = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
+                tmpMovieDb.IsLock = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(14))
 
                 Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
 
@@ -5408,12 +5408,12 @@ doCancel:
     Public Sub SetListItemAfterEdit(ByVal iID As Integer, ByVal iRow As Integer)
 
         Try
-            Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt32(drvRow.Item(0)) = iID Select drvRow
+            Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", iID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    dRow(0).Item(11) = Convert.ToBoolean(SQLreader("mark"))
+                    DirectCast(dRow(0), DataRow).Item(11) = Convert.ToBoolean(SQLreader("mark"))
                 End Using
             End Using
         Catch ex As Exception

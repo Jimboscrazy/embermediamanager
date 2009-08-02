@@ -821,9 +821,9 @@ Public Class dlgImgSelect
 
     Private Sub pbImage_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
-            If Me.DLType = Master.ImageType.Fanart OrElse Not sender.tag.ToString.Contains("themoviedb.org") Then
+            If Me.DLType = Master.ImageType.Fanart OrElse Not DirectCast(sender, PictureBox).Tag.ToString.Contains("themoviedb.org") Then
                 Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(sender.image)
+                    dImgView.ShowDialog(DirectCast(sender, PictureBox).Image)
                 End Using
             End If
         Catch
@@ -831,15 +831,15 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub pbImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag.ToString)
+        Me.DoSelect(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(sender, PictureBox).Tag.ToString)
     End Sub
 
     Private Sub pnlImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag.ToString)
+        Me.DoSelect(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(sender, Panel).Tag.ToString)
     End Sub
 
     Private Sub lblImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.DoSelect(Convert.ToInt32(sender.Name), sender.Tag.ToString)
+        Me.DoSelect(Convert.ToInt32(DirectCast(sender, Label).Name), DirectCast(sender, Label).Tag.ToString)
     End Sub
 
     Private Sub dlgImgSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
