@@ -1194,11 +1194,13 @@ Public Class Master
                 Dim SubKeyNames As String() = masterKey.GetSubKeyNames()
                 For i As Integer = 0 To SubKeyNames.Count - 1
                     tempKey = Registry.LocalMachine.OpenSubKey(String.Concat(regLocation, "\\", SubKeyNames(i)))
-                    sVersion = tempKey.GetValue("Version").ToString
-                    If Not String.IsNullOrEmpty(sVersion) Then
-                        Dim tVersion() As String = sVersion.Split(Convert.ToChar("."))
-                        If Convert.ToDouble(tVersion(0)) >= 3 AndAlso Convert.ToDouble(tVersion(1)) >= 5 Then
-                            Return True
+                    If Not IsNothing(tempKey) Then
+                        sVersion = tempKey.GetValue("Version").ToString
+                        If Not String.IsNullOrEmpty(sVersion) Then
+                            Dim tVersion() As String = sVersion.Split(Convert.ToChar("."))
+                            If Convert.ToDouble(tVersion(0)) >= 3 AndAlso Convert.ToDouble(tVersion(1)) >= 5 Then
+                                Return True
+                            End If
                         End If
                     End If
                 Next
