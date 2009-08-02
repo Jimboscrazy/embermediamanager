@@ -3533,6 +3533,8 @@ doCancel:
                 Me.tspbLoading.Value = e.ProgressPercentage
             End If
         End If
+
+        Me.dgvMediaList.Invalidate()
     End Sub
 
     Private Sub bwScraper_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwScraper.RunWorkerCompleted

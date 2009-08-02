@@ -358,7 +358,6 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.Controls.Add(Me.chkMPAA)
         Me.gbOptions.Controls.Add(Me.chkYear)
         Me.gbOptions.Controls.Add(Me.chkTitle)
-        Me.gbOptions.Enabled = False
         Me.gbOptions.Location = New System.Drawing.Point(287, 70)
         Me.gbOptions.Name = "gbOptions"
         Me.gbOptions.Size = New System.Drawing.Size(274, 254)
@@ -369,6 +368,8 @@ Partial Class dlgUpdateMedia
         'chkTop250
         '
         Me.chkTop250.AutoSize = True
+        Me.chkTop250.Checked = True
+        Me.chkTop250.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkTop250.Location = New System.Drawing.Point(147, 227)
         Me.chkTop250.Name = "chkTop250"
         Me.chkTop250.Size = New System.Drawing.Size(66, 17)
@@ -379,6 +380,8 @@ Partial Class dlgUpdateMedia
         'chkCrew
         '
         Me.chkCrew.AutoSize = True
+        Me.chkCrew.Checked = True
+        Me.chkCrew.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkCrew.Location = New System.Drawing.Point(147, 203)
         Me.chkCrew.Name = "chkCrew"
         Me.chkCrew.Size = New System.Drawing.Size(79, 17)
@@ -389,6 +392,8 @@ Partial Class dlgUpdateMedia
         'chkMusicBy
         '
         Me.chkMusicBy.AutoSize = True
+        Me.chkMusicBy.Checked = True
+        Me.chkMusicBy.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkMusicBy.Location = New System.Drawing.Point(147, 180)
         Me.chkMusicBy.Name = "chkMusicBy"
         Me.chkMusicBy.Size = New System.Drawing.Size(69, 17)
@@ -399,6 +404,8 @@ Partial Class dlgUpdateMedia
         'chkProducers
         '
         Me.chkProducers.AutoSize = True
+        Me.chkProducers.Checked = True
+        Me.chkProducers.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkProducers.Location = New System.Drawing.Point(147, 157)
         Me.chkProducers.Name = "chkProducers"
         Me.chkProducers.Size = New System.Drawing.Size(74, 17)
@@ -409,6 +416,8 @@ Partial Class dlgUpdateMedia
         'chkWriters
         '
         Me.chkWriters.AutoSize = True
+        Me.chkWriters.Checked = True
+        Me.chkWriters.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkWriters.Location = New System.Drawing.Point(147, 134)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(59, 17)
@@ -419,6 +428,8 @@ Partial Class dlgUpdateMedia
         'chkStudio
         '
         Me.chkStudio.AutoSize = True
+        Me.chkStudio.Checked = True
+        Me.chkStudio.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkStudio.Location = New System.Drawing.Point(6, 181)
         Me.chkStudio.Name = "chkStudio"
         Me.chkStudio.Size = New System.Drawing.Size(56, 17)
@@ -429,6 +440,8 @@ Partial Class dlgUpdateMedia
         'chkRuntime
         '
         Me.chkRuntime.AutoSize = True
+        Me.chkRuntime.Checked = True
+        Me.chkRuntime.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkRuntime.Location = New System.Drawing.Point(6, 112)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(65, 17)
@@ -439,6 +452,8 @@ Partial Class dlgUpdateMedia
         'chkPlot
         '
         Me.chkPlot.AutoSize = True
+        Me.chkPlot.Checked = True
+        Me.chkPlot.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkPlot.Location = New System.Drawing.Point(147, 65)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(44, 17)
@@ -449,6 +464,8 @@ Partial Class dlgUpdateMedia
         'chkOutline
         '
         Me.chkOutline.AutoSize = True
+        Me.chkOutline.Checked = True
+        Me.chkOutline.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkOutline.Location = New System.Drawing.Point(147, 42)
         Me.chkOutline.Name = "chkOutline"
         Me.chkOutline.Size = New System.Drawing.Size(59, 17)
@@ -459,6 +476,8 @@ Partial Class dlgUpdateMedia
         'chkGenre
         '
         Me.chkGenre.AutoSize = True
+        Me.chkGenre.Checked = True
+        Me.chkGenre.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkGenre.Location = New System.Drawing.Point(6, 204)
         Me.chkGenre.Name = "chkGenre"
         Me.chkGenre.Size = New System.Drawing.Size(55, 17)
@@ -469,6 +488,8 @@ Partial Class dlgUpdateMedia
         'chkDirector
         '
         Me.chkDirector.AutoSize = True
+        Me.chkDirector.Checked = True
+        Me.chkDirector.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkDirector.Location = New System.Drawing.Point(147, 111)
         Me.chkDirector.Name = "chkDirector"
         Me.chkDirector.Size = New System.Drawing.Size(63, 17)
@@ -479,6 +500,8 @@ Partial Class dlgUpdateMedia
         'chkTagline
         '
         Me.chkTagline.AutoSize = True
+        Me.chkTagline.Checked = True
+        Me.chkTagline.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkTagline.Location = New System.Drawing.Point(147, 19)
         Me.chkTagline.Name = "chkTagline"
         Me.chkTagline.Size = New System.Drawing.Size(61, 17)
@@ -489,6 +512,8 @@ Partial Class dlgUpdateMedia
         'chkCast
         '
         Me.chkCast.AutoSize = True
+        Me.chkCast.Checked = True
+        Me.chkCast.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkCast.Location = New System.Drawing.Point(147, 88)
         Me.chkCast.Name = "chkCast"
         Me.chkCast.Size = New System.Drawing.Size(47, 17)
@@ -499,6 +524,8 @@ Partial Class dlgUpdateMedia
         'chkVotes
         '
         Me.chkVotes.AutoSize = True
+        Me.chkVotes.Checked = True
+        Me.chkVotes.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkVotes.Location = New System.Drawing.Point(6, 158)
         Me.chkVotes.Name = "chkVotes"
         Me.chkVotes.Size = New System.Drawing.Size(53, 17)
@@ -509,6 +536,8 @@ Partial Class dlgUpdateMedia
         'chkTrailer
         '
         Me.chkTrailer.AutoSize = True
+        Me.chkTrailer.Checked = True
+        Me.chkTrailer.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkTrailer.Location = New System.Drawing.Point(6, 227)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(55, 17)
@@ -519,6 +548,8 @@ Partial Class dlgUpdateMedia
         'chkRating
         '
         Me.chkRating.AutoSize = True
+        Me.chkRating.Checked = True
+        Me.chkRating.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkRating.Location = New System.Drawing.Point(6, 135)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(57, 17)
@@ -529,6 +560,8 @@ Partial Class dlgUpdateMedia
         'chkRelease
         '
         Me.chkRelease.AutoSize = True
+        Me.chkRelease.Checked = True
+        Me.chkRelease.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkRelease.Location = New System.Drawing.Point(6, 89)
         Me.chkRelease.Name = "chkRelease"
         Me.chkRelease.Size = New System.Drawing.Size(91, 17)
@@ -539,6 +572,8 @@ Partial Class dlgUpdateMedia
         'chkMPAA
         '
         Me.chkMPAA.AutoSize = True
+        Me.chkMPAA.Checked = True
+        Me.chkMPAA.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkMPAA.Location = New System.Drawing.Point(6, 66)
         Me.chkMPAA.Name = "chkMPAA"
         Me.chkMPAA.Size = New System.Drawing.Size(80, 17)
@@ -549,6 +584,8 @@ Partial Class dlgUpdateMedia
         'chkYear
         '
         Me.chkYear.AutoSize = True
+        Me.chkYear.Checked = True
+        Me.chkYear.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkYear.Location = New System.Drawing.Point(6, 43)
         Me.chkYear.Name = "chkYear"
         Me.chkYear.Size = New System.Drawing.Size(48, 17)
@@ -559,6 +596,8 @@ Partial Class dlgUpdateMedia
         'chkTitle
         '
         Me.chkTitle.AutoSize = True
+        Me.chkTitle.Checked = True
+        Me.chkTitle.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkTitle.Location = New System.Drawing.Point(6, 20)
         Me.chkTitle.Name = "chkTitle"
         Me.chkTitle.Size = New System.Drawing.Size(46, 17)
