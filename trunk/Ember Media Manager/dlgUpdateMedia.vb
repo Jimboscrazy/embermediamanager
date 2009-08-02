@@ -139,11 +139,17 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub rbUpdateModifier_Missing_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_Missing.CheckedChanged
+        Me.chkMetaMod.Enabled = Not Me.rbUpdateModifier_Missing.Checked
+        If Me.rbUpdateModifier_Missing.Checked Then Me.chkMetaMod.Checked = False
+
+
         If Me.rbUpdate_Auto.Checked Then
             Me.CustomUpdater.ScrapeType = Master.ScrapeType.UpdateAuto
         Else
             Me.CustomUpdater.ScrapeType = Master.ScrapeType.UpdateAsk
         End If
+
+        Me.CheckEnable()
     End Sub
 
     Private Sub rbUpdateModifier_New_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbUpdateModifier_New.CheckedChanged
@@ -320,8 +326,8 @@ Public Class dlgUpdateMedia
         chkPosterMod.Enabled = Not chkAllMod.Checked
         chkFanartMod.Checked = chkAllMod.Checked
         chkFanartMod.Enabled = Not chkAllMod.Checked
-        chkMetaMod.Checked = chkAllMod.Checked
-        chkMetaMod.Enabled = Not chkAllMod.Checked
+        chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked
+        chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked
         chkExtraMod.Checked = chkAllMod.Checked
         chkExtraMod.Enabled = Not chkAllMod.Checked
         chkTrailerMod.Checked = chkAllMod.Checked
