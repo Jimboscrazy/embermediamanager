@@ -1321,7 +1321,7 @@ Public Class frmMain
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                     SQLcommand.CommandText = "UPDATE movies SET mark = (?) WHERE id = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                        parMark.Value = If(Me.dgvMediaList.SelectedRows.Count > 1, setMark, Not sRow.Cells(11).Value)
+                        parMark.Value = If(Me.dgvMediaList.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells(11).Value))
                         parID.Value = sRow.Cells(0).Value
                         SQLcommand.ExecuteNonQuery()
                         sRow.Cells(11).Value = parMark.Value
@@ -1365,7 +1365,7 @@ Public Class frmMain
                     Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "id")
                     SQLcommand.CommandText = "UPDATE movies SET lock = (?) WHERE id = (?);"
                     For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                        parLock.Value = If(Me.dgvMediaList.SelectedRows.Count > 1, setLock, Not sRow.Cells(14).Value)
+                        parLock.Value = If(Me.dgvMediaList.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells(14).Value))
                         parID.Value = sRow.Cells(0).Value
                         SQLcommand.ExecuteNonQuery()
                         sRow.Cells(14).Value = parLock.Value
@@ -2547,7 +2547,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnSortDate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortDate.Click
-        If Me.btnSortDate.Tag = "DESC" Then
+        If Me.btnSortDate.Tag.ToString = "DESC" Then
             Me.btnSortDate.Tag = "ASC"
             Me.btnSortDate.Image = My.Resources.desc
             Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(0), ComponentModel.ListSortDirection.Descending)
@@ -2618,7 +2618,7 @@ Public Class frmMain
                             pExt = Path.GetExtension(mRow.Item(0).ToString).ToLower
                             MLFind.SearchString = mRow.Item(0).ToString
                             MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
-                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2) = Args.SourceName)) OrElse (Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0).ToString).ToLower) AndAlso (Not Master.eSettings.AutoDetectVTS OrElse (Master.eSettings.AutoDetectVTS AndAlso Not pExt = ".ifo" AndAlso Not pExt = ".vob" AndAlso Not pExt = ".bup"))) Then
+                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2).ToString = Args.SourceName)) OrElse (Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0).ToString).ToLower) AndAlso (Not Master.eSettings.AutoDetectVTS OrElse (Master.eSettings.AutoDetectVTS AndAlso Not pExt = ".ifo" AndAlso Not pExt = ".vob" AndAlso Not pExt = ".bup"))) Then
                                 parPath.Value = mRow.Item(0)
                                 SQLcommand.ExecuteNonQuery()
 
@@ -3524,7 +3524,7 @@ doCancel:
     Private Sub bwScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwScraper.ProgressChanged
         If Not isCL Then
             If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") Then
-                If Me.dgvMediaList.SelectedRows(0).Cells(0).Value = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
+                If Me.dgvMediaList.SelectedRows(0).Cells(0).Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
                     Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
                 End If
             Else
@@ -3547,7 +3547,7 @@ doCancel:
             Else
                 Me.pnlCancel.Visible = False
 
-                If e.Result = Master.ScrapeType.CleanFolders Then
+                If DirectCast(e.Result, Master.ScrapeType) = Master.ScrapeType.CleanFolders Then
                     'only rescan media if expert cleaner and videos are not whitelisted 
                     'since the db is updated during cleaner now.
                     If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
@@ -4935,7 +4935,7 @@ doCancel:
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLNewcommand.CommandText = String.Concat("SELECT COUNT(id) AS mcount FROM movies WHERE mark = 1;")
                     Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                        If SQLcount("mcount") > 0 Then
+                        If Convert.ToInt32(SQLcount("mcount")) > 0 Then
                             Me.btnMarkAll.Text = Master.eLang.GetString(105, "Unmark All")
                         Else
                             Me.btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
@@ -5413,7 +5413,7 @@ doCancel:
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", iID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    dRow(0).Item(11) = SQLreader("mark")
+                    dRow(0).Item(11) = Convert.ToBoolean(SQLreader("mark"))
                 End Using
             End Using
         Catch ex As Exception

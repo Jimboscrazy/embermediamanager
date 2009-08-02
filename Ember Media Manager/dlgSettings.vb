@@ -1372,7 +1372,7 @@ Public Class dlgSettings
         Using dEditMeta As New dlgFileInfo
             Dim fi As New MediaInfo.Fileinfo
             For Each x As emmSettings.MetadataPerType In Meta
-                If x.FileType = lstMetaData.SelectedItems(0) Then
+                If x.FileType = lstMetaData.SelectedItems(0).ToString Then
                     fi = dEditMeta.ShowDialog(x.Metadata)
                     If Not fi Is Nothing Then
                         Meta.Remove(x)
@@ -1392,7 +1392,7 @@ Public Class dlgSettings
 
     Private Sub btnRemoveMetaDataFT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveMetaDataFT.Click
         For Each x As emmSettings.MetadataPerType In Meta
-            If x.FileType = lstMetaData.SelectedItems(0) Then
+            If x.FileType = lstMetaData.SelectedItems(0).ToString Then
                 Meta.Remove(x)
                 LoadMetadata()
                 SetApplyButton(True)
@@ -1406,7 +1406,7 @@ Public Class dlgSettings
             Using dEditMeta As New dlgFileInfo
                 Dim fi As New MediaInfo.Fileinfo
                 For Each x As emmSettings.MetadataPerType In Meta
-                    If x.FileType = lstMetaData.SelectedItems(0) Then
+                    If x.FileType = lstMetaData.SelectedItems(0).ToString Then
                         fi = dEditMeta.ShowDialog(x.Metadata)
                         If Not fi Is Nothing Then
                             Meta.Remove(x)

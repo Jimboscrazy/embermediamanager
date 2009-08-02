@@ -649,8 +649,8 @@ Public Class dlgOfflineHolder
         Me.Activate()
     End Sub
 
-    Private Sub TrackBar1_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbTagLine.Scroll
-        txtTop.Text = (sender.maximum - sender.value).ToString
+    Private Sub tbTagLine_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbTagLine.Scroll
+        txtTop.Text = (tbTagLine.Maximum - tbTagLine.Value).ToString
     End Sub
 
     Private Sub btnBackgroundColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBackgroundColor.Click
