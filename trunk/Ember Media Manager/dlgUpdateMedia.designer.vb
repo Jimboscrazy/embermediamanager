@@ -46,6 +46,7 @@ Partial Class dlgUpdateMedia
         Me.chkAllMod = New System.Windows.Forms.CheckBox
         Me.Update_Button = New System.Windows.Forms.Button
         Me.gbOptions = New System.Windows.Forms.GroupBox
+        Me.chkTop250 = New System.Windows.Forms.CheckBox
         Me.chkCrew = New System.Windows.Forms.CheckBox
         Me.chkMusicBy = New System.Windows.Forms.CheckBox
         Me.chkProducers = New System.Windows.Forms.CheckBox
@@ -65,7 +66,6 @@ Partial Class dlgUpdateMedia
         Me.chkMPAA = New System.Windows.Forms.CheckBox
         Me.chkYear = New System.Windows.Forms.CheckBox
         Me.chkTitle = New System.Windows.Forms.CheckBox
-        Me.chkTop250 = New System.Windows.Forms.CheckBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbUpdateModifier.SuspendLayout()
@@ -239,6 +239,9 @@ Partial Class dlgUpdateMedia
         'chkTrailerMod
         '
         Me.chkTrailerMod.AutoSize = True
+        Me.chkTrailerMod.Checked = True
+        Me.chkTrailerMod.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkTrailerMod.Enabled = False
         Me.chkTrailerMod.Location = New System.Drawing.Point(135, 54)
         Me.chkTrailerMod.Name = "chkTrailerMod"
         Me.chkTrailerMod.Size = New System.Drawing.Size(55, 17)
@@ -249,6 +252,9 @@ Partial Class dlgUpdateMedia
         'chkExtraMod
         '
         Me.chkExtraMod.AutoSize = True
+        Me.chkExtraMod.Checked = True
+        Me.chkExtraMod.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkExtraMod.Enabled = False
         Me.chkExtraMod.Location = New System.Drawing.Point(135, 36)
         Me.chkExtraMod.Name = "chkExtraMod"
         Me.chkExtraMod.Size = New System.Drawing.Size(84, 17)
@@ -259,6 +265,9 @@ Partial Class dlgUpdateMedia
         'chkMetaMod
         '
         Me.chkMetaMod.AutoSize = True
+        Me.chkMetaMod.Checked = True
+        Me.chkMetaMod.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkMetaMod.Enabled = False
         Me.chkMetaMod.Location = New System.Drawing.Point(135, 18)
         Me.chkMetaMod.Name = "chkMetaMod"
         Me.chkMetaMod.Size = New System.Drawing.Size(76, 17)
@@ -269,6 +278,9 @@ Partial Class dlgUpdateMedia
         'chkFanartMod
         '
         Me.chkFanartMod.AutoSize = True
+        Me.chkFanartMod.Checked = True
+        Me.chkFanartMod.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkFanartMod.Enabled = False
         Me.chkFanartMod.Location = New System.Drawing.Point(14, 72)
         Me.chkFanartMod.Name = "chkFanartMod"
         Me.chkFanartMod.Size = New System.Drawing.Size(56, 17)
@@ -279,6 +291,9 @@ Partial Class dlgUpdateMedia
         'chkPosterMod
         '
         Me.chkPosterMod.AutoSize = True
+        Me.chkPosterMod.Checked = True
+        Me.chkPosterMod.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkPosterMod.Enabled = False
         Me.chkPosterMod.Location = New System.Drawing.Point(14, 54)
         Me.chkPosterMod.Name = "chkPosterMod"
         Me.chkPosterMod.Size = New System.Drawing.Size(56, 17)
@@ -289,6 +304,9 @@ Partial Class dlgUpdateMedia
         'chkNFOMod
         '
         Me.chkNFOMod.AutoSize = True
+        Me.chkNFOMod.Checked = True
+        Me.chkNFOMod.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkNFOMod.Enabled = False
         Me.chkNFOMod.Location = New System.Drawing.Point(14, 36)
         Me.chkNFOMod.Name = "chkNFOMod"
         Me.chkNFOMod.Size = New System.Drawing.Size(48, 17)
@@ -299,6 +317,8 @@ Partial Class dlgUpdateMedia
         'chkAllMod
         '
         Me.chkAllMod.AutoSize = True
+        Me.chkAllMod.Checked = True
+        Me.chkAllMod.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkAllMod.Location = New System.Drawing.Point(14, 18)
         Me.chkAllMod.Name = "chkAllMod"
         Me.chkAllMod.Size = New System.Drawing.Size(65, 17)
@@ -345,6 +365,16 @@ Partial Class dlgUpdateMedia
         Me.gbOptions.TabIndex = 66
         Me.gbOptions.TabStop = False
         Me.gbOptions.Text = "Options"
+        '
+        'chkTop250
+        '
+        Me.chkTop250.AutoSize = True
+        Me.chkTop250.Location = New System.Drawing.Point(147, 227)
+        Me.chkTop250.Name = "chkTop250"
+        Me.chkTop250.Size = New System.Drawing.Size(66, 17)
+        Me.chkTop250.TabIndex = 19
+        Me.chkTop250.Text = "Top 250"
+        Me.chkTop250.UseVisualStyleBackColor = True
         '
         'chkCrew
         '
@@ -535,16 +565,6 @@ Partial Class dlgUpdateMedia
         Me.chkTitle.TabIndex = 0
         Me.chkTitle.Text = "Title"
         Me.chkTitle.UseVisualStyleBackColor = True
-        '
-        'chkTop250
-        '
-        Me.chkTop250.AutoSize = True
-        Me.chkTop250.Location = New System.Drawing.Point(147, 227)
-        Me.chkTop250.Name = "chkTop250"
-        Me.chkTop250.Size = New System.Drawing.Size(66, 17)
-        Me.chkTop250.TabIndex = 19
-        Me.chkTop250.Text = "Top 250"
-        Me.chkTop250.UseVisualStyleBackColor = True
         '
         'dlgUpdateMedia
         '
