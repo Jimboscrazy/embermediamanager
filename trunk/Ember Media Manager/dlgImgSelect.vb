@@ -236,10 +236,8 @@ Public Class dlgImgSelect
 
             If Me.DLType = Master.ImageType.Posters Then
                 Me.Text = String.Concat(Master.eLang.GetString(308, "Select Poster - "), Me.tMovie.ListTitle)
-                Me.pnlDLStatus.Visible = True
             Else
                 Me.Text = String.Concat(Master.eLang.GetString(309, "Select Fanart - "), Me.tMovie.ListTitle)
-                Me.pnlDLStatus.Visible = False
                 Me.pnlDLStatus.Height = 75
                 Me.pnlDLStatus.Top = 207
 
@@ -446,8 +444,11 @@ Public Class dlgImgSelect
 
 
                 If lFi.Count > 0 Then
+                    Me.pnlDLStatus.Height = 75
+                    Me.pnlDLStatus.Top = 207
+                    Me.pnlDLStatus.Visible = True
+                    Application.DoEvents()
                     NoneFound = False
-                    Me.pnlDLStatus.Visible = False
                     Dim tImage As Media.Image
                     Dim tmpImage As New Images
                     For Each sFile As FileInfo In lFi
@@ -473,6 +474,7 @@ Public Class dlgImgSelect
                     tmpImage.Dispose()
                     tmpImage = Nothing
                     ProcessPics(TMDBPosters)
+                    Me.pnlDLStatus.Visible = False
                     Me.pnlBG.Visible = True
                 End If
 
@@ -547,8 +549,9 @@ Public Class dlgImgSelect
                 End If
 
                 If lFi.Count > 0 Then
+                    Me.pnlDLStatus.Visible = True
+                    Application.DoEvents()
                     NoneFound = False
-                    Me.pnlDLStatus.Visible = False
                     Dim tImage As Media.Image
                     Dim tmpImage As New Images
                     For Each sFile As FileInfo In lFi
@@ -587,6 +590,7 @@ Public Class dlgImgSelect
                     tmpImage.Dispose()
                     tmpImage = Nothing
                     ProcessPics(TMDBPosters)
+                    Me.pnlDLStatus.Visible = False
                     Me.pnlBG.Visible = True
                     Me.pnlFanart.Visible = True
                     Me.lblInfo.Visible = True
@@ -844,8 +848,7 @@ Public Class dlgImgSelect
 
     Private Sub dlgImgSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Try
-
-            Me.Activate()
+            Application.DoEvents()
             If Not PreDL Then
                 StartDownload()
             ElseIf noImages Then
@@ -857,6 +860,7 @@ Public Class dlgImgSelect
                 Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
                 Me.Close()
             End If
+            Me.Activate()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1259,6 +1263,23 @@ Public Class dlgImgSelect
         End Try
 
     End Sub
+
+    Private Sub dlgImgSelect_MouseWheel(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseWheel
+        If e.Delta < 0 Then
+            If (pnlBG.VerticalScroll.Value + 50) <= pnlBG.VerticalScroll.Maximum Then
+                pnlBG.VerticalScroll.Value += 50
+            Else
+                pnlBG.VerticalScroll.Value = pnlBG.VerticalScroll.Maximum
+            End If
+        Else
+            If (pnlBG.VerticalScroll.Value - 50) >= pnlBG.VerticalScroll.Minimum Then
+                pnlBG.VerticalScroll.Value -= 50
+            Else
+                pnlBG.VerticalScroll.Value = pnlBG.VerticalScroll.Minimum
+            End If
+        End If
+    End Sub
+
 End Class
 
 
