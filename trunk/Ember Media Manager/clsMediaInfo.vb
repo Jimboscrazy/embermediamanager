@@ -679,7 +679,6 @@ Public Class MediaInfo
 
         Private _language As String = String.Empty
         Private _longlanguage As String = String.Empty
-        Private _haspreferred As Boolean = False
 
         <XmlElement("language")> _
         Public Property Language() As String
@@ -715,16 +714,8 @@ Public Class MediaInfo
             End Get
         End Property
 
-        <XmlIgnore()> _
-        Public Property HasPreferred() As Boolean
-            Get
-                Return Me._haspreferred
-            End Get
-            Set(ByVal value As Boolean)
-                Me._haspreferred = value
-            End Set
-        End Property
     End Class
+
     Public Shared Function ApplyDefaults(ByVal ext As String) As Fileinfo
         Dim fi As New Fileinfo
         For Each m As emmSettings.MetadataPerType In Master.eSettings.MetadataPerFileType
