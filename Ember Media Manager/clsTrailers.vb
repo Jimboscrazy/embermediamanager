@@ -19,7 +19,7 @@
 ' ################################################################################
 ' Highly modified version of original code by Maximilian "mafis90" Fischer
 
-Option Explicit On
+
 
 Imports System
 Imports System.IO
