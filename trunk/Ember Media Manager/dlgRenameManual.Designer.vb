@@ -29,6 +29,10 @@ Partial Class dlgRenameManual
         Me.Label1 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
         Me.txtFile = New System.Windows.Forms.TextBox
+        Me.lblTitle = New System.Windows.Forms.Label
+        Me.txtTitle = New System.Windows.Forms.TextBox
+        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer
+        Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -40,7 +44,7 @@ Partial Class dlgRenameManual
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(261, 62)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(261, 96)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -71,14 +75,14 @@ Partial Class dlgRenameManual
         '
         Me.txtFolder.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFolder.Location = New System.Drawing.Point(89, 12)
+        Me.txtFolder.Location = New System.Drawing.Point(89, 42)
         Me.txtFolder.Name = "txtFolder"
         Me.txtFolder.Size = New System.Drawing.Size(318, 20)
         Me.txtFolder.TabIndex = 1
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(6, 13)
+        Me.Label1.Location = New System.Drawing.Point(6, 43)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(77, 19)
         Me.Label1.TabIndex = 2
@@ -87,7 +91,7 @@ Partial Class dlgRenameManual
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(6, 39)
+        Me.Label2.Location = New System.Drawing.Point(6, 69)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(77, 19)
         Me.Label2.TabIndex = 4
@@ -98,10 +102,49 @@ Partial Class dlgRenameManual
         '
         Me.txtFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFile.Location = New System.Drawing.Point(89, 38)
+        Me.txtFile.Location = New System.Drawing.Point(89, 68)
         Me.txtFile.Name = "txtFile"
         Me.txtFile.Size = New System.Drawing.Size(318, 20)
         Me.txtFile.TabIndex = 3
+        '
+        'lblTitle
+        '
+        Me.lblTitle.Location = New System.Drawing.Point(6, 12)
+        Me.lblTitle.Name = "lblTitle"
+        Me.lblTitle.Size = New System.Drawing.Size(77, 19)
+        Me.lblTitle.TabIndex = 6
+        Me.lblTitle.Text = "Title:"
+        Me.lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'txtTitle
+        '
+        Me.txtTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTitle.Location = New System.Drawing.Point(89, 11)
+        Me.txtTitle.Name = "txtTitle"
+        Me.txtTitle.ReadOnly = True
+        Me.txtTitle.Size = New System.Drawing.Size(318, 20)
+        Me.txtTitle.TabIndex = 5
+        '
+        'ShapeContainer1
+        '
+        Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer1.Name = "ShapeContainer1"
+        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape1})
+        Me.ShapeContainer1.Size = New System.Drawing.Size(414, 131)
+        Me.ShapeContainer1.TabIndex = 7
+        Me.ShapeContainer1.TabStop = False
+        '
+        'LineShape1
+        '
+        Me.LineShape1.BorderColor = System.Drawing.Color.Black
+        Me.LineShape1.Name = "LineShape1"
+        Me.LineShape1.SelectionColor = System.Drawing.Color.Black
+        Me.LineShape1.X1 = 10
+        Me.LineShape1.X2 = 406
+        Me.LineShape1.Y1 = 36
+        Me.LineShape1.Y2 = 36
         '
         'dlgRenameManual
         '
@@ -109,12 +152,15 @@ Partial Class dlgRenameManual
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(414, 97)
+        Me.ClientSize = New System.Drawing.Size(414, 131)
+        Me.Controls.Add(Me.lblTitle)
+        Me.Controls.Add(Me.txtTitle)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.txtFile)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtFolder)
         Me.Controls.Add(Me.TableLayoutPanel1)
+        Me.Controls.Add(Me.ShapeContainer1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -134,5 +180,9 @@ Partial Class dlgRenameManual
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents txtFile As System.Windows.Forms.TextBox
+    Friend WithEvents lblTitle As System.Windows.Forms.Label
+    Friend WithEvents txtTitle As System.Windows.Forms.TextBox
+    Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
+    Friend WithEvents LineShape1 As Microsoft.VisualBasic.PowerPacks.LineShape
 
 End Class
