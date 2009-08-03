@@ -235,9 +235,9 @@ Public Class dlgImgSelect
             AddHandler MPDBDone, AddressOf MPDBDoneDownloading
 
             If Me.DLType = Master.ImageType.Posters Then
-                Me.Text = String.Concat(Master.eLang.GetString(308, "Select Poster - "), Me.tMovie.Movie.Title)
+                Me.Text = String.Concat(Master.eLang.GetString(308, "Select Poster - "), If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
             Else
-                Me.Text = String.Concat(Master.eLang.GetString(309, "Select Fanart - "), Me.tMovie.Movie.Title)
+                Me.Text = String.Concat(Master.eLang.GetString(309, "Select Fanart - "), If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))
                 Me.pnlDLStatus.Height = 75
                 Me.pnlDLStatus.Top = 207
 
