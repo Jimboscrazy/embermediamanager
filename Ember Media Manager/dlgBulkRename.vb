@@ -133,16 +133,20 @@ Public Class dlgBulkRenamer
                                         MovieFile.Path = Path.GetDirectoryName(_curMovie.Filename)
                                         MovieFile.IsSingle = _curMovie.isSingle
                                         If Not IsNothing(_curMovie.Movie.FileInfo) Then
-                                            If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
-                                                tRes = NFO.GetResFromDimensions(tVid)
-                                                MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes))
-                                            End If
+                                            Try
+                                                If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                                                    tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
+                                                    tRes = NFO.GetResFromDimensions(tVid)
+                                                    MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes))
+                                                End If
 
-                                            If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                                                tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
-                                                MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
-                                            End If
+                                                If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                                                    tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
+                                                    MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
+                                                End If
+                                            Catch ex As Exception
+                                                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
+                                            End Try
                                         End If
                                         '
                                         Dim plen As Integer
