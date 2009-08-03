@@ -38,6 +38,7 @@ Public Class Master
     Public Shared DB As New Database
     Public Shared TempPath As String = Path.Combine(AppPath, "Temp")
     Public Shared currMovie As New DBMovie
+    Public Shared CanScanDiscImage As Boolean
 
     Public Shared tmpMovie As New Media.Movie
 
@@ -1263,4 +1264,19 @@ Public Class Master
     Public Shared Function AppPath() As String
         Return System.AppDomain.CurrentDomain.BaseDirectory
     End Function
+
+    Public Shared Sub TestMediaInfoDLL()
+        Try
+            'just assume dll is there since we're distributing full package... if it's not, user has bigger problems
+            Dim dllPath As String = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "MediaInfo.DLL")
+            Dim fVersion As FileVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(dllPath)
+            If fVersion.FileMinorPart <= 7 AndAlso fVersion.FileBuildPart <= 11 Then
+                CanScanDiscImage = True
+            Else
+                CanScanDiscImage = False
+            End If
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class

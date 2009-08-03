@@ -31,6 +31,7 @@ Namespace My
                     End
                 End If
 
+                Master.TestMediaInfoDLL()
                 Master.eSettings.Load()
                 Master.eLang.LoadLanguage(Master.eSettings.Language)
                 Master.CreateDefaultOptions()
