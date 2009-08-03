@@ -331,6 +331,9 @@ Public Class dlgExportMovies
 
             HTMLBody.Length = 0
 
+            Me.bexportPosters = False
+            Me.bexportFanart = False
+            Me.bexportFlags = False
 
             Dim tVid As New MediaInfo.Video
             Dim tAud As New MediaInfo.Audio
