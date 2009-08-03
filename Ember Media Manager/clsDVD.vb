@@ -1,4 +1,4 @@
-'Class developed by blackducksoftware and modified for Ember Media Manager
+'Class originally developed by blackducksoftware and highly modified for Ember Media Manager
 
 Imports System.IO
 
@@ -254,7 +254,6 @@ Public Class clsDVD
         Return String.Empty
     End Function
 
-    'Convert the DVD time type to a string HH:MM:SS
     Private Function fctPlayBackTimeToString(ByRef PlayBack As DVD_Time_Type, Optional ByVal MinsOnly As Boolean = False) As String
         Try
             If MinsOnly Then
@@ -305,29 +304,11 @@ Public Class clsDVD
     End Function
 
     Private Function fctHexOffset(ByVal strHexString As String) As Integer
-        Return fctHexStrToHex(strHexString)
-    End Function
-
-    Private Function fctHexStrToHex(ByVal strHexString As String) As Integer
         Return Convert.ToInt32(Val(String.Concat("&H", (strHexString).ToUpper)))
     End Function
 
-    'convert hex time style 0x01 0x25 0x30 to Dec 1,25,30, and not real amounts of 1,37,48
     Private Function fctHexTimeToDecTime(ByVal bytAmountHex As Byte) As Byte
-        Select Case bytAmountHex
-            Case Is < 9
-                Return bytAmountHex
-            Case Is < Convert.ToByte(fctHexStrToHex("19"))
-                Return Convert.ToByte(bytAmountHex - 6)
-            Case Is < Convert.ToByte(fctHexStrToHex("29"))
-                Return Convert.ToByte(bytAmountHex - 12)
-            Case Is < Convert.ToByte(fctHexStrToHex("39"))
-                Return Convert.ToByte(bytAmountHex - 18)
-            Case Is < Convert.ToByte(fctHexStrToHex("49"))
-                Return Convert.ToByte(bytAmountHex - 24)
-            Case Is < Convert.ToByte(fctHexStrToHex("59"))
-                Return Convert.ToByte(bytAmountHex - 30)
-        End Select
+        Return Convert.ToByte(bytAmountHex.ToString("X2"))
     End Function
 
     Private Function fctProgramChainInformation(ByVal shoProgramChainNumber As Short, ByRef strIFOFileBuffer As String, ByRef tmpIFO As struct_IFO_VST_Parse) As struct_Program_Chain_Type
