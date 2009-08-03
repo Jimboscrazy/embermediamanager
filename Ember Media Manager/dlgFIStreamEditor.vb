@@ -72,7 +72,6 @@ Public Class dlgFIStreamEditor
                 cbSubsLanguage.Items.AddRange(xShortLang.ToArray)
                 If Not movie Is Nothing Then
                     cbSubsLanguage.Text = movie.StreamDetails.Subtitle(idx).LongLanguage
-                    chbPrefered.Checked = movie.StreamDetails.Subtitle(idx).HasPreferred
                 End If
             End If
 
@@ -96,7 +95,6 @@ Public Class dlgFIStreamEditor
                 If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
                     stream_s.LongLanguage = If(cbSubsLanguage.SelectedItem Is Nothing, "", cbSubsLanguage.SelectedItem.ToString)
                     stream_s.Language = ConvertL(cbSubsLanguage.SelectedItem.ToString)
-                    stream_s.HasPreferred = chbPrefered.Checked
                     Return stream_s
                 End If
                 Return Nothing
@@ -153,7 +151,6 @@ Public Class dlgFIStreamEditor
         Me.Label7.Text = Me.Label4.Text
         Me.Label6.Text = Master.eLang.GetString(610, "Language")
         Me.GroupBox3.Text = Master.eLang.GetString(597, "Subtitle  Streams")
-        Me.chbPrefered.Text = Master.eLang.GetString(612, "Preferred")
         Me.Label10.Text = Me.Label6.Text
     End Sub
 

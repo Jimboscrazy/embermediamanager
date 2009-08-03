@@ -191,13 +191,8 @@ Public Class emmSettings
     Private _autorenamemulti As Boolean
     Private _autorenamesingle As Boolean
     Private _movietheme As String
-    Private _metadatapertype As List(Of MetadataPerType)
+    Private _metadatapertype As New List(Of MetadataPerType)
     Private _enableifoscan As Boolean
-
-    Structure MetadataPerType
-        Dim FileType As String
-        Dim Metadata As MediaInfo.Fileinfo
-    End Structure
 
     Public Property Version() As String
         Get
@@ -1877,6 +1872,7 @@ Public Class emmSettings
         Me._autorenamemulti = False
         Me._autorenamesingle = False
         Me._movietheme = String.Empty
+        Me._metadatapertype.Clear()
         Me._enableifoscan = True
     End Sub
 
@@ -2017,6 +2013,38 @@ Public Class emmSettings
             Me._xbmcport = String.Empty
             Me._xbmcusername = String.Empty
             Me._xbmcpassword = String.Empty
+        End Sub
+    End Class
+
+    Public Class MetadataPerType
+        Private _filetype As String
+        Private _metadata As MediaInfo.Fileinfo
+
+        Public Property FileType() As String
+            Get
+                Return Me._filetype
+            End Get
+            Set(ByVal value As String)
+                Me._filetype = value
+            End Set
+        End Property
+
+        Public Property MetaData() As MediaInfo.Fileinfo
+            Get
+                Return Me._metadata
+            End Get
+            Set(ByVal value As MediaInfo.Fileinfo)
+                Me._metadata = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._filetype = String.Empty
+            Me._metadata = New MediaInfo.Fileinfo
         End Sub
     End Class
 End Class

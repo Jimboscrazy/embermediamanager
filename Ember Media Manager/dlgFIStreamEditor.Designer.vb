@@ -46,7 +46,6 @@ Partial Class dlgFIStreamEditor
         Me.Label6 = New System.Windows.Forms.Label
         Me.cbAudioLanguage = New System.Windows.Forms.ComboBox
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
-        Me.chbPrefered = New System.Windows.Forms.CheckBox
         Me.Label10 = New System.Windows.Forms.Label
         Me.cbSubsLanguage = New System.Windows.Forms.ComboBox
         Me.TableLayoutPanel1.SuspendLayout()
@@ -291,7 +290,6 @@ Partial Class dlgFIStreamEditor
         '
         'GroupBox3
         '
-        Me.GroupBox3.Controls.Add(Me.chbPrefered)
         Me.GroupBox3.Controls.Add(Me.Label10)
         Me.GroupBox3.Controls.Add(Me.cbSubsLanguage)
         Me.GroupBox3.Location = New System.Drawing.Point(7, 12)
@@ -301,16 +299,6 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Subtitle  Streams"
         Me.GroupBox3.Visible = False
-        '
-        'chbPrefered
-        '
-        Me.chbPrefered.AutoSize = True
-        Me.chbPrefered.Location = New System.Drawing.Point(79, 48)
-        Me.chbPrefered.Name = "chbPrefered"
-        Me.chbPrefered.Size = New System.Drawing.Size(69, 17)
-        Me.chbPrefered.TabIndex = 23
-        Me.chbPrefered.Text = "Preferred"
-        Me.chbPrefered.UseVisualStyleBackColor = True
         '
         'Label10
         '
@@ -353,7 +341,6 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -381,7 +368,6 @@ Partial Class dlgFIStreamEditor
     Friend WithEvents cbAudioLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents cbAudioChannels As System.Windows.Forms.ComboBox
-    Friend WithEvents chbPrefered As System.Windows.Forms.CheckBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents cbSubsLanguage As System.Windows.Forms.ComboBox
 

@@ -137,7 +137,6 @@ Public Class dlgFileInfo
                 i.Tag = "Header"
                 i.Text = ""
                 i.SubItems.Add(Master.eLang.GetString(610, "Language"))
-                i.SubItems.Add(Master.eLang.GetString(612, "Preferred"))
                 g.Items.Add(i)
                 lvStreams.Items.Add(i)
                 Dim s As MediaInfo.Subtitle
@@ -148,7 +147,6 @@ Public Class dlgFileInfo
                         i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
                         i.Text = c.ToString
                         i.SubItems.Add(s.LongLanguage)
-                        i.SubItems.Add(s.HasPreferred.ToString)
                         g.Items.Add(i)
                         lvStreams.Items.Add(i)
                     End If
