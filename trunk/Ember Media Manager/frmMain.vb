@@ -3736,6 +3736,7 @@ doCancel:
 
         Try
             With Me
+                .btnSortDate.Tag = String.Empty
                 .pnlFilterGenre.Tag = String.Empty
                 .pnlFilterSource.Tag = String.Empty
                 .FileToolStripMenuItem.Text = Master.eLang.GetString(1, "&File")
