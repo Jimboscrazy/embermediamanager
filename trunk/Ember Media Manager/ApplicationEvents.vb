@@ -31,12 +31,6 @@ Namespace My
                     End
                 End If
 
-                If Not Master.HasSQLite Then
-                    MsgBox(String.Concat("The Ember Media Manager Extra Package is required to run Ember Media Manager and has not been installed or was installed improperly.", vbNewLine, vbNewLine, _
-                               "Please download and extract the latest Extras Package into your Ember installation directory."), MsgBoxStyle.Critical, "Extras Package Not Installed")
-                    End
-                End If
-
                 Master.eSettings.Load()
                 Master.eLang.LoadLanguage(Master.eSettings.Language)
                 Master.CreateDefaultOptions()
