@@ -56,6 +56,11 @@ Namespace My
                 End
             End If
         End Sub
+
+        Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
+            MsgBox(e.Exception, MsgBoxStyle.OkOnly, "Ember Media Manager")
+            My.Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")
+        End Sub
     End Class
 
 End Namespace
