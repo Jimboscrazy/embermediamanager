@@ -1199,12 +1199,10 @@ Public Class Master
                             sVersion = tempKey.GetValue("Version").ToString
                         Catch ex As Exception
                             ' GetValue can Raise Exceptions  when some key are Close or Marked for Deletion
+                            sVersion = String.Empty 'clear variable
                         End Try
                         If Not String.IsNullOrEmpty(sVersion) Then
-                            Dim tVersion() As String = sVersion.Split(Convert.ToChar("."))
-                            If Convert.ToDouble(tVersion(0)) >= 3 AndAlso Convert.ToDouble(tVersion(1)) >= 5 Then
-                                Return True
-                            End If
+                            If ConvertToSingle(sVersion.Substring(0, 3)) >= 3.5 Then Return True
                         End If
                     End If
                 Next
