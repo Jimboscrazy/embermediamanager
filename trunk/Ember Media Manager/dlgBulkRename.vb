@@ -115,63 +115,66 @@ Public Class dlgBulkRenamer
                         While SQLreader.Read()
                             Try
                                 _tmpPath = SQLreader("NfoPath").ToString
-                                If Not String.IsNullOrEmpty(_tmpPath) AndAlso Not Path.GetFileName(_tmpPath).ToLower = "video_ts" Then
+                                If Not String.IsNullOrEmpty(_tmpPath) Then
+
                                     MovieFile = New FileFolderRenamer.FileRename
                                     MovieFile.ID = Convert.ToInt32(SQLreader("id"))
                                     _curMovie = Master.DB.LoadMovieFromDB(MovieFile.ID)
                                     If Not _curMovie.ID = -1 Then
-                                        If _curMovie.Movie.Title = String.Empty Then
-                                            MovieFile.Title = _curMovie.ListTitle
-                                        Else
-                                            MovieFile.Title = _curMovie.Movie.Title
-                                        End If
-                                        MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
-                                        MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle
-                                        MovieFile.Year = _curMovie.Movie.Year
-                                        MovieFile.IsLocked = _curMovie.IsLock
-                                        MovieFile.BasePath = Path.GetDirectoryName(_curMovie.Filename)
-                                        MovieFile.Path = Path.GetDirectoryName(_curMovie.Filename)
-                                        MovieFile.IsSingle = _curMovie.isSingle
-                                        If Not IsNothing(_curMovie.Movie.FileInfo) Then
-                                            Try
-                                                If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                    tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
-                                                    tRes = NFO.GetResFromDimensions(tVid)
-                                                    MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes))
-                                                End If
-
-                                                If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                                                    tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
-                                                    MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
-                                                End If
-                                            Catch ex As Exception
-                                                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
-                                            End Try
-                                        End If
-                                        '
-                                        Dim plen As Integer
-                                        For Each i As String In FFRenamer.MovieFolders
-                                            If i.EndsWith(Path.DirectorySeparatorChar) Then i = Path.GetDirectoryName(i)
-                                            If i = MovieFile.Path.Substring(0, i.Length) Then
-                                                plen = String.Concat(i, Path.DirectorySeparatorChar).Length
-                                                If MovieFile.Path.Length >= plen Then
-                                                    MovieFile.Path = MovieFile.Path.Substring(plen)
-                                                Else
-                                                    MovieFile.Path = String.Empty
-                                                End If
-                                                MovieFile.BasePath = i
-                                                Exit For
+                                        If Not Path.GetDirectoryName(_curMovie.Filename).ToLower = "video_ts" Then
+                                            If _curMovie.Movie.Title = String.Empty Then
+                                                MovieFile.Title = _curMovie.ListTitle
+                                            Else
+                                                MovieFile.Title = _curMovie.Movie.Title
                                             End If
-                                        Next
-                                        MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_curMovie.Filename))
-                                        Dim stackMark As String = Path.GetFileNameWithoutExtension(_curMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
-                                        If _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
-                                            MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
+                                            MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
+                                            MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle
+                                            MovieFile.Year = _curMovie.Movie.Year
+                                            MovieFile.IsLocked = _curMovie.IsLock
+                                            MovieFile.BasePath = Path.GetDirectoryName(_curMovie.Filename)
+                                            MovieFile.Path = Path.GetDirectoryName(_curMovie.Filename)
+                                            MovieFile.IsSingle = _curMovie.isSingle
+                                            If Not IsNothing(_curMovie.Movie.FileInfo) Then
+                                                Try
+                                                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                                                        tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
+                                                        tRes = NFO.GetResFromDimensions(tVid)
+                                                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes))
+                                                    End If
+
+                                                    If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                                                        tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
+                                                        MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
+                                                    End If
+                                                Catch ex As Exception
+                                                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
+                                                End Try
+                                            End If
+                                            '
+                                            Dim plen As Integer
+                                            For Each i As String In FFRenamer.MovieFolders
+                                                If i.EndsWith(Path.DirectorySeparatorChar) Then i = Path.GetDirectoryName(i)
+                                                If i = MovieFile.Path.Substring(0, i.Length) Then
+                                                    plen = String.Concat(i, Path.DirectorySeparatorChar).Length
+                                                    If MovieFile.Path.Length >= plen Then
+                                                        MovieFile.Path = MovieFile.Path.Substring(plen)
+                                                    Else
+                                                        MovieFile.Path = String.Empty
+                                                    End If
+                                                    MovieFile.BasePath = i
+                                                    Exit For
+                                                End If
+                                            Next
+                                            MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_curMovie.Filename))
+                                            Dim stackMark As String = Path.GetFileNameWithoutExtension(_curMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
+                                            If _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
+                                                MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
+                                            End If
+
+                                            FFRenamer.AddMovie(MovieFile)
+
+                                            Me.bwLoadInfo.ReportProgress(iProg, _curMovie.ListTitle)
                                         End If
-
-                                        FFRenamer.AddMovie(MovieFile)
-
-                                        Me.bwLoadInfo.ReportProgress(iProg, _curMovie.ListTitle)
                                     End If
                                 End If
                             Catch ex As Exception
