@@ -1213,6 +1213,11 @@ Public Class Master
         Return False
     End Function
 
+    Public Shared Function HasSQLite() As Boolean
+        If File.Exists(Path.Combine(AppPath, "System.Data.SQLite.dll")) Then Return True
+        Return False
+    End Function
+
     Public Shared Sub DeleteDirectory(ByVal sPath As String)
         Try
             If Directory.Exists(sPath) Then
