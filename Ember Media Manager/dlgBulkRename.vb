@@ -115,7 +115,7 @@ Public Class dlgBulkRenamer
                         While SQLreader.Read()
                             Try
                                 _tmpPath = SQLreader("NfoPath").ToString
-                                If Not String.IsNullOrEmpty(_tmpPath) AndAlso Not Path.GetDirectoryName(_tmpPath).ToLower = "video_ts" Then
+                                If Not String.IsNullOrEmpty(_tmpPath) AndAlso Not Path.GetFileName ).ToLower = "video_ts" Then
                                     MovieFile = New FileFolderRenamer.FileRename
                                     MovieFile.ID = Convert.ToInt32(SQLreader("id"))
                                     _curMovie = Master.DB.LoadMovieFromDB(MovieFile.ID)
