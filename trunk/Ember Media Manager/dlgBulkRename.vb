@@ -20,7 +20,7 @@
 
 
 
-Option Explicit On
+
 Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Drawing2D

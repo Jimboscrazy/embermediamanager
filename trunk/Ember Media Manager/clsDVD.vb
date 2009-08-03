@@ -1,6 +1,4 @@
 'Class developed by blackducksoftware and modified for Ember Media Manager
-Option Strict Off
-Option Explicit On 
 
 Imports System.IO
 
@@ -16,7 +14,7 @@ Public Class clsDVD
     Dim mLanguages As New Hashtable
     Dim mAudioModes As New Hashtable
     Dim mVideoCodingMode As New Hashtable
-    Dim mVideoResolution(1) As Object
+    Dim mVideoResolution()() As String = {New String() {"720x480", "704x480", "352x480", "352x240"}, New String() {"720x576", "704x576", "352x576", "352x288"}}
 
     'All these types are used for the IFO Parsing
     Private Structure VTS_PTT_SRPT
@@ -135,7 +133,7 @@ Public Class clsDVD
                 ParsedIFOFile = tIFOFile
                 Return True
             ElseIf IFOFiles.Count = 1 Then
-                ParsedIFOFile = fctParseIFO_VSTFile(IFOFiles(0))
+                ParsedIFOFile = fctParseIFO_VSTFile(IFOFiles(0).ToString)
                 Return True
             ElseIf Path.GetExtension(strPath).ToLower = ".ifo" AndAlso Not Path.GetFileName(strPath).ToLower = "video_ts.ifo" Then
                 ParsedIFOFile = fctParseIFO_VSTFile(strPath)
@@ -161,7 +159,7 @@ Public Class clsDVD
 
     Public ReadOnly Property GetNumberProgramChains() As Integer
         Get
-            Return ParsedIFOFile.NumberOfProgramChains
+            Return Convert.ToInt32(ParsedIFOFile.NumberOfProgramChains)
         End Get
     End Property
 
@@ -169,7 +167,7 @@ Public Class clsDVD
         Get
             Try
                 If bytProChainIndex <= ParsedIFOFile.NumberOfProgramChains Then
-                    bytProChainIndex = bytProChainIndex - 1
+                    bytProChainIndex = Convert.ToByte(bytProChainIndex - 1)
 
                     Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
                 End If
@@ -185,7 +183,7 @@ Public Class clsDVD
             Dim ReturnArray(2) As String
             Try
                 If mVideoCodingMode.ContainsKey(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString) Then
-                    ReturnArray(0) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString)
+                    ReturnArray(0) = mVideoCodingMode.Item(ParsedIFOFile.VideoAtt_VTS_VOBS.Coding_Mode.ToString).ToString
                 Else
                     'assume mpeg2
                     ReturnArray(0) = "mpeg2"
@@ -220,7 +218,7 @@ Public Class clsDVD
                 If bytAudioIndex <= ParsedIFOFile.NumAudioStreams_VTS_VOBS AndAlso bytAudioIndex > 0 Then
                     bytAudioIndex -= 1
                     If mAudioModes.ContainsKey(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString) Then
-                        ReturnArray(0) = mAudioModes.Item(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString)
+                        ReturnArray(0) = mAudioModes.Item(ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).CodingMode.ToString).ToString
                     Else
                         'assume ac3
                         ReturnArray(0) = "ac3"
@@ -251,7 +249,7 @@ Public Class clsDVD
 
     Private Function fctLang2CodeToLong(ByVal strLanCode As String) As String
         If mLanguages.ContainsKey(strLanCode) Then
-            Return mLanguages.Item(strLanCode)
+            Return mLanguages.Item(strLanCode).ToString
         End If
         Return String.Empty
     End Function
@@ -260,7 +258,7 @@ Public Class clsDVD
     Private Function fctPlayBackTimeToString(ByRef PlayBack As DVD_Time_Type, Optional ByVal MinsOnly As Boolean = False) As String
         Try
             If MinsOnly Then
-                Return (PlayBack.hours * 60) + PlayBack.minutes
+                Return ((PlayBack.hours * 60) + PlayBack.minutes).ToString
             Else
                 Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s")
             End If
@@ -279,7 +277,7 @@ Public Class clsDVD
         Try
             'Setup Byte info
             For i = 0 To 7
-                byteInfo(i) = Convert.ToInt32(oEnc.GetBytes(((strAudioInfo).Substring(i, 1)).Chars(0))(0))
+                byteInfo(i) = Convert.ToByte(oEnc.GetBytes(((strAudioInfo).Substring(i, 1)).Chars(0))(0))
             Next
 
             If byteInfo(2) <> 0 AndAlso byteInfo(3) <> 0 Then
@@ -291,15 +289,15 @@ Public Class clsDVD
             'Using Logic AND's to check if bits are set dec 176 -> bin 10110000
             bytTempValue = 0
             If (byteInfo(0) And 32) = 32 Then bytTempValue = 1
-            If (byteInfo(0) And 64) = 64 Then bytTempValue = bytTempValue + 2
-            If (byteInfo(0) And 128) = 128 Then bytTempValue = bytTempValue + 4
+            If (byteInfo(0) And 64) = 64 Then bytTempValue = Convert.ToByte(bytTempValue + 2)
+            If (byteInfo(0) And 128) = 128 Then bytTempValue = Convert.ToByte(bytTempValue + 4)
             tVTSM.CodingMode = bytTempValue
 
 
             If (byteInfo(1) And 1) = 1 Then bytTempValue = 1
-            If (byteInfo(1) And 2) = 2 Then bytTempValue = bytTempValue + 2
-            If (byteInfo(1) And 4) = 4 Then bytTempValue = bytTempValue + 4
-            tVTSM.NumberOfChannels = bytTempValue + 1
+            If (byteInfo(1) And 2) = 2 Then bytTempValue = Convert.ToByte(bytTempValue + 2)
+            If (byteInfo(1) And 4) = 4 Then bytTempValue = Convert.ToByte(bytTempValue + 4)
+            tVTSM.NumberOfChannels = Convert.ToByte(bytTempValue + 1)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -311,7 +309,7 @@ Public Class clsDVD
     End Function
 
     Private Function fctHexStrToHex(ByVal strHexString As String) As Integer
-        Return String.Concat("&H", (strHexString).ToUpper)
+        Return Convert.ToInt32(Val(String.Concat("&H", (strHexString).ToUpper)))
     End Function
 
     'convert hex time style 0x01 0x25 0x30 to Dec 1,25,30, and not real amounts of 1,37,48
@@ -319,16 +317,16 @@ Public Class clsDVD
         Select Case bytAmountHex
             Case Is < 9
                 Return bytAmountHex
-            Case Is < fctHexStrToHex("19")
-                Return bytAmountHex - 6
-            Case Is < fctHexStrToHex("29")
-                Return bytAmountHex - 12
-            Case Is < fctHexStrToHex("39")
-                Return bytAmountHex - 18
-            Case Is < fctHexStrToHex("49")
-                Return bytAmountHex - 24
-            Case Is < fctHexStrToHex("59")
-                Return bytAmountHex - 30
+            Case Is < Convert.ToByte(fctHexStrToHex("19"))
+                Return Convert.ToByte(bytAmountHex - 6)
+            Case Is < Convert.ToByte(fctHexStrToHex("29"))
+                Return Convert.ToByte(bytAmountHex - 12)
+            Case Is < Convert.ToByte(fctHexStrToHex("39"))
+                Return Convert.ToByte(bytAmountHex - 18)
+            Case Is < Convert.ToByte(fctHexStrToHex("49"))
+                Return Convert.ToByte(bytAmountHex - 24)
+            Case Is < Convert.ToByte(fctHexStrToHex("59"))
+                Return Convert.ToByte(bytAmountHex - 30)
         End Select
     End Function
 
@@ -337,18 +335,18 @@ Public Class clsDVD
         Dim PCT As New struct_Program_Chain_Type
         Try
             'Setup the Start loc for the File
-            ChainLoc = (tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE) + fctStrByteToHex((strIFOFileBuffer).Substring(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE + 12 + (shoProgramChainNumber) * 8, 4))
+            ChainLoc = Convert.ToInt32((tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE) + fctStrByteToHex((strIFOFileBuffer).Substring(Convert.ToInt32(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE + 12 + (shoProgramChainNumber) * 8), 4)))
 
             'The Program Number
-            PCT.NumberOfPrograms = fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 2, 1))
+            PCT.NumberOfPrograms = Convert.ToByte(fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 2, 1)))
 
             'Number of Cells in Program Chain
-            PCT.NumberOfCells = fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 3, 1))
+            PCT.NumberOfCells = Convert.ToByte(fctStrByteToHex((strIFOFileBuffer).Substring(ChainLoc + 3, 1)))
 
             'Get DVD Chain Type Info
-            PCT.PlayBackTime.hours = fctHexTimeToDecTime(Convert.ToInt32(((strIFOFileBuffer).Substring(ChainLoc + 4, 1)).Chars(0)))
-            PCT.PlayBackTime.minutes = fctHexTimeToDecTime(Convert.ToInt32(((strIFOFileBuffer).Substring(ChainLoc + 5, 1)).Chars(0)))
-            PCT.PlayBackTime.seconds = fctHexTimeToDecTime(Convert.ToInt32(((strIFOFileBuffer).Substring(ChainLoc + 6, 1)).Chars(0)))
+            PCT.PlayBackTime.hours = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 4, 1)).Chars(0)))
+            PCT.PlayBackTime.minutes = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 5, 1)).Chars(0)))
+            PCT.PlayBackTime.seconds = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 6, 1)).Chars(0)))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -367,7 +365,7 @@ Public Class clsDVD
             Dim objFS As FileStream
             objFS = File.Open(strFileName, FileMode.Open, FileAccess.Read)
             Dim objBR As New BinaryReader(objFS)
-            strTmpIFOFileIn = System.Text.Encoding.Default.GetString(objBR.ReadBytes(objFS.Length))
+            strTmpIFOFileIn = System.Text.Encoding.Default.GetString(objBR.ReadBytes(Convert.ToInt32(objFS.Length)))
             intFileLength = strTmpIFOFileIn.Length
             objBR.Close()
             objBR = Nothing
@@ -433,10 +431,10 @@ Public Class clsDVD
                 Next
 
                 'Get Program Chain Information
-                tmpIFO.NumberOfProgramChains = fctStrByteToHex((strTmpIFOFileIn).Substring(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE, 2))
-                For intFileLength = 0 To tmpIFO.NumberOfProgramChains - 1
+                tmpIFO.NumberOfProgramChains = fctStrByteToHex((strTmpIFOFileIn).Substring(Convert.ToInt32(tmpIFO.SectorPointer_VTS_PGCI * ifo_SECTOR_SIZE), 2))
+                For intFileLength = 0 To Convert.ToInt32(tmpIFO.NumberOfProgramChains - 1)
                     ReDim Preserve tmpIFO.ProgramChainInformation(intFileLength)
-                    tmpIFO.ProgramChainInformation(intFileLength) = fctProgramChainInformation(intFileLength, strTmpIFOFileIn, tmpIFO)
+                    tmpIFO.ProgramChainInformation(intFileLength) = fctProgramChainInformation(Convert.ToInt16(intFileLength), strTmpIFOFileIn, tmpIFO)
                 Next
             End If
 
@@ -454,7 +452,7 @@ Public Class clsDVD
             For i = 0 To BytConvert.Length - 1
                 hexStr = hexStr + (BytConvert(i)).ToString("X")
             Next i
-            hexStr = hexStr.PadLeft(16, "0")
+            hexStr = hexStr.PadLeft(16, Convert.ToChar("0"))
             hexStr = hexStr.Insert(0, "0x")
 
         Catch ex As Exception
@@ -472,7 +470,7 @@ Public Class clsDVD
 
         Try
             For i = 0 To (strHexString).Length - 1
-                CharNum = Convert.ToInt32(oEnc.GetBytes(strHexString.Substring(i, 1).Chars(0))(0))
+                CharNum = Convert.ToInt32(oEnc.GetBytes(strHexString.Substring(Convert.ToInt32(i), 1).Chars(0))(0))
                 If i <> (strHexString).Length Then
                     HexMod = 256 ^ (((strHexString).Length - 1) - i)
                     HexTotal = HexTotal + CharNum * HexMod
@@ -483,7 +481,7 @@ Public Class clsDVD
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-        Return HexTotal
+        Return Convert.ToInt32(HexTotal)
     End Function
 
 
@@ -496,24 +494,24 @@ Public Class clsDVD
 
         Try
             'Split String for logic AND checks
-            byte1 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(0, 1)).Chars(0))(0))
-            byte2 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
+            byte1 = Convert.ToByte(oEnc.GetBytes(((VideoInfo).Substring(0, 1)).Chars(0))(0))
+            byte2 = Convert.ToByte(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
 
             bytTmpValue = 0
             If (byte1 And 4) = 4 Then bytTmpValue = 1
-            If (byte1 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
+            If (byte1 And 8) = 8 Then bytTmpValue = Convert.ToByte(bytTmpValue + 2)
             fctSRPT.Aspect_Ratio = bytTmpValue
 
             bytTmpValue = 0
             If (byte1 And 64) = 64 Then bytTmpValue = 1
-            If (byte1 And 128) = 128 Then bytTmpValue = bytTmpValue + 2
+            If (byte1 And 128) = 128 Then bytTmpValue = Convert.ToByte(bytTmpValue + 2)
             tSRPT.Coding_Mode = bytTmpValue
 
-            fctSRPT.LetterBoxed = (byte2 And 2)
+            fctSRPT.LetterBoxed = Convert.ToBoolean(byte2 And 2)
 
             bytTmpValue = 0
             If (byte2 And 4) = 4 Then bytTmpValue = 1
-            If (byte2 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
+            If (byte2 And 8) = 8 Then bytTmpValue = Convert.ToByte(bytTmpValue + 2)
             tSRPT.Resolution = bytTmpValue
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -529,29 +527,29 @@ Public Class clsDVD
         Dim tVTSVOB As New struct_VideoAttributes_VTS_VOBS
         Try
             'Split String for logic AND checks
-            byte1 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(0, 1)).Chars(0))(0))
-            byte2 = Convert.ToInt32(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
+            byte1 = Convert.ToByte(oEnc.GetBytes(((VideoInfo).Substring(0, 1)).Chars(0))(0))
+            byte2 = Convert.ToByte(oEnc.GetBytes(((VideoInfo).Substring(1, 1)).Chars(0))(0))
 
             bytTmpValue = 0
             If (byte1 And 4) = 4 Then bytTmpValue = 1
-            If (byte1 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
+            If (byte1 And 8) = 8 Then bytTmpValue = Convert.ToByte(bytTmpValue + 2)
             fctVideoAtt_VTS_VOBS.Aspect_Ratio = bytTmpValue
 
             bytTmpValue = 0
             If (byte1 And 16) = 16 Then bytTmpValue = 1
-            If (byte1 And 32) = 32 Then bytTmpValue = bytTmpValue + 2
+            If (byte1 And 32) = 32 Then bytTmpValue = Convert.ToByte(bytTmpValue + 2)
             tVTSVOB.Video_Standard = bytTmpValue
 
             bytTmpValue = 0
             If (byte1 And 64) = 64 Then bytTmpValue = 1
-            If (byte1 And 128) = 128 Then bytTmpValue = bytTmpValue + 2
+            If (byte1 And 128) = 128 Then bytTmpValue = Convert.ToByte(bytTmpValue + 2)
             tVTSVOB.Coding_Mode = bytTmpValue
 
-            fctVideoAtt_VTS_VOBS.LetterBoxed = (byte2 And 2)
+            fctVideoAtt_VTS_VOBS.LetterBoxed = Convert.ToBoolean(byte2 And 2)
 
             bytTmpValue = 0
             If (byte2 And 4) = 4 Then bytTmpValue = 1
-            If (byte2 And 8) = 8 Then bytTmpValue = bytTmpValue + 2
+            If (byte2 And 8) = 8 Then bytTmpValue = Convert.ToByte(bytTmpValue + 2)
             tVTSVOB.Resolution = bytTmpValue
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -563,7 +561,7 @@ Public Class clsDVD
         Dim SubPicATT As New SubPictureAtt_VTSM_VTS_Type
         Try
             SubPicATT.LanguageCode = (strSubPictureInfo).Substring(2, 1) & (strSubPictureInfo).Substring(3, 1)
-            SubPicATT.CodeExtention = Convert.ToInt32(oEnc.GetBytes((((strSubPictureInfo).Substring(5, 1)).Chars(0)))(0))
+            SubPicATT.CodeExtention = Convert.ToByte(oEnc.GetBytes((((strSubPictureInfo).Substring(5, 1)).Chars(0)))(0))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -771,9 +769,6 @@ Public Class clsDVD
 
         mVideoCodingMode.Add("0", "mpeg1")
         mVideoCodingMode.Add("1", "mpeg2")
-
-        mVideoResolution(0) = New String() {"720x480", "704x480", "352x480", "352x240"}
-        mVideoResolution(1) = New String() {"720x576", "704x576", "352x576", "352x288"}
     End Sub
 
     Protected Overrides Sub Finalize()
