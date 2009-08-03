@@ -42,6 +42,7 @@ Public Class FileFolderRenamer
         Public Audio As String = String.Empty
         Public Source As String = String.Empty
         Public OriginalTitle As String = String.Empty
+        Public IsVIDEO_TS As Boolean = False
 
 
         Public Property Title() As String
@@ -173,7 +174,12 @@ Public Class FileFolderRenamer
                 Else
                     localForderPattern = folderPatternIsNotSingle
                 End If
-                f.NewFileName = ProccessPattern(f, filePattern).Trim
+                If f.IsVIDEO_TS Then
+                    f.NewFileName = String.Empty
+                Else
+                    f.NewFileName = ProccessPattern(f, filePattern).Trim
+                End If
+
                 If HaveBase(localForderPattern) Then
                     f.NewPath = ProccessPattern(f, localForderPattern).Trim
                 Else
@@ -429,7 +435,12 @@ Public Class FileFolderRenamer
                                     End If
                                 End If
                                 If DoDB = True Then
-                                    UpdateFaSPaths(_movieDB, Path.Combine(f.BasePath, f.Path), Path.Combine(f.BasePath, f.NewPath))
+                                    If f.IsVIDEO_TS Then
+                                        UpdateFaSPaths(_movieDB, Path.Combine(f.BasePath, Path.Combine(f.Path, "VIDEO_TS")), Path.Combine(f.BasePath, Path.Combine(f.NewPath, "VIDEO_TS")))
+                                    Else
+                                        UpdateFaSPaths(_movieDB, Path.Combine(f.BasePath, f.Path), Path.Combine(f.BasePath, f.NewPath))
+                                    End If
+
                                 End If
                                 DoUpdate = True
                             End If
@@ -441,7 +452,7 @@ Public Class FileFolderRenamer
 
                     End If
                     'Rename Files
-                    If Not Path.GetFileName(f.Path).ToLower = "video_ts" Then
+                    If Not Path.GetFileName(f.Path).ToLower = "video_ts" AndAlso Not f.IsVIDEO_TS Then
                         If (Not f.NewFileName.ToLower = f.FileName.ToLower) OrElse (f.Path = String.Empty AndAlso Not f.NewPath = String.Empty) OrElse Not f.IsSingle Then
                             Dim tmpList As New ArrayList
                             Dim di As DirectoryInfo
