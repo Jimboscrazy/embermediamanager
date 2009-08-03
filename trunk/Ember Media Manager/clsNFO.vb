@@ -311,12 +311,12 @@ Public Class NFO
             End Try
             fList.AddRange(tList.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
 
-            If Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
+            If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
+                Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
+            ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPathWithStack, ".nfo")) Then
                 Return String.Concat(nPathWithStack, ".nfo")
             ElseIf Master.eSettings.MovieNameNFO AndAlso fList.Contains(String.Concat(nPath, ".nfo")) Then
                 Return String.Concat(nPath, ".nfo")
-            ElseIf isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
-                Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
             Else
                 If Not isSingle Then
                     Return String.Empty

@@ -742,7 +742,9 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
+
         If Me.dgvMediaList.RowCount > 0 Then
+            Me.tmpTitle = Me.dgvMediaList.Item(3, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
             If Me.dgvMediaList.SelectedRows.Count > 1 Then
                 Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
             ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
@@ -1539,6 +1541,8 @@ Public Class frmMain
             If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvMediaList.RowCount > 0 Then
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvMediaList.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+
+                    Me.tmpTitle = Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value.ToString
 
                     If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -5494,4 +5498,7 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
+    Private Sub dgvMediaList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellContentClick
+
+    End Sub
 End Class
