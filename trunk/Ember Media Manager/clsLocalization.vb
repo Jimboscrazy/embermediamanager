@@ -71,6 +71,7 @@ Public Class Localization
     Public Sub LoadLanguage(ByVal Language As String)
         htStrings.Clear()
         Dim _old_all As String = _all
+        Me.Clear()
         Try
             If Not String.IsNullOrEmpty(Language) Then
                 Dim lPath As String = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, String.Concat(Language, ".xml"))
@@ -86,16 +87,18 @@ Public Class Localization
                         _none = GetString(570, Master.eLang.None)
                         _disabled = GetString(571, Master.eLang.Disabled)
 
-                        ' Need to change Globaly Langs_all
-                        Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
                     End If
                 Else
                     MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
                 End If
             End If
+
+            ' Need to change Globaly Langs_all
+            Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+
     End Sub
 
     Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
