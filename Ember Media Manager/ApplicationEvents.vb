@@ -26,7 +26,6 @@ Namespace My
 
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
             Try
-                Master.eSettings.Load()
 
                 If Not Master.GetNETVersion Then
                     MsgBox(String.Concat("Ember Media Manager requires .NET Framework version 3.5 or higher.", vbNewLine, vbNewLine, _
@@ -40,8 +39,10 @@ Namespace My
                     End
                 End If
 
+                Master.eSettings.Load()
                 Master.eLang.LoadLanguage(Master.eSettings.Language)
                 Master.CreateDefaultOptions()
+
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try

@@ -1892,8 +1892,8 @@ Public Class emmSettings
     End Sub
 
     Public Sub Load()
-        Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
         Try
+            Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
             If File.Exists(Path.Combine(Master.AppPath, "Settings.xml")) Then
                 Dim strmReader As New StreamReader(Path.Combine(Master.AppPath, "Settings.xml"))
                 Master.eSettings = CType(xmlSerial.Deserialize(strmReader), emmSettings)
