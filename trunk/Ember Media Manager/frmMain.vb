@@ -250,20 +250,22 @@ Public Class frmMain
                     Do While Me.bwMediaInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
                         Application.DoEvents()
                     Loop
-
-                    If dResult.NeedsUpdate Then
-                        If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
-                            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
-                                Application.DoEvents()
-                            Loop
-                            Me.LoadMedia(1)
+                    If dResult.NeedsRefresh OrElse dResult.NeedsUpdate Then
+                        If dResult.NeedsRefresh Then
+                            If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
+                                Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+                                    Application.DoEvents()
+                                Loop
+                                Me.RefreshAllMovies()
+                            End If
                         End If
-                    ElseIf dResult.NeedsRefresh Then
-                        If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
-                            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
-                                Application.DoEvents()
-                            Loop
-                            Me.RefreshAllMovies()
+                        If dResult.NeedsUpdate Then
+                            If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
+                                Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+                                    Application.DoEvents()
+                                Loop
+                                Me.LoadMedia(1)
+                            End If
                         End If
                     Else
                         If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy Then
@@ -3528,6 +3530,7 @@ doCancel:
         Fanart.Dispose()
         Fanart = Nothing
     End Sub
+
     Private Sub bwScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwScraper.ProgressChanged
         If Not isCL Then
             If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") Then

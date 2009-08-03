@@ -264,7 +264,7 @@ Public Class dlgSettings
 
     Private Sub chkProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProperCase.CheckedChanged
         Me.SetApplyButton(True)
-        Me.sResult.NeedsUpdate = True
+        Me.sResult.NeedsRefresh = True
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
@@ -275,7 +275,7 @@ Public Class dlgSettings
                 Me.lstFilters.Items.RemoveAt(iIndex + 1)
                 Me.lstFilters.SelectedIndex = iIndex - 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsRefresh = True
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
@@ -291,7 +291,7 @@ Public Class dlgSettings
                 Me.lstFilters.Items.RemoveAt(iIndex)
                 Me.lstFilters.SelectedIndex = iIndex + 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsRefresh = True
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
@@ -301,7 +301,7 @@ Public Class dlgSettings
 
     Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
-        Me.sResult.NeedsUpdate = True
+        Me.sResult.NeedsRefresh = True
     End Sub
 
     Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMPDB.CheckedChanged
@@ -2230,7 +2230,7 @@ Public Class dlgSettings
                 lstFilters.Items.RemoveAt(i)
             Next
             Me.SetApplyButton(True)
-            Me.sResult.NeedsUpdate = True
+            Me.sResult.NeedsRefresh = True
         End If
     End Sub
 
