@@ -4610,7 +4610,7 @@ doCancel:
         Try
 
             Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
-            If Not pExt = ".rar" Then
+            If Not pExt = ".rar" AndAlso Not pExt = ".iso" Then 'Temporarie hack to exclude ISO
                 Dim MI As New MediaInfo
                 MI.GetMovieMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename)
                 If Master.eSettings.UseMIDuration AndAlso miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
