@@ -81,7 +81,7 @@ Namespace IMDB
         Private Const IMG_PATTERN As String = "<img src=""(?<thumb>.*?)"" width=""\d{1,3}"" height=""\d{1,3}"" border="".{1,3}"">"
         Private Const TR_PATTERN As String = "<tr\sclass="".*?"">(.*?)</tr>"
         Private Const TD_PATTERN_1 As String = "<td\sclass=""nm"">(.*?)</td>"
-        Private Const TD_PATTERN_2 As String = "(?<=<td\sclass=""char"">)(.*?)(?=</td>)"
+        Private Const TD_PATTERN_2 As String = "(?<=<td\sclass=""char"">)(.*?)(?=</td>)(\s\(.*?\))?"
         Private Const TD_PATTERN_3 As String = "<td\sclass=""hs"">(.*?)</td>"
         Private Const MOVIE_TITLE_PATTERN As String = "(?<=<(title)>).*(?=<\/\1>)"
         Private Const IMDB_ID_REGEX As String = "tt\d\d\d\d\d\d\d"
@@ -522,8 +522,11 @@ mResult:
 
                     'Clean up the actors list
                     For Each Ps As Media.Person In Cast
-                        Dim a_patterRegex = Regex.Match(Ps.Role, HREF_PATTERN)
-                        If a_patterRegex.Success Then Ps.Role = a_patterRegex.Groups("name").ToString.Trim
+                        For Each sMatch As Match In Regex.Matches(Ps.Role, HREF_PATTERN)
+                            Ps.Role = Ps.Role.Replace(sMatch.Value, sMatch.Groups("name").Value.ToString.Trim)
+                        Next
+                        ' Dim a_patterRegex = Regex.Match(Ps.Role, HREF_PATTERN)
+                        ' If a_patterRegex.Success Then Ps.Role = a_patterRegex.Groups("name").ToString.Trim
                     Next
 
                     IMDBMovie.Actors = Cast
