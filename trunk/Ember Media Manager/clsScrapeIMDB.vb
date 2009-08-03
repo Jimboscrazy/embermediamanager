@@ -458,7 +458,7 @@ mResult:
                     If String.IsNullOrEmpty(RegexRating) Then
                         IMDBMovie.Rating = String.Empty
                     Else
-                        IMDBMovie.Rating = RegexRating.Split("/".ToCharArray)(0).Trim
+                        IMDBMovie.Rating = RegexRating.Split(Convert.ToChar("/")).First.Trim
                     End If
                 End If
 
@@ -594,8 +594,7 @@ mResult:
                                           Select N = Web.HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString) Where Not N.Contains("more") Take If(Master.eSettings.GenreLimit > 0, Master.eSettings.GenreLimit, 999999)
                                 If Gen.Count > 0 Then
                                     'force splitting of /ed genres
-                                    Dim tGenre As String = Strings.Join(Gen.ToArray, "/").Trim
-                                    IMDBMovie.Genre = Strings.Join(tGenre.Split(Convert.ToChar("/")), " / ").Trim
+                                    IMDBMovie.Genre = Strings.Join(Gen.ToArray, "/").Trim.Replace("/", " / ").Trim
                                 End If
                             End If
                         End If

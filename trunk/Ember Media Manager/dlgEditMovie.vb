@@ -522,7 +522,7 @@ Public Class dlgEditMovie
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Genre) Then
                     Dim genreArray() As String
-                    genreArray = Strings.Split(Master.currMovie.Movie.Genre, "/")
+                    genreArray = Master.currMovie.Movie.Genre.Split(Convert.ToChar("/"))
                     For g As Integer = 0 To UBound(genreArray)
                         If .lbGenre.FindString(genreArray(g).Trim) > 0 Then
                             .lbGenre.SetItemChecked(.lbGenre.FindString(genreArray(g).Trim), True)

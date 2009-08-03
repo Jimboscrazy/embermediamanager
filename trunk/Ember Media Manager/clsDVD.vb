@@ -196,7 +196,7 @@ Public Class clsDVD
                 ElseIf ParsedIFOFile.VideoAtt_VTS_VOBS.Aspect_Ratio = 3 OrElse ParsedIFOFile.VideoAtt_VTS_VOBS.LetterBoxed Then
                     ReturnArray(2) = "1.78"
                 ElseIf ReturnArray(1).Contains("x") Then
-                    Dim strAspect() As String = ReturnArray(1).Split(New Char() {"x"})
+                    Dim strAspect() As String = ReturnArray(1).Split(Convert.ToChar("x"))
                     Dim strReturn As String = FormatNumber(Master.ConvertToSingle(strAspect(0)) / Master.ConvertToSingle(strAspect(1)), 2, TriState.False).Replace(",", ".")
                     If strReturn.EndsWith("0") Then
                         ReturnArray(2) = strReturn.Substring(0, strReturn.Length - 1)
