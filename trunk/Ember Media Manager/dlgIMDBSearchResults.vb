@@ -147,7 +147,7 @@ Public Class dlgIMDBSearchResults
         Try
             Me.ClearInfo()
             Me.OK_Button.Enabled = False
-            If Not String.IsNullOrEmpty(e.Node.Tag.ToString) Then
+            If Not IsNothing(e.Node.Tag) AndAlso Not String.IsNullOrEmpty(e.Node.Tag.ToString) Then
                 Me.Label3.Text = Master.eLang.GetString(290, "Downloading details...")
                 Me.pnlLoading.Visible = True
                 IMDB.GetSearchMovieInfoAsync(e.Node.Tag.ToString, Master.tmpMovie, Master.DefaultOptions)
