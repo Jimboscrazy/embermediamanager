@@ -85,9 +85,10 @@ Public Class Localization
                         _all = String.Format("[{0}]", GetString(569, Master.eLang.All))
                         _none = GetString(570, Master.eLang.None)
                         _disabled = GetString(571, Master.eLang.Disabled)
+
+                        ' Need to change Globaly Langs_all
+                        Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
                     End If
-                    ' Need to change Globaly Langs_all
-                    Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, String.Format("[{0}]", Master.eLang.GetString(569, Master.eLang.All)))
                 Else
                     MsgBox(String.Concat(String.Format("Cannot find {0}.xml.", Language), vbNewLine, vbNewLine, "Expected path:", vbNewLine, lPath), MsgBoxStyle.Critical, "File Not Found")
                 End If

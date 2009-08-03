@@ -349,10 +349,6 @@
   <Name>Adonara</Name>
  </Language>
  <Language>
-  <Code>ads</Code>
-  <Name>Adamorobe Sign Language</Name>
- </Language>
- <Language>
   <Code>adt</Code>
   <Name>Adnyamathanha</Name>
  </Language>
@@ -370,7 +366,7 @@
  </Language>
  <Language>
   <Code>ady</Code>
-  <Name>Adygei/Adyghe</Name>
+  <Name>Adygei</Name>
  </Language>
  <Language>
   <Code>adz</Code>
@@ -389,10 +385,6 @@
   <Name>Saidi Arabic</Name>
  </Language>
  <Language>
-  <Code>aed</Code>
-  <Name>Argentine Sign Language</Name>
- </Language>
- <Language>
   <Code>aee</Code>
   <Name>Northeast Pashayi</Name>
  </Language>
@@ -407,10 +399,6 @@
  <Language>
   <Code>aem</Code>
   <Name>Arem</Name>
- </Language>
- <Language>
-  <Code>aen</Code>
-  <Name>Armenian Sign Language</Name>
  </Language>
  <Language>
   <Code>aeq</Code>
@@ -451,10 +439,6 @@
  <Language>
   <Code>afe</Code>
   <Name>Putukwam</Name>
- </Language>
- <Language>
-  <Code>afg</Code>
-  <Name>Afghan Sign Language</Name>
  </Language>
  <Language>
   <Code>afh</Code>
@@ -957,12 +941,8 @@
   <Name>Southern Altai</Name>
  </Language>
  <Language>
-  <Code>alu</Code>
-  <Name>'Are'are</Name>
- </Language>
- <Language>
   <Code>alw</Code>
-  <Name>Alaba-K’abeena/Wanbasana</Name>
+  <Name>Alaba-K’abeena</Name>
  </Language>
  <Language>
   <Code>alx</Code>
@@ -1022,7 +1002,7 @@
  </Language>
  <Language>
   <Code>amm</Code>
-  <Name>Ama (Papua New Guinea)</Name>
+  <Name>Ama</Name>
  </Language>
  <Language>
   <Code>amn</Code>
@@ -1102,7 +1082,7 @@
  </Language>
  <Language>
   <Code>ang</Code>
-  <Name>Old English (ca. 450-1100)</Name>
+  <Name>Old English</Name>
  </Language>
  <Language>
   <Code>anh</Code>
@@ -1142,7 +1122,7 @@
  </Language>
  <Language>
   <Code>anq</Code>
-  <Name>Jarawa (India)</Name>
+  <Name>Jarawa</Name>
  </Language>
  <Language>
   <Code>anr</Code>
@@ -1386,7 +1366,7 @@
  </Language>
  <Language>
   <Code>arc</Code>
-  <Name>Imperial Aramaic (700-300 BCE)/Official Aramaic (700-300 BCE)</Name>
+  <Name>Imperial Aramaic</Name>
  </Language>
  <Language>
   <Code>ard</Code>
@@ -1422,7 +1402,7 @@
  </Language>
  <Language>
   <Code>arn</Code>
-  <Name>Mapuche/Mapudungun</Name>
+  <Name>Mapuche</Name>
  </Language>
  <Language>
   <Code>aro</Code>
@@ -1438,7 +1418,7 @@
  </Language>
  <Language>
   <Code>arr</Code>
-  <Name>Karo (Brazil)</Name>
+  <Name>Karo</Name>
  </Language>
  <Language>
   <Code>ars</Code>
@@ -1470,7 +1450,7 @@
  </Language>
  <Language>
   <Code>asa</Code>
-  <Name>Asu (Tanzania)</Name>
+  <Name>Asu</Name>
  </Language>
  <Language>
   <Code>asb</Code>
@@ -1483,14 +1463,6 @@
  <Language>
   <Code>asd</Code>
   <Name>Asas</Name>
- </Language>
- <Language>
-  <Code>ase</Code>
-  <Name>American Sign Language</Name>
- </Language>
- <Language>
-  <Code>asf</Code>
-  <Name>Australian Sign Language</Name>
  </Language>
  <Language>
   <Code>asg</Code>
@@ -1529,14 +1501,6 @@
   <Name>Dano</Name>
  </Language>
  <Language>
-  <Code>asp</Code>
-  <Name>Algerian Sign Language</Name>
- </Language>
- <Language>
-  <Code>asq</Code>
-  <Name>Austrian Sign Language</Name>
- </Language>
- <Language>
   <Code>asr</Code>
   <Name>Asuri</Name>
  </Language>
@@ -1546,7 +1510,7 @@
  </Language>
  <Language>
   <Code>ast</Code>
-  <Name>Asturian/Asturleonese/Bable/Leonese</Name>
+  <Name>Asturian</Name>
  </Language>
  <Language>
   <Code>asu</Code>
@@ -1555,10 +1519,6 @@
  <Language>
   <Code>asv</Code>
   <Name>Asoa</Name>
- </Language>
- <Language>
-  <Code>asw</Code>
-  <Name>Australian Aborigines Sign Language</Name>
  </Language>
  <Language>
   <Code>asx</Code>
@@ -1686,7 +1646,7 @@
  </Language>
  <Language>
   <Code>aue</Code>
-  <Name>=/Kx'au//'ein</Name>
+  <Name>Kx'au</Name>
  </Language>
  <Language>
   <Code>aug</Code>
@@ -1714,7 +1674,7 @@
  </Language>
  <Language>
   <Code>aum</Code>
-  <Name>Asu (Nigeria)</Name>
+  <Name>Asu</Name>
  </Language>
  <Language>
   <Code>aun</Code>
@@ -1730,7 +1690,7 @@
  </Language>
  <Language>
   <Code>auq</Code>
-  <Name>Anus/Korur</Name>
+  <Name>Anus</Name>
  </Language>
  <Language>
   <Code>aur</Code>
@@ -1894,7 +1854,7 @@
  </Language>
  <Language>
   <Code>axk</Code>
-  <Name>Yaka (Central African Republic)</Name>
+  <Name>Yaka</Name>
  </Language>
  <Language>
   <Code>axm</Code>
@@ -1962,7 +1922,7 @@
  </Language>
  <Language>
   <Code>ayq</Code>
-  <Name>Ayi (Papua New Guinea)</Name>
+  <Name>Ayi</Name>
  </Language>
  <Language>
   <Code>ayr</Code>
@@ -1982,7 +1942,7 @@
  </Language>
  <Language>
   <Code>ayx</Code>
-  <Name>Ayi (China)</Name>
+  <Name>Ayi</Name>
  </Language>
  <Language>
   <Code>ayy</Code>
@@ -2090,11 +2050,11 @@
  </Language>
  <Language>
   <Code>bas</Code>
-  <Name>Basa (Cameroon)</Name>
+  <Name>Basa</Name>
  </Language>
  <Language>
   <Code>bau</Code>
-  <Name>Bada (Nigeria)</Name>
+  <Name>Bada</Name>
  </Language>
  <Language>
   <Code>bav</Code>
@@ -2198,7 +2158,7 @@
  </Language>
  <Language>
   <Code>bbu</Code>
-  <Name>Kulung (Nigeria)</Name>
+  <Name>Kulung</Name>
  </Language>
  <Language>
   <Code>bbv</Code>
@@ -2274,7 +2234,7 @@
  </Language>
  <Language>
   <Code>bcn</Code>
-  <Name>Bali (Nigeria)</Name>
+  <Name>Bali</Name>
  </Language>
  <Language>
   <Code>bco</Code>
@@ -2282,7 +2242,7 @@
  </Language>
  <Language>
   <Code>bcp</Code>
-  <Name>Bali (Democratic Republic of Congo)</Name>
+  <Name>Bali</Name>
  </Language>
  <Language>
   <Code>bcq</Code>
@@ -2346,7 +2306,7 @@
  </Language>
  <Language>
   <Code>bdh</Code>
-  <Name>Baka (Sudan)</Name>
+  <Name>Baka</Name>
  </Language>
  <Language>
   <Code>bdi</Code>
@@ -2458,7 +2418,7 @@
  </Language>
  <Language>
   <Code>bej</Code>
-  <Name>Bedawiyet/Beja</Name>
+  <Name>Bedawiyet</Name>
  </Language>
  <Language>
   <Code>bek</Code>
@@ -2470,7 +2430,7 @@
  </Language>
  <Language>
   <Code>bem</Code>
-  <Name>Bemba (Zambia)</Name>
+  <Name>Bemba</Name>
  </Language>
  <Language>
   <Code>ben</Code>
@@ -2514,11 +2474,11 @@
  </Language>
  <Language>
   <Code>bey</Code>
-  <Name>Beli (Papua New Guinea)</Name>
+  <Name>Beli</Name>
  </Language>
  <Language>
   <Code>bez</Code>
-  <Name>Bena (Tanzania)</Name>
+  <Name>Bena</Name>
  </Language>
  <Language>
   <Code>bfa</Code>
@@ -2538,7 +2498,7 @@
  </Language>
  <Language>
   <Code>bfe</Code>
-  <Name>Betaf/Tena</Name>
+  <Name>Betaf</Name>
  </Language>
  <Language>
   <Code>bff</Code>
@@ -2553,16 +2513,8 @@
   <Name>Blafe</Name>
  </Language>
  <Language>
-  <Code>bfi</Code>
-  <Name>British Sign Language</Name>
- </Language>
- <Language>
   <Code>bfj</Code>
   <Name>Bafanji</Name>
- </Language>
- <Language>
-  <Code>bfk</Code>
-  <Name>Ban Khor Sign Language</Name>
  </Language>
  <Language>
   <Code>bfl</Code>
@@ -2654,11 +2606,11 @@
  </Language>
  <Language>
   <Code>bgk</Code>
-  <Name>Bit/Buxinhua</Name>
+  <Name>Bit</Name>
  </Language>
  <Language>
   <Code>bgl</Code>
-  <Name>Bo (Laos)</Name>
+  <Name>Bo</Name>
  </Language>
  <Language>
   <Code>bgm</Code>
@@ -2818,7 +2770,7 @@
  </Language>
  <Language>
   <Code>bhz</Code>
-  <Name>Bada (Indonesia)</Name>
+  <Name>Bada</Name>
  </Language>
  <Language>
   <Code>bia</Code>
@@ -2866,7 +2818,7 @@
  </Language>
  <Language>
   <Code>bin</Code>
-  <Name>Bini/Edo</Name>
+  <Name>Bini</Name>
  </Language>
  <Language>
   <Code>bio</Code>
@@ -2902,7 +2854,7 @@
  </Language>
  <Language>
   <Code>biw</Code>
-  <Name>Kol (Cameroon)</Name>
+  <Name>Kol</Name>
  </Language>
  <Language>
   <Code>bix</Code>
@@ -2962,7 +2914,7 @@
  </Language>
  <Language>
   <Code>bjl</Code>
-  <Name>Bulu (Papua New Guinea)</Name>
+  <Name>Bulu</Name>
  </Language>
  <Language>
   <Code>bjm</Code>
@@ -3026,7 +2978,7 @@
  </Language>
  <Language>
   <Code>bkc</Code>
-  <Name>Baka (Cameroon)</Name>
+  <Name>Baka</Name>
  </Language>
  <Language>
   <Code>bkd</Code>
@@ -3062,7 +3014,7 @@
  </Language>
  <Language>
   <Code>bkm</Code>
-  <Name>Kom (Cameroon)</Name>
+  <Name>Kom</Name>
  </Language>
  <Language>
   <Code>bkn</Code>
@@ -3074,7 +3026,7 @@
  </Language>
  <Language>
   <Code>bkp</Code>
-  <Name>Boko (Democratic Republic of Congo)</Name>
+  <Name>Boko</Name>
  </Language>
  <Language>
   <Code>bkq</Code>
@@ -3166,7 +3118,7 @@
  </Language>
  <Language>
   <Code>blm</Code>
-  <Name>Beli (Sudan)</Name>
+  <Name>Beli</Name>
  </Language>
  <Language>
   <Code>bln</Code>
@@ -3270,7 +3222,7 @@
  </Language>
  <Language>
   <Code>bmn</Code>
-  <Name>Bina (Papua New Guinea)</Name>
+  <Name>Bina</Name>
  </Language>
  <Language>
   <Code>bmo</Code>
@@ -3314,7 +3266,7 @@
  </Language>
  <Language>
   <Code>bmy</Code>
-  <Name>Bemba (Democratic Republic of Congo)</Name>
+  <Name>Bemba</Name>
  </Language>
  <Language>
   <Code>bmz</Code>
@@ -3334,7 +3286,7 @@
  </Language>
  <Language>
   <Code>bnd</Code>
-  <Name>Banda (Indonesia)</Name>
+  <Name>Banda</Name>
  </Language>
  <Language>
   <Code>bne</Code>
@@ -3398,7 +3350,7 @@
  </Language>
  <Language>
   <Code>bnv</Code>
-  <Name>Beneraf/Bonerif/Edwas</Name>
+  <Name>Beneraf</Name>
  </Language>
  <Language>
   <Code>bnw</Code>
@@ -3435,10 +3387,6 @@
  <Language>
   <Code>bof</Code>
   <Name>Bolon</Name>
- </Language>
- <Language>
-  <Code>bog</Code>
-  <Name>Bamako Sign Language</Name>
  </Language>
  <Language>
   <Code>boh</Code>
@@ -3510,7 +3458,7 @@
  </Language>
  <Language>
   <Code>boy</Code>
-  <Name>Bodo (Central African Republic)</Name>
+  <Name>Bodo</Name>
  </Language>
  <Language>
   <Code>boz</Code>
@@ -3594,7 +3542,7 @@
  </Language>
  <Language>
   <Code>bpw</Code>
-  <Name>Bo (Papua New Guinea)</Name>
+  <Name>Bo</Name>
  </Language>
  <Language>
   <Code>bpx</Code>
@@ -3618,7 +3566,7 @@
  </Language>
  <Language>
   <Code>bqc</Code>
-  <Name>Boko (Benin)</Name>
+  <Name>Boko</Name>
  </Language>
  <Language>
   <Code>bqd</Code>
@@ -3657,10 +3605,6 @@
   <Name>Wumboko</Name>
  </Language>
  <Language>
-  <Code>bqn</Code>
-  <Name>Bulgarian Sign Language</Name>
- </Language>
- <Language>
   <Code>bqo</Code>
   <Name>Balo</Name>
  </Language>
@@ -3694,15 +3638,11 @@
  </Language>
  <Language>
   <Code>bqw</Code>
-  <Name>Buru (Nigeria)</Name>
+  <Name>Buru</Name>
  </Language>
  <Language>
   <Code>bqx</Code>
   <Name>Baangi</Name>
- </Language>
- <Language>
-  <Code>bqy</Code>
-  <Name>Bengkala Sign Language</Name>
  </Language>
  <Language>
   <Code>bqz</Code>
@@ -3802,7 +3742,7 @@
  </Language>
  <Language>
   <Code>brx</Code>
-  <Name>Bodo (India)</Name>
+  <Name>Bodo</Name>
  </Language>
  <Language>
   <Code>bry</Code>
@@ -3822,7 +3762,7 @@
  </Language>
  <Language>
   <Code>bsc</Code>
-  <Name>Bassari/Oniyan</Name>
+  <Name>Bassari</Name>
  </Language>
  <Language>
   <Code>bse</Code>
@@ -3914,11 +3854,11 @@
  </Language>
  <Language>
   <Code>btb</Code>
-  <Name>Beti (Cameroon)</Name>
+  <Name>Beti</Name>
  </Language>
  <Language>
   <Code>btc</Code>
-  <Name>Bati (Cameroon)</Name>
+  <Name>Bati</Name>
  </Language>
  <Language>
   <Code>btd</Code>
@@ -4058,7 +3998,7 @@
  </Language>
  <Language>
   <Code>bum</Code>
-  <Name>Bulu (Cameroon)</Name>
+  <Name>Bulu</Name>
  </Language>
  <Language>
   <Code>bun</Code>
@@ -4153,10 +4093,6 @@
   <Name>Bukat</Name>
  </Language>
  <Language>
-  <Code>bvl</Code>
-  <Name>Bolivian Sign Language</Name>
- </Language>
- <Language>
   <Code>bvm</Code>
   <Name>Bamunka</Name>
  </Language>
@@ -4178,7 +4114,7 @@
  </Language>
  <Language>
   <Code>bvt</Code>
-  <Name>Bati (Indonesia)</Name>
+  <Name>Bati</Name>
  </Language>
  <Language>
   <Code>bvu</Code>
@@ -4258,7 +4194,7 @@
  </Language>
  <Language>
   <Code>bwo</Code>
-  <Name>Borna/Boro</Name>
+  <Name>Borna</Name>
  </Language>
  <Language>
   <Code>bwp</Code>
@@ -4282,7 +4218,7 @@
  </Language>
  <Language>
   <Code>bwu</Code>
-  <Name>Buli (Ghana)</Name>
+  <Name>Buli</Name>
  </Language>
  <Language>
   <Code>bww</Code>
@@ -4342,7 +4278,7 @@
  </Language>
  <Language>
   <Code>bxk</Code>
-  <Name>Bukusu/Lubukusu</Name>
+  <Name>Bukusu</Name>
  </Language>
  <Language>
   <Code>bxl</Code>
@@ -4434,7 +4370,7 @@
  </Language>
  <Language>
   <Code>byj</Code>
-  <Name>Bina (Nigeria)</Name>
+  <Name>Bina</Name>
  </Language>
  <Language>
   <Code>byk</Code>
@@ -4450,7 +4386,7 @@
  </Language>
  <Language>
   <Code>byn</Code>
-  <Name>Bilin/Blin</Name>
+  <Name>Bilin</Name>
  </Language>
  <Language>
   <Code>byo</Code>
@@ -4538,7 +4474,7 @@
  </Language>
  <Language>
   <Code>bzl</Code>
-  <Name>Boano (Sulawesi)</Name>
+  <Name>Boano</Name>
  </Language>
  <Language>
   <Code>bzm</Code>
@@ -4546,7 +4482,7 @@
  </Language>
  <Language>
   <Code>bzn</Code>
-  <Name>Boano (Maluku)</Name>
+  <Name>Boano</Name>
  </Language>
  <Language>
   <Code>bzo</Code>
@@ -4558,15 +4494,11 @@
  </Language>
  <Language>
   <Code>bzq</Code>
-  <Name>Buli (Indonesia)</Name>
+  <Name>Buli</Name>
  </Language>
  <Language>
   <Code>bzr</Code>
   <Name>Biri</Name>
- </Language>
- <Language>
-  <Code>bzs</Code>
-  <Name>Brazilian Sign Language</Name>
  </Language>
  <Language>
   <Code>bzt</Code>
@@ -4582,7 +4514,7 @@
  </Language>
  <Language>
   <Code>bzw</Code>
-  <Name>Basa (Nigeria)</Name>
+  <Name>Basa</Name>
  </Language>
  <Language>
   <Code>bzx</Code>
@@ -4614,7 +4546,7 @@
  </Language>
  <Language>
   <Code>cae</Code>
-  <Name>Laalaa/Lehar</Name>
+  <Name>Laalaa</Name>
  </Language>
  <Language>
   <Code>caf</Code>
@@ -4670,7 +4602,7 @@
  </Language>
  <Language>
   <Code>cat</Code>
-  <Name>Catalan/Valencian</Name>
+  <Name>Catalan</Name>
  </Language>
  <Language>
   <Code>cav</Code>
@@ -4865,10 +4797,6 @@
   <Name>Cinda-Regi-Tiyal</Name>
  </Language>
  <Language>
-  <Code>cds</Code>
-  <Name>Chadian Sign Language</Name>
- </Language>
- <Language>
   <Code>cdy</Code>
   <Name>Chadong</Name>
  </Language>
@@ -4978,7 +4906,7 @@
  </Language>
  <Language>
   <Code>chm</Code>
-  <Name>Mari (Russia)</Name>
+  <Name>Mari</Name>
  </Language>
  <Language>
   <Code>chn</Code>
@@ -4990,7 +4918,7 @@
  </Language>
  <Language>
   <Code>chp</Code>
-  <Name>Chipewyan/Dene Suline</Name>
+  <Name>Chipewyan</Name>
  </Language>
  <Language>
   <Code>chq</Code>
@@ -5010,7 +4938,7 @@
  </Language>
  <Language>
   <Code>chu</Code>
-  <Name>Church Slavic/Church Slavonic/Old Bulgarian/Old Church Slavonic/Old Slavonic</Name>
+  <Name>Church Slavic</Name>
  </Language>
  <Language>
   <Code>chv</Code>
@@ -5414,7 +5342,7 @@
  </Language>
  <Language>
   <Code>coh</Code>
-  <Name>Chichonyi-Chidzihana-Chikauma/Chonyi-Dzihana-Kauma</Name>
+  <Name>Chichonyi-Chidzihana-Chikauma</Name>
  </Language>
  <Language>
   <Code>coj</Code>
@@ -5637,26 +5565,6 @@
   <Name>Kashubian</Name>
  </Language>
  <Language>
-  <Code>csc</Code>
-  <Name>Catalan Sign Language/Lengua de señas catalana/Llengua de Signes Catalana</Name>
- </Language>
- <Language>
-  <Code>csd</Code>
-  <Name>Chiangmai Sign Language</Name>
- </Language>
- <Language>
-  <Code>cse</Code>
-  <Name>Czech Sign Language</Name>
- </Language>
- <Language>
-  <Code>csf</Code>
-  <Name>Cuba Sign Language</Name>
- </Language>
- <Language>
-  <Code>csg</Code>
-  <Name>Chilean Sign Language</Name>
- </Language>
- <Language>
   <Code>csh</Code>
   <Name>Asho Chin</Name>
  </Language>
@@ -5669,28 +5577,12 @@
   <Name>Jola-Kasa</Name>
  </Language>
  <Language>
-  <Code>csl</Code>
-  <Name>Chinese Sign Language</Name>
- </Language>
- <Language>
   <Code>csm</Code>
   <Name>Central Sierra Miwok</Name>
  </Language>
  <Language>
-  <Code>csn</Code>
-  <Name>Colombian Sign Language</Name>
- </Language>
- <Language>
   <Code>cso</Code>
-  <Name>Sochiapam Chinantec/Sochiapan Chinantec</Name>
- </Language>
- <Language>
-  <Code>csq</Code>
-  <Name>Croatia Sign Language</Name>
- </Language>
- <Language>
-  <Code>csr</Code>
-  <Name>Costa Rican Sign Language</Name>
+  <Name>Sochiapam Chinantec</Name>
  </Language>
  <Language>
   <Code>css</Code>
@@ -5974,7 +5866,7 @@
  </Language>
  <Language>
   <Code>dap</Code>
-  <Name>Nisi (India)</Name>
+  <Name>Nisi</Name>
  </Language>
  <Language>
   <Code>daq</Code>
@@ -6110,7 +6002,7 @@
  </Language>
  <Language>
   <Code>ddn</Code>
-  <Name>Dendi (Benin)</Name>
+  <Name>Dendi</Name>
  </Language>
  <Language>
   <Code>ddo</Code>
@@ -6166,7 +6058,7 @@
  </Language>
  <Language>
   <Code>den</Code>
-  <Name>Slave (Athapascan)</Name>
+  <Name>Slave</Name>
  </Language>
  <Language>
   <Code>dep</Code>
@@ -6174,7 +6066,7 @@
  </Language>
  <Language>
   <Code>deq</Code>
-  <Name>Dendi (Central African Republic)</Name>
+  <Name>Dendi</Name>
  </Language>
  <Language>
   <Code>der</Code>
@@ -6238,7 +6130,7 @@
  </Language>
  <Language>
   <Code>dgo</Code>
-  <Name>Dogri (individual language)</Name>
+  <Name>Dogri</Name>
  </Language>
  <Language>
   <Code>dgr</Code>
@@ -6262,7 +6154,7 @@
  </Language>
  <Language>
   <Code>dha</Code>
-  <Name>Dhanwar (India)</Name>
+  <Name>Dhanwar</Name>
  </Language>
  <Language>
   <Code>dhd</Code>
@@ -6310,7 +6202,7 @@
  </Language>
  <Language>
   <Code>dhw</Code>
-  <Name>Dhanwar (Nepal)</Name>
+  <Name>Dhanwar</Name>
  </Language>
  <Language>
   <Code>dia</Code>
@@ -6550,7 +6442,7 @@
  </Language>
  <Language>
   <Code>dmu</Code>
-  <Name>Dubu/Tebi</Name>
+  <Name>Dubu</Name>
  </Language>
  <Language>
   <Code>dmv</Code>
@@ -6562,7 +6454,7 @@
  </Language>
  <Language>
   <Code>dmy</Code>
-  <Name>Demta/Sowari</Name>
+  <Name>Demta</Name>
  </Language>
  <Language>
   <Code>dna</Code>
@@ -6638,7 +6530,7 @@
  </Language>
  <Language>
   <Code>doi</Code>
-  <Name>Dogri (macrolanguage)</Name>
+  <Name>Dogri</Name>
  </Language>
  <Language>
   <Code>dok</Code>
@@ -6650,7 +6542,7 @@
  </Language>
  <Language>
   <Code>don</Code>
-  <Name>Toura (Papua New Guinea)</Name>
+  <Name>Toura</Name>
  </Language>
  <Language>
   <Code>doo</Code>
@@ -6659,10 +6551,6 @@
  <Language>
   <Code>dop</Code>
   <Name>Lukpa</Name>
- </Language>
- <Language>
-  <Code>doq</Code>
-  <Name>Dominican Sign Language</Name>
  </Language>
  <Language>
   <Code>dor</Code>
@@ -6769,20 +6657,12 @@
   <Name>Lower Sorbian</Name>
  </Language>
  <Language>
-  <Code>dse</Code>
-  <Name>Dutch Sign Language</Name>
- </Language>
- <Language>
   <Code>dsh</Code>
   <Name>Daasanach</Name>
  </Language>
  <Language>
   <Code>dsi</Code>
   <Name>Disa</Name>
- </Language>
- <Language>
-  <Code>dsl</Code>
-  <Name>Danish Sign Language</Name>
  </Language>
  <Language>
   <Code>dsn</Code>
@@ -6862,7 +6742,7 @@
  </Language>
  <Language>
   <Code>dug</Code>
-  <Name>Chiduruma/Duruma</Name>
+  <Name>Chiduruma</Name>
  </Language>
  <Language>
   <Code>duh</Code>
@@ -6886,7 +6766,7 @@
  </Language>
  <Language>
   <Code>dum</Code>
-  <Name>Middle Dutch (ca. 1050-1350)</Name>
+  <Name>Middle Dutch</Name>
  </Language>
  <Language>
   <Code>dun</Code>
@@ -7034,23 +6914,15 @@
  </Language>
  <Language>
   <Code>ebu</Code>
-  <Name>Embu/Kiembu</Name>
+  <Name>Embu</Name>
  </Language>
  <Language>
   <Code>ecr</Code>
   <Name>Eteocretan</Name>
  </Language>
  <Language>
-  <Code>ecs</Code>
-  <Name>Ecuadorian Sign Language</Name>
- </Language>
- <Language>
   <Code>ecy</Code>
   <Name>Eteocypriot</Name>
- </Language>
- <Language>
-  <Code>eee</Code>
-  <Name>E</Name>
  </Language>
  <Language>
   <Code>efa</Code>
@@ -7074,7 +6946,7 @@
  </Language>
  <Language>
   <Code>egy</Code>
-  <Name>Egyptian (Ancient)</Name>
+  <Name>Egyptian</Name>
  </Language>
  <Language>
   <Code>ehu</Code>
@@ -7150,7 +7022,7 @@
  </Language>
  <Language>
   <Code>ell</Code>
-  <Name>Modern Greek (1453-)</Name>
+  <Name>Modern Greek</Name>
  </Language>
  <Language>
   <Code>elm</Code>
@@ -7262,7 +7134,7 @@
  </Language>
  <Language>
   <Code>enm</Code>
-  <Name>Middle English (1100-1500)</Name>
+  <Name>Middle English</Name>
  </Language>
  <Language>
   <Code>enn</Code>
@@ -7278,7 +7150,7 @@
  </Language>
  <Language>
   <Code>enr</Code>
-  <Name>Emem/Emumu</Name>
+  <Name>Emem</Name>
  </Language>
  <Language>
   <Code>enu</Code>
@@ -7286,15 +7158,15 @@
  </Language>
  <Language>
   <Code>env</Code>
-  <Name>Enwan (Edu State)</Name>
+  <Name>Enwan</Name>
  </Language>
  <Language>
   <Code>enw</Code>
-  <Name>Enwan (Akwa Ibom State)</Name>
+  <Name>Enwan</Name>
  </Language>
  <Language>
   <Code>eot</Code>
-  <Name>Beti (Côte d'Ivoire)</Name>
+  <Name>Beti</Name>
  </Language>
  <Language>
   <Code>epi</Code>
@@ -7361,20 +7233,8 @@
   <Name>Northwest Alaska Inupiatun</Name>
  </Language>
  <Language>
-  <Code>esl</Code>
-  <Name>Egypt Sign Language</Name>
- </Language>
- <Language>
   <Code>esm</Code>
   <Name>Esuma</Name>
- </Language>
- <Language>
-  <Code>esn</Code>
-  <Name>Salvadoran Sign Language</Name>
- </Language>
- <Language>
-  <Code>eso</Code>
-  <Name>Estonian Sign Language</Name>
  </Language>
  <Language>
   <Code>esq</Code>
@@ -7401,16 +7261,12 @@
   <Name>Etchemin</Name>
  </Language>
  <Language>
-  <Code>eth</Code>
-  <Name>Ethiopian Sign Language</Name>
- </Language>
- <Language>
   <Code>etn</Code>
-  <Name>Eton (Vanuatu)</Name>
+  <Name>Eton</Name>
  </Language>
  <Language>
   <Code>eto</Code>
-  <Name>Eton (Cameroon)</Name>
+  <Name>Eton</Name>
  </Language>
  <Language>
   <Code>etr</Code>
@@ -7514,7 +7370,7 @@
  </Language>
  <Language>
   <Code>fak</Code>
-  <Name>Fang (Cameroon)</Name>
+  <Name>Fang</Name>
  </Language>
  <Language>
   <Code>fal</Code>
@@ -7526,7 +7382,7 @@
  </Language>
  <Language>
   <Code>fan</Code>
-  <Name>Fang (Equatorial Guinea)</Name>
+  <Name>Fang</Name>
  </Language>
  <Language>
   <Code>fao</Code>
@@ -7565,10 +7421,6 @@
   <Name>Northwestern Fars</Name>
  </Language>
  <Language>
-  <Code>fcs</Code>
-  <Name>Quebec Sign Language</Name>
- </Language>
- <Language>
   <Code>fer</Code>
   <Name>Feroge</Name>
  </Language>
@@ -7598,7 +7450,7 @@
  </Language>
  <Language>
   <Code>fil</Code>
-  <Name>Filipino/Pilipino</Name>
+  <Name>Filipino</Name>
  </Language>
  <Language>
   <Code>fin</Code>
@@ -7718,11 +7570,11 @@
  </Language>
  <Language>
   <Code>frm</Code>
-  <Name>Middle French (ca. 1400-1600)</Name>
+  <Name>Middle French</Name>
  </Language>
  <Language>
   <Code>fro</Code>
-  <Name>Old French (842-ca. 1400)</Name>
+  <Name>Old French</Name>
  </Language>
  <Language>
   <Code>frp</Code>
@@ -7747,18 +7599,6 @@
  <Language>
   <Code>fry</Code>
   <Name>Western Frisian</Name>
- </Language>
- <Language>
-  <Code>fse</Code>
-  <Name>Finnish Sign Language</Name>
- </Language>
- <Language>
-  <Code>fsl</Code>
-  <Name>French Sign Language</Name>
- </Language>
- <Language>
-  <Code>fss</Code>
-  <Name>Finnish-Swedish Sign Language</Name>
  </Language>
  <Language>
   <Code>fub</Code>
@@ -7942,7 +7782,7 @@
  </Language>
  <Language>
   <Code>gba</Code>
-  <Name>Gbaya (Central African Republic)</Name>
+  <Name>Gbaya</Name>
  </Language>
  <Language>
   <Code>gbb</Code>
@@ -8166,7 +8006,7 @@
  </Language>
  <Language>
   <Code>geh</Code>
-  <Name>Hutterisch/Hutterite German</Name>
+  <Name>Hutterisch</Name>
  </Language>
  <Language>
   <Code>gei</Code>
@@ -8338,7 +8178,7 @@
  </Language>
  <Language>
   <Code>gim</Code>
-  <Name>Gimi (Eastern Highlands)</Name>
+  <Name>Gimi</Name>
  </Language>
  <Language>
   <Code>gin</Code>
@@ -8350,7 +8190,7 @@
  </Language>
  <Language>
   <Code>gip</Code>
-  <Name>Gimi (West New Britain)</Name>
+  <Name>Gimi</Name>
  </Language>
  <Language>
   <Code>giq</Code>
@@ -8418,7 +8258,7 @@
  </Language>
  <Language>
   <Code>gla</Code>
-  <Name>Gaelic/Scottish Gaelic</Name>
+  <Name>Gaelic</Name>
  </Language>
  <Language>
   <Code>glc</Code>
@@ -8462,7 +8302,7 @@
  </Language>
  <Language>
   <Code>glu</Code>
-  <Name>Gula (Chad)</Name>
+  <Name>Gula</Name>
  </Language>
  <Language>
   <Code>glv</Code>
@@ -8490,7 +8330,7 @@
  </Language>
  <Language>
   <Code>gmh</Code>
-  <Name>Middle High German (ca. 1050-1500)</Name>
+  <Name>Middle High German</Name>
  </Language>
  <Language>
   <Code>gml</Code>
@@ -8554,7 +8394,7 @@
  </Language>
  <Language>
   <Code>gnk</Code>
-  <Name>//Gana</Name>
+  <Name>Gana</Name>
  </Language>
  <Language>
   <Code>gnl</Code>
@@ -8622,7 +8462,7 @@
  </Language>
  <Language>
   <Code>goh</Code>
-  <Name>Old High German (ca. 750-1050)</Name>
+  <Name>Old High German</Name>
  </Language>
  <Language>
   <Code>goi</Code>
@@ -8710,7 +8550,7 @@
  </Language>
  <Language>
   <Code>gqn</Code>
-  <Name>Guana (Brazil)</Name>
+  <Name>Guana</Name>
  </Language>
  <Language>
   <Code>gqr</Code>
@@ -8726,7 +8566,7 @@
  </Language>
  <Language>
   <Code>grc</Code>
-  <Name>Ancient Greek (to 1453)</Name>
+  <Name>Ancient Greek</Name>
  </Language>
  <Language>
   <Code>grd</Code>
@@ -8801,20 +8641,8 @@
   <Name>Guramalum</Name>
  </Language>
  <Language>
-  <Code>gse</Code>
-  <Name>Ghanaian Sign Language</Name>
- </Language>
- <Language>
-  <Code>gsg</Code>
-  <Name>German Sign Language</Name>
- </Language>
- <Language>
   <Code>gsl</Code>
   <Name>Gusilay</Name>
- </Language>
- <Language>
-  <Code>gsm</Code>
-  <Name>Guatemalan Sign Language</Name>
  </Language>
  <Language>
   <Code>gsn</Code>
@@ -8829,12 +8657,8 @@
   <Name>Wasembo</Name>
  </Language>
  <Language>
-  <Code>gss</Code>
-  <Name>Greek Sign Language</Name>
- </Language>
- <Language>
   <Code>gsw</Code>
-  <Name>Alemannic/Alsatian/Swiss German</Name>
+  <Name>Alemannic</Name>
  </Language>
  <Language>
   <Code>gta</Code>
@@ -8917,10 +8741,6 @@
   <Name>Farefare</Name>
  </Language>
  <Language>
-  <Code>gus</Code>
-  <Name>Guinean Sign Language</Name>
- </Language>
- <Language>
   <Code>gut</Code>
   <Name>Maléku Jaíka</Name>
  </Language>
@@ -8942,11 +8762,11 @@
  </Language>
  <Language>
   <Code>guz</Code>
-  <Name>Ekegusii/Gusii</Name>
+  <Name>Ekegusii</Name>
  </Language>
  <Language>
   <Code>gva</Code>
-  <Name>Guana (Paraguay)</Name>
+  <Name>Guana</Name>
  </Language>
  <Language>
   <Code>gvc</Code>
@@ -9030,7 +8850,7 @@
  </Language>
  <Language>
   <Code>gwj</Code>
-  <Name>/Gwi</Name>
+  <Name>Gwi</Name>
  </Language>
  <Language>
   <Code>gwn</Code>
@@ -9125,10 +8945,6 @@
   <Name>Han</Name>
  </Language>
  <Language>
-  <Code>hab</Code>
-  <Name>Hanoi Sign Language</Name>
- </Language>
- <Language>
   <Code>hac</Code>
   <Name>Gurani</Name>
  </Language>
@@ -9139,10 +8955,6 @@
  <Language>
   <Code>hae</Code>
   <Name>Eastern Oromo</Name>
- </Language>
- <Language>
-  <Code>haf</Code>
-  <Name>Haiphong Sign Language</Name>
  </Language>
  <Language>
   <Code>hag</Code>
@@ -9198,7 +9010,7 @@
  </Language>
  <Language>
   <Code>hat</Code>
-  <Name>Haitian/Haitian Creole</Name>
+  <Name>Haitian</Name>
  </Language>
  <Language>
   <Code>hau</Code>
@@ -9261,10 +9073,6 @@
   <Name>Northern Haida</Name>
  </Language>
  <Language>
-  <Code>hds</Code>
-  <Name>Honduras Sign Language</Name>
- </Language>
- <Language>
   <Code>hdy</Code>
   <Name>Hadiyya</Name>
  </Language>
@@ -9302,7 +9110,7 @@
  </Language>
  <Language>
   <Code>hgm</Code>
-  <Name>Hai//om</Name>
+  <Name>Hai</Name>
  </Language>
  <Language>
   <Code>hgw</Code>
@@ -9401,10 +9209,6 @@
   <Name>Hunjara-Kaina Ke</Name>
  </Language>
  <Language>
-  <Code>hks</Code>
-  <Name>Heung Kong Sau Yue/Hong Kong Sign Language</Name>
- </Language>
- <Language>
   <Code>hla</Code>
   <Name>Halia</Name>
  </Language>
@@ -9430,7 +9234,7 @@
  </Language>
  <Language>
   <Code>hma</Code>
-  <Name>Southern Mashan Hmong/Southern Mashan Miao</Name>
+  <Name>Southern Mashan Hmong</Name>
  </Language>
  <Language>
   <Code>hmb</Code>
@@ -9438,15 +9242,15 @@
  </Language>
  <Language>
   <Code>hmc</Code>
-  <Name>Central Huishui Hmong/Central Huishui Miao</Name>
+  <Name>Central Huishui Hmong</Name>
  </Language>
  <Language>
   <Code>hmd</Code>
-  <Name>A-hmaos/Da-Hua Miao/Large Flowery Miao</Name>
+  <Name>A-hmaos</Name>
  </Language>
  <Language>
   <Code>hme</Code>
-  <Name>Eastern Huishui Hmong/Eastern Huishui Miao</Name>
+  <Name>Eastern Huishui Hmong</Name>
  </Language>
  <Language>
   <Code>hmf</Code>
@@ -9458,15 +9262,15 @@
  </Language>
  <Language>
   <Code>hmh</Code>
-  <Name>Southwestern Huishui Hmong/Southwestern Huishui Miao</Name>
+  <Name>Southwestern Huishui Hmong</Name>
  </Language>
  <Language>
   <Code>hmi</Code>
-  <Name>Northern Huishui Hmong/Northern Huishui Miao</Name>
+  <Name>Northern Huishui Hmong</Name>
  </Language>
  <Language>
   <Code>hmj</Code>
-  <Name>Ge/Gejia</Name>
+  <Name>Ge</Name>
  </Language>
  <Language>
   <Code>hmk</Code>
@@ -9474,11 +9278,11 @@
  </Language>
  <Language>
   <Code>hml</Code>
-  <Name>Luopohe Hmong/Luopohe Miao</Name>
+  <Name>Luopohe Hmong</Name>
  </Language>
  <Language>
   <Code>hmm</Code>
-  <Name>Central Mashan Hmong/Central Mashan Miao</Name>
+  <Name>Central Mashan Hmong</Name>
  </Language>
  <Language>
   <Code>hmn</Code>
@@ -9490,7 +9294,7 @@
  </Language>
  <Language>
   <Code>hmp</Code>
-  <Name>Northern Mashan Hmong/Northern Mashan Miao</Name>
+  <Name>Northern Mashan Hmong</Name>
  </Language>
  <Language>
   <Code>hmq</Code>
@@ -9518,19 +9322,19 @@
  </Language>
  <Language>
   <Code>hmw</Code>
-  <Name>Western Mashan Hmong/Western Mashan Miao</Name>
+  <Name>Western Mashan Hmong</Name>
  </Language>
  <Language>
   <Code>hmy</Code>
-  <Name>Southern Guiyang Hmong/Southern Guiyang Miao</Name>
+  <Name>Southern Guiyang Hmong</Name>
  </Language>
  <Language>
   <Code>hmz</Code>
-  <Name>Hmong Shua/Sinicized Miao</Name>
+  <Name>Hmong Shua</Name>
  </Language>
  <Language>
   <Code>hna</Code>
-  <Name>Mina (Cameroon)</Name>
+  <Name>Mina</Name>
  </Language>
  <Language>
   <Code>hnd</Code>
@@ -9542,7 +9346,7 @@
  </Language>
  <Language>
   <Code>hnh</Code>
-  <Name>//Ani</Name>
+  <Name>Ani</Name>
  </Language>
  <Language>
   <Code>hni</Code>
@@ -9574,7 +9378,7 @@
  </Language>
  <Language>
   <Code>hob</Code>
-  <Name>Mari (Madang Province)</Name>
+  <Name>Mari</Name>
  </Language>
  <Language>
   <Code>hoc</Code>
@@ -9621,10 +9425,6 @@
   <Name>Horo</Name>
  </Language>
  <Language>
-  <Code>hos</Code>
-  <Name>Ho Chi Minh City Sign Language</Name>
- </Language>
- <Language>
   <Code>hot</Code>
   <Name>Hote</Name>
  </Language>
@@ -9647,10 +9447,6 @@
  <Language>
   <Code>hpo</Code>
   <Name>Hpon</Name>
- </Language>
- <Language>
-  <Code>hps</Code>
-  <Name>Hawai'i Pidgin Sign Language</Name>
  </Language>
  <Language>
   <Code>hra</Code>
@@ -9705,14 +9501,6 @@
   <Name>Southeastern Huastec</Name>
  </Language>
  <Language>
-  <Code>hsh</Code>
-  <Name>Hungarian Sign Language</Name>
- </Language>
- <Language>
-  <Code>hsl</Code>
-  <Name>Hausa Sign Language</Name>
- </Language>
- <Language>
   <Code>hsn</Code>
   <Name>Xiang Chinese</Name>
  </Language>
@@ -9746,7 +9534,7 @@
  </Language>
  <Language>
   <Code>huc</Code>
-  <Name>=/Hua</Name>
+  <Name>Hua</Name>
  </Language>
  <Language>
   <Code>hud</Code>
@@ -9774,7 +9562,7 @@
  </Language>
  <Language>
   <Code>huj</Code>
-  <Name>Northern Guiyang Hmong/Northern Guiyang Miao</Name>
+  <Name>Northern Guiyang Hmong</Name>
  </Language>
  <Language>
   <Code>huk</Code>
@@ -9961,16 +9749,12 @@
   <Name>Etkywan</Name>
  </Language>
  <Language>
-  <Code>icl</Code>
-  <Name>Icelandic Sign Language</Name>
- </Language>
- <Language>
   <Code>icr</Code>
   <Name>Islander Creole English</Name>
  </Language>
  <Language>
   <Code>ida</Code>
-  <Name>Idakho-Isukha-Tiriki/Luidakho-Luisukha-Lutirichi</Name>
+  <Name>Idakho-Isukha-Tiriki</Name>
  </Language>
  <Language>
   <Code>idb</Code>
@@ -10094,7 +9878,7 @@
  </Language>
  <Language>
   <Code>iii</Code>
-  <Name>Nuosu/Sichuan Yi</Name>
+  <Name>Nuosu</Name>
  </Language>
  <Language>
   <Code>ijc</Code>
@@ -10174,7 +9958,7 @@
  </Language>
  <Language>
   <Code>ile</Code>
-  <Name>Interlingue/Occidental</Name>
+  <Name>Interlingue</Name>
  </Language>
  <Language>
   <Code>ilg</Code>
@@ -10246,7 +10030,7 @@
  </Language>
  <Language>
   <Code>ina</Code>
-  <Name>Interlingua (International Auxiliary Language Association)</Name>
+  <Name>Interlingua</Name>
  </Language>
  <Language>
   <Code>inb</Code>
@@ -10269,10 +10053,6 @@
   <Name>Jungle Inga</Name>
  </Language>
  <Language>
-  <Code>inl</Code>
-  <Name>Indonesian Sign Language</Name>
- </Language>
- <Language>
   <Code>inm</Code>
   <Name>Minaean</Name>
  </Language>
@@ -10287,10 +10067,6 @@
  <Language>
   <Code>inp</Code>
   <Name>Iñapari</Name>
- </Language>
- <Language>
-  <Code>ins</Code>
-  <Name>Indian Sign Language</Name>
  </Language>
  <Language>
   <Code>int</Code>
@@ -10377,14 +10153,6 @@
   <Name>Isnag</Name>
  </Language>
  <Language>
-  <Code>ise</Code>
-  <Name>Italian Sign Language</Name>
- </Language>
- <Language>
-  <Code>isg</Code>
-  <Name>Irish Sign Language</Name>
- </Language>
- <Language>
   <Code>ish</Code>
   <Name>Esan</Name>
  </Language>
@@ -10409,16 +10177,12 @@
   <Name>Isoko</Name>
  </Language>
  <Language>
-  <Code>isr</Code>
-  <Name>Israeli Sign Language</Name>
- </Language>
- <Language>
   <Code>ist</Code>
   <Name>Istriot</Name>
  </Language>
  <Language>
   <Code>isu</Code>
-  <Name>Isu (Menchum Division)</Name>
+  <Name>Isu</Name>
  </Language>
  <Language>
   <Code>ita</Code>
@@ -10538,7 +10302,7 @@
  </Language>
  <Language>
   <Code>iyx</Code>
-  <Name>Yaka (Congo)</Name>
+  <Name>Yaka</Name>
  </Language>
  <Language>
   <Code>izh</Code>
@@ -10610,7 +10374,7 @@
  </Language>
  <Language>
   <Code>jar</Code>
-  <Name>Jarawa (Nigeria)</Name>
+  <Name>Jarawa</Name>
  </Language>
  <Language>
   <Code>jas</Code>
@@ -10667,10 +10431,6 @@
  <Language>
   <Code>jbu</Code>
   <Name>Jukun Takum</Name>
- </Language>
- <Language>
-  <Code>jcs</Code>
-  <Name>Jamaican Country Sign Language</Name>
  </Language>
  <Language>
   <Code>jct</Code>
@@ -10749,10 +10509,6 @@
   <Name>Jehai</Name>
  </Language>
  <Language>
-  <Code>jhs</Code>
-  <Name>Jhankot Sign Language</Name>
- </Language>
- <Language>
   <Code>jia</Code>
   <Name>Jina</Name>
  </Language>
@@ -10790,7 +10546,7 @@
  </Language>
  <Language>
   <Code>jim</Code>
-  <Name>Jimi (Cameroon)</Name>
+  <Name>Jimi</Name>
  </Language>
  <Language>
   <Code>jio</Code>
@@ -10846,7 +10602,7 @@
  </Language>
  <Language>
   <Code>jmi</Code>
-  <Name>Jimi (Nigeria)</Name>
+  <Name>Jimi</Name>
  </Language>
  <Language>
   <Code>jml</Code>
@@ -10862,7 +10618,7 @@
  </Language>
  <Language>
   <Code>jms</Code>
-  <Name>Mashi (Nigeria)</Name>
+  <Name>Mashi</Name>
  </Language>
  <Language>
   <Code>jmx</Code>
@@ -10909,10 +10665,6 @@
   <Name>Jorá</Name>
  </Language>
  <Language>
-  <Code>jos</Code>
-  <Name>Jordanian Sign Language</Name>
- </Language>
- <Language>
   <Code>jow</Code>
   <Name>Jowulu</Name>
  </Language>
@@ -10951,10 +10703,6 @@
  <Language>
   <Code>jru</Code>
   <Name>Japrería</Name>
- </Language>
- <Language>
-  <Code>jsl</Code>
-  <Name>Japanese Sign Language</Name>
  </Language>
  <Language>
   <Code>jua</Code>
@@ -11003,10 +10751,6 @@
  <Language>
   <Code>jur</Code>
   <Name>Jurúna</Name>
- </Language>
- <Language>
-  <Code>jus</Code>
-  <Name>Jumla Sign Language</Name>
  </Language>
  <Language>
   <Code>jut</Code>
@@ -11058,7 +10802,7 @@
  </Language>
  <Language>
   <Code>kac</Code>
-  <Name>Jingpho/Kachin</Name>
+  <Name>Jingpho</Name>
  </Language>
  <Language>
   <Code>kad</Code>
@@ -11078,7 +10822,7 @@
  </Language>
  <Language>
   <Code>kah</Code>
-  <Name>Kara (Central African Republic)</Name>
+  <Name>Kara</Name>
  </Language>
  <Language>
   <Code>kai</Code>
@@ -11094,11 +10838,11 @@
  </Language>
  <Language>
   <Code>kal</Code>
-  <Name>Greenlandic/Kalaallisut</Name>
+  <Name>Greenlandic</Name>
  </Language>
  <Language>
   <Code>kam</Code>
-  <Name>Kamba (Kenya)</Name>
+  <Name>Kamba</Name>
  </Language>
  <Language>
   <Code>kan</Code>
@@ -11202,7 +10946,7 @@
  </Language>
  <Language>
   <Code>kbn</Code>
-  <Name>Kare (Central African Republic)</Name>
+  <Name>Kare</Name>
  </Language>
  <Language>
   <Code>kbo</Code>
@@ -11234,7 +10978,7 @@
  </Language>
  <Language>
   <Code>kbv</Code>
-  <Name>Dera (Indonesia)</Name>
+  <Name>Dera</Name>
  </Language>
  <Language>
   <Code>kbw</Code>
@@ -11298,11 +11042,11 @@
  </Language>
  <Language>
   <Code>kcl</Code>
-  <Name>Kela (Papua New Guinea)</Name>
+  <Name>Kela</Name>
  </Language>
  <Language>
   <Code>kcm</Code>
-  <Name>Gula (Central African Republic)</Name>
+  <Name>Gula</Name>
  </Language>
  <Language>
   <Code>kcn</Code>
@@ -11334,7 +11078,7 @@
  </Language>
  <Language>
   <Code>kcu</Code>
-  <Name>Kami (Tanzania)</Name>
+  <Name>Kami</Name>
  </Language>
  <Language>
   <Code>kcv</Code>
@@ -11442,7 +11186,7 @@
  </Language>
  <Language>
   <Code>kdy</Code>
-  <Name>Keder/Keijar</Name>
+  <Name>Keder</Name>
  </Language>
  <Language>
   <Code>kdz</Code>
@@ -11490,7 +11234,7 @@
  </Language>
  <Language>
   <Code>kel</Code>
-  <Name>Kela (Democratic Republic of Congo)</Name>
+  <Name>Kela</Name>
  </Language>
  <Language>
   <Code>kem</Code>
@@ -11566,7 +11310,7 @@
  </Language>
  <Language>
   <Code>kfe</Code>
-  <Name>Kota (India)</Name>
+  <Name>Kota</Name>
  </Language>
  <Language>
   <Code>kff</Code>
@@ -11606,7 +11350,7 @@
  </Language>
  <Language>
   <Code>kfo</Code>
-  <Name>Koro (Côte d'Ivoire)</Name>
+  <Name>Koro</Name>
  </Language>
  <Language>
   <Code>kfp</Code>
@@ -11683,10 +11427,6 @@
  <Language>
   <Code>kgh</Code>
   <Name>Upper Tanudan Kalinga</Name>
- </Language>
- <Language>
-  <Code>kgi</Code>
-  <Name>Selangor Sign Language</Name>
  </Language>
  <Language>
   <Code>kgj</Code>
@@ -11810,7 +11550,7 @@
  </Language>
  <Language>
   <Code>khp</Code>
-  <Name>Kapauri/Kapori</Name>
+  <Name>Kapauri</Name>
  </Language>
  <Language>
   <Code>khq</Code>
@@ -11846,7 +11586,7 @@
  </Language>
  <Language>
   <Code>khy</Code>
-  <Name>Kele (Democratic Republic of Congo)</Name>
+  <Name>Kele</Name>
  </Language>
  <Language>
   <Code>khz</Code>
@@ -11878,7 +11618,7 @@
  </Language>
  <Language>
   <Code>kig</Code>
-  <Name>Kimaama/Kimaghima</Name>
+  <Name>Kimaama</Name>
  </Language>
  <Language>
   <Code>kih</Code>
@@ -11894,7 +11634,7 @@
  </Language>
  <Language>
   <Code>kik</Code>
-  <Name>Gikuyu/Kikuyu</Name>
+  <Name>Gikuyu</Name>
  </Language>
  <Language>
   <Code>kil</Code>
@@ -11918,11 +11658,11 @@
  </Language>
  <Language>
   <Code>kiq</Code>
-  <Name>Kosadle/Kosare</Name>
+  <Name>Kosadle</Name>
  </Language>
  <Language>
   <Code>kir</Code>
-  <Name>Kirghiz/Kyrgyz</Name>
+  <Name>Kirghiz</Name>
  </Language>
  <Language>
   <Code>kis</Code>
@@ -12174,7 +11914,7 @@
  </Language>
  <Language>
   <Code>kle</Code>
-  <Name>Kulung (Nepal)</Name>
+  <Name>Kulung</Name>
  </Language>
  <Language>
   <Code>klf</Code>
@@ -12198,7 +11938,7 @@
  </Language>
  <Language>
   <Code>klk</Code>
-  <Name>Kono (Nigeria)</Name>
+  <Name>Kono</Name>
  </Language>
  <Language>
   <Code>kll</Code>
@@ -12282,7 +12022,7 @@
  </Language>
  <Language>
   <Code>kmf</Code>
-  <Name>Kare (Papua New Guinea)</Name>
+  <Name>Kare</Name>
  </Language>
  <Language>
   <Code>kmg</Code>
@@ -12294,7 +12034,7 @@
  </Language>
  <Language>
   <Code>kmi</Code>
-  <Name>Kami (Nigeria)</Name>
+  <Name>Kami</Name>
  </Language>
  <Language>
   <Code>kmj</Code>
@@ -12310,7 +12050,7 @@
  </Language>
  <Language>
   <Code>kmm</Code>
-  <Name>Kom (India)</Name>
+  <Name>Kom</Name>
  </Language>
  <Language>
   <Code>kmn</Code>
@@ -12350,7 +12090,7 @@
  </Language>
  <Language>
   <Code>kmw</Code>
-  <Name>Komo (Democratic Republic of Congo)</Name>
+  <Name>Komo</Name>
  </Language>
  <Language>
   <Code>kmx</Code>
@@ -12366,7 +12106,7 @@
  </Language>
  <Language>
   <Code>kna</Code>
-  <Name>Dera (Nigeria)</Name>
+  <Name>Dera</Name>
  </Language>
  <Language>
   <Code>knb</Code>
@@ -12414,11 +12154,11 @@
  </Language>
  <Language>
   <Code>knn</Code>
-  <Name>Konkani (individual language)</Name>
+  <Name>Konkani</Name>
  </Language>
  <Language>
   <Code>kno</Code>
-  <Name>Kono (Sierra Leone)</Name>
+  <Name>Kono</Name>
  </Language>
  <Language>
   <Code>knp</Code>
@@ -12442,7 +12182,7 @@
  </Language>
  <Language>
   <Code>knu</Code>
-  <Name>Kono (Guinea)</Name>
+  <Name>Kono</Name>
  </Language>
  <Language>
   <Code>knv</Code>
@@ -12454,7 +12194,7 @@
  </Language>
  <Language>
   <Code>knx</Code>
-  <Name>Kendayan/Salako</Name>
+  <Name>Kendayan</Name>
  </Language>
  <Language>
   <Code>kny</Code>
@@ -12502,11 +12242,11 @@
  </Language>
  <Language>
   <Code>kok</Code>
-  <Name>Konkani (macrolanguage)</Name>
+  <Name>Konkani</Name>
  </Language>
  <Language>
   <Code>kol</Code>
-  <Name>Kol (Papua New Guinea)</Name>
+  <Name>Kol</Name>
  </Language>
  <Language>
   <Code>kom</Code>
@@ -12526,7 +12266,7 @@
  </Language>
  <Language>
   <Code>koq</Code>
-  <Name>Kota (Gabon)</Name>
+  <Name>Kota</Name>
  </Language>
  <Language>
   <Code>kor</Code>
@@ -12794,7 +12534,7 @@
  </Language>
  <Language>
   <Code>krf</Code>
-  <Name>Koro (Vanuatu)</Name>
+  <Name>Koro</Name>
  </Language>
  <Language>
   <Code>krh</Code>
@@ -12834,7 +12574,7 @@
  </Language>
  <Language>
   <Code>krs</Code>
-  <Name>Gbaya (Sudan)</Name>
+  <Name>Gbaya</Name>
  </Language>
  <Language>
   <Code>krt</Code>
@@ -13050,7 +12790,7 @@
  </Language>
  <Language>
   <Code>ktu</Code>
-  <Name>Kituba (Democratic Republic of Congo)</Name>
+  <Name>Kituba</Name>
  </Language>
  <Language>
   <Code>ktv</Code>
@@ -13066,15 +12806,15 @@
  </Language>
  <Language>
   <Code>kty</Code>
-  <Name>Kango (Bas-Uélé District)</Name>
+  <Name>Kango</Name>
  </Language>
  <Language>
   <Code>ktz</Code>
-  <Name>Ju/'hoan</Name>
+  <Name>Ju</Name>
  </Language>
  <Language>
   <Code>kua</Code>
-  <Name>Kuanyama/Kwanyama</Name>
+  <Name>Kuanyama</Name>
  </Language>
  <Language>
   <Code>kub</Code>
@@ -13083,10 +12823,6 @@
  <Language>
   <Code>kuc</Code>
   <Name>Kwinsu</Name>
- </Language>
- <Language>
-  <Code>kud</Code>
-  <Name>'Auhelawa</Name>
  </Language>
  <Language>
   <Code>kue</Code>
@@ -13190,7 +12926,7 @@
  </Language>
  <Language>
   <Code>kvd</Code>
-  <Name>Kui (Indonesia)</Name>
+  <Name>Kui</Name>
  </Language>
  <Language>
   <Code>kve</Code>
@@ -13215,10 +12951,6 @@
  <Language>
   <Code>kvj</Code>
   <Name>Psikye</Name>
- </Language>
- <Language>
-  <Code>kvk</Code>
-  <Name>Korean Sign Language</Name>
  </Language>
  <Language>
   <Code>kvl</Code>
@@ -13278,7 +13010,7 @@
  </Language>
  <Language>
   <Code>kvz</Code>
-  <Name>Tsakwambo/Tsaukambo</Name>
+  <Name>Tsakwambo</Name>
  </Language>
  <Language>
   <Code>kwa</Code>
@@ -13394,7 +13126,7 @@
  </Language>
  <Language>
   <Code>kxc</Code>
-  <Name>Khonso/Konso</Name>
+  <Name>Khonso</Name>
  </Language>
  <Language>
   <Code>kxd</Code>
@@ -13410,7 +13142,7 @@
  </Language>
  <Language>
   <Code>kxh</Code>
-  <Name>Karo (Ethiopia)</Name>
+  <Name>Karo</Name>
  </Language>
  <Language>
   <Code>kxi</Code>
@@ -13450,7 +13182,7 @@
  </Language>
  <Language>
   <Code>kxr</Code>
-  <Name>Koro (Papua New Guinea)</Name>
+  <Name>Koro</Name>
  </Language>
  <Language>
   <Code>kxs</Code>
@@ -13462,7 +13194,7 @@
  </Language>
  <Language>
   <Code>kxu</Code>
-  <Name>Kui (India)</Name>
+  <Name>Kui</Name>
  </Language>
  <Language>
   <Code>kxv</Code>
@@ -13686,7 +13418,7 @@
  </Language>
  <Language>
   <Code>kzy</Code>
-  <Name>Kango (Tshopo District)</Name>
+  <Name>Kango</Name>
  </Language>
  <Language>
   <Code>kzz</Code>
@@ -13730,11 +13462,11 @@
  </Language>
  <Language>
   <Code>laj</Code>
-  <Name>Lango (Uganda)</Name>
+  <Name>Lango</Name>
  </Language>
  <Language>
   <Code>lak</Code>
-  <Name>Laka (Nigeria)</Name>
+  <Name>Laka</Name>
  </Language>
  <Language>
   <Code>lal</Code>
@@ -13754,7 +13486,7 @@
  </Language>
  <Language>
   <Code>lap</Code>
-  <Name>Laka (Chad)</Name>
+  <Name>Laka</Name>
  </Language>
  <Language>
   <Code>laq</Code>
@@ -13766,7 +13498,7 @@
  </Language>
  <Language>
   <Code>las</Code>
-  <Name>Lama (Togo)</Name>
+  <Name>Lama</Name>
  </Language>
  <Language>
   <Code>lat</Code>
@@ -13790,7 +13522,7 @@
  </Language>
  <Language>
   <Code>lay</Code>
-  <Name>Lama (Myanmar)</Name>
+  <Name>Lama</Name>
  </Language>
  <Language>
   <Code>laz</Code>
@@ -13847,10 +13579,6 @@
  <Language>
   <Code>lbr</Code>
   <Name>Northern Lorung</Name>
- </Language>
- <Language>
-  <Code>lbs</Code>
-  <Name>Libyan Sign Language</Name>
  </Language>
  <Language>
   <Code>lbt</Code>
@@ -14018,7 +13746,7 @@
  </Language>
  <Language>
   <Code>lel</Code>
-  <Name>Lele (Democratic Republic of Congo)</Name>
+  <Name>Lele</Name>
  </Language>
  <Language>
   <Code>lem</Code>
@@ -14030,7 +13758,7 @@
  </Language>
  <Language>
   <Code>leo</Code>
-  <Name>Leti (Cameroon)</Name>
+  <Name>Leti</Name>
  </Language>
  <Language>
   <Code>lep</Code>
@@ -14054,7 +13782,7 @@
  </Language>
  <Language>
   <Code>leu</Code>
-  <Name>Kara (Papua New Guinea)</Name>
+  <Name>Kara</Name>
  </Language>
  <Language>
   <Code>lev</Code>
@@ -14142,11 +13870,11 @@
  </Language>
  <Language>
   <Code>lha</Code>
-  <Name>Laha (Viet Nam)</Name>
+  <Name>Laha</Name>
  </Language>
  <Language>
   <Code>lhh</Code>
-  <Name>Laha (Indonesia)</Name>
+  <Name>Laha</Name>
  </Language>
  <Language>
   <Code>lhi</Code>
@@ -14230,7 +13958,7 @@
  </Language>
  <Language>
   <Code>lim</Code>
-  <Name>Limburgan/Limburger/Limburgish</Name>
+  <Name>Limburgan</Name>
  </Language>
  <Language>
   <Code>lin</Code>
@@ -14306,7 +14034,7 @@
  </Language>
  <Language>
   <Code>lkb</Code>
-  <Name>Kabras/Lukabaras</Name>
+  <Name>Kabras</Name>
  </Language>
  <Language>
   <Code>lkc</Code>
@@ -14342,7 +14070,7 @@
  </Language>
  <Language>
   <Code>lko</Code>
-  <Name>Khayo/Olukhayo</Name>
+  <Name>Khayo</Name>
  </Language>
  <Language>
   <Code>lkr</Code>
@@ -14350,7 +14078,7 @@
  </Language>
  <Language>
   <Code>lks</Code>
-  <Name>Kisa/Olushisa</Name>
+  <Name>Kisa</Name>
  </Language>
  <Language>
   <Code>lkt</Code>
@@ -14370,7 +14098,7 @@
  </Language>
  <Language>
   <Code>llc</Code>
-  <Name>Lele (Guinea)</Name>
+  <Name>Lele</Name>
  </Language>
  <Language>
   <Code>lld</Code>
@@ -14378,7 +14106,7 @@
  </Language>
  <Language>
   <Code>lle</Code>
-  <Name>Lele (Papua New Guinea)</Name>
+  <Name>Lele</Name>
  </Language>
  <Language>
   <Code>llf</Code>
@@ -14410,7 +14138,7 @@
  </Language>
  <Language>
   <Code>lln</Code>
-  <Name>Lele (Chad)</Name>
+  <Name>Lele</Name>
  </Language>
  <Language>
   <Code>llo</Code>
@@ -14423,10 +14151,6 @@
  <Language>
   <Code>llq</Code>
   <Name>Lolak</Name>
- </Language>
- <Language>
-  <Code>lls</Code>
-  <Name>Lithuanian Sign Language</Name>
  </Language>
  <Language>
   <Code>llu</Code>
@@ -14542,7 +14266,7 @@
  </Language>
  <Language>
   <Code>lnd</Code>
-  <Name>Lun Bawang/Lundayeh</Name>
+  <Name>Lun Bawang</Name>
  </Language>
  <Language>
   <Code>lng</Code>
@@ -14574,7 +14298,7 @@
  </Language>
  <Language>
   <Code>lno</Code>
-  <Name>Lango (Sudan)</Name>
+  <Name>Lango</Name>
  </Language>
  <Language>
   <Code>lns</Code>
@@ -14618,7 +14342,7 @@
  </Language>
  <Language>
   <Code>loi</Code>
-  <Name>Loma (Côte d'Ivoire)</Name>
+  <Name>Loma</Name>
  </Language>
  <Language>
   <Code>loj</Code>
@@ -14634,7 +14358,7 @@
  </Language>
  <Language>
   <Code>lom</Code>
-  <Name>Loma (Liberia)</Name>
+  <Name>Loma</Name>
  </Language>
  <Language>
   <Code>lon</Code>
@@ -14726,7 +14450,7 @@
  </Language>
  <Language>
   <Code>lri</Code>
-  <Name>Marachi/Olumarachi</Name>
+  <Name>Marachi</Name>
  </Language>
  <Language>
   <Code>lrk</Code>
@@ -14738,7 +14462,7 @@
  </Language>
  <Language>
   <Code>lrm</Code>
-  <Name>Marama/Olumarama</Name>
+  <Name>Marama</Name>
  </Language>
  <Language>
   <Code>lrn</Code>
@@ -14773,10 +14497,6 @@
   <Name>Lusengo</Name>
  </Language>
  <Language>
-  <Code>lsg</Code>
-  <Name>Lyons Sign Language</Name>
- </Language>
- <Language>
   <Code>lsh</Code>
   <Name>Lish</Name>
  </Language>
@@ -14785,16 +14505,8 @@
   <Name>Lashi</Name>
  </Language>
  <Language>
-  <Code>lsl</Code>
-  <Name>Latvian Sign Language</Name>
- </Language>
- <Language>
   <Code>lsm</Code>
-  <Name>Olusamia/Saamia</Name>
- </Language>
- <Language>
-  <Code>lso</Code>
-  <Name>Laos Sign Language</Name>
+  <Name>Olusamia</Name>
  </Language>
  <Language>
   <Code>lsr</Code>
@@ -14810,7 +14522,7 @@
  </Language>
  <Language>
   <Code>lti</Code>
-  <Name>Leti (Indonesia)</Name>
+  <Name>Leti</Name>
  </Language>
  <Language>
   <Code>ltn</Code>
@@ -14818,11 +14530,11 @@
  </Language>
  <Language>
   <Code>lto</Code>
-  <Name>Olutsotso/Tsotso</Name>
+  <Name>Olutsotso</Name>
  </Language>
  <Language>
   <Code>lts</Code>
-  <Name>Lutachoni/Tachoni</Name>
+  <Name>Lutachoni</Name>
  </Language>
  <Language>
   <Code>ltu</Code>
@@ -14830,7 +14542,7 @@
  </Language>
  <Language>
   <Code>ltz</Code>
-  <Name>Letzeburgesch/Luxembourgish</Name>
+  <Name>Letzeburgesch</Name>
  </Language>
  <Language>
   <Code>lua</Code>
@@ -14886,7 +14598,7 @@
  </Language>
  <Language>
   <Code>luo</Code>
-  <Name>Dholuo/Luo (Kenya and Tanzania)</Name>
+  <Name>Dholuo</Name>
  </Language>
  <Language>
   <Code>lup</Code>
@@ -14918,11 +14630,11 @@
  </Language>
  <Language>
   <Code>luw</Code>
-  <Name>Luo (Cameroon)</Name>
+  <Name>Luo</Name>
  </Language>
  <Language>
   <Code>luy</Code>
-  <Name>Luyia/Oluluyia</Name>
+  <Name>Luyia</Name>
  </Language>
  <Language>
   <Code>luz</Code>
@@ -14950,7 +14662,7 @@
  </Language>
  <Language>
   <Code>lwg</Code>
-  <Name>Oluwanga/Wanga</Name>
+  <Name>Oluwanga</Name>
  </Language>
  <Language>
   <Code>lwh</Code>
@@ -15142,7 +14854,7 @@
  </Language>
  <Language>
   <Code>mbo</Code>
-  <Name>Mbo (Cameroon)</Name>
+  <Name>Mbo</Name>
  </Language>
  <Language>
   <Code>mbp</Code>
@@ -15178,7 +14890,7 @@
  </Language>
  <Language>
   <Code>mbx</Code>
-  <Name>Mari (East Sepik Province)</Name>
+  <Name>Mari</Name>
  </Language>
  <Language>
   <Code>mby</Code>
@@ -15278,7 +14990,7 @@
  </Language>
  <Language>
   <Code>mcw</Code>
-  <Name>Mawa (Chad)</Name>
+  <Name>Mawa</Name>
  </Language>
  <Language>
   <Code>mcx</Code>
@@ -15294,7 +15006,7 @@
  </Language>
  <Language>
   <Code>mda</Code>
-  <Name>Mada (Nigeria)</Name>
+  <Name>Mada</Name>
  </Language>
  <Language>
   <Code>mdb</Code>
@@ -15302,7 +15014,7 @@
  </Language>
  <Language>
   <Code>mdc</Code>
-  <Name>Male (Papua New Guinea)</Name>
+  <Name>Male</Name>
  </Language>
  <Language>
   <Code>mdd</Code>
@@ -15310,7 +15022,7 @@
  </Language>
  <Language>
   <Code>mde</Code>
-  <Name>Maba (Chad)</Name>
+  <Name>Maba</Name>
  </Language>
  <Language>
   <Code>mdf</Code>
@@ -15337,10 +15049,6 @@
   <Name>Mangbutu</Name>
  </Language>
  <Language>
-  <Code>mdl</Code>
-  <Name>Maltese Sign Language</Name>
- </Language>
- <Language>
   <Code>mdm</Code>
   <Name>Mayogo</Name>
  </Language>
@@ -15362,7 +15070,7 @@
  </Language>
  <Language>
   <Code>mds</Code>
-  <Name>Maria (Papua New Guinea)</Name>
+  <Name>Maria</Name>
  </Language>
  <Language>
   <Code>mdt</Code>
@@ -15386,7 +15094,7 @@
  </Language>
  <Language>
   <Code>mdy</Code>
-  <Name>Male (Ethiopia)</Name>
+  <Name>Male</Name>
  </Language>
  <Language>
   <Code>mdz</Code>
@@ -15446,7 +15154,7 @@
  </Language>
  <Language>
   <Code>men</Code>
-  <Name>Mende (Sierra Leone)</Name>
+  <Name>Mende</Name>
  </Language>
  <Language>
   <Code>meo</Code>
@@ -15565,10 +15273,6 @@
   <Name>Marithiel</Name>
  </Language>
  <Language>
-  <Code>mfs</Code>
-  <Name>Mexican Sign Language</Name>
- </Language>
- <Language>
   <Code>mft</Code>
   <Name>Mokerang</Name>
  </Language>
@@ -15598,7 +15302,7 @@
  </Language>
  <Language>
   <Code>mga</Code>
-  <Name>Middle Irish (900-1200)</Name>
+  <Name>Middle Irish</Name>
  </Language>
  <Language>
   <Code>mgb</Code>
@@ -15670,7 +15374,7 @@
  </Language>
  <Language>
   <Code>mgs</Code>
-  <Name>Manda (Tanzania)</Name>
+  <Name>Manda</Name>
  </Language>
  <Language>
   <Code>mgt</Code>
@@ -15702,7 +15406,7 @@
  </Language>
  <Language>
   <Code>mha</Code>
-  <Name>Manda (India)</Name>
+  <Name>Manda</Name>
  </Language>
  <Language>
   <Code>mhb</Code>
@@ -15718,7 +15422,7 @@
  </Language>
  <Language>
   <Code>mhe</Code>
-  <Name>Besisi/Mah Meri</Name>
+  <Name>Besisi</Name>
  </Language>
  <Language>
   <Code>mhf</Code>
@@ -15758,7 +15462,7 @@
  </Language>
  <Language>
   <Code>mho</Code>
-  <Name>Mashi (Zambia)</Name>
+  <Name>Mashi</Name>
  </Language>
  <Language>
   <Code>mhp</Code>
@@ -15774,7 +15478,7 @@
  </Language>
  <Language>
   <Code>mhs</Code>
-  <Name>Buru (Indonesia)</Name>
+  <Name>Buru</Name>
  </Language>
  <Language>
   <Code>mht</Code>
@@ -15782,7 +15486,7 @@
  </Language>
  <Language>
   <Code>mhu</Code>
-  <Name>Darang Deng/Digaro-Mishmi</Name>
+  <Name>Darang Deng</Name>
  </Language>
  <Language>
   <Code>mhw</Code>
@@ -15790,7 +15494,7 @@
  </Language>
  <Language>
   <Code>mhx</Code>
-  <Name>Lhaovo/Maru</Name>
+  <Name>Lhaovo</Name>
  </Language>
  <Language>
   <Code>mhy</Code>
@@ -15798,7 +15502,7 @@
  </Language>
  <Language>
   <Code>mhz</Code>
-  <Name>Mor (Mor Islands)</Name>
+  <Name>Mor</Name>
  </Language>
  <Language>
   <Code>mia</Code>
@@ -15810,7 +15514,7 @@
  </Language>
  <Language>
   <Code>mic</Code>
-  <Name>Micmac/Mi'kmaq</Name>
+  <Name>Micmac</Name>
  </Language>
  <Language>
   <Code>mid</Code>
@@ -15922,7 +15626,7 @@
  </Language>
  <Language>
   <Code>mjh</Code>
-  <Name>Mwera (Nyasa)</Name>
+  <Name>Mwera</Name>
  </Language>
  <Language>
   <Code>mji</Code>
@@ -15946,7 +15650,7 @@
  </Language>
  <Language>
   <Code>mjn</Code>
-  <Name>Ma (Papua New Guinea)</Name>
+  <Name>Ma</Name>
  </Language>
  <Language>
   <Code>mjo</Code>
@@ -16022,7 +15726,7 @@
  </Language>
  <Language>
   <Code>mkg</Code>
-  <Name>Mak (China)</Name>
+  <Name>Mak</Name>
  </Language>
  <Language>
   <Code>mki</Code>
@@ -16082,7 +15786,7 @@
  </Language>
  <Language>
   <Code>mkw</Code>
-  <Name>Kituba (Congo)</Name>
+  <Name>Kituba</Name>
  </Language>
  <Language>
   <Code>mkx</Code>
@@ -16138,7 +15842,7 @@
  </Language>
  <Language>
   <Code>mlk</Code>
-  <Name>Ilwana/Kiwilwana</Name>
+  <Name>Ilwana</Name>
  </Language>
  <Language>
   <Code>mll</Code>
@@ -16330,7 +16034,7 @@
  </Language>
  <Language>
   <Code>mnh</Code>
-  <Name>Mono (Democratic Republic of Congo)</Name>
+  <Name>Mono</Name>
  </Language>
  <Language>
   <Code>mni</Code>
@@ -16366,7 +16070,7 @@
  </Language>
  <Language>
   <Code>mnr</Code>
-  <Name>Mono (USA)</Name>
+  <Name>Mono</Name>
  </Language>
  <Language>
   <Code>mns</Code>
@@ -16462,7 +16166,7 @@
  </Language>
  <Language>
   <Code>moq</Code>
-  <Name>Mor (Bomberai Peninsula)</Name>
+  <Name>Mor</Name>
  </Language>
  <Language>
   <Code>mor</Code>
@@ -16486,7 +16190,7 @@
  </Language>
  <Language>
   <Code>mow</Code>
-  <Name>Moi (Congo)</Name>
+  <Name>Moi</Name>
  </Language>
  <Language>
   <Code>mox</Code>
@@ -16542,7 +16246,7 @@
  </Language>
  <Language>
   <Code>mpk</Code>
-  <Name>Mbara (Chad)</Name>
+  <Name>Mbara</Name>
  </Language>
  <Language>
   <Code>mpl</Code>
@@ -16606,7 +16310,7 @@
  </Language>
  <Language>
   <Code>mqa</Code>
-  <Name>Maba (Indonesia)</Name>
+  <Name>Maba</Name>
  </Language>
  <Language>
   <Code>mqb</Code>
@@ -16721,10 +16425,6 @@
   <Name>Western Magar</Name>
  </Language>
  <Language>
-  <Code>mre</Code>
-  <Name>Martha's Vineyard Sign Language</Name>
- </Language>
- <Language>
   <Code>mrf</Code>
   <Name>Elseng</Name>
  </Language>
@@ -16774,7 +16474,7 @@
  </Language>
  <Language>
   <Code>mrr</Code>
-  <Name>Maria (India)</Name>
+  <Name>Maria</Name>
  </Language>
  <Language>
   <Code>mrs</Code>
@@ -16786,7 +16486,7 @@
  </Language>
  <Language>
   <Code>mru</Code>
-  <Name>Mono (Cameroon)</Name>
+  <Name>Mono</Name>
  </Language>
  <Language>
   <Code>mrv</Code>
@@ -16798,7 +16498,7 @@
  </Language>
  <Language>
   <Code>mrx</Code>
-  <Name>Dineor/Maremgi</Name>
+  <Name>Dineor</Name>
  </Language>
  <Language>
   <Code>mry</Code>
@@ -16810,7 +16510,7 @@
  </Language>
  <Language>
   <Code>msa</Code>
-  <Name>Malay (macrolanguage)</Name>
+  <Name>Malay</Name>
  </Language>
  <Language>
   <Code>msb</Code>
@@ -16819,10 +16519,6 @@
  <Language>
   <Code>msc</Code>
   <Name>Sankaran Maninka</Name>
- </Language>
- <Language>
-  <Code>msd</Code>
-  <Name>Yucatec Maya Sign Language</Name>
  </Language>
  <Language>
   <Code>mse</Code>
@@ -16846,7 +16542,7 @@
  </Language>
  <Language>
   <Code>msj</Code>
-  <Name>Ma (Democratic Republic of Congo)</Name>
+  <Name>Ma</Name>
  </Language>
  <Language>
   <Code>msk</Code>
@@ -16854,7 +16550,7 @@
  </Language>
  <Language>
   <Code>msl</Code>
-  <Name>Molof/Poule</Name>
+  <Name>Molof</Name>
  </Language>
  <Language>
   <Code>msm</Code>
@@ -16875,10 +16571,6 @@
  <Language>
   <Code>msq</Code>
   <Name>Caac</Name>
- </Language>
- <Language>
-  <Code>msr</Code>
-  <Name>Mongolian Sign Language</Name>
  </Language>
  <Language>
   <Code>mss</Code>
@@ -16930,7 +16622,7 @@
  </Language>
  <Language>
   <Code>mte</Code>
-  <Name>Mono (Solomon Islands)</Name>
+  <Name>Mono</Name>
  </Language>
  <Language>
   <Code>mtf</Code>
@@ -16946,7 +16638,7 @@
  </Language>
  <Language>
   <Code>mti</Code>
-  <Name>Maiwa (Papua New Guinea)</Name>
+  <Name>Maiwa</Name>
  </Language>
  <Language>
   <Code>mtj</Code>
@@ -17126,7 +16818,7 @@
  </Language>
  <Language>
   <Code>mve</Code>
-  <Name>Marwari (Pakistan)</Name>
+  <Name>Marwari</Name>
  </Language>
  <Language>
   <Code>mvf</Code>
@@ -17154,7 +16846,7 @@
  </Language>
  <Language>
   <Code>mvl</Code>
-  <Name>Mbara (Australia)</Name>
+  <Name>Mbara</Name>
  </Language>
  <Language>
   <Code>mvm</Code>
@@ -17230,7 +16922,7 @@
  </Language>
  <Language>
   <Code>mwe</Code>
-  <Name>Mwera (Chimwera)</Name>
+  <Name>Mwera</Name>
  </Language>
  <Language>
   <Code>mwf</Code>
@@ -17354,7 +17046,7 @@
  </Language>
  <Language>
   <Code>mxj</Code>
-  <Name>Geman Deng/Miju-Mishmi</Name>
+  <Name>Geman Deng</Name>
  </Language>
  <Language>
   <Code>mxk</Code>
@@ -17370,7 +17062,7 @@
  </Language>
  <Language>
   <Code>mxn</Code>
-  <Name>Moi (Indonesia)</Name>
+  <Name>Moi</Name>
  </Language>
  <Language>
   <Code>mxo</Code>
@@ -17398,7 +17090,7 @@
  </Language>
  <Language>
   <Code>mxu</Code>
-  <Name>Mada (Cameroon)</Name>
+  <Name>Mada</Name>
  </Language>
  <Language>
   <Code>mxv</Code>
@@ -17454,7 +17146,7 @@
  </Language>
  <Language>
   <Code>myi</Code>
-  <Name>Mina (India)</Name>
+  <Name>Mina</Name>
  </Language>
  <Language>
   <Code>myj</Code>
@@ -17529,20 +17221,12 @@
   <Name>Tumzabt</Name>
  </Language>
  <Language>
-  <Code>mzc</Code>
-  <Name>Madagascar Sign Language</Name>
- </Language>
- <Language>
   <Code>mzd</Code>
   <Name>Malimba</Name>
  </Language>
  <Language>
   <Code>mze</Code>
   <Name>Morawa</Name>
- </Language>
- <Language>
-  <Code>mzg</Code>
-  <Name>Monastic Sign Language</Name>
  </Language>
  <Language>
   <Code>mzh</Code>
@@ -17613,10 +17297,6 @@
   <Name>Mawayana</Name>
  </Language>
  <Language>
-  <Code>mzy</Code>
-  <Name>Mozambican Sign Language</Name>
- </Language>
- <Language>
   <Code>mzz</Code>
   <Name>Maiadomu</Name>
  </Language>
@@ -17678,7 +17358,7 @@
  </Language>
  <Language>
   <Code>naq</Code>
-  <Name>Nama (Namibia)</Name>
+  <Name>Nama</Name>
  </Language>
  <Language>
   <Code>nar</Code>
@@ -17698,7 +17378,7 @@
  </Language>
  <Language>
   <Code>nav</Code>
-  <Name>Navaho/Navajo</Name>
+  <Name>Navaho</Name>
  </Language>
  <Language>
   <Code>naw</Code>
@@ -17787,10 +17467,6 @@
  <Language>
   <Code>nbr</Code>
   <Name>Numana-Nunku-Gbantu-Numbu</Name>
- </Language>
- <Language>
-  <Code>nbs</Code>
-  <Name>Namibian Sign Language</Name>
  </Language>
  <Language>
   <Code>nbt</Code>
@@ -17885,10 +17561,6 @@
   <Name>Ncane</Name>
  </Language>
  <Language>
-  <Code>ncs</Code>
-  <Name>Nicaraguan Sign Language</Name>
- </Language>
- <Language>
   <Code>nct</Code>
   <Name>Chothe Naga</Name>
  </Language>
@@ -17978,7 +17650,7 @@
  </Language>
  <Language>
   <Code>nds</Code>
-  <Name>Low German/Low Saxon</Name>
+  <Name>Low German</Name>
  </Language>
  <Language>
   <Code>ndt</Code>
@@ -18014,7 +17686,7 @@
  </Language>
  <Language>
   <Code>neb</Code>
-  <Name>Toura (Côte d'Ivoire)</Name>
+  <Name>Toura</Name>
  </Language>
  <Language>
   <Code>nec</Code>
@@ -18090,7 +17762,7 @@
  </Language>
  <Language>
   <Code>new</Code>
-  <Name>Nepal Bhasa/Newari</Name>
+  <Name>Nepal Bhasa</Name>
  </Language>
  <Language>
   <Code>nex</Code>
@@ -18142,11 +17814,11 @@
  </Language>
  <Language>
   <Code>ngc</Code>
-  <Name>Ngombe (Democratic Republic of Congo)</Name>
+  <Name>Ngombe</Name>
  </Language>
  <Language>
   <Code>ngd</Code>
-  <Name>Ngando (Central African Republic)</Name>
+  <Name>Ngando</Name>
  </Language>
  <Language>
   <Code>nge</Code>
@@ -18155,10 +17827,6 @@
  <Language>
   <Code>ngg</Code>
   <Name>Ngbaka Manza</Name>
- </Language>
- <Language>
-  <Code>ngh</Code>
-  <Name>N/u</Name>
  </Language>
  <Language>
   <Code>ngi</Code>
@@ -18194,7 +17862,7 @@
  </Language>
  <Language>
   <Code>ngq</Code>
-  <Name>Ngoreme/Ngurimi</Name>
+  <Name>Ngoreme</Name>
  </Language>
  <Language>
   <Code>ngr</Code>
@@ -18246,7 +17914,7 @@
  </Language>
  <Language>
   <Code>nhd</Code>
-  <Name>Ava Guaraní/Chiripá</Name>
+  <Name>Ava Guaraní</Name>
  </Language>
  <Language>
   <Code>nhe</Code>
@@ -18350,7 +18018,7 @@
  </Language>
  <Language>
   <Code>nih</Code>
-  <Name>Nyiha (Tanzania)</Name>
+  <Name>Nyiha</Name>
  </Language>
  <Language>
   <Code>nii</Code>
@@ -18554,7 +18222,7 @@
  </Language>
  <Language>
   <Code>nkt</Code>
-  <Name>Nyika (Tanzania)</Name>
+  <Name>Nyika</Name>
  </Language>
  <Language>
   <Code>nku</Code>
@@ -18562,7 +18230,7 @@
  </Language>
  <Language>
   <Code>nkv</Code>
-  <Name>Nyika (Malawi and Zambia)</Name>
+  <Name>Nyika</Name>
  </Language>
  <Language>
   <Code>nkw</Code>
@@ -18586,7 +18254,7 @@
  </Language>
  <Language>
   <Code>nld</Code>
-  <Name>Dutch/Flemish</Name>
+  <Name>Dutch</Name>
  </Language>
  <Language>
   <Code>nle</Code>
@@ -18678,7 +18346,7 @@
  </Language>
  <Language>
   <Code>nmj</Code>
-  <Name>Ngombe (Central African Republic)</Name>
+  <Name>Ngombe</Name>
  </Language>
  <Language>
   <Code>nmk</Code>
@@ -18691,10 +18359,6 @@
  <Language>
   <Code>nmm</Code>
   <Name>Manangba</Name>
- </Language>
- <Language>
-  <Code>nmn</Code>
-  <Name>!Xóõ</Name>
  </Language>
  <Language>
   <Code>nmo</Code>
@@ -18734,7 +18398,7 @@
  </Language>
  <Language>
   <Code>nmx</Code>
-  <Name>Nama (Papua New Guinea)</Name>
+  <Name>Nama</Name>
  </Language>
  <Language>
   <Code>nmy</Code>
@@ -18830,7 +18494,7 @@
  </Language>
  <Language>
   <Code>nnv</Code>
-  <Name>Nugunu (Australia)</Name>
+  <Name>Nugunu</Name>
  </Language>
  <Language>
   <Code>nnw</Code>
@@ -19077,16 +18741,8 @@
   <Name>Ngoshie</Name>
  </Language>
  <Language>
-  <Code>nsi</Code>
-  <Name>Nigerian Sign Language</Name>
- </Language>
- <Language>
   <Code>nsk</Code>
   <Name>Naskapi</Name>
- </Language>
- <Language>
-  <Code>nsl</Code>
-  <Name>Norwegian Sign Language</Name>
  </Language>
  <Language>
   <Code>nsm</Code>
@@ -19098,19 +18754,11 @@
  </Language>
  <Language>
   <Code>nso</Code>
-  <Name>Northern Sotho/Pedi/Sepedi</Name>
- </Language>
- <Language>
-  <Code>nsp</Code>
-  <Name>Nepalese Sign Language</Name>
+  <Name>Sepedi</Name>
  </Language>
  <Language>
   <Code>nsq</Code>
   <Name>Northern Sierra Miwok</Name>
- </Language>
- <Language>
-  <Code>nsr</Code>
-  <Name>Maritime Sign Language</Name>
  </Language>
  <Language>
   <Code>nss</Code>
@@ -19238,7 +18886,7 @@
  </Language>
  <Language>
   <Code>nun</Code>
-  <Name>Nung (Myanmar)</Name>
+  <Name>Nung</Name>
  </Language>
  <Language>
   <Code>nuo</Code>
@@ -19262,7 +18910,7 @@
  </Language>
  <Language>
   <Code>nut</Code>
-  <Name>Nung (Viet Nam)</Name>
+  <Name>Nung</Name>
  </Language>
  <Language>
   <Code>nuu</Code>
@@ -19306,7 +18954,7 @@
  </Language>
  <Language>
   <Code>nwc</Code>
-  <Name>Classical Nepal Bhasa/Classical Newari/Old Newari</Name>
+  <Name>Classical Nepal Bhasa</Name>
  </Language>
  <Language>
   <Code>nwe</Code>
@@ -19338,7 +18986,7 @@
  </Language>
  <Language>
   <Code>nxd</Code>
-  <Name>Ngando (Democratic Republic of Congo)</Name>
+  <Name>Ngando</Name>
  </Language>
  <Language>
   <Code>nxe</Code>
@@ -19378,7 +19026,7 @@
  </Language>
  <Language>
   <Code>nya</Code>
-  <Name>Chewa/Chichewa/Nyanja</Name>
+  <Name>Chewa</Name>
  </Language>
  <Language>
   <Code>nyb</Code>
@@ -19390,7 +19038,7 @@
  </Language>
  <Language>
   <Code>nyd</Code>
-  <Name>Nyore/Olunyole</Name>
+  <Name>Nyore</Name>
  </Language>
  <Language>
   <Code>nye</Code>
@@ -19398,7 +19046,7 @@
  </Language>
  <Language>
   <Code>nyf</Code>
-  <Name>Giryama/Kigiryama</Name>
+  <Name>Giryama</Name>
  </Language>
  <Language>
   <Code>nyg</Code>
@@ -19410,7 +19058,7 @@
  </Language>
  <Language>
   <Code>nyi</Code>
-  <Name>Ama (Sudan)</Name>
+  <Name>Ama</Name>
  </Language>
  <Language>
   <Code>nyj</Code>
@@ -19446,7 +19094,7 @@
  </Language>
  <Language>
   <Code>nyr</Code>
-  <Name>Nyiha (Malawi)</Name>
+  <Name>Nyiha</Name>
  </Language>
  <Language>
   <Code>nys</Code>
@@ -19497,10 +19145,6 @@
   <Name>Zeme Naga</Name>
  </Language>
  <Language>
-  <Code>nzs</Code>
-  <Name>New Zealand Sign Language</Name>
- </Language>
- <Language>
   <Code>nzu</Code>
   <Name>Teke-Nzikou</Name>
  </Language>
@@ -19518,7 +19162,7 @@
  </Language>
  <Language>
   <Code>oar</Code>
-  <Name>Ancient Aramaic (up to 700 BCE)/Old Aramaic (up to 700 BCE)</Name>
+  <Name>Old Aramaic</Name>
  </Language>
  <Language>
   <Code>oav</Code>
@@ -19562,7 +19206,7 @@
  </Language>
  <Language>
   <Code>oci</Code>
-  <Name>Occitan (post 1500)</Name>
+  <Name>Occitan</Name>
  </Language>
  <Language>
   <Code>oco</Code>
@@ -19686,7 +19330,7 @@
  </Language>
  <Language>
   <Code>oke</Code>
-  <Name>Okpe (Southwestern Edo)</Name>
+  <Name>Okpe</Name>
  </Language>
  <Language>
   <Code>okh</Code>
@@ -19705,12 +19349,8 @@
   <Name>Kwamtim One</Name>
  </Language>
  <Language>
-  <Code>okl</Code>
-  <Name>Old Kentish Sign Language</Name>
- </Language>
- <Language>
   <Code>okm</Code>
-  <Name>Middle Korean (10th-16th cent.)</Name>
+  <Name>Middle Korean</Name>
  </Language>
  <Language>
   <Code>okn</Code>
@@ -19718,7 +19358,7 @@
  </Language>
  <Language>
   <Code>oko</Code>
-  <Name>Old Korean (3rd-9th cent.)</Name>
+  <Name>Old Korean</Name>
  </Language>
  <Language>
   <Code>okr</Code>
@@ -19738,7 +19378,7 @@
  </Language>
  <Language>
   <Code>okx</Code>
-  <Name>Okpe (Northwestern Edo)</Name>
+  <Name>Okpe</Name>
  </Language>
  <Language>
   <Code>ola</Code>
@@ -20022,7 +19662,7 @@
  </Language>
  <Language>
   <Code>oss</Code>
-  <Name>Ossetian/Ossetic</Name>
+  <Name>Ossetian</Name>
  </Language>
  <Language>
   <Code>ost</Code>
@@ -20038,7 +19678,7 @@
  </Language>
  <Language>
   <Code>ota</Code>
-  <Name>Ottoman Turkish (1500-1928)</Name>
+  <Name>Ottoman Turkish</Name>
  </Language>
  <Language>
   <Code>otb</Code>
@@ -20129,10 +19769,6 @@
   <Name>Ouma</Name>
  </Language>
  <Language>
-  <Code>oun</Code>
-  <Name>!O!ung</Name>
- </Language>
- <Language>
   <Code>owi</Code>
   <Name>Owiniga</Name>
  </Language>
@@ -20202,11 +19838,11 @@
  </Language>
  <Language>
   <Code>pam</Code>
-  <Name>Kapampangan/Pampanga</Name>
+  <Name>Kapampangan</Name>
  </Language>
  <Language>
   <Code>pan</Code>
-  <Name>Panjabi/Punjabi</Name>
+  <Name>Panjabi</Name>
  </Language>
  <Language>
   <Code>pao</Code>
@@ -20286,7 +19922,7 @@
  </Language>
  <Language>
   <Code>pbl</Code>
-  <Name>Mak (Nigeria)</Name>
+  <Name>Mak</Name>
  </Language>
  <Language>
   <Code>pbn</Code>
@@ -20410,7 +20046,7 @@
  </Language>
  <Language>
   <Code>pdn</Code>
-  <Name>Fedan/Podena</Name>
+  <Name>Fedan</Name>
  </Language>
  <Language>
   <Code>pdo</Code>
@@ -20434,7 +20070,7 @@
  </Language>
  <Language>
   <Code>ped</Code>
-  <Name>Mala (Papua New Guinea)</Name>
+  <Name>Mala</Name>
  </Language>
  <Language>
   <Code>pee</Code>
@@ -20474,7 +20110,7 @@
  </Language>
  <Language>
   <Code>peo</Code>
-  <Name>Old Persian (ca. 600-400 B.C.)</Name>
+  <Name>Old Persian</Name>
  </Language>
  <Language>
   <Code>pep</Code>
@@ -20714,7 +20350,7 @@
  </Language>
  <Language>
   <Code>pkb</Code>
-  <Name>Kipfokomo/Pokomo</Name>
+  <Name>Kipfokomo</Name>
  </Language>
  <Language>
   <Code>pkc</Code>
@@ -20743,10 +20379,6 @@
  <Language>
   <Code>pkr</Code>
   <Name>Attapady Kurumba</Name>
- </Language>
- <Language>
-  <Code>pks</Code>
-  <Name>Pakistan Sign Language</Name>
  </Language>
  <Language>
   <Code>pkt</Code>
@@ -20982,7 +20614,7 @@
  </Language>
  <Language>
   <Code>pnq</Code>
-  <Name>Pana (Burkina Faso)</Name>
+  <Name>Pana</Name>
  </Language>
  <Language>
   <Code>pnr</Code>
@@ -21018,7 +20650,7 @@
  </Language>
  <Language>
   <Code>pnz</Code>
-  <Name>Pana (Central African Republic)</Name>
+  <Name>Pana</Name>
  </Language>
  <Language>
   <Code>poa</Code>
@@ -21217,10 +20849,6 @@
   <Name>Parauk</Name>
  </Language>
  <Language>
-  <Code>prl</Code>
-  <Name>Peruvian Sign Language</Name>
- </Language>
- <Language>
   <Code>prm</Code>
   <Name>Kibiri</Name>
  </Language>
@@ -21230,7 +20858,7 @@
  </Language>
  <Language>
   <Code>pro</Code>
-  <Name>Old Provençal (to 1500)</Name>
+  <Name>Old Provençal</Name>
  </Language>
  <Language>
   <Code>prp</Code>
@@ -21246,7 +20874,7 @@
  </Language>
  <Language>
   <Code>prs</Code>
-  <Name>Dari/Eastern Farsi</Name>
+  <Name>Dari</Name>
  </Language>
  <Language>
   <Code>prt</Code>
@@ -21269,28 +20897,12 @@
   <Name>Pray 3</Name>
  </Language>
  <Language>
-  <Code>prz</Code>
-  <Name>Providencia Sign Language</Name>
- </Language>
- <Language>
   <Code>psa</Code>
   <Name>Asue Awyu</Name>
  </Language>
  <Language>
-  <Code>psc</Code>
-  <Name>Persian Sign Language</Name>
- </Language>
- <Language>
-  <Code>psd</Code>
-  <Name>Plains Indian Sign Language</Name>
- </Language>
- <Language>
   <Code>pse</Code>
   <Name>Central Malay</Name>
- </Language>
- <Language>
-  <Code>psg</Code>
-  <Name>Penang Sign Language</Name>
  </Language>
  <Language>
   <Code>psh</Code>
@@ -21301,10 +20913,6 @@
   <Name>Southeast Pashayi</Name>
  </Language>
  <Language>
-  <Code>psl</Code>
-  <Name>Puerto Rican Sign Language</Name>
- </Language>
- <Language>
   <Code>psm</Code>
   <Name>Pauserna</Name>
  </Language>
@@ -21313,20 +20921,8 @@
   <Name>Panasuan</Name>
  </Language>
  <Language>
-  <Code>pso</Code>
-  <Name>Polish Sign Language</Name>
- </Language>
- <Language>
-  <Code>psp</Code>
-  <Name>Philippine Sign Language</Name>
- </Language>
- <Language>
   <Code>psq</Code>
   <Name>Pasi</Name>
- </Language>
- <Language>
-  <Code>psr</Code>
-  <Name>Portuguese Sign Language</Name>
  </Language>
  <Language>
   <Code>pss</Code>
@@ -21458,7 +21054,7 @@
  </Language>
  <Language>
   <Code>pus</Code>
-  <Name>Pashto/Pushto</Name>
+  <Name>Pashto</Name>
  </Language>
  <Language>
   <Code>put</Code>
@@ -21538,7 +21134,7 @@
  </Language>
  <Language>
   <Code>pyx</Code>
-  <Name>Pyu (Myanmar)</Name>
+  <Name>Pyu</Name>
  </Language>
  <Language>
   <Code>pyy</Code>
@@ -21722,7 +21318,7 @@
  </Language>
  <Language>
   <Code>qwm</Code>
-  <Name>Kuman (Russia)</Name>
+  <Name>Kuman</Name>
  </Language>
  <Language>
   <Code>qws</Code>
@@ -21814,7 +21410,7 @@
  </Language>
  <Language>
   <Code>rag</Code>
-  <Name>Logooli/Lulogooli</Name>
+  <Name>Logooli</Name>
  </Language>
  <Language>
   <Code>rah</Code>
@@ -21858,7 +21454,7 @@
  </Language>
  <Language>
   <Code>rar</Code>
-  <Name>Cook Islands Maori/Rarotongan</Name>
+  <Name>Cook Islands Maori</Name>
  </Language>
  <Language>
   <Code>ras</Code>
@@ -21918,7 +21514,7 @@
  </Language>
  <Language>
   <Code>reg</Code>
-  <Name>Kara (Tanzania)</Name>
+  <Name>Kara</Name>
  </Language>
  <Language>
   <Code>rei</Code>
@@ -21990,7 +21586,7 @@
  </Language>
  <Language>
   <Code>ria</Code>
-  <Name>Riang (India)</Name>
+  <Name>Riang</Name>
  </Language>
  <Language>
   <Code>rie</Code>
@@ -22002,7 +21598,7 @@
  </Language>
  <Language>
   <Code>ril</Code>
-  <Name>Riang (Myanmar)</Name>
+  <Name>Riang</Name>
  </Language>
  <Language>
   <Code>rim</Code>
@@ -22058,7 +21654,7 @@
  </Language>
  <Language>
   <Code>rkt</Code>
-  <Name>Kamta/Rangpuri</Name>
+  <Name>Kamta</Name>
  </Language>
  <Language>
   <Code>rma</Code>
@@ -22123,10 +21719,6 @@
  <Language>
   <Code>rmr</Code>
   <Name>Caló</Name>
- </Language>
- <Language>
-  <Code>rms</Code>
-  <Name>Romanian Sign Language</Name>
  </Language>
  <Language>
   <Code>rmt</Code>
@@ -22265,14 +21857,6 @@
   <Name>Romano-Serbian</Name>
  </Language>
  <Language>
-  <Code>rsi</Code>
-  <Name>Rennellese Sign Language</Name>
- </Language>
- <Language>
-  <Code>rsl</Code>
-  <Name>Russian Sign Language</Name>
- </Language>
- <Language>
   <Code>rth</Code>
   <Name>Ratahan</Name>
  </Language>
@@ -22326,7 +21910,7 @@
  </Language>
  <Language>
   <Code>rup</Code>
-  <Name>Aromanian/Arumanian/Macedo Romanian</Name>
+  <Name>Aromanian</Name>
  </Language>
  <Language>
   <Code>ruq</Code>
@@ -22346,7 +21930,7 @@
  </Language>
  <Language>
   <Code>ruy</Code>
-  <Name>Mala (Nigeria)</Name>
+  <Name>Mala</Name>
  </Language>
  <Language>
   <Code>ruz</Code>
@@ -22362,7 +21946,7 @@
  </Language>
  <Language>
   <Code>rwm</Code>
-  <Name>Amba (Uganda)</Name>
+  <Name>Amba</Name>
  </Language>
  <Language>
   <Code>rwo</Code>
@@ -22370,7 +21954,7 @@
  </Language>
  <Language>
   <Code>rwr</Code>
-  <Name>Marwari (India)</Name>
+  <Name>Marwari</Name>
  </Language>
  <Language>
   <Code>ryn</Code>
@@ -22490,7 +22074,7 @@
  </Language>
  <Language>
   <Code>sbc</Code>
-  <Name>Kele (Papua New Guinea)</Name>
+  <Name>Kele</Name>
  </Language>
  <Language>
   <Code>sbd</Code>
@@ -22542,7 +22126,7 @@
  </Language>
  <Language>
   <Code>sbp</Code>
-  <Name>Sangu (Tanzania)</Name>
+  <Name>Sangu</Name>
  </Language>
  <Language>
   <Code>sbq</Code>
@@ -22689,10 +22273,6 @@
   <Name>Suundi</Name>
  </Language>
  <Language>
-  <Code>sdl</Code>
-  <Name>Saudi Arabian Sign Language</Name>
- </Language>
- <Language>
   <Code>sdm</Code>
   <Name>Semandang</Name>
  </Language>
@@ -22829,16 +22409,8 @@
   <Name>Senthang Chin</Name>
  </Language>
  <Language>
-  <Code>sfb</Code>
-  <Name>French Belgian Sign Language/Langue des signes de Belgique Francophone</Name>
- </Language>
- <Language>
   <Code>sfm</Code>
   <Name>Small Flowery Miao</Name>
- </Language>
- <Language>
-  <Code>sfs</Code>
-  <Name>South African Sign Language</Name>
  </Language>
  <Language>
   <Code>sfw</Code>
@@ -22846,7 +22418,7 @@
  </Language>
  <Language>
   <Code>sga</Code>
-  <Name>Old Irish (to 900)</Name>
+  <Name>Old Irish</Name>
  </Language>
  <Language>
   <Code>sgb</Code>
@@ -22859,10 +22431,6 @@
  <Language>
   <Code>sge</Code>
   <Name>Segai</Name>
- </Language>
- <Language>
-  <Code>sgg</Code>
-  <Name>Swiss-German Sign Language</Name>
  </Language>
  <Language>
   <Code>sgh</Code>
@@ -22907,10 +22475,6 @@
  <Language>
   <Code>sgw</Code>
   <Name>Sebat Bet Gurage</Name>
- </Language>
- <Language>
-  <Code>sgx</Code>
-  <Name>Sierra Leone Sign Language</Name>
  </Language>
  <Language>
   <Code>sgz</Code>
@@ -23062,11 +22626,11 @@
  </Language>
  <Language>
   <Code>sim</Code>
-  <Name>Mende (Papua New Guinea)</Name>
+  <Name>Mende</Name>
  </Language>
  <Language>
   <Code>sin</Code>
-  <Name>Sinhala/Sinhalese</Name>
+  <Name>Sinhala</Name>
  </Language>
  <Language>
   <Code>sip</Code>
@@ -23134,7 +22698,7 @@
  </Language>
  <Language>
   <Code>sjl</Code>
-  <Name>Miji/Sajalong</Name>
+  <Name>Miji</Name>
  </Language>
  <Language>
   <Code>sjm</Code>
@@ -23190,7 +22754,7 @@
  </Language>
  <Language>
   <Code>ske</Code>
-  <Name>Seke (Vanuatu)</Name>
+  <Name>Seke</Name>
  </Language>
  <Language>
   <Code>skf</Code>
@@ -23210,7 +22774,7 @@
  </Language>
  <Language>
   <Code>skj</Code>
-  <Name>Seke (Nepal)</Name>
+  <Name>Seke</Name>
  </Language>
  <Language>
   <Code>skk</Code>
@@ -23285,10 +22849,6 @@
   <Name>Sholaga</Name>
  </Language>
  <Language>
-  <Code>slf</Code>
-  <Name>Swiss-Italian Sign Language</Name>
- </Language>
- <Language>
   <Code>slg</Code>
   <Name>Selungai Murut</Name>
  </Language>
@@ -23331,10 +22891,6 @@
  <Language>
   <Code>slr</Code>
   <Name>Salar</Name>
- </Language>
- <Language>
-  <Code>sls</Code>
-  <Name>Singapore Sign Language</Name>
  </Language>
  <Language>
   <Code>slt</Code>
@@ -23490,7 +23046,7 @@
  </Language>
  <Language>
   <Code>sng</Code>
-  <Name>Sanga (Democratic Republic of Congo)</Name>
+  <Name>Sanga</Name>
  </Language>
  <Language>
   <Code>snh</Code>
@@ -23530,7 +23086,7 @@
  </Language>
  <Language>
   <Code>snq</Code>
-  <Name>Sangu (Gabon)</Name>
+  <Name>Sangu</Name>
  </Language>
  <Language>
   <Code>snr</Code>
@@ -23542,7 +23098,7 @@
  </Language>
  <Language>
   <Code>snu</Code>
-  <Name>Senggi/Viid</Name>
+  <Name>Senggi</Name>
  </Language>
  <Language>
   <Code>snv</Code>
@@ -23574,7 +23130,7 @@
  </Language>
  <Language>
   <Code>soc</Code>
-  <Name>So (Democratic Republic of Congo)</Name>
+  <Name>So</Name>
  </Language>
  <Language>
   <Code>sod</Code>
@@ -23650,7 +23206,7 @@
  </Language>
  <Language>
   <Code>sox</Code>
-  <Name>So (Cameroon)</Name>
+  <Name>So</Name>
  </Language>
  <Language>
   <Code>soy</Code>
@@ -23666,7 +23222,7 @@
  </Language>
  <Language>
   <Code>spb</Code>
-  <Name>Sepa (Indonesia)</Name>
+  <Name>Sepa</Name>
  </Language>
  <Language>
   <Code>spc</Code>
@@ -23678,7 +23234,7 @@
  </Language>
  <Language>
   <Code>spe</Code>
-  <Name>Sepa (Papua New Guinea)</Name>
+  <Name>Sepa</Name>
  </Language>
  <Language>
   <Code>spg</Code>
@@ -23763,10 +23319,6 @@
  <Language>
   <Code>sqq</Code>
   <Name>Sou</Name>
- </Language>
- <Language>
-  <Code>sqs</Code>
-  <Name>Sri Lankan Sign Language</Name>
  </Language>
  <Language>
   <Code>sqt</Code>
@@ -23933,16 +23485,8 @@
   <Name>Sissano</Name>
  </Language>
  <Language>
-  <Code>ssp</Code>
-  <Name>Spanish Sign Language</Name>
- </Language>
- <Language>
   <Code>ssq</Code>
   <Name>So'a</Name>
- </Language>
- <Language>
-  <Code>ssr</Code>
-  <Name>Swiss-French Sign Language</Name>
  </Language>
  <Language>
   <Code>sss</Code>
@@ -24165,10 +23709,6 @@
   <Name>Serili</Name>
  </Language>
  <Language>
-  <Code>svk</Code>
-  <Name>Slovakian Sign Language</Name>
- </Language>
- <Language>
   <Code>svr</Code>
   <Name>Savara</Name>
  </Language>
@@ -24182,7 +23722,7 @@
  </Language>
  <Language>
   <Code>swa</Code>
-  <Name>Swahili (macrolanguage)</Name>
+  <Name>Swahili</Name>
  </Language>
  <Language>
   <Code>swb</Code>
@@ -24206,7 +23746,7 @@
  </Language>
  <Language>
   <Code>swh</Code>
-  <Name>Kiswahili/Swahili (individual language)</Name>
+  <Name>Kiswahili</Name>
  </Language>
  <Language>
   <Code>swi</Code>
@@ -24219,10 +23759,6 @@
  <Language>
   <Code>swk</Code>
   <Name>Malawi Sena</Name>
- </Language>
- <Language>
-  <Code>swl</Code>
-  <Name>Swedish Sign Language</Name>
  </Language>
  <Language>
   <Code>swm</Code>
@@ -24414,7 +23950,7 @@
  </Language>
  <Language>
   <Code>szv</Code>
-  <Name>Isu (Fako Division)</Name>
+  <Name>Isu</Name>
  </Language>
  <Language>
   <Code>szw</Code>
@@ -24582,7 +24118,7 @@
  </Language>
  <Language>
   <Code>tbp</Code>
-  <Name>Diebroud/Taworta</Name>
+  <Name>Diebroud</Name>
  </Language>
  <Language>
   <Code>tbr</Code>
@@ -24594,7 +24130,7 @@
  </Language>
  <Language>
   <Code>tbt</Code>
-  <Name>Tembo (Kitembo)</Name>
+  <Name>Tembo</Name>
  </Language>
  <Language>
   <Code>tbu</Code>
@@ -24662,7 +24198,7 @@
  </Language>
  <Language>
   <Code>tcl</Code>
-  <Name>Taman (Myanmar)</Name>
+  <Name>Taman</Name>
  </Language>
  <Language>
   <Code>tcm</Code>
@@ -24846,7 +24382,7 @@
  </Language>
  <Language>
   <Code>ten</Code>
-  <Name>Tama (Colombia)</Name>
+  <Name>Tama</Name>
  </Language>
  <Language>
   <Code>teo</Code>
@@ -24882,7 +24418,7 @@
  </Language>
  <Language>
   <Code>tew</Code>
-  <Name>Tewa (USA)</Name>
+  <Name>Tewa</Name>
  </Language>
  <Language>
   <Code>tex</Code>
@@ -25030,7 +24566,7 @@
  </Language>
  <Language>
   <Code>thk</Code>
-  <Name>Kitharaka/Tharaka</Name>
+  <Name>Kitharaka</Name>
  </Language>
  <Language>
   <Code>thl</Code>
@@ -25318,7 +24854,7 @@
  </Language>
  <Language>
   <Code>tlh</Code>
-  <Name>Klingon/tlhIngan-Hol</Name>
+  <Name>Klingon</Name>
  </Language>
  <Language>
   <Code>tli</Code>
@@ -25394,7 +24930,7 @@
  </Language>
  <Language>
   <Code>tma</Code>
-  <Name>Tama (Chad)</Name>
+  <Name>Tama</Name>
  </Language>
  <Language>
   <Code>tmb</Code>
@@ -25446,7 +24982,7 @@
  </Language>
  <Language>
   <Code>tmn</Code>
-  <Name>Taman (Indonesia)</Name>
+  <Name>Taman</Name>
  </Language>
  <Language>
   <Code>tmo</Code>
@@ -25462,7 +24998,7 @@
  </Language>
  <Language>
   <Code>tmr</Code>
-  <Name>Jewish Babylonian Aramaic (ca. 200-1200 CE)</Name>
+  <Name>Jewish Babylonian Aramaic</Name>
  </Language>
  <Language>
   <Code>tms</Code>
@@ -25478,7 +25014,7 @@
  </Language>
  <Language>
   <Code>tmv</Code>
-  <Name>Tembo (Motembo)</Name>
+  <Name>Tembo</Name>
  </Language>
  <Language>
   <Code>tmw</Code>
@@ -25590,7 +25126,7 @@
  </Language>
  <Language>
   <Code>tnz</Code>
-  <Name>Tonga (Thailand)</Name>
+  <Name>Tonga</Name>
  </Language>
  <Language>
   <Code>tob</Code>
@@ -25614,7 +25150,7 @@
  </Language>
  <Language>
   <Code>tog</Code>
-  <Name>Tonga (Nyasa)</Name>
+  <Name>Tonga</Name>
  </Language>
  <Language>
   <Code>toh</Code>
@@ -25622,7 +25158,7 @@
  </Language>
  <Language>
   <Code>toi</Code>
-  <Name>Tonga (Zambia)</Name>
+  <Name>Tonga</Name>
  </Language>
  <Language>
   <Code>toj</Code>
@@ -25638,7 +25174,7 @@
  </Language>
  <Language>
   <Code>ton</Code>
-  <Name>Tonga (Tonga Islands)</Name>
+  <Name>Tonga</Name>
  </Language>
  <Language>
   <Code>too</Code>
@@ -25933,10 +25469,6 @@
   <Name>Tsakonian</Name>
  </Language>
  <Language>
-  <Code>tse</Code>
-  <Name>Tunisian Sign Language</Name>
- </Language>
- <Language>
   <Code>tsf</Code>
   <Name>Southwestern Tamang</Name>
  </Language>
@@ -25965,10 +25497,6 @@
   <Name>Ts'ün-Lao</Name>
  </Language>
  <Language>
-  <Code>tsm</Code>
-  <Name>Turkish Sign Language</Name>
- </Language>
- <Language>
   <Code>tsn</Code>
   <Name>Tswana</Name>
  </Language>
@@ -25981,16 +25509,8 @@
   <Name>Northern Toussian</Name>
  </Language>
  <Language>
-  <Code>tsq</Code>
-  <Name>Thai Sign Language</Name>
- </Language>
- <Language>
   <Code>tsr</Code>
   <Name>Akei</Name>
- </Language>
- <Language>
-  <Code>tss</Code>
-  <Name>Taiwan Sign Language</Name>
  </Language>
  <Language>
   <Code>tsu</Code>
@@ -26007,10 +25527,6 @@
  <Language>
   <Code>tsx</Code>
   <Name>Mubami</Name>
- </Language>
- <Language>
-  <Code>tsy</Code>
-  <Name>Tebul Sign Language</Name>
  </Language>
  <Language>
   <Code>tsz</Code>
@@ -26274,7 +25790,7 @@
  </Language>
  <Language>
   <Code>twe</Code>
-  <Name>Tewa (Indonesia)</Name>
+  <Name>Tewa</Name>
  </Language>
  <Language>
   <Code>twf</Code>
@@ -26469,10 +25985,6 @@
   <Name>Tày</Name>
  </Language>
  <Language>
-  <Code>tza</Code>
-  <Name>Tanzanian Sign Language</Name>
- </Language>
- <Language>
   <Code>tzb</Code>
   <Name>Bachajón Tzeltal</Name>
  </Language>
@@ -26609,16 +26121,8 @@
   <Name>Ughele</Name>
  </Language>
  <Language>
-  <Code>ugn</Code>
-  <Name>Ugandan Sign Language</Name>
- </Language>
- <Language>
   <Code>ugo</Code>
   <Name>Ugong</Name>
- </Language>
- <Language>
-  <Code>ugy</Code>
-  <Name>Uruguayan Sign Language</Name>
  </Language>
  <Language>
   <Code>uha</Code>
@@ -26630,7 +26134,7 @@
  </Language>
  <Language>
   <Code>uig</Code>
-  <Name>Uighur/Uyghur</Name>
+  <Name>Uighur</Name>
  </Language>
  <Language>
   <Code>uis</Code>
@@ -26657,10 +26161,6 @@
   <Name>Ukhwejo</Name>
  </Language>
  <Language>
-  <Code>ukl</Code>
-  <Name>Ukrainian Sign Language</Name>
- </Language>
- <Language>
   <Code>ukp</Code>
   <Name>Ukpe-Bayobiri</Name>
  </Language>
@@ -26671,10 +26171,6 @@
  <Language>
   <Code>ukr</Code>
   <Name>Ukrainian</Name>
- </Language>
- <Language>
-  <Code>uks</Code>
-  <Name>Kaapor Sign Language/Urubú-Kaapor Sign Language</Name>
  </Language>
  <Language>
   <Code>uku</Code>
@@ -26698,7 +26194,7 @@
  </Language>
  <Language>
   <Code>ulf</Code>
-  <Name>Afra/Usku</Name>
+  <Name>Afra</Name>
  </Language>
  <Language>
   <Code>uli</Code>
@@ -26834,7 +26330,7 @@
  </Language>
  <Language>
   <Code>urb</Code>
-  <Name>Kaapor/Urubú-Kaapor</Name>
+  <Name>Kaapor</Name>
  </Language>
  <Language>
   <Code>urc</Code>
@@ -26882,7 +26378,7 @@
  </Language>
  <Language>
   <Code>uro</Code>
-  <Name>Ura (Papua New Guinea)</Name>
+  <Name>Ura</Name>
  </Language>
  <Language>
   <Code>urp</Code>
@@ -26954,7 +26450,7 @@
  </Language>
  <Language>
   <Code>utp</Code>
-  <Name>Amba (Solomon Islands)</Name>
+  <Name>Amba</Name>
  </Language>
  <Language>
   <Code>utr</Code>
@@ -26974,11 +26470,7 @@
  </Language>
  <Language>
   <Code>uur</Code>
-  <Name>Ura (Vanuatu)</Name>
- </Language>
- <Language>
-  <Code>uuu</Code>
-  <Name>U</Name>
+  <Name>Ura</Name>
  </Language>
  <Language>
   <Code>uve</Code>
@@ -27119,10 +26611,6 @@
  <Language>
   <Code>vgr</Code>
   <Name>Vaghri</Name>
- </Language>
- <Language>
-  <Code>vgt</Code>
-  <Name>Flemish Sign Language/Vlaamse Gebarentaal</Name>
  </Language>
  <Language>
   <Code>vic</Code>
@@ -27341,18 +26829,6 @@
   <Name>Burmbar</Name>
  </Language>
  <Language>
-  <Code>vsi</Code>
-  <Name>Moldova Sign Language</Name>
- </Language>
- <Language>
-  <Code>vsl</Code>
-  <Name>Venezuelan Sign Language</Name>
- </Language>
- <Language>
-  <Code>vsv</Code>
-  <Name>Llengua de signes valenciana/Valencian Sign Language</Name>
- </Language>
- <Language>
   <Code>vto</Code>
   <Name>Vitou</Name>
  </Language>
@@ -27438,7 +26914,7 @@
  </Language>
  <Language>
   <Code>war</Code>
-  <Name>Waray (Philippines)</Name>
+  <Name>Waray</Name>
  </Language>
  <Language>
   <Code>was</Code>
@@ -27614,7 +27090,7 @@
  </Language>
  <Language>
   <Code>wfg</Code>
-  <Name>Yafi/Zorop</Name>
+  <Name>Yafi</Name>
  </Language>
  <Language>
   <Code>wga</Code>
@@ -27746,7 +27222,7 @@
  </Language>
  <Language>
   <Code>wkd</Code>
-  <Name>Mo/Wakde</Name>
+  <Name>Mo</Name>
  </Language>
  <Language>
   <Code>wkl</Code>
@@ -27786,7 +27262,7 @@
  </Language>
  <Language>
   <Code>wll</Code>
-  <Name>Wali (Sudan)</Name>
+  <Name>Wali</Name>
  </Language>
  <Language>
   <Code>wlm</Code>
@@ -27822,7 +27298,7 @@
  </Language>
  <Language>
   <Code>wlx</Code>
-  <Name>Wali (Ghana)</Name>
+  <Name>Wali</Name>
  </Language>
  <Language>
   <Code>wly</Code>
@@ -27830,7 +27306,7 @@
  </Language>
  <Language>
   <Code>wma</Code>
-  <Name>Mawa (Nigeria)</Name>
+  <Name>Mawa</Name>
  </Language>
  <Language>
   <Code>wmb</Code>
@@ -27858,7 +27334,7 @@
  </Language>
  <Language>
   <Code>wmm</Code>
-  <Name>Maiwa (Indonesia)</Name>
+  <Name>Maiwa</Name>
  </Language>
  <Language>
   <Code>wmn</Code>
@@ -27866,7 +27342,7 @@
  </Language>
  <Language>
   <Code>wmo</Code>
-  <Name>Wom (Papua New Guinea)</Name>
+  <Name>Wom</Name>
  </Language>
  <Language>
   <Code>wms</Code>
@@ -27966,7 +27442,7 @@
  </Language>
  <Language>
   <Code>wom</Code>
-  <Name>Wom (Nigeria)</Name>
+  <Name>Wom</Name>
  </Language>
  <Language>
   <Code>won</Code>
@@ -28066,7 +27542,7 @@
  </Language>
  <Language>
   <Code>wrz</Code>
-  <Name>Waray (Australia)</Name>
+  <Name>Waray</Name>
  </Language>
  <Language>
   <Code>wsa</Code>
@@ -28238,11 +27714,11 @@
  </Language>
  <Language>
   <Code>xal</Code>
-  <Name>Kalmyk/Oirat</Name>
+  <Name>Kalmyk</Name>
  </Language>
  <Language>
   <Code>xam</Code>
-  <Name>/Xam</Name>
+  <Name>Xam</Name>
  </Language>
  <Language>
   <Code>xan</Code>
@@ -28290,7 +27766,7 @@
  </Language>
  <Language>
   <Code>xba</Code>
-  <Name>Kamba (Brazil)</Name>
+  <Name>Kamba</Name>
  </Language>
  <Language>
   <Code>xbc</Code>
@@ -28402,7 +27878,7 @@
  </Language>
  <Language>
   <Code>xeg</Code>
-  <Name>//Xegwi</Name>
+  <Name>Xegwi</Name>
  </Language>
  <Language>
   <Code>xel</Code>
@@ -28557,10 +28033,6 @@
   <Name>Karahawyana</Name>
  </Language>
  <Language>
-  <Code>xki</Code>
-  <Name>Kenyan Sign Language</Name>
- </Language>
- <Language>
   <Code>xkj</Code>
   <Name>Kajali</Name>
  </Language>
@@ -28646,7 +28118,7 @@
  </Language>
  <Language>
   <Code>xlg</Code>
-  <Name>Ligurian (Ancient)</Name>
+  <Name>Ligurian</Name>
  </Language>
  <Language>
   <Code>xli</Code>
@@ -28717,10 +28189,6 @@
   <Name>Ancient Macedonian</Name>
  </Language>
  <Language>
-  <Code>xml</Code>
-  <Name>Malaysian Sign Language</Name>
- </Language>
- <Language>
   <Code>xmm</Code>
   <Name>Manado Malay</Name>
  </Language>
@@ -28743,10 +28211,6 @@
  <Language>
   <Code>xmr</Code>
   <Name>Meroitic</Name>
- </Language>
- <Language>
-  <Code>xms</Code>
-  <Name>Moroccan Sign Language</Name>
  </Language>
  <Language>
   <Code>xmt</Code>
@@ -28830,7 +28294,7 @@
  </Language>
  <Language>
   <Code>xom</Code>
-  <Name>Komo (Sudan)</Name>
+  <Name>Komo</Name>
  </Language>
  <Language>
   <Code>xon</Code>
@@ -28998,7 +28462,7 @@
  </Language>
  <Language>
   <Code>xsn</Code>
-  <Name>Sanga (Nigeria)</Name>
+  <Name>Sanga</Name>
  </Language>
  <Language>
   <Code>xso</Code>
@@ -29246,7 +28710,7 @@
  </Language>
  <Language>
   <Code>yaf</Code>
-  <Name>Yaka (Democratic Republic of Congo)</Name>
+  <Name>Yaka</Name>
  </Language>
  <Language>
   <Code>yag</Code>
@@ -29294,7 +28758,7 @@
  </Language>
  <Language>
   <Code>yas</Code>
-  <Name>Nugunu (Cameroon)</Name>
+  <Name>Nugunu</Name>
  </Language>
  <Language>
   <Code>yat</Code>
@@ -29411,10 +28875,6 @@
  <Language>
   <Code>ydk</Code>
   <Name>Yoidik</Name>
- </Language>
- <Language>
-  <Code>yds</Code>
-  <Name>Yiddish Sign Language</Name>
  </Language>
  <Language>
   <Code>yea</Code>
@@ -29714,7 +29174,7 @@
  </Language>
  <Language>
   <Code>ymn</Code>
-  <Name>Sunum/Yamna</Name>
+  <Name>Sunum</Name>
  </Language>
  <Language>
   <Code>ymo</Code>
@@ -29913,16 +29373,12 @@
   <Name>Samatao</Name>
  </Language>
  <Language>
-  <Code>ysl</Code>
-  <Name>Yugoslavian Sign Language</Name>
- </Language>
- <Language>
   <Code>ysn</Code>
   <Name>Sani</Name>
  </Language>
  <Language>
   <Code>yso</Code>
-  <Name>Nisi (China)</Name>
+  <Name>Nisi</Name>
  </Language>
  <Language>
   <Code>ysp</Code>
@@ -30002,7 +29458,7 @@
  </Language>
  <Language>
   <Code>yun</Code>
-  <Name>Bena (Nigeria)</Name>
+  <Name>Bena</Name>
  </Language>
  <Language>
   <Code>yup</Code>
@@ -30030,7 +29486,7 @@
  </Language>
  <Language>
   <Code>yuw</Code>
-  <Name>Yau (Morobe Province)</Name>
+  <Name>Yau</Name>
  </Language>
  <Language>
   <Code>yux</Code>
@@ -30086,7 +29542,7 @@
  </Language>
  <Language>
   <Code>yyu</Code>
-  <Name>Yau (Sandaun Province)</Name>
+  <Name>Yau</Name>
  </Language>
  <Language>
   <Code>yyz</Code>
@@ -30194,7 +29650,7 @@
  </Language>
  <Language>
   <Code>zay</Code>
-  <Name>Zaysete/Zayse-Zergulla</Name>
+  <Name>Zaysete</Name>
  </Language>
  <Language>
   <Code>zaz</Code>
@@ -30210,7 +29666,7 @@
  </Language>
  <Language>
   <Code>zbl</Code>
-  <Name>Bliss/Blissymbolics/Blissymbols</Name>
+  <Name>Bliss</Name>
  </Language>
  <Language>
   <Code>zbt</Code>
@@ -30270,7 +29726,7 @@
  </Language>
  <Language>
   <Code>zha</Code>
-  <Name>Chuang/Zhuang</Name>
+  <Name>Chuang</Name>
  </Language>
  <Language>
   <Code>zhb</Code>
@@ -30299,10 +29755,6 @@
  <Language>
   <Code>zia</Code>
   <Name>Zia</Name>
- </Language>
- <Language>
-  <Code>zib</Code>
-  <Name>Zimbabwe Sign Language</Name>
  </Language>
  <Language>
   <Code>zik</Code>
@@ -30382,7 +29834,7 @@
  </Language>
  <Language>
   <Code>zlm</Code>
-  <Name>Malay (individual language)</Name>
+  <Name>Malay</Name>
  </Language>
  <Language>
   <Code>zln</Code>
@@ -30394,7 +29846,7 @@
  </Language>
  <Language>
   <Code>zma</Code>
-  <Name>Manda (Australia)</Name>
+  <Name>Manda</Name>
  </Language>
  <Language>
   <Code>zmb</Code>
@@ -30482,7 +29934,7 @@
  </Language>
  <Language>
   <Code>zmw</Code>
-  <Name>Mbo (Democratic Republic of Congo)</Name>
+  <Name>Mbo</Name>
  </Language>
  <Language>
   <Code>zmx</Code>
@@ -30502,7 +29954,7 @@
  </Language>
  <Language>
   <Code>zne</Code>
-  <Name>Zande (individual language)</Name>
+  <Name>Zande</Name>
  </Language>
  <Language>
   <Code>zng</Code>
@@ -30654,7 +30106,7 @@
  </Language>
  <Language>
   <Code>zra</Code>
-  <Name>Kara (Korea)</Name>
+  <Name>Kara</Name>
  </Language>
  <Language>
   <Code>zrg</Code>
@@ -30683,10 +30135,6 @@
  <Language>
   <Code>zsk</Code>
   <Name>Kaskean</Name>
- </Language>
- <Language>
-  <Code>zsl</Code>
-  <Name>Zambian Sign Language</Name>
  </Language>
  <Language>
   <Code>zsm</Code>
