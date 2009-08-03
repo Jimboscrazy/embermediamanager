@@ -1083,6 +1083,7 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtSortToken.Text) Then
             If Not lstSortTokens.Items.Contains(txtSortToken.Text) Then
                 lstSortTokens.Items.Add(txtSortToken.Text)
+                Me.sResult.NeedsRefresh = True
                 Me.SetApplyButton(True)
                 txtSortToken.Text = String.Empty
                 txtSortToken.Focus()
@@ -2212,6 +2213,7 @@ Public Class dlgSettings
             For Each i As Integer In lstSortTokens.SelectedIndices
                 lstSortTokens.Items.RemoveAt(i)
             Next
+            Me.sResult.NeedsRefresh = True
             Me.SetApplyButton(True)
         End If
     End Sub
