@@ -197,19 +197,29 @@ Public Class FileFolderRenamer
     End Function
 
     Public Shared Function SelectMPAA(ByVal _movies As Media.Movie) As String
-        If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
+        If Not String.IsNullOrEmpty(_movies.MPAA) Then
             Try
-                Dim strMPAA As String = Master.currMovie.Movie.MPAA
+                Dim strMPAA As String = _movies.MPAA
                 If strMPAA.ToLower.StartsWith("rated g") Then
                     Return "0"
                 ElseIf strMPAA.ToLower.StartsWith("rated pg-13") Then
                     Return "13"
                 ElseIf strMPAA.ToLower.StartsWith("rated pg") Then
-                    Return "6"
+                    Return "7"
                 ElseIf strMPAA.ToLower.StartsWith("rated r") Then
                     Return "17"
                 ElseIf strMPAA.ToLower.StartsWith("rated nc-17") Then
                     Return "17+"
+                ElseIf strMPAA.Contains(":") Then 'might be a certification
+                    Dim tReturn As String = strMPAA.Split(Convert.ToChar(":")).Last
+                    'just in case
+                    For Each fnC As Char In Path.GetInvalidFileNameChars
+                        tReturn = tReturn.Replace(fnC, String.Empty)
+                    Next
+                    For Each fC As Char In Path.GetInvalidPathChars
+                        tReturn = tReturn.Replace(fC, String.Empty)
+                    Next
+                    Return tReturn
                 Else
                     Return String.Empty
                 End If

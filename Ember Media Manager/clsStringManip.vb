@@ -186,7 +186,7 @@ Public Class StringManip
 
                     If Strings.InStr(Str, "[->]") > 0 Then
                         strSplit = Strings.Split(Str, "[->]")
-                        movieName = Strings.Replace(movieName, Regex.Match(movieName, strSplit(0)).ToString, strSplit(1))
+                        movieName = Strings.Replace(movieName, Regex.Match(movieName, strSplit.First).ToString, strSplit.Last)
                     Else
                         movieName = Strings.Replace(movieName, Regex.Match(movieName, Str).ToString, String.Empty)
                     End If
