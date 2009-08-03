@@ -154,6 +154,12 @@ Public Class Master
         Dim Options As ScrapeOptions
     End Structure
 
+    Public Structure SettingsResult
+        Dim NeedsUpdate As Boolean
+        Dim NeedsRefresh As Boolean
+        Dim DidCancel As Boolean
+    End Structure
+
     Public Class ImgResult
         Dim _imagepath As String
         Dim _posters As New List(Of String)

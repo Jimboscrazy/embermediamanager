@@ -228,8 +228,8 @@ Public Class frmMain
 
         Try
             Using dSettings As New dlgSettings
-                Dim dResult As Windows.Forms.DialogResult = dSettings.ShowDialog
-                If dResult = Windows.Forms.DialogResult.OK OrElse dResult = Windows.Forms.DialogResult.Retry Then
+                Dim dResult As Master.SettingsResult = dSettings.ShowDialog
+                If Not dResult.DidCancel Then
 
                     Me.SetUp(False)
 
@@ -251,12 +251,19 @@ Public Class frmMain
                         Application.DoEvents()
                     Loop
 
-                    If dResult = Windows.Forms.DialogResult.Retry Then
+                    If dResult.NeedsUpdate Then
                         If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
                             Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
                                 Application.DoEvents()
                             Loop
                             Me.LoadMedia(1)
+                        End If
+                    ElseIf dResult.NeedsRefresh Then
+                        If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
+                            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+                                Application.DoEvents()
+                            Loop
+                            Me.RefreshAllMovies()
                         End If
                     Else
                         If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy Then
@@ -555,7 +562,7 @@ Public Class frmMain
                     Me.FillList(0)
                     Me.Visible = True
                 Else
-                    Master.DB.Connect(True, True)
+                    Master.DB.Connect(True, False)
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True

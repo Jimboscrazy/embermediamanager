@@ -24,17 +24,24 @@ Imports System.IO
 
 Public Class dlgSettings
 
-    Private doRefresh As Boolean = False
     Private didApply As Boolean = False
-
-#Region "Form/Controls"
-
+    Private sResult As New Master.SettingsResult
     Private XComs As List(Of emmSettings.XBMCCom)
     Private Meta As List(Of emmSettings.MetadataPerType)
     Private LangChanged As Boolean = False
+
+#Region "Form/Controls"
+
     ' ########################################
     ' ############ FORMS/CONTROLS ############
     ' ########################################
+
+    Public Overloads Function ShowDialog() As Master.SettingsResult
+
+        MyBase.ShowDialog()
+        Return Me.sResult
+
+    End Function
 
     Private Sub SetApplyButton(ByVal v As Boolean)
         Me.btnApply.Enabled = v
@@ -48,7 +55,7 @@ Public Class dlgSettings
                 SetUp()
             End If
             Me.SetApplyButton(False)
-            If doRefresh Then didApply = True
+            If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh Then Me.didApply = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -59,7 +66,7 @@ Public Class dlgSettings
             If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
                 RefreshSources()
                 Me.SetApplyButton(True)
-                Me.doRefresh = True
+                Me.sResult.NeedsUpdate = True
             End If
         End Using
     End Sub
@@ -69,13 +76,12 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
-        Me.DialogResult = If(doRefresh, Windows.Forms.DialogResult.Retry, Windows.Forms.DialogResult.OK)
         Me.SaveSettings()
         Me.Close()
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Me.DialogResult = If(didApply, Windows.Forms.DialogResult.Retry, Windows.Forms.DialogResult.Cancel)
+        If Not didApply Then sResult.DidCancel = True
         Me.Close()
     End Sub
 
@@ -105,7 +111,10 @@ Public Class dlgSettings
             Me.FillSettings()
 
             Me.SetApplyButton(False)
-            Me.doRefresh = False
+
+            Me.sResult.NeedsUpdate = False
+            sResult.NeedsRefresh = False
+            sResult.DidCancel = False
             Me.didApply = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -117,7 +126,7 @@ Public Class dlgSettings
             Me.lstFilters.Items.Add(Me.txtFilter.Text)
             Me.txtFilter.Text = String.Empty
             Me.SetApplyButton(True)
-            Me.doRefresh = True
+            Me.sResult.NeedsUpdate = True
         End If
 
         Me.txtFilter.Focus()
@@ -250,12 +259,12 @@ Public Class dlgSettings
 
     Private Sub chkUseFolderNames_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
-        Me.doRefresh = True
+        Me.sResult.NeedsUpdate = True
     End Sub
 
     Private Sub chkProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProperCase.CheckedChanged
         Me.SetApplyButton(True)
-        Me.doRefresh = True
+        Me.sResult.NeedsUpdate = True
     End Sub
 
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
@@ -266,7 +275,7 @@ Public Class dlgSettings
                 Me.lstFilters.Items.RemoveAt(iIndex + 1)
                 Me.lstFilters.SelectedIndex = iIndex - 1
                 Me.SetApplyButton(True)
-                Me.doRefresh = True
+                Me.sResult.NeedsUpdate = True
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
@@ -282,7 +291,7 @@ Public Class dlgSettings
                 Me.lstFilters.Items.RemoveAt(iIndex)
                 Me.lstFilters.SelectedIndex = iIndex + 1
                 Me.SetApplyButton(True)
-                Me.doRefresh = True
+                Me.sResult.NeedsUpdate = True
                 Me.lstFilters.Focus()
             End If
         Catch ex As Exception
@@ -292,7 +301,7 @@ Public Class dlgSettings
 
     Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
-        Me.doRefresh = True
+        Me.sResult.NeedsUpdate = True
     End Sub
 
     Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMPDB.CheckedChanged
@@ -509,7 +518,7 @@ Public Class dlgSettings
 
     Private Sub chkScanRecursive_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
-        Me.doRefresh = True
+        Me.sResult.NeedsUpdate = True
     End Sub
 
     Private Sub chkCastWithImg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCastWithImg.CheckedChanged
@@ -518,7 +527,7 @@ Public Class dlgSettings
 
     Private Sub chkVideoTSParent_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkVideoTSParent.CheckedChanged
         Me.SetApplyButton(True)
-        Me.doRefresh = True
+        Me.sResult.NeedsUpdate = True
     End Sub
 
     Private Sub tvSettings_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvSettings.AfterSelect
@@ -679,7 +688,7 @@ Public Class dlgSettings
             If Not lstMovieExts.Items.Contains(txtMovieExt.Text.ToLower) Then
                 lstMovieExts.Items.Add(txtMovieExt.Text.ToLower)
                 Me.SetApplyButton(True)
-                Me.doRefresh = True
+                Me.sResult.NeedsUpdate = True
                 txtMovieExt.Text = String.Empty
                 txtMovieExt.Focus()
             End If
@@ -768,7 +777,7 @@ Public Class dlgSettings
 
     Private Sub txtSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSkipLessThan.TextChanged
         Me.SetApplyButton(True)
-        Me.doRefresh = True
+        Me.sResult.NeedsUpdate = True
     End Sub
 
     Private Sub chkLockTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockTrailer.CheckedChanged
@@ -990,7 +999,7 @@ Public Class dlgSettings
             If Not lstNoStack.Items.Contains(txtNoStack.Text) Then
                 lstNoStack.Items.Add(txtNoStack.Text)
                 Me.SetApplyButton(True)
-                Me.doRefresh = True
+                Me.sResult.NeedsUpdate = True
                 txtNoStack.Text = String.Empty
                 txtNoStack.Focus()
             End If
@@ -1002,7 +1011,7 @@ Public Class dlgSettings
             Using dMovieSource As New dlgMovieSource
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshSources()
-                    Me.doRefresh = True
+                    Me.sResult.NeedsUpdate = True
                     Me.SetApplyButton(True)
                 End If
             End Using
@@ -1014,7 +1023,7 @@ Public Class dlgSettings
             Using dMovieSource As New dlgMovieSource
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshSources()
-                    Me.doRefresh = True
+                    Me.sResult.NeedsUpdate = True
                     Me.SetApplyButton(True)
                 End If
             End Using
@@ -1022,6 +1031,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkDisplayYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDisplayYear.CheckedChanged
+        Me.sResult.NeedsRefresh = True
         Me.SetApplyButton(True)
     End Sub
 
@@ -1308,8 +1318,8 @@ Public Class dlgSettings
             If Not fi Is Nothing Then
                 Dim m As New emmSettings.MetadataPerType
                 m.FileType = txtDefFIExt.Text
-                m.Metadata = New MediaInfo.Fileinfo
-                m.Metadata = fi
+                m.MetaData = New MediaInfo.Fileinfo
+                m.MetaData = fi
                 Meta.Add(m)
                 LoadMetadata()
                 Me.SetApplyButton(True)
@@ -1324,13 +1334,13 @@ Public Class dlgSettings
             Dim fi As New MediaInfo.Fileinfo
             For Each x As emmSettings.MetadataPerType In Meta
                 If x.FileType = lstMetaData.SelectedItems(0).ToString Then
-                    fi = dEditMeta.ShowDialog(x.Metadata)
+                    fi = dEditMeta.ShowDialog(x.MetaData)
                     If Not fi Is Nothing Then
                         Meta.Remove(x)
                         Dim m As New emmSettings.MetadataPerType
                         m.FileType = x.FileType
-                        m.Metadata = New MediaInfo.Fileinfo
-                        m.Metadata = fi
+                        m.MetaData = New MediaInfo.Fileinfo
+                        m.MetaData = fi
                         Meta.Add(m)
                         LoadMetadata()
                         Me.SetApplyButton(True)
@@ -1351,13 +1361,13 @@ Public Class dlgSettings
                 Dim fi As New MediaInfo.Fileinfo
                 For Each x As emmSettings.MetadataPerType In Meta
                     If x.FileType = lstMetaData.SelectedItems(0).ToString Then
-                        fi = dEditMeta.ShowDialog(x.Metadata)
+                        fi = dEditMeta.ShowDialog(x.MetaData)
                         If Not fi Is Nothing Then
                             Meta.Remove(x)
                             Dim m As New emmSettings.MetadataPerType
                             m.FileType = x.FileType
-                            m.Metadata = New MediaInfo.Fileinfo
-                            m.Metadata = fi
+                            m.MetaData = New MediaInfo.Fileinfo
+                            m.MetaData = fi
                             Meta.Add(m)
                             LoadMetadata()
                             Me.SetApplyButton(True)
@@ -2220,7 +2230,7 @@ Public Class dlgSettings
                 lstFilters.Items.RemoveAt(i)
             Next
             Me.SetApplyButton(True)
-            Me.doRefresh = True
+            Me.sResult.NeedsUpdate = True
         End If
     End Sub
 
@@ -2230,7 +2240,7 @@ Public Class dlgSettings
                 lstMovieExts.Items.RemoveAt(i)
             Next
             Me.SetApplyButton(True)
-            Me.doRefresh = True
+            Me.sResult.NeedsUpdate = True
         End If
     End Sub
 
@@ -2240,7 +2250,7 @@ Public Class dlgSettings
                 lstNoStack.Items.RemoveAt(i)
             Next
             Me.SetApplyButton(True)
-            Me.doRefresh = True
+            Me.sResult.NeedsUpdate = True
         End If
     End Sub
 
@@ -2282,7 +2292,7 @@ Public Class dlgSettings
                     Me.lvMovies.EndUpdate()
                     Me.lvMovies.Refresh()
                     Me.SetApplyButton(True)
-                    Me.doRefresh = True
+                    Me.sResult.NeedsUpdate = True
                 End If
             End If
         Catch ex As Exception
