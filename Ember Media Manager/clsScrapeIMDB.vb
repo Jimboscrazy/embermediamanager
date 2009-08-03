@@ -75,8 +75,9 @@ Namespace IMDB
         Private Const TABLE_PATTERN As String = "<table.*?>(.*?)</table>"
         Private Const HREF_PATTERN As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_2 As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>"
-        Private Const TITLE_PATTERN As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>((\s)+?(\((?<year>\d{4})(\/.*?)?\)))?((\s)+?(\((?<type>.*?)\)))?"
         Private Const HREF_PATTERN_3 As String = "<a href=""/List\?certificates=[^""]*"">([^<]*):([^<]*)</a>[^<]*(<i>([^<]*)</i>)?"
+        Private Const HREF_PATTERN_4 As String = "<a.*?href=[""']/title/tt\d{7}/[""'].*?>(?<text>.*?)</a>"
+        Private Const TITLE_PATTERN As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>((\s)+?(\((?<year>\d{4})(\/.*?)?\)))?((\s)+?(\((?<type>.*?)\)))?"
         Private Const IMG_PATTERN As String = "<img src=""(?<thumb>.*?)"" width=""\d{1,3}"" height=""\d{1,3}"" border="".{1,3}"">"
         Private Const TR_PATTERN As String = "<tr\sclass="".*?"">(.*?)</tr>"
         Private Const TD_PATTERN_1 As String = "<td\sclass=""nm"">(.*?)</td>"
@@ -634,9 +635,18 @@ mResult:
                             End If
                             Dim PlotOutline As String = HTML.Substring(D, W - D).Remove(0, "<h5>Plot:</h5> ".Length)
 
-                            PlotOutline = Web.HttpUtility.HtmlDecode(PlotOutline.Replace("|", String.Empty)).Trim
-                            IMDBMovie.Outline = Regex.Replace(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
-                                               , String.Empty, PlotOutline), HREF_PATTERN, String.Empty).Trim
+                            PlotOutline = Web.HttpUtility.HtmlDecode(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
+                                               , String.Empty, PlotOutline.Replace("|", String.Empty)).Trim)
+                            'check if outline has links to other IMDB entry
+                            If Not String.IsNullOrEmpty(PlotOutline) Then
+                                For Each rMatch As Match In Regex.Matches(PlotOutline, HREF_PATTERN_4)
+                                    PlotOutline = PlotOutline.Replace(rMatch.Value, rMatch.Groups("text").Value.Trim)
+                                Next
+                                IMDBMovie.Outline = Regex.Replace(PlotOutline, HREF_PATTERN, String.Empty).Trim
+                            Else
+                                IMDBMovie.Outline = String.Empty
+                            End If
+
                         Catch ex As Exception
                             IMDBMovie.Outline = String.Empty
                         End Try
@@ -655,13 +665,20 @@ mPlot:
                     If Not String.IsNullOrEmpty(ofdbPlot) Then
                         IMDBMovie.Plot = ofdbPlot
                     Else
-                        Dim FullPlot As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)<i>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value
-                        IMDBMovie.Plot = Web.HttpUtility.HtmlDecode(FullPlot.Replace("|", String.Empty)).Trim
-                    End If
+                        Dim FullPlot As String = Regex.Match(PlotHtml, "<p class=.plotpar.>(.*?)<i>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
 
-                    If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(IMDBMovie.Plot) AndAlso Not String.IsNullOrEmpty(IMDBMovie.Outline) Then
-                        IMDBMovie.Plot = IMDBMovie.Outline
-                    End If
+                        If Not String.IsNullOrEmpty(FullPlot) Then
+                            For Each rMatch As Match In Regex.Matches(FullPlot, HREF_PATTERN_4)
+                                FullPlot = FullPlot.Replace(rMatch.Value, rMatch.Groups("text").Value.Trim)
+                            Next
+                            IMDBMovie.Plot = Web.HttpUtility.HtmlDecode(FullPlot.Replace("|", String.Empty)).Trim
+                        End If
+
+                        End If
+
+                        If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(IMDBMovie.Plot) AndAlso Not String.IsNullOrEmpty(IMDBMovie.Outline) Then
+                            IMDBMovie.Plot = IMDBMovie.Outline
+                        End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
