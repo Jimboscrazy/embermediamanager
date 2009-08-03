@@ -31,9 +31,9 @@ Partial Class dlgRenameManual
         Me.txtFile = New System.Windows.Forms.TextBox
         Me.lblTitle = New System.Windows.Forms.Label
         Me.txtTitle = New System.Windows.Forms.TextBox
-        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer
-        Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TableLayoutPanel1.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -126,25 +126,14 @@ Partial Class dlgRenameManual
         Me.txtTitle.Size = New System.Drawing.Size(318, 20)
         Me.txtTitle.TabIndex = 5
         '
-        'ShapeContainer1
+        'PictureBox1
         '
-        Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape1})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(414, 131)
-        Me.ShapeContainer1.TabIndex = 7
-        Me.ShapeContainer1.TabStop = False
-        '
-        'LineShape1
-        '
-        Me.LineShape1.BorderColor = System.Drawing.Color.Black
-        Me.LineShape1.Name = "LineShape1"
-        Me.LineShape1.SelectionColor = System.Drawing.Color.Black
-        Me.LineShape1.X1 = 10
-        Me.LineShape1.X2 = 406
-        Me.LineShape1.Y1 = 36
-        Me.LineShape1.Y2 = 36
+        Me.PictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.PictureBox1.Location = New System.Drawing.Point(8, 36)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(399, 1)
+        Me.PictureBox1.TabIndex = 7
+        Me.PictureBox1.TabStop = False
         '
         'dlgRenameManual
         '
@@ -153,6 +142,7 @@ Partial Class dlgRenameManual
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(414, 131)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.lblTitle)
         Me.Controls.Add(Me.txtTitle)
         Me.Controls.Add(Me.Label2)
@@ -160,7 +150,6 @@ Partial Class dlgRenameManual
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtFolder)
         Me.Controls.Add(Me.TableLayoutPanel1)
-        Me.Controls.Add(Me.ShapeContainer1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -169,6 +158,7 @@ Partial Class dlgRenameManual
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Manual Rename"
         Me.TableLayoutPanel1.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -182,7 +172,6 @@ Partial Class dlgRenameManual
     Friend WithEvents txtFile As System.Windows.Forms.TextBox
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
-    Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
-    Friend WithEvents LineShape1 As Microsoft.VisualBasic.PowerPacks.LineShape
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 
 End Class
