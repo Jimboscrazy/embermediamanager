@@ -3736,7 +3736,8 @@ doCancel:
 
         Try
             With Me
-
+                .pnlFilterGenre.Tag = String.Empty
+                .pnlFilterSource.Tag = String.Empty
                 .FileToolStripMenuItem.Text = Master.eLang.GetString(1, "&File")
                 .ExitToolStripMenuItem.Text = Master.eLang.GetString(2, "E&xit")
                 .EditToolStripMenuItem.Text = Master.eLang.GetString(3, "&Edit")
