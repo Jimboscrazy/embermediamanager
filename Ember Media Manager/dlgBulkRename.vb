@@ -18,9 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
-
 Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
@@ -35,7 +32,6 @@ Public Class dlgBulkRenamer
     Private CancelRename As Boolean = False
     Private run_once As Boolean = True
     Private _columnsize(9) As Integer
-    Private dtMovies As New DataTable
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
         If DoneRename Then
@@ -62,8 +58,7 @@ Public Class dlgBulkRenamer
                     .Tag = False
                     .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 End If
-                dtMovies = FFRenamer.GetMovies
-                bsMovies.DataSource = dtMovies
+                bsMovies.DataSource = FFRenamer.GetMovies
                 .DataSource = bsMovies
                 .Columns(5).Visible = False
                 .Columns(6).Visible = False
@@ -92,6 +87,7 @@ Public Class dlgBulkRenamer
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         '//
         ' Thread to load movieinformation (from nfo)
@@ -206,6 +202,7 @@ Public Class dlgBulkRenamer
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
     Private Sub bwLoadInfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadInfo.ProgressChanged
         If e.ProgressPercentage >= 0 Then
             Me.pbCompile.Value = e.ProgressPercentage
@@ -215,6 +212,7 @@ Public Class dlgBulkRenamer
         End If
 
     End Sub
+
     Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
         '//
         ' Thread finished: display it if not cancelled
@@ -231,6 +229,7 @@ Public Class dlgBulkRenamer
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
     Private Sub DoCancel()
         Try
             Me.bwLoadInfo.CancelAsync()
@@ -253,6 +252,7 @@ Public Class dlgBulkRenamer
             Loop
         End If
     End Sub
+
     Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
 
