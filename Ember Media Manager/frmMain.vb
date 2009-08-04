@@ -42,10 +42,8 @@ Public Class frmMain
     Friend WithEvents bwScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
 
-    Friend WithEvents bsMedia As New BindingSource
-
-    Public alActors As New ArrayList
-
+    Private bsMedia As New BindingSource
+    Private alActors As New ArrayList
     Private aniType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private aniRaise As Boolean = False
     Private aniFilterRaise As Boolean = False
@@ -803,7 +801,6 @@ Public Class frmMain
         If Me.dgvMediaList.RowCount > 0 Then
             Me.dgvMediaList.Rows(0).Selected = True
             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(3)
-            Me.SetFilterColors(False)
         End If
 
     End Sub
@@ -956,6 +953,7 @@ Public Class frmMain
         '\\
 
         Try
+            'icons
             If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
@@ -969,6 +967,45 @@ Public Class frmMain
                 e.Handled = True
 
             End If
+
+            If e.ColumnIndex = 3 AndAlso e.RowIndex >= 0 Then
+                If Convert.ToBoolean(Me.dgvMediaList.Item(11, e.RowIndex).Value) Then
+                    e.CellStyle.ForeColor = Color.Crimson
+                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.SelectionForeColor = Color.Crimson
+                ElseIf Convert.ToBoolean(Me.dgvMediaList.Item(10, e.RowIndex).Value) Then
+                    e.CellStyle.ForeColor = Color.Green
+                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.SelectionForeColor = Color.Green
+                Else
+                    e.CellStyle.ForeColor = Color.Black
+                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
+                    e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+                    If Me.chkFilterMark.Checked Then
+                        Me.dgvMediaList.Rows(e.RowIndex).Selected = False
+                        Me.dgvMediaList.CurrentCell = Nothing
+                        If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
+                        Me.dgvMediaList.ClearSelection()
+                    End If
+                End If
+            End If
+
+            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 9 AndAlso e.RowIndex >= 0 Then
+
+                If Convert.ToBoolean(Me.dgvMediaList.Item(14, e.RowIndex).Value) Then
+                    e.CellStyle.BackColor = Color.LightSteelBlue
+                    e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+                ElseIf Convert.ToBoolean(Me.dgvMediaList.Item(47, e.RowIndex).Value) Then
+                    e.CellStyle.BackColor = Color.MistyRose
+                    e.CellStyle.SelectionBackColor = Color.DarkMagenta
+                Else
+                    e.CellStyle.BackColor = Color.White
+                    e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+                End If
+            End If
+
+            Me.tabMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMediaList.RowCount)
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1349,7 +1386,8 @@ Public Class frmMain
             Next
             Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
 
-            Me.SetFilterColors(False)
+            Me.dgvMediaList.Invalidate()
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -1383,7 +1421,9 @@ Public Class frmMain
                 End Using
                 SQLtransaction.Commit()
             End Using
-            Me.SetFilterColors(False)
+
+            Me.dgvMediaList.Invalidate()
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2074,7 +2114,6 @@ Public Class frmMain
             For Each drvRow As DataRow In dtMedia.Rows
                 drvRow.Item(11) = MarkAll
             Next
-            Me.SetFilterColors(False)
             btnMarkAll.Text = If(Not MarkAll, Master.eLang.GetString(35, "Mark All"), Master.eLang.GetString(105, "Unmark All"))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2301,7 +2340,7 @@ Public Class frmMain
             Me.dgvMediaList.Cursor = Cursors.Default
             Me.dgvMediaList.Enabled = True
 
-            If doFill Then FillList(0) Else SetFilterColors(True)
+            If doFill Then FillList(0) Else DoTitleCheck()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -3541,7 +3580,6 @@ doCancel:
                     Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
                 End If
             Else
-                SetFilterColors(False)
                 Me.tslStatus.Text = e.UserState.ToString
                 Me.tspbLoading.Value = e.ProgressPercentage
             End If
@@ -4868,7 +4906,7 @@ doCancel:
             End If
 
             If Not BatchMode Then
-                Me.SetFilterColors(True)
+                Me.DoTitleCheck()
                 Me.LoadInfo(Convert.ToInt32(ID), tmpMovieDb.Filename, True, False)
             End If
 
@@ -5028,116 +5066,48 @@ doCancel:
 
     End Sub
 
-    Private Sub SetFilterColors(ByVal DoTitleCheck As Boolean)
+    Private Sub DoTitleCheck()
 
         Try
-            Dim LevFail As Boolean = False
 
-            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-            If DoTitleCheck Then SQLtransaction = Master.DB.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = "UPDATE movies SET OutOfTolerance = (?) WHERE ID = (?);"
-                Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
-                For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLcommand.CommandText = "UPDATE movies SET OutOfTolerance = (?) WHERE ID = (?);"
+                    Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                    Dim LevFail As Boolean = False
+                    Dim pTitle As String = String.Empty
+                    For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
 
-                    If Convert.ToBoolean(drvRow.Cells(11).Value) Then
-                        drvRow.Cells(3).Style.ForeColor = Color.Crimson
-                        drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                        drvRow.Cells(3).Style.SelectionForeColor = Color.Crimson
-                    ElseIf Convert.ToBoolean(drvRow.Cells(10).Value) Then
-                        drvRow.Cells(3).Style.ForeColor = Color.Green
-                        drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
-                        drvRow.Cells(3).Style.SelectionForeColor = Color.Green
-                    Else
-                        drvRow.Cells(3).Style.ForeColor = Color.Black
-                        drvRow.Cells(3).Style.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
-                        drvRow.Cells(3).Style.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-                        If Me.chkFilterMark.Checked Then
-                            drvRow.Selected = False
-                            Me.dgvMediaList.CurrentCell = Nothing
-                            If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
-                            Me.dgvMediaList.ClearSelection()
-                        End If
-                    End If
-
-                    If Master.eSettings.LevTolerance > 0 AndAlso DoTitleCheck Then
-                        Dim pTitle As String = String.Empty
-                        If Directory.GetParent(drvRow.Cells(1).Value.ToString).Name.ToLower = "video_ts" Then
-                            pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).Name
-                        Else
-                            If Convert.ToBoolean(drvRow.Cells(46).Value) AndAlso Convert.ToBoolean(drvRow.Cells(2).Value) Then
-                                pTitle = Directory.GetParent(drvRow.Cells(1).Value.ToString).Name
+                        If Master.eSettings.LevTolerance > 0 Then
+                            If Directory.GetParent(drvRow.Cells(1).Value.ToString).Name.ToLower = "video_ts" Then
+                                pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).Name
                             Else
-                                pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value.ToString)
+                                If Convert.ToBoolean(drvRow.Cells(46).Value) AndAlso Convert.ToBoolean(drvRow.Cells(2).Value) Then
+                                    pTitle = Directory.GetParent(drvRow.Cells(1).Value.ToString).Name
+                                Else
+                                    pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells(1).Value.ToString)
+                                End If
                             End If
+
+                            LevFail = StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value.ToString, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
+
+                            parOutOfTolerance.Value = LevFail
+                            drvRow.Cells(47).Value = LevFail
+                            parID.Value = drvRow.Cells(0).Value
+                        Else
+                            parOutOfTolerance.Value = False
+                            drvRow.Cells(47).Value = False
+                            parID.Value = drvRow.Cells(0).Value
                         End If
-
-                        LevFail = StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value.ToString, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
-
-                        parOutOfTolerance.Value = LevFail
-                        drvRow.Cells(47).Value = LevFail
-                        parID.Value = drvRow.Cells(0).Value
                         SQLcommand.ExecuteNonQuery()
-                    ElseIf Master.eSettings.LevTolerance <= 0 Then
-                        LevFail = False
-                    Else
-                        LevFail = Convert.ToBoolean(drvRow.Cells(47).Value)
-                    End If
+                    Next
+                End Using
 
-                    If Convert.ToBoolean(drvRow.Cells(14).Value) Then
-                        drvRow.Cells(3).Style.BackColor = Color.LightSteelBlue
-                        drvRow.Cells(4).Style.BackColor = Color.LightSteelBlue
-                        drvRow.Cells(5).Style.BackColor = Color.LightSteelBlue
-                        drvRow.Cells(6).Style.BackColor = Color.LightSteelBlue
-                        drvRow.Cells(7).Style.BackColor = Color.LightSteelBlue
-                        drvRow.Cells(8).Style.BackColor = Color.LightSteelBlue
-                        drvRow.Cells(9).Style.BackColor = Color.LightSteelBlue
-                        drvRow.Cells(3).Style.SelectionBackColor = Color.DarkTurquoise
-                        drvRow.Cells(4).Style.SelectionBackColor = Color.DarkTurquoise
-                        drvRow.Cells(5).Style.SelectionBackColor = Color.DarkTurquoise
-                        drvRow.Cells(6).Style.SelectionBackColor = Color.DarkTurquoise
-                        drvRow.Cells(7).Style.SelectionBackColor = Color.DarkTurquoise
-                        drvRow.Cells(8).Style.SelectionBackColor = Color.DarkTurquoise
-                        drvRow.Cells(9).Style.SelectionBackColor = Color.DarkTurquoise
-                    ElseIf LevFail Then
-                        drvRow.Cells(3).Style.BackColor = Color.MistyRose
-                        drvRow.Cells(4).Style.BackColor = Color.MistyRose
-                        drvRow.Cells(5).Style.BackColor = Color.MistyRose
-                        drvRow.Cells(6).Style.BackColor = Color.MistyRose
-                        drvRow.Cells(7).Style.BackColor = Color.MistyRose
-                        drvRow.Cells(8).Style.BackColor = Color.MistyRose
-                        drvRow.Cells(9).Style.BackColor = Color.MistyRose
-                        drvRow.Cells(3).Style.SelectionBackColor = Color.DarkMagenta
-                        drvRow.Cells(4).Style.SelectionBackColor = Color.DarkMagenta
-                        drvRow.Cells(5).Style.SelectionBackColor = Color.DarkMagenta
-                        drvRow.Cells(6).Style.SelectionBackColor = Color.DarkMagenta
-                        drvRow.Cells(7).Style.SelectionBackColor = Color.DarkMagenta
-                        drvRow.Cells(8).Style.SelectionBackColor = Color.DarkMagenta
-                        drvRow.Cells(9).Style.SelectionBackColor = Color.DarkMagenta
-                    Else
-                        drvRow.Cells(3).Style.BackColor = Color.White
-                        drvRow.Cells(4).Style.BackColor = Color.White
-                        drvRow.Cells(5).Style.BackColor = Color.White
-                        drvRow.Cells(6).Style.BackColor = Color.White
-                        drvRow.Cells(7).Style.BackColor = Color.White
-                        drvRow.Cells(8).Style.BackColor = Color.White
-                        drvRow.Cells(9).Style.BackColor = Color.White
-                        drvRow.Cells(3).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                        drvRow.Cells(4).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                        drvRow.Cells(5).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                        drvRow.Cells(6).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                        drvRow.Cells(7).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                        drvRow.Cells(8).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                        drvRow.Cells(9).Style.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
-                    End If
-                Next
+                SQLtransaction.Commit()
             End Using
-            If DoTitleCheck Then SQLtransaction.Commit()
 
-            Me.tabMovies.Text = String.Format("{0} ({1})", Master.eLang.GetString(36, "Movies"), Me.dgvMediaList.RowCount)
             Me.dgvMediaList.Invalidate()
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -5247,8 +5217,6 @@ doCancel:
                 Else
                     If doFill Then
                         Me.FillList(0)
-                    Else
-                        Me.SetFilterColors(False)
                     End If
                 End If
 
@@ -5426,7 +5394,7 @@ doCancel:
             Me.tspbLoading.Visible = False
             Me.tspbLoading.Value = 0
 
-            Me.SetFilterColors(True)
+            Me.DoTitleCheck()
             Me.EnableFilters(True)
 
         End If

@@ -51,6 +51,7 @@ Partial Class dlgBulkRenamer
         Me.lblLabel = New System.Windows.Forms.Label
         Me.txtFolderNotSingle = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
+        Me.chkRenamedOnly = New System.Windows.Forms.CheckBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlCancel.SuspendLayout()
@@ -199,6 +200,7 @@ Partial Class dlgBulkRenamer
         '
         Me.dgvMoviesList.AllowUserToAddRows = False
         Me.dgvMoviesList.AllowUserToDeleteRows = False
+        Me.dgvMoviesList.AllowUserToResizeRows = False
         Me.dgvMoviesList.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.dgvMoviesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
@@ -208,6 +210,7 @@ Partial Class dlgBulkRenamer
         Me.dgvMoviesList.Name = "dgvMoviesList"
         Me.dgvMoviesList.RowHeadersVisible = False
         Me.dgvMoviesList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvMoviesList.ShowEditingIcon = False
         Me.dgvMoviesList.Size = New System.Drawing.Size(966, 316)
         Me.dgvMoviesList.TabIndex = 68
         '
@@ -311,6 +314,16 @@ Partial Class dlgBulkRenamer
         Me.Label1.Text = "Folder Pattern (for Multiple movies in Folder)"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'chkRenamedOnly
+        '
+        Me.chkRenamedOnly.AutoSize = True
+        Me.chkRenamedOnly.Location = New System.Drawing.Point(668, 424)
+        Me.chkRenamedOnly.Name = "chkRenamedOnly"
+        Me.chkRenamedOnly.Size = New System.Drawing.Size(231, 17)
+        Me.chkRenamedOnly.TabIndex = 77
+        Me.chkRenamedOnly.Text = "Display Only Movies That Will Be Renamed"
+        Me.chkRenamedOnly.UseVisualStyleBackColor = True
+        '
         'dlgBulkRenamer
         '
         Me.AcceptButton = Me.Close_Button
@@ -318,6 +331,7 @@ Partial Class dlgBulkRenamer
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(992, 477)
         Me.Controls.Add(Me.txtFolderNotSingle)
+        Me.Controls.Add(Me.chkRenamedOnly)
         Me.Controls.Add(Me.lblLabel)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.txtFolder)
@@ -374,5 +388,6 @@ Partial Class dlgBulkRenamer
     Friend WithEvents tsmLockAll As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tsmUnlockMovie As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tsmUnlockAll As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents chkRenamedOnly As System.Windows.Forms.CheckBox
 
 End Class

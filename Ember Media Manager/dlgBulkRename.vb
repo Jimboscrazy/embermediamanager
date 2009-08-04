@@ -28,14 +28,14 @@ Imports System.Drawing.Drawing2D
 Public Class dlgBulkRenamer
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDoRename As New System.ComponentModel.BackgroundWorker
-    Private bindingSource1 As New BindingSource()
+    Private bsMovies As New BindingSource
     Private isLoaded As Boolean = False
     Private FFRenamer As New FileFolderRenamer
     Private DoneRename As Boolean = False
     Private CancelRename As Boolean = False
     Private run_once As Boolean = True
     Private _columnsize(9) As Integer
-
+    Private dtMovies As New DataTable
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
         If DoneRename Then
@@ -47,8 +47,7 @@ Public Class dlgBulkRenamer
         Me.Close()
     End Sub
 
-
-    Public Sub Simulate()
+    Private Sub Simulate()
         Try
             With Me.dgvMoviesList
                 If Not run_once Then
@@ -63,12 +62,14 @@ Public Class dlgBulkRenamer
                     .Tag = False
                     .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 End If
-                bindingSource1.DataSource = FFRenamer.GetMovies
-                .DataSource = bindingSource1
+                dtMovies = FFRenamer.GetMovies
+                bsMovies.DataSource = dtMovies
+                .DataSource = bsMovies
                 .Columns(5).Visible = False
                 .Columns(6).Visible = False
                 .Columns(7).Visible = False
                 .Columns(8).Visible = False
+                .Columns(9).Visible = False
                 If run_once Then
                     For Each c As DataGridViewColumn In .Columns
                         c.MinimumWidth = Convert.ToInt32(.Width / 5)
@@ -278,102 +279,18 @@ Public Class dlgBulkRenamer
 
     Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
         Try
-            If e.RowIndex = -1 AndAlso e.ColumnIndex >= 0 AndAlso e.ColumnIndex <= 4 Then
-                e.PaintBackground(e.ClipBounds, True)
-                Dim strColumn() As String = {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(174, "Folder"), Master.eLang.GetString(175, "Filename"), Master.eLang.GetString(176, "New Folder"), Master.eLang.GetString(177, "New Filename")}
 
-                e.Graphics.DrawString(strColumn(e.ColumnIndex), e.CellStyle.Font, _
-                    New SolidBrush(e.CellStyle.ForeColor), e.CellBounds.X + 1, e.CellBounds.Y + 4, _
-                    StringFormat.GenericDefault)
-                e.Handled = True
-            End If
-            If dgvMoviesList.ColumnCount > 5 AndAlso e.RowIndex >= 0 Then
-                If Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(5).Value) Then ' Locked
-                    Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
-                        e.CellBounds.Width - 4, e.CellBounds.Height - 4)
-                    Dim backColorBrush As New SolidBrush(e.CellStyle.BackColor)
-                    Dim gridBrush As New SolidBrush(Me.dgvMoviesList.GridColor)
-                    Dim gridLinePen As New Pen(gridBrush)
-                    Try
-                        ' Erase the cell.
-                        If (e.State And DataGridViewElementStates.Selected) = DataGridViewElementStates.Selected Then
-                            e.Graphics.FillRectangle(New SolidBrush(e.CellStyle.SelectionBackColor), e.CellBounds)
-                        Else
-                            e.Graphics.FillRectangle(backColorBrush, e.CellBounds)
-                        End If
-                        ' Draw the grid lines (only the right and bottom lines;
-                        ' DataGridView takes care of the others).
-                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, _
-                            e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, _
-                            e.CellBounds.Bottom - 1)
-                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, _
-                            e.CellBounds.Top, e.CellBounds.Right - 1, _
-                            e.CellBounds.Bottom)
-                        ' Draw the inset highlight box.
-                        If Not IsNothing(e.Value) Then
-                            'Dim f As New Font(e.CellStyle.Font, FontStyle.Strikeout)
-                            e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
-                            Brushes.Gray, e.CellBounds.X + 1, e.CellBounds.Y + 4, _
-                            StringFormat.GenericDefault)
-                            Dim pointS As New Point(e.CellBounds.Left, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
-                            Dim pointE As New Point(e.CellBounds.Right, CInt((e.CellBounds.Top + e.CellBounds.Bottom) / 2))
-                            If e.ColumnIndex = 0 Then pointS.X += 4
-                            If e.ColumnIndex = 4 Then pointE.X -= 4
-                            e.Graphics.DrawLine(New Pen(Color.DarkGray), pointS, pointE)
-                            e.Handled = True
-                        End If
-
-                    Finally
-                        gridLinePen.Dispose()
-                        gridBrush.Dispose()
-                        backColorBrush.Dispose()
-                    End Try
-                End If
-            End If
             If ((e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0) AndAlso Not Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(5).Value) Then
                 If Not IsNothing(e.Value) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value.ToString = e.Value.ToString Then
-                    Dim newRect As New Rectangle(e.CellBounds.X + 1, e.CellBounds.Y + 1, _
-                        e.CellBounds.Width - 4, e.CellBounds.Height - 4)
-                    Dim backColorBrush As New SolidBrush(e.CellStyle.BackColor)
-                    Dim gridBrush As New SolidBrush(Me.dgvMoviesList.GridColor)
-                    Dim gridLinePen As New Pen(gridBrush)
-                    Try
-                        ' Erase the cell.
-                        If (e.State And DataGridViewElementStates.Selected) = DataGridViewElementStates.Selected Then
-                            e.Graphics.FillRectangle(New SolidBrush(e.CellStyle.SelectionBackColor), e.CellBounds)
-                        Else
-                            e.Graphics.FillRectangle(backColorBrush, e.CellBounds)
-                        End If
-                        ' Draw the grid lines (only the right and bottom lines;
-                        ' DataGridView takes care of the others).
-                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, _
-                            e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, _
-                            e.CellBounds.Bottom - 1)
-                        e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, _
-                            e.CellBounds.Top, e.CellBounds.Right - 1, _
-                            e.CellBounds.Bottom)
-                        ' Draw the inset highlight box.
-
-                        If Not IsNothing(e.Value) Then
-                            Dim tb As Brush
-                            If (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(6).Value) AndAlso e.ColumnIndex = 3) OrElse (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(7).Value) AndAlso e.ColumnIndex = 4) Then
-                                tb = Brushes.Red
-                            Else
-                                tb = Brushes.Purple
-                            End If
-                            e.Graphics.DrawString(CStr(e.Value), e.CellStyle.Font, _
-                            tb, e.CellBounds.X + 1, e.CellBounds.Y + 4, _
-                            StringFormat.GenericDefault)
-                            e.Handled = True
-                        End If
-
-                    Finally
-                        gridLinePen.Dispose()
-                        gridBrush.Dispose()
-                        backColorBrush.Dispose()
-                    End Try
+                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    If (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(6).Value) AndAlso e.ColumnIndex = 3) OrElse (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(7).Value) AndAlso e.ColumnIndex = 4) Then
+                        e.CellStyle.ForeColor = Color.Red
+                    Else
+                        e.CellStyle.ForeColor = Color.Blue
+                    End If
                 End If
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -445,6 +362,7 @@ Public Class dlgBulkRenamer
         Me.lblFolderPattern.Text = Master.eLang.GetString(171, "Folder Pattern (for Single movie in Folder)")
         Me.lblFilePattern.Text = Master.eLang.GetString(172, "File Pattern")
         Me.Label1.Text = Master.eLang.GetString(173, "Folder Pattern (for Multiple movies in Folder)")
+        Me.chkRenamedOnly.Text = Master.eLang.GetString(636, "Display Only Movies That Will Be Renamed")
     End Sub
 
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
@@ -577,6 +495,14 @@ Public Class dlgBulkRenamer
         Next
         If sum < dgvMoviesList.Width Then
             e.Column.Width = dgvMoviesList.Width - (sum - e.Column.Width)
+        End If
+    End Sub
+
+    Private Sub chkRenamedOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenamedOnly.CheckedChanged
+        If chkRenamedOnly.Checked Then
+            bsMovies.Filter = "IsRenamed = True"
+        Else
+            bsMovies.RemoveFilter()
         End If
     End Sub
 End Class
