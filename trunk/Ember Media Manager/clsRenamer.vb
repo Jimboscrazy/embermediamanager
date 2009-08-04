@@ -36,7 +36,8 @@ Public Class FileFolderRenamer
         Private _islocked As Boolean = False ' support for bulkRenamer 
         Private _dirExist As Boolean = True ' support for bulkRenamer 
         Private _fileExist As Boolean = True ' support for bulkRenamer 
-        Private _isSingle As Boolean = True
+        Private _isSingle As Boolean = True ' support for bulkRenamer
+        Private _isRenamed As Boolean = False ' support for bulkRenamer
         Public MPAARate As String = String.Empty
         Public Resolution As String = String.Empty
         Public Audio As String = String.Empty
@@ -119,12 +120,24 @@ Public Class FileFolderRenamer
                 Me._isSingle = value
             End Set
         End Property
+
+        Public Property IsRenamed() As Boolean
+            Get
+                Return Me._isRenamed
+            End Get
+            Set(ByVal value As Boolean)
+                Me._isRenamed = value
+            End Set
+        End Property
     End Class
+
     Private _movies As New List(Of FileRename)
     Public MovieFolders As New ArrayList
+
     Public Function GetCount() As Integer
         Return _movies.Count
     End Function
+
     Public Function GetCountLocked() As Integer
         Dim c As Integer = c
         For Each f As FileRename In _movies
@@ -157,8 +170,27 @@ Public Class FileFolderRenamer
         _movies.Add(_movie)
     End Sub
 
-    Public Function GetMovies() As List(Of FileRename)
-        Return _movies
+    Public Function GetMovies() As DataTable
+        Dim dtMovies As New DataTable
+
+        dtMovies.Columns.Add("Title", GetType(String))
+        dtMovies.Columns.Add("Path", GetType(String))
+        dtMovies.Columns.Add("FileName", GetType(String))
+        dtMovies.Columns.Add("NewPath", GetType(String))
+        dtMovies.Columns.Add("NewFileName", GetType(String))
+        dtMovies.Columns.Add("IsLocked", GetType(Boolean))
+        dtMovies.Columns.Add("DirExist", GetType(Boolean))
+        dtMovies.Columns.Add("FileExist", GetType(Boolean))
+        dtMovies.Columns.Add("IsSingle", GetType(Boolean))
+        dtMovies.Columns.Add("IsRenamed", GetType(Boolean))
+
+        For Each dtRow As FileRename In _movies
+            dtMovies.Rows.Add(dtRow.Title, dtRow.Path, dtRow.FileName, dtRow.NewPath, _
+                              dtRow.NewFileName, dtRow.IsLocked, dtRow.DirExist, _
+                              dtRow.FileExist, dtRow.IsSingle, dtRow.IsRenamed)
+        Next
+
+        Return dtMovies
     End Function
 
     Public Function GetMoviesCount() As Integer
@@ -189,6 +221,7 @@ Public Class FileFolderRenamer
                 f.FileExist = File.Exists(Path.Combine(f.Source, f.NewFileName)) AndAlso Not (f.FileName = f.NewFileName)
                 f.DirExist = File.Exists(Path.Combine(f.Source, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
 
+                f.isRenamed = Not f.NewPath = f.Path OrElse Not f.NewFileName = f.FileName
             Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

@@ -635,4 +635,5 @@
   <string id="633">Folder Name</string>
   <string id="634">File Name</string>
   <string id="635">You have selected {0} folders to open. Are you sure you want to do this?</string>
+  <string id="636">Display Only Movies That Will Be Renamed</string>
 </strings>
