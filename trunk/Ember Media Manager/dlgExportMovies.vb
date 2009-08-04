@@ -418,7 +418,12 @@ Public Class dlgExportMovies
                 row = row.Replace("<$MOVIE_PATH>", String.Empty)
                 row = row.Replace("<$POSTER_FILE>", String.Concat("export/", counter.ToString, ".jpg"))
                 row = row.Replace("<$FANART_FILE>", String.Concat("export/", counter.ToString, "-fanart.jpg"))
-                row = row.Replace("<$MOVIENAME>", Web.HttpUtility.HtmlEncode(_curMovie.ListTitle))
+                If Not String.IsNullOrEmpty(_curMovie.Movie.Title) Then
+                    row = row.Replace("<$MOVIENAME>", HtmlEncode(_curMovie.Movie.Title))
+                Else
+                    row = row.Replace("<$MOVIENAME>", HtmlEncode(_curMovie.ListTitle))
+                End If
+                row = row.Replace("<$LISTTITLE>", HtmlEncode(_curMovie.ListTitle))
                 row = row.Replace("<$YEAR>", _curMovie.Movie.Year)
                 row = row.Replace("<$COUNT>", counter.ToString)
                 row = row.Replace("<$FILENAME>", Path.GetFileName(_curMovie.Filename))
@@ -427,7 +432,7 @@ Public Class dlgExportMovies
                 row = row.Replace("<$OUTLINE>", HtmlEncode(_curMovie.Movie.Outline))
                 'row = row.Replace("<$PLOT>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Plot))
                 row = row.Replace("<$PLOT>", HtmlEncode(_curMovie.Movie.Plot))
-                row = row.Replace("<$GENRES>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Genre))
+                row = row.Replace("<$GENRES>", HtmlEncode(_curMovie.Movie.Genre))
                 row = row.Replace("<$VIDEO>", _vidDetails)
                 row = row.Replace("<$AUDIO>", _audDetails)
                 row = GetAVImages(_curMovie, row)
