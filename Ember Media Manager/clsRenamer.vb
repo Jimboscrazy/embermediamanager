@@ -175,7 +175,7 @@ Public Class FileFolderRenamer
                     localForderPattern = folderPatternIsNotSingle
                 End If
                 If f.IsVIDEO_TS Then
-                    f.NewFileName = String.Empty
+                    f.NewFileName = "VIDEO_TS"
                 Else
                     f.NewFileName = ProccessPattern(f, filePattern).Trim
                 End If

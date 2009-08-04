@@ -289,7 +289,6 @@ Public Class frmMain
         '//
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
-
         Me.Visible = False
         Dim Args() As String = Environment.GetCommandLineArgs
 
