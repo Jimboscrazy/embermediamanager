@@ -4625,7 +4625,7 @@ doCancel:
         Try
 
             Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
-            If Not pExt = ".rar" AndAlso (Not Master.CanScanDiscImage AndAlso (pExt = ".iso" OrElse _
+            If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
                pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg")) Then
                 Dim MI As New MediaInfo
                 MI.GetMovieMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename)
@@ -5498,7 +5498,4 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
-    Private Sub dgvMediaList_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellContentClick
-
-    End Sub
 End Class
