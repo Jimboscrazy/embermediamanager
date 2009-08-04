@@ -19,7 +19,6 @@
 ' ################################################################################
 
 
-
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
@@ -325,6 +324,23 @@ Public Class dlgExportMovies
         Return line
     End Function
 
+    Public Function HtmlEncode(ByVal stext As String) As String
+        Dim chars = Web.HttpUtility.HtmlEncode(stext).ToCharArray()
+        Dim result As StringBuilder = New StringBuilder(stext.Length + Convert.ToInt16(stext.Length * 0.1))
+
+        For Each c As Char In chars
+            Dim value As Integer = Convert.ToInt32(c)
+            If (value > 127) Then
+                result.AppendFormat("&#{0};", value)
+            Else
+                result.Append(c)
+            End If
+
+        Next
+        Return result.ToString()
+    End Function
+
+
     Private Sub BuildHTML(ByVal bSearch As Boolean, ByVal strFilter As String, ByVal strIn As String, ByVal template As String, ByVal doNavigate As Boolean)
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
@@ -396,6 +412,7 @@ Public Class dlgExportMovies
                         _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels)).ToUpper
                     End If
                 End If
+                Dim uni As New UnicodeEncoding()
 
                 Dim row As String = movierow
                 row = row.Replace("<$MOVIE_PATH>", String.Empty)
@@ -406,8 +423,10 @@ Public Class dlgExportMovies
                 row = row.Replace("<$COUNT>", counter.ToString)
                 row = row.Replace("<$FILENAME>", Path.GetFileName(_curMovie.Filename))
                 row = row.Replace("<$DIRNAME>", Path.GetDirectoryName(_curMovie.Filename))
-                row = row.Replace("<$OUTLINE>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Outline))
-                row = row.Replace("<$PLOT>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Plot))
+                'row = row.Replace("<$OUTLINE>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Outline))
+                row = row.Replace("<$OUTLINE>", HtmlEncode(_curMovie.Movie.Outline))
+                'row = row.Replace("<$PLOT>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Plot))
+                row = row.Replace("<$PLOT>", HtmlEncode(_curMovie.Movie.Plot))
                 row = row.Replace("<$GENRES>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Genre))
                 row = row.Replace("<$VIDEO>", _vidDetails)
                 row = row.Replace("<$AUDIO>", _audDetails)

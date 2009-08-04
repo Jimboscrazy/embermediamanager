@@ -177,7 +177,7 @@ Public Class dlgBulkRenamer
                                                 MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
                                             End If
                                         Else
-                                            MovieFile.FileName = String.Empty
+                                            MovieFile.FileName = "VIDEO_TS"
                                         End If
 
                                         FFRenamer.AddMovie(MovieFile)
