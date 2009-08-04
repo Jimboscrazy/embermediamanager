@@ -1980,7 +1980,7 @@ Partial Class dlgSettings
         Me.GroupBox9.Controls.Add(Me.chkUseIMPA)
         Me.GroupBox9.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox9.Name = "GroupBox9"
-        Me.GroupBox9.Size = New System.Drawing.Size(166, 184)
+        Me.GroupBox9.Size = New System.Drawing.Size(166, 205)
         Me.GroupBox9.TabIndex = 0
         Me.GroupBox9.TabStop = False
         Me.GroupBox9.Text = "Images"
@@ -1988,9 +1988,9 @@ Partial Class dlgSettings
         'chkNoSaveImagesToNfo
         '
         Me.chkNoSaveImagesToNfo.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 149)
+        Me.chkNoSaveImagesToNfo.Location = New System.Drawing.Point(6, 167)
         Me.chkNoSaveImagesToNfo.Name = "chkNoSaveImagesToNfo"
-        Me.chkNoSaveImagesToNfo.Size = New System.Drawing.Size(156, 30)
+        Me.chkNoSaveImagesToNfo.Size = New System.Drawing.Size(156, 34)
         Me.chkNoSaveImagesToNfo.TabIndex = 4
         Me.chkNoSaveImagesToNfo.Text = "Do Not Save Image URLs to Nfo"
         Me.chkNoSaveImagesToNfo.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -1999,9 +1999,9 @@ Partial Class dlgSettings
         'chkSingleScrapeImages
         '
         Me.chkSingleScrapeImages.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 116)
+        Me.chkSingleScrapeImages.Location = New System.Drawing.Point(6, 130)
         Me.chkSingleScrapeImages.Name = "chkSingleScrapeImages"
-        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(156, 30)
+        Me.chkSingleScrapeImages.Size = New System.Drawing.Size(156, 36)
         Me.chkSingleScrapeImages.TabIndex = 3
         Me.chkSingleScrapeImages.Text = "Scrape Images on Single Scrape"
         Me.chkSingleScrapeImages.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -2010,9 +2010,9 @@ Partial Class dlgSettings
         'chkUseMPDB
         '
         Me.chkUseMPDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseMPDB.Location = New System.Drawing.Point(6, 83)
+        Me.chkUseMPDB.Location = New System.Drawing.Point(6, 93)
         Me.chkUseMPDB.Name = "chkUseMPDB"
-        Me.chkUseMPDB.Size = New System.Drawing.Size(156, 30)
+        Me.chkUseMPDB.Size = New System.Drawing.Size(156, 36)
         Me.chkUseMPDB.TabIndex = 2
         Me.chkUseMPDB.Text = "Get Images From MoviePostersDB"
         Me.chkUseMPDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -2023,7 +2023,7 @@ Partial Class dlgSettings
         Me.chkUseTMDB.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkUseTMDB.Location = New System.Drawing.Point(6, 19)
         Me.chkUseTMDB.Name = "chkUseTMDB"
-        Me.chkUseTMDB.Size = New System.Drawing.Size(156, 30)
+        Me.chkUseTMDB.Size = New System.Drawing.Size(156, 36)
         Me.chkUseTMDB.TabIndex = 0
         Me.chkUseTMDB.Text = "Get Images From TMDB"
         Me.chkUseTMDB.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -2032,9 +2032,9 @@ Partial Class dlgSettings
         'chkUseIMPA
         '
         Me.chkUseIMPA.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkUseIMPA.Location = New System.Drawing.Point(6, 51)
+        Me.chkUseIMPA.Location = New System.Drawing.Point(6, 56)
         Me.chkUseIMPA.Name = "chkUseIMPA"
-        Me.chkUseIMPA.Size = New System.Drawing.Size(156, 30)
+        Me.chkUseIMPA.Size = New System.Drawing.Size(156, 36)
         Me.chkUseIMPA.TabIndex = 1
         Me.chkUseIMPA.Text = "Get Images From IMPAwards"
         Me.chkUseIMPA.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -3576,9 +3576,9 @@ Partial Class dlgSettings
         Me.GroupBox17.Controls.Add(Me.Label19)
         Me.GroupBox17.Controls.Add(Me.chkPersistImgCache)
         Me.GroupBox17.Controls.Add(Me.chkUseImgCache)
-        Me.GroupBox17.Location = New System.Drawing.Point(3, 189)
+        Me.GroupBox17.Location = New System.Drawing.Point(3, 210)
         Me.GroupBox17.Name = "GroupBox17"
-        Me.GroupBox17.Size = New System.Drawing.Size(166, 156)
+        Me.GroupBox17.Size = New System.Drawing.Size(166, 135)
         Me.GroupBox17.TabIndex = 1
         Me.GroupBox17.TabStop = False
         Me.GroupBox17.Text = "Caching"
@@ -3644,13 +3644,13 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlGeneral)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
