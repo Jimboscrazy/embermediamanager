@@ -32,8 +32,12 @@ Partial Class dlgRenameManual
         Me.lblTitle = New System.Windows.Forms.Label
         Me.txtTitle = New System.Windows.Forms.TextBox
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.pnlStatus = New System.Windows.Forms.Panel
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.TableLayoutPanel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlStatus.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -135,6 +139,35 @@ Partial Class dlgRenameManual
         Me.PictureBox1.TabIndex = 7
         Me.PictureBox1.TabStop = False
         '
+        'pnlStatus
+        '
+        Me.pnlStatus.BackColor = System.Drawing.Color.White
+        Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlStatus.Controls.Add(Me.Label3)
+        Me.pnlStatus.Controls.Add(Me.ProgressBar1)
+        Me.pnlStatus.Location = New System.Drawing.Point(47, 36)
+        Me.pnlStatus.Name = "pnlStatus"
+        Me.pnlStatus.Size = New System.Drawing.Size(321, 59)
+        Me.pnlStatus.TabIndex = 10
+        Me.pnlStatus.Visible = False
+        '
+        'Label3
+        '
+        Me.Label3.Location = New System.Drawing.Point(5, 10)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(310, 13)
+        Me.Label3.TabIndex = 7
+        Me.Label3.Text = "Renaming Directory/Files..."
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(6, 32)
+        Me.ProgressBar1.MarqueeAnimationSpeed = 25
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(309, 19)
+        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.ProgressBar1.TabIndex = 6
+        '
         'dlgRenameManual
         '
         Me.AcceptButton = Me.OK_Button
@@ -142,6 +175,7 @@ Partial Class dlgRenameManual
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(414, 131)
+        Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.lblTitle)
         Me.Controls.Add(Me.txtTitle)
@@ -159,6 +193,7 @@ Partial Class dlgRenameManual
         Me.Text = "Manual Rename"
         Me.TableLayoutPanel1.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlStatus.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -173,5 +208,8 @@ Partial Class dlgRenameManual
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents pnlStatus As System.Windows.Forms.Panel
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
 
 End Class

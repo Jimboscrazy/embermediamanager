@@ -21,16 +21,18 @@
 Imports System.IO
 
 Public Class dlgRenameManual
+    Friend WithEvents bwRename As New System.ComponentModel.BackgroundWorker
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Cursor.Current = Cursors.WaitCursor
         OK_Button.Enabled = False
         Cancel_Button.Enabled = False
+        txtFolder.Enabled = False
+        txtFile.Enabled = False
+        pnlStatus.visible = True
         Application.DoEvents()
-        FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True)
-        Cursor.Current = Cursors.Default
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        Me.bwRename = New System.ComponentModel.BackgroundWorker
+        Me.bwRename.RunWorkerAsync()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -77,6 +79,17 @@ Public Class dlgRenameManual
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
+        Me.Label3.Text = Master.eLang.GetString(641, "Renaming Directory/Files...")
         Me.txtTitle.Text = Master.currMovie.Movie.Title
+    End Sub
+
+    Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
+        Cursor.Current = Cursors.Default
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
+    End Sub
+
+    Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
+        FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True)
     End Sub
 End Class

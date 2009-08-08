@@ -634,7 +634,7 @@ Public Class FileFolderRenamer
                         End If
                     Catch ex As Exception
                         If ShowError Then
-                            MsgBox(String.Format("An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer).", vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Unable to Rename Directory")
+                            MsgBox(String.Format(Master.eLang.GetString(637, "An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer)."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(638, "Unable to Rename Directory"))
                         Else
                             Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
                         End If
@@ -683,7 +683,7 @@ Public Class FileFolderRenamer
 
                                     Catch ex As Exception
                                         If ShowError Then
-                                            MsgBox(String.Format("An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program.", vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Unable to Rename File")
+                                            MsgBox(String.Format(Master.eLang.GetString(639, "An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program."), vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, Master.eLang.GetString(640, "Unable to Rename File"))
                                         Else
                                             Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
                                         End If
