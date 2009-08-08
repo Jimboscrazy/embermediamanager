@@ -570,7 +570,7 @@ Public Class FileFolderRenamer
         End Try
     End Sub
 
-    Public Shared Sub RenameSingle(ByRef _tmpMovie As Master.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean)
+    Public Shared Sub RenameSingle(ByRef _tmpMovie As Master.DBMovie, ByVal folderPattern As String, ByVal filePattern As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean)
         Dim MovieFile As New FileRename
         If Not IsNothing(_tmpMovie.Movie.FileInfo) Then
             If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then MovieFile.Resolution = NFO.GetResFromDimensions(NFO.GetBestVideo(_tmpMovie.Movie.FileInfo))
@@ -606,10 +606,10 @@ Public Class FileFolderRenamer
         MovieFile.NewPath = ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim
         MovieFile.FileExist = File.Exists(Path.Combine(MovieFile.Source, MovieFile.NewFileName)) AndAlso Not (MovieFile.FileName = MovieFile.NewFileName)
         MovieFile.DirExist = File.Exists(Path.Combine(MovieFile.Source, MovieFile.NewPath)) AndAlso Not (MovieFile.Path = MovieFile.NewPath)
-        DoRenameSingle(MovieFile, _tmpMovie, BatchMode, toNfo)
+        DoRenameSingle(MovieFile, _tmpMovie, BatchMode, toNfo, ShowError)
     End Sub
 
-    Private Shared Sub DoRenameSingle(ByVal _frename As FileRename, ByRef _movie As Master.DBMovie, ByVal BatchMode As Boolean, ByVal toNfo As Boolean)
+    Private Shared Sub DoRenameSingle(ByVal _frename As FileRename, ByRef _movie As Master.DBMovie, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean)
         Try
             If Not _movie.IsLock Then
 
@@ -633,7 +633,11 @@ Public Class FileFolderRenamer
                             UpdateFaSPaths(_movie, Path.Combine(_frename.BasePath, _frename.Path), Path.Combine(_frename.BasePath, _frename.NewPath))
                         End If
                     Catch ex As Exception
-                        Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                        If ShowError Then
+                            MsgBox(String.Format("An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer).", vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Unable to Rename Directory")
+                        Else
+                            Master.eLog.WriteToErrorLog(ex.Message, "Dir: " & srcDir & " " & destDir, "Error")
+                        End If
                     End Try
 
                 End If
@@ -678,8 +682,11 @@ Public Class FileFolderRenamer
                                         End If
 
                                     Catch ex As Exception
-                                        Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
-                                        'Need to make some type of failure log
+                                        If ShowError Then
+                                            MsgBox(String.Format("An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program.", vbNewLine, ex.Message), MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Unable to Rename File")
+                                        Else
+                                            Master.eLog.WriteToErrorLog(ex.Message, "File " & srcFile & " " & dstFile, "Error")
+                                        End If
                                     End Try
                                 End If
                             Next
