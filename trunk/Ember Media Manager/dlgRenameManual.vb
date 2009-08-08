@@ -27,7 +27,7 @@ Public Class dlgRenameManual
         OK_Button.Enabled = False
         Cancel_Button.Enabled = False
         Application.DoEvents()
-        FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True)
+        FileFolderRenamer.RenameSingle(Master.currMovie, txtFolder.Text, txtFile.Text, True, True, True)
         Cursor.Current = Cursors.Default
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()

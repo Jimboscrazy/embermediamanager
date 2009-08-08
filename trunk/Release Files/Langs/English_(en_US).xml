@@ -636,4 +636,8 @@
   <string id="634">File Name</string>
   <string id="635">You have selected {0} folders to open. Are you sure you want to do this?</string>
   <string id="636">Display Only Movies That Will Be Renamed</string>
+  <string id="637">An error occured while attempting to rename the directory:{0}{0}{1}{0}{0}Please ensure that you are not accessing this directory or any of its files from another program (including browsing via Windows Explorer).</string>
+  <string id="638">Unable to Rename Directory</string>
+  <string id="639">An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program.</string>
+  <string id="640">Unable to Rename File</string>
 </strings>

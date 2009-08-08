@@ -2555,7 +2555,7 @@ Public Class frmMain
             Cursor.Current = Cursors.WaitCursor
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-            FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, True)
+            FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, True, True)
             Me.SetListItemAfterEdit(ID, indX)
             If Me.RefreshMovie(ID) Then
                 Me.FillList(0)
@@ -3308,7 +3308,7 @@ Public Class frmMain
                                 Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
 
                                 If doSave AndAlso Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
-                                    FileFolderRenamer.RenameSingle(scrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
+                                    FileFolderRenamer.RenameSingle(scrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID), False)
                                 Else
                                     Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID))
                                 End If
@@ -3474,7 +3474,7 @@ Public Class frmMain
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
 
                                     If doSave AndAlso Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
-                                        FileFolderRenamer.RenameSingle(scrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, doSave)
+                                        FileFolderRenamer.RenameSingle(scrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, doSave, False)
                                     Else
                                         Master.DB.SaveMovieToDB(scrapeMovie, False, True, doSave)
                                     End If
@@ -4777,7 +4777,7 @@ doCancel:
                         Select Case dEditMovie.ShowDialog()
                             Case Windows.Forms.DialogResult.OK
                                 If Master.eSettings.AutoRenameSingle Then
-                                    FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False)
+                                    FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, True)
                                 End If
                                 Me.SetListItemAfterEdit(ID, indX)
                                 If Me.RefreshMovie(ID) Then
@@ -4796,7 +4796,7 @@ doCancel:
 
                 Else
                     If Master.eSettings.AutoRenameSingle Then
-                        FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, True)
+                        FileFolderRenamer.RenameSingle(Master.currMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, True, False)
                     Else
                         Master.DB.SaveMovieToDB(Master.currMovie, True, False, True)
                     End If
