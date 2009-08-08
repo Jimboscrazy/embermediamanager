@@ -2903,10 +2903,10 @@ Public Class frmMain
                     Me.txtMetaData.Text = Res.fileInfo
                     If Master.eSettings.ScanMediaInfo Then
                         XML.GetAVImages(Res.Movie)
-                        Me.pnlInfoIcons.Width = 390
-                        Me.pbStudio.Left = 325
+                        Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
+                        Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
                     Else
-                        Me.pnlInfoIcons.Width = 65
+                        Me.pnlInfoIcons.Width = pbStudio.Width + 1
                         Me.pbStudio.Left = 0
                     End If
                     If Master.eSettings.UseMIDuration Then
@@ -4288,10 +4288,10 @@ doCancel:
 
             If Master.eSettings.ScanMediaInfo Then
                 XML.GetAVImages(Master.currMovie)
-                Me.pnlInfoIcons.Width = 390
-                Me.pbStudio.Left = 325
+                Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
+                Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
-                Me.pnlInfoIcons.Width = 65
+                Me.pnlInfoIcons.Width = pbStudio.Width + 1
                 Me.pbStudio.Left = 0
             End If
 
