@@ -156,15 +156,13 @@ Public Class Images
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
 
-                If Master.eSettings.MovieNameJPG Then
+                If Master.eSettings.MovieNameJPG OrElse Master.eSettings.MovieJPG OrElse Master.eSettings.FolderJPG OrElse Master.eSettings.PosterJPG Then
                     pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".jpg")
                     If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                         Save(pPath, Master.eSettings.PosterQuality)
                         strReturn = pPath
                     End If
-                End If
-
-                If Master.eSettings.MovieNameTBN Then
+                ElseIf Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieTBN OrElse Master.eSettings.PosterTBN Then
                     pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".tbn")
                     If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                         Save(pPath, Master.eSettings.PosterQuality)
