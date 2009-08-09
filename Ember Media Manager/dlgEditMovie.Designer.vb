@@ -133,6 +133,8 @@ Partial Class dlgEditMovie
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.txtSortTitle = New System.Windows.Forms.TextBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -240,6 +242,8 @@ Partial Class dlgEditMovie
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Label6)
+        Me.TabPage1.Controls.Add(Me.txtSortTitle)
         Me.TabPage1.Controls.Add(Me.lblLocalTrailer)
         Me.TabPage1.Controls.Add(Me.btnPlayTrailer)
         Me.TabPage1.Controls.Add(Me.btnDLTrailer)
@@ -334,9 +338,9 @@ Partial Class dlgEditMovie
         Me.lbGenre.CheckOnClick = True
         Me.lbGenre.FormattingEnabled = True
         Me.lbGenre.IntegralHeight = False
-        Me.lbGenre.Location = New System.Drawing.Point(7, 285)
+        Me.lbGenre.Location = New System.Drawing.Point(7, 302)
         Me.lbGenre.Name = "lbGenre"
-        Me.lbGenre.Size = New System.Drawing.Size(192, 159)
+        Me.lbGenre.Size = New System.Drawing.Size(192, 141)
         Me.lbGenre.Sorted = True
         Me.lbGenre.TabIndex = 105
         '
@@ -386,7 +390,7 @@ Partial Class dlgEditMovie
         'txtReleaseDate
         '
         Me.txtReleaseDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtReleaseDate.Location = New System.Drawing.Point(79, 154)
+        Me.txtReleaseDate.Location = New System.Drawing.Point(79, 186)
         Me.txtReleaseDate.Name = "txtReleaseDate"
         Me.txtReleaseDate.Size = New System.Drawing.Size(71, 20)
         Me.txtReleaseDate.TabIndex = 4
@@ -394,7 +398,7 @@ Partial Class dlgEditMovie
         'lblReleaseDate
         '
         Me.lblReleaseDate.AutoSize = True
-        Me.lblReleaseDate.Location = New System.Drawing.Point(79, 138)
+        Me.lblReleaseDate.Location = New System.Drawing.Point(79, 170)
         Me.lblReleaseDate.Name = "lblReleaseDate"
         Me.lblReleaseDate.Size = New System.Drawing.Size(75, 13)
         Me.lblReleaseDate.TabIndex = 96
@@ -437,7 +441,7 @@ Partial Class dlgEditMovie
         'lblRuntime
         '
         Me.lblRuntime.AutoSize = True
-        Me.lblRuntime.Location = New System.Drawing.Point(7, 179)
+        Me.lblRuntime.Location = New System.Drawing.Point(7, 208)
         Me.lblRuntime.Name = "lblRuntime"
         Me.lblRuntime.Size = New System.Drawing.Size(49, 13)
         Me.lblRuntime.TabIndex = 91
@@ -446,7 +450,7 @@ Partial Class dlgEditMovie
         'txtRuntime
         '
         Me.txtRuntime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtRuntime.Location = New System.Drawing.Point(7, 195)
+        Me.txtRuntime.Location = New System.Drawing.Point(7, 224)
         Me.txtRuntime.Name = "txtRuntime"
         Me.txtRuntime.Size = New System.Drawing.Size(192, 20)
         Me.txtRuntime.TabIndex = 6
@@ -551,7 +555,7 @@ Partial Class dlgEditMovie
         'lblGenre
         '
         Me.lblGenre.AutoSize = True
-        Me.lblGenre.Location = New System.Drawing.Point(7, 268)
+        Me.lblGenre.Location = New System.Drawing.Point(7, 285)
         Me.lblGenre.Name = "lblGenre"
         Me.lblGenre.Size = New System.Drawing.Size(39, 13)
         Me.lblGenre.TabIndex = 80
@@ -569,7 +573,7 @@ Partial Class dlgEditMovie
         'lblDirector
         '
         Me.lblDirector.AutoSize = True
-        Me.lblDirector.Location = New System.Drawing.Point(7, 220)
+        Me.lblDirector.Location = New System.Drawing.Point(7, 246)
         Me.lblDirector.Name = "lblDirector"
         Me.lblDirector.Size = New System.Drawing.Size(47, 13)
         Me.lblDirector.TabIndex = 77
@@ -578,7 +582,7 @@ Partial Class dlgEditMovie
         'txtDirector
         '
         Me.txtDirector.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtDirector.Location = New System.Drawing.Point(7, 236)
+        Me.txtDirector.Location = New System.Drawing.Point(7, 262)
         Me.txtDirector.Name = "txtDirector"
         Me.txtDirector.Size = New System.Drawing.Size(192, 20)
         Me.txtDirector.TabIndex = 7
@@ -586,7 +590,7 @@ Partial Class dlgEditMovie
         'txtTop250
         '
         Me.txtTop250.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTop250.Location = New System.Drawing.Point(156, 154)
+        Me.txtTop250.Location = New System.Drawing.Point(156, 186)
         Me.txtTop250.Name = "txtTop250"
         Me.txtTop250.Size = New System.Drawing.Size(43, 20)
         Me.txtTop250.TabIndex = 5
@@ -594,7 +598,7 @@ Partial Class dlgEditMovie
         'lblTop250
         '
         Me.lblTop250.AutoSize = True
-        Me.lblTop250.Location = New System.Drawing.Point(153, 138)
+        Me.lblTop250.Location = New System.Drawing.Point(153, 170)
         Me.lblTop250.Name = "lblTop250"
         Me.lblTop250.Size = New System.Drawing.Size(50, 13)
         Me.lblTop250.TabIndex = 74
@@ -641,7 +645,7 @@ Partial Class dlgEditMovie
         'lblTagline
         '
         Me.lblTagline.AutoSize = True
-        Me.lblTagline.Location = New System.Drawing.Point(7, 50)
+        Me.lblTagline.Location = New System.Drawing.Point(7, 89)
         Me.lblTagline.Name = "lblTagline"
         Me.lblTagline.Size = New System.Drawing.Size(45, 13)
         Me.lblTagline.TabIndex = 69
@@ -650,14 +654,14 @@ Partial Class dlgEditMovie
         'txtTagline
         '
         Me.txtTagline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTagline.Location = New System.Drawing.Point(7, 69)
+        Me.txtTagline.Location = New System.Drawing.Point(7, 108)
         Me.txtTagline.Name = "txtTagline"
         Me.txtTagline.Size = New System.Drawing.Size(192, 20)
         Me.txtTagline.TabIndex = 1
         '
         'pbStar5
         '
-        Me.pbStar5.Location = New System.Drawing.Point(175, 110)
+        Me.pbStar5.Location = New System.Drawing.Point(175, 146)
         Me.pbStar5.Name = "pbStar5"
         Me.pbStar5.Size = New System.Drawing.Size(24, 24)
         Me.pbStar5.TabIndex = 67
@@ -665,7 +669,7 @@ Partial Class dlgEditMovie
         '
         'pbStar4
         '
-        Me.pbStar4.Location = New System.Drawing.Point(151, 110)
+        Me.pbStar4.Location = New System.Drawing.Point(151, 146)
         Me.pbStar4.Name = "pbStar4"
         Me.pbStar4.Size = New System.Drawing.Size(24, 24)
         Me.pbStar4.TabIndex = 66
@@ -673,7 +677,7 @@ Partial Class dlgEditMovie
         '
         'pbStar3
         '
-        Me.pbStar3.Location = New System.Drawing.Point(127, 110)
+        Me.pbStar3.Location = New System.Drawing.Point(127, 146)
         Me.pbStar3.Name = "pbStar3"
         Me.pbStar3.Size = New System.Drawing.Size(24, 24)
         Me.pbStar3.TabIndex = 65
@@ -681,7 +685,7 @@ Partial Class dlgEditMovie
         '
         'pbStar2
         '
-        Me.pbStar2.Location = New System.Drawing.Point(103, 110)
+        Me.pbStar2.Location = New System.Drawing.Point(103, 146)
         Me.pbStar2.Name = "pbStar2"
         Me.pbStar2.Size = New System.Drawing.Size(24, 24)
         Me.pbStar2.TabIndex = 64
@@ -689,7 +693,7 @@ Partial Class dlgEditMovie
         '
         'pbStar1
         '
-        Me.pbStar1.Location = New System.Drawing.Point(79, 110)
+        Me.pbStar1.Location = New System.Drawing.Point(79, 146)
         Me.pbStar1.Name = "pbStar1"
         Me.pbStar1.Size = New System.Drawing.Size(24, 24)
         Me.pbStar1.TabIndex = 63
@@ -698,7 +702,7 @@ Partial Class dlgEditMovie
         'txtVotes
         '
         Me.txtVotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtVotes.Location = New System.Drawing.Point(7, 154)
+        Me.txtVotes.Location = New System.Drawing.Point(7, 186)
         Me.txtVotes.Name = "txtVotes"
         Me.txtVotes.Size = New System.Drawing.Size(66, 20)
         Me.txtVotes.TabIndex = 3
@@ -706,7 +710,7 @@ Partial Class dlgEditMovie
         'lblVotes
         '
         Me.lblVotes.AutoSize = True
-        Me.lblVotes.Location = New System.Drawing.Point(7, 138)
+        Me.lblVotes.Location = New System.Drawing.Point(7, 170)
         Me.lblVotes.Name = "lblVotes"
         Me.lblVotes.Size = New System.Drawing.Size(37, 13)
         Me.lblVotes.TabIndex = 61
@@ -715,7 +719,7 @@ Partial Class dlgEditMovie
         'lblRating
         '
         Me.lblRating.AutoSize = True
-        Me.lblRating.Location = New System.Drawing.Point(76, 94)
+        Me.lblRating.Location = New System.Drawing.Point(76, 130)
         Me.lblRating.Name = "lblRating"
         Me.lblRating.Size = New System.Drawing.Size(41, 13)
         Me.lblRating.TabIndex = 60
@@ -724,7 +728,7 @@ Partial Class dlgEditMovie
         'mtxtYear
         '
         Me.mtxtYear.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.mtxtYear.Location = New System.Drawing.Point(7, 110)
+        Me.mtxtYear.Location = New System.Drawing.Point(7, 146)
         Me.mtxtYear.Mask = "####"
         Me.mtxtYear.Name = "mtxtYear"
         Me.mtxtYear.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
@@ -734,7 +738,7 @@ Partial Class dlgEditMovie
         'lblYear
         '
         Me.lblYear.AutoSize = True
-        Me.lblYear.Location = New System.Drawing.Point(7, 94)
+        Me.lblYear.Location = New System.Drawing.Point(7, 130)
         Me.lblYear.Name = "lblYear"
         Me.lblYear.Size = New System.Drawing.Size(32, 13)
         Me.lblYear.TabIndex = 58
@@ -1289,6 +1293,23 @@ Partial Class dlgEditMovie
         Me.btnClearCache.UseVisualStyleBackColor = True
         Me.btnClearCache.Visible = False
         '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(7, 49)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(52, 13)
+        Me.Label6.TabIndex = 111
+        Me.Label6.Text = "Sort Title:"
+        '
+        'txtSortTitle
+        '
+        Me.txtSortTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSortTitle.Location = New System.Drawing.Point(7, 66)
+        Me.txtSortTitle.Name = "txtSortTitle"
+        Me.txtSortTitle.Size = New System.Drawing.Size(192, 20)
+        Me.txtSortTitle.TabIndex = 110
+        '
         'dlgEditMovie
         '
         Me.AcceptButton = Me.OK_Button
@@ -1452,5 +1473,7 @@ Partial Class dlgEditMovie
     Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
     Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
     Friend WithEvents pnlFileInfo As System.Windows.Forms.Panel
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents txtSortTitle As System.Windows.Forms.TextBox
 
 End Class
