@@ -1036,118 +1036,15 @@ Public Class Master
     End Function
 
     Public Shared Function CreateRandomThumbs(ByVal mMovie As DBMovie, ByVal ThumbCount As Integer, ByVal isEdit As Boolean) As String
+        Dim tThumb As New ThumbGenerator
 
-        Dim SetFA As String = String.Empty
+        tThumb.Movie = mMovie
+        tThumb.ThumbCount = ThumbCount
+        tThumb.isEdit = isEdit
 
-        Try
-            Dim pExt As String = Path.GetExtension(mMovie.Filename).ToLower
-            If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso _
-            Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
+        tThumb.Start()
 
-                Using ffmpeg As New Process()
-                    Dim intSeconds As Integer = 0
-                    Dim intAdd As Integer = 0
-                    Dim tPath As String = String.Empty
-                    Dim exImage As New Images
-
-                    If isEdit Then
-                        tPath = Path.Combine(TempPath, "extrathumbs")
-                    Else
-                        If eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
-                            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, "extrathumbs")
-                        Else
-                            tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "extrathumbs")
-                        End If
-                    End If
-
-                    If Not Directory.Exists(tPath) Then
-                        Directory.CreateDirectory(tPath)
-                    End If
-
-                    ffmpeg.StartInfo.FileName = String.Concat(AppPath, "Bin", Path.DirectorySeparatorChar, "ffmpeg.exe")
-                    ffmpeg.EnableRaisingEvents = False
-                    ffmpeg.StartInfo.UseShellExecute = False
-                    ffmpeg.StartInfo.CreateNoWindow = True
-                    ffmpeg.StartInfo.RedirectStandardOutput = True
-                    ffmpeg.StartInfo.RedirectStandardError = True
-
-                    'first get the duration
-                    ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", mMovie.Filename)
-                    ffmpeg.Start()
-                    Dim d As StreamReader = ffmpeg.StandardError
-                    Do
-                        Dim s As String = d.ReadLine()
-                        If s.Contains("Duration: ") Then
-                            Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
-                            If Not sTime = "N/A" Then
-                                Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
-                                intSeconds = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
-                            End If
-                        End If
-                    Loop While Not d.EndOfStream
-
-                    ffmpeg.WaitForExit()
-                    ffmpeg.Close()
-
-                    If intSeconds > 0 AndAlso ((eSettings.AutoThumbsNoSpoilers AndAlso intSeconds / 2 > ThumbCount + 300) OrElse (Not eSettings.AutoThumbsNoSpoilers AndAlso intSeconds > ThumbCount + 2)) Then
-                        If eSettings.AutoThumbsNoSpoilers Then
-                            intSeconds = Convert.ToInt32(((intSeconds / 2) - 300) / ThumbCount)
-                            intAdd = intSeconds
-                            intSeconds += intAdd + 300
-                        Else
-                            intSeconds = Convert.ToInt32(intSeconds / (ThumbCount + 2))
-                            intAdd = intSeconds
-                            intSeconds += intAdd
-                        End If
-
-                        For i = 0 To (ThumbCount - 1)
-                            'check to see if file already exists... if so, don't bother running ffmpeg since we're not
-                            'overwriting current thumbs anyway
-                            If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg"))) Then
-                                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg ""{2}""", intSeconds, mMovie.Filename, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
-                                ffmpeg.Start()
-                                ffmpeg.WaitForExit()
-                                ffmpeg.Close()
-
-                                exImage = New Images
-                                exImage.ResizeExtraThumb(Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")), Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
-                                exImage.Dispose()
-                                exImage = Nothing
-
-                            End If
-                            intSeconds += intAdd
-                        Next
-                    End If
-
-                    Dim fThumbs As New ArrayList
-                    Try
-                        fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
-                    Catch
-                    End Try
-
-                    If fThumbs.Count <= 0 Then
-                        DeleteDirectory(tPath)
-                    Else
-                        Dim exFanart As New Images
-                        'always set to something if extrathumbs are created so we know during scrapers
-                        SetFA = "TRUE"
-                        If eSettings.UseETasFA AndAlso String.IsNullOrEmpty(mMovie.FanartPath) Then
-                            exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
-                            SetFA = exFanart.SaveAsFanart(mMovie)
-                        End If
-                        exFanart.Dispose()
-                        exFanart = Nothing
-                    End If
-
-                End Using
-
-            End If
-
-        Catch ex As Exception
-            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-        Return SetFA
+        Return tThumb.SetFA
     End Function
 
     Public Shared Function CheckUpdate() As Integer
