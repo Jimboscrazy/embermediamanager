@@ -449,6 +449,10 @@ Public Class dlgEditMovie
                     .txtTitle.Text = Master.currMovie.Movie.Title
                 End If
 
+                If Not String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then
+                    .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
+                End If
+
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Tagline) Then
                     .txtTagline.Text = Master.currMovie.Movie.Tagline
                 End If
@@ -616,10 +620,15 @@ Public Class dlgEditMovie
                 Master.currMovie.IsMark = Me.chkMark.Checked
 
                 If Not String.IsNullOrEmpty(.txtTitle.Text) Then
-                    Master.currMovie.ListTitle = .txtTitle.Text.Trim
+                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(.mtxtYear.Text.Trim) Then
+                        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(.txtTitle.Text.Trim), .mtxtYear.Text.Trim)
+                    Else
+                        Master.currMovie.ListTitle = StringManip.FilterTokens(.txtTitle.Text.Trim)
+                    End If
                     Master.currMovie.Movie.Title = .txtTitle.Text.Trim
                 End If
 
+                Master.currMovie.Movie.SortTitle = .txtSortTitle.Text.Trim
                 Master.currMovie.Movie.Tagline = .txtTagline.Text.Trim
                 Master.currMovie.Movie.Year = .mtxtYear.Text.Trim
                 Master.currMovie.Movie.Votes = .txtVotes.Text.Trim

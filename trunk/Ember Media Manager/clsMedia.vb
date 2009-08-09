@@ -29,6 +29,7 @@ Namespace Media
         Private _imdbid As String
         Private _title As String
         Private _originaltitle As String
+        Private _sorttitle As String
         Private _year As String
         Private _rating As String
         Private _votes As String
@@ -116,6 +117,23 @@ Namespace Media
         Public ReadOnly Property OriginalTitleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._originaltitle)
+            End Get
+        End Property
+
+        <XmlElement("sorttitle")> _
+        Public Property SortTitle() As String
+            Get
+                Return Me._sorttitle
+            End Get
+            Set(ByVal value As String)
+                Me._sorttitle = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SortTitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._sorttitle)
             End Get
         End Property
 
@@ -634,6 +652,7 @@ Namespace Media
             Me._imdbid = String.Empty
             Me._title = String.Empty
             Me._originaltitle = String.Empty
+            Me._sorttitle = String.Empty
             Me._year = String.Empty
             Me._rating = String.Empty
             Me._votes = String.Empty
