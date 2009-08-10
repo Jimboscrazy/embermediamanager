@@ -3347,7 +3347,8 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If (Not Convert.ToBoolean(drvRow.Item(4)) AndAlso Master.GlobalScrapeMod.Poster) OrElse (Not Convert.ToBoolean(drvRow.Item(5)) AndAlso Master.GlobalScrapeMod.Fanart) OrElse _
-                                (Not Convert.ToBoolean(drvRow.Item(6)) AndAlso Master.GlobalScrapeMod.NFO) OrElse (Not Convert.ToBoolean(drvRow.Item(7)) AndAlso Master.GlobalScrapeMod.Trailer) Then
+                                (Not Convert.ToBoolean(drvRow.Item(6)) AndAlso Master.GlobalScrapeMod.NFO) OrElse (Not Convert.ToBoolean(drvRow.Item(7)) AndAlso Master.GlobalScrapeMod.Trailer) OrElse _
+                                (Not Convert.ToBoolean(drvRow.Item(9)) AndAlso Master.GlobalScrapeMod.Extra) Then
 
                                     doSave = False
 
