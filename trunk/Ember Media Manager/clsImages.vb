@@ -911,7 +911,6 @@ Public Class Images
                                 _image = New Bitmap(tmpListTMDB(0).WebImage)
                             End If
 
-                            Me.Clear()
                         End If
                     Else
                         'download all the fanart from TMDB
