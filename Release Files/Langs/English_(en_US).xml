@@ -641,4 +641,5 @@
   <string id="639">An error occured while attempting to rename a file:{0}{0}{1}{0}{0}Please ensure that you are not accessing this file from another program.</string>
   <string id="640">Unable to Rename File</string>
   <string id="641">Renaming Directory/Files...</string>
+  <string id="642">Sort Title</string>
 </strings>

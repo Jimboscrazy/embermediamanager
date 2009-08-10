@@ -194,6 +194,7 @@ Public Class dlgEditMovie
         Me.btnClearCache.Text = Master.eLang.GetString(264, "Clear Cache")
         Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
+        Me.Label6.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
     End Sub
 
     Private Sub pbStar1_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar1.MouseLeave
@@ -628,7 +629,12 @@ Public Class dlgEditMovie
                     Master.currMovie.Movie.Title = .txtTitle.Text.Trim
                 End If
 
-                Master.currMovie.Movie.SortTitle = .txtSortTitle.Text.Trim
+                If Not String.IsNullOrEmpty(.txtSortTitle.Text) Then
+                    Master.currMovie.Movie.SortTitle = .txtSortTitle.Text.Trim
+                Else
+                    Master.currMovie.Movie.SortTitle = StringManip.FilterTokens(.txtTitle.Text.Trim)
+                End If
+
                 Master.currMovie.Movie.Tagline = .txtTagline.Text.Trim
                 Master.currMovie.Movie.Year = .mtxtYear.Text.Trim
                 Master.currMovie.Movie.Votes = .txtVotes.Text.Trim

@@ -484,10 +484,18 @@ Public Class dlgOfflineHolder
         If Not String.IsNullOrEmpty(tMovie.FanartPath) Then tMovie.FanartPath = Path.Combine(destPath, Path.GetFileName(tMovie.FanartPath).ToString)
 
         If Not String.IsNullOrEmpty(tMovie.Movie.Title) Then
-            tMovie.ListTitle = tMovie.Movie.Title
+            Dim tTitle As String = StringManip.FilterTokens(tMovie.Movie.Title)
+            tMovie.Movie.SortTitle = tTitle
+            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tMovie.Movie.Year) Then
+                tMovie.ListTitle = String.Format("{0} ({1})", tTitle, tMovie.Movie.Year)
+            Else
+                tMovie.ListTitle = StringManip.FilterTokens(tMovie.Movie.Title)
+            End If
         Else
             tMovie.ListTitle = MovieName.Replace("[Offline]", String.Empty).Trim
         End If
+
+        tMovie.Movie.SortTitle = tMovie.ListTitle
 
         tMovie = Master.DB.SaveMovieToDB(tMovie, True, False, True)
 

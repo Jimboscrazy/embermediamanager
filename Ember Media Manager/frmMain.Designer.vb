@@ -285,6 +285,7 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
+        Me.btnSortTitle = New System.Windows.Forms.Button
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -1016,10 +1017,11 @@ Partial Class frmMain
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btnSortTitle)
         Me.GroupBox1.Controls.Add(Me.btnSortDate)
         Me.GroupBox1.Location = New System.Drawing.Point(3, 98)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(131, 53)
+        Me.GroupBox1.Size = New System.Drawing.Size(131, 55)
         Me.GroupBox1.TabIndex = 16
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Extra Sorting"
@@ -1040,9 +1042,9 @@ Partial Class frmMain
         '
         Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
         Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters.Location = New System.Drawing.Point(22, 154)
+        Me.btnClearFilters.Location = New System.Drawing.Point(22, 156)
         Me.btnClearFilters.Name = "btnClearFilters"
-        Me.btnClearFilters.Size = New System.Drawing.Size(92, 23)
+        Me.btnClearFilters.Size = New System.Drawing.Size(92, 20)
         Me.btnClearFilters.TabIndex = 16
         Me.btnClearFilters.Text = "Clear Filters"
         Me.btnClearFilters.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -2663,6 +2665,18 @@ Partial Class frmMain
         '
         Me.tmrFilterAni.Interval = 1
         '
+        'btnSortTitle
+        '
+        Me.btnSortTitle.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
+        Me.btnSortTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSortTitle.Location = New System.Drawing.Point(7, 33)
+        Me.btnSortTitle.Name = "btnSortTitle"
+        Me.btnSortTitle.Size = New System.Drawing.Size(117, 20)
+        Me.btnSortTitle.TabIndex = 43
+        Me.btnSortTitle.Text = "Sort Title"
+        Me.btnSortTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSortTitle.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -3007,4 +3021,5 @@ Partial Class frmMain
     Friend WithEvents cmuRenamer As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuRenameAuto As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuRenameManual As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents btnSortTitle As System.Windows.Forms.Button
 End Class

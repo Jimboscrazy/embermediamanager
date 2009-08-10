@@ -459,11 +459,14 @@ Public Class frmMain
                                             Master.currMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
                                         End If
                                     End If
+                                    If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = Master.currMovie.ListTitle
                                 Else
+                                    Dim tTitle As String = StringManip.FilterTokens(Master.currMovie.Movie.Title)
+                                    If String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then Master.currMovie.Movie.SortTitle = tTitle
                                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
-                                        Master.currMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(Master.currMovie.Movie.Title), Master.currMovie.Movie.Year)
+                                        Master.currMovie.ListTitle = String.Format("{0} ({1})", tTitle, Master.currMovie.Movie.Year)
                                     Else
-                                        Master.currMovie.ListTitle = StringManip.FilterTokens(Master.currMovie.Movie.Title)
+                                        Master.currMovie.ListTitle = tTitle
                                     End If
                                 End If
 
@@ -570,6 +573,12 @@ Public Class frmMain
                         Me.FillList(0)
                         Me.Visible = True
                     End If
+                    'can be removed for future releases... just need to make sure list is
+                    'refreshed for the addition of sorttitle
+                    While Me.bwFolderData.IsBusy OrElse Me.bwPrelim.IsBusy
+                        Application.DoEvents()
+                    End While
+                    Me.RefreshAllMovies()
                 End If
 
                 Me.SetMenus(True)
@@ -763,7 +772,7 @@ Public Class frmMain
 
         Try
 
-            If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+            If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
@@ -2797,9 +2806,12 @@ Public Class frmMain
                                     tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
                                 End If
                             End If
+                            If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
                         Else
+                            Dim tTitle As String = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
+                            If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
                             If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(tmpMovieDB.Movie.Title), tmpMovieDB.Movie.Year)
+                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
                             Else
                                 tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
                             End If
@@ -3130,6 +3142,8 @@ Public Class frmMain
         Dim pResults As New Master.ImgResult
         Dim fResults As New Master.ImgResult
         Dim didEts As Boolean = False
+        Dim tTitle As String = String.Empty
+        Dim OldTitle As String = String.Empty
 
         myDelegate = New MydtMediaUpdate(AddressOf dtMediaUpdate)
 
@@ -3161,6 +3175,8 @@ Public Class frmMain
                                 doSave = False
 
                                 scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
+
+                                OldTitle = scrapeMovie.Movie.Title
 
                                 If Master.GlobalScrapeMod.NFO Then
                                     If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
@@ -3287,10 +3303,12 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
+                                    tTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
+                                    If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = tTitle
                                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
+                                        scrapeMovie.ListTitle = String.Format("{0} ({1})", tTitle, scrapeMovie.Movie.Year)
                                     Else
-                                        scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
+                                        scrapeMovie.ListTitle = tTitle
                                     End If
                                 Else
                                     If Directory.GetParent(drvRow.Item(1).ToString).Name.ToLower = "video_ts" Then
@@ -3302,9 +3320,11 @@ Public Class frmMain
                                             scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
                                         End If
                                     End If
+                                    If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = scrapeMovie.ListTitle
                                 End If
 
                                 Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
+                                Me.Invoke(myDelegate, New Object() {drvRow, 50, scrapeMovie.Movie.SortTitle})
 
                                 If doSave AndAlso Master.eSettings.AutoRenameMulti AndAlso Master.GlobalScrapeMod.NFO Then
                                     FileFolderRenamer.RenameSingle(scrapeMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, True, doSave AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID), False)
@@ -3332,6 +3352,8 @@ Public Class frmMain
                                     doSave = False
 
                                     scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
+
+                                    OldTitle = scrapeMovie.Movie.Title
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
 
@@ -3450,10 +3472,12 @@ Public Class frmMain
                                     End If
 
                                     If Not String.IsNullOrEmpty(scrapeMovie.Movie.Title) Then
+                                        tTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
+                                        If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = tTitle
                                         If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.Year) Then
-                                            scrapeMovie.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(scrapeMovie.Movie.Title), scrapeMovie.Movie.Year)
+                                            scrapeMovie.ListTitle = String.Format("{0} ({1})", tTitle, scrapeMovie.Movie.Year)
                                         Else
-                                            scrapeMovie.ListTitle = StringManip.FilterTokens(scrapeMovie.Movie.Title)
+                                            scrapeMovie.ListTitle = tTitle
                                         End If
                                     Else
                                         If Directory.GetParent(drvRow.Item(1).ToString).Name.ToLower = "video_ts" Then
@@ -3465,9 +3489,11 @@ Public Class frmMain
                                                 scrapeMovie.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString))
                                             End If
                                         End If
+                                        If Not OldTitle = scrapeMovie.Movie.Title OrElse String.IsNullOrEmpty(scrapeMovie.Movie.SortTitle) Then scrapeMovie.Movie.SortTitle = scrapeMovie.ListTitle
                                     End If
 
                                     Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
+                                    Me.Invoke(myDelegate, New Object() {drvRow, 50, scrapeMovie.Movie.SortTitle})
                                     If doSave Then Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -3789,6 +3815,7 @@ doCancel:
                 .btnSortDate.Tag = String.Empty
                 .pnlFilterGenre.Tag = String.Empty
                 .pnlFilterSource.Tag = String.Empty
+                .btnSortTitle.Tag = String.Empty
                 .FileToolStripMenuItem.Text = Master.eLang.GetString(1, "&File")
                 .ExitToolStripMenuItem.Text = Master.eLang.GetString(2, "E&xit")
                 .EditToolStripMenuItem.Text = Master.eLang.GetString(3, "&Edit")
@@ -3951,6 +3978,7 @@ doCancel:
                 .GroupBox1.Text = Master.eLang.GetString(600, "Extra Sorting")
                 .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
                 .cmnuMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
+                .btnSortTitle.Text = Master.eLang.GetString(642, "Sort Title")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
@@ -4832,12 +4860,15 @@ doCancel:
         Dim aContents(6) As String
         Dim tmpMovie As New Media.Movie
         Dim tmpMovieDb As New Master.DBMovie
+        Dim OldTitle As String = String.Empty
 
         Dim myDelegate As New MydtMediaUpdate(AddressOf dtMediaUpdate)
 
         Try
 
             tmpMovieDb = Master.DB.LoadMovieFromDB(ID)
+
+            OldTitle = tmpMovieDb.Movie.Title
 
             If Directory.Exists(Directory.GetParent(tmpMovieDb.Filename).FullName) Then
 
@@ -4862,18 +4893,20 @@ doCancel:
                             tmpMovieDb.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename))
                         End If
                     End If
+                    If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tmpMovieDb.ListTitle
                 Else
+                    Dim tTitle As String = StringManip.FilterTokens(tmpMovieDb.Movie.Title)
+                    If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tTitle
                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDb.Movie.Year) Then
-                        tmpMovieDb.ListTitle = String.Format("{0} ({1})", StringManip.FilterTokens(tmpMovieDb.Movie.Title), tmpMovieDb.Movie.Year)
+                        tmpMovieDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDb.Movie.Year)
                     Else
-                        tmpMovieDb.ListTitle = StringManip.FilterTokens(tmpMovieDb.Movie.Title)
+                        tmpMovieDb.ListTitle = ttitle
                     End If
                 End If
 
                 Me.Invoke(myDelegate, New Object() {dRow(0), 3, tmpMovieDb.ListTitle})
                 Me.Invoke(myDelegate, New Object() {dRow(0), 15, tmpMovieDb.Movie.Title})
-
-
+                Me.Invoke(myDelegate, New Object() {dRow(0), 50, tmpMovieDb.Movie.SortTitle})
 
                 'update genre
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
@@ -5407,9 +5440,10 @@ doCancel:
             Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt32(DirectCast(drvRow, DataRow).Item(0)) = iID Select drvRow
 
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT mark FROM movies WHERE id = ", iID, ";")
+                SQLcommand.CommandText = String.Concat("SELECT mark, SortTitle FROM movies WHERE id = ", iID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     DirectCast(dRow(0), DataRow).Item(11) = Convert.ToBoolean(SQLreader("mark"))
+                    If Not DBNull.Value.Equals(SQLreader("SortTitle")) Then DirectCast(dRow(0), DataRow).Item(50) = SQLreader("SortTitle").ToString
                 End Using
             End Using
         Catch ex As Exception
@@ -5438,8 +5472,10 @@ doCancel:
 
                 Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, iRow).Value), Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
-            ''''
-            Me.mnuMediaList.Enabled = True
+
+            If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy Then
+                Me.mnuMediaList.Enabled = True
+            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -5467,4 +5503,15 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
+    Private Sub btnSortTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortTitle.Click
+        If Me.btnSortTitle.Tag.ToString = "DESC" Then
+            Me.btnSortTitle.Tag = "ASC"
+            Me.btnSortTitle.Image = My.Resources.desc
+            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Descending)
+        Else
+            Me.btnSortTitle.Tag = "DESC"
+            Me.btnSortTitle.Image = My.Resources.asc
+            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Ascending)
+        End If
+    End Sub
 End Class

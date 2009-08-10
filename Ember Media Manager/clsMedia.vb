@@ -133,7 +133,7 @@ Namespace Media
         <XmlIgnore()> _
         Public ReadOnly Property SortTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._sorttitle)
+                Return Not String.IsNullOrEmpty(Me._sorttitle) AndAlso Not Me._sorttitle = StringManip.FilterTokens(Me._title)
             End Get
         End Property
 

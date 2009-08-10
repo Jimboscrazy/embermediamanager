@@ -124,7 +124,7 @@ Public Class dlgBulkRenamer
                                         Else
                                             MovieFile.Path = Path.GetDirectoryName(_curMovie.Filename)
                                         End If
-                                        If _curMovie.Movie.Title = String.Empty Then
+                                        If String.IsNullOrEmpty(_curMovie.Movie.Title) Then
                                             MovieFile.Title = _curMovie.ListTitle
                                         Else
                                             MovieFile.Title = _curMovie.Movie.Title
