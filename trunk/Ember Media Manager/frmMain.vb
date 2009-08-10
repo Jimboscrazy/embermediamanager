@@ -763,8 +763,7 @@ Public Class frmMain
 
         Try
 
-            If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse _
-            Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+            If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
@@ -3468,7 +3467,7 @@ Public Class frmMain
                                         End If
                                     End If
 
-                                    Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.Movie.Title})
+                                    Me.Invoke(myDelegate, New Object() {drvRow, 3, scrapeMovie.ListTitle})
                                     If doSave Then Me.Invoke(myDelegate, New Object() {drvRow, 6, True})
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel
