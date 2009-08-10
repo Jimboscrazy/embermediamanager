@@ -85,7 +85,6 @@ Namespace IMDB
         Private Const TD_PATTERN_3 As String = "<td\sclass=""hs"">(.*?)</td>"
         Private Const MOVIE_TITLE_PATTERN As String = "(?<=<(title)>).*(?=<\/\1>)"
         Private Const IMDB_ID_REGEX As String = "tt\d\d\d\d\d\d\d"
-        Private Const YEAR_FILTER As String = "[ _.-]\(?\d{4}\)?"
 
         Private sPoster As String
 
@@ -253,7 +252,7 @@ Namespace IMDB
                 Dim qPopular = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
                                Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
                                Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
-                                                Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
+                                                Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(StringManip.FilterYear(sMovie).ToLower, StringManip.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
                 R.PopularTitles = qPopular.ToList
 mPartial:
@@ -267,7 +266,7 @@ mPartial:
                 Dim qpartial = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
                     Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
-                                     Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
+                                     Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(StringManip.FilterYear(sMovie).ToLower, StringManip.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
 
                 R.PartialMatches = qpartial.ToList
@@ -283,7 +282,7 @@ mApprox:
                 Dim qApprox = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
                     Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
-                                     Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(Regex.Replace(sMovie, YEAR_FILTER, String.Empty).ToLower, Regex.Replace(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), YEAR_FILTER, String.Empty).ToLower))
+                                     Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(StringManip.FilterYear(sMovie).ToLower, StringManip.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
                 If Not IsNothing(R.PartialMatches) Then
                     R.PartialMatches = R.PartialMatches.Union(qApprox.ToList).ToList
@@ -304,7 +303,7 @@ mExact:
                 Dim qExact = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
                                Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
                                Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
-                            Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString.ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(sMovie, Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)))
+                            Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString.ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(StringManip.FilterYear(sMovie).ToLower, StringManip.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
                 R.ExactMatches = qExact.ToList
 

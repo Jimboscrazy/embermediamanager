@@ -246,4 +246,7 @@ Public Class StringManip
         Return Regex.Replace(sReturn.ToLower, "\s\s(\s+)?", " ").Trim
     End Function
 
+    Public Shared Function FilterYear(ByVal sString As String) As String
+        Return Regex.Replace(sString, "([ _.-]\(?\d{4}\))?", String.Empty).Trim
+    End Function
 End Class
