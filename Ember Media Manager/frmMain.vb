@@ -4660,6 +4660,8 @@ doCancel:
 
     Private Sub UpdateMediaInfo(ByRef miMovie As Master.DBMovie)
         Try
+            'clear it out
+            miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
 
             Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
             If Not pExt = ".rar" AndAlso (Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
