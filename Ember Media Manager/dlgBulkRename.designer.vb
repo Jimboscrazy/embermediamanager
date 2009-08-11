@@ -133,6 +133,7 @@ Partial Class dlgBulkRenamer
         'pbCompile
         '
         Me.pbCompile.Location = New System.Drawing.Point(8, 36)
+        Me.pbCompile.MarqueeAnimationSpeed = 25
         Me.pbCompile.Name = "pbCompile"
         Me.pbCompile.Size = New System.Drawing.Size(388, 18)
         Me.pbCompile.Style = System.Windows.Forms.ProgressBarStyle.Continuous

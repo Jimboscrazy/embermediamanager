@@ -111,77 +111,71 @@ Public Class dlgBulkRenamer
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
                             Try
-                                _tmpPath = SQLreader("NfoPath").ToString
-                                If Not String.IsNullOrEmpty(_tmpPath) Then
+                                If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("id")) Then
+                                    _tmpPath = SQLreader("NfoPath").ToString
+                                    If Not String.IsNullOrEmpty(_tmpPath) Then
 
-                                    MovieFile = New FileFolderRenamer.FileRename
-                                    MovieFile.ID = Convert.ToInt32(SQLreader("id"))
-                                    _curMovie = Master.DB.LoadMovieFromDB(MovieFile.ID)
-                                    If Not _curMovie.ID = -1 Then
-                                        If Path.GetFileName(Path.GetDirectoryName(_curMovie.Filename).ToLower) = "video_ts" Then
-                                            MovieFile.Path = Path.GetDirectoryName(Path.GetDirectoryName(_curMovie.Filename))
-                                            MovieFile.IsVIDEO_TS = True
-                                        Else
-                                            MovieFile.Path = Path.GetDirectoryName(_curMovie.Filename)
-                                        End If
-                                        If String.IsNullOrEmpty(_curMovie.Movie.Title) Then
-                                            MovieFile.Title = _curMovie.ListTitle
-                                        Else
-                                            MovieFile.Title = _curMovie.Movie.Title
-                                        End If
-                                        MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
-                                        MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle
-                                        MovieFile.Year = _curMovie.Movie.Year
-                                        MovieFile.IsLocked = _curMovie.IsLock
-                                        MovieFile.BasePath = Path.GetDirectoryName(_curMovie.Filename)
-                                        'MovieFile.Path = Path.GetDirectoryName(_curMovie.Filename)
-                                        MovieFile.IsSingle = _curMovie.isSingle
-                                        If Not IsNothing(_curMovie.Movie.FileInfo) Then
-                                            Try
-                                                If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                                                    tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
-                                                    tRes = NFO.GetResFromDimensions(tVid)
-                                                    MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes))
-                                                End If
-
-                                                If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                                                    tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
-                                                    MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
-                                                End If
-                                            Catch ex As Exception
-                                                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
-                                            End Try
-                                        End If
-                                        '
-                                        Dim plen As Integer
-                                        For Each i As String In FFRenamer.MovieFolders
-                                            If i.EndsWith(Path.DirectorySeparatorChar) Then i = Path.GetDirectoryName(i)
-                                            If i = MovieFile.Path.Substring(0, i.Length) Then
-                                                plen = String.Concat(i, Path.DirectorySeparatorChar).Length
-                                                If MovieFile.Path.Length >= plen Then
-                                                    MovieFile.Path = MovieFile.Path.Substring(plen)
-                                                Else
-                                                    MovieFile.Path = String.Empty
-                                                End If
-                                                MovieFile.BasePath = i
-                                                Exit For
+                                        MovieFile = New FileFolderRenamer.FileRename
+                                        MovieFile.ID = Convert.ToInt32(SQLreader("id"))
+                                        _curMovie = Master.DB.LoadMovieFromDB(MovieFile.ID)
+                                        If Not _curMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_curMovie.Filename) Then
+                                            If String.IsNullOrEmpty(_curMovie.Movie.Title) Then
+                                                MovieFile.Title = _curMovie.ListTitle
+                                            Else
+                                                MovieFile.Title = _curMovie.Movie.Title
                                             End If
-                                        Next
-                                        If Not MovieFile.IsVIDEO_TS Then
-                                            MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_curMovie.Filename))
-                                            Dim stackMark As String = Path.GetFileNameWithoutExtension(_curMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
-                                            If _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
-                                                MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
+                                            MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
+                                            MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle
+                                            MovieFile.Year = _curMovie.Movie.Year
+                                            MovieFile.IsLocked = _curMovie.IsLock
+                                            MovieFile.IsSingle = _curMovie.isSingle
+                                            If Not IsNothing(_curMovie.Movie.FileInfo) Then
+                                                Try
+                                                    If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
+                                                        tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
+                                                        tRes = NFO.GetResFromDimensions(tVid)
+                                                        MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes))
+                                                    End If
+
+                                                    If _curMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
+                                                        tAud = NFO.GetBestAudio(_curMovie.Movie.FileInfo)
+                                                        MovieFile.Audio = String.Format("{0}-{1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels))
+                                                    End If
+                                                Catch ex As Exception
+                                                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error FileInfo")
+                                                End Try
                                             End If
-                                        Else
-                                            MovieFile.FileName = "VIDEO_TS"
+
+                                            For Each i As String In FFRenamer.MovieFolders
+                                                If _curMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
+                                                    MovieFile.BasePath = If(i.EndsWith(Path.DirectorySeparatorChar), i.Substring(0, i.Length - 1), i)
+                                                    If Directory.GetParent(_curMovie.Filename).Name.ToLower = "video_ts" Then
+                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).Name
+                                                        MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                        MovieFile.IsVIDEO_TS = True
+                                                    Else
+                                                        MovieFile.Parent = Directory.GetParent(_curMovie.Filename).Name
+                                                        MovieFile.OldPath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                    End If
+                                                End If
+                                            Next
+
+                                            If Not MovieFile.IsVIDEO_TS Then
+                                                MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_curMovie.Filename))
+                                                Dim stackMark As String = Path.GetFileNameWithoutExtension(_curMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
+                                                If _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
+                                                    MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
+                                                End If
+                                            Else
+                                                MovieFile.FileName = "VIDEO_TS"
+                                            End If
+
+                                            FFRenamer.AddMovie(MovieFile)
+
+                                            Me.bwLoadInfo.ReportProgress(iProg, _curMovie.ListTitle)
                                         End If
-
-                                        FFRenamer.AddMovie(MovieFile)
-
-                                        Me.bwLoadInfo.ReportProgress(iProg, _curMovie.ListTitle)
                                     End If
-                                    End If
+                                End If
                             Catch ex As Exception
                                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                             End Try
@@ -309,12 +303,34 @@ Public Class dlgBulkRenamer
             'Need to make simulate thread safe
             tmrSimul.Enabled = False
             If isLoaded Then
-                FFRenamer.ProccessFiles(txtFolder.Text, txtFile.Text, txtFolderNotSingle.Text)
-                Simulate()
+                Dim tThread As Threading.Thread = New Threading.Thread(AddressOf DoProcess)
+                tThread.Start()
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub DoProcess()
+        Dim Sta As MyStart = New MyStart(AddressOf Start)
+        Dim Fin As MyFinish = New MyFinish(AddressOf Finish)
+        Me.Invoke(Sta)
+        FFRenamer.ProccessFiles(txtFolder.Text, txtFile.Text, txtFolderNotSingle.Text)
+        Me.Invoke(Fin)
+    End Sub
+
+    Delegate Sub MyStart()
+    Private Sub Start()
+        Me.btnCancel.Visible = False
+        Me.lblFile.Visible = False
+        Me.pbCompile.Style = ProgressBarStyle.Marquee
+        Me.pnlCancel.Visible = True
+    End Sub
+
+    Delegate Sub MyFinish()
+    Private Sub Finish()
+        Simulate()
+        Me.pnlCancel.Visible = False
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
@@ -369,6 +385,7 @@ Public Class dlgBulkRenamer
         DoneRename = True
         pnlCancel.Visible = True
         lblCompiling.Text = Master.eLang.GetString(567, "Renaming...")
+        pbCompile.Style = ProgressBarStyle.Continuous
         pbCompile.Maximum = FFRenamer.GetMoviesCount
         pbCompile.Value = 0
         Application.DoEvents()
@@ -473,6 +490,12 @@ Public Class dlgBulkRenamer
             For Each row As DataGridViewRow In dgvMoviesList.Rows
                 row.Cells(5).Value = lock
             Next
+
+            If Me.chkRenamedOnly.Checked AndAlso lock Then
+                Me.dgvMoviesList.ClearSelection()
+                Me.dgvMoviesList.CurrentCell = Nothing
+            End If
+
             dgvMoviesList.Refresh()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -484,6 +507,12 @@ Public Class dlgBulkRenamer
             FFRenamer.SetIsLocked(row.Cells(1).Value.ToString, row.Cells(2).Value.ToString, lock)
             row.Cells(5).Value = lock
         Next
+
+        If Me.chkRenamedOnly.Checked AndAlso lock Then
+            Me.dgvMoviesList.ClearSelection()
+            Me.dgvMoviesList.CurrentCell = Nothing
+        End If
+
         dgvMoviesList.Refresh()
     End Sub
 
@@ -500,7 +529,7 @@ Public Class dlgBulkRenamer
 
     Private Sub chkRenamedOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenamedOnly.CheckedChanged
         If chkRenamedOnly.Checked Then
-            bsMovies.Filter = "IsRenamed = True"
+            bsMovies.Filter = "IsRenamed = True AND IsLocked = False"
         Else
             bsMovies.RemoveFilter()
         End If
