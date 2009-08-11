@@ -41,7 +41,7 @@ Public Class ThumbGenerator
         Try
             tThread.Start()
 
-            If Not tThread.Join(60000) Then 'give it one minute
+            If Not tThread.Join(Math.Max(120000, 30000 * Master.eSettings.AutoThumbs)) Then 'give it 30 seconds per image with a minimum of two minutes
                 'something went wrong and the thread is hung (movie is corrupt?)... kill it forcibly
                 isAborting = True
                 If Not ffmpeg.HasExited Then
