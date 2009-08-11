@@ -102,7 +102,7 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Controls.Add(Me.txtHeight)
         Me.GroupBox1.Controls.Add(Me.txtWidth)
-        Me.GroupBox1.Location = New System.Drawing.Point(8, 11)
+        Me.GroupBox1.Location = New System.Drawing.Point(8, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(191, 178)
         Me.GroupBox1.TabIndex = 4
@@ -226,7 +226,7 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox2.Controls.Add(Me.cbAudioCodec)
         Me.GroupBox2.Controls.Add(Me.Label6)
         Me.GroupBox2.Controls.Add(Me.cbAudioLanguage)
-        Me.GroupBox2.Location = New System.Drawing.Point(7, 12)
+        Me.GroupBox2.Location = New System.Drawing.Point(8, 12)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(191, 178)
         Me.GroupBox2.TabIndex = 5
@@ -286,13 +286,14 @@ Partial Class dlgFIStreamEditor
         Me.cbAudioLanguage.Location = New System.Drawing.Point(75, 19)
         Me.cbAudioLanguage.Name = "cbAudioLanguage"
         Me.cbAudioLanguage.Size = New System.Drawing.Size(93, 21)
+        Me.cbAudioLanguage.Sorted = True
         Me.cbAudioLanguage.TabIndex = 14
         '
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.Label10)
         Me.GroupBox3.Controls.Add(Me.cbSubsLanguage)
-        Me.GroupBox3.Location = New System.Drawing.Point(7, 12)
+        Me.GroupBox3.Location = New System.Drawing.Point(8, 12)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(191, 178)
         Me.GroupBox3.TabIndex = 6
@@ -316,6 +317,7 @@ Partial Class dlgFIStreamEditor
         Me.cbSubsLanguage.Location = New System.Drawing.Point(79, 21)
         Me.cbSubsLanguage.Name = "cbSubsLanguage"
         Me.cbSubsLanguage.Size = New System.Drawing.Size(93, 21)
+        Me.cbSubsLanguage.Sorted = True
         Me.cbSubsLanguage.TabIndex = 21
         '
         'dlgFIStreamEditor
