@@ -989,12 +989,6 @@ Public Class frmMain
                     e.CellStyle.ForeColor = Color.Black
                     e.CellStyle.Font = New Font("Microsoft Sans Serif", 8.25, FontStyle.Regular)
                     e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
-                    If Me.chkFilterMark.Checked Then
-                        Me.dgvMediaList.Rows(e.RowIndex).Selected = False
-                        Me.dgvMediaList.CurrentCell = Nothing
-                        If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
-                        Me.dgvMediaList.ClearSelection()
-                    End If
                 End If
             End If
 
@@ -1394,6 +1388,12 @@ Public Class frmMain
             Next
             Me.btnMarkAll.Text = If(setMark, Master.eLang.GetString(105, "Unmark All"), Master.eLang.GetString(35, "Mark All"))
 
+            If Me.chkFilterMark.Checked Then
+                Me.dgvMediaList.ClearSelection()
+                Me.dgvMediaList.CurrentCell = Nothing
+                If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
+            End If
+
             Me.dgvMediaList.Invalidate()
 
         Catch ex As Exception
@@ -1429,6 +1429,12 @@ Public Class frmMain
                 End Using
                 SQLtransaction.Commit()
             End Using
+
+            If Me.chkFilterLock.Checked Then
+                Me.dgvMediaList.ClearSelection()
+                Me.dgvMediaList.CurrentCell = Nothing
+                If Me.dgvMediaList.RowCount <= 0 Then Me.ClearInfo()
+            End If
 
             Me.dgvMediaList.Invalidate()
 
@@ -2617,6 +2623,17 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub btnSortTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortTitle.Click
+        If Me.btnSortTitle.Tag.ToString = "DESC" Then
+            Me.btnSortTitle.Tag = "ASC"
+            Me.btnSortTitle.Image = My.Resources.desc
+            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Descending)
+        Else
+            Me.btnSortTitle.Tag = "DESC"
+            Me.btnSortTitle.Image = My.Resources.asc
+            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Ascending)
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -3128,7 +3145,7 @@ Public Class frmMain
         ' Thread to handle scraping
         '\\
 
-        Dim myDelegate As MydtMediaUpdate
+        Dim myDelegate As MydtMediaUpdate = New MydtMediaUpdate(AddressOf dtMediaUpdate)
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim TMDB As New TMDB.Scraper
         Dim IMPA As New IMPA.Scraper
@@ -3144,8 +3161,6 @@ Public Class frmMain
         Dim didEts As Boolean = False
         Dim tTitle As String = String.Empty
         Dim OldTitle As String = String.Empty
-
-        myDelegate = New MydtMediaUpdate(AddressOf dtMediaUpdate)
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
 
@@ -5504,15 +5519,4 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
-    Private Sub btnSortTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortTitle.Click
-        If Me.btnSortTitle.Tag.ToString = "DESC" Then
-            Me.btnSortTitle.Tag = "ASC"
-            Me.btnSortTitle.Image = My.Resources.desc
-            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Descending)
-        Else
-            Me.btnSortTitle.Tag = "DESC"
-            Me.btnSortTitle.Image = My.Resources.asc
-            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Ascending)
-        End If
-    End Sub
 End Class

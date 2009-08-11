@@ -101,6 +101,7 @@ Partial Class frmMain
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.pnlFilter = New System.Windows.Forms.Panel
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnSortTitle = New System.Windows.Forms.Button
         Me.btnSortDate = New System.Windows.Forms.Button
         Me.btnClearFilters = New System.Windows.Forms.Button
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
@@ -285,7 +286,6 @@ Partial Class frmMain
         Me.tmrSearchWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
-        Me.btnSortTitle = New System.Windows.Forms.Button
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -741,7 +741,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 298)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 320)
         '
         'cmnuTitle
         '
@@ -1025,6 +1025,18 @@ Partial Class frmMain
         Me.GroupBox1.TabIndex = 16
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Extra Sorting"
+        '
+        'btnSortTitle
+        '
+        Me.btnSortTitle.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
+        Me.btnSortTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnSortTitle.Location = New System.Drawing.Point(7, 33)
+        Me.btnSortTitle.Name = "btnSortTitle"
+        Me.btnSortTitle.Size = New System.Drawing.Size(117, 20)
+        Me.btnSortTitle.TabIndex = 43
+        Me.btnSortTitle.Text = "Sort Title"
+        Me.btnSortTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSortTitle.UseVisualStyleBackColor = True
         '
         'btnSortDate
         '
@@ -2664,18 +2676,6 @@ Partial Class frmMain
         'tmrFilterAni
         '
         Me.tmrFilterAni.Interval = 1
-        '
-        'btnSortTitle
-        '
-        Me.btnSortTitle.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
-        Me.btnSortTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnSortTitle.Location = New System.Drawing.Point(7, 33)
-        Me.btnSortTitle.Name = "btnSortTitle"
-        Me.btnSortTitle.Size = New System.Drawing.Size(117, 20)
-        Me.btnSortTitle.TabIndex = 43
-        Me.btnSortTitle.Text = "Sort Title"
-        Me.btnSortTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSortTitle.UseVisualStyleBackColor = True
         '
         'frmMain
         '
