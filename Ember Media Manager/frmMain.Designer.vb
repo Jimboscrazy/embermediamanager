@@ -613,6 +613,7 @@ Partial Class frmMain
         Me.scMain.Size = New System.Drawing.Size(1008, 686)
         Me.scMain.SplitterDistance = 349
         Me.scMain.TabIndex = 7
+        Me.scMain.TabStop = False
         '
         'pnlFilterSource
         '
@@ -662,6 +663,7 @@ Partial Class frmMain
         Me.clbFilterSource.Name = "clbFilterSource"
         Me.clbFilterSource.Size = New System.Drawing.Size(162, 139)
         Me.clbFilterSource.TabIndex = 8
+        Me.clbFilterSource.TabStop = False
         '
         'pnlFilterGenre
         '
@@ -711,6 +713,7 @@ Partial Class frmMain
         Me.clbFilterGenres.Name = "clbFilterGenres"
         Me.clbFilterGenres.Size = New System.Drawing.Size(162, 139)
         Me.clbFilterGenres.TabIndex = 8
+        Me.clbFilterGenres.TabStop = False
         '
         'dgvMediaList
         '
@@ -735,13 +738,14 @@ Partial Class frmMain
         Me.dgvMediaList.ShowCellErrors = False
         Me.dgvMediaList.ShowRowErrors = False
         Me.dgvMediaList.Size = New System.Drawing.Size(349, 450)
-        Me.dgvMediaList.TabIndex = 10
+        Me.dgvMediaList.StandardTab = True
+        Me.dgvMediaList.TabIndex = 0
         '
         'mnuMediaList
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 320)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 298)
         '
         'cmnuTitle
         '
@@ -942,7 +946,7 @@ Partial Class frmMain
         Me.cbSearch.Location = New System.Drawing.Point(238, 5)
         Me.cbSearch.Name = "cbSearch"
         Me.cbSearch.Size = New System.Drawing.Size(83, 21)
-        Me.cbSearch.TabIndex = 2
+        Me.cbSearch.TabIndex = 7
         '
         'picSearch
         '
@@ -963,7 +967,7 @@ Partial Class frmMain
         Me.txtSearch.Location = New System.Drawing.Point(7, 6)
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(227, 20)
-        Me.txtSearch.TabIndex = 0
+        Me.txtSearch.TabIndex = 6
         '
         'btnMarkAll
         '
@@ -973,7 +977,7 @@ Partial Class frmMain
         Me.btnMarkAll.Location = New System.Drawing.Point(252, 1)
         Me.btnMarkAll.Name = "btnMarkAll"
         Me.btnMarkAll.Size = New System.Drawing.Size(96, 21)
-        Me.btnMarkAll.TabIndex = 13
+        Me.btnMarkAll.TabIndex = 5
         Me.btnMarkAll.Text = "Mark All"
         Me.btnMarkAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnMarkAll.UseVisualStyleBackColor = True
@@ -988,6 +992,7 @@ Partial Class frmMain
         Me.tabsMain.SelectedIndex = 0
         Me.tabsMain.Size = New System.Drawing.Size(347, 35)
         Me.tabsMain.TabIndex = 8
+        Me.tabsMain.TabStop = False
         '
         'tabMovies
         '
@@ -1022,7 +1027,7 @@ Partial Class frmMain
         Me.GroupBox1.Location = New System.Drawing.Point(3, 98)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(131, 55)
-        Me.GroupBox1.TabIndex = 16
+        Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Extra Sorting"
         '
@@ -1033,7 +1038,7 @@ Partial Class frmMain
         Me.btnSortTitle.Location = New System.Drawing.Point(7, 33)
         Me.btnSortTitle.Name = "btnSortTitle"
         Me.btnSortTitle.Size = New System.Drawing.Size(117, 20)
-        Me.btnSortTitle.TabIndex = 43
+        Me.btnSortTitle.TabIndex = 1
         Me.btnSortTitle.Text = "Sort Title"
         Me.btnSortTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnSortTitle.UseVisualStyleBackColor = True
@@ -1045,7 +1050,7 @@ Partial Class frmMain
         Me.btnSortDate.Location = New System.Drawing.Point(7, 13)
         Me.btnSortDate.Name = "btnSortDate"
         Me.btnSortDate.Size = New System.Drawing.Size(117, 20)
-        Me.btnSortDate.TabIndex = 42
+        Me.btnSortDate.TabIndex = 0
         Me.btnSortDate.Text = "Date Added"
         Me.btnSortDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnSortDate.UseVisualStyleBackColor = True
@@ -1057,7 +1062,7 @@ Partial Class frmMain
         Me.btnClearFilters.Location = New System.Drawing.Point(22, 156)
         Me.btnClearFilters.Name = "btnClearFilters"
         Me.btnClearFilters.Size = New System.Drawing.Size(92, 20)
-        Me.btnClearFilters.TabIndex = 16
+        Me.btnClearFilters.TabIndex = 4
         Me.btnClearFilters.Text = "Clear Filters"
         Me.btnClearFilters.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnClearFilters.UseVisualStyleBackColor = True
@@ -1070,7 +1075,7 @@ Partial Class frmMain
         Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(131, 73)
-        Me.GroupBox3.TabIndex = 37
+        Me.GroupBox3.TabIndex = 1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "General"
         '
@@ -1080,7 +1085,7 @@ Partial Class frmMain
         Me.chkFilterTolerance.Location = New System.Drawing.Point(7, 50)
         Me.chkFilterTolerance.Name = "chkFilterTolerance"
         Me.chkFilterTolerance.Size = New System.Drawing.Size(106, 17)
-        Me.chkFilterTolerance.TabIndex = 28
+        Me.chkFilterTolerance.TabIndex = 2
         Me.chkFilterTolerance.Text = "Out of Tolerance"
         Me.chkFilterTolerance.UseVisualStyleBackColor = True
         '
@@ -1090,7 +1095,7 @@ Partial Class frmMain
         Me.chkFilterMissing.Location = New System.Drawing.Point(7, 34)
         Me.chkFilterMissing.Name = "chkFilterMissing"
         Me.chkFilterMissing.Size = New System.Drawing.Size(89, 17)
-        Me.chkFilterMissing.TabIndex = 27
+        Me.chkFilterMissing.TabIndex = 1
         Me.chkFilterMissing.Text = "Missing Items"
         Me.chkFilterMissing.UseVisualStyleBackColor = True
         '
@@ -1100,7 +1105,7 @@ Partial Class frmMain
         Me.chkFilterDupe.Location = New System.Drawing.Point(7, 18)
         Me.chkFilterDupe.Name = "chkFilterDupe"
         Me.chkFilterDupe.Size = New System.Drawing.Size(76, 17)
-        Me.chkFilterDupe.TabIndex = 26
+        Me.chkFilterDupe.TabIndex = 0
         Me.chkFilterDupe.Text = "Duplicates"
         Me.chkFilterDupe.UseVisualStyleBackColor = True
         '
@@ -1122,7 +1127,7 @@ Partial Class frmMain
         Me.gbSpecific.Location = New System.Drawing.Point(135, 22)
         Me.gbSpecific.Name = "gbSpecific"
         Me.gbSpecific.Size = New System.Drawing.Size(224, 152)
-        Me.gbSpecific.TabIndex = 36
+        Me.gbSpecific.TabIndex = 3
         Me.gbSpecific.TabStop = False
         Me.gbSpecific.Text = "Specific"
         '
@@ -1133,7 +1138,7 @@ Partial Class frmMain
         Me.txtFilterSource.Name = "txtFilterSource"
         Me.txtFilterSource.ReadOnly = True
         Me.txtFilterSource.Size = New System.Drawing.Size(166, 20)
-        Me.txtFilterSource.TabIndex = 40
+        Me.txtFilterSource.TabIndex = 8
         '
         'Label6
         '
@@ -1151,7 +1156,7 @@ Partial Class frmMain
         Me.cbFilterFileSource.Location = New System.Drawing.Point(70, 104)
         Me.cbFilterFileSource.Name = "cbFilterFileSource"
         Me.cbFilterFileSource.Size = New System.Drawing.Size(146, 21)
-        Me.cbFilterFileSource.TabIndex = 39
+        Me.cbFilterFileSource.TabIndex = 7
         '
         'chkFilterLock
         '
@@ -1159,7 +1164,7 @@ Partial Class frmMain
         Me.chkFilterLock.Location = New System.Drawing.Point(80, 18)
         Me.chkFilterLock.Name = "chkFilterLock"
         Me.chkFilterLock.Size = New System.Drawing.Size(62, 17)
-        Me.chkFilterLock.TabIndex = 37
+        Me.chkFilterLock.TabIndex = 2
         Me.chkFilterLock.Text = "Locked"
         Me.chkFilterLock.UseVisualStyleBackColor = True
         '
@@ -1170,7 +1175,7 @@ Partial Class frmMain
         Me.GroupBox2.Location = New System.Drawing.Point(158, 10)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(58, 43)
-        Me.GroupBox2.TabIndex = 36
+        Me.GroupBox2.TabIndex = 3
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Modifier"
         '
@@ -1181,7 +1186,7 @@ Partial Class frmMain
         Me.rbFilterAnd.Location = New System.Drawing.Point(6, 11)
         Me.rbFilterAnd.Name = "rbFilterAnd"
         Me.rbFilterAnd.Size = New System.Drawing.Size(44, 17)
-        Me.rbFilterAnd.TabIndex = 24
+        Me.rbFilterAnd.TabIndex = 0
         Me.rbFilterAnd.TabStop = True
         Me.rbFilterAnd.Text = "And"
         Me.rbFilterAnd.UseVisualStyleBackColor = True
@@ -1192,7 +1197,7 @@ Partial Class frmMain
         Me.rbFilterOr.Location = New System.Drawing.Point(6, 25)
         Me.rbFilterOr.Name = "rbFilterOr"
         Me.rbFilterOr.Size = New System.Drawing.Size(36, 17)
-        Me.rbFilterOr.TabIndex = 25
+        Me.rbFilterOr.TabIndex = 1
         Me.rbFilterOr.Text = "Or"
         Me.rbFilterOr.UseVisualStyleBackColor = True
         '
@@ -1202,7 +1207,7 @@ Partial Class frmMain
         Me.chkFilterNew.Location = New System.Drawing.Point(9, 18)
         Me.chkFilterNew.Name = "chkFilterNew"
         Me.chkFilterNew.Size = New System.Drawing.Size(48, 17)
-        Me.chkFilterNew.TabIndex = 1
+        Me.chkFilterNew.TabIndex = 0
         Me.chkFilterNew.Text = "New"
         Me.chkFilterNew.UseVisualStyleBackColor = True
         '
@@ -1214,7 +1219,7 @@ Partial Class frmMain
         Me.cbFilterYear.Location = New System.Drawing.Point(130, 80)
         Me.cbFilterYear.Name = "cbFilterYear"
         Me.cbFilterYear.Size = New System.Drawing.Size(69, 21)
-        Me.cbFilterYear.TabIndex = 35
+        Me.cbFilterYear.TabIndex = 6
         '
         'chkFilterMark
         '
@@ -1222,7 +1227,7 @@ Partial Class frmMain
         Me.chkFilterMark.Location = New System.Drawing.Point(9, 36)
         Me.chkFilterMark.Name = "chkFilterMark"
         Me.chkFilterMark.Size = New System.Drawing.Size(62, 17)
-        Me.chkFilterMark.TabIndex = 23
+        Me.chkFilterMark.TabIndex = 1
         Me.chkFilterMark.Text = "Marked"
         Me.chkFilterMark.UseVisualStyleBackColor = True
         '
@@ -1234,7 +1239,7 @@ Partial Class frmMain
         Me.cbFilterYearMod.Location = New System.Drawing.Point(67, 80)
         Me.cbFilterYearMod.Name = "cbFilterYearMod"
         Me.cbFilterYearMod.Size = New System.Drawing.Size(59, 21)
-        Me.cbFilterYearMod.TabIndex = 34
+        Me.cbFilterYearMod.TabIndex = 5
         '
         'Label5
         '
@@ -1252,7 +1257,7 @@ Partial Class frmMain
         Me.txtFilterGenre.Name = "txtFilterGenre"
         Me.txtFilterGenre.ReadOnly = True
         Me.txtFilterGenre.Size = New System.Drawing.Size(166, 20)
-        Me.txtFilterGenre.TabIndex = 32
+        Me.txtFilterGenre.TabIndex = 4
         '
         'Label2
         '
@@ -1281,6 +1286,7 @@ Partial Class frmMain
         Me.btnFilterDown.Name = "btnFilterDown"
         Me.btnFilterDown.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterDown.TabIndex = 28
+        Me.btnFilterDown.TabStop = False
         Me.btnFilterDown.Text = "v"
         Me.btnFilterDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnFilterDown.UseVisualStyleBackColor = False
@@ -1294,6 +1300,7 @@ Partial Class frmMain
         Me.btnFilterUp.Name = "btnFilterUp"
         Me.btnFilterUp.Size = New System.Drawing.Size(30, 22)
         Me.btnFilterUp.TabIndex = 27
+        Me.btnFilterUp.TabStop = False
         Me.btnFilterUp.Text = "^"
         Me.btnFilterUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnFilterUp.UseVisualStyleBackColor = False
@@ -1356,6 +1363,7 @@ Partial Class frmMain
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(205, 55)
         Me.btnCancel.TabIndex = 0
+        Me.btnCancel.TabStop = False
         Me.btnCancel.Text = "Cancel Scraper"
         Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnCancel.UseVisualStyleBackColor = True
@@ -1446,6 +1454,7 @@ Partial Class frmMain
         Me.txtCerts.ReadOnly = True
         Me.txtCerts.Size = New System.Drawing.Size(219, 20)
         Me.txtCerts.TabIndex = 41
+        Me.txtCerts.TabStop = False
         '
         'lblCertsHeader
         '
@@ -1495,6 +1504,7 @@ Partial Class frmMain
         Me.btnMid.Name = "btnMid"
         Me.btnMid.Size = New System.Drawing.Size(30, 22)
         Me.btnMid.TabIndex = 37
+        Me.btnMid.TabStop = False
         Me.btnMid.Text = "-"
         Me.btnMid.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnMid.UseVisualStyleBackColor = False
@@ -1518,6 +1528,7 @@ Partial Class frmMain
         Me.btnMetaDataRefresh.Name = "btnMetaDataRefresh"
         Me.btnMetaDataRefresh.Size = New System.Drawing.Size(75, 23)
         Me.btnMetaDataRefresh.TabIndex = 34
+        Me.btnMetaDataRefresh.TabStop = False
         Me.btnMetaDataRefresh.Text = "Refresh"
         Me.btnMetaDataRefresh.UseVisualStyleBackColor = True
         '
@@ -1559,6 +1570,7 @@ Partial Class frmMain
         Me.btnPlay.Name = "btnPlay"
         Me.btnPlay.Size = New System.Drawing.Size(20, 20)
         Me.btnPlay.TabIndex = 32
+        Me.btnPlay.TabStop = False
         Me.btnPlay.UseVisualStyleBackColor = True
         '
         'txtFilePath
@@ -1571,6 +1583,7 @@ Partial Class frmMain
         Me.txtFilePath.ReadOnly = True
         Me.txtFilePath.Size = New System.Drawing.Size(311, 20)
         Me.txtFilePath.TabIndex = 31
+        Me.txtFilePath.TabStop = False
         '
         'lblFilePathHeader
         '
@@ -1595,6 +1608,7 @@ Partial Class frmMain
         Me.txtIMDBID.ReadOnly = True
         Me.txtIMDBID.Size = New System.Drawing.Size(108, 20)
         Me.txtIMDBID.TabIndex = 29
+        Me.txtIMDBID.TabStop = False
         '
         'lblIMDBHeader
         '
@@ -1671,6 +1685,7 @@ Partial Class frmMain
         Me.lstActors.Name = "lstActors"
         Me.lstActors.Size = New System.Drawing.Size(214, 221)
         Me.lstActors.TabIndex = 28
+        Me.lstActors.TabStop = False
         '
         'pbActors
         '
@@ -1725,6 +1740,7 @@ Partial Class frmMain
         Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtOutline.Size = New System.Drawing.Size(333, 78)
         Me.txtOutline.TabIndex = 16
+        Me.txtOutline.TabStop = False
         '
         'pnlTop250
         '
@@ -1788,6 +1804,7 @@ Partial Class frmMain
         Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtPlot.Size = New System.Drawing.Size(333, 184)
         Me.txtPlot.TabIndex = 7
+        Me.txtPlot.TabStop = False
         '
         'btnDown
         '
@@ -1797,6 +1814,7 @@ Partial Class frmMain
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(30, 22)
         Me.btnDown.TabIndex = 6
+        Me.btnDown.TabStop = False
         Me.btnDown.Text = "v"
         Me.btnDown.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnDown.UseVisualStyleBackColor = False
@@ -1810,6 +1828,7 @@ Partial Class frmMain
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(30, 22)
         Me.btnUp.TabIndex = 1
+        Me.btnUp.TabStop = False
         Me.btnUp.Text = "^"
         Me.btnUp.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnUp.UseVisualStyleBackColor = False
