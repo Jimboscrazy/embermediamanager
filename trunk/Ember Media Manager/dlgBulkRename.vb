@@ -151,11 +151,21 @@ Public Class dlgBulkRenamer
                                                     MovieFile.BasePath = If(i.EndsWith(Path.DirectorySeparatorChar), i.Substring(0, i.Length - 1), i)
                                                     If Directory.GetParent(_curMovie.Filename).Name.ToLower = "video_ts" Then
                                                         MovieFile.Parent = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).Name
-                                                        MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName Then
+                                                            MovieFile.OldPath = String.Empty
+                                                            MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
+                                                        Else
+                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                        End If
                                                         MovieFile.IsVIDEO_TS = True
                                                     Else
                                                         MovieFile.Parent = Directory.GetParent(_curMovie.Filename).Name
-                                                        MovieFile.OldPath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                        If MovieFile.BasePath = Directory.GetParent(_curMovie.Filename).FullName Then
+                                                            MovieFile.OldPath = String.Empty
+                                                            MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
+                                                        Else
+                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                        End If
                                                     End If
                                                 End If
                                             Next
