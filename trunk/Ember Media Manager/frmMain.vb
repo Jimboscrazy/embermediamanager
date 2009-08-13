@@ -5409,6 +5409,8 @@ doCancel:
                             .dgvMediaList.Columns(i).Visible = False
                         Next
 
+                        .dgvMediaList.Columns(0).ValueType = GetType(Int32)
+
                         'Trick to autosize the first column, but still allow resizing by user
                         .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
