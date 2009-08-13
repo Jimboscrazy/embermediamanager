@@ -611,11 +611,21 @@ Public Class FileFolderRenamer
                 MovieFile.BasePath = i
                 If Directory.GetParent(_tmpMovie.Filename).Name.ToLower = "video_ts" Then
                     MovieFile.Parent = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).Name
-                    MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName.Replace(i, String.Empty)
+                    If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName Then
+                        MovieFile.OldPath = String.Empty
+                        MovieFile.BasePath = Directory.GetParent(i).FullName
+                    Else
+                        MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName.Replace(i, String.Empty)
+                    End If
                     MovieFile.IsVIDEO_TS = True
                 Else
                     MovieFile.Parent = Directory.GetParent(_tmpMovie.Filename).Name
-                    MovieFile.OldPath = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName.Replace(i, String.Empty)
+                    If MovieFile.BasePath = Directory.GetParent(_tmpMovie.Filename).FullName Then
+                        MovieFile.OldPath = String.Empty
+                        MovieFile.BasePath = Directory.GetParent(i).FullName
+                    Else
+                        MovieFile.OldPath = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName.Replace(i, String.Empty)
+                    End If
                 End If
             End If
         Next
