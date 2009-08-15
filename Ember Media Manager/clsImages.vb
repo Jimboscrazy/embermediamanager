@@ -102,7 +102,7 @@ Public Class Images
 
     Public Sub Save(ByVal sPath As String, Optional ByVal iQuality As Long = 0)
         Try
-            If Not File.Exists(sPath) OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly)) Then
+            If Not String.IsNullOrEmpty(sPath) AndAlso (Not File.Exists(sPath) OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly))) Then
                 Using msSave As New MemoryStream
                     Dim retSave() As Byte
                     If iQuality > 0 Then
