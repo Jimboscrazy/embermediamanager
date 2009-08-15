@@ -475,7 +475,7 @@ Public Class FileFolderRenamer
                             DoDB = False
                         End If
                         'Rename Directory
-                        If Not f.NewPath = f.Path Then
+                        If Not srcDir = destDir Then
 
                             If Not sfunction Is Nothing Then
                                 If Not sfunction(f.NewPath, iProg) Then Return
@@ -483,18 +483,12 @@ Public Class FileFolderRenamer
 
                             Try
                                 If Not f.IsSingle Then
-                                    System.IO.Directory.CreateDirectory(destDir)
+                                    Directory.CreateDirectory(destDir)
                                 Else
-                                    If f.NewPath.ToLower = f.Path.ToLower Then
-                                        If Not Directory.Exists(String.Concat(destDir, ".$emm")) Then
-                                            Directory.CreateDirectory(String.Concat(destDir, ".$emm"))
-                                        End If
+                                    If srcDir.ToLower = destDir.ToLower Then
                                         Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
                                         Directory.Move(String.Concat(destDir, ".$emm"), destDir)
                                     Else
-                                        If Not Directory.Exists(Path.GetDirectoryName(destDir)) Then
-                                            Directory.CreateDirectory(Path.GetDirectoryName(destDir))
-                                        End If
                                         Directory.Move(srcDir, destDir)
                                     End If
                                 End If
@@ -664,19 +658,17 @@ Public Class FileFolderRenamer
                 End If
 
                 'Rename Directory
-                If Not _frename.NewPath = _frename.Path Then
+                If Not srcDir = destDir Then
 
                     Try
-                        If Not Path.GetFileName(srcDir).ToLower = "video_ts" Then
-                            If Not _movie.isSingle Then
-                                System.IO.Directory.CreateDirectory(destDir)
+                        If Not _movie.isSingle Then
+                            Directory.CreateDirectory(destDir)
+                        Else
+                            If srcDir.ToLower = destDir.ToLower Then
+                                Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
+                                Directory.Move(String.Concat(destDir, ".$emm"), destDir)
                             Else
-                                If _frename.NewPath.ToLower = _frename.Path.ToLower Then
-                                    System.IO.Directory.Move(srcDir, String.Concat(destDir, ".$emm"))
-                                    System.IO.Directory.Move(String.Concat(destDir, ".$emm"), destDir)
-                                Else
-                                    System.IO.Directory.Move(srcDir, destDir)
-                                End If
+                                Directory.Move(srcDir, destDir)
                             End If
                         End If
                     Catch ex As Exception
