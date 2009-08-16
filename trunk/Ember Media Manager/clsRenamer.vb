@@ -504,7 +504,13 @@ Public Class FileFolderRenamer
                         If Not f.IsVIDEO_TS Then
                             If (Not f.NewFileName = f.FileName) OrElse (f.Path = String.Empty AndAlso Not f.NewPath = String.Empty) OrElse Not f.IsSingle Then
                                 Dim tmpList As New ArrayList
-                                Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
+                                Dim di As DirectoryInfo
+
+                                If f.IsSingle Then
+                                    di = New DirectoryInfo(destDir)
+                                Else
+                                    di = New DirectoryInfo(srcDir)
+                                End If
 
                                 Dim lFi As New List(Of FileInfo)
                                 If Not sfunction Is Nothing Then
@@ -520,7 +526,7 @@ Public Class FileFolderRenamer
                                     Dim dstFile As String
                                     For Each lFile As FileInfo In lFi
                                         srcFile = lFile.FullName
-                                        dstFile = Path.Combine(destDir, Path.GetFileName(lFile.FullName).Replace(f.FileName.Trim, f.NewFileName.Trim))
+                                        dstFile = Path.Combine(destDir, lFile.Name.Replace(f.FileName.Trim, f.NewFileName.Trim))
 
                                         If Not srcFile = dstFile Then
                                             Try
@@ -529,7 +535,7 @@ Public Class FileFolderRenamer
                                                     File.Move(srcFile, String.Concat(dstFile, ".$emm$"))
                                                     File.Move(String.Concat(dstFile, ".$emm$"), dstFile)
                                                 Else
-                                                    If Path.GetFileName(srcFile).StartsWith(f.FileName, StringComparison.OrdinalIgnoreCase) Then
+                                                    If lFile.Name.StartsWith(f.FileName, StringComparison.OrdinalIgnoreCase) Then
                                                         File.Move(srcFile, dstFile)
                                                     End If
                                                 End If
@@ -552,7 +558,7 @@ Public Class FileFolderRenamer
                                 Dim fileCount As Integer = 0
                                 Dim dirCount As Integer = 0
 
-                                Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(f.BasePath, f.Path))
+                                Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
 
                                 Try
                                     fileCount = di.GetFiles().Count
@@ -683,7 +689,14 @@ Public Class FileFolderRenamer
                 'Rename Files
                 If Not _frename.IsVIDEO_TS Then
                     If (Not _frename.NewFileName = _frename.FileName) OrElse (_frename.Path = String.Empty AndAlso Not _frename.NewPath = String.Empty) OrElse Not _movie.isSingle Then
-                        Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(_frename.BasePath, _frename.Path))
+                        Dim di As DirectoryInfo
+
+                        If _frename.IsSingle Then
+                            di = New DirectoryInfo(destDir)
+                        Else
+                            di = New DirectoryInfo(srcDir)
+                        End If
+
                         Dim lFi As New List(Of FileInfo)
                         Try
                             lFi.AddRange(di.GetFiles())
@@ -695,14 +708,14 @@ Public Class FileFolderRenamer
                             Dim dstFile As String
                             For Each lFile As FileInfo In lFi
                                 srcFile = lFile.FullName
-                                dstFile = Path.Combine(destDir, Path.GetFileName(lFile.FullName).Replace(_frename.FileName.Trim, _frename.NewFileName.Trim))
+                                dstFile = Path.Combine(destDir, lFile.Name.Replace(_frename.FileName.Trim, _frename.NewFileName.Trim))
                                 If Not srcFile = dstFile Then
                                     Try
                                         If srcFile.ToLower = dstFile.ToLower Then
                                             File.Move(srcFile, String.Concat(dstFile, ".$emm$"))
                                             File.Move(String.Concat(dstFile, ".$emm$"), dstFile)
                                         Else
-                                            If Path.GetFileName(srcFile).StartsWith(_frename.FileName, StringComparison.OrdinalIgnoreCase) Then
+                                            If lFile.Name.StartsWith(_frename.FileName, StringComparison.OrdinalIgnoreCase) Then
                                                 File.Move(srcFile, dstFile)
                                             End If
                                         End If
@@ -726,7 +739,7 @@ Public Class FileFolderRenamer
                     Dim fileCount As Integer = 0
                     Dim dirCount As Integer = 0
 
-                    Dim di As DirectoryInfo = New DirectoryInfo(Path.Combine(_frename.BasePath, _frename.Path))
+                    Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
 
                     Try
                         fileCount = di.GetFiles().Count
