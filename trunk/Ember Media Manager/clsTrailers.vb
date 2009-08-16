@@ -87,7 +87,7 @@ Public Class Trailers
             TrailerNumber = Convert.ToInt32(Link.Value.Substring(3))
 
             If TrailerNumber > 0 Then
-                currPage = Convert.ToInt32((TrailerNumber / 10))
+                currPage = Convert.ToInt32(Math.Ceiling(TrailerNumber / 10))
 
                 For i As Integer = 1 To currPage
                     If Not i = 1 Then
@@ -114,60 +114,28 @@ Public Class Trailers
     Private Sub GetYouTubeTrailer()
         Dim TMDB As New TMDB.Scraper
         Dim YT As String = TMDB.GetTrailers(_ImdbID)
-        Dim StartIndex As Integer = 0
-        Dim EndIndex As Integer = 0
-        Dim tLink As String = String.Empty
         Dim T As String = String.Empty
         Dim videoID As String = String.Empty
         Dim L As String = String.Empty
+        Dim DLURL As String = String.Empty
+        Dim tURL As String = String.Empty
 
         If Not String.IsNullOrEmpty(YT) Then
             Dim YTPage As String = WebPage.DownloadData(YT)
-
             If Not String.IsNullOrEmpty(YTPage) Then
-                StartIndex = YTPage.IndexOf("/watch_fullscreen?") + 18
-                If StartIndex > 0 Then
-                    EndIndex = YTPage.IndexOf("title=", StartIndex)
-                    If EndIndex > 0 Then
-                        tLink = YTPage.Substring(StartIndex, (EndIndex - StartIndex)).Trim
+                If Regex.IsMatch(YTPage, "var pageVideoId = '(.*?)';") Then
+                    videoID = Regex.Match(YTPage, "var pageVideoId = '(.*?)';").Groups(1).Value.ToString
+                    If Regex.IsMatch(YTPage, ", ""l"": (\d+),") Then
+                        L = Regex.Match(YTPage, ", ""l"": (\d+),").Groups(1).Value.ToString
+                        If Regex.IsMatch(YTPage, ", ""t"": ""(.*?)"",") Then
+                            T = Regex.Match(YTPage, ", ""t"": ""(.*?)"",").Groups(1).Value.ToString
 
-                        If Not String.IsNullOrEmpty(tLink) Then
-                            StartIndex = tLink.IndexOf("&t=") + 3
-                            If StartIndex > 0 Then
-                                EndIndex = tLink.IndexOf("&", StartIndex + 1)
-                                If EndIndex > 0 Then
-                                    T = tLink.Substring(StartIndex, (EndIndex - StartIndex))
-
-                                    If Not String.IsNullOrEmpty(T) Then
-                                        StartIndex = tLink.IndexOf("&video_id=") + 10
-                                        If StartIndex > 0 Then
-                                            EndIndex = tLink.IndexOf("&", StartIndex + 1)
-                                            If EndIndex > 0 Then
-                                                videoID = tLink.Substring(StartIndex, (EndIndex - StartIndex))
-
-                                                If Not String.IsNullOrEmpty(videoID) Then
-                                                    StartIndex = tLink.IndexOf("&l=") + 3
-                                                    If StartIndex > 0 Then
-                                                        EndIndex = tLink.IndexOf("&", StartIndex + 1)
-                                                        If EndIndex > 0 Then
-                                                            L = tLink.Substring(StartIndex, EndIndex - StartIndex)
-
-                                                            If Not String.IsNullOrEmpty(L) Then
-                                                                Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
-                                                                If WebPage.IsValidURL(YTURL) Then
-                                                                    Me._TrailerList.Add(YTURL)
-                                                                ElseIf WebPage.IsValidURL(YTURL.Replace("&fmt=18", String.Empty)) Then
-                                                                    'try the flv version
-                                                                    Me._TrailerList.Add(YTURL.Replace("&fmt=18", String.Empty))
-                                                                End If
-                                                            End If
-                                                        End If
-                                                    End If
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-                                End If
+                            Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
+                            If WebPage.IsValidURL(YTURL) Then
+                                Me._TrailerList.Add(YTURL)
+                            ElseIf WebPage.IsValidURL(YTURL.Replace("&fmt=18", String.Empty)) Then
+                                'try the flv version
+                                Me._TrailerList.Add(YTURL.Replace("&fmt=18", String.Empty))
                             End If
                         End If
                     End If
@@ -217,9 +185,6 @@ Public Class Trailers
 
     Public Function DownloadYouTubeTrailer(ByVal sPath As String, ByVal sURL As String) As String
 
-        Dim StartIndex As Integer = 0
-        Dim EndIndex As Integer = 0
-        Dim tLink As String = String.Empty
         Dim T As String = String.Empty
         Dim videoID As String = String.Empty
         Dim L As String = String.Empty
@@ -230,49 +195,19 @@ Public Class Trailers
             Dim YTPage As String = WebPage.DownloadData(sURL)
 
             If Not String.IsNullOrEmpty(YTPage) Then
-                StartIndex = YTPage.IndexOf("/watch_fullscreen?") + 18
-                If StartIndex > 0 Then
-                    EndIndex = YTPage.IndexOf("title=", StartIndex)
-                    If EndIndex > 0 Then
-                        tLink = YTPage.Substring(StartIndex, (EndIndex - StartIndex)).Trim
+                If Regex.IsMatch(YTPage, "var pageVideoId = '(.*?)';") Then
+                    videoID = Regex.Match(YTPage, "var pageVideoId = '(.*?)';").Groups(1).Value.ToString
+                    If Regex.IsMatch(YTPage, ", ""l"": (\d+),") Then
+                        L = Regex.Match(YTPage, ", ""l"": (\d+),").Groups(1).Value.ToString
+                        If Regex.IsMatch(YTPage, ", ""t"": ""(.*?)"",") Then
+                            T = Regex.Match(YTPage, ", ""t"": ""(.*?)"",").Groups(1).Value.ToString
 
-                        If Not String.IsNullOrEmpty(tLink) Then
-                            StartIndex = tLink.IndexOf("&t=") + 3
-                            If StartIndex > 0 Then
-                                EndIndex = tLink.IndexOf("&", StartIndex + 1)
-                                If EndIndex > 0 Then
-                                    T = tLink.Substring(StartIndex, (EndIndex - StartIndex))
-
-                                    If Not String.IsNullOrEmpty(T) Then
-                                        StartIndex = tLink.IndexOf("&video_id=") + 10
-                                        If StartIndex > 0 Then
-                                            EndIndex = tLink.IndexOf("&", StartIndex + 1)
-                                            If EndIndex > 0 Then
-                                                videoID = tLink.Substring(StartIndex, (EndIndex - StartIndex))
-
-                                                If Not String.IsNullOrEmpty(videoID) Then
-                                                    StartIndex = tLink.IndexOf("&l=") + 3
-                                                    If StartIndex > 0 Then
-                                                        EndIndex = tLink.IndexOf("&", StartIndex + 1)
-                                                        If EndIndex > 0 Then
-                                                            L = tLink.Substring(StartIndex, EndIndex - StartIndex)
-
-                                                            If Not String.IsNullOrEmpty(L) Then
-                                                                Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
-                                                                If WebPage.IsValidURL(YTURL) Then
-                                                                    DLURL = YTURL
-                                                                ElseIf WebPage.IsValidURL(YTURL.Replace("&fmt=18", String.Empty)) Then
-                                                                    'try the flv version
-                                                                    DLURL = YTURL.Replace("&fmt=18", String.Empty)
-                                                                End If
-                                                            End If
-                                                        End If
-                                                    End If
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-                                End If
+                            Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
+                            If WebPage.IsValidURL(YTURL) Then
+                                DLURL = YTURL
+                            ElseIf WebPage.IsValidURL(YTURL.Replace("&fmt=18", String.Empty)) Then
+                                'try the flv version
+                                DLURL = YTURL.Replace("&fmt=18", String.Empty)
                             End If
                         End If
                     End If
@@ -291,7 +226,7 @@ Public Class Trailers
             End If
         End If
 
-        Return tURL
+            Return tURL
     End Function
 
     Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
