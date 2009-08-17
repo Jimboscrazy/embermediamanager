@@ -52,7 +52,7 @@ Public Class FileFolderRenamer
                 Return Me._title
             End Get
             Set(ByVal value As String)
-                Me._title = value
+                Me._title = value.Trim
             End Set
         End Property
 
@@ -61,7 +61,7 @@ Public Class FileFolderRenamer
                 Return Me._oldpath
             End Get
             Set(ByVal value As String)
-                Me._oldpath = value
+                Me._oldpath = value.Trim
             End Set
         End Property
 
@@ -70,7 +70,7 @@ Public Class FileFolderRenamer
                 Return Me._path
             End Get
             Set(ByVal value As String)
-                Me._path = value
+                Me._path = value.Trim
             End Set
         End Property
 
@@ -79,7 +79,7 @@ Public Class FileFolderRenamer
                 Return Me._parent
             End Get
             Set(ByVal value As String)
-                Me._parent = value
+                Me._parent = value.Trim
             End Set
         End Property
 
@@ -88,7 +88,7 @@ Public Class FileFolderRenamer
                 Return Me._fileName
             End Get
             Set(ByVal value As String)
-                Me._fileName = value
+                Me._fileName = value.Trim
             End Set
         End Property
         Public Property NewPath() As String
@@ -96,7 +96,7 @@ Public Class FileFolderRenamer
                 Return Me._newPath
             End Get
             Set(ByVal value As String)
-                Me._newPath = value
+                Me._newPath = value.Trim
             End Set
         End Property
         Public Property NewFileName() As String
@@ -104,7 +104,7 @@ Public Class FileFolderRenamer
                 Return Me._newFileName
             End Get
             Set(ByVal value As String)
-                Me._newFileName = value
+                Me._newFileName = value.Trim
             End Set
         End Property
         Public Property IsLocked() As Boolean
@@ -221,7 +221,8 @@ Public Class FileFolderRenamer
     End Function
 
     Public Function GetMoviesCount() As Integer
-        Return _movies.Count
+        Dim Renamed = From rList In _movies Where rList.IsRenamed = True
+        Return Renamed.Count
     End Function
 
     Public Shared Function HaveBase(ByVal fpath As String) As Boolean
@@ -641,7 +642,16 @@ Public Class FileFolderRenamer
         End If
         MovieFile.NewPath = If(MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar), MovieFile.NewPath.Substring(1), MovieFile.NewPath)
 
-        MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_tmpMovie.Filename))
+        If Not MovieFile.IsVIDEO_TS Then
+            MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_tmpMovie.Filename))
+            Dim stackMark As String = Path.GetFileNameWithoutExtension(_tmpMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
+            If _tmpMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
+                MovieFile.FileName = Path.GetFileNameWithoutExtension(_tmpMovie.Filename)
+            End If
+        Else
+            MovieFile.FileName = "VIDEO_TS"
+        End If
+
         MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern).Trim
 
         MovieFile.FileExist = File.Exists(Path.Combine(MovieFile.BasePath, Path.Combine(MovieFile.NewPath, MovieFile.NewFileName))) AndAlso Not (MovieFile.FileName = MovieFile.NewFileName)
