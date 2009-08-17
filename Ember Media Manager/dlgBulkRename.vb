@@ -284,11 +284,14 @@ Public Class dlgBulkRenamer
     Private Sub dgvMoviesList_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMoviesList.CellPainting
         Try
 
-            If ((e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0) AndAlso Not Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(5).Value) Then
-                If Not IsNothing(e.Value) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value.ToString = e.Value.ToString Then
+            If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex >= 0 Then
+                If Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(5).Value) Then
+                    e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
+                    e.CellStyle.ForeColor = Color.Red
+                ElseIf Not IsNothing(e.Value) AndAlso Not dgvMoviesList.Rows(e.RowIndex).Cells(e.ColumnIndex - 2).Value.ToString = e.Value.ToString Then
                     e.CellStyle.Font = New Font("Microsoft Sans Serif", 9, FontStyle.Bold)
                     If (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(6).Value) AndAlso e.ColumnIndex = 3) OrElse (Convert.ToBoolean(dgvMoviesList.Rows(e.RowIndex).Cells(7).Value) AndAlso e.ColumnIndex = 4) Then
-                        e.CellStyle.ForeColor = Color.Red
+                        e.CellStyle.ForeColor = Color.Purple
                     Else
                         e.CellStyle.ForeColor = Color.Blue
                     End If
@@ -395,6 +398,7 @@ Public Class dlgBulkRenamer
         DoneRename = True
         pnlCancel.Visible = True
         lblCompiling.Text = Master.eLang.GetString(567, "Renaming...")
+        lblFile.Visible = True
         pbCompile.Style = ProgressBarStyle.Continuous
         pbCompile.Maximum = FFRenamer.GetMoviesCount
         pbCompile.Value = 0
