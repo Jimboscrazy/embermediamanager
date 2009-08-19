@@ -623,6 +623,7 @@ Public Class frmMainManager
 
         '_cmds.Save(Path.Combine(AppPath, String.Format("site\commands_{0}.xml", v.Version)))
         pnlWork.Visible = False
+        LoadVersions()
     End Sub
 
     Private Sub btnAddPath_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOriginPath.Click
