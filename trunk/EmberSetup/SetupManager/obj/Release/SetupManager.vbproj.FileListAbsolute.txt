@@ -1,0 +1,12 @@
+C:\Ember Media Manager\SVN-trunk\SetupManager\obj\Release\ResolveAssemblyReference.cache
+C:\Ember Media Manager\SVN-trunk\SetupManager\obj\Release\SetupManager.dlgEditOrigPath.resources
+C:\Ember Media Manager\SVN-trunk\SetupManager\obj\Release\SetupManager.dlgOrigPaths.resources
+C:\Ember Media Manager\SVN-trunk\SetupManager\obj\Release\SetupManager.frmMainManager.resources
+C:\Ember Media Manager\SVN-trunk\SetupManager\obj\Release\SetupManager.Resources.resources
+C:\Ember Media Manager\SVN-trunk\SetupManager\obj\Release\SetupManager.vbproj.GenerateResource.Cache
+C:\Ember Media Manager\SVN-trunk\SetupManager\obj\Release\SetupManager.exe
+C:\Ember Media Manager\SVN-trunk\SetupManager\obj\Release\SetupManager.xml
+C:\Ember Media Manager\SVN-trunk\SetupManager\obj\Release\SetupManager.pdb
+C:\Ember Media Manager\SetupManager.exe
+C:\Ember Media Manager\SetupManager.pdb
+C:\Ember Media Manager\SetupManager.xml
