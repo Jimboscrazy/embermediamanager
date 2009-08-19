@@ -32,6 +32,8 @@ Partial Class dlgEditMovie
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.txtSortTitle = New System.Windows.Forms.TextBox
         Me.lblLocalTrailer = New System.Windows.Forms.Label
         Me.btnPlayTrailer = New System.Windows.Forms.Button
         Me.btnDLTrailer = New System.Windows.Forms.Button
@@ -133,8 +135,6 @@ Partial Class dlgEditMovie
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.txtSortTitle = New System.Windows.Forms.TextBox
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -301,6 +301,23 @@ Partial Class dlgEditMovie
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(7, 49)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(52, 13)
+        Me.Label6.TabIndex = 111
+        Me.Label6.Text = "Sort Title:"
+        '
+        'txtSortTitle
+        '
+        Me.txtSortTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSortTitle.Location = New System.Drawing.Point(7, 66)
+        Me.txtSortTitle.Name = "txtSortTitle"
+        Me.txtSortTitle.Size = New System.Drawing.Size(192, 20)
+        Me.txtSortTitle.TabIndex = 1
         '
         'lblLocalTrailer
         '
@@ -1292,23 +1309,6 @@ Partial Class dlgEditMovie
         Me.btnClearCache.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnClearCache.UseVisualStyleBackColor = True
         Me.btnClearCache.Visible = False
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(7, 49)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(52, 13)
-        Me.Label6.TabIndex = 111
-        Me.Label6.Text = "Sort Title:"
-        '
-        'txtSortTitle
-        '
-        Me.txtSortTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtSortTitle.Location = New System.Drawing.Point(7, 66)
-        Me.txtSortTitle.Name = "txtSortTitle"
-        Me.txtSortTitle.Size = New System.Drawing.Size(192, 20)
-        Me.txtSortTitle.TabIndex = 110
         '
         'dlgEditMovie
         '
