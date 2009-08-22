@@ -126,8 +126,8 @@ Public Class dlgImgView
 
         Try
             Me.Visible = False 'hide form until resizing is done... hides Full -> Fit position whackiness not fixable by .SuspendLayout
-            Dim screenHeight As Integer = My.Computer.Screen.Bounds.Height
-            Dim screenWidth As Integer = My.Computer.Screen.Bounds.Width
+            Dim screenHeight As Integer = My.Computer.Screen.WorkingArea.Height
+            Dim screenWidth As Integer = My.Computer.Screen.WorkingArea.Width
 
             Me.ResetScroll()
             Me.isFull = True
@@ -172,12 +172,12 @@ Public Class dlgImgView
             Me.isFull = False
             Me.pnlBG.AutoScroll = False
 
-            ImageManip.ResizePB(Me.pbPicture, Me.pbCache, My.Computer.Screen.Bounds.Height - 60, My.Computer.Screen.Bounds.Width)
+            ImageManip.ResizePB(Me.pbPicture, Me.pbCache, My.Computer.Screen.WorkingArea.Height - 60, My.Computer.Screen.WorkingArea.Width)
 
             Me.Width = Me.pbPicture.Width
             Me.Height = Me.pbPicture.Height + 53
-            Me.Left = Convert.ToInt32((My.Computer.Screen.Bounds.Width - Me.Width) / 2)
-            Me.Top = Convert.ToInt32((My.Computer.Screen.Bounds.Height - Me.Height) / 2)
+            Me.Left = Convert.ToInt32((My.Computer.Screen.WorkingArea.Width - Me.Width) / 2)
+            Me.Top = Convert.ToInt32((My.Computer.Screen.WorkingArea.Height - Me.Height) / 2)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
