@@ -155,7 +155,7 @@ Public Class frmMain
                 Master.eSettings.FilterPanelState = Me.aniFilterRaise
                 Master.eSettings.SpliterPanelState = Me.scMain.SplitterDistance
             End If
-            Master.eSettings.Save()
+            If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
 
             If Me.bwPrelim.IsBusy OrElse Me.bwFolderData.IsBusy OrElse isCL Then
                 doSave = False
