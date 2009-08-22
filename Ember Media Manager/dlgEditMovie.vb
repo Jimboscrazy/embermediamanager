@@ -1324,6 +1324,7 @@ Public Class dlgEditMovie
     Private Sub btnSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetAsFanart.Click
         Me.Fanart.FromFile(Me.Thumbs.Item(Me.ExtraIndex).Path)
         Me.pbFanart.Image = pbExtraThumbs.Image
+        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
         Me.btnSetAsFanart.Enabled = False
     End Sub
 
