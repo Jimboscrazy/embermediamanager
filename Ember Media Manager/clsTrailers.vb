@@ -125,31 +125,35 @@ Public Class Trailers
             If Not String.IsNullOrEmpty(YTPage) Then
                 If Regex.IsMatch(YTPage, "var pageVideoId = '(.*?)';") Then
                     videoID = Regex.Match(YTPage, "var pageVideoId = '(.*?)';").Groups(1).Value.ToString
-                    Dim YTInfo As String() = Web.HttpUtility.UrlDecode(WebPage.DownloadData(String.Format("http://www.youtube.com/get_video_info?&video_id={0}", videoID))).Split(Convert.ToChar("|"))
+                    Dim YTInfo As String()
+                    'The commented Code is the correct way to do it...
+                    'but will not get the "Blocked by Autheor" movies...
+                    'So will just skip it and do it the Hard way for all Movies ... LOL
 
-                    If YTInfo.Count > 0 AndAlso YTInfo(0).Contains("status=ok") Then
-                        For i As Integer = 1 To YTInfo.Count - 1
-                            If WebPage.IsValidURL(YTInfo(i)) Then
-                                Me._TrailerList.Add(YTInfo(i))
-                                'assume best video quality are the first in list
-                                Exit For
-                            End If
-                        Next
+                    'YTInfo = Web.HttpUtility.UrlDecode(WebPage.DownloadData(String.Format("http://www.youtube.com/get_video_info?&video_id={0}", videoID))).Split(Convert.ToChar("|"))
+                    'If YTInfo.Count > 0 AndAlso YTInfo(0).Contains("status=ok") Then
+                    'For i As Integer = 1 To YTInfo.Count - 1
+                    'If WebPage.IsValidURL(YTInfo(i)) Then
+                    'Me._TrailerList.Add(YTInfo(i))
+                    'assume best video quality are the first in list
+                    'for this maybe we can show them all? (Remove the Exit For)
+                    'Exit For
+                    'End If
+                    'Next
+                    'ElseIf YTInfo(0).Contains("errorcode=150") Then
+                    'Blocked by Youtube, let find the "hiddens" url's :D
+                    If Regex.IsMatch(YTPage, """fmt_url_map"": ""(.*?)""") Then
+                        YTInfo = Web.HttpUtility.UrlDecode(Regex.Match(YTPage, """fmt_url_map"": ""(.*?)""").Groups(1).Value.ToString).Split(Convert.ToChar("|"))
+                        If YTInfo.Count > 0 Then
+                            For i As Integer = 1 To YTInfo.Count - 1
+                                If WebPage.IsValidURL(YTInfo(i)) Then
+                                    Me._TrailerList.Add(YTInfo(i))
+                                    'assume best video quality are the first in list
+                                    Exit For
+                                End If
+                            Next
+                        End If
                     End If
-
-                    'If Regex.IsMatch(YTPage, ", ""l"": (\d+),") Then
-                    'L = Regex.Match(YTPage, ", ""l"": (\d+),").Groups(1).Value.ToString
-                    'If Regex.IsMatch(YTPage, ", ""t"": ""(.*?)"",") Then
-                    'T = Regex.Match(YTPage, ", ""t"": ""(.*?)"",").Groups(1).Value.ToString
-
-                    'Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
-                    'If WebPage.IsValidURL(YTURL) Then
-                    'Me._TrailerList.Add(YTURL)
-                    'ElseIf WebPage.IsValidURL(YTURL.Replace("&fmt=18", String.Empty)) Then
-                    'try the flv version
-                    'Me._TrailerList.Add(YTURL.Replace("&fmt=18", String.Empty))
-                    'End If
-                    'End If
                     'End If
                 End If
             End If
@@ -209,37 +213,40 @@ Public Class Trailers
             If Not String.IsNullOrEmpty(YTPage) Then
                 If Regex.IsMatch(YTPage, "var pageVideoId = '(.*?)';") Then
                     videoID = Regex.Match(YTPage, "var pageVideoId = '(.*?)';").Groups(1).Value.ToString
+                    Dim YTInfo As String()
+                    'The commented Code is the correct way to do it...
+                    'but will not get the "Blocked by Autheor" movies...
+                    'So will just skip it and do it the Hard way for all Movies ... LOL
 
-                    Dim YTInfo As String() = Web.HttpUtility.UrlDecode(WebPage.DownloadData(String.Format("http://www.youtube.com/get_video_info?&video_id={0}", videoID))).Split(Convert.ToChar("|"))
-
-                    If YTInfo.Count > 0 AndAlso YTInfo(0).Contains("status=ok") Then
-                        For i As Integer = 1 To YTInfo.Count - 1
-                            If WebPage.IsValidURL(YTInfo(i)) Then
-                                DLURL = YTInfo(i)
-                                'assume best video quality are the first in list
-                                Exit For
-                            End If
-                        Next
-                    End If
-
-                    'If Regex.IsMatch(YTPage, ", ""l"": (\d+),") Then
-                    'L = Regex.Match(YTPage, ", ""l"": (\d+),").Groups(1).Value.ToString
-                    'If Regex.IsMatch(YTPage, ", ""t"": ""(.*?)"",") Then
-                    'T = Regex.Match(YTPage, ", ""t"": ""(.*?)"",").Groups(1).Value.ToString
-
-                    'Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
-                    'If WebPage.IsValidURL(YTURL) Then
-                    'DLURL = YTURL
-                    'ElseIf WebPage.IsValidURL(YTURL.Replace("&fmt=18", String.Empty)) Then
-                    'try the flv version
-                    'DLURL = YTURL.Replace("&fmt=18", String.Empty)
+                    'YTInfo = Web.HttpUtility.UrlDecode(WebPage.DownloadData(String.Format("http://www.youtube.com/get_video_info?&video_id={0}", videoID))).Split(Convert.ToChar("|"))
+                    'If YTInfo.Count > 0 Then
+                    'If YTInfo(0).Contains("status=ok") Then
+                    'For i As Integer = 1 To YTInfo.Count - 1
+                    'If WebPage.IsValidURL(YTInfo(i)) Then
+                    'DLURL = YTInfo(i)
+                    'assume best video quality are the first in list
+                    'Exit For
                     'End If
+                    'Next
+                    'ElseIf YTInfo(0).Contains("errorcode=150") Then
+                    'Blocked by Youtube, let find the "hiddens" url's :D
+                    If Regex.IsMatch(YTPage, """fmt_url_map"": ""(.*?)""") Then
+                        YTInfo = Web.HttpUtility.UrlDecode(Regex.Match(YTPage, """fmt_url_map"": ""(.*?)""").Groups(1).Value.ToString).Split(Convert.ToChar("|"))
+                        If YTInfo.Count > 0 Then
+                            For i As Integer = 1 To YTInfo.Count - 1
+                                If WebPage.IsValidURL(YTInfo(i)) Then
+                                    DLURL = YTInfo(i)
+                                    'assume best video quality are the first in list
+                                    Exit For
+                                End If
+                            Next
+                        End If
+                    End If
                     'End If
                     'End If
                 End If
             End If
         End If
-
         If Not String.IsNullOrEmpty(DLURL) Then
             tURL = WebPage.DownloadFile(DLURL, sPath, True, "trailer")
 
