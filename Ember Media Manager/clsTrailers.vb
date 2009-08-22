@@ -131,6 +131,8 @@ Public Class Trailers
                         For i As Integer = 1 To YTInfo.Count - 1
                             If WebPage.IsValidURL(YTInfo(i)) Then
                                 Me._TrailerList.Add(YTInfo(i))
+                                'assume best video quality are the first in list
+                                Exit For
                             End If
                         Next
                     End If
@@ -207,20 +209,33 @@ Public Class Trailers
             If Not String.IsNullOrEmpty(YTPage) Then
                 If Regex.IsMatch(YTPage, "var pageVideoId = '(.*?)';") Then
                     videoID = Regex.Match(YTPage, "var pageVideoId = '(.*?)';").Groups(1).Value.ToString
-                    If Regex.IsMatch(YTPage, ", ""l"": (\d+),") Then
-                        L = Regex.Match(YTPage, ", ""l"": (\d+),").Groups(1).Value.ToString
-                        If Regex.IsMatch(YTPage, ", ""t"": ""(.*?)"",") Then
-                            T = Regex.Match(YTPage, ", ""t"": ""(.*?)"",").Groups(1).Value.ToString
 
-                            Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
-                            If WebPage.IsValidURL(YTURL) Then
-                                DLURL = YTURL
-                            ElseIf WebPage.IsValidURL(YTURL.Replace("&fmt=18", String.Empty)) Then
-                                'try the flv version
-                                DLURL = YTURL.Replace("&fmt=18", String.Empty)
+                    Dim YTInfo As String() = Web.HttpUtility.UrlDecode(WebPage.DownloadData(String.Format("http://www.youtube.com/get_video_info?&video_id={0}", videoID))).Split(Convert.ToChar("|"))
+
+                    If YTInfo.Count > 0 AndAlso YTInfo(0).Contains("status=ok") Then
+                        For i As Integer = 1 To YTInfo.Count - 1
+                            If WebPage.IsValidURL(YTInfo(i)) Then
+                                DLURL = YTInfo(i)
+                                'assume best video quality are the first in list
+                                Exit For
                             End If
-                        End If
+                        Next
                     End If
+
+                    'If Regex.IsMatch(YTPage, ", ""l"": (\d+),") Then
+                    'L = Regex.Match(YTPage, ", ""l"": (\d+),").Groups(1).Value.ToString
+                    'If Regex.IsMatch(YTPage, ", ""t"": ""(.*?)"",") Then
+                    'T = Regex.Match(YTPage, ", ""t"": ""(.*?)"",").Groups(1).Value.ToString
+
+                    'Dim YTURL As String = String.Format("http://www.youtube.com/get_video?video_id={0}&l={1}&t={2}&fmt=18", videoID, L, T)
+                    'If WebPage.IsValidURL(YTURL) Then
+                    'DLURL = YTURL
+                    'ElseIf WebPage.IsValidURL(YTURL.Replace("&fmt=18", String.Empty)) Then
+                    'try the flv version
+                    'DLURL = YTURL.Replace("&fmt=18", String.Empty)
+                    'End If
+                    'End If
+                    'End If
                 End If
             End If
         End If
@@ -236,7 +251,7 @@ Public Class Trailers
             End If
         End If
 
-            Return tURL
+        Return tURL
     End Function
 
     Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
