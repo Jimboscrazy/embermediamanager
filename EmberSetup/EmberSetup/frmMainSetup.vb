@@ -33,7 +33,7 @@ Imports System.ComponentModel
 
 
 Public Class frmMainSetup
-    Public DEBUG As Boolean = True  ' So I can Debug without a Web Server
+    Public DEBUG As Boolean = False  ' So I can Debug without a Web Server
     Public emberPath As String
     Public emberAllFounds As New List(Of String)
     Public Final As Boolean = False
@@ -187,7 +187,7 @@ Public Class frmMainSetup
         Try
             LogWrite(String.Format("--- GetURL: URL=updates/{0}  File={1}", url, localfile))
             If Not DEBUG Then
-                Return GetURLDataBin(String.Concat("http://www.embermm.com/updates/", url), localfile)
+                Return GetURLDataBin(String.Concat("http://www.embermm.com/Updates/", url), localfile)
             Else
                 ' So I can Debug without a Web Server
                 'File.Copy(Path.Combine(AppPath, String.Concat("site\", url.Replace("/", "\"))), localfile)
@@ -568,25 +568,28 @@ Public Class frmMainSetup
                             f.NeedInstall = True
                             curr_hash = String.Empty
                             fpath = Path.Combine(Path.Combine(Path.GetDirectoryName(emberPath), f.Path.Substring(1)), f.Filename)
-                            If File.Exists(fpath) AndAlso Not _CurrentFiles.Files Is Nothing Then
-                                Dim cf As FileOfList = GetFromList(_CurrentFiles, f)
-                                If Not cf Is Nothing Then
-                                    curr_hash = cf.Hash
-                                End If
+                            If File.Exists(fpath) Then
                                 hash = GetHash(fpath)
-                                If Not hash = curr_hash Then
-                                    f.NeedBackup = True
+                                If Not _CurrentFiles.Files Is Nothing Then
+                                    Dim cf As FileOfList = GetFromList(_CurrentFiles, f)
+                                    If Not cf Is Nothing Then
+                                        curr_hash = cf.Hash
+                                    End If
+
+                                    If Not hash = curr_hash Then
+                                        f.NeedBackup = True
+                                    End If
                                 End If
                             End If
-                            If curr_hash = f.Hash AndAlso Not f.NeedBackup Then
+                            If (curr_hash = f.Hash AndAlso Not f.NeedBackup) OrElse (f.Hash = hash) Then
                                 f.NeedInstall = False
                             End If
                             If bwDoInstall.CancellationPending Then Return False
                             If f.Platform = CurrentEmberPlatform OrElse f.Platform = "Common" Then
-                                If f.NeedInstall = True OrElse CurrentEmberVersion = String.Empty Then
+                                If f.NeedInstall = True Then 'OrElse CurrentEmberVersion = String.Empty 
                                     f.NeedInstall = True
-                                    'getFile = String.Format("files/{0}.gz", f.Filename)
-                                    getFile = String.Format("files/{0}.emm", f.Hash)
+                                    'getFile = String.Format("Files/{0}.gz", f.Filename)
+                                    getFile = String.Format("Files/{0}.emm", f.Hash)
                                     Me.bwDoInstall.ReportProgress(10, New Object() {counter, String.Format("Downloading: {0}", f.Filename)})
                                     'If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}.gz", f.Filename))) Then
                                     'If Not GetURLFile(getFile, Path.Combine(Path.GetDirectoryName(emberPath), String.Format("updates\{0}", f.Filename))) Then
@@ -1146,7 +1149,7 @@ Public Class frmMainSetup
         Try
             Dim g As Graphics = e.Graphics
             g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-            g.CompositingMode = Drawing2D.CompositingMode.SourceOver
+            'g.CompositingMode = Drawing2D.CompositingMode.SourceOver
             If iLogo Is Nothing Then
                 SetupLogo()
             End If
@@ -1200,29 +1203,31 @@ Public Class frmMainSetup
 
         End Try
     End Sub
-
+    Dim intcounter As Integer = 0
     Sub UpdateBackgorund()
         If Not LogoStop OrElse Not LogoAlpha = 50 Then
             If LogoUp Then
-                LogoAlpha += 5
+                'LogoAlpha += 5
             Else
-                LogoAlpha -= 5
+                'LogoAlpha -= 5
             End If
         End If
         If LogoAlpha > 90 OrElse LogoAlpha < 20 Then
             LogoUp = Not LogoUp
         End If
-
-        If BackUp Then
-            BackAlpha += 2
-        Else
-            BackAlpha -= 2
+        intcounter += 1
+        If intcounter > 15 Then
+            If BackUp Then
+                BackAlpha += 2
+            Else
+                BackAlpha -= 2
+            End If
+            If BackAlpha > 70 OrElse BackAlpha < 0 Then
+                BackUp = Not BackUp
+            End If
+            intcounter = 0
         End If
-
-        If BackAlpha > 70 OrElse BackAlpha < 0 Then
-            BackUp = Not BackUp
-        End If
-        SetupLogo()
+        'SetupLogo()
         'Credits()
 
     End Sub
@@ -1251,12 +1256,12 @@ Public Class frmMainSetup
         End Property
 
         Public Sub New()
-            clear()
+            Clear()
         End Sub
 
         Public Sub Clear()
             _text = String.Empty
-            _font = New Font("Microsoft Sans Serif", 11, FontStyle.Bold)
+            _font = New Font("Microsoft Sans Serif", 11, FontStyle.Regular)
         End Sub
     End Class
 
@@ -1310,7 +1315,7 @@ Public Class frmMainSetup
         CredList.Add(New CredLine With {.Text = "See the GNU General Public License for more details."})
         PicY = Me.MyBackGround.Height
     End Sub
-
+    Dim SlowDown As Integer = 0
     Sub Credits()
         bCredits = New Bitmap(Me.MyBackGround.Width, Me.MyBackGround.Height)
         Dim e As Graphics = Graphics.FromImage(bCredits)
@@ -1322,7 +1327,11 @@ Public Class frmMainSetup
             If i = CredList.Count - 1 And CurrentY < -25 Then PicY = Me.MyBackGround.Height
             e.DrawString(CredList(i).Text, CredList(i).Font, Brushes.Black, CurrentX, CurrentY)
         Next
-        PicY -= 1
+        SlowDown += 1
+        If SlowDown > 5 Then
+            PicY -= 1
+            SlowDown = 0
+        End If
     End Sub
 
     Private Sub llAbout_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llAbout.LinkClicked
