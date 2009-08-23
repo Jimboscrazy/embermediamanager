@@ -174,40 +174,46 @@ Public Class StringManip
         '//
         ' Clean all the crap out of the name
         '\\
-
-        If String.IsNullOrEmpty(movieName) Then Return String.Empty
-
-        Dim strSplit() As String
         Try
 
-            'run through each of the custom filters
-            If Master.eSettings.FilterCustom.Count > 0 Then
-                For Each Str As String In Master.eSettings.FilterCustom
+            If String.IsNullOrEmpty(movieName) Then Return String.Empty
 
-                    If Strings.InStr(Str, "[->]") > 0 Then
-                        strSplit = Strings.Split(Str, "[->]")
-                        movieName = Strings.Replace(movieName, Regex.Match(movieName, strSplit.First).ToString, strSplit.Last)
-                    Else
-                        movieName = Strings.Replace(movieName, Regex.Match(movieName, Str).ToString, String.Empty)
-                    End If
-                Next
-            End If
+            Dim strSplit() As String
+            Try
 
-            'Convert String To Proper Case
-            If Master.eSettings.ProperCase AndAlso doExtras Then
-                movieName = ProperCase(movieName)
+                'run through each of the custom filters
+                If Master.eSettings.FilterCustom.Count > 0 Then
+                    For Each Str As String In Master.eSettings.FilterCustom
+
+                        If Strings.InStr(Str, "[->]") > 0 Then
+                            strSplit = Strings.Split(Str, "[->]")
+                            movieName = Strings.Replace(movieName, Regex.Match(movieName, strSplit.First).ToString, strSplit.Last)
+                        Else
+                            movieName = Strings.Replace(movieName, Regex.Match(movieName, Str).ToString, String.Empty)
+                        End If
+                    Next
+                End If
+
+                'Convert String To Proper Case
+                If Master.eSettings.ProperCase AndAlso doExtras Then
+                    movieName = ProperCase(movieName)
+                End If
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+
+            If doExtras Then
+                Return FilterTokens(CleanStackingMarkers(movieName.Trim))
+            Else
+                Return RemovePunctuation(CleanStackingMarkers(movieName.Trim))
             End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ' Some error handling so EMM dont break on populate folderdata
+            Return movieName.Trim
         End Try
-
-        If doExtras Then
-            Return FilterTokens(CleanStackingMarkers(movieName.Trim))
-        Else
-            Return RemovePunctuation(CleanStackingMarkers(movieName.Trim))
-        End If
-
     End Function
 
     Public Shared Function ProperCase(ByVal sString As String) As String
