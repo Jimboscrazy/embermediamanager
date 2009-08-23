@@ -242,13 +242,19 @@ Public Class frmMainManager
     End Class
 
     Public Function GetEmberPlatform(ByVal fpath As String) As String
-        Dim _Assembly As Assembly = Assembly.ReflectionOnlyLoadFrom(Path.Combine(fpath, "Ember Media Manager.exe"))
-        Dim kinds As PortableExecutableKinds
-        Dim imgFileMachine As ImageFileMachine
-        _Assembly.ManifestModule.GetPEKind(kinds, imgFileMachine)
-        If kinds And PortableExecutableKinds.PE32Plus Then
-            Return "64"
-        End If
+        Try
+
+
+            Dim _Assembly As Assembly = Assembly.ReflectionOnlyLoadFrom(Path.Combine(fpath, "Ember Media Manager.exe"))
+
+            Dim kinds As PortableExecutableKinds
+            Dim imgFileMachine As ImageFileMachine
+            _Assembly.ManifestModule.GetPEKind(kinds, imgFileMachine)
+            If kinds And PortableExecutableKinds.PE32Plus Then
+                Return "64"
+            End If
+        Catch
+        End Try
         Return "32"
     End Function
 
