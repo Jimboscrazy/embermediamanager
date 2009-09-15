@@ -90,6 +90,8 @@ Public Class HTTP
         Dim wrResponse As WebResponse
         Try
             wrRequest = HttpWebRequest.Create(URL)
+            Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
+            wrRequest.CachePolicy = noCachePolicy
             wrRequest.Method = "GET"
             wrRequest.Timeout = Master.eSettings.TrailerTimeout * 1000
             wrResponse = wrRequest.GetResponse()
