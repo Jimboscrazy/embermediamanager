@@ -268,6 +268,7 @@ Public Class dlgIMDBSearchResults
             Me.ClearInfo()
             Me.Label3.Text = Master.eLang.GetString(568, "Searching IMDB...")
             Me.pnlLoading.Visible = True
+            chkManual.Enabled = False
             IMDB.SearchMovieAsync(Me.txtSearch.Text)
         End If
     End Sub
@@ -332,6 +333,7 @@ Public Class dlgIMDBSearchResults
                 End If
             End If
             Me.pnlLoading.Visible = False
+            chkManual.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -353,6 +355,7 @@ Public Class dlgIMDBSearchResults
         '\\
 
         Me.Text = String.Concat(Master.eLang.GetString(301, "Search Results - "), sMovieTitle)
+        chkManual.Enabled = False
         IMDB.SearchMovieAsync(sMovieTitle)
 
         Return MyBase.ShowDialog()

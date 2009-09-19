@@ -478,7 +478,7 @@ Public Class Database
 
                 ' First let's save it to NFO, even because we will need the NFO path
                 'If ToNfo AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.IMDBID) Then NFO.SaveMovieToNFO(_movieDB)
-                'Why do we need IMDB to save to 
+                'Why do we need IMDB to save to NFO?
                 If ToNfo Then NFO.SaveMovieToNFO(_movieDB)
 
                 parMoviePath.Value = _movieDB.Filename
