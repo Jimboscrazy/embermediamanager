@@ -4062,50 +4062,60 @@ doCancel:
         ' Begin threads to fill datagrid with media data
         '\\
 
-
-        Try
-            Me.tslStatus.Text = Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)...")
-            Application.DoEvents()
-
-            If bwPrelim.IsBusy Then
-                bwPrelim.CancelAsync()
-                While bwPrelim.IsBusy
+        Select Case mediaType
+            Case 1
+                Try
+                    Me.tslStatus.Text = Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)...")
                     Application.DoEvents()
-                End While
-            End If
 
-            If bwFolderData.IsBusy Then
-                bwFolderData.CancelAsync()
-                While bwFolderData.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
+                    If bwPrelim.IsBusy Then
+                        bwPrelim.CancelAsync()
+                        While bwPrelim.IsBusy
+                            Application.DoEvents()
+                        End While
+                    End If
 
-            Me.SaveMovieList()
-            Me.txtSearch.Text = String.Empty
+                    If bwFolderData.IsBusy Then
+                        bwFolderData.CancelAsync()
+                        While bwFolderData.IsBusy
+                            Application.DoEvents()
+                        End While
+                    End If
 
-            Me.dgvMediaList.DataSource = Nothing
+                    Me.SaveMovieList()
+                    Me.txtSearch.Text = String.Empty
 
-            Me.ClearInfo()
-            Me.ClearFilters()
-            Me.EnableFilters(False)
+                    Me.dgvMediaList.DataSource = Nothing
 
-            Me.ToolsToolStripMenuItem.Enabled = False
-            Me.tsbAutoPilot.Enabled = False
-            Me.tsbRefreshMedia.Enabled = False
-            Me.mnuMediaList.Enabled = False
-            Me.tabsMain.Enabled = False
-            Me.tabMovies.Text = Master.eLang.GetString(36, "Movies")
+                    Me.ClearInfo()
+                    Me.ClearFilters()
+                    Me.EnableFilters(False)
 
-            Me.bwPrelim = New System.ComponentModel.BackgroundWorker
-            Me.bwPrelim.WorkerSupportsCancellation = True
-            Me.bwPrelim.RunWorkerAsync(New Arguments With {.SourceName = SourceName})
+                    Me.ToolsToolStripMenuItem.Enabled = False
+                    Me.tsbAutoPilot.Enabled = False
+                    Me.tsbRefreshMedia.Enabled = False
+                    Me.mnuMediaList.Enabled = False
+                    Me.tabsMain.Enabled = False
+                    Me.tabMovies.Text = Master.eLang.GetString(36, "Movies")
 
-        Catch ex As Exception
-            Me.LoadingDone = True
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+                    Me.bwPrelim = New System.ComponentModel.BackgroundWorker
+                    Me.bwPrelim.WorkerSupportsCancellation = True
+                    Me.bwPrelim.RunWorkerAsync(New Arguments With {.SourceName = SourceName})
 
+                Catch ex As Exception
+                    Me.LoadingDone = True
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+            Case 2
+                Try
+                    Me.ClearInfo()
+                    Me.ClearFilters()
+                    Me.EnableFilters(False)
+                Catch ex As Exception
+                    Me.LoadingDone = True
+                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                End Try
+        End Select
 
     End Sub
 
@@ -5336,105 +5346,113 @@ doCancel:
 
     Private Sub FillList(ByVal iIndex As Integer, Optional ByVal DupesOnly As Boolean = False, Optional ByVal Actor As String = "")
         Try
-            Me.bsMedia.DataSource = Nothing
-            Me.dgvMediaList.DataSource = Nothing
-            Me.ClearInfo()
-            Application.DoEvents()
-
-            If Not String.IsNullOrEmpty(Actor) Then
-                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT * FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Actor, "%') ORDER BY ListTitle COLLATE NOCASE;"))
-            Else
-                If DupesOnly Then
-                    Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
-                Else
-                    Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
-                End If
-            End If
-
-            If isCL Then
-                Me.LoadingDone = True
-            Else
-                If Me.dtMedia.Rows.Count > 0 Then
-
-                    With Me
-                        .bsMedia.DataSource = .dtMedia
-                        .dgvMediaList.DataSource = .bsMedia
-
-                        .dgvMediaList.Columns(0).Visible = False
-                        .dgvMediaList.Columns(1).Visible = False
-                        .dgvMediaList.Columns(2).Visible = False
-                        .dgvMediaList.Columns(3).Resizable = DataGridViewTriState.True
-                        .dgvMediaList.Columns(3).ReadOnly = True
-                        .dgvMediaList.Columns(3).MinimumWidth = 83
-                        .dgvMediaList.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMediaList.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
-                        .dgvMediaList.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
-                        .dgvMediaList.Columns(4).Width = 20
-                        .dgvMediaList.Columns(4).Resizable = DataGridViewTriState.False
-                        .dgvMediaList.Columns(4).ReadOnly = True
-                        .dgvMediaList.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
-                        .dgvMediaList.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
-                        .dgvMediaList.Columns(5).Width = 20
-                        .dgvMediaList.Columns(5).Resizable = DataGridViewTriState.False
-                        .dgvMediaList.Columns(5).ReadOnly = True
-                        .dgvMediaList.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMediaList.Columns(5).Visible = Not Master.eSettings.MovieFanartCol
-                        .dgvMediaList.Columns(5).ToolTipText = Master.eLang.GetString(149, "Fanart")
-                        .dgvMediaList.Columns(6).Width = 20
-                        .dgvMediaList.Columns(6).Resizable = DataGridViewTriState.False
-                        .dgvMediaList.Columns(6).ReadOnly = True
-                        .dgvMediaList.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMediaList.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
-                        .dgvMediaList.Columns(6).ToolTipText = Master.eLang.GetString(150, "Nfo")
-                        .dgvMediaList.Columns(7).Width = 20
-                        .dgvMediaList.Columns(7).Resizable = DataGridViewTriState.False
-                        .dgvMediaList.Columns(7).ReadOnly = True
-                        .dgvMediaList.Columns(7).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMediaList.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
-                        .dgvMediaList.Columns(7).ToolTipText = Master.eLang.GetString(151, "Trailer")
-                        .dgvMediaList.Columns(8).Width = 20
-                        .dgvMediaList.Columns(8).Resizable = DataGridViewTriState.False
-                        .dgvMediaList.Columns(8).ReadOnly = True
-                        .dgvMediaList.Columns(8).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMediaList.Columns(8).Visible = Not Master.eSettings.MovieSubCol
-                        .dgvMediaList.Columns(8).ToolTipText = Master.eLang.GetString(152, "Subtitles")
-                        .dgvMediaList.Columns(9).Width = 20
-                        .dgvMediaList.Columns(9).Resizable = DataGridViewTriState.False
-                        .dgvMediaList.Columns(9).ReadOnly = True
-                        .dgvMediaList.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
-                        .dgvMediaList.Columns(9).ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
-                        For i As Integer = 10 To .dgvMediaList.Columns.Count - 1
-                            .dgvMediaList.Columns(i).Visible = False
-                        Next
-
-                        .dgvMediaList.Columns(0).ValueType = GetType(Int32)
-
-                        'Trick to autosize the first column, but still allow resizing by user
-                        .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                        .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-
-                        .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
-
-                        If .dgvMediaList.RowCount > 0 Then
-                            'Set current cell and automatically load the info for the first movie in the list
-                            .dgvMediaList.Rows(iIndex).Cells(3).Selected = True
-                            .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
-                        End If
-
-                        .ToolsToolStripMenuItem.Enabled = True
-                        .tsbAutoPilot.Enabled = True
-                        .mnuMediaList.Enabled = True
-                    End With
-                Else
-                    Me.ToolsToolStripMenuItem.Enabled = False
-                    Me.tsbAutoPilot.Enabled = False
-                    Me.mnuMediaList.Enabled = False
-                    Me.tslStatus.Text = String.Empty
+            Select Case iIndex
+                Case 0
+                    Me.bsMedia.DataSource = Nothing
+                    Me.dgvMediaList.DataSource = Nothing
                     Me.ClearInfo()
-                End If
-            End If
+                    Application.DoEvents()
+
+                    If Not String.IsNullOrEmpty(Actor) Then
+                        Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT * FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Actor, "%') ORDER BY ListTitle COLLATE NOCASE;"))
+                    Else
+                        If DupesOnly Then
+                            Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
+                        Else
+                            Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
+                        End If
+                    End If
+
+                    If isCL Then
+                        Me.LoadingDone = True
+                    Else
+                        If Me.dtMedia.Rows.Count > 0 Then
+
+                            With Me
+                                .bsMedia.DataSource = .dtMedia
+                                .dgvMediaList.DataSource = .bsMedia
+
+                                .dgvMediaList.Columns(0).Visible = False
+                                .dgvMediaList.Columns(1).Visible = False
+                                .dgvMediaList.Columns(2).Visible = False
+                                .dgvMediaList.Columns(3).Resizable = DataGridViewTriState.True
+                                .dgvMediaList.Columns(3).ReadOnly = True
+                                .dgvMediaList.Columns(3).MinimumWidth = 83
+                                .dgvMediaList.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
+                                .dgvMediaList.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
+                                .dgvMediaList.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
+                                .dgvMediaList.Columns(4).Width = 20
+                                .dgvMediaList.Columns(4).Resizable = DataGridViewTriState.False
+                                .dgvMediaList.Columns(4).ReadOnly = True
+                                .dgvMediaList.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
+                                .dgvMediaList.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
+                                .dgvMediaList.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
+                                .dgvMediaList.Columns(5).Width = 20
+                                .dgvMediaList.Columns(5).Resizable = DataGridViewTriState.False
+                                .dgvMediaList.Columns(5).ReadOnly = True
+                                .dgvMediaList.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
+                                .dgvMediaList.Columns(5).Visible = Not Master.eSettings.MovieFanartCol
+                                .dgvMediaList.Columns(5).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                                .dgvMediaList.Columns(6).Width = 20
+                                .dgvMediaList.Columns(6).Resizable = DataGridViewTriState.False
+                                .dgvMediaList.Columns(6).ReadOnly = True
+                                .dgvMediaList.Columns(6).SortMode = DataGridViewColumnSortMode.Automatic
+                                .dgvMediaList.Columns(6).Visible = Not Master.eSettings.MovieInfoCol
+                                .dgvMediaList.Columns(6).ToolTipText = Master.eLang.GetString(150, "Nfo")
+                                .dgvMediaList.Columns(7).Width = 20
+                                .dgvMediaList.Columns(7).Resizable = DataGridViewTriState.False
+                                .dgvMediaList.Columns(7).ReadOnly = True
+                                .dgvMediaList.Columns(7).SortMode = DataGridViewColumnSortMode.Automatic
+                                .dgvMediaList.Columns(7).Visible = Not Master.eSettings.MovieTrailerCol
+                                .dgvMediaList.Columns(7).ToolTipText = Master.eLang.GetString(151, "Trailer")
+                                .dgvMediaList.Columns(8).Width = 20
+                                .dgvMediaList.Columns(8).Resizable = DataGridViewTriState.False
+                                .dgvMediaList.Columns(8).ReadOnly = True
+                                .dgvMediaList.Columns(8).SortMode = DataGridViewColumnSortMode.Automatic
+                                .dgvMediaList.Columns(8).Visible = Not Master.eSettings.MovieSubCol
+                                .dgvMediaList.Columns(8).ToolTipText = Master.eLang.GetString(152, "Subtitles")
+                                .dgvMediaList.Columns(9).Width = 20
+                                .dgvMediaList.Columns(9).Resizable = DataGridViewTriState.False
+                                .dgvMediaList.Columns(9).ReadOnly = True
+                                .dgvMediaList.Columns(9).SortMode = DataGridViewColumnSortMode.Automatic
+                                .dgvMediaList.Columns(9).Visible = Not Master.eSettings.MovieExtraCol
+                                .dgvMediaList.Columns(9).ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
+                                For i As Integer = 10 To .dgvMediaList.Columns.Count - 1
+                                    .dgvMediaList.Columns(i).Visible = False
+                                Next
+
+                                .dgvMediaList.Columns(0).ValueType = GetType(Int32)
+
+                                'Trick to autosize the first column, but still allow resizing by user
+                                .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                                .dgvMediaList.Columns(3).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+
+                                .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
+
+                                If .dgvMediaList.RowCount > 0 Then
+                                    'Set current cell and automatically load the info for the first movie in the list
+                                    .dgvMediaList.Rows(iIndex).Cells(3).Selected = True
+                                    .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
+                                End If
+
+                                .ToolsToolStripMenuItem.Enabled = True
+                                .tsbAutoPilot.Enabled = True
+                                .mnuMediaList.Enabled = True
+                            End With
+                        Else
+                            Me.ToolsToolStripMenuItem.Enabled = False
+                            Me.tsbAutoPilot.Enabled = False
+                            Me.mnuMediaList.Enabled = False
+                            Me.tslStatus.Text = String.Empty
+                            Me.ClearInfo()
+                        End If
+                    End If
+                Case 1
+                    Me.bsMedia.DataSource = Nothing
+                    Me.dgvMediaList.DataSource = Nothing
+                    Me.ClearInfo()
+                    Application.DoEvents()
+            End Select
         Catch ex As Exception
             Me.LoadingDone = True
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -5521,4 +5539,8 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
+    Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
+        'LoadMedia(tabsMain.SelectedIndex + 1)
+        FillList(tabsMain.SelectedIndex)
+    End Sub
 End Class

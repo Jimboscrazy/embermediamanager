@@ -99,6 +99,7 @@ Partial Class frmMain
         Me.btnMarkAll = New System.Windows.Forms.Button
         Me.tabsMain = New System.Windows.Forms.TabControl
         Me.tabMovies = New System.Windows.Forms.TabPage
+        Me.tabTV = New System.Windows.Forms.TabPage
         Me.pnlFilter = New System.Windows.Forms.Panel
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.btnSortTitle = New System.Windows.Forms.Button
@@ -987,6 +988,7 @@ Partial Class frmMain
         Me.tabsMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tabsMain.Controls.Add(Me.tabMovies)
+        Me.tabsMain.Controls.Add(Me.tabTV)
         Me.tabsMain.Location = New System.Drawing.Point(3, 3)
         Me.tabsMain.Name = "tabsMain"
         Me.tabsMain.SelectedIndex = 0
@@ -1003,6 +1005,15 @@ Partial Class frmMain
         Me.tabMovies.TabIndex = 0
         Me.tabMovies.Text = "Movies"
         Me.tabMovies.UseVisualStyleBackColor = True
+        '
+        'tabTV
+        '
+        Me.tabTV.Location = New System.Drawing.Point(4, 22)
+        Me.tabTV.Name = "tabTV"
+        Me.tabTV.Size = New System.Drawing.Size(339, 9)
+        Me.tabTV.TabIndex = 1
+        Me.tabTV.Text = "TV Series"
+        Me.tabTV.UseVisualStyleBackColor = True
         '
         'pnlFilter
         '
@@ -3041,4 +3052,5 @@ Partial Class frmMain
     Friend WithEvents cmnuRenameAuto As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuRenameManual As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnSortTitle As System.Windows.Forms.Button
+    Friend WithEvents tabTV As System.Windows.Forms.TabPage
 End Class
