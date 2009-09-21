@@ -199,8 +199,12 @@ Public Class NFO
                         tNonConf.Text = XML.XMLToLowerCase(sInfo.Substring(0, sInfo.ToLower.IndexOf("</movie>") + 8))
                     End If
                     Exit For
+                Else
+                    sIMDBID = Regex.Match(sPath, "tt\d\d\d\d\d\d\d", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
+                    If Not String.IsNullOrEmpty(sIMDBID) Then
+                        tNonConf.IMDBID = sIMDBID
+                    End If
                 End If
-
             End Using
         Next
         Return tNonConf
