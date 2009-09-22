@@ -2128,6 +2128,7 @@ Public Class frmMain
             For Each drvRow As DataRow In dtMedia.Rows
                 drvRow.Item(11) = MarkAll
             Next
+            dgvMediaList.Refresh()
             btnMarkAll.Text = If(Not MarkAll, Master.eLang.GetString(35, "Mark All"), Master.eLang.GetString(105, "Unmark All"))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
