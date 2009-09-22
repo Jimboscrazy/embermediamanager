@@ -197,7 +197,7 @@
   <string id="195">Valid</string>
   <string id="196">Do you want to save changes?</string>
   <string id="197">Save?</string>
-  <string id="198">Movie Source</string>
+  <string id="198">Add Source</string>
   <string id="199">Source Name:</string>
   <string id="200">Source Path:</string>
   <string id="201">Source Options</string>
@@ -642,4 +642,9 @@
   <string id="640">Unable to Rename File</string>
   <string id="641">Renaming Directory/Files...</string>
   <string id="642">Sort Title</string>
+  <string id="643">Source Type</string>
+  <string id="644">Movie</string>
+  <string id="645">TV Serie</string>
+  <string id="646">TV Series</string>
+
 </strings>
