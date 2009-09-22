@@ -118,6 +118,12 @@ Public Class frmMain
     ' ######### FORM/CONTROLS EVENTS #########
     ' ########################################
 
+
+    Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
+        'LoadMedia(tabsMain.SelectedIndex + 1)
+        FillList(tabsMain.SelectedIndex)
+    End Sub
+
     Private Sub frmMain_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
@@ -3873,6 +3879,7 @@ doCancel:
                 .DeleteMovieToolStripMenuItem.Text = Master.eLang.GetString(34, "Delete Movie")
                 .btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
                 .tabMovies.Text = Master.eLang.GetString(36, "Movies")
+                .tabTV.Text = Master.eLang.GetString(646, "TV Series")
                 .btnClearFilters.Text = Master.eLang.GetString(37, "Clear Filters")
                 .GroupBox3.Text = Master.eLang.GetString(38, "General")
                 .chkFilterTolerance.Text = Master.eLang.GetString(39, "Out of Tolerance")
@@ -5539,8 +5546,4 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
-    Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
-        'LoadMedia(tabsMain.SelectedIndex + 1)
-        FillList(tabsMain.SelectedIndex)
-    End Sub
 End Class

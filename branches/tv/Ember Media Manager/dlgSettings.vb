@@ -536,7 +536,7 @@ Public Class dlgSettings
         pnlGeneral.Visible = False
         pnlXBMCCom.Visible = False
         pnlMovies.Visible = False
-        pnlSources.Visible = False
+        pnlMovieSources.Visible = False
         pnlScraper.Visible = False
         pnlExtensions.Visible = False
         pnlImages.Visible = False
@@ -548,14 +548,17 @@ Public Class dlgSettings
                 pnlXBMCCom.Visible = True
             Case "nMovies"
                 pnlMovies.Visible = True
-            Case "nSources"
-                pnlSources.Visible = True
+            Case "nMovieSources"
+                pnlMovieSources.Visible = True
             Case "nScraper"
                 pnlScraper.Visible = True
             Case "nExts"
                 pnlExtensions.Visible = True
             Case "nImages"
                 pnlImages.Visible = True
+            Case "nTVSeries"
+            Case "nTVSources"
+
         End Select
     End Sub
 

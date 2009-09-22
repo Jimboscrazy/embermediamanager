@@ -31,6 +31,8 @@ Partial Class dlgSettings
         Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
         Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
         Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Series", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode8})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -308,7 +310,7 @@ Partial Class dlgSettings
         Me.btnAddMovieExt = New System.Windows.Forms.Button
         Me.txtMovieExt = New System.Windows.Forms.TextBox
         Me.lstMovieExts = New System.Windows.Forms.ListBox
-        Me.pnlSources = New System.Windows.Forms.Panel
+        Me.pnlMovieSources = New System.Windows.Forms.Panel
         Me.btnEditSource = New System.Windows.Forms.Button
         Me.GroupBox19 = New System.Windows.Forms.GroupBox
         Me.chkAutoDetectVTS = New System.Windows.Forms.CheckBox
@@ -379,7 +381,7 @@ Partial Class dlgSettings
         Me.GroupBox22.SuspendLayout()
         Me.gbRenamerPatterns.SuspendLayout()
         Me.GroupBox18.SuspendLayout()
-        Me.pnlSources.SuspendLayout()
+        Me.pnlMovieSources.SuspendLayout()
         Me.GroupBox19.SuspendLayout()
         Me.pnlImages.SuspendLayout()
         Me.GroupBox23.SuspendLayout()
@@ -2378,7 +2380,7 @@ Partial Class dlgSettings
         TreeNode3.SelectedImageIndex = 0
         TreeNode3.Text = "General"
         TreeNode4.ImageIndex = 5
-        TreeNode4.Name = "nSources"
+        TreeNode4.Name = "nMovieSources"
         TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode4.SelectedImageIndex = 5
         TreeNode4.Text = "Files and Sources"
@@ -2397,7 +2399,15 @@ Partial Class dlgSettings
         TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode7.SelectedImageIndex = 2
         TreeNode7.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
+        TreeNode8.ImageIndex = 5
+        TreeNode8.Name = "nTVSources"
+        TreeNode8.SelectedImageIndex = 5
+        TreeNode8.Text = "Files and Sources"
+        TreeNode9.ImageIndex = 2
+        TreeNode9.Name = "nTVSeries"
+        TreeNode9.SelectedImageIndex = 2
+        TreeNode9.Text = "TV Series"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7, TreeNode9})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -3340,22 +3350,22 @@ Partial Class dlgSettings
         Me.lstMovieExts.Sorted = True
         Me.lstMovieExts.TabIndex = 0
         '
-        'pnlSources
+        'pnlMovieSources
         '
-        Me.pnlSources.BackColor = System.Drawing.Color.White
-        Me.pnlSources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlSources.Controls.Add(Me.btnEditSource)
-        Me.pnlSources.Controls.Add(Me.GroupBox19)
-        Me.pnlSources.Controls.Add(Me.GroupBox16)
-        Me.pnlSources.Controls.Add(Me.lvMovies)
-        Me.pnlSources.Controls.Add(Me.btnMovieRem)
-        Me.pnlSources.Controls.Add(Me.btnMovieAddFolder)
-        Me.pnlSources.Controls.Add(Me.GroupBox8)
-        Me.pnlSources.Location = New System.Drawing.Point(208, 96)
-        Me.pnlSources.Name = "pnlSources"
-        Me.pnlSources.Size = New System.Drawing.Size(597, 353)
-        Me.pnlSources.TabIndex = 67
-        Me.pnlSources.Visible = False
+        Me.pnlMovieSources.BackColor = System.Drawing.Color.White
+        Me.pnlMovieSources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovieSources.Controls.Add(Me.btnEditSource)
+        Me.pnlMovieSources.Controls.Add(Me.GroupBox19)
+        Me.pnlMovieSources.Controls.Add(Me.GroupBox16)
+        Me.pnlMovieSources.Controls.Add(Me.lvMovies)
+        Me.pnlMovieSources.Controls.Add(Me.btnMovieRem)
+        Me.pnlMovieSources.Controls.Add(Me.btnMovieAddFolder)
+        Me.pnlMovieSources.Controls.Add(Me.GroupBox8)
+        Me.pnlMovieSources.Location = New System.Drawing.Point(208, 96)
+        Me.pnlMovieSources.Name = "pnlMovieSources"
+        Me.pnlMovieSources.Size = New System.Drawing.Size(597, 353)
+        Me.pnlMovieSources.TabIndex = 67
+        Me.pnlMovieSources.Visible = False
         '
         'btnEditSource
         '
@@ -3644,7 +3654,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlGeneral)
@@ -3731,7 +3741,7 @@ Partial Class dlgSettings
         Me.gbRenamerPatterns.PerformLayout()
         Me.GroupBox18.ResumeLayout(False)
         Me.GroupBox18.PerformLayout()
-        Me.pnlSources.ResumeLayout(False)
+        Me.pnlMovieSources.ResumeLayout(False)
         Me.GroupBox19.ResumeLayout(False)
         Me.GroupBox19.PerformLayout()
         Me.pnlImages.ResumeLayout(False)
@@ -3897,7 +3907,7 @@ Partial Class dlgSettings
     Friend WithEvents chkUseMIDuration As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieExtraCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieSubCol As System.Windows.Forms.CheckBox
-    Friend WithEvents pnlSources As System.Windows.Forms.Panel
+    Friend WithEvents pnlMovieSources As System.Windows.Forms.Panel
     Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
     Friend WithEvents lblGenre As System.Windows.Forms.Label
     Friend WithEvents chkUseETasFA As System.Windows.Forms.CheckBox
