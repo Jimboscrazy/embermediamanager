@@ -398,15 +398,13 @@ mResult:
                 Dim D, W, tempD As Integer
 
                 If Options.bMPAA Then
-                    tempD = HTML.IndexOf("MPAA</a>:</h5>")
+                    tempD = If(HTML.IndexOf("MPAA</a>:</h5>") > 0, HTML.IndexOf("MPAA</a>:</h5>"), 0)
 
-                    D = HTML.IndexOf("<p>", tempD)
+                    D = If(tempD > 0, HTML.IndexOf("<p>", tempD), 0)
 
-                    W = HTML.IndexOf("</p>", D)
+                    W = If(D > 0, HTML.IndexOf("</p>", D), 0)
 
-                    Dim sRated As String = HTML.Substring(D, W - D).Remove(0, 3)
-
-                    IMDBMovie.MPAA = Web.HttpUtility.HtmlDecode(sRated).Trim()
+                    IMDBMovie.MPAA = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Remove(0, 3)).Trim(), String.Empty)
                 End If
 
                 If doProgress Then
@@ -547,11 +545,9 @@ mResult:
                 D = 0 : W = 0
 
                 If Options.bTagline AndAlso (String.IsNullOrEmpty(IMDBMovie.Tagline) OrElse Not Master.eSettings.LockTagline) Then
-                    'get tagline
-                    'tempD = HTML.IndexOf("<h5>Tagline:</h5>")
+
                     tempD = If(HTML.IndexOf("<h5>Tagline:</h5>") > 0, HTML.IndexOf("<h5>Tagline:</h5>"), 0)
 
-                    'D = HTML.IndexOf("<p>", tempD)
                     D = If(tempD > 0, HTML.IndexOf("<p>", tempD), 0)
 
                     Dim lHtmlIndexOf As Integer = If(D > 0, HTML.IndexOf("<a class=""tn15more inline""", D), 0)
