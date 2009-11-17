@@ -59,8 +59,7 @@ Namespace TMDB
 
             If Me.bwTMDB.CancellationPending Then Return Nothing
             Try
-                Dim ApiXML As String = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=tt{0}&api_key={1}", imdbID, APIKey))
-
+                Dim ApiXML As String = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.1/Movie.imdbLookup/en/xml/{0}/tt{1}", APIKey, imdbID))
                 If Not String.IsNullOrEmpty(ApiXML) Then
                     Try
                         xmlTMDB = XDocument.Parse(ApiXML)
@@ -76,10 +75,10 @@ Namespace TMDB
                     Dim tmdbNode = From xNode In xmlTMDB.Elements
 
                     If tmdbNode.Count > 0 Then
-                        If Not tmdbNode(0).Value = "Your query didn't return any results." Then
-                            Dim movieID As String = xmlTMDB...<results>...<moviematches>...<movie>...<id>.Value
+                        If Not xmlTMDB...<OpenSearchDescription>...<movies>.Value = "Nothing found." Then
+                            Dim movieID As String = xmlTMDB...<OpenSearchDescription>...<movies>...<movie>...<id>.Value
 
-                            ApiXML = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.0/Movie.getInfo?id={0}&api_key={1}", movieID, APIKey))
+                            ApiXML = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.1/Movie.getInfo/en/xml/{0}/{1}", APIKey, movieID))
 
                             If Not String.IsNullOrEmpty(ApiXML) Then
 
@@ -95,11 +94,10 @@ Namespace TMDB
 
                                 If Me.bwTMDB.CancellationPending Then Return Nothing
 
-                                Dim Trailers = From tNode In xmlTMDB...<results>...<moviematches>...<movie> Select tNode.<trailer>
+                                Dim Trailers = From tNode In xmlTMDB...<OpenSearchDescription>...<movies>...<movie>...<overview> Select tNode.<trailer>
+
                                 If Trailers.Count > 0 AndAlso Not String.IsNullOrEmpty(Trailers(0).Value) Then
-                                    If Trailers(0).@source.ToLower = "youtube" Then
-                                        Return Trailers(0).Value
-                                    End If
+                                    Return Trailers(0).Value
                                 End If
                             End If
                         End If
@@ -137,7 +135,7 @@ Namespace TMDB
 
             If Me.bwTMDB.CancellationPending Then Return Nothing
             Try
-                Dim ApiXML As String = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.0/Movie.imdbLookup?imdb_id=tt{0}&api_key={1}", imdbID, APIKey))
+                Dim ApiXML As String = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.1/Movie.imdbLookup/en/xml/{0}/tt{1}", APIKey, imdbID))
 
                 If Not String.IsNullOrEmpty(ApiXML) Then
                     Try
@@ -149,49 +147,36 @@ Namespace TMDB
                     If bwTMDB.WorkerReportsProgress Then
                         bwTMDB.ReportProgress(1)
                     End If
+
                     If Me.bwTMDB.CancellationPending Then Return Nothing
 
                     Dim tmdbNode = From xNode In xmlTMDB.Elements
 
                     If tmdbNode.Count > 0 Then
-                        If Not tmdbNode(0).Value = "Your query didn't return any results." Then
-                            Dim movieID As String = xmlTMDB...<results>...<moviematches>...<movie>...<id>.Value
+                        If Not xmlTMDB...<OpenSearchDescription>...<movies>.Value = "Nothing found." Then
+                            Dim tmdbImages = From iNode In xmlTMDB...<OpenSearchDescription>...<movies>...<movie>...<images>.Elements Where iNode.@type.ToLower = sType Select iNode
 
-                            ApiXML = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.0/Movie.getInfo?id={0}&api_key={1}", movieID, APIKey))
-                            If Not String.IsNullOrEmpty(ApiXML) Then
-                                Try
-                                    xmlTMDB = XDocument.Parse(ApiXML)
-                                Catch
-                                    Return alPosters
-                                End Try
-
-                                If bwTMDB.WorkerReportsProgress Then
-                                    bwTMDB.ReportProgress(2)
-                                End If
-
-                                Dim tmdbImages = From iNode In xmlTMDB...<results>...<moviematches>...<movie>.Elements Where iNode.Name.ToString.ToLower = sType Select iNode
-
-                                If tmdbImages.Count > 0 Then
-                                    For Each tmdbI As XElement In tmdbImages
-                                        If Me.bwTMDB.CancellationPending Then Return Nothing
-                                        If sType = "backdrop" AndAlso Master.eSettings.FanartPrefSizeOnly Then
-                                            Select Case Master.eSettings.PreferredFanartSize
-                                                Case Master.FanartSize.Lrg
-                                                    If Not tmdbI.@size.ToLower = "original" Then Continue For
-                                                Case Master.FanartSize.Mid
-                                                    If Not tmdbI.@size.ToLower = "mid" Then Continue For
-                                                Case Master.FanartSize.Small
-                                                    If Not tmdbI.@size.ToLower = "thumb" Then Continue For
-                                            End Select
-                                        End If
-                                        Dim tmpPoster As New Media.Image With {.URL = tmdbI.Value, .Description = tmdbI.@size}
-                                        alPosters.Add(tmpPoster)
-                                    Next
-                                End If
+                            If tmdbImages.Count > 0 Then
+                                For Each tmdbI As XElement In tmdbImages
+                                    If Me.bwTMDB.CancellationPending Then Return Nothing
+                                    If sType = "backdrop" AndAlso Master.eSettings.FanartPrefSizeOnly Then
+                                        Select Case Master.eSettings.PreferredFanartSize
+                                            Case Master.FanartSize.Lrg
+                                                If Not tmdbI.@size.ToLower = "original" Then Continue For
+                                            Case Master.FanartSize.Mid
+                                                If Not tmdbI.@size.ToLower = "mid" Then Continue For
+                                            Case Master.FanartSize.Small
+                                                If Not tmdbI.@size.ToLower = "thumb" Then Continue For
+                                        End Select
+                                    End If
+                                    Dim tmpPoster As New Media.Image With {.URL = tmdbI.@url, .Description = tmdbI.@size}
+                                    alPosters.Add(tmpPoster)
+                                Next
                             End If
                         End If
                     End If
                 End If
+
                 If bwTMDB.WorkerReportsProgress Then
                     bwTMDB.ReportProgress(3)
                 End If
