@@ -398,13 +398,13 @@ mResult:
                 Dim D, W, tempD As Integer
 
                 If Options.bMPAA Then
-                    tempD = If(HTML.IndexOf("MPAA</a>:</h5>") > 0, HTML.IndexOf("MPAA</a>:</h5>"), 0)
+                    tempD = If(HTML.IndexOf("<h5><a href=""/mpaa"">MPAA</a>:</h5>") > 0, HTML.IndexOf("<h5><a href=""/mpaa"">MPAA</a>:</h5>"), 0)
 
-                    D = If(tempD > 0, HTML.IndexOf("<p>", tempD), 0)
+                    D = If(tempD > 0, HTML.IndexOf("<div class=""info-content"">", tempD), 0)
 
-                    W = If(D > 0, HTML.IndexOf("</p>", D), 0)
+                    W = If(D > 0, HTML.IndexOf("</div", D), 0)
 
-                    IMDBMovie.MPAA = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Remove(0, 3)).Trim(), String.Empty)
+                    IMDBMovie.MPAA = If(D > 0 AndAlso W > 0, Web.HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Remove(0, 26)).Trim(), String.Empty)
                 End If
 
                 If doProgress Then
@@ -548,7 +548,7 @@ mResult:
 
                     tempD = If(HTML.IndexOf("<h5>Tagline:</h5>") > 0, HTML.IndexOf("<h5>Tagline:</h5>"), 0)
 
-                    D = If(tempD > 0, HTML.IndexOf("<p>", tempD), 0)
+                    D = If(tempD > 0, HTML.IndexOf("<div class=""info-content"">", tempD), 0)
 
                     Dim lHtmlIndexOf As Integer = If(D > 0, HTML.IndexOf("<a class=""tn15more inline""", D), 0)
                     Dim TagLineEnd As Integer = If(lHtmlIndexOf > 0, lHtmlIndexOf, 0)
@@ -624,14 +624,15 @@ mResult:
                         Try
                             If IMDBMovie.Title.Contains("(VG)") Then
                                 D = If(HTML.IndexOf("<h5>Plot Summary:</h5>") > 0, HTML.IndexOf("<h5>Plot Summary:</h5>"), HTML.IndexOf("<h5>Tagline:</h5>"))
-                                If D > 0 Then W = HTML.IndexOf("</p>", D)
+                                If D > 0 Then W = HTML.IndexOf("</div>", D)
                             Else
-                                D = If(HTML.IndexOf("<h5>Plot:</h5>") > 0, HTML.IndexOf("<h5>Plot:</h5>"), HTML.IndexOf("<h5>Plot Summary:</h5>"))
+                                tempD = If(HTML.IndexOf("<h5>Plot:</h5>") > 0, HTML.IndexOf("<h5>Plot:</h5>"), HTML.IndexOf("<h5>Plot Summary:</h5>"))
+                                D = If(tempD > 0, HTML.IndexOf("<div class=""info-content"">", tempD), 0)
                                 If D <= 0 Then D = HTML.IndexOf("<h5>Plot Synopsis:</h5>")
                                 If D > 0 Then
                                     W = HTML.IndexOf("<a class=", D)
                                     If W > 0 Then
-                                        W = HTML.IndexOf("</p>", D)
+                                        W = HTML.IndexOf("</div>", D)
                                     Else
                                         IMDBMovie.Outline = String.Empty
                                         GoTo mplot
@@ -641,7 +642,7 @@ mResult:
                                     GoTo mPlot 'This plot synopsis is empty
                                 End If
                             End If
-                            Dim PlotOutline As String = HTML.Substring(D, W - D).Remove(0, 18)
+                            Dim PlotOutline As String = HTML.Substring(D, W - D).Remove(0, 26)
 
                             PlotOutline = Web.HttpUtility.HtmlDecode(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
                                                , String.Empty, PlotOutline.Replace("|", String.Empty)).Trim)
