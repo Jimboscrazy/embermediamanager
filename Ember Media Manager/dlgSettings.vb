@@ -703,6 +703,10 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub chkXBMCCompatibility_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkXBMCCompatibility.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkLockGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkLockGenre.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1482,6 +1486,7 @@ Public Class dlgSettings
             Master.eSettings.NoStackExts.AddRange(lstNoStack.Items)
             Master.eSettings.CheckUpdates = chkUpdates.Checked
             Master.eSettings.InfoPanelAnim = chkInfoPanelAnim.Checked
+            Master.eSettings.XBMCCompatible = chkXBMCCompatibility.Checked
 
             '######## MOVIES TAB ########
 
@@ -1714,6 +1719,7 @@ Public Class dlgSettings
             Me.chkWhitelistVideo.Checked = Master.eSettings.CleanWhitelistVideo
             Me.lstWhitelist.Items.AddRange(Master.eSettings.CleanWhitelistExts.ToArray)
             Me.chkOverwriteNfo.Checked = Master.eSettings.OverwriteNfo
+            Me.chkXBMCCompatibility.Checked = Master.eSettings.XBMCCompatible
 
             Me.XComs = Master.eSettings.XBMCComs
             Me.LoadXComs()
@@ -2191,6 +2197,7 @@ Public Class dlgSettings
         Me.Label34.Text = Master.eLang.GetString(626, "File Type")
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
+        Me.chkXBMCCompatibility.Text = Master.eLang.GetString(999, "XBMC Compatible Sets") 'TODO: setup string in xml file
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")

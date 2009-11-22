@@ -347,8 +347,8 @@ Public Class Database
                     Dim sets As Media.Set
                     While SQLreader.Read
                         sets = New Media.Set
-                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.SetContainer.Set = SQLreader("SetName").ToString
-                        If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.SetContainer.Order = SQLreader("SetOrder").ToString
+                        If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Set = SQLreader("SetName").ToString
+                        If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.Order = SQLreader("SetOrder").ToString
                         _movieDB.Movie.Sets.Add(sets)
                     End While
                 End Using
@@ -696,7 +696,7 @@ Public Class Database
                                 ") VALUES (?);")
                         Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
                         For Each s As Media.Set In _movieDB.Movie.Sets
-                            parSets_SetName.Value = s.SetContainer.Set
+                            parSets_SetName.Value = s.Set
                             SQLcommandMoviesSubs.ExecuteNonQuery()
                         Next
                     End Using
@@ -709,8 +709,8 @@ Public Class Database
                         Dim parMovieSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_SetOrder", DbType.String, 0, "SetOrder")
                         For Each s As Media.Set In _movieDB.Movie.Sets
                             parMovieSets_MovieID.Value = _movieDB.ID
-                            parMovieSets_SetName.Value = s.SetContainer.Set
-                            parMovieSets_SetOrder.Value = s.SetContainer.Order
+                            parMovieSets_SetName.Value = s.Set
+                            parMovieSets_SetOrder.Value = s.Order
                             SQLcommandMoviesSubs.ExecuteNonQuery()
                         Next
                     End Using

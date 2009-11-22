@@ -193,6 +193,7 @@ Public Class emmSettings
     Private _movietheme As String
     Private _metadatapertype As New List(Of MetadataPerType)
     Private _enableifoscan As Boolean
+    Private _xbmccompatible As Boolean
 
     Public Property Version() As String
         Get
@@ -1701,6 +1702,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property XBMCCompatible() As Boolean
+        Get
+            Return Me._xbmccompatible
+        End Get
+        Set(ByVal value As Boolean)
+            Me._xbmccompatible = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1874,6 +1884,7 @@ Public Class emmSettings
         Me._movietheme = String.Empty
         Me._metadatapertype.Clear()
         Me._enableifoscan = True
+        Me._xbmccompatible = True
     End Sub
 
     Public Sub Save()

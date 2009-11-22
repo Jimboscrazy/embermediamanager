@@ -56,8 +56,25 @@ Namespace Media
         Private _fanart As New Fanart
         Private _actors As New List(Of Person)
         Private _fileInfo As New MediaInfo.Fileinfo
-        Private _sets As New List(Of [Set])
+        Private _sets As New List(Of [set])
         Private _lev As Integer
+
+
+        Public Shared Function GetSerialiser() As XmlSerializer
+            Dim SetsElement As New XmlElementAttribute()
+            SetsElement.ElementName = "set"
+            Dim myAttrib As New XmlAttributes
+            myAttrib.XmlElements.Add(SetsElement)
+
+            Dim myOverrides As New XmlAttributeOverrides
+            If Master.eSettings.XBMCCompatible Then
+                myOverrides.Add(GetType(Media.Movie), "sets", myAttrib)
+            End If
+
+            Dim mySerializer As New XmlSerializer(GetType(Media.Movie), myOverrides)
+            Return mySerializer
+        End Function
+
 
         <XmlIgnore()> _
         Public Property IMDBID() As String
@@ -585,8 +602,8 @@ Namespace Media
             End Get
         End Property
 
-        <XmlElement("sets")> _
-        Public Property Sets() As List(Of [Set])
+        ''<XmlElement("sets")> _
+        Public Property sets() As List(Of [Set])
             Get
                 Return _sets
             End Get
@@ -621,16 +638,16 @@ Namespace Media
         End Function
 
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
-            Dim tSet = From bSet As [Set] In _sets Where bSet.SetContainer.Set = SetName
+            Dim tSet = From bSet As [Set] In _sets Where bSet.Set = SetName
             If tSet.Count > 0 Then
-                If Order > 0 Then tSet(0).SetContainer.Order = Order.ToString
+                If Order > 0 Then tSet(0).Order = Order.ToString
             Else
-                Me._sets.Add(New [Set] With {.SetContainer = New SetContainer With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)}})
+                Me._sets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
             End If
         End Sub
 
         Public Sub RemoveSet(ByVal SetName As String)
-            Dim tSet = From bSet As [Set] In _sets Where bSet.SetContainer.Set = SetName
+            Dim tSet = From bSet As [Set] In _sets Where bSet.Set = SetName
             If tSet.Count > 0 Then
                 _sets.Remove(tSet(0))
             End If
@@ -855,18 +872,38 @@ Namespace Media
 
     End Class
 
-    Public Class [Set]
-        Private _set As New SetContainer
+    Public Class [set]
+        Private _set As String
 
-        <XmlElement("set")> _
-        Public Property SetContainer() As SetContainer
+        <XmlText()> _
+        Public Property [Set]() As String
             Get
-                Return Me._set
+                Return _set
             End Get
-            Set(ByVal value As SetContainer)
-                Me._set = value
+            Set(ByVal value As String)
+                _set = value
             End Set
         End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            _set = String.Empty
+        End Sub
+
+        ''Private _set As New SetContainer
+
+        ''<XmlElement("set")> _
+        ''Public Property SetContainer() As SetContainer
+        ''    Get
+        ''        Return Me._set
+        ''    End Get
+        ''    Set(ByVal value As SetContainer)
+        ''        Me._set = value
+        ''    End Set
+        ''End Property
     End Class
 
     Public Class SetContainer
