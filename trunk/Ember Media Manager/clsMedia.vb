@@ -874,6 +874,7 @@ Namespace Media
 
     Public Class [set]
         Private _set As String
+        Private _order As String
 
         <XmlText()> _
         Public Property [Set]() As String
@@ -885,12 +886,30 @@ Namespace Media
             End Set
         End Property
 
+        <XmlAttribute("order")> _
+        Public Property Order() As String
+            Get
+                Return _order
+            End Get
+            Set(ByVal value As String)
+                _order = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property OrderSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._order)
+            End Get
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
 
         Public Sub Clear()
             _set = String.Empty
+            _order = String.Empty
         End Sub
 
         ''Private _set As New SetContainer
