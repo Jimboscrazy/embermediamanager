@@ -98,7 +98,8 @@ Public Class NFO
         Try
             If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
                 Using xmlSR As StreamReader = New StreamReader(sPath)
-                    xmlSer = New XmlSerializer(GetType(Media.Movie))
+                    'xmlSer = New XmlSerializer(GetType(Media.Movie))
+                    xmlSer = Media.Movie.GetSerialiser()
                     xmlMov = CType(xmlSer.Deserialize(xmlSR), Media.Movie)
                 End Using
             Else
@@ -109,7 +110,8 @@ Public Class NFO
                     Try
                         If Not String.IsNullOrEmpty(sReturn.Text) Then
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                                xmlSer = New XmlSerializer(GetType(Media.Movie))
+                                xmlSer = Media.Movie.GetSerialiser()
+                                'xmlSer = New XmlSerializer(GetType(Media.Movie))
                                 xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
                                 xmlMov.IMDBID = sReturn.IMDBID
                             End Using
@@ -134,7 +136,8 @@ Public Class NFO
                 Try
                     If Not String.IsNullOrEmpty(sReturn.Text) Then
                         Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                            xmlSer = New XmlSerializer(GetType(Media.Movie))
+                            xmlSer = Media.Movie.GetSerialiser()
+                            'xmlSer = New XmlSerializer(GetType(Media.Movie))
                             xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
                             xmlMov.IMDBID = sReturn.IMDBID
                         End Using
@@ -490,7 +493,9 @@ Public Class NFO
 
         Try
 
-            Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
+            'Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
+            Dim xmlSer As XmlSerializer = Media.Movie.GetSerialiser()
+
             Dim tPath As String = String.Empty
             Dim nPath As String = String.Empty
 
@@ -502,6 +507,17 @@ Public Class NFO
                 End If
 
                 If Not File.Exists(nPath) OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
+                    movieToSave.NfoPath = tPath
+                    ''Using memData As New IO.MemoryStream
+                    ''    xmlSer.Serialize(memData, movieToSave.Movie)
+                    ''    memData.Position = 0
+                    ''    Using sr As New StreamReader(memData, Encoding.UTF8)
+                    ''        Dim sData As String = sr.ReadToEnd
+                    ''        sData = sData.Replace("<sets>" & Environment.NewLine, "")
+                    ''        sData = sData.Replace("</sets>" & Environment.NewLine, "")
+                    ''        IO.File.WriteAllText(tPath, sData)
+                    ''    End Using
+                    ''End Using
                     Using xmlSW As New StreamWriter(nPath)
                         movieToSave.NfoPath = tPath
                         xmlSer.Serialize(xmlSW, movieToSave.Movie)
@@ -523,6 +539,16 @@ Public Class NFO
                     End If
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+                        ''Using memData As New IO.MemoryStream
+                        ''    xmlSer.Serialize(memData, movieToSave.Movie)
+                        ''    memData.Position = 0
+                        ''    Using sr As New StreamReader(memData, Encoding.UTF8)
+                        ''        Dim sData As String = sr.ReadToEnd
+                        ''        sData = sData.Replace("<sets>" & Environment.NewLine, "")
+                        ''        sData = sData.Replace("</sets>" & Environment.NewLine, "")
+                        ''        IO.File.WriteAllText(tPath, sData)
+                        ''    End Using
+                        ''End Using
                         Using xmlSW As New StreamWriter(tPath)
                             movieToSave.NfoPath = tPath
                             xmlSer.Serialize(xmlSW, movieToSave.Movie)
@@ -538,6 +564,16 @@ Public Class NFO
                     End If
 
                     If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+                        ''Using memData As New IO.MemoryStream
+                        ''    xmlSer.Serialize(memData, movieToSave.Movie)
+                        ''    memData.Position = 0
+                        ''    Using sr As New StreamReader(memData, Encoding.UTF8)
+                        ''        Dim sData As String = sr.ReadToEnd
+                        ''        sData = sData.Replace("<sets>" & Environment.NewLine, "")
+                        ''        sData = sData.Replace("</sets>" & Environment.NewLine, "")
+                        ''        IO.File.WriteAllText(tPath, sData)
+                        ''    End Using
+                        ''End Using
                         Using xmlSW As New StreamWriter(tPath)
                             movieToSave.NfoPath = tPath
                             xmlSer.Serialize(xmlSW, movieToSave.Movie)

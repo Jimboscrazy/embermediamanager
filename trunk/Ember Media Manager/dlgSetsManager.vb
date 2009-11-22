@@ -169,8 +169,8 @@ Public Class dlgSetsManager
                                 lMovies.Add(New Movies With {.DBMovie = tmpMovie})
                                 If tmpMovie.Movie.Sets.Count > 0 Then
                                     For Each mSet As Media.Set In tmpMovie.Movie.Sets
-                                        If Not alSets.Contains(mSet.SetContainer.Set) AndAlso Not String.IsNullOrEmpty(mSet.SetContainer.Set) Then
-                                            alSets.Add(mSet.SetContainer.Set)
+                                        If Not alSets.Contains(mSet.Set) AndAlso Not String.IsNullOrEmpty(mSet.Set) Then
+                                            alSets.Add(mSet.Set)
                                         End If
                                     Next
                                 End If
@@ -263,9 +263,9 @@ Public Class dlgSetsManager
 
                 For Each tMovie As Movies In lMovies
                     For Each mSet As Media.Set In tMovie.DBMovie.Movie.Sets
-                        If mSet.SetContainer.Set = Me.currSet.Set Then
-                            If Not String.IsNullOrEmpty(mSet.SetContainer.Order) Then
-                                tOrder = Convert.ToInt32(mSet.SetContainer.Order)
+                        If mSet.Set = Me.currSet.Set Then
+                            If Not String.IsNullOrEmpty(mSet.Order) Then
+                                tOrder = Convert.ToInt32(mSet.Order)
                             End If
                             Me.currSet.AddMovie(tMovie, tOrder)
                         End If
@@ -476,7 +476,7 @@ Public Class dlgSetsManager
         Me.lblCompiling.Text = Master.eLang.GetString(369, "Loading Movies and Sets...")
         Me.lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
         Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(370, "Add and configure movie boxed sets.")
+        Me.Label2.Text = Master.eLang.GetString(371, "Add and configure movie boxed sets.")
         Me.Label4.Text = Me.Text
     End Sub
 

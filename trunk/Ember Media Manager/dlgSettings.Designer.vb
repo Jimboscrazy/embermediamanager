@@ -53,6 +53,7 @@ Partial Class dlgSettings
         Me.Label32 = New System.Windows.Forms.Label
         Me.cbIntLang = New System.Windows.Forms.ComboBox
         Me.chkInfoPanelAnim = New System.Windows.Forms.CheckBox
+        Me.chkXBMCCompatibility = New System.Windows.Forms.CheckBox
         Me.chkUpdates = New System.Windows.Forms.CheckBox
         Me.chkOverwriteNfo = New System.Windows.Forms.CheckBox
         Me.Label5 = New System.Windows.Forms.Label
@@ -334,6 +335,7 @@ Partial Class dlgSettings
         Me.chkPersistImgCache = New System.Windows.Forms.CheckBox
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
+        Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -526,6 +528,7 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.Label32)
         Me.GroupBox4.Controls.Add(Me.cbIntLang)
         Me.GroupBox4.Controls.Add(Me.chkInfoPanelAnim)
+        Me.GroupBox4.Controls.Add(Me.chkXBMCCompatibility)
         Me.GroupBox4.Controls.Add(Me.chkUpdates)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.Label5)
@@ -542,9 +545,9 @@ Partial Class dlgSettings
         Me.GroupBox29.Controls.Add(Me.Label36)
         Me.GroupBox29.Controls.Add(Me.cbMovieTheme)
         Me.GroupBox29.Controls.Add(Me.Label35)
-        Me.GroupBox29.Location = New System.Drawing.Point(9, 154)
+        Me.GroupBox29.Location = New System.Drawing.Point(9, 179)
         Me.GroupBox29.Name = "GroupBox29"
-        Me.GroupBox29.Size = New System.Drawing.Size(167, 119)
+        Me.GroupBox29.Size = New System.Drawing.Size(167, 91)
         Me.GroupBox29.TabIndex = 21
         Me.GroupBox29.TabStop = False
         Me.GroupBox29.Text = "Themes"
@@ -592,7 +595,7 @@ Partial Class dlgSettings
         'Label32
         '
         Me.Label32.AutoSize = True
-        Me.Label32.Location = New System.Drawing.Point(7, 114)
+        Me.Label32.Location = New System.Drawing.Point(7, 135)
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(103, 13)
         Me.Label32.TabIndex = 17
@@ -602,7 +605,7 @@ Partial Class dlgSettings
         '
         Me.cbIntLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbIntLang.FormattingEnabled = True
-        Me.cbIntLang.Location = New System.Drawing.Point(10, 131)
+        Me.cbIntLang.Location = New System.Drawing.Point(10, 152)
         Me.cbIntLang.Name = "cbIntLang"
         Me.cbIntLang.Size = New System.Drawing.Size(137, 21)
         Me.cbIntLang.TabIndex = 16
@@ -616,6 +619,17 @@ Partial Class dlgSettings
         Me.chkInfoPanelAnim.TabIndex = 3
         Me.chkInfoPanelAnim.Text = "Enable Panel Animation"
         Me.chkInfoPanelAnim.UseVisualStyleBackColor = True
+        '
+        'chkXBMCCompatibility
+        '
+        Me.chkXBMCCompatibility.AutoSize = True
+        Me.chkXBMCCompatibility.Location = New System.Drawing.Point(10, 115)
+        Me.chkXBMCCompatibility.Name = "chkXBMCCompatibility"
+        Me.chkXBMCCompatibility.Size = New System.Drawing.Size(135, 17)
+        Me.chkXBMCCompatibility.TabIndex = 0
+        Me.chkXBMCCompatibility.Text = "XBMC Compatible Sets"
+        Me.ToolTips.SetToolTip(Me.chkXBMCCompatibility, "This will save sets in a way that is friendly to XBMC")
+        Me.chkXBMCCompatibility.UseVisualStyleBackColor = True
         '
         'chkUpdates
         '
@@ -3637,6 +3651,10 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -3645,12 +3663,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -4047,4 +4061,6 @@ Partial Class dlgSettings
     Friend WithEvents Label36 As System.Windows.Forms.Label
     Friend WithEvents chkIFOScan As System.Windows.Forms.CheckBox
     Friend WithEvents lstMetaData As System.Windows.Forms.ListBox
+    Friend WithEvents chkXBMCCompatibility As System.Windows.Forms.CheckBox
+    Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
 End Class
