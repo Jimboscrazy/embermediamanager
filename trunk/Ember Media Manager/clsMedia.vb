@@ -61,13 +61,13 @@ Namespace Media
 
 
         Public Shared Function GetSerialiser() As XmlSerializer
-            Dim SetsElement As New XmlElementAttribute()
-            SetsElement.ElementName = "set"
-            Dim myAttrib As New XmlAttributes
-            myAttrib.XmlElements.Add(SetsElement)
 
             Dim myOverrides As New XmlAttributeOverrides
             If Master.eSettings.XBMCCompatible Then
+                Dim SetsElement As New XmlElementAttribute()
+                SetsElement.ElementName = "set"
+                Dim myAttrib As New XmlAttributes
+                myAttrib.XmlElements.Add(SetsElement)
                 myOverrides.Add(GetType(Media.Movie), "sets", myAttrib)
             End If
 
@@ -640,9 +640,13 @@ Namespace Media
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
             Dim tSet = From bSet As [Set] In _sets Where bSet.Set = SetName
             If tSet.Count > 0 Then
-                If Order > 0 Then tSet(0).Order = Order.ToString
+                If Order > 0 Then
+                    tSet(0).Order = Order.ToString
+                Else
+                    tSet(0).Order = String.Empty
+                End If
             Else
-                Me._sets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
+                Me._sets.Add(New [set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
             End If
         End Sub
 

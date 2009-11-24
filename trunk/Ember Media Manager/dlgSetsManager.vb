@@ -309,7 +309,11 @@ Public Class dlgSetsManager
     Private Sub SaveSet(ByVal mSet As Sets)
         Try
             For Each tMovie As Movies In mSet.Movies
-                tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
+                If Master.eSettings.XBMCCompatible Then
+                    tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
+                Else
+                    tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
+                End If
                 Master.DB.SaveMovieToDB(tMovie.DBMovie, False, False, True)
             Next
         Catch ex As Exception
