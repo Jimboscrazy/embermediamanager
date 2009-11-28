@@ -53,7 +53,6 @@ Partial Class dlgSettings
         Me.Label32 = New System.Windows.Forms.Label
         Me.cbIntLang = New System.Windows.Forms.ComboBox
         Me.chkInfoPanelAnim = New System.Windows.Forms.CheckBox
-        Me.chkXBMCCompatibility = New System.Windows.Forms.CheckBox
         Me.chkUpdates = New System.Windows.Forms.CheckBox
         Me.chkOverwriteNfo = New System.Windows.Forms.CheckBox
         Me.Label5 = New System.Windows.Forms.Label
@@ -199,6 +198,7 @@ Partial Class dlgSettings
         Me.txtAutoThumbs = New System.Windows.Forms.TextBox
         Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.chkYAMJCompatibleSets = New System.Windows.Forms.CheckBox
         Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox
         Me.Label18 = New System.Windows.Forms.Label
         Me.txtIMDBURL = New System.Windows.Forms.TextBox
@@ -528,7 +528,6 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.Label32)
         Me.GroupBox4.Controls.Add(Me.cbIntLang)
         Me.GroupBox4.Controls.Add(Me.chkInfoPanelAnim)
-        Me.GroupBox4.Controls.Add(Me.chkXBMCCompatibility)
         Me.GroupBox4.Controls.Add(Me.chkUpdates)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.Label5)
@@ -619,17 +618,6 @@ Partial Class dlgSettings
         Me.chkInfoPanelAnim.TabIndex = 3
         Me.chkInfoPanelAnim.Text = "Enable Panel Animation"
         Me.chkInfoPanelAnim.UseVisualStyleBackColor = True
-        '
-        'chkXBMCCompatibility
-        '
-        Me.chkXBMCCompatibility.AutoSize = True
-        Me.chkXBMCCompatibility.Location = New System.Drawing.Point(10, 115)
-        Me.chkXBMCCompatibility.Name = "chkXBMCCompatibility"
-        Me.chkXBMCCompatibility.Size = New System.Drawing.Size(135, 17)
-        Me.chkXBMCCompatibility.TabIndex = 0
-        Me.chkXBMCCompatibility.Text = "XBMC Compatible Sets"
-        Me.ToolTips.SetToolTip(Me.chkXBMCCompatibility, "This will save sets in a way that is friendly to XBMC")
-        Me.chkXBMCCompatibility.UseVisualStyleBackColor = True
         '
         'chkUpdates
         '
@@ -2118,6 +2106,7 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkYAMJCompatibleSets)
         Me.GroupBox1.Controls.Add(Me.chkOutlineForPlot)
         Me.GroupBox1.Controls.Add(Me.Label18)
         Me.GroupBox1.Controls.Add(Me.txtIMDBURL)
@@ -2129,15 +2118,26 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Location = New System.Drawing.Point(306, 4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(269, 177)
+        Me.GroupBox1.Size = New System.Drawing.Size(269, 194)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
         '
+        'chkYAMJCompatibleSets
+        '
+        Me.chkYAMJCompatibleSets.AutoSize = True
+        Me.chkYAMJCompatibleSets.Location = New System.Drawing.Point(6, 17)
+        Me.chkYAMJCompatibleSets.Name = "chkYAMJCompatibleSets"
+        Me.chkYAMJCompatibleSets.Size = New System.Drawing.Size(133, 17)
+        Me.chkYAMJCompatibleSets.TabIndex = 63
+        Me.chkYAMJCompatibleSets.Text = "YAMJ Compatible Sets"
+        Me.ToolTips.SetToolTip(Me.chkYAMJCompatibleSets, "This will save sets in a way that is friendly to XBMC")
+        Me.chkYAMJCompatibleSets.UseVisualStyleBackColor = True
+        '
         'chkOutlineForPlot
         '
         Me.chkOutlineForPlot.AutoSize = True
-        Me.chkOutlineForPlot.Location = New System.Drawing.Point(6, 63)
+        Me.chkOutlineForPlot.Location = New System.Drawing.Point(6, 81)
         Me.chkOutlineForPlot.Name = "chkOutlineForPlot"
         Me.chkOutlineForPlot.Size = New System.Drawing.Size(188, 17)
         Me.chkOutlineForPlot.TabIndex = 3
@@ -2147,7 +2147,7 @@ Partial Class dlgSettings
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(8, 137)
+        Me.Label18.Location = New System.Drawing.Point(8, 155)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(66, 13)
         Me.Label18.TabIndex = 62
@@ -2156,7 +2156,7 @@ Partial Class dlgSettings
         'txtIMDBURL
         '
         Me.txtIMDBURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIMDBURL.Location = New System.Drawing.Point(10, 150)
+        Me.txtIMDBURL.Location = New System.Drawing.Point(10, 168)
         Me.txtIMDBURL.Name = "txtIMDBURL"
         Me.txtIMDBURL.Size = New System.Drawing.Size(192, 20)
         Me.txtIMDBURL.TabIndex = 10
@@ -2164,7 +2164,7 @@ Partial Class dlgSettings
         'chkCastWithImg
         '
         Me.chkCastWithImg.AutoSize = True
-        Me.chkCastWithImg.Location = New System.Drawing.Point(6, 31)
+        Me.chkCastWithImg.Location = New System.Drawing.Point(6, 49)
         Me.chkCastWithImg.Name = "chkCastWithImg"
         Me.chkCastWithImg.Size = New System.Drawing.Size(179, 17)
         Me.chkCastWithImg.TabIndex = 1
@@ -2175,7 +2175,7 @@ Partial Class dlgSettings
         '
         Me.chkUseCertForMPAA.AutoSize = True
         Me.chkUseCertForMPAA.Enabled = False
-        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(20, 120)
+        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(20, 138)
         Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
         Me.chkUseCertForMPAA.Size = New System.Drawing.Size(151, 17)
         Me.chkUseCertForMPAA.TabIndex = 6
@@ -2185,7 +2185,7 @@ Partial Class dlgSettings
         'chkFullCast
         '
         Me.chkFullCast.AutoSize = True
-        Me.chkFullCast.Location = New System.Drawing.Point(6, 15)
+        Me.chkFullCast.Location = New System.Drawing.Point(6, 33)
         Me.chkFullCast.Name = "chkFullCast"
         Me.chkFullCast.Size = New System.Drawing.Size(103, 17)
         Me.chkFullCast.TabIndex = 0
@@ -2195,7 +2195,7 @@ Partial Class dlgSettings
         'chkFullCrew
         '
         Me.chkFullCrew.AutoSize = True
-        Me.chkFullCrew.Location = New System.Drawing.Point(6, 47)
+        Me.chkFullCrew.Location = New System.Drawing.Point(6, 65)
         Me.chkFullCrew.Name = "chkFullCrew"
         Me.chkFullCrew.Size = New System.Drawing.Size(106, 17)
         Me.chkFullCrew.TabIndex = 2
@@ -2208,7 +2208,7 @@ Partial Class dlgSettings
         Me.cbCert.Enabled = False
         Me.cbCert.FormattingEnabled = True
         Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbCert.Location = New System.Drawing.Point(6, 97)
+        Me.cbCert.Location = New System.Drawing.Point(6, 115)
         Me.cbCert.Name = "cbCert"
         Me.cbCert.Size = New System.Drawing.Size(179, 21)
         Me.cbCert.Sorted = True
@@ -2217,7 +2217,7 @@ Partial Class dlgSettings
         'chkCert
         '
         Me.chkCert.AutoSize = True
-        Me.chkCert.Location = New System.Drawing.Point(6, 79)
+        Me.chkCert.Location = New System.Drawing.Point(6, 97)
         Me.chkCert.Name = "chkCert"
         Me.chkCert.Size = New System.Drawing.Size(157, 17)
         Me.chkCert.TabIndex = 4
@@ -3651,10 +3651,10 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -4061,6 +4061,6 @@ Partial Class dlgSettings
     Friend WithEvents Label36 As System.Windows.Forms.Label
     Friend WithEvents chkIFOScan As System.Windows.Forms.CheckBox
     Friend WithEvents lstMetaData As System.Windows.Forms.ListBox
-    Friend WithEvents chkXBMCCompatibility As System.Windows.Forms.CheckBox
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
+    Friend WithEvents chkYAMJCompatibleSets As System.Windows.Forms.CheckBox
 End Class

@@ -63,7 +63,7 @@ Namespace Media
         Public Shared Function GetSerialiser() As XmlSerializer
 
             Dim myOverrides As New XmlAttributeOverrides
-            If Master.eSettings.XBMCCompatible Then
+            If Not Master.eSettings.YAMJSetsCompatible Then
                 Dim SetsElement As New XmlElementAttribute()
                 SetsElement.ElementName = "set"
                 Dim myAttrib As New XmlAttributes
