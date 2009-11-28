@@ -193,7 +193,7 @@ Public Class emmSettings
     Private _movietheme As String
     Private _metadatapertype As New List(Of MetadataPerType)
     Private _enableifoscan As Boolean
-    Private _xbmccompatible As Boolean
+    Private _yamjsetscompatible As Boolean
 
     Public Property Version() As String
         Get
@@ -1702,12 +1702,12 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property XBMCCompatible() As Boolean
+    Public Property YAMJSetsCompatible() As Boolean
         Get
-            Return Me._xbmccompatible
+            Return Me._yamjsetscompatible
         End Get
         Set(ByVal value As Boolean)
-            Me._xbmccompatible = value
+            Me._yamjsetscompatible = value
         End Set
     End Property
 
@@ -1884,7 +1884,7 @@ Public Class emmSettings
         Me._movietheme = String.Empty
         Me._metadatapertype.Clear()
         Me._enableifoscan = True
-        Me._xbmccompatible = True
+        Me._yamjsetscompatible = False
     End Sub
 
     Public Sub Save()

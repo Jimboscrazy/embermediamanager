@@ -309,7 +309,7 @@ Public Class dlgSetsManager
     Private Sub SaveSet(ByVal mSet As Sets)
         Try
             For Each tMovie As Movies In mSet.Movies
-                If Master.eSettings.XBMCCompatible Then
+                If Not Master.eSettings.YAMJSetsCompatible Then
                     tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
                 Else
                     tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
