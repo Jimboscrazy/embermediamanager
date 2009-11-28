@@ -124,7 +124,7 @@ Public Class HTTP
                     outFile = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, URL.Substring(URL.LastIndexOf("/") + 1))
                 Case Type = "template"
                     Dim basePath As String = Path.Combine(Master.AppPath, "Langs")
-                    Dim folders() As String = URL.Replace("http://www.embermm.com/Updates/Translations/", String.Empty).Trim.Split(Convert.ToChar("/"))
+                    Dim folders() As String = URL.Replace("http://217.20.138.65/emm/Updates/Translations/", String.Empty).Trim.Split(Convert.ToChar("/"))
                     For i As Integer = 0 To folders.Count - 2
                         If Not Directory.Exists(Path.Combine(basePath, folders(i))) Then Directory.CreateDirectory(Path.Combine(basePath, folders(i)))
                         basePath = Path.Combine(basePath, folders(i))
