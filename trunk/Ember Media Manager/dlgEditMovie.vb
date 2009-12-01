@@ -451,7 +451,9 @@ Public Class dlgEditMovie
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.SortTitle) Then
-                    .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
+                    If Master.currMovie.Movie.SortTitle <> StringManip.FilterTokens(Master.currMovie.Movie.Title) Then
+                        .txtSortTitle.Text = Master.currMovie.Movie.SortTitle
+                    End If
                 End If
 
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Tagline) Then
