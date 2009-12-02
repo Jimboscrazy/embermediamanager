@@ -281,7 +281,9 @@ Partial Class dlgFIStreamEditor
         '
         'cbAudioLanguage
         '
-        Me.cbAudioLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbAudioLanguage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.cbAudioLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cbAudioLanguage.DropDownWidth = 120
         Me.cbAudioLanguage.FormattingEnabled = True
         Me.cbAudioLanguage.Location = New System.Drawing.Point(75, 19)
         Me.cbAudioLanguage.Name = "cbAudioLanguage"
@@ -312,7 +314,9 @@ Partial Class dlgFIStreamEditor
         '
         'cbSubsLanguage
         '
-        Me.cbSubsLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSubsLanguage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.cbSubsLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cbSubsLanguage.DropDownWidth = 120
         Me.cbSubsLanguage.FormattingEnabled = True
         Me.cbSubsLanguage.Location = New System.Drawing.Point(79, 21)
         Me.cbSubsLanguage.Name = "cbSubsLanguage"
@@ -327,10 +331,10 @@ Partial Class dlgFIStreamEditor
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(207, 231)
-        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.GroupBox2)
-        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.GroupBox3)
+        Me.Controls.Add(Me.GroupBox1)
+        Me.Controls.Add(Me.TableLayoutPanel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
