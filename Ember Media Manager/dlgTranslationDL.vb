@@ -70,7 +70,7 @@ Public Class dlgTranslationDL
     Private Sub DownloadList()
         Dim sHTTP As New HTTP
         Try
-            Dim transXML As String = sHTTP.DownloadData("http://217.20.138.65/emm/Updates/Download.xml")
+            Dim transXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Download.xml")
             sHTTP = Nothing
 
             Dim xmlTrans As XDocument = XDocument.Parse(transXML)
