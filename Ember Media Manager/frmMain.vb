@@ -2088,18 +2088,23 @@ Public Class frmMain
 
     Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
         Try
-            Dim mMovie As Master.DBMovie
-            If MsgBox(String.Concat(Master.eLang.GetString(109, "WARNING: THIS WILL PERMANENTLY DELETE THE SELECTED MOVIE(S) FROM THE HARD DRIVE"), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
-                    For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                        mMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
-                        Master.DeleteFiles(False, mMovie)
-                        Master.DB.DeleteFromDB(Convert.ToInt64(sRow.Cells(0).Value), True)
-                    Next
-                    SQLtransaction.Commit()
+            Dim ListRefreshReqd As Boolean = False
+            Dim MoviesToDelete As New List(Of Long)
+            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                Dim MovieId As Int64 = Convert.ToInt64(sRow.Cells(0).Value)
+                If Not MoviesToDelete.Contains(MovieId) Then
+                    MoviesToDelete.Add(MovieId)
+                End If
+            Next
+
+            If MoviesToDelete.Count > 0 Then
+                Using dlg As New dlgDeleteConfirm
+                    If dlg.ShowDialog(MoviesToDelete) = Windows.Forms.DialogResult.OK Then
+                        Me.FillList(0)
+                    End If
                 End Using
-                Me.FillList(0)
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4209,6 +4214,13 @@ doCancel:
                 .pbStar3.Image = Nothing
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
+                ToolTips.SetToolTip(pbStar1, "")
+                ToolTips.SetToolTip(pbStar2, "")
+                ToolTips.SetToolTip(pbStar3, "")
+                ToolTips.SetToolTip(pbStar4, "")
+                ToolTips.SetToolTip(pbStar5, "")
+
+
                 .lstActors.Items.Clear()
                 If Not IsNothing(.alActors) Then
                     .alActors.Clear()
@@ -4318,7 +4330,15 @@ doCancel:
             End If
 
             Dim tmpRating As Single = Master.ConvertToSingle(Master.currMovie.Movie.Rating)
-            If tmpRating > 0 Then Me.BuildStars(tmpRating)
+            If tmpRating > 0 Then
+                Me.BuildStars(tmpRating)
+            Else
+                ''ToolTips.SetToolTip(pbStar1, "Rating: N/A")
+                ''ToolTips.SetToolTip(pbStar2, "Rating: N/A")
+                ''ToolTips.SetToolTip(pbStar3, "Rating: N/A")
+                ''ToolTips.SetToolTip(pbStar4, "Rating: N/A")
+                ''ToolTips.SetToolTip(pbStar5, "Rating: N/A")
+            End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Genre) Then
                 Me.createGenreThumbs(Master.currMovie.Movie.Genre)
@@ -4369,6 +4389,13 @@ doCancel:
                 .pbStar3.Image = Nothing
                 .pbStar4.Image = Nothing
                 .pbStar5.Image = Nothing
+
+                ToolTips.SetToolTip(.pbStar1, String.Format("Rating: {0:N}", sinRating))
+                ToolTips.SetToolTip(.pbStar2, String.Format("Rating: {0:N}", sinRating))
+                ToolTips.SetToolTip(.pbStar3, String.Format("Rating: {0:N}", sinRating))
+                ToolTips.SetToolTip(.pbStar4, String.Format("Rating: {0:N}", sinRating))
+                ToolTips.SetToolTip(.pbStar5, String.Format("Rating: {0:N}", sinRating))
+
 
                 If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
                     Select Case (sinRating / 2)
