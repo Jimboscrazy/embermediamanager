@@ -423,6 +423,17 @@ Public Class dlgExportMovies
                 Else
                     row = row.Replace("<$MOVIENAME>", HtmlEncode(_curMovie.ListTitle))
                 End If
+                'TODO: write extension method to create a comma-separated string from the actors list
+                row = row.Replace("<$ACTORS>", HtmlEncode(Master.ListToStringWithSeparator(_curMovie.Movie.Actors, ",")))
+                row = row.Replace("<$DIRECTOR>", HtmlEncode(_curMovie.Movie.Director))
+                row = row.Replace("<$CERTIFICATION>", HtmlEncode(_curMovie.Movie.Certification))
+                row = row.Replace("<$IMDBID>", HtmlEncode(_curMovie.Movie.IMDBID))
+                row = row.Replace("<$MPAA>", HtmlEncode(_curMovie.Movie.MPAA))
+                row = row.Replace("<$RELEASEDATE>", HtmlEncode(_curMovie.Movie.ReleaseDate))
+                row = row.Replace("<$RUNTIME>", HtmlEncode(_curMovie.Movie.Runtime))
+                row = row.Replace("<$TAGLINE>", HtmlEncode(_curMovie.Movie.Tagline))
+                row = row.Replace("<$RATING>", HtmlEncode(_curMovie.Movie.Rating))
+                row = row.Replace("<$VOTES>", HtmlEncode(_curMovie.Movie.Votes))
                 row = row.Replace("<$LISTTITLE>", HtmlEncode(_curMovie.ListTitle))
                 row = row.Replace("<$YEAR>", _curMovie.Movie.Year)
                 row = row.Replace("<$COUNT>", counter.ToString)

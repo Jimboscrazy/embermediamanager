@@ -759,6 +759,10 @@ Namespace Media
             Me._role = String.Empty
             Me._thumb = String.Empty
         End Sub
+
+        Public Overrides Function ToString() As String
+            Return Me._name
+        End Function
     End Class
 
     Public Class Fanart
