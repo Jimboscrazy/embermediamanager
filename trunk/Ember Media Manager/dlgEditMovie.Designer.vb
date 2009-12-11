@@ -135,6 +135,7 @@ Partial Class dlgEditMovie
         Me.btnRescrape = New System.Windows.Forms.Button
         Me.btnChangeMovie = New System.Windows.Forms.Button
         Me.btnClearCache = New System.Windows.Forms.Button
+        Me.DelayTimer = New System.Windows.Forms.Timer(Me.components)
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -1203,6 +1204,7 @@ Partial Class dlgEditMovie
         Me.btnGrab.TabIndex = 5
         Me.btnGrab.Text = "Grab Frame"
         Me.btnGrab.UseVisualStyleBackColor = True
+        Me.btnGrab.Visible = False
         '
         'lblTime
         '
@@ -1309,6 +1311,10 @@ Partial Class dlgEditMovie
         Me.btnClearCache.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnClearCache.UseVisualStyleBackColor = True
         Me.btnClearCache.Visible = False
+        '
+        'DelayTimer
+        '
+        Me.DelayTimer.Interval = 250
         '
         'dlgEditMovie
         '
@@ -1475,5 +1481,6 @@ Partial Class dlgEditMovie
     Friend WithEvents pnlFileInfo As System.Windows.Forms.Panel
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents txtSortTitle As System.Windows.Forms.TextBox
+    Friend WithEvents DelayTimer As System.Windows.Forms.Timer
 
 End Class
