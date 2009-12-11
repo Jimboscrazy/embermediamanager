@@ -30,7 +30,6 @@ Public Class dlgDeleteConfirm
         'TODO: create language keys for new texts
         Me.Text = Master.eLang.GetString(999, "Confirm Items To Be Deleted")
         Me.btnToggleAllFiles.Text = Master.eLang.GetString(999, "Toggle All Files")
-        Me.btnToggleAllRecords.Text = Master.eLang.GetString(999, "Toggle All Records")
 
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
@@ -45,15 +44,21 @@ Public Class dlgDeleteConfirm
                 For Each MovieParentNode As TreeNode In .Nodes
                     Dim mMovie As Master.DBMovie = CType(MovieParentNode.Tag, Master.DBMovie)
 
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
+                        Master.DB.DeleteFromDB(mMovie.ID, True)
+                        SQLtransaction.Commit()
+                    End Using
+
                     If MovieParentNode.Nodes.Count > 0 Then
                         For Each node As TreeNode In MovieParentNode.Nodes
                             If node.Checked Then
                                 Select Case node.ImageKey
-                                    Case "RECORD"
-                                        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction 'Only on Batch Mode
-                                            Master.DB.DeleteFromDB(mMovie.ID, True)
-                                            SQLtransaction.Commit()
-                                        End Using
+                                    Case "FOLDER"
+                                        Dim oDir As New IO.DirectoryInfo(node.Tag.ToString)
+                                        If oDir.Exists Then
+                                            oDir.Delete(True)
+                                            Exit For
+                                        End If
 
                                     Case "FILE"
                                         Dim oFile As New IO.FileInfo(node.Tag.ToString)
@@ -87,21 +92,22 @@ Public Class dlgDeleteConfirm
                 MovieParentNode.SelectedImageKey = "MOVIE"
                 MovieParentNode.Tag = mMovie
 
-                Dim MovieNode As TreeNode = MovieParentNode.Nodes.Add(mMovie.ID.ToString, Master.eLang.GetString(999, "Ember Database Record"))
-                MovieNode.ImageKey = "RECORD"
-                MovieNode.SelectedImageKey = "RECORD"
-                MovieNode.Tag = mMovie
+                ''Dim MovieNode As TreeNode = MovieParentNode.Nodes.Add(mMovie.ID.ToString, Master.eLang.GetString(999, "Ember Database Record"))
+                ''MovieNode.ImageKey = "RECORD"
+                ''MovieNode.SelectedImageKey = "RECORD"
+                ''MovieNode.Tag = mMovie
 
 
                 'get the associated files
-                Dim FilesToDelete As List(Of IO.FileInfo) = Master.GetFilesToDelete(False, mMovie)
+                Dim ItemsToDelete As List(Of IO.FileSystemInfo) = Master.GetItemsToDelete(False, mMovie)
 
-                For Each file As IO.FileInfo In FilesToDelete
-                    If Not MovieParentNode.Nodes.ContainsKey(file.FullName) Then
-                        Dim NewNode As TreeNode = MovieParentNode.Nodes.Add(file.FullName, file.Name)
-                        NewNode.Tag = file.FullName
-                        NewNode.ImageKey = "FILE"
-                        NewNode.SelectedImageKey = "FILE"
+                For Each fileItem As IO.FileSystemInfo In ItemsToDelete
+                    If Not MovieParentNode.Nodes.ContainsKey(fileItem.FullName) Then
+                        If TypeOf fileItem Is IO.DirectoryInfo Then
+                            AddFolderNode(MovieParentNode, DirectCast(fileItem, IO.DirectoryInfo))
+                        Else
+                            AddFileNode(MovieParentNode, DirectCast(fileItem, IO.FileInfo))
+                        End If
                     End If
                 Next
 
@@ -116,42 +122,84 @@ Public Class dlgDeleteConfirm
         End With
     End Sub
 
-    Private CodeIsChecking As Boolean = False
+    Private Sub AddFolderNode(ByVal ParentNode As TreeNode, ByVal dir As IO.DirectoryInfo)
+        Dim NewNode As TreeNode = ParentNode.Nodes.Add(dir.FullName, dir.Name)
+        NewNode.Tag = dir.FullName
+        NewNode.ImageKey = "FOLDER"
+        NewNode.SelectedImageKey = "FOLDER"
+
+        'populate all the sub-folders in the folder
+        For Each item As IO.DirectoryInfo In dir.GetDirectories
+            AddFolderNode(NewNode, item)
+        Next
+
+        'populate all the files in the folder
+        For Each item As IO.FileInfo In dir.GetFiles()
+            AddFileNode(NewNode, item)
+        Next
+
+
+    End Sub
+
+    Private Sub AddFileNode(ByVal ParentNode As TreeNode, ByVal item As IO.FileInfo)
+        Dim NewNode As TreeNode = ParentNode.Nodes.Add(item.FullName, item.Name)
+        NewNode.Tag = item.FullName
+        NewNode.ImageKey = "FILE"
+        NewNode.SelectedImageKey = "FILE"
+    End Sub
+
+
+    Private PropogatingUp As Boolean = False
+    Private PropogatingDown As Boolean = False
 
     Private Sub tvwFiles_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvwFiles.AfterCheck
         Try
             If e.Node.Parent Is Nothing Then
                 'this is a movie node
-                If CodeIsChecking Then Return
-                CodeIsChecking = True
+                If PropogatingUp Then Return
+
                 'check/uncheck all children
+                PropogatingDown = True
                 For Each node As TreeNode In e.Node.Nodes
                     node.Checked = e.Node.Checked
                 Next
-                CodeIsChecking = False
+                PropogatingDown = False
             Else
-                'this is a file node
+                'this is a file/folder node
                 If e.Node.Checked Then
+                    If Not PropogatingUp Then
+                        PropogatingDown = True
+                        For Each node As TreeNode In e.Node.Nodes
+                            node.Checked = True
+                        Next
+                        PropogatingDown = False
+                    End If
+
                     'if all children are checked then check root node
                     For Each node As TreeNode In e.Node.Parent.Nodes
                         If Not node.Checked Then Return
                     Next
-                    CodeIsChecking = True
+                    PropogatingUp = True
                     e.Node.Parent.Checked = True
-                    CodeIsChecking = False
+                    PropogatingUp = False
                 Else
-                    'make sure root is no longer checked
-                    If CodeIsChecking Then
-                        e.Node.Parent.Checked = False
-                    Else
-                        CodeIsChecking = True
-                        e.Node.Parent.Checked = False
-                        CodeIsChecking = False
+                    If Not PropogatingUp Then
+                        'uncheck any children
+                        PropogatingDown = True
+                        For Each node As TreeNode In e.Node.Nodes
+                            node.Checked = False
+                        Next
+                        PropogatingDown = False
                     End If
+
+                    'make sure parent is no longer checked
+                    PropogatingUp = True
+                    e.Node.Parent.Checked = False
+                    PropogatingUp = False
                 End If
             End If
-        Catch ex As Exception
-
+        Catch
+            'swallow this - not a critical function
         End Try
     End Sub
 
@@ -162,6 +210,8 @@ Public Class dlgDeleteConfirm
                     lblNodeSelected.Text = CType(e.Node.Tag, Master.DBMovie).ListTitle
                 Case "RECORD"
                     lblNodeSelected.Text = CType(e.Node.Tag, Master.DBMovie).ListTitle
+                Case "FOLDER"
+                    lblNodeSelected.Text = e.Node.Tag.ToString
                 Case "FILE"
                     lblNodeSelected.Text = e.Node.Tag.ToString
             End Select
@@ -170,36 +220,23 @@ Public Class dlgDeleteConfirm
         End Try
     End Sub
 
-    Private Sub btnToggleAllRecords_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnToggleAllRecords.Click
-        ToggleAllNodes("RECORD")
-    End Sub
-
     Private Sub btnToggleAllFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnToggleAllFiles.Click
-        ToggleAllNodes("FILE")
+        ToggleAllNodes()
     End Sub
 
-    Private Sub ToggleAllNodes(ByVal ImageKey As String)
+    Private Sub ToggleAllNodes()
         Try
             Dim Checked As Nullable(Of Boolean)
             With tvwFiles
                 If .Nodes.Count = 0 Then Return
-
-                For Each MovieParentNode As TreeNode In .Nodes
-                    If MovieParentNode.Nodes.Count > 0 Then
-                        For Each node As TreeNode In MovieParentNode.Nodes
-                            If node.ImageKey = ImageKey Then
-                                If Not Checked.HasValue Then
-                                    'this is the first node of this type, set toggle status based on this
-                                    Checked = Not node.Checked
-                                End If
-                                node.Checked = Checked.Value
-                            End If
-                        Next
+                For Each node As TreeNode In .Nodes
+                    If Not Checked.HasValue Then
+                        'this is the first node of this type, set toggle status based on this
+                        Checked = Not node.Checked
                     End If
-
+                    node.Checked = Checked.Value
                 Next
             End With
-
         Catch
             'swallow this - not a critical function
         End Try
