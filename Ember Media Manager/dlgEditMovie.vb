@@ -930,6 +930,8 @@ Public Class dlgEditMovie
                 tbFrame.Enabled = False
                 pbFrame.Image = Nothing
             End If
+            PreviousFrameValue = 0
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             tbFrame.Maximum = 0
@@ -939,18 +941,37 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
+    Private PreviousFrameValue As Integer
+
+    Private Sub tbFrame_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tbFrame.KeyUp
+        If tbFrame.Value <> PreviousFrameValue Then
+            GrabTheFrame()
+        End If
+    End Sub
+
+    Private Sub tbFrame_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tbFrame.MouseUp
+        If tbFrame.Value <> PreviousFrameValue Then
+            GrabTheFrame()
+        End If
+    End Sub
+
     Private Sub tbFrame_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbFrame.Scroll
         Try
             Dim sec2Time As New TimeSpan(0, 0, tbFrame.Value)
             lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
 
             btnGrab.Enabled = True
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
     Private Sub btnGrab_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGrab.Click
+        GrabTheFrame()
+    End Sub
+
+    Private Sub GrabTheFrame()
         Try
             btnGrab.Enabled = False
 
@@ -987,8 +1008,12 @@ Public Class dlgEditMovie
             End If
 
             pnlFrameProgress.Visible = False
+
+            PreviousFrameValue = tbFrame.Value
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            PreviousFrameValue = 0
             tbFrame.Maximum = 0
             tbFrame.Value = 0
             tbFrame.Enabled = False
@@ -1545,5 +1570,10 @@ Public Class dlgEditMovie
 
     Private Sub lvActors_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvActors.KeyDown
         If e.KeyCode = Keys.Delete Then Me.DeleteActors()
+    End Sub
+
+    Private Sub DelayTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DelayTimer.Tick
+        DelayTimer.Stop()
+        GrabTheFrame()
     End Sub
 End Class
