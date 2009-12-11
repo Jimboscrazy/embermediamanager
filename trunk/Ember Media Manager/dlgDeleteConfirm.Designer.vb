@@ -30,11 +30,8 @@ Partial Class dlgDeleteConfirm
         Me.tvwFiles = New System.Windows.Forms.TreeView
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.lblNodeSelected = New System.Windows.Forms.Label
-        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel
-        Me.btnToggleAllRecords = New System.Windows.Forms.Button
         Me.btnToggleAllFiles = New System.Windows.Forms.Button
         Me.TableLayoutPanel1.SuspendLayout()
-        Me.TableLayoutPanel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'TableLayoutPanel1
@@ -92,6 +89,7 @@ Partial Class dlgDeleteConfirm
         Me.ImageList1.Images.SetKeyName(0, "FILE")
         Me.ImageList1.Images.SetKeyName(1, "RECORD")
         Me.ImageList1.Images.SetKeyName(2, "MOVIE")
+        Me.ImageList1.Images.SetKeyName(3, "FOLDER")
         '
         'lblNodeSelected
         '
@@ -104,34 +102,10 @@ Partial Class dlgDeleteConfirm
         Me.lblNodeSelected.Size = New System.Drawing.Size(0, 13)
         Me.lblNodeSelected.TabIndex = 2
         '
-        'TableLayoutPanel2
-        '
-        Me.TableLayoutPanel2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel2.ColumnCount = 2
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Controls.Add(Me.btnToggleAllRecords, 0, 0)
-        Me.TableLayoutPanel2.Controls.Add(Me.btnToggleAllFiles, 1, 0)
-        Me.TableLayoutPanel2.Location = New System.Drawing.Point(-1, 291)
-        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
-        Me.TableLayoutPanel2.RowCount = 1
-        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel2.Size = New System.Drawing.Size(245, 29)
-        Me.TableLayoutPanel2.TabIndex = 3
-        '
-        'btnToggleAllRecords
-        '
-        Me.btnToggleAllRecords.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnToggleAllRecords.Location = New System.Drawing.Point(3, 3)
-        Me.btnToggleAllRecords.Name = "btnToggleAllRecords"
-        Me.btnToggleAllRecords.Size = New System.Drawing.Size(115, 23)
-        Me.btnToggleAllRecords.TabIndex = 0
-        Me.btnToggleAllRecords.Text = "Toggle All Records"
-        '
         'btnToggleAllFiles
         '
         Me.btnToggleAllFiles.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnToggleAllFiles.Location = New System.Drawing.Point(126, 3)
+        Me.btnToggleAllFiles.Location = New System.Drawing.Point(2, 294)
         Me.btnToggleAllFiles.Name = "btnToggleAllFiles"
         Me.btnToggleAllFiles.Size = New System.Drawing.Size(115, 23)
         Me.btnToggleAllFiles.TabIndex = 1
@@ -144,7 +118,7 @@ Partial Class dlgDeleteConfirm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(508, 326)
-        Me.Controls.Add(Me.TableLayoutPanel2)
+        Me.Controls.Add(Me.btnToggleAllFiles)
         Me.Controls.Add(Me.lblNodeSelected)
         Me.Controls.Add(Me.tvwFiles)
         Me.Controls.Add(Me.TableLayoutPanel1)
@@ -155,7 +129,6 @@ Partial Class dlgDeleteConfirm
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Confirm Items To Be Deleted"
         Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.TableLayoutPanel2.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -166,8 +139,6 @@ Partial Class dlgDeleteConfirm
     Friend WithEvents tvwFiles As System.Windows.Forms.TreeView
     Friend WithEvents ImageList1 As System.Windows.Forms.ImageList
     Friend WithEvents lblNodeSelected As System.Windows.Forms.Label
-    Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents btnToggleAllRecords As System.Windows.Forms.Button
     Friend WithEvents btnToggleAllFiles As System.Windows.Forms.Button
 
 End Class
