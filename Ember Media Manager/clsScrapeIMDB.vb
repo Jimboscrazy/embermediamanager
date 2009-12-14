@@ -382,6 +382,7 @@ mResult:
                         Else
                             IMDBMovie.Title = IMDBMovie.OriginalTitle.Trim
                         End If
+                        IMDBMovie.SortTitle = ""
                     End If
                 End If
 
@@ -683,11 +684,11 @@ mPlot:
                             IMDBMovie.Plot = Web.HttpUtility.HtmlDecode(FullPlot.Replace("|", String.Empty)).Trim
                         End If
 
-                        End If
+                    End If
 
-                        If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(IMDBMovie.Plot) AndAlso Not String.IsNullOrEmpty(IMDBMovie.Outline) Then
-                            IMDBMovie.Plot = IMDBMovie.Outline
-                        End If
+                    If Master.eSettings.OutlineForPlot AndAlso String.IsNullOrEmpty(IMDBMovie.Plot) AndAlso Not String.IsNullOrEmpty(IMDBMovie.Outline) Then
+                        IMDBMovie.Plot = IMDBMovie.Outline
+                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
