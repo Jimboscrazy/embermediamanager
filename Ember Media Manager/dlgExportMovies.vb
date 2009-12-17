@@ -729,11 +729,18 @@ Public Class dlgExportMovies
     Private Shared Sub CopyDirectory(ByVal SourcePath As String, ByVal DestPath As String, Optional ByVal Overwrite As Boolean = False)
         Dim SourceDir As DirectoryInfo = New DirectoryInfo(SourcePath)
         Dim DestDir As DirectoryInfo = New DirectoryInfo(DestPath)
+        Dim IsRoot As Boolean = False
 
         ' the source directory must exist, otherwise throw an exception
         If SourceDir.Exists Then
-            ' if destination SubDir's parent SubDir does not exist throw an exception
-            If Not DestDir.Parent.Exists Then
+
+            'is this a root directory?
+            If DestDir.Root.FullName = DestDir.FullName Then
+                IsRoot = True
+            End If
+
+            ' if destination SubDir's parent SubDir does not exist throw an exception (also check it isn't the root)
+            If Not IsRoot AndAlso Not DestDir.Parent.Exists Then
                 Throw New DirectoryNotFoundException _
                     ("Destination directory does not exist: " + DestDir.Parent.FullName)
             End If
