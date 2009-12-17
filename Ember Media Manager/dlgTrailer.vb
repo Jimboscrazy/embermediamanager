@@ -247,7 +247,11 @@ Public Class dlgTrailer
     End Sub
 
     Private Sub DoEnableFetchFormats()
-        Me.btnFetchFormats.Enabled = Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*")
+        If bwCompileList.IsBusy OrElse bwDownloadTrailer.IsBusy Then
+            Me.btnFetchFormats.Enabled = False
+        Else
+            Me.btnFetchFormats.Enabled = Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*")
+        End If
     End Sub
 
     Private Sub lstFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstFormats.SelectedIndexChanged
