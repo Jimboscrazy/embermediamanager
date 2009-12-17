@@ -28,9 +28,6 @@ Partial Class dlgTrailer
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.lstFormats = New System.Windows.Forms.ListBox
-        Me.pnlFormatsStatus = New System.Windows.Forms.Panel
-        Me.lblFormatsStatus = New System.Windows.Forms.Label
-        Me.pbFormatsStatus = New System.Windows.Forms.ProgressBar
         Me.txtYouTube = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.btnFetchFormats = New System.Windows.Forms.Button
@@ -41,7 +38,6 @@ Partial Class dlgTrailer
         Me.btnSetNfo = New System.Windows.Forms.Button
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
-        Me.pnlFormatsStatus.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -90,7 +86,6 @@ Partial Class dlgTrailer
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.lstFormats)
-        Me.GroupBox2.Controls.Add(Me.pnlFormatsStatus)
         Me.GroupBox2.Controls.Add(Me.txtYouTube)
         Me.GroupBox2.Controls.Add(Me.Label1)
         Me.GroupBox2.Controls.Add(Me.btnFetchFormats)
@@ -108,37 +103,6 @@ Partial Class dlgTrailer
         Me.lstFormats.Name = "lstFormats"
         Me.lstFormats.Size = New System.Drawing.Size(78, 69)
         Me.lstFormats.TabIndex = 2
-        '
-        'pnlFormatsStatus
-        '
-        Me.pnlFormatsStatus.BackColor = System.Drawing.Color.White
-        Me.pnlFormatsStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlFormatsStatus.Controls.Add(Me.lblFormatsStatus)
-        Me.pnlFormatsStatus.Controls.Add(Me.pbFormatsStatus)
-        Me.pnlFormatsStatus.Location = New System.Drawing.Point(190, 67)
-        Me.pnlFormatsStatus.Name = "pnlFormatsStatus"
-        Me.pnlFormatsStatus.Size = New System.Drawing.Size(211, 54)
-        Me.pnlFormatsStatus.TabIndex = 69
-        Me.pnlFormatsStatus.Visible = False
-        '
-        'lblFormatsStatus
-        '
-        Me.lblFormatsStatus.AutoSize = True
-        Me.lblFormatsStatus.Location = New System.Drawing.Point(3, 10)
-        Me.lblFormatsStatus.Name = "lblFormatsStatus"
-        Me.lblFormatsStatus.Size = New System.Drawing.Size(90, 13)
-        Me.lblFormatsStatus.TabIndex = 1
-        Me.lblFormatsStatus.Text = "Getting Formats..."
-        Me.lblFormatsStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'pbFormatsStatus
-        '
-        Me.pbFormatsStatus.Location = New System.Drawing.Point(3, 32)
-        Me.pbFormatsStatus.MarqueeAnimationSpeed = 25
-        Me.pbFormatsStatus.Name = "pbFormatsStatus"
-        Me.pbFormatsStatus.Size = New System.Drawing.Size(202, 17)
-        Me.pbFormatsStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.pbFormatsStatus.TabIndex = 0
         '
         'txtYouTube
         '
@@ -244,8 +208,6 @@ Partial Class dlgTrailer
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox2.ResumeLayout(False)
         Me.GroupBox2.PerformLayout()
-        Me.pnlFormatsStatus.ResumeLayout(False)
-        Me.pnlFormatsStatus.PerformLayout()
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlStatus.PerformLayout()
         Me.ResumeLayout(False)
@@ -265,8 +227,5 @@ Partial Class dlgTrailer
     Friend WithEvents txtYouTube As System.Windows.Forms.TextBox
     Friend WithEvents lstFormats As System.Windows.Forms.ListBox
     Friend WithEvents btnFetchFormats As System.Windows.Forms.Button
-    Friend WithEvents pnlFormatsStatus As System.Windows.Forms.Panel
-    Friend WithEvents lblFormatsStatus As System.Windows.Forms.Label
-    Friend WithEvents pbFormatsStatus As System.Windows.Forms.ProgressBar
 
 End Class

@@ -104,6 +104,7 @@ Public Class dlgTrailer
 
         Me.pnlStatus.Visible = False
         Me.Cancel_Button.Enabled = True
+        DoEnableFetchFormats()
     End Sub
 
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
@@ -200,6 +201,7 @@ Public Class dlgTrailer
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
 
+        Me.btnFetchFormats.Enabled = False
         Me.pnlStatus.Visible = True
         Me.bwCompileList = New System.ComponentModel.BackgroundWorker
         Me.bwCompileList.WorkerSupportsCancellation = True
@@ -233,15 +235,19 @@ Public Class dlgTrailer
     Private WithEvents YouTube As YouTube.Scraper
 
     Private Sub FetchFormatsProgressUpdated(ByVal iProgress As Integer)
-        bwDownloadTrailer.ReportProgress(iProgress)
+        pbStatus.Value = iProgress
     End Sub
 
     Private Sub txtYouTube_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYouTube.TextChanged
         Try
-            Me.btnFetchFormats.Enabled = Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*")
+            DoEnableFetchFormats()
             lstFormats.DataSource = Nothing
         Catch
         End Try
+    End Sub
+
+    Private Sub DoEnableFetchFormats()
+        Me.btnFetchFormats.Enabled = Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*")
     End Sub
 
     Private Sub lstFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstFormats.SelectedIndexChanged
@@ -274,11 +280,10 @@ Public Class dlgTrailer
             Me.btnFetchFormats.Enabled = False
             Me.btnSetNfo.Enabled = False
 
-            Me.lblFormatsStatus.Text = Master.eLang.GetString(999, "Retrieving formats...")
-            Me.pbFormatsStatus.Style = ProgressBarStyle.Continuous
-            Me.pbFormatsStatus.Value = 0
-            Me.pnlFormatsStatus.Visible = True
-
+            Me.lblStatus.Text = Master.eLang.GetString(999, "Retrieving formats...")
+            Me.pbStatus.Style = ProgressBarStyle.Marquee
+            Me.pbStatus.Value = 0
+            Me.pnlStatus.Visible = True
 
         Catch ex As Exception
             MsgBox(Master.eLang.GetString(999, "The video format links could not be retrieved."), MsgBoxStyle.Critical, Master.eLang.GetString(999, "Error Retrieving Video Format Links"))
@@ -288,7 +293,7 @@ Public Class dlgTrailer
 
     Private Sub YouTube_VideoLinksRetrieved(ByVal bSuccess As Boolean) Handles YouTube.VideoLinksRetrieved
 
-        Me.pnlFormatsStatus.Visible = False
+        Me.pnlStatus.Visible = False
         Me.Cancel_Button.Enabled = True
 
         If bSuccess Then
