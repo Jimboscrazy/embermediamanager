@@ -49,6 +49,7 @@ Public Class dlgTrailer
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.OK_Button.Enabled = False
+        Me.btnFetchFormats.Enabled = False
         Me.Cancel_Button.Enabled = False
         Me.btnSetNfo.Enabled = False
         Me.btnPlayTrailer.Enabled = False
@@ -60,10 +61,10 @@ Public Class dlgTrailer
         Me.pnlStatus.Visible = True
         Application.DoEvents()
 
-        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") AndAlso lstFormats.SelectedItem IsNot Nothing Then
             Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
             Me.bwDownloadTrailer.WorkerReportsProgress = True
-            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = Me.txtYouTube.Text, .iIndex = -1, .bType = True})
+            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = DirectCast(lstFormats.SelectedItem, YouTube.VideoLinkItem).URL, .iIndex = -1, .bType = True})
         Else
             If Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
                 tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
@@ -193,6 +194,7 @@ Public Class dlgTrailer
         Me.lblStatus.Text = Master.eLang.GetString(377, "Compiling trailer list...")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(378, "Preview Trailer")
         Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
+        Me.btnFetchFormats.Text = Master.eLang.GetString(999, "Fetch Formats")
     End Sub
 
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -208,6 +210,7 @@ Public Class dlgTrailer
         Try
             Me.btnPlayTrailer.Enabled = False
             Me.OK_Button.Enabled = False
+            Me.btnFetchFormats.Enabled = False
             Me.btnSetNfo.Enabled = False
             Me.Cancel_Button.Enabled = False
 
@@ -225,9 +228,76 @@ Public Class dlgTrailer
         End Try
     End Sub
 
-    Private Sub txtYouTube_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYouTube.TextChanged
-        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
-            Me.OK_Button.Enabled = True
-        End If
+#Region " YouTube Stuff "
+
+    Private WithEvents YouTube As YouTube.Scraper
+
+    Private Sub FetchFormatsProgressUpdated(ByVal iProgress As Integer)
+        bwDownloadTrailer.ReportProgress(iProgress)
     End Sub
+
+    Private Sub txtYouTube_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYouTube.TextChanged
+        Try
+            Me.btnFetchFormats.Enabled = Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*")
+            lstFormats.DataSource = Nothing
+        Catch
+        End Try
+    End Sub
+
+    Private Sub lstFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstFormats.SelectedIndexChanged
+        Try
+            Me.OK_Button.Enabled = True
+            Me.btnSetNfo.Enabled = True
+            Me.btnPlayTrailer.Enabled = True
+
+            If File.Exists(Me.prePath) Then
+                File.Delete(Me.prePath)
+            End If
+            Me.prePath = String.Empty
+        Catch
+        End Try
+    End Sub
+
+    Private Sub btnFetchFormats_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFetchFormats.Click
+
+        Try
+
+            lstFormats.DataSource = Nothing
+            Me.btnPlayTrailer.Enabled = False
+            Me.Cancel_Button.Enabled = False
+            Application.DoEvents()
+
+            YouTube = New YouTube.Scraper
+            YouTube.GetVideoLinksAsync(txtYouTube.Text)
+
+            Me.OK_Button.Enabled = False
+            Me.btnFetchFormats.Enabled = False
+            Me.btnSetNfo.Enabled = False
+
+            Me.lblFormatsStatus.Text = Master.eLang.GetString(999, "Retrieving formats...")
+            Me.pbFormatsStatus.Style = ProgressBarStyle.Continuous
+            Me.pbFormatsStatus.Value = 0
+            Me.pnlFormatsStatus.Visible = True
+
+
+        Catch ex As Exception
+            MsgBox(Master.eLang.GetString(999, "The video format links could not be retrieved."), MsgBoxStyle.Critical, Master.eLang.GetString(999, "Error Retrieving Video Format Links"))
+        End Try
+
+    End Sub
+
+    Private Sub YouTube_VideoLinksRetrieved(ByVal bSuccess As Boolean) Handles YouTube.VideoLinksRetrieved
+
+        Me.pnlFormatsStatus.Visible = False
+        Me.Cancel_Button.Enabled = True
+
+        If bSuccess Then
+            lstFormats.DataSource = YouTube.VideoLinks
+            lstFormats.DisplayMember = "Description"
+            lstFormats.ValueMember = "URL"
+        End If
+
+    End Sub
+
+#End Region
 End Class
