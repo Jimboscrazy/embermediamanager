@@ -498,7 +498,7 @@ Public Class NFO
                 Dim iHeight As Integer = Convert.ToInt32(fiRes.Height)
                 Dim sinADR As Single = Master.ConvertToSingle(fiRes.Aspect)
 
-                result = String.Format("{0}x{1} ({2})", iHeight, iWidth, sinADR.ToString("0.00"))
+                result = String.Format("{0}x{1} ({2})", iWidth, iHeight, sinADR.ToString("0.00"))
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
