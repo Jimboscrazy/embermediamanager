@@ -485,6 +485,28 @@ Public Class NFO
     End Function
 
 
+    Public Shared Function GetDimensionsFromVideo(ByVal fiRes As MediaInfo.Video) As String
+
+        '//
+        ' Get the dimension values of the video from the information provided by MediaInfo.dll
+        '\\
+
+        Dim result As String = String.Empty
+        Try
+            If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then
+                Dim iWidth As Integer = Convert.ToInt32(fiRes.Width)
+                Dim iHeight As Integer = Convert.ToInt32(fiRes.Height)
+                Dim sinADR As Single = Master.ConvertToSingle(fiRes.Aspect)
+
+                result = String.Format("{0}x{1} ({2})", iHeight, iWidth, sinADR.ToString("0.00"))
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return result
+    End Function
+
     Public Shared Sub SaveMovieToNFO(ByRef movieToSave As Master.DBMovie)
 
         '//
