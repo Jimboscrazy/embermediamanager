@@ -399,11 +399,13 @@ Public Class dlgExportMovies
             Dim counter As Integer = 1
             For Each _curMovie As Master.DBMovie In _movies
                 Dim _vidDetails As String = String.Empty
+                Dim _vidDimensions As String = String.Empty
                 Dim _audDetails As String = String.Empty
                 If Not IsNothing(_curMovie.Movie.FileInfo) Then
                     If _curMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
                         tVid = NFO.GetBestVideo(_curMovie.Movie.FileInfo)
                         tRes = NFO.GetResFromDimensions(tVid)
+                        _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
                         _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(283, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(283, "Unknown"), tVid.Codec)).ToUpper
                     End If
 
@@ -445,6 +447,7 @@ Public Class dlgExportMovies
                 row = row.Replace("<$PLOT>", HtmlEncode(_curMovie.Movie.Plot))
                 row = row.Replace("<$GENRES>", HtmlEncode(_curMovie.Movie.Genre))
                 row = row.Replace("<$VIDEO>", _vidDetails)
+                row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
                 row = row.Replace("<$AUDIO>", _audDetails)
                 row = GetAVImages(_curMovie, row)
                 If bSearch Then
