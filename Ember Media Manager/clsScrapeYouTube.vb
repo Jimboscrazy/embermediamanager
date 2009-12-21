@@ -9,11 +9,13 @@ Namespace YouTube
         Public Event Exception(ByVal ex As Exception)
         Public Event ProgressUpdated(ByVal iPercent As Integer)
 
-        Private _VideoLinks As List(Of VideoLinkItem)
-        Public ReadOnly Property VideoLinks() As List(Of VideoLinkItem)
+
+
+        Private _VideoLinks As VideoLinkItemCollection
+        Public ReadOnly Property VideoLinks() As VideoLinkItemCollection
             Get
                 If _VideoLinks Is Nothing Then
-                    _VideoLinks = New List(Of VideoLinkItem)
+                    _VideoLinks = New VideoLinkItemCollection
                 End If
                 Return _VideoLinks
             End Get
@@ -33,9 +35,18 @@ Namespace YouTube
         End Sub
 
 
+        Public Sub GetVideoLinks(ByVal url As String)
+            Try
+                _VideoLinks = ParseImdbForVideoLinks(url, False)
 
-        Private Function GetVideoLinks(ByVal url As String, ByVal doProgress As Boolean) As List(Of VideoLinkItem)
-            Dim DownloadLinks As New List(Of VideoLinkItem)
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
+
+
+        Private Function ParseImdbForVideoLinks(ByVal url As String, ByVal doProgress As Boolean) As VideoLinkItemCollection
+            Dim DownloadLinks As New VideoLinkItemCollection
             Dim sHTTP As New HTTP
 
             Try
@@ -65,13 +76,15 @@ Namespace YouTube
                             Dim FormatElements As String() = fmt.Split(Convert.ToChar("|"))
 
                             Dim Link As New VideoLinkItem
-                            Select Case FormatElements(0)
+                            Select Case FormatElements(0).Trim
                                 Case "22"
                                     Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
                                     Link.Description = "720p"
+                                    Link.FormatQuality = 3
                                 Case "37"
                                     Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
                                     Link.Description = "1080p"
+                                    Link.FormatQuality = 1
                             End Select
 
                             If bwYT.CancellationPending Then Return DownloadLinks
@@ -91,6 +104,7 @@ Namespace YouTube
                             Dim StdLink As New VideoLinkItem
                             StdLink.URL = "http://www.youtube.com/get_video?fmt=18&video_id=" & VideoId & "&t=" & VideoHash
                             StdLink.Description = "Standard"
+                            StdLink.FormatQuality = 100
                             DownloadLinks.Add(StdLink)
                         End If
 
@@ -101,7 +115,7 @@ Namespace YouTube
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                Return New List(Of VideoLinkItem)
+                Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing
             End Try
@@ -156,7 +170,7 @@ Namespace YouTube
             Dim Url As String = DirectCast(e.Argument, String)
 
             Try
-                e.Result = GetVideoLinks(Url, True)
+                e.Result = ParseImdbForVideoLinks(Url, True)
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
@@ -178,7 +192,7 @@ Namespace YouTube
                 Else
                     'all good
                     If e.Result IsNot Nothing Then
-                        _VideoLinks = DirectCast(e.Result, List(Of VideoLinkItem))
+                        _VideoLinks = DirectCast(e.Result, VideoLinkItemCollection)
                         RaiseEvent VideoLinksRetrieved(True)
                     Else
                         RaiseEvent VideoLinksRetrieved(False)
@@ -213,6 +227,26 @@ Namespace YouTube
                 _URL = value
             End Set
         End Property
+
+
+        Private _FormatQuality As Integer
+        Friend Property FormatQuality() As Integer
+            Get
+                Return _FormatQuality
+            End Get
+            Set(ByVal value As Integer)
+                _FormatQuality = value
+            End Set
+        End Property
+
+    End Class
+
+    Public Class VideoLinkItemCollection
+        Inherits Generic.SortedList(Of Integer, VideoLinkItem)
+
+        Public Shadows Sub Add(ByVal Link As VideoLinkItem)
+            MyBase.Add(Link.FormatQuality, Link)
+        End Sub
 
     End Class
 
