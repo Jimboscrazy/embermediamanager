@@ -81,71 +81,84 @@ Public Class dlgDeleteConfirm
     End Function
 
     Private Sub Populate_FileList(ByVal MoviesToDelete As List(Of Long))
-        With tvwFiles
+        Try
+            With tvwFiles
 
-            Dim mMovie As Master.DBMovie
-            For Each MovieId As Long In MoviesToDelete
-                mMovie = Master.DB.LoadMovieFromDB(MovieId)
+                Dim mMovie As Master.DBMovie
+                For Each MovieId As Long In MoviesToDelete
+                    mMovie = Master.DB.LoadMovieFromDB(MovieId)
 
-                Dim MovieParentNode As TreeNode = .Nodes.Add(mMovie.ID.ToString, mMovie.ListTitle)
-                MovieParentNode.ImageKey = "MOVIE"
-                MovieParentNode.SelectedImageKey = "MOVIE"
-                MovieParentNode.Tag = mMovie
+                    Dim MovieParentNode As TreeNode = .Nodes.Add(mMovie.ID.ToString, mMovie.ListTitle)
+                    MovieParentNode.ImageKey = "MOVIE"
+                    MovieParentNode.SelectedImageKey = "MOVIE"
+                    MovieParentNode.Tag = mMovie
 
-                ''Dim MovieNode As TreeNode = MovieParentNode.Nodes.Add(mMovie.ID.ToString, Master.eLang.GetString(999, "Ember Database Record"))
-                ''MovieNode.ImageKey = "RECORD"
-                ''MovieNode.SelectedImageKey = "RECORD"
-                ''MovieNode.Tag = mMovie
+                    ''Dim MovieNode As TreeNode = MovieParentNode.Nodes.Add(mMovie.ID.ToString, Master.eLang.GetString(999, "Ember Database Record"))
+                    ''MovieNode.ImageKey = "RECORD"
+                    ''MovieNode.SelectedImageKey = "RECORD"
+                    ''MovieNode.Tag = mMovie
 
 
-                'get the associated files
-                Dim ItemsToDelete As List(Of IO.FileSystemInfo) = Master.GetItemsToDelete(False, mMovie)
+                    'get the associated files
+                    Dim ItemsToDelete As List(Of IO.FileSystemInfo) = Master.GetItemsToDelete(False, mMovie, Master.GetListOfSources)
 
-                For Each fileItem As IO.FileSystemInfo In ItemsToDelete
-                    If Not MovieParentNode.Nodes.ContainsKey(fileItem.FullName) Then
-                        If TypeOf fileItem Is IO.DirectoryInfo Then
-                            AddFolderNode(MovieParentNode, DirectCast(fileItem, IO.DirectoryInfo))
-                        Else
-                            AddFileNode(MovieParentNode, DirectCast(fileItem, IO.FileInfo))
+                    For Each fileItem As IO.FileSystemInfo In ItemsToDelete
+                        If Not MovieParentNode.Nodes.ContainsKey(fileItem.FullName) Then
+                            If TypeOf fileItem Is IO.DirectoryInfo Then
+                                AddFolderNode(MovieParentNode, DirectCast(fileItem, IO.DirectoryInfo))
+                            Else
+                                AddFileNode(MovieParentNode, DirectCast(fileItem, IO.FileInfo))
+                            End If
                         End If
-                    End If
+                    Next
+
                 Next
 
-            Next
+                'check all the nodes
+                For Each node As TreeNode In .Nodes
+                    node.Checked = True
+                    node.Expand()
+                Next
 
-            'check all the nodes
-            For Each node As TreeNode In .Nodes
-                node.Checked = True
-                node.Expand()
-            Next
-
-        End With
+            End With
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub AddFolderNode(ByVal ParentNode As TreeNode, ByVal dir As IO.DirectoryInfo)
-        Dim NewNode As TreeNode = ParentNode.Nodes.Add(dir.FullName, dir.Name)
-        NewNode.Tag = dir.FullName
-        NewNode.ImageKey = "FOLDER"
-        NewNode.SelectedImageKey = "FOLDER"
+        Try
+            Dim NewNode As TreeNode = ParentNode.Nodes.Add(dir.FullName, dir.Name)
+            NewNode.Tag = dir.FullName
+            NewNode.ImageKey = "FOLDER"
+            NewNode.SelectedImageKey = "FOLDER"
 
-        'populate all the sub-folders in the folder
-        For Each item As IO.DirectoryInfo In dir.GetDirectories
-            AddFolderNode(NewNode, item)
-        Next
+            If Not Master.GetListOfSources.Contains(dir.FullName) Then
+                'populate all the sub-folders in the folder
+                For Each item As IO.DirectoryInfo In dir.GetDirectories
+                    AddFolderNode(NewNode, item)
+                Next
+            End If
 
-        'populate all the files in the folder
-        For Each item As IO.FileInfo In dir.GetFiles()
-            AddFileNode(NewNode, item)
-        Next
-
+            'populate all the files in the folder
+            For Each item As IO.FileInfo In dir.GetFiles()
+                AddFileNode(NewNode, item)
+            Next
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
     End Sub
 
     Private Sub AddFileNode(ByVal ParentNode As TreeNode, ByVal item As IO.FileInfo)
-        Dim NewNode As TreeNode = ParentNode.Nodes.Add(item.FullName, item.Name)
-        NewNode.Tag = item.FullName
-        NewNode.ImageKey = "FILE"
-        NewNode.SelectedImageKey = "FILE"
+        Try
+            Dim NewNode As TreeNode = ParentNode.Nodes.Add(item.FullName, item.Name)
+            NewNode.Tag = item.FullName
+            NewNode.ImageKey = "FILE"
+            NewNode.SelectedImageKey = "FILE"
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
 
