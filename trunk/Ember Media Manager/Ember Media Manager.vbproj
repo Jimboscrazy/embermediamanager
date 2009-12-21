@@ -180,6 +180,7 @@
     <Compile Include="clsScrapeTMDB.vb" />
     <Compile Include="clsStringManip.vb" />
     <Compile Include="clsTrailers.vb" />
+    <Compile Include="clsUtility.vb" />
     <Compile Include="clsXML.vb" />
     <Compile Include="dlgBulkOfflineHolder.designer.vb">
       <DependentUpon>dlgBulkOfflineHolder.vb</DependentUpon>

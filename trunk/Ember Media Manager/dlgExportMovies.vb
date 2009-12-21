@@ -398,6 +398,7 @@ Public Class dlgExportMovies
             HTMLBody.Append(movieheader)
             Dim counter As Integer = 1
             For Each _curMovie As Master.DBMovie In _movies
+
                 Dim _vidDetails As String = String.Empty
                 Dim _vidDimensions As String = String.Empty
                 Dim _audDetails As String = String.Empty
@@ -414,6 +415,25 @@ Public Class dlgExportMovies
                         _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(283, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(283, "Unknown"), tAud.Channels)).ToUpper
                     End If
                 End If
+
+
+
+                'now check if we need to include this movie
+                If bSearch Then
+                    If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso Utility.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso Utility.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(21, "Title") AndAlso Utility.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(278, "Year") AndAlso Utility.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(353, "Source Folder") AndAlso Utility.Wildcard.IsMatch(_curMovie.Source, strFilter)) Then
+                        'included - build the output
+                    Else
+                        'filtered out - exclude this one
+                        Continue For
+                    End If
+                End If
+
+
+
                 Dim uni As New UnicodeEncoding()
 
                 Dim row As String = movierow
@@ -450,18 +470,7 @@ Public Class dlgExportMovies
                 row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
                 row = row.Replace("<$AUDIO>", _audDetails)
                 row = GetAVImages(_curMovie, row)
-                If bSearch Then
-                    If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso _vidDetails.Contains(strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso _audDetails.Contains(strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(21, "Title") AndAlso _curMovie.Movie.Title.Contains(strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(278, "Year") AndAlso _curMovie.Movie.Year.Contains(strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(353, "Source Folder") AndAlso _curMovie.Source.Contains(strFilter)) Then
-                        HTMLBody.Append(row)
-                    End If
-                Else
-
-                    HTMLBody.Append(row)
-                End If
+                HTMLBody.Append(row)
                 counter += 1
             Next
             HTMLBody.Append(moviefooter)
