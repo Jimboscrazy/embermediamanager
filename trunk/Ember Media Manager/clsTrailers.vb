@@ -123,9 +123,22 @@ Public Class Trailers
         If Not String.IsNullOrEmpty(YT) Then
             Dim YTPage As String = WebPage.DownloadData(YT)
             If Not String.IsNullOrEmpty(YTPage) Then
+
+                'new YouTube scraper
+                Dim scraper As New YouTube.Scraper()
+                scraper.GetVideoLinks(YT)
+
+                If scraper.VideoLinks.Count > 0 Then
+                    Me._TrailerList.Add(scraper.VideoLinks.Values(0).URL)
+                End If
+
+
+
+
+
                 '  If Regex.IsMatch(YTPage, "var pageVideoId = '(.*?)';") Then
                 ' videoID = Regex.Match(YTPage, "var pageVideoId = '(.*?)';").Groups(1).Value.ToString
-                Dim YTInfo As String()
+                ''Dim YTInfo As String()
                 'The commented Code is the correct way to do it...
                 'but will not get the "Blocked by Author" movies...
                 'So will just skip it and do it the Hard way for all Movies ... LOL
@@ -142,23 +155,23 @@ Public Class Trailers
                 'Next
                 'ElseIf YTInfo(0).Contains("errorcode=150") Then
                 'Blocked by Youtube, let find the "hiddens" url's :D
-                If Regex.IsMatch(YTPage, """fmt_url_map"": ""(.*?)""") Then
-                    YTInfo = Web.HttpUtility.UrlDecode(Regex.Match(YTPage, """fmt_url_map"": ""(.*?)""").Groups(1).Value.ToString).Split(Convert.ToChar("|"))
-                    If YTInfo.Count > 0 Then
-                        For i As Integer = 1 To YTInfo.Count - 1
+                ''If Regex.IsMatch(YTPage, """fmt_url_map"": ""(.*?)""") Then
+                ''    YTInfo = Web.HttpUtility.UrlDecode(Regex.Match(YTPage, """fmt_url_map"": ""(.*?)""").Groups(1).Value.ToString).Split(Convert.ToChar("|"))
+                ''    If YTInfo.Count > 0 Then
+                ''        For i As Integer = 1 To YTInfo.Count - 1
 
-                            If InStr(YTInfo(i), ",") <> -1 Then
-                                YTInfo(i) = YTInfo(i).Substring(0, InStr(YTInfo(i), ",") - 1)
-                            End If
+                ''            If InStr(YTInfo(i), ",") <> -1 Then
+                ''                YTInfo(i) = YTInfo(i).Substring(0, InStr(YTInfo(i), ",") - 1)
+                ''            End If
 
-                            If WebPage.IsValidURL(YTInfo(i)) Then
-                                Me._TrailerList.Add(YTInfo(i))
-                                'assume best video quality are the first in list
-                                Exit For
-                            End If
-                        Next
-                    End If
-                End If
+                ''            If WebPage.IsValidURL(YTInfo(i)) Then
+                ''                Me._TrailerList.Add(YTInfo(i))
+                ''                'assume best video quality are the first in list
+                ''                Exit For
+                ''            End If
+                ''        Next
+                ''    End If
+                ''End If
                 'End If
                 'End If
             End If
