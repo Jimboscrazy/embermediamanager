@@ -1048,10 +1048,7 @@ Public Class Master
         Return bReturn
     End Function
 
-
-
-
-    Public Shared Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As DBMovie) As List(Of IO.FileSystemInfo)
+    Public Shared Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As DBMovie, ByVal SourcesList As List(Of String)) As List(Of IO.FileSystemInfo)
         Dim dPath As String = String.Empty
         Dim bReturn As Boolean = False
         Dim ItemsToDelete As New List(Of FileSystemInfo)
@@ -1113,7 +1110,7 @@ Public Class Master
                     End If
                 End If
 
-                If Not isCleaner AndAlso mMovie.isSingle Then
+                If Not isCleaner AndAlso mMovie.isSingle AndAlso Not SourcesList.Contains(MovieDir.Parent.ToString) Then
                     If MovieDir.Name.ToLower = "video_ts" Then
                         ItemsToDelete.Add(MovieDir.Parent)
                         'DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
@@ -1402,4 +1399,18 @@ Public Class Master
         Return String.Join(separator, values)
     End Function
 
+    Public Shared Function GetListOfSources() As List(Of String)
+        Dim SourcesList As New List(Of String)
+
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = "SELECT * FROM sources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    SourcesList.Add(SQLreader("Path").ToString)
+                End While
+            End Using
+        End Using
+
+        Return SourcesList
+    End Function
 End Class

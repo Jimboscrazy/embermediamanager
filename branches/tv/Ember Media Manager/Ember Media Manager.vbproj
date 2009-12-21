@@ -276,6 +276,12 @@
     <Compile Include="dlgTranslationDL.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgTVSource.Designer.vb">
+      <DependentUpon>dlgTVSource.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgTVSource.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgUpdateMedia.designer.vb">
       <DependentUpon>dlgUpdateMedia.vb</DependentUpon>
     </Compile>

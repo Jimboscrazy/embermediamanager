@@ -554,6 +554,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)ON-Build-Release" $(OutDir) "$(ProjectDir)" "$(SolutionDir)" $(PlatformName)</PostBuildEvent>
-    <PreBuildEvent>call "$(SolutionDir)svnrev.bat"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
