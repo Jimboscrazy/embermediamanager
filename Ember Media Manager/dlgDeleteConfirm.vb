@@ -1,13 +1,12 @@
 ﻿Imports System.Windows.Forms
 
 Public Class dlgDeleteConfirm
-
+    Private PropogatingUp As Boolean = False
+    Private PropogatingDown As Boolean = False
 
     Private Sub dlgDeleteConfirm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
     End Sub
-
-
 
     Public Overloads Function ShowDialog(ByVal MoviesToDelete As List(Of Long)) As System.Windows.Forms.DialogResult
         Populate_FileList(MoviesToDelete)
@@ -25,9 +24,7 @@ Public Class dlgDeleteConfirm
         Me.Close()
     End Sub
 
-
     Private Sub SetUp()
-        'TODO: create language keys for new texts
         Me.Text = Master.eLang.GetString(649, "Confirm Items To Be Deleted")
         Me.btnToggleAllFiles.Text = Master.eLang.GetString(650, "Toggle All Files")
 
@@ -85,7 +82,10 @@ Public Class dlgDeleteConfirm
             With tvwFiles
 
                 Dim mMovie As Master.DBMovie
+                Dim hadError As Boolean
+
                 For Each MovieId As Long In MoviesToDelete
+                    hadError = False
                     mMovie = Master.DB.LoadMovieFromDB(MovieId)
 
                     Dim MovieParentNode As TreeNode = .Nodes.Add(mMovie.ID.ToString, mMovie.ListTitle)
@@ -93,25 +93,30 @@ Public Class dlgDeleteConfirm
                     MovieParentNode.SelectedImageKey = "MOVIE"
                     MovieParentNode.Tag = mMovie
 
-                    ''Dim MovieNode As TreeNode = MovieParentNode.Nodes.Add(mMovie.ID.ToString, Master.eLang.GetString(999, "Ember Database Record"))
-                    ''MovieNode.ImageKey = "RECORD"
-                    ''MovieNode.SelectedImageKey = "RECORD"
-                    ''MovieNode.Tag = mMovie
-
-
                     'get the associated files
                     Dim ItemsToDelete As List(Of IO.FileSystemInfo) = Master.GetItemsToDelete(False, mMovie, Master.GetListOfSources)
 
                     For Each fileItem As IO.FileSystemInfo In ItemsToDelete
                         If Not MovieParentNode.Nodes.ContainsKey(fileItem.FullName) Then
                             If TypeOf fileItem Is IO.DirectoryInfo Then
-                                AddFolderNode(MovieParentNode, DirectCast(fileItem, IO.DirectoryInfo))
+                                Try
+                                    AddFolderNode(MovieParentNode, DirectCast(fileItem, IO.DirectoryInfo))
+                                Catch
+                                    hadError = True
+                                    Exit For
+                                End Try
                             Else
-                                AddFileNode(MovieParentNode, DirectCast(fileItem, IO.FileInfo))
+                                Try
+                                    AddFileNode(MovieParentNode, DirectCast(fileItem, IO.FileInfo))
+                                Catch
+                                    hadError = True
+                                    Exit For
+                                End Try
                             End If
                         End If
                     Next
 
+                    If hadError Then .Nodes.Remove(MovieParentNode)
                 Next
 
                 'check all the nodes
@@ -146,6 +151,7 @@ Public Class dlgDeleteConfirm
             Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Throw ex
         End Try
 
     End Sub
@@ -158,12 +164,9 @@ Public Class dlgDeleteConfirm
             NewNode.SelectedImageKey = "FILE"
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Throw ex
         End Try
     End Sub
-
-
-    Private PropogatingUp As Boolean = False
-    Private PropogatingDown As Boolean = False
 
     Private Sub tvwFiles_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvwFiles.AfterCheck
         Try
