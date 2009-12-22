@@ -119,7 +119,7 @@ Public Class dlgExportMovies
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY SortTitle ASC;")
+                SQLNewcommand.CommandText = String.Concat("SELECT ID FROM movies ORDER BY SortTitle COLLATE NOCASE;")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
@@ -680,7 +680,9 @@ Public Class dlgExportMovies
             Me.SetUp()
             Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html"))
             For Each i As DirectoryInfo In di.GetDirectories
-                cbTemplate.Items.Add(i.Name)
+                If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
+                    cbTemplate.Items.Add(i.Name)
+                End If
             Next
             If cbTemplate.Items.Count > 0 Then
                 RemoveHandler cbTemplate.SelectedIndexChanged, AddressOf cbTemplate_SelectedIndexChanged
@@ -764,9 +766,7 @@ Public Class dlgExportMovies
             ' copy all the files of the current directory
             Dim ChildFile As FileInfo
             For Each ChildFile In SourceDir.GetFiles()
-                If Path.GetExtension(ChildFile.FullName) = ".html" Then
-                    Continue For
-                End If
+                If (ChildFile.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden OrElse Path.GetExtension(ChildFile.FullName) = ".html" Then Continue For
                 If Overwrite Then
                     ChildFile.CopyTo(Path.Combine(DestDir.FullName, ChildFile.Name), True)
                 Else
@@ -782,6 +782,7 @@ Public Class dlgExportMovies
             ' copy all the sub-directories by recursively calling this same routine
             Dim SubDir As DirectoryInfo
             For Each SubDir In SourceDir.GetDirectories()
+                If (SubDir.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then Continue For
                 CopyDirectory(SubDir.FullName, Path.Combine(DestDir.FullName, _
                     SubDir.Name), Overwrite)
             Next

@@ -573,12 +573,7 @@ Public Class frmMain
                         Me.FillList(0)
                         Me.Visible = True
                     End If
-                    'can be removed for future releases... just need to make sure list is
-                    'refreshed for the addition of sorttitle
-                    While Me.bwFolderData.IsBusy OrElse Me.bwPrelim.IsBusy
-                        Application.DoEvents()
-                    End While
-                    Me.RefreshAllMovies()
+
                 End If
 
                 Me.SetMenus(True)
