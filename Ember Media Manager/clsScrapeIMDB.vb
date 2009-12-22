@@ -83,6 +83,7 @@ Namespace IMDB
         Private Const TD_PATTERN_1 As String = "<td\sclass=""nm"">(.*?)</td>"
         Private Const TD_PATTERN_2 As String = "(?<=<td\sclass=""char"">)(.*?)(?=</td>)(\s\(.*?\))?"
         Private Const TD_PATTERN_3 As String = "<td\sclass=""hs"">(.*?)</td>"
+        Private Const TD_PATTERN_4 As String = "<td>(?<title>.*?)</td>"
         Private Const MOVIE_TITLE_PATTERN As String = "(?<=<(title)>).*(?=<\/\1>)"
         Private Const IMDB_ID_REGEX As String = "tt\d\d\d\d\d\d\d"
 
@@ -336,6 +337,41 @@ mResult:
             Return alStudio
         End Function
 
+        Private Function GetForcedTitle(ByVal strID As String, ByVal oTitle As String) As String
+            Dim fTitle As String = oTitle
+
+            Try
+                If bwIMDB.CancellationPending Then Return Nothing
+                Dim sHTTP As New HTTP
+                Dim HTML As String = sHTTP.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", strID, "/releaseinfo#akas"))
+                sHTTP = Nothing
+
+                Dim D, W As Integer
+
+                D = HTML.IndexOf("<h5><a name=""akas"">Also Known As (AKA)</a></h5>")
+
+                If D > 0 Then
+                    W = HTML.IndexOf("</table>", D)
+                    Dim rTitles As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TD_PATTERN_4, RegexOptions.Multiline Or RegexOptions.IgnorePatternWhitespace)
+
+                    If rTitles.Count > 0 Then
+                        For i As Integer = 1 To rTitles.Count Step 2
+                            If rTitles(i).Value.ToString.Contains(Master.eSettings.ForceTitle) Then
+                                fTitle = rTitles(i - 1).Groups("title").Value.ToString
+                                Exit For
+                            End If
+                        Next
+                    End If
+
+                End If
+
+                Return fTitle
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Return fTitle
+            End Try
+        End Function
+
         Public Function GetMovieInfo(ByVal strID As String, ByRef IMDBMovie As Media.Movie, ByVal FullCrew As Boolean, ByVal FullCast As Boolean, ByVal GetPoster As Boolean, ByVal Options As Master.ScrapeOptions, Optional ByVal doProgress As Boolean = False) As Boolean
             Try
                 Dim ofdbTitle As String = String.Empty
@@ -380,7 +416,11 @@ mResult:
                         If Not String.IsNullOrEmpty(ofdbTitle) Then
                             IMDBMovie.Title = ofdbTitle.Trim
                         Else
-                            IMDBMovie.Title = IMDBMovie.OriginalTitle.Trim
+                            If Not String.IsNullOrEmpty(Master.eSettings.ForceTitle) Then
+                                IMDBMovie.Title = GetForcedTitle(strID, IMDBMovie.OriginalTitle)
+                            Else
+                                IMDBMovie.Title = IMDBMovie.OriginalTitle.Trim
+                            End If
                         End If
                         IMDBMovie.SortTitle = ""
                     End If

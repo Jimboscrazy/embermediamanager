@@ -29,6 +29,7 @@ Public Class emmSettings
     Private _filterCustom As New ArrayList
     Private _certificationLang As String
     Private _usecertformpaa As Boolean
+    Private _forcetitle As String
     Private _scanmediainfo As Boolean
     Private _imdburl As String
     Private _fullcast As Boolean
@@ -210,6 +211,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As ArrayList)
             Me._filterCustom = value
+        End Set
+    End Property
+
+    Public Property ForceTitle() As String
+        Get
+            Return Me._forcetitle
+        End Get
+        Set(ByVal value As String)
+            Me._forcetitle = value
         End Set
     End Property
 
@@ -1718,6 +1728,7 @@ Public Class emmSettings
     Public Sub Clear()
         Me._version = String.Empty
         Me._filterCustom.Clear()
+        Me._forcetitle = String.Empty
         Me._certificationLang = String.Empty
         Me._usecertformpaa = False
         Me._scanmediainfo = True
