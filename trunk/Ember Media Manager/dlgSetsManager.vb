@@ -25,6 +25,7 @@ Public Class dlgSetsManager
     Private lMovies As New List(Of Movies)
     Private alSets As New ArrayList
     Private currSet As New Sets
+    Private needsSave As Boolean = False
     Friend WithEvents bwLoadMovies As New System.ComponentModel.BackgroundWorker
 
     Friend Class Sets
@@ -107,7 +108,7 @@ Public Class dlgSetsManager
         Master.eSettings.Sets = alSets
         Master.eSettings.Save()
 
-        If Me.currSet.Movies.Count > 0 Then SaveSet(currSet)
+        If Me.currSet.Movies.Count > 0 AndAlso needsSave Then SaveSet(currSet)
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
@@ -250,7 +251,7 @@ Public Class dlgSetsManager
         Try
             Dim tOrder As Integer = 0
 
-            If Me.currSet.Movies.Count > 0 Then SaveSet(currSet)
+            If Me.currSet.Movies.Count > 0 AndAlso needsSave Then SaveSet(currSet)
 
             Me.currSet.Clear()
             Me.lbMoviesInSet.Items.Clear()
@@ -276,7 +277,9 @@ Public Class dlgSetsManager
 
             Else
                 Me.lblCurrentSet.Text = Master.eLang.GetString(368, "None Selected")
+                needsSave = False
             End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -304,18 +307,23 @@ Public Class dlgSetsManager
         For Each mSet As String In alSets
             Me.lbSets.Items.Add(mSet)
         Next
+        needsSave = False
     End Sub
 
     Private Sub SaveSet(ByVal mSet As Sets)
         Try
-            For Each tMovie As Movies In mSet.Movies
-                If Not Master.eSettings.YAMJSetsCompatible Then
-                    tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
-                Else
-                    tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
-                End If
-                Master.DB.SaveMovieToDB(tMovie.DBMovie, False, False, True)
-            Next
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each tMovie As Movies In mSet.Movies
+                    If Not Master.eSettings.YAMJSetsCompatible Then
+                        tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
+                    Else
+                        tMovie.DBMovie.Movie.AddSet(mSet.Set, tMovie.Order)
+                    End If
+                    Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True)
+                Next
+                SQLtransaction.Commit()
+                needsSave = False
+            End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -327,6 +335,7 @@ Public Class dlgSetsManager
                 For i As Integer = 0 To lbMovies.SelectedItems.Count - 1
                     If Not Me.lbMoviesInSet.Items.Contains(Me.lbMovies.SelectedItems(i)) Then
                         Me.currSet.AddMovie(lMovies(Me.lbMovies.SelectedIndices(i)), Me.lbMoviesInSet.Items.Count + i)
+                        needsSave = True
                     End If
                 Next
                 Me.LoadCurrSet()
@@ -344,6 +353,7 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Items.Add(tMovie.DBMovie.Movie.Title)
                 tMovie.Order = Me.lbMoviesInSet.Items.Count
             Next
+            needsSave = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -365,6 +375,7 @@ Public Class dlgSetsManager
 
     Private Sub DeleteFromSet()
         If Me.lbMoviesInSet.SelectedItems.Count > 0 Then
+            needsSave = True
             Me.RemoveFromSet(Me.lbMoviesInSet.SelectedIndex, False)
             Me.LoadCurrSet()
         End If
@@ -373,6 +384,7 @@ Public Class dlgSetsManager
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
         Try
             If Me.lbMoviesInSet.Items.Count > 0 AndAlso Not IsNothing(Me.lbMoviesInSet.SelectedItem) AndAlso Me.lbMoviesInSet.SelectedIndex > 0 Then
+                needsSave = True
                 Dim iIndex As Integer = Me.lbMoviesInSet.SelectedIndex
                 Me.currSet.Movies(iIndex).Order -= 1
                 Me.currSet.Movies(iIndex - 1).Order += 1
@@ -388,6 +400,7 @@ Public Class dlgSetsManager
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
         Try
             If Me.lbMoviesInSet.Items.Count > 0 AndAlso Not IsNothing(Me.lbMoviesInSet.SelectedItem) AndAlso Me.lbMoviesInSet.SelectedIndex < (Me.lbMoviesInSet.Items.Count - 1) Then
+                needsSave = True
                 Dim iIndex As Integer = Me.lbMoviesInSet.SelectedIndex
                 Me.currSet.Movies(iIndex).Order += 1
                 Me.currSet.Movies(iIndex + 1).Order -= 1
