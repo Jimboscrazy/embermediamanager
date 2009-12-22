@@ -484,6 +484,10 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub SetUp()
+        If Not Master.eSettings.YAMJSetsCompatible Then
+            btnUp.Visible = False
+            btnDown.Visible = False
+        End If
         Me.Text = Master.eLang.GetString(365, "Sets Manager")
         Me.OK_Button.Text = Master.eLang.GetString(19, "Close")
         Me.GroupBox1.Text = Master.eLang.GetString(36, "Movies")
