@@ -38,7 +38,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>0.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>0.0.0.1</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -554,7 +554,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)ON-Build-Release" $(OutDir) "$(ProjectDir)" "$(SolutionDir)" $(PlatformName)</PostBuildEvent>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>rem SVN Revision -&gt; Version Number
+"$(SolutionDir)\SubWCRev.exe" "$(SolutionDir)." "$(ProjectDir)My Project\AssemblyInfo.temp" "$(ProjectDir)My Project\AssemblyInfo.vb"</PreBuildEvent>
   </PropertyGroup>
 </Project>
