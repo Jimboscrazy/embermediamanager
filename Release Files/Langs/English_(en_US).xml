@@ -643,4 +643,11 @@
   <string id="641">Renaming Directory/Files...</string>
   <string id="642">Sort Title</string>
   <string id="643">YAMJ Compatible Sets Saving</string>
+  <string id="644">Local Trailer:</string>
+  <string id="645">Fetch Formats</string>
+  <string id="646">Retrieving formats...</string>
+  <string id="647">The video format links could not be retrieved.</string>
+  <string id="648">Error Retrieving Video Format Links</string>
+  <string id="649">Confirm Items To Be Deleted</string>
+  <string id="650">Toggle All Files</string>
 </strings>

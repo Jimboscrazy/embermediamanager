@@ -61,16 +61,25 @@ Public Class dlgTrailer
         Me.pnlStatus.Visible = True
         Application.DoEvents()
 
-        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") AndAlso lstFormats.SelectedItem IsNot Nothing Then
+        If Me.txtManual.Text.Length > 0 AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
+            Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
+            Master.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
+
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+        ElseIf Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") AndAlso lstFormats.SelectedItem IsNot Nothing Then
             Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
             Me.bwDownloadTrailer.WorkerReportsProgress = True
             Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = DirectCast(lstFormats.SelectedItem, YouTube.VideoLinkItem).URL, .iIndex = -1, .bType = True})
         Else
             If Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
-                tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
-                Master.MoveFileWithStream(Me.prePath, tURL)
+                Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
+                Master.MoveFileWithStream(Me.prePath, Me.tURL)
 
                 File.Delete(Me.prePath)
+
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
             Else
                 Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadTrailer.WorkerReportsProgress = True
@@ -195,7 +204,8 @@ Public Class dlgTrailer
         Me.lblStatus.Text = Master.eLang.GetString(377, "Compiling trailer list...")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(378, "Preview Trailer")
         Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
-        Me.btnFetchFormats.Text = Master.eLang.GetString(999, "Fetch Formats")
+        Me.btnFetchFormats.Text = Master.eLang.GetString(645, "Fetch Formats")
+        Me.Label2.Text = Master.eLang.GetString(644, "Local Trailer:")
     End Sub
 
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -284,13 +294,13 @@ Public Class dlgTrailer
             Me.btnFetchFormats.Enabled = False
             Me.btnSetNfo.Enabled = False
 
-            Me.lblStatus.Text = Master.eLang.GetString(999, "Retrieving formats...")
+            Me.lblStatus.Text = Master.eLang.GetString(646, "Retrieving formats...")
             Me.pbStatus.Style = ProgressBarStyle.Marquee
             Me.pbStatus.Value = 0
             Me.pnlStatus.Visible = True
 
         Catch ex As Exception
-            MsgBox(Master.eLang.GetString(999, "The video format links could not be retrieved."), MsgBoxStyle.Critical, Master.eLang.GetString(999, "Error Retrieving Video Format Links"))
+            MsgBox(Master.eLang.GetString(647, "The video format links could not be retrieved."), MsgBoxStyle.Critical, Master.eLang.GetString(648, "Error Retrieving Video Format Links"))
         End Try
 
     End Sub
@@ -309,4 +319,24 @@ Public Class dlgTrailer
     End Sub
 
 #End Region
+
+    Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
+        Try
+            With ofdTrailer
+                .InitialDirectory = Directory.GetParent(Master.currMovie.Filename).FullName
+                .Filter = String.Concat("Supported Trailer Formats|*", Master.ListToStringWithSeparator(Master.eSettings.ValidExts.ToArray(), ";*"))
+                .FilterIndex = 0
+            End With
+
+            If ofdTrailer.ShowDialog() = DialogResult.OK Then
+                txtManual.Text = ofdTrailer.FileName
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub txtManual_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtManual.TextChanged
+        Me.OK_Button.Enabled = txtManual.Text.Length > 0
+    End Sub
 End Class
