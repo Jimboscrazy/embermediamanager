@@ -2635,6 +2635,18 @@ Public Class frmMain
             Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(50), ComponentModel.ListSortDirection.Ascending)
         End If
     End Sub
+
+    Private Sub btnIMDBRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnIMDBRating.Click
+        If Me.btnIMDBRating.Tag.ToString = "DESC" Then
+            Me.btnIMDBRating.Tag = "ASC"
+            Me.btnIMDBRating.Image = My.Resources.desc
+            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(18), ComponentModel.ListSortDirection.Descending)
+        Else
+            Me.btnIMDBRating.Tag = "DESC"
+            Me.btnIMDBRating.Image = My.Resources.asc
+            Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(18), ComponentModel.ListSortDirection.Ascending)
+        End If
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -3833,6 +3845,7 @@ doCancel:
                 .pnlFilterGenre.Tag = String.Empty
                 .pnlFilterSource.Tag = String.Empty
                 .btnSortTitle.Tag = String.Empty
+                .btnIMDBRating.Tag = String.Empty
                 .FileToolStripMenuItem.Text = Master.eLang.GetString(1, "&File")
                 .ExitToolStripMenuItem.Text = Master.eLang.GetString(2, "E&xit")
                 .EditToolStripMenuItem.Text = Master.eLang.GetString(3, "&Edit")
@@ -3996,6 +4009,7 @@ doCancel:
                 .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
                 .cmnuMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
                 .btnSortTitle.Text = Master.eLang.GetString(642, "Sort Title")
+                .btnIMDBRating.Text = Master.eLang.GetString(651, "IMDB Rating")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")

@@ -24,7 +24,7 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -101,6 +101,7 @@ Partial Class frmMain
         Me.tabMovies = New System.Windows.Forms.TabPage
         Me.pnlFilter = New System.Windows.Forms.Panel
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnIMDBRating = New System.Windows.Forms.Button
         Me.btnSortTitle = New System.Windows.Forms.Button
         Me.btnSortDate = New System.Windows.Forms.Button
         Me.btnClearFilters = New System.Windows.Forms.Button
@@ -721,8 +722,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -746,7 +747,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.DeleteMovieToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 320)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 298)
         '
         'cmnuTitle
         '
@@ -1023,14 +1024,27 @@ Partial Class frmMain
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.btnIMDBRating)
         Me.GroupBox1.Controls.Add(Me.btnSortTitle)
         Me.GroupBox1.Controls.Add(Me.btnSortDate)
-        Me.GroupBox1.Location = New System.Drawing.Point(3, 98)
+        Me.GroupBox1.Location = New System.Drawing.Point(3, 81)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(131, 55)
+        Me.GroupBox1.Size = New System.Drawing.Size(131, 76)
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Extra Sorting"
+        '
+        'btnIMDBRating
+        '
+        Me.btnIMDBRating.Image = Global.Ember_Media_Manager.My.Resources.Resources.desc
+        Me.btnIMDBRating.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnIMDBRating.Location = New System.Drawing.Point(7, 53)
+        Me.btnIMDBRating.Name = "btnIMDBRating"
+        Me.btnIMDBRating.Size = New System.Drawing.Size(117, 21)
+        Me.btnIMDBRating.TabIndex = 2
+        Me.btnIMDBRating.Text = "IMDB Rating"
+        Me.btnIMDBRating.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnIMDBRating.UseVisualStyleBackColor = True
         '
         'btnSortTitle
         '
@@ -1038,7 +1052,7 @@ Partial Class frmMain
         Me.btnSortTitle.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnSortTitle.Location = New System.Drawing.Point(7, 33)
         Me.btnSortTitle.Name = "btnSortTitle"
-        Me.btnSortTitle.Size = New System.Drawing.Size(117, 20)
+        Me.btnSortTitle.Size = New System.Drawing.Size(117, 21)
         Me.btnSortTitle.TabIndex = 1
         Me.btnSortTitle.Text = "Sort Title"
         Me.btnSortTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1050,7 +1064,7 @@ Partial Class frmMain
         Me.btnSortDate.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnSortDate.Location = New System.Drawing.Point(7, 13)
         Me.btnSortDate.Name = "btnSortDate"
-        Me.btnSortDate.Size = New System.Drawing.Size(117, 20)
+        Me.btnSortDate.Size = New System.Drawing.Size(117, 21)
         Me.btnSortDate.TabIndex = 0
         Me.btnSortDate.Text = "Date Added"
         Me.btnSortDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1060,7 +1074,7 @@ Partial Class frmMain
         '
         Me.btnClearFilters.Image = CType(resources.GetObject("btnClearFilters.Image"), System.Drawing.Image)
         Me.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters.Location = New System.Drawing.Point(22, 156)
+        Me.btnClearFilters.Location = New System.Drawing.Point(22, 160)
         Me.btnClearFilters.Name = "btnClearFilters"
         Me.btnClearFilters.Size = New System.Drawing.Size(92, 20)
         Me.btnClearFilters.TabIndex = 4
@@ -1075,7 +1089,7 @@ Partial Class frmMain
         Me.GroupBox3.Controls.Add(Me.chkFilterDupe)
         Me.GroupBox3.Location = New System.Drawing.Point(3, 22)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(131, 73)
+        Me.GroupBox3.Size = New System.Drawing.Size(131, 59)
         Me.GroupBox3.TabIndex = 1
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "General"
@@ -1083,7 +1097,7 @@ Partial Class frmMain
         'chkFilterTolerance
         '
         Me.chkFilterTolerance.AutoSize = True
-        Me.chkFilterTolerance.Location = New System.Drawing.Point(7, 50)
+        Me.chkFilterTolerance.Location = New System.Drawing.Point(7, 41)
         Me.chkFilterTolerance.Name = "chkFilterTolerance"
         Me.chkFilterTolerance.Size = New System.Drawing.Size(106, 17)
         Me.chkFilterTolerance.TabIndex = 2
@@ -1093,7 +1107,7 @@ Partial Class frmMain
         'chkFilterMissing
         '
         Me.chkFilterMissing.AutoSize = True
-        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 34)
+        Me.chkFilterMissing.Location = New System.Drawing.Point(7, 27)
         Me.chkFilterMissing.Name = "chkFilterMissing"
         Me.chkFilterMissing.Size = New System.Drawing.Size(89, 17)
         Me.chkFilterMissing.TabIndex = 1
@@ -1103,7 +1117,7 @@ Partial Class frmMain
         'chkFilterDupe
         '
         Me.chkFilterDupe.AutoSize = True
-        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 18)
+        Me.chkFilterDupe.Location = New System.Drawing.Point(7, 13)
         Me.chkFilterDupe.Name = "chkFilterDupe"
         Me.chkFilterDupe.Size = New System.Drawing.Size(76, 17)
         Me.chkFilterDupe.TabIndex = 0
@@ -1127,7 +1141,7 @@ Partial Class frmMain
         Me.gbSpecific.Controls.Add(Me.Label3)
         Me.gbSpecific.Location = New System.Drawing.Point(135, 22)
         Me.gbSpecific.Name = "gbSpecific"
-        Me.gbSpecific.Size = New System.Drawing.Size(224, 152)
+        Me.gbSpecific.Size = New System.Drawing.Size(224, 155)
         Me.gbSpecific.TabIndex = 3
         Me.gbSpecific.TabStop = False
         Me.gbSpecific.Text = "Specific"
@@ -3049,4 +3063,5 @@ Partial Class frmMain
     Friend WithEvents cmnuRenameManual As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents btnSortTitle As System.Windows.Forms.Button
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
+    Friend WithEvents btnIMDBRating As System.Windows.Forms.Button
 End Class
