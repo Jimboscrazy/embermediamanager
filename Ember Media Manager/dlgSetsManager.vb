@@ -307,11 +307,12 @@ Public Class dlgSetsManager
         For Each mSet As String In alSets
             Me.lbSets.Items.Add(mSet)
         Next
-        needsSave = False
     End Sub
 
     Private Sub SaveSet(ByVal mSet As Sets)
         Try
+            Me.SetControlsEnabled(False)
+
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 For Each tMovie As Movies In mSet.Movies
                     If Not Master.eSettings.YAMJSetsCompatible Then
@@ -324,9 +325,27 @@ Public Class dlgSetsManager
                 SQLtransaction.Commit()
                 needsSave = False
             End Using
+
+            Me.SetControlsEnabled(True)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
+        Me.pnlSaving.Visible = Not isEnabled
+        Me.lbSets.Enabled = isEnabled
+        Me.lbMoviesInSet.Enabled = isEnabled
+        Me.lbMovies.Enabled = isEnabled
+        Me.btnNewSet.Enabled = isEnabled
+        Me.btnEditSet.Enabled = isEnabled
+        Me.btnRemoveSet.Enabled = isEnabled
+        Me.btnUp.Enabled = isEnabled
+        Me.btnDown.Enabled = isEnabled
+        Me.btnRemove.Enabled = isEnabled
+        Me.btnAdd.Enabled = isEnabled
+        Me.OK_Button.Enabled = isEnabled
+        Application.DoEvents()
     End Sub
 
     Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
@@ -338,6 +357,7 @@ Public Class dlgSetsManager
                         needsSave = True
                     End If
                 Next
+                lbMovies.SelectedIndex = -1
                 Me.LoadCurrSet()
             End If
         Catch ex As Exception
@@ -353,7 +373,6 @@ Public Class dlgSetsManager
                 Me.lbMoviesInSet.Items.Add(tMovie.DBMovie.Movie.Title)
                 tMovie.Order = Me.lbMoviesInSet.Items.Count
             Next
-            needsSave = False
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -375,9 +394,10 @@ Public Class dlgSetsManager
 
     Private Sub DeleteFromSet()
         If Me.lbMoviesInSet.SelectedItems.Count > 0 Then
-            needsSave = True
+            Me.SetControlsEnabled(False)
             Me.RemoveFromSet(Me.lbMoviesInSet.SelectedIndex, False)
             Me.LoadCurrSet()
+            Me.SetControlsEnabled(True)
         End If
     End Sub
 
