@@ -355,7 +355,7 @@ mResult:
                     Dim rTitles As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TD_PATTERN_4, RegexOptions.Multiline Or RegexOptions.IgnorePatternWhitespace)
 
                     If rTitles.Count > 0 Then
-                        For i As Integer = 1 To rTitles.Count Step 2
+                        For i As Integer = 1 To rTitles.Count - 1 Step 2
                             If rTitles(i).Value.ToString.Contains(Master.eSettings.ForceTitle) Then
                                 fTitle = rTitles(i - 1).Groups("title").Value.ToString
                                 Exit For
