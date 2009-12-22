@@ -942,7 +942,15 @@ Public Class Master
                     If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
                         DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
                     Else
-                        DeleteDirectory(Directory.GetParent(mMovie.Filename).FullName)
+                        'check if there are other folders with movies in them
+                        If Not SubDirsHaveMovies(New DirectoryInfo(Directory.GetParent(mMovie.Filename).FullName)) Then
+                            'no movies in sub dirs... delete the whole thing
+                            DeleteDirectory(Directory.GetParent(mMovie.Filename).FullName)
+                        Else
+                            'just delete the movie file itself
+                            File.Delete(mMovie.Filename)
+                        End If
+
                     End If
                 Else
                     For Each lFI As FileInfo In ioFi
@@ -1015,7 +1023,7 @@ Public Class Master
 
                         ioFi.Clear()
                         Try
-                            ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
+                            If mMovie.isSingle Then ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
                         Catch
                         End Try
 
@@ -1113,10 +1121,15 @@ Public Class Master
                 If Not isCleaner AndAlso mMovie.isSingle AndAlso Not SourcesList.Contains(MovieDir.Parent.ToString) Then
                     If MovieDir.Name.ToLower = "video_ts" Then
                         ItemsToDelete.Add(MovieDir.Parent)
-                        'DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
                     Else
-                        ItemsToDelete.Add(MovieDir)
-                        'DeleteDirectory(Directory.GetParent(mMovie.Filename).FullName)
+                        'check if there are other folders with movies in them
+                        If Not SubDirsHaveMovies(MovieDir) Then
+                            'no movies in sub dirs... delete the whole thing
+                            ItemsToDelete.Add(MovieDir)
+                        Else
+                            'just delete the movie file itself
+                            ItemsToDelete.Add(New IO.FileInfo(mMovie.Filename))
+                        End If
                     End If
                 Else
                     For Each lFI As FileInfo In ioFi
@@ -1245,6 +1258,57 @@ Public Class Master
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return ItemsToDelete
+    End Function
+
+    Public Shared Function SubDirsHaveMovies(ByVal MovieDir As DirectoryInfo) As Boolean
+        Try
+            If Directory.Exists(MovieDir.FullName) Then
+
+                Dim Dirs As New List(Of DirectoryInfo)
+
+                Try
+                    Dirs.AddRange(MovieDir.GetDirectories)
+                Catch
+                End Try
+
+                For Each inDir As DirectoryInfo In Dirs
+                    If isValidDir(inDir.FullName) Then
+                        If ScanSubs(inDir) Then Return True
+                        SubDirsHaveMovies(inDir)
+                    End If
+                Next
+            End If
+            Return False
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Return False
+        End Try
+    End Function
+
+    Public Shared Function ScanSubs(ByVal inDir As DirectoryInfo) As Boolean
+        Try
+            Dim lFi As New List(Of FileInfo)
+
+            Try
+                lFi.AddRange(inDir.GetFiles)
+            Catch
+            End Try
+
+            lFi.Sort(AddressOf SortFileNames)
+
+            For Each lFile As FileInfo In lFi
+
+                If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
+                    Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso _
+                    Not lFile.Name.ToLower.Contains("sample") Then Return True
+
+            Next
+
+            Return False
+        Catch ex As Exception
+            eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Return False
+        End Try
     End Function
 
     Public Shared Function CreateRandomThumbs(ByVal mMovie As DBMovie, ByVal ThumbCount As Integer, ByVal isEdit As Boolean) As String

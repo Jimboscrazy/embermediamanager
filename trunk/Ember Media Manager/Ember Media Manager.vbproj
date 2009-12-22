@@ -555,6 +555,13 @@
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)ON-Build-Release" $(OutDir) "$(ProjectDir)" "$(SolutionDir)" $(PlatformName)</PostBuildEvent>
     <PreBuildEvent>rem SVN Revision -&gt; Version Number
-"$(SolutionDir)\SubWCRev.exe" "$(SolutionDir)." "$(ProjectDir)My Project\AssemblyInfo.temp" "$(ProjectDir)My Project\AssemblyInfo.vb"</PreBuildEvent>
+
+echo %25ProgramFiles%25  | find /i "(x86)"
+if errorlevel  1 (
+set ToolExec="$(SolutionDir)SubWCRev.exe"
+) else (
+set ToolExec="$(SolutionDir)SubWCRev64.exe"
+)
+%25ToolExec%25 "$(SolutionDir)." "$(ProjectDir)My Project\AssemblyInfo.temp" "$(ProjectDir)My Project\AssemblyInfo.vb"</PreBuildEvent>
   </PropertyGroup>
 </Project>
