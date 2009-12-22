@@ -163,6 +163,16 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub cbForce_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbForce.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkForceTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkForceTitle.CheckedChanged
+        Me.cbForce.SelectedIndex = -1
+        Me.cbForce.Enabled = Me.chkForceTitle.Checked
+        Me.SetApplyButton(True)
+    End Sub
+
     Private Sub chkFullCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFullCast.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -1496,6 +1506,7 @@ Public Class dlgSettings
             Else
                 Master.eSettings.UseCertForMPAA = False
             End If
+            Master.eSettings.ForceTitle = Me.cbForce.Text
             Master.eSettings.ScanMediaInfo = Me.chkScanMediaInfo.Checked
             Master.eSettings.FullCast = Me.chkFullCast.Checked
             Master.eSettings.FullCrew = Me.chkFullCrew.Checked
@@ -1738,6 +1749,11 @@ Public Class dlgSettings
                 Me.cbCert.Text = Master.eSettings.CertificationLang
                 Me.chkUseCertForMPAA.Enabled = True
                 Me.chkUseCertForMPAA.Checked = Master.eSettings.UseCertForMPAA
+            End If
+            If Not String.IsNullOrEmpty(Master.eSettings.ForceTitle) Then
+                Me.chkForceTitle.Checked = True
+                Me.cbForce.Enabled = True
+                Me.cbForce.Text = Master.eSettings.ForceTitle
             End If
             Me.chkScanMediaInfo.Checked = Master.eSettings.ScanMediaInfo
             Me.chkFullCast.Checked = Master.eSettings.FullCast

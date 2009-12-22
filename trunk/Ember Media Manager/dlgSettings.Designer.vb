@@ -336,6 +336,8 @@ Partial Class dlgSettings
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
+        Me.cbForce = New System.Windows.Forms.ComboBox
+        Me.chkForceTitle = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -1580,16 +1582,16 @@ Partial Class dlgSettings
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Location = New System.Drawing.Point(306, 203)
+        Me.GroupBox15.Location = New System.Drawing.Point(306, 238)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(269, 89)
+        Me.GroupBox15.Size = New System.Drawing.Size(269, 79)
         Me.GroupBox15.TabIndex = 2
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "OFDB"
         '
         'chkOFDBGenre
         '
-        Me.chkOFDBGenre.Location = New System.Drawing.Point(6, 66)
+        Me.chkOFDBGenre.Location = New System.Drawing.Point(6, 61)
         Me.chkOFDBGenre.Name = "chkOFDBGenre"
         Me.chkOFDBGenre.Size = New System.Drawing.Size(168, 17)
         Me.chkOFDBGenre.TabIndex = 3
@@ -1598,7 +1600,7 @@ Partial Class dlgSettings
         '
         'chkOFDBPlot
         '
-        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 50)
+        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 45)
         Me.chkOFDBPlot.Name = "chkOFDBPlot"
         Me.chkOFDBPlot.Size = New System.Drawing.Size(168, 17)
         Me.chkOFDBPlot.TabIndex = 2
@@ -1607,7 +1609,7 @@ Partial Class dlgSettings
         '
         'chkOFDBOutline
         '
-        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 34)
+        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 29)
         Me.chkOFDBOutline.Name = "chkOFDBOutline"
         Me.chkOFDBOutline.Size = New System.Drawing.Size(168, 17)
         Me.chkOFDBOutline.TabIndex = 1
@@ -1616,7 +1618,7 @@ Partial Class dlgSettings
         '
         'chkOFDBTitle
         '
-        Me.chkOFDBTitle.Location = New System.Drawing.Point(6, 18)
+        Me.chkOFDBTitle.Location = New System.Drawing.Point(6, 13)
         Me.chkOFDBTitle.Name = "chkOFDBTitle"
         Me.chkOFDBTitle.Size = New System.Drawing.Size(168, 17)
         Me.chkOFDBTitle.TabIndex = 0
@@ -2106,6 +2108,8 @@ Partial Class dlgSettings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.cbForce)
+        Me.GroupBox1.Controls.Add(Me.chkForceTitle)
         Me.GroupBox1.Controls.Add(Me.chkYAMJCompatibleSets)
         Me.GroupBox1.Controls.Add(Me.chkOutlineForPlot)
         Me.GroupBox1.Controls.Add(Me.Label18)
@@ -2118,7 +2122,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Location = New System.Drawing.Point(306, 4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(269, 194)
+        Me.GroupBox1.Size = New System.Drawing.Size(269, 233)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
@@ -2147,7 +2151,7 @@ Partial Class dlgSettings
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(8, 155)
+        Me.Label18.Location = New System.Drawing.Point(7, 195)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(66, 13)
         Me.Label18.TabIndex = 62
@@ -2156,7 +2160,7 @@ Partial Class dlgSettings
         'txtIMDBURL
         '
         Me.txtIMDBURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIMDBURL.Location = New System.Drawing.Point(10, 168)
+        Me.txtIMDBURL.Location = New System.Drawing.Point(9, 208)
         Me.txtIMDBURL.Name = "txtIMDBURL"
         Me.txtIMDBURL.Size = New System.Drawing.Size(192, 20)
         Me.txtIMDBURL.TabIndex = 10
@@ -2175,7 +2179,7 @@ Partial Class dlgSettings
         '
         Me.chkUseCertForMPAA.AutoSize = True
         Me.chkUseCertForMPAA.Enabled = False
-        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(20, 138)
+        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(20, 137)
         Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
         Me.chkUseCertForMPAA.Size = New System.Drawing.Size(151, 17)
         Me.chkUseCertForMPAA.TabIndex = 6
@@ -2208,7 +2212,7 @@ Partial Class dlgSettings
         Me.cbCert.Enabled = False
         Me.cbCert.FormattingEnabled = True
         Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbCert.Location = New System.Drawing.Point(6, 115)
+        Me.cbCert.Location = New System.Drawing.Point(6, 114)
         Me.cbCert.Name = "cbCert"
         Me.cbCert.Size = New System.Drawing.Size(179, 21)
         Me.cbCert.Sorted = True
@@ -3644,6 +3648,28 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
+        'cbForce
+        '
+        Me.cbForce.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbForce.Enabled = False
+        Me.cbForce.FormattingEnabled = True
+        Me.cbForce.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
+        Me.cbForce.Location = New System.Drawing.Point(7, 172)
+        Me.cbForce.Name = "cbForce"
+        Me.cbForce.Size = New System.Drawing.Size(179, 21)
+        Me.cbForce.Sorted = True
+        Me.cbForce.TabIndex = 65
+        '
+        'chkForceTitle
+        '
+        Me.chkForceTitle.AutoSize = True
+        Me.chkForceTitle.Location = New System.Drawing.Point(7, 154)
+        Me.chkForceTitle.Name = "chkForceTitle"
+        Me.chkForceTitle.Size = New System.Drawing.Size(130, 17)
+        Me.chkForceTitle.TabIndex = 64
+        Me.chkForceTitle.Text = "Force Title Language:"
+        Me.chkForceTitle.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3651,10 +3677,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -3662,6 +3684,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlImages)
@@ -4063,4 +4089,6 @@ Partial Class dlgSettings
     Friend WithEvents lstMetaData As System.Windows.Forms.ListBox
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
     Friend WithEvents chkYAMJCompatibleSets As System.Windows.Forms.CheckBox
+    Friend WithEvents cbForce As System.Windows.Forms.ComboBox
+    Friend WithEvents chkForceTitle As System.Windows.Forms.CheckBox
 End Class
