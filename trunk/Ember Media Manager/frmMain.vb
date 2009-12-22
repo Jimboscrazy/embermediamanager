@@ -3551,7 +3551,7 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
                                 scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
-                                If Master.DeleteFiles(True, scrapeMovie) Then
+                                If Master.DeleteFiles(True, scrapeMovie, Master.GetListOfSources) Then
                                     Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
                                     Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 End If

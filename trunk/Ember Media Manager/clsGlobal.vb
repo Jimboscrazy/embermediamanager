@@ -882,7 +882,7 @@ Public Class Master
         Return 0
     End Function
 
-    Public Shared Function DeleteFiles(ByVal isCleaner As Boolean, ByVal mMovie As DBMovie) As Boolean
+    Public Shared Function DeleteFiles(ByVal isCleaner As Boolean, ByVal mMovie As DBMovie, ByVal SourcesList As List(Of String)) As Boolean
         Dim dPath As String = String.Empty
         Dim bReturn As Boolean = False
         Try
@@ -938,7 +938,7 @@ Public Class Master
                     End If
                 End If
 
-                If Not isCleaner AndAlso mMovie.isSingle Then
+                If Not isCleaner AndAlso mMovie.isSingle AndAlso Not SourcesList.Contains(Directory.GetParent(mMovie.Filename).FullName) Then
                     If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
                         DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
                     Else
@@ -1209,7 +1209,7 @@ Public Class Master
 
                         ioFi.Clear()
                         Try
-                            ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
+                            If mMovie.isSingle Then ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
                         Catch
                         End Try
 

@@ -123,7 +123,6 @@ Partial Class dlgEditMovie
         Me.pnlFrameProgress = New System.Windows.Forms.Panel
         Me.Label3 = New System.Windows.Forms.Label
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.btnGrab = New System.Windows.Forms.Button
         Me.lblTime = New System.Windows.Forms.Label
         Me.tbFrame = New System.Windows.Forms.TrackBar
         Me.btnFrameLoad = New System.Windows.Forms.Button
@@ -1097,7 +1096,6 @@ Partial Class dlgEditMovie
         Me.TabPage4.Controls.Add(Me.GroupBox1)
         Me.TabPage4.Controls.Add(Me.btnFrameSave)
         Me.TabPage4.Controls.Add(Me.pnlFrameProgress)
-        Me.TabPage4.Controls.Add(Me.btnGrab)
         Me.TabPage4.Controls.Add(Me.lblTime)
         Me.TabPage4.Controls.Add(Me.tbFrame)
         Me.TabPage4.Controls.Add(Me.btnFrameLoad)
@@ -1195,20 +1193,9 @@ Partial Class dlgEditMovie
         Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.ProgressBar1.TabIndex = 0
         '
-        'btnGrab
-        '
-        Me.btnGrab.Enabled = False
-        Me.btnGrab.Location = New System.Drawing.Point(655, 423)
-        Me.btnGrab.Name = "btnGrab"
-        Me.btnGrab.Size = New System.Drawing.Size(75, 23)
-        Me.btnGrab.TabIndex = 5
-        Me.btnGrab.Text = "Grab Frame"
-        Me.btnGrab.UseVisualStyleBackColor = True
-        Me.btnGrab.Visible = False
-        '
         'lblTime
         '
-        Me.lblTime.Location = New System.Drawing.Point(590, 423)
+        Me.lblTime.Location = New System.Drawing.Point(671, 422)
         Me.lblTime.Name = "lblTime"
         Me.lblTime.Size = New System.Drawing.Size(59, 23)
         Me.lblTime.TabIndex = 4
@@ -1220,7 +1207,7 @@ Partial Class dlgEditMovie
         Me.tbFrame.Enabled = False
         Me.tbFrame.Location = New System.Drawing.Point(6, 422)
         Me.tbFrame.Name = "tbFrame"
-        Me.tbFrame.Size = New System.Drawing.Size(580, 45)
+        Me.tbFrame.Size = New System.Drawing.Size(659, 45)
         Me.tbFrame.TabIndex = 2
         Me.tbFrame.TickStyle = System.Windows.Forms.TickStyle.None
         '
@@ -1441,7 +1428,6 @@ Partial Class dlgEditMovie
     Friend WithEvents btnFrameLoad As System.Windows.Forms.Button
     Friend WithEvents tbFrame As System.Windows.Forms.TrackBar
     Friend WithEvents lblTime As System.Windows.Forms.Label
-    Friend WithEvents btnGrab As System.Windows.Forms.Button
     Friend WithEvents pnlFrameProgress As System.Windows.Forms.Panel
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents Label3 As System.Windows.Forms.Label

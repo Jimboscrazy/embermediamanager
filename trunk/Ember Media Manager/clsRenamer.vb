@@ -404,7 +404,7 @@ Public Class FileFolderRenamer
             Return pattern.Trim
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Return vbNullString
+            Return String.Empty
         End Try
     End Function
     Private Shared Function ApplyPattern(ByVal pattern As String, ByVal flag As String, ByVal v As String) As String
