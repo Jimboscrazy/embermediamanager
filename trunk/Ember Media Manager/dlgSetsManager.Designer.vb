@@ -48,12 +48,16 @@ Partial Class dlgSetsManager
         Me.Label2 = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
+        Me.pnlSaving = New System.Windows.Forms.Panel
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.pnlCancel.SuspendLayout()
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlSaving.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -331,12 +335,43 @@ Partial Class dlgSetsManager
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
+        'pnlSaving
+        '
+        Me.pnlSaving.BackColor = System.Drawing.Color.LightGray
+        Me.pnlSaving.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlSaving.Controls.Add(Me.Label3)
+        Me.pnlSaving.Controls.Add(Me.ProgressBar1)
+        Me.pnlSaving.Location = New System.Drawing.Point(225, 216)
+        Me.pnlSaving.Name = "pnlSaving"
+        Me.pnlSaving.Size = New System.Drawing.Size(252, 51)
+        Me.pnlSaving.TabIndex = 59
+        Me.pnlSaving.Visible = False
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(2, 7)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(49, 13)
+        Me.Label3.TabIndex = 1
+        Me.Label3.Text = "Saving..."
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Location = New System.Drawing.Point(4, 26)
+        Me.ProgressBar1.MarqueeAnimationSpeed = 25
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(242, 16)
+        Me.ProgressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.ProgressBar1.TabIndex = 0
+        '
         'dlgSetsManager
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(702, 482)
+        Me.Controls.Add(Me.pnlSaving)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.pnlCancel)
@@ -357,6 +392,8 @@ Partial Class dlgSetsManager
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlSaving.ResumeLayout(False)
+        Me.pnlSaving.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -385,5 +422,8 @@ Partial Class dlgSetsManager
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents lblCurrentSet As System.Windows.Forms.Label
+    Friend WithEvents pnlSaving As System.Windows.Forms.Panel
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
 
 End Class
