@@ -293,7 +293,7 @@ Public Class dlgOfflineHolder
                 lvStatus.Items(idxStsSource).SubItems(1).Text = Master.eLang.GetString(194, "Not Valid")
                 lvStatus.Items(idxStsSource).SubItems(1).ForeColor = Color.Red
             End If
-            If Not txtMovieName.Text = vbNullString Then
+            If Not txtMovieName.Text = String.Empty Then
                 If Directory.Exists(destPath) Then
                     lvStatus.Items(idxStsMovie).SubItems(1).Text = Master.eLang.GetString(355, "Exists")
                     lvStatus.Items(idxStsMovie).SubItems(1).ForeColor = Color.Red
