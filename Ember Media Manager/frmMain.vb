@@ -3390,13 +3390,14 @@ Public Class frmMain
 
                                         If String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) OrElse Not IMDB.GetMovieInfo(scrapeMovie.Movie.IMDBID, scrapeMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Args.Options) Then
                                             scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType, Args.Options)
+                                            doSave = True
                                         End If
 
-                                        If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
+                                        If Master.eSettings.ScanMediaInfo AndAlso Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) AndAlso Master.GlobalScrapeMod.Meta Then
                                             UpdateMediaInfo(scrapeMovie)
+                                            doSave = True
                                         End If
 
-                                        doSave = True
                                     End If
 
                                     If Me.bwScraper.CancellationPending Then GoTo doCancel

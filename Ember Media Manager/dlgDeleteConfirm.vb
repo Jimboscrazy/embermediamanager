@@ -151,7 +151,7 @@ Public Class dlgDeleteConfirm
             Next
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Throw ex
+            Throw
         End Try
 
     End Sub
@@ -164,7 +164,7 @@ Public Class dlgDeleteConfirm
             NewNode.SelectedImageKey = "FILE"
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            Throw ex
+            Throw
         End Try
     End Sub
 
