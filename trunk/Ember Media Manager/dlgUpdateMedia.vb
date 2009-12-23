@@ -366,12 +366,14 @@ Public Class dlgUpdateMedia
             chkMetaMod.Checked = chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo
             chkExtraMod.Checked = chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0 OrElse Master.eSettings.AutoET)
             chkTrailerMod.Checked = chkAllMod.Checked AndAlso Master.eSettings.DownloadTrailers
+        Else
+            chkMetaMod.Checked = Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
         End If
 
         chkNFOMod.Enabled = Not chkAllMod.Checked
         chkPosterMod.Enabled = Not chkAllMod.Checked AndAlso (Master.eSettings.UseTMDB OrElse Master.eSettings.UseIMPA OrElse Master.eSettings.UseMPDB)
         chkFanartMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.UseTMDB
-        chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo
+        chkMetaMod.Enabled = Not chkAllMod.Checked AndAlso Not Me.rbUpdateModifier_Missing.Checked AndAlso Master.eSettings.ScanMediaInfo AndAlso (Not rbUpdate_Ask.Checked OrElse chkNFOMod.Checked)
         chkExtraMod.Enabled = Not chkAllMod.Checked AndAlso (Master.eSettings.AutoThumbs > 0 OrElse Master.eSettings.AutoET)
         chkTrailerMod.Enabled = Not chkAllMod.Checked AndAlso Master.eSettings.DownloadTrailers
 
@@ -391,5 +393,4 @@ Public Class dlgUpdateMedia
             Update_Button.Enabled = False
         End If
     End Sub
-
 End Class
