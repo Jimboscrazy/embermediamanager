@@ -306,15 +306,19 @@ Public Class dlgTrailer
     End Sub
 
     Private Sub YouTube_VideoLinksRetrieved(ByVal bSuccess As Boolean) Handles YouTube.VideoLinksRetrieved
+        Try
 
-        Me.pnlStatus.Visible = False
-        Me.Cancel_Button.Enabled = True
-
-        If bSuccess Then
-            lstFormats.DataSource = YouTube.VideoLinks
-            lstFormats.DisplayMember = "Description"
-            lstFormats.ValueMember = "URL"
-        End If
+            If bSuccess Then
+                lstFormats.DataSource = YouTube.VideoLinks.Values.ToList
+                lstFormats.DisplayMember = "Description"
+                lstFormats.ValueMember = "URL"
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        Finally
+            Me.pnlStatus.Visible = False
+            Me.Cancel_Button.Enabled = True
+        End Try
 
     End Sub
 
