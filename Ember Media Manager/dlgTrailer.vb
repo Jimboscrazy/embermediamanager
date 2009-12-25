@@ -26,6 +26,7 @@ Imports System.Text.RegularExpressions
 Public Class dlgTrailer
 
     Private cTrailer As New Trailers
+    Private sHTTP As New HTTP
     Dim tArray As New ArrayList
     Dim imdbID As String = String.Empty
     Dim sPath As String = String.Empty
@@ -126,9 +127,7 @@ Public Class dlgTrailer
                 If Args.bType Then
                     tURL = cTrailer.DownloadYouTubeTrailer(Me.sPath, Args.Parameter)
                 Else
-                    Dim sHTTP As New HTTP
                     Me.prePath = sHTTP.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True, "trailer")
-                    sHTTP = Nothing
                 End If
             End If
         Catch
@@ -192,6 +191,7 @@ Public Class dlgTrailer
     Private Sub dlgTrailer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         AddHandler cTrailer.ProgressUpdated, AddressOf DownloadProgressUpdated
+        AddHandler sHTTP.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
     Private Sub SetUp()
@@ -342,5 +342,11 @@ Public Class dlgTrailer
 
     Private Sub txtManual_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtManual.TextChanged
         Me.OK_Button.Enabled = txtManual.Text.Length > 0
+    End Sub
+
+    Protected Overrides Sub Finalize()
+        cTrailer = Nothing
+        sHTTP = Nothing
+        MyBase.Finalize()
     End Sub
 End Class
