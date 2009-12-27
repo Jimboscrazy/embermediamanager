@@ -1056,16 +1056,17 @@ Public Class dlgEditMovie
 
                 If lFI.Count > 0 Then
                     lFI.Sort(AddressOf Master.SortThumbFileNames)
+                    Dim fsImage As FileStream
                     For Each thumb As FileInfo In lFI
                         If Not Me.DeleteList.Contains(thumb.Name) Then
-                            Dim fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
+                            fsImage = New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
                             Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})
                             ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
                             fsImage.Close()
-                            fsImage = Nothing
                             i += 1
                         End If
                     Next
+                    fsImage = Nothing
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

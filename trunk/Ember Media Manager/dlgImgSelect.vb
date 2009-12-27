@@ -165,15 +165,16 @@ Public Class dlgImgSelect
                         Directory.CreateDirectory(extraPath)
                     End If
 
+                    Dim fsET As FileStream
                     For i As Integer = 0 To UBound(Me.chkImage)
                         If Me.chkImage(i).Checked Then
-                            Dim fsET As New FileStream(Path.Combine(extraPath, String.Concat("thumb", iVal, ".jpg")), FileMode.Create, FileAccess.ReadWrite)
+                            fsET = New FileStream(Path.Combine(extraPath, String.Concat("thumb", iVal, ".jpg")), FileMode.Create, FileAccess.ReadWrite)
                             Me.pbImage(i).Image.Save(fsET, System.Drawing.Imaging.ImageFormat.Jpeg)
                             fsET.Close()
-                            fsET = Nothing
                             iVal += 1
                         End If
                     Next
+                    fsET = Nothing
                 End If
             End If
         Catch ex As Exception
