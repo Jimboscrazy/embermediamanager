@@ -102,7 +102,16 @@ Public Class Images
 
     Public Sub Save(ByVal sPath As String, Optional ByVal iQuality As Long = 0)
         Try
-            If Not String.IsNullOrEmpty(sPath) AndAlso (Not File.Exists(sPath) OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly))) Then
+            Dim doesExist As Boolean = File.Exists(sPath)
+            Dim fAtt As New FileAttributes
+            If Not String.IsNullOrEmpty(sPath) AndAlso (Not doesExist OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly))) Then
+                If doesExist Then
+                    'get the current attributes to set them back after writing
+                    fAtt = File.GetAttributes(sPath)
+                    'set attributes to none for writing
+                    File.SetAttributes(sPath, FileAttributes.Normal)
+                End If
+
                 Using msSave As New MemoryStream
                     Dim retSave() As Byte
                     If iQuality > 0 Then
@@ -125,6 +134,8 @@ Public Class Images
                     End Using
                     msSave.Flush()
                 End Using
+
+                If doesExist Then File.SetAttributes(sPath, fAtt)
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

@@ -520,30 +520,30 @@ Public Class NFO
 
             Dim tPath As String = String.Empty
             Dim nPath As String = String.Empty
+            Dim doesExist As Boolean = False
+            Dim fAtt As New FileAttributes
 
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(movieToSave.Filename).Name.ToLower = "video_ts" Then
-                nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).Name), ".nfo")
+                tPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).Name), ".nfo")
 
                 If Not Master.eSettings.OverwriteNfo Then
                     RenameNonConfNfo(tPath, False)
                 End If
 
-                If Not File.Exists(nPath) OrElse (Not CBool(File.GetAttributes(nPath) And FileAttributes.ReadOnly)) Then
-                    movieToSave.NfoPath = tPath
-                    ''Using memData As New IO.MemoryStream
-                    ''    xmlSer.Serialize(memData, movieToSave.Movie)
-                    ''    memData.Position = 0
-                    ''    Using sr As New StreamReader(memData, Encoding.UTF8)
-                    ''        Dim sData As String = sr.ReadToEnd
-                    ''        sData = sData.Replace("<sets>" & Environment.NewLine, "")
-                    ''        sData = sData.Replace("</sets>" & Environment.NewLine, "")
-                    ''        IO.File.WriteAllText(tPath, sData)
-                    ''    End Using
-                    ''End Using
-                    Using xmlSW As New StreamWriter(nPath)
+                doesExist = File.Exists(tPath)
+                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+
+                    If doesExist Then
+                        fAtt = File.GetAttributes(tPath)
+                        File.SetAttributes(tPath, FileAttributes.Normal)
+                    End If
+
+                    Using xmlSW As New StreamWriter(tPath)
                         movieToSave.NfoPath = tPath
                         xmlSer.Serialize(xmlSW, movieToSave.Movie)
                     End Using
+
+                    If doesExist Then File.SetAttributes(tPath, fAtt)
                 End If
             Else
                 Dim tmpName As String = Path.GetFileNameWithoutExtension(movieToSave.Filename)
@@ -560,21 +560,20 @@ Public Class NFO
                         RenameNonConfNfo(tPath, False)
                     End If
 
-                    If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-                        ''Using memData As New IO.MemoryStream
-                        ''    xmlSer.Serialize(memData, movieToSave.Movie)
-                        ''    memData.Position = 0
-                        ''    Using sr As New StreamReader(memData, Encoding.UTF8)
-                        ''        Dim sData As String = sr.ReadToEnd
-                        ''        sData = sData.Replace("<sets>" & Environment.NewLine, "")
-                        ''        sData = sData.Replace("</sets>" & Environment.NewLine, "")
-                        ''        IO.File.WriteAllText(tPath, sData)
-                        ''    End Using
-                        ''End Using
+                    doesExist = File.Exists(tPath)
+                    If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+
+                        If doesExist Then
+                            fAtt = File.GetAttributes(tPath)
+                            File.SetAttributes(tPath, FileAttributes.Normal)
+                        End If
+
                         Using xmlSW As New StreamWriter(tPath)
                             movieToSave.NfoPath = tPath
                             xmlSer.Serialize(xmlSW, movieToSave.Movie)
                         End Using
+
+                        If doesExist Then File.SetAttributes(tPath, fAtt)
                     End If
                 End If
 
@@ -585,21 +584,20 @@ Public Class NFO
                         RenameNonConfNfo(tPath, False)
                     End If
 
-                    If Not File.Exists(tPath) OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-                        ''Using memData As New IO.MemoryStream
-                        ''    xmlSer.Serialize(memData, movieToSave.Movie)
-                        ''    memData.Position = 0
-                        ''    Using sr As New StreamReader(memData, Encoding.UTF8)
-                        ''        Dim sData As String = sr.ReadToEnd
-                        ''        sData = sData.Replace("<sets>" & Environment.NewLine, "")
-                        ''        sData = sData.Replace("</sets>" & Environment.NewLine, "")
-                        ''        IO.File.WriteAllText(tPath, sData)
-                        ''    End Using
-                        ''End Using
+                    doesExist = File.Exists(tPath)
+                    If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+
+                        If doesExist Then
+                            fAtt = File.GetAttributes(tPath)
+                            File.SetAttributes(tPath, FileAttributes.Normal)
+                        End If
+
                         Using xmlSW As New StreamWriter(tPath)
                             movieToSave.NfoPath = tPath
                             xmlSer.Serialize(xmlSW, movieToSave.Movie)
                         End Using
+
+                        If doesExist Then File.SetAttributes(tPath, fAtt)
                     End If
                 End If
             End If
