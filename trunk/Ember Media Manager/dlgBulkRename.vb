@@ -305,6 +305,7 @@ Public Class dlgBulkRenamer
 
     Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged
         Try
+            If String.IsNullOrEmpty(txtFile.Text) Then txtFile.Text = "$F"
             tmrSimul.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -433,6 +434,7 @@ Public Class dlgBulkRenamer
 
     Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
         Try
+            If String.IsNullOrEmpty(txtFolder.Text) Then txtFolder.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -441,6 +443,7 @@ Public Class dlgBulkRenamer
 
     Private Sub txtFolderNotSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderNotSingle.TextChanged
         Try
+            If String.IsNullOrEmpty(txtFolderNotSingle.Text) Then txtFolderNotSingle.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
