@@ -169,7 +169,7 @@ Public Class StringManip
         End If
     End Function
 
-    Public Shared Function FilterName(ByVal movieName As String, Optional ByVal doExtras As Boolean = True) As String
+    Public Shared Function FilterName(ByVal movieName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
 
         '//
         ' Clean all the crap out of the name
@@ -203,11 +203,10 @@ Public Class StringManip
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
 
-            If doExtras Then
-                Return FilterTokens(CleanStackingMarkers(movieName.Trim))
-            Else
-                Return RemovePunctuation(CleanStackingMarkers(movieName.Trim))
-            End If
+            If doExtras Then movieName = FilterTokens(CleanStackingMarkers(movieName.Trim))
+            If remPunct Then movieName = RemovePunctuation(CleanStackingMarkers(movieName.Trim))
+
+            Return movieName.Trim
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
