@@ -434,7 +434,7 @@ mResult:
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                If Options.bYear Then IMDBMovie.Year = Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))").ToString
+                If Options.bYear Then IMDBMovie.Year = Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))", RegexOptions.RightToLeft).ToString
 
                 Dim D, W, tempD As Integer
 
