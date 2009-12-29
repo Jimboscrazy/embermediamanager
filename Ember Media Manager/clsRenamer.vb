@@ -659,6 +659,8 @@ Public Class FileFolderRenamer
 
         If Not MovieFile.NewPath = MovieFile.Path OrElse Not MovieFile.NewFileName = MovieFile.FileName Then
             DoRenameSingle(MovieFile, _tmpMovie, BatchMode, toNfo, ShowError)
+        Else
+            Master.DB.SaveMovieToDB(_tmpMovie, False, True, Not String.IsNullOrEmpty(_tmpMovie.Movie.IMDBID))
         End If
     End Sub
 

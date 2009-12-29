@@ -745,7 +745,7 @@ Public Class frmMain
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
 
         If Me.dgvMediaList.RowCount > 0 Then
-            Me.tmpTitle = Me.dgvMediaList.Item(3, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+            Me.tmpTitle = Me.dgvMediaList.Item(15, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
             If Me.dgvMediaList.SelectedRows.Count > 1 Then
                 Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
             ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
@@ -772,7 +772,7 @@ Public Class frmMain
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
             Master.currMovie = Master.DB.LoadMovieFromDB(ID)
-            Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
+            Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
             Using dEditMovie As New dlgEditMovie
 
@@ -1318,7 +1318,7 @@ Public Class frmMain
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
                 Master.currMovie = Master.DB.LoadMovieFromDB(ID)
                 Me.tslStatus.Text = Master.currMovie.Filename
-                Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
+                Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
                 Using dEditMovie As New dlgEditMovie
 
@@ -1562,7 +1562,7 @@ Public Class frmMain
         Try
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-            Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
+            Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
             Using dEditMovie As New dlgEditMovie
                 Select Case dEditMovie.ShowDialog()
@@ -1590,7 +1590,7 @@ Public Class frmMain
                 Dim dgvHTI As DataGridView.HitTestInfo = dgvMediaList.HitTest(e.X, e.Y)
                 If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
-                    Me.tmpTitle = Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value.ToString
+                    Me.tmpTitle = Me.dgvMediaList.Item(15, dgvHTI.RowIndex).Value.ToString
 
                     If Me.dgvMediaList.SelectedRows.Count > 1 AndAlso Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                         Dim setMark As Boolean = False
@@ -2584,7 +2584,7 @@ Public Class frmMain
     Private Sub cmnuRenameManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenameManual.Click
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-        Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
+        Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
         Using dRenameManual As New dlgRenameManual
             Select Case dRenameManual.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
@@ -2600,7 +2600,7 @@ Public Class frmMain
     Private Sub cmnuMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMetaData.Click
         Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-        Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
+        Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
         Using dEditMeta As New dlgFileInfo
             Select Case dEditMeta.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
@@ -2829,11 +2829,14 @@ Public Class frmMain
 
                             If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
                                 tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name, False)
                             Else
                                 If sFile.UseFolder AndAlso sFile.isSingle Then
                                     tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
+                                    tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name, False)
                                 Else
                                     tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                    tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename), False)
                                 End If
                             End If
                             If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
@@ -3196,7 +3199,7 @@ Public Class frmMain
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15).ToString)
 
                                 If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
@@ -3210,7 +3213,7 @@ Public Class frmMain
                                     If Not String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) Then
                                         IMDB.GetMovieInfo(scrapeMovie.Movie.IMDBID, scrapeMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Args.Options)
                                     Else
-                                        scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType, Args.Options)
+                                        scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(15).ToString, New Media.Movie, Args.scrapeType, Args.Options)
                                     End If
                                     doSave = True
                                 End If
@@ -3369,7 +3372,7 @@ Public Class frmMain
 
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15).ToString)
 
                                 If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
@@ -3389,7 +3392,7 @@ Public Class frmMain
                                     If Not Convert.ToBoolean(drvRow.Item(6)) AndAlso Master.GlobalScrapeMod.NFO Then
 
                                         If String.IsNullOrEmpty(scrapeMovie.Movie.IMDBID) OrElse Not IMDB.GetMovieInfo(scrapeMovie.Movie.IMDBID, scrapeMovie.Movie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Args.Options) Then
-                                            scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(3).ToString, New Media.Movie, Args.scrapeType, Args.Options)
+                                            scrapeMovie.Movie = IMDB.GetSearchMovieInfo(drvRow.Item(15).ToString, New Media.Movie, Args.scrapeType, Args.Options)
                                             doSave = True
                                         End If
 
@@ -3545,7 +3548,7 @@ Public Class frmMain
                         Case Master.ScrapeType.CleanFolders
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(3))
+                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15))
                                 iCount += 1
                                 If Convert.ToBoolean(drvRow.Item(14)) Then Continue For
 
@@ -3562,7 +3565,7 @@ Public Class frmMain
                             Dim sPath As String = String.Empty
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15).ToString)
                                 iCount += 1
 
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
@@ -3589,7 +3592,7 @@ Public Class frmMain
                             Next
                         Case Master.ScrapeType.RevertStudios
                             For Each drvRow As DataRow In Me.dtMedia.Rows
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(3).ToString)
+                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15).ToString)
                                 iCount += 1
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
@@ -4851,7 +4854,7 @@ doCancel:
                 If Not isCL Then
                     Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                     Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
-                    Me.tmpTitle = Me.dgvMediaList.Item(3, indX).Value.ToString
+                    Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
                     Me.tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
                     Application.DoEvents()
@@ -4940,11 +4943,14 @@ doCancel:
                 If String.IsNullOrEmpty(tmpMovieDb.Movie.Title) Then
                     If Directory.GetParent(tmpMovieDb.Filename).Name.ToLower = "video_ts" Then
                         tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name)
+                        tmpMovieDb.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name, False)
                     Else
                         If tmpMovieDb.UseFolder AndAlso tmpMovieDb.isSingle Then
                             tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name)
+                            tmpMovieDb.Movie.Title = StringManip.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name, False)
                         Else
                             tmpMovieDb.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename))
+                            tmpMovieDb.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(tmpMovieDb.Filename), False)
                         End If
                     End If
                     If Not OldTitle = tmpMovieDb.Movie.Title OrElse String.IsNullOrEmpty(tmpMovieDb.Movie.SortTitle) Then tmpMovieDb.Movie.SortTitle = tmpMovieDb.ListTitle
@@ -5178,7 +5184,7 @@ doCancel:
                                 End If
                             End If
 
-                            LevFail = StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value.ToString, False).ToLower, StringManip.FilterName(pTitle, False).ToLower) > Master.eSettings.LevTolerance
+                            LevFail = StringManip.ComputeLevenshtein(StringManip.FilterName(drvRow.Cells(15).Value.ToString, False, True).ToLower, StringManip.FilterName(pTitle, False, True).ToLower) > Master.eSettings.LevTolerance
 
                             parOutOfTolerance.Value = LevFail
                             drvRow.Cells(47).Value = LevFail
@@ -5518,7 +5524,7 @@ doCancel:
                 Loop
             End If
 
-            Me.tmpTitle = Me.dgvMediaList.Item(3, iRow).Value.ToString
+            Me.tmpTitle = Me.dgvMediaList.Item(15, iRow).Value.ToString
             If Not Convert.ToBoolean(Me.dgvMediaList.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(6, iRow).Value) Then
                 Me.ClearInfo()
                 Me.pnlNoInfo.Visible = True
