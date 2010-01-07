@@ -75,6 +75,20 @@ Public Class dlgSettings
         Me.RemoveMovieSource()
     End Sub
 
+    Private Sub btnAddTVSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddTVSource.Click
+        Using dSource As New dlgTVSource
+            If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
+                RefreshTVSources()
+                Me.SetApplyButton(True)
+                Me.sResult.NeedsUpdate = True
+            End If
+        End Using
+    End Sub
+
+    Private Sub btnRemTVSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemTVSource.Click
+        Me.RemoveTVSource()
+    End Sub
+
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         Me.SaveSettings()
         Me.Close()
@@ -267,11 +281,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkUseFolderNames_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-        Me.sResult.NeedsUpdate = True
-    End Sub
-
     Private Sub chkProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProperCase.CheckedChanged
         Me.SetApplyButton(True)
         Me.sResult.NeedsRefresh = True
@@ -307,11 +316,6 @@ Public Class dlgSettings
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Sub
-
-    Private Sub chkTitleFromNfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-        Me.sResult.NeedsRefresh = True
     End Sub
 
     Private Sub chkUseMPDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseMPDB.CheckedChanged
@@ -526,11 +530,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkScanRecursive_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
-        Me.sResult.NeedsUpdate = True
-    End Sub
-
     Private Sub chkCastWithImg_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCastWithImg.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
@@ -550,6 +549,7 @@ Public Class dlgSettings
         pnlScraper.Visible = False
         pnlExtensions.Visible = False
         pnlImages.Visible = False
+        pnlTVSources.Visible = False
 
         Select Case tvSettings.SelectedNode.Name
             Case "nGeneral"
@@ -566,6 +566,8 @@ Public Class dlgSettings
                 pnlExtensions.Visible = True
             Case "nImages"
                 pnlImages.Visible = True
+            Case "nTVSources"
+                pnlTVSources.Visible = True
         End Select
     End Sub
 
@@ -1032,11 +1034,35 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSources.DoubleClick
+        If lvTVSources.SelectedItems.Count > 0 Then
+            Using dTVSource As New dlgTVSource
+                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                    Me.RefreshTVSources()
+                    Me.sResult.NeedsUpdate = True
+                    Me.SetApplyButton(True)
+                End If
+            End Using
+        End If
+    End Sub
+
     Private Sub btnEditSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSource.Click
         If lvMovies.SelectedItems.Count > 0 Then
             Using dMovieSource As New dlgMovieSource
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshSources()
+                    Me.sResult.NeedsUpdate = True
+                    Me.SetApplyButton(True)
+                End If
+            End Using
+        End If
+    End Sub
+
+    Private Sub btnEditTVSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditTVSource.Click
+        If lvTVSources.SelectedItems.Count > 0 Then
+            Using dTVSource As New dlgTVSource
+                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                    Me.RefreshTVSources()
                     Me.sResult.NeedsUpdate = True
                     Me.SetApplyButton(True)
                 End If
@@ -1120,6 +1146,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkAutoDetectVTS_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAutoDetectVTS.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkCleanDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCleanDB.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1433,6 +1463,9 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then Me.RemoveMovieSource()
     End Sub
 
+    Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvTVSources.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveTVSource()
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1699,6 +1732,7 @@ Public Class dlgSettings
             Master.eSettings.AutoRenameSingle = Me.chkRenameSingle.Checked
             Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
             Master.eSettings.EnableIFOScan = Me.chkIFOScan.Checked
+            Master.eSettings.CleanDB = Me.chkCleanDB.Checked
 
             Master.eSettings.Save()
 
@@ -1922,8 +1956,10 @@ Public Class dlgSettings
             Me.Meta = Master.eSettings.MetadataPerFileType
             Me.LoadMetadata()
             Me.chkIFOScan.Checked = Master.eSettings.EnableIFOScan
+            Me.chkCleanDB.Checked = Master.eSettings.CleanDB
 
             Me.RefreshSources()
+            Me.RefreshTVSources()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2016,6 +2052,24 @@ Public Class dlgSettings
                     lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Foldername")), "Yes", "No"))
                     lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Single")), "Yes", "No"))
                     lvMovies.Items.Add(lvItem)
+                End While
+            End Using
+        End Using
+
+    End Sub
+
+    Private Sub RefreshTVSources()
+        lvTVSources.Items.Clear()
+        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLcommand.CommandText = "SELECT * FROM TVSources;"
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim lvItem As New ListViewItem(SQLreader("ID").ToString)
+                    lvItem.SubItems.Add(SQLreader("Name").ToString)
+                    lvItem.SubItems.Add(SQLreader("Path").ToString)
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Recursive")), "Yes", "No"))
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Foldername")), "Yes", "No"))
+                    lvTVSources.Items.Add(lvItem)
                 End While
             End Using
         End Using
@@ -2147,7 +2201,6 @@ Public Class dlgSettings
         Me.chkUpdaterTrailer.Text = Master.eLang.GetString(527, "Get Trailers During ""All Items"" Scrapers")
         Me.Label22.Text = Master.eLang.GetString(528, "Supported Trailer Sites:")
         Me.chkDownloadTrailer.Text = Master.eLang.GetString(529, "Enable Trailer Downloading")
-        Me.lblCurrent.Text = Master.eLang.GetString(38, "General")
         Me.GroupBox22.Text = Master.eLang.GetString(530, "No Stack Extensions")
         Me.gbRenamerPatterns.Text = Master.eLang.GetString(531, "Default Renaming Patterns")
         Me.lblFilePattern.Text = Master.eLang.GetString(532, "Files Pattern")
@@ -2214,6 +2267,7 @@ Public Class dlgSettings
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
         Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
+        Me.chkCleanDB.Text = Master.eLang.GetString(999, "Clean database after each scan")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
@@ -2222,6 +2276,14 @@ Public Class dlgSettings
         Me.tvSettings.Nodes(1).Nodes(0).Text = Master.eLang.GetString(555, "Files and Sources")
         Me.tvSettings.Nodes(1).Nodes(1).Text = Master.eLang.GetString(556, "Scraper - Data")
         Me.tvSettings.Nodes(1).Nodes(2).Text = Master.eLang.GetString(557, "Scraper - Images")
+        Me.tvSettings.Nodes(2).Text = Master.eLang.GetString(999, "TV Shows")
+        Me.tvSettings.Nodes(2).Nodes(0).Text = Master.eLang.GetString(555, "Files and Sources")
+
+        If Not IsNothing(tvSettings.SelectedNode) Then
+            Me.lblCurrent.Text = tvSettings.SelectedNode.Text
+        Else
+            Me.lblCurrent.Text = Master.eLang.GetString(38, "General")
+        End If
 
         Me.TabPage1.Text = Master.eLang.GetString(38, "General")
         Me.TabPage2.Text = Master.eLang.GetString(390, "Options")
@@ -2303,8 +2365,12 @@ Public Class dlgSettings
                             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
                             For i As Integer = lvMovies.SelectedItems.Count - 1 To 0 Step -1
                                 parSource.Value = lvMovies.SelectedItems(i).SubItems(1).Text
-                                SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
-                                SQLcommand.ExecuteNonQuery()
+                                SQLcommand.CommandText = "SELECT Id FROM movies WHERE source = (?);"
+                                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                                    While SQLReader.Read
+                                        Master.DB.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                    End While
+                                End Using
                                 SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
                                 SQLcommand.ExecuteNonQuery()
                                 lvMovies.Items.RemoveAt(lvMovies.SelectedItems(i).Index)
@@ -2316,6 +2382,43 @@ Public Class dlgSettings
                     Me.lvMovies.Sort()
                     Me.lvMovies.EndUpdate()
                     Me.lvMovies.Refresh()
+                    Me.SetApplyButton(True)
+                    Me.sResult.NeedsUpdate = True
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub RemoveTVSource()
+        Try
+            If Me.lvTVSources.SelectedItems.Count > 0 Then
+                If MsgBox(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the TV Shows from these sources from the Ember database."), MsgBoxStyle.Question Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are You Sure?")) = MsgBoxResult.Yes Then
+                    Me.lvTVSources.BeginUpdate()
+
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                            For i As Integer = lvTVSources.SelectedItems.Count - 1 To 0 Step -1
+                                parSource.Value = lvTVSources.SelectedItems(i).SubItems(1).Text
+                                SQLcommand.CommandText = "SELECT Id FROM TVShows WHERE Source = (?);"
+                                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                                    While SQLReader.Read
+                                        Master.DB.DeleteTVShowFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                    End While
+                                End Using
+                                SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
+                                SQLcommand.ExecuteNonQuery()
+                                lvTVSources.Items.RemoveAt(lvTVSources.SelectedItems(i).Index)
+                            Next
+                        End Using
+                        SQLtransaction.Commit()
+                    End Using
+
+                    Me.lvTVSources.Sort()
+                    Me.lvTVSources.EndUpdate()
+                    Me.lvTVSources.Refresh()
                     Me.SetApplyButton(True)
                     Me.sResult.NeedsUpdate = True
                 End If

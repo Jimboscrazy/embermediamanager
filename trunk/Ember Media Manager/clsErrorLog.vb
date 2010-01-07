@@ -23,11 +23,13 @@ Imports System.Text
 
 Public Class ErrorLogger
 
+    ''' <summary>
+    ''' Write the error to our log file, if enabled in settings.
+    ''' </summary>
+    ''' <param name="msg">Error summary</param>
+    ''' <param name="stkTrace">Full stack trace</param>
+    ''' <param name="title">Error title</param>
     Public Sub WriteToErrorLog(ByVal msg As String, ByVal stkTrace As String, ByVal title As String)
-
-        '//
-        ' Write the error to our log file, if the option is set
-        '\\
 
         Try
             If Master.eSettings.LogErrors Then

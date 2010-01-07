@@ -595,7 +595,7 @@ Public Class dlgEditMovie
 
                     If Not Master.eSettings.UseTMDB Then
                         .btnSetFanartScrape.Enabled = False
-                        If Not Master.eSettings.UseIMPA Then
+                        If Not Master.eSettings.UseIMPA AndAlso Not Master.eSettings.UseMPDB Then
                             .btnSetPosterScrape.Enabled = False
                         End If
                     End If

@@ -556,7 +556,7 @@ mResult:
                                 Let m3 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_3).ToString, IMG_PATTERN) _
                                 Select New Media.Person(Web.HttpUtility.HtmlDecode(m1.Groups("name").ToString.Trim), _
                                 Web.HttpUtility.HtmlDecode(m2.ToString.Trim), _
-                                If(Strings.InStr(m3.Groups("thumb").ToString, "addtiny") > 0, String.Empty, Strings.Replace(Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim), _
+                                If(Strings.InStr(m3.Groups("thumb").ToString, "addtiny") > 0 OrElse Strings.InStr(m3.Groups("thumb").ToString, "no_photo") > 0, String.Empty, Strings.Replace(Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim), _
                                 "._SY30_SX23_.jpg", "._SY275_SX400_.jpg"))) Take If(Master.eSettings.ActorLimit > 0, Master.eSettings.ActorLimit, 999999)
 
                     If Master.eSettings.CastImagesOnly Then

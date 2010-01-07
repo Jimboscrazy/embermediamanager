@@ -35,6 +35,10 @@ Public Class ThumbGenerator
         End Get
     End Property
 
+    ''' <summary>
+    ''' Start the thread which extracts the thumbs from the movie file.
+    ''' </summary>
+    ''' <remarks>Originally meant to keep the GUI from locking during frame extraction, but checking timeout locks the main thread anyway :/</remarks>
     Public Sub Start()
         Dim tThread As Threading.Thread = New Threading.Thread(AddressOf CreateRandom)
 
@@ -55,6 +59,9 @@ Public Class ThumbGenerator
 
     End Sub
 
+    ''' <summary>
+    ''' Extract thumbs from a movie file.
+    ''' </summary>
     Private Sub CreateRandom()
 
         Try

@@ -41,6 +41,7 @@ Public Class frmMain
     Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
 
     Private bsMedia As New BindingSource
     Private alActors As New ArrayList
@@ -168,6 +169,7 @@ Public Class frmMain
             If Me.bwPrelim.IsBusy Then Me.bwPrelim.CancelAsync()
             If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
+            If Me.bwCleanDB.IsBusy Then Me.bwCleanDB.CancelAsync()
 
             lblCanceling.Text = Master.eLang.GetString(99, "Canceling All Processes...")
             btnCancel.Visible = False
@@ -176,7 +178,7 @@ Public Class frmMain
             pnlCancel.Visible = True
             Me.Refresh()
 
-            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
             Loop
 
@@ -251,7 +253,7 @@ Public Class frmMain
                     If dResult.NeedsRefresh OrElse dResult.NeedsUpdate Then
                         If dResult.NeedsRefresh Then
                             If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
-                                Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+                                Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 Loop
                                 Me.RefreshAllMovies()
@@ -259,14 +261,14 @@ Public Class frmMain
                         End If
                         If dResult.NeedsUpdate Then
                             If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
-                                Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+                                Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 Loop
                                 Me.LoadMedia(1)
                             End If
                         End If
                     Else
-                        If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy Then
+                        If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                             Me.FillList(0)
                         End If
                     End If
@@ -767,7 +769,7 @@ Public Class frmMain
 
         Try
 
-            If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy Then Return
+            If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
@@ -1312,7 +1314,8 @@ Public Class frmMain
                 Next
             ElseIf e.KeyChar = Chr(13) Then
                 If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse _
-                Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy Then Return
+                Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
+                OrElse Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
@@ -2083,10 +2086,11 @@ Public Class frmMain
 
     Private Sub DeleteMovieToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteMovieToolStripMenuItem.Click
         Try
-            Dim ListRefreshReqd As Boolean = False
             Dim MoviesToDelete As New List(Of Long)
+            Dim MovieId As Int64 = -1
+
             For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
-                Dim MovieId As Int64 = Convert.ToInt64(sRow.Cells(0).Value)
+                MovieId = Convert.ToInt64(sRow.Cells(0).Value)
                 If Not MoviesToDelete.Contains(MovieId) Then
                     MoviesToDelete.Add(MovieId)
                 End If
@@ -2099,6 +2103,20 @@ Public Class frmMain
                     End If
                 End Using
             End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub RemoveFromDatabaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles RemoveFromDatabaseToolStripMenuItem.Click
+        Try
+
+            For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
+                Master.DB.DeleteFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+            Next
+
+            Me.FillList(0)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2211,7 +2229,7 @@ Public Class frmMain
 
     Private Sub cbFilterFileSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource.SelectedIndexChanged
         Try
-            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
             Loop
 
@@ -2366,9 +2384,6 @@ Public Class frmMain
     End Sub
 
     Private Sub RefreshAllMovies()
-        Dim aContents(6) As String
-        Dim tmpMovie As New Media.Movie
-
         If Me.dtMedia.Rows.Count > 0 Then
 
             Me.ToolsToolStripMenuItem.Enabled = False
@@ -2647,6 +2662,23 @@ Public Class frmMain
             Me.dgvMediaList.Sort(Me.dgvMediaList.Columns(18), ComponentModel.ListSortDirection.Ascending)
         End If
     End Sub
+
+    Private Sub CleanDatabaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CleanDatabaseToolStripMenuItem.Click
+        Me.ToolsToolStripMenuItem.Enabled = False
+        Me.tsbAutoPilot.Enabled = False
+        Me.tsbRefreshMedia.Enabled = False
+        Me.mnuMediaList.Enabled = False
+        Me.tabsMain.Enabled = False
+        Me.tspbLoading.Style = ProgressBarStyle.Marquee
+        Me.EnableFilters(False)
+
+        Me.tslLoading.Text = Master.eLang.GetString(999, "Cleaning Database:")
+        Me.tspbLoading.Visible = True
+        Me.tslLoading.Visible = True
+
+        Me.bwCleanDB.WorkerSupportsCancellation = True
+        Me.bwCleanDB.RunWorkerAsync()
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2658,21 +2690,8 @@ Public Class frmMain
 
     Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
 
-        '//
-        ' Thread to count directories to prepare for loading media
-        '\\
-
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Master.alMoviePaths.Clear()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = "SELECT MoviePath FROM movies;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        Master.alMoviePaths.Add(SQLreader("MoviePath").ToString.ToLower)
-                    End While
-                End Using
-            End Using
 
             Master.MediaList.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -2681,67 +2700,32 @@ Public Class frmMain
                 Else
                     SQLcommand.CommandText = "SELECT * FROM sources;"
                 End If
+
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        Master.ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")))
-                        If Me.bwPrelim.CancellationPending Then
-                            e.Cancel = True
-                            Return
-                        End If
-                    End While
+                    Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        SQLUpdatecommand.CommandText = "UPDATE sources SET LastScan = (?) WHERE ID = (?);"
+                        Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
+                        Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                        While SQLreader.Read
+                            Master.SourceLastScan = Convert.ToDateTime(SQLreader("LastScan").ToString)
+                            If Convert.ToBoolean(SQLreader("Recursive")) OrElse Directory.GetLastWriteTime(SQLreader("Path").ToString) > Master.SourceLastScan Then
+                                'save the scan time back to the db
+                                parLastScan.Value = Now
+                                parID.Value = SQLreader("ID")
+                                SQLUpdatecommand.ExecuteNonQuery()
+                                Master.ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")))
+                                If Me.bwPrelim.CancellationPending Then
+                                    e.Cancel = True
+                                    Return
+                                End If
+                            End If
+                        End While
+                    End Using
                 End Using
             End Using
 
-            'remove any db entries that are not in the media list
-            Dim dtMediaList As New DataTable
-            Dim MLFind As New MovieListFind
-            Dim MLFound As New Master.FileAndSource
-            Dim pExt As String = String.Empty
-            Master.DB.FillDataTable(dtMediaList, "SELECT MoviePath, Id, Source FROM movies ORDER BY ListTitle COLLATE NOCASE;")
-            If dtMediaList.Rows.Count > 0 Then
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLcommand.CommandText = "DELETE FROM movies WHERE MoviePath = (?);"
-                        Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMoviePath", DbType.String, 0, "MoviePath")
-                        For Each mRow As DataRow In dtMediaList.Rows
-                            pExt = Path.GetExtension(mRow.Item(0).ToString).ToLower
-                            MLFind.SearchString = mRow.Item(0).ToString
-                            MLFound = Master.MediaList.Find(AddressOf MLFind.Find)
-                            If (IsNothing(MLFound) AndAlso (Args.SourceName = String.Empty OrElse mRow.Item(2).ToString = Args.SourceName)) OrElse (Not Master.eSettings.ValidExts.Contains(Path.GetExtension(mRow.Item(0).ToString).ToLower) AndAlso (Not Master.eSettings.AutoDetectVTS OrElse (Master.eSettings.AutoDetectVTS AndAlso Not pExt = ".ifo" AndAlso Not pExt = ".vob" AndAlso Not pExt = ".bup"))) Then
-                                parPath.Value = mRow.Item(0)
-                                SQLcommand.ExecuteNonQuery()
-
-                                Using SQLOthercommands As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                                    Dim parId As SQLite.SQLiteParameter = SQLOthercommands.Parameters.Add("parId", DbType.UInt64, 0, "MovieID")
-                                    SQLOthercommands.CommandText = "DELETE FROM MoviesAStreams WHERE MovieID = (?);"
-                                    parId.Value = mRow.Item(1)
-                                    SQLOthercommands.ExecuteNonQuery()
-                                    SQLOthercommands.CommandText = "DELETE FROM MoviesVStreams WHERE MovieID = (?);"
-                                    parId.Value = mRow.Item(1)
-                                    SQLOthercommands.ExecuteNonQuery()
-                                    SQLOthercommands.CommandText = "DELETE FROM MoviesActors WHERE MovieID = (?);"
-                                    parId.Value = mRow.Item(1)
-                                    SQLOthercommands.ExecuteNonQuery()
-                                    SQLOthercommands.CommandText = "DELETE FROM MoviesSubs WHERE MovieID = (?);"
-                                    parId.Value = mRow.Item(1)
-                                    SQLOthercommands.ExecuteNonQuery()
-                                    SQLOthercommands.CommandText = "DELETE FROM MoviesPosters WHERE MovieID = (?);"
-                                    parId.Value = mRow.Item(1)
-                                    SQLOthercommands.ExecuteNonQuery()
-                                    SQLOthercommands.CommandText = "DELETE FROM MoviesFanart WHERE MovieID = (?);"
-                                    parId.Value = mRow.Item(1)
-                                    SQLOthercommands.ExecuteNonQuery()
-                                End Using
-                            End If
-                            If Me.bwPrelim.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
-                        Next
-                    End Using
-                    SQLtransaction.Commit()
-                End Using
-            End If
+            'remove any db entries that no longer exist
+            If Master.eSettings.CleanDB Then Master.DB.Clean()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2761,7 +2745,8 @@ Public Class frmMain
                     If isCL Then
                         Me.ScraperDone = True
                     Else
-                        Me.tslStatus.Text = Master.eLang.GetString(111, "Unable to load directories. Please check settings.")
+                        Me.FillList(0)
+                        'Me.tslStatus.Text = Master.eLang.GetString(111, "Unable to load directories. Please check settings.")
                         Me.tspbLoading.Visible = False
                         Me.tslLoading.Visible = False
                         Me.tabsMain.Enabled = True
@@ -2807,7 +2792,7 @@ Public Class frmMain
                         e.Cancel = True
                         Return
                     End If
-                    If Not String.IsNullOrEmpty(sFile.Filename) AndAlso Not sFile.Source = "[!FROMDB!]" Then
+                    If Not String.IsNullOrEmpty(sFile.Filename) Then
                         'first, lets get the contents
                         aContents = Master.GetFolderContents(sFile.Filename, sFile.isSingle)
                         sFile.Poster = aContents(0)
@@ -3136,7 +3121,7 @@ Public Class frmMain
 
                 Me.InfoCleared = False
 
-                If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy Then
+                If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                     Me.ToolsToolStripMenuItem.Enabled = True
                     Me.tsbAutoPilot.Enabled = True
                     Me.tsbRefreshMedia.Enabled = True
@@ -3724,6 +3709,25 @@ doCancel:
         Me.FillList(0)
     End Sub
 
+    Private Sub bwCleanDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCleanDB.DoWork
+        Master.DB.Clean()
+    End Sub
+
+    Private Sub bwCleanDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCleanDB.RunWorkerCompleted
+
+        Me.tslLoading.Text = String.Empty
+        Me.tspbLoading.Visible = False
+        Me.tslLoading.Visible = False
+        Me.ToolsToolStripMenuItem.Enabled = True
+        Me.tsbAutoPilot.Enabled = True
+        Me.tsbRefreshMedia.Enabled = True
+        Me.mnuMediaList.Enabled = True
+        Me.tabsMain.Enabled = True
+        Me.EnableFilters(True)
+
+        Me.FillList(0)
+    End Sub
+
 #End Region '*** Background Workers
 
 
@@ -3888,7 +3892,9 @@ doCancel:
                 .cmnuRescrape.Text = Master.eLang.GetString(31, "Re-scrape IMDB")
                 .cmnuSearchNew.Text = Master.eLang.GetString(32, "Change Movie")
                 .OpenContainingFolderToolStripMenuItem.Text = Master.eLang.GetString(33, "Open Containing Folder")
+                .RemoveToolStripMenuItem.Text = Master.eLang.GetString(999, "Remove")
                 .DeleteMovieToolStripMenuItem.Text = Master.eLang.GetString(34, "Delete Movie")
+                .RemoveFromDatabaseToolStripMenuItem.Text = Master.eLang.GetString(999, "Remove From Database")
                 .btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
                 .tabMovies.Text = Master.eLang.GetString(36, "Movies")
                 .btnClearFilters.Text = Master.eLang.GetString(37, "Clear Filters")
@@ -4960,7 +4966,7 @@ doCancel:
                     If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDb.Movie.Year) Then
                         tmpMovieDb.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDb.Movie.Year)
                     Else
-                        tmpMovieDb.ListTitle = ttitle
+                        tmpMovieDb.ListTitle = tTitle
                     End If
                 End If
 
@@ -5535,33 +5541,13 @@ doCancel:
                 Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, iRow).Value), Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
 
-            If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy Then
+            If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                 Me.mnuMediaList.Enabled = True
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
-    Friend Class MovieListFind
-
-        Private _searchstring As String = String.Empty
-
-        Public WriteOnly Property SearchString() As String
-            Set(ByVal value As String)
-                _searchstring = value
-            End Set
-        End Property
-
-        Public Function Find(ByVal FAS As Master.FileAndSource) As Boolean
-            If Not IsNothing(FAS) AndAlso FAS.Filename = _searchstring Then
-                Return True
-            Else
-                Return False
-            End If
-        End Function
-
-    End Class
 
 #End Region '*** Routines/Functions
 

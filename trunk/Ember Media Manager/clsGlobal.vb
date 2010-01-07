@@ -34,11 +34,12 @@ Public Class Master
     Public Shared eLog As New ErrorLogger
     Public Shared DefaultOptions As New ScrapeOptions
     Public Shared GlobalScrapeMod As New ScrapeModifier
-    Public Shared alMoviePaths As New ArrayList
+    'Public Shared alMoviePaths As New ArrayList
     Public Shared DB As New Database
     Public Shared TempPath As String = Path.Combine(AppPath, "Temp")
     Public Shared currMovie As New DBMovie
     Public Shared CanScanDiscImage As Boolean
+    Public Shared SourceLastScan As New DateTime
 
     Public Shared tmpMovie As New Media.Movie
 
@@ -403,11 +404,15 @@ Public Class Master
         Return False
     End Function
 
+    ''' <summary>
+    ''' Get all directories/movies in the parent directory
+    ''' </summary>
+    ''' <param name="sSource">Name of source.</param>
+    ''' <param name="sPath">Path of source.</param>
+    ''' <param name="bRecur">Scan directory recursively?</param>
+    ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
+    ''' <param name="bSingle">Only detect one movie from each folder?</param>
     Public Shared Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
-
-        '//
-        ' Get all directories in the parent directory
-        '\\
 
         Try
             Dim sMoviePath As String = String.Empty
@@ -416,32 +421,38 @@ Public Class Master
                 'check if there are any movies in the parent folder
                 ScanForFiles(sPath, sSource, bUseFolder, bSingle)
 
-                Dim Dirs As New ArrayList
+                Dim Dirs As New List(Of DirectoryInfo)
+                Dim dInfo As New DirectoryInfo(sPath)
 
                 Try
-                    Dirs.AddRange(Directory.GetDirectories(sPath))
+                    Dirs.AddRange(dInfo.GetDirectories)
                 Catch
                 End Try
 
-                For Each inDir As String In Dirs
-                    If isValidDir(inDir) Then
-                        ScanForFiles(inDir, sSource, bUseFolder, bSingle)
+                Dim upDir = From uD As DirectoryInfo In Dirs Where uD.LastWriteTime > SourceLastScan And isValidDir(uD.FullName)
+                If upDir.Count > 0 Then
+                    For Each inDir As DirectoryInfo In upDir
+                        ScanForFiles(inDir.FullName, sSource, bUseFolder, bSingle)
                         If bRecur Then
-                            ScanSourceDir(sSource, inDir, bRecur, bUseFolder, bSingle)
+                            ScanSourceDir(sSource, inDir.FullName, bRecur, bUseFolder, bSingle)
                         End If
-                    End If
-                Next
+                    Next
+                End If
+
             End If
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Find all related files in a directory.
+    ''' </summary>
+    ''' <param name="sPath">Full path of the directory.</param>
+    ''' <param name="sSource">Name of source.</param>
+    ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
+    ''' <param name="bSingle">Only detect one movie from each folder?</param>
     Public Shared Sub ScanForFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
-
-        '//
-        ' Get all files in the directory
-        '\\
 
         Try
 
@@ -493,31 +504,22 @@ Public Class Master
                     Not Path.GetFileName(tFile).ToLower.Contains("-trailer") AndAlso Not Path.GetFileName(tFile).ToLower.Contains("[trailer") AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("sample") Then
                         tmpList.Add(tFile.ToLower)
-                        If alMoviePaths.Contains(tFile.ToLower) Then
-                            fList.Add(New FileAndSource With {.Filename = tFile, .Source = "[!FROMDB!]"})
-                        Else
-                            fList.Add(New FileAndSource With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder, .Contents = lFi})
-                        End If
+                        fList.Add(New FileAndSource With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder, .Contents = lFi})
                     End If
                 Else
                     lFi.Sort(AddressOf SortFileNames)
 
                     For Each lFile As FileInfo In lFi
-
                         If eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
-                        Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
-                        ((eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
+                            Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
+                            ((eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= eSettings.SkipLessThan * 1048576) Then
                             If eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
                                 tmpList.Add(lFile.FullName.ToLower)
                                 SkipStack = True
                             Else
                                 tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
                             End If
-                            If alMoviePaths.Contains(lFile.FullName.ToLower) Then
-                                fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = "[!FROMDB!]"})
-                            Else
-                                fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
-                            End If
+                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
                             If bSingle AndAlso Not SkipStack Then Exit For
                         End If
                     Next
@@ -540,11 +542,12 @@ Public Class Master
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Check if we should scan the directory.
+    ''' </summary>
+    ''' <param name="sPath">Full path of the directory to check</param>
+    ''' <returns>True if directory is valid, false if not.</returns>
     Public Shared Function isValidDir(ByVal sPath As String) As Boolean
-
-        '//
-        ' Make sure it's a valid directory
-        '\\
 
         Try
 
@@ -576,11 +579,12 @@ Public Class Master
     End Function
 
 
+    ''' <summary>
+    ''' Get the entire path and filename of a file, but without the extension
+    ''' </summary>
+    ''' <param name="sPath">Full path to file.</param>
+    ''' <returns>Path and filename of a file, without the extension</returns>
     Public Shared Function RemoveExtFromPath(ByVal sPath As String) As String
-
-        '//
-        ' Get the entire path without the extension
-        '\\
 
         Try
             Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
@@ -590,11 +594,13 @@ Public Class Master
 
     End Function
 
+    ''' <summary>
+    ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
+    ''' </summary>
+    ''' <param name="sPath">Full path to directory.</param>
+    ''' <param name="bSingle">Only check for <movie> type files if there could be more than one movie in the directory, else check for all types.</param>
+    ''' <returns>String array (0 = poster, 1 = fanart, 2 = nfo, 3 = trailer, 4 = subtitle, 5 = extrathumbs)</returns>
     Public Shared Function GetFolderContents(ByVal sPath As String, ByVal bSingle As Boolean) As String()
-
-        '//
-        ' Check if a folder has all the items (nfo, poster, fanart, etc)
-        '\\
 
         Dim NfoPath As String = String.Empty
         Dim PosterPath As String = String.Empty
@@ -752,11 +758,12 @@ Public Class Master
         Return aResults
     End Function
 
+    ''' <summary>
+    ''' Get the full path to a trailer, if it exists.
+    ''' </summary>
+    ''' <param name="sPath">Full path to a movie file for which you are trying to find the accompanying trailer.</param>
+    ''' <returns>Full path of trailer file.</returns>
     Public Shared Function GetTrailerPath(ByVal sPath As String) As String
-
-        '//
-        ' Get the proper path to trailer
-        '\\
 
         Dim tFile As String = String.Empty
 
@@ -783,6 +790,12 @@ Public Class Master
 
     End Function
 
+    ''' <summary>
+    ''' Function to compare filenames for programmatic sorting (utilizes CompareTo)
+    ''' </summary>
+    ''' <param name="x">Fileinfo object</param>
+    ''' <param name="y">Fileinfo object</param>
+    ''' <returns>Integer (-1 = x first, 0 = same, 1 = y first)</returns>
     Public Shared Function SortFileNames(ByVal x As FileInfo, ByVal y As FileInfo) As Integer
 
         Try
@@ -800,6 +813,12 @@ Public Class Master
 
     End Function
 
+    ''' <summary>
+    ''' Function to compare extrathumb number (thumb#.jpg) for programmatic sorting (utilizes ObjectCompare)
+    ''' </summary>
+    ''' <param name="x">FileInfo object</param>
+    ''' <param name="y">FileInfo object</param>
+    ''' <returns>Integer (-1 = x first, 0 = same, 1 = y first)</returns>
     Public Shared Function SortThumbFileNames(ByVal x As FileInfo, ByVal y As FileInfo) As Integer
 
         Try
@@ -819,11 +838,12 @@ Public Class Master
 
     End Function
 
+    ''' <summary>
+    ''' Get the number of the last sequential extrathumb to make sure we're not overwriting current ones.
+    ''' </summary>
+    ''' <param name="sPath">Full path to extrathumbs directory</param>
+    ''' <returns>Last detected number of the discovered extrathumbs.</returns>
     Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
-
-        '//
-        ' Get the number of the last thumb#.jpg to make sure we're not overwriting current ones
-        '\\
 
         Dim iMod As Integer = 0
         Dim lThumbs As New ArrayList
@@ -848,11 +868,12 @@ Public Class Master
         Return iMod
     End Function
 
+    ''' <summary>
+    ''' Copy a file from one location to another using a stream/buffer
+    ''' </summary>
+    ''' <param name="sPathFrom">Old path of file to move.</param>
+    ''' <param name="sPathTo">New path of file to move.</param>
     Public Shared Sub MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String)
-
-        '//
-        ' Copy a file from one location to another using a stream/buffer
-        '\\
 
         Try
             Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
@@ -871,6 +892,11 @@ Public Class Master
 
     End Sub
 
+    ''' <summary>
+    ''' Convert a numerical string to single (internationally friendly method)
+    ''' </summary>
+    ''' <param name="sNumber">Number (as string) to convert</param>
+    ''' <returns>Number as single</returns>
     Public Shared Function ConvertToSingle(ByVal sNumber As String) As Single
         Try
             If String.IsNullOrEmpty(sNumber) OrElse sNumber = "0" Then Return 0
@@ -882,6 +908,14 @@ Public Class Master
         Return 0
     End Function
 
+    ''' <summary>
+    ''' Delete files as selected by cleaner settings or all files related to a movie
+    ''' </summary>
+    ''' <param name="isCleaner">Called from cleaner?</param>
+    ''' <param name="mMovie">DBMovie object to get paths from.</param>
+    ''' <param name="SourcesList">List(of String) of paths for each source.</param>
+    ''' <returns>True if files were deleted, false if not.</returns>
+    ''' <remarks>Deprecated for all but cleaner... needs cleanup to reflect</remarks>
     Public Shared Function DeleteFiles(ByVal isCleaner As Boolean, ByVal mMovie As DBMovie, ByVal SourcesList As List(Of String)) As Boolean
         Dim dPath As String = String.Empty
         Dim bReturn As Boolean = False
@@ -1056,6 +1090,14 @@ Public Class Master
         Return bReturn
     End Function
 
+    ''' <summary>
+    ''' Gather a list of all files to be deleted for display in a confirmation dialog.
+    ''' </summary>
+    ''' <param name="isCleaner">Is the function being called from the cleaner?</param>
+    ''' <param name="mMovie">DBMovie object to get paths from</param>
+    ''' <param name="SourcesList">List(of String) of paths for each source.</param>
+    ''' <returns>True if files were found that are to be deleted, false if not.</returns>
+    ''' <remarks>Not used for cleaner, needs to be modified to reflect.</remarks>
     Public Shared Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As DBMovie, ByVal SourcesList As List(Of String)) As List(Of IO.FileSystemInfo)
         Dim dPath As String = String.Empty
         Dim bReturn As Boolean = False
@@ -1260,6 +1302,11 @@ Public Class Master
         Return ItemsToDelete
     End Function
 
+    ''' <summary>
+    ''' Check if there are movies in the subdirectorys of a path.
+    ''' </summary>
+    ''' <param name="MovieDir">DirectoryInfo object of directory to scan.</param>
+    ''' <returns>True if the path's subdirectories contain movie files, else false.</returns>
     Public Shared Function SubDirsHaveMovies(ByVal MovieDir As DirectoryInfo) As Boolean
         Try
             If Directory.Exists(MovieDir.FullName) Then
@@ -1285,6 +1332,11 @@ Public Class Master
         End Try
     End Function
 
+    ''' <summary>
+    ''' Check if a path contains movies.
+    ''' </summary>
+    ''' <param name="inDir">DirectoryInfo object of directory to scan</param>
+    ''' <returns>True if directory contains movie files.</returns>
     Public Shared Function ScanSubs(ByVal inDir As DirectoryInfo) As Boolean
         Try
             Dim lFi As New List(Of FileInfo)
@@ -1311,6 +1363,13 @@ Public Class Master
         End Try
     End Function
 
+    ''' <summary>
+    ''' Begin the process to extract extrathumbs
+    ''' </summary>
+    ''' <param name="mMovie">DBMovie object (for paths)</param>
+    ''' <param name="ThumbCount">How many thumbs to extract</param>
+    ''' <param name="isEdit"></param>
+    ''' <returns>Fanart path if an extrathumb was set as fanart.</returns>
     Public Shared Function CreateRandomThumbs(ByVal mMovie As DBMovie, ByVal ThumbCount As Integer, ByVal isEdit As Boolean) As String
         Dim tThumb As New ThumbGenerator
 
@@ -1323,6 +1382,10 @@ Public Class Master
         Return tThumb.SetFA
     End Function
 
+    ''' <summary>
+    ''' Check for the lastest version of Ember
+    ''' </summary>
+    ''' <returns>Latest version as integer</returns>
     Public Shared Function CheckUpdate() As Integer
         Try
             Dim sHTTP As New HTTP
@@ -1348,6 +1411,10 @@ Public Class Master
         End Try
     End Function
 
+    ''' <summary>
+    ''' Get the changelog for the latest version
+    ''' </summary>
+    ''' <returns>Changelog as string</returns>
     Public Shared Function GetChangelog() As String
         Try
             Dim sHTTP As New HTTP
@@ -1363,6 +1430,10 @@ Public Class Master
         Return "Unavailable"
     End Function
 
+    ''' <summary>
+    ''' Check to make sure user has at least .NET Framework 3.5 installed
+    ''' </summary>
+    ''' <returns>True if installed version is >= 3.5, false if not.</returns>
     Public Shared Function GetNETVersion() As Boolean
         Try
             Const regLocation As String = "SOFTWARE\\Microsoft\\NET Framework Setup\\NDP"
@@ -1393,6 +1464,10 @@ Public Class Master
         Return False
     End Function
 
+    ''' <summary>
+    ''' Safer method of deleting a diretory and all it's contents
+    ''' </summary>
+    ''' <param name="sPath">Full path of directory to delete</param>
     Public Shared Sub DeleteDirectory(ByVal sPath As String)
         Try
             If Directory.Exists(sPath) Then
@@ -1430,14 +1505,26 @@ Public Class Master
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Constrain a number to the nearest multiple
+    ''' </summary>
+    ''' <param name="iNumber">Number to quantize</param>
+    ''' <param name="iMultiple">Multiple of constraint.</param>
     Public Shared Function Quantize(ByVal iNumber As Integer, ByVal iMultiple As Integer) As Integer
         Return Convert.ToInt32(System.Math.Round(iNumber / iMultiple, 0) * iMultiple)
     End Function
 
+    ''' <summary>
+    ''' Force of habit
+    ''' </summary>
+    ''' <returns>Path of the directory containing the Ember executable</returns>
     Public Shared Function AppPath() As String
         Return System.AppDomain.CurrentDomain.BaseDirectory
     End Function
 
+    ''' <summary>
+    ''' Check version of the MediaInfo dll. If newer than 0.7.11 then don't try to scan disc images with it.
+    ''' </summary>
     Public Shared Sub TestMediaInfoDLL()
         Try
             'just assume dll is there since we're distributing full package... if it's not, user has bigger problems
@@ -1453,6 +1540,12 @@ Public Class Master
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Convert a list(of T) to a string of separated values
+    ''' </summary>
+    ''' <param name="source">List(of T)</param>
+    ''' <param name="separator">Character or string to use as a value separator</param>
+    ''' <returns>String of separated values</returns>
     Public Shared Function ListToStringWithSeparator(Of T)(ByVal source As IList(Of T), ByVal separator As String) As String
 
         If source Is Nothing Then Throw New ArgumentNullException("Source parameter cannot be nothing")
@@ -1463,11 +1556,15 @@ Public Class Master
         Return String.Join(separator, values)
     End Function
 
+    ''' <summary>
+    ''' Get a list of paths to all sources stored in the database
+    ''' </summary>
+    ''' <returns>List(of String)</returns>
     Public Shared Function GetListOfSources() As List(Of String)
         Dim SourcesList As New List(Of String)
 
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-            SQLcommand.CommandText = "SELECT * FROM sources;"
+            SQLcommand.CommandText = "SELECT sources.Path FROM sources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     SourcesList.Add(SQLreader("Path").ToString)
@@ -1477,4 +1574,5 @@ Public Class Master
 
         Return SourcesList
     End Function
+
 End Class

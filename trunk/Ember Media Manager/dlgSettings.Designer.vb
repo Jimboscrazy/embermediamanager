@@ -31,6 +31,8 @@ Partial Class dlgSettings
         Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
         Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
         Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode8})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -198,6 +200,8 @@ Partial Class dlgSettings
         Me.txtAutoThumbs = New System.Windows.Forms.TextBox
         Me.chkAutoThumbs = New System.Windows.Forms.CheckBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.cbForce = New System.Windows.Forms.ComboBox
+        Me.chkForceTitle = New System.Windows.Forms.CheckBox
         Me.chkYAMJCompatibleSets = New System.Windows.Forms.CheckBox
         Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox
         Me.Label18 = New System.Windows.Forms.Label
@@ -312,6 +316,7 @@ Partial Class dlgSettings
         Me.pnlSources = New System.Windows.Forms.Panel
         Me.btnEditSource = New System.Windows.Forms.Button
         Me.GroupBox19 = New System.Windows.Forms.GroupBox
+        Me.chkCleanDB = New System.Windows.Forms.CheckBox
         Me.chkAutoDetectVTS = New System.Windows.Forms.CheckBox
         Me.chkSkipStackedSizeCheck = New System.Windows.Forms.CheckBox
         Me.Label21 = New System.Windows.Forms.Label
@@ -336,8 +341,16 @@ Partial Class dlgSettings
         Me.chkUseImgCache = New System.Windows.Forms.CheckBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
-        Me.cbForce = New System.Windows.Forms.ComboBox
-        Me.chkForceTitle = New System.Windows.Forms.CheckBox
+        Me.pnlTVSources = New System.Windows.Forms.Panel
+        Me.btnEditTVSource = New System.Windows.Forms.Button
+        Me.lvTVSources = New System.Windows.Forms.ListView
+        Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader4 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader5 = New System.Windows.Forms.ColumnHeader
+        Me.btnRemTVSource = New System.Windows.Forms.Button
+        Me.btnAddTVSource = New System.Windows.Forms.Button
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -389,6 +402,7 @@ Partial Class dlgSettings
         Me.GroupBox23.SuspendLayout()
         Me.GroupBox24.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
+        Me.pnlTVSources.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -2127,6 +2141,28 @@ Partial Class dlgSettings
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
         '
+        'cbForce
+        '
+        Me.cbForce.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbForce.Enabled = False
+        Me.cbForce.FormattingEnabled = True
+        Me.cbForce.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
+        Me.cbForce.Location = New System.Drawing.Point(7, 172)
+        Me.cbForce.Name = "cbForce"
+        Me.cbForce.Size = New System.Drawing.Size(179, 21)
+        Me.cbForce.Sorted = True
+        Me.cbForce.TabIndex = 65
+        '
+        'chkForceTitle
+        '
+        Me.chkForceTitle.AutoSize = True
+        Me.chkForceTitle.Location = New System.Drawing.Point(7, 154)
+        Me.chkForceTitle.Name = "chkForceTitle"
+        Me.chkForceTitle.Size = New System.Drawing.Size(130, 17)
+        Me.chkForceTitle.TabIndex = 64
+        Me.chkForceTitle.Text = "Force Title Language:"
+        Me.chkForceTitle.UseVisualStyleBackColor = True
+        '
         'chkYAMJCompatibleSets
         '
         Me.chkYAMJCompatibleSets.AutoSize = True
@@ -2370,6 +2406,7 @@ Partial Class dlgSettings
         Me.ilSettings.Images.SetKeyName(4, "attachment.png")
         Me.ilSettings.Images.SetKeyName(5, "folder_full.png")
         Me.ilSettings.Images.SetKeyName(6, "image.png")
+        Me.ilSettings.Images.SetKeyName(7, "television.ico")
         '
         'tvSettings
         '
@@ -2415,7 +2452,17 @@ Partial Class dlgSettings
         TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode7.SelectedImageIndex = 2
         TreeNode7.Text = "Movies"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7})
+        TreeNode8.ImageIndex = 5
+        TreeNode8.Name = "nTVSources"
+        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 5
+        TreeNode8.Text = "Files and Sources"
+        TreeNode9.ImageIndex = 7
+        TreeNode9.Name = "nTV"
+        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode9.SelectedImageIndex = 7
+        TreeNode9.Text = "TV Shows"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7, TreeNode9})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -3389,6 +3436,7 @@ Partial Class dlgSettings
         '
         'GroupBox19
         '
+        Me.GroupBox19.Controls.Add(Me.chkCleanDB)
         Me.GroupBox19.Controls.Add(Me.chkAutoDetectVTS)
         Me.GroupBox19.Controls.Add(Me.chkSkipStackedSizeCheck)
         Me.GroupBox19.Controls.Add(Me.Label21)
@@ -3400,6 +3448,16 @@ Partial Class dlgSettings
         Me.GroupBox19.TabIndex = 4
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
+        '
+        'chkCleanDB
+        '
+        Me.chkCleanDB.AutoSize = True
+        Me.chkCleanDB.Location = New System.Drawing.Point(8, 138)
+        Me.chkCleanDB.Name = "chkCleanDB"
+        Me.chkCleanDB.Size = New System.Drawing.Size(177, 17)
+        Me.chkCleanDB.TabIndex = 71
+        Me.chkCleanDB.Text = "Clean database after each scan"
+        Me.chkCleanDB.UseVisualStyleBackColor = True
         '
         'chkAutoDetectVTS
         '
@@ -3648,27 +3706,91 @@ Partial Class dlgSettings
         '
         Me.fbdBrowse.Description = "Select the folder where you wish to store your backdrops."
         '
-        'cbForce
+        'pnlTVSources
         '
-        Me.cbForce.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbForce.Enabled = False
-        Me.cbForce.FormattingEnabled = True
-        Me.cbForce.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbForce.Location = New System.Drawing.Point(7, 172)
-        Me.cbForce.Name = "cbForce"
-        Me.cbForce.Size = New System.Drawing.Size(179, 21)
-        Me.cbForce.Sorted = True
-        Me.cbForce.TabIndex = 65
+        Me.pnlTVSources.BackColor = System.Drawing.Color.White
+        Me.pnlTVSources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVSources.Controls.Add(Me.btnEditTVSource)
+        Me.pnlTVSources.Controls.Add(Me.lvTVSources)
+        Me.pnlTVSources.Controls.Add(Me.btnRemTVSource)
+        Me.pnlTVSources.Controls.Add(Me.btnAddTVSource)
+        Me.pnlTVSources.Location = New System.Drawing.Point(208, 96)
+        Me.pnlTVSources.Name = "pnlTVSources"
+        Me.pnlTVSources.Size = New System.Drawing.Size(597, 353)
+        Me.pnlTVSources.TabIndex = 69
+        Me.pnlTVSources.Visible = False
         '
-        'chkForceTitle
+        'btnEditTVSource
         '
-        Me.chkForceTitle.AutoSize = True
-        Me.chkForceTitle.Location = New System.Drawing.Point(7, 154)
-        Me.chkForceTitle.Name = "chkForceTitle"
-        Me.chkForceTitle.Size = New System.Drawing.Size(130, 17)
-        Me.chkForceTitle.TabIndex = 64
-        Me.chkForceTitle.Text = "Force Title Language:"
-        Me.chkForceTitle.UseVisualStyleBackColor = True
+        Me.btnEditTVSource.Image = CType(resources.GetObject("btnEditTVSource.Image"), System.Drawing.Image)
+        Me.btnEditTVSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditTVSource.Location = New System.Drawing.Point(485, 35)
+        Me.btnEditTVSource.Name = "btnEditTVSource"
+        Me.btnEditTVSource.Size = New System.Drawing.Size(104, 23)
+        Me.btnEditTVSource.TabIndex = 2
+        Me.btnEditTVSource.Text = "Edit Source"
+        Me.btnEditTVSource.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditTVSource.UseVisualStyleBackColor = True
+        '
+        'lvTVSources
+        '
+        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
+        Me.lvTVSources.FullRowSelect = True
+        Me.lvTVSources.HideSelection = False
+        Me.lvTVSources.Location = New System.Drawing.Point(5, 6)
+        Me.lvTVSources.Name = "lvTVSources"
+        Me.lvTVSources.Size = New System.Drawing.Size(466, 105)
+        Me.lvTVSources.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvTVSources.TabIndex = 0
+        Me.lvTVSources.UseCompatibleStateImageBehavior = False
+        Me.lvTVSources.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Width = 0
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Text = "Name"
+        Me.ColumnHeader2.Width = 75
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Path"
+        Me.ColumnHeader3.Width = 227
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Recursive"
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Use Folder Name"
+        Me.ColumnHeader5.Width = 100
+        '
+        'btnRemTVSource
+        '
+        Me.btnRemTVSource.Image = CType(resources.GetObject("btnRemTVSource.Image"), System.Drawing.Image)
+        Me.btnRemTVSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRemTVSource.Location = New System.Drawing.Point(485, 88)
+        Me.btnRemTVSource.Name = "btnRemTVSource"
+        Me.btnRemTVSource.Size = New System.Drawing.Size(104, 23)
+        Me.btnRemTVSource.TabIndex = 3
+        Me.btnRemTVSource.Text = "Remove"
+        Me.btnRemTVSource.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnRemTVSource.UseVisualStyleBackColor = True
+        '
+        'btnAddTVSource
+        '
+        Me.btnAddTVSource.Image = CType(resources.GetObject("btnAddTVSource.Image"), System.Drawing.Image)
+        Me.btnAddTVSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAddTVSource.Location = New System.Drawing.Point(485, 6)
+        Me.btnAddTVSource.Name = "btnAddTVSource"
+        Me.btnAddTVSource.Size = New System.Drawing.Size(104, 23)
+        Me.btnAddTVSource.TabIndex = 1
+        Me.btnAddTVSource.Text = "Add Source"
+        Me.btnAddTVSource.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnAddTVSource.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -3684,11 +3806,12 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -3781,6 +3904,7 @@ Partial Class dlgSettings
         Me.GroupBox24.PerformLayout()
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
+        Me.pnlTVSources.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -4091,4 +4215,15 @@ Partial Class dlgSettings
     Friend WithEvents chkYAMJCompatibleSets As System.Windows.Forms.CheckBox
     Friend WithEvents cbForce As System.Windows.Forms.ComboBox
     Friend WithEvents chkForceTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlTVSources As System.Windows.Forms.Panel
+    Friend WithEvents btnEditTVSource As System.Windows.Forms.Button
+    Friend WithEvents lvTVSources As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnRemTVSource As System.Windows.Forms.Button
+    Friend WithEvents btnAddTVSource As System.Windows.Forms.Button
+    Friend WithEvents chkCleanDB As System.Windows.Forms.CheckBox
 End Class
