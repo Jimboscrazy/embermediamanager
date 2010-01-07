@@ -182,6 +182,12 @@
     <Compile Include="clsTrailers.vb" />
     <Compile Include="clsUtility.vb" />
     <Compile Include="clsXML.vb" />
+    <Compile Include="dlgTVSource.Designer.vb">
+      <DependentUpon>dlgTVSource.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgTVSource.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="dlgBulkOfflineHolder.designer.vb">
       <DependentUpon>dlgBulkOfflineHolder.vb</DependentUpon>
     </Compile>
@@ -377,6 +383,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="dlgTVSource.resx">
+      <DependentUpon>dlgTVSource.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="dlgBulkOfflineHolder.resx">
       <DependentUpon>dlgBulkOfflineHolder.vb</DependentUpon>
       <SubType>Designer</SubType>

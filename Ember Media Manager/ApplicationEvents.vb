@@ -22,6 +22,9 @@ Namespace My
 
     Partial Friend Class MyApplication
 
+        ''' <summary>
+        ''' Process/load information before beginning the main application.
+        ''' </summary>
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
             Try
 
@@ -41,15 +44,20 @@ Namespace My
             End Try
         End Sub
 
+        ''' <summary>
+        ''' Check if Ember is already running, but only for GUI instances
+        ''' </summary>
         Private Sub MyApplication_StartupNextInstance(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs) Handles Me.StartupNextInstance
             Dim Args() As String = Environment.GetCommandLineArgs
-            ' Check if is allready running
             If Args.Count = 1 Then
                 MsgBox("Ember Media Manager is already running.", MsgBoxStyle.OkOnly, "Ember Media Manager")
                 End
             End If
         End Sub
 
+        ''' <summary>
+        ''' Basic wrapper for unhandled exceptions
+        ''' </summary>
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
             MsgBox(e.Exception, MsgBoxStyle.OkOnly, "Ember Media Manager")
             My.Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")

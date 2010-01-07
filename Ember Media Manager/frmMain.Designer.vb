@@ -56,6 +56,7 @@ Partial Class frmMain
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
         Me.ClearAllCachesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RefreshAllMoviesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.CleanDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scMain = New System.Windows.Forms.SplitContainer
         Me.pnlFilterSource = New System.Windows.Forms.Panel
         Me.lblSFilClose = New System.Windows.Forms.Label
@@ -65,6 +66,8 @@ Partial Class frmMain
         Me.lblGFilClose = New System.Windows.Forms.Label
         Me.Label4 = New System.Windows.Forms.Label
         Me.clbFilterGenres = New System.Windows.Forms.CheckedListBox
+        Me.tabsMain = New System.Windows.Forms.TabControl
+        Me.tabMovies = New System.Windows.Forms.TabPage
         Me.dgvMediaList = New System.Windows.Forms.DataGridView
         Me.mnuMediaList = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.cmnuTitle = New System.Windows.Forms.ToolStripMenuItem
@@ -90,15 +93,22 @@ Partial Class frmMain
         Me.cmuRenamer = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuRenameAuto = New System.Windows.Forms.ToolStripMenuItem
         Me.cmnuRenameManual = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.RemoveFromDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.tabTV = New System.Windows.Forms.TabPage
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
+        Me.dgvTVMain = New System.Windows.Forms.DataGridView
+        Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
+        Me.dgvTVSeason = New System.Windows.Forms.DataGridView
+        Me.dgvTVShow = New System.Windows.Forms.DataGridView
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlSearch = New System.Windows.Forms.Panel
         Me.cbSearch = New System.Windows.Forms.ComboBox
         Me.picSearch = New System.Windows.Forms.PictureBox
         Me.txtSearch = New System.Windows.Forms.TextBox
         Me.btnMarkAll = New System.Windows.Forms.Button
-        Me.tabsMain = New System.Windows.Forms.TabControl
-        Me.tabMovies = New System.Windows.Forms.TabPage
         Me.pnlFilter = New System.Windows.Forms.Panel
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.btnIMDBRating = New System.Windows.Forms.Button
@@ -295,12 +305,23 @@ Partial Class frmMain
         Me.scMain.SuspendLayout()
         Me.pnlFilterSource.SuspendLayout()
         Me.pnlFilterGenre.SuspendLayout()
+        Me.tabsMain.SuspendLayout()
+        Me.tabMovies.SuspendLayout()
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.mnuMediaList.SuspendLayout()
+        Me.tabTV.SuspendLayout()
+        Me.SplitContainer1.Panel1.SuspendLayout()
+        Me.SplitContainer1.Panel2.SuspendLayout()
+        Me.SplitContainer1.SuspendLayout()
+        CType(Me.dgvTVMain, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SplitContainer2.Panel1.SuspendLayout()
+        Me.SplitContainer2.Panel2.SuspendLayout()
+        Me.SplitContainer2.SuspendLayout()
+        CType(Me.dgvTVSeason, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvTVShow, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.pnlSearch.SuspendLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.tabsMain.SuspendLayout()
         Me.pnlFilter.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -470,7 +491,7 @@ Partial Class frmMain
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.RenamerToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem, Me.ToolStripSeparator5, Me.ClearAllCachesToolStripMenuItem, Me.RefreshAllMoviesToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.RenamerToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem, Me.ToolStripSeparator5, Me.ClearAllCachesToolStripMenuItem, Me.RefreshAllMoviesToolStripMenuItem, Me.CleanDatabaseToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.ToolsToolStripMenuItem.Text = "&Tools"
@@ -580,6 +601,15 @@ Partial Class frmMain
         Me.RefreshAllMoviesToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
         Me.RefreshAllMoviesToolStripMenuItem.Text = "Re&load All Movies"
         '
+        'CleanDatabaseToolStripMenuItem
+        '
+        Me.CleanDatabaseToolStripMenuItem.Image = CType(resources.GetObject("CleanDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.CleanDatabaseToolStripMenuItem.Name = "CleanDatabaseToolStripMenuItem"
+        Me.CleanDatabaseToolStripMenuItem.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
+                    Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
+        Me.CleanDatabaseToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
+        Me.CleanDatabaseToolStripMenuItem.Text = "Clean Database"
+        '
         'scMain
         '
         Me.scMain.Dock = System.Windows.Forms.DockStyle.Fill
@@ -592,7 +622,7 @@ Partial Class frmMain
         Me.scMain.Panel1.BackColor = System.Drawing.Color.Gainsboro
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterSource)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilterGenre)
-        Me.scMain.Panel1.Controls.Add(Me.dgvMediaList)
+        Me.scMain.Panel1.Controls.Add(Me.tabsMain)
         Me.scMain.Panel1.Controls.Add(Me.Panel1)
         Me.scMain.Panel1.Controls.Add(Me.pnlFilter)
         Me.scMain.Panel1.Margin = New System.Windows.Forms.Padding(3)
@@ -717,6 +747,29 @@ Partial Class frmMain
         Me.clbFilterGenres.TabIndex = 8
         Me.clbFilterGenres.TabStop = False
         '
+        'tabsMain
+        '
+        Me.tabsMain.Controls.Add(Me.tabMovies)
+        Me.tabsMain.Controls.Add(Me.tabTV)
+        Me.tabsMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tabsMain.Location = New System.Drawing.Point(0, 56)
+        Me.tabsMain.Name = "tabsMain"
+        Me.tabsMain.SelectedIndex = 0
+        Me.tabsMain.Size = New System.Drawing.Size(349, 452)
+        Me.tabsMain.TabIndex = 8
+        Me.tabsMain.TabStop = False
+        '
+        'tabMovies
+        '
+        Me.tabMovies.Controls.Add(Me.dgvMediaList)
+        Me.tabMovies.Location = New System.Drawing.Point(4, 22)
+        Me.tabMovies.Name = "tabMovies"
+        Me.tabMovies.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabMovies.Size = New System.Drawing.Size(341, 426)
+        Me.tabMovies.TabIndex = 0
+        Me.tabMovies.Text = "Movies"
+        Me.tabMovies.UseVisualStyleBackColor = True
+        '
         'dgvMediaList
         '
         Me.dgvMediaList.AllowUserToAddRows = False
@@ -732,22 +785,22 @@ Partial Class frmMain
         Me.dgvMediaList.ContextMenuStrip = Me.mnuMediaList
         Me.dgvMediaList.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvMediaList.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
-        Me.dgvMediaList.Location = New System.Drawing.Point(0, 56)
+        Me.dgvMediaList.Location = New System.Drawing.Point(3, 3)
         Me.dgvMediaList.Name = "dgvMediaList"
         Me.dgvMediaList.ReadOnly = True
         Me.dgvMediaList.RowHeadersVisible = False
         Me.dgvMediaList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMediaList.ShowCellErrors = False
         Me.dgvMediaList.ShowRowErrors = False
-        Me.dgvMediaList.Size = New System.Drawing.Size(349, 452)
+        Me.dgvMediaList.Size = New System.Drawing.Size(335, 420)
         Me.dgvMediaList.StandardTab = True
-        Me.dgvMediaList.TabIndex = 0
+        Me.dgvMediaList.TabIndex = 1
         '
         'mnuMediaList
         '
-        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.DeleteMovieToolStripMenuItem})
+        Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 298)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 304)
         '
         'cmnuTitle
         '
@@ -908,19 +961,119 @@ Partial Class frmMain
         Me.cmnuRenameManual.Size = New System.Drawing.Size(114, 22)
         Me.cmnuRenameManual.Text = "Manual"
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(241, 6)
+        '
+        'RemoveToolStripMenuItem
+        '
+        Me.RemoveToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RemoveFromDatabaseToolStripMenuItem, Me.DeleteMovieToolStripMenuItem})
+        Me.RemoveToolStripMenuItem.Image = CType(resources.GetObject("RemoveToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem"
+        Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.RemoveToolStripMenuItem.Text = "Remove"
+        '
+        'RemoveFromDatabaseToolStripMenuItem
+        '
+        Me.RemoveFromDatabaseToolStripMenuItem.Image = CType(resources.GetObject("RemoveFromDatabaseToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.RemoveFromDatabaseToolStripMenuItem.Name = "RemoveFromDatabaseToolStripMenuItem"
+        Me.RemoveFromDatabaseToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.V), System.Windows.Forms.Keys)
+        Me.RemoveFromDatabaseToolStripMenuItem.Size = New System.Drawing.Size(238, 22)
+        Me.RemoveFromDatabaseToolStripMenuItem.Text = "Remove from Database"
+        '
         'DeleteMovieToolStripMenuItem
         '
         Me.DeleteMovieToolStripMenuItem.Image = CType(resources.GetObject("DeleteMovieToolStripMenuItem.Image"), System.Drawing.Image)
         Me.DeleteMovieToolStripMenuItem.Name = "DeleteMovieToolStripMenuItem"
         Me.DeleteMovieToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(244, 22)
+        Me.DeleteMovieToolStripMenuItem.Size = New System.Drawing.Size(238, 22)
         Me.DeleteMovieToolStripMenuItem.Text = "Delete Movie"
+        '
+        'tabTV
+        '
+        Me.tabTV.Controls.Add(Me.SplitContainer1)
+        Me.tabTV.Location = New System.Drawing.Point(4, 22)
+        Me.tabTV.Name = "tabTV"
+        Me.tabTV.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabTV.Size = New System.Drawing.Size(341, 426)
+        Me.tabTV.TabIndex = 1
+        Me.tabTV.Text = "TV Shows"
+        Me.tabTV.UseVisualStyleBackColor = True
+        '
+        'SplitContainer1
+        '
+        Me.SplitContainer1.BackColor = System.Drawing.Color.Gainsboro
+        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer1.Location = New System.Drawing.Point(3, 3)
+        Me.SplitContainer1.Name = "SplitContainer1"
+        Me.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal
+        '
+        'SplitContainer1.Panel1
+        '
+        Me.SplitContainer1.Panel1.BackColor = System.Drawing.Color.Gainsboro
+        Me.SplitContainer1.Panel1.Controls.Add(Me.dgvTVMain)
+        '
+        'SplitContainer1.Panel2
+        '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.SplitContainer2)
+        Me.SplitContainer1.Size = New System.Drawing.Size(335, 420)
+        Me.SplitContainer1.SplitterDistance = 109
+        Me.SplitContainer1.TabIndex = 3
+        '
+        'dgvTVMain
+        '
+        Me.dgvTVMain.BackgroundColor = System.Drawing.Color.White
+        Me.dgvTVMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTVMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvTVMain.Location = New System.Drawing.Point(0, 0)
+        Me.dgvTVMain.Name = "dgvTVMain"
+        Me.dgvTVMain.Size = New System.Drawing.Size(335, 109)
+        Me.dgvTVMain.TabIndex = 0
+        '
+        'SplitContainer2
+        '
+        Me.SplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer2.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer2.Name = "SplitContainer2"
+        Me.SplitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal
+        '
+        'SplitContainer2.Panel1
+        '
+        Me.SplitContainer2.Panel1.BackColor = System.Drawing.Color.Gainsboro
+        Me.SplitContainer2.Panel1.Controls.Add(Me.dgvTVSeason)
+        '
+        'SplitContainer2.Panel2
+        '
+        Me.SplitContainer2.Panel2.Controls.Add(Me.dgvTVShow)
+        Me.SplitContainer2.Size = New System.Drawing.Size(335, 307)
+        Me.SplitContainer2.SplitterDistance = 108
+        Me.SplitContainer2.TabIndex = 0
+        '
+        'dgvTVSeason
+        '
+        Me.dgvTVSeason.BackgroundColor = System.Drawing.Color.White
+        Me.dgvTVSeason.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTVSeason.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvTVSeason.Location = New System.Drawing.Point(0, 0)
+        Me.dgvTVSeason.Name = "dgvTVSeason"
+        Me.dgvTVSeason.Size = New System.Drawing.Size(335, 108)
+        Me.dgvTVSeason.TabIndex = 0
+        '
+        'dgvTVShow
+        '
+        Me.dgvTVShow.BackgroundColor = System.Drawing.Color.White
+        Me.dgvTVShow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTVShow.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvTVShow.Location = New System.Drawing.Point(0, 0)
+        Me.dgvTVShow.Name = "dgvTVShow"
+        Me.dgvTVShow.Size = New System.Drawing.Size(335, 195)
+        Me.dgvTVShow.TabIndex = 0
         '
         'Panel1
         '
         Me.Panel1.Controls.Add(Me.pnlSearch)
         Me.Panel1.Controls.Add(Me.btnMarkAll)
-        Me.Panel1.Controls.Add(Me.tabsMain)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
@@ -929,8 +1082,7 @@ Partial Class frmMain
         '
         'pnlSearch
         '
-        Me.pnlSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pnlSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlSearch.Controls.Add(Me.cbSearch)
         Me.pnlSearch.Controls.Add(Me.picSearch)
@@ -983,28 +1135,6 @@ Partial Class frmMain
         Me.btnMarkAll.Text = "Mark All"
         Me.btnMarkAll.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnMarkAll.UseVisualStyleBackColor = True
-        '
-        'tabsMain
-        '
-        Me.tabsMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tabsMain.Controls.Add(Me.tabMovies)
-        Me.tabsMain.Location = New System.Drawing.Point(3, 3)
-        Me.tabsMain.Name = "tabsMain"
-        Me.tabsMain.SelectedIndex = 0
-        Me.tabsMain.Size = New System.Drawing.Size(347, 35)
-        Me.tabsMain.TabIndex = 8
-        Me.tabsMain.TabStop = False
-        '
-        'tabMovies
-        '
-        Me.tabMovies.Location = New System.Drawing.Point(4, 22)
-        Me.tabMovies.Name = "tabMovies"
-        Me.tabMovies.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabMovies.Size = New System.Drawing.Size(339, 9)
-        Me.tabMovies.TabIndex = 0
-        Me.tabMovies.Text = "Movies"
-        Me.tabMovies.UseVisualStyleBackColor = True
         '
         'pnlFilter
         '
@@ -2743,13 +2873,24 @@ Partial Class frmMain
         Me.pnlFilterSource.PerformLayout()
         Me.pnlFilterGenre.ResumeLayout(False)
         Me.pnlFilterGenre.PerformLayout()
+        Me.tabsMain.ResumeLayout(False)
+        Me.tabMovies.ResumeLayout(False)
         CType(Me.dgvMediaList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.mnuMediaList.ResumeLayout(False)
+        Me.tabTV.ResumeLayout(False)
+        Me.SplitContainer1.Panel1.ResumeLayout(False)
+        Me.SplitContainer1.Panel2.ResumeLayout(False)
+        Me.SplitContainer1.ResumeLayout(False)
+        CType(Me.dgvTVMain, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.SplitContainer2.Panel1.ResumeLayout(False)
+        Me.SplitContainer2.Panel2.ResumeLayout(False)
+        Me.SplitContainer2.ResumeLayout(False)
+        CType(Me.dgvTVSeason, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvTVShow, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.pnlSearch.ResumeLayout(False)
         Me.pnlSearch.PerformLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.tabsMain.ResumeLayout(False)
         Me.pnlFilter.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox3.ResumeLayout(False)
@@ -2887,13 +3028,11 @@ Partial Class frmMain
     Friend WithEvents UpdateAskToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tmrWait As System.Windows.Forms.Timer
     Friend WithEvents tmrLoad As System.Windows.Forms.Timer
-    Friend WithEvents dgvMediaList As System.Windows.Forms.DataGridView
     Friend WithEvents pnlSearch As System.Windows.Forms.Panel
     Friend WithEvents picSearch As System.Windows.Forms.PictureBox
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents tmrSearchWait As System.Windows.Forms.Timer
     Friend WithEvents tmrSearch As System.Windows.Forms.Timer
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents ToolsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
@@ -2984,7 +3123,6 @@ Partial Class frmMain
     Friend WithEvents btnFilterUp As System.Windows.Forms.Button
     Friend WithEvents tmrFilterAni As System.Windows.Forms.Timer
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents mnuRevertStudioTags As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents OfflineMediaManagerToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuAllAutoTrailer As System.Windows.Forms.ToolStripMenuItem
@@ -3064,4 +3202,17 @@ Partial Class frmMain
     Friend WithEvents btnSortTitle As System.Windows.Forms.Button
     Friend WithEvents ToolTips As System.Windows.Forms.ToolTip
     Friend WithEvents btnIMDBRating As System.Windows.Forms.Button
+    Friend WithEvents tabTV As System.Windows.Forms.TabPage
+    Friend WithEvents dgvMediaList As System.Windows.Forms.DataGridView
+    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+    Friend WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Friend WithEvents dgvTVMain As System.Windows.Forms.DataGridView
+    Friend WithEvents dgvTVSeason As System.Windows.Forms.DataGridView
+    Friend WithEvents dgvTVShow As System.Windows.Forms.DataGridView
+    Friend WithEvents CleanDatabaseToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents RemoveFromDatabaseToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents RemoveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
 End Class

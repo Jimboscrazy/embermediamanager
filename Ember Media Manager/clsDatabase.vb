@@ -24,14 +24,27 @@ Imports System.IO
 Public Class Database
     Public SQLcn As New SQLite.SQLiteConnection()
 
+    ''' <summary>
+    ''' Create a SQLite command
+    ''' </summary>
+    ''' <returns>Created command on the global connection</returns>
     Public Function CreateCommand() As SQLite.SQLiteCommand
         Return SQLcn.CreateCommand
     End Function
 
+    ''' <summary>
+    ''' Begin a SQLite transaction
+    ''' </summary>
+    ''' <returns>Created transaction on the global connection</returns>
     Public Function BeginTransaction() As SQLite.SQLiteTransaction
         Return SQLcn.BeginTransaction
     End Function
 
+    ''' <summary>
+    ''' Fill DataTable with data returned from the provided command
+    ''' </summary>
+    ''' <param name="dTable">DataTable to fill</param>
+    ''' <param name="Command">SQL Command to process</param>
     Public Sub FillDataTable(ByRef dTable As DataTable, ByVal Command As String)
         dTable.Clear()
         Dim sqlDA As New SQLite.SQLiteDataAdapter(Command, SQLcn)
@@ -43,6 +56,11 @@ Public Class Database
         SQLcn.Close()
     End Sub
 
+    ''' <summary>
+    ''' Connect to, create, or update the SQLite database
+    ''' </summary>
+    ''' <param name="Reset">Rebuild the database (preserves data)</param>
+    ''' <param name="Delete">Completely remove the SQLite database (only necessary in rare cases)</param>
     Public Sub Connect(ByVal Reset As Boolean, ByVal Delete As Boolean)
         Try
             Dim NewDB As Boolean = False
@@ -57,6 +75,7 @@ Public Class Database
             SQLcn.ConnectionString = String.Format("Data Source=""{0}"";Compress=True", Path.Combine(Master.AppPath, "Media.emm"))
             SQLcn.Open()
             Dim cQuery As String = String.Empty
+            Dim sQuery As String = String.Empty
             Using SQLtransaction As SQLite.SQLiteTransaction = SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
 
@@ -72,6 +91,18 @@ Public Class Database
                         SQLcommand.CommandText = "DROP INDEX IF EXISTS UniquePath;"
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "ALTER TABLE Movies RENAME TO tmp_movies;"
+                        SQLcommand.ExecuteNonQuery()
+
+                        aCol.Clear()
+                        tRestrict = New String(2) {Nothing, Nothing, "sources"}
+                        tColumns = SQLcn.GetSchema("Columns", tRestrict)
+                        For Each col As DataRow In tColumns.Rows
+                            aCol.Add(col("column_name").ToString)
+                        Next
+                        sQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
+                        SQLcommand.CommandText = "DROP INDEX IF EXISTS UniqueSource;"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "ALTER TABLE Sources RENAME TO tmp_sources;"
                         SQLcommand.ExecuteNonQuery()
                     End If
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Movies(" & _
@@ -206,15 +237,182 @@ Public Class Database
                                 ");"
                     SQLcommand.ExecuteNonQuery()
 
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False, LastScan TEXT NOT NULL DEFAULT '1900/01/01');"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueSource ON Sources (Path);"
+                    SQLcommand.ExecuteNonQuery()
+
                     If Not NewDB AndAlso Reset Then
                         SQLcommand.CommandText = String.Concat("INSERT INTO Movies ", cQuery, " SELECT * FROM tmp_movies;")
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "DROP TABLE tmp_movies;"
                         SQLcommand.ExecuteNonQuery()
+
+                        SQLcommand.CommandText = String.Concat("INSERT INTO Sources ", sQuery, " SELECT * FROM tmp_sources;")
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "DROP TABLE tmp_sources;"
+                        SQLcommand.ExecuteNonQuery()
                     End If
-                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Sources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False , Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
+
+                    'TV Entries
+                    If Not NewDB AndAlso Reset Then
+                        Dim tColumns As New DataTable
+                        Dim tRestrict() As String = New String(2) {Nothing, Nothing, "TVShows"}
+                        Dim aCol As New ArrayList
+                        tColumns = SQLcn.GetSchema("Columns", tRestrict)
+                        For Each col As DataRow In tColumns.Rows
+                            aCol.Add(col("column_name").ToString)
+                        Next
+                        cQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
+                        SQLcommand.CommandText = "DROP INDEX IF EXISTS UniqueTVShowPath;"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "ALTER TABLE TVShows RENAME TO tmp_tvshows;"
+                        SQLcommand.ExecuteNonQuery()
+                    End If
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVShows(" & _
+                                            "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                            "TVShowPath TEXT NOT NULL, " & _
+                                            "HasPoster BOOL NOT NULL DEFAULT False, " & _
+                                            "HasFanart BOOL NOT NULL DEFAULT False, " & _
+                                            "HasNfo BOOL NOT NULL DEFAULT False, " & _
+                                            "New BOOL DEFAULT False, " & _
+                                            "Mark BOOL NOT NULL DEFAULT False, " & _
+                                            "Source TEXT NOT NULL, " & _
+                                            "TVDB TEXT, " & _
+                                            "Lock BOOL NOT NULL DEFAULT False, " & _
+                                            "Title TEXT, " & _
+                                            "EpisodeGuide TEXT, " & _
+                                            "Plot TEXT, " & _
+                                            "Genre TEXT, " & _
+                                            "Premiered TEXT, " & _
+                                            "Studio TEXT, " & _
+                                            "MPAA TEXT, " & _
+                                            "PosterPath TEXT, " & _
+                                            "FanartPath TEXT, " & _
+                                            "NfoPath TEXT, " & _
+                                            "NeedsSave BOOL NOT NULL DEFAULT False" & _
+                                            ");"
                     SQLcommand.ExecuteNonQuery()
-                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueSource ON Sources (Path);"
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVShowPath ON TVShows (TVShowPath);"
+                    SQLcommand.ExecuteNonQuery()
+
+                    If Not NewDB AndAlso Reset Then
+                        SQLcommand.CommandText = String.Concat("INSERT INTO TVShows ", cQuery, " SELECT * FROM tmp_tvshows;")
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "DROP TABLE tmp_tvshows;"
+                        SQLcommand.ExecuteNonQuery()
+                    End If
+
+                    If Not NewDB AndAlso Reset Then
+                        Dim tColumns As New DataTable
+                        Dim tRestrict() As String = New String(2) {Nothing, Nothing, "TVEps"}
+                        Dim aCol As New ArrayList
+                        tColumns = SQLcn.GetSchema("Columns", tRestrict)
+                        For Each col As DataRow In tColumns.Rows
+                            aCol.Add(col("column_name").ToString)
+                        Next
+                        cQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
+                        SQLcommand.CommandText = "DROP INDEX IF EXISTS UniqueTVEpPath;"
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "ALTER TABLE TVEps RENAME TO tmp_tveps;"
+                        SQLcommand.ExecuteNonQuery()
+                    End If
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVEps(" & _
+                                            "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                            "TVShowID INTEGER NOT NULL, " & _
+                                            "TVEpPath TEXT NOT NULL, " & _
+                                            "HasPoster BOOL NOT NULL DEFAULT False, " & _
+                                            "HasNfo BOOL NOT NULL DEFAULT False, " & _
+                                            "New BOOL DEFAULT False, " & _
+                                            "Mark BOOL NOT NULL DEFAULT False, " & _
+                                            "Source TEXT NOT NULL, " & _
+                                            "TVDB TEXT, " & _
+                                            "Lock BOOL NOT NULL DEFAULT False, " & _
+                                            "Title TEXT, " & _
+                                            "Season TEXT, " & _
+                                            "Episode TEXT, " & _
+                                            "Rating TEXT, " & _
+                                            "Plot TEXT, " & _
+                                            "Aired TEXT, " & _
+                                            "Director TEXT, " & _
+                                            "Credits TEXT, " & _
+                                            "PosterPath TEXT, " & _
+                                            "NfoPath TEXT, " & _
+                                            "NeedsSave BOOL NOT NULL DEFAULT False" & _
+                                            ");"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVEpPath ON TVEps (TVEpPath);"
+                    SQLcommand.ExecuteNonQuery()
+
+                    If Not NewDB AndAlso Reset Then
+                        SQLcommand.CommandText = String.Concat("INSERT INTO TVEps ", cQuery, " SELECT * FROM tmp_tveps;")
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "DROP TABLE tmp_tveps;"
+                        SQLcommand.ExecuteNonQuery()
+                    End If
+
+                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS TVShowActors(" & _
+                                "TVShowID INTEGER NOT NULL, " & _
+                                "ActorName TEXT NOT NULL, " & _
+                                "Role TEXT, " & _
+                                "PRIMARY KEY (TVShowID,ActorName) " & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS TVEpActors(" & _
+                                "TVEpID INTEGER NOT NULL, " & _
+                                "ActorName TEXT NOT NULL, " & _
+                                "Role TEXT, " & _
+                                "PRIMARY KEY (TVEpID,ActorName) " & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS TVSeason(" & _
+                                "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
+                                "TVShowID INTEGER NOT NULL, " & _
+                                "TVEpID INTEGER NOT NULL, " & _
+                                "Season INTEGER NOT NULL " & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVVStreams(" & _
+                                "TVEpID INTEGER NOT NULL, " & _
+                                "StreamID INTEGER NOT NULL, " & _
+                                "Video_Width TEXT, " & _
+                                "Video_Height TEXT," & _
+                                "Video_Codec TEXT, " & _
+                                "Video_Duration TEXT, " & _
+                                "Video_ScanType TEXT, " & _
+                                "Video_AspectDisplayRatio TEXT, " & _
+                                "PRIMARY KEY (TVEpID,StreamID) " & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVAStreams(" & _
+                                "TVEpID INTEGER NOT NULL, " & _
+                                "StreamID INTEGER NOT NULL, " & _
+                                "Audio_Language TEXT, " & _
+                                "Audio_LongLanguage TEXT, " & _
+                                "Audio_Codec TEXT, " & _
+                                "Audio_Channel TEXT, " & _
+                                "PRIMARY KEY (TVEpID,StreamID) " & _
+                                ");"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVSubs(" & _
+                                "TVEpID INTEGER NOT NULL, " & _
+                                "StreamID INTEGER NOT NULL, " & _
+                                "Subs_Language TEXT, " & _
+                                "Subs_LongLanguage TEXT, " & _
+                                "PRIMARY KEY (TVEpID,StreamID) " & _
+                                 ");"
+                    SQLcommand.ExecuteNonQuery()
+
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVSources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False, Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False);"
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVSource ON TVSources (Path);"
                     SQLcommand.ExecuteNonQuery()
                 End Using
                 SQLtransaction.Commit()
@@ -224,6 +422,11 @@ Public Class Database
         End Try
     End Sub
 
+    ''' <summary>
+    ''' Load all the information for a movie.
+    ''' </summary>
+    ''' <param name="id">ID of the movie to load, as stored in the database</param>
+    ''' <returns>Media.Movie object</returns>
     Public Function LoadMovieFromDB(ByVal id As Long) As Master.DBMovie
         Dim _movieDB As New Master.DBMovie
         Try
@@ -344,12 +547,12 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSets WHERE MovieID = ", _movieDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    Dim sets As Media.Set
+                    Dim sets As Media.set
                     While SQLreader.Read
-                        sets = New Media.Set
+                        sets = New Media.set
                         If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Set = SQLreader("SetName").ToString
                         If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.Order = SQLreader("SetOrder").ToString
-                        _movieDB.Movie.Sets.Add(sets)
+                        _movieDB.Movie.sets.Add(sets)
                     End While
                 End Using
             End Using
@@ -380,6 +583,11 @@ Public Class Database
         Return _movieDB
     End Function
 
+    ''' <summary>
+    ''' Load all the information for a movie (by movie path)
+    ''' </summary>
+    ''' <param name="sPath">Full path to the movie file</param>
+    ''' <returns>Media.movie object</returns>
     Public Function LoadMovieFromDB(ByVal sPath As String) As Master.DBMovie
         Try
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
@@ -399,6 +607,14 @@ Public Class Database
         Return New Master.DBMovie With {.Id = -1}
     End Function
 
+    ''' <summary>
+    ''' Saves all information from a Media.Movie object to the database
+    ''' </summary>
+    ''' <param name="_movieDB">Media.Movie object to save to the database</param>
+    ''' <param name="IsNew">Is this a new movie (not already present in database)?</param>
+    ''' <param name="BatchMode">Is the function already part of a transaction?</param>
+    ''' <param name="ToNfo">Save the information to an nfo file?</param>
+    ''' <returns>Media.movie object</returns>
     Public Function SaveMovieToDB(ByVal _movieDB As Master.DBMovie, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Master.DBMovie
 
         Try
@@ -557,7 +773,7 @@ Public Class Database
                 End If
 
                 If Not _movieDB.ID = -1 Then
-                    Using SQLOthercommands As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    Using SQLOthercommands As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         Dim parId As SQLite.SQLiteParameter = SQLOthercommands.Parameters.Add("parId", DbType.UInt64, 0, "MovieID")
                         SQLOthercommands.CommandText = "DELETE FROM MoviesAStreams WHERE MovieID = (?);"
                         parId.Value = _movieDB.ID
@@ -695,7 +911,7 @@ Public Class Database
                                 "SetName", _
                                 ") VALUES (?);")
                         Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
-                        For Each s As Media.Set In _movieDB.Movie.Sets
+                        For Each s As Media.set In _movieDB.Movie.sets
                             parSets_SetName.Value = s.Set
                             SQLcommandMoviesSubs.ExecuteNonQuery()
                         Next
@@ -707,7 +923,7 @@ Public Class Database
                         Dim parMovieSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parMovieSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_SetName", DbType.String, 0, "SetName")
                         Dim parMovieSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parMovieSets_SetOrder", DbType.String, 0, "SetOrder")
-                        For Each s As Media.Set In _movieDB.Movie.Sets
+                        For Each s As Media.set In _movieDB.Movie.sets
                             parMovieSets_MovieID.Value = _movieDB.ID
                             parMovieSets_SetName.Value = s.Set
                             parMovieSets_SetOrder.Value = s.Order
@@ -724,55 +940,115 @@ Public Class Database
         Return _movieDB
     End Function
 
-    'Public Function SaveMovieToDB(ByVal _movie As Media.Movie, ByVal sPath As String, Optional ByVal IsMark As Boolean = False, Optional ByVal IsLock As Boolean = False) As Master.DBMovie
-    '    Dim _movieDB As New Master.DBMovie
-    '    Try
-    '        _movieDB.Movie = _movie
-    '        Dim _tmpMovieDB As Master.DBMovie = LoadMovieFromDB(sPath)
-    '        If _tmpMovieDB.ID = -1 Then
-    '            ' New Movie!!!! Can't Use this Function for new Movies need DBMovie for that
-    '            Return _tmpMovieDB
-    '        Else
-    '            _movieDB.ID = _tmpMovieDB.ID
-    '            _movieDB.FaS = _tmpMovieDB.FaS
-    '        End If
-    '        _movieDB.IsMark = IsMark
-    '        _movieDB.IsLock = IsLock
-    '        _movieDB = SaveMovieToDB(_movieDB, False)
-    '    Catch ex As Exception
-    '        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-    '    End Try
-    '    Return _movieDB
-    'End Function
-
+    ''' <summary>
+    ''' Remove all information related to a movie from the database.
+    ''' </summary>
+    ''' <param name="ID">ID of the movie to remove, as stored in the database.</param>
+    ''' <param name="BatchMode">Is this function already part of a transaction?</param>
+    ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function DeleteFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Try
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-            If Not BatchMode Then SQLtransaction = Master.DB.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE id = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                Dim parId As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parId", DbType.UInt64, 0, "MovieID")
-                SQLcommand.CommandText = "DELETE FROM MoviesAStreams WHERE MovieID = (?);"
-                parId.Value = ID
+                SQLcommand.CommandText = String.Concat("DELETE FROM MoviesAStreams WHERE MovieID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                SQLcommand.CommandText = "DELETE FROM MoviesVStreams WHERE MovieID = (?);"
-                parId.Value = ID
+                SQLcommand.CommandText = String.Concat("DELETE FROM MoviesVStreams WHERE MovieID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                SQLcommand.CommandText = "DELETE FROM MoviesActors WHERE MovieID = (?);"
-                parId.Value = ID
+                SQLcommand.CommandText = String.Concat("DELETE FROM MoviesActors WHERE MovieID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                SQLcommand.CommandText = "DELETE FROM MoviesSubs WHERE MovieID = (?);"
-                parId.Value = ID
+                SQLcommand.CommandText = String.Concat("DELETE FROM MoviesSubs WHERE MovieID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                SQLcommand.CommandText = "DELETE FROM MoviesPosters WHERE MovieID = (?);"
-                parId.Value = ID
+                SQLcommand.CommandText = String.Concat("DELETE FROM MoviesPosters WHERE MovieID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                SQLcommand.CommandText = "DELETE FROM MoviesFanart WHERE MovieID = (?);"
-                parId.Value = ID
+                SQLcommand.CommandText = String.Concat("DELETE FROM MoviesFanart WHERE MovieID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
-                SQLcommand.CommandText = "DELETE FROM MoviesSets WHERE MovieID = (?);"
-                parId.Value = ID
+                SQLcommand.CommandText = String.Concat("DELETE FROM MoviesSets WHERE MovieID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            If Not BatchMode Then SQLtransaction.Commit()
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Iterates db entries to check if the paths to the movie files are valid. If not, remove all entries pertaining to the movie.
+    ''' </summary>
+    Public Sub Clean()
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = SQLcn.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                    SQLcommand.CommandText = "SELECT MoviePath, Id FROM movies ORDER BY ListTitle COLLATE NOCASE;"
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        While SQLReader.Read
+                            If Not File.Exists(SQLReader("MoviePath").ToString) Then
+                                Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                            End If
+                        End While
+                    End Using
+                End Using
+                SQLtransaction.Commit()
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Remove all information related to a TV show from the database.
+    ''' </summary>
+    ''' <param name="ID">ID of the tvshow to remove, as stored in the database.</param>
+    ''' <param name="BatchMode">Is this function already part of a transaction?</param>
+    ''' <returns>True if successful, false if deletion failed.</returns>
+    Public Function DeleteTVShowFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", ID, ";")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLReader.Read
+                        Master.DB.DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                    End While
+                End Using
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVShows WHERE ID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVShowActors WHERE TVShowID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVShowID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+            If Not BatchMode Then SQLtransaction.Commit()
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Remove all information related to a TV episode from the database.
+    ''' </summary>
+    ''' <param name="ID">ID of the episode to remove, as stored in the database.</param>
+    ''' <param name="BatchMode">Is this function already part of a transaction?</param>
+    ''' <returns>True if successful, false if deletion failed.</returns>
+    Public Function DeleteTVEpFromDB(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+            If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVEps WHERE ID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVEpActors WHERE TVEpID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", ID, ";")
+                SQLcommand.ExecuteNonQuery()
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
             End Using
             If Not BatchMode Then SQLtransaction.Commit()

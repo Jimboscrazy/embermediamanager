@@ -59,7 +59,6 @@ Namespace Media
         Private _sets As New List(Of [set])
         Private _lev As Integer
 
-
         Public Shared Function GetSerialiser() As XmlSerializer
 
             Dim myOverrides As New XmlAttributeOverrides
@@ -920,17 +919,6 @@ Namespace Media
             _order = String.Empty
         End Sub
 
-        ''Private _set As New SetContainer
-
-        ''<XmlElement("set")> _
-        ''Public Property SetContainer() As SetContainer
-        ''    Get
-        ''        Return Me._set
-        ''    End Get
-        ''    Set(ByVal value As SetContainer)
-        ''        Me._set = value
-        ''    End Set
-        ''End Property
     End Class
 
     Public Class SetContainer
