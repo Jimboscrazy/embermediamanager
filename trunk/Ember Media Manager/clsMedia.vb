@@ -961,4 +961,412 @@ Namespace Media
             _order = String.Empty
         End Sub
     End Class
+
+    <XmlRoot("tvshow")> _
+    Public Class TVShow
+        Private _title As String
+        Private _tvdb As String
+        Private _rating As String
+        Private _episodeguideurl As String
+        Private _plot As String
+        Private _mpaa As String
+        Private _genre As String
+        Private _premiered As String
+        Private _studio As String
+        Private _actors As New List(Of Person)
+
+        <XmlElement("title")> _
+        Public Property Title() As String
+            Get
+                Return Me._title
+            End Get
+            Set(ByVal value As String)
+                Me._title = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._title)
+            End Get
+        End Property
+
+        <XmlElement("id")> _
+        Public Property TVDB() As String
+            Get
+                Return Me._tvdb
+            End Get
+            Set(ByVal value As String)
+                Me._tvdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TVDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tvdb)
+            End Get
+        End Property
+
+        <XmlElement("rating")> _
+        Public Property Rating() As String
+            Get
+                Return Me._rating
+            End Get
+            Set(ByVal value As String)
+                Me._rating = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property RatingSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._rating)
+            End Get
+        End Property
+
+        <XmlElement("episodeguideurl")> _
+        Public Property EpisodeGuideURL() As String
+            Get
+                Return Me._episodeguideurl
+            End Get
+            Set(ByVal value As String)
+                Me._episodeguideurl = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property EpisodeGuideURLSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._episodeguideurl)
+            End Get
+        End Property
+
+        <XmlElement("plot")> _
+        Public Property Plot() As String
+            Get
+                Return Me._plot
+            End Get
+            Set(ByVal value As String)
+                Me._plot = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property PlotSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._plot)
+            End Get
+        End Property
+
+        <XmlElement("mpaa")> _
+        Public Property MPAA() As String
+            Get
+                Return Me._mpaa
+            End Get
+            Set(ByVal value As String)
+                Me._mpaa = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property MPAASpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._mpaa)
+            End Get
+        End Property
+
+        <XmlElement("genre")> _
+        Public Property Genre() As String
+            Get
+                Return Me._genre
+            End Get
+            Set(ByVal value As String)
+                Me._genre = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property GenreSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._genre)
+            End Get
+        End Property
+
+        <XmlElement("premiered")> _
+        Public Property Premiered() As String
+            Get
+                Return Me._premiered
+            End Get
+            Set(ByVal value As String)
+                Me._premiered = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property PremieredSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._premiered)
+            End Get
+        End Property
+
+        <XmlElement("studio")> _
+        Public Property Studio() As String
+            Get
+                Return Me._studio
+            End Get
+            Set(ByVal value As String)
+                Me._studio = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property StudioSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._studio)
+            End Get
+        End Property
+
+        <XmlElement("actor")> _
+        Public Property Actors() As List(Of Person)
+            Get
+                Return Me._actors
+            End Get
+            Set(ByVal Value As List(Of Person))
+                Me._actors = Value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property ActorsSpecified() As Boolean
+            Get
+                Return Me._actors.Count > 0
+            End Get
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            _title = String.Empty
+            _tvdb = String.Empty
+            _rating = String.Empty
+            _episodeguideurl = String.Empty
+            _plot = String.Empty
+            _mpaa = String.Empty
+            _genre = String.Empty
+            _premiered = String.Empty
+            _studio = String.Empty
+            _actors.Clear()
+        End Sub
+    End Class
+
+    <XmlRoot("episodedetails")> _
+    Public Class EpisodeDetails
+        Private _title As String
+        Private _season As String
+        Private _episode As String
+        Private _aired As String
+        Private _rating As String
+        Private _plot As String
+        Private _director As String
+        Private _credits As String
+        Private _actors As New List(Of Person)
+        Private _fileInfo As New MediaInfo.Fileinfo
+
+        <XmlElement("title")> _
+        Public Property Title() As String
+            Get
+                Return Me._title
+            End Get
+            Set(ByVal value As String)
+                Me._title = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property TitleSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._title)
+            End Get
+        End Property
+
+        <XmlElement("season")> _
+        Public Property Season() As String
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As String)
+                Me._season = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SeasonSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._season)
+            End Get
+        End Property
+
+        <XmlElement("episode")> _
+        Public Property Episode() As String
+            Get
+                Return Me._episode
+            End Get
+            Set(ByVal value As String)
+                Me._episode = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property EpisodeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._episode)
+            End Get
+        End Property
+
+        <XmlElement("aired")> _
+        Public Property Aired() As String
+            Get
+                Return Me._aired
+            End Get
+            Set(ByVal value As String)
+                Me._aired = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property AiredSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._aired)
+            End Get
+        End Property
+
+        <XmlElement("rating")> _
+        Public Property Rating() As String
+            Get
+                Return Me._rating
+            End Get
+            Set(ByVal value As String)
+                Me._rating = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property RatingSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._rating)
+            End Get
+        End Property
+
+        <XmlElement("plot")> _
+        Public Property Plot() As String
+            Get
+                Return Me._plot
+            End Get
+            Set(ByVal value As String)
+                Me._plot = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property PlotSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._plot)
+            End Get
+        End Property
+
+        <XmlElement("director")> _
+        Public Property Director() As String
+            Get
+                Return Me._director
+            End Get
+            Set(ByVal value As String)
+                Me._director = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property DirectorSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._director)
+            End Get
+        End Property
+
+        <XmlElement("credits")> _
+        Public Property Credits() As String
+            Get
+                Return Me._credits
+            End Get
+            Set(ByVal value As String)
+                Me._credits = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property CreditsSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._credits)
+            End Get
+        End Property
+
+        <XmlElement("actor")> _
+        Public Property Actors() As List(Of Person)
+            Get
+                Return Me._actors
+            End Get
+            Set(ByVal Value As List(Of Person))
+                Me._actors = Value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property ActorsSpecified() As Boolean
+            Get
+                Return Me._actors.Count > 0
+            End Get
+        End Property
+
+        <XmlElement("fileinfo")> _
+        Public Property FileInfo() As MediaInfo.Fileinfo
+            Get
+                Return Me._fileInfo
+            End Get
+            Set(ByVal value As MediaInfo.Fileinfo)
+                Me._fileInfo = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property FileInfoSpecified() As Boolean
+            Get
+                If Not IsNothing(Me._fileInfo.StreamDetails.Video) OrElse _
+                Me._fileInfo.StreamDetails.Audio.Count > 0 OrElse _
+                 Me._fileInfo.StreamDetails.Subtitle.Count > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End Get
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            _title = String.Empty
+            _season = String.Empty
+            _episode = String.Empty
+            _aired = String.Empty
+            _rating = String.Empty
+            _plot = String.Empty
+            _director = String.Empty
+            _credits = String.Empty
+            _actors.Clear()
+            _fileInfo = New MediaInfo.Fileinfo
+        End Sub
+    End Class
 End Namespace

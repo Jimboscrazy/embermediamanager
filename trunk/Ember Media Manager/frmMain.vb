@@ -188,7 +188,7 @@ Public Class frmMain
 
             If Not Master.eSettings.PersistImgCache Then
                 If Directory.Exists(Master.TempPath) Then
-                    Master.DeleteDirectory(Master.TempPath)
+                    FileManip.Delete.DeleteDirectory(Master.TempPath)
                 End If
             End If
         Catch
@@ -304,7 +304,7 @@ Public Class frmMain
         Dim sPath As String = String.Concat(Master.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
         If File.Exists(sPath) Then
             If File.Exists(sPath.Insert(sPath.LastIndexOf("."), "-old")) Then File.Delete(sPath.Insert(sPath.LastIndexOf("."), "-old"))
-            Master.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
+            FileManip.Common.MoveFileWithStream(sPath, sPath.Insert(sPath.LastIndexOf("."), "-old"))
             File.Delete(sPath)
         End If
 
@@ -437,7 +437,7 @@ Public Class frmMain
                                 Dim sFile As New Master.FileAndSource
                                 Dim aContents() As String
                                 sFile.Filename = MoviePath
-                                aContents = Master.GetFolderContents(sFile.Filename, sFile.isSingle)
+                                aContents = Scanner.GetFolderContents(sFile.Filename, sFile.isSingle)
                                 sFile.Poster = aContents(0)
                                 sFile.Fanart = aContents(1)
                                 sFile.Nfo = aContents(2)
@@ -579,6 +579,7 @@ Public Class frmMain
                 End If
 
                 Me.SetMenus(True)
+                Master.GetListOfSources()
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2167,7 +2168,7 @@ Public Class frmMain
 
     Private Sub ClearAllCachesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearAllCachesToolStripMenuItem.Click
         If Directory.Exists(Master.TempPath) Then
-            Master.DeleteDirectory(Master.TempPath)
+            FileManip.Delete.DeleteDirectory(Master.TempPath)
         End If
 
         Directory.CreateDirectory(Master.TempPath)
@@ -2177,7 +2178,6 @@ Public Class frmMain
         '//
         ' Begin animation to raise panel all the way up
         '\\
-
         Me.aniFilterRaise = True
         Me.tmrFilterAni.Start()
     End Sub
@@ -2186,7 +2186,6 @@ Public Class frmMain
         '//
         ' Begin animation to lower panel all the way down
         '\\
-
         Me.aniFilterRaise = False
         Me.tmrFilterAni.Start()
     End Sub
@@ -2197,6 +2196,7 @@ Public Class frmMain
         '\\
 
         Try
+
             Dim pHeight As Integer = Master.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
 
             If Master.eSettings.InfoPanelAnim Then
@@ -2693,6 +2693,16 @@ Public Class frmMain
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
 
+            Master.MoviePaths.Clear()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLcommand.CommandText = "SELECT MoviePath FROM movies;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Master.MoviePaths.Add(SQLreader("MoviePath").ToString.ToLower)
+                    End While
+                End Using
+            End Using
+
             Master.MediaList.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 If Not String.IsNullOrEmpty(Args.SourceName) Then
@@ -2713,7 +2723,7 @@ Public Class frmMain
                                 parLastScan.Value = Now
                                 parID.Value = SQLreader("ID")
                                 SQLUpdatecommand.ExecuteNonQuery()
-                                Master.ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")))
+                                Scanner.ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")))
                                 If Me.bwPrelim.CancellationPending Then
                                     e.Cancel = True
                                     Return
@@ -2726,7 +2736,6 @@ Public Class frmMain
 
             'remove any db entries that no longer exist
             If Master.eSettings.CleanDB Then Master.DB.Clean()
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -2794,7 +2803,7 @@ Public Class frmMain
                     End If
                     If Not String.IsNullOrEmpty(sFile.Filename) Then
                         'first, lets get the contents
-                        aContents = Master.GetFolderContents(sFile.Filename, sFile.isSingle)
+                        aContents = Scanner.GetFolderContents(sFile.Filename, sFile.isSingle)
                         sFile.Poster = aContents(0)
                         sFile.Fanart = aContents(1)
                         sFile.Nfo = aContents(2)
@@ -3531,6 +3540,7 @@ Public Class frmMain
                             Next
 
                         Case Master.ScrapeType.CleanFolders
+                            Dim fDeleter As New FileManip.Delete
                             For Each drvRow As DataRow In Me.dtMedia.Rows
 
                                 Me.bwScraper.ReportProgress(iCount, drvRow.Item(15))
@@ -3540,12 +3550,11 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
 
                                 scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
-                                If Master.DeleteFiles(True, scrapeMovie, Master.GetListOfSources) Then
+                                If fDeleter.DeleteFiles(True, scrapeMovie) Then
                                     Me.RefreshMovie(Convert.ToInt64(drvRow.Item(0)), True, True)
                                     Me.bwScraper.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item(0).ToString))
                                 End If
                             Next
-
                         Case Master.ScrapeType.CopyBD
                             Dim sPath As String = String.Empty
                             For Each drvRow As DataRow In Me.dtMedia.Rows
@@ -3558,19 +3567,19 @@ Public Class frmMain
                                 If Not String.IsNullOrEmpty(sPath) Then
                                     If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                                         If Master.eSettings.VideoTSParent Then
-                                            Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
+                                            FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
                                         Else
                                             If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                                                FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
                                             Else
-                                                Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                                FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                             End If
                                         End If
                                     Else
                                         If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                            Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
+                                            FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
                                         Else
-                                            Master.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
+                                            FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                         End If
                                     End If
                                 End If
@@ -4978,7 +4987,7 @@ doCancel:
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
                 tmpMovieDb.FileSource = XML.GetFileSource(tmpMovieDb.Filename)
-                aContents = Master.GetFolderContents(tmpMovieDb.Filename, Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(2)))
+                aContents = Scanner.GetFolderContents(tmpMovieDb.Filename, Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(2)))
                 tmpMovieDb.PosterPath = aContents(0)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(aContents(0)), False, True)})
                 tmpMovieDb.FanartPath = aContents(1)

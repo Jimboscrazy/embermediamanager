@@ -100,7 +100,7 @@ Public Class dlgExportMovies
                 Application.DoEvents()
             Loop
         End If
-        Master.DeleteDirectory(Me.TempPath)
+        FileManip.Delete.DeleteDirectory(Me.TempPath)
     End Sub
 
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
@@ -553,7 +553,7 @@ Public Class dlgExportMovies
             Dim destPathShort As String = Path.GetDirectoryName(Args.destPath)
             'Only create extra files once for each template... dont do it when applyng filters
             If Not DontSaveExtra Then
-                Master.DeleteDirectory(Me.TempPath)
+                FileManip.Delete.DeleteDirectory(Me.TempPath)
                 CopyDirectory(Args.srcPath, destPathShort, True)
                 If Me.bexportFlags Then
                     Args.srcPath = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)

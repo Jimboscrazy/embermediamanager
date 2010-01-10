@@ -67,7 +67,7 @@ Public Class dlgMovieSource
             SQLtransaction.Commit()
         End Using
 
-
+        Master.GetListOfSources()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()

@@ -38,6 +38,8 @@ Public Class dlgFIStreamEditor
                 For Each p() As String In xVTypeFlag.ToArray.Cast(Of String)().Select(Function(AL) AL.Split(Convert.ToChar("|")))
                     cbVideoCodec.Items.AddRange(p)
                 Next
+                Dim xShortLang = From xLang In XML.LanguageXML.Descendants("Language") Select xLang.Element("Name").Value
+                cbVideoLanguage.Items.AddRange(xShortLang.ToArray)
                 If Not movie Is Nothing Then
                     cbVideoCodec.Text = movie.StreamDetails.Video(idx).Codec
                     txtARatio.Text = movie.StreamDetails.Video(idx).Aspect
@@ -49,6 +51,7 @@ Public Class dlgFIStreamEditor
                         rbInterlaced.Checked = True
                     End If
                     txtDuration.Text = movie.StreamDetails.Video(idx).Duration
+                    cbVideoLanguage.Text = movie.StreamDetails.Video(idx).LongLanguage
                 End If
             End If
             If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
@@ -83,6 +86,8 @@ Public Class dlgFIStreamEditor
                     stream_v.Height = txtHeight.Text
                     stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
                     stream_v.Duration = txtDuration.Text
+                    stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
+                    stream_v.Language = ConvertL(cbVideoLanguage.SelectedItem.ToString)
                     Return stream_v
                 End If
                 If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
@@ -152,6 +157,7 @@ Public Class dlgFIStreamEditor
         Me.Label6.Text = Master.eLang.GetString(610, "Language")
         Me.GroupBox3.Text = Master.eLang.GetString(597, "Subtitle  Streams")
         Me.Label10.Text = Me.Label6.Text
+        Me.Label8.Text = Me.Label6.Text
     End Sub
 
     Private Sub cbAudioCodec_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAudioCodec.SelectedIndexChanged

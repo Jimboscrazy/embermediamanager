@@ -155,7 +155,7 @@ Public Class ThumbGenerator
                 End Try
 
                 If fThumbs.Count <= 0 Then
-                    Master.DeleteDirectory(tPath)
+                    FileManip.Delete.DeleteDirectory(tPath)
                 Else
                     Dim exFanart As New Images
                     'always set to something if extrathumbs are created so we know during scrapers

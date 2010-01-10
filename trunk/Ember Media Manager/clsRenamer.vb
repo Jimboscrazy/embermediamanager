@@ -522,7 +522,7 @@ Public Class FileFolderRenamer
                                 Catch
                                 End Try
                                 If lFi.Count > 0 Then
-                                    lFi.Sort(AddressOf Master.SortFileNames)
+                                    lFi.Sort(AddressOf FileManip.Common.SortFileNames)
                                     Dim srcFile As String
                                     Dim dstFile As String
                                     For Each lFile As FileInfo In lFi
@@ -715,7 +715,7 @@ Public Class FileFolderRenamer
                         Catch
                         End Try
                         If lFi.Count > 0 Then
-                            lFi.Sort(AddressOf Master.SortFileNames)
+                            lFi.Sort(AddressOf FileManip.Common.SortFileNames)
                             Dim srcFile As String
                             Dim dstFile As String
                             For Each lFile As FileInfo In lFi

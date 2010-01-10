@@ -102,7 +102,7 @@ Public Class dlgOfflineHolder
 
     Private Sub dlgOfflineHolder_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
         If Directory.Exists(WorkingPath) Then
-            Master.DeleteDirectory(WorkingPath)
+            FileManip.Delete.DeleteDirectory(WorkingPath)
         End If
     End Sub
 
@@ -133,7 +133,7 @@ Public Class dlgOfflineHolder
             AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
             AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
             If Directory.Exists(WorkingPath) Then
-                Master.DeleteDirectory(WorkingPath)
+                FileManip.Delete.DeleteDirectory(WorkingPath)
             End If
             Directory.CreateDirectory(WorkingPath)
 
@@ -401,7 +401,7 @@ Public Class dlgOfflineHolder
         Dim newGraphics As Graphics
         Me.bwCreateHolder.ReportProgress(0, Master.eLang.GetString(356, "Preparing Data"))
         If Directory.Exists(buildPath) Then
-            Master.DeleteDirectory(buildPath)
+            FileManip.Delete.DeleteDirectory(buildPath)
         End If
         Directory.CreateDirectory(buildPath)
 
@@ -474,7 +474,7 @@ Public Class dlgOfflineHolder
         End If
         Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(359, "Moving Files"))
         If Directory.Exists(buildPath) Then
-            Master.DeleteDirectory(buildPath)
+            FileManip.Delete.DeleteDirectory(buildPath)
         End If
 
         DirectoryCopy(WorkingPath, destPath)
@@ -501,7 +501,7 @@ Public Class dlgOfflineHolder
 
         Me.bwCreateHolder.ReportProgress(4, Master.eLang.GetString(360, "Renaming Files"))
         If Directory.Exists(buildPath) Then
-            Master.DeleteDirectory(buildPath)
+            FileManip.Delete.DeleteDirectory(buildPath)
         End If
         Try
             FileFolderRenamer.RenameSingle(tMovie, Master.eSettings.FoldersPattern, Master.eSettings.FilesPattern, False, False, False)
@@ -583,7 +583,7 @@ Public Class dlgOfflineHolder
         End Try
 
         For Each sFile As FileInfo In Files
-            Master.MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name))
+            FileManip.Common.MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name))
         Next
 
         Files = Nothing

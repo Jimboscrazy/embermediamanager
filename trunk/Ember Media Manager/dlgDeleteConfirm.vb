@@ -78,23 +78,26 @@ Public Class dlgDeleteConfirm
     End Function
 
     Private Sub Populate_FileList(ByVal MoviesToDelete As List(Of Long))
+        Dim mMovie As New Master.DBMovie
+        Dim hadError As Boolean = False
+        Dim fDeleter As New FileManip.Delete
+        Dim ItemsToDelete As New List(Of IO.FileSystemInfo)
+        Dim MovieParentNode As New TreeNode
         Try
             With tvwFiles
 
-                Dim mMovie As Master.DBMovie
-                Dim hadError As Boolean
 
                 For Each MovieId As Long In MoviesToDelete
                     hadError = False
                     mMovie = Master.DB.LoadMovieFromDB(MovieId)
 
-                    Dim MovieParentNode As TreeNode = .Nodes.Add(mMovie.ID.ToString, mMovie.ListTitle)
+                    MovieParentNode = .Nodes.Add(mMovie.ID.ToString, mMovie.ListTitle)
                     MovieParentNode.ImageKey = "MOVIE"
                     MovieParentNode.SelectedImageKey = "MOVIE"
                     MovieParentNode.Tag = mMovie
 
                     'get the associated files
-                    Dim ItemsToDelete As List(Of IO.FileSystemInfo) = Master.GetItemsToDelete(False, mMovie, Master.GetListOfSources)
+                    ItemsToDelete = fDeleter.GetItemsToDelete(False, mMovie)
 
                     For Each fileItem As IO.FileSystemInfo In ItemsToDelete
                         If Not MovieParentNode.Nodes.ContainsKey(fileItem.FullName) Then
@@ -138,7 +141,7 @@ Public Class dlgDeleteConfirm
             NewNode.ImageKey = "FOLDER"
             NewNode.SelectedImageKey = "FOLDER"
 
-            If Not Master.GetListOfSources.Contains(dir.FullName) Then
+            If Not Master.SourcesList.Contains(dir.FullName) Then
                 'populate all the sub-folders in the folder
                 For Each item As IO.DirectoryInfo In dir.GetDirectories
                     AddFolderNode(NewNode, item)
