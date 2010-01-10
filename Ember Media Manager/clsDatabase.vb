@@ -76,6 +76,7 @@ Public Class Database
             SQLcn.Open()
             Dim cQuery As String = String.Empty
             Dim sQuery As String = String.Empty
+            Dim vQuery As String = String.Empty
             Using SQLtransaction As SQLite.SQLiteTransaction = SQLcn.BeginTransaction
                 Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
 
@@ -103,6 +104,16 @@ Public Class Database
                         SQLcommand.CommandText = "DROP INDEX IF EXISTS UniqueSource;"
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "ALTER TABLE Sources RENAME TO tmp_sources;"
+                        SQLcommand.ExecuteNonQuery()
+
+                        aCol.Clear()
+                        tRestrict = New String(2) {Nothing, Nothing, "MoviesVStreams"}
+                        tColumns = SQLcn.GetSchema("Columns", tRestrict)
+                        For Each col As DataRow In tColumns.Rows
+                            aCol.Add(col("column_name").ToString)
+                        Next
+                        vQuery = String.Format("({0})", Strings.Join(aCol.ToArray, ", "))
+                        SQLcommand.CommandText = "ALTER TABLE MoviesVStreams RENAME TO tmp_moviesvstreams;"
                         SQLcommand.ExecuteNonQuery()
                     End If
                     SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Movies(" & _
@@ -184,6 +195,8 @@ Public Class Database
                                 "Video_Duration TEXT, " & _
                                 "Video_ScanType TEXT, " & _
                                 "Video_AspectDisplayRatio TEXT, " & _
+                                "Video_Language TEXT, " & _
+                                "Video_LongLanguage TEXT, " & _
                                 "PRIMARY KEY (MovieID,StreamID) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
@@ -251,6 +264,11 @@ Public Class Database
                         SQLcommand.CommandText = String.Concat("INSERT INTO Sources ", sQuery, " SELECT * FROM tmp_sources;")
                         SQLcommand.ExecuteNonQuery()
                         SQLcommand.CommandText = "DROP TABLE tmp_sources;"
+                        SQLcommand.ExecuteNonQuery()
+
+                        SQLcommand.CommandText = String.Concat("INSERT INTO MoviesVStreams ", vQuery, " SELECT * FROM tmp_moviesvstreams;")
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = "DROP TABLE tmp_moviesvstreams;"
                         SQLcommand.ExecuteNonQuery()
                     End If
 
@@ -386,6 +404,8 @@ Public Class Database
                                 "Video_Duration TEXT, " & _
                                 "Video_ScanType TEXT, " & _
                                 "Video_AspectDisplayRatio TEXT, " & _
+                                "Video_Language TEXT, " & _
+                                "Video_LongLanguage TEXT, " & _
                                 "PRIMARY KEY (TVEpID,StreamID) " & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
@@ -513,6 +533,8 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Video_Duration")) Then video.Duration = SQLreader("Video_Duration").ToString
                         If Not DBNull.Value.Equals(SQLreader("Video_ScanType")) Then video.Scantype = SQLreader("Video_ScanType").ToString
                         If Not DBNull.Value.Equals(SQLreader("Video_AspectDisplayRatio")) Then video.Aspect = SQLreader("Video_AspectDisplayRatio").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_Language")) Then video.Language = SQLreader("Video_Language").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Video_LongLanguage")) Then video.LongLanguage = SQLreader("Video_LongLanguage").ToString
                         _movieDB.Movie.FileInfo.StreamDetails.Video.Add(video)
                     End While
                 End Using
@@ -821,8 +843,8 @@ Public Class Database
                     Using SQLcommandMoviesVStreams As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommandMoviesVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesVStreams (", _
                                 "MovieID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
-                                "Video_ScanType, Video_AspectDisplayRatio", _
-                                ") VALUES (?,?,?,?,?,?,?,?);")
+                                "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage", _
+                                ") VALUES (?,?,?,?,?,?,?,?,?,?);")
                         Dim parVideo_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parVideo_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parVideo_Width As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
@@ -831,6 +853,8 @@ Public Class Database
                         Dim parVideo_Duration As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Duration", DbType.String, 0, "Video_Duration")
                         Dim parVideo_ScanType As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_ScanType", DbType.String, 0, "Video_ScanType")
                         Dim parVideo_AspectDisplayRatio As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_AspectDisplayRatio", DbType.String, 0, "Video_AspectDisplayRatio")
+                        Dim parVideo_Language As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Language", DbType.String, 0, "Video_Language")
+                        Dim parVideo_LongLanguage As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_LongLanguage", DbType.String, 0, "Video_LongLanguage")
                         For i As Integer = 0 To _movieDB.Movie.FileInfo.StreamDetails.Video.Count - 1
                             parVideo_MovieID.Value = _movieDB.ID
                             parVideo_StreamID.Value = i
@@ -840,6 +864,8 @@ Public Class Database
                             parVideo_Duration.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Duration
                             parVideo_ScanType.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Scantype
                             parVideo_AspectDisplayRatio.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Aspect
+                            parVideo_Language.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).Language
+                            parVideo_LongLanguage.Value = _movieDB.Movie.FileInfo.StreamDetails.Video(i).LongLanguage
                             SQLcommandMoviesVStreams.ExecuteNonQuery()
                         Next
                     End Using

@@ -429,7 +429,7 @@ Public Class dlgEditMovie
     Private Sub btnClearCache_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearCache.Click
         Try
             If Directory.Exists(CachePath) Then
-                Master.DeleteDirectory(CachePath)
+                FileManip.Delete.DeleteDirectory(CachePath)
             End If
 
             btnClearCache.Visible = False
@@ -1130,7 +1130,7 @@ Public Class dlgEditMovie
             End If
 
             If Master.currMovie.ClearExtras AndAlso Not hasCleared Then
-                Master.DeleteDirectory(tPath)
+                FileManip.Delete.DeleteDirectory(tPath)
                 hasCleared = True
             Else
                 'first delete the ones from the delete list
@@ -1404,7 +1404,7 @@ Public Class dlgEditMovie
                 End If
 
                 If Master.currMovie.ClearExtras AndAlso Not hasCleared Then
-                    Master.DeleteDirectory(ePath)
+                    FileManip.Delete.DeleteDirectory(ePath)
                     hasCleared = True
                 End If
 
@@ -1425,14 +1425,14 @@ Public Class dlgEditMovie
                     End If
 
                     For Each sFile As String In fList
-                        Master.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
+                        FileManip.Common.MoveFileWithStream(sFile, Path.Combine(ePath, String.Concat("thumb", iVal, ".jpg")))
                         iVal += 1
                     Next
                 End If
 
                 Master.currMovie.ExtraPath = ePath
 
-                Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+                FileManip.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1468,7 +1468,7 @@ Public Class dlgEditMovie
             End If
 
             If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
-                Master.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
+                FileManip.Delete.DeleteDirectory(Path.Combine(Master.TempPath, "extrathumbs"))
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

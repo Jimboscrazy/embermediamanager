@@ -232,6 +232,7 @@ Public Class MediaInfo
                 Dim VideoStreams As Integer
                 Dim AudioStreams As Integer
                 Dim SubtitleStreams As Integer
+                Dim vLang As String = String.Empty
                 Dim aLang As String = String.Empty
                 Dim sLang As String = String.Empty
 
@@ -264,6 +265,11 @@ Public Class MediaInfo
                             fiOut.StreamDetails.Video.Add(miVideo)
                         End If
                     End With
+                    vLang = Me.Get_(StreamKind.Visual, v, "Language/String")
+                    If Not String.IsNullOrEmpty(vLang) Then
+                        miVideo.LongLanguage = vLang
+                        miVideo.Language = ConvertL(miVideo.LongLanguage)
+                    End If
                 Next
 
                 AudioStreams = Me.Count_Get(StreamKind.Audio)
@@ -479,6 +485,8 @@ Public Class MediaInfo
         Private _codec As String = String.Empty
         Private _duration As String = String.Empty
         Private _aspect As String = String.Empty
+        Private _language As String = String.Empty
+        Private _longlanguage As String = String.Empty
         Private _scantype As String = String.Empty
 
         <XmlElement("width")> _
@@ -580,6 +588,40 @@ Public Class MediaInfo
         Public ReadOnly Property ScantypeSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._scantype)
+            End Get
+        End Property
+
+        <XmlElement("language")> _
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal Value As String)
+                Me._language = Value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
+            End Get
+        End Property
+
+        <XmlElement("longlanguage")> _
+        Public Property LongLanguage() As String
+            Get
+                Return Me._longlanguage
+            End Get
+            Set(ByVal value As String)
+                Me._longlanguage = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property LongLanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._longlanguage)
             End Get
         End Property
 

@@ -64,7 +64,7 @@ Public Class dlgTrailer
 
         If Me.txtManual.Text.Length > 0 AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
             Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
-            Master.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
+            FileManip.Common.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
 
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
@@ -75,7 +75,7 @@ Public Class dlgTrailer
         Else
             If Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
                 Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
-                Master.MoveFileWithStream(Me.prePath, Me.tURL)
+                FileManip.Common.MoveFileWithStream(Me.prePath, Me.tURL)
 
                 File.Delete(Me.prePath)
 

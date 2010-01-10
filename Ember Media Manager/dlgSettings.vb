@@ -2382,6 +2382,9 @@ Public Class dlgSettings
                     Me.lvMovies.Sort()
                     Me.lvMovies.EndUpdate()
                     Me.lvMovies.Refresh()
+
+                    Master.GetListOfSources()
+
                     Me.SetApplyButton(True)
                     Me.sResult.NeedsUpdate = True
                 End If

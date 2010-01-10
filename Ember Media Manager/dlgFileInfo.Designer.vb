@@ -37,6 +37,7 @@ Partial Class dlgFileInfo
         Me.ColumnHeader5 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader6 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader7 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader8 = New System.Windows.Forms.ColumnHeader
         Me.btnRemoveSet = New System.Windows.Forms.Button
         Me.btnEditSet = New System.Windows.Forms.Button
         Me.btnNewSet = New System.Windows.Forms.Button
@@ -47,7 +48,7 @@ Partial Class dlgFileInfo
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(465, 328)
+        Me.Cancel_Button.Location = New System.Drawing.Point(501, 324)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -58,7 +59,7 @@ Partial Class dlgFileInfo
         Me.lvStreams.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7})
+        Me.lvStreams.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8})
         Me.lvStreams.FullRowSelect = True
         ListViewGroup1.Header = "Video Streams"
         ListViewGroup1.Name = "VideoStreams"
@@ -74,7 +75,7 @@ Partial Class dlgFileInfo
         Me.lvStreams.Location = New System.Drawing.Point(4, 7)
         Me.lvStreams.MultiSelect = False
         Me.lvStreams.Name = "lvStreams"
-        Me.lvStreams.Size = New System.Drawing.Size(528, 315)
+        Me.lvStreams.Size = New System.Drawing.Size(564, 315)
         Me.lvStreams.TabIndex = 1
         Me.lvStreams.UseCompatibleStateImageBehavior = False
         Me.lvStreams.View = System.Windows.Forms.View.Details
@@ -110,6 +111,10 @@ Partial Class dlgFileInfo
         '
         Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         Me.ColumnHeader7.Width = 90
+        '
+        'ColumnHeader8
+        '
+        Me.ColumnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'btnRemoveSet
         '
@@ -174,7 +179,7 @@ Partial Class dlgFileInfo
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(540, 354)
+        Me.ClientSize = New System.Drawing.Size(576, 354)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.cbStreamType)
@@ -207,5 +212,6 @@ Partial Class dlgFileInfo
     Friend WithEvents cbStreamType As System.Windows.Forms.ComboBox
     Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader7 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader8 As System.Windows.Forms.ColumnHeader
 
 End Class

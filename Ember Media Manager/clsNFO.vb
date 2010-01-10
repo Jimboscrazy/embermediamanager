@@ -249,6 +249,7 @@ Public Class NFO
                         If Not String.IsNullOrEmpty(miVideo.Scantype) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(605, "Scan Type"), miVideo.Scantype, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Codec) Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miVideo.Codec, vbNewLine)
                         If Not String.IsNullOrEmpty(miVideo.Duration) Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(609, "Duration"), miVideo.Duration)
+                        If Not String.IsNullOrEmpty(miVideo.LongLanguage) Then strOutput.AppendFormat("{0}- {1}: {2}", vbNewLine, Master.eLang.GetString(610, "Language"), miVideo.LongLanguage)
                         iVS += 1
                     Next
 
@@ -354,6 +355,7 @@ Public Class NFO
             fivOut.Codec = String.Empty
             fivOut.Duration = String.Empty
             fivOut.Scantype = String.Empty
+            fivOut.Language = String.Empty
 
             For Each miVideo As MediaInfo.Video In miFIV.StreamDetails.Video
                 If Not String.IsNullOrEmpty(miVideo.Width) Then
@@ -366,6 +368,7 @@ Public Class NFO
                         fivOut.Codec = miVideo.Codec
                         fivOut.Duration = miVideo.Duration
                         fivOut.Scantype = miVideo.Scantype
+                        fivOut.Language = miVideo.Language
                     End If
                 End If
             Next
@@ -614,14 +617,14 @@ Public Class NFO
             If isChecked OrElse Not IsConformingNfo(sPath) Then
                 If isChecked OrElse File.Exists(sPath) Then
                     Dim i As Integer = 1
-                    Dim strNewName As String = String.Concat(Master.RemoveExtFromPath(sPath), ".info")
+                    Dim strNewName As String = String.Concat(FileManip.Common.RemoveExtFromPath(sPath), ".info")
                     'in case there is already a .info file
                     If File.Exists(strNewName) Then
                         Do
-                            strNewName = String.Format("{0}({1}).info", Master.RemoveExtFromPath(sPath), i)
+                            strNewName = String.Format("{0}({1}).info", FileManip.Common.RemoveExtFromPath(sPath), i)
                             i += 1
                         Loop While File.Exists(strNewName)
-                        strNewName = String.Format("{0}({1}).info", Master.RemoveExtFromPath(sPath), i)
+                        strNewName = String.Format("{0}({1}).info", FileManip.Common.RemoveExtFromPath(sPath), i)
                     End If
                     My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
                 End If

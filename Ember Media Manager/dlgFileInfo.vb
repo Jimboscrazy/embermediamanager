@@ -74,6 +74,7 @@ Public Class dlgFileInfo
                 i.SubItems.Add(Master.eLang.GetString(607, "Height"))
                 i.SubItems.Add(Master.eLang.GetString(608, "Aspect"))
                 i.SubItems.Add(Master.eLang.GetString(609, "Duration"))
+                i.SubItems.Add(Master.eLang.GetString(610, "Language"))
                 g.Items.Add(i)
                 lvStreams.Items.Add(i)
                 Dim v As MediaInfo.Video
@@ -89,6 +90,7 @@ Public Class dlgFileInfo
                         i.SubItems.Add(v.Height)
                         i.SubItems.Add(v.Aspect)
                         i.SubItems.Add(v.Duration)
+                        i.SubItems.Add(v.LongLanguage)
                         g.Items.Add(i)
                         lvStreams.Items.Add(i)
                     End If

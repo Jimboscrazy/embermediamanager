@@ -216,7 +216,7 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub dlgImgSelect_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        If Master.eSettings.AutoET AndAlso Not Master.eSettings.UseImgCache Then Master.DeleteDirectory(Me.CachePath)
+        If Master.eSettings.AutoET AndAlso Not Master.eSettings.UseImgCache Then FileManip.Delete.DeleteDirectory(Me.CachePath)
     End Sub
 
     Private Sub dlgImgSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

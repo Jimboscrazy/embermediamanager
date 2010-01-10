@@ -285,7 +285,7 @@ Public Class Images
             Directory.CreateDirectory(extraPath)
         End If
 
-        Master.MoveFileWithStream(faPath, Path.Combine(extraPath, String.Concat("thumb", iVal, ".jpg")))
+        FileManip.Common.MoveFileWithStream(faPath, Path.Combine(extraPath, String.Concat("thumb", iVal, ".jpg")))
 
     End Sub
 
@@ -997,7 +997,7 @@ Public Class Images
                                 Next
 
                                 Me.Clear()
-                                Master.DeleteDirectory(CachePath)
+                                FileManip.Delete.DeleteDirectory(CachePath)
                             End If
 
                             For Each iMovie As Media.Image In tmpListTMDB
@@ -1222,7 +1222,7 @@ foundIT:
                     Next
 
                     _image = Nothing
-                    Master.DeleteDirectory(CachePath)
+                    FileManip.Delete.DeleteDirectory(CachePath)
 
                 End If
             End If

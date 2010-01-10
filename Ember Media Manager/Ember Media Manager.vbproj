@@ -160,8 +160,10 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="clsDatabase.vb" />
+    <Compile Include="clsFileManip.vb" />
     <Compile Include="clsDVD.vb" />
     <Compile Include="clsErrorLog.vb" />
+    <Compile Include="clsScanner.vb" />
     <Compile Include="clsGenerateThumbs.vb" />
     <Compile Include="clsHashing.vb" />
     <Compile Include="clsHTTP.vb" />
