@@ -965,7 +965,7 @@ Namespace Media
     <XmlRoot("tvshow")> _
     Public Class TVShow
         Private _title As String
-        Private _tvdb As String
+        Private _id As String
         Private _rating As String
         Private _episodeguideurl As String
         Private _plot As String
@@ -993,19 +993,19 @@ Namespace Media
         End Property
 
         <XmlElement("id")> _
-        Public Property TVDB() As String
+        Public Property ID() As String
             Get
-                Return Me._tvdb
+                Return Me._id
             End Get
             Set(ByVal value As String)
-                Me._tvdb = value
+                Me._id = value
             End Set
         End Property
 
         <XmlIgnore()> _
         Public ReadOnly Property TVDBSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._tvdb)
+                Return Not String.IsNullOrEmpty(Me._id)
             End Get
         End Property
 
@@ -1151,7 +1151,7 @@ Namespace Media
 
         Public Sub Clear()
             _title = String.Empty
-            _tvdb = String.Empty
+            _id = String.Empty
             _rating = String.Empty
             _episodeguideurl = String.Empty
             _plot = String.Empty

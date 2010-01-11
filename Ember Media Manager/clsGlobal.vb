@@ -127,6 +127,29 @@ Public Class Master
         Dim FileSource As String
     End Structure
 
+    Public Structure DBTV
+        Dim ShowID As Long
+        Dim EpID As Long
+        Dim TVShow As Media.TVShow
+        Dim TVEp As Media.EpisodeDetails
+        Dim Season As Integer
+        Dim IsNewShow As Boolean
+        Dim IsMarkShow As Boolean
+        Dim IsLockShow As Boolean
+        Dim IsNewEp As Boolean
+        Dim IsMarkEp As Boolean
+        Dim IsLockEp As Boolean
+        Dim ShowNeedsSave As Boolean
+        Dim EpNeedsSave As Boolean
+        Dim Filename As String
+        Dim ShowPosterPath As String
+        Dim ShowFanartPath As String
+        Dim ShowNfoPath As String
+        Dim EpPosterPath As String
+        Dim EpNfoPath As String
+        Dim Source As String
+    End Structure
+
     Public Structure ScrapeOptions
         Dim bTitle As Boolean
         Dim bYear As Boolean
