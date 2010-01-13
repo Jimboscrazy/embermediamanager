@@ -34,11 +34,9 @@ Public Class frmMain
     ' ########################################
     ' ############# DECLARATIONS #############
     ' ########################################
-    Friend WithEvents bwFolderData As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwMediaInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
@@ -55,6 +53,7 @@ Public Class frmMain
     Private tmpTitle As String = String.Empty
     Private ReportDownloadPercent As Boolean = False
     Private IMDB As New IMDB.Scraper
+    Private fScanner As New Scanner
     Private dtMedia As New DataTable
     Private currRow As Integer = -1
     Private prevRow As Integer = -1
@@ -63,7 +62,6 @@ Public Class frmMain
     Private FilterArray As New ArrayList
     Private ScraperDone As Boolean = False
     Private LoadingDone As Boolean = False
-    Private isCL As Boolean = False
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
     Private ThemeXML As New XDocument
@@ -72,6 +70,7 @@ Public Class frmMain
     Private GenrePanelColor As Color = Color.Gainsboro
     Private IPUp As Integer = 500
     Private IPMid As Integer = 280
+    Private isCL As Boolean = False
 
     'filters
     Private filSearch As String = String.Empty
@@ -107,7 +106,6 @@ Public Class frmMain
         Dim Path As String
         Dim Movie As Master.DBMovie
         Dim ID As Integer
-        Dim SourceName As String
     End Structure
 
 #End Region '*** Declarations
@@ -158,15 +156,14 @@ Public Class frmMain
             End If
             If Not Me.WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
 
-            If Me.bwPrelim.IsBusy OrElse Me.bwFolderData.IsBusy OrElse isCL Then
+            If Me.fScanner.IsBusy OrElse isCL Then
                 doSave = False
             End If
 
-            If Me.bwFolderData.IsBusy Then Me.bwFolderData.CancelAsync()
+            If Me.fScanner.IsBusy Then Me.fScanner.Cancel()
             If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-            If Me.bwPrelim.IsBusy Then Me.bwPrelim.CancelAsync()
             If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
             If Me.bwCleanDB.IsBusy Then Me.bwCleanDB.CancelAsync()
@@ -178,11 +175,11 @@ Public Class frmMain
             pnlCancel.Visible = True
             Me.Refresh()
 
-            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            Do While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
             Loop
 
-            If doSave Then Me.SaveMovieList()
+            If doSave Then Master.DB.SaveMovieList()
 
             If Not isCL Then Master.DB.Close()
 
@@ -252,7 +249,7 @@ Public Class frmMain
                     Loop
                     If dResult.NeedsRefresh OrElse dResult.NeedsUpdate Then
                         If dResult.NeedsRefresh Then
-                            If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
+                            If Not Me.fScanner.IsBusy Then
                                 Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 Loop
@@ -260,7 +257,7 @@ Public Class frmMain
                             End If
                         End If
                         If dResult.NeedsUpdate Then
-                            If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy Then
+                            If Not Me.fScanner.IsBusy Then
                                 Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 Loop
@@ -268,7 +265,7 @@ Public Class frmMain
                             End If
                         End If
                     Else
-                        If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                        If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwScraper.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                             Me.FillList(0)
                         End If
                     End If
@@ -300,6 +297,8 @@ Public Class frmMain
 
         AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
         AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
+        AddHandler fScanner.ProgressUpdated, AddressOf ScannerProgressUpdated
+        AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
 
         Dim sPath As String = String.Concat(Master.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
         If File.Exists(sPath) Then
@@ -434,10 +433,10 @@ Public Class frmMain
                             If Master.currMovie.Movie Is Nothing Then
                                 Master.currMovie.Movie = New Media.Movie
                                 Master.currMovie.Movie.Title = tmpTitle
-                                Dim sFile As New Master.FileAndSource
+                                Dim sFile As New Scanner.FileAndSource
                                 Dim aContents() As String
                                 sFile.Filename = MoviePath
-                                aContents = Scanner.GetFolderContents(sFile.Filename, sFile.isSingle)
+                                aContents = fScanner.GetFolderContents(sFile.Filename, sFile.isSingle)
                                 sFile.Poster = aContents(0)
                                 sFile.Fanart = aContents(1)
                                 sFile.Nfo = aContents(2)
@@ -770,7 +769,7 @@ Public Class frmMain
 
         Try
 
-            If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
@@ -1314,8 +1313,8 @@ Public Class frmMain
                     End If
                 Next
             ElseIf e.KeyChar = Chr(13) Then
-                If Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse _
-                Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
+                If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse _
+                Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
                 OrElse Me.bwCleanDB.IsBusy Then Return
 
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
@@ -2229,7 +2228,7 @@ Public Class frmMain
 
     Private Sub cbFilterFileSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource.SelectedIndexChanged
         Try
-            Do While Me.bwFolderData.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwPrelim.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            Do While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
             Loop
 
@@ -2687,221 +2686,6 @@ Public Class frmMain
     ' ########################################
     ' ########## WORKER COMPONENTS ###########
     ' ########################################
-
-    Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
-
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        Try
-
-            Master.MoviePaths.Clear()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = "SELECT MoviePath FROM movies;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        Master.MoviePaths.Add(SQLreader("MoviePath").ToString.ToLower)
-                    End While
-                End Using
-            End Using
-
-            Master.MediaList.Clear()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                If Not String.IsNullOrEmpty(Args.SourceName) Then
-                    SQLcommand.CommandText = String.Format("SELECT * FROM sources WHERE Name = ""{0}"";", Args.SourceName)
-                Else
-                    SQLcommand.CommandText = "SELECT * FROM sources;"
-                End If
-
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                        SQLUpdatecommand.CommandText = "UPDATE sources SET LastScan = (?) WHERE ID = (?);"
-                        Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
-                        Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
-                        While SQLreader.Read
-                            Master.SourceLastScan = Convert.ToDateTime(SQLreader("LastScan").ToString)
-                            If Convert.ToBoolean(SQLreader("Recursive")) OrElse (Master.eSettings.IgnoreLastScan OrElse Directory.GetLastWriteTime(SQLreader("Path").ToString) > Master.SourceLastScan) Then
-                                'save the scan time back to the db
-                                parLastScan.Value = Now
-                                parID.Value = SQLreader("ID")
-                                SQLUpdatecommand.ExecuteNonQuery()
-                                Scanner.ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")))
-                                If Me.bwPrelim.CancellationPending Then
-                                    e.Cancel = True
-                                    Return
-                                End If
-                            End If
-                        End While
-                    End Using
-                End Using
-            End Using
-
-            'remove any db entries that no longer exist
-            If Master.eSettings.CleanDB Then Master.DB.Clean()
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
-
-    Private Sub bwPrelim_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwPrelim.RunWorkerCompleted
-
-        '//
-        ' Thread finished: set up progress bar, display count, and begin thread to load data
-        '\\
-        If Not e.Cancelled Then
-            Try
-                If Master.MediaList.Count = 0 Then
-
-                    If isCL Then
-                        Me.ScraperDone = True
-                    Else
-                        Me.FillList(0)
-                        'Me.tslStatus.Text = Master.eLang.GetString(111, "Unable to load directories. Please check settings.")
-                        Me.tspbLoading.Visible = False
-                        Me.tslLoading.Visible = False
-                        Me.tabsMain.Enabled = True
-                        Me.tsbRefreshMedia.Enabled = True
-                        Me.ToolsToolStripMenuItem.Enabled = False
-                        Me.tsbAutoPilot.Enabled = False
-                        Me.mnuMediaList.Enabled = False
-                    End If
-
-                Else
-                    Me.tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
-                    Me.tspbLoading.Style = ProgressBarStyle.Continuous
-                    Me.tslLoading.Visible = True
-                    Me.tspbLoading.Visible = True
-                    Me.tspbLoading.Maximum = (Master.MediaList.Count + 1)
-
-                    Me.bwFolderData = New System.ComponentModel.BackgroundWorker
-                    Me.bwFolderData.WorkerReportsProgress = True
-                    Me.bwFolderData.WorkerSupportsCancellation = True
-                    Me.bwFolderData.RunWorkerAsync()
-                End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-        End If
-    End Sub
-
-    Private Sub bwFolderData_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwFolderData.DoWork
-
-        '//
-        ' Thread to fill a datatable with basic media data
-        '\\
-        Dim currentIndex As Integer = 0
-        Dim tmpMovieDB As New Master.DBMovie
-        Dim aContents(6) As String
-
-        Try
-            tmpMovieDB.Movie = New Media.Movie
-            'process the folder type media
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                For Each sFile As Master.FileAndSource In Master.MediaList
-                    If Me.bwFolderData.CancellationPending Then
-                        e.Cancel = True
-                        Return
-                    End If
-                    If Not String.IsNullOrEmpty(sFile.Filename) Then
-                        'first, lets get the contents
-                        aContents = Scanner.GetFolderContents(sFile.Filename, sFile.isSingle)
-                        sFile.Poster = aContents(0)
-                        sFile.Fanart = aContents(1)
-                        sFile.Nfo = aContents(2)
-                        sFile.Trailer = aContents(3)
-                        sFile.Subs = aContents(4)
-                        sFile.Extra = aContents(5)
-
-                        If Not String.IsNullOrEmpty(sFile.Nfo) Then
-                            tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
-                        Else
-                            tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
-                        End If
-
-                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                            'no title so assume it's an invalid nfo, clear nfo path if exists
-                            sFile.Nfo = String.Empty
-
-                            If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
-                                tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name, False)
-                            Else
-                                If sFile.UseFolder AndAlso sFile.isSingle Then
-                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
-                                    tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name, False)
-                                Else
-                                    tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
-                                    tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename), False)
-                                End If
-                            End If
-                            If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
-                        Else
-                            Dim tTitle As String = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
-                            If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
-                            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
-                            Else
-                                tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
-                            End If
-                        End If
-
-                        Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
-                        If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
-                            tmpMovieDB.NfoPath = sFile.Nfo
-                            tmpMovieDB.PosterPath = sFile.Poster
-                            tmpMovieDB.FanartPath = sFile.Fanart
-                            tmpMovieDB.TrailerPath = sFile.Trailer
-                            tmpMovieDB.SubPath = sFile.Subs
-                            tmpMovieDB.ExtraPath = sFile.Extra
-                            tmpMovieDB.Filename = sFile.Filename
-                            tmpMovieDB.isSingle = sFile.isSingle
-                            tmpMovieDB.UseFolder = sFile.UseFolder
-                            tmpMovieDB.Source = sFile.Source
-                            tmpMovieDB.FileSource = XML.GetFileSource(sFile.Filename)
-                            tmpMovieDB.IsNew = True
-                            tmpMovieDB.IsLock = False
-                            tmpMovieDB.IsMark = Master.eSettings.MarkNew
-                            'Do the Save
-                            tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
-                        End If
-                        currentIndex += 1
-                    End If
-                Next
-                SQLtransaction.Commit()
-            End Using
-            If Me.bwFolderData.CancellationPending Then
-                e.Cancel = True
-                Return
-            End If
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub bwFolderData_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwFolderData.ProgressChanged
-
-        '//
-        ' Update the status bar with the name of the current media name and increase progress bar
-        '\\
-
-        If Not isCL Then
-            Me.tspbLoading.Value = e.ProgressPercentage
-            Me.tslStatus.Text = e.UserState.ToString
-        End If
-
-    End Sub
-
-    Private Sub bwFolderData_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwFolderData.RunWorkerCompleted
-
-        '//
-        ' Thread finished: fill datagrid with info and configure columns
-        '\\
-
-        If Not e.Cancelled Then
-            Me.FillList(0)
-        End If
-
-    End Sub
 
     Private Sub bwMediaInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMediaInfo.DoWork
 
@@ -4101,25 +3885,6 @@ doCancel:
             Me.tslStatus.Text = Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)...")
             Application.DoEvents()
 
-            If bwPrelim.IsBusy Then
-                bwPrelim.CancelAsync()
-                While bwPrelim.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
-
-            If bwFolderData.IsBusy Then
-                bwFolderData.CancelAsync()
-                While bwFolderData.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
-
-            Me.SaveMovieList()
-            Me.txtSearch.Text = String.Empty
-
-            Me.dgvMediaList.DataSource = Nothing
-
             Me.ClearInfo()
             Me.ClearFilters()
             Me.EnableFilters(False)
@@ -4130,10 +3895,12 @@ doCancel:
             Me.mnuMediaList.Enabled = False
             Me.tabsMain.Enabled = False
             Me.tabMovies.Text = Master.eLang.GetString(36, "Movies")
+            Me.txtSearch.Text = String.Empty
 
-            Me.bwPrelim = New System.ComponentModel.BackgroundWorker
-            Me.bwPrelim.WorkerSupportsCancellation = True
-            Me.bwPrelim.RunWorkerAsync(New Arguments With {.SourceName = SourceName})
+            Me.fScanner.CancelAndWait()
+            Me.dgvMediaList.DataSource = Nothing
+
+            Me.fScanner.Start(SourceName)
 
         Catch ex As Exception
             Me.LoadingDone = True
@@ -4987,7 +4754,7 @@ doCancel:
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
                 tmpMovieDb.FileSource = XML.GetFileSource(tmpMovieDb.Filename)
-                aContents = Scanner.GetFolderContents(tmpMovieDb.Filename, Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(2)))
+                aContents = fScanner.GetFolderContents(tmpMovieDb.Filename, Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(2)))
                 tmpMovieDb.PosterPath = aContents(0)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(aContents(0)), False, True)})
                 tmpMovieDb.FanartPath = aContents(1)
@@ -5372,27 +5139,6 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub SaveMovieList()
-        Try
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLcommand.CommandText = "UPDATE movies SET new = (?);"
-                    Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
-                    parNew.Value = False
-                    SQLcommand.ExecuteNonQuery()
-                End Using
-                SQLtransaction.Commit()
-            End Using
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = "VACUUM;"
-                SQLcommand.ExecuteNonQuery()
-            End Using
-
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
     Private Sub FillList(ByVal iIndex As Integer, Optional ByVal DupesOnly As Boolean = False, Optional ByVal Actor As String = "")
         Try
             Me.bsMedia.DataSource = Nothing
@@ -5550,12 +5296,52 @@ doCancel:
                 Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, iRow).Value), Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
 
-            If Not Me.bwFolderData.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwPrelim.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                 Me.mnuMediaList.Enabled = True
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub ScannerProgressUpdated(ByVal iPercent As Integer, ByVal sText As String)
+        '//
+        ' Update the status bar with the name of the current media name and increase progress bar
+        '\\
+
+        If Not isCL Then
+            Me.tspbLoading.Value = iPercent
+            Me.tslStatus.Text = sText
+        End If
+    End Sub
+
+    Private Sub ScanningCompleted(ByVal iStatus As Integer, ByVal iMax As Integer)
+
+        Select Case iStatus
+            Case 0
+                If isCL Then
+                    Me.ScraperDone = True
+                Else
+                    Me.FillList(0)
+                    'Me.tslStatus.Text = Master.eLang.GetString(111, "Unable to load directories. Please check settings.")
+                    Me.tspbLoading.Visible = False
+                    Me.tslLoading.Visible = False
+                    Me.tabsMain.Enabled = True
+                    Me.tsbRefreshMedia.Enabled = True
+                    Me.ToolsToolStripMenuItem.Enabled = False
+                    Me.tsbAutoPilot.Enabled = False
+                    Me.mnuMediaList.Enabled = False
+                End If
+            Case 1
+                Me.tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
+                Me.tspbLoading.Style = ProgressBarStyle.Continuous
+                Me.tslLoading.Visible = True
+                Me.tspbLoading.Visible = True
+                Me.tspbLoading.Maximum = iMax
+            Case 2
+                Me.FillList(0)
+        End Select
+
     End Sub
 
 #End Region '*** Routines/Functions

@@ -1560,4 +1560,24 @@ Public Class Database
         Return True
     End Function
 
+    Public Sub SaveMovieList()
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLcommand.CommandText = "UPDATE movies SET new = (?);"
+                    Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
+                    parNew.Value = False
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
+            End Using
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLcommand.CommandText = "VACUUM;"
+                SQLcommand.ExecuteNonQuery()
+            End Using
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class

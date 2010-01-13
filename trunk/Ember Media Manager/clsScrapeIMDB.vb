@@ -480,7 +480,6 @@ mResult:
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 If Options.bRelease Then
-                    'Get Release Date ( According to your country )
                     Dim RelDate As Date
                     Dim sRelDate As String = Regex.Match(HTML, "\d+\s\w+\s\d\d\d\d\s").ToString.Trim
                     If Not sRelDate = String.Empty Then
@@ -778,7 +777,7 @@ mPlot:
                         Dim q = From M In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN) _
                                 Where Not DirectCast(M, Match).Groups("name").ToString = "more" _
                                 AndAlso Not DirectCast(M, Match).Groups("name").ToString = "(more)" _
-                                AndAlso Not DirectCast(M, Match).Groups("name").ToString = "(WGA)" _
+                                AndAlso Not DirectCast(M, Match).Groups("name").ToString = "WGA" _
                                 Select Writer = Web.HttpUtility.HtmlDecode(String.Concat(DirectCast(M, Match).Groups("name").ToString, If(FullCrew, " (writer)", String.Empty)))
 
                         If q.Count > 0 Then

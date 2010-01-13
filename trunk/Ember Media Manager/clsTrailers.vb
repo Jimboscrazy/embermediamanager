@@ -220,11 +220,13 @@ Public Class Trailers
     End Function
 
     Public Function IsAllowedToDownload(ByVal sPath As String, ByVal isDL As Boolean, ByVal currNfoTrailer As String, Optional ByVal isSS As Boolean = False) As Boolean
+        Dim fScanner As New Scanner
+
         If isDL Then
-            If String.IsNullOrEmpty(Scanner.GetTrailerPath(sPath)) OrElse Master.eSettings.OverwriteTrailer Then
+            If String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) OrElse Master.eSettings.OverwriteTrailer Then
                 Return True
             Else
-                If isSS AndAlso String.IsNullOrEmpty(Scanner.GetTrailerPath(sPath)) Then
+                If isSS AndAlso String.IsNullOrEmpty(fScanner.GetTrailerPath(sPath)) Then
                     If String.IsNullOrEmpty(currNfoTrailer) OrElse Not Master.eSettings.LockTrailer Then
                         Return True
                     Else

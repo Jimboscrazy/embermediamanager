@@ -23,6 +23,171 @@ Imports System.Text.RegularExpressions
 
 Public Class Scanner
 
+    Public MediaList As New List(Of FileAndSource)
+    Friend WithEvents bwFolderData As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
+
+    Public Event ProgressUpdated(ByVal iPercent As Integer, ByVal sText As String)
+    Public Event ScanningCompleted(ByVal iStatus As Integer, ByVal iMax As Integer)
+
+    Private Structure Arguments
+        Dim SourceName As String
+    End Structure
+
+    Public Class FileAndSource
+        Dim _filename As String
+        Dim _source As String
+        Dim _single As Boolean
+        Dim _usefolder As Boolean
+        Dim _poster As String
+        Dim _fanart As String
+        Dim _nfo As String
+        Dim _extra As String
+        Dim _trailer As String
+        Dim _subs As String
+        Dim _contents As New List(Of FileInfo)
+
+        Public Property Filename() As String
+            Get
+                Return _filename
+            End Get
+            Set(ByVal value As String)
+                _filename = value
+            End Set
+        End Property
+
+        Public Property Source() As String
+            Get
+                Return _source
+            End Get
+            Set(ByVal value As String)
+                _source = value
+            End Set
+        End Property
+
+        Public Property isSingle() As Boolean
+            Get
+                Return _single
+            End Get
+            Set(ByVal value As Boolean)
+                _single = value
+            End Set
+        End Property
+
+        Public Property UseFolder() As Boolean
+            Get
+                Return _usefolder
+            End Get
+            Set(ByVal value As Boolean)
+                _usefolder = value
+            End Set
+        End Property
+
+        Public Property Poster() As String
+            Get
+                Return _poster
+            End Get
+            Set(ByVal value As String)
+                _poster = value
+            End Set
+        End Property
+
+        Public Property Fanart() As String
+            Get
+                Return _fanart
+            End Get
+            Set(ByVal value As String)
+                _fanart = value
+            End Set
+        End Property
+
+        Public Property Nfo() As String
+            Get
+                Return _nfo
+            End Get
+            Set(ByVal value As String)
+                _nfo = value
+            End Set
+        End Property
+
+        Public Property Extra() As String
+            Get
+                Return _extra
+            End Get
+            Set(ByVal value As String)
+                _extra = value
+            End Set
+        End Property
+
+        Public Property Trailer() As String
+            Get
+                Return _trailer
+            End Get
+            Set(ByVal value As String)
+                _trailer = value
+            End Set
+        End Property
+
+        Public Property Subs() As String
+            Get
+                Return _subs
+            End Get
+            Set(ByVal value As String)
+                _subs = value
+            End Set
+        End Property
+
+        Public Property Contents() As List(Of FileInfo)
+            Get
+                Return _contents
+            End Get
+            Set(ByVal value As List(Of FileInfo))
+                _contents = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+        Public Sub Clear()
+            _filename = String.Empty
+            _source = String.Empty
+            _usefolder = False
+            _poster = String.Empty
+            _fanart = String.Empty
+            _nfo = String.Empty
+            _extra = String.Empty
+            _trailer = String.Empty
+            _subs = String.Empty
+            _contents.Clear()
+        End Sub
+    End Class
+
+    Public Sub Start(ByVal SourceName As String)
+        Me.bwPrelim = New System.ComponentModel.BackgroundWorker
+        Me.bwPrelim.WorkerReportsProgress = True
+        Me.bwPrelim.WorkerSupportsCancellation = True
+        Me.bwPrelim.RunWorkerAsync(New Arguments With {.SourceName = SourceName})
+    End Sub
+
+    Public Function IsBusy() As Boolean
+        Return bwPrelim.IsBusy OrElse bwFolderData.IsBusy
+    End Function
+
+    Public Sub Cancel()
+        If Me.bwPrelim.IsBusy Then Me.bwPrelim.CancelAsync()
+        If Me.bwFolderData.IsBusy Then Me.bwFolderData.CancelAsync()
+    End Sub
+
+    Public Sub CancelAndWait()
+        If bwPrelim.IsBusy Then bwPrelim.CancelAsync()
+        If bwFolderData.IsBusy Then bwFolderData.CancelAsync()
+        While bwPrelim.IsBusy OrElse bwFolderData.IsBusy
+            Application.DoEvents()
+        End While
+    End Sub
+
     ''' <summary>
     ''' Get all directories/movies in the parent directory
     ''' </summary>
@@ -31,7 +196,7 @@ Public Class Scanner
     ''' <param name="bRecur">Scan directory recursively?</param>
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
-    Public Shared Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
+    Public Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
 
         Try
             Dim sMoviePath As String = String.Empty
@@ -51,6 +216,8 @@ Public Class Scanner
                 Dim upDir = From uD As DirectoryInfo In Dirs Where (Master.eSettings.IgnoreLastScan Or uD.LastWriteTime > Master.SourceLastScan) And isValidDir(uD.FullName)
                 If upDir.Count > 0 Then
                     For Each inDir As DirectoryInfo In upDir
+                        If Me.bwPrelim.CancellationPending Then Return
+
                         ScanForFiles(inDir.FullName, sSource, bUseFolder, bSingle)
                         If bRecur Then
                             ScanSourceDir(sSource, inDir.FullName, bRecur, bUseFolder, bSingle)
@@ -71,7 +238,7 @@ Public Class Scanner
     ''' <param name="sSource">Name of source.</param>
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
-    Public Shared Sub ScanForFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
+    Public Sub ScanForFiles(ByVal sPath As String, ByVal sSource As String, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
 
         Try
 
@@ -79,7 +246,7 @@ Public Class Scanner
             Dim di As DirectoryInfo
             Dim lFi As New List(Of FileInfo)
             Dim SkipStack As Boolean = False
-            Dim fList As New List(Of Master.FileAndSource)
+            Dim fList As New List(Of FileAndSource)
             Dim tSingle As Boolean = False
             Dim vtsSingle As Boolean = False
             Dim tFile As String = String.Empty
@@ -115,6 +282,7 @@ Public Class Scanner
                         End If
                         vtsSingle = (hasIfo + hasVob + hasBup) > 1
                         If vtsSingle AndAlso Path.GetFileName(tFile).ToLower = "video_ts.vob" Then Exit For
+                        If Me.bwPrelim.CancellationPending Then Return
                     Next
                 End If
 
@@ -123,7 +291,7 @@ Public Class Scanner
                     Not Path.GetFileName(tFile).ToLower.Contains("-trailer") AndAlso Not Path.GetFileName(tFile).ToLower.Contains("[trailer") AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("sample") Then
                         tmpList.Add(tFile.ToLower)
-                        fList.Add(New Master.FileAndSource With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder, .Contents = lFi})
+                        fList.Add(New FileAndSource With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder, .Contents = lFi})
                     End If
                 Else
                     lFi.Sort(AddressOf FileManip.Common.SortFileNames)
@@ -138,9 +306,10 @@ Public Class Scanner
                             Else
                                 tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
                             End If
-                            fList.Add(New Master.FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
+                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
                             If bSingle AndAlso Not SkipStack Then Exit For
                         End If
+                        If Me.bwPrelim.CancellationPending Then Return
                     Next
                 End If
 
@@ -149,9 +318,9 @@ Public Class Scanner
                 If tSingle Then
                     fList(0).isSingle = True
                     fList(0).UseFolder = bUseFolder
-                    Master.MediaList.Add(fList(0))
+                    MediaList.Add(fList(0))
                 Else
-                    Master.MediaList.AddRange(fList)
+                    MediaList.AddRange(fList)
                 End If
 
                 fList = Nothing
@@ -166,7 +335,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sPath">Full path of the directory to check</param>
     ''' <returns>True if directory is valid, false if not.</returns>
-    Public Shared Function isValidDir(ByVal sPath As String) As Boolean
+    Public Function isValidDir(ByVal sPath As String) As Boolean
 
         Try
 
@@ -202,7 +371,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="MovieDir">DirectoryInfo object of directory to scan.</param>
     ''' <returns>True if the path's subdirectories contain movie files, else false.</returns>
-    Public Shared Function SubDirsHaveMovies(ByVal MovieDir As DirectoryInfo) As Boolean
+    Public Function SubDirsHaveMovies(ByVal MovieDir As DirectoryInfo) As Boolean
         Try
             If Directory.Exists(MovieDir.FullName) Then
 
@@ -232,7 +401,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="inDir">DirectoryInfo object of directory to scan</param>
     ''' <returns>True if directory contains movie files.</returns>
-    Public Shared Function ScanSubs(ByVal inDir As DirectoryInfo) As Boolean
+    Public Function ScanSubs(ByVal inDir As DirectoryInfo) As Boolean
         Try
             Dim lFi As New List(Of FileInfo)
 
@@ -264,7 +433,7 @@ Public Class Scanner
     ''' <param name="sPath">Full path to directory.</param>
     ''' <param name="bSingle">Only check for <movie> type files if there could be more than one movie in the directory, else check for all types.</param>
     ''' <returns>String array (0 = poster, 1 = fanart, 2 = nfo, 3 = trailer, 4 = subtitle, 5 = extrathumbs)</returns>
-    Public Shared Function GetFolderContents(ByVal sPath As String, ByVal bSingle As Boolean) As String()
+    Public Function GetFolderContents(ByVal sPath As String, ByVal bSingle As Boolean) As String()
 
         Dim NfoPath As String = String.Empty
         Dim PosterPath As String = String.Empty
@@ -427,7 +596,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sPath">Full path to a movie file for which you are trying to find the accompanying trailer.</param>
     ''' <returns>Full path of trailer file.</returns>
-    Public Shared Function GetTrailerPath(ByVal sPath As String) As String
+    Public Function GetTrailerPath(ByVal sPath As String) As String
 
         Dim tFile As String = String.Empty
 
@@ -459,7 +628,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sSource">Name of source.</param>
     ''' <param name="sPath">Path of source.</param>
-    Public Shared Sub ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String)
+    Public Sub ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String)
 
         Try
             Dim sTVEpPath As String = String.Empty
@@ -492,13 +661,13 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sPath">Full path of the directory.</param>
     ''' <param name="sSource">Name of source.</param>
-    Public Shared Sub ScanForTVFiles(ByVal sPath As String, ByVal sSource As String)
+    Public Sub ScanForTVFiles(ByVal sPath As String, ByVal sSource As String)
 
         Try
 
             Dim di As DirectoryInfo
             Dim lFi As New List(Of FileInfo)
-            Dim fList As New List(Of Master.FileAndSource)
+            Dim fList As New List(Of FileAndSource)
             Dim tFile As String = String.Empty
 
             di = New DirectoryInfo(sPath)
@@ -516,11 +685,11 @@ Public Class Scanner
                     If Not Master.MoviePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                         Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                         lFile.Length >= Master.eSettings.SkipLessThan * 1048576 Then
-                        fList.Add(New Master.FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .Contents = lFi})
+                        fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .Contents = lFi})
                     End If
                 Next
 
-                Master.MediaList.AddRange(fList)
+                Me.MediaList.AddRange(fList)
 
                 fList = Nothing
             End If
@@ -528,4 +697,197 @@ Public Class Scanner
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
+
+        Try
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+
+            Master.DB.SaveMovieList()
+
+            Master.MoviePaths.Clear()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLcommand.CommandText = "SELECT MoviePath FROM movies;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        Master.MoviePaths.Add(SQLreader("MoviePath").ToString.ToLower)
+                        If Me.bwPrelim.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+                    End While
+                End Using
+            End Using
+
+            Me.MediaList.Clear()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                If Not String.IsNullOrEmpty(Args.SourceName) Then
+                    SQLcommand.CommandText = String.Format("SELECT * FROM sources WHERE Name = ""{0}"";", Args.SourceName)
+                Else
+                    SQLcommand.CommandText = "SELECT * FROM sources;"
+                End If
+
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        SQLUpdatecommand.CommandText = "UPDATE sources SET LastScan = (?) WHERE ID = (?);"
+                        Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
+                        Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                        While SQLreader.Read
+                            Master.SourceLastScan = Convert.ToDateTime(SQLreader("LastScan").ToString)
+                            If Convert.ToBoolean(SQLreader("Recursive")) OrElse (Master.eSettings.IgnoreLastScan OrElse Directory.GetLastWriteTime(SQLreader("Path").ToString) > Master.SourceLastScan) Then
+                                'save the scan time back to the db
+                                parLastScan.Value = Now
+                                parID.Value = SQLreader("ID")
+                                SQLUpdatecommand.ExecuteNonQuery()
+                                ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")))
+                            End If
+                            If Me.bwPrelim.CancellationPending Then
+                                e.Cancel = True
+                                Return
+                            End If
+                        End While
+                    End Using
+                End Using
+            End Using
+
+            'remove any db entries that no longer exist
+            If Master.eSettings.CleanDB Then Master.DB.Clean()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub bwPrelim_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwPrelim.RunWorkerCompleted
+
+        '//
+        ' Thread finished: set up progress bar, display count, and begin thread to load data
+        '\\
+        If Not e.Cancelled Then
+            Try
+                If MediaList.Count = 0 Then
+                    RaiseEvent ScanningCompleted(0, 0)
+                Else
+                    RaiseEvent ScanningCompleted(1, MediaList.Count + 1)
+
+                    Me.bwFolderData = New System.ComponentModel.BackgroundWorker
+                    Me.bwFolderData.WorkerReportsProgress = True
+                    Me.bwFolderData.WorkerSupportsCancellation = True
+                    Me.bwFolderData.RunWorkerAsync()
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End If
+    End Sub
+
+    Private Sub bwFolderData_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwFolderData.DoWork
+
+        '//
+        ' Thread to fill a datatable with basic media data
+        '\\
+        Dim currentIndex As Integer = 0
+        Dim tmpMovieDB As New Master.DBMovie
+        Dim aContents(6) As String
+
+        Try
+            tmpMovieDB.Movie = New Media.Movie
+            'process the folder type media
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each sFile As FileAndSource In MediaList
+                    If Me.bwFolderData.CancellationPending Then
+                        e.Cancel = True
+                        Return
+                    End If
+                    If Not String.IsNullOrEmpty(sFile.Filename) Then
+                        'first, lets get the contents
+                        aContents = GetFolderContents(sFile.Filename, sFile.isSingle)
+                        sFile.Poster = aContents(0)
+                        sFile.Fanart = aContents(1)
+                        sFile.Nfo = aContents(2)
+                        sFile.Trailer = aContents(3)
+                        sFile.Subs = aContents(4)
+                        sFile.Extra = aContents(5)
+
+                        If Not String.IsNullOrEmpty(sFile.Nfo) Then
+                            tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                        Else
+                            tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
+                        End If
+
+                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                            'no title so assume it's an invalid nfo, clear nfo path if exists
+                            sFile.Nfo = String.Empty
+
+                            If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
+                                tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name, False)
+                            Else
+                                If sFile.UseFolder AndAlso sFile.isSingle Then
+                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
+                                    tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name, False)
+                                Else
+                                    tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                    tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename), False)
+                                End If
+                            End If
+                            If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
+                        Else
+                            Dim tTitle As String = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
+                            If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
+                            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
+                            Else
+                                tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
+                            End If
+                        End If
+
+                        Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
+                        If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
+                            tmpMovieDB.NfoPath = sFile.Nfo
+                            tmpMovieDB.PosterPath = sFile.Poster
+                            tmpMovieDB.FanartPath = sFile.Fanart
+                            tmpMovieDB.TrailerPath = sFile.Trailer
+                            tmpMovieDB.SubPath = sFile.Subs
+                            tmpMovieDB.ExtraPath = sFile.Extra
+                            tmpMovieDB.Filename = sFile.Filename
+                            tmpMovieDB.isSingle = sFile.isSingle
+                            tmpMovieDB.UseFolder = sFile.UseFolder
+                            tmpMovieDB.Source = sFile.Source
+                            tmpMovieDB.FileSource = XML.GetFileSource(sFile.Filename)
+                            tmpMovieDB.IsNew = True
+                            tmpMovieDB.IsLock = False
+                            tmpMovieDB.IsMark = Master.eSettings.MarkNew
+                            'Do the Save
+                            tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
+                        End If
+                        currentIndex += 1
+                    End If
+                Next
+                SQLtransaction.Commit()
+            End Using
+            If Me.bwFolderData.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub bwFolderData_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwFolderData.ProgressChanged
+
+        If Not bwFolderData.CancellationPending Then RaiseEvent ProgressUpdated(e.ProgressPercentage, e.UserState.ToString)
+
+    End Sub
+
+    Private Sub bwFolderData_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwFolderData.RunWorkerCompleted
+
+        If Not e.Cancelled Then
+            RaiseEvent ScanningCompleted(2, 0)
+        End If
+
+    End Sub
+
 End Class
