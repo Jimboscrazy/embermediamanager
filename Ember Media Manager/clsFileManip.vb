@@ -34,6 +34,8 @@ Namespace FileManip
         Public Function DeleteFiles(ByVal isCleaner As Boolean, ByVal mMovie As Master.DBMovie) As Boolean
             Dim dPath As String = String.Empty
             Dim bReturn As Boolean = False
+            Dim fScanner As New Scanner
+
             Try
                 If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
                     dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".ext")
@@ -92,14 +94,13 @@ Namespace FileManip
                             DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
                         Else
                             'check if there are other folders with movies in them
-                            If Not Scanner.SubDirsHaveMovies(New DirectoryInfo(Directory.GetParent(mMovie.Filename).FullName)) Then
+                            If Not fScanner.SubDirsHaveMovies(New DirectoryInfo(Directory.GetParent(mMovie.Filename).FullName)) Then
                                 'no movies in sub dirs... delete the whole thing
                                 DeleteDirectory(Directory.GetParent(mMovie.Filename).FullName)
                             Else
                                 'just delete the movie file itself
                                 File.Delete(mMovie.Filename)
                             End If
-
                         End If
                     Else
                         For Each lFI As FileInfo In ioFi
@@ -217,6 +218,8 @@ Namespace FileManip
             Dim dPath As String = String.Empty
             Dim bReturn As Boolean = False
             Dim ItemsToDelete As New List(Of FileSystemInfo)
+            Dim fScanner As New Scanner
+
             Try
                 Dim MovieFile As New FileInfo(mMovie.Filename)
                 Dim MovieDir As DirectoryInfo = MovieFile.Directory
@@ -280,7 +283,7 @@ Namespace FileManip
                             ItemsToDelete.Add(MovieDir.Parent)
                         Else
                             'check if there are other folders with movies in them
-                            If Not Scanner.SubDirsHaveMovies(MovieDir) Then
+                            If Not fScanner.SubDirsHaveMovies(MovieDir) Then
                                 'no movies in sub dirs... delete the whole thing
                                 ItemsToDelete.Add(MovieDir)
                             Else

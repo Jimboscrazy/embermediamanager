@@ -30,7 +30,7 @@ Public Class Master
     'Global Variables
     Public Shared eSettings As New emmSettings
     Public Shared eLang As New Localization
-    Public Shared MediaList As New List(Of FileAndSource)
+    'Public Shared MediaList As New List(Of FileAndSource)
     Public Shared eLog As New ErrorLogger
     Public Shared DefaultOptions As New ScrapeOptions
     Public Shared GlobalScrapeMod As New ScrapeModifier
@@ -226,136 +226,6 @@ Public Class Master
             _imagepath = String.Empty
             _posters.Clear()
             _fanart.Clear()
-        End Sub
-    End Class
-
-    Public Class FileAndSource
-        Dim _filename As String
-        Dim _source As String
-        Dim _single As Boolean
-        Dim _usefolder As Boolean
-        Dim _poster As String
-        Dim _fanart As String
-        Dim _nfo As String
-        Dim _extra As String
-        Dim _trailer As String
-        Dim _subs As String
-        Dim _contents As New List(Of FileInfo)
-
-        Public Property Filename() As String
-            Get
-                Return _filename
-            End Get
-            Set(ByVal value As String)
-                _filename = value
-            End Set
-        End Property
-
-        Public Property Source() As String
-            Get
-                Return _source
-            End Get
-            Set(ByVal value As String)
-                _source = value
-            End Set
-        End Property
-
-        Public Property isSingle() As Boolean
-            Get
-                Return _single
-            End Get
-            Set(ByVal value As Boolean)
-                _single = value
-            End Set
-        End Property
-
-        Public Property UseFolder() As Boolean
-            Get
-                Return _usefolder
-            End Get
-            Set(ByVal value As Boolean)
-                _usefolder = value
-            End Set
-        End Property
-
-        Public Property Poster() As String
-            Get
-                Return _poster
-            End Get
-            Set(ByVal value As String)
-                _poster = value
-            End Set
-        End Property
-
-        Public Property Fanart() As String
-            Get
-                Return _fanart
-            End Get
-            Set(ByVal value As String)
-                _fanart = value
-            End Set
-        End Property
-
-        Public Property Nfo() As String
-            Get
-                Return _nfo
-            End Get
-            Set(ByVal value As String)
-                _nfo = value
-            End Set
-        End Property
-
-        Public Property Extra() As String
-            Get
-                Return _extra
-            End Get
-            Set(ByVal value As String)
-                _extra = value
-            End Set
-        End Property
-
-        Public Property Trailer() As String
-            Get
-                Return _trailer
-            End Get
-            Set(ByVal value As String)
-                _trailer = value
-            End Set
-        End Property
-
-        Public Property Subs() As String
-            Get
-                Return _subs
-            End Get
-            Set(ByVal value As String)
-                _subs = value
-            End Set
-        End Property
-
-        Public Property Contents() As List(Of FileInfo)
-            Get
-                Return _contents
-            End Get
-            Set(ByVal value As List(Of FileInfo))
-                _contents = value
-            End Set
-        End Property
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-        Public Sub Clear()
-            _filename = String.Empty
-            _source = String.Empty
-            _usefolder = False
-            _poster = String.Empty
-            _fanart = String.Empty
-            _nfo = String.Empty
-            _extra = String.Empty
-            _trailer = String.Empty
-            _subs = String.Empty
-            _contents.Clear()
         End Sub
     End Class
 
