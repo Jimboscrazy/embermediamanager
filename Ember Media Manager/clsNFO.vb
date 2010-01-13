@@ -657,4 +657,87 @@ Public Class NFO
             Return False
         End Try
     End Function
+
+    Public Shared Sub SaveTVShowToNFO(ByRef tvShowToSave As Master.DBTV)
+
+        '//
+        ' Serialize Media.TVShow to an NFO
+        '\\
+
+        Try
+
+            Dim xmlSer As New XmlSerializer(GetType(Media.TVShow))
+
+            Dim tPath As String = String.Empty
+            Dim doesExist As Boolean = False
+            Dim fAtt As New FileAttributes
+
+            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(tvShowToSave.Filename).FullName).FullName, "tvshow.nfo")
+
+            'If Not Master.eSettings.OverwriteNfo Then
+            '    RenameNonConfNfo(tPath, False)
+            'End If
+
+            doesExist = File.Exists(tPath)
+            If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+
+                If doesExist Then
+                    fAtt = File.GetAttributes(tPath)
+                    File.SetAttributes(tPath, FileAttributes.Normal)
+                End If
+
+                Using xmlSW As New StreamWriter(tPath)
+                    tvShowToSave.ShowNfoPath = tPath
+                    xmlSer.Serialize(xmlSW, tvShowToSave.TVShow)
+                End Using
+
+                If doesExist Then File.SetAttributes(tPath, fAtt)
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Shared Sub SaveTVEpToNFO(ByRef tvEpToSave As Master.DBTV)
+
+        '//
+        ' Serialize Media.EpisodeDetails to an NFO
+        '\\
+
+        Try
+
+            Dim xmlSer As New XmlSerializer(GetType(Media.EpisodeDetails))
+
+            Dim tPath As String = String.Empty
+            Dim doesExist As Boolean = False
+            Dim fAtt As New FileAttributes
+
+            Dim tmpName As String = Path.GetFileNameWithoutExtension(tvEpToSave.Filename)
+            tPath = String.Concat(Path.Combine(Directory.GetParent(tvEpToSave.Filename).FullName, tmpName), ".nfo")
+
+            'If Not Master.eSettings.OverwriteNfo Then
+            '    RenameNonConfNfo(tPath, False)
+            'End If
+
+            doesExist = File.Exists(tPath)
+            If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
+
+                If doesExist Then
+                    fAtt = File.GetAttributes(tPath)
+                    File.SetAttributes(tPath, FileAttributes.Normal)
+                End If
+
+                Using xmlSW As New StreamWriter(tPath)
+                    tvEpToSave.EpNfoPath = tPath
+                    xmlSer.Serialize(xmlSW, tvEpToSave.TVEp)
+                End Using
+
+                If doesExist Then File.SetAttributes(tPath, fAtt)
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class

@@ -356,7 +356,7 @@ mResult:
 
                     If rTitles.Count > 0 Then
                         For i As Integer = 1 To rTitles.Count - 1 Step 2
-                            If rTitles(i).Value.ToString.Contains(Master.eSettings.ForceTitle) AndAlso Not rTitles(i).Value.ToString.Contains(String.Concat(Master.eSettings.ForceTitle, " (working title)")) Then
+                            If rTitles(i).Value.ToString.Contains(Master.eSettings.ForceTitle) AndAlso Not rTitles(i).Value.ToString.Contains(String.Concat(Master.eSettings.ForceTitle, " (working title)")) AndAlso Not rTitles(i).Value.ToString.Contains(String.Concat(Master.eSettings.ForceTitle, " (fake working title)")) Then
                                 fTitle = CleanTitle(Web.HttpUtility.HtmlDecode(rTitles(i - 1).Groups("title").Value.ToString.Trim))
                                 Exit For
                             End If

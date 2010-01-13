@@ -81,8 +81,9 @@ Public Class Master
     End Enum
 
     Public Enum TrailerPages As Integer
-        YouTube = 0
-        Imdb = 1
+        AllHTPC = 0
+        TMDB = 1
+        IMDB = 2
     End Enum
 
     Public Enum ModType As Integer

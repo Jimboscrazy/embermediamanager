@@ -236,13 +236,13 @@ Public Class Database
                                 ");"
                     SQLcommand.ExecuteNonQuery()
 
-                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS Actors(" & _
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS Actors(" & _
                                 "Name TEXT PRIMARY KEY, " & _
                                 "thumb TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
 
-                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS MoviesActors(" & _
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS MoviesActors(" & _
                                 "MovieID INTEGER NOT NULL, " & _
                                 "ActorName TEXT NOT NULL, " & _
                                 "Role TEXT, " & _
@@ -370,7 +370,7 @@ Public Class Database
                         SQLcommand.ExecuteNonQuery()
                     End If
 
-                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS TVShowActors(" & _
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVShowActors(" & _
                                 "TVShowID INTEGER NOT NULL, " & _
                                 "ActorName TEXT NOT NULL, " & _
                                 "Role TEXT, " & _
@@ -378,7 +378,7 @@ Public Class Database
                                 ");"
                     SQLcommand.ExecuteNonQuery()
 
-                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS TVEpActors(" & _
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVEpActors(" & _
                                 "TVEpID INTEGER NOT NULL, " & _
                                 "ActorName TEXT NOT NULL, " & _
                                 "Role TEXT, " & _
@@ -386,7 +386,7 @@ Public Class Database
                                 ");"
                     SQLcommand.ExecuteNonQuery()
 
-                    SQLcommand.CommandText = "CREATE TABLE  IF NOT EXISTS TVSeason(" & _
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVSeason(" & _
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                                 "TVShowID INTEGER NOT NULL, " & _
                                 "TVEpID INTEGER NOT NULL, " & _
@@ -429,7 +429,7 @@ Public Class Database
                                  ");"
                     SQLcommand.ExecuteNonQuery()
 
-                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVSources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, Recursive BOOL NOT NULL DEFAULT False, Foldername BOOL NOT NULL DEFAULT False, Single BOOL NOT NULL DEFAULT False, LastScan TEXT NOT NULL DEFAULT '1900/01/01');"
+                    SQLcommand.CommandText = "CREATE TABLE IF NOT EXISTS TVSources(ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, path TEXT NOT NULL, LastScan TEXT NOT NULL DEFAULT '1900/01/01');"
                     SQLcommand.ExecuteNonQuery()
                     SQLcommand.CommandText = "CREATE UNIQUE INDEX IF NOT EXISTS UniqueTVSource ON TVSources (Path);"
                     SQLcommand.ExecuteNonQuery()
@@ -794,8 +794,6 @@ Public Class Database
                 End If
 
                 If Not _movieDB.ID = -1 Then
-                    DeleteFromDB(_movieDB.ID, BatchMode)
-
                     Using SQLcommandActor As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?)")
                         Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
@@ -1118,7 +1116,7 @@ Public Class Database
     ''' Saves all episode information from a Master.DBTV object to the database
     ''' </summary>
     ''' <param name="_TVEpDB">Master.DBTV object to save to the database</param>
-    ''' <param name="IsNew">Is this a new movie (not already present in database)?</param>
+    ''' <param name="IsNew">Is this a new episode (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToNfo">Save the information to an nfo file?</param>
     ''' <returns>Master.DBTV object</returns>
@@ -1165,7 +1163,7 @@ Public Class Database
                 Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
 
                 ' First let's save it to NFO, even because we will need the NFO path
-                'If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
+                If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
 
                 parTVEpPath.Value = _TVEpDB.Filename
                 parPosterPath.Value = _TVEpDB.EpPosterPath
@@ -1210,8 +1208,6 @@ Public Class Database
                 End If
 
                 If Not _TVEpDB.EpID = -1 Then
-                    DeleteTVEpFromDB(_TVEpDB.EpID, BatchMode)
-
                     Using SQLcommandActor As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?)")
                         Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
@@ -1220,15 +1216,15 @@ Public Class Database
                             parActorName.Value = actor.Name
                             parActorThumb.Value = actor.Thumb
                             SQLcommandActor.ExecuteNonQuery()
-                            Using SQLcommandMoviesActors As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                                SQLcommandMoviesActors.CommandText = String.Concat("INSERT OR REPLACE INTO TVEpActors (TVEpID,ActorName,Role) VALUES (?,?,?);")
-                                Dim parTVEpActorsEpID As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parTVEpActorsEpID", DbType.UInt64, 0, "MovieID")
-                                Dim parTVEpActorsActorName As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parTVEpActorsActorName", DbType.String, 0, "ActorNAme")
-                                Dim parTVEpActorsActorRole As SQLite.SQLiteParameter = SQLcommandMoviesActors.Parameters.Add("parTVEpActorsActorRole", DbType.String, 0, "Role")
+                            Using SQLcommandTVEpActors As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                                SQLcommandTVEpActors.CommandText = String.Concat("INSERT OR REPLACE INTO TVEpActors (TVEpID,ActorName,Role) VALUES (?,?,?);")
+                                Dim parTVEpActorsEpID As SQLite.SQLiteParameter = SQLcommandTVEpActors.Parameters.Add("parTVEpActorsEpID", DbType.UInt64, 0, "MovieID")
+                                Dim parTVEpActorsActorName As SQLite.SQLiteParameter = SQLcommandTVEpActors.Parameters.Add("parTVEpActorsActorName", DbType.String, 0, "ActorNAme")
+                                Dim parTVEpActorsActorRole As SQLite.SQLiteParameter = SQLcommandTVEpActors.Parameters.Add("parTVEpActorsActorRole", DbType.String, 0, "Role")
                                 parTVEpActorsEpID.Value = _TVEpDB.EpID
                                 parTVEpActorsActorName.Value = actor.Name
                                 parTVEpActorsActorRole.Value = actor.Role
-                                SQLcommandMoviesActors.ExecuteNonQuery()
+                                SQLcommandTVEpActors.ExecuteNonQuery()
                             End Using
                         Next
                     End Using
@@ -1316,6 +1312,134 @@ Public Class Database
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return _TVEpDB
+    End Function
+
+    ''' <summary>
+    ''' Saves all show information from a Master.DBTV object to the database
+    ''' </summary>
+    ''' <param name="_TVShowDB">Master.DBTV object to save to the database</param>
+    ''' <param name="IsNew">Is this a new show (not already present in database)?</param>
+    ''' <param name="BatchMode">Is the function already part of a transaction?</param>
+    ''' <param name="ToNfo">Save the information to an nfo file?</param>
+    ''' <returns>Master.DBTV object</returns>
+    Public Function SaveTVShowToDB(ByVal _TVShowDB As Master.DBTV, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal ToNfo As Boolean = False) As Master.DBTV
+
+        Try
+            Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
+
+            If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
+            Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                If IsNew Then
+                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVShows (", _
+                        "TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title,", _
+                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, PosterPath, FanartPath, NfoPath, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                Else
+                    SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVEps (", _
+                        "ID, TVShowPath, HasPoster, HasFanart, HasNfo, New, Mark, Source, TVDB, Lock, Title,", _
+                        "EpisodeGuide, Plot, Genre, Premiered, Studio, MPAA, PosterPath, FanartPath, NfoPath, NeedsSave", _
+                        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM TVShows;")
+                    Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "ID")
+                    parTVShowID.Value = _TVShowDB.EpID
+                End If
+
+                Dim parTVShowPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowPath", DbType.String, 0, "TVShowPath")
+                Dim parHasPoster As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasFanart", DbType.Boolean, 0, "HasFanart")
+                Dim parHasFanart As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasPoster", DbType.Boolean, 0, "HasPoster")
+                Dim parHasNfo As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parHasInfo", DbType.Boolean, 0, "HasNfo")
+                Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
+                Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
+                Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
+                Dim parTVDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVDB", DbType.String, 0, "TVDB")
+                Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "Title")
+                Dim parEpisodeGuide As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeGuide", DbType.String, 0, "EpisodeGuide")
+                Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
+                Dim parGenre As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGenre", DbType.String, 0, "Genre")
+                Dim parPremiered As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPremiered", DbType.String, 0, "Premiered")
+                Dim parStudio As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parStudio", DbType.String, 0, "Studio")
+                Dim parMPAA As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMPAA", DbType.String, 0, "MPAA")
+                Dim parPosterPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPosterPath", DbType.String, 0, "PosterPath")
+                Dim parFanartPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFanartPath", DbType.String, 0, "FanartPath")
+                Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
+                Dim parNeedsSave As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNeedsSave", DbType.Boolean, 0, "NeedsSave")
+
+                ' First let's save it to NFO, even because we will need the NFO path
+                If ToNfo Then NFO.SaveTVShowToNFO(_TVShowDB)
+
+                parTVShowPath.Value = Directory.GetParent(Directory.GetParent(_TVShowDB.Filename).FullName).FullName
+                parPosterPath.Value = _TVShowDB.ShowPosterPath
+                parFanartPath.Value = _TVShowDB.ShowFanartPath
+                parNfoPath.Value = _TVShowDB.ShowNfoPath
+                parHasPoster.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowPosterPath)
+                parHasFanart.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowFanartPath)
+                parHasNfo.Value = Not String.IsNullOrEmpty(_TVShowDB.ShowNfoPath)
+
+                parNew.Value = _TVShowDB.IsNewShow
+                parMark.Value = _TVShowDB.IsMarkShow
+                parLock.Value = _TVShowDB.IsLockShow
+                parSource.Value = _TVShowDB.Source
+                parNeedsSave.Value = _TVShowDB.EpNeedsSave
+
+                With _TVShowDB.TVShow
+                    parTVDB.Value = .ID
+                    parTitle.Value = .Title
+                    parEpisodeGuide.Value = .EpisodeGuideURL
+                    parPlot.Value = .Plot
+                    parGenre.Value = .Genre
+                    parPremiered.Value = .Premiered
+                    parStudio.Value = .Studio
+                    parMPAA.Value = .MPAA
+                End With
+
+                If IsNew Then
+                    If Master.eSettings.MarkNew Then
+                        parMark.Value = True
+                    Else
+                        parMark.Value = False
+                    End If
+                    Using rdrTVShow As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        If rdrTVShow.Read Then
+                            _TVShowDB.ShowID = Convert.ToInt64(rdrTVShow(0))
+                        Else
+                            Master.eLog.WriteToErrorLog("Something very wrong here: SaveTVShowToDB", _TVShowDB.ToString, "Error")
+                            _TVShowDB.ShowID = -1
+                            Return _TVShowDB
+                        End If
+                    End Using
+                Else
+                    SQLcommand.ExecuteNonQuery()
+                End If
+
+                If Not _TVShowDB.ShowID = -1 Then
+                    Using SQLcommandActor As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?)")
+                        Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
+                        Dim parActorThumb As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorThumb", DbType.String, 0, "thumb")
+                        For Each actor As Media.Person In _TVShowDB.TVShow.Actors
+                            parActorName.Value = actor.Name
+                            parActorThumb.Value = actor.Thumb
+                            SQLcommandActor.ExecuteNonQuery()
+                            Using SQLcommandTVShowActors As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                                SQLcommandTVShowActors.CommandText = String.Concat("INSERT OR REPLACE INTO TVEpActors (TVEpID,ActorName,Role) VALUES (?,?,?);")
+                                Dim parTVShowActorsShowID As SQLite.SQLiteParameter = SQLcommandTVShowActors.Parameters.Add("parTVEpActorsEpID", DbType.UInt64, 0, "MovieID")
+                                Dim parTVShowActorsActorName As SQLite.SQLiteParameter = SQLcommandTVShowActors.Parameters.Add("parTVEpActorsActorName", DbType.String, 0, "ActorNAme")
+                                Dim parTVShowActorsActorRole As SQLite.SQLiteParameter = SQLcommandTVShowActors.Parameters.Add("parTVEpActorsActorRole", DbType.String, 0, "Role")
+                                parTVShowActorsShowID.Value = _TVShowDB.ShowID
+                                parTVShowActorsActorName.Value = actor.Name
+                                parTVShowActorsActorRole.Value = actor.Role
+                                SQLcommandTVShowActors.ExecuteNonQuery()
+                            End Using
+                        Next
+                    End Using
+                End If
+            End Using
+            If Not BatchMode Then SQLtransaction.Commit()
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return _TVShowDB
     End Function
 
     ''' <summary>

@@ -60,6 +60,7 @@ Namespace TMDB
             If Me.bwTMDB.CancellationPending Then Return Nothing
             Try
                 Dim ApiXML As String = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.1/Movie.imdbLookup/en/xml/{0}/tt{1}", APIKey, imdbID))
+                sHTTP = Nothing
 
                 If Not String.IsNullOrEmpty(ApiXML) Then
                     Try
@@ -79,7 +80,9 @@ Namespace TMDB
                         If Not tmdbNode(0).Value = "Your query didn't return any results." Then
                             Dim movieID As String = xmlTMDB...<OpenSearchDescription>...<movies>...<movie>...<id>.Value
 
+                            sHTTP = New HTTP
                             ApiXML = sHTTP.DownloadData(String.Format("http://api.themoviedb.org/2.1/Movie.getInfo/en/xml/{0}/{1}", APIKey, movieID))
+                            sHTTP = Nothing
 
                             If Not String.IsNullOrEmpty(ApiXML) Then
 
@@ -111,8 +114,6 @@ Namespace TMDB
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
-
-            sHTTP = Nothing
 
             Return String.Empty
 

@@ -1466,6 +1466,11 @@ Public Class dlgSettings
     Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvTVSources.KeyDown
         If e.KeyCode = Keys.Delete Then Me.RemoveTVSource()
     End Sub
+
+    Private Sub chkIgnoreLastScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkIgnoreLastScan.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -1733,6 +1738,7 @@ Public Class dlgSettings
             Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
             Master.eSettings.EnableIFOScan = Me.chkIFOScan.Checked
             Master.eSettings.CleanDB = Me.chkCleanDB.Checked
+            Master.eSettings.IgnoreLastScan = Me.chkIgnoreLastScan.Checked
 
             Master.eSettings.Save()
 
@@ -1957,6 +1963,7 @@ Public Class dlgSettings
             Me.LoadMetadata()
             Me.chkIFOScan.Checked = Master.eSettings.EnableIFOScan
             Me.chkCleanDB.Checked = Master.eSettings.CleanDB
+            Me.chkIgnoreLastScan.Checked = Master.eSettings.IgnoreLastScan
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -2067,8 +2074,6 @@ Public Class dlgSettings
                     Dim lvItem As New ListViewItem(SQLreader("ID").ToString)
                     lvItem.SubItems.Add(SQLreader("Name").ToString)
                     lvItem.SubItems.Add(SQLreader("Path").ToString)
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Recursive")), "Yes", "No"))
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Foldername")), "Yes", "No"))
                     lvTVSources.Items.Add(lvItem)
                 End While
             End Using
@@ -2267,7 +2272,8 @@ Public Class dlgSettings
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
         Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
-        Me.chkCleanDB.Text = Master.eLang.GetString(999, "Clean database after each scan")
+        Me.chkCleanDB.Text = Master.eLang.GetString(999, "Clean database after updating library")
+        Me.chkIgnoreLastScan.Text = Master.eLang.GetString(999, "Ignore last scan time when updating library")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
@@ -2431,5 +2437,6 @@ Public Class dlgSettings
         End Try
     End Sub
 #End Region '*** Routines/Functions
+
 
 End Class

@@ -746,21 +746,21 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
-
-        If Me.dgvMediaList.RowCount > 0 Then
-            Me.tmpTitle = Me.dgvMediaList.Item(15, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
-            If Me.dgvMediaList.SelectedRows.Count > 1 Then
-                Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
-            ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
-                Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+        If Me.dgvMediaList.SelectedRows.Count > 0 Then
+            If Me.dgvMediaList.RowCount > 0 Then
+                Me.tmpTitle = Me.dgvMediaList.Item(15, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+                If Me.dgvMediaList.SelectedRows.Count > 1 Then
+                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
+                ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
+                    Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+                End If
             End If
+
+            Me.currRow = e.RowIndex
+            Me.tmrWait.Enabled = False
+            Me.tmrLoad.Enabled = False
+            Me.tmrWait.Enabled = True
         End If
-
-        Me.currRow = e.RowIndex
-        Me.tmrWait.Enabled = False
-        Me.tmrLoad.Enabled = False
-        Me.tmrWait.Enabled = True
-
     End Sub
     Private Sub dgvMediaList_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellDoubleClick
 
@@ -1606,8 +1606,8 @@ Public Class frmMain
                         Me.cmnuSearchNew.Visible = False
                         Me.cmuRenamer.Visible = False
                         Me.cmnuMetaData.Visible = False
-                        Me.cmnuSep.Visible = False
                         Me.cmnuSep2.Visible = False
+                        Me.ToolStripSeparator2.Visible = False
 
                         For Each sRow As DataGridViewRow In Me.dgvMediaList.SelectedRows
                             'if any one item is set as unmarked, set menu to mark
@@ -2718,7 +2718,7 @@ Public Class frmMain
                         Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
                         While SQLreader.Read
                             Master.SourceLastScan = Convert.ToDateTime(SQLreader("LastScan").ToString)
-                            If Convert.ToBoolean(SQLreader("Recursive")) OrElse Directory.GetLastWriteTime(SQLreader("Path").ToString) > Master.SourceLastScan Then
+                            If Convert.ToBoolean(SQLreader("Recursive")) OrElse (Master.eSettings.IgnoreLastScan OrElse Directory.GetLastWriteTime(SQLreader("Path").ToString) > Master.SourceLastScan) Then
                                 'save the scan time back to the db
                                 parLastScan.Value = Now
                                 parID.Value = SQLreader("ID")

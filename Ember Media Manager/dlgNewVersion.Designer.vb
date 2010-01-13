@@ -74,7 +74,7 @@ Partial Class dlgNewVersion
         Me.lblNew.Name = "lblNew"
         Me.lblNew.Size = New System.Drawing.Size(277, 43)
         Me.lblNew.TabIndex = 11
-        Me.lblNew.Text = "Version r{0} is now available on Ember Media Manager's Google Code page."
+        Me.lblNew.Text = "Version r{0} is now available."
         Me.lblNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'llClick
@@ -94,9 +94,9 @@ Partial Class dlgNewVersion
         Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(93, 391)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(222, 20)
+        Me.Label2.Size = New System.Drawing.Size(166, 20)
         Me.Label2.TabIndex = 13
-        Me.Label2.Text = "to visit the Google Code page."
+        Me.Label2.Text = "to visit embermm.com."
         '
         'dlgNewVersion
         '

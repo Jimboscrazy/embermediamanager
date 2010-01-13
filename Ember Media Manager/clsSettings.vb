@@ -196,6 +196,7 @@ Public Class emmSettings
     Private _enableifoscan As Boolean
     Private _yamjsetscompatible As Boolean
     Private _cleandb As Boolean
+    Private _ignorelastscan As Boolean
 
     Public Property Version() As String
         Get
@@ -1731,6 +1732,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property IgnoreLastScan() As Boolean
+        Get
+            Return Me._ignorelastscan
+        End Get
+        Set(ByVal value As Boolean)
+            Me._ignorelastscan = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -1907,6 +1917,7 @@ Public Class emmSettings
         Me._enableifoscan = True
         Me._yamjsetscompatible = False
         Me._cleandb = True
+        Me._ignorelastscan = False
     End Sub
 
     Public Sub Save()

@@ -73,7 +73,7 @@ Public NotInheritable Class dlgAbout
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = "Jason ""nul7"" Schnitzler"})
         CredList.Add(New CredLine With {.Text = "Nuno ""Zordor"" Novais"})
-        CredList.Add(New CredLine With {.Text = """RogueDazza"""})
+        CredList.Add(New CredLine With {.Text = "Darren ""RogueDazza"" Sayers"})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
         CredList.Add(New CredLine With {.Text = String.Empty})
@@ -211,6 +211,10 @@ Public NotInheritable Class dlgAbout
     End Sub
 
     Private Sub picDisplay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles picDisplay.Click
-        Process.Start("http://code.google.com/p/embermediamanager/")
+        Process.Start("http://www.embermm.com")
+    End Sub
+
+    Private Sub pbAllHTPC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbAllHTPC.Click
+        Process.Start("http://www.allhtpc.com/")
     End Sub
 End Class

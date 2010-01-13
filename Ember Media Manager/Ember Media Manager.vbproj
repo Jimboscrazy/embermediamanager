@@ -172,6 +172,7 @@
     <Compile Include="clsLocalization.vb" />
     <Compile Include="clsNFO.vb" />
     <Compile Include="clsRenamer.vb" />
+    <Compile Include="clsScrapeAllHTPC.vb" />
     <Compile Include="clsScrapeIMDB.vb" />
     <Compile Include="clsScrapeIMPA.vb" />
     <Compile Include="clsScrapeMPDB.vb" />
@@ -565,7 +566,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>call "$(SolutionDir)ON-Build-Release" $(OutDir) "$(ProjectDir)" "$(SolutionDir)" $(PlatformName)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
     <PreBuildEvent>rem SVN Revision -&gt; Version Number
 
 echo %25ProgramFiles%25  | find /i "(x86)"

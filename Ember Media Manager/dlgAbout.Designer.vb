@@ -35,6 +35,7 @@ Partial Class dlgAbout
         Me.pbIMPA = New System.Windows.Forms.PictureBox
         Me.pbTMDB = New System.Windows.Forms.PictureBox
         Me.picDisplay = New System.Windows.Forms.PictureBox
+        Me.pbAllHTPC = New System.Windows.Forms.PictureBox
         Me.Panel1.SuspendLayout()
         CType(Me.pbYouTube, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbXBMC, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -45,6 +46,7 @@ Partial Class dlgAbout
         CType(Me.pbIMPA, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picDisplay, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAllHTPC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OKButton
@@ -62,6 +64,7 @@ Partial Class dlgAbout
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.pbAllHTPC)
         Me.Panel1.Controls.Add(Me.pbYouTube)
         Me.Panel1.Controls.Add(Me.pbXBMC)
         Me.Panel1.Controls.Add(Me.pbMPDB)
@@ -79,7 +82,7 @@ Partial Class dlgAbout
         '
         Me.pbYouTube.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbYouTube.Image = CType(resources.GetObject("pbYouTube.Image"), System.Drawing.Image)
-        Me.pbYouTube.Location = New System.Drawing.Point(72, 71)
+        Me.pbYouTube.Location = New System.Drawing.Point(3, 71)
         Me.pbYouTube.Name = "pbYouTube"
         Me.pbYouTube.Size = New System.Drawing.Size(91, 38)
         Me.pbYouTube.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -123,7 +126,7 @@ Partial Class dlgAbout
         '
         Me.pbMI.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbMI.Image = CType(resources.GetObject("pbMI.Image"), System.Drawing.Image)
-        Me.pbMI.Location = New System.Drawing.Point(248, 71)
+        Me.pbMI.Location = New System.Drawing.Point(326, 71)
         Me.pbMI.Name = "pbMI"
         Me.pbMI.Size = New System.Drawing.Size(91, 38)
         Me.pbMI.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -178,6 +181,17 @@ Partial Class dlgAbout
         Me.picDisplay.TabIndex = 10
         Me.picDisplay.TabStop = False
         '
+        'pbAllHTPC
+        '
+        Me.pbAllHTPC.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbAllHTPC.Image = CType(resources.GetObject("pbAllHTPC.Image"), System.Drawing.Image)
+        Me.pbAllHTPC.Location = New System.Drawing.Point(159, 71)
+        Me.pbAllHTPC.Name = "pbAllHTPC"
+        Me.pbAllHTPC.Size = New System.Drawing.Size(91, 38)
+        Me.pbAllHTPC.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbAllHTPC.TabIndex = 18
+        Me.pbAllHTPC.TabStop = False
+        '
         'dlgAbout
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 13.0!)
@@ -207,6 +221,7 @@ Partial Class dlgAbout
         CType(Me.pbIMPA, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbTMDB, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.picDisplay, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAllHTPC, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -221,5 +236,6 @@ Partial Class dlgAbout
     Friend WithEvents pbXBMC As System.Windows.Forms.PictureBox
     Public WithEvents picDisplay As System.Windows.Forms.PictureBox
     Friend WithEvents pbYouTube As System.Windows.Forms.PictureBox
+    Friend WithEvents pbAllHTPC As System.Windows.Forms.PictureBox
 
 End Class

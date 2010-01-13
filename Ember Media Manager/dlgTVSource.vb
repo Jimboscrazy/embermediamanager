@@ -46,19 +46,15 @@ Public Class dlgTVSource
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 If Me._id >= 0 Then
-                    SQLcommand.CommandText = String.Concat("UPDATE TVSources SET name = (?), path = (?), recursive = (?), foldername = (?) WHERE ID =", Me._id, ";")
+                    SQLcommand.CommandText = String.Concat("UPDATE TVSources SET name = (?), path = (?) WHERE ID =", Me._id, ";")
                 Else
-                    SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (name, path, recursive, foldername) VALUES (?,?,?,?);"
+                    SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (name, path) VALUES (?,?);"
                 End If
                 Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
                 Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
-                Dim parRecur As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRecur", DbType.Boolean, 0, "recursive")
-                Dim parFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFolder", DbType.Boolean, 0, "foldername")
 
                 parName.Value = txtSourceName.Text.Trim
                 parPath.Value = txtSourcePath.Text.Trim
-                parRecur.Value = chkScanRecursive.Checked
-                parFolder.Value = chkUseFolderName.Checked
 
                 SQLcommand.ExecuteNonQuery()
             End Using
@@ -169,8 +165,6 @@ Public Class dlgTVSource
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     Me.txtSourceName.Text = SQLreader("Name").ToString
                     Me.txtSourcePath.Text = SQLreader("Path").ToString
-                    Me.chkScanRecursive.Checked = Convert.ToBoolean(SQLreader("Recursive"))
-                    Me.chkUseFolderName.Checked = Convert.ToBoolean(SQLreader("Foldername"))
                 End Using
             End Using
         End If
@@ -182,9 +176,6 @@ Public Class dlgTVSource
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.Label1.Text = Master.eLang.GetString(199, "Source Name:")
         Me.Label2.Text = Master.eLang.GetString(200, "Source Path:")
-        Me.GroupBox1.Text = Master.eLang.GetString(201, "Source Options")
-        Me.chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
-        Me.chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")
         Me.fbdBrowse.Description = Master.eLang.GetString(999, "Select the parent folder for your TV Series folders/files.")
     End Sub
 
