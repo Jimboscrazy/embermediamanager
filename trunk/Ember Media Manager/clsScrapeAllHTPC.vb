@@ -18,38 +18,27 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports System.Text.RegularExpressions
 
+Namespace AllHTPC
+    Public Class Scraper
+        Public Function GetTrailer(ByVal imdbID As String) As String
+            Dim sHTTP As New HTTP
 
-Public Class dlgNewVersion
+            Try
+                Dim sResults As String = sHTTP.DownloadData(String.Format("http://hdtrailers.allhtpc.com/search.php?imdbid={0}", imdbID))
+                sHTTP = Nothing
 
-    Private Sub llClick_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llClick.LinkClicked
-        Process.Start("http://www.embermm.com/tab/show/embermm")
-    End Sub
+                If Not String.IsNullOrEmpty(sResults) Then
+                    Return Regex.Match(sResults, "(?<link>.*?)$", RegexOptions.Multiline Or RegexOptions.IgnorePatternWhitespace).Groups("link").Value.Trim
+                End If
 
-    Public Overloads Function ShowDialog(ByVal iNew As Integer) As Windows.Forms.DialogResult
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
 
-        '//
-        ' Overload to pass data
-        '\\
+            Return String.Empty
 
-        Me.lblNew.Text = String.Format(Master.eLang.GetString(210, "Version r{0} is now available."), iNew)
-        Me.txtChangelog.Text = Master.GetChangelog.Replace("\n", vbNewLine)
-
-        Return MyBase.ShowDialog()
-    End Function
-
-    Private Sub dlgNewVersion_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-    End Sub
-
-    Private Sub dlgNewVersion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.SetUp()
-    End Sub
-
-    Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(209, "A New Version Is Available")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.llClick.Text = Master.eLang.GetString(211, "Click Here")
-        Me.Label2.Text = Master.eLang.GetString(212, "to visit embermm.com.")
-    End Sub
-End Class
+        End Function
+    End Class
+End Namespace

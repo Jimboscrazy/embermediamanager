@@ -31,9 +31,6 @@ Partial Class dlgTVSource
         Me.Label2 = New System.Windows.Forms.Label
         Me.txtSourcePath = New System.Windows.Forms.TextBox
         Me.btnBrowse = New System.Windows.Forms.Button
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox
-        Me.chkUseFolderName = New System.Windows.Forms.CheckBox
-        Me.chkScanRecursive = New System.Windows.Forms.CheckBox
         Me.pbValid = New System.Windows.Forms.PictureBox
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.tmrWait = New System.Windows.Forms.Timer(Me.components)
@@ -41,7 +38,6 @@ Partial Class dlgTVSource
         Me.tmrPathWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrPath = New System.Windows.Forms.Timer(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -123,37 +119,6 @@ Partial Class dlgTVSource
         Me.btnBrowse.Text = "..."
         Me.btnBrowse.UseVisualStyleBackColor = True
         '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.chkUseFolderName)
-        Me.GroupBox1.Controls.Add(Me.chkScanRecursive)
-        Me.GroupBox1.Location = New System.Drawing.Point(175, 8)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(248, 61)
-        Me.GroupBox1.TabIndex = 6
-        Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "Source Options"
-        '
-        'chkUseFolderName
-        '
-        Me.chkUseFolderName.AutoSize = True
-        Me.chkUseFolderName.Location = New System.Drawing.Point(6, 39)
-        Me.chkUseFolderName.Name = "chkUseFolderName"
-        Me.chkUseFolderName.Size = New System.Drawing.Size(183, 17)
-        Me.chkUseFolderName.TabIndex = 1
-        Me.chkUseFolderName.Text = "Use Folder Name for Initial Listing"
-        Me.chkUseFolderName.UseVisualStyleBackColor = True
-        '
-        'chkScanRecursive
-        '
-        Me.chkScanRecursive.AutoSize = True
-        Me.chkScanRecursive.Location = New System.Drawing.Point(6, 19)
-        Me.chkScanRecursive.Name = "chkScanRecursive"
-        Me.chkScanRecursive.Size = New System.Drawing.Size(109, 17)
-        Me.chkScanRecursive.TabIndex = 0
-        Me.chkScanRecursive.Text = "Scan Recursively"
-        Me.chkScanRecursive.UseVisualStyleBackColor = True
-        '
         'pbValid
         '
         Me.pbValid.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
@@ -191,7 +156,6 @@ Partial Class dlgTVSource
         Me.CancelButton = Me.Cancel_Button
         Me.ClientSize = New System.Drawing.Size(435, 136)
         Me.Controls.Add(Me.pbValid)
-        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.btnBrowse)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.txtSourcePath)
@@ -206,8 +170,6 @@ Partial Class dlgTVSource
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "TV Source"
         Me.TableLayoutPanel1.ResumeLayout(False)
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -221,9 +183,6 @@ Partial Class dlgTVSource
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents txtSourcePath As System.Windows.Forms.TextBox
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
-    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents chkUseFolderName As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScanRecursive As System.Windows.Forms.CheckBox
     Friend WithEvents pbValid As System.Windows.Forms.PictureBox
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents tmrWait As System.Windows.Forms.Timer

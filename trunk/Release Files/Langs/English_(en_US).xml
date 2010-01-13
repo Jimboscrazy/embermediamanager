@@ -209,9 +209,9 @@
   <string id="207">Edit Set</string>
   <string id="208">Add New Set</string>
   <string id="209">A New Version Is Available</string>
-  <string id="210">Version r{0} is now available on Ember Media Manager's Google Code page.</string>
+  <string id="210">Version r{0} is now available.</string>
   <string id="211">Click Here</string>
-  <string id="212">to visit the Google Code page.</string>
+  <string id="212">to visit embermm.com.</string>
   <string id="213">Sort Files Into Folders</string>
   <string id="214">Go</string>
   <string id="215">Status</string>

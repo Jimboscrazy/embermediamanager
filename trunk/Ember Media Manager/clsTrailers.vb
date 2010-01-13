@@ -46,7 +46,6 @@ Public Class Trailers
     Public Function GetTrailers(ByVal ImdbID As String, Optional ByVal BreakAfterFound As Boolean = True) As ArrayList
         Me._ImdbID = ImdbID
 
-        Me.GetImdbTrailerPage()
 
         For Each TP As Master.TrailerPages In Master.eSettings.TrailerSites
             If BreakAfterFound AndAlso Me._TrailerList.Count > 0 Then
@@ -54,10 +53,12 @@ Public Class Trailers
             End If
             Try
                 Select Case TP
-                    Case Master.TrailerPages.YouTube
-                        Me.GetYouTubeTrailer()
-                    Case Master.TrailerPages.Imdb
-                        If Not String.IsNullOrEmpty(Me._ImdbTrailerPage) Then Me.GetImdbTrailer()
+                    Case Master.TrailerPages.AllHTPC
+                        Me.GetAllHTPCTrailer()
+                    Case Master.TrailerPages.TMDB
+                        Me.GetTMDBTrailer()
+                    Case Master.TrailerPages.IMDB
+                        Me.GetImdbTrailer()
                 End Select
             Catch
             End Try
@@ -75,44 +76,63 @@ Public Class Trailers
         Dim Link As Match
         Dim currPage As Integer = 0
 
-        Link = Regex.Match(_ImdbTrailerPage, "of [0-9]{1,3}")
+        Me.GetImdbTrailerPage()
 
-        If Link.Success Then
-            TrailerNumber = Convert.ToInt32(Link.Value.Substring(3))
+        If Not String.IsNullOrEmpty(_ImdbTrailerPage) Then
+            Link = Regex.Match(_ImdbTrailerPage, "of [0-9]{1,3}")
 
-            If TrailerNumber > 0 Then
-                currPage = Convert.ToInt32(Math.Ceiling(TrailerNumber / 10))
+            If Link.Success Then
+                TrailerNumber = Convert.ToInt32(Link.Value.Substring(3))
 
-                For i As Integer = 1 To currPage
-                    If Not i = 1 Then
-                        _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer?page=", i))
-                    End If
+                If TrailerNumber > 0 Then
+                    currPage = Convert.ToInt32(Math.Ceiling(TrailerNumber / 10))
 
-                    Links = Regex.Matches(_ImdbTrailerPage, "/vi[0-9]+/")
-
-                    For Each m As Match In Links
-                        trailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/video/screenplay", m.Value, "player"))
-
-                        trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+flv").Value)
-
-                        If Not String.IsNullOrEmpty(trailerUrl) AndAlso WebPage.IsValidURL(trailerUrl) Then
-                            Me._TrailerList.Add(trailerUrl)
+                    For i As Integer = 1 To currPage
+                        If Not i = 1 Then
+                            _ImdbTrailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/title/tt", _ImdbID, "/videogallery/content_type-Trailer?page=", i))
                         End If
+
+                        Links = Regex.Matches(_ImdbTrailerPage, "/vi[0-9]+/")
+
+                        For Each m As Match In Links
+                            trailerPage = WebPage.DownloadData(String.Concat("http://", Master.eSettings.IMDBURL, "/video/screenplay", m.Value, "player"))
+
+                            trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+flv").Value)
+
+                            If Not String.IsNullOrEmpty(trailerUrl) AndAlso WebPage.IsValidURL(trailerUrl) Then
+                                Me._TrailerList.Add(trailerUrl)
+                            End If
+                        Next
                     Next
-                Next
+                End If
+            End If
+        End If
+    End Sub
+
+    Private Sub GetAllHTPCTrailer()
+        Dim AllHTPC As New AllHTPC.Scraper
+        Dim YT As String = AllHTPC.GetTrailer(_ImdbID)
+
+        If Not String.IsNullOrEmpty(YT) Then
+            Dim YTPage As String = WebPage.DownloadData(YT)
+            If Not String.IsNullOrEmpty(YTPage) Then
+
+                'new YouTube scraper
+                Dim scraper As New YouTube.Scraper()
+                scraper.GetVideoLinks(YT)
+
+                If scraper.VideoLinks.Count > 0 Then
+                    Me._TrailerList.Add(scraper.VideoLinks.Values(0).URL)
+                End If
             End If
         End If
 
+        AllHTPC = Nothing
     End Sub
 
-    Private Sub GetYouTubeTrailer()
+    Private Sub GetTMDBTrailer()
         Dim TMDB As New TMDB.Scraper
         Dim YT As String = TMDB.GetTrailers(_ImdbID)
-        Dim T As String = String.Empty
-        Dim videoID As String = String.Empty
-        Dim L As String = String.Empty
-        Dim DLURL As String = String.Empty
-        Dim tURL As String = String.Empty
 
         If Not String.IsNullOrEmpty(YT) Then
             Dim YTPage As String = WebPage.DownloadData(YT)
@@ -170,10 +190,6 @@ Public Class Trailers
 
     Public Function DownloadYouTubeTrailer(ByVal sPath As String, ByVal sURL As String) As String
 
-        Dim T As String = String.Empty
-        Dim videoID As String = String.Empty
-        Dim L As String = String.Empty
-        Dim DLURL As String = String.Empty
         Dim tURL As String = String.Empty
 
         If Not String.IsNullOrEmpty(sURL) Then

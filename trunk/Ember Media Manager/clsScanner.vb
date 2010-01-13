@@ -48,7 +48,7 @@ Public Class Scanner
                 Catch
                 End Try
 
-                Dim upDir = From uD As DirectoryInfo In Dirs Where uD.LastWriteTime > Master.SourceLastScan And isValidDir(uD.FullName)
+                Dim upDir = From uD As DirectoryInfo In Dirs Where (Master.eSettings.IgnoreLastScan Or uD.LastWriteTime > Master.SourceLastScan) And isValidDir(uD.FullName)
                 If upDir.Count > 0 Then
                     For Each inDir As DirectoryInfo In upDir
                         ScanForFiles(inDir.FullName, sSource, bUseFolder, bSingle)
@@ -119,9 +119,9 @@ Public Class Scanner
                 End If
 
                 If vtsSingle AndAlso Not String.IsNullOrEmpty(tFile) Then
-                    If Not tmpList.Contains(tFile.ToLower) AndAlso _
+                    If Not tmpList.Contains(tFile.ToLower) AndAlso Not Master.MoviePaths.Contains(tFile.ToLower) AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("-trailer") AndAlso Not Path.GetFileName(tFile).ToLower.Contains("[trailer") AndAlso _
-                    Not Path.GetFileName(tFile).ToLower.Contains("sample") AndAlso Not Master.MoviePaths.Contains(tFile) Then
+                    Not Path.GetFileName(tFile).ToLower.Contains("sample") Then
                         tmpList.Add(tFile.ToLower)
                         fList.Add(New Master.FileAndSource With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder, .Contents = lFi})
                     End If
@@ -129,7 +129,7 @@ Public Class Scanner
                     lFi.Sort(AddressOf FileManip.Common.SortFileNames)
 
                     For Each lFile As FileInfo In lFi
-                        If Master.MoviePaths.Contains(lFile.FullName) AndAlso Not Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
+                        If Not Master.MoviePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
                             Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                             ((Master.eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
                             If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
@@ -453,4 +453,79 @@ Public Class Scanner
         Return tFile
 
     End Function
+
+    ''' <summary>
+    ''' Get all directories in the parent directory
+    ''' </summary>
+    ''' <param name="sSource">Name of source.</param>
+    ''' <param name="sPath">Path of source.</param>
+    Public Shared Sub ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String)
+
+        Try
+            Dim sTVEpPath As String = String.Empty
+            If Directory.Exists(sPath) Then
+
+                Dim Dirs As New List(Of DirectoryInfo)
+                Dim dInfo As New DirectoryInfo(sPath)
+
+                Try
+                    Dirs.AddRange(dInfo.GetDirectories)
+                Catch
+                End Try
+
+                Dim upDir = From uD As DirectoryInfo In Dirs Where (Master.eSettings.IgnoreLastScan Or uD.LastWriteTime > Master.SourceLastScan) And isValidDir(uD.FullName)
+                If upDir.Count > 0 Then
+                    For Each inDir As DirectoryInfo In upDir
+                        ScanForTVFiles(inDir.FullName, sSource)
+                        If Regex.IsMatch(Directory.GetParent(inDir.FullName).Name, "(s(eason)?)?([\._ ])?([0-9]+)") Then ScanTVSourceDir(sSource, inDir.FullName)
+                    Next
+                End If
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Find all related files in a directory.
+    ''' </summary>
+    ''' <param name="sPath">Full path of the directory.</param>
+    ''' <param name="sSource">Name of source.</param>
+    Public Shared Sub ScanForTVFiles(ByVal sPath As String, ByVal sSource As String)
+
+        Try
+
+            Dim di As DirectoryInfo
+            Dim lFi As New List(Of FileInfo)
+            Dim fList As New List(Of Master.FileAndSource)
+            Dim tFile As String = String.Empty
+
+            di = New DirectoryInfo(sPath)
+
+            Try
+                lFi.AddRange(di.GetFiles())
+            Catch
+            End Try
+
+            If lFi.Count > 0 Then
+
+                lFi.Sort(AddressOf FileManip.Common.SortFileNames)
+
+                For Each lFile As FileInfo In lFi
+                    If Not Master.MoviePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
+                        Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
+                        lFile.Length >= Master.eSettings.SkipLessThan * 1048576 Then
+                        fList.Add(New Master.FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .Contents = lFi})
+                    End If
+                Next
+
+                Master.MediaList.AddRange(fList)
+
+                fList = Nothing
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class
