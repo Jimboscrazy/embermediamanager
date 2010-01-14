@@ -24,6 +24,10 @@ Imports System.Text.RegularExpressions
 Public Class Scanner
 
     Public MediaList As New List(Of FileAndSource)
+    Public MoviePaths As New List(Of String)
+    Public TVPaths As New List(Of String)
+    Public ShowPath As String = String.Empty
+
     Friend WithEvents bwFolderData As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
 
@@ -33,6 +37,11 @@ Public Class Scanner
     Private Structure Arguments
         Dim SourceName As String
     End Structure
+
+    Public Enum MediaType As Integer
+        Movie = 0
+        TVShow = 1
+    End Enum
 
     Public Class FileAndSource
         Dim _filename As String
@@ -46,6 +55,10 @@ Public Class Scanner
         Dim _trailer As String
         Dim _subs As String
         Dim _contents As New List(Of FileInfo)
+        Dim _epposter As String
+        Dim _epnfo As String
+        Dim _showpath As String
+        Dim _type As MediaType
 
         Public Property Filename() As String
             Get
@@ -146,6 +159,42 @@ Public Class Scanner
             End Set
         End Property
 
+        Public Property Type() As MediaType
+            Get
+                Return _type
+            End Get
+            Set(ByVal value As MediaType)
+                _type = value
+            End Set
+        End Property
+
+        Public Property EpPoster() As String
+            Get
+                Return _epposter
+            End Get
+            Set(ByVal value As String)
+                _epposter = value
+            End Set
+        End Property
+
+        Public Property EpNfo() As String
+            Get
+                Return _epnfo
+            End Get
+            Set(ByVal value As String)
+                _epnfo = value
+            End Set
+        End Property
+
+        Public Property ShowPath() As String
+            Get
+                Return _showpath
+            End Get
+            Set(ByVal value As String)
+                _showpath = value
+            End Set
+        End Property
+
         Public Sub New()
             Clear()
         End Sub
@@ -161,6 +210,10 @@ Public Class Scanner
             _trailer = String.Empty
             _subs = String.Empty
             _contents.Clear()
+            _epposter = String.Empty
+            _epnfo = String.Empty
+            _showpath = String.Empty
+            _type = MediaType.Movie
         End Sub
     End Class
 
@@ -287,26 +340,27 @@ Public Class Scanner
                 End If
 
                 If vtsSingle AndAlso Not String.IsNullOrEmpty(tFile) Then
-                    If Not tmpList.Contains(tFile.ToLower) AndAlso Not Master.MoviePaths.Contains(tFile.ToLower) AndAlso _
+                    If Not tmpList.Contains(tFile.ToLower) AndAlso Not MoviePaths.Contains(tFile.ToLower) AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("-trailer") AndAlso Not Path.GetFileName(tFile).ToLower.Contains("[trailer") AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("sample") Then
                         tmpList.Add(tFile.ToLower)
-                        fList.Add(New FileAndSource With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder, .Contents = lFi})
+                        fList.Add(New FileAndSource With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder, .Contents = lFi, .Type = MediaType.Movie})
                     End If
                 Else
                     lFi.Sort(AddressOf FileManip.Common.SortFileNames)
 
                     For Each lFile As FileInfo In lFi
-                        If Not Master.MoviePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
+                        If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
+                            tmpList.Add(lFile.FullName.ToLower)
+                            SkipStack = True
+                        Else
+                            tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
+                        End If
+
+                        If Not MoviePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
                             Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                             ((Master.eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
-                            If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
-                                tmpList.Add(lFile.FullName.ToLower)
-                                SkipStack = True
-                            Else
-                                tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
-                            End If
-                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi})
+                            fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False), .Contents = lFi, .Type = MediaType.Movie})
                             If bSingle AndAlso Not SkipStack Then Exit For
                         End If
                         If Me.bwPrelim.CancellationPending Then Return
@@ -592,6 +646,95 @@ Public Class Scanner
     End Function
 
     ''' <summary>
+    ''' Check if a directory contains supporting files (nfo, poster)
+    ''' </summary>
+    ''' <param name="sPath">Full path to directory.</param>
+    ''' <returns>String array (0 = poster, 1 = nfo)</returns>
+    Public Function GetEpFolderContents(ByVal sPath As String) As String()
+
+        Dim NfoPath As String = String.Empty
+        Dim PosterPath As String = String.Empty
+        Dim aResults(2) As String
+        Dim parPath As String = String.Empty
+        Dim tmpName As String = String.Empty
+        Dim fList As New List(Of String)
+
+        Try
+            Try
+                fList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(sPath), ".*")))
+            Catch
+            End Try
+
+            parPath = Directory.GetParent(sPath).FullName.ToLower
+            tmpName = Path.Combine(parPath, Path.GetFileNameWithoutExtension(sPath)).ToLower
+
+            Dim pFile = From fFiles As String In fList Where fFiles.ToLower = String.Concat(tmpName, ".tbn")
+            If pFile.count > 0 Then
+                PosterPath = pFile(0).ToString
+            End If
+
+            Dim nFile = From fFiles As String In fList Where fFiles.ToLower = String.Concat(tmpName, ".nfo")
+            If nFile.Count > 0 Then
+                NfoPath = nFile(0).ToString
+            End If
+
+            aResults(0) = PosterPath
+            aResults(1) = NfoPath
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return aResults
+    End Function
+
+    ''' <summary>
+    ''' Check if a directory contains supporting files (nfo, poster)
+    ''' </summary>
+    ''' <param name="sPath">Full path to directory.</param>
+    ''' <returns>String array (0 = poster, 1 = nfo, 2 = fanart)</returns>
+    Public Function GetShowFolderContents(ByVal sPath As String) As String()
+
+        Dim NfoPath As String = String.Empty
+        Dim PosterPath As String = String.Empty
+        Dim FanartPath As String = String.Empty
+        Dim aResults(3) As String
+        Dim parPath As String = String.Empty
+        Dim tmpName As String = String.Empty
+        Dim fList As New List(Of String)
+
+        Try
+            Try
+                fList.AddRange(Directory.GetFiles(sPath))
+            Catch
+            End Try
+
+            Dim pFile = From fFiles As String In fList Where fFiles.ToLower = Path.Combine(sPath.ToLower, "season-all.tbn")
+            If pFile.Count > 0 Then
+                PosterPath = pFile(0).ToString
+            End If
+
+            Dim nFile = From fFiles As String In fList Where fFiles.ToLower = Path.Combine(sPath.ToLower, "tvshow.nfo")
+            If nFile.Count > 0 Then
+                NfoPath = nFile(0).ToString
+            End If
+
+            Dim fFile = From fFiles As String In fList Where fFiles.ToLower = Path.Combine(sPath.ToLower, "fanart.jpg")
+            If fFile.Count > 0 Then
+                FanartPath = fFile(0).ToString
+            End If
+
+            aResults(0) = PosterPath
+            aResults(1) = NfoPath
+            aResults(2) = FanartPath
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return aResults
+    End Function
+
+    ''' <summary>
     ''' Get the full path to a trailer, if it exists.
     ''' </summary>
     ''' <param name="sPath">Full path to a movie file for which you are trying to find the accompanying trailer.</param>
@@ -628,7 +771,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sSource">Name of source.</param>
     ''' <param name="sPath">Path of source.</param>
-    Public Sub ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String)
+    Public Sub ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String, Optional ByVal isInner As Boolean = False)
 
         Try
             Dim sTVEpPath As String = String.Empty
@@ -645,8 +788,10 @@ Public Class Scanner
                 Dim upDir = From uD As DirectoryInfo In Dirs Where (Master.eSettings.IgnoreLastScan Or uD.LastWriteTime > Master.SourceLastScan) And isValidDir(uD.FullName)
                 If upDir.Count > 0 Then
                     For Each inDir As DirectoryInfo In upDir
+                        If Not isInner Then Me.ShowPath = inDir.FullName
                         ScanForTVFiles(inDir.FullName, sSource)
-                        If Regex.IsMatch(Directory.GetParent(inDir.FullName).Name, "(s(eason)?)?([\._ ])?([0-9]+)") Then ScanTVSourceDir(sSource, inDir.FullName)
+                        'If Regex.IsMatch(inDir.Name, "(s(eason)?)?([\._ ])?([0-9]+)", RegexOptions.IgnoreCase) Then
+                        ScanTVSourceDir(sSource, inDir.FullName, True)
                     Next
                 End If
 
@@ -682,10 +827,10 @@ Public Class Scanner
                 lFi.Sort(AddressOf FileManip.Common.SortFileNames)
 
                 For Each lFile As FileInfo In lFi
-                    If Not Master.MoviePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
+                    If Not TVPaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                         Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                         lFile.Length >= Master.eSettings.SkipLessThan * 1048576 Then
-                        fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .Contents = lFi})
+                        fList.Add(New FileAndSource With {.Filename = lFile.FullName, .Source = sSource, .Contents = lFi, .Type = MediaType.TVShow, .ShowPath = ShowPath})
                     End If
                 Next
 
@@ -705,12 +850,26 @@ Public Class Scanner
 
             Master.DB.SaveMovieList()
 
-            Master.MoviePaths.Clear()
+            MoviePaths.Clear()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                 SQLcommand.CommandText = "SELECT MoviePath FROM movies;"
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
-                        Master.MoviePaths.Add(SQLreader("MoviePath").ToString.ToLower)
+                        MoviePaths.Add(SQLreader("MoviePath").ToString.ToLower)
+                        If Me.bwPrelim.CancellationPending Then
+                            e.Cancel = True
+                            Return
+                        End If
+                    End While
+                End Using
+            End Using
+
+            TVPaths.Clear()
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                SQLcommand.CommandText = "SELECT TVEpPath FROM TVEps;"
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    While SQLreader.Read
+                        TVPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
                         If Me.bwPrelim.CancellationPending Then
                             e.Cancel = True
                             Return
@@ -741,6 +900,34 @@ Public Class Scanner
                                 SQLUpdatecommand.ExecuteNonQuery()
                                 ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")))
                             End If
+                            If Me.bwPrelim.CancellationPending Then
+                                e.Cancel = True
+                                Return
+                            End If
+                        End While
+                    End Using
+                End Using
+            End Using
+
+            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                If Not String.IsNullOrEmpty(Args.SourceName) Then
+                    SQLcommand.CommandText = String.Format("SELECT * FROM TVSources WHERE Name = ""{0}"";", Args.SourceName)
+                Else
+                    SQLcommand.CommandText = "SELECT * FROM TVSources;"
+                End If
+
+                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                    Using SQLUpdatecommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                        SQLUpdatecommand.CommandText = "UPDATE TVSources SET LastScan = (?) WHERE ID = (?);"
+                        Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
+                        Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "ID")
+                        While SQLreader.Read
+                            Master.SourceLastScan = Convert.ToDateTime(SQLreader("LastScan").ToString)
+                            'save the scan time back to the db
+                            parLastScan.Value = Now
+                            parID.Value = SQLreader("ID")
+                            SQLUpdatecommand.ExecuteNonQuery()
+                            ScanTVSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString)
                             If Me.bwPrelim.CancellationPending Then
                                 e.Cancel = True
                                 Return
@@ -788,10 +975,14 @@ Public Class Scanner
         '\\
         Dim currentIndex As Integer = 0
         Dim tmpMovieDB As New Master.DBMovie
+        Dim tmpTVDB As New Master.DBTV
         Dim aContents(6) As String
 
         Try
             tmpMovieDB.Movie = New Media.Movie
+            tmpTVDB.TVEp = New Media.EpisodeDetails
+            tmpTVDB.TVShow = New Media.TVShow
+
             'process the folder type media
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                 For Each sFile As FileAndSource In MediaList
@@ -799,70 +990,131 @@ Public Class Scanner
                         e.Cancel = True
                         Return
                     End If
-                    If Not String.IsNullOrEmpty(sFile.Filename) Then
-                        'first, lets get the contents
-                        aContents = GetFolderContents(sFile.Filename, sFile.isSingle)
-                        sFile.Poster = aContents(0)
-                        sFile.Fanart = aContents(1)
-                        sFile.Nfo = aContents(2)
-                        sFile.Trailer = aContents(3)
-                        sFile.Subs = aContents(4)
-                        sFile.Extra = aContents(5)
+                    Select Case sFile.Type
+                        Case MediaType.TVShow
+                            If Not String.IsNullOrEmpty(sFile.Filename) Then
+                                aContents = GetShowFolderContents(sFile.ShowPath)
+                                sFile.Poster = aContents(0)
+                                sFile.Nfo = aContents(1)
+                                sFile.Fanart = aContents(2)
 
-                        If Not String.IsNullOrEmpty(sFile.Nfo) Then
-                            tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
-                        Else
-                            tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
-                        End If
-
-                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                            'no title so assume it's an invalid nfo, clear nfo path if exists
-                            sFile.Nfo = String.Empty
-
-                            If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
-                                tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name, False)
-                            Else
-                                If sFile.UseFolder AndAlso sFile.isSingle Then
-                                    tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
-                                    tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name, False)
+                                If Not String.IsNullOrEmpty(sFile.Nfo) Then
+                                    tmpTVDB.TVShow = NFO.LoadTVShowFromNFO(sFile.Nfo)
                                 Else
-                                    tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
-                                    tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename), False)
+                                    tmpTVDB.TVShow = NFO.LoadTVShowFromNFO(sFile.ShowPath)
                                 End If
-                            End If
-                            If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
-                        Else
-                            Dim tTitle As String = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
-                            If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
-                            If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                                tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
-                            Else
-                                tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
-                            End If
-                        End If
 
-                        Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
-                        If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
-                            tmpMovieDB.NfoPath = sFile.Nfo
-                            tmpMovieDB.PosterPath = sFile.Poster
-                            tmpMovieDB.FanartPath = sFile.Fanart
-                            tmpMovieDB.TrailerPath = sFile.Trailer
-                            tmpMovieDB.SubPath = sFile.Subs
-                            tmpMovieDB.ExtraPath = sFile.Extra
-                            tmpMovieDB.Filename = sFile.Filename
-                            tmpMovieDB.isSingle = sFile.isSingle
-                            tmpMovieDB.UseFolder = sFile.UseFolder
-                            tmpMovieDB.Source = sFile.Source
-                            tmpMovieDB.FileSource = XML.GetFileSource(sFile.Filename)
-                            tmpMovieDB.IsNew = True
-                            tmpMovieDB.IsLock = False
-                            tmpMovieDB.IsMark = Master.eSettings.MarkNew
-                            'Do the Save
-                            tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
-                        End If
-                        currentIndex += 1
-                    End If
+                                If String.IsNullOrEmpty(tmpTVDB.TVShow.Title) Then
+                                    'no title so assume it's an invalid nfo, clear nfo path if exists
+                                    sFile.Nfo = String.Empty
+
+                                    'set title based on show folder name
+                                End If
+
+                                aContents = GetEpFolderContents(sFile.Filename)
+                                sFile.EpPoster = aContents(0)
+                                sFile.EpNfo = aContents(1)
+
+                                If Not String.IsNullOrEmpty(sFile.EpNfo) Then
+                                    tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(sFile.EpNfo)
+                                Else
+                                    tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(sFile.Filename)
+                                End If
+
+                                If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
+                                    'no title so assume it's an invalid nfo, clear nfo path if exists
+                                    sFile.EpNfo = String.Empty
+
+                                    'set title based on episode file
+                                End If
+
+                                Me.bwFolderData.ReportProgress(currentIndex, tmpTVDB.TVEp.Title)
+                                tmpTVDB.ShowNfoPath = sFile.Nfo
+                                tmpTVDB.ShowPosterPath = sFile.Poster
+                                tmpTVDB.ShowFanartPath = sFile.Fanart
+                                tmpTVDB.IsNewShow = True
+                                tmpTVDB.IsLockShow = False
+                                tmpTVDB.IsMarkShow = Master.eSettings.MarkNew
+                                tmpTVDB.EpNfoPath = sFile.EpNfo
+                                tmpTVDB.EpPosterPath = sFile.EpPoster
+                                tmpTVDB.Filename = sFile.Filename
+                                tmpTVDB.Source = sFile.Source
+                                tmpTVDB.IsNewEp = True
+                                tmpTVDB.IsLockEp = False
+                                tmpTVDB.IsMarkEp = Master.eSettings.MarkNew
+                                'Do the Save
+                                tmpTVDB = Master.DB.SaveTVShowToDB(tmpTVDB, True, True)
+                                If Not String.IsNullOrEmpty(tmpTVDB.ShowID.ToString) Then
+                                    tmpTVDB = Master.DB.SaveTVEpToDB(tmpTVDB, True, True)
+                                End If
+                                currentIndex += 1
+                            End If
+                        Case Else 'assume movie
+                                If Not String.IsNullOrEmpty(sFile.Filename) Then
+                                    'first, lets get the contents
+                                    aContents = GetFolderContents(sFile.Filename, sFile.isSingle)
+                                    sFile.Poster = aContents(0)
+                                    sFile.Fanart = aContents(1)
+                                    sFile.Nfo = aContents(2)
+                                    sFile.Trailer = aContents(3)
+                                    sFile.Subs = aContents(4)
+                                    sFile.Extra = aContents(5)
+
+                                    If Not String.IsNullOrEmpty(sFile.Nfo) Then
+                                        tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
+                                    Else
+                                        tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
+                                    End If
+
+                                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                                        'no title so assume it's an invalid nfo, clear nfo path if exists
+                                        sFile.Nfo = String.Empty
+
+                                        If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
+                                            tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                            tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name, False)
+                                        Else
+                                            If sFile.UseFolder AndAlso sFile.isSingle Then
+                                                tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
+                                                tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name, False)
+                                            Else
+                                                tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename))
+                                                tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.Filename), False)
+                                            End If
+                                        End If
+                                        If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
+                                    Else
+                                        Dim tTitle As String = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
+                                        If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
+                                        If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+                                            tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
+                                        Else
+                                            tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
+                                        End If
+                                    End If
+
+                                    Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
+                                    If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
+                                        tmpMovieDB.NfoPath = sFile.Nfo
+                                        tmpMovieDB.PosterPath = sFile.Poster
+                                        tmpMovieDB.FanartPath = sFile.Fanart
+                                        tmpMovieDB.TrailerPath = sFile.Trailer
+                                        tmpMovieDB.SubPath = sFile.Subs
+                                        tmpMovieDB.ExtraPath = sFile.Extra
+                                        tmpMovieDB.Filename = sFile.Filename
+                                        tmpMovieDB.isSingle = sFile.isSingle
+                                        tmpMovieDB.UseFolder = sFile.UseFolder
+                                        tmpMovieDB.Source = sFile.Source
+                                        tmpMovieDB.FileSource = XML.GetFileSource(sFile.Filename)
+                                        tmpMovieDB.IsNew = True
+                                        tmpMovieDB.IsLock = False
+                                        tmpMovieDB.IsMark = Master.eSettings.MarkNew
+                                        'Do the Save
+                                        tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
+                                    End If
+                                    currentIndex += 1
+                                End If
+                    End Select
                 Next
                 SQLtransaction.Commit()
             End Using

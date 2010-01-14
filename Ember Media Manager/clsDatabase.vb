@@ -390,7 +390,8 @@ Public Class Database
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT, " & _
                                 "TVShowID INTEGER NOT NULL, " & _
                                 "TVEpID INTEGER NOT NULL, " & _
-                                "Season INTEGER NOT NULL" & _
+                                "Season INTEGER NOT NULL, " & _
+                                "PosterPath TEXT" & _
                                 ");"
                     SQLcommand.ExecuteNonQuery()
 
@@ -1165,6 +1166,7 @@ Public Class Database
                 ' First let's save it to NFO, even because we will need the NFO path
                 If ToNfo Then NFO.SaveTVEpToNFO(_TVEpDB)
 
+                parTVShowID.Value = _TVEpDB.ShowID
                 parTVEpPath.Value = _TVEpDB.Filename
                 parPosterPath.Value = _TVEpDB.EpPosterPath
                 parNfoPath.Value = _TVEpDB.EpNfoPath
@@ -1350,8 +1352,8 @@ Public Class Database
                 Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
                 Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
-                Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
                 Dim parTVDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVDB", DbType.String, 0, "TVDB")
+                Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
                 Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "Title")
                 Dim parEpisodeGuide As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeGuide", DbType.String, 0, "EpisodeGuide")
                 Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
