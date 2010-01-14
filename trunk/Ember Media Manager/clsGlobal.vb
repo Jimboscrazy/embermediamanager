@@ -40,7 +40,6 @@ Public Class Master
     Public Shared CanScanDiscImage As Boolean
     Public Shared SourceLastScan As New DateTime
     Public Shared SourcesList As New List(Of String)
-    Public Shared MoviePaths As New List(Of String)
     Public Shared tmpMovie As New Media.Movie
 
     'Global Enums

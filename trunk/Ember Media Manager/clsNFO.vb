@@ -740,4 +740,56 @@ Public Class NFO
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Public Shared Function LoadTVEpFromNFO(ByVal sPath As String) As Media.EpisodeDetails
+
+        Dim xmlSer As XmlSerializer = Nothing
+        Dim xmlEp As New Media.EpisodeDetails
+        Try
+            If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                Using xmlSR As StreamReader = New StreamReader(sPath)
+                    xmlSer = New XmlSerializer(GetType(Media.EpisodeDetails))
+                    xmlEp = CType(xmlSer.Deserialize(xmlSR), Media.EpisodeDetails)
+                End Using
+            Else
+                'read non conforming nfos
+            End If
+
+        Catch
+            'read non conforming nfos
+        End Try
+
+        If Not IsNothing(xmlSer) Then
+            xmlSer = Nothing
+        End If
+
+        Return xmlEp
+
+    End Function
+
+    Public Shared Function LoadTVShowFromNFO(ByVal sPath As String) As Media.TVShow
+
+        Dim xmlSer As XmlSerializer = Nothing
+        Dim xmlShow As New Media.TVShow
+        Try
+            If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                Using xmlSR As StreamReader = New StreamReader(sPath)
+                    xmlSer = New XmlSerializer(GetType(Media.TVShow))
+                    xmlShow = CType(xmlSer.Deserialize(xmlSR), Media.TVShow)
+                End Using
+            Else
+                'read non conforming nfos
+            End If
+
+        Catch
+            'read non conforming nfos
+        End Try
+
+        If Not IsNothing(xmlSer) Then
+            xmlSer = Nothing
+        End If
+
+        Return xmlShow
+
+    End Function
 End Class
