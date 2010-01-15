@@ -146,8 +146,38 @@ Public Class dlgSettings
         Me.txtFilter.Focus()
     End Sub
 
+    Private Sub btnAddShowFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddShowFilter.Click
+        If Not String.IsNullOrEmpty(Me.txtShowFilter.Text) Then
+            Me.lstShowFilters.Items.Add(Me.txtShowFilter.Text)
+            Me.txtShowFilter.Text = String.Empty
+            Me.SetApplyButton(True)
+            Me.sResult.NeedsUpdate = True
+        End If
+
+        Me.txtShowFilter.Focus()
+    End Sub
+
+    Private Sub btnAddEpFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddEpFilter.Click
+        If Not String.IsNullOrEmpty(Me.txtEpFilter.Text) Then
+            Me.lstEpFilters.Items.Add(Me.txtEpFilter.Text)
+            Me.txtEpFilter.Text = String.Empty
+            Me.SetApplyButton(True)
+            Me.sResult.NeedsUpdate = True
+        End If
+
+        Me.txtEpFilter.Focus()
+    End Sub
+
     Private Sub btnRemoveFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFilter.Click
         Me.RemoveFilter()
+    End Sub
+
+    Private Sub btnRemoveShowFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowFilter.Click
+        Me.RemoveShowFilter()
+    End Sub
+
+    Private Sub btnRemoveEpFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveEpFilter.Click
+        Me.RemoveEpFilter()
     End Sub
 
     Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScanMediaInfo.CheckedChanged
@@ -203,10 +233,6 @@ Public Class dlgSettings
             Me.chkMusicBy.Checked = False
             Me.chkCrew.Checked = False
         End If
-    End Sub
-
-    Private Sub chkMovieMediaCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkMoviePosterCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviePosterCol.CheckedChanged
@@ -286,6 +312,16 @@ Public Class dlgSettings
         Me.sResult.NeedsRefresh = True
     End Sub
 
+    Private Sub chkShowProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowProperCase.CheckedChanged
+        Me.SetApplyButton(True)
+        Me.sResult.NeedsRefresh = True
+    End Sub
+
+    Private Sub chkEpProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpProperCase.CheckedChanged
+        Me.SetApplyButton(True)
+        Me.sResult.NeedsRefresh = True
+    End Sub
+
     Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
         Try
             If Me.lstFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstFilters.SelectedItem) AndAlso Me.lstFilters.SelectedIndex > 0 Then
@@ -302,6 +338,38 @@ Public Class dlgSettings
         End Try
     End Sub
 
+    Private Sub btnShowFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowFilterUp.Click
+        Try
+            If Me.lstShowFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstShowFilters.SelectedItem) AndAlso Me.lstShowFilters.SelectedIndex > 0 Then
+                Dim iIndex As Integer = Me.lstShowFilters.SelectedIndices(0)
+                Me.lstShowFilters.Items.Insert(iIndex - 1, Me.lstShowFilters.SelectedItems(0))
+                Me.lstShowFilters.Items.RemoveAt(iIndex + 1)
+                Me.lstShowFilters.SelectedIndex = iIndex - 1
+                Me.SetApplyButton(True)
+                Me.sResult.NeedsRefresh = True
+                Me.lstShowFilters.Focus()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnEpFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEpFilterUp.Click
+        Try
+            If Me.lstEpFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstEpFilters.SelectedItem) AndAlso Me.lstEpFilters.SelectedIndex > 0 Then
+                Dim iIndex As Integer = Me.lstEpFilters.SelectedIndices(0)
+                Me.lstEpFilters.Items.Insert(iIndex - 1, Me.lstEpFilters.SelectedItems(0))
+                Me.lstEpFilters.Items.RemoveAt(iIndex + 1)
+                Me.lstEpFilters.SelectedIndex = iIndex - 1
+                Me.SetApplyButton(True)
+                Me.sResult.NeedsRefresh = True
+                Me.lstEpFilters.Focus()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
     Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
         Try
             If Me.lstFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstFilters.SelectedItem) AndAlso Me.lstFilters.SelectedIndex < (Me.lstFilters.Items.Count - 1) Then
@@ -312,6 +380,38 @@ Public Class dlgSettings
                 Me.SetApplyButton(True)
                 Me.sResult.NeedsRefresh = True
                 Me.lstFilters.Focus()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnShowFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnShowFilterDown.Click
+        Try
+            If Me.lstShowFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstShowFilters.SelectedItem) AndAlso Me.lstShowFilters.SelectedIndex < (Me.lstShowFilters.Items.Count - 1) Then
+                Dim iIndex As Integer = Me.lstShowFilters.SelectedIndices(0)
+                Me.lstShowFilters.Items.Insert(iIndex + 2, Me.lstShowFilters.SelectedItems(0))
+                Me.lstShowFilters.Items.RemoveAt(iIndex)
+                Me.lstShowFilters.SelectedIndex = iIndex + 1
+                Me.SetApplyButton(True)
+                Me.sResult.NeedsRefresh = True
+                Me.lstShowFilters.Focus()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnEpFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEpFilterDown.Click
+        Try
+            If Me.lstEpFilters.Items.Count > 0 AndAlso Not IsNothing(Me.lstEpFilters.SelectedItem) AndAlso Me.lstEpFilters.SelectedIndex < (Me.lstEpFilters.Items.Count - 1) Then
+                Dim iIndex As Integer = Me.lstEpFilters.SelectedIndices(0)
+                Me.lstEpFilters.Items.Insert(iIndex + 2, Me.lstEpFilters.SelectedItems(0))
+                Me.lstEpFilters.Items.RemoveAt(iIndex)
+                Me.lstEpFilters.SelectedIndex = iIndex + 1
+                Me.SetApplyButton(True)
+                Me.sResult.NeedsRefresh = True
+                Me.lstEpFilters.Focus()
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -549,6 +649,7 @@ Public Class dlgSettings
         pnlScraper.Visible = False
         pnlExtensions.Visible = False
         pnlImages.Visible = False
+        pnlShows.Visible = False
         pnlTVSources.Visible = False
 
         Select Case tvSettings.SelectedNode.Name
@@ -566,6 +667,8 @@ Public Class dlgSettings
                 pnlExtensions.Visible = True
             Case "nImages"
                 pnlImages.Visible = True
+            Case "nTV"
+                pnlShows.Visible = True
             Case "nTVSources"
                 pnlTVSources.Visible = True
         End Select
@@ -1451,6 +1554,14 @@ Public Class dlgSettings
         If e.KeyCode = Keys.Delete Then Me.RemoveFilter()
     End Sub
 
+    Private Sub lstShowFilters_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstShowFilters.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveShowFilter()
+    End Sub
+
+    Private Sub lstEpFilters_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstEpFilters.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveEpFilter()
+    End Sub
+
     Private Sub lstMovieExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstMovieExts.KeyDown
         If e.KeyCode = Keys.Delete Then Me.RemoveMovieExt()
     End Sub
@@ -1483,10 +1594,20 @@ Public Class dlgSettings
     Private Sub SaveSettings()
 
         Try
-            '######## GENERAL TAB ########
             Master.eSettings.FilterCustom.Clear()
-            Master.eSettings.FilterCustom.AddRange(Me.lstFilters.Items)
+            Master.eSettings.FilterCustom.AddRange(Me.lstFilters.Items.OfType(Of String).ToList)
             If Master.eSettings.FilterCustom.Count <= 0 Then Master.eSettings.NoFilters = True
+            Master.eSettings.ProperCase = Me.chkProperCase.Checked
+
+            Master.eSettings.ShowFilterCustom.Clear()
+            Master.eSettings.ShowFilterCustom.AddRange(Me.lstShowFilters.Items.OfType(Of String).ToList)
+            If Master.eSettings.ShowFilterCustom.Count <= 0 Then Master.eSettings.NoShowFilters = True
+            Master.eSettings.ShowProperCase = Me.chkShowProperCase.Checked
+
+            Master.eSettings.EpFilterCustom.Clear()
+            Master.eSettings.EpFilterCustom.AddRange(Me.lstEpFilters.Items.OfType(Of String).ToList)
+            If Master.eSettings.EpFilterCustom.Count <= 0 Then Master.eSettings.NoEpFilters = True
+            Master.eSettings.EpProperCase = Me.chkEpProperCase.Checked
 
             If Me.tcCleaner.SelectedTab.Name = "tpExpert" Then
                 Master.eSettings.ExpertCleaner = True
@@ -1505,7 +1626,7 @@ Public Class dlgSettings
                 Master.eSettings.CleanExtraThumbs = False
                 Master.eSettings.CleanWhitelistVideo = Me.chkWhitelistVideo.Checked
                 Master.eSettings.CleanWhitelistExts.Clear()
-                Master.eSettings.CleanWhitelistExts.AddRange(Me.lstWhitelist.Items)
+                Master.eSettings.CleanWhitelistExts.AddRange(Me.lstWhitelist.Items.OfType(Of String).ToList)
             Else
                 Master.eSettings.ExpertCleaner = False
                 Master.eSettings.CleanFolderJPG = Me.chkCleanFolderJPG.Checked
@@ -1525,19 +1646,15 @@ Public Class dlgSettings
                 Master.eSettings.CleanWhitelistExts.Clear()
             End If
             Master.eSettings.LogErrors = Me.chkLogErrors.Checked
-            Master.eSettings.ProperCase = Me.chkProperCase.Checked
             Master.eSettings.OverwriteNfo = Me.chkOverwriteNfo.Checked
             Master.eSettings.XBMCComs = Me.XComs
             Master.eSettings.ValidExts.Clear()
-            Master.eSettings.ValidExts.AddRange(lstMovieExts.Items)
+            Master.eSettings.ValidExts.AddRange(lstMovieExts.Items.OfType(Of String).ToList)
             Master.eSettings.NoStackExts.Clear()
-            Master.eSettings.NoStackExts.AddRange(lstNoStack.Items)
+            Master.eSettings.NoStackExts.AddRange(lstNoStack.Items.OfType(Of String).ToList)
             Master.eSettings.CheckUpdates = chkUpdates.Checked
             Master.eSettings.InfoPanelAnim = chkInfoPanelAnim.Checked
             Master.eSettings.YAMJSetsCompatible = chkYAMJCompatibleSets.Checked
-
-            '######## MOVIES TAB ########
-
             Master.eSettings.CertificationLang = Me.cbCert.Text
             If Not String.IsNullOrEmpty(Me.cbCert.Text) Then
                 Master.eSettings.UseCertForMPAA = Me.chkUseCertForMPAA.Checked
@@ -1683,7 +1800,7 @@ Public Class dlgSettings
             End If
 
             Master.eSettings.SortTokens.Clear()
-            Master.eSettings.SortTokens.AddRange(lstSortTokens.Items)
+            Master.eSettings.SortTokens.AddRange(lstSortTokens.Items.OfType(Of String).ToList)
             If Master.eSettings.SortTokens.Count <= 0 Then Master.eSettings.NoTokens = True
 
             Master.eSettings.LevTolerance = If(Not String.IsNullOrEmpty(Me.txtCheckTitleTol.Text), Convert.ToInt32(Me.txtCheckTitleTol.Text), 0)
@@ -1751,8 +1868,12 @@ Public Class dlgSettings
     Private Sub FillSettings()
 
         Try
-            '######## GENERAL TAB ########
             Me.lstFilters.Items.AddRange(Master.eSettings.FilterCustom.ToArray)
+            Me.chkProperCase.Checked = Master.eSettings.ProperCase
+            Me.lstShowFilters.Items.AddRange(Master.eSettings.ShowFilterCustom.ToArray)
+            Me.chkShowProperCase.Checked = Master.eSettings.ShowProperCase
+            Me.lstEpFilters.Items.AddRange(Master.eSettings.EpFilterCustom.ToArray)
+            Me.chkEpProperCase.Checked = Master.eSettings.EpProperCase
             Me.chkCleanFolderJPG.Checked = Master.eSettings.CleanFolderJPG
             Me.chkCleanMovieTBN.Checked = Master.eSettings.CleanMovieTBN
             Me.chkCleanMovieTBNb.Checked = Master.eSettings.CleanMovieTBNB
@@ -1776,12 +1897,10 @@ Public Class dlgSettings
             Me.LoadXComs()
 
             Me.chkLogErrors.Checked = Master.eSettings.LogErrors
-            Me.chkProperCase.Checked = Master.eSettings.ProperCase
             Me.lstMovieExts.Items.AddRange(Master.eSettings.ValidExts.ToArray)
             Me.lstNoStack.Items.AddRange(Master.eSettings.NoStackExts.ToArray)
             Me.chkUpdates.Checked = Master.eSettings.CheckUpdates
             Me.chkInfoPanelAnim.Checked = Master.eSettings.InfoPanelAnim
-            '######## MOVIES TAB ########
 
             If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
                 Me.chkCert.Checked = True
@@ -2012,13 +2131,13 @@ Public Class dlgSettings
 
         Me.cbIntLang.Items.Clear()
         If Directory.Exists(Path.Combine(Master.AppPath, "Langs")) Then
-            Dim alL As New ArrayList
-            Dim alLangs As New ArrayList
+            Dim alL As New List(Of String)
+            Dim alLangs As New List(Of String)
             Try
                 alL.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Langs"), "*).xml"))
             Catch
             End Try
-            alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToArray)
+            alLangs.AddRange(alL.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL)).ToList)
             Me.cbIntLang.Items.AddRange(alLangs.ToArray)
         End If
 
@@ -2028,8 +2147,8 @@ Public Class dlgSettings
 
         Me.cbMovieTheme.Items.Clear()
         If Directory.Exists(Path.Combine(Master.AppPath, "Themes")) Then
-            Dim alT As New ArrayList
-            Dim alThemes As New ArrayList
+            Dim alT As New List(Of String)
+            Dim alThemes As New List(Of String)
             Try
                 alT.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Themes"), "movie-*.xml"))
             Catch
@@ -2107,9 +2226,11 @@ Public Class dlgSettings
         Me.Label25.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
         Me.gbFilters.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
         Me.chkProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
+        Me.chkShowProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
+        Me.chkEpProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         Me.GroupBox12.Text = Me.GroupBox4.Text
         Me.chkShowGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
-        Me.lblGenre.Text = Master.eLang.GetString(454, "Genre Language Filter:")
+        Me.gbGenreFilter.Text = Master.eLang.GetString(454, "Genre Language Filter:")
         Me.chkNoDisplayFanart.Text = Master.eLang.GetString(455, "Do Not Display Fanart")
         Me.chkNoDisplayPoster.Text = Master.eLang.GetString(456, "Do Not Display Poster")
         Me.chkShowDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
@@ -2274,6 +2395,8 @@ Public Class dlgSettings
         Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
         Me.chkCleanDB.Text = Master.eLang.GetString(999, "Clean database after updating library")
         Me.chkIgnoreLastScan.Text = Master.eLang.GetString(999, "Ignore last scan time when updating library")
+        Me.gbShowFilter.Text = Master.eLang.GetString(999, "Show Folder/File Name Filters")
+        Me.gbEpFilter.Text = Master.eLang.GetString(999, "Episode Folder/File Name Filters")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
@@ -2321,6 +2444,26 @@ Public Class dlgSettings
         If Me.lstFilters.Items.Count > 0 AndAlso Me.lstFilters.SelectedItems.Count > 0 Then
             For Each i As Integer In lstFilters.SelectedIndices
                 lstFilters.Items.RemoveAt(i)
+            Next
+            Me.SetApplyButton(True)
+            Me.sResult.NeedsRefresh = True
+        End If
+    End Sub
+
+    Private Sub RemoveShowFilter()
+        If Me.lstShowFilters.Items.Count > 0 AndAlso Me.lstShowFilters.SelectedItems.Count > 0 Then
+            For Each i As Integer In lstShowFilters.SelectedIndices
+                lstShowFilters.Items.RemoveAt(i)
+            Next
+            Me.SetApplyButton(True)
+            Me.sResult.NeedsRefresh = True
+        End If
+    End Sub
+
+    Private Sub RemoveEpFilter()
+        If Me.lstEpFilters.Items.Count > 0 AndAlso Me.lstEpFilters.SelectedItems.Count > 0 Then
+            For Each i As Integer In lstEpFilters.SelectedIndices
+                lstEpFilters.Items.RemoveAt(i)
             Next
             Me.SetApplyButton(True)
             Me.sResult.NeedsRefresh = True

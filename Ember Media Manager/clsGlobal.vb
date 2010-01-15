@@ -38,7 +38,6 @@ Public Class Master
     Public Shared TempPath As String = Path.Combine(AppPath, "Temp")
     Public Shared currMovie As New DBMovie
     Public Shared CanScanDiscImage As Boolean
-    Public Shared SourceLastScan As New DateTime
     Public Shared SourcesList As New List(Of String)
     Public Shared tmpMovie As New Media.Movie
 
@@ -127,12 +126,34 @@ Public Class Master
         Dim FileSource As String
     End Structure
 
+    Public Shared Sub ClearDBMovie(ByRef _DBMovie As DBMovie)
+        _DBMovie.ID = -1
+        _DBMovie.ListTitle = String.Empty
+        _DBMovie.Movie = New Media.Movie
+        _DBMovie.IsNew = False
+        _DBMovie.IsMark = False
+        _DBMovie.IsLock = False
+        _DBMovie.NeedsSave = False
+        _DBMovie.UseFolder = True
+        _DBMovie.Filename = String.Empty
+        _DBMovie.isSingle = True
+        _DBMovie.PosterPath = String.Empty
+        _DBMovie.FanartPath = String.Empty
+        _DBMovie.NfoPath = String.Empty
+        _DBMovie.TrailerPath = String.Empty
+        _DBMovie.SubPath = String.Empty
+        _DBMovie.ExtraPath = String.Empty
+        _DBMovie.Source = String.Empty
+        _DBMovie.OutOfTolerance = False
+        _DBMovie.ClearExtras = False
+        _DBMovie.FileSource = String.Empty
+    End Sub
+
     Public Structure DBTV
         Dim ShowID As Long
         Dim EpID As Long
         Dim TVShow As Media.TVShow
         Dim TVEp As Media.EpisodeDetails
-        Dim Season As Integer
         Dim IsNewShow As Boolean
         Dim IsMarkShow As Boolean
         Dim IsLockShow As Boolean
@@ -148,7 +169,33 @@ Public Class Master
         Dim EpPosterPath As String
         Dim EpNfoPath As String
         Dim Source As String
+        Dim ShowPath As String
+        Dim SeasonPosterPath As String
     End Structure
+
+    Public Shared Sub ClearDBTV(ByRef _DBTV As DBTV)
+        _DBTV.ShowID = -1
+        _DBTV.EpID = -1
+        _DBTV.TVShow = New Media.TVShow
+        _DBTV.TVEp = New Media.EpisodeDetails
+        _DBTV.IsNewShow = False
+        _DBTV.IsMarkShow = False
+        _DBTV.IsLockShow = False
+        _DBTV.IsNewEp = False
+        _DBTV.IsMarkEp = False
+        _DBTV.IsLockEp = False
+        _DBTV.ShowNeedsSave = False
+        _DBTV.EpNeedsSave = False
+        _DBTV.Filename = String.Empty
+        _DBTV.ShowPosterPath = String.Empty
+        _DBTV.ShowFanartPath = String.Empty
+        _DBTV.ShowNfoPath = String.Empty
+        _DBTV.EpPosterPath = String.Empty
+        _DBTV.EpNfoPath = String.Empty
+        _DBTV.Source = String.Empty
+        _DBTV.ShowPath = String.Empty
+        _DBTV.SeasonPosterPath = String.Empty
+    End Sub
 
     Public Structure ScrapeOptions
         Dim bTitle As Boolean
@@ -330,7 +377,7 @@ Public Class Master
     Public Shared Function GetExtraModifier(ByVal sPath As String) As Integer
 
         Dim iMod As Integer = 0
-        Dim lThumbs As New ArrayList
+        Dim lThumbs As New List(Of String)
 
         Try
             If Directory.Exists(sPath) Then

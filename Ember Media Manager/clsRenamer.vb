@@ -152,7 +152,7 @@ Public Class FileFolderRenamer
     End Class
 
     Private _movies As New List(Of FileRename)
-    Public MovieFolders As New ArrayList
+    Public MovieFolders As New List(Of String)
 
     Public Function GetCount() As Integer
         Return _movies.Count
@@ -504,7 +504,7 @@ Public Class FileFolderRenamer
                         'Rename Files
                         If Not f.IsVIDEO_TS Then
                             If (Not f.NewFileName = f.FileName) OrElse (f.Path = String.Empty AndAlso Not f.NewPath = String.Empty) OrElse Not f.IsSingle Then
-                                Dim tmpList As New ArrayList
+                                Dim tmpList As New List(Of String)
                                 Dim di As DirectoryInfo
 
                                 If f.IsSingle Then
@@ -595,12 +595,12 @@ Public Class FileFolderRenamer
         MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
         MovieFile.Year = _tmpMovie.Movie.Year
 
-        Dim mFolders As New ArrayList
+        Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
-                    mFolders.Add(SQLReader("Path"))
+                    mFolders.Add(SQLReader("Path").ToString)
                 End While
             End Using
         End Using

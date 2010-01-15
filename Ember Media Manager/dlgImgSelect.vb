@@ -66,7 +66,7 @@ Public Class dlgImgSelect
 
     Private CachePath As String = String.Empty
     Private Results As New Master.ImgResult
-    Private ETHashes As New ArrayList
+    Private ETHashes As New List(Of String)
 
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click

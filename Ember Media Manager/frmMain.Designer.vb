@@ -25,6 +25,9 @@ Partial Class frmMain
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -99,10 +102,10 @@ Partial Class frmMain
         Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tabTV = New System.Windows.Forms.TabPage
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-        Me.dgvTVMain = New System.Windows.Forms.DataGridView
+        Me.dgvTVShows = New System.Windows.Forms.DataGridView
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
-        Me.dgvTVSeason = New System.Windows.Forms.DataGridView
-        Me.dgvTVShow = New System.Windows.Forms.DataGridView
+        Me.dgvTVSeasons = New System.Windows.Forms.DataGridView
+        Me.dgvTVEpisodes = New System.Windows.Forms.DataGridView
         Me.Panel1 = New System.Windows.Forms.Panel
         Me.pnlSearch = New System.Windows.Forms.Panel
         Me.cbSearch = New System.Windows.Forms.ComboBox
@@ -313,12 +316,12 @@ Partial Class frmMain
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
-        CType(Me.dgvTVMain, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer2.Panel1.SuspendLayout()
         Me.SplitContainer2.Panel2.SuspendLayout()
         Me.SplitContainer2.SuspendLayout()
-        CType(Me.dgvTVSeason, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dgvTVShow, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.pnlSearch.SuspendLayout()
         CType(Me.picSearch, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1012,7 +1015,7 @@ Partial Class frmMain
         'SplitContainer1.Panel1
         '
         Me.SplitContainer1.Panel1.BackColor = System.Drawing.Color.Gainsboro
-        Me.SplitContainer1.Panel1.Controls.Add(Me.dgvTVMain)
+        Me.SplitContainer1.Panel1.Controls.Add(Me.dgvTVShows)
         '
         'SplitContainer1.Panel2
         '
@@ -1021,15 +1024,30 @@ Partial Class frmMain
         Me.SplitContainer1.SplitterDistance = 109
         Me.SplitContainer1.TabIndex = 3
         '
-        'dgvTVMain
+        'dgvTVShows
         '
-        Me.dgvTVMain.BackgroundColor = System.Drawing.Color.White
-        Me.dgvTVMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvTVMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvTVMain.Location = New System.Drawing.Point(0, 0)
-        Me.dgvTVMain.Name = "dgvTVMain"
-        Me.dgvTVMain.Size = New System.Drawing.Size(335, 109)
-        Me.dgvTVMain.TabIndex = 0
+        Me.dgvTVShows.AllowUserToAddRows = False
+        Me.dgvTVShows.AllowUserToDeleteRows = False
+        Me.dgvTVShows.AllowUserToResizeRows = False
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
+        Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
+        Me.dgvTVShows.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
+        Me.dgvTVShows.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTVShows.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvTVShows.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.dgvTVShows.Location = New System.Drawing.Point(0, 0)
+        Me.dgvTVShows.Name = "dgvTVShows"
+        Me.dgvTVShows.ReadOnly = True
+        Me.dgvTVShows.RowHeadersVisible = False
+        Me.dgvTVShows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvTVShows.ShowCellErrors = False
+        Me.dgvTVShows.ShowRowErrors = False
+        Me.dgvTVShows.Size = New System.Drawing.Size(335, 109)
+        Me.dgvTVShows.StandardTab = True
+        Me.dgvTVShows.TabIndex = 0
         '
         'SplitContainer2
         '
@@ -1041,34 +1059,64 @@ Partial Class frmMain
         'SplitContainer2.Panel1
         '
         Me.SplitContainer2.Panel1.BackColor = System.Drawing.Color.Gainsboro
-        Me.SplitContainer2.Panel1.Controls.Add(Me.dgvTVSeason)
+        Me.SplitContainer2.Panel1.Controls.Add(Me.dgvTVSeasons)
         '
         'SplitContainer2.Panel2
         '
-        Me.SplitContainer2.Panel2.Controls.Add(Me.dgvTVShow)
+        Me.SplitContainer2.Panel2.Controls.Add(Me.dgvTVEpisodes)
         Me.SplitContainer2.Size = New System.Drawing.Size(335, 307)
         Me.SplitContainer2.SplitterDistance = 108
         Me.SplitContainer2.TabIndex = 0
         '
-        'dgvTVSeason
+        'dgvTVSeasons
         '
-        Me.dgvTVSeason.BackgroundColor = System.Drawing.Color.White
-        Me.dgvTVSeason.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvTVSeason.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvTVSeason.Location = New System.Drawing.Point(0, 0)
-        Me.dgvTVSeason.Name = "dgvTVSeason"
-        Me.dgvTVSeason.Size = New System.Drawing.Size(335, 108)
-        Me.dgvTVSeason.TabIndex = 0
+        Me.dgvTVSeasons.AllowUserToAddRows = False
+        Me.dgvTVSeasons.AllowUserToDeleteRows = False
+        Me.dgvTVSeasons.AllowUserToResizeRows = False
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
+        Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
+        Me.dgvTVSeasons.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
+        Me.dgvTVSeasons.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTVSeasons.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvTVSeasons.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.dgvTVSeasons.Location = New System.Drawing.Point(0, 0)
+        Me.dgvTVSeasons.Name = "dgvTVSeasons"
+        Me.dgvTVSeasons.ReadOnly = True
+        Me.dgvTVSeasons.RowHeadersVisible = False
+        Me.dgvTVSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvTVSeasons.ShowCellErrors = False
+        Me.dgvTVSeasons.ShowRowErrors = False
+        Me.dgvTVSeasons.Size = New System.Drawing.Size(335, 108)
+        Me.dgvTVSeasons.StandardTab = True
+        Me.dgvTVSeasons.TabIndex = 0
         '
-        'dgvTVShow
+        'dgvTVEpisodes
         '
-        Me.dgvTVShow.BackgroundColor = System.Drawing.Color.White
-        Me.dgvTVShow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvTVShow.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.dgvTVShow.Location = New System.Drawing.Point(0, 0)
-        Me.dgvTVShow.Name = "dgvTVShow"
-        Me.dgvTVShow.Size = New System.Drawing.Size(335, 195)
-        Me.dgvTVShow.TabIndex = 0
+        Me.dgvTVEpisodes.AllowUserToAddRows = False
+        Me.dgvTVEpisodes.AllowUserToDeleteRows = False
+        Me.dgvTVEpisodes.AllowUserToResizeRows = False
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
+        Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
+        Me.dgvTVEpisodes.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
+        Me.dgvTVEpisodes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTVEpisodes.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvTVEpisodes.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.dgvTVEpisodes.Location = New System.Drawing.Point(0, 0)
+        Me.dgvTVEpisodes.Name = "dgvTVEpisodes"
+        Me.dgvTVEpisodes.ReadOnly = True
+        Me.dgvTVEpisodes.RowHeadersVisible = False
+        Me.dgvTVEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvTVEpisodes.ShowCellErrors = False
+        Me.dgvTVEpisodes.ShowRowErrors = False
+        Me.dgvTVEpisodes.Size = New System.Drawing.Size(335, 195)
+        Me.dgvTVEpisodes.StandardTab = True
+        Me.dgvTVEpisodes.TabIndex = 0
         '
         'Panel1
         '
@@ -2881,12 +2929,12 @@ Partial Class frmMain
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         Me.SplitContainer1.ResumeLayout(False)
-        CType(Me.dgvTVMain, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer2.Panel1.ResumeLayout(False)
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         Me.SplitContainer2.ResumeLayout(False)
-        CType(Me.dgvTVSeason, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dgvTVShow, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.pnlSearch.ResumeLayout(False)
         Me.pnlSearch.PerformLayout()
@@ -3208,9 +3256,9 @@ Partial Class frmMain
     Friend WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
-    Friend WithEvents dgvTVMain As System.Windows.Forms.DataGridView
-    Friend WithEvents dgvTVSeason As System.Windows.Forms.DataGridView
-    Friend WithEvents dgvTVShow As System.Windows.Forms.DataGridView
+    Friend WithEvents dgvTVShows As System.Windows.Forms.DataGridView
+    Friend WithEvents dgvTVSeasons As System.Windows.Forms.DataGridView
+    Friend WithEvents dgvTVEpisodes As System.Windows.Forms.DataGridView
     Friend WithEvents CleanDatabaseToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RemoveFromDatabaseToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RemoveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

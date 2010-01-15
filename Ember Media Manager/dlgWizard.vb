@@ -119,8 +119,8 @@ Public Class dlgWizard
     Private Sub LoadIntLangs()
 
         If Directory.Exists(Path.Combine(Master.AppPath, "Langs")) Then
-            Dim alL As New ArrayList
-            Dim alLangs As New ArrayList
+            Dim alL As New List(Of String)
+            Dim alLangs As New List(Of String)
             Try
                 alL.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Langs"), "*).xml"))
             Catch

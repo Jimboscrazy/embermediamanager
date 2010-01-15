@@ -792,7 +792,7 @@ Public Class Images
 
                 If Master.eSettings.UseTMDB Then
 
-                    Dim ETHashes As New ArrayList
+                    Dim ETHashes As New List(Of String)
                     If Master.eSettings.AutoET AndAlso doETs Then
                         ETHashes = HashFile.CurrentETHashes(sPath)
                     End If
@@ -1082,7 +1082,7 @@ foundIT:
         If Master.eSettings.UseTMDB Then
             Dim TMDB As New TMDB.Scraper
             Dim tmpListTMDB As New List(Of Media.Image)
-            Dim ETHashes As New ArrayList
+            Dim ETHashes As New List(Of String)
 
             Dim CachePath As String = String.Concat(Master.TempPath, Path.DirectorySeparatorChar, IMDBID, Path.DirectorySeparatorChar, "fanart")
 

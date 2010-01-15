@@ -148,7 +148,7 @@ Public Class MediaInfo
             ElseIf StringManip.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) OrElse Path.GetFileNameWithoutExtension(sPath).ToLower = "video_ts" Then
                 Try
                     Dim oFile As String = StringManip.CleanStackingMarkers(sPath, False)
-                    Dim sFile As New ArrayList
+                    Dim sFile As New List(Of String)
                     Dim bIsVTS As Boolean = False
 
                     If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then

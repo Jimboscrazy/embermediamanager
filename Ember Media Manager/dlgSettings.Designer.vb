@@ -85,23 +85,14 @@ Partial Class dlgSettings
         Me.txtWhitelist = New System.Windows.Forms.TextBox
         Me.lstWhitelist = New System.Windows.Forms.ListBox
         Me.Label25 = New System.Windows.Forms.Label
-        Me.gbFilters = New System.Windows.Forms.GroupBox
-        Me.btnDown = New System.Windows.Forms.Button
-        Me.btnUp = New System.Windows.Forms.Button
-        Me.chkProperCase = New System.Windows.Forms.CheckBox
-        Me.btnRemoveFilter = New System.Windows.Forms.Button
-        Me.btnAddFilter = New System.Windows.Forms.Button
-        Me.txtFilter = New System.Windows.Forms.TextBox
-        Me.lstFilters = New System.Windows.Forms.ListBox
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
-        Me.lbGenre = New System.Windows.Forms.CheckedListBox
         Me.chkShowGenresText = New System.Windows.Forms.CheckBox
-        Me.lblGenre = New System.Windows.Forms.Label
         Me.chkNoDisplayFanart = New System.Windows.Forms.CheckBox
         Me.chkNoDisplayPoster = New System.Windows.Forms.CheckBox
         Me.chkShowDims = New System.Windows.Forms.CheckBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.chkMarkNew = New System.Windows.Forms.CheckBox
+        Me.lbGenre = New System.Windows.Forms.CheckedListBox
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.txtCheckTitleTol = New System.Windows.Forms.TextBox
         Me.Label30 = New System.Windows.Forms.Label
@@ -232,6 +223,15 @@ Partial Class dlgSettings
         Me.btnRemoveCom = New System.Windows.Forms.Button
         Me.lbXBMCCom = New System.Windows.Forms.ListBox
         Me.pnlMovies = New System.Windows.Forms.Panel
+        Me.gbGenreFilter = New System.Windows.Forms.GroupBox
+        Me.gbFilters = New System.Windows.Forms.GroupBox
+        Me.btnDown = New System.Windows.Forms.Button
+        Me.btnUp = New System.Windows.Forms.Button
+        Me.chkProperCase = New System.Windows.Forms.CheckBox
+        Me.btnRemoveFilter = New System.Windows.Forms.Button
+        Me.btnAddFilter = New System.Windows.Forms.Button
+        Me.txtFilter = New System.Windows.Forms.TextBox
+        Me.lstFilters = New System.Windows.Forms.ListBox
         Me.GroupBox27 = New System.Windows.Forms.GroupBox
         Me.chkMissingExtra = New System.Windows.Forms.CheckBox
         Me.chkMissingSubs = New System.Windows.Forms.CheckBox
@@ -316,6 +316,7 @@ Partial Class dlgSettings
         Me.pnlSources = New System.Windows.Forms.Panel
         Me.btnEditSource = New System.Windows.Forms.Button
         Me.GroupBox19 = New System.Windows.Forms.GroupBox
+        Me.chkIgnoreLastScan = New System.Windows.Forms.CheckBox
         Me.chkCleanDB = New System.Windows.Forms.CheckBox
         Me.chkAutoDetectVTS = New System.Windows.Forms.CheckBox
         Me.chkSkipStackedSizeCheck = New System.Windows.Forms.CheckBox
@@ -349,7 +350,23 @@ Partial Class dlgSettings
         Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
         Me.btnRemTVSource = New System.Windows.Forms.Button
         Me.btnAddTVSource = New System.Windows.Forms.Button
-        Me.chkIgnoreLastScan = New System.Windows.Forms.CheckBox
+        Me.pnlShows = New System.Windows.Forms.Panel
+        Me.gbEpFilter = New System.Windows.Forms.GroupBox
+        Me.btnEpFilterDown = New System.Windows.Forms.Button
+        Me.btnEpFilterUp = New System.Windows.Forms.Button
+        Me.chkEpProperCase = New System.Windows.Forms.CheckBox
+        Me.btnRemoveEpFilter = New System.Windows.Forms.Button
+        Me.btnAddEpFilter = New System.Windows.Forms.Button
+        Me.txtEpFilter = New System.Windows.Forms.TextBox
+        Me.lstEpFilters = New System.Windows.Forms.ListBox
+        Me.gbShowFilter = New System.Windows.Forms.GroupBox
+        Me.btnShowFilterDown = New System.Windows.Forms.Button
+        Me.btnShowFilterUp = New System.Windows.Forms.Button
+        Me.chkShowProperCase = New System.Windows.Forms.CheckBox
+        Me.btnRemoveShowFilter = New System.Windows.Forms.Button
+        Me.btnAddShowFilter = New System.Windows.Forms.Button
+        Me.txtShowFilter = New System.Windows.Forms.TextBox
+        Me.lstShowFilters = New System.Windows.Forms.ListBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -357,7 +374,6 @@ Partial Class dlgSettings
         Me.tcCleaner.SuspendLayout()
         Me.tpStandard.SuspendLayout()
         Me.tpExpert.SuspendLayout()
-        Me.gbFilters.SuspendLayout()
         Me.GroupBox12.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox25.SuspendLayout()
@@ -380,6 +396,8 @@ Partial Class dlgSettings
         Me.pnlGeneral.SuspendLayout()
         Me.pnlXBMCCom.SuspendLayout()
         Me.pnlMovies.SuspendLayout()
+        Me.gbGenreFilter.SuspendLayout()
+        Me.gbFilters.SuspendLayout()
         Me.GroupBox27.SuspendLayout()
         Me.GroupBox16.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
@@ -402,6 +420,9 @@ Partial Class dlgSettings
         Me.GroupBox24.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
         Me.pnlTVSources.SuspendLayout()
+        Me.pnlShows.SuspendLayout()
+        Me.gbEpFilter.SuspendLayout()
+        Me.gbShowFilter.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -547,7 +568,7 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
         Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.chkLogErrors)
-        Me.GroupBox4.Location = New System.Drawing.Point(203, 6)
+        Me.GroupBox4.Location = New System.Drawing.Point(5, 3)
         Me.GroupBox4.Name = "GroupBox4"
         Me.GroupBox4.Size = New System.Drawing.Size(185, 333)
         Me.GroupBox4.TabIndex = 2
@@ -696,7 +717,7 @@ Partial Class dlgSettings
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.tcCleaner)
-        Me.GroupBox3.Location = New System.Drawing.Point(393, 3)
+        Me.GroupBox3.Location = New System.Drawing.Point(193, 3)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(196, 336)
         Me.GroupBox3.TabIndex = 3
@@ -952,112 +973,20 @@ Partial Class dlgSettings
             "e care when using this tool."
         Me.Label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'gbFilters
-        '
-        Me.gbFilters.Controls.Add(Me.btnDown)
-        Me.gbFilters.Controls.Add(Me.btnUp)
-        Me.gbFilters.Controls.Add(Me.chkProperCase)
-        Me.gbFilters.Controls.Add(Me.btnRemoveFilter)
-        Me.gbFilters.Controls.Add(Me.btnAddFilter)
-        Me.gbFilters.Controls.Add(Me.txtFilter)
-        Me.gbFilters.Controls.Add(Me.lstFilters)
-        Me.gbFilters.Location = New System.Drawing.Point(6, 6)
-        Me.gbFilters.Name = "gbFilters"
-        Me.gbFilters.Size = New System.Drawing.Size(192, 175)
-        Me.gbFilters.TabIndex = 0
-        Me.gbFilters.TabStop = False
-        Me.gbFilters.Text = "Folder/File Name Filters"
-        '
-        'btnDown
-        '
-        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
-        Me.btnDown.Location = New System.Drawing.Point(129, 146)
-        Me.btnDown.Name = "btnDown"
-        Me.btnDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnDown.TabIndex = 5
-        Me.btnDown.UseVisualStyleBackColor = True
-        '
-        'btnUp
-        '
-        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
-        Me.btnUp.Location = New System.Drawing.Point(105, 146)
-        Me.btnUp.Name = "btnUp"
-        Me.btnUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnUp.TabIndex = 4
-        Me.btnUp.UseVisualStyleBackColor = True
-        '
-        'chkProperCase
-        '
-        Me.chkProperCase.AutoSize = True
-        Me.chkProperCase.Location = New System.Drawing.Point(6, 16)
-        Me.chkProperCase.Name = "chkProperCase"
-        Me.chkProperCase.Size = New System.Drawing.Size(172, 17)
-        Me.chkProperCase.TabIndex = 0
-        Me.chkProperCase.Text = "Convert Names to Proper Case"
-        Me.chkProperCase.UseVisualStyleBackColor = True
-        '
-        'btnRemoveFilter
-        '
-        Me.btnRemoveFilter.Image = CType(resources.GetObject("btnRemoveFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveFilter.Location = New System.Drawing.Point(163, 146)
-        Me.btnRemoveFilter.Name = "btnRemoveFilter"
-        Me.btnRemoveFilter.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveFilter.TabIndex = 6
-        Me.btnRemoveFilter.UseVisualStyleBackColor = True
-        '
-        'btnAddFilter
-        '
-        Me.btnAddFilter.Image = CType(resources.GetObject("btnAddFilter.Image"), System.Drawing.Image)
-        Me.btnAddFilter.Location = New System.Drawing.Point(68, 146)
-        Me.btnAddFilter.Name = "btnAddFilter"
-        Me.btnAddFilter.Size = New System.Drawing.Size(23, 23)
-        Me.btnAddFilter.TabIndex = 3
-        Me.btnAddFilter.UseVisualStyleBackColor = True
-        '
-        'txtFilter
-        '
-        Me.txtFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtFilter.Location = New System.Drawing.Point(6, 147)
-        Me.txtFilter.Name = "txtFilter"
-        Me.txtFilter.Size = New System.Drawing.Size(61, 20)
-        Me.txtFilter.TabIndex = 2
-        '
-        'lstFilters
-        '
-        Me.lstFilters.FormattingEnabled = True
-        Me.lstFilters.Location = New System.Drawing.Point(6, 34)
-        Me.lstFilters.Name = "lstFilters"
-        Me.lstFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstFilters.Size = New System.Drawing.Size(180, 108)
-        Me.lstFilters.TabIndex = 1
-        '
         'GroupBox12
         '
-        Me.GroupBox12.Controls.Add(Me.lbGenre)
         Me.GroupBox12.Controls.Add(Me.chkShowGenresText)
-        Me.GroupBox12.Controls.Add(Me.lblGenre)
         Me.GroupBox12.Controls.Add(Me.chkNoDisplayFanart)
         Me.GroupBox12.Controls.Add(Me.chkNoDisplayPoster)
         Me.GroupBox12.Controls.Add(Me.chkShowDims)
         Me.GroupBox12.Controls.Add(Me.Label8)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
-        Me.GroupBox12.Location = New System.Drawing.Point(5, 8)
+        Me.GroupBox12.Location = New System.Drawing.Point(2, 182)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(195, 280)
+        Me.GroupBox12.Size = New System.Drawing.Size(195, 133)
         Me.GroupBox12.TabIndex = 1
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
-        '
-        'lbGenre
-        '
-        Me.lbGenre.CheckOnClick = True
-        Me.lbGenre.FormattingEnabled = True
-        Me.lbGenre.IntegralHeight = False
-        Me.lbGenre.Location = New System.Drawing.Point(27, 161)
-        Me.lbGenre.Name = "lbGenre"
-        Me.lbGenre.Size = New System.Drawing.Size(144, 108)
-        Me.lbGenre.Sorted = True
-        Me.lbGenre.TabIndex = 0
         '
         'chkShowGenresText
         '
@@ -1068,15 +997,6 @@ Partial Class dlgSettings
         Me.chkShowGenresText.TabIndex = 57
         Me.chkShowGenresText.Text = "Allways Display Genres Text"
         Me.chkShowGenresText.UseVisualStyleBackColor = True
-        '
-        'lblGenre
-        '
-        Me.lblGenre.AutoSize = True
-        Me.lblGenre.Location = New System.Drawing.Point(27, 144)
-        Me.lblGenre.Name = "lblGenre"
-        Me.lblGenre.Size = New System.Drawing.Size(115, 13)
-        Me.lblGenre.TabIndex = 106
-        Me.lblGenre.Text = "Genre Language Filter:"
         '
         'chkNoDisplayFanart
         '
@@ -1128,6 +1048,17 @@ Partial Class dlgSettings
         Me.chkMarkNew.Text = "Mark New Movies"
         Me.chkMarkNew.UseVisualStyleBackColor = True
         '
+        'lbGenre
+        '
+        Me.lbGenre.CheckOnClick = True
+        Me.lbGenre.FormattingEnabled = True
+        Me.lbGenre.IntegralHeight = False
+        Me.lbGenre.Location = New System.Drawing.Point(10, 18)
+        Me.lbGenre.Name = "lbGenre"
+        Me.lbGenre.Size = New System.Drawing.Size(144, 124)
+        Me.lbGenre.Sorted = True
+        Me.lbGenre.TabIndex = 0
+        '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.txtCheckTitleTol)
@@ -1141,7 +1072,7 @@ Partial Class dlgSettings
         Me.GroupBox2.Controls.Add(Me.chkMovieInfoCol)
         Me.GroupBox2.Controls.Add(Me.chkMovieFanartCol)
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
-        Me.GroupBox2.Location = New System.Drawing.Point(204, 8)
+        Me.GroupBox2.Location = New System.Drawing.Point(201, 6)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(218, 280)
         Me.GroupBox2.TabIndex = 4
@@ -2474,7 +2405,6 @@ Partial Class dlgSettings
         Me.pnlGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlGeneral.Controls.Add(Me.GroupBox3)
         Me.pnlGeneral.Controls.Add(Me.GroupBox4)
-        Me.pnlGeneral.Controls.Add(Me.gbFilters)
         Me.pnlGeneral.Location = New System.Drawing.Point(208, 96)
         Me.pnlGeneral.Name = "pnlGeneral"
         Me.pnlGeneral.Size = New System.Drawing.Size(597, 353)
@@ -2520,6 +2450,8 @@ Partial Class dlgSettings
         '
         Me.pnlMovies.BackColor = System.Drawing.Color.White
         Me.pnlMovies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlMovies.Controls.Add(Me.gbGenreFilter)
+        Me.pnlMovies.Controls.Add(Me.gbFilters)
         Me.pnlMovies.Controls.Add(Me.GroupBox27)
         Me.pnlMovies.Controls.Add(Me.GroupBox12)
         Me.pnlMovies.Controls.Add(Me.GroupBox2)
@@ -2528,6 +2460,95 @@ Partial Class dlgSettings
         Me.pnlMovies.Size = New System.Drawing.Size(597, 353)
         Me.pnlMovies.TabIndex = 61
         Me.pnlMovies.Visible = False
+        '
+        'gbGenreFilter
+        '
+        Me.gbGenreFilter.Controls.Add(Me.lbGenre)
+        Me.gbGenreFilter.Location = New System.Drawing.Point(426, 135)
+        Me.gbGenreFilter.Name = "gbGenreFilter"
+        Me.gbGenreFilter.Size = New System.Drawing.Size(164, 151)
+        Me.gbGenreFilter.TabIndex = 7
+        Me.gbGenreFilter.TabStop = False
+        Me.gbGenreFilter.Text = "Genre Language Filter"
+        '
+        'gbFilters
+        '
+        Me.gbFilters.Controls.Add(Me.btnDown)
+        Me.gbFilters.Controls.Add(Me.btnUp)
+        Me.gbFilters.Controls.Add(Me.chkProperCase)
+        Me.gbFilters.Controls.Add(Me.btnRemoveFilter)
+        Me.gbFilters.Controls.Add(Me.btnAddFilter)
+        Me.gbFilters.Controls.Add(Me.txtFilter)
+        Me.gbFilters.Controls.Add(Me.lstFilters)
+        Me.gbFilters.Location = New System.Drawing.Point(3, 4)
+        Me.gbFilters.Name = "gbFilters"
+        Me.gbFilters.Size = New System.Drawing.Size(192, 175)
+        Me.gbFilters.TabIndex = 6
+        Me.gbFilters.TabStop = False
+        Me.gbFilters.Text = "Folder/File Name Filters"
+        '
+        'btnDown
+        '
+        Me.btnDown.Image = CType(resources.GetObject("btnDown.Image"), System.Drawing.Image)
+        Me.btnDown.Location = New System.Drawing.Point(129, 146)
+        Me.btnDown.Name = "btnDown"
+        Me.btnDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnDown.TabIndex = 5
+        Me.btnDown.UseVisualStyleBackColor = True
+        '
+        'btnUp
+        '
+        Me.btnUp.Image = CType(resources.GetObject("btnUp.Image"), System.Drawing.Image)
+        Me.btnUp.Location = New System.Drawing.Point(105, 146)
+        Me.btnUp.Name = "btnUp"
+        Me.btnUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnUp.TabIndex = 4
+        Me.btnUp.UseVisualStyleBackColor = True
+        '
+        'chkProperCase
+        '
+        Me.chkProperCase.AutoSize = True
+        Me.chkProperCase.Location = New System.Drawing.Point(6, 16)
+        Me.chkProperCase.Name = "chkProperCase"
+        Me.chkProperCase.Size = New System.Drawing.Size(172, 17)
+        Me.chkProperCase.TabIndex = 0
+        Me.chkProperCase.Text = "Convert Names to Proper Case"
+        Me.chkProperCase.UseVisualStyleBackColor = True
+        '
+        'btnRemoveFilter
+        '
+        Me.btnRemoveFilter.Image = CType(resources.GetObject("btnRemoveFilter.Image"), System.Drawing.Image)
+        Me.btnRemoveFilter.Location = New System.Drawing.Point(163, 146)
+        Me.btnRemoveFilter.Name = "btnRemoveFilter"
+        Me.btnRemoveFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveFilter.TabIndex = 6
+        Me.btnRemoveFilter.UseVisualStyleBackColor = True
+        '
+        'btnAddFilter
+        '
+        Me.btnAddFilter.Image = CType(resources.GetObject("btnAddFilter.Image"), System.Drawing.Image)
+        Me.btnAddFilter.Location = New System.Drawing.Point(68, 146)
+        Me.btnAddFilter.Name = "btnAddFilter"
+        Me.btnAddFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddFilter.TabIndex = 3
+        Me.btnAddFilter.UseVisualStyleBackColor = True
+        '
+        'txtFilter
+        '
+        Me.txtFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtFilter.Location = New System.Drawing.Point(6, 147)
+        Me.txtFilter.Name = "txtFilter"
+        Me.txtFilter.Size = New System.Drawing.Size(61, 20)
+        Me.txtFilter.TabIndex = 2
+        '
+        'lstFilters
+        '
+        Me.lstFilters.FormattingEnabled = True
+        Me.lstFilters.Location = New System.Drawing.Point(6, 34)
+        Me.lstFilters.Name = "lstFilters"
+        Me.lstFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstFilters.Size = New System.Drawing.Size(180, 108)
+        Me.lstFilters.TabIndex = 1
         '
         'GroupBox27
         '
@@ -3449,6 +3470,15 @@ Partial Class dlgSettings
         Me.GroupBox19.TabStop = False
         Me.GroupBox19.Text = "Miscellaneous Options"
         '
+        'chkIgnoreLastScan
+        '
+        Me.chkIgnoreLastScan.Location = New System.Drawing.Point(7, 131)
+        Me.chkIgnoreLastScan.Name = "chkIgnoreLastScan"
+        Me.chkIgnoreLastScan.Size = New System.Drawing.Size(199, 30)
+        Me.chkIgnoreLastScan.TabIndex = 72
+        Me.chkIgnoreLastScan.Text = "Ignore last scan time when updating library"
+        Me.chkIgnoreLastScan.UseVisualStyleBackColor = True
+        '
         'chkCleanDB
         '
         Me.chkCleanDB.AutoSize = True
@@ -3783,14 +3813,174 @@ Partial Class dlgSettings
         Me.btnAddTVSource.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnAddTVSource.UseVisualStyleBackColor = True
         '
-        'chkIgnoreLastScan
+        'pnlShows
         '
-        Me.chkIgnoreLastScan.Location = New System.Drawing.Point(7, 131)
-        Me.chkIgnoreLastScan.Name = "chkIgnoreLastScan"
-        Me.chkIgnoreLastScan.Size = New System.Drawing.Size(199, 30)
-        Me.chkIgnoreLastScan.TabIndex = 72
-        Me.chkIgnoreLastScan.Text = "Ignore last scan time when updating library"
-        Me.chkIgnoreLastScan.UseVisualStyleBackColor = True
+        Me.pnlShows.BackColor = System.Drawing.Color.White
+        Me.pnlShows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlShows.Controls.Add(Me.gbEpFilter)
+        Me.pnlShows.Controls.Add(Me.gbShowFilter)
+        Me.pnlShows.Location = New System.Drawing.Point(208, 96)
+        Me.pnlShows.Name = "pnlShows"
+        Me.pnlShows.Size = New System.Drawing.Size(597, 353)
+        Me.pnlShows.TabIndex = 70
+        '
+        'gbEpFilter
+        '
+        Me.gbEpFilter.Controls.Add(Me.btnEpFilterDown)
+        Me.gbEpFilter.Controls.Add(Me.btnEpFilterUp)
+        Me.gbEpFilter.Controls.Add(Me.chkEpProperCase)
+        Me.gbEpFilter.Controls.Add(Me.btnRemoveEpFilter)
+        Me.gbEpFilter.Controls.Add(Me.btnAddEpFilter)
+        Me.gbEpFilter.Controls.Add(Me.txtEpFilter)
+        Me.gbEpFilter.Controls.Add(Me.lstEpFilters)
+        Me.gbEpFilter.Location = New System.Drawing.Point(202, 6)
+        Me.gbEpFilter.Name = "gbEpFilter"
+        Me.gbEpFilter.Size = New System.Drawing.Size(192, 175)
+        Me.gbEpFilter.TabIndex = 1
+        Me.gbEpFilter.TabStop = False
+        Me.gbEpFilter.Text = "Episode Folder/File Name Filters"
+        '
+        'btnEpFilterDown
+        '
+        Me.btnEpFilterDown.Image = CType(resources.GetObject("btnEpFilterDown.Image"), System.Drawing.Image)
+        Me.btnEpFilterDown.Location = New System.Drawing.Point(129, 146)
+        Me.btnEpFilterDown.Name = "btnEpFilterDown"
+        Me.btnEpFilterDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnEpFilterDown.TabIndex = 5
+        Me.btnEpFilterDown.UseVisualStyleBackColor = True
+        '
+        'btnEpFilterUp
+        '
+        Me.btnEpFilterUp.Image = CType(resources.GetObject("btnEpFilterUp.Image"), System.Drawing.Image)
+        Me.btnEpFilterUp.Location = New System.Drawing.Point(105, 146)
+        Me.btnEpFilterUp.Name = "btnEpFilterUp"
+        Me.btnEpFilterUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnEpFilterUp.TabIndex = 4
+        Me.btnEpFilterUp.UseVisualStyleBackColor = True
+        '
+        'chkEpProperCase
+        '
+        Me.chkEpProperCase.AutoSize = True
+        Me.chkEpProperCase.Location = New System.Drawing.Point(6, 16)
+        Me.chkEpProperCase.Name = "chkEpProperCase"
+        Me.chkEpProperCase.Size = New System.Drawing.Size(172, 17)
+        Me.chkEpProperCase.TabIndex = 0
+        Me.chkEpProperCase.Text = "Convert Names to Proper Case"
+        Me.chkEpProperCase.UseVisualStyleBackColor = True
+        '
+        'btnRemoveEpFilter
+        '
+        Me.btnRemoveEpFilter.Image = CType(resources.GetObject("btnRemoveEpFilter.Image"), System.Drawing.Image)
+        Me.btnRemoveEpFilter.Location = New System.Drawing.Point(163, 146)
+        Me.btnRemoveEpFilter.Name = "btnRemoveEpFilter"
+        Me.btnRemoveEpFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveEpFilter.TabIndex = 6
+        Me.btnRemoveEpFilter.UseVisualStyleBackColor = True
+        '
+        'btnAddEpFilter
+        '
+        Me.btnAddEpFilter.Image = CType(resources.GetObject("btnAddEpFilter.Image"), System.Drawing.Image)
+        Me.btnAddEpFilter.Location = New System.Drawing.Point(68, 146)
+        Me.btnAddEpFilter.Name = "btnAddEpFilter"
+        Me.btnAddEpFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddEpFilter.TabIndex = 3
+        Me.btnAddEpFilter.UseVisualStyleBackColor = True
+        '
+        'txtEpFilter
+        '
+        Me.txtEpFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEpFilter.Location = New System.Drawing.Point(6, 147)
+        Me.txtEpFilter.Name = "txtEpFilter"
+        Me.txtEpFilter.Size = New System.Drawing.Size(61, 20)
+        Me.txtEpFilter.TabIndex = 2
+        '
+        'lstEpFilters
+        '
+        Me.lstEpFilters.FormattingEnabled = True
+        Me.lstEpFilters.Location = New System.Drawing.Point(6, 34)
+        Me.lstEpFilters.Name = "lstEpFilters"
+        Me.lstEpFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstEpFilters.Size = New System.Drawing.Size(180, 108)
+        Me.lstEpFilters.TabIndex = 1
+        '
+        'gbShowFilter
+        '
+        Me.gbShowFilter.Controls.Add(Me.btnShowFilterDown)
+        Me.gbShowFilter.Controls.Add(Me.btnShowFilterUp)
+        Me.gbShowFilter.Controls.Add(Me.chkShowProperCase)
+        Me.gbShowFilter.Controls.Add(Me.btnRemoveShowFilter)
+        Me.gbShowFilter.Controls.Add(Me.btnAddShowFilter)
+        Me.gbShowFilter.Controls.Add(Me.txtShowFilter)
+        Me.gbShowFilter.Controls.Add(Me.lstShowFilters)
+        Me.gbShowFilter.Location = New System.Drawing.Point(6, 6)
+        Me.gbShowFilter.Name = "gbShowFilter"
+        Me.gbShowFilter.Size = New System.Drawing.Size(192, 175)
+        Me.gbShowFilter.TabIndex = 0
+        Me.gbShowFilter.TabStop = False
+        Me.gbShowFilter.Text = "Show Folder/File Name Filters"
+        '
+        'btnShowFilterDown
+        '
+        Me.btnShowFilterDown.Image = CType(resources.GetObject("btnShowFilterDown.Image"), System.Drawing.Image)
+        Me.btnShowFilterDown.Location = New System.Drawing.Point(129, 146)
+        Me.btnShowFilterDown.Name = "btnShowFilterDown"
+        Me.btnShowFilterDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnShowFilterDown.TabIndex = 5
+        Me.btnShowFilterDown.UseVisualStyleBackColor = True
+        '
+        'btnShowFilterUp
+        '
+        Me.btnShowFilterUp.Image = CType(resources.GetObject("btnShowFilterUp.Image"), System.Drawing.Image)
+        Me.btnShowFilterUp.Location = New System.Drawing.Point(105, 146)
+        Me.btnShowFilterUp.Name = "btnShowFilterUp"
+        Me.btnShowFilterUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnShowFilterUp.TabIndex = 4
+        Me.btnShowFilterUp.UseVisualStyleBackColor = True
+        '
+        'chkShowProperCase
+        '
+        Me.chkShowProperCase.AutoSize = True
+        Me.chkShowProperCase.Location = New System.Drawing.Point(6, 16)
+        Me.chkShowProperCase.Name = "chkShowProperCase"
+        Me.chkShowProperCase.Size = New System.Drawing.Size(172, 17)
+        Me.chkShowProperCase.TabIndex = 0
+        Me.chkShowProperCase.Text = "Convert Names to Proper Case"
+        Me.chkShowProperCase.UseVisualStyleBackColor = True
+        '
+        'btnRemoveShowFilter
+        '
+        Me.btnRemoveShowFilter.Image = CType(resources.GetObject("btnRemoveShowFilter.Image"), System.Drawing.Image)
+        Me.btnRemoveShowFilter.Location = New System.Drawing.Point(163, 146)
+        Me.btnRemoveShowFilter.Name = "btnRemoveShowFilter"
+        Me.btnRemoveShowFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnRemoveShowFilter.TabIndex = 6
+        Me.btnRemoveShowFilter.UseVisualStyleBackColor = True
+        '
+        'btnAddShowFilter
+        '
+        Me.btnAddShowFilter.Image = CType(resources.GetObject("btnAddShowFilter.Image"), System.Drawing.Image)
+        Me.btnAddShowFilter.Location = New System.Drawing.Point(68, 146)
+        Me.btnAddShowFilter.Name = "btnAddShowFilter"
+        Me.btnAddShowFilter.Size = New System.Drawing.Size(23, 23)
+        Me.btnAddShowFilter.TabIndex = 3
+        Me.btnAddShowFilter.UseVisualStyleBackColor = True
+        '
+        'txtShowFilter
+        '
+        Me.txtShowFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtShowFilter.Location = New System.Drawing.Point(6, 147)
+        Me.txtShowFilter.Name = "txtShowFilter"
+        Me.txtShowFilter.Size = New System.Drawing.Size(61, 20)
+        Me.txtShowFilter.TabIndex = 2
+        '
+        'lstShowFilters
+        '
+        Me.lstShowFilters.FormattingEnabled = True
+        Me.lstShowFilters.Location = New System.Drawing.Point(6, 34)
+        Me.lstShowFilters.Name = "lstShowFilters"
+        Me.lstShowFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+        Me.lstShowFilters.Size = New System.Drawing.Size(180, 108)
+        Me.lstShowFilters.TabIndex = 1
         '
         'dlgSettings
         '
@@ -3806,14 +3996,15 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -3833,8 +4024,6 @@ Partial Class dlgSettings
         Me.tpStandard.PerformLayout()
         Me.tpExpert.ResumeLayout(False)
         Me.tpExpert.PerformLayout()
-        Me.gbFilters.ResumeLayout(False)
-        Me.gbFilters.PerformLayout()
         Me.GroupBox12.ResumeLayout(False)
         Me.GroupBox12.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)
@@ -3869,6 +4058,9 @@ Partial Class dlgSettings
         Me.pnlGeneral.ResumeLayout(False)
         Me.pnlXBMCCom.ResumeLayout(False)
         Me.pnlMovies.ResumeLayout(False)
+        Me.gbGenreFilter.ResumeLayout(False)
+        Me.gbFilters.ResumeLayout(False)
+        Me.gbFilters.PerformLayout()
         Me.GroupBox27.ResumeLayout(False)
         Me.GroupBox27.PerformLayout()
         Me.GroupBox16.ResumeLayout(False)
@@ -3905,17 +4097,17 @@ Partial Class dlgSettings
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
         Me.pnlTVSources.ResumeLayout(False)
+        Me.pnlShows.ResumeLayout(False)
+        Me.gbEpFilter.ResumeLayout(False)
+        Me.gbEpFilter.PerformLayout()
+        Me.gbShowFilter.ResumeLayout(False)
+        Me.gbShowFilter.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents btnOK As System.Windows.Forms.Button
     Friend WithEvents btnApply As System.Windows.Forms.Button
     Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents gbFilters As System.Windows.Forms.GroupBox
-    Friend WithEvents btnAddFilter As System.Windows.Forms.Button
-    Friend WithEvents txtFilter As System.Windows.Forms.TextBox
-    Friend WithEvents lstFilters As System.Windows.Forms.ListBox
-    Friend WithEvents btnRemoveFilter As System.Windows.Forms.Button
     Friend WithEvents cdColor As System.Windows.Forms.ColorDialog
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
     Friend WithEvents Label2 As System.Windows.Forms.Label
@@ -3931,9 +4123,6 @@ Partial Class dlgSettings
     Friend WithEvents chkCleanMovieFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents chkLogErrors As System.Windows.Forms.CheckBox
-    Friend WithEvents chkProperCase As System.Windows.Forms.CheckBox
-    Friend WithEvents btnDown As System.Windows.Forms.Button
-    Friend WithEvents btnUp As System.Windows.Forms.Button
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents chkOverwriteNfo As System.Windows.Forms.CheckBox
     Friend WithEvents lvMovies As System.Windows.Forms.ListView
@@ -4063,7 +4252,6 @@ Partial Class dlgSettings
     Friend WithEvents chkMovieSubCol As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSources As System.Windows.Forms.Panel
     Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
-    Friend WithEvents lblGenre As System.Windows.Forms.Label
     Friend WithEvents chkUseETasFA As System.Windows.Forms.CheckBox
     Friend WithEvents pnlImages As System.Windows.Forms.Panel
     Friend WithEvents GroupBox17 As System.Windows.Forms.GroupBox
@@ -4225,4 +4413,30 @@ Partial Class dlgSettings
     Friend WithEvents btnAddTVSource As System.Windows.Forms.Button
     Friend WithEvents chkCleanDB As System.Windows.Forms.CheckBox
     Friend WithEvents chkIgnoreLastScan As System.Windows.Forms.CheckBox
+    Friend WithEvents pnlShows As System.Windows.Forms.Panel
+    Friend WithEvents gbEpFilter As System.Windows.Forms.GroupBox
+    Friend WithEvents btnEpFilterDown As System.Windows.Forms.Button
+    Friend WithEvents btnEpFilterUp As System.Windows.Forms.Button
+    Friend WithEvents chkEpProperCase As System.Windows.Forms.CheckBox
+    Friend WithEvents btnRemoveEpFilter As System.Windows.Forms.Button
+    Friend WithEvents btnAddEpFilter As System.Windows.Forms.Button
+    Friend WithEvents txtEpFilter As System.Windows.Forms.TextBox
+    Friend WithEvents lstEpFilters As System.Windows.Forms.ListBox
+    Friend WithEvents gbShowFilter As System.Windows.Forms.GroupBox
+    Friend WithEvents btnShowFilterDown As System.Windows.Forms.Button
+    Friend WithEvents btnShowFilterUp As System.Windows.Forms.Button
+    Friend WithEvents chkShowProperCase As System.Windows.Forms.CheckBox
+    Friend WithEvents btnRemoveShowFilter As System.Windows.Forms.Button
+    Friend WithEvents btnAddShowFilter As System.Windows.Forms.Button
+    Friend WithEvents txtShowFilter As System.Windows.Forms.TextBox
+    Friend WithEvents lstShowFilters As System.Windows.Forms.ListBox
+    Friend WithEvents gbFilters As System.Windows.Forms.GroupBox
+    Friend WithEvents btnDown As System.Windows.Forms.Button
+    Friend WithEvents btnUp As System.Windows.Forms.Button
+    Friend WithEvents chkProperCase As System.Windows.Forms.CheckBox
+    Friend WithEvents btnRemoveFilter As System.Windows.Forms.Button
+    Friend WithEvents btnAddFilter As System.Windows.Forms.Button
+    Friend WithEvents txtFilter As System.Windows.Forms.TextBox
+    Friend WithEvents lstFilters As System.Windows.Forms.ListBox
+    Friend WithEvents gbGenreFilter As System.Windows.Forms.GroupBox
 End Class

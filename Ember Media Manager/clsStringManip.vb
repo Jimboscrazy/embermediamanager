@@ -21,6 +21,7 @@
 
 Imports System.Text.RegularExpressions
 Imports System.Globalization
+Imports System.IO
 
 Public Class StringManip
     Public Shared Function ComputeLevenshtein(ByVal s As String, ByVal t As String) As Integer
@@ -253,5 +254,129 @@ Public Class StringManip
 
     Public Shared Function FilterYear(ByVal sString As String) As String
         Return Regex.Replace(sString, "([ _.-]\(?\d{4}\))?", String.Empty).Trim
+    End Function
+
+    Public Shared Function FilterTVShowName(ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
+
+        '//
+        ' Clean all the crap out of the name
+        '\\
+        Try
+
+            If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
+
+            Dim strSplit() As String
+
+            'run through each of the custom filters
+            If Master.eSettings.ShowFilterCustom.Count > 0 Then
+                For Each Str As String In Master.eSettings.ShowFilterCustom
+
+                    If Strings.InStr(Str, "[->]") > 0 Then
+                        strSplit = Strings.Split(Str, "[->]")
+                        TVShowName = Strings.Replace(TVShowName, Regex.Match(TVShowName, strSplit.First).ToString, strSplit.Last)
+                    Else
+                        TVShowName = Strings.Replace(TVShowName, Regex.Match(TVShowName, Str).ToString, String.Empty)
+                    End If
+                Next
+            End If
+
+            'Convert String To Proper Case
+            If Master.eSettings.ShowProperCase AndAlso doExtras Then
+                TVShowName = ProperCase(TVShowName)
+            End If
+
+            If remPunct Then TVShowName = RemovePunctuation(CleanStackingMarkers(TVShowName.Trim))
+
+            Return TVShowName.Trim
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ' Some error handling so EMM dont break on populate folderdata
+            Return TVShowName.Trim
+        End Try
+    End Function
+
+    Public Shared Function FilterTVEpName(ByVal TVEpName As String, ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
+
+        '//
+        ' Clean all the crap out of the name
+        '\\
+        Try
+
+            If String.IsNullOrEmpty(TVEpName) Then Return String.Empty
+
+            Dim strSplit() As String
+
+            'run through each of the custom filters
+            If Master.eSettings.EpFilterCustom.Count > 0 Then
+                For Each Str As String In Master.eSettings.EpFilterCustom
+
+                    If Strings.InStr(Str, "[->]") > 0 Then
+                        strSplit = Strings.Split(Str, "[->]")
+                        TVEpName = Strings.Replace(TVEpName, Regex.Match(TVEpName, strSplit.First).ToString, strSplit.Last)
+                    Else
+                        TVEpName = Strings.Replace(TVEpName, Regex.Match(TVEpName, Str).ToString, String.Empty)
+                    End If
+
+                Next
+            End If
+
+            'remove the show name from the episode name
+            TVEpName = Strings.Replace(TVEpName, TVShowName, String.Empty, 1, -1, CompareMethod.Text)
+
+            'Convert String To Proper Case
+            If Master.eSettings.EpProperCase AndAlso doExtras Then
+                TVEpName = ProperCase(TVEpName)
+            End If
+
+            If remPunct Then TVEpName = RemovePunctuation(CleanStackingMarkers(TVEpName.Trim))
+
+            Return TVEpName.Trim
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            ' Some error handling so EMM dont break on populate folderdata
+            Return TVEpName.Trim
+        End Try
+    End Function
+
+    Public Shared Function GetSeason(ByVal sPath As String) As Integer
+
+        Select Case True
+            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "s([0-9]+)[][._-]*e([0-9]+)", RegexOptions.IgnoreCase)
+                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "s(?<season>[0-9]+)[][._-]*e([0-9]+)", RegexOptions.IgnoreCase).Groups("season").Value)
+            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)x([0-9]+)([\._ -].*?)?", RegexOptions.IgnoreCase)
+                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?(?<season>[0-9]+)x([0-9]+)([\._ -].*?)?", RegexOptions.IgnoreCase).Groups("season").Value)
+            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)([0-9][0-9])([\._ ].*?)?$", RegexOptions.IgnoreCase)
+                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?(?<season>[0-9]+)([0-9][0-9])([\._ ].*?)?", RegexOptions.IgnoreCase).Groups("season").Value)
+            Case Regex.IsMatch(Path.GetDirectoryName(sPath), "(s(eason)?)?([\._ -])?([0-9]+)", RegexOptions.IgnoreCase)
+                Return Convert.ToInt32(Regex.Match(Path.GetDirectoryName(sPath), "(s(eason)?)?([\._ -])?(?<season>[0-9]+)", RegexOptions.IgnoreCase).Groups("season").Value)
+            Case Else
+                Return -1
+        End Select
+
+    End Function
+
+    Public Shared Function GetEpisode(ByVal sPath As String) As Integer
+        Select Case True
+            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "s([0-9]+)[][._-]*e([0-9]+)", RegexOptions.IgnoreCase)
+                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "s([0-9]+)[][._-]*e(?<episode>[0-9]+)", RegexOptions.IgnoreCase).Groups("episode").Value)
+            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)x([0-9]+)([\._ -].*?)?", RegexOptions.IgnoreCase)
+                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)x(?<episode>[0-9]+)([\._ -].*?)?", RegexOptions.IgnoreCase).Groups("episode").Value)
+            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)([0-9][0-9])([\._ -].*?)?", RegexOptions.IgnoreCase)
+                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)(?<episode>[0-9][0-9])([\._ -].*?)?", RegexOptions.IgnoreCase).Groups("episode").Value)
+            Case Else
+                Return -1
+        End Select
+    End Function
+
+    Public Shared Function FormatSeasonText(ByVal sSeason As Integer) As String
+        If sSeason > 0 Then
+            Return String.Concat(Master.eLang.GetString(999, "Season "), sSeason.ToString.PadLeft(2, Convert.ToChar("0")))
+        ElseIf sSeason = 0 Then
+            Return Master.eLang.GetString(999, "Season Specials")
+        Else
+            Return Master.eLang.GetString(999, "Unknown")
+        End If
     End Function
 End Class

@@ -70,8 +70,8 @@ Public Class HashFile
         Return hexBuilder.ToString()
     End Function
 
-    Public Shared Function CurrentETHashes(ByVal sPath As String) As ArrayList
-        Dim ETHashes As New ArrayList
+    Public Shared Function CurrentETHashes(ByVal sPath As String) As List(Of String)
+        Dim ETHashes As New List(Of String)
         Dim tPath As String = String.Empty
 
         If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
@@ -81,7 +81,7 @@ Public Class HashFile
         End If
 
         If Directory.Exists(tPath) Then
-            Dim fThumbs As New ArrayList
+            Dim fThumbs As New List(Of String)
 
             Try
                 fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
