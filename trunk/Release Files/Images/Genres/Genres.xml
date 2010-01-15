@@ -2,14 +2,19 @@
 
 <!-- German genres thanks to MrDVD -->
 <!-- French genres thanks to Tolriq -->
+<!-- Español genres thanks to Dr. Clone -->
 
 <genres>
       <supported>
         <language>English</language>
         <language>German</language>
 			  <language>Français</language>
+			  <language>Español</language>			  
       </supported>
       <name searchstring="Action" language="English|German|Français">
+            <icon>action.jpg</icon>
+      </name>
+      <name searchstring="Acción" language="Español">
             <icon>action.jpg</icon>
       </name>
       <name searchstring="Adult" language="English">
@@ -21,6 +26,9 @@
       <name searchstring="Erotik" language="German">
             <icon>adult.jpg</icon>
       </name>
+      <name searchstring="Adultos" language="Español">
+            <icon>adult.jpg</icon>
+      </name>
       <name searchstring="Adventure" language="English">
             <icon>adventure.jpg</icon>
       </name>
@@ -30,13 +38,19 @@
       <name searchstring="Abenteuer" language="German">
             <icon>adventure.jpg</icon>
       </name>
+      <name searchstring="Aventura" language="Español">
+            <icon>adventure.jpg</icon>
+      </name>
       <name searchstring="Animation" language="English|German|Français">
             <icon>animation.jpg</icon>
       </name>
-      <name searchstring="Anime" language="English">
+      <name searchstring="Animación" language="Español">
+            <icon>animation.jpg</icon>
+      </name>
+      <name searchstring="Anime" language="English|Español">
             <icon>anime.jpg</icon>
       </name>
-      <name searchstring="Manga" language="English|Français">
+      <name searchstring="Manga" language="English|Français|Español">
             <icon>anime.jpg</icon>
       </name>
       <name searchstring="Biography" language="English">
@@ -45,7 +59,10 @@
       <name searchstring="Biographie" language="German|Français">
             <icon>biography.jpg</icon>
       </name>
-      <name searchstring="Bollywood" language="English|Français">
+      <name searchstring="Biografía" language="Español">
+            <icon>biography.jpg</icon>
+      </name>
+      <name searchstring="Bollywood" language="English|Français|Español">
             <icon>bollywood.jpg</icon>
       </name>
       <name searchstring="Eastern" language="English|German">
@@ -60,10 +77,16 @@
       <name searchstring="Kinder-" language="German">
             <icon>children.jpg</icon>
       </name>
+      <name searchstring="Infantil" language="Español">
+            <icon>children.jpg</icon>
+      </name>
       <name searchstring="Christmas" language="English">
             <icon>christmas.jpg</icon>
       </name>
       <name searchstring="Noël" language="Français">
+            <icon>christmas.jpg</icon>
+      </name>
+      <name searchstring="Navidad" language="Español">
             <icon>christmas.jpg</icon>
       </name>
       <name searchstring="Comedy" language="English">
@@ -75,16 +98,25 @@
       <name searchstring="Komödie" language="German">
             <icon>comedy.jpg</icon>
       </name>
+      <name searchstring="Comedia" language="Español">
+            <icon>comedy.jpg</icon>
+      </name>
       <name searchstring="Concert" language="English|Français">
             <icon>concert.jpg</icon>
       </name>
       <name searchstring="Koncert" language="German">
             <icon>concert.jpg</icon>
       </name>
+      <name searchstring="Concierto" language="Español">
+            <icon>concert.jpg</icon>
+      </name>
       <name searchstring="Crime" language="English|Français">
             <icon>crime.jpg</icon>
       </name>
       <name searchstring="Krimi" language="German">
+            <icon>crime.jpg</icon>
+      </name>
+      <name searchstring="Crimen" language="Español">
             <icon>crime.jpg</icon>
       </name>
       <name searchstring="Disaster" language="English">
@@ -96,6 +128,9 @@
       <name searchstring="Katastrophen" language="German">
             <icon>disaster.jpg</icon>
       </name>
+      <name searchstring="Catástrofes" language="Español">
+            <icon>disaster.jpg</icon>
+      </name>
       <name searchstring="Documentary" language="English">
             <icon>documentary.jpg</icon>
       </name>
@@ -105,7 +140,10 @@
       <name searchstring="Dokumentation" language="German">
             <icon>documentary.jpg</icon>
       </name>
-      <name searchstring="Drama" language="English|German">
+      <name searchstring="Documental" language="Español">
+            <icon>documentary.jpg</icon>
+      </name>
+      <name searchstring="Drama" language="English|German|Español">
             <icon>drama.jpg</icon>
       </name>
       <name searchstring="Drame" language="Français">
@@ -123,19 +161,28 @@
       <name searchstring="Heimatfilm" language="German">
             <icon>family.jpg</icon>
       </name>
+      <name searchstring="Familiar" language="Español">
+            <icon>family.jpg</icon>
+      </name>
       <name searchstring="Fantasy" language="English|German">
             <icon>fantasy.jpg</icon>
       </name>
       <name searchstring="Fantaisie" language="Français">
             <icon>fantasy.jpg</icon>
       </name>
+      <name searchstring="Fantasía" language="Español">
+            <icon>fantasy.jpg</icon>
+      </name>
       <name searchstring="Film Noir" language="English|Français">
             <icon>film-noir.jpg</icon>
       </name>
-      <name searchstring="Halloween" language="English">
+      <name searchstring="Cine Negro" language="Español">
+            <icon>film-noir.jpg</icon>
+      </name>
+      <name searchstring="Halloween" language="English|Español">
             <icon>halloween.jpg</icon>
       </name>
-      <name searchstring="Hentai" language="English|Français">
+      <name searchstring="Hentai" language="English|Français|Español">
             <icon>hentai.jpg</icon>
       </name>
       <name searchstring="History" language="English">
@@ -147,6 +194,9 @@
       <name searchstring="Historienfilm" language="German">
             <icon>history.jpg</icon>
       </name>
+      <name searchstring="Histórico" language="Español">
+            <icon>history.jpg</icon>
+      </name>
       <name searchstring="Horror" language="English|German">
             <icon>horror.jpg</icon>
       </name>
@@ -156,13 +206,22 @@
       <name searchstring="Splatter" language="English|German">
             <icon>horror.jpg</icon>
       </name>
+      <name searchstring="Terror" language="Espanish">
+            <icon>horror.jpg</icon>
+      </name>
       <name searchstring="Independent" language="English">
             <icon>independent.jpg</icon>
       </name>
       <name searchstring="Indépendant" language="Français">
             <icon>independent.jpg</icon>
       </name>
+      <name searchstring="Independiente" language="Español">
+            <icon>independent.jpg</icon>
+      </name>
       <name searchstring="Interview" language="English|Français">
+            <icon>interview.jpg</icon>
+      </name>
+      <name searchstring="Entrevista" language="Español">
             <icon>interview.jpg</icon>
       </name>
       <name searchstring="Martial Arts" language="English">
@@ -171,16 +230,25 @@
       <name searchstring="Arts Martiaux" language="Français">
             <icon>martial-arts.jpg</icon>
       </name>
+      <name searchstring="Artes Marciales" language="Español">
+            <icon>martial-arts.jpg</icon>
+      </name>
       <name searchstring="Mini-TV Series" language="English">
             <icon>mini-tv-series.jpg</icon>
       </name>
       <name searchstring="TV-Mini-Serie" language="German|Français">
             <icon>mini-tv-series.jpg</icon>
       </name>
+      <name searchstring="Mini-Serie TV" language="Español">
+            <icon>mini-tv-series.jpg</icon>
+      </name>
       <name searchstring="Monster" language="English">
             <icon>monster.jpg</icon>
       </name>
       <name searchstring="Monstre" language="Français">
+            <icon>monster.jpg</icon>
+      </name>
+      <name searchstring="Monstruos" language="Español">
             <icon>monster.jpg</icon>
       </name>
       <name searchstring="Music" language="English">
@@ -195,7 +263,10 @@
       <name searchstring="Musikfilm" language="German">
             <icon>music.jpg</icon>
       </name>
-      <name searchstring="Musical" language="English|German|Français">
+      <name searchstring="Música" language="Español">
+            <icon>music.jpg</icon>
+      </name>
+      <name searchstring="Musical" language="English|German|Français|Español">
             <icon>musical.jpg</icon>
       </name>
       <name searchstring="Mystery" language="English|German">
@@ -207,6 +278,9 @@
       <name searchstring="Grusel" language="German">
             <icon>mystery.jpg</icon>
       </name>
+      <name searchstring="Misterio" language="Español">
+            <icon>mystery.jpg</icon>
+      </name>
       <name searchstring="Nature" language="English|Français">
             <icon>nature.jpg</icon>
       </name>
@@ -216,10 +290,16 @@
       <name searchstring="Tierfilm" language="German">
             <icon>nature.jpg</icon>
       </name>
+      <name searchstring="Naturaleza" language="Español">
+            <icon>nature.jpg</icon>
+      </name>
       <name searchstring="Post-Apocalypse" language="English">
             <icon>post-apocalypse.jpg</icon>
       </name>
       <name searchstring="Religion" language="English|German|Français">
+            <icon>religion.jpg</icon>
+      </name>
+      <name searchstring="Religión" language="Español">
             <icon>religion.jpg</icon>
       </name>
       <name searchstring="Romance" language="English|Français">
@@ -231,10 +311,16 @@
       <name searchstring="Liebe" language="German">
             <icon>romance.jpg</icon>
       </name>
+      <name searchstring="Romántico" language="Español">
+            <icon>romance.jpg</icon>
+      </name>
       <name searchstring="Sci-Fi" language="English">
             <icon>sci-fi.jpg</icon>
       </name>
       <name searchstring="Science-Fiction" language="English|German|Français">
+            <icon>sci-fi.jpg</icon>
+      </name>
+      <name searchstring="Ciencia Ficción" language="Español">
             <icon>sci-fi.jpg</icon>
       </name>
       <name searchstring="Sport" language="English|German|Français">
@@ -243,19 +329,28 @@
       <name searchstring="Sportfilm" language="German">
             <icon>sport.jpg</icon>
       </name>
-      <name searchstring="Stageplay" language="English">
+      <name searchstring="Deportes" language="Español">
+            <icon>sport.jpg</icon>
+      </name>
+      <name searchstring="Stageplay" language="English|Español">
             <icon>stageplay.jpg</icon>
       </name>
-      <name searchstring="Stand Up" language="English">
+      <name searchstring="Stand Up" language="English|Español">
             <icon>stand-up.jpg</icon>
       </name>
       <name searchstring="Superhero" language="English|Français">
             <icon>superhero.jpg</icon>
       </name>
+      <name searchstring="Superhéroes" language="Español">
+            <icon>superhero.jpg</icon>
+      </name>
       <name searchstring="Supernatural" language="English">
             <icon>supernatural.jpg</icon>
       </name>
-      <name searchstring="Thriller" language="English|German|Français">
+      <name searchstring="Sobrenatural" language="Español">
+            <icon>supernatural.jpg</icon>
+      </name>
+      <name searchstring="Thriller" language="English|German|Français|Español">
             <icon>thriller.jpg</icon>
       </name>
       <name searchstring="War" language="English">
@@ -267,7 +362,10 @@
       <name searchstring="Krieg" language="German">
             <icon>war.jpg</icon>
       </name>
-      <name searchstring="Western" language="English|Français">
+      <name searchstring="Bélico" language="Español">
+            <icon>war.jpg</icon>
+      </name>
+      <name searchstring="Western" language="English|Français|Español">
             <icon>western.jpg</icon>
       </name>
       <name searchstring="Wrestling" language="English">
@@ -279,10 +377,16 @@
       <name searchstring="Kampfsport" language="German">
             <icon>wrestling.jpg</icon>
       </name>
+      <name searchstring="Lucha" language="Español">
+            <icon>wrestling.jpg</icon>
+      </name>
       <name searchstring="Short" language="English">
             <icon>short.jpg</icon>
       </name>
       <name searchstring="Court" language="Français">
+            <icon>short.jpg</icon>
+      </name>
+      <name searchstring="Corto" language="Español">
             <icon>short.jpg</icon>
       </name>
       <!-- default icon to display when no match could be found -->

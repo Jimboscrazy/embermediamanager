@@ -471,16 +471,18 @@ Public Class Scanner
                     lFi.Sort(AddressOf FileManip.Common.SortFileNames)
 
                     For Each lFile As FileInfo In lFi
-                        If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
-                            tmpList.Add(lFile.FullName.ToLower)
-                            SkipStack = True
-                        Else
-                            tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
-                        End If
 
                         If Not MoviePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
                             Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                             ((Master.eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
+
+                            If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
+                                tmpList.Add(lFile.FullName.ToLower)
+                                SkipStack = True
+                            Else
+                                tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
+                            End If
+
                             fList.Add(New AllContainer With {.Type = MediaType.Movie, .MContainer = New MovieContainer With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False)}})
                             If bSingle AndAlso Not SkipStack Then Exit For
                         End If
@@ -887,7 +889,7 @@ Public Class Scanner
 
                     For Each sDirs As DirectoryInfo In inDirs
                         If Regex.IsMatch(sDirs.Name, "(s(eason)?)?([\._ ])?([0-9]+)", RegexOptions.IgnoreCase) AndAlso _
-                        sDirs.LastAccessTime > SourceLastScan Then
+                        sDirs.LastWriteTime > SourceLastScan Then
                             Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                         End If
                     Next

@@ -78,7 +78,6 @@ Partial Class dlgTranslationDL
         Me.lvDownload.Location = New System.Drawing.Point(12, 12)
         Me.lvDownload.Name = "lvDownload"
         Me.lvDownload.Size = New System.Drawing.Size(358, 230)
-        Me.lvDownload.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvDownload.TabIndex = 1
         Me.lvDownload.UseCompatibleStateImageBehavior = False
         Me.lvDownload.View = System.Windows.Forms.View.Details
