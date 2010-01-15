@@ -148,7 +148,7 @@ Public Class ThumbGenerator
 
                 If isAborting Then Exit Sub
 
-                Dim fThumbs As New ArrayList
+                Dim fThumbs As New List(Of String)
                 Try
                     fThumbs.AddRange(Directory.GetFiles(tPath, "thumb*.jpg"))
                 Catch

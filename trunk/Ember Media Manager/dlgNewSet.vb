@@ -23,7 +23,7 @@
 Public Class dlgNewSet
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Dim tAL As New ArrayList
+        Dim tAL As New List(Of String)
         tAL = Master.eSettings.Sets
 
         If Not tAL.Contains(txtSetName.Text) Then

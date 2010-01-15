@@ -42,7 +42,10 @@ Public Class frmMain
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
 
     Private bsMedia As New BindingSource
-    Private alActors As New ArrayList
+    Private bsShows As New BindingSource
+    Private bsSeasons As New BindingSource
+    Private bsEpisodes As New BindingSource
+    Private alActors As New List(Of String)
     Private aniType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private aniRaise As Boolean = False
     Private aniFilterRaise As Boolean = False
@@ -55,11 +58,14 @@ Public Class frmMain
     Private IMDB As New IMDB.Scraper
     Private fScanner As New Scanner
     Private dtMedia As New DataTable
+    Private dtShows As New DataTable
+    Private dtSeasons As New DataTable
+    Private dtEpisodes As New DataTable
     Private currRow As Integer = -1
     Private prevRow As Integer = -1
     Private currText As String = String.Empty
     Private prevText As String = String.Empty
-    Private FilterArray As New ArrayList
+    Private FilterArray As New List(Of String)
     Private ScraperDone As Boolean = False
     Private LoadingDone As Boolean = False
     Private GenreImage As Image
@@ -433,16 +439,11 @@ Public Class frmMain
                             If Master.currMovie.Movie Is Nothing Then
                                 Master.currMovie.Movie = New Media.Movie
                                 Master.currMovie.Movie.Title = tmpTitle
-                                Dim sFile As New Scanner.FileAndSource
-                                Dim aContents() As String
+                                Dim sFile As New Scanner.MovieContainer
                                 sFile.Filename = MoviePath
-                                aContents = fScanner.GetFolderContents(sFile.Filename, sFile.isSingle)
-                                sFile.Poster = aContents(0)
-                                sFile.Fanart = aContents(1)
-                                sFile.Nfo = aContents(2)
-                                sFile.Trailer = aContents(3)
-                                sFile.Subs = aContents(4)
-                                sFile.Extra = aContents(5)
+                                sFile.isSingle = isSingle
+                                sFile.UseFolder = If(isSingle, True, False)
+                                fScanner.GetMovieFolderContents(sFile)
                                 If Not String.IsNullOrEmpty(sFile.Nfo) Then
                                     Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
                                 Else
@@ -1173,7 +1174,7 @@ Public Class frmMain
 
     Private Sub chkFilterMissing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterMissing.Click
         Try
-            Dim MissingFilter As New ArrayList
+            Dim MissingFilter As New List(Of String)
             If Me.chkFilterMissing.Checked Then
                 With Master.eSettings
                     If .MissingFilterPoster Then MissingFilter.Add("HasPoster = 0")
@@ -1247,8 +1248,8 @@ Public Class frmMain
             Me.txtFilterGenre.Text = String.Empty
             Me.FilterArray.Remove(Me.filGenre)
 
-            Dim alGenres As New ArrayList
-            alGenres.AddRange(clbFilterGenres.CheckedItems)
+            Dim alGenres As New List(Of String)
+            alGenres.AddRange(clbFilterGenres.CheckedItems.OfType(Of String).ToList)
 
             Me.txtFilterGenre.Text = Strings.Join(alGenres.ToArray, " AND ")
 
@@ -1272,8 +1273,8 @@ Public Class frmMain
             Me.txtFilterGenre.Text = String.Empty
             Me.FilterArray.Remove(Me.filGenre)
 
-            Dim alGenres As New ArrayList
-            alGenres.AddRange(clbFilterGenres.CheckedItems)
+            Dim alGenres As New List(Of String)
+            alGenres.AddRange(clbFilterGenres.CheckedItems.OfType(Of String).ToList)
 
             Me.txtFilterGenre.Text = Strings.Join(alGenres.ToArray, " OR ")
 
@@ -2415,8 +2416,8 @@ Public Class frmMain
                 Me.txtFilterGenre.Text = String.Empty
                 Me.FilterArray.Remove(Me.filGenre)
 
-                Dim alGenres As New ArrayList
-                alGenres.AddRange(clbFilterGenres.CheckedItems)
+                Dim alGenres As New List(Of String)
+                alGenres.AddRange(clbFilterGenres.CheckedItems.OfType(Of String).ToList)
 
                 If rbFilterAnd.Checked Then
                     Me.txtFilterGenre.Text = Strings.Join(alGenres.ToArray, " AND ")
@@ -2457,8 +2458,8 @@ Public Class frmMain
                 Me.txtFilterSource.Text = String.Empty
                 Me.FilterArray.Remove(Me.filSource)
 
-                Dim alSource As New ArrayList
-                alSource.AddRange(clbFilterSource.CheckedItems)
+                Dim alSource As New List(Of String)
+                alSource.AddRange(clbFilterSource.CheckedItems.OfType(Of String).ToList)
 
                 Me.txtFilterSource.Text = Strings.Join(alSource.ToArray, " | ")
 
@@ -4090,7 +4091,7 @@ doCancel:
             Me.txtPlot.Text = Master.currMovie.Movie.Plot
             Me.lblTagline.Text = Master.currMovie.Movie.Tagline
 
-            Me.alActors = New ArrayList
+            Me.alActors = New List(Of String)
 
             If Master.currMovie.Movie.Actors.Count > 0 Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
@@ -4696,7 +4697,6 @@ doCancel:
 
     Private Function RefreshMovie(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow In dtMedia.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
-        Dim aContents(6) As String
         Dim tmpMovie As New Media.Movie
         Dim tmpMovieDb As New Master.DBMovie
         Dim OldTitle As String = String.Empty
@@ -4754,20 +4754,21 @@ doCancel:
                 Me.Invoke(myDelegate, New Object() {dRow(0), 26, tmpMovieDb.Movie.Genre})
 
                 tmpMovieDb.FileSource = XML.GetFileSource(tmpMovieDb.Filename)
-                aContents = fScanner.GetFolderContents(tmpMovieDb.Filename, Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(2)))
-                tmpMovieDb.PosterPath = aContents(0)
-                Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(aContents(0)), False, True)})
-                tmpMovieDb.FanartPath = aContents(1)
-                Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(aContents(1)), False, True)})
+                Dim mContainer As New Scanner.MovieContainer With {.Filename = tmpMovieDb.Filename, .isSingle = tmpMovieDb.isSingle}
+                fScanner.GetMovieFolderContents(mContainer)
+                tmpMovieDb.PosterPath = mContainer.Poster
+                Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(mContainer.Poster), False, True)})
+                tmpMovieDb.FanartPath = mContainer.Fanart
+                Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(mContainer.Fanart), False, True)})
                 'assume invalid nfo if no title
-                tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, aContents(2))
+                tmpMovieDb.NfoPath = If(String.IsNullOrEmpty(tmpMovieDb.Movie.Title), String.Empty, mContainer.Nfo)
                 Me.Invoke(myDelegate, New Object() {dRow(0), 6, If(String.IsNullOrEmpty(tmpMovieDb.NfoPath), False, True)})
-                tmpMovieDb.TrailerPath = aContents(3)
-                Me.Invoke(myDelegate, New Object() {dRow(0), 7, If(String.IsNullOrEmpty(aContents(3)), False, True)})
-                tmpMovieDb.SubPath = aContents(4)
-                Me.Invoke(myDelegate, New Object() {dRow(0), 8, If(String.IsNullOrEmpty(aContents(4)), False, True)})
-                tmpMovieDb.ExtraPath = aContents(5)
-                Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(aContents(5)), False, True)})
+                tmpMovieDb.TrailerPath = mContainer.Trailer
+                Me.Invoke(myDelegate, New Object() {dRow(0), 7, If(String.IsNullOrEmpty(mContainer.Trailer), False, True)})
+                tmpMovieDb.SubPath = mContainer.Subs
+                Me.Invoke(myDelegate, New Object() {dRow(0), 8, If(String.IsNullOrEmpty(mContainer.Subs), False, True)})
+                tmpMovieDb.ExtraPath = mContainer.Extra
+                Me.Invoke(myDelegate, New Object() {dRow(0), 9, If(String.IsNullOrEmpty(mContainer.Extra), False, True)})
 
                 Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpMovieDb.Filename})
                 tmpMovieDb.IsMark = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(11))
@@ -4775,7 +4776,6 @@ doCancel:
 
                 Master.DB.SaveMovieToDB(tmpMovieDb, False, BatchMode, ToNfo)
 
-                aContents = Nothing
             Else
                 Master.DB.DeleteFromDB(ID, BatchMode)
                 Return True
@@ -5143,6 +5143,13 @@ doCancel:
         Try
             Me.bsMedia.DataSource = Nothing
             Me.dgvMediaList.DataSource = Nothing
+            Me.bsShows.DataSource = Nothing
+            Me.dgvTVShows.DataSource = Nothing
+            Me.bsSeasons.DataSource = Nothing
+            Me.dgvTVSeasons.DataSource = Nothing
+            Me.bsEpisodes.DataSource = Nothing
+            Me.dgvTVEpisodes.DataSource = Nothing
+
             Me.ClearInfo()
             Application.DoEvents()
 
@@ -5240,6 +5247,65 @@ doCancel:
                     Me.ClearInfo()
                 End If
             End If
+
+
+            Master.DB.FillDataTable(Me.dtShows, "SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
+
+            If Me.dtShows.Rows.Count > 0 Then
+
+                With Me
+                    .bsShows.DataSource = .dtShows
+                    .dgvTVShows.DataSource = .bsShows
+
+                    .dgvTVShows.Columns(0).Visible = False
+                    .dgvTVShows.Columns(1).Resizable = DataGridViewTriState.True
+                    .dgvTVShows.Columns(1).ReadOnly = True
+                    .dgvTVShows.Columns(1).MinimumWidth = 83
+                    .dgvTVShows.Columns(1).SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvTVShows.Columns(1).ToolTipText = Master.eLang.GetString(21, "Title")
+                    .dgvTVShows.Columns(1).HeaderText = Master.eLang.GetString(21, "Title")
+                    .dgvTVShows.Columns(2).Width = 20
+                    .dgvTVShows.Columns(2).Resizable = DataGridViewTriState.False
+                    .dgvTVShows.Columns(2).ReadOnly = True
+                    .dgvTVShows.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvTVShows.Columns(2).Visible = Not Master.eSettings.MoviePosterCol
+                    .dgvTVShows.Columns(2).ToolTipText = Master.eLang.GetString(148, "Poster")
+                    .dgvTVShows.Columns(3).Width = 20
+                    .dgvTVShows.Columns(3).Resizable = DataGridViewTriState.False
+                    .dgvTVShows.Columns(3).ReadOnly = True
+                    .dgvTVShows.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvTVShows.Columns(3).Visible = Not Master.eSettings.MovieFanartCol
+                    .dgvTVShows.Columns(3).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                    .dgvTVShows.Columns(4).Width = 20
+                    .dgvTVShows.Columns(4).Resizable = DataGridViewTriState.False
+                    .dgvTVShows.Columns(4).ReadOnly = True
+                    .dgvTVShows.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvTVShows.Columns(4).Visible = Not Master.eSettings.MovieInfoCol
+                    .dgvTVShows.Columns(4).ToolTipText = Master.eLang.GetString(150, "Nfo")
+                    For i As Integer = 5 To .dgvTVShows.Columns.Count - 1
+                        .dgvTVShows.Columns(i).Visible = False
+                    Next
+
+                    .dgvTVShows.Columns(0).ValueType = GetType(Int32)
+
+                    'Trick to autosize the first column, but still allow resizing by user
+                    .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+
+                    .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
+
+                    .ToolsToolStripMenuItem.Enabled = True
+                    .tsbAutoPilot.Enabled = True
+                    .mnuMediaList.Enabled = True
+                End With
+            Else
+                Me.ToolsToolStripMenuItem.Enabled = False
+                Me.tsbAutoPilot.Enabled = False
+                Me.mnuMediaList.Enabled = False
+                Me.tslStatus.Text = String.Empty
+                Me.ClearInfo()
+            End If
+
         Catch ex As Exception
             Me.LoadingDone = True
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -5344,6 +5410,129 @@ doCancel:
 
     End Sub
 
+    Private Sub FillSeasons(ByVal ShowID As Integer)
+        Me.bsSeasons.DataSource = Nothing
+        Me.dgvTVSeasons.DataSource = Nothing
+        Me.bsEpisodes.DataSource = Nothing
+        Me.dgvTVEpisodes.DataSource = Nothing
+
+        Application.DoEvents()
+
+        Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", ShowID, " GROUP BY Season ORDER BY Season COLLATE NOCASE;"))
+
+        If Me.dtSeasons.Rows.Count > 0 Then
+
+            With Me
+                .bsSeasons.DataSource = .dtSeasons
+                .dgvTVSeasons.DataSource = .bsSeasons
+
+                .dgvTVSeasons.Columns(0).Visible = False
+                .dgvTVSeasons.Columns(1).Visible = False
+                .dgvTVSeasons.Columns(2).Resizable = DataGridViewTriState.True
+                .dgvTVSeasons.Columns(2).ReadOnly = True
+                .dgvTVSeasons.Columns(2).MinimumWidth = 83
+                .dgvTVSeasons.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVSeasons.Columns(2).ToolTipText = Master.eLang.GetString(999, "Season")
+                .dgvTVSeasons.Columns(2).HeaderText = Master.eLang.GetString(999, "Season")
+                .dgvTVSeasons.Columns(3).Visible = False
+                .dgvTVSeasons.Columns(4).Width = 20
+                .dgvTVSeasons.Columns(4).Resizable = DataGridViewTriState.False
+                .dgvTVSeasons.Columns(4).ReadOnly = True
+                .dgvTVSeasons.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVSeasons.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
+                .dgvTVSeasons.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
+                For i As Integer = 5 To .dgvTVSeasons.Columns.Count - 1
+                    .dgvTVSeasons.Columns(i).Visible = False
+                Next
+
+                .dgvTVSeasons.Columns(0).ValueType = GetType(Int32)
+
+                'Trick to autosize the first column, but still allow resizing by user
+                .dgvTVSeasons.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                .dgvTVSeasons.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+
+                .dgvTVSeasons.Sort(.dgvTVSeasons.Columns(2), ComponentModel.ListSortDirection.Ascending)
+
+            End With
+        End If
+    End Sub
+
+    Private Sub FillEpisodes(ByVal ShowID As Integer, ByVal Season As Integer)
+        Me.bsEpisodes.DataSource = Nothing
+        Me.dgvTVEpisodes.DataSource = Nothing
+
+        Application.DoEvents()
+
+        Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT * FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
+
+        If Me.dtEpisodes.Rows.Count > 0 Then
+
+            With Me
+                .bsEpisodes.DataSource = .dtEpisodes
+                .dgvTVEpisodes.DataSource = .bsEpisodes
+
+                .dgvTVEpisodes.Columns(0).Visible = False
+                .dgvTVEpisodes.Columns(1).Visible = False
+                .dgvTVEpisodes.Columns(2).Resizable = DataGridViewTriState.True
+                .dgvTVEpisodes.Columns(2).ReadOnly = True
+                .dgvTVEpisodes.Columns(2).MinimumWidth = 83
+                .dgvTVEpisodes.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVEpisodes.Columns(2).ToolTipText = Master.eLang.GetString(999, "Title")
+                .dgvTVEpisodes.Columns(2).HeaderText = Master.eLang.GetString(999, "Title")
+                .dgvTVEpisodes.Columns(3).Width = 20
+                .dgvTVEpisodes.Columns(3).Resizable = DataGridViewTriState.False
+                .dgvTVEpisodes.Columns(3).ReadOnly = True
+                .dgvTVEpisodes.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVEpisodes.Columns(3).Visible = Not Master.eSettings.MoviePosterCol
+                .dgvTVEpisodes.Columns(3).ToolTipText = Master.eLang.GetString(148, "Poster")
+                .dgvTVEpisodes.Columns(4).Width = 20
+                .dgvTVEpisodes.Columns(4).Resizable = DataGridViewTriState.False
+                .dgvTVEpisodes.Columns(4).ReadOnly = True
+                .dgvTVEpisodes.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVEpisodes.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
+                .dgvTVEpisodes.Columns(4).ToolTipText = Master.eLang.GetString(150, "Nfo")
+                For i As Integer = 5 To .dgvTVEpisodes.Columns.Count - 1
+                    .dgvTVEpisodes.Columns(i).Visible = False
+                Next
+
+                .dgvTVEpisodes.Columns(0).ValueType = GetType(Int32)
+                .dgvTVEpisodes.Columns(11).ValueType = GetType(Int32)
+
+                'Trick to autosize the first column, but still allow resizing by user
+                .dgvTVEpisodes.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                .dgvTVEpisodes.Columns(2).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+
+                .dgvTVEpisodes.Sort(.dgvTVEpisodes.Columns(11), ComponentModel.ListSortDirection.Ascending)
+
+            End With
+        End If
+    End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
+        If Me.dgvTVShows.SelectedRows.Count > 0 Then
+            Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
+        End If
+    End Sub
+
+    Private Sub dgvTVSeasons_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellClick
+        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+            Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(3).Value))
+        End If
+    End Sub
+
+    Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
+        Select Case tabsMain.SelectedIndex
+            Case 0
+                If Me.dgvMediaList.RowCount > 0 Then
+                    Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                End If
+            Case 1
+                If Me.dgvTVShows.RowCount > 0 Then
+                    Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                End If
+        End Select
+    End Sub
 End Class

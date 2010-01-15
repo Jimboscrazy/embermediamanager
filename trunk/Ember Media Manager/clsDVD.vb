@@ -108,7 +108,7 @@ Public Class clsDVD
     End Structure
 
     Public Function fctOpenIFOFile(ByVal strPath As String) As Boolean
-        Dim IFOFiles As New ArrayList
+        Dim IFOFiles As New List(Of String)
         Dim tIFOFile As New struct_IFO_VST_Parse
         Dim currLongest As Integer = 0
         Dim currDuration As Integer = 0

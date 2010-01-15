@@ -23,7 +23,7 @@
 Public Class dlgSetsManager
 
     Private lMovies As New List(Of Movies)
-    Private alSets As New ArrayList
+    Private alSets As New List(Of String)
     Private currSet As New Sets
     Private needsSave As Boolean = False
     Friend WithEvents bwLoadMovies As New System.ComponentModel.BackgroundWorker

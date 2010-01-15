@@ -39,7 +39,7 @@ Public Class dlgStudioSelect
         Me.SetUp()
 
         Dim IMDB As New IMDB.Scraper
-        Dim alStudio As ArrayList = IMDB.GetMovieStudios(Me._imdbid)
+        Dim alStudio As List(Of String) = IMDB.GetMovieStudios(Me._imdbid)
 
         For i As Integer = 0 To alStudio.Count - 1
             ilStudios.Images.Add(alStudio(i).ToString, XML.GetStudioImage(alStudio(i).ToString))

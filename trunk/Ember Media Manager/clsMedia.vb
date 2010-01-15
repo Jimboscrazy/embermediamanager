@@ -1166,8 +1166,8 @@ Namespace Media
     <XmlRoot("episodedetails")> _
     Public Class EpisodeDetails
         Private _title As String
-        Private _season As String
-        Private _episode As String
+        Private _season As Integer
+        Private _episode As Integer
         Private _aired As String
         Private _rating As String
         Private _plot As String
@@ -1194,11 +1194,11 @@ Namespace Media
         End Property
 
         <XmlElement("season")> _
-        Public Property Season() As String
+        Public Property Season() As Integer
             Get
                 Return Me._season
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 Me._season = value
             End Set
         End Property
@@ -1206,16 +1206,16 @@ Namespace Media
         <XmlIgnore()> _
         Public ReadOnly Property SeasonSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._season)
+                Return Not String.IsNullOrEmpty(Me._season.ToString)
             End Get
         End Property
 
         <XmlElement("episode")> _
-        Public Property Episode() As String
+        Public Property Episode() As Integer
             Get
                 Return Me._episode
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 Me._episode = value
             End Set
         End Property
@@ -1223,7 +1223,7 @@ Namespace Media
         <XmlIgnore()> _
         Public ReadOnly Property EpisodeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._episode)
+                Return Not String.IsNullOrEmpty(Me._episode.ToString)
             End Get
         End Property
 
@@ -1358,8 +1358,8 @@ Namespace Media
 
         Public Sub Clear()
             _title = String.Empty
-            _season = String.Empty
-            _episode = String.Empty
+            _season = -1
+            _episode = -1
             _aired = String.Empty
             _rating = String.Empty
             _plot = String.Empty

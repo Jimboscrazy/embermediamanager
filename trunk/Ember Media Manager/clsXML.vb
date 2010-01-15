@@ -29,11 +29,11 @@ Imports System.Text.RegularExpressions
 Public Class XML
 
     Public Shared FlagsXML As New XDocument
-    Public Shared alFlags As New ArrayList
+    Public Shared alFlags As New List(Of String)
     Public Shared GenreXML As New XDocument
-    Public Shared alGenres As New ArrayList
+    Public Shared alGenres As New List(Of String)
     Public Shared StudioXML As New XDocument
-    Public Shared alStudios As New ArrayList
+    Public Shared alStudios As New List(Of String)
     Public Shared RatingXML As New XDocument
     Public Shared LanguageXML As New XDocument
 
@@ -313,7 +313,7 @@ Public Class XML
             End If
 
             If Directory.Exists(Directory.GetParent(fPath).FullName) Then
-                Dim alF As New ArrayList
+                Dim alF As New List(Of String)
                 Try
                     alF.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
                 Catch
@@ -329,7 +329,7 @@ Public Class XML
             End If
 
             If Directory.Exists(Directory.GetParent(gPath).FullName) Then
-                Dim alG As New ArrayList
+                Dim alG As New List(Of String)
                 Try
                     alG.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
                 Catch
@@ -345,7 +345,7 @@ Public Class XML
             End If
 
             If Directory.Exists(Directory.GetParent(sPath).FullName) Then
-                Dim alS As New ArrayList
+                Dim alS As New List(Of String)
                 Try
                     alS.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png"))
                 Catch
@@ -373,7 +373,7 @@ Public Class XML
     End Sub
 
     Public Shared Function GetGenreList(Optional ByVal LangsOnly As Boolean = False) As Object()
-        Dim retGenre As New ArrayList
+        Dim retGenre As New List(Of String)
         Try
             If LangsOnly Then
                 Dim xGenre = From xGen In GenreXML...<supported>.Descendants Select xGen.Value
@@ -401,7 +401,7 @@ Public Class XML
     End Function
 
     Public Shared Function GetRatingList() As Object()
-        Dim retRatings As New ArrayList
+        Dim retRatings As New List(Of String)
         Try
             If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso XML.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
                 Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
@@ -422,7 +422,7 @@ Public Class XML
     End Function
 
     Public Shared Function GetLanguageList() As Object()
-        Dim retLang As New ArrayList
+        Dim retLang As New List(Of String)
         Try
             Dim xLang = From xL In LanguageXML.Descendants("Language") Select xL.Element("Name").Value
             If xLang.Count > 0 Then
@@ -456,7 +456,7 @@ Public Class XML
     End Function
 
     Public Shared Function GetSourceList() As Object()
-        Dim retSources As New ArrayList
+        Dim retSources As New List(Of String)
         Try
 
             Dim xSource = From xSrc In FlagsXML...<vsource>...<name> Select xSrc.@searchstring.ToString.Replace("|", " | ")

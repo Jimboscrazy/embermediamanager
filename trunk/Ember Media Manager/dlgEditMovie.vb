@@ -32,7 +32,7 @@ Public Class dlgEditMovie
     Private Poster As New Images With {.IsEdit = True}
     Private Fanart As New Images With {.IsEdit = True}
     Private Thumbs As New List(Of ExtraThumbs)
-    Private DeleteList As New ArrayList
+    Private DeleteList As New List(Of String)
     Private ExtraIndex As Integer = 0
     Private CachePath As String = String.Empty
     Private hasCleared As Boolean = False
@@ -1411,7 +1411,7 @@ Public Class dlgEditMovie
                 Dim iMod As Integer = Master.GetExtraModifier(ePath)
                 Dim iVal As Integer = iMod + 1
                 Dim hasET As Boolean = Not iMod = 0
-                Dim fList As New ArrayList
+                Dim fList As New List(Of String)
 
                 Try
                     fList.AddRange(Directory.GetFiles(Path.Combine(Master.TempPath, "extrathumbs"), "thumb*.jpg"))

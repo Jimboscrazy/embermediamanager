@@ -428,7 +428,7 @@ Namespace FileManip
             Try
                 If Directory.Exists(sPath) Then
 
-                    Dim Dirs As New ArrayList
+                    Dim Dirs As New List(Of String)
 
                     Try
                         Dirs.AddRange(Directory.GetDirectories(sPath))
@@ -440,7 +440,7 @@ Namespace FileManip
                     Next
 
 
-                    Dim fFiles As New ArrayList
+                    Dim fFiles As New List(Of String)
 
                     Try
                         fFiles.AddRange(Directory.GetFiles(sPath))

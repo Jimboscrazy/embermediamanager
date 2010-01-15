@@ -27,7 +27,7 @@ Public Class dlgTrailer
 
     Private cTrailer As New Trailers
     Private sHTTP As New HTTP
-    Dim tArray As New ArrayList
+    Dim tArray As New List(Of String)
     Dim imdbID As String = String.Empty
     Dim sPath As String = String.Empty
     Dim tURL As String = String.Empty

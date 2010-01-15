@@ -28,7 +28,7 @@ Imports System.Xml
 Public Class Trailers
     Private _ImdbID As String = String.Empty
     Private _ImdbTrailerPage As String = String.Empty
-    Private _TrailerList As New ArrayList
+    Private _TrailerList As New List(Of String)
     Private WebPage As New HTTP
 
     Public Event ProgressUpdated(ByVal iPercent As Integer)
@@ -43,7 +43,7 @@ Public Class Trailers
         Me._ImdbTrailerPage = String.Empty
     End Sub
 
-    Public Function GetTrailers(ByVal ImdbID As String, Optional ByVal BreakAfterFound As Boolean = True) As ArrayList
+    Public Function GetTrailers(ByVal ImdbID As String, Optional ByVal BreakAfterFound As Boolean = True) As List(Of String)
         Me._ImdbID = ImdbID
 
 

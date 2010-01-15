@@ -52,7 +52,7 @@ Public Class dlgSortFiles
     End Sub
 
     Private Sub SortFiles(ByVal sPath As String)
-        Dim tmpAL As New ArrayList
+        Dim tmpAL As New List(Of String)
         Dim tmpPath As String = String.Empty
         Dim tmpName As String = String.Empty
         Dim iCount As Integer = 0

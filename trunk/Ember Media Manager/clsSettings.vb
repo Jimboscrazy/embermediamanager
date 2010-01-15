@@ -26,7 +26,9 @@ Imports System.Xml.Serialization
 <Serializable()> _
 Public Class emmSettings
     Private _version As String
-    Private _filterCustom As New ArrayList
+    Private _filterCustom As New List(Of String)
+    Private _showfiltercustom As New List(Of String)
+    Private _epfiltercustom As New List(Of String)
     Private _certificationLang As String
     Private _usecertformpaa As Boolean
     Private _forcetitle As String
@@ -56,7 +58,7 @@ Public Class emmSettings
     Private _cleanextrathumbs As Boolean
     Private _expertcleaner As Boolean
     Private _cleanwhitelistvideo As Boolean
-    Private _cleanwhitelistexts As New ArrayList
+    Private _cleanwhitelistexts As New List(Of String)
     Private _useTMDB As Boolean
     Private _useIMPA As Boolean
     Private _useMPDB As Boolean
@@ -71,9 +73,11 @@ Public Class emmSettings
     Private _overwriteFanart As Boolean
     Private _logerrors As Boolean
     Private _properCase As Boolean
+    Private _showproperCase As Boolean
+    Private _epproperCase As Boolean
     Private _overwritenfo As Boolean
-    Private _validexts As New ArrayList
-    Private _nostackexts As New ArrayList
+    Private _validexts As New List(Of String)
+    Private _nostackexts As New List(Of String)
     Private _movietbn As Boolean
     Private _movienametbn As Boolean
     Private _moviejpg As Boolean
@@ -125,7 +129,7 @@ Public Class emmSettings
     Private _usehmforruntime As Boolean
     Private _genrefilter As String
     Private _useetasfa As Boolean
-    Private _sets As New ArrayList
+    Private _sets As New List(Of String)
     Private _useimgcache As Boolean
     Private _useimgcacheupdater As Boolean
     Private _persistimagecache As Boolean
@@ -150,12 +154,14 @@ Public Class emmSettings
     Private _sortpath As String
     Private _allwaysdisplaygenrestext As Boolean
     Private _displayyear As Boolean
-    Private _sorttokens As New ArrayList
+    Private _sorttokens As New List(Of String)
     Private _etnative As Boolean
     Private _etwidth As Integer
     Private _etheight As Integer
     Private _etpadding As Boolean
     Private _nofilters As Boolean
+    Private _noshowfilters As Boolean
+    Private _noepfilters As Boolean
     Private _notokens As Boolean
     Private _levtolerance As Integer
     Private _autodetectvts As Boolean
@@ -207,12 +213,30 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property FilterCustom() As ArrayList
+    Public Property FilterCustom() As List(Of String)
         Get
             Return Me._filterCustom
         End Get
-        Set(ByVal value As ArrayList)
+        Set(ByVal value As List(Of String))
             Me._filterCustom = value
+        End Set
+    End Property
+
+    Public Property ShowFilterCustom() As List(Of String)
+        Get
+            Return Me._showfilterCustom
+        End Get
+        Set(ByVal value As List(Of String))
+            Me._showfilterCustom = value
+        End Set
+    End Property
+
+    Public Property EpFilterCustom() As List(Of String)
+        Get
+            Return Me._epfilterCustom
+        End Get
+        Set(ByVal value As List(Of String))
+            Me._epfilterCustom = value
         End Set
     End Property
 
@@ -477,11 +501,11 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property CleanWhitelistExts() As ArrayList
+    Public Property CleanWhitelistExts() As List(Of String)
         Get
             Return Me._cleanwhitelistexts
         End Get
-        Set(ByVal value As ArrayList)
+        Set(ByVal value As List(Of String))
             Me._cleanwhitelistexts = value
         End Set
     End Property
@@ -612,6 +636,24 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property ShowProperCase() As Boolean
+        Get
+            Return Me._showproperCase
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showproperCase = value
+        End Set
+    End Property
+
+    Public Property EpProperCase() As Boolean
+        Get
+            Return Me._epproperCase
+        End Get
+        Set(ByVal value As Boolean)
+            Me._epproperCase = value
+        End Set
+    End Property
+
     Public Property OverwriteNfo() As Boolean
         Get
             Return Me._overwritenfo
@@ -621,20 +663,20 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property ValidExts() As ArrayList
+    Public Property ValidExts() As List(Of String)
         Get
             Return Me._validexts
         End Get
-        Set(ByVal value As ArrayList)
+        Set(ByVal value As List(Of String))
             Me._validexts = value
         End Set
     End Property
 
-    Public Property NoStackExts() As ArrayList
+    Public Property NoStackExts() As List(Of String)
         Get
             Return Me._nostackexts
         End Get
-        Set(ByVal value As ArrayList)
+        Set(ByVal value As List(Of String))
             Me._nostackexts = value
         End Set
     End Property
@@ -1093,11 +1135,11 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property Sets() As ArrayList
+    Public Property Sets() As List(Of String)
         Get
             Return Me._sets
         End Get
-        Set(ByVal value As ArrayList)
+        Set(ByVal value As List(Of String))
             Me._sets = value
         End Set
     End Property
@@ -1318,11 +1360,11 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property SortTokens() As ArrayList
+    Public Property SortTokens() As List(Of String)
         Get
             Return Me._sorttokens
         End Get
-        Set(ByVal value As ArrayList)
+        Set(ByVal value As List(Of String))
             Me._sorttokens = value
         End Set
     End Property
@@ -1369,6 +1411,24 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._nofilters = value
+        End Set
+    End Property
+
+    Public Property NoShowFilters() As Boolean
+        Get
+            Return Me._noshowfilters
+        End Get
+        Set(ByVal value As Boolean)
+            Me._noshowfilters = value
+        End Set
+    End Property
+
+    Public Property NoEpFilters() As Boolean
+        Get
+            Return Me._noepfilters
+        End Get
+        Set(ByVal value As Boolean)
+            Me._noepfilters = value
         End Set
     End Property
 
@@ -1748,6 +1808,8 @@ Public Class emmSettings
     Public Sub Clear()
         Me._version = String.Empty
         Me._filterCustom.Clear()
+        Me._showfiltercustom.Clear()
+        Me._epfiltercustom.Clear()
         Me._forcetitle = String.Empty
         Me._certificationLang = String.Empty
         Me._usecertformpaa = False
@@ -1792,6 +1854,8 @@ Public Class emmSettings
         Me._overwriteFanart = False
         Me._logerrors = True
         Me._properCase = True
+        Me._showproperCase = True
+        Me._epproperCase = True
         Me._overwritenfo = False
         Me._validexts.Clear()
         Me._nostackexts.Clear()
@@ -1877,6 +1941,8 @@ Public Class emmSettings
         Me._etheight = 0
         Me._etpadding = False
         Me._nofilters = False
+        Me._noshowfilters = False
+        Me._noepfilters = False
         Me._notokens = False
         Me._levtolerance = 0
         Me._autodetectvts = True
@@ -1974,6 +2040,55 @@ Public Class emmSettings
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]ntsc.*")
             Master.eSettings.FilterCustom.Add("[ _.-]PAL[ _.-]?.*")
             Master.eSettings.FilterCustom.Add("\.[->] ")
+        End If
+
+        'TODO: TV Show specific filters
+        If Master.eSettings.ShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoShowFilters Then
+            Master.eSettings.ShowFilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]blu[ _.-]?ray.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]bd[ _.-]?rip.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]dvd.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]720.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]ac3.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]dts.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]divx.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]xvid.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]dc[ _.-]?.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]dir(ector'?s?)?\s?cut.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]extended.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]hd(tv)?.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]unrated.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]uncut.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]([a-z]{3}|multi)[sd]ub.*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]\[offline\].*")
+            Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]ntsc.*")
+            Master.eSettings.ShowFilterCustom.Add("[ _.-]PAL[ _.-]?.*")
+            Master.eSettings.ShowFilterCustom.Add("\.[->] ")
+        End If
+
+        If Master.eSettings.EpFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoEpFilters Then
+            Master.eSettings.EpFilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]blu[ _.-]?ray.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]bd[ _.-]?rip.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]dvd.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]720.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]ac3.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]dts.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]divx.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]xvid.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]dc[ _.-]?.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]dir(ector'?s?)?\s?cut.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]extended.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]hd(tv)?.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]unrated.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]uncut.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]([a-z]{3}|multi)[sd]ub.*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]\[offline\].*")
+            Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]ntsc.*")
+            Master.eSettings.EpFilterCustom.Add("[ _.-]PAL[ _.-]?.*")
+            Master.eSettings.EpFilterCustom.Add("\.[->] ")
         End If
 
         If Master.eSettings.SortTokens.Count <= 0 AndAlso Not Master.eSettings.NoTokens Then

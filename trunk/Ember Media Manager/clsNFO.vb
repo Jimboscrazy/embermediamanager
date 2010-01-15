@@ -158,7 +158,7 @@ Public Class NFO
     Public Shared Function GetIMDBFromNonConf(ByVal sPath As String, ByVal isSingle As Boolean) As NonConf
         Dim tNonConf As New NonConf
         Dim dirPath As String = Directory.GetParent(sPath).FullName
-        Dim lFiles As New ArrayList
+        Dim lFiles As New List(Of String)
 
         If isSingle Then
             Try
@@ -311,8 +311,8 @@ Public Class NFO
             nPath = Path.Combine(Directory.GetParent(sPath).FullName, tmpName).ToLower
             Dim nPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack).ToLower
 
-            Dim fList As New ArrayList
-            Dim tList As New ArrayList
+            Dim fList As New List(Of String)
+            Dim tList As New List(Of String)
             Try
                 tList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.nfo"))
             Catch
