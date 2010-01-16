@@ -365,6 +365,8 @@ Public Class StringManip
                 Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)x(?<episode>[0-9]+)([\._ -].*?)?", RegexOptions.IgnoreCase).Groups("episode").Value)
             Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)([0-9][0-9])([\._ -].*?)?", RegexOptions.IgnoreCase)
                 Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)(?<episode>[0-9][0-9])([\._ -].*?)?", RegexOptions.IgnoreCase).Groups("episode").Value)
+            Case Regex.IsMatch(Path.GetDirectoryName(sPath), "(e(pisode)?)?([\._ -])?([0-9]+)", RegexOptions.IgnoreCase)
+                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "(e(pisode)?)?([\._ -])?(?<episode>[0-9]+)", RegexOptions.IgnoreCase).Groups("episode").Value)
             Case Else
                 Return -1
         End Select
