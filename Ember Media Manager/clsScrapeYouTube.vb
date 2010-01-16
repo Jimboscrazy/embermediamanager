@@ -80,11 +80,11 @@ Namespace YouTube
                                 Case "22"
                                     Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
                                     Link.Description = "720p"
-                                    Link.FormatQuality = 3
+                                    Link.FormatQuality = Master.TrailerQuality.HD720p
                                 Case "37"
                                     Link.URL = FormatElements(1) & "&title=" & Web.HttpUtility.UrlEncode(VideoTitle)
                                     Link.Description = "1080p"
-                                    Link.FormatQuality = 1
+                                    Link.FormatQuality = Master.TrailerQuality.HD1080p
                             End Select
 
                             If bwYT.CancellationPending Then Return DownloadLinks
@@ -104,7 +104,7 @@ Namespace YouTube
                             Dim StdLink As New VideoLinkItem
                             StdLink.URL = "http://www.youtube.com/get_video?fmt=18&video_id=" & VideoId & "&t=" & VideoHash
                             StdLink.Description = "Standard"
-                            StdLink.FormatQuality = 100
+                            StdLink.FormatQuality = Master.TrailerQuality.Standard
                             DownloadLinks.Add(StdLink)
                         End If
 
@@ -229,12 +229,12 @@ Namespace YouTube
         End Property
 
 
-        Private _FormatQuality As Integer
-        Friend Property FormatQuality() As Integer
+        Private _FormatQuality As Master.TrailerQuality
+        Friend Property FormatQuality() As Master.TrailerQuality
             Get
                 Return _FormatQuality
             End Get
-            Set(ByVal value As Integer)
+            Set(ByVal value As Master.TrailerQuality)
                 _FormatQuality = value
             End Set
         End Property
@@ -242,7 +242,7 @@ Namespace YouTube
     End Class
 
     Public Class VideoLinkItemCollection
-        Inherits Generic.SortedList(Of Integer, VideoLinkItem)
+        Inherits Generic.SortedList(Of Master.TrailerQuality, VideoLinkItem)
 
         Public Shadows Sub Add(ByVal Link As VideoLinkItem)
             MyBase.Add(Link.FormatQuality, Link)

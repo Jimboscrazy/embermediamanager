@@ -136,6 +136,7 @@ Public Class emmSettings
     Private _skiplessthan As Integer
     Private _skipstacksizecheck As Boolean
     Private _downloadtrailers As Boolean
+    Private _trailerquality As Master.TrailerQuality
     Private _updatertrailers As Boolean
     Private _updatertrailersnodownload As Boolean
     Private _singlescrapetrailer As Boolean
@@ -1198,6 +1199,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property PreferredTrailerQuality() As Master.TrailerQuality
+        Get
+            Return Me._trailerquality
+        End Get
+        Set(ByVal value As Master.TrailerQuality)
+            Me._trailerquality = value
+        End Set
+    End Property
+
     Public Property UpdaterTrailers() As Boolean
         Get
             Return Me._updatertrailers
@@ -1916,6 +1926,7 @@ Public Class emmSettings
         Me._skiplessthan = 0
         Me._skipstacksizecheck = False
         Me._downloadtrailers = False
+        Me._trailerquality = Master.TrailerQuality.HD1080p
         Me._updatertrailers = False
         Me._updatertrailersnodownload = False
         Me._singlescrapetrailer = False

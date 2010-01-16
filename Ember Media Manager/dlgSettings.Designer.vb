@@ -367,6 +367,8 @@ Partial Class dlgSettings
         Me.btnAddShowFilter = New System.Windows.Forms.Button
         Me.txtShowFilter = New System.Windows.Forms.TextBox
         Me.lstShowFilters = New System.Windows.Forms.ListBox
+        Me.cbTrailerQuality = New System.Windows.Forms.ComboBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -2801,6 +2803,8 @@ Partial Class dlgSettings
         '
         'GroupBox20
         '
+        Me.GroupBox20.Controls.Add(Me.cbTrailerQuality)
+        Me.GroupBox20.Controls.Add(Me.Label1)
         Me.GroupBox20.Controls.Add(Me.chkDeleteAllTrailers)
         Me.GroupBox20.Controls.Add(Me.chkOverwriteTrailer)
         Me.GroupBox20.Controls.Add(Me.chkNoDLTrailer)
@@ -2869,7 +2873,7 @@ Partial Class dlgSettings
         'Label23
         '
         Me.Label23.AutoSize = True
-        Me.Label23.Location = New System.Drawing.Point(427, 116)
+        Me.Label23.Location = New System.Drawing.Point(340, 114)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(48, 13)
         Me.Label23.TabIndex = 64
@@ -2879,7 +2883,7 @@ Partial Class dlgSettings
         '
         Me.txtTimeout.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTimeout.Enabled = False
-        Me.txtTimeout.Location = New System.Drawing.Point(514, 112)
+        Me.txtTimeout.Location = New System.Drawing.Point(427, 110)
         Me.txtTimeout.Name = "txtTimeout"
         Me.txtTimeout.Size = New System.Drawing.Size(36, 20)
         Me.txtTimeout.TabIndex = 7
@@ -2900,7 +2904,7 @@ Partial Class dlgSettings
         'Label22
         '
         Me.Label22.AutoSize = True
-        Me.Label22.Location = New System.Drawing.Point(429, 13)
+        Me.Label22.Location = New System.Drawing.Point(342, 11)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(117, 13)
         Me.Label22.TabIndex = 2
@@ -2912,7 +2916,7 @@ Partial Class dlgSettings
         Me.lbTrailerSites.Enabled = False
         Me.lbTrailerSites.FormattingEnabled = True
         Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/AllHTPC", "YouTube/TMDB", "IMDB"})
-        Me.lbTrailerSites.Location = New System.Drawing.Point(430, 30)
+        Me.lbTrailerSites.Location = New System.Drawing.Point(343, 28)
         Me.lbTrailerSites.Name = "lbTrailerSites"
         Me.lbTrailerSites.Size = New System.Drawing.Size(120, 79)
         Me.lbTrailerSites.TabIndex = 6
@@ -3982,6 +3986,25 @@ Partial Class dlgSettings
         Me.lstShowFilters.Size = New System.Drawing.Size(180, 108)
         Me.lstShowFilters.TabIndex = 1
         '
+        'cbTrailerQuality
+        '
+        Me.cbTrailerQuality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTrailerQuality.Enabled = False
+        Me.cbTrailerQuality.FormattingEnabled = True
+        Me.cbTrailerQuality.Location = New System.Drawing.Point(482, 28)
+        Me.cbTrailerQuality.Name = "cbTrailerQuality"
+        Me.cbTrailerQuality.Size = New System.Drawing.Size(84, 21)
+        Me.cbTrailerQuality.TabIndex = 65
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(479, 12)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(88, 13)
+        Me.Label1.TabIndex = 66
+        Me.Label1.Text = "Preferred Quality:"
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -3989,6 +4012,8 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -4000,11 +4025,9 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -4439,4 +4462,6 @@ Partial Class dlgSettings
     Friend WithEvents txtFilter As System.Windows.Forms.TextBox
     Friend WithEvents lstFilters As System.Windows.Forms.ListBox
     Friend WithEvents gbGenreFilter As System.Windows.Forms.GroupBox
+    Friend WithEvents cbTrailerQuality As System.Windows.Forms.ComboBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 End Class

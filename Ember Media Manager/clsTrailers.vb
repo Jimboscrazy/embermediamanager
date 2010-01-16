@@ -121,9 +121,17 @@ Public Class Trailers
                 Dim scraper As New YouTube.Scraper()
                 scraper.GetVideoLinks(YT)
 
-                If scraper.VideoLinks.Count > 0 Then
-                    Me._TrailerList.Add(scraper.VideoLinks.Values(0).URL)
-                End If
+                With scraper.VideoLinks
+                    If .Count > 0 Then
+                        'check if we have preferred quality
+                        If .ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
+                            Me._TrailerList.Add(.Values(.IndexOfKey(Master.eSettings.PreferredTrailerQuality)).URL)
+                        Else
+                            'just add the first link (best available quality)
+                            Me._TrailerList.Add(.Values(0).URL)
+                        End If
+                    End If
+                End With
             End If
         End If
 

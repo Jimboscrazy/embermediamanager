@@ -312,6 +312,10 @@ Public Class dlgTrailer
                 lstFormats.DataSource = YouTube.VideoLinks.Values.ToList
                 lstFormats.DisplayMember = "Description"
                 lstFormats.ValueMember = "URL"
+
+                If YouTube.VideoLinks.ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
+                    lstFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.PreferredTrailerQuality)
+                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
