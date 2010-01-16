@@ -1504,16 +1504,38 @@ Public Class Database
     Public Sub Clean()
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = SQLcn.BeginTransaction
-                Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                    SQLcommand.CommandText = "SELECT MoviePath, Id FROM movies ORDER BY ListTitle COLLATE NOCASE;"
-                    Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        While SQLReader.Read
-                            If Not File.Exists(SQLReader("MoviePath").ToString) Then
-                                Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
-                            End If
-                        End While
+                If Master.eSettings.CleanDB Then
+                    Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommand.CommandText = "SELECT MoviePath, Id FROM movies ORDER BY ListTitle COLLATE NOCASE;"
+                        Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            While SQLReader.Read
+                                If Not File.Exists(SQLReader("MoviePath").ToString) Then
+                                    Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                End If
+                            End While
+                        End Using
                     End Using
-                End Using
+                End If
+
+                If Master.eSettings.TVCleanDB Then
+                    Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommand.CommandText = "SELECT TVEpPath, Id FROM TVEps ORDER BY Title COLLATE NOCASE;"
+                        Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            While SQLReader.Read
+                                If Not File.Exists(SQLReader("TVEpPath").ToString) Then
+                                    Me.DeleteTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                    SQLcommand.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVEpID = ", SQLReader("ID"), ";")
+                                    SQLcommand.ExecuteNonQuery()
+                                End If
+                            End While
+                        End Using
+                        SQLcommand.CommandText = String.Concat("DELETE FROM TVShows WHERE ID NOT IN (SELECT TVShowID FROM TVEps);")
+                        SQLcommand.ExecuteNonQuery()
+                        SQLcommand.CommandText = String.Concat("DELETE FROM TVShowActors WHERE TVShowID NOT IN (SELECT ID FROM TVShows);")
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                End If
+
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception

@@ -38,7 +38,7 @@ fontstyle code 5.
    
   <infopanel>
     <backcolor>-2302756</backcolor>
-    <ipup>500</ipup> <!-- Must be in multiples of 5!! -->
+    <ipup>290</ipup> <!-- Must be in multiples of 5!! -->
     <ipmid>280</ipmid> <!-- Must be in multiples of 5!! -->
     
     <object name="lblInfoPanelHeader">
@@ -57,17 +57,13 @@ fontstyle code 5.
     <object name="btnUp">
       <width>30</width>
       <height>22</height>
-      <left>552</left>
+      <left>584</left>
       <top>1</top>
       <anchor>9</anchor>
     </object>
     
     <object name="btnMid">
-      <width>30</width>
-      <height>22</height>
-      <left>584</left>
-      <top>1</top>
-      <anchor>9</anchor>
+      <width>-1</width>
     </object>
     
     <object name="btnDown">
@@ -78,107 +74,69 @@ fontstyle code 5.
       <anchor>9</anchor>
     </object>
     
+    <!-- Hide all the stuff we won't be using -->
     <object name="lblDirectorHeader">
-      <width>162</width>
-      <height>17</height>
-      <left>3</left>
-      <top>27</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
+      <width>-1</width>
     </object>
     
     <object name="lblDirector">
-      <width>162</width>
-      <height>16</height>
-      <left>3</left>
-      <top>48</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <width>-1</width>
     </object>
     
     <object name="lblReleaseDateHeader">
-      <width>105</width>
-      <height>17</height>
-      <left>170</left>
-      <top>27</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
+      <width>-1</width>
     </object>
     
     <object name="lblReleaseDate">
-      <width>105</width>
-      <height>16</height>
-      <left>147</left>
-      <top>48</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <width>-1</width>
     </object>
     
     <object name="pnlTop250">
-      <left>280</left>
-      <top>27</top>
-      <backcolor>-2302756</backcolor>
-      <anchor>9</anchor>
+	 <width>-1</width>
     </object>
-    
-    <!-- BEGIN INTERNAL TO PNLTOP250 -->
-    <object name="pbTop250">
-      <width>54</width>
-      <height>30</height>
-      <left>1</left>
-      <top>1</top>
-      <backcolor>-2302756</backcolor>
-      <anchor>5</anchor>
-    </object>
-    
-    <object name="lblTop250">
-      <width>52</width>
-      <height>17</height>
-      <left>1</left>
-      <top>30</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>5</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-    </object>
-    <!-- END INTERNAL TO PNLTOP250 -->
-    
+
     <object name="lblOutlineHeader">
-      <width>333</width>
-      <height>17</height>
-      <left>3</left>
-      <top>81</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
+      <width>-1</width>
     </object>
     
     <object name="txtOutline">
-      <width>333</width>
-      <height>78</height>
+      <width>-1</width>
+    </object>
+
+    <object name="lblIMDBHeader">
+      <width>-1</width>
+    </object>
+    
+    <object name="txtIMDBID">
+      <width>-1</width>
+    </object>
+    
+    <object name="lblCertsHeader">
+      <width>-1</width>
+    </object>
+    
+    <object name="txtCerts">
+      <width>-1</width>
+    </object>
+    
+    <object name="lblPlotHeader">
+      <width>175</width>
+      <height>17</height>
       <left>3</left>
-      <top>103</top>
+      <top>29</top>
+      <backcolor>-9868951</backcolor>
+      <forecolor>-1</forecolor>
+      <anchor>13</anchor>
+      <font>Microsoft Sans Serif</font>
+      <fontsize>8</fontsize>
+      <fontstyle>1</fontstyle>
+    </object>
+    
+    <object name="txtPlot">
+      <width>175</width>
+      <height>184</height>
+      <left>3</left>
+      <top>50</top>
       <backcolor>-2302756</backcolor>
       <forecolor>-16777216</forecolor>
       <anchor>13</anchor>
@@ -186,97 +144,11 @@ fontstyle code 5.
       <fontsize>8</fontsize>
       <fontstyle>0</fontstyle>
     </object>
-    
-    <object name="lblIMDBHeader">
-      <width>108</width>
-      <height>17</height>
-      <left>3</left>
-      <top>188</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>5</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-    </object>
-    
-    <object name="txtIMDBID">
-      <width>108</width>
-      <height>20</height>
-      <left>3</left>
-      <top>208</top>
-      <backcolor>-1</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>5</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
-    </object>
-    
-    <object name="lblCertsHeader">
-      <width>219</width>
-      <height>17</height>
-      <left>117</left>
-      <top>188</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-    </object>
-    
-    <object name="txtCerts">
-      <width>219</width>
-      <height>20</height>
-      <left>117</left>
-      <top>208</top>
-      <backcolor>-1</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
-    </object>
-    
-    <object name="lblFilePathHeader">
-      <width>333</width>
-      <height>17</height>
-      <left>3</left>
-      <top>234</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-    </object>
-    
-    <object name="txtFilePath">
-      <width>311</width>
-      <height>20</height>
-      <left>3</left>
-      <top>254</top>
-      <backcolor>-1</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
-    </object>
-    
-    <object name="btnPlay">
-      <width>20</width>
-      <height>20</height>
-      <left>317</left>
-      <top>254</top>
-      <anchor>9</anchor>
-    </object>
-    
+
     <object name="pnlActors">
-      <width>302</width>
-      <height>244</height>
-      <left>348</left>
+      <width>225</width>
+      <height>184</height>
+      <left>183</left>
       <top>29</top>
       <backcolor>-2302756</backcolor>
       <anchor>9</anchor>
@@ -284,7 +156,7 @@ fontstyle code 5.
     
     <!-- BEGIN INTERNAL TO PNLACTORS -->
     <object name="lblActorsHeader">
-      <width>301</width>
+      <width>225</width>
       <height>17</height>
       <left>0</left>
       <top>0</top>
@@ -297,8 +169,8 @@ fontstyle code 5.
     </object>
     
     <object name="lstActors">
-      <width>214</width>
-      <height>221</height>
+      <width>140</width>
+      <height>161</height>
       <left>3</left>
       <top>21</top>
       <backcolor>-2302756</backcolor>
@@ -312,8 +184,8 @@ fontstyle code 5.
     <object name="pbActors">
       <width>81</width>
       <height>106</height>
-      <left>220</left>
-      <top>75</top>
+      <left>143</left>
+      <top>45</top>
       <backcolor>-2302756</backcolor>
       <anchor>5</anchor>
     </object>
@@ -321,18 +193,18 @@ fontstyle code 5.
     <object name="pbActLoad">
       <width>41</width>
       <height>39</height>
-      <left>240</left>
-      <top>111</top>
+      <left>163</left>
+      <top>81</top>
       <backcolor>-2302756</backcolor>
       <anchor>5</anchor>
     </object>
     <!-- END INTERNAL TO PNLACTORS -->
     
-    <object name="lblPlotHeader">
-      <width>333</width>
+    <object name="lblFilePathHeader">
+      <width>405</width>
       <height>17</height>
       <left>3</left>
-      <top>282</top>
+      <top>240</top>
       <backcolor>-9868951</backcolor>
       <forecolor>-1</forecolor>
       <anchor>13</anchor>
@@ -341,12 +213,12 @@ fontstyle code 5.
       <fontstyle>1</fontstyle>
     </object>
     
-    <object name="txtPlot">
-      <width>333</width>
-      <height>184</height>
+    <object name="txtFilePath">
+      <width>383</width>
+      <height>20</height>
       <left>3</left>
-      <top>303</top>
-      <backcolor>-2302756</backcolor>
+      <top>261</top>
+      <backcolor>-1</backcolor>
       <forecolor>-16777216</forecolor>
       <anchor>13</anchor>
       <font>Microsoft Sans Serif</font>
@@ -354,11 +226,19 @@ fontstyle code 5.
       <fontstyle>0</fontstyle>
     </object>
     
+    <object name="btnPlay">
+      <width>20</width>
+      <height>20</height>
+      <left>389</left>
+      <top>261</top>
+      <anchor>9</anchor>
+    </object>
+
     <object name="lblMetaDataHeader">
-      <width>294</width>
+      <width>237</width>
       <height>17</height>
-      <left>349</left>
-      <top>282</top>
+      <left>413</left>
+      <top>29</top>
       <backcolor>-9868951</backcolor>
       <forecolor>-1</forecolor>
       <anchor>9</anchor>
@@ -368,10 +248,10 @@ fontstyle code 5.
     </object>
     
     <object name="btnMetaDataRefresh">
-      <width>75</width>
+      <width>65</width>
       <height>23</height>
-      <left>574</left>
-      <top>278</top>
+      <left>581</left>
+      <top>26</top>
       <anchor>9</anchor>
       <font>Microsoft Sans Serif</font>
       <fontsize>8</fontsize>
@@ -379,10 +259,10 @@ fontstyle code 5.
     </object>
     
     <object name="txtMetaData">
-      <width>296</width>
-      <height>184</height>
-      <left>349</left>
-      <top>303</top>
+      <width>237</width>
+      <height>229</height>
+      <left>413</left>
+      <top>50</top>
       <backcolor>-2302756</backcolor>
       <forecolor>-16777216</forecolor>
       <anchor>9</anchor>

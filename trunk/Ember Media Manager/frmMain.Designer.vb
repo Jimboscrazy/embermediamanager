@@ -291,6 +291,8 @@ Partial Class frmMain
         Me.mnuFilterAskMI = New System.Windows.Forms.ToolStripMenuItem
         Me.CustomUpdaterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbRefreshMedia = New System.Windows.Forms.ToolStripSplitButton
+        Me.mnuMoviesUpdate = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuTVShowUpdate = New System.Windows.Forms.ToolStripMenuItem
         Me.tsbUpdateXBMC = New System.Windows.Forms.ToolStripSplitButton
         Me.pbFanartCache = New System.Windows.Forms.PictureBox
         Me.pbFanart = New System.Windows.Forms.PictureBox
@@ -301,8 +303,6 @@ Partial Class frmMain
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
-        Me.mnuMoviesUpdate = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuTVShowUpdate = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -2834,6 +2834,18 @@ Partial Class frmMain
         Me.tsbRefreshMedia.Size = New System.Drawing.Size(116, 22)
         Me.tsbRefreshMedia.Text = "Update Library"
         '
+        'mnuMoviesUpdate
+        '
+        Me.mnuMoviesUpdate.Name = "mnuMoviesUpdate"
+        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(125, 22)
+        Me.mnuMoviesUpdate.Text = "Movies"
+        '
+        'mnuTVShowUpdate
+        '
+        Me.mnuTVShowUpdate.Name = "mnuTVShowUpdate"
+        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(125, 22)
+        Me.mnuTVShowUpdate.Text = "TV Shows"
+        '
         'tsbUpdateXBMC
         '
         Me.tsbUpdateXBMC.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -2897,18 +2909,6 @@ Partial Class frmMain
         Me.ToolTips.AutoPopDelay = 15000
         Me.ToolTips.InitialDelay = 500
         Me.ToolTips.ReshowDelay = 100
-        '
-        'mnuMoviesUpdate
-        '
-        Me.mnuMoviesUpdate.Name = "mnuMoviesUpdate"
-        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(152, 22)
-        Me.mnuMoviesUpdate.Text = "Movies"
-        '
-        'mnuTVShowUpdate
-        '
-        Me.mnuTVShowUpdate.Name = "mnuTVShowUpdate"
-        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(152, 22)
-        Me.mnuTVShowUpdate.Text = "TV Shows"
         '
         'frmMain
         '
