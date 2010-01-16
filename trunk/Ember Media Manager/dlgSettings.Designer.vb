@@ -24,15 +24,15 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode11})
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14, TreeNode15})
-        Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode17})
+        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
+        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
+        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode8})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -368,7 +368,7 @@ Partial Class dlgSettings
         Me.txtShowFilter = New System.Windows.Forms.TextBox
         Me.lstShowFilters = New System.Windows.Forms.ListBox
         Me.cbTrailerQuality = New System.Windows.Forms.ComboBox
-        Me.Label1 = New System.Windows.Forms.Label
+        Me.lblPreferredQuality = New System.Windows.Forms.Label
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -2349,52 +2349,52 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode10.ImageIndex = 4
-        TreeNode10.Name = "nExts"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 4
-        TreeNode10.Text = "File System"
-        TreeNode11.ImageIndex = 1
-        TreeNode11.Name = "nXBMCCom"
-        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode11.SelectedImageIndex = 1
-        TreeNode11.Text = "XBMC Communication"
-        TreeNode12.ImageIndex = 0
-        TreeNode12.Name = "nGeneral"
-        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode12.SelectedImageIndex = 0
-        TreeNode12.Text = "General"
-        TreeNode13.ImageIndex = 5
-        TreeNode13.Name = "nSources"
-        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode13.SelectedImageIndex = 5
-        TreeNode13.Text = "Files and Sources"
-        TreeNode14.ImageIndex = 3
-        TreeNode14.Name = "nScraper"
-        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode14.SelectedImageIndex = 3
-        TreeNode14.Text = "Scraper - Data"
-        TreeNode15.ImageIndex = 6
-        TreeNode15.Name = "nImages"
-        TreeNode15.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode15.SelectedImageIndex = 6
-        TreeNode15.Text = "Scraper - Images"
-        TreeNode16.ImageIndex = 2
-        TreeNode16.Name = "nMovies"
-        TreeNode16.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode16.SelectedImageIndex = 2
-        TreeNode16.Text = "Movies"
-        TreeNode17.ImageIndex = 5
-        TreeNode17.Name = "nTVSources"
-        TreeNode17.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode17.SelectedImageIndex = 5
-        TreeNode17.Text = "Files and Sources"
-        TreeNode18.ImageIndex = 7
-        TreeNode18.Name = "nTV"
-        TreeNode18.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode18.SelectedImageIndex = 7
-        TreeNode18.Text = "TV Shows"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode12, TreeNode16, TreeNode18})
+        TreeNode1.ImageIndex = 4
+        TreeNode1.Name = "nExts"
+        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode1.SelectedImageIndex = 4
+        TreeNode1.Text = "File System"
+        TreeNode2.ImageIndex = 1
+        TreeNode2.Name = "nXBMCCom"
+        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode2.SelectedImageIndex = 1
+        TreeNode2.Text = "XBMC Communication"
+        TreeNode3.ImageIndex = 0
+        TreeNode3.Name = "nGeneral"
+        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode3.SelectedImageIndex = 0
+        TreeNode3.Text = "General"
+        TreeNode4.ImageIndex = 5
+        TreeNode4.Name = "nSources"
+        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode4.SelectedImageIndex = 5
+        TreeNode4.Text = "Files and Sources"
+        TreeNode5.ImageIndex = 3
+        TreeNode5.Name = "nScraper"
+        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.SelectedImageIndex = 3
+        TreeNode5.Text = "Scraper - Data"
+        TreeNode6.ImageIndex = 6
+        TreeNode6.Name = "nImages"
+        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode6.SelectedImageIndex = 6
+        TreeNode6.Text = "Scraper - Images"
+        TreeNode7.ImageIndex = 2
+        TreeNode7.Name = "nMovies"
+        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode7.SelectedImageIndex = 2
+        TreeNode7.Text = "Movies"
+        TreeNode8.ImageIndex = 5
+        TreeNode8.Name = "nTVSources"
+        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode8.SelectedImageIndex = 5
+        TreeNode8.Text = "Files and Sources"
+        TreeNode9.ImageIndex = 7
+        TreeNode9.Name = "nTV"
+        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode9.SelectedImageIndex = 7
+        TreeNode9.Text = "TV Shows"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7, TreeNode9})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2804,7 +2804,7 @@ Partial Class dlgSettings
         'GroupBox20
         '
         Me.GroupBox20.Controls.Add(Me.cbTrailerQuality)
-        Me.GroupBox20.Controls.Add(Me.Label1)
+        Me.GroupBox20.Controls.Add(Me.lblPreferredQuality)
         Me.GroupBox20.Controls.Add(Me.chkDeleteAllTrailers)
         Me.GroupBox20.Controls.Add(Me.chkOverwriteTrailer)
         Me.GroupBox20.Controls.Add(Me.chkNoDLTrailer)
@@ -3996,14 +3996,14 @@ Partial Class dlgSettings
         Me.cbTrailerQuality.Size = New System.Drawing.Size(84, 21)
         Me.cbTrailerQuality.TabIndex = 65
         '
-        'Label1
+        'lblPreferredQuality
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(479, 12)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(88, 13)
-        Me.Label1.TabIndex = 66
-        Me.Label1.Text = "Preferred Quality:"
+        Me.lblPreferredQuality.AutoSize = True
+        Me.lblPreferredQuality.Location = New System.Drawing.Point(479, 12)
+        Me.lblPreferredQuality.Name = "lblPreferredQuality"
+        Me.lblPreferredQuality.Size = New System.Drawing.Size(88, 13)
+        Me.lblPreferredQuality.TabIndex = 66
+        Me.lblPreferredQuality.Text = "Preferred Quality:"
         '
         'dlgSettings
         '
@@ -4463,5 +4463,5 @@ Partial Class dlgSettings
     Friend WithEvents lstFilters As System.Windows.Forms.ListBox
     Friend WithEvents gbGenreFilter As System.Windows.Forms.GroupBox
     Friend WithEvents cbTrailerQuality As System.Windows.Forms.ComboBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblPreferredQuality As System.Windows.Forms.Label
 End Class
