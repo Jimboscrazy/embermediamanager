@@ -1456,6 +1456,8 @@ Public Class dlgSettings
 
                 Me.LoadThemes()
                 Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
+                Me.cbTVShowTheme.SelectedItem = Master.eSettings.TVShowTheme
+                Me.cbEpTheme.SelectedItem = Master.eSettings.TVEpTheme
             End If
         End Using
     End Sub
@@ -1478,6 +1480,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub cbMovieTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieTheme.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub cbTVShowTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVShowTheme.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub cbTVEpTheme_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEpTheme.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1610,6 +1620,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkIgnoreLastScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkIgnoreLastScan.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVCleanDB_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVCleanDB.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkTVIgnoreLastScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVIgnoreLastScan.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
 
@@ -1889,9 +1907,13 @@ Public Class dlgSettings
             Master.eSettings.AutoRenameMulti = Me.chkRenameMulti.Checked
             Master.eSettings.AutoRenameSingle = Me.chkRenameSingle.Checked
             Master.eSettings.MovieTheme = Me.cbMovieTheme.Text
+            Master.eSettings.TVShowTheme = Me.cbTVShowTheme.Text
+            Master.eSettings.TVEpTheme = Me.cbEpTheme.Text
             Master.eSettings.EnableIFOScan = Me.chkIFOScan.Checked
             Master.eSettings.CleanDB = Me.chkCleanDB.Checked
             Master.eSettings.IgnoreLastScan = Me.chkIgnoreLastScan.Checked
+            Master.eSettings.TVCleanDB = Me.chkTVCleanDB.Checked
+            Master.eSettings.TVIgnoreLastScan = Me.chkTVIgnoreLastScan.Checked
 
             Master.eSettings.Save()
 
@@ -2116,11 +2138,15 @@ Public Class dlgSettings
             Me.chkRenameMulti.Checked = Master.eSettings.AutoRenameMulti
             Me.chkRenameSingle.Checked = Master.eSettings.AutoRenameSingle
             Me.cbMovieTheme.SelectedItem = Master.eSettings.MovieTheme
+            Me.cbTVShowTheme.SelectedItem = Master.eSettings.TVShowTheme
+            Me.cbEpTheme.SelectedItem = Master.eSettings.TVEpTheme
             Me.Meta = Master.eSettings.MetadataPerFileType
             Me.LoadMetadata()
             Me.chkIFOScan.Checked = Master.eSettings.EnableIFOScan
             Me.chkCleanDB.Checked = Master.eSettings.CleanDB
             Me.chkIgnoreLastScan.Checked = Master.eSettings.IgnoreLastScan
+            Me.chkTVCleanDB.Checked = Master.eSettings.TVCleanDB
+            Me.chkTVIgnoreLastScan.Checked = Master.eSettings.TVIgnoreLastScan
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -2194,15 +2220,27 @@ Public Class dlgSettings
     Private Sub LoadThemes()
 
         Me.cbMovieTheme.Items.Clear()
+        Me.cbTVShowTheme.Items.Clear()
+        Me.cbEpTheme.Items.Clear()
         If Directory.Exists(Path.Combine(Master.AppPath, "Themes")) Then
-            Dim alT As New List(Of String)
-            Dim alThemes As New List(Of String)
+            Dim mT As New List(Of String)
+            Dim sT As New List(Of String)
+            Dim eT As New List(Of String)
             Try
-                alT.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Themes"), "movie-*.xml"))
+                mT.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Themes"), "movie-*.xml"))
             Catch
             End Try
-            alThemes.AddRange(alT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movie-", String.Empty)).ToArray)
-            Me.cbMovieTheme.Items.AddRange(alThemes.ToArray)
+            Me.cbMovieTheme.Items.AddRange(mT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("movie-", String.Empty)).ToArray)
+            Try
+                sT.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Themes"), "tvshow-*.xml"))
+            Catch
+            End Try
+            Me.cbTVShowTheme.Items.AddRange(sT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvshow-", String.Empty)).ToArray)
+            Try
+                eT.AddRange(Directory.GetFiles(Path.Combine(Master.AppPath, "Themes"), "tvep-*.xml"))
+            Catch
+            End Try
+            Me.cbEpTheme.Items.AddRange(eT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvep-", String.Empty)).ToArray)
         End If
 
     End Sub
@@ -2631,8 +2669,7 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
-
     Private Sub lbTrailerSites_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailerSites.SelectedIndexChanged
-
+        Me.SetApplyButton(True)
     End Sub
 End Class

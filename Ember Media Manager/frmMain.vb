@@ -3532,13 +3532,15 @@ doCancel:
     ' ########################################
 
     Private Sub LoadTheme(ByVal tType As String)
+        Dim wModifier As Double = 1.0
         Dim tPath As String = String.Concat(Master.AppPath, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, Master.eSettings.MovieTheme))
         If File.Exists(tPath) Then
 
-            'Just to make sure Theme will setup ok (Issues r893,r894)
-            'force size
             Me.MinimumSize = New Size(1024, 768)
-            Me.Size = Me.MinimumSize
+
+            'get width modifier - just a hack to get the controls to resize properly when switching themes
+            'TODO - Improve theme support to better handle window sizing. Ideas?
+            wModifier = Me.pnlInfoPanel.Width / 655
 
             ThemeXML = XDocument.Load(tPath)
             'top panel
@@ -3586,11 +3588,11 @@ doCancel:
             End Try
 
             'info panel
-            SetIPTheme(pnlInfoPanel)
+            SetIPTheme(pnlInfoPanel, wModifier)
         End If
     End Sub
 
-    Private Sub SetIPTheme(ByVal cControl As Control)
+    Private Sub SetIPTheme(ByVal cControl As Control, ByVal wModifier As Double)
         Try
             Dim ControlName As String
 
@@ -3611,13 +3613,20 @@ doCancel:
                     ControlName = xControl.Name
                     Dim xIP = From xTheme In ThemeXML...<theme>...<infopanel>...<object> Where ControlName = xTheme.@name
                     If xIP.Count > 0 Then
-                        If Not String.IsNullOrEmpty(xIP.<width>.Value) Then xControl.Width = Convert.ToInt32(xIP.<width>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<width>.Value) Then
+                            If Convert.ToInt32(xIP.<width>.Value) = -1 Then
+                                xControl.Visible = False
+                                Continue For
+                            Else
+                                xControl.Visible = True
+                                xControl.Width = Convert.ToInt32(Convert.ToInt32(xIP.<width>.Value) * wModifier)
+                            End If
+                        End If
                         If Not String.IsNullOrEmpty(xIP.<height>.Value) Then xControl.Height = Convert.ToInt32(xIP.<height>.Value)
-                        If Not String.IsNullOrEmpty(xIP.<left>.Value) Then xControl.Left = Convert.ToInt32(xIP.<left>.Value)
+                        If Not String.IsNullOrEmpty(xIP.<left>.Value) Then xControl.Left = Convert.ToInt32(Convert.ToInt32(xIP.<left>.Value) * wModifier)
                         If Not String.IsNullOrEmpty(xIP.<top>.Value) Then xControl.Top = Convert.ToInt32(xIP.<top>.Value)
                         If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then xControl.BackColor = Color.FromArgb(Convert.ToInt32(xIP.<backcolor>.Value))
                         If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then xControl.ForeColor = Color.FromArgb(Convert.ToInt32(xIP.<forecolor>.Value))
-                        If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then xControl.Anchor = DirectCast(Convert.ToInt32(xIP.<anchor>.Value), AnchorStyles)
                         If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then xControl.Anchor = DirectCast(Convert.ToInt32(xIP.<anchor>.Value), AnchorStyles)
 
                         cFont = "Microsoft Sans Serif"
@@ -3629,7 +3638,7 @@ doCancel:
                         If Not String.IsNullOrEmpty(xIP.<fontstyle>.Value) Then cFontStyle = DirectCast(Convert.ToInt32(xIP.<fontstyle>.Value), FontStyle)
                         xControl.Font = New Font(cFont, cFontSize, cFontStyle)
                     End If
-                    If xControl.HasChildren Then SetIPTheme(xControl)
+                    If xControl.HasChildren Then SetIPTheme(xControl, wModifier)
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
@@ -5545,11 +5554,15 @@ doCancel:
     Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
         Select Case tabsMain.SelectedIndex
             Case 0
+                Me.ClearInfo()
+                Me.LoadTheme("movie")
                 If Me.dgvMediaList.RowCount > 0 Then
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                 End If
             Case 1
+                Me.ClearInfo()
+                Me.LoadTheme("tvshow")
                 If Me.dgvTVShows.RowCount > 0 Then
                     Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None

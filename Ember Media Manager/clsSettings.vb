@@ -199,11 +199,15 @@ Public Class emmSettings
     Private _autorenamemulti As Boolean
     Private _autorenamesingle As Boolean
     Private _movietheme As String
+    Private _tvshowtheme As String
+    Private _tveptheme As String
     Private _metadatapertype As New List(Of MetadataPerType)
     Private _enableifoscan As Boolean
     Private _yamjsetscompatible As Boolean
     Private _cleandb As Boolean
     Private _ignorelastscan As Boolean
+    Private _tvcleandb As Boolean
+    Private _tvignorelastscan As Boolean
 
     Public Property Version() As String
         Get
@@ -1766,6 +1770,24 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property TVShowTheme() As String
+        Get
+            Return Me._tvshowtheme
+        End Get
+        Set(ByVal value As String)
+            Me._tvshowtheme = value
+        End Set
+    End Property
+
+    Public Property TVEpTheme() As String
+        Get
+            Return Me._tveptheme
+        End Get
+        Set(ByVal value As String)
+            Me._tveptheme = value
+        End Set
+    End Property
+
     Public Property MetadataPerFileType() As List(Of MetadataPerType)
         Get
             Return Me._metadatapertype
@@ -1808,6 +1830,24 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._ignorelastscan = value
+        End Set
+    End Property
+
+    Public Property TVCleanDB() As Boolean
+        Get
+            Return Me._tvcleandb
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvcleandb = value
+        End Set
+    End Property
+
+    Public Property TVIgnoreLastScan() As Boolean
+        Get
+            Return Me._tvignorelastscan
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvignorelastscan = value
         End Set
     End Property
 
@@ -1990,11 +2030,15 @@ Public Class emmSettings
         Me._autorenamemulti = False
         Me._autorenamesingle = False
         Me._movietheme = String.Empty
+        Me._tvshowtheme = String.Empty
+        Me._tveptheme = String.Empty
         Me._metadatapertype.Clear()
         Me._enableifoscan = True
         Me._yamjsetscompatible = False
         Me._cleandb = True
         Me._ignorelastscan = False
+        Me._tvcleandb = True
+        Me._tvignorelastscan = False
     End Sub
 
     Public Sub Save()

@@ -24,15 +24,15 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode8})
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode10, TreeNode11})
+        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode13, TreeNode14, TreeNode15})
+        Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode17})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -256,6 +256,8 @@ Partial Class dlgSettings
         Me.btnNewMetaDataFT = New System.Windows.Forms.Button
         Me.chkIFOScan = New System.Windows.Forms.CheckBox
         Me.GroupBox20 = New System.Windows.Forms.GroupBox
+        Me.cbTrailerQuality = New System.Windows.Forms.ComboBox
+        Me.lblPreferredQuality = New System.Windows.Forms.Label
         Me.chkDeleteAllTrailers = New System.Windows.Forms.CheckBox
         Me.chkOverwriteTrailer = New System.Windows.Forms.CheckBox
         Me.chkNoDLTrailer = New System.Windows.Forms.CheckBox
@@ -343,6 +345,9 @@ Partial Class dlgSettings
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
         Me.pnlTVSources = New System.Windows.Forms.Panel
+        Me.GroupBox30 = New System.Windows.Forms.GroupBox
+        Me.chkTVIgnoreLastScan = New System.Windows.Forms.CheckBox
+        Me.chkTVCleanDB = New System.Windows.Forms.CheckBox
         Me.btnEditTVSource = New System.Windows.Forms.Button
         Me.lvTVSources = New System.Windows.Forms.ListView
         Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
@@ -367,8 +372,11 @@ Partial Class dlgSettings
         Me.btnAddShowFilter = New System.Windows.Forms.Button
         Me.txtShowFilter = New System.Windows.Forms.TextBox
         Me.lstShowFilters = New System.Windows.Forms.ListBox
-        Me.cbTrailerQuality = New System.Windows.Forms.ComboBox
-        Me.lblPreferredQuality = New System.Windows.Forms.Label
+        Me.gbInterface = New System.Windows.Forms.GroupBox
+        Me.cbTVShowTheme = New System.Windows.Forms.ComboBox
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.cbEpTheme = New System.Windows.Forms.ComboBox
+        Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -422,9 +430,11 @@ Partial Class dlgSettings
         Me.GroupBox24.SuspendLayout()
         Me.GroupBox17.SuspendLayout()
         Me.pnlTVSources.SuspendLayout()
+        Me.GroupBox30.SuspendLayout()
         Me.pnlShows.SuspendLayout()
         Me.gbEpFilter.SuspendLayout()
         Me.gbShowFilter.SuspendLayout()
+        Me.gbInterface.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -561,10 +571,6 @@ Partial Class dlgSettings
         '
         'GroupBox4
         '
-        Me.GroupBox4.Controls.Add(Me.GroupBox29)
-        Me.GroupBox4.Controls.Add(Me.btnDLTrans)
-        Me.GroupBox4.Controls.Add(Me.Label32)
-        Me.GroupBox4.Controls.Add(Me.cbIntLang)
         Me.GroupBox4.Controls.Add(Me.chkInfoPanelAnim)
         Me.GroupBox4.Controls.Add(Me.chkUpdates)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
@@ -572,19 +578,23 @@ Partial Class dlgSettings
         Me.GroupBox4.Controls.Add(Me.chkLogErrors)
         Me.GroupBox4.Location = New System.Drawing.Point(5, 3)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(185, 333)
+        Me.GroupBox4.Size = New System.Drawing.Size(185, 336)
         Me.GroupBox4.TabIndex = 2
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Miscellaneous"
         '
         'GroupBox29
         '
+        Me.GroupBox29.Controls.Add(Me.cbEpTheme)
+        Me.GroupBox29.Controls.Add(Me.Label3)
+        Me.GroupBox29.Controls.Add(Me.cbTVShowTheme)
+        Me.GroupBox29.Controls.Add(Me.Label1)
         Me.GroupBox29.Controls.Add(Me.Label36)
         Me.GroupBox29.Controls.Add(Me.cbMovieTheme)
         Me.GroupBox29.Controls.Add(Me.Label35)
-        Me.GroupBox29.Location = New System.Drawing.Point(9, 179)
+        Me.GroupBox29.Location = New System.Drawing.Point(8, 61)
         Me.GroupBox29.Name = "GroupBox29"
-        Me.GroupBox29.Size = New System.Drawing.Size(167, 91)
+        Me.GroupBox29.Size = New System.Drawing.Size(181, 198)
         Me.GroupBox29.TabIndex = 21
         Me.GroupBox29.TabStop = False
         Me.GroupBox29.Text = "Themes"
@@ -592,7 +602,7 @@ Partial Class dlgSettings
         'Label36
         '
         Me.Label36.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label36.Location = New System.Drawing.Point(4, 16)
+        Me.Label36.Location = New System.Drawing.Point(11, 16)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(159, 24)
         Me.Label36.TabIndex = 21
@@ -621,7 +631,7 @@ Partial Class dlgSettings
         '
         Me.btnDLTrans.Image = CType(resources.GetObject("btnDLTrans.Image"), System.Drawing.Image)
         Me.btnDLTrans.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnDLTrans.Location = New System.Drawing.Point(12, 275)
+        Me.btnDLTrans.Location = New System.Drawing.Point(17, 275)
         Me.btnDLTrans.Name = "btnDLTrans"
         Me.btnDLTrans.Size = New System.Drawing.Size(162, 53)
         Me.btnDLTrans.TabIndex = 18
@@ -632,7 +642,7 @@ Partial Class dlgSettings
         'Label32
         '
         Me.Label32.AutoSize = True
-        Me.Label32.Location = New System.Drawing.Point(7, 135)
+        Me.Label32.Location = New System.Drawing.Point(6, 17)
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(103, 13)
         Me.Label32.TabIndex = 17
@@ -642,7 +652,7 @@ Partial Class dlgSettings
         '
         Me.cbIntLang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbIntLang.FormattingEnabled = True
-        Me.cbIntLang.Location = New System.Drawing.Point(10, 152)
+        Me.cbIntLang.Location = New System.Drawing.Point(9, 34)
         Me.cbIntLang.Name = "cbIntLang"
         Me.cbIntLang.Size = New System.Drawing.Size(137, 21)
         Me.cbIntLang.TabIndex = 16
@@ -2349,52 +2359,52 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode1.ImageIndex = 4
-        TreeNode1.Name = "nExts"
-        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode1.SelectedImageIndex = 4
-        TreeNode1.Text = "File System"
-        TreeNode2.ImageIndex = 1
-        TreeNode2.Name = "nXBMCCom"
-        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode2.SelectedImageIndex = 1
-        TreeNode2.Text = "XBMC Communication"
-        TreeNode3.ImageIndex = 0
-        TreeNode3.Name = "nGeneral"
-        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode3.SelectedImageIndex = 0
-        TreeNode3.Text = "General"
-        TreeNode4.ImageIndex = 5
-        TreeNode4.Name = "nSources"
-        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode4.SelectedImageIndex = 5
-        TreeNode4.Text = "Files and Sources"
-        TreeNode5.ImageIndex = 3
-        TreeNode5.Name = "nScraper"
-        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode5.SelectedImageIndex = 3
-        TreeNode5.Text = "Scraper - Data"
-        TreeNode6.ImageIndex = 6
-        TreeNode6.Name = "nImages"
-        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode6.SelectedImageIndex = 6
-        TreeNode6.Text = "Scraper - Images"
-        TreeNode7.ImageIndex = 2
-        TreeNode7.Name = "nMovies"
-        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode7.SelectedImageIndex = 2
-        TreeNode7.Text = "Movies"
-        TreeNode8.ImageIndex = 5
-        TreeNode8.Name = "nTVSources"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 5
-        TreeNode8.Text = "Files and Sources"
-        TreeNode9.ImageIndex = 7
-        TreeNode9.Name = "nTV"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 7
-        TreeNode9.Text = "TV Shows"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7, TreeNode9})
+        TreeNode10.ImageIndex = 4
+        TreeNode10.Name = "nExts"
+        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode10.SelectedImageIndex = 4
+        TreeNode10.Text = "File System"
+        TreeNode11.ImageIndex = 1
+        TreeNode11.Name = "nXBMCCom"
+        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode11.SelectedImageIndex = 1
+        TreeNode11.Text = "XBMC Communication"
+        TreeNode12.ImageIndex = 0
+        TreeNode12.Name = "nGeneral"
+        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode12.SelectedImageIndex = 0
+        TreeNode12.Text = "General"
+        TreeNode13.ImageIndex = 5
+        TreeNode13.Name = "nSources"
+        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode13.SelectedImageIndex = 5
+        TreeNode13.Text = "Files and Sources"
+        TreeNode14.ImageIndex = 3
+        TreeNode14.Name = "nScraper"
+        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode14.SelectedImageIndex = 3
+        TreeNode14.Text = "Scraper - Data"
+        TreeNode15.ImageIndex = 6
+        TreeNode15.Name = "nImages"
+        TreeNode15.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode15.SelectedImageIndex = 6
+        TreeNode15.Text = "Scraper - Images"
+        TreeNode16.ImageIndex = 2
+        TreeNode16.Name = "nMovies"
+        TreeNode16.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode16.SelectedImageIndex = 2
+        TreeNode16.Text = "Movies"
+        TreeNode17.ImageIndex = 5
+        TreeNode17.Name = "nTVSources"
+        TreeNode17.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode17.SelectedImageIndex = 5
+        TreeNode17.Text = "Files and Sources"
+        TreeNode18.ImageIndex = 7
+        TreeNode18.Name = "nTV"
+        TreeNode18.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode18.SelectedImageIndex = 7
+        TreeNode18.Text = "TV Shows"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode12, TreeNode16, TreeNode18})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2405,6 +2415,7 @@ Partial Class dlgSettings
         '
         Me.pnlGeneral.BackColor = System.Drawing.Color.White
         Me.pnlGeneral.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlGeneral.Controls.Add(Me.gbInterface)
         Me.pnlGeneral.Controls.Add(Me.GroupBox3)
         Me.pnlGeneral.Controls.Add(Me.GroupBox4)
         Me.pnlGeneral.Location = New System.Drawing.Point(208, 96)
@@ -2821,6 +2832,25 @@ Partial Class dlgSettings
         Me.GroupBox20.TabIndex = 3
         Me.GroupBox20.TabStop = False
         Me.GroupBox20.Text = "Trailers"
+        '
+        'cbTrailerQuality
+        '
+        Me.cbTrailerQuality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTrailerQuality.Enabled = False
+        Me.cbTrailerQuality.FormattingEnabled = True
+        Me.cbTrailerQuality.Location = New System.Drawing.Point(482, 28)
+        Me.cbTrailerQuality.Name = "cbTrailerQuality"
+        Me.cbTrailerQuality.Size = New System.Drawing.Size(84, 21)
+        Me.cbTrailerQuality.TabIndex = 65
+        '
+        'lblPreferredQuality
+        '
+        Me.lblPreferredQuality.AutoSize = True
+        Me.lblPreferredQuality.Location = New System.Drawing.Point(479, 12)
+        Me.lblPreferredQuality.Name = "lblPreferredQuality"
+        Me.lblPreferredQuality.Size = New System.Drawing.Size(88, 13)
+        Me.lblPreferredQuality.TabIndex = 66
+        Me.lblPreferredQuality.Text = "Preferred Quality:"
         '
         'chkDeleteAllTrailers
         '
@@ -3744,6 +3774,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVSources.BackColor = System.Drawing.Color.White
         Me.pnlTVSources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVSources.Controls.Add(Me.GroupBox30)
         Me.pnlTVSources.Controls.Add(Me.btnEditTVSource)
         Me.pnlTVSources.Controls.Add(Me.lvTVSources)
         Me.pnlTVSources.Controls.Add(Me.btnRemTVSource)
@@ -3753,6 +3784,36 @@ Partial Class dlgSettings
         Me.pnlTVSources.Size = New System.Drawing.Size(597, 353)
         Me.pnlTVSources.TabIndex = 69
         Me.pnlTVSources.Visible = False
+        '
+        'GroupBox30
+        '
+        Me.GroupBox30.Controls.Add(Me.chkTVIgnoreLastScan)
+        Me.GroupBox30.Controls.Add(Me.chkTVCleanDB)
+        Me.GroupBox30.Location = New System.Drawing.Point(5, 116)
+        Me.GroupBox30.Name = "GroupBox30"
+        Me.GroupBox30.Size = New System.Drawing.Size(211, 191)
+        Me.GroupBox30.TabIndex = 5
+        Me.GroupBox30.TabStop = False
+        Me.GroupBox30.Text = "Miscellaneous Options"
+        '
+        'chkTVIgnoreLastScan
+        '
+        Me.chkTVIgnoreLastScan.Location = New System.Drawing.Point(6, 16)
+        Me.chkTVIgnoreLastScan.Name = "chkTVIgnoreLastScan"
+        Me.chkTVIgnoreLastScan.Size = New System.Drawing.Size(199, 30)
+        Me.chkTVIgnoreLastScan.TabIndex = 72
+        Me.chkTVIgnoreLastScan.Text = "Ignore last scan time when updating library"
+        Me.chkTVIgnoreLastScan.UseVisualStyleBackColor = True
+        '
+        'chkTVCleanDB
+        '
+        Me.chkTVCleanDB.AutoSize = True
+        Me.chkTVCleanDB.Location = New System.Drawing.Point(7, 53)
+        Me.chkTVCleanDB.Name = "chkTVCleanDB"
+        Me.chkTVCleanDB.Size = New System.Drawing.Size(198, 17)
+        Me.chkTVCleanDB.TabIndex = 71
+        Me.chkTVCleanDB.Text = "Clean database after updating library"
+        Me.chkTVCleanDB.UseVisualStyleBackColor = True
         '
         'btnEditTVSource
         '
@@ -3986,24 +4047,54 @@ Partial Class dlgSettings
         Me.lstShowFilters.Size = New System.Drawing.Size(180, 108)
         Me.lstShowFilters.TabIndex = 1
         '
-        'cbTrailerQuality
+        'gbInterface
         '
-        Me.cbTrailerQuality.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTrailerQuality.Enabled = False
-        Me.cbTrailerQuality.FormattingEnabled = True
-        Me.cbTrailerQuality.Location = New System.Drawing.Point(482, 28)
-        Me.cbTrailerQuality.Name = "cbTrailerQuality"
-        Me.cbTrailerQuality.Size = New System.Drawing.Size(84, 21)
-        Me.cbTrailerQuality.TabIndex = 65
+        Me.gbInterface.Controls.Add(Me.GroupBox29)
+        Me.gbInterface.Controls.Add(Me.Label32)
+        Me.gbInterface.Controls.Add(Me.btnDLTrans)
+        Me.gbInterface.Controls.Add(Me.cbIntLang)
+        Me.gbInterface.Location = New System.Drawing.Point(392, 3)
+        Me.gbInterface.Name = "gbInterface"
+        Me.gbInterface.Size = New System.Drawing.Size(198, 336)
+        Me.gbInterface.TabIndex = 4
+        Me.gbInterface.TabStop = False
+        Me.gbInterface.Text = "Interface"
         '
-        'lblPreferredQuality
+        'cbTVShowTheme
         '
-        Me.lblPreferredQuality.AutoSize = True
-        Me.lblPreferredQuality.Location = New System.Drawing.Point(479, 12)
-        Me.lblPreferredQuality.Name = "lblPreferredQuality"
-        Me.lblPreferredQuality.Size = New System.Drawing.Size(88, 13)
-        Me.lblPreferredQuality.TabIndex = 66
-        Me.lblPreferredQuality.Text = "Preferred Quality:"
+        Me.cbTVShowTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVShowTheme.FormattingEnabled = True
+        Me.cbTVShowTheme.Location = New System.Drawing.Point(9, 107)
+        Me.cbTVShowTheme.Name = "cbTVShowTheme"
+        Me.cbTVShowTheme.Size = New System.Drawing.Size(137, 21)
+        Me.cbTVShowTheme.TabIndex = 22
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(6, 90)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(90, 13)
+        Me.Label1.TabIndex = 23
+        Me.Label1.Text = "TV Show Theme:"
+        '
+        'cbEpTheme
+        '
+        Me.cbEpTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbEpTheme.FormattingEnabled = True
+        Me.cbEpTheme.Location = New System.Drawing.Point(9, 153)
+        Me.cbEpTheme.Name = "cbEpTheme"
+        Me.cbEpTheme.Size = New System.Drawing.Size(137, 21)
+        Me.cbEpTheme.TabIndex = 24
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(6, 136)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(84, 13)
+        Me.Label3.TabIndex = 25
+        Me.Label3.Text = "Episode Theme:"
         '
         'dlgSettings
         '
@@ -4012,8 +4103,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -4021,13 +4110,15 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlShows)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -4120,11 +4211,15 @@ Partial Class dlgSettings
         Me.GroupBox17.ResumeLayout(False)
         Me.GroupBox17.PerformLayout()
         Me.pnlTVSources.ResumeLayout(False)
+        Me.GroupBox30.ResumeLayout(False)
+        Me.GroupBox30.PerformLayout()
         Me.pnlShows.ResumeLayout(False)
         Me.gbEpFilter.ResumeLayout(False)
         Me.gbEpFilter.PerformLayout()
         Me.gbShowFilter.ResumeLayout(False)
         Me.gbShowFilter.PerformLayout()
+        Me.gbInterface.ResumeLayout(False)
+        Me.gbInterface.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -4462,6 +4557,14 @@ Partial Class dlgSettings
     Friend WithEvents txtFilter As System.Windows.Forms.TextBox
     Friend WithEvents lstFilters As System.Windows.Forms.ListBox
     Friend WithEvents gbGenreFilter As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox30 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkTVIgnoreLastScan As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVCleanDB As System.Windows.Forms.CheckBox
     Friend WithEvents cbTrailerQuality As System.Windows.Forms.ComboBox
     Friend WithEvents lblPreferredQuality As System.Windows.Forms.Label
+    Friend WithEvents gbInterface As System.Windows.Forms.GroupBox
+    Friend WithEvents cbEpTheme As System.Windows.Forms.ComboBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents cbTVShowTheme As System.Windows.Forms.ComboBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 End Class

@@ -890,7 +890,7 @@ Public Class Scanner
 
                     For Each sDirs As DirectoryInfo In inDirs
                         If Regex.IsMatch(sDirs.Name, "(s(eason)?)?([\._ ])?([0-9]+)", RegexOptions.IgnoreCase) AndAlso _
-                        sDirs.LastWriteTime > SourceLastScan Then
+                        (Master.eSettings.TVIgnoreLastScan OrElse sDirs.LastWriteTime > SourceLastScan) Then
                             Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                         End If
                     Next
@@ -1052,7 +1052,7 @@ Public Class Scanner
             End If
 
             'remove any db entries that no longer exist
-            If Master.eSettings.CleanDB Then Master.DB.Clean()
+            Master.DB.Clean()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
