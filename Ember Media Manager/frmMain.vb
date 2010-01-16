@@ -267,7 +267,7 @@ Public Class frmMain
                                 Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
                                 Loop
-                                Me.LoadMedia(1)
+                                Me.LoadMedia(New Master.Scans With {.Movies = True})
                             End If
                         End If
                     Else
@@ -422,7 +422,7 @@ Public Class frmMain
             If Not IsNothing(clScrapeType) Then
                 If Master.HasModifier AndAlso Not clScrapeType = Master.ScrapeType.SingleScrape Then
                     Try
-                        LoadMedia(1)
+                        LoadMedia(New Master.Scans With {.Movies = True})
                         Do While Not Me.LoadingDone
                             Application.DoEvents()
                         Loop
@@ -570,7 +570,7 @@ Public Class frmMain
                     If dlgWizard.ShowDialog = Windows.Forms.DialogResult.OK Then
                         Me.SetUp(False) 'just in case user changed languages
                         Me.Visible = True
-                        Me.LoadMedia(1)
+                        Me.LoadMedia(New Master.Scans With {.Movies = True, .TV = True})
                     Else
                         Me.FillList(0)
                         Me.Visible = True
@@ -629,7 +629,7 @@ Public Class frmMain
         ' Reload media type when "Rescan Media" is clicked
         '\\
 
-        Me.LoadMedia(1)
+        Me.LoadMedia(New Master.Scans With {.Movies = True, .TV = True})
 
     End Sub
 
@@ -1168,7 +1168,7 @@ Public Class frmMain
     Private Sub ConvertFileSourceToFolderSourceToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConvertFileSourceToFolderSourceToolStripMenuItem.Click
 
         Using dSortFiles As New dlgSortFiles
-            If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then Me.LoadMedia(1)
+            If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then Me.LoadMedia(New Master.Scans With {.Movies = True})
         End Using
     End Sub
 
@@ -2258,7 +2258,7 @@ Public Class frmMain
     Private Sub OfflineMediaManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OfflineMediaManagerToolStripMenuItem.Click
         Using dOfflineHolder As New dlgOfflineHolder
             If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                Me.LoadMedia(1)
+                Me.LoadMedia(New Master.Scans With {.Movies = True})
             End If
         End Using
     End Sub
@@ -2348,7 +2348,7 @@ Public Class frmMain
             Try
                 If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     Application.DoEvents()
-                    Me.LoadMedia(0)
+                    Me.LoadMedia(New Master.Scans With {.Movies = True})
                 End If
             Catch ex As Exception
             End Try
@@ -3441,7 +3441,7 @@ doCancel:
                     'only rescan media if expert cleaner and videos are not whitelisted 
                     'since the db is updated during cleaner now.
                     If Master.eSettings.ExpertCleaner AndAlso Not Master.eSettings.CleanWhitelistVideo Then
-                        Me.LoadMedia(1)
+                        Me.LoadMedia(New Master.Scans With {.Movies = True})
                     Else
                         Me.FillList(0)
                     End If
@@ -3875,7 +3875,7 @@ doCancel:
 
     End Sub
 
-    Public Sub LoadMedia(ByVal mediaType As Integer, Optional ByVal SourceName As String = "")
+    Public Sub LoadMedia(ByVal Scan As Master.Scans, Optional ByVal SourceName As String = "")
 
         '//
         ' Begin threads to fill datagrid with media data
@@ -3901,7 +3901,7 @@ doCancel:
             Me.fScanner.CancelAndWait()
             Me.dgvMediaList.DataSource = Nothing
 
-            Me.fScanner.Start(SourceName)
+            Me.fScanner.Start(Scan, SourceName)
 
         Catch ex As Exception
             Me.LoadingDone = True
@@ -4795,6 +4795,8 @@ doCancel:
 
     Private Sub SetMenus(ByVal ReloadFilters As Boolean)
 
+        Dim mnuItem As ToolStripItem
+
         Try
             With Master.eSettings
                 If (Not .ExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
@@ -4884,12 +4886,24 @@ doCancel:
                     End Using
                 End Using
 
-                Me.tsbRefreshMedia.DropDownItems.Clear()
+                Me.mnuMoviesUpdate.DropDownItems.Clear()
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
-                            Me.tsbRefreshMedia.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf SourceSubClick))
+                            mnuItem = Me.mnuMoviesUpdate.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf SourceSubClick))
+                            mnuItem.Tag = SQLReader("Name").ToString
+                        End While
+                    End Using
+                End Using
+
+                Me.mnuTVShowUpdate.DropDownItems.Clear()
+                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLNewcommand.CommandText = String.Concat("SELECT Name FROM TVSources;")
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                        While SQLReader.Read
+                            mnuItem = Me.mnuTVShowUpdate.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
+                            mnuItem.Tag = SQLReader("Name").ToString
                         End While
                     End Using
                 End Using
@@ -5105,9 +5119,16 @@ doCancel:
     End Sub
 
     Private Sub SourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim SourceName As String = sender.ToString.Replace(Master.eLang.GetString(144, "Update"), String.Empty).Replace(Master.eLang.GetString(145, "Only"), String.Empty).Trim
+        Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
         If Not String.IsNullOrEmpty(SourceName) Then
-            Me.LoadMedia(1, SourceName)
+            Me.LoadMedia(New Master.Scans With {.Movies = True}, SourceName)
+        End If
+    End Sub
+
+    Private Sub TVSourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
+        If Not String.IsNullOrEmpty(SourceName) Then
+            Me.LoadMedia(New Master.Scans With {.TV = True}, SourceName)
         End If
     End Sub
 
