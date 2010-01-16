@@ -2042,8 +2042,12 @@ Public Class emmSettings
             Master.eSettings.FilterCustom.Add("\.[->] ")
         End If
 
-        'TODO: TV Show specific filters
         If Master.eSettings.ShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoShowFilters Then
+            Master.eSettings.ShowFilterCustom.Add("s([0-9]+)[][._-]*e([0-9]+)")
+            Master.eSettings.ShowFilterCustom.Add("([\._ -])?([0-9]+)x([0-9]+)([\._ -].*?)?")
+            Master.eSettings.ShowFilterCustom.Add("([\._ -])?([0-9]+)([0-9][0-9])([\._ ].*?)?$")
+            Master.eSettings.ShowFilterCustom.Add("(s(eason)?)?([\._ -])?([0-9]+)")
+            Master.eSettings.ShowFilterCustom.Add("(e(pisode)?)?([\._ -])?([0-9]+)")
             Master.eSettings.ShowFilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
             Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]blu[ _.-]?ray.*")
             Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]bd[ _.-]?rip.*")
@@ -2068,6 +2072,11 @@ Public Class emmSettings
         End If
 
         If Master.eSettings.EpFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoEpFilters Then
+            Master.eSettings.EpFilterCustom.Add("s([0-9]+)[][._-]*e([0-9]+)")
+            Master.eSettings.EpFilterCustom.Add("([\._ -])?([0-9]+)x([0-9]+)([\._ -].*?)?")
+            Master.eSettings.EpFilterCustom.Add("([\._ -])?([0-9]+)([0-9][0-9])([\._ ].*?)?$")
+            Master.eSettings.EpFilterCustom.Add("(s(eason)?)?([\._ -])?([0-9]+)")
+            Master.eSettings.EpFilterCustom.Add("(e(pisode)?)?([\._ -])?([0-9]+)")
             Master.eSettings.EpFilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
             Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]blu[ _.-]?ray.*")
             Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]bd[ _.-]?rip.*")
