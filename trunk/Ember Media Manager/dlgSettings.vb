@@ -912,6 +912,7 @@ Public Class dlgSettings
         Me.chkOverwriteTrailer.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkNoDLTrailer.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkDeleteAllTrailers.Enabled = Me.chkDownloadTrailer.Checked
+        TrailerQualityEnableDisable()
 
         If Not Me.chkDownloadTrailer.Checked Then
             Me.chkUpdaterTrailer.Checked = False
@@ -923,11 +924,41 @@ Public Class dlgSettings
             For i As Integer = 0 To lbTrailerSites.Items.Count - 1
                 lbTrailerSites.SetItemChecked(i, False)
             Next
+            Me.cbTrailerQuality.SelectedIndex = -1
         End If
     End Sub
 
     Private Sub lbTrailerSites_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbTrailerSites.ItemCheck
         Me.SetApplyButton(True)
+        'pass the item's index because this event occurs before the item's checked state is updated and won't be reflected in its properties
+        TrailerQualityEnableDisable(e.Index)
+    End Sub
+
+    Private Sub TrailerQualityEnableDisable(Optional ByVal ChangedItemIndex As Integer = -1)
+        If Me.chkDownloadTrailer.Checked Then
+            If lbTrailerSites.Items.Count > 0 Then
+                If ChangedItemIndex <> -1 AndAlso Not lbTrailerSites.GetItemChecked(ChangedItemIndex) Then
+                    'this item has just been requested to be checked
+                    If lbTrailerSites.Items(ChangedItemIndex).ToString.ToLower.Contains("allhtpc") Then
+                        Me.cbTrailerQuality.Enabled = True
+                        Return
+                    End If
+                End If
+
+                'now go through the items
+                For i As Integer = 0 To lbTrailerSites.Items.Count - 1
+                    If i <> ChangedItemIndex AndAlso lbTrailerSites.GetItemChecked(i) Then
+                        If lbTrailerSites.Items(i).ToString.ToLower.Contains("allhtpc") Then
+                            Me.cbTrailerQuality.Enabled = True
+                            Return
+                        End If
+                    End If
+                Next
+                Me.cbTrailerQuality.Enabled = False
+            End If
+        Else
+            Me.cbTrailerQuality.Enabled = False
+        End If
     End Sub
 
     Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbGenre.ItemCheck
@@ -1744,6 +1775,11 @@ Public Class dlgSettings
             Master.eSettings.SkipStackSizeCheck = Me.chkSkipStackedSizeCheck.Checked
             Master.eSettings.NoSaveImagesToNfo = Me.chkNoSaveImagesToNfo.Checked
 
+
+            If Me.cbTrailerQuality.SelectedValue IsNot Nothing Then
+                Master.eSettings.PreferredTrailerQuality = CType(Me.cbTrailerQuality.SelectedValue, Master.TrailerQuality)
+            End If
+
             Master.eSettings.TrailerSites.Clear()
             If Me.lbTrailerSites.CheckedItems.Count > 0 Then
                 For Each iTrailer As Integer In Me.lbTrailerSites.CheckedIndices
@@ -2004,6 +2040,8 @@ Public Class dlgSettings
             Me.chkOverwriteTrailer.Checked = Master.eSettings.OverwriteTrailer
             Me.chkDeleteAllTrailers.Checked = Master.eSettings.DeleteAllTrailers
 
+            Me.cbTrailerQuality.SelectedValue = Master.eSettings.PreferredTrailerQuality
+
             If Master.eSettings.TrailerSites.Count > 0 Then
                 For Each iTrailer As Integer In Master.eSettings.TrailerSites
                     Me.lbTrailerSites.SetItemChecked(iTrailer, True)
@@ -2104,6 +2142,16 @@ Public Class dlgSettings
         Else
             Me.lbGenre.SetItemChecked(0, True)
         End If
+    End Sub
+
+    Private Sub LoadTrailerQualities()
+        Dim items As New Dictionary(Of String, Master.TrailerQuality)
+        items.Add("1080p", Master.TrailerQuality.HD1080p)
+        items.Add("720p", Master.TrailerQuality.HD720p)
+        items.Add("Standard", Master.TrailerQuality.Standard)
+        Me.cbTrailerQuality.DataSource = items.ToList
+        Me.cbTrailerQuality.DisplayMember = "Key"
+        Me.cbTrailerQuality.ValueMember = "Value"
     End Sub
 
     Private Sub LoadXComs()
@@ -2420,6 +2468,8 @@ Public Class dlgSettings
         Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbAutoETSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+
+        LoadTrailerQualities()
     End Sub
 
     Private Sub RemoveSortToken()
@@ -2582,4 +2632,7 @@ Public Class dlgSettings
 #End Region '*** Routines/Functions
 
 
+    Private Sub lbTrailerSites_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailerSites.SelectedIndexChanged
+
+    End Sub
 End Class

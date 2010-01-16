@@ -84,6 +84,12 @@ Public Class Master
         IMDB = 2
     End Enum
 
+    Public Enum TrailerQuality As Integer
+        HD1080p = 0
+        HD720p = 1
+        Standard = 99
+    End Enum
+
     Public Enum ModType As Integer
         NFO = 0
         Poster = 1
