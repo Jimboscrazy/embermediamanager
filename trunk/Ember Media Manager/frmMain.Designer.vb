@@ -301,6 +301,8 @@ Partial Class frmMain
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
+        Me.mnuMoviesUpdate = New System.Windows.Forms.ToolStripMenuItem
+        Me.mnuTVShowUpdate = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -2825,6 +2827,7 @@ Partial Class frmMain
         '
         'tsbRefreshMedia
         '
+        Me.tsbRefreshMedia.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMoviesUpdate, Me.mnuTVShowUpdate})
         Me.tsbRefreshMedia.Image = CType(resources.GetObject("tsbRefreshMedia.Image"), System.Drawing.Image)
         Me.tsbRefreshMedia.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbRefreshMedia.Name = "tsbRefreshMedia"
@@ -2894,6 +2897,18 @@ Partial Class frmMain
         Me.ToolTips.AutoPopDelay = 15000
         Me.ToolTips.InitialDelay = 500
         Me.ToolTips.ReshowDelay = 100
+        '
+        'mnuMoviesUpdate
+        '
+        Me.mnuMoviesUpdate.Name = "mnuMoviesUpdate"
+        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMoviesUpdate.Text = "Movies"
+        '
+        'mnuTVShowUpdate
+        '
+        Me.mnuTVShowUpdate.Name = "mnuTVShowUpdate"
+        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTVShowUpdate.Text = "TV Shows"
         '
         'frmMain
         '
@@ -3263,4 +3278,6 @@ Partial Class frmMain
     Friend WithEvents RemoveFromDatabaseToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RemoveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents mnuMoviesUpdate As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuTVShowUpdate As System.Windows.Forms.ToolStripMenuItem
 End Class

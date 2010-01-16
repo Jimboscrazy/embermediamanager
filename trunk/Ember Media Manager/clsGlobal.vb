@@ -94,6 +94,11 @@ Public Class Master
         All = 6
     End Enum
 
+    Public Structure Scans
+        Dim Movies As Boolean
+        Dim TV As Boolean
+    End Structure
+
     Public Structure ScrapeModifier
         Dim NFO As Boolean
         Dim Poster As Boolean
