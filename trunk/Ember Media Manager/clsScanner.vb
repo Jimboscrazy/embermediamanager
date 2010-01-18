@@ -879,7 +879,6 @@ Public Class Scanner
                     currShowContainer.ShowPath = inDir.FullName
                     currShowContainer.Source = sSource
                     Me.ScanForTVFiles(currShowContainer, inDir.FullName)
-                    MediaList.Add(New AllContainer With {.Type = MediaType.TVShow, .TVContainer = currShowContainer})
 
                     inInfo = New DirectoryInfo(inDir.FullName)
                     inDirs.Clear()
@@ -894,6 +893,8 @@ Public Class Scanner
                             Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                         End If
                     Next
+
+                    MediaList.Add(New AllContainer With {.Type = MediaType.TVShow, .TVContainer = currShowContainer})
                 Next
 
             End If
@@ -1100,8 +1101,8 @@ Public Class Scanner
         ' Thread to fill a datatable with basic media data
         '\\
         Dim currentIndex As Integer = 0
-        Dim tmpMovieDB As New Master.DBMovie
-        Dim tmpTVDB As New Master.DBTV
+        Dim tmpMovieDB As Master.DBMovie
+        Dim tmpTVDB As Master.DBTV
 
         Try
             'process the folder type media
@@ -1113,9 +1114,9 @@ Public Class Scanner
                     End If
                     Select Case sFile.Type
                         Case MediaType.TVShow
+                            tmpTVDB = New Master.DBTV
                             'TODO: Handle video_ts and files with multiple seasons/episodes
                             If sFile.TVContainer.Episodes.Count > 0 Then
-                                Master.ClearDBTV(tmpTVDB)
                                 If Not htTVShows.ContainsKey(sFile.TVContainer.ShowPath.ToLower) Then
                                     GetShowFolderContents(sFile.TVContainer)
                                     If Not String.IsNullOrEmpty(sFile.TVContainer.Nfo) Then
@@ -1188,7 +1189,7 @@ Public Class Scanner
                             End If
                         Case Else 'assume movie
                             If Not String.IsNullOrEmpty(sFile.MContainer.Filename) Then
-                                Master.ClearDBMovie(tmpMovieDB)
+                                tmpMovieDB = New Master.DBMovie
                                 'first, lets get the contents
                                 GetMovieFolderContents(sFile.MContainer)
 

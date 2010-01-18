@@ -36,6 +36,8 @@ Public Class frmMain
     ' ########################################
     Friend WithEvents bwMediaInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadEpInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwScraper As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
@@ -88,18 +90,11 @@ Public Class frmMain
     Private filMissing As String = String.Empty
     Private filSource As String = String.Empty
 
-    Private Enum PicType As Integer
-        Actor = 0
-        Poster = 1
-        Fanart = 2
-    End Enum
-
     Private Structure Results
         Dim scrapeType As Master.ScrapeType
         Dim Options As Master.ScrapeOptions
         Dim fileInfo As String
         Dim setEnabled As Boolean
-        Dim ResultType As PicType
         Dim Movie As Master.DBMovie
         Dim Path As String
         Dim Result As Image
@@ -109,7 +104,6 @@ Public Class frmMain
         Dim setEnabled As Boolean
         Dim scrapeType As Master.ScrapeType
         Dim Options As Master.ScrapeOptions
-        Dim pType As PicType
         Dim pURL As String
         Dim Path As String
         Dim Movie As Master.DBMovie
@@ -255,6 +249,7 @@ Public Class frmMain
                     Do While Me.bwMediaInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
                         Application.DoEvents()
                     Loop
+
                     If dResult.NeedsRefresh OrElse dResult.NeedsUpdate Then
                         If dResult.NeedsRefresh Then
                             If Not Me.fScanner.IsBusy Then
@@ -607,14 +602,11 @@ Public Class frmMain
 
                 Me.pbActLoad.Visible = True
 
-                If Me.bwDownloadPic.IsBusy Then
-                    Me.bwDownloadPic.CancelAsync()
-                End If
-
+                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
                 Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadPic.WorkerSupportsCancellation = True
-                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pType = PicType.Actor, .pURL = Me.alActors.Item(Me.lstActors.SelectedIndex).ToString})
+                Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = Me.alActors.Item(Me.lstActors.SelectedIndex).ToString})
 
             Else
                 Me.pbActors.Image = My.Resources.actor_silhouette
@@ -1052,12 +1044,6 @@ Public Class frmMain
                     Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
                 End If
 
-                If Me.bwLoadInfo.IsBusy Then
-                    Me.bwLoadInfo.CancelAsync()
-                    Do While Me.bwLoadInfo.IsBusy
-                        Application.DoEvents()
-                    Loop
-                End If
                 Me.SelectRow(Me.dgvMediaList.SelectedRows(0).Index)
             End If
         Catch
@@ -2771,11 +2757,19 @@ Public Class frmMain
             Dim wrRequest As WebRequest = WebRequest.Create(Args.pURL)
             wrRequest.Timeout = 10000
             Using wrResponse As WebResponse = wrRequest.GetResponse()
-                tImage = Image.FromStream(wrResponse.GetResponseStream())
+                If wrResponse.ContentType.Contains("image") Then
+                    tImage = Image.FromStream(wrResponse.GetResponseStream())
+                End If
             End Using
-            e.Result = New Results With {.ResultType = Args.pType, .Result = tImage}
+
+            If Me.bwDownloadPic.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            e.Result = New Results With {.Result = tImage}
         Catch ex As Exception
-            e.Result = New Results With {.ResultType = Args.pType, .Result = Nothing}
+            e.Result = New Results With {.Result = Nothing}
         End Try
 
     End Sub
@@ -2786,15 +2780,19 @@ Public Class frmMain
         ' Thread finished: display pic if it was able to get one
         '\\
 
-        Dim Res As Results = DirectCast(e.Result, Results)
+        Me.pbActLoad.Visible = False
 
-        Select Case Res.ResultType
-            Case PicType.Actor
-                Me.pbActLoad.Visible = False
+        If e.Cancelled Then
+            Me.pbActors.Image = My.Resources.actor_silhouette
+        Else
+            Dim Res As Results = DirectCast(e.Result, Results)
+
+            If Not IsNothing(Res.Result) Then
                 Me.pbActors.Image = Res.Result
-            Case Else
-        End Select
-
+            Else
+                Me.pbActors.Image = My.Resources.actor_silhouette
+            End If
+        End If
     End Sub
 
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
@@ -2856,7 +2854,7 @@ Public Class frmMain
 
         Try
             If Not e.Cancelled Then
-                Me.fillScreenInfo()
+                Me.fillScreenInfoWithMovie()
 
                 If Not IsNothing(Me.MainFanart.Image) Then
                     Me.pbFanartCache.Image = Me.MainFanart.Image
@@ -2913,6 +2911,234 @@ Public Class frmMain
                     rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
                     ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
                     g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                End If
+
+                Me.InfoCleared = False
+
+                If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+                    Me.ToolsToolStripMenuItem.Enabled = True
+                    Me.tsbAutoPilot.Enabled = True
+                    Me.tsbRefreshMedia.Enabled = True
+                    Me.mnuMediaList.Enabled = True
+                    Me.tabsMain.Enabled = True
+                    Me.EnableFilters(True)
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub bwLoadShowInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadShowInfo.DoWork
+
+        Try
+
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Me.MainFanart.Clear()
+            Me.MainPoster.Clear()
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            Master.currShow = Master.DB.LoadTVShowFromDB(Args.ID)
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
+            'read nfo if it's there
+
+            'wait for mediainfo to update the nfo
+            Do While bwMediaInfo.IsBusy
+                Application.DoEvents()
+            Loop
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+
+    End Sub
+
+    Private Sub bwLoadShowInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadShowInfo.RunWorkerCompleted
+
+        '//
+        ' Thread finished: display it
+        '\\
+
+        Try
+            If Not e.Cancelled Then
+                Me.fillScreenInfoWithShow()
+
+                If Not IsNothing(Me.MainFanart.Image) Then
+                    Me.pbFanartCache.Image = Me.MainFanart.Image
+                Else
+                    If Not IsNothing(Me.pbFanartCache.Image) Then
+                        Me.pbFanartCache.Image.Dispose()
+                        Me.pbFanartCache.Image = Nothing
+                    End If
+                    If Not IsNothing(Me.pbFanart.Image) Then
+                        Me.pbFanart.Image.Dispose()
+                        Me.pbFanart.Image = Nothing
+                    End If
+                End If
+
+                Dim g As Graphics
+                Dim strSize As String
+                Dim lenSize As Integer
+                Dim rect As Rectangle
+
+                If Not IsNothing(Me.MainPoster.Image) Then
+                    Me.pbPosterCache.Image = Me.MainPoster.Image
+                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                    ImageManip.SetGlassOverlay(Me.pbPoster)
+                    Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
+
+                    If Master.eSettings.ShowDims Then
+                        g = Graphics.FromImage(pbPoster.Image)
+                        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                        strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
+                        lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                        rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
+                        ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                        g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                    End If
+
+                    Me.pbPoster.Location = New Point(4, 4)
+                    Me.pnlPoster.Visible = True
+                Else
+                    If Not IsNothing(Me.pbPoster.Image) Then
+                        Me.pbPoster.Image.Dispose()
+                        Me.pbPoster.Image = Nothing
+                        Me.pnlPoster.Visible = False
+                    End If
+                End If
+
+                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanart.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                End If
+
+                Me.InfoCleared = False
+
+                If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+                    Me.ToolsToolStripMenuItem.Enabled = True
+                    Me.tsbAutoPilot.Enabled = True
+                    Me.tsbRefreshMedia.Enabled = True
+                    Me.mnuMediaList.Enabled = True
+                    Me.tabsMain.Enabled = True
+                    Me.EnableFilters(True)
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub bwLoadEpInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadEpInfo.DoWork
+
+        Try
+
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Me.MainPoster.Clear()
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            Master.currShow = Master.DB.LoadTVEpFromDB(Args.ID, False)
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.EpPosterPath)
+            'read nfo if it's there
+
+            'wait for mediainfo to update the nfo
+            Do While bwMediaInfo.IsBusy
+                Application.DoEvents()
+            Loop
+
+            If bwLoadInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+
+    End Sub
+
+    Private Sub bwLoadEpInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadEpInfo.RunWorkerCompleted
+
+        '//
+        ' Thread finished: display it
+        '\\
+
+        Try
+            If Not e.Cancelled Then
+                Me.fillScreenInfoWithEpisode()
+
+                Dim g As Graphics
+                Dim strSize As String
+                Dim lenSize As Integer
+                Dim rect As Rectangle
+
+                If Not IsNothing(Me.MainPoster.Image) Then
+                    Me.pbPosterCache.Image = Me.MainPoster.Image
+                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                    ImageManip.SetGlassOverlay(Me.pbPoster)
+                    Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
+
+                    If Master.eSettings.ShowDims Then
+                        g = Graphics.FromImage(pbPoster.Image)
+                        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                        strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
+                        lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                        rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
+                        ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                        g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                    End If
+
+                    Me.pbPoster.Location = New Point(4, 4)
+                    Me.pnlPoster.Visible = True
+                Else
+                    If Not IsNothing(Me.pbPoster.Image) Then
+                        Me.pbPoster.Image.Dispose()
+                        Me.pbPoster.Image = Nothing
+                        Me.pnlPoster.Visible = False
+                    End If
                 End If
 
                 Me.InfoCleared = False
@@ -3564,6 +3790,10 @@ doCancel:
             Case Else
                 'nothing to do
         End Select
+
+        Me.pbActLoad.Visible = False
+        Me.pbActors.Image = My.Resources.actor_silhouette
+
         Me.pnlInfoPanel.ResumeLayout()
     End Sub
 
@@ -3877,9 +4107,7 @@ doCancel:
                 End If
                 Me.txtMetaData.Clear()
                 Me.pbMILoading.Visible = True
-            End If
 
-            If doMI Then
                 Me.bwMediaInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwMediaInfo.WorkerSupportsCancellation = True
                 Me.bwMediaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
@@ -3897,6 +4125,73 @@ doCancel:
 
     End Sub
 
+    Private Sub LoadShowInfo(ByVal ID As Integer)
+
+        Try
+            Me.ToolsToolStripMenuItem.Enabled = False
+            Me.tsbAutoPilot.Enabled = False
+            Me.tsbRefreshMedia.Enabled = False
+            Me.tabsMain.Enabled = False
+            Me.pnlNoInfo.Visible = False
+
+            If Me.bwDownloadPic.IsBusy Then
+                Me.bwDownloadPic.CancelAsync()
+                While Me.bwDownloadPic.IsBusy
+                    Application.DoEvents()
+                End While
+            End If
+
+            If Me.bwLoadShowInfo.IsBusy Then
+                Me.bwLoadShowInfo.CancelAsync()
+                While Me.bwLoadShowInfo.IsBusy
+                    Application.DoEvents()
+                End While
+            End If
+
+            Me.ClearInfo()
+            Me.bwLoadShowInfo = New System.ComponentModel.BackgroundWorker
+            Me.bwLoadShowInfo.WorkerSupportsCancellation = True
+            Me.bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub LoadEpisodeInfo(ByVal ID As Integer)
+
+        Try
+            Me.ToolsToolStripMenuItem.Enabled = False
+            Me.tsbAutoPilot.Enabled = False
+            Me.tsbRefreshMedia.Enabled = False
+            Me.tabsMain.Enabled = False
+            Me.pnlNoInfo.Visible = False
+
+            If Me.bwDownloadPic.IsBusy Then
+                Me.bwDownloadPic.CancelAsync()
+                While Me.bwDownloadPic.IsBusy
+                    Application.DoEvents()
+                End While
+            End If
+
+            If Me.bwLoadInfo.IsBusy Then
+                Me.bwLoadInfo.CancelAsync()
+                While Me.bwLoadInfo.IsBusy
+                    Application.DoEvents()
+                End While
+            End If
+
+            Me.ClearInfo()
+            Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
+            Me.bwLoadEpInfo.WorkerSupportsCancellation = True
+            Me.bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
     Public Sub ClearInfo()
 
         '//
@@ -3905,6 +4200,8 @@ doCancel:
         Try
             With Me
                 .InfoCleared = True
+
+                If .bwDownloadPic.IsBusy Then .bwDownloadPic.CancelAsync()
 
                 If Not IsNothing(.pbFanart.Image) Then
                     .pbFanart.Image.Dispose()
@@ -3986,11 +4283,7 @@ doCancel:
 
     End Sub
 
-    Private Sub fillScreenInfo()
-
-        '//
-        ' Get info from arralist (populated by bw) and parse to screen
-        '\\
+    Private Sub fillScreenInfoWithMovie()
 
         Try
             Me.SuspendLayout()
@@ -4027,10 +4320,7 @@ doCancel:
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As Media.Person In Master.currMovie.Movie.Actors
                     If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
-
-                        'Was it XBMC or MIP that set some of the actor thumbs to
-                        'the default "Add Pic" image??
-                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 Then
+                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 AndAlso Not Strings.InStr(imdbAct.Thumb.ToLower, "no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.Thumb)
                         Else
                             Me.alActors.Add("none")
@@ -4039,7 +4329,11 @@ doCancel:
                         Me.alActors.Add("none")
                     End If
 
-                    Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name, imdbAct.Role))
+                    If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
+                        Me.lstActors.Items.Add(imdbAct.Name.Trim)
+                    Else
+                        Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.Trim, imdbAct.Role.Trim))
+                    End If
                 Next
                 Me.lstActors.SelectedIndex = 0
             End If
@@ -4058,12 +4352,6 @@ doCancel:
             Dim tmpRating As Single = Master.ConvertToSingle(Master.currMovie.Movie.Rating)
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
-            Else
-                ''ToolTips.SetToolTip(pbStar1, "Rating: N/A")
-                ''ToolTips.SetToolTip(pbStar2, "Rating: N/A")
-                ''ToolTips.SetToolTip(pbStar3, "Rating: N/A")
-                ''ToolTips.SetToolTip(pbStar4, "Rating: N/A")
-                ''ToolTips.SetToolTip(pbStar5, "Rating: N/A")
             End If
 
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Genre) Then
@@ -4095,6 +4383,119 @@ doCancel:
             Me.txtCerts.Text = Master.currMovie.Movie.Certification
 
             Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo)
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Me.ResumeLayout()
+    End Sub
+
+    Private Sub fillScreenInfoWithShow()
+
+        Try
+            Me.SuspendLayout()
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then
+                Me.lblTitle.Text = Master.currShow.TVShow.Title
+            End If
+
+            Me.txtPlot.Text = Master.currShow.TVShow.Plot
+
+            Me.alActors = New List(Of String)
+
+            If Master.currShow.TVShow.Actors.Count > 0 Then
+                Me.pbActors.Image = My.Resources.actor_silhouette
+                For Each imdbAct As Media.Person In Master.currShow.TVShow.Actors
+                    If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
+                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 AndAlso Not Strings.InStr(imdbAct.Thumb.ToLower, "no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.Thumb)
+                        Else
+                            Me.alActors.Add("none")
+                        End If
+                    Else
+                        Me.alActors.Add("none")
+                    End If
+
+                    If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
+                        Me.lstActors.Items.Add(imdbAct.Name.Trim)
+                    Else
+                        Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.Trim, imdbAct.Role.Trim))
+                    End If
+                Next
+                Me.lstActors.SelectedIndex = 0
+            End If
+
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
+                Dim tmpRatingImg As Image = XML.GetRatingImage(Master.currShow.TVShow.MPAA)
+                If Not IsNothing(tmpRatingImg) Then
+                    Me.pbMPAA.Image = tmpRatingImg
+                    Me.MoveMPAA()
+                    Me.pnlMPAA.Visible = True
+                Else
+                    Me.pnlMPAA.Visible = False
+                End If
+            End If
+
+            Dim tmpRating As Single = Master.ConvertToSingle(Master.currShow.TVShow.Rating)
+            If tmpRating > 0 Then
+                Me.BuildStars(tmpRating)
+            End If
+
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Genre) Then
+                Me.createGenreThumbs(Master.currShow.TVShow.Genre)
+            End If
+
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
+                Me.pbStudio.Image = XML.GetStudioImage(Master.currShow.TVShow.Studio)
+            Else
+                Me.pbStudio.Image = XML.GetStudioImage("####")
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Me.ResumeLayout()
+    End Sub
+
+    Private Sub fillScreenInfoWithEpisode()
+
+        Try
+            Me.SuspendLayout()
+            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Title) Then
+                Me.lblTitle.Text = Master.currShow.TVEp.Title
+            End If
+
+            Me.txtPlot.Text = Master.currShow.TVEp.Plot
+
+            Me.alActors = New List(Of String)
+
+            If Master.currShow.TVEp.Actors.Count > 0 Then
+                Me.pbActors.Image = My.Resources.actor_silhouette
+                For Each imdbAct As Media.Person In Master.currShow.TVEp.Actors
+                    If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
+                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 AndAlso Not Strings.InStr(imdbAct.Thumb.ToLower, "no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.Thumb)
+                        Else
+                            Me.alActors.Add("none")
+                        End If
+                    Else
+                        Me.alActors.Add("none")
+                    End If
+
+                    If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
+                        Me.lstActors.Items.Add(imdbAct.Name.Trim)
+                    Else
+                        Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.Trim, imdbAct.Role.Trim))
+                    End If
+                Next
+                Me.lstActors.SelectedIndex = 0
+            End If
+
+            Me.pnlMPAA.Visible = False
+
+            Dim tmpRating As Single = Master.ConvertToSingle(Master.currShow.TVEp.Rating)
+            If tmpRating > 0 Then
+                Me.BuildStars(tmpRating)
+            End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4159,7 +4560,7 @@ doCancel:
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
                             .pbStar5.Image = My.Resources.starhalf
-                        Case Is <= 5
+                        Case Else
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
@@ -5462,7 +5863,14 @@ doCancel:
 
     Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
         If Me.dgvTVShows.SelectedRows.Count > 0 Then
-            Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
+            Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.SelectedRows(0).Cells(0).Value))
+            Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.SelectedRows(0).Cells(0).Value))
+        End If
+    End Sub
+
+    Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
+        If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
+            Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value))
         End If
     End Sub
 
@@ -5535,4 +5943,7 @@ doCancel:
             _genrepanelcolor = value
         End Set
     End Property
+
+
+
 End Class
