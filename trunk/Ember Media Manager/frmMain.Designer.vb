@@ -24,10 +24,10 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
@@ -303,6 +303,7 @@ Partial Class frmMain
         Me.tmrSearch = New System.Windows.Forms.Timer(Me.components)
         Me.tmrFilterAni = New System.Windows.Forms.Timer(Me.components)
         Me.ToolTips = New System.Windows.Forms.ToolTip(Me.components)
+        Me.DonateToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -487,7 +488,7 @@ Partial Class frmMain
         '
         'MenuStrip
         '
-        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem})
+        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem, Me.DonateToolStripMenuItem})
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.Name = "MenuStrip"
         Me.MenuStrip.Size = New System.Drawing.Size(1016, 24)
@@ -780,8 +781,8 @@ Partial Class frmMain
         Me.dgvMediaList.AllowUserToAddRows = False
         Me.dgvMediaList.AllowUserToDeleteRows = False
         Me.dgvMediaList.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvMediaList.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvMediaList.BackgroundColor = System.Drawing.Color.White
         Me.dgvMediaList.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvMediaList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1031,8 +1032,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1075,8 +1076,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -1100,8 +1101,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle7
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -2910,6 +2911,13 @@ Partial Class frmMain
         Me.ToolTips.InitialDelay = 500
         Me.ToolTips.ReshowDelay = 100
         '
+        'DonateToolStripMenuItem
+        '
+        Me.DonateToolStripMenuItem.Image = CType(resources.GetObject("DonateToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.DonateToolStripMenuItem.Name = "DonateToolStripMenuItem"
+        Me.DonateToolStripMenuItem.Size = New System.Drawing.Size(73, 20)
+        Me.DonateToolStripMenuItem.Text = "Donate"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -3280,4 +3288,5 @@ Partial Class frmMain
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents mnuMoviesUpdate As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuTVShowUpdate As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents DonateToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
