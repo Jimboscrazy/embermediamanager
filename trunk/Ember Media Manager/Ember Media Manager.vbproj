@@ -182,6 +182,7 @@
     <Compile Include="clsSorter.vb" />
     <Compile Include="clsScrapeTMDB.vb" />
     <Compile Include="clsStringManip.vb" />
+    <Compile Include="clsTheming.vb" />
     <Compile Include="clsTrailers.vb" />
     <Compile Include="clsUtility.vb" />
     <Compile Include="clsXML.vb" />

@@ -70,13 +70,15 @@ Public Class frmMain
     Private LoadingDone As Boolean = False
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
-    Private ThemeXML As New XDocument
-    Private PosterMaxHeight As Integer = 160
-    Private PosterMaxWidth As Integer = 160
-    Private GenrePanelColor As Color = Color.Gainsboro
-    Private IPUp As Integer = 500
-    Private IPMid As Integer = 280
     Private isCL As Boolean = False
+
+    Private _postermaxheight As Integer = 160
+    Private _postermaxwidth As Integer = 160
+    Private _genrepanelcolor As Color = Color.Gainsboro
+    Private _ipup As Integer = 500
+    Private _ipmid As Integer = 280
+    Private tTheme As New Theming
+
 
     'filters
     Private filSearch As String = String.Empty
@@ -533,12 +535,12 @@ Public Class frmMain
                         Me.btnMid.Enabled = True
                         Me.btnUp.Enabled = True
                     Case 1
-                        Me.pnlInfoPanel.Height = IPMid
+                        Me.pnlInfoPanel.Height = Me.IPMid
                         Me.btnMid.Enabled = False
                         Me.btnDown.Enabled = True
                         Me.btnUp.Enabled = True
                     Case 2
-                        Me.pnlInfoPanel.Height = IPUp
+                        Me.pnlInfoPanel.Height = Me.IPUp
                         Me.btnUp.Enabled = False
                         Me.btnDown.Enabled = True
                         Me.btnMid.Enabled = True
@@ -652,7 +654,7 @@ Public Class frmMain
         ' Begin animation to raise/lower panel to mid point
         '\\
 
-        If Me.pnlInfoPanel.Height = IPUp Then
+        If Me.pnlInfoPanel.Height = Me.IPUp Then
             Me.aniRaise = False
         Else
             Me.aniRaise = True
@@ -693,10 +695,10 @@ Public Class frmMain
                         Me.pnlInfoPanel.Height = 25
 
                     Case 1
-                        Me.pnlInfoPanel.Height = IPMid
+                        Me.pnlInfoPanel.Height = Me.IPMid
 
                     Case 2
-                        Me.pnlInfoPanel.Height = IPUp
+                        Me.pnlInfoPanel.Height = Me.IPUp
 
                 End Select
             End If
@@ -713,14 +715,14 @@ Public Class frmMain
                     Me.btnUp.Enabled = True
                 End If
             ElseIf Me.aniType = 1 Then
-                If Me.pnlInfoPanel.Height = IPMid Then
+                If Me.pnlInfoPanel.Height = Me.IPMid Then
                     Me.tmrAni.Stop()
                     Me.btnMid.Enabled = False
                     Me.btnDown.Enabled = True
                     Me.btnUp.Enabled = True
                 End If
             ElseIf Me.aniType = 2 Then
-                If Me.pnlInfoPanel.Height = IPUp Then
+                If Me.pnlInfoPanel.Height = Me.IPUp Then
                     Me.tmrAni.Stop()
                     Me.btnUp.Enabled = False
                     Me.btnDown.Enabled = True
@@ -2876,7 +2878,7 @@ Public Class frmMain
 
                 If Not IsNothing(Me.MainPoster.Image) Then
                     Me.pbPosterCache.Image = Me.MainPoster.Image
-                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, PosterMaxHeight, PosterMaxWidth)
+                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
                     ImageManip.SetGlassOverlay(Me.pbPoster)
                     Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
 
@@ -3530,128 +3532,47 @@ doCancel:
     ' ########################################
     ' ###### GENERAL ROUTINES/FUNCTIONS ######
     ' ########################################
+    Private Sub ApplyTheme(ByVal tType As Theming.ThemeType)
+        Me.pnlInfoPanel.SuspendLayout()
+        tTheme.ApplyTheme(tType)
 
-    Private Sub LoadTheme(ByVal tType As String)
-        Dim wModifier As Double = 1.0
-        Dim tPath As String = String.Concat(Master.AppPath, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, Master.eSettings.MovieTheme))
-        If File.Exists(tPath) Then
-
-            Me.MinimumSize = New Size(1024, 768)
-
-            'get width modifier - just a hack to get the controls to resize properly when switching themes
-            'TODO - Improve theme support to better handle window sizing. Ideas?
-            wModifier = Me.pnlInfoPanel.Width / 655
-
-            ThemeXML = XDocument.Load(tPath)
-            'top panel
-            Try
-                Dim xTop = From xTheme In ThemeXML...<theme>...<toppanel>
-                If xTop.Count > 0 Then
-                    If Not String.IsNullOrEmpty(xTop.<backcolor>.Value) Then Me.pnlTop.BackColor = Color.FromArgb(Convert.ToInt32(xTop.<backcolor>.Value))
-                    Me.pnlInfoIcons.BackColor = Me.pnlTop.BackColor
-                    Me.pnlRating.BackColor = Me.pnlTop.BackColor
-                    Me.pbVideo.BackColor = Me.pnlTop.BackColor
-                    Me.pbResolution.BackColor = Me.pnlTop.BackColor
-                    Me.pbAudio.BackColor = Me.pnlTop.BackColor
-                    Me.pbChannels.BackColor = Me.pnlTop.BackColor
-                    Me.pbStudio.BackColor = Me.pnlTop.BackColor
-                    Me.pbStar1.BackColor = Me.pnlTop.BackColor
-                    Me.pbStar2.BackColor = Me.pnlTop.BackColor
-                    Me.pbStar3.BackColor = Me.pnlTop.BackColor
-                    Me.pbStar4.BackColor = Me.pnlTop.BackColor
-                    Me.pbStar5.BackColor = Me.pnlTop.BackColor
-
-                    If Not String.IsNullOrEmpty(xTop.<forecolor>.Value) Then Me.lblTitle.ForeColor = Color.FromArgb(Convert.ToInt32(xTop.<forecolor>.Value))
-                    Me.lblVotes.ForeColor = Me.lblTitle.ForeColor
-                    Me.lblRuntime.ForeColor = Me.lblTitle.ForeColor
-                    Me.lblTagline.ForeColor = Me.lblTitle.ForeColor
+        Select Case aniType
+            Case 1
+                If Me.btnMid.Visible Then
+                    Me.pnlInfoPanel.Height = Me._ipmid
+                ElseIf Me.btnUp.Visible Then
+                    Me.pnlInfoPanel.Height = Me._ipup
+                    Me.aniType = 2
+                    Me.btnUp.Enabled = False
+                Else
+                    Me.pnlInfoPanel.Height = 25
+                    Me.aniType = 0
                 End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-
-            'images
-            Try
-                Dim xImages = From xTheme In ThemeXML...<theme>...<images>
-                If xImages.Count > 0 Then
-                    If Not String.IsNullOrEmpty(xImages.<fanartbackcolor>.Value) Then Me.scMain.Panel2.BackColor = Color.FromArgb(Convert.ToInt32(xImages.<fanartbackcolor>.Value))
-                    Me.pbFanart.BackColor = Me.scMain.Panel2.BackColor
-                    If Not String.IsNullOrEmpty(xImages.<posterbackcolor>.Value) Then Me.pbPoster.BackColor = Color.FromArgb(Convert.ToInt32(xImages.<posterbackcolor>.Value))
-                    If Not String.IsNullOrEmpty(xImages.<postermaxheight>.Value) Then Me.PosterMaxHeight = Convert.ToInt32(xImages.<postermaxheight>.Value)
-                    If Not String.IsNullOrEmpty(xImages.<postermaxwidth>.Value) Then Me.PosterMaxWidth = Convert.ToInt32(xImages.<postermaxwidth>.Value)
-                    If Not String.IsNullOrEmpty(xImages.<mpaabackcolor>.Value) Then Me.pnlMPAA.BackColor = Color.FromArgb(Convert.ToInt32(xImages.<mpaabackcolor>.Value))
-                    Me.pbMPAA.BackColor = Me.pnlMPAA.BackColor
-                    If Not String.IsNullOrEmpty(xImages.<genrebackcolor>.Value) Then Me.GenrePanelColor = Color.FromArgb(Convert.ToInt32(xImages.<genrebackcolor>.Value))
+            Case 2
+                If Me.btnUp.Visible Then
+                    Me.pnlInfoPanel.Height = Me._ipup
+                    Me.btnUp.Enabled = False
+                    Me.btnMid.Enabled = True
+                ElseIf Me.btnMid.Visible Then
+                    Me.pnlInfoPanel.Height = Me._ipmid
+                    Me.aniType = 1
+                    Me.btnMid.Enabled = False
+                Else
+                    Me.pnlInfoPanel.Height = 25
+                    Me.aniType = 0
                 End If
-            Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            End Try
-
-            'info panel
-            SetIPTheme(pnlInfoPanel, wModifier)
-        End If
-    End Sub
-
-    Private Sub SetIPTheme(ByVal cControl As Control, ByVal wModifier As Double)
-        Try
-            Dim ControlName As String
-
-            Dim cFont As String = "Microsoft Sans Serif"
-            Dim cFontSize As Integer = 8
-            Dim cFontStyle As FontStyle = FontStyle.Bold
-
-            'info panel
-            Dim xIPMain = From xTheme In ThemeXML...<theme>...<infopanel> Select xTheme.<backcolor>.Value, xTheme.<ipup>.Value, xTheme.<ipmid>.Value
-            If xIPMain.Count > 0 Then
-                If Not String.IsNullOrEmpty(xIPMain(0).backcolor) Then Me.pnlInfoPanel.BackColor = Color.FromArgb(Convert.ToInt32(xIPMain(0).backcolor))
-                If Not String.IsNullOrEmpty(xIPMain(0).ipup) Then Me.IPUp = Convert.ToInt32(xIPMain(0).ipup)
-                If Not String.IsNullOrEmpty(xIPMain(0).ipmid) Then Me.IPMid = Convert.ToInt32(xIPMain(0).ipmid)
-            End If
-
-            For Each xControl As Control In cControl.Controls
-                Try
-                    ControlName = xControl.Name
-                    Dim xIP = From xTheme In ThemeXML...<theme>...<infopanel>...<object> Where ControlName = xTheme.@name
-                    If xIP.Count > 0 Then
-                        If Not String.IsNullOrEmpty(xIP.<width>.Value) Then
-                            If Convert.ToInt32(xIP.<width>.Value) = -1 Then
-                                xControl.Visible = False
-                                Continue For
-                            Else
-                                xControl.Visible = True
-                                xControl.Width = Convert.ToInt32(Convert.ToInt32(xIP.<width>.Value) * wModifier)
-                            End If
-                        End If
-                        If Not String.IsNullOrEmpty(xIP.<height>.Value) Then xControl.Height = Convert.ToInt32(xIP.<height>.Value)
-                        If Not String.IsNullOrEmpty(xIP.<left>.Value) Then xControl.Left = Convert.ToInt32(Convert.ToInt32(xIP.<left>.Value) * wModifier)
-                        If Not String.IsNullOrEmpty(xIP.<top>.Value) Then xControl.Top = Convert.ToInt32(xIP.<top>.Value)
-                        If Not String.IsNullOrEmpty(xIP.<backcolor>.Value) Then xControl.BackColor = Color.FromArgb(Convert.ToInt32(xIP.<backcolor>.Value))
-                        If Not String.IsNullOrEmpty(xIP.<forecolor>.Value) Then xControl.ForeColor = Color.FromArgb(Convert.ToInt32(xIP.<forecolor>.Value))
-                        If Not String.IsNullOrEmpty(xIP.<anchor>.Value) Then xControl.Anchor = DirectCast(Convert.ToInt32(xIP.<anchor>.Value), AnchorStyles)
-
-                        cFont = "Microsoft Sans Serif"
-                        cFontSize = 8
-                        cFontStyle = FontStyle.Regular
-
-                        If Not String.IsNullOrEmpty(xIP.<font>.Value) Then cFont = xIP.<font>.Value
-                        If Not String.IsNullOrEmpty(xIP.<fontsize>.Value) Then cFontSize = Convert.ToInt32(xIP.<fontsize>.Value)
-                        If Not String.IsNullOrEmpty(xIP.<fontstyle>.Value) Then cFontStyle = DirectCast(Convert.ToInt32(xIP.<fontstyle>.Value), FontStyle)
-                        xControl.Font = New Font(cFont, cFontSize, cFontStyle)
-                    End If
-                    If xControl.HasChildren Then SetIPTheme(xControl, wModifier)
-                Catch ex As Exception
-                    Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                End Try
-            Next
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+            Case Else
+                'nothing to do
+        End Select
+        Me.pnlInfoPanel.ResumeLayout()
     End Sub
 
     Private Sub SetUp(ByVal doTheme As Boolean)
 
         Try
             With Me
+                .MinimumSize = New Size(1024, 768)
+
                 .btnSortDate.Tag = String.Empty
                 .pnlFilterGenre.Tag = String.Empty
                 .pnlFilterSource.Tag = String.Empty
@@ -3845,7 +3766,7 @@ doCancel:
                 .cbSearch.Items.Clear()
                 .cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(21, "Title"), Master.eLang.GetString(100, "Actor"), Master.eLang.GetString(62, "Director")})
 
-                If doTheme Then .LoadTheme("movie")
+                If doTheme Then .ApplyTheme(Theming.ThemeType.Movies)
 
             End With
         Catch ex As Exception
@@ -5555,18 +5476,63 @@ doCancel:
         Select Case tabsMain.SelectedIndex
             Case 0
                 Me.ClearInfo()
-                Me.LoadTheme("movie")
+                Me.ApplyTheme(Theming.ThemeType.Movies)
                 If Me.dgvMediaList.RowCount > 0 Then
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                 End If
             Case 1
                 Me.ClearInfo()
-                Me.LoadTheme("tvshow")
+                Me.ApplyTheme(Theming.ThemeType.Show)
                 If Me.dgvTVShows.RowCount > 0 Then
                     Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                 End If
         End Select
     End Sub
+
+    Public Property PosterMaxWidth() As Integer
+        Get
+            Return _postermaxwidth
+        End Get
+        Set(ByVal value As Integer)
+            _postermaxwidth = value
+        End Set
+    End Property
+
+    Public Property PosterMaxHeight() As Integer
+        Get
+            Return _postermaxheight
+        End Get
+        Set(ByVal value As Integer)
+            _postermaxheight = value
+        End Set
+    End Property
+
+    Public Property IPUp() As Integer
+        Get
+            Return _ipup
+        End Get
+        Set(ByVal value As Integer)
+            _ipup = value
+        End Set
+    End Property
+
+    Public Property IPMid() As Integer
+        Get
+            Return _ipmid
+        End Get
+        Set(ByVal value As Integer)
+            _ipmid = value
+        End Set
+    End Property
+
+    Public Property GenrePanelColor() As Color
+        Get
+            Return _genrepanelcolor
+        End Get
+        Set(ByVal value As Color)
+            _genrepanelcolor = value
+        End Set
+    End Property
 End Class
