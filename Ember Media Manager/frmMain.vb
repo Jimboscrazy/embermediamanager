@@ -5944,6 +5944,7 @@ doCancel:
         End Set
     End Property
 
-
-
+    Private Sub DonateToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DonateToolStripMenuItem.Click
+        Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11135532")
+    End Sub
 End Class
