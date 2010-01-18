@@ -37,6 +37,7 @@ Public Class Master
     Public Shared DB As New Database
     Public Shared TempPath As String = Path.Combine(AppPath, "Temp")
     Public Shared currMovie As New DBMovie
+    Public Shared currShow As New DBTV
     Public Shared CanScanDiscImage As Boolean
     Public Shared SourcesList As New List(Of String)
     Public Shared tmpMovie As New Media.Movie
@@ -137,29 +138,6 @@ Public Class Master
         Dim FileSource As String
     End Structure
 
-    Public Shared Sub ClearDBMovie(ByRef _DBMovie As DBMovie)
-        _DBMovie.ID = -1
-        _DBMovie.ListTitle = String.Empty
-        _DBMovie.Movie = New Media.Movie
-        _DBMovie.IsNew = False
-        _DBMovie.IsMark = False
-        _DBMovie.IsLock = False
-        _DBMovie.NeedsSave = False
-        _DBMovie.UseFolder = True
-        _DBMovie.Filename = String.Empty
-        _DBMovie.isSingle = True
-        _DBMovie.PosterPath = String.Empty
-        _DBMovie.FanartPath = String.Empty
-        _DBMovie.NfoPath = String.Empty
-        _DBMovie.TrailerPath = String.Empty
-        _DBMovie.SubPath = String.Empty
-        _DBMovie.ExtraPath = String.Empty
-        _DBMovie.Source = String.Empty
-        _DBMovie.OutOfTolerance = False
-        _DBMovie.ClearExtras = False
-        _DBMovie.FileSource = String.Empty
-    End Sub
-
     Public Structure DBTV
         Dim ShowID As Long
         Dim EpID As Long
@@ -183,30 +161,6 @@ Public Class Master
         Dim ShowPath As String
         Dim SeasonPosterPath As String
     End Structure
-
-    Public Shared Sub ClearDBTV(ByRef _DBTV As DBTV)
-        _DBTV.ShowID = -1
-        _DBTV.EpID = -1
-        _DBTV.TVShow = New Media.TVShow
-        _DBTV.TVEp = New Media.EpisodeDetails
-        _DBTV.IsNewShow = False
-        _DBTV.IsMarkShow = False
-        _DBTV.IsLockShow = False
-        _DBTV.IsNewEp = False
-        _DBTV.IsMarkEp = False
-        _DBTV.IsLockEp = False
-        _DBTV.ShowNeedsSave = False
-        _DBTV.EpNeedsSave = False
-        _DBTV.Filename = String.Empty
-        _DBTV.ShowPosterPath = String.Empty
-        _DBTV.ShowFanartPath = String.Empty
-        _DBTV.ShowNfoPath = String.Empty
-        _DBTV.EpPosterPath = String.Empty
-        _DBTV.EpNfoPath = String.Empty
-        _DBTV.Source = String.Empty
-        _DBTV.ShowPath = String.Empty
-        _DBTV.SeasonPosterPath = String.Empty
-    End Sub
 
     Public Structure ScrapeOptions
         Dim bTitle As Boolean
