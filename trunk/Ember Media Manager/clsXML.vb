@@ -37,7 +37,7 @@ Public Class XML
     Public Shared RatingXML As New XDocument
     Public Shared LanguageXML As New XDocument
 
-    Public Shared Sub GetAVImages(ByVal AVMovie As Master.DBMovie)
+    Public Shared Sub GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String)
 
         '//
         ' Parse the Flags XML and set the proper images
@@ -46,7 +46,6 @@ Public Class XML
         If FlagsXML.Nodes.Count > 0 Then
             Dim mePath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Flags")
             Try
-                Dim fiAV As MediaInfo.Fileinfo = AVMovie.Movie.FileInfo
                 Dim atypeRef As String = String.Empty
                 Dim vresImage As String = String.Empty
                 Dim vsourceImage As String = String.Empty
@@ -57,10 +56,10 @@ Public Class XML
                 Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV)
                 Dim sourceCheck As String = String.Empty
 
-                If Directory.GetParent(AVMovie.Filename).Name.ToLower = "video_ts" Then
-                    sourceCheck = Directory.GetParent(Directory.GetParent(AVMovie.Filename).FullName).Name.ToLower
+                If Directory.GetParent(fName).Name.ToLower = "video_ts" Then
+                    sourceCheck = Directory.GetParent(Directory.GetParent(fName).FullName).Name.ToLower
                 Else
-                    sourceCheck = String.Concat(Directory.GetParent(AVMovie.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.Filename).ToLower)
+                    sourceCheck = String.Concat(Directory.GetParent(fName).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(fName).ToLower)
                 End If
 
                 'video resolution

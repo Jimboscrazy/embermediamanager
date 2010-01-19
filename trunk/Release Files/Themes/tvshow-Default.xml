@@ -119,6 +119,18 @@ fontstyle code 5.
       <visible>false</visible>
     </object>
     
+    <object name="lblFilePathHeader">
+      <visible>false</visible>
+    </object>
+    
+    <object name="txtFilePath">
+      <visible>false</visible>
+    </object>
+    
+    <object name="btnPlay">
+      <visible>false</visible>
+    </object>
+
     <object name="lblMetaDataHeader">
       <width>237</width>
       <height>17</height>
@@ -226,7 +238,7 @@ fontstyle code 5.
     
     <object name="txtPlot">
       <width>lblPlotheader.Width</width>
-      <height>184</height>
+      <height>229</height>
       <left>3</left>
       <top>50</top>
       <backcolor>-2302756</backcolor>
@@ -237,39 +249,6 @@ fontstyle code 5.
       <fontstyle>0</fontstyle>
     </object>
     
-    <object name="lblFilePathHeader">
-      <width>lblPlotHeader.Width</width>
-      <height>17</height>
-      <left>3</left>
-      <top>240</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
-    </object>
-    
-    <object name="txtFilePath">
-      <width>lblPlotHeader.Width - 23</width>
-      <height>20</height>
-      <left>3</left>
-      <top>261</top>
-      <backcolor>-1</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>13</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
-    </object>
-    
-    <object name="btnPlay">
-      <width>20</width>
-      <height>20</height>
-      <left>txtFilePath.Left + txtFilePath.Width + 3</left>
-      <top>261</top>
-      <anchor>9</anchor>
-    </object>
 
   </infopanel>
 </theme>
