@@ -409,19 +409,24 @@ Public Class Master
             Dim updateXML As String = sHTTP.DownloadData("http://www.embermm.com/Updates/Update.xml")
             sHTTP = Nothing
 
-            Dim xmlUpdate As XDocument
-            Try
-                xmlUpdate = XDocument.Parse(updateXML)
-            Catch
-                Return 0
-            End Try
+            If updateXML.Length > 0 Then
+                Dim xmlUpdate As XDocument
+                Try
+                    xmlUpdate = XDocument.Parse(updateXML)
+                Catch
+                    Return 0
+                End Try
 
-            Dim xUdpate = From xUp In xmlUpdate...<version> Select xUp.@current
-            If xUdpate.Count > 0 Then
-                Return Convert.ToInt32(xUdpate(0))
+                Dim xUdpate = From xUp In xmlUpdate...<version> Select xUp.@current
+                If xUdpate.Count > 0 Then
+                    Return Convert.ToInt32(xUdpate(0))
+                Else
+                    Return 0
+                End If
             Else
                 Return 0
             End If
+
         Catch ex As Exception
             eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             Return 0

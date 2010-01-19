@@ -63,8 +63,6 @@ Public Class frmMain
     Private dtShows As New DataTable
     Private dtSeasons As New DataTable
     Private dtEpisodes As New DataTable
-    Private currRow As Integer = -1
-    Private prevRow As Integer = -1
     Private currText As String = String.Empty
     Private prevText As String = String.Empty
     Private FilterArray As New List(Of String)
@@ -74,13 +72,24 @@ Public Class frmMain
     Private InfoCleared As Boolean = False
     Private isCL As Boolean = False
 
+    'Loading Delays
+    Private currRow As Integer = -1
+    Private prevRow As Integer = -1
+    Private currShowRow As Integer = -1
+    Private prevShowRow As Integer = -1
+    Private currSeasonRow As Integer = -1
+    Private prevSeasonRow As Integer = -1
+    Private currEpRow As Integer = -1
+    Private prevEpRow As Integer = -1
+
+    'Theme Information
     Private _postermaxheight As Integer = 160
     Private _postermaxwidth As Integer = 160
     Private _genrepanelcolor As Color = Color.Gainsboro
     Private _ipup As Integer = 500
     Private _ipmid As Integer = 280
     Private tTheme As New Theming
-
+    Private currThemeType As Theming.ThemeType
 
     'filters
     Private filSearch As String = String.Empty
@@ -740,13 +749,20 @@ Public Class frmMain
     End Sub
 
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
+        Me.tmrWaitShow.Enabled = False
+        Me.tmrWaitSeason.Enabled = False
+        Me.tmrWaitEp.Enabled = False
+        Me.tmrLoadShow.Enabled = False
+        Me.tmrLoadSeason.Enabled = False
+        Me.tmrLoadEp.Enabled = False
+
         If Me.dgvMediaList.SelectedRows.Count > 0 Then
             If Me.dgvMediaList.RowCount > 0 Then
-                Me.tmpTitle = Me.dgvMediaList.Item(15, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+                Me.tmpTitle = Me.dgvMediaList.SelectedRows(0).Cells(15).Value.ToString
                 If Me.dgvMediaList.SelectedRows.Count > 1 Then
                     Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
                 ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+                    Me.tslStatus.Text = Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString
                 End If
             End If
 
@@ -756,11 +772,81 @@ Public Class frmMain
             Me.tmrWait.Enabled = True
         End If
     End Sub
-    Private Sub dgvMediaList_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellDoubleClick
 
-        '//
-        ' Show the NFO Editor
-        '\\
+    Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
+        Me.tmrWait.Enabled = False
+        Me.tmrWaitSeason.Enabled = False
+        Me.tmrWaitEp.Enabled = False
+        Me.tmrLoad.Enabled = False
+        Me.tmrLoadSeason.Enabled = False
+        Me.tmrLoadEp.Enabled = False
+
+        If Me.dgvTVShows.SelectedRows.Count > 0 Then
+            If Me.dgvTVShows.RowCount > 0 Then
+                If Me.dgvTVShows.SelectedRows.Count > 1 Then
+                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count)
+                ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
+                    Me.tslStatus.Text = Me.dgvTVShows.SelectedRows(0).Cells(1).Value.ToString
+                End If
+            End If
+
+            Me.currShowRow = e.RowIndex
+            Me.tmrWaitShow.Enabled = False
+            Me.tmrLoadShow.Enabled = False
+            Me.tmrWaitShow.Enabled = True
+        End If
+    End Sub
+
+    Private Sub dgvTVSeasons_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellClick
+        Me.tmrWaitShow.Enabled = False
+        Me.tmrWait.Enabled = False
+        Me.tmrWaitEp.Enabled = False
+        Me.tmrLoadShow.Enabled = False
+        Me.tmrLoad.Enabled = False
+        Me.tmrLoadEp.Enabled = False
+
+        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+            If Me.dgvTVSeasons.RowCount > 0 Then
+                If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
+                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count)
+                ElseIf Me.dgvTVSeasons.SelectedRows.Count = 1 Then
+                    Me.tslStatus.Text = Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value.ToString
+                End If
+            End If
+
+            Me.currSeasonRow = e.RowIndex
+            Me.tmrWaitSeason.Enabled = False
+            Me.tmrLoadSeason.Enabled = False
+            Me.tmrWaitSeason.Enabled = True
+        End If
+    End Sub
+
+    Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
+        Me.tmrWaitShow.Enabled = False
+        Me.tmrWaitSeason.Enabled = False
+        Me.tmrWait.Enabled = False
+        Me.tmrLoadShow.Enabled = False
+        Me.tmrLoadSeason.Enabled = False
+        Me.tmrLoad.Enabled = False
+
+
+        If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
+            If Me.dgvTVEpisodes.RowCount > 0 Then
+                If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count)
+                ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
+                    Me.tslStatus.Text = Me.dgvTVEpisodes.SelectedRows(0).Cells(2).Value.ToString
+                End If
+            End If
+
+            Me.currEpRow = e.RowIndex
+            Me.tmrWaitEp.Enabled = False
+            Me.tmrLoadEp.Enabled = False
+            Me.tmrWaitEp.Enabled = True
+        End If
+    End Sub
+
+    Private Sub dgvMediaList_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellDoubleClick
 
         Try
 
@@ -794,13 +880,36 @@ Public Class frmMain
 
     Private Sub dgvMediaList_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMediaList.Sorted
 
-        '//
-        ' Select first item in the media list after sort
-        '\\
-
         If Me.dgvMediaList.RowCount > 0 Then
             Me.dgvMediaList.Rows(0).Selected = True
             Me.dgvMediaList.CurrentCell = Me.dgvMediaList.Rows(0).Cells(3)
+        End If
+
+    End Sub
+
+    Private Sub dgvTVShows_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVShows.Sorted
+
+        If Me.dgvTVShows.RowCount > 0 Then
+            Me.dgvTVShows.Rows(0).Selected = True
+            Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Rows(0).Cells(1)
+        End If
+
+    End Sub
+
+    Private Sub dgvTVSeasons_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Sorted
+
+        If Me.dgvTVSeasons.RowCount > 0 Then
+            Me.dgvTVSeasons.Rows(0).Selected = True
+            Me.dgvTVSeasons.CurrentCell = Me.dgvTVSeasons.Rows(0).Cells(2)
+        End If
+
+    End Sub
+
+    Private Sub dgvTVEpisodes_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVEpisodes.Sorted
+
+        If Me.dgvTVEpisodes.RowCount > 0 Then
+            Me.dgvTVEpisodes.Rows(0).Selected = True
+            Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Rows(0).Cells(2)
         End If
 
     End Sub
@@ -948,10 +1057,6 @@ Public Class frmMain
 
     Private Sub dgvMediaList_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMediaList.CellPainting
 
-        '//
-        ' Add icons to media list column headers
-        '\\
-
         Try
             'icons
             If e.ColumnIndex >= 4 AndAlso e.ColumnIndex <= 9 AndAlso e.RowIndex = -1 Then
@@ -1005,18 +1110,155 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub dgvMediaList_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellEnter
-
-        '//
-        ' Load media information for the selected item
-        '\\
+    Private Sub dgvTVShows_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVShows.CellPainting
 
         Try
+            'icons
+            If e.ColumnIndex >= 2 AndAlso e.ColumnIndex <= 4 AndAlso e.RowIndex = -1 Then
+                e.PaintBackground(e.ClipBounds, False)
+
+                Dim pt As Point = e.CellBounds.Location
+                Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                pt.X += offset
+                pt.Y = 1
+                Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 2)
+
+                e.Handled = True
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub dgvTVSeasons_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVSeasons.CellPainting
+
+        Try
+            'icons
+            If e.ColumnIndex = 4 AndAlso e.RowIndex = -1 Then
+                e.PaintBackground(e.ClipBounds, False)
+
+                Dim pt As Point = e.CellBounds.Location
+                Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                pt.X += offset
+                pt.Y = 1
+                Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 4)
+
+                e.Handled = True
+
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub dgvTVEpisodes_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvTVEpisodes.CellPainting
+
+        Try
+            'icons
+            If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex = -1 Then
+                e.PaintBackground(e.ClipBounds, False)
+
+                Dim pt As Point = e.CellBounds.Location
+                Dim offset As Integer = Convert.ToInt32((e.CellBounds.Width - Me.ilColumnIcons.ImageSize.Width) / 2)
+
+                pt.X += offset
+                pt.Y = 1
+
+                If e.ColumnIndex = 3 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 3)
+                ElseIf e.ColumnIndex = 4 Then
+                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 2)
+                End If
+
+                e.Handled = True
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub dgvMediaList_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellEnter
+
+        Try
+            Me.tmrWaitShow.Enabled = False
+            Me.tmrWaitSeason.Enabled = False
+            Me.tmrWaitEp.Enabled = False
+            Me.tmrLoadShow.Enabled = False
+            Me.tmrLoadSeason.Enabled = False
+            Me.tmrLoadEp.Enabled = False
 
             Me.currRow = e.RowIndex
             Me.tmrWait.Enabled = False
             Me.tmrLoad.Enabled = False
             Me.tmrWait.Enabled = True
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub dgvTVShow_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
+
+        Try
+            If Me.dgvTVShows.Enabled Then
+                Me.tmrWait.Enabled = False
+                Me.tmrWaitSeason.Enabled = False
+                Me.tmrWaitEp.Enabled = False
+                Me.tmrLoad.Enabled = False
+                Me.tmrLoadSeason.Enabled = False
+                Me.tmrLoadEp.Enabled = False
+
+
+                Me.currShowRow = e.RowIndex
+                Me.tmrWaitShow.Enabled = False
+                Me.tmrLoadShow.Enabled = False
+                Me.tmrWaitShow.Enabled = True
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub dgvTVSeasons_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellEnter
+
+        Try
+            Me.tmrWaitShow.Enabled = False
+            Me.tmrWait.Enabled = False
+            Me.tmrWaitEp.Enabled = False
+            Me.tmrLoadShow.Enabled = False
+            Me.tmrLoad.Enabled = False
+            Me.tmrLoadEp.Enabled = False
+
+
+            Me.currSeasonRow = e.RowIndex
+            Me.tmrWaitSeason.Enabled = False
+            Me.tmrLoadSeason.Enabled = False
+            Me.tmrWaitSeason.Enabled = True
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub dgvTVEpisodes_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellEnter
+
+        Try
+            Me.tmrWaitShow.Enabled = False
+            Me.tmrWaitSeason.Enabled = False
+            Me.tmrWait.Enabled = False
+            Me.tmrLoadShow.Enabled = False
+            Me.tmrLoadSeason.Enabled = False
+            Me.tmrLoad.Enabled = False
+
+
+            Me.currEpRow = e.RowIndex
+            Me.tmrWaitEp.Enabled = False
+            Me.tmrLoadEp.Enabled = False
+            Me.tmrWaitEp.Enabled = True
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1041,10 +1283,106 @@ Public Class frmMain
                 If Me.dgvMediaList.SelectedRows.Count > 1 Then
                     Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
                 ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvMediaList.Item(1, Me.dgvMediaList.SelectedRows(0).Index).Value.ToString
+                    Me.tslStatus.Text = Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString
                 End If
 
                 Me.SelectRow(Me.dgvMediaList.SelectedRows(0).Index)
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub tmrWaitShow_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWaitShow.Tick
+        Me.tmrLoadSeason.Enabled = False
+        Me.tmrLoadEp.Enabled = False
+        Me.tmrWaitSeason.Enabled = False
+        Me.tmrWaitEp.Enabled = False
+
+        If Me.prevShowRow = Me.currShowRow Then
+            Me.tmrLoadShow.Enabled = True
+        Else
+            Me.prevShowRow = Me.currShowRow
+            Me.tmrLoadShow.Enabled = False
+        End If
+    End Sub
+
+    Private Sub tmrLoadShow_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadShow.Tick
+        Me.tmrWaitShow.Enabled = False
+        Me.tmrLoadShow.Enabled = False
+        Try
+            If Me.dgvTVShows.SelectedRows.Count > 0 Then
+
+                If Me.dgvTVShows.SelectedRows.Count > 1 Then
+                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count)
+                ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
+                    Me.tslStatus.Text = Me.dgvTVShows.SelectedRows(0).Cells(1).Value.ToString
+                End If
+
+                Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub tmrWaitSeason_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWaitSeason.Tick
+        Me.tmrLoadShow.Enabled = False
+        Me.tmrLoadEp.Enabled = False
+        Me.tmrWaitShow.Enabled = False
+        Me.tmrWaitEp.Enabled = False
+
+        If Me.prevSeasonRow = Me.currSeasonRow Then
+            Me.tmrLoadSeason.Enabled = True
+        Else
+            Me.prevSeasonRow = Me.currSeasonRow
+            Me.tmrLoadSeason.Enabled = False
+        End If
+    End Sub
+
+    Private Sub tmrLoadSeason_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadSeason.Tick
+        Me.tmrWaitSeason.Enabled = False
+        Me.tmrLoadSeason.Enabled = False
+        Try
+            If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+
+                If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
+                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count)
+                ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
+                    Me.tslStatus.Text = Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value.ToString
+                End If
+
+                Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
+            End If
+        Catch
+        End Try
+    End Sub
+
+    Private Sub tmrWaitEp_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWaitEp.Tick
+        Me.tmrLoadSeason.Enabled = False
+        Me.tmrLoadShow.Enabled = False
+        Me.tmrWaitSeason.Enabled = False
+        Me.tmrWaitShow.Enabled = False
+
+        If Me.prevEpRow = Me.currEpRow Then
+            Me.tmrLoadEp.Enabled = True
+        Else
+            Me.prevEpRow = Me.currEpRow
+            Me.tmrLoadEp.Enabled = False
+        End If
+    End Sub
+
+    Private Sub tmrLoadEp_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoadEp.Tick
+        Me.tmrWaitEp.Enabled = False
+        Me.tmrLoadEp.Enabled = False
+        Try
+            If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
+
+                If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
+                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count)
+                ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
+                    Me.tslStatus.Text = Me.dgvTVEpisodes.SelectedRows(0).Cells(2).Value.ToString
+                End If
+
+                Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
             End If
         Catch
         End Try
@@ -1330,6 +1668,60 @@ Public Class frmMain
 
                 End Using
 
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
+
+        Try
+            If Not StringManip.AlphaNumericOnly(e.KeyChar) Then
+                For Each drvRow As DataGridViewRow In Me.dgvTVShows.Rows
+                    If drvRow.Cells(1).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
+                        drvRow.Selected = True
+                        Me.dgvTVShows.CurrentCell = drvRow.Cells(1)
+                        Exit For
+                    End If
+                Next
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub dgvTVSeasons_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVSeasons.KeyPress
+
+        Try
+            If Not StringManip.AlphaNumericOnly(e.KeyChar) Then
+                For Each drvRow As DataGridViewRow In Me.dgvTVSeasons.Rows
+                    If drvRow.Cells(4).Value.ToString = e.KeyChar.ToString Then
+                        drvRow.Selected = True
+                        Me.dgvTVSeasons.CurrentCell = drvRow.Cells(3)
+                        Exit For
+                    End If
+                Next
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub dgvTVEpisodes_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVEpisodes.KeyPress
+
+        Try
+            If Not StringManip.AlphaNumericOnly(e.KeyChar) Then
+                For Each drvRow As DataGridViewRow In Me.dgvTVEpisodes.Rows
+                    If drvRow.Cells(2).Value.ToString.ToLower.StartsWith(e.KeyChar.ToString.ToLower) Then
+                        drvRow.Selected = True
+                        Me.dgvTVEpisodes.CurrentCell = drvRow.Cells(2)
+                        Exit For
+                    End If
+                Next
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -2566,6 +2958,20 @@ Public Class frmMain
         e.Handled = e.KeyCode = Keys.Enter
     End Sub
 
+    Private Sub dgvTVShows_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvTVShows.KeyDown
+        'stop enter key from selecting next list item
+        e.Handled = e.KeyCode = Keys.Enter
+    End Sub
+
+    Private Sub dgvTVSeasons_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvTVSeasons.KeyDown
+        'stop enter key from selecting next list item
+        e.Handled = e.KeyCode = Keys.Enter
+    End Sub
+
+    Private Sub dgvTVEpisodes_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvTVEpisodes.KeyDown
+        'stop enter key from selecting next list item
+        e.Handled = e.KeyCode = Keys.Enter
+    End Sub
 
     Private Sub cmnuRenameAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenameAuto.Click
 
@@ -2713,7 +3119,7 @@ Public Class frmMain
                     Me.pbMILoading.Visible = False
                     Me.txtMetaData.Text = Res.fileInfo
                     If Master.eSettings.ScanMediaInfo Then
-                        XML.GetAVImages(Res.Movie)
+                        XML.GetAVImages(Res.Movie.Movie.FileInfo, Res.Movie.Filename)
                         Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                         Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
                     Else
@@ -3760,6 +4166,9 @@ doCancel:
     ' ########################################
     Private Sub ApplyTheme(ByVal tType As Theming.ThemeType)
         Me.pnlInfoPanel.SuspendLayout()
+
+        Me.currThemeType = tType
+
         tTheme.ApplyTheme(tType)
 
         Select Case aniType
@@ -3869,7 +4278,6 @@ doCancel:
                 .lblFilter.Text = Master.eLang.GetString(52, "Filters")
                 .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
                 .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-                .Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
                 .lblCertsHeader.Text = Master.eLang.GetString(56, "Certification(s)")
                 .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
                 .btnMetaDataRefresh.Text = Master.eLang.GetString(58, "Refresh")
@@ -4082,7 +4490,7 @@ doCancel:
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.tabsMain.Enabled = False
-            Me.pnlNoInfo.Visible = False
+            Me.ShowNoInfo(False)
 
             If Me.bwDownloadPic.IsBusy Then
                 Me.bwDownloadPic.CancelAsync()
@@ -4132,7 +4540,7 @@ doCancel:
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.tabsMain.Enabled = False
-            Me.pnlNoInfo.Visible = False
+            Me.ShowNoInfo(False)
 
             If Me.bwDownloadPic.IsBusy Then
                 Me.bwDownloadPic.CancelAsync()
@@ -4148,7 +4556,10 @@ doCancel:
                 End While
             End If
 
-            Me.ClearInfo()
+            Me.ClearInfo(False)
+
+            If Not Me.currThemetype = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
+
             Me.bwLoadShowInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadShowInfo.WorkerSupportsCancellation = True
             Me.bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
@@ -4166,7 +4577,7 @@ doCancel:
             Me.tsbAutoPilot.Enabled = False
             Me.tsbRefreshMedia.Enabled = False
             Me.tabsMain.Enabled = False
-            Me.pnlNoInfo.Visible = False
+            Me.ShowNoInfo(False)
 
             If Me.bwDownloadPic.IsBusy Then
                 Me.bwDownloadPic.CancelAsync()
@@ -4182,7 +4593,10 @@ doCancel:
                 End While
             End If
 
-            Me.ClearInfo()
+            Me.ClearInfo(False)
+
+            If Not Me.currThemetype = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
+
             Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadEpInfo.WorkerSupportsCancellation = True
             Me.bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
@@ -4192,7 +4606,7 @@ doCancel:
 
     End Sub
 
-    Public Sub ClearInfo()
+    Public Sub ClearInfo(Optional ByVal IncludeFanart As Boolean = True)
 
         '//
         ' Reset all info fields
@@ -4202,16 +4616,29 @@ doCancel:
                 .InfoCleared = True
 
                 If .bwDownloadPic.IsBusy Then .bwDownloadPic.CancelAsync()
+                If .bwLoadInfo.IsBusy Then .bwLoadInfo.CancelAsync()
+                If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
+                If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
 
-                If Not IsNothing(.pbFanart.Image) Then
-                    .pbFanart.Image.Dispose()
-                    .pbFanart.Image = Nothing
+                Do While .bwDownloadPic.IsBusy OrElse .bwLoadInfo.IsBusy OrElse .bwLoadShowInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy
+                    Application.DoEvents()
+                Loop
+
+                If IncludeFanart Then
+                    If Not IsNothing(.pbFanart.Image) Then
+                        .pbFanart.Image.Dispose()
+                        .pbFanart.Image = Nothing
+                    End If
+                    .MainFanart.Clear()
                 End If
+
                 If Not IsNothing(.pbPoster.Image) Then
                     .pbPoster.Image.Dispose()
                     .pbPoster.Image = Nothing
                 End If
                 .pnlPoster.Visible = False
+
+                .MainPoster.Clear()
 
                 'remove all the current genres
                 Try
@@ -4271,9 +4698,6 @@ doCancel:
                 .pbAudio.Image = Nothing
                 .pbResolution.Image = Nothing
                 .pbChannels.Image = Nothing
-
-                .MainPoster.Clear()
-                .MainFanart.Clear()
 
                 .txtMetaData.Text = String.Empty
             End With
@@ -4365,7 +4789,7 @@ doCancel:
             End If
 
             If Master.eSettings.ScanMediaInfo Then
-                XML.GetAVImages(Master.currMovie)
+                XML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename)
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
             Else
@@ -4399,6 +4823,7 @@ doCancel:
             End If
 
             Me.txtPlot.Text = Master.currShow.TVShow.Plot
+            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(999, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
 
             Me.alActors = New List(Of String)
 
@@ -4450,6 +4875,9 @@ doCancel:
                 Me.pbStudio.Image = XML.GetStudioImage("####")
             End If
 
+            Me.pnlInfoIcons.Width = pbStudio.Width + 1
+            Me.pbStudio.Left = 0
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4460,11 +4888,17 @@ doCancel:
 
         Try
             Me.SuspendLayout()
-            If Not String.IsNullOrEmpty(Master.currShow.TVEp.Title) Then
-                Me.lblTitle.Text = Master.currShow.TVEp.Title
-            End If
-
+            Me.lblTitle.Text = Master.currShow.TVEp.Title
             Me.txtPlot.Text = Master.currShow.TVEp.Plot
+            Me.lblDirector.Text = Master.currShow.TVEp.Director
+            Me.txtFilePath.Text = Master.currShow.Filename
+            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(999, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEp.Aired), "?", Master.currShow.TVEp.Aired))
+
+            Me.lblTagline.Text = String.Format(Master.eLang.GetString(999, "Season: {0}, Episode: {1}"), _
+                            If(String.IsNullOrEmpty(Master.currShow.TVEp.Season.ToString), "?", Master.currShow.TVEp.Season.ToString), _
+                            If(String.IsNullOrEmpty(Master.currShow.TVEp.Episode.ToString), "?", Master.currShow.TVEp.Episode.ToString))
+
+
 
             Me.alActors = New List(Of String)
 
@@ -4496,6 +4930,17 @@ doCancel:
             If tmpRating > 0 Then
                 Me.BuildStars(tmpRating)
             End If
+
+            If Master.eSettings.ScanMediaInfo Then
+                XML.GetAVImages(Master.currShow.TVEp.FileInfo, Master.currShow.Filename)
+                Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
+                Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
+            Else
+                Me.pnlInfoIcons.Width = pbStudio.Width + 1
+                Me.pbStudio.Left = 0
+            End If
+
+            Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -5600,7 +6045,7 @@ doCancel:
                 End If
             End If
 
-
+            Me.dgvTVShows.Enabled = False
             Master.DB.FillDataTable(Me.dtShows, "SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
 
             If Me.dtShows.Rows.Count > 0 Then
@@ -5645,19 +6090,10 @@ doCancel:
                     .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
 
                     .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
-
-                    .ToolsToolStripMenuItem.Enabled = True
-                    .tsbAutoPilot.Enabled = True
-                    .mnuMediaList.Enabled = True
                 End With
-            Else
-                Me.ToolsToolStripMenuItem.Enabled = False
-                Me.tsbAutoPilot.Enabled = False
-                Me.mnuMediaList.Enabled = False
-                Me.tslStatus.Text = String.Empty
-                Me.ClearInfo()
             End If
-
+            Me.dgvTVShows.SelectedRows(0).Selected = False
+            Me.dgvTVShows.Enabled = True
         Catch ex As Exception
             Me.LoadingDone = True
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -5696,27 +6132,97 @@ doCancel:
     Private Sub SelectRow(ByVal iRow As Integer)
 
         Try
-            If Me.bwLoadInfo.IsBusy Then
-                Me.bwLoadInfo.CancelAsync()
-                Do While Me.bwLoadInfo.IsBusy
-                    Application.DoEvents()
-                Loop
-            End If
+            If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
+            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+
+            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
+                Application.DoEvents()
+            Loop
 
             Me.tmpTitle = Me.dgvMediaList.Item(15, iRow).Value.ToString
             If Not Convert.ToBoolean(Me.dgvMediaList.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(6, iRow).Value) Then
                 Me.ClearInfo()
-                Me.pnlNoInfo.Visible = True
+                Me.ShowNoInfo(True, 0)
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMediaList.Item(0, iRow).Value))
             Else
-                Me.pnlNoInfo.Visible = False
-
+                Me.ShowNoInfo(False)
                 Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, iRow).Value), Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                 Me.mnuMediaList.Enabled = True
             End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub SelectShowRow(ByVal iRow As Integer)
+
+        Try
+            If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
+            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+
+            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
+                Application.DoEvents()
+            Loop
+
+            Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
+
+            If Not Convert.ToBoolean(Me.dgvTVShows.Item(2, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(4, iRow).Value) Then
+                Me.ClearInfo()
+                Me.ShowNoInfo(True, 1)
+                Master.currShow = Master.DB.LoadTVShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item(0, iRow).Value))
+            Else
+                Me.ShowNoInfo(False)
+                Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub SelectSeasonRow(ByVal iRow As Integer)
+
+        Try
+            If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
+            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+
+            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
+                Application.DoEvents()
+            Loop
+
+            Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub SelectEpisodeRow(ByVal iRow As Integer)
+
+        Try
+            If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
+            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+
+            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
+                Application.DoEvents()
+            Loop
+
+            If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) Then
+                Me.ClearInfo(False)
+                Me.ShowNoInfo(True, 2)
+                Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, iRow).Value), True)
+            Else
+                Me.ShowNoInfo(False)
+                Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value))
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -5770,6 +6276,8 @@ doCancel:
 
         Application.DoEvents()
 
+        Me.dgvTVSeasons.Enabled = False
+
         Master.DB.FillDataTable(Me.dtSeasons, String.Concat("SELECT * FROM TVSeason WHERE TVShowID = ", ShowID, " GROUP BY Season ORDER BY Season COLLATE NOCASE;"))
 
         If Me.dtSeasons.Rows.Count > 0 Then
@@ -5807,6 +6315,9 @@ doCancel:
 
             End With
         End If
+
+        Me.dgvTVSeasons.SelectedRows(0).Selected = False
+        Me.dgvTVSeasons.Enabled = True
     End Sub
 
     Private Sub FillEpisodes(ByVal ShowID As Integer, ByVal Season As Integer)
@@ -5814,6 +6325,8 @@ doCancel:
         Me.dgvTVEpisodes.DataSource = Nothing
 
         Application.DoEvents()
+
+        Me.dgvTVEpisodes.Enabled = False
 
         Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT * FROM TVEps WHERE TVShowID = ", ShowID, " AND Season = ", Season, " ORDER BY Episode;"))
 
@@ -5858,43 +6371,62 @@ doCancel:
 
             End With
         End If
-    End Sub
-#End Region '*** Routines/Functions
 
-    Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
-        If Me.dgvTVShows.SelectedRows.Count > 0 Then
-            Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.SelectedRows(0).Cells(0).Value))
-            Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.SelectedRows(0).Cells(0).Value))
-        End If
+        Me.dgvTVEpisodes.SelectedRows(0).Selected = False
+        Me.dgvTVEpisodes.Enabled = True
     End Sub
+#End Region
 
-    Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
-        If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
-            Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value))
-        End If
-    End Sub
-
-    Private Sub dgvTVSeasons_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellClick
-        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
-            Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(0).Value), Convert.ToInt32(Me.dgvTVSeasons.SelectedRows(0).Cells(3).Value))
-        End If
-    End Sub
+    '*** Routines/Functions
 
     Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
+
+        Me.ClearInfo()
+
         Select Case tabsMain.SelectedIndex
             Case 0
-                Me.ClearInfo()
+                Me.scTV.Visible = False
+                Me.dgvMediaList.Visible = True
+                Me.pnlFilter.Visible = True
+                Me.pnlListTop.Height = 56
+                Me.btnMarkAll.Visible = True
                 Me.ApplyTheme(Theming.ThemeType.Movies)
                 If Me.dgvMediaList.RowCount > 0 Then
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                    Me.ToolsToolStripMenuItem.Enabled = True
+                    Me.tsbAutoPilot.Enabled = True
+                    Me.mnuMediaList.Enabled = True
+                    Me.SelectRow(If(Me.currRow = -1, 0, Me.currRow))
                 End If
             Case 1
-                Me.ClearInfo()
+                Me.ToolsToolStripMenuItem.Enabled = False
+                Me.tsbAutoPilot.Enabled = False
+                Me.mnuMediaList.Enabled = False
+                Me.dgvMediaList.Visible = False
+                Me.scTV.Visible = True
+                Me.pnlFilter.Visible = False
+                Me.pnlListTop.Height = 23
+                Me.btnMarkAll.Visible = False
                 Me.ApplyTheme(Theming.ThemeType.Show)
+                If Me.dgvTVEpisodes.RowCount > 0 Then
+                    Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                End If
+                If Me.dgvTVSeasons.RowCount > 0 Then
+                    Me.dgvTVSeasons.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    Me.dgvTVSeasons.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                End If
                 If Me.dgvTVShows.RowCount > 0 Then
                     Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+
+                    If Me.currShowRow = -1 Then
+                        Me.dgvTVShows.ClearSelection()
+                        Me.dgvTVShows.Rows(0).Selected = True
+                    End If
+
+                    Me.SelectShowRow(If(Me.currShowRow = -1, 0, Me.currShowRow))
                 End If
         End Select
     End Sub
@@ -5946,5 +6478,20 @@ doCancel:
 
     Private Sub DonateToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DonateToolStripMenuItem.Click
         Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11135532")
+    End Sub
+
+    Private Sub ShowNoInfo(ByVal ShowIt As Boolean, Optional ByVal tType As Integer = 0)
+        If ShowIt Then
+            Select Case tType
+                Case 0
+                    Me.Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
+                Case 1
+                    Me.Label1.Text = Master.eLang.GetString(999, "No Information is Available for This Show")
+                Case 2
+                    Me.Label1.Text = Master.eLang.GetString(999, "No Information is Available for This Episode")
+            End Select
+        End If
+
+        Me.pnlNoInfo.Visible = ShowIt
     End Sub
 End Class
