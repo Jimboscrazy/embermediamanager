@@ -1347,6 +1347,7 @@ Public Class Scanner
         End If
 
     End Function
+
     Public Shared Function GetSeasons(ByVal sPath As String) As List(Of Seasons)
 
         Dim retSeason As New List(Of Seasons)

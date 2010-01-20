@@ -2114,11 +2114,11 @@ Public Class emmSettings
         End If
 
         If Master.eSettings.ShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoShowFilters Then
+            Master.eSettings.ShowFilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
             Master.eSettings.ShowFilterCustom.Add("(?i)([\._\-\[]+\s?)?s[0-9]+[\]\._ \-\[]*e[0-9]+(\])*")
             Master.eSettings.ShowFilterCustom.Add("(?i)([\._\-\[]+\s?)?[0-9]+x[0-9]+(\])*")
             Master.eSettings.ShowFilterCustom.Add("(?i)([\._\-\[]+\s?)?s(eason)?[\]\._ \-\[]*[0-9]+(\])*")
             Master.eSettings.ShowFilterCustom.Add("(?i)([\._\-\[]+\s?)?e(pisode)?[\]\._ \-\[]*[0-9]+(\])*")
-            Master.eSettings.ShowFilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
             Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]blu[ _.-]?ray.*")
             Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]bd[ _.-]?rip.*")
             Master.eSettings.ShowFilterCustom.Add("(?i)[ _.-]dvd.*")
@@ -2142,11 +2142,11 @@ Public Class emmSettings
         End If
 
         If Master.eSettings.EpFilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoEpFilters Then
+            Master.eSettings.EpFilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
             Master.eSettings.EpFilterCustom.Add("(?i)([\._\-\[]+\s?)?s[0-9]+[\]._ \-\[]*e[0-9]+(\])*")
             Master.eSettings.EpFilterCustom.Add("(?i)([\._\-\[]+\s?)?[0-9]+x[0-9]+(\])*")
             Master.eSettings.EpFilterCustom.Add("(?i)([\._\-\[]+\s?)?s(eason)?[\]\._ \-\[]*[0-9]+(\])*")
             Master.eSettings.EpFilterCustom.Add("(?i)([\._\-\[]+\s?)?e(pisode)?[\]\._ \-\[]*[0-9]+(\])*")
-            Master.eSettings.EpFilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
             Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]blu[ _.-]?ray.*")
             Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]bd[ _.-]?rip.*")
             Master.eSettings.EpFilterCustom.Add("(?i)[ _.-]dvd.*")
