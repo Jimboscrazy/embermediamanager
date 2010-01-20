@@ -92,6 +92,7 @@ Partial Class dlgSettings
         Me.GroupBox12 = New System.Windows.Forms.GroupBox
         Me.chkShowGenresText = New System.Windows.Forms.CheckBox
         Me.chkNoDisplayFanart = New System.Windows.Forms.CheckBox
+        Me.chkYAMJCompatibleSets = New System.Windows.Forms.CheckBox
         Me.chkNoDisplayPoster = New System.Windows.Forms.CheckBox
         Me.chkShowDims = New System.Windows.Forms.CheckBox
         Me.Label8 = New System.Windows.Forms.Label
@@ -197,7 +198,6 @@ Partial Class dlgSettings
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.cbForce = New System.Windows.Forms.ComboBox
         Me.chkForceTitle = New System.Windows.Forms.CheckBox
-        Me.chkYAMJCompatibleSets = New System.Windows.Forms.CheckBox
         Me.chkOutlineForPlot = New System.Windows.Forms.CheckBox
         Me.Label18 = New System.Windows.Forms.Label
         Me.txtIMDBURL = New System.Windows.Forms.TextBox
@@ -1025,13 +1025,14 @@ Partial Class dlgSettings
         '
         Me.GroupBox12.Controls.Add(Me.chkShowGenresText)
         Me.GroupBox12.Controls.Add(Me.chkNoDisplayFanart)
+        Me.GroupBox12.Controls.Add(Me.chkYAMJCompatibleSets)
         Me.GroupBox12.Controls.Add(Me.chkNoDisplayPoster)
         Me.GroupBox12.Controls.Add(Me.chkShowDims)
         Me.GroupBox12.Controls.Add(Me.Label8)
         Me.GroupBox12.Controls.Add(Me.chkMarkNew)
         Me.GroupBox12.Location = New System.Drawing.Point(2, 182)
         Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Size = New System.Drawing.Size(195, 133)
+        Me.GroupBox12.Size = New System.Drawing.Size(195, 161)
         Me.GroupBox12.TabIndex = 1
         Me.GroupBox12.TabStop = False
         Me.GroupBox12.Text = "Miscellaneous"
@@ -1055,6 +1056,17 @@ Partial Class dlgSettings
         Me.chkNoDisplayFanart.TabIndex = 2
         Me.chkNoDisplayFanart.Text = "Do Not Display Fanart"
         Me.chkNoDisplayFanart.UseVisualStyleBackColor = True
+        '
+        'chkYAMJCompatibleSets
+        '
+        Me.chkYAMJCompatibleSets.AutoSize = True
+        Me.chkYAMJCompatibleSets.Location = New System.Drawing.Point(12, 128)
+        Me.chkYAMJCompatibleSets.Name = "chkYAMJCompatibleSets"
+        Me.chkYAMJCompatibleSets.Size = New System.Drawing.Size(133, 17)
+        Me.chkYAMJCompatibleSets.TabIndex = 63
+        Me.chkYAMJCompatibleSets.Text = "YAMJ Compatible Sets"
+        Me.ToolTips.SetToolTip(Me.chkYAMJCompatibleSets, "This will save sets in a way that is friendly to XBMC")
+        Me.chkYAMJCompatibleSets.UseVisualStyleBackColor = True
         '
         'chkNoDisplayPoster
         '
@@ -1122,7 +1134,7 @@ Partial Class dlgSettings
         Me.GroupBox2.Controls.Add(Me.chkMoviePosterCol)
         Me.GroupBox2.Location = New System.Drawing.Point(201, 6)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(218, 280)
+        Me.GroupBox2.Size = New System.Drawing.Size(218, 337)
         Me.GroupBox2.TabIndex = 4
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Media List Options"
@@ -1574,16 +1586,16 @@ Partial Class dlgSettings
         Me.GroupBox15.Controls.Add(Me.chkOFDBPlot)
         Me.GroupBox15.Controls.Add(Me.chkOFDBOutline)
         Me.GroupBox15.Controls.Add(Me.chkOFDBTitle)
-        Me.GroupBox15.Location = New System.Drawing.Point(306, 238)
+        Me.GroupBox15.Location = New System.Drawing.Point(306, 228)
         Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(269, 79)
+        Me.GroupBox15.Size = New System.Drawing.Size(269, 87)
         Me.GroupBox15.TabIndex = 2
         Me.GroupBox15.TabStop = False
         Me.GroupBox15.Text = "OFDB"
         '
         'chkOFDBGenre
         '
-        Me.chkOFDBGenre.Location = New System.Drawing.Point(6, 61)
+        Me.chkOFDBGenre.Location = New System.Drawing.Point(6, 65)
         Me.chkOFDBGenre.Name = "chkOFDBGenre"
         Me.chkOFDBGenre.Size = New System.Drawing.Size(168, 17)
         Me.chkOFDBGenre.TabIndex = 3
@@ -1592,7 +1604,7 @@ Partial Class dlgSettings
         '
         'chkOFDBPlot
         '
-        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 45)
+        Me.chkOFDBPlot.Location = New System.Drawing.Point(6, 49)
         Me.chkOFDBPlot.Name = "chkOFDBPlot"
         Me.chkOFDBPlot.Size = New System.Drawing.Size(168, 17)
         Me.chkOFDBPlot.TabIndex = 2
@@ -1601,7 +1613,7 @@ Partial Class dlgSettings
         '
         'chkOFDBOutline
         '
-        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 29)
+        Me.chkOFDBOutline.Location = New System.Drawing.Point(6, 33)
         Me.chkOFDBOutline.Name = "chkOFDBOutline"
         Me.chkOFDBOutline.Size = New System.Drawing.Size(168, 17)
         Me.chkOFDBOutline.TabIndex = 1
@@ -1610,7 +1622,7 @@ Partial Class dlgSettings
         '
         'chkOFDBTitle
         '
-        Me.chkOFDBTitle.Location = New System.Drawing.Point(6, 13)
+        Me.chkOFDBTitle.Location = New System.Drawing.Point(6, 17)
         Me.chkOFDBTitle.Name = "chkOFDBTitle"
         Me.chkOFDBTitle.Size = New System.Drawing.Size(168, 17)
         Me.chkOFDBTitle.TabIndex = 0
@@ -2102,7 +2114,6 @@ Partial Class dlgSettings
         '
         Me.GroupBox1.Controls.Add(Me.cbForce)
         Me.GroupBox1.Controls.Add(Me.chkForceTitle)
-        Me.GroupBox1.Controls.Add(Me.chkYAMJCompatibleSets)
         Me.GroupBox1.Controls.Add(Me.chkOutlineForPlot)
         Me.GroupBox1.Controls.Add(Me.Label18)
         Me.GroupBox1.Controls.Add(Me.txtIMDBURL)
@@ -2114,7 +2125,7 @@ Partial Class dlgSettings
         Me.GroupBox1.Controls.Add(Me.chkCert)
         Me.GroupBox1.Location = New System.Drawing.Point(306, 4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(269, 233)
+        Me.GroupBox1.Size = New System.Drawing.Size(269, 223)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Miscellaneous"
@@ -2125,7 +2136,7 @@ Partial Class dlgSettings
         Me.cbForce.Enabled = False
         Me.cbForce.FormattingEnabled = True
         Me.cbForce.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbForce.Location = New System.Drawing.Point(7, 172)
+        Me.cbForce.Location = New System.Drawing.Point(7, 158)
         Me.cbForce.Name = "cbForce"
         Me.cbForce.Size = New System.Drawing.Size(179, 21)
         Me.cbForce.Sorted = True
@@ -2134,28 +2145,17 @@ Partial Class dlgSettings
         'chkForceTitle
         '
         Me.chkForceTitle.AutoSize = True
-        Me.chkForceTitle.Location = New System.Drawing.Point(7, 154)
+        Me.chkForceTitle.Location = New System.Drawing.Point(7, 140)
         Me.chkForceTitle.Name = "chkForceTitle"
         Me.chkForceTitle.Size = New System.Drawing.Size(130, 17)
         Me.chkForceTitle.TabIndex = 64
         Me.chkForceTitle.Text = "Force Title Language:"
         Me.chkForceTitle.UseVisualStyleBackColor = True
         '
-        'chkYAMJCompatibleSets
-        '
-        Me.chkYAMJCompatibleSets.AutoSize = True
-        Me.chkYAMJCompatibleSets.Location = New System.Drawing.Point(6, 17)
-        Me.chkYAMJCompatibleSets.Name = "chkYAMJCompatibleSets"
-        Me.chkYAMJCompatibleSets.Size = New System.Drawing.Size(133, 17)
-        Me.chkYAMJCompatibleSets.TabIndex = 63
-        Me.chkYAMJCompatibleSets.Text = "YAMJ Compatible Sets"
-        Me.ToolTips.SetToolTip(Me.chkYAMJCompatibleSets, "This will save sets in a way that is friendly to XBMC")
-        Me.chkYAMJCompatibleSets.UseVisualStyleBackColor = True
-        '
         'chkOutlineForPlot
         '
         Me.chkOutlineForPlot.AutoSize = True
-        Me.chkOutlineForPlot.Location = New System.Drawing.Point(6, 81)
+        Me.chkOutlineForPlot.Location = New System.Drawing.Point(6, 67)
         Me.chkOutlineForPlot.Name = "chkOutlineForPlot"
         Me.chkOutlineForPlot.Size = New System.Drawing.Size(188, 17)
         Me.chkOutlineForPlot.TabIndex = 3
@@ -2165,7 +2165,7 @@ Partial Class dlgSettings
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(7, 195)
+        Me.Label18.Location = New System.Drawing.Point(7, 181)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(66, 13)
         Me.Label18.TabIndex = 62
@@ -2174,7 +2174,7 @@ Partial Class dlgSettings
         'txtIMDBURL
         '
         Me.txtIMDBURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIMDBURL.Location = New System.Drawing.Point(9, 208)
+        Me.txtIMDBURL.Location = New System.Drawing.Point(9, 194)
         Me.txtIMDBURL.Name = "txtIMDBURL"
         Me.txtIMDBURL.Size = New System.Drawing.Size(192, 20)
         Me.txtIMDBURL.TabIndex = 10
@@ -2182,7 +2182,7 @@ Partial Class dlgSettings
         'chkCastWithImg
         '
         Me.chkCastWithImg.AutoSize = True
-        Me.chkCastWithImg.Location = New System.Drawing.Point(6, 49)
+        Me.chkCastWithImg.Location = New System.Drawing.Point(6, 35)
         Me.chkCastWithImg.Name = "chkCastWithImg"
         Me.chkCastWithImg.Size = New System.Drawing.Size(179, 17)
         Me.chkCastWithImg.TabIndex = 1
@@ -2193,7 +2193,7 @@ Partial Class dlgSettings
         '
         Me.chkUseCertForMPAA.AutoSize = True
         Me.chkUseCertForMPAA.Enabled = False
-        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(20, 137)
+        Me.chkUseCertForMPAA.Location = New System.Drawing.Point(20, 123)
         Me.chkUseCertForMPAA.Name = "chkUseCertForMPAA"
         Me.chkUseCertForMPAA.Size = New System.Drawing.Size(151, 17)
         Me.chkUseCertForMPAA.TabIndex = 6
@@ -2203,7 +2203,7 @@ Partial Class dlgSettings
         'chkFullCast
         '
         Me.chkFullCast.AutoSize = True
-        Me.chkFullCast.Location = New System.Drawing.Point(6, 33)
+        Me.chkFullCast.Location = New System.Drawing.Point(6, 19)
         Me.chkFullCast.Name = "chkFullCast"
         Me.chkFullCast.Size = New System.Drawing.Size(103, 17)
         Me.chkFullCast.TabIndex = 0
@@ -2213,7 +2213,7 @@ Partial Class dlgSettings
         'chkFullCrew
         '
         Me.chkFullCrew.AutoSize = True
-        Me.chkFullCrew.Location = New System.Drawing.Point(6, 65)
+        Me.chkFullCrew.Location = New System.Drawing.Point(6, 51)
         Me.chkFullCrew.Name = "chkFullCrew"
         Me.chkFullCrew.Size = New System.Drawing.Size(106, 17)
         Me.chkFullCrew.TabIndex = 2
@@ -2226,7 +2226,7 @@ Partial Class dlgSettings
         Me.cbCert.Enabled = False
         Me.cbCert.FormattingEnabled = True
         Me.cbCert.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Portugal", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "UK", "USA"})
-        Me.cbCert.Location = New System.Drawing.Point(6, 114)
+        Me.cbCert.Location = New System.Drawing.Point(6, 100)
         Me.cbCert.Name = "cbCert"
         Me.cbCert.Size = New System.Drawing.Size(179, 21)
         Me.cbCert.Sorted = True
@@ -2235,7 +2235,7 @@ Partial Class dlgSettings
         'chkCert
         '
         Me.chkCert.AutoSize = True
-        Me.chkCert.Location = New System.Drawing.Point(6, 97)
+        Me.chkCert.Location = New System.Drawing.Point(6, 83)
         Me.chkCert.Name = "chkCert"
         Me.chkCert.Size = New System.Drawing.Size(157, 17)
         Me.chkCert.TabIndex = 4
@@ -4110,15 +4110,15 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlShows)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
