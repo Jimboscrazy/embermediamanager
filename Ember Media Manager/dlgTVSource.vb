@@ -21,6 +21,7 @@
 
 Imports System
 Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class dlgTVSource
 
