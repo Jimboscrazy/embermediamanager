@@ -656,7 +656,12 @@ Namespace Media
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
             Dim tSet = From bSet As [Set] In _sets Where bSet.Set = SetName
             If tSet.Count = 0 Then
-                Me._sets.Add(New [Set] With {.Set = SetName, .Order = String.Empty})
+                If Order > 0 AndAlso Master.eSettings.YAMJSetsCompatible Then
+                    tSet(0).Order = Order.ToString
+                Else
+                    tSet(0).Order = String.Empty
+                End If
+                Me._sets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
             End If
         End Sub
 
@@ -712,6 +717,7 @@ Namespace Media
             Me._fileInfo = New MediaInfo.Fileinfo
             Me._ysets = New SetContainer
             Me._xsets.Clear()
+            Me._sets.Clear()
             Me._lev = 0
         End Sub
     End Class
