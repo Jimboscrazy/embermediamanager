@@ -745,15 +745,25 @@ Public Class NFO
                 'better way to read multi-root xml??
                 Using xmlSR As StreamReader = New StreamReader(sPath)
                     Dim xmlStr As String = xmlSR.ReadToEnd
-                    For Each xmlReg As Match In Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
-                        Using xmlRead As StringReader = New StringReader(xmlReg.Value)
+                    Dim rMatches As MatchCollection = Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
+                    If rMatches.Count = 1 Then
+                        'only one episodedetail... assume it's the proper one
+                        Using xmlRead As StringReader = New StringReader(rMatches(0).Value)
                             xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), Media.EpisodeDetails)
-                            If xmlEp.Episode = EpisodeNumber Then
-                                xmlSer = Nothing
-                                Return xmlEp
-                            End If
+                            xmlSer = Nothing
+                            Return xmlEp
                         End Using
-                    Next
+                    Else
+                        For Each xmlReg As Match In rMatches
+                            Using xmlRead As StringReader = New StringReader(xmlReg.Value)
+                                xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), Media.EpisodeDetails)
+                                If xmlEp.Episode = EpisodeNumber Then
+                                    xmlSer = Nothing
+                                    Return xmlEp
+                                End If
+                            End Using
+                        Next
+                    End If
                 End Using
 
             Else
