@@ -655,11 +655,9 @@ Namespace Media
 
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
             Dim tSet = From bSet As [Set] In _sets Where bSet.Set = SetName
-            If tSet.Count = 0 Then
+            If tSet.Count > 0 Then
                 If Order > 0 AndAlso Master.eSettings.YAMJSetsCompatible Then
                     tSet(0).Order = Order.ToString
-                Else
-                    tSet(0).Order = String.Empty
                 End If
                 Me._sets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
             End If
