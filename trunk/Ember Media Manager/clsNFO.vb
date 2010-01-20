@@ -100,7 +100,7 @@ Public Class NFO
                 Using xmlSR As StreamReader = New StreamReader(sPath)
                     'xmlSer = New XmlSerializer(GetType(Media.Movie))
                     xmlSer = Media.Movie.GetSerialiser()
-                    xmlMov = CType(xmlSer.Deserialize(xmlSR), Media.Movie)
+                    xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), Media.Movie)
                 End Using
             Else
                 If Not String.IsNullOrEmpty(sPath) Then
@@ -112,7 +112,7 @@ Public Class NFO
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                 xmlSer = Media.Movie.GetSerialiser()
                                 'xmlSer = New XmlSerializer(GetType(Media.Movie))
-                                xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
+                                xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), Media.Movie)
                                 xmlMov.IMDBID = sReturn.IMDBID
                             End Using
                         End If
@@ -138,7 +138,7 @@ Public Class NFO
                         Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                             xmlSer = Media.Movie.GetSerialiser()
                             'xmlSer = New XmlSerializer(GetType(Media.Movie))
-                            xmlMov = CType(xmlSer.Deserialize(xmlSTR), Media.Movie)
+                            xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), Media.Movie)
                             xmlMov.IMDBID = sReturn.IMDBID
                         End Using
                     End If
@@ -641,7 +641,7 @@ Public Class NFO
             If File.Exists(sPath) AndAlso Not Master.eSettings.ValidExts.Contains(Path.GetExtension(sPath).ToLower) Then
                 Using testSR As StreamReader = New StreamReader(sPath)
                     testSer = New XmlSerializer(GetType(Media.Movie))
-                    Dim testMovie As Media.Movie = CType(testSer.Deserialize(testSR), Media.Movie)
+                    Dim testMovie As Media.Movie = DirectCast(testSer.Deserialize(testSR), Media.Movie)
                     testMovie = Nothing
                     testSer = Nothing
                 End Using
@@ -741,30 +741,34 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Function LoadTVEpFromNFO(ByVal sPath As String) As Media.EpisodeDetails
-
-        Dim xmlSer As XmlSerializer = Nothing
+    Public Shared Function LoadTVEpFromNFO(ByVal sPath As String, ByVal EpisodeNumber As Integer) As Media.EpisodeDetails
+        Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(Media.EpisodeDetails))
         Dim xmlEp As New Media.EpisodeDetails
         Try
             If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
+                'better way to read multi-root xml??
                 Using xmlSR As StreamReader = New StreamReader(sPath)
-                    xmlSer = New XmlSerializer(GetType(Media.EpisodeDetails))
-                    xmlEp = CType(xmlSer.Deserialize(xmlSR), Media.EpisodeDetails)
+                    Dim xmlStr As String = xmlSR.ReadToEnd
+                    For Each xmlReg As Match In Regex.Matches(xmlStr, "<episodedetails.*?>.*?</episodedetails>", RegexOptions.IgnoreCase Or RegexOptions.Singleline Or RegexOptions.IgnorePatternWhitespace)
+                        Using xmlRead As StringReader = New StringReader(xmlReg.Value)
+                            xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), Media.EpisodeDetails)
+                            If xmlEp.Episode = EpisodeNumber Then
+                                xmlSer = Nothing
+                                Return xmlEp
+                            End If
+                        End Using
+                    Next
                 End Using
+
             Else
                 'read non conforming nfos
             End If
 
-        Catch
-            'read non conforming nfos
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
 
-        If Not IsNothing(xmlSer) Then
-            xmlSer = Nothing
-        End If
-
-        Return xmlEp
-
+        Return New Media.EpisodeDetails
     End Function
 
     Public Shared Function LoadTVShowFromNFO(ByVal sPath As String) As Media.TVShow
@@ -775,7 +779,7 @@ Public Class NFO
             If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
                 Using xmlSR As StreamReader = New StreamReader(sPath)
                     xmlSer = New XmlSerializer(GetType(Media.TVShow))
-                    xmlShow = CType(xmlSer.Deserialize(xmlSR), Media.TVShow)
+                    xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), Media.TVShow)
                 End Using
             Else
                 'read non conforming nfos

@@ -251,9 +251,9 @@ Public Class dlgBulkRenamer
     Private Sub dlgBulkRename_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         If Me.bwLoadInfo.IsBusy Then
             Me.DoCancel()
-            Do While Me.bwLoadInfo.IsBusy
+            While Me.bwLoadInfo.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
         End If
     End Sub
 

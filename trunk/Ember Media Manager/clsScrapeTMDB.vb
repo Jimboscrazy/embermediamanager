@@ -48,9 +48,9 @@ Namespace TMDB
         Public Sub Cancel()
             If Me.bwTMDB.IsBusy Then Me.bwTMDB.CancelAsync()
 
-            Do While Me.bwTMDB.IsBusy
+            While Me.bwTMDB.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
         End Sub
 
         Public Function GetTrailers(ByVal imdbID As String) As String

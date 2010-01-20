@@ -43,25 +43,28 @@ Public Class dlgTVSource
     End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                If Me._id >= 0 Then
-                    SQLcommand.CommandText = String.Concat("UPDATE TVSources SET name = (?), path = (?) WHERE ID =", Me._id, ";")
-                Else
-                    SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (name, path) VALUES (?,?);"
-                End If
-                Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
-                Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    If Me._id >= 0 Then
+                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET name = (?), path = (?) WHERE ID =", Me._id, ";")
+                    Else
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (name, path) VALUES (?,?);"
+                    End If
+                    Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
+                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
 
-                parName.Value = txtSourceName.Text.Trim
-                parPath.Value = txtSourcePath.Text.Trim
+                    parName.Value = txtSourceName.Text.Trim
+                    parPath.Value = txtSourcePath.Text.Trim
 
-                SQLcommand.ExecuteNonQuery()
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
             End Using
-            SQLtransaction.Commit()
-        End Using
-
-
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        End Try
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
@@ -112,21 +115,25 @@ Public Class dlgTVSource
     Private Sub CheckConditions()
         Dim isValid As Boolean = False
 
-        If String.IsNullOrEmpty(Me.txtSourceName.Text) Then
-            pbValid.Image = My.Resources.invalid
-        Else
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT ID FROM TVSources WHERE Name LIKE """, Me.txtSourceName.Text.Trim, """ AND ID != ", Me._id, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If Not String.IsNullOrEmpty(SQLreader("ID").ToString) Then
-                        pbValid.Image = My.Resources.invalid
-                    Else
-                        pbValid.Image = My.Resources.valid
-                        isValid = True
-                    End If
+        Try
+            If String.IsNullOrEmpty(Me.txtSourceName.Text) Then
+                pbValid.Image = My.Resources.invalid
+            Else
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLcommand.CommandText = String.Concat("SELECT ID FROM TVSources WHERE Name LIKE """, Me.txtSourceName.Text.Trim, """ AND ID != ", Me._id, ";")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        If Not String.IsNullOrEmpty(SQLreader("ID").ToString) Then
+                            pbValid.Image = My.Resources.invalid
+                        Else
+                            pbValid.Image = My.Resources.valid
+                            isValid = True
+                        End If
+                    End Using
                 End Using
-            End Using
-        End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
             Me.OK_Button.Enabled = True
@@ -158,16 +165,19 @@ Public Class dlgTVSource
 
     Private Sub dlgMovieSource_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
-
-        If Me._id >= 0 Then
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT * FROM TVSources WHERE ID = ", Me._id, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    Me.txtSourceName.Text = SQLreader("Name").ToString
-                    Me.txtSourcePath.Text = SQLreader("Path").ToString
+        Try
+            If Me._id >= 0 Then
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLcommand.CommandText = String.Concat("SELECT * FROM TVSources WHERE ID = ", Me._id, ";")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        Me.txtSourceName.Text = SQLreader("Name").ToString
+                        Me.txtSourcePath.Text = SQLreader("Path").ToString
+                    End Using
                 End Using
-            End Using
-        End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub SetUp()

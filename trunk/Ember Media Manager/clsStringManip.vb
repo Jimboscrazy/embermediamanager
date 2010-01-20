@@ -335,41 +335,8 @@ Public Class StringManip
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-            ' Some error handling so EMM dont break on populate folderdata
             Return TVEpName.Trim
         End Try
-    End Function
-
-    Public Shared Function GetSeason(ByVal sPath As String) As Integer
-
-        Select Case True
-            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "s([0-9]+)[][._-]*e([0-9]+)", RegexOptions.IgnoreCase)
-                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "s(?<season>[0-9]+)[][._-]*e([0-9]+)", RegexOptions.IgnoreCase).Groups("season").Value)
-            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)x([0-9]+)([\._ -].*?)?", RegexOptions.IgnoreCase)
-                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?(?<season>[0-9]+)x([0-9]+)([\._ -].*?)?", RegexOptions.IgnoreCase).Groups("season").Value)
-            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)([0-9][0-9])([\._ ].*?)?$", RegexOptions.IgnoreCase)
-                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?(?<season>[0-9]+)([0-9][0-9])([\._ ].*?)?", RegexOptions.IgnoreCase).Groups("season").Value)
-            Case Regex.IsMatch(Path.GetDirectoryName(sPath), "(s(eason)?)?([\._ -])?([0-9]+)", RegexOptions.IgnoreCase)
-                Return Convert.ToInt32(Regex.Match(Path.GetDirectoryName(sPath), "(s(eason)?)?([\._ -])?(?<season>[0-9]+)", RegexOptions.IgnoreCase).Groups("season").Value)
-            Case Else
-                Return -1
-        End Select
-
-    End Function
-
-    Public Shared Function GetEpisode(ByVal sPath As String) As Integer
-        Select Case True
-            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "s([0-9]+)[][._-]*e([0-9]+)", RegexOptions.IgnoreCase)
-                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "s([0-9]+)[][._-]*e(?<episode>[0-9]+)", RegexOptions.IgnoreCase).Groups("episode").Value)
-            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)x([0-9]+)([\._ -].*?)?", RegexOptions.IgnoreCase)
-                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)x(?<episode>[0-9]+)([\._ -].*?)?", RegexOptions.IgnoreCase).Groups("episode").Value)
-            Case Regex.IsMatch(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)([0-9][0-9])([\._ -].*?)?", RegexOptions.IgnoreCase)
-                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?([0-9]+)(?<episode>[0-9][0-9])([\._ -].*?)?", RegexOptions.IgnoreCase).Groups("episode").Value)
-            Case Regex.IsMatch(Path.GetDirectoryName(sPath), "(e(pisode)?)?([\._ -])?([0-9]+)", RegexOptions.IgnoreCase)
-                Return Convert.ToInt32(Regex.Match(Path.GetFileNameWithoutExtension(sPath), "(e(pisode)?)?([\._ -])?(?<episode>[0-9]+)", RegexOptions.IgnoreCase).Groups("episode").Value)
-            Case Else
-                Return -1
-        End Select
     End Function
 
     Public Shared Function FormatSeasonText(ByVal sSeason As Integer) As String

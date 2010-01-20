@@ -117,9 +117,9 @@ Public Class dlgSetsManager
     Private Sub dlgSetsManager_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         If Me.bwLoadMovies.IsBusy Then
             Me.DoCancel()
-            Do While Me.bwLoadMovies.IsBusy
+            While Me.bwLoadMovies.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
         End If
     End Sub
 
