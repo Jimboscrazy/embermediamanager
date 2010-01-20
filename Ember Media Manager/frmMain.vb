@@ -49,6 +49,7 @@ Public Class frmMain
     Private bsEpisodes As New BindingSource
     Private alActors As New List(Of String)
     Private aniType As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private aniShowType As Integer = 0 '0 = down, 1 = mid, 2 = up
     Private aniRaise As Boolean = False
     Private aniFilterRaise As Boolean = False
     Private MainPoster As New Images
@@ -162,6 +163,7 @@ Public Class frmMain
                 Master.eSettings.WindowSize = Me.Size
                 Master.eSettings.WindowState = Me.WindowState
                 Master.eSettings.InfoPanelState = Me.aniType
+                Master.eSettings.ShowInfoPanelState = Me.aniShowType
                 Master.eSettings.FilterPanelState = Me.aniFilterRaise
                 Master.eSettings.SpliterPanelState = Me.scMain.SplitterDistance
             End If
@@ -554,6 +556,8 @@ Public Class frmMain
                         Me.btnMid.Enabled = True
                 End Select
 
+                Me.aniShowType = Master.eSettings.ShowInfoPanelState
+
                 Me.aniFilterRaise = Master.eSettings.FilterPanelState
                 If Me.aniFilterRaise Then
                     Me.pnlFilter.Height = Master.Quantize(Me.gbSpecific.Height + Me.lblFilter.Height + 15, 5)
@@ -650,7 +654,11 @@ Public Class frmMain
         ' Begin animation to raise panel all the way up
         '\\
 
-        Me.aniType = 2
+        If Me.tabsMain.SelectedIndex = 0 Then
+            Me.aniType = 2
+        Else
+            Me.aniShowType = 2
+        End If
         Me.aniRaise = True
         Me.tmrAni.Start()
 
@@ -668,7 +676,13 @@ Public Class frmMain
         Else
             Me.aniRaise = True
         End If
-        Me.aniType = 1
+
+        If Me.tabsMain.SelectedIndex = 0 Then
+            Me.aniType = 1
+        Else
+            Me.aniShowType = 1
+        End If
+
         Me.tmrAni.Start()
 
     End Sub
@@ -679,7 +693,11 @@ Public Class frmMain
         ' Begin animation to lower panel all the way down
         '\\
 
-        Me.aniType = 0
+        If Me.tabsMain.SelectedIndex = 0 Then
+            Me.aniType = 0
+        Else
+            Me.aniShowType = 0
+        End If
         Me.aniRaise = False
         Me.tmrAni.Start()
 
@@ -699,7 +717,7 @@ Public Class frmMain
                     Me.pnlInfoPanel.Height -= 5
                 End If
             Else
-                Select Case Me.aniType
+                Select Case If(Me.tabsMain.SelectedIndex = 0, Me.aniType, Me.aniShowType)
                     Case 0
                         Me.pnlInfoPanel.Height = 25
 
@@ -716,31 +734,33 @@ Public Class frmMain
             Me.MoveGenres()
             Me.MoveMPAA()
 
-            If Me.aniType = 0 Then
-                If Me.pnlInfoPanel.Height = 25 Then
-                    Me.tmrAni.Stop()
-                    Me.btnDown.Enabled = False
-                    Me.btnMid.Enabled = True
-                    Me.btnUp.Enabled = True
-                End If
-            ElseIf Me.aniType = 1 Then
-                If Me.pnlInfoPanel.Height = Me.IPMid Then
-                    Me.tmrAni.Stop()
-                    Me.btnMid.Enabled = False
-                    Me.btnDown.Enabled = True
-                    Me.btnUp.Enabled = True
-                End If
-            ElseIf Me.aniType = 2 Then
-                If Me.pnlInfoPanel.Height = Me.IPUp Then
-                    Me.tmrAni.Stop()
-                    Me.btnUp.Enabled = False
-                    Me.btnDown.Enabled = True
-                    Me.btnMid.Enabled = True
-                End If
-            End If
+            Dim aType As Integer = If(Me.tabsMain.SelectedIndex = 0, Me.aniType, Me.aniShowType)
+            Select Case aType
+                Case 0
+                    If Me.pnlInfoPanel.Height = 25 Then
+                        Me.tmrAni.Stop()
+                        Me.btnDown.Enabled = False
+                        Me.btnMid.Enabled = True
+                        Me.btnUp.Enabled = True
+                    End If
+                Case 1
+                    If Me.pnlInfoPanel.Height = Me.IPMid Then
+                        Me.tmrAni.Stop()
+                        Me.btnMid.Enabled = False
+                        Me.btnDown.Enabled = True
+                        Me.btnUp.Enabled = True
+                    End If
+                Case 2
+                    If Me.pnlInfoPanel.Height = Me.IPUp Then
+                        Me.tmrAni.Stop()
+                        Me.btnUp.Enabled = False
+                        Me.btnDown.Enabled = True
+                        Me.btnMid.Enabled = True
+                    End If
+            End Select
 
             'move focus somewhere to stop highlighting some info boxes
-            Me.txtSearch.Focus()
+            If Me.tabsMain.SelectedIndex = 0 Then Me.txtSearch.Focus()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4132,33 +4152,74 @@ doCancel:
 
         tTheme.ApplyTheme(tType)
 
-        Select Case aniType
+        Select Case If(Me.tabsMain.SelectedIndex = 0, aniType, aniShowType)
             Case 1
                 If Me.btnMid.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipmid
+                    Me.btnUp.Enabled = True
+                    Me.btnMid.Enabled = False
+                    Me.btnDown.Enabled = True
                 ElseIf Me.btnUp.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipup
-                    Me.aniType = 2
+                    If Me.tabsMain.SelectedIndex = 0 Then
+                        aniType = 2
+                    Else
+                        aniShowType = 2
+                    End If
                     Me.btnUp.Enabled = False
+                    Me.btnMid.Enabled = True
+                    Me.btnDown.Enabled = True
                 Else
                     Me.pnlInfoPanel.Height = 25
-                    Me.aniType = 0
+                    If Me.tabsMain.SelectedIndex = 0 Then
+                        aniType = 0
+                    Else
+                        aniShowType = 0
+                    End If
+                    Me.btnUp.Enabled = True
+                    Me.btnMid.Enabled = True
+                    Me.btnDown.Enabled = False
                 End If
             Case 2
                 If Me.btnUp.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipup
                     Me.btnUp.Enabled = False
                     Me.btnMid.Enabled = True
+                    Me.btnDown.Enabled = True
                 ElseIf Me.btnMid.Visible Then
                     Me.pnlInfoPanel.Height = Me._ipmid
-                    Me.aniType = 1
+
+                    If Me.tabsMain.SelectedIndex = 0 Then
+                        aniType = 1
+                    Else
+                        aniShowType = 1
+                    End If
+
+                    Me.btnUp.Enabled = True
                     Me.btnMid.Enabled = False
+                    Me.btnDown.Enabled = True
                 Else
                     Me.pnlInfoPanel.Height = 25
-                    Me.aniType = 0
+                    If Me.tabsMain.SelectedIndex = 0 Then
+                        aniType = 0
+                    Else
+                        aniShowType = 0
+                    End If
+                    Me.btnUp.Enabled = True
+                    Me.btnMid.Enabled = True
+                    Me.btnDown.Enabled = False
                 End If
             Case Else
-                'nothing to do
+                Me.pnlInfoPanel.Height = 25
+                If Me.tabsMain.SelectedIndex = 0 Then
+                    aniType = 0
+                Else
+                    aniShowType = 0
+                End If
+
+                Me.btnUp.Enabled = True
+                Me.btnMid.Enabled = True
+                Me.btnDown.Enabled = False
         End Select
 
         Me.pbActLoad.Visible = False

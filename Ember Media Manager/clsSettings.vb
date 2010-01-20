@@ -119,6 +119,7 @@ Public Class emmSettings
     Private _windowsize As New Size
     Private _windowstate As FormWindowState
     Private _infopanelstate As Integer
+    Private _showinfopanelstate As Integer
     Private _filterPanelState As Boolean
     Private _scmainstate As Integer
     Private _infopanelanim As Boolean
@@ -1045,6 +1046,7 @@ Public Class emmSettings
             Me._windowstate = value
         End Set
     End Property
+
     Public Property InfoPanelState() As Integer
         Get
             Return Me._infopanelstate
@@ -1053,6 +1055,16 @@ Public Class emmSettings
             Me._infopanelstate = value
         End Set
     End Property
+
+    Public Property ShowInfoPanelState() As Integer
+        Get
+            Return Me._showinfopanelstate
+        End Get
+        Set(ByVal value As Integer)
+            Me._showinfopanelstate = value
+        End Set
+    End Property
+
     Public Property FilterPanelState() As Boolean
         Get
             Return Me._filterPanelState
@@ -1061,6 +1073,7 @@ Public Class emmSettings
             Me._filterPanelState = value
         End Set
     End Property
+
     Public Property SpliterPanelState() As Integer
         Get
             Return Me._scmainstate
@@ -1069,6 +1082,7 @@ Public Class emmSettings
             Me._scmainstate = value
         End Set
     End Property
+
     Public Property InfoPanelAnim() As Boolean
         Get
             Return Me._infopanelanim
@@ -1077,6 +1091,7 @@ Public Class emmSettings
             Me._infopanelanim = value
         End Set
     End Property
+
     Public Property CheckUpdates() As Boolean
         Get
             Return Me._checkupdates
@@ -1950,6 +1965,7 @@ Public Class emmSettings
         Me._windowsize = New Size(1024, 768)
         Me._windowstate = FormWindowState.Normal
         Me._infopanelstate = 0
+        Me._showinfopanelstate = 0
         Me._filterPanelState = False
         Me._scmainstate = 305
         Me._infopanelanim = True
