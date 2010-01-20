@@ -56,24 +56,10 @@ Namespace Media
         Private _fanart As New Fanart
         Private _actors As New List(Of Person)
         Private _fileInfo As New MediaInfo.Fileinfo
-        Private _sets As New List(Of [set])
+        Private _xsets As New List(Of [Set])
+        Private _ysets As New SetContainer
+        Private _sets As New List(Of [Set])
         Private _lev As Integer
-
-        Public Shared Function GetSerialiser() As XmlSerializer
-
-            Dim myOverrides As New XmlAttributeOverrides
-            If Not Master.eSettings.YAMJSetsCompatible Then
-                Dim SetsElement As New XmlElementAttribute()
-                SetsElement.ElementName = "set"
-                Dim myAttrib As New XmlAttributes
-                myAttrib.XmlElements.Add(SetsElement)
-                myOverrides.Add(GetType(Media.Movie), "sets", myAttrib)
-            End If
-
-            Dim mySerializer As New XmlSerializer(GetType(Media.Movie), myOverrides)
-            Return mySerializer
-        End Function
-
 
         <XmlIgnore()> _
         Public Property IMDBID() As String
@@ -601,21 +587,52 @@ Namespace Media
             End Get
         End Property
 
-        ''<XmlElement("sets")> _
-        Public Property sets() As List(Of [Set])
+        <XmlElement("sets")> _
+        Public Property YSets() As SetContainer
             Get
-                Return _sets
+                Return _ysets
             End Get
-            Set(ByVal value As List(Of [Set]))
-                _sets = value
+            Set(ByVal value As SetContainer)
+                _ysets = value
             End Set
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property SetsSpecified() As Boolean
+        Public ReadOnly Property YSetsSpecified() As Boolean
             Get
-                Return Me._sets.Count > 0
+                Return _ysets.Sets.Count > 0
             End Get
+        End Property
+
+        <XmlElement("set")> _
+        Public Property XSets() As List(Of [Set])
+            Get
+                Return Me._xsets
+            End Get
+            Set(ByVal value As List(Of [Set]))
+                _xsets = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property XSetsSpecified() As Boolean
+            Get
+                Return Me._xsets.Count > 0
+            End Get
+        End Property
+
+        <XmlIgnore()> _
+        Public Property Sets() As List(Of [Set])
+            Get
+                Return If(Master.eSettings.YAMJSetsCompatible, Me._ysets.Sets, Me._xsets)
+            End Get
+            Set(ByVal value As List(Of [Set]))
+                If Master.eSettings.YAMJSetsCompatible Then
+                    Me._ysets.Sets = value
+                Else
+                    Me._xsets = value
+                End If
+            End Set
         End Property
 
         <XmlIgnore()> _
@@ -638,14 +655,8 @@ Namespace Media
 
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
             Dim tSet = From bSet As [Set] In _sets Where bSet.Set = SetName
-            If tSet.Count > 0 Then
-                If Order > 0 Then
-                    tSet(0).Order = Order.ToString
-                Else
-                    tSet(0).Order = String.Empty
-                End If
-            Else
-                Me._sets.Add(New [set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
+            If tSet.Count = 0 Then
+                Me._sets.Add(New [Set] With {.Set = SetName, .Order = String.Empty})
             End If
         End Sub
 
@@ -699,7 +710,8 @@ Namespace Media
             Me._fanart = New Fanart
             Me._actors.Clear()
             Me._fileInfo = New MediaInfo.Fileinfo
-            Me._sets.Clear()
+            Me._ysets = New SetContainer
+            Me._xsets.Clear()
             Me._lev = 0
         End Sub
     End Class
@@ -879,35 +891,17 @@ Namespace Media
 
     End Class
 
-    Public Class [set]
-        Private _set As String
-        Private _order As String
+    Public Class SetContainer
+        Private _set As New List(Of [Set])
 
-        <XmlText()> _
-        Public Property [Set]() As String
+        <XmlElement("set")> _
+        Public Property Sets() As List(Of [Set])
             Get
                 Return _set
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As List(Of [Set]))
                 _set = value
             End Set
-        End Property
-
-        <XmlAttribute("order")> _
-        Public Property Order() As String
-            Get
-                Return _order
-            End Get
-            Set(ByVal value As String)
-                _order = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property OrderSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._order)
-            End Get
         End Property
 
         Public Sub New()
@@ -915,13 +909,11 @@ Namespace Media
         End Sub
 
         Public Sub Clear()
-            _set = String.Empty
-            _order = String.Empty
+            Me._set = New List(Of [Set])
         End Sub
-
     End Class
 
-    Public Class SetContainer
+    Public Class [Set]
         Private _set As String
         Private _order As String
 
@@ -960,6 +952,7 @@ Namespace Media
             _set = String.Empty
             _order = String.Empty
         End Sub
+
     End Class
 
     <XmlRoot("tvshow")> _

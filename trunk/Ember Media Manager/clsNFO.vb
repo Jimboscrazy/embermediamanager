@@ -98,8 +98,7 @@ Public Class NFO
         Try
             If File.Exists(sPath) AndAlso Path.GetExtension(sPath).ToLower = ".nfo" Then
                 Using xmlSR As StreamReader = New StreamReader(sPath)
-                    'xmlSer = New XmlSerializer(GetType(Media.Movie))
-                    xmlSer = Media.Movie.GetSerialiser()
+                    xmlSer = New XmlSerializer(GetType(Media.Movie))
                     xmlMov = DirectCast(xmlSer.Deserialize(xmlSR), Media.Movie)
                 End Using
             Else
@@ -110,8 +109,7 @@ Public Class NFO
                     Try
                         If Not String.IsNullOrEmpty(sReturn.Text) Then
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                                xmlSer = Media.Movie.GetSerialiser()
-                                'xmlSer = New XmlSerializer(GetType(Media.Movie))
+                                xmlSer = New XmlSerializer(GetType(Media.Movie))
                                 xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), Media.Movie)
                                 xmlMov.IMDBID = sReturn.IMDBID
                             End Using
@@ -136,8 +134,7 @@ Public Class NFO
                 Try
                     If Not String.IsNullOrEmpty(sReturn.Text) Then
                         Using xmlSTR As StringReader = New StringReader(sReturn.Text)
-                            xmlSer = Media.Movie.GetSerialiser()
-                            'xmlSer = New XmlSerializer(GetType(Media.Movie))
+                            xmlSer = New XmlSerializer(GetType(Media.Movie))
                             xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), Media.Movie)
                             xmlMov.IMDBID = sReturn.IMDBID
                         End Using
@@ -518,8 +515,7 @@ Public Class NFO
 
         Try
 
-            'Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
-            Dim xmlSer As XmlSerializer = Media.Movie.GetSerialiser()
+            Dim xmlSer As New XmlSerializer(GetType(Media.Movie))
 
             Dim tPath As String = String.Empty
             Dim nPath As String = String.Empty

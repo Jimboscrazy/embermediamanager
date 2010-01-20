@@ -580,7 +580,7 @@ Public Class Database
                         sets = New Media.set
                         If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Set = SQLreader("SetName").ToString
                         If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.Order = SQLreader("SetOrder").ToString
-                        _movieDB.Movie.sets.Add(sets)
+                        _movieDB.Movie.Sets.Add(sets)
                     End While
                 End Using
             End Using
@@ -918,7 +918,7 @@ Public Class Database
                                 "SetName", _
                                 ") VALUES (?);")
                         Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
-                        For Each s As Media.set In _movieDB.Movie.sets
+                        For Each s As Media.Set In _movieDB.Movie.Sets
                             parSets_SetName.Value = s.Set
                             SQLcommandSets.ExecuteNonQuery()
                         Next
@@ -930,7 +930,7 @@ Public Class Database
                         Dim parMovieSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parMovieSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_SetName", DbType.String, 0, "SetName")
                         Dim parMovieSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_SetOrder", DbType.String, 0, "SetOrder")
-                        For Each s As Media.set In _movieDB.Movie.sets
+                        For Each s As Media.Set In _movieDB.Movie.Sets
                             parMovieSets_MovieID.Value = _movieDB.ID
                             parMovieSets_SetName.Value = s.Set
                             parMovieSets_SetOrder.Value = s.Order
