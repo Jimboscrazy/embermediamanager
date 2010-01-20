@@ -753,7 +753,7 @@ Public Class NFO
                             xmlSer = Nothing
                             Return xmlEp
                         End Using
-                    Else
+                    ElseIf rMatches.Count > 1 Then
                         For Each xmlReg As Match In rMatches
                             Using xmlRead As StringReader = New StringReader(xmlReg.Value)
                                 xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), Media.EpisodeDetails)
