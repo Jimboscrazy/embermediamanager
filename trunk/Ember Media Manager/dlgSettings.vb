@@ -1631,6 +1631,14 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub lbTrailerSites_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailerSites.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkYAMJCompatibleSets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYAMJCompatibleSets.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -2669,7 +2677,4 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub lbTrailerSites_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailerSites.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
 End Class
