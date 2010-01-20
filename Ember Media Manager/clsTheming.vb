@@ -419,6 +419,7 @@ Public Class Theming
         frmMain.lblTagline.ForeColor = xTheme.TopPanelForeColor
 
         frmMain.pbFanart.BackColor = xTheme.FanartBackColor
+        frmMain.scMain.Panel2.BackColor = xTheme.FanartBackColor
         frmMain.pnlPoster.BackColor = xTheme.PosterBackColor
         frmMain.pbPoster.BackColor = xTheme.PosterBackColor
         frmMain.pnlMPAA.BackColor = xTheme.MPAABackColor

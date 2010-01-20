@@ -183,9 +183,9 @@ Namespace IMDB
         Public Sub CancelAsync()
             If bwIMDB.IsBusy Then bwIMDB.CancelAsync()
 
-            Do While bwIMDB.IsBusy
+            While bwIMDB.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
         End Sub
 
         Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal IMDBMovie As Media.Movie, ByVal Options As Master.ScrapeOptions)

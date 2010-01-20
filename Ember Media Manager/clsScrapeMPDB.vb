@@ -44,9 +44,9 @@ Namespace MPDB
         Public Sub Cancel()
             If Me.bwMPDB.IsBusy Then Me.bwMPDB.CancelAsync()
 
-            Do While Me.bwMPDB.IsBusy
+            While Me.bwMPDB.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
         End Sub
 

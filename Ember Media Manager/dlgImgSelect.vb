@@ -194,9 +194,9 @@ Public Class dlgImgSelect
         If bwMPDBDownload.IsBusy Then bwMPDBDownload.CancelAsync()
         If bwTMDBDownload.IsBusy Then bwTMDBDownload.CancelAsync()
 
-        Do While bwIMPADownload.IsBusy OrElse bwMPDBDownload.IsBusy OrElse bwTMDBDownload.IsBusy
+        While bwIMPADownload.IsBusy OrElse bwMPDBDownload.IsBusy OrElse bwTMDBDownload.IsBusy
             Application.DoEvents()
-        Loop
+        End While
 
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()

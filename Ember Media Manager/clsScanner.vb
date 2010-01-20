@@ -46,10 +46,42 @@ Public Class Scanner
         TVShow = 1
     End Enum
 
+    Public Class Seasons
+        Private _season As Integer
+        Private _episodes As List(Of Integer)
+
+        Public Property Season() As Integer
+            Get
+                Return _season
+            End Get
+            Set(ByVal value As Integer)
+                _season = value
+            End Set
+        End Property
+
+        Public Property Episodes() As List(Of Integer)
+            Get
+                Return _episodes
+            End Get
+            Set(ByVal value As List(Of Integer))
+                _episodes = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._season = -1
+            Me._episodes = New List(Of Integer)
+        End Sub
+    End Class
+
     Public Class AllContainer
-        Dim _type As MediaType
-        Dim _mcontainer As New MovieContainer
-        Dim _tvcontainer As New TVShowContainer
+        Private _type As MediaType
+        Private _mcontainer As New MovieContainer
+        Private _tvcontainer As New TVShowContainer
 
         Public Property Type() As MediaType
             Get
@@ -90,16 +122,16 @@ Public Class Scanner
     End Class
 
     Public Class MovieContainer
-        Dim _filename As String
-        Dim _source As String
-        Dim _single As Boolean
-        Dim _usefolder As Boolean
-        Dim _poster As String
-        Dim _fanart As String
-        Dim _nfo As String
-        Dim _extra As String
-        Dim _trailer As String
-        Dim _subs As String
+        Private _filename As String
+        Private _source As String
+        Private _single As Boolean
+        Private _usefolder As Boolean
+        Private _poster As String
+        Private _fanart As String
+        Private _nfo As String
+        Private _extra As String
+        Private _trailer As String
+        Private _subs As String
 
         Public Property Filename() As String
             Get
@@ -210,12 +242,12 @@ Public Class Scanner
     End Class
 
     Public Class TVShowContainer
-        Dim _showpath As String
-        Dim _source As String
-        Dim _poster As String
-        Dim _fanart As String
-        Dim _nfo As String
-        Dim _episodes As New List(Of EpisodeContainer)
+        Private _showpath As String
+        Private _source As String
+        Private _poster As String
+        Private _fanart As String
+        Private _nfo As String
+        Private _episodes As New List(Of EpisodeContainer)
 
         Public Property ShowPath() As String
             Get
@@ -286,10 +318,10 @@ Public Class Scanner
     End Class
 
     Public Class EpisodeContainer
-        Dim _filename As String
-        Dim _source As String
-        Dim _poster As String
-        Dim _nfo As String
+        Private _filename As String
+        Private _source As String
+        Private _poster As String
+        Private _nfo As String
 
         Public Property Filename() As String
             Get
@@ -1014,7 +1046,7 @@ Public Class Scanner
                     SQLcommand.CommandText = "SELECT TVEpPath FROM TVEps;"
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
-                            TVPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
+                            TVPaths.Add(Regex.Replace(SQLreader("TVEpPath").ToString.ToLower, "\[[0-9]+\]$", String.Empty))
                             If Me.bwPrelim.CancellationPending Then
                                 e.Cancel = True
                                 Return
@@ -1146,107 +1178,123 @@ Public Class Scanner
                                 Else
                                     tmpTVDB.ShowID = Convert.ToInt64(htTVShows.Item(sFile.TVContainer.ShowPath.ToLower))
                                 End If
-                                For Each Episode In sFile.TVContainer.Episodes
-                                    If Not String.IsNullOrEmpty(Episode.Filename) Then
-                                        GetEpFolderContents(Episode)
+                                If tmpTVDB.ShowID > -1 Then
+                                    For Each Episode In sFile.TVContainer.Episodes
+                                        If Not String.IsNullOrEmpty(Episode.Filename) Then
+                                            GetEpFolderContents(Episode)
 
-                                        If Not String.IsNullOrEmpty(Episode.Nfo) Then
-                                            tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo)
-                                        Else
-                                            tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Filename)
+                                            tmpTVDB.EpNfoPath = Episode.Nfo
+                                            tmpTVDB.EpPosterPath = Episode.Poster
+                                            tmpTVDB.Source = Episode.Source
+                                            tmpTVDB.IsNewEp = True
+                                            tmpTVDB.IsLockEp = False
+                                            tmpTVDB.IsMarkEp = Master.eSettings.MarkNew
+
+                                            For Each sSeasons As Seasons In GetSeasons(Episode.Filename)
+                                                For Each i As Integer In sSeasons.Episodes
+
+                                                    If sSeasons.Episodes.Count = 1 Then
+                                                        tmpTVDB.Filename = Episode.Filename
+                                                    Else
+                                                        tmpTVDB.Filename = String.Format("{0}[{1}]", Episode.Filename, i)
+                                                    End If
+
+                                                    tmpTVDB.TVEp = New Media.EpisodeDetails
+
+                                                    If Not String.IsNullOrEmpty(Episode.Nfo) Then
+                                                        tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo, i)
+                                                    Else
+                                                        tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Filename, i)
+                                                    End If
+
+                                                    If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
+                                                        'no title so assume it's an invalid nfo, clear nfo path if exists
+                                                        Episode.Nfo = String.Empty
+                                                        'set title based on episode file
+                                                        tmpTVDB.TVEp.Title = StringManip.FilterTVEpName(Path.GetFileNameWithoutExtension(Episode.Filename), tmpTVDB.TVShow.Title)
+                                                    End If
+
+                                                    If tmpTVDB.TVEp.Season < 0 Then tmpTVDB.TVEp.Season = sSeasons.Season
+                                                    If tmpTVDB.TVEp.Episode < 0 Then tmpTVDB.TVEp.Episode = i
+
+                                                    If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
+                                                        'nothing usable in the title after filters have run
+                                                        tmpTVDB.TVEp.Title = String.Format("{0} S{1}E{2}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Season, tmpTVDB.TVEp.Episode)
+                                                    End If
+
+                                                    Me.bwFolderData.ReportProgress(currentIndex, String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title))
+
+                                                    If String.IsNullOrEmpty(tmpTVDB.SeasonPosterPath) Then tmpTVDB.SeasonPosterPath = Me.GetSeasonPoster(tmpTVDB.Filename, tmpTVDB.TVEp.Season)
+
+                                                    'Do the Save
+                                                    Master.DB.SaveTVEpToDB(tmpTVDB, True, True)
+                                                Next
+                                            Next
+                                            currentIndex += 1
                                         End If
-
-                                        If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
-                                            'no title so assume it's an invalid nfo, clear nfo path if exists
-                                            Episode.Nfo = String.Empty
-                                            'set title based on episode file
-                                            tmpTVDB.TVEp.Title = StringManip.FilterTVEpName(Path.GetFileNameWithoutExtension(Episode.Filename), tmpTVDB.TVShow.Title)
-                                        End If
-
-                                        Me.bwFolderData.ReportProgress(currentIndex, String.Format("{0}: {1}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Title))
-                                        tmpTVDB.EpNfoPath = Episode.Nfo
-                                        tmpTVDB.EpPosterPath = Episode.Poster
-                                        tmpTVDB.Filename = Episode.Filename
-                                        tmpTVDB.Source = Episode.Source
-                                        tmpTVDB.IsNewEp = True
-                                        tmpTVDB.IsLockEp = False
-                                        tmpTVDB.IsMarkEp = Master.eSettings.MarkNew
-
-                                        If tmpTVDB.TVEp.Season < 0 Then tmpTVDB.TVEp.Season = StringManip.GetSeason(tmpTVDB.Filename)
-                                        tmpTVDB.SeasonPosterPath = Me.GetSeasonPoster(tmpTVDB.Filename, tmpTVDB.TVEp.Season)
-                                        If tmpTVDB.TVEp.Episode < 0 Then tmpTVDB.TVEp.Episode = StringManip.GetEpisode(tmpTVDB.Filename)
-
-                                        If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
-                                            'nothing usable in the title after filters have run
-                                            tmpTVDB.TVEp.Title = String.Format("{0} S{1}E{2}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Season, tmpTVDB.TVEp.Episode)
-                                        End If
-
-                                        'Do the Save
-                                        If tmpTVDB.ShowID > -1 Then Master.DB.SaveTVEpToDB(tmpTVDB, True, True)
-                                        currentIndex += 1
-                                    End If
-                                Next
+                                    Next
+                                End If
                             End If
                         Case Else 'assume movie
-                            If Not String.IsNullOrEmpty(sFile.MContainer.Filename) Then
-                                tmpMovieDB = New Master.DBMovie
-                                'first, lets get the contents
-                                GetMovieFolderContents(sFile.MContainer)
+                                If Not String.IsNullOrEmpty(sFile.MContainer.Filename) Then
+                                    tmpMovieDB = New Master.DBMovie
+                                    'first, lets get the contents
+                                    GetMovieFolderContents(sFile.MContainer)
 
-                                If Not String.IsNullOrEmpty(sFile.MContainer.Nfo) Then
-                                    tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.MContainer.Nfo, sFile.MContainer.isSingle)
-                                Else
-                                    tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.MContainer.Filename, sFile.MContainer.isSingle)
-                                End If
-
-                                If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
-                                    'no title so assume it's an invalid nfo, clear nfo path if exists
-                                    sFile.MContainer.Nfo = String.Empty
-
-                                    If Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "video_ts" Then
-                                        tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name)
-                                        tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name, False)
+                                    If Not String.IsNullOrEmpty(sFile.MContainer.Nfo) Then
+                                        tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.MContainer.Nfo, sFile.MContainer.isSingle)
                                     Else
-                                        If sFile.MContainer.UseFolder AndAlso sFile.MContainer.isSingle Then
-                                            tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.MContainer.Filename).Name)
-                                            tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(sFile.MContainer.Filename).Name, False)
+                                        tmpMovieDB.Movie = NFO.LoadMovieFromNFO(sFile.MContainer.Filename, sFile.MContainer.isSingle)
+                                    End If
+
+                                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                                        'no title so assume it's an invalid nfo, clear nfo path if exists
+                                        sFile.MContainer.Nfo = String.Empty
+
+                                        If Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "video_ts" Then
+                                            tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name)
+                                            tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name, False)
                                         Else
-                                            tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.MContainer.Filename))
-                                            tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.MContainer.Filename), False)
+                                            If sFile.MContainer.UseFolder AndAlso sFile.MContainer.isSingle Then
+                                                tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.MContainer.Filename).Name)
+                                                tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(sFile.MContainer.Filename).Name, False)
+                                            Else
+                                                tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.MContainer.Filename))
+                                                tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.MContainer.Filename), False)
+                                            End If
+                                        End If
+                                        If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
+                                    Else
+                                        Dim tTitle As String = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
+                                        If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
+                                        If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+                                            tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
+                                        Else
+                                            tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
                                         End If
                                     End If
-                                    If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
-                                Else
-                                    Dim tTitle As String = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
-                                    If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
-                                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                                        tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
-                                    Else
-                                        tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
-                                    End If
-                                End If
 
-                                Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
-                                If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
-                                    tmpMovieDB.NfoPath = sFile.MContainer.Nfo
-                                    tmpMovieDB.PosterPath = sFile.MContainer.Poster
-                                    tmpMovieDB.FanartPath = sFile.MContainer.Fanart
-                                    tmpMovieDB.TrailerPath = sFile.MContainer.Trailer
-                                    tmpMovieDB.SubPath = sFile.MContainer.Subs
-                                    tmpMovieDB.ExtraPath = sFile.MContainer.Extra
-                                    tmpMovieDB.Filename = sFile.MContainer.Filename
-                                    tmpMovieDB.isSingle = sFile.MContainer.isSingle
-                                    tmpMovieDB.UseFolder = sFile.MContainer.UseFolder
-                                    tmpMovieDB.Source = sFile.MContainer.Source
-                                    tmpMovieDB.FileSource = XML.GetFileSource(sFile.MContainer.Filename)
-                                    tmpMovieDB.IsNew = True
-                                    tmpMovieDB.IsLock = False
-                                    tmpMovieDB.IsMark = Master.eSettings.MarkNew
-                                    'Do the Save
-                                    tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
+                                    Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
+                                    If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
+                                        tmpMovieDB.NfoPath = sFile.MContainer.Nfo
+                                        tmpMovieDB.PosterPath = sFile.MContainer.Poster
+                                        tmpMovieDB.FanartPath = sFile.MContainer.Fanart
+                                        tmpMovieDB.TrailerPath = sFile.MContainer.Trailer
+                                        tmpMovieDB.SubPath = sFile.MContainer.Subs
+                                        tmpMovieDB.ExtraPath = sFile.MContainer.Extra
+                                        tmpMovieDB.Filename = sFile.MContainer.Filename
+                                        tmpMovieDB.isSingle = sFile.MContainer.isSingle
+                                        tmpMovieDB.UseFolder = sFile.MContainer.UseFolder
+                                        tmpMovieDB.Source = sFile.MContainer.Source
+                                        tmpMovieDB.FileSource = XML.GetFileSource(sFile.MContainer.Filename)
+                                        tmpMovieDB.IsNew = True
+                                        tmpMovieDB.IsLock = False
+                                        tmpMovieDB.IsMark = Master.eSettings.MarkNew
+                                        'Do the Save
+                                        tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
+                                    End If
+                                    currentIndex += 1
                                 End If
-                                currentIndex += 1
-                            End If
                     End Select
                 Next
                 SQLtransaction.Commit()
@@ -1298,5 +1346,62 @@ Public Class Scanner
             Return String.Empty
         End If
 
+    End Function
+    Public Shared Function GetSeasons(ByVal sPath As String) As List(Of Seasons)
+
+        Dim retSeason As New List(Of Seasons)
+        Dim cSeason As Seasons
+
+        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "(s(eason[\]\._\-+\s?\[?]*)?(?<season>[0-9]+))[\]\._\-+\s?\[?]*((-|e(pisode[\]\._\-+\s?\[?]*)?)[0-9]+)+", RegexOptions.IgnoreCase)
+            cSeason = New Seasons
+            cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
+            For Each eMatch As Match In Regex.Matches(sMatch.Value, "(-|e(pisode[\]\._\-+\s?\[?]*)?)(?<episode>[0-9]+)", RegexOptions.IgnoreCase)
+                cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+            Next
+            retSeason.Add(cSeason)
+        Next
+
+        If retSeason.Count > 0 Then Return retSeason
+
+        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?(?<season>[0-9]+)([-x][0-9]+)+", RegexOptions.IgnoreCase)
+            cSeason = New Seasons
+            cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
+            For Each eMatch As Match In Regex.Matches(sMatch.Value, "[-x](?<episode>[0-9]+)", RegexOptions.IgnoreCase)
+                cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+            Next
+            retSeason.Add(cSeason)
+        Next
+
+        If retSeason.Count > 0 Then Return retSeason
+
+        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?(?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9])", RegexOptions.IgnoreCase)
+            cSeason = New Seasons
+            cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
+            For Each eMatch As Match In Regex.Matches(sMatch.Value, "(([0-9]+|-)(?<episode>[0-9][0-9]))", RegexOptions.IgnoreCase)
+                cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+            Next
+            retSeason.Add(cSeason)
+        Next
+
+        If retSeason.Count > 0 Then Return retSeason
+
+        If Regex.IsMatch(Path.GetDirectoryName(sPath), "^(s(eason)?)?([\._ -])?[0-9]+$", RegexOptions.IgnoreCase) Then
+            cSeason = New Seasons
+            cSeason.Season = Convert.ToInt32(Regex.Match(Path.GetDirectoryName(sPath), "^(s(eason)?)?([\._ -])?(?<season>[0-9]+)$", RegexOptions.IgnoreCase).Groups("season").Value)
+            For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "e(pisode[\]\._\-+\s?\[?]*)?(?<episode>[0-9]+)", RegexOptions.IgnoreCase)
+                cSeason.Episodes.Add(Convert.ToInt32(sMatch.Groups("episode").Value))
+            Next
+            retSeason.Add(cSeason)
+        End If
+
+        If retSeason.Count > 0 Then Return retSeason
+
+        'nothing found
+        cSeason = New Seasons
+        cSeason.Season = -1
+        cSeason.Episodes.Add(-1)
+        retSeason.Add(cSeason)
+
+        Return retSeason
     End Function
 End Class

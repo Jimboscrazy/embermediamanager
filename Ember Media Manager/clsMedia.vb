@@ -1012,10 +1012,10 @@ Namespace Media
         <XmlElement("rating")> _
         Public Property Rating() As String
             Get
-                Return Me._rating
+                Return Me._rating.Replace(",", ".")
             End Get
             Set(ByVal value As String)
-                Me._rating = value
+                Me._rating = value.Replace(",", ".")
             End Set
         End Property
 
@@ -1247,10 +1247,10 @@ Namespace Media
         <XmlElement("rating")> _
         Public Property Rating() As String
             Get
-                Return Me._rating
+                Return Me._rating.Replace(",", ".")
             End Get
             Set(ByVal value As String)
-                Me._rating = value
+                Me._rating = value.Replace(",", ".")
             End Set
         End Property
 

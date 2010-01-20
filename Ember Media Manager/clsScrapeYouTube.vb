@@ -159,9 +159,9 @@ Namespace YouTube
         Public Sub CancelAsync()
             If bwYT.IsBusy Then bwYT.CancelAsync()
 
-            Do While bwYT.IsBusy
+            While bwYT.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
         End Sub
 
 

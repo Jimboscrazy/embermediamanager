@@ -648,7 +648,7 @@ Partial Class frmMain
         '
         'scMain.Panel2
         '
-        Me.scMain.Panel2.BackColor = System.Drawing.Color.Gainsboro
+        Me.scMain.Panel2.BackColor = System.Drawing.Color.DimGray
         Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
         Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
         Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
@@ -2119,6 +2119,7 @@ Partial Class frmMain
         Me.pnlTop.Name = "pnlTop"
         Me.pnlTop.Size = New System.Drawing.Size(663, 74)
         Me.pnlTop.TabIndex = 9
+        Me.pnlTop.Visible = False
         '
         'lblTitle
         '
@@ -2901,6 +2902,7 @@ Partial Class frmMain
         '
         'tmrWait
         '
+        Me.tmrWait.Interval = 250
         '
         'tmrLoad
         '
@@ -2925,18 +2927,21 @@ Partial Class frmMain
         '
         'tmrWaitShow
         '
+        Me.tmrWaitShow.Interval = 250
         '
         'tmrLoadShow
         '
         '
         'tmrWaitSeason
         '
+        Me.tmrWaitSeason.Interval = 250
         '
         'tmrLoadSeason
         '
         '
         'tmrWaitEp
         '
+        Me.tmrWaitEp.Interval = 250
         '
         'tmrLoadEp
         '

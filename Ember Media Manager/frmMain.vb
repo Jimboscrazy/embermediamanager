@@ -174,6 +174,8 @@ Public Class frmMain
             If Me.fScanner.IsBusy Then Me.fScanner.Cancel()
             If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
+            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
             If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
@@ -186,9 +188,11 @@ Public Class frmMain
             pnlCancel.Visible = True
             Me.Refresh()
 
-            Do While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy _
+            OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
+            OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
             If doSave Then Master.DB.SaveMovieList()
 
@@ -255,25 +259,25 @@ Public Class frmMain
                     End If
 
                     'might as well wait for these
-                    Do While Me.bwMediaInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
+                    While Me.bwMediaInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
                         Application.DoEvents()
-                    Loop
+                    End While
 
                     If dResult.NeedsRefresh OrElse dResult.NeedsUpdate Then
                         If dResult.NeedsRefresh Then
                             If Not Me.fScanner.IsBusy Then
-                                Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+                                While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
-                                Loop
+                                End While
                                 Me.RefreshAllMovies()
                             End If
                         End If
                         If dResult.NeedsUpdate Then
                             If Not Me.fScanner.IsBusy Then
-                                Do While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+                                While Me.bwLoadInfo.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                                     Application.DoEvents()
-                                Loop
-                                Me.LoadMedia(New Master.Scans With {.Movies = True})
+                                End While
+                                Me.LoadMedia(New Master.Scans With {.Movies = True, .TV = True})
                             End If
                         End If
                     Else
@@ -429,9 +433,9 @@ Public Class frmMain
                 If Master.HasModifier AndAlso Not clScrapeType = Master.ScrapeType.SingleScrape Then
                     Try
                         LoadMedia(New Master.Scans With {.Movies = True})
-                        Do While Not Me.LoadingDone
+                        While Not Me.LoadingDone
                             Application.DoEvents()
-                        Loop
+                        End While
                         ScrapeData(clScrapeType, Master.DefaultOptions, Nothing, clAsk)
                     Catch ex As Exception
                         Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -502,9 +506,9 @@ Public Class frmMain
                     End Try
                 End If
 
-                Do While Not Me.ScraperDone
+                While Not Me.ScraperDone
                     Application.DoEvents()
-                Loop
+                End While
             End If
 
             frmSplash.CloseForm()
@@ -611,9 +615,13 @@ Public Class frmMain
 
                 Me.pbActLoad.Visible = True
 
-                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                If Me.bwDownloadPic.IsBusy Then
+                    Me.bwDownloadPic.CancelAsync()
+                    While Me.bwDownloadPic.IsBusy
+                        Application.DoEvents()
+                    End While
+                End If
 
-                Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadPic.WorkerSupportsCancellation = True
                 Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = Me.alActors.Item(Me.lstActors.SelectedIndex).ToString})
 
@@ -744,18 +752,13 @@ Public Class frmMain
         ' Refresh Media Info
         '\\
 
-        Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
+        If Me.tabsMain.SelectedIndex = 0 Then
+            Me.LoadInfo(Convert.ToInt32(Master.currMovie.ID), Master.currMovie.Filename, False, True, True)
+        End If
 
     End Sub
 
     Private Sub dgvMediaList_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMediaList.CellClick
-        Me.tmrWaitShow.Enabled = False
-        Me.tmrWaitSeason.Enabled = False
-        Me.tmrWaitEp.Enabled = False
-        Me.tmrLoadShow.Enabled = False
-        Me.tmrLoadSeason.Enabled = False
-        Me.tmrLoadEp.Enabled = False
-
         If Me.dgvMediaList.SelectedRows.Count > 0 Then
             If Me.dgvMediaList.RowCount > 0 Then
                 Me.tmpTitle = Me.dgvMediaList.SelectedRows(0).Cells(15).Value.ToString
@@ -766,21 +769,11 @@ Public Class frmMain
                 End If
             End If
 
-            Me.currRow = e.RowIndex
-            Me.tmrWait.Enabled = False
-            Me.tmrLoad.Enabled = False
-            Me.tmrWait.Enabled = True
+            Me.currRow = Me.dgvMediaList.SelectedRows(0).Index
         End If
     End Sub
 
     Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
-        Me.tmrWait.Enabled = False
-        Me.tmrWaitSeason.Enabled = False
-        Me.tmrWaitEp.Enabled = False
-        Me.tmrLoad.Enabled = False
-        Me.tmrLoadSeason.Enabled = False
-        Me.tmrLoadEp.Enabled = False
-
         If Me.dgvTVShows.SelectedRows.Count > 0 Then
             If Me.dgvTVShows.RowCount > 0 Then
                 If Me.dgvTVShows.SelectedRows.Count > 1 Then
@@ -790,21 +783,11 @@ Public Class frmMain
                 End If
             End If
 
-            Me.currShowRow = e.RowIndex
-            Me.tmrWaitShow.Enabled = False
-            Me.tmrLoadShow.Enabled = False
-            Me.tmrWaitShow.Enabled = True
+            Me.currShowRow = Me.dgvTVShows.SelectedRows(0).Index
         End If
     End Sub
 
     Private Sub dgvTVSeasons_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVSeasons.CellClick
-        Me.tmrWaitShow.Enabled = False
-        Me.tmrWait.Enabled = False
-        Me.tmrWaitEp.Enabled = False
-        Me.tmrLoadShow.Enabled = False
-        Me.tmrLoad.Enabled = False
-        Me.tmrLoadEp.Enabled = False
-
         If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
             If Me.dgvTVSeasons.RowCount > 0 Then
                 If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
@@ -814,21 +797,11 @@ Public Class frmMain
                 End If
             End If
 
-            Me.currSeasonRow = e.RowIndex
-            Me.tmrWaitSeason.Enabled = False
-            Me.tmrLoadSeason.Enabled = False
-            Me.tmrWaitSeason.Enabled = True
+            Me.currSeasonRow = Me.dgvTVSeasons.SelectedRows(0).Index
         End If
     End Sub
 
     Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
-        Me.tmrWaitShow.Enabled = False
-        Me.tmrWaitSeason.Enabled = False
-        Me.tmrWait.Enabled = False
-        Me.tmrLoadShow.Enabled = False
-        Me.tmrLoadSeason.Enabled = False
-        Me.tmrLoad.Enabled = False
-
 
         If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             If Me.dgvTVEpisodes.RowCount > 0 Then
@@ -839,10 +812,7 @@ Public Class frmMain
                 End If
             End If
 
-            Me.currEpRow = e.RowIndex
-            Me.tmrWaitEp.Enabled = False
-            Me.tmrLoadEp.Enabled = False
-            Me.tmrWaitEp.Enabled = True
+            Me.currEpRow = Me.dgvTVEpisodes.SelectedRows(0).Index
         End If
     End Sub
 
@@ -1187,13 +1157,13 @@ Public Class frmMain
             Me.tmrWaitShow.Enabled = False
             Me.tmrWaitSeason.Enabled = False
             Me.tmrWaitEp.Enabled = False
+            Me.tmrWait.Enabled = False
             Me.tmrLoadShow.Enabled = False
             Me.tmrLoadSeason.Enabled = False
             Me.tmrLoadEp.Enabled = False
+            Me.tmrLoad.Enabled = False
 
             Me.currRow = e.RowIndex
-            Me.tmrWait.Enabled = False
-            Me.tmrLoad.Enabled = False
             Me.tmrWait.Enabled = True
 
         Catch ex As Exception
@@ -1208,14 +1178,14 @@ Public Class frmMain
                 Me.tmrWait.Enabled = False
                 Me.tmrWaitSeason.Enabled = False
                 Me.tmrWaitEp.Enabled = False
+                Me.tmrWaitShow.Enabled = False
                 Me.tmrLoad.Enabled = False
                 Me.tmrLoadSeason.Enabled = False
                 Me.tmrLoadEp.Enabled = False
+                Me.tmrLoadShow.Enabled = False
 
 
                 Me.currShowRow = e.RowIndex
-                Me.tmrWaitShow.Enabled = False
-                Me.tmrLoadShow.Enabled = False
                 Me.tmrWaitShow.Enabled = True
             End If
         Catch ex As Exception
@@ -1229,14 +1199,14 @@ Public Class frmMain
             Me.tmrWaitShow.Enabled = False
             Me.tmrWait.Enabled = False
             Me.tmrWaitEp.Enabled = False
+            Me.tmrWaitSeason.Enabled = False
             Me.tmrLoadShow.Enabled = False
             Me.tmrLoad.Enabled = False
             Me.tmrLoadEp.Enabled = False
+            Me.tmrLoadSeason.Enabled = False
 
 
             Me.currSeasonRow = e.RowIndex
-            Me.tmrWaitSeason.Enabled = False
-            Me.tmrLoadSeason.Enabled = False
             Me.tmrWaitSeason.Enabled = True
 
         Catch ex As Exception
@@ -1250,14 +1220,14 @@ Public Class frmMain
             Me.tmrWaitShow.Enabled = False
             Me.tmrWaitSeason.Enabled = False
             Me.tmrWait.Enabled = False
+            Me.tmrWaitEp.Enabled = False
             Me.tmrLoadShow.Enabled = False
             Me.tmrLoadSeason.Enabled = False
             Me.tmrLoad.Enabled = False
+            Me.tmrLoadEp.Enabled = False
 
 
             Me.currEpRow = e.RowIndex
-            Me.tmrWaitEp.Enabled = False
-            Me.tmrLoadEp.Enabled = False
             Me.tmrWaitEp.Enabled = True
 
         Catch ex As Exception
@@ -2029,9 +1999,9 @@ Public Class frmMain
 
                         If Me.bwLoadInfo.IsBusy Then
                             Me.bwLoadInfo.CancelAsync()
-                            Do While Me.bwLoadInfo.IsBusy
+                            While Me.bwLoadInfo.IsBusy
                                 Application.DoEvents()
-                            Loop
+                            End While
                         End If
 
                         If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
@@ -2443,9 +2413,9 @@ Public Class frmMain
         If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
         If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
 
-        Do While Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
+        While Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy
             Application.DoEvents()
-        Loop
+        End While
     End Sub
 
     Private Sub OpenContainingFolderToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenContainingFolderToolStripMenuItem.Click
@@ -2609,9 +2579,9 @@ Public Class frmMain
 
     Private Sub cbFilterFileSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterFileSource.SelectedIndexChanged
         Try
-            Do While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
+            While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwCleanDB.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
             For i As Integer = Me.FilterArray.Count - 1 To 0 Step -1
                 If Me.FilterArray(i).ToString.StartsWith("FileSource =") Then
@@ -3236,9 +3206,9 @@ Public Class frmMain
             'read nfo if it's there
 
             'wait for mediainfo to update the nfo
-            Do While bwMediaInfo.IsBusy
+            While bwMediaInfo.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
             If bwLoadInfo.CancellationPending Then
                 e.Cancel = True
@@ -3344,34 +3314,33 @@ Public Class frmMain
             Me.MainFanart.Clear()
             Me.MainPoster.Clear()
 
-            If bwLoadInfo.CancellationPending Then
+            If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
 
             Master.currShow = Master.DB.LoadTVShowFromDB(Args.ID)
 
-            If bwLoadInfo.CancellationPending Then
+            If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
 
             If Not Master.eSettings.NoDisplayFanart Then Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
 
-            If bwLoadInfo.CancellationPending Then
+            If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
 
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
-            'read nfo if it's there
 
             'wait for mediainfo to update the nfo
-            Do While bwMediaInfo.IsBusy
+            While bwMediaInfo.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
-            If bwLoadInfo.CancellationPending Then
+            If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
@@ -3453,12 +3422,8 @@ Public Class frmMain
                 Me.InfoCleared = False
 
                 If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                    Me.ToolsToolStripMenuItem.Enabled = True
-                    Me.tsbAutoPilot.Enabled = True
                     Me.tsbRefreshMedia.Enabled = True
-                    Me.mnuMediaList.Enabled = True
                     Me.tabsMain.Enabled = True
-                    Me.EnableFilters(True)
                 End If
             End If
         Catch ex As Exception
@@ -3474,14 +3439,14 @@ Public Class frmMain
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Me.MainPoster.Clear()
 
-            If bwLoadInfo.CancellationPending Then
+            If bwLoadEpInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
 
             Master.currShow = Master.DB.LoadTVEpFromDB(Args.ID, False)
 
-            If bwLoadInfo.CancellationPending Then
+            If bwLoadEpInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
@@ -3490,11 +3455,11 @@ Public Class frmMain
             'read nfo if it's there
 
             'wait for mediainfo to update the nfo
-            Do While bwMediaInfo.IsBusy
+            While bwMediaInfo.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
-            If bwLoadInfo.CancellationPending Then
+            If bwLoadEpInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
@@ -3550,12 +3515,8 @@ Public Class frmMain
                 Me.InfoCleared = False
 
                 If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                    Me.ToolsToolStripMenuItem.Enabled = True
-                    Me.tsbAutoPilot.Enabled = True
                     Me.tsbRefreshMedia.Enabled = True
-                    Me.mnuMediaList.Enabled = True
                     Me.tabsMain.Enabled = True
-                    Me.EnableFilters(True)
                 End If
             End If
         Catch ex As Exception
@@ -4492,20 +4453,6 @@ doCancel:
             Me.tabsMain.Enabled = False
             Me.ShowNoInfo(False)
 
-            If Me.bwDownloadPic.IsBusy Then
-                Me.bwDownloadPic.CancelAsync()
-                While Me.bwDownloadPic.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
-
-            If Me.bwLoadInfo.IsBusy Then
-                Me.bwLoadInfo.CancelAsync()
-                While Me.bwLoadInfo.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
-
             If doMI Then
                 If Me.bwMediaInfo.IsBusy Then
                     Me.bwMediaInfo.CancelAsync()
@@ -4516,14 +4463,12 @@ doCancel:
                 Me.txtMetaData.Clear()
                 Me.pbMILoading.Visible = True
 
-                Me.bwMediaInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwMediaInfo.WorkerSupportsCancellation = True
                 Me.bwMediaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
             End If
 
             If doInfo Then
                 Me.ClearInfo()
-                Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwLoadInfo.WorkerSupportsCancellation = True
                 Me.bwLoadInfo.RunWorkerAsync(New Arguments With {.ID = ID})
             End If
@@ -4542,27 +4487,18 @@ doCancel:
             Me.tabsMain.Enabled = False
             Me.ShowNoInfo(False)
 
-            If Me.bwDownloadPic.IsBusy Then
-                Me.bwDownloadPic.CancelAsync()
-                While Me.bwDownloadPic.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
-
-            If Me.bwLoadShowInfo.IsBusy Then
-                Me.bwLoadShowInfo.CancelAsync()
-                While Me.bwLoadShowInfo.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
-
             Me.ClearInfo(False)
 
             If Not Me.currThemetype = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
 
-            Me.bwLoadShowInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadShowInfo.WorkerSupportsCancellation = True
             Me.bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+
+            While Me.bwLoadShowInfo.IsBusy
+                Application.DoEvents()
+            End While
+
+            Me.FillSeasons(ID)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4579,25 +4515,10 @@ doCancel:
             Me.tabsMain.Enabled = False
             Me.ShowNoInfo(False)
 
-            If Me.bwDownloadPic.IsBusy Then
-                Me.bwDownloadPic.CancelAsync()
-                While Me.bwDownloadPic.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
-
-            If Me.bwLoadInfo.IsBusy Then
-                Me.bwLoadInfo.CancelAsync()
-                While Me.bwLoadInfo.IsBusy
-                    Application.DoEvents()
-                End While
-            End If
-
             Me.ClearInfo(False)
 
             If Not Me.currThemetype = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
 
-            Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadEpInfo.WorkerSupportsCancellation = True
             Me.bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
         Catch ex As Exception
@@ -4620,9 +4541,9 @@ doCancel:
                 If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
                 If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
 
-                Do While .bwDownloadPic.IsBusy OrElse .bwLoadInfo.IsBusy OrElse .bwLoadShowInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy
+                While .bwDownloadPic.IsBusy OrElse .bwLoadInfo.IsBusy OrElse .bwLoadShowInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy
                     Application.DoEvents()
-                Loop
+                End While
 
                 If IncludeFanart Then
                     If Not IsNothing(.pbFanart.Image) Then
@@ -4891,7 +4812,7 @@ doCancel:
             Me.lblTitle.Text = Master.currShow.TVEp.Title
             Me.txtPlot.Text = Master.currShow.TVEp.Plot
             Me.lblDirector.Text = Master.currShow.TVEp.Director
-            Me.txtFilePath.Text = Master.currShow.Filename
+            Me.txtFilePath.Text = Regex.Replace(Master.currShow.Filename, "\[[0-9]+\]$", String.Empty)
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(999, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEp.Aired), "?", Master.currShow.TVEp.Aired))
 
             Me.lblTagline.Text = String.Format(Master.eLang.GetString(999, "Season: {0}, Episode: {1}"), _
@@ -6090,9 +6011,10 @@ doCancel:
                     .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
 
                     .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
+
+                    .dgvTVShows.SelectedRows(0).Selected = False
                 End With
             End If
-            Me.dgvTVShows.SelectedRows(0).Selected = False
             Me.dgvTVShows.Enabled = True
         Catch ex As Exception
             Me.LoadingDone = True
@@ -6135,10 +6057,11 @@ doCancel:
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+            If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
-            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
+            While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
             Me.tmpTitle = Me.dgvMediaList.Item(15, iRow).Value.ToString
             If Not Convert.ToBoolean(Me.dgvMediaList.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(6, iRow).Value) Then
@@ -6164,17 +6087,17 @@ doCancel:
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+            If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
-            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
+            While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
                 Application.DoEvents()
-            Loop
-
-            Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
+            End While
 
             If Not Convert.ToBoolean(Me.dgvTVShows.Item(2, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(4, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 1)
                 Master.currShow = Master.DB.LoadTVShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item(0, iRow).Value))
+                Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
             Else
                 Me.ShowNoInfo(False)
                 Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
@@ -6191,10 +6114,11 @@ doCancel:
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+            If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
-            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
+            While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
             Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
 
@@ -6209,10 +6133,11 @@ doCancel:
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+            If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
-            Do While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
+            While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) Then
                 Me.ClearInfo(False)
@@ -6264,6 +6189,17 @@ doCancel:
                 Me.tspbLoading.Maximum = iMax
             Case 2
                 Me.FillList(0)
+
+                Me.tspbLoading.Visible = False
+                Me.tslLoading.Visible = False
+                Me.tabsMain.Enabled = True
+                Me.tsbRefreshMedia.Enabled = True
+
+                If Me.tabsMain.SelectedIndex = 0 Then
+                    Me.ToolsToolStripMenuItem.Enabled = True
+                    Me.tsbAutoPilot.Enabled = True
+                    Me.mnuMediaList.Enabled = True
+                End If
         End Select
 
     End Sub
@@ -6385,12 +6321,18 @@ doCancel:
 
         Select Case tabsMain.SelectedIndex
             Case 0
-                Me.scTV.Visible = False
-                Me.dgvMediaList.Visible = True
                 Me.pnlFilter.Visible = True
                 Me.pnlListTop.Height = 56
                 Me.btnMarkAll.Visible = True
+                Me.scTV.Visible = False
+                Me.dgvMediaList.Visible = True
                 Me.ApplyTheme(Theming.ThemeType.Movies)
+                If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+                If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                While Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
+                    Application.DoEvents()
+                End While
                 If Me.dgvMediaList.RowCount > 0 Then
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
@@ -6404,11 +6346,16 @@ doCancel:
                 Me.tsbAutoPilot.Enabled = False
                 Me.mnuMediaList.Enabled = False
                 Me.dgvMediaList.Visible = False
-                Me.scTV.Visible = True
                 Me.pnlFilter.Visible = False
                 Me.pnlListTop.Height = 23
                 Me.btnMarkAll.Visible = False
+                Me.scTV.Visible = True
                 Me.ApplyTheme(Theming.ThemeType.Show)
+                If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
+                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                While Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
+                    Application.DoEvents()
+                End While
                 If Me.dgvTVEpisodes.RowCount > 0 Then
                     Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
@@ -6424,9 +6371,11 @@ doCancel:
                     If Me.currShowRow = -1 Then
                         Me.dgvTVShows.ClearSelection()
                         Me.dgvTVShows.Rows(0).Selected = True
+                        Me.currShowRow = 0
                     End If
 
-                    Me.SelectShowRow(If(Me.currShowRow = -1, 0, Me.currShowRow))
+                    Me.SelectShowRow(Me.currShowRow)
+
                 End If
         End Select
     End Sub
@@ -6482,6 +6431,7 @@ doCancel:
 
     Private Sub ShowNoInfo(ByVal ShowIt As Boolean, Optional ByVal tType As Integer = 0)
         If ShowIt Then
+            Me.pnlTop.Visible = False
             Select Case tType
                 Case 0
                     Me.Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
@@ -6490,6 +6440,8 @@ doCancel:
                 Case 2
                     Me.Label1.Text = Master.eLang.GetString(999, "No Information is Available for This Episode")
             End Select
+        Else
+            Me.pnlTop.Visible = True
         End If
 
         Me.pnlNoInfo.Visible = ShowIt

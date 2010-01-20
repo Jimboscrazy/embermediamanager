@@ -75,9 +75,9 @@ Public Class dlgExportMovies
             MySelf.bwLoadInfo.WorkerSupportsCancellation = True
             MySelf.bwLoadInfo.WorkerReportsProgress = True
             MySelf.bwLoadInfo.RunWorkerAsync()
-            Do While MySelf.bwLoadInfo.IsBusy
+            While MySelf.bwLoadInfo.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
             MySelf.BuildHTML(False, String.Empty, String.Empty, template, False)
             Dim srcPath As String = String.Concat(Master.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, template, Path.DirectorySeparatorChar)
             MySelf.SaveAll(String.Empty, srcPath, filename, resizePoster)
@@ -96,9 +96,9 @@ Public Class dlgExportMovies
     Private Sub dlgExportMovies_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         If Me.bwLoadInfo.IsBusy Then
             Me.DoCancel()
-            Do While Me.bwLoadInfo.IsBusy
+            While Me.bwLoadInfo.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
         End If
         FileManip.Delete.DeleteDirectory(Me.TempPath)
     End Sub

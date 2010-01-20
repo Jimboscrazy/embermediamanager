@@ -45,9 +45,9 @@ Namespace IMPA
         Public Sub Cancel()
             If Me.bwIMPA.IsBusy Then Me.bwIMPA.CancelAsync()
 
-            Do While Me.bwIMPA.IsBusy
+            While Me.bwIMPA.IsBusy
                 Application.DoEvents()
-            Loop
+            End While
 
         End Sub
 

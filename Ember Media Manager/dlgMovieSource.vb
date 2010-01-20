@@ -43,33 +43,38 @@ Public Class dlgMovieSource
     End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                If Me._id >= 0 Then
-                    SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?) WHERE ID =", Me._id, ";")
-                Else
-                    SQLcommand.CommandText = "INSERT OR REPLACE INTO sources (name, path, recursive, foldername, single) VALUES (?,?,?,?,?);"
-                End If
-                Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
-                Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
-                Dim parRecur As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRecur", DbType.Boolean, 0, "recursive")
-                Dim parFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFolder", DbType.Boolean, 0, "foldername")
-                Dim parSingle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSingle", DbType.Boolean, 0, "single")
+        Try
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    If Me._id >= 0 Then
+                        SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?) WHERE ID =", Me._id, ";")
+                    Else
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO sources (name, path, recursive, foldername, single) VALUES (?,?,?,?,?);"
+                    End If
+                    Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
+                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
+                    Dim parRecur As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRecur", DbType.Boolean, 0, "recursive")
+                    Dim parFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFolder", DbType.Boolean, 0, "foldername")
+                    Dim parSingle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSingle", DbType.Boolean, 0, "single")
 
-                parName.Value = txtSourceName.Text.Trim
-                parPath.Value = txtSourcePath.Text.Trim
-                parRecur.Value = chkScanRecursive.Checked
-                parFolder.Value = chkUseFolderName.Checked
-                parSingle.Value = chkSingle.Checked
+                    parName.Value = txtSourceName.Text.Trim
+                    parPath.Value = txtSourcePath.Text.Trim
+                    parRecur.Value = chkScanRecursive.Checked
+                    parFolder.Value = chkUseFolderName.Checked
+                    parSingle.Value = chkSingle.Checked
 
-                SQLcommand.ExecuteNonQuery()
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+                SQLtransaction.Commit()
             End Using
-            SQLtransaction.Commit()
-        End Using
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Finally
+            Master.GetListOfSources()
+        End Try
 
-        Master.GetListOfSources()
-
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
@@ -118,21 +123,25 @@ Public Class dlgMovieSource
     Private Sub CheckConditions()
         Dim isValid As Boolean = False
 
-        If String.IsNullOrEmpty(Me.txtSourceName.Text) Then
-            pbValid.Image = My.Resources.invalid
-        Else
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT ID FROM Sources WHERE Name LIKE """, Me.txtSourceName.Text.Trim, """ AND ID != ", Me._id, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If Not String.IsNullOrEmpty(SQLreader("ID").ToString) Then
-                        pbValid.Image = My.Resources.invalid
-                    Else
-                        pbValid.Image = My.Resources.valid
-                        isValid = True
-                    End If
+        Try
+            If String.IsNullOrEmpty(Me.txtSourceName.Text) Then
+                pbValid.Image = My.Resources.invalid
+            Else
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLcommand.CommandText = String.Concat("SELECT ID FROM Sources WHERE Name LIKE """, Me.txtSourceName.Text.Trim, """ AND ID != ", Me._id, ";")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        If Not String.IsNullOrEmpty(SQLreader("ID").ToString) Then
+                            pbValid.Image = My.Resources.invalid
+                        Else
+                            pbValid.Image = My.Resources.valid
+                            isValid = True
+                        End If
+                    End Using
                 End Using
-            End Using
-        End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso isValid Then
             Me.OK_Button.Enabled = True
@@ -164,19 +173,22 @@ Public Class dlgMovieSource
 
     Private Sub dlgMovieSource_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
-
-        If Me._id >= 0 Then
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLcommand.CommandText = String.Concat("SELECT * FROM Sources WHERE ID = ", Me._id, ";")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    Me.txtSourceName.Text = SQLreader("Name").ToString
-                    Me.txtSourcePath.Text = SQLreader("Path").ToString
-                    Me.chkScanRecursive.Checked = Convert.ToBoolean(SQLreader("Recursive"))
-                    Me.chkSingle.Checked = Convert.ToBoolean(SQLreader("Single"))
-                    Me.chkUseFolderName.Checked = Convert.ToBoolean(SQLreader("Foldername"))
+        Try
+            If Me._id >= 0 Then
+                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLcommand.CommandText = String.Concat("SELECT * FROM Sources WHERE ID = ", Me._id, ";")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        Me.txtSourceName.Text = SQLreader("Name").ToString
+                        Me.txtSourcePath.Text = SQLreader("Path").ToString
+                        Me.chkScanRecursive.Checked = Convert.ToBoolean(SQLreader("Recursive"))
+                        Me.chkSingle.Checked = Convert.ToBoolean(SQLreader("Single"))
+                        Me.chkUseFolderName.Checked = Convert.ToBoolean(SQLreader("Foldername"))
+                    End Using
                 End Using
-            End Using
-        End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub SetUp()
