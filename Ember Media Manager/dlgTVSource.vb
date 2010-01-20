@@ -55,7 +55,7 @@ Public Class dlgTVSource
                     Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
 
                     parName.Value = txtSourceName.Text.Trim
-                    parPath.Value = txtSourcePath.Text.Trim
+                    parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
 
                     SQLcommand.ExecuteNonQuery()
                 End Using

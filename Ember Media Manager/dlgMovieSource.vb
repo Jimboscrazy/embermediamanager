@@ -21,6 +21,7 @@
 
 Imports System
 Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class dlgMovieSource
 
@@ -58,7 +59,7 @@ Public Class dlgMovieSource
                     Dim parSingle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSingle", DbType.Boolean, 0, "single")
 
                     parName.Value = txtSourceName.Text.Trim
-                    parPath.Value = txtSourcePath.Text.Trim
+                    parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
                     parRecur.Value = chkScanRecursive.Checked
                     parFolder.Value = chkUseFolderName.Checked
                     parSingle.Value = chkSingle.Checked
