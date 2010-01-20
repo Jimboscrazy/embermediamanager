@@ -132,46 +132,21 @@ fontstyle code 5.
     </object>
 
     <object name="lblMetaDataHeader">
-      <width>237</width>
-      <height>17</height>
-      <left>pnlInfoPanel.Width - 242</left>
-      <top>29</top>
-      <backcolor>-9868951</backcolor>
-      <forecolor>-1</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>1</fontstyle>
+      <visible>false</visible>
     </object>
     
     <object name="btnMetaDataRefresh">
-      <width>65</width>
-      <height>23</height>
-      <left>lblMetaDataHeader.Left + 167</left>
-      <top>26</top>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <visible>false</visible>
     </object>
     
     <object name="txtMetaData">
-      <width>237</width>
-      <height>229</height>
-      <left>lblMetaDataHeader.Left</left>
-      <top>50</top>
-      <backcolor>-2302756</backcolor>
-      <forecolor>-16777216</forecolor>
-      <anchor>9</anchor>
-      <font>Microsoft Sans Serif</font>
-      <fontsize>8</fontsize>
-      <fontstyle>0</fontstyle>
+      <visible>false</visible>
     </object>
 
     <object name="pnlActors">
       <width>302</width>
       <height>250</height>
-      <left>pnlInfoPanel.Width - 547</left>
+      <left>pnlInfoPanel.Width - 307</left>
       <top>29</top>
       <backcolor>-2302756</backcolor>
       <anchor>9</anchor>
@@ -224,7 +199,7 @@ fontstyle code 5.
     <!-- END INTERNAL TO PNLACTORS -->
 
     <object name="lblPlotHeader">
-      <width>pnlInfoPanel.Width - 553</width>
+      <width>pnlInfoPanel.Width - 315</width>
       <height>17</height>
       <left>3</left>
       <top>29</top>
