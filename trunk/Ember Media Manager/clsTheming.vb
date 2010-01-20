@@ -24,9 +24,9 @@ Public Class Theming
 
         BuildControlList()
 
-        ParseThemes(_movietheme, "movie")
-        ParseThemes(_showtheme, "tvshow")
-        ParseThemes(_eptheme, "tvep")
+        ParseThemes(_movietheme, "movie", Master.eSettings.MovieTheme)
+        ParseThemes(_showtheme, "tvshow", Master.eSettings.TVShowTheme)
+        ParseThemes(_eptheme, "tvep", Master.eSettings.TVEpTheme)
     End Sub
 
     Public Class Controls
@@ -303,7 +303,7 @@ Public Class Theming
         End Try
     End Sub
 
-    Public Sub ParseThemes(ByRef tTheme As Theme, ByVal tType As String)
+    Public Sub ParseThemes(ByRef tTheme As Theme, ByVal tType As String, ByVal sTheme As String)
         Dim ThemeXML As New XDocument
         Dim cControl As Controls
         Dim cName As String = String.Empty
@@ -311,7 +311,7 @@ Public Class Theming
         Dim cFontSize As Integer = 8
         Dim cFontStyle As FontStyle = FontStyle.Bold
 
-        Dim tPath As String = String.Concat(Master.AppPath, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, Master.eSettings.MovieTheme))
+        Dim tPath As String = String.Concat(Master.AppPath, "Themes", Path.DirectorySeparatorChar, String.Format("{0}-{1}.xml", tType, sTheme))
         If File.Exists(tPath) Then
 
             ThemeXML = XDocument.Load(tPath)
