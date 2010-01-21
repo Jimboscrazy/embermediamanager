@@ -753,7 +753,7 @@ Public Class frmMain
                 Case 2
                     If Me.pnlInfoPanel.Height = Me.IPUp Then
                         Me.tmrAni.Stop()
-                        Me.btnUp.Enabled = False
+                        'Me.btnUp.Enabled = False
                         Me.btnDown.Enabled = True
                         Me.btnMid.Enabled = True
                     End If
@@ -761,6 +761,7 @@ Public Class frmMain
 
             'move focus somewhere to stop highlighting some info boxes
             If Me.tabsMain.SelectedIndex = 0 Then Me.txtSearch.Focus()
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4550,7 +4551,7 @@ doCancel:
 
             Me.ClearInfo(False)
 
-            If Not Me.currThemetype = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
+            If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
 
             Me.bwLoadShowInfo.WorkerSupportsCancellation = True
             Me.bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
@@ -4873,7 +4874,7 @@ doCancel:
             Me.lblTitle.Text = Master.currShow.TVEp.Title
             Me.txtPlot.Text = Master.currShow.TVEp.Plot
             Me.lblDirector.Text = Master.currShow.TVEp.Director
-            Me.txtFilePath.Text = Regex.Replace(Master.currShow.Filename, "\[[0-9]+\]$", String.Empty)
+            Me.txtFilePath.Text = Master.currShow.Filename
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(999, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEp.Aired), "?", Master.currShow.TVEp.Aired))
 
             Me.lblTagline.Text = String.Format(Master.eLang.GetString(999, "Season: {0}, Episode: {1}"), _
@@ -4922,7 +4923,7 @@ doCancel:
                 Me.pbStudio.Left = 0
             End If
 
-            Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo)
+            Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEp.FileInfo)
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -6172,6 +6173,8 @@ doCancel:
     Private Sub SelectSeasonRow(ByVal iRow As Integer)
 
         Try
+            If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
+
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
@@ -6496,10 +6499,13 @@ doCancel:
             Select Case tType
                 Case 0
                     Me.Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
+                    If Not Me.currThemeType = Theming.ThemeType.Movies Then Me.ApplyTheme(Theming.ThemeType.Movies)
                 Case 1
                     Me.Label1.Text = Master.eLang.GetString(999, "No Information is Available for This Show")
+                    If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Case 2
                     Me.Label1.Text = Master.eLang.GetString(999, "No Information is Available for This Episode")
+                    If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
             End Select
         Else
             Me.pnlTop.Visible = True
