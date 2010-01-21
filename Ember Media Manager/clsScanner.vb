@@ -1353,10 +1353,10 @@ Public Class Scanner
         Dim retSeason As New List(Of Seasons)
         Dim cSeason As Seasons
 
-        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "(s(eason[\]\._\-+\s?\[?]*)?(?<season>[0-9]+))[\]\._\-+\s?\[?]*((-|e(pisode[\]\._\-+\s?\[?]*)?)[0-9]+)+", RegexOptions.IgnoreCase)
+        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "(s(eason[\W_]*)?(?<season>[0-9]+))[\W_]*((-|e(pisode[\W_]*)?)[0-9]+)+", RegexOptions.IgnoreCase)
             cSeason = New Seasons
             cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
-            For Each eMatch As Match In Regex.Matches(sMatch.Value, "(-|e(pisode[\]\._\-+\s?\[?]*)?)(?<episode>[0-9]+)", RegexOptions.IgnoreCase)
+            For Each eMatch As Match In Regex.Matches(sMatch.Value, "(-|e(pisode[\W_]*)?)(?<episode>[0-9]+)", RegexOptions.IgnoreCase)
                 cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
             Next
             retSeason.Add(cSeason)
@@ -1364,7 +1364,7 @@ Public Class Scanner
 
         If retSeason.Count > 0 Then Return retSeason
 
-        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?(?<season>[0-9]+)([-x][0-9]+)+", RegexOptions.IgnoreCase)
+        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "([\W_])?(?<season>[0-9]+)([-x][0-9]+)+", RegexOptions.IgnoreCase)
             cSeason = New Seasons
             cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
             For Each eMatch As Match In Regex.Matches(sMatch.Value, "[-x](?<episode>[0-9]+)", RegexOptions.IgnoreCase)
@@ -1375,7 +1375,7 @@ Public Class Scanner
 
         If retSeason.Count > 0 Then Return retSeason
 
-        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "([\._ -])?(?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9])", RegexOptions.IgnoreCase)
+        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "([\W_])?(?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9])", RegexOptions.IgnoreCase)
             cSeason = New Seasons
             cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
             For Each eMatch As Match In Regex.Matches(sMatch.Value, "(([0-9]+|-)(?<episode>[0-9][0-9]))", RegexOptions.IgnoreCase)
@@ -1386,10 +1386,10 @@ Public Class Scanner
 
         If retSeason.Count > 0 Then Return retSeason
 
-        If Regex.IsMatch(Path.GetDirectoryName(sPath), "^(s(eason)?)?([\._ -])?[0-9]+$", RegexOptions.IgnoreCase) Then
+        If Regex.IsMatch(Path.GetDirectoryName(sPath), "^(s(eason)?)?([\W_])?[0-9]+$", RegexOptions.IgnoreCase) Then
             cSeason = New Seasons
-            cSeason.Season = Convert.ToInt32(Regex.Match(Path.GetDirectoryName(sPath), "^(s(eason)?)?([\._ -])?(?<season>[0-9]+)$", RegexOptions.IgnoreCase).Groups("season").Value)
-            For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "e(pisode[\]\._\-+\s?\[?]*)?(?<episode>[0-9]+)", RegexOptions.IgnoreCase)
+            cSeason.Season = Convert.ToInt32(Regex.Match(Path.GetDirectoryName(sPath), "^(s(eason)?)?([\W_])?(?<season>[0-9]+)$", RegexOptions.IgnoreCase).Groups("season").Value)
+            For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "e(pisode[\W_]*)?(?<episode>[0-9]+)", RegexOptions.IgnoreCase)
                 cSeason.Episodes.Add(Convert.ToInt32(sMatch.Groups("episode").Value))
             Next
             retSeason.Add(cSeason)
