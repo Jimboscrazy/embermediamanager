@@ -983,7 +983,7 @@ Public Class Scanner
             If Args.Scan.Movies Then
                 MoviePaths.Clear()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLcommand.CommandText = "SELECT Movies.MoviePath, TVShows.ID, TVShows.TVShowPath, TVEps.TVEpPath FROM Movies, TVShows, TVEps;"
+                    SQLcommand.CommandText = "SELECT Movies.MoviePath FROM Movies;"
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
                             MoviePaths.Add(SQLreader("MoviePath").ToString.ToLower)
@@ -1043,10 +1043,10 @@ Public Class Scanner
 
                 TVPaths.Clear()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                    SQLcommand.CommandText = "SELECT TVEpPath FROM TVEps;"
+                    SQLcommand.CommandText = "SELECT TVEpPath FROM TVEpPaths;"
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
-                            TVPaths.Add(Regex.Replace(SQLreader("TVEpPath").ToString.ToLower, "\[[0-9]+\]$", String.Empty))
+                            TVPaths.Add(SQLreader("TVEpPath").ToString.ToLower)
                             If Me.bwPrelim.CancellationPending Then
                                 e.Cancel = True
                                 Return
@@ -1193,11 +1193,7 @@ Public Class Scanner
                                             For Each sSeasons As Seasons In GetSeasons(Episode.Filename)
                                                 For Each i As Integer In sSeasons.Episodes
 
-                                                    If sSeasons.Episodes.Count = 1 Then
-                                                        tmpTVDB.Filename = Episode.Filename
-                                                    Else
-                                                        tmpTVDB.Filename = String.Format("{0}[{1}]", Episode.Filename, i)
-                                                    End If
+                                                    tmpTVDB.Filename = Episode.Filename
 
                                                     tmpTVDB.TVEp = New Media.EpisodeDetails
 
