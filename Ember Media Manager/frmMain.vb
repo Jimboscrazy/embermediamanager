@@ -2752,11 +2752,7 @@ Public Class frmMain
     Private Sub RefreshAllMovies()
         If Me.dtMedia.Rows.Count > 0 Then
 
-            Me.ToolsToolStripMenuItem.Enabled = False
-            Me.tsbAutoPilot.Enabled = False
-            Me.tsbRefreshMedia.Enabled = False
-            Me.mnuMediaList.Enabled = False
-            Me.tabsMain.Enabled = False
+            Me.SetControlsEnabled(False)
             Me.tspbLoading.Style = ProgressBarStyle.Continuous
             Me.EnableFilters(False)
 
@@ -3044,11 +3040,7 @@ Public Class frmMain
     End Sub
 
     Private Sub CleanDatabaseToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CleanDatabaseToolStripMenuItem.Click
-        Me.ToolsToolStripMenuItem.Enabled = False
-        Me.tsbAutoPilot.Enabled = False
-        Me.tsbRefreshMedia.Enabled = False
-        Me.mnuMediaList.Enabled = False
-        Me.tabsMain.Enabled = False
+        Me.SetControlsEnabled(False)
         Me.tspbLoading.Style = ProgressBarStyle.Marquee
         Me.EnableFilters(False)
 
@@ -3128,9 +3120,7 @@ Public Class frmMain
                 Me.tabsMain.Enabled = True
                 Me.tsbRefreshMedia.Enabled = True
                 If Me.dgvMediaList.RowCount > 0 Then
-                    Me.ToolsToolStripMenuItem.Enabled = True
-                    Me.tsbAutoPilot.Enabled = True
-                    Me.mnuMediaList.Enabled = True
+                    Me.SetControlsEnabled(True)
                 End If
             End If
         End If
@@ -3889,11 +3879,7 @@ doCancel:
             Me.tspbLoading.Visible = False
             Me.tslStatus.Text = String.Empty
 
-            Me.ToolsToolStripMenuItem.Enabled = True
-            Me.tsbAutoPilot.Enabled = True
-            Me.tsbRefreshMedia.Enabled = True
-            Me.mnuMediaList.Enabled = True
-            Me.tabsMain.Enabled = True
+            SetControlsEnabled(True)
             Me.EnableFilters(True)
 
             Me.btnMarkAll.Enabled = True
@@ -3925,11 +3911,7 @@ doCancel:
         Me.tslLoading.Text = String.Empty
         Me.tspbLoading.Visible = False
         Me.tslLoading.Visible = False
-        Me.ToolsToolStripMenuItem.Enabled = True
-        Me.tsbAutoPilot.Enabled = True
-        Me.tsbRefreshMedia.Enabled = True
-        Me.mnuMediaList.Enabled = True
-        Me.tabsMain.Enabled = True
+        Me.SetControlsEnabled(True)
         Me.EnableFilters(True)
 
         Me.FillList(0)
@@ -3944,11 +3926,7 @@ doCancel:
         Me.tslLoading.Text = String.Empty
         Me.tspbLoading.Visible = False
         Me.tslLoading.Visible = False
-        Me.ToolsToolStripMenuItem.Enabled = True
-        Me.tsbAutoPilot.Enabled = True
-        Me.tsbRefreshMedia.Enabled = True
-        Me.mnuMediaList.Enabled = True
-        Me.tabsMain.Enabled = True
+        Me.SetControlsEnabled(True)
         Me.EnableFilters(True)
 
         Me.FillList(0)
@@ -4297,11 +4275,7 @@ doCancel:
             Me.ClearFilters()
             Me.EnableFilters(False)
 
-            Me.ToolsToolStripMenuItem.Enabled = False
-            Me.tsbAutoPilot.Enabled = False
-            Me.tsbRefreshMedia.Enabled = False
-            Me.mnuMediaList.Enabled = False
-            Me.tabsMain.Enabled = False
+            Me.SetControlsEnabled(False)
             Me.tabMovies.Text = Master.eLang.GetString(36, "Movies")
             Me.txtSearch.Text = String.Empty
 
@@ -4663,11 +4637,7 @@ doCancel:
             Me.InfoCleared = False
 
             If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.ToolsToolStripMenuItem.Enabled = True
-                Me.tsbAutoPilot.Enabled = True
-                Me.tsbRefreshMedia.Enabled = True
-                Me.mnuMediaList.Enabled = True
-                Me.tabsMain.Enabled = True
+                Me.SetControlsEnabled(True)
                 Me.EnableFilters(True)
             End If
 
@@ -5048,11 +5018,7 @@ doCancel:
 
             If Not isCL Then
                 Me.tslStatus.Text = String.Empty 'clear status for scrapers that do not report
-                Me.ToolsToolStripMenuItem.Enabled = False
-                Me.tsbAutoPilot.Enabled = False
-                Me.tsbRefreshMedia.Enabled = False
-                Me.mnuMediaList.Enabled = False
-                Me.tabsMain.Enabled = False
+                Me.SetControlsEnabled(False)
                 Me.tspbLoading.Style = ProgressBarStyle.Continuous
                 Me.EnableFilters(False)
 
@@ -5145,11 +5111,7 @@ doCancel:
                             Me.tslLoading.Visible = False
                             Me.tspbLoading.Visible = False
                             Me.tslStatus.Text = String.Empty
-                            Me.ToolsToolStripMenuItem.Enabled = True
-                            Me.tsbAutoPilot.Enabled = True
-                            Me.tsbRefreshMedia.Enabled = True
-                            Me.mnuMediaList.Enabled = True
-                            Me.tabsMain.Enabled = True
+                            Me.SetControlsEnabled(True)
                             Me.EnableFilters(True)
                             Me.btnMarkAll.Enabled = True
                             Me.pnlCancel.Visible = False
@@ -5247,11 +5209,7 @@ doCancel:
                                         Me.tslLoading.Visible = False
                                         Me.tspbLoading.Visible = False
                                         Me.tslStatus.Text = String.Empty
-                                        Me.ToolsToolStripMenuItem.Enabled = True
-                                        Me.tsbAutoPilot.Enabled = True
-                                        Me.tsbRefreshMedia.Enabled = True
-                                        Me.mnuMediaList.Enabled = True
-                                        Me.tabsMain.Enabled = True
+                                        Me.SetControlsEnabled(True)
                                         Me.EnableFilters(True)
                                         Me.LoadInfo(ID, Master.currMovie.Filename, True, False)
                                     End If
@@ -5427,12 +5385,8 @@ doCancel:
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.tslStatus.Text = String.Empty
-            Me.ToolsToolStripMenuItem.Enabled = True
-            Me.tsbAutoPilot.Enabled = True
-            Me.tsbRefreshMedia.Enabled = True
-            Me.mnuMediaList.Enabled = True
-            Me.tabsMain.Enabled = True
-            Me.EnableFilters(False)
+            Me.SetControlsEnabled(True)
+            Me.EnableFilters(True)
         End If
     End Sub
 
@@ -5997,14 +5951,10 @@ doCancel:
                             .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
                         End If
 
-                        .ToolsToolStripMenuItem.Enabled = True
-                        .tsbAutoPilot.Enabled = True
-                        .mnuMediaList.Enabled = True
+                        Me.SetControlsEnabled(True)
                     End With
                 Else
-                    Me.ToolsToolStripMenuItem.Enabled = False
-                    Me.tsbAutoPilot.Enabled = False
-                    Me.mnuMediaList.Enabled = False
+                    Me.SetControlsEnabled(False)
                     Me.tslStatus.Text = String.Empty
                     Me.ClearInfo()
                 End If
@@ -6207,11 +6157,7 @@ doCancel:
                     'Me.tslStatus.Text = Master.eLang.GetString(111, "Unable to load directories. Please check settings.")
                     Me.tspbLoading.Visible = False
                     Me.tslLoading.Visible = False
-                    Me.tabsMain.Enabled = True
-                    Me.tsbRefreshMedia.Enabled = True
-                    Me.ToolsToolStripMenuItem.Enabled = False
-                    Me.tsbAutoPilot.Enabled = False
-                    Me.mnuMediaList.Enabled = False
+                    Me.SetControlsEnabled(False)
                 End If
             Case 1
                 Me.tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
@@ -6224,14 +6170,7 @@ doCancel:
 
                 Me.tspbLoading.Visible = False
                 Me.tslLoading.Visible = False
-                Me.tabsMain.Enabled = True
-                Me.tsbRefreshMedia.Enabled = True
-
-                If Me.tabsMain.SelectedIndex = 0 Then
-                    Me.ToolsToolStripMenuItem.Enabled = True
-                    Me.tsbAutoPilot.Enabled = True
-                    Me.mnuMediaList.Enabled = True
-                End If
+                Me.SetControlsEnabled(True)
         End Select
 
     End Sub
@@ -6365,9 +6304,7 @@ doCancel:
                 If Me.dgvMediaList.RowCount > 0 Then
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-                    Me.ToolsToolStripMenuItem.Enabled = True
-                    Me.tsbAutoPilot.Enabled = True
-                    Me.mnuMediaList.Enabled = True
+                    Me.SetControlsEnabled(True)
                     Me.dgvMediaList.Focus()
                 End If
             Case 1
@@ -6490,8 +6427,12 @@ doCancel:
         End If
     End Sub
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        Dim sHTTP As New HTTP
-        sHTTP.DownloadData("http://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.useragent%28VS.71%29.aspx")
+    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
+        Me.ToolsToolStripMenuItem.Enabled = isEnabled
+        Me.tsbAutoPilot.Enabled = isEnabled
+        Me.tsbRefreshMedia.Enabled = isEnabled
+        Me.mnuMediaList.Enabled = isEnabled
+        Me.tabsMain.Enabled = isEnabled
+        Me.txtSearch.Enabled = isEnabled
     End Sub
 End Class
