@@ -310,6 +310,7 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
+        Me.Button1 = New System.Windows.Forms.Button
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -649,6 +650,7 @@ Partial Class frmMain
         'scMain.Panel2
         '
         Me.scMain.Panel2.BackColor = System.Drawing.Color.DimGray
+        Me.scMain.Panel2.Controls.Add(Me.Button1)
         Me.scMain.Panel2.Controls.Add(Me.pnlCancel)
         Me.scMain.Panel2.Controls.Add(Me.pnlNoInfo)
         Me.scMain.Panel2.Controls.Add(Me.pnlInfoPanel)
@@ -2946,6 +2948,15 @@ Partial Class frmMain
         'tmrLoadEp
         '
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(316, 7)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 13
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -3321,4 +3332,5 @@ Partial Class frmMain
     Friend WithEvents tmrLoadSeason As System.Windows.Forms.Timer
     Friend WithEvents tmrWaitEp As System.Windows.Forms.Timer
     Friend WithEvents tmrLoadEp As System.Windows.Forms.Timer
+    Friend WithEvents Button1 As System.Windows.Forms.Button
 End Class

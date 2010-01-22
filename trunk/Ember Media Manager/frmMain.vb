@@ -626,6 +626,7 @@ Public Class frmMain
                     End While
                 End If
 
+                Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadPic.WorkerSupportsCancellation = True
                 Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = Me.alActors.Item(Me.lstActors.SelectedIndex).ToString})
 
@@ -1192,7 +1193,7 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub dgvTVShow_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
+    Private Sub dgvTVShows_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellEnter
 
         Try
             If Me.dgvTVShows.Enabled Then
@@ -2018,12 +2019,7 @@ Public Class frmMain
 
                         cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
 
-                        If Me.bwLoadInfo.IsBusy Then
-                            Me.bwLoadInfo.CancelAsync()
-                            While Me.bwLoadInfo.IsBusy
-                                Application.DoEvents()
-                            End While
-                        End If
+                        If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
 
                         If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                             Me.dgvMediaList.ClearSelection()
@@ -2718,7 +2714,6 @@ Public Class frmMain
         Using dBulkRename As New dlgBulkRenamer
             Try
                 If dBulkRename.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    Application.DoEvents()
                     Me.LoadMedia(New Master.Scans With {.Movies = True})
                 End If
             Catch ex As Exception
@@ -3093,6 +3088,7 @@ Public Class frmMain
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
+            e.Cancel = True
         End Try
     End Sub
 
@@ -3142,31 +3138,19 @@ Public Class frmMain
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
 
-        '//
-        ' Thread to download image from the internet (multi-threaded because sometimes
-        ' the web server is slow to respond or not reachable, hanging the GUI)
-        '\\
-
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Dim tImage As Image = Nothing
-
-            Dim wrRequest As WebRequest = WebRequest.Create(Args.pURL)
-            wrRequest.Timeout = 10000
-            Using wrResponse As WebResponse = wrRequest.GetResponse()
-                If wrResponse.ContentType.Contains("image") Then
-                    tImage = Image.FromStream(wrResponse.GetResponseStream())
-                End If
-            End Using
+            Dim dImage As Image = Images.GenericFromWeb(Args.pURL)
 
             If Me.bwDownloadPic.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
 
-            e.Result = New Results With {.Result = tImage}
+            e.Result = New Results With {.Result = dImage}
         Catch ex As Exception
             e.Result = New Results With {.Result = Nothing}
+            e.Cancel = True
         End Try
 
     End Sub
@@ -3238,6 +3222,7 @@ Public Class frmMain
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            e.Cancel = True
         End Try
 
 
@@ -3252,74 +3237,6 @@ Public Class frmMain
         Try
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithMovie()
-
-                If Not IsNothing(Me.MainFanart.Image) Then
-                    Me.pbFanartCache.Image = Me.MainFanart.Image
-                Else
-                    If Not IsNothing(Me.pbFanartCache.Image) Then
-                        Me.pbFanartCache.Image.Dispose()
-                        Me.pbFanartCache.Image = Nothing
-                    End If
-                    If Not IsNothing(Me.pbFanart.Image) Then
-                        Me.pbFanart.Image.Dispose()
-                        Me.pbFanart.Image = Nothing
-                    End If
-                End If
-
-                Dim g As Graphics
-                Dim strSize As String
-                Dim lenSize As Integer
-                Dim rect As Rectangle
-
-                If Not IsNothing(Me.MainPoster.Image) Then
-                    Me.pbPosterCache.Image = Me.MainPoster.Image
-                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                    ImageManip.SetGlassOverlay(Me.pbPoster)
-                    Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
-
-                    If Master.eSettings.ShowDims Then
-                        g = Graphics.FromImage(pbPoster.Image)
-                        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                        lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                        rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                        ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                        g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
-                    End If
-
-                    Me.pbPoster.Location = New Point(4, 4)
-                    Me.pnlPoster.Visible = True
-                Else
-                    If Not IsNothing(Me.pbPoster.Image) Then
-                        Me.pbPoster.Image.Dispose()
-                        Me.pbPoster.Image = Nothing
-                        Me.pnlPoster.Visible = False
-                    End If
-                End If
-
-                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
-
-                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
-                    g = Graphics.FromImage(pbFanart.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
-                End If
-
-                Me.InfoCleared = False
-
-                If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                    Me.ToolsToolStripMenuItem.Enabled = True
-                    Me.tsbAutoPilot.Enabled = True
-                    Me.tsbRefreshMedia.Enabled = True
-                    Me.mnuMediaList.Enabled = True
-                    Me.tabsMain.Enabled = True
-                    Me.EnableFilters(True)
-                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3368,6 +3285,7 @@ Public Class frmMain
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            e.Cancel = True
         End Try
 
 
@@ -3382,70 +3300,6 @@ Public Class frmMain
         Try
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithShow()
-
-                If Not IsNothing(Me.MainFanart.Image) Then
-                    Me.pbFanartCache.Image = Me.MainFanart.Image
-                Else
-                    If Not IsNothing(Me.pbFanartCache.Image) Then
-                        Me.pbFanartCache.Image.Dispose()
-                        Me.pbFanartCache.Image = Nothing
-                    End If
-                    If Not IsNothing(Me.pbFanart.Image) Then
-                        Me.pbFanart.Image.Dispose()
-                        Me.pbFanart.Image = Nothing
-                    End If
-                End If
-
-                Dim g As Graphics
-                Dim strSize As String
-                Dim lenSize As Integer
-                Dim rect As Rectangle
-
-                If Not IsNothing(Me.MainPoster.Image) Then
-                    Me.pbPosterCache.Image = Me.MainPoster.Image
-                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                    ImageManip.SetGlassOverlay(Me.pbPoster)
-                    Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
-
-                    If Master.eSettings.ShowDims Then
-                        g = Graphics.FromImage(pbPoster.Image)
-                        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                        lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                        rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                        ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                        g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
-                    End If
-
-                    Me.pbPoster.Location = New Point(4, 4)
-                    Me.pnlPoster.Visible = True
-                Else
-                    If Not IsNothing(Me.pbPoster.Image) Then
-                        Me.pbPoster.Image.Dispose()
-                        Me.pbPoster.Image = Nothing
-                        Me.pnlPoster.Visible = False
-                    End If
-                End If
-
-                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
-
-                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
-                    g = Graphics.FromImage(pbFanart.Image)
-                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
-                End If
-
-                Me.InfoCleared = False
-
-                If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                    Me.tsbRefreshMedia.Enabled = True
-                    Me.tabsMain.Enabled = True
-                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -3473,7 +3327,6 @@ Public Class frmMain
             End If
 
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.EpPosterPath)
-            'read nfo if it's there
 
             'wait for mediainfo to update the nfo
             While bwMediaInfo.IsBusy
@@ -3487,6 +3340,7 @@ Public Class frmMain
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            e.Cancel = True
         End Try
 
 
@@ -3501,44 +3355,6 @@ Public Class frmMain
         Try
             If Not e.Cancelled Then
                 Me.fillScreenInfoWithEpisode()
-
-                Dim g As Graphics
-                Dim strSize As String
-                Dim lenSize As Integer
-                Dim rect As Rectangle
-
-                If Not IsNothing(Me.MainPoster.Image) Then
-                    Me.pbPosterCache.Image = Me.MainPoster.Image
-                    ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
-                    ImageManip.SetGlassOverlay(Me.pbPoster)
-                    Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
-
-                    If Master.eSettings.ShowDims Then
-                        g = Graphics.FromImage(pbPoster.Image)
-                        g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                        strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
-                        lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                        rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
-                        ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                        g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
-                    End If
-
-                    Me.pbPoster.Location = New Point(4, 4)
-                    Me.pnlPoster.Visible = True
-                Else
-                    If Not IsNothing(Me.pbPoster.Image) Then
-                        Me.pbPoster.Image.Dispose()
-                        Me.pbPoster.Image = Nothing
-                        Me.pnlPoster.Visible = False
-                    End If
-                End If
-
-                Me.InfoCleared = False
-
-                If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                    Me.tsbRefreshMedia.Enabled = True
-                    Me.tabsMain.Enabled = True
-                End If
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4120,7 +3936,7 @@ doCancel:
     End Sub
 
     Private Sub bwCleanDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCleanDB.DoWork
-        Master.DB.Clean()
+        Master.DB.Clean(True, True)
     End Sub
 
     Private Sub bwCleanDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCleanDB.RunWorkerCompleted
@@ -4516,21 +4332,19 @@ doCancel:
             Me.ShowNoInfo(False)
 
             If doMI Then
-                If Me.bwMediaInfo.IsBusy Then
-                    Me.bwMediaInfo.CancelAsync()
-                    While Me.bwMediaInfo.IsBusy
-                        Application.DoEvents()
-                    End While
-                End If
+                If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
+
                 Me.txtMetaData.Clear()
                 Me.pbMILoading.Visible = True
 
+                Me.bwMediaInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwMediaInfo.WorkerSupportsCancellation = True
                 Me.bwMediaInfo.RunWorkerAsync(New Arguments With {.setEnabled = setEnabled, .Path = sPath, .Movie = Master.currMovie})
             End If
 
             If doInfo Then
                 Me.ClearInfo()
+                Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
                 Me.bwLoadInfo.WorkerSupportsCancellation = True
                 Me.bwLoadInfo.RunWorkerAsync(New Arguments With {.ID = ID})
             End If
@@ -4549,16 +4363,13 @@ doCancel:
             Me.tabsMain.Enabled = False
             Me.ShowNoInfo(False)
 
-            Me.ClearInfo(False)
-
             If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
 
+            Me.ClearInfo()
+
+            Me.bwLoadShowInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadShowInfo.WorkerSupportsCancellation = True
             Me.bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
-
-            While Me.bwLoadShowInfo.IsBusy
-                Application.DoEvents()
-            End While
 
             Me.FillSeasons(ID)
 
@@ -4577,10 +4388,11 @@ doCancel:
             Me.tabsMain.Enabled = False
             Me.ShowNoInfo(False)
 
+            If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
+
             Me.ClearInfo(False)
 
-            If Not Me.currThemetype = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
-
+            Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadEpInfo.WorkerSupportsCancellation = True
             Me.bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
         Catch ex As Exception
@@ -4602,10 +4414,6 @@ doCancel:
                 If .bwLoadInfo.IsBusy Then .bwLoadInfo.CancelAsync()
                 If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
                 If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
-
-                While .bwDownloadPic.IsBusy OrElse .bwLoadInfo.IsBusy OrElse .bwLoadShowInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy
-                    Application.DoEvents()
-                End While
 
                 If IncludeFanart Then
                     If Not IsNothing(.pbFanart.Image) Then
@@ -4683,6 +4491,9 @@ doCancel:
                 .pbChannels.Image = Nothing
 
                 .txtMetaData.Text = String.Empty
+                .pnlTop.Visible = False
+
+                Application.DoEvents()
             End With
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4692,8 +4503,14 @@ doCancel:
 
     Private Sub fillScreenInfoWithMovie()
 
+        Dim g As Graphics
+        Dim strSize As String
+        Dim lenSize As Integer
+        Dim rect As Rectangle
+
         Try
             Me.SuspendLayout()
+            Me.pnlTop.Visible = True
             If Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
                 Me.lblTitle.Text = String.Format("{0} ({1})", Master.currMovie.Movie.Title, Master.currMovie.Movie.Year)
             ElseIf Not String.IsNullOrEmpty(Master.currMovie.Movie.Title) AndAlso String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
@@ -4791,6 +4608,69 @@ doCancel:
 
             Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo)
 
+            If Not IsNothing(Me.MainFanart.Image) Then
+                Me.pbFanartCache.Image = Me.MainFanart.Image
+            Else
+                If Not IsNothing(Me.pbFanartCache.Image) Then
+                    Me.pbFanartCache.Image.Dispose()
+                    Me.pbFanartCache.Image = Nothing
+                End If
+                If Not IsNothing(Me.pbFanart.Image) Then
+                    Me.pbFanart.Image.Dispose()
+                    Me.pbFanart.Image = Nothing
+                End If
+            End If
+
+            If Not IsNothing(Me.MainPoster.Image) Then
+                Me.pbPosterCache.Image = Me.MainPoster.Image
+                ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                ImageManip.SetGlassOverlay(Me.pbPoster)
+                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
+
+                If Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbPoster.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                End If
+
+                Me.pbPoster.Location = New Point(4, 4)
+                Me.pnlPoster.Visible = True
+            Else
+                If Not IsNothing(Me.pbPoster.Image) Then
+                    Me.pbPoster.Image.Dispose()
+                    Me.pbPoster.Image = Nothing
+                    Me.pnlPoster.Visible = False
+                End If
+            End If
+
+            ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+            Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                g = Graphics.FromImage(pbFanart.Image)
+                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+            End If
+
+            Me.InfoCleared = False
+
+            If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+                Me.ToolsToolStripMenuItem.Enabled = True
+                Me.tsbAutoPilot.Enabled = True
+                Me.tsbRefreshMedia.Enabled = True
+                Me.mnuMediaList.Enabled = True
+                Me.tabsMain.Enabled = True
+                Me.EnableFilters(True)
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4798,9 +4678,14 @@ doCancel:
     End Sub
 
     Private Sub fillScreenInfoWithShow()
+        Dim g As Graphics
+        Dim strSize As String
+        Dim lenSize As Integer
+        Dim rect As Rectangle
 
         Try
             Me.SuspendLayout()
+            Me.pnlTop.Visible = True
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then
                 Me.lblTitle.Text = Master.currShow.TVShow.Title
             End If
@@ -4861,6 +4746,65 @@ doCancel:
             Me.pnlInfoIcons.Width = pbStudio.Width + 1
             Me.pbStudio.Left = 0
 
+            If Not IsNothing(Me.MainFanart.Image) Then
+                Me.pbFanartCache.Image = Me.MainFanart.Image
+            Else
+                If Not IsNothing(Me.pbFanartCache.Image) Then
+                    Me.pbFanartCache.Image.Dispose()
+                    Me.pbFanartCache.Image = Nothing
+                End If
+                If Not IsNothing(Me.pbFanart.Image) Then
+                    Me.pbFanart.Image.Dispose()
+                    Me.pbFanart.Image = Nothing
+                End If
+            End If
+
+            If Not IsNothing(Me.MainPoster.Image) Then
+                Me.pbPosterCache.Image = Me.MainPoster.Image
+                ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                ImageManip.SetGlassOverlay(Me.pbPoster)
+                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
+
+                If Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbPoster.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                End If
+
+                Me.pbPoster.Location = New Point(4, 4)
+                Me.pnlPoster.Visible = True
+            Else
+                If Not IsNothing(Me.pbPoster.Image) Then
+                    Me.pbPoster.Image.Dispose()
+                    Me.pbPoster.Image = Nothing
+                    Me.pnlPoster.Visible = False
+                End If
+            End If
+
+            ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+            Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                g = Graphics.FromImage(pbFanart.Image)
+                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+            End If
+
+            Me.InfoCleared = False
+
+            If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+                Me.tsbRefreshMedia.Enabled = True
+                Me.tabsMain.Enabled = True
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -4868,9 +4812,14 @@ doCancel:
     End Sub
 
     Private Sub fillScreenInfoWithEpisode()
+        Dim g As Graphics
+        Dim strSize As String
+        Dim lenSize As Integer
+        Dim rect As Rectangle
 
         Try
             Me.SuspendLayout()
+            Me.pnlTop.Visible = True
             Me.lblTitle.Text = Master.currShow.TVEp.Title
             Me.txtPlot.Text = Master.currShow.TVEp.Plot
             Me.lblDirector.Text = Master.currShow.TVEp.Director
@@ -4924,6 +4873,39 @@ doCancel:
             End If
 
             Me.txtMetaData.Text = NFO.FIToString(Master.currShow.TVEp.FileInfo)
+
+            If Not IsNothing(Me.MainPoster.Image) Then
+                Me.pbPosterCache.Image = Me.MainPoster.Image
+                ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                ImageManip.SetGlassOverlay(Me.pbPoster)
+                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
+
+                If Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbPoster.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                End If
+
+                Me.pbPoster.Location = New Point(4, 4)
+                Me.pnlPoster.Visible = True
+            Else
+                If Not IsNothing(Me.pbPoster.Image) Then
+                    Me.pbPoster.Image.Dispose()
+                    Me.pbPoster.Image = Nothing
+                    Me.pnlPoster.Visible = False
+                End If
+            End If
+
+            Me.InfoCleared = False
+
+            If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+                Me.tsbRefreshMedia.Enabled = True
+                Me.tabsMain.Enabled = True
+            End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -5646,6 +5628,8 @@ doCancel:
                 End Using
 
                 Me.mnuMoviesUpdate.DropDownItems.Clear()
+                mnuItem = Me.mnuMoviesUpdate.DropDownItems.Add(Master.eLang.GetString(999, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
+                mnuItem.Tag = String.Empty
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
@@ -5657,6 +5641,8 @@ doCancel:
                 End Using
 
                 Me.mnuTVShowUpdate.DropDownItems.Clear()
+                mnuItem = Me.mnuTVShowUpdate.DropDownItems.Add(Master.eLang.GetString(999, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
+                mnuItem.Tag = String.Empty
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLNewcommand.CommandText = String.Concat("SELECT Name FROM TVSources;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
@@ -5879,16 +5865,12 @@ doCancel:
 
     Private Sub SourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
-        If Not String.IsNullOrEmpty(SourceName) Then
-            Me.LoadMedia(New Master.Scans With {.Movies = True}, SourceName)
-        End If
+        Me.LoadMedia(New Master.Scans With {.Movies = True}, SourceName)
     End Sub
 
     Private Sub TVSourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
-        If Not String.IsNullOrEmpty(SourceName) Then
-            Me.LoadMedia(New Master.Scans With {.TV = True}, SourceName)
-        End If
+        Me.LoadMedia(New Master.Scans With {.TV = True}, SourceName)
     End Sub
 
     Private Sub XComSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -6075,6 +6057,8 @@ doCancel:
                     .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
 
                     .dgvTVShows.SelectedRows(0).Selected = False
+
+                    Me.SetTVCount()
                 End With
             End If
             Me.dgvTVShows.Enabled = True
@@ -6121,10 +6105,6 @@ doCancel:
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
-            While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
-                Application.DoEvents()
-            End While
-
             Me.tmpTitle = Me.dgvMediaList.Item(15, iRow).Value.ToString
             If Not Convert.ToBoolean(Me.dgvMediaList.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(6, iRow).Value) Then
                 Me.ClearInfo()
@@ -6151,10 +6131,6 @@ doCancel:
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
-            While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
-                Application.DoEvents()
-            End While
-
             If Not Convert.ToBoolean(Me.dgvTVShows.Item(2, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(4, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 1)
@@ -6180,10 +6156,6 @@ doCancel:
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
-            While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
-                Application.DoEvents()
-            End While
-
             Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
 
         Catch ex As Exception
@@ -6198,10 +6170,6 @@ doCancel:
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-
-            While Me.bwLoadInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
-                Application.DoEvents()
-            End While
 
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) Then
                 Me.ClearInfo(False)
@@ -6394,16 +6362,13 @@ doCancel:
                 If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
                 If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-                While Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
-                    Application.DoEvents()
-                End While
                 If Me.dgvMediaList.RowCount > 0 Then
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
                     Me.ToolsToolStripMenuItem.Enabled = True
                     Me.tsbAutoPilot.Enabled = True
                     Me.mnuMediaList.Enabled = True
-                    Me.SelectRow(If(Me.currRow = -1, 0, Me.currRow))
+                    Me.dgvMediaList.Focus()
                 End If
             Case 1
                 Me.ToolsToolStripMenuItem.Enabled = False
@@ -6417,9 +6382,6 @@ doCancel:
                 Me.ApplyTheme(Theming.ThemeType.Show)
                 If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-                While Me.bwLoadInfo.IsBusy OrElse Me.bwDownloadPic.IsBusy
-                    Application.DoEvents()
-                End While
                 If Me.dgvTVEpisodes.RowCount > 0 Then
                     Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                     Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
@@ -6438,7 +6400,7 @@ doCancel:
                         Me.currShowRow = 0
                     End If
 
-                    Me.SelectShowRow(Me.currShowRow)
+                    Me.dgvTVShows.Focus()
 
                 End If
         End Select
@@ -6495,7 +6457,6 @@ doCancel:
 
     Private Sub ShowNoInfo(ByVal ShowIt As Boolean, Optional ByVal tType As Integer = 0)
         If ShowIt Then
-            Me.pnlTop.Visible = False
             Select Case tType
                 Case 0
                     Me.Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
@@ -6507,10 +6468,30 @@ doCancel:
                     Me.Label1.Text = Master.eLang.GetString(999, "No Information is Available for This Episode")
                     If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
             End Select
-        Else
-            Me.pnlTop.Visible = True
         End If
 
         Me.pnlNoInfo.Visible = ShowIt
+    End Sub
+
+    Private Sub SetTVCount()
+        Dim ShowCount As Integer = 0
+        Dim EpCount As Integer = 0
+
+        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+            SQLCommand.CommandText = "SELECT COUNT(ID) AS COUNT FROM TVShows"
+            ShowCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+
+            SQLCommand.CommandText = "SELECT COUNT(ID) AS COUNT FROM TVEps"
+            EpCount = Convert.ToInt32(SQLCommand.ExecuteScalar)
+        End Using
+
+        If ShowCount > 0 AndAlso EpCount > 0 Then
+            Me.tabTV.Text = String.Format("{0} ({1}/{2})", Master.eLang.GetString(999, "TV"), ShowCount, EpCount)
+        End If
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        Dim sHTTP As New HTTP
+        sHTTP.DownloadData("http://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.useragent%28VS.71%29.aspx")
     End Sub
 End Class

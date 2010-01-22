@@ -22,6 +22,7 @@
 Imports System.Text.RegularExpressions
 Imports System.Globalization
 Imports System.IO
+Imports System.Text
 
 Public Class StringManip
     Public Shared Function ComputeLevenshtein(ByVal s As String, ByVal t As String) As Integer
@@ -348,4 +349,21 @@ Public Class StringManip
             Return Master.eLang.GetString(999, "Unknown")
         End If
     End Function
+
+    Public Shared Function HtmlEncode(ByVal stext As String) As String
+        Dim chars = Web.HttpUtility.HtmlEncode(stext).ToCharArray()
+        Dim result As StringBuilder = New StringBuilder(stext.Length + Convert.ToInt16(stext.Length * 0.1))
+
+        For Each c As Char In chars
+            Dim value As Integer = Convert.ToInt32(c)
+            If (value > 127) Then
+                result.AppendFormat("&#{0};", value)
+            Else
+                result.Append(c)
+            End If
+
+        Next
+        Return result.ToString()
+    End Function
+
 End Class

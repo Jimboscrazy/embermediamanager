@@ -324,23 +324,6 @@ Public Class dlgExportMovies
         Return line
     End Function
 
-    Public Function HtmlEncode(ByVal stext As String) As String
-        Dim chars = Web.HttpUtility.HtmlEncode(stext).ToCharArray()
-        Dim result As StringBuilder = New StringBuilder(stext.Length + Convert.ToInt16(stext.Length * 0.1))
-
-        For Each c As Char In chars
-            Dim value As Integer = Convert.ToInt32(c)
-            If (value > 127) Then
-                result.AppendFormat("&#{0};", value)
-            Else
-                result.Append(c)
-            End If
-
-        Next
-        Return result.ToString()
-    End Function
-
-
     Private Sub BuildHTML(ByVal bSearch As Boolean, ByVal strFilter As String, ByVal strIn As String, ByVal template As String, ByVal doNavigate As Boolean)
         Try
             ' Build HTML Documment in Code ... ugly but will work until new option
@@ -441,31 +424,31 @@ Public Class dlgExportMovies
                 row = row.Replace("<$POSTER_FILE>", String.Concat("export/", counter.ToString, ".jpg"))
                 row = row.Replace("<$FANART_FILE>", String.Concat("export/", counter.ToString, "-fanart.jpg"))
                 If Not String.IsNullOrEmpty(_curMovie.Movie.Title) Then
-                    row = row.Replace("<$MOVIENAME>", HtmlEncode(_curMovie.Movie.Title))
+                    row = row.Replace("<$MOVIENAME>", StringManip.HtmlEncode(_curMovie.Movie.Title))
                 Else
-                    row = row.Replace("<$MOVIENAME>", HtmlEncode(_curMovie.ListTitle))
+                    row = row.Replace("<$MOVIENAME>", StringManip.HtmlEncode(_curMovie.ListTitle))
                 End If
                 'TODO: write extension method to create a comma-separated string from the actors list
-                row = row.Replace("<$ACTORS>", HtmlEncode(Master.ListToStringWithSeparator(_curMovie.Movie.Actors, ",")))
-                row = row.Replace("<$DIRECTOR>", HtmlEncode(_curMovie.Movie.Director))
-                row = row.Replace("<$CERTIFICATION>", HtmlEncode(_curMovie.Movie.Certification))
-                row = row.Replace("<$IMDBID>", HtmlEncode(_curMovie.Movie.IMDBID))
-                row = row.Replace("<$MPAA>", HtmlEncode(_curMovie.Movie.MPAA))
-                row = row.Replace("<$RELEASEDATE>", HtmlEncode(_curMovie.Movie.ReleaseDate))
-                row = row.Replace("<$RUNTIME>", HtmlEncode(_curMovie.Movie.Runtime))
-                row = row.Replace("<$TAGLINE>", HtmlEncode(_curMovie.Movie.Tagline))
-                row = row.Replace("<$RATING>", HtmlEncode(_curMovie.Movie.Rating))
-                row = row.Replace("<$VOTES>", HtmlEncode(_curMovie.Movie.Votes))
-                row = row.Replace("<$LISTTITLE>", HtmlEncode(_curMovie.ListTitle))
+                row = row.Replace("<$ACTORS>", StringManip.HtmlEncode(Master.ListToStringWithSeparator(_curMovie.Movie.Actors, ",")))
+                row = row.Replace("<$DIRECTOR>", StringManip.HtmlEncode(_curMovie.Movie.Director))
+                row = row.Replace("<$CERTIFICATION>", StringManip.HtmlEncode(_curMovie.Movie.Certification))
+                row = row.Replace("<$IMDBID>", StringManip.HtmlEncode(_curMovie.Movie.IMDBID))
+                row = row.Replace("<$MPAA>", StringManip.HtmlEncode(_curMovie.Movie.MPAA))
+                row = row.Replace("<$RELEASEDATE>", StringManip.HtmlEncode(_curMovie.Movie.ReleaseDate))
+                row = row.Replace("<$RUNTIME>", StringManip.HtmlEncode(_curMovie.Movie.Runtime))
+                row = row.Replace("<$TAGLINE>", StringManip.HtmlEncode(_curMovie.Movie.Tagline))
+                row = row.Replace("<$RATING>", StringManip.HtmlEncode(_curMovie.Movie.Rating))
+                row = row.Replace("<$VOTES>", StringManip.HtmlEncode(_curMovie.Movie.Votes))
+                row = row.Replace("<$LISTTITLE>", StringManip.HtmlEncode(_curMovie.ListTitle))
                 row = row.Replace("<$YEAR>", _curMovie.Movie.Year)
                 row = row.Replace("<$COUNT>", counter.ToString)
-                row = row.Replace("<$FILENAME>", HtmlEncode(Path.GetFileName(_curMovie.Filename)))
-                row = row.Replace("<$DIRNAME>", HtmlEncode(Path.GetDirectoryName(_curMovie.Filename)))
+                row = row.Replace("<$FILENAME>", StringManip.HtmlEncode(Path.GetFileName(_curMovie.Filename)))
+                row = row.Replace("<$DIRNAME>", StringManip.HtmlEncode(Path.GetDirectoryName(_curMovie.Filename)))
                 'row = row.Replace("<$OUTLINE>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Outline))
-                row = row.Replace("<$OUTLINE>", HtmlEncode(_curMovie.Movie.Outline))
+                row = row.Replace("<$OUTLINE>", StringManip.HtmlEncode(_curMovie.Movie.Outline))
                 'row = row.Replace("<$PLOT>", Web.HttpUtility.HtmlEncode(_curMovie.Movie.Plot))
-                row = row.Replace("<$PLOT>", HtmlEncode(_curMovie.Movie.Plot))
-                row = row.Replace("<$GENRES>", HtmlEncode(_curMovie.Movie.Genre))
+                row = row.Replace("<$PLOT>", StringManip.HtmlEncode(_curMovie.Movie.Plot))
+                row = row.Replace("<$GENRES>", StringManip.HtmlEncode(_curMovie.Movie.Genre))
                 row = row.Replace("<$VIDEO>", _vidDetails)
                 row = row.Replace("<$VIDEO_DIMENSIONS>", _vidDimensions)
                 row = row.Replace("<$AUDIO>", _audDetails)
