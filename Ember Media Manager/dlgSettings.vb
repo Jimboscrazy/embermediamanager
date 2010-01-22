@@ -1640,6 +1640,60 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
+    Private Sub btnRemoveShowRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveShowRegex.Click
+        Me.RemoveRegex()
+    End Sub
+
+    Private Sub btnEditShowRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditShowRegex.Click
+        If Me.lvShowRegex.SelectedItems.Count > 0 Then Me.EditShowRegex(lvShowRegex.SelectedItems(0))
+    End Sub
+
+    Private Sub lvShowRegex_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvShowRegex.DoubleClick
+        If Me.lvShowRegex.SelectedItems.Count > 0 Then Me.EditShowRegex(lvShowRegex.SelectedItems(0))
+    End Sub
+
+    Private Sub lvShowRegex_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvShowRegex.SelectedIndexChanged
+        If Not String.IsNullOrEmpty(Me.btnAddShowRegex.Tag.ToString) Then Me.ClearRegex()
+    End Sub
+
+    Private Sub btnAddShowRegex_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddShowRegex.Click
+        If String.IsNullOrEmpty(Me.btnAddShowRegex.Tag.ToString) Then
+            Dim lID = (From lRegex As emmSettings.TVShowRegEx In Me.ShowRegex Select lRegex.ID).Max
+            Me.ShowRegex.Add(New emmSettings.TVShowRegEx With {.ID = Convert.ToInt32(lID) + 1, .SeasonRegex = Me.txtSeasonRegex.Text, .SeasonFromDirectory = Convert.ToBoolean(Me.cboSeasonRetrieve.SelectedIndex), .EpisodeRegex = Me.txtEpRegex.Text, .EpisodeRetrieve = DirectCast(Me.cboEpRetrieve.SelectedIndex, emmSettings.EpRetrieve)})
+        Else
+            Dim selRex = From lRegex As emmSettings.TVShowRegEx In Me.ShowRegex Where lRegex.ID = Convert.ToInt32(Me.btnAddShowRegex.Tag)
+            If selRex.Count > 0 Then
+                selRex(0).SeasonRegex = Me.txtSeasonRegex.Text
+                selRex(0).SeasonFromDirectory = Convert.ToBoolean(Me.cboSeasonRetrieve.SelectedIndex)
+                selRex(0).EpisodeRegex = Me.txtEpRegex.Text
+                selRex(0).EpisodeRetrieve = DirectCast(Me.cboEpRetrieve.SelectedIndex, emmSettings.EpRetrieve)
+            End If
+        End If
+
+        Me.ClearRegex()
+        Me.SetApplyButton(True)
+        Me.LoadShowRegex()
+    End Sub
+
+    Private Sub txtSeasonRegex_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSeasonRegex.TextChanged
+        Me.ValidateRegex()
+    End Sub
+
+    Private Sub txtEpRegex_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEpRegex.TextChanged
+        Me.ValidateRegex()
+    End Sub
+
+    Private Sub cboSeasonRetrieve_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboSeasonRetrieve.SelectedIndexChanged
+        Me.ValidateRegex()
+    End Sub
+
+    Private Sub cboEpRetrieve_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboEpRetrieve.SelectedIndexChanged
+        Me.ValidateRegex()
+    End Sub
+
+    Private Sub lvShowRegex_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvShowRegex.KeyDown
+        If e.KeyCode = Keys.Delete Then Me.RemoveRegex()
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2301,7 +2355,8 @@ Public Class dlgSettings
     Private Sub LoadShowRegex()
         lvShowRegex.Items.Clear()
         For Each rShow As emmSettings.TVShowRegEx In Me.ShowRegex
-            Dim lvItem As New ListViewItem(rShow.SeasonRegex)
+            Dim lvItem As New ListViewItem(rShow.ID.ToString)
+            lvItem.SubItems.Add(rShow.SeasonRegex)
             lvItem.SubItems.Add(If(rShow.SeasonFromDirectory, "Directory", "File"))
             lvItem.SubItems.Add(rShow.EpisodeRegex)
             Select Case rShow.EpisodeRetrieve
@@ -2317,6 +2372,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SetUp()
+        Me.btnAddShowRegex.Tag = String.Empty
         Me.Text = Master.eLang.GetString(420, "Settings")
         Me.GroupBox11.Text = Master.eLang.GetString(421, "XBMC Communication")
         Me.btnEditCom.Text = Master.eLang.GetString(422, "Commit Edit")
@@ -2696,6 +2752,63 @@ Public Class dlgSettings
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub EditShowRegex(ByVal lItem As ListViewItem)
+        Me.btnAddShowRegex.Text = "Update Regex"
+        Me.btnAddShowRegex.Tag = lItem.Text
+
+        Me.txtSeasonRegex.Text = lItem.SubItems(1).Text
+
+        Select Case lItem.SubItems(2).Text
+            Case "Directory"
+                Me.cboSeasonRetrieve.SelectedIndex = 0
+            Case "File"
+                Me.cboSeasonRetrieve.SelectedIndex = 1
+        End Select
+
+        Me.txtEpRegex.Text = lItem.SubItems(3).Text
+
+        Select Case lItem.SubItems(4).Text
+            Case "Directory"
+                Me.cboEpRetrieve.SelectedIndex = 0
+            Case "File"
+                Me.cboEpRetrieve.SelectedIndex = 1
+            Case "Result"
+                Me.cboEpRetrieve.SelectedIndex = 2
+        End Select
+    End Sub
+
+    Private Sub ClearRegex()
+        Me.btnAddShowRegex.Text = "Add Regex"
+        Me.btnAddShowRegex.Tag = String.Empty
+        Me.btnAddShowRegex.Enabled = False
+        Me.txtSeasonRegex.Text = String.Empty
+        Me.cboSeasonRetrieve.SelectedIndex = -1
+        Me.txtEpRegex.Text = String.Empty
+        Me.cboEpRetrieve.SelectedIndex = -1
+    End Sub
+
+    Private Sub ValidateRegex()
+        If Me.txtSeasonRegex.Text.Contains("?<season>") AndAlso Me.txtEpRegex.Text.Contains("?<episode>") AndAlso _
+        Me.cboSeasonRetrieve.SelectedIndex > -1 AndAlso Me.cboEpRetrieve.SelectedIndex > -1 Then
+            Me.btnAddShowRegex.Enabled = True
+        Else
+            Me.btnAddShowRegex.Enabled = False
+        End If
+    End Sub
+
+    Private Sub RemoveRegex()
+        Dim ID As Integer
+        For Each lItem As ListViewItem In lvShowRegex.SelectedItems
+            ID = Convert.ToInt32(lItem.Text)
+            Dim selRex = From lRegex As emmSettings.TVShowRegEx In Me.ShowRegex Where lRegex.ID = ID
+            If selRex.Count > 0 Then
+                Me.ShowRegex.Remove(selRex(0))
+                Me.SetApplyButton(True)
+            End If
+        Next
+        Me.LoadShowRegex()
     End Sub
 #End Region '*** Routines/Functions
 

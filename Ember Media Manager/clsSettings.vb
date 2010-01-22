@@ -2194,10 +2194,10 @@ Public Class emmSettings
         End If
 
         If Master.eSettings.TVShowRegexes.Count <= 0 Then
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.SeasonRegex = "(s(eason[\W_]*)?(?<season>[0-9]+))[\W_]*((-|e(pisode[\W_]*)?)[0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "(-|e(pisode[\W_]*)?)(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.SeasonRegex = "([\W_])?(?<season>[0-9]+)([-x][0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "[-x](?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.SeasonRegex = "([\W_])?(?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9])", .SeasonFromDirectory = False, .EpisodeRegex = "(([0-9]+|-)(?<episode>[0-9][0-9]))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
-            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.SeasonRegex = "^(s(eason)?)?([\W_])?(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 0, .SeasonRegex = "(s(eason[\W_]*)?(?<season>[0-9]+))[\W_]*((-|e(pisode[\W_]*)?)[0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "(-|e(pisode[\W_]*)?)(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 1, .SeasonRegex = "([\W_])?(?<season>[0-9]+)([-x][0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "[-x](?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 2, .SeasonRegex = "([\W_])?(?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9])", .SeasonFromDirectory = False, .EpisodeRegex = "(([0-9]+|-)(?<episode>[0-9][0-9]))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.ID = 3, .SeasonRegex = "^(s(eason)?)?([\W_])?(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
         End If
     End Sub
 
@@ -2309,10 +2309,20 @@ Public Class emmSettings
     End Class
 
     Public Class TVShowRegEx
+        Private _id As Integer
         Private _seasonregex As String
         Private _seasonfromdirectory As Boolean
         Private _episoderegex As String
         Private _episoderetrieve As EpRetrieve
+
+        Public Property ID() As Integer
+            Get
+                Return _id
+            End Get
+            Set(ByVal value As Integer)
+                _id = value
+            End Set
+        End Property
 
         Public Property SeasonRegex() As String
             Get
@@ -2355,6 +2365,7 @@ Public Class emmSettings
         End Sub
 
         Public Sub Clear()
+            Me._id = -1
             Me._seasonregex = String.Empty
             Me._seasonfromdirectory = True
             Me._episoderegex = String.Empty
