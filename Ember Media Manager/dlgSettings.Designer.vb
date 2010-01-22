@@ -377,6 +377,26 @@ Partial Class dlgSettings
         Me.btnAddShowFilter = New System.Windows.Forms.Button
         Me.txtShowFilter = New System.Windows.Forms.TextBox
         Me.lstShowFilters = New System.Windows.Forms.ListBox
+        Me.TabControl2 = New System.Windows.Forms.TabControl
+        Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.lvShowRegex = New System.Windows.Forms.ListView
+        Me.colSeason = New System.Windows.Forms.ColumnHeader
+        Me.colSeasonApply = New System.Windows.Forms.ColumnHeader
+        Me.colEpisode = New System.Windows.Forms.ColumnHeader
+        Me.colEpApply = New System.Windows.Forms.ColumnHeader
+        Me.btnAddShowRegex = New System.Windows.Forms.Button
+        Me.btnEditShowRegex = New System.Windows.Forms.Button
+        Me.btnRemoveShowRegex = New System.Windows.Forms.Button
+        Me.TextBox1 = New System.Windows.Forms.TextBox
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.ComboBox2 = New System.Windows.Forms.ComboBox
+        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.Label33 = New System.Windows.Forms.Label
+        Me.Label37 = New System.Windows.Forms.Label
+        Me.Label38 = New System.Windows.Forms.Label
+        Me.Label39 = New System.Windows.Forms.Label
+        Me.GroupBox31 = New System.Windows.Forms.GroupBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -435,6 +455,10 @@ Partial Class dlgSettings
         Me.pnlShows.SuspendLayout()
         Me.gbEpFilter.SuspendLayout()
         Me.gbShowFilter.SuspendLayout()
+        Me.TabControl2.SuspendLayout()
+        Me.TabPage3.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
+        Me.GroupBox31.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -2479,7 +2503,7 @@ Partial Class dlgSettings
         Me.pnlXBMCCom.Controls.Add(Me.btnRemoveCom)
         Me.pnlXBMCCom.Controls.Add(Me.lbXBMCCom)
         Me.pnlXBMCCom.Controls.Add(Me.GroupBox11)
-        Me.pnlXBMCCom.Location = New System.Drawing.Point(208, 96)
+        Me.pnlXBMCCom.Location = New System.Drawing.Point(208, 97)
         Me.pnlXBMCCom.Name = "pnlXBMCCom"
         Me.pnlXBMCCom.Size = New System.Drawing.Size(597, 353)
         Me.pnlXBMCCom.TabIndex = 60
@@ -3823,11 +3847,7 @@ Partial Class dlgSettings
         '
         Me.pnlTVSources.BackColor = System.Drawing.Color.White
         Me.pnlTVSources.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTVSources.Controls.Add(Me.GroupBox30)
-        Me.pnlTVSources.Controls.Add(Me.btnEditTVSource)
-        Me.pnlTVSources.Controls.Add(Me.lvTVSources)
-        Me.pnlTVSources.Controls.Add(Me.btnRemTVSource)
-        Me.pnlTVSources.Controls.Add(Me.btnAddTVSource)
+        Me.pnlTVSources.Controls.Add(Me.TabControl2)
         Me.pnlTVSources.Location = New System.Drawing.Point(208, 96)
         Me.pnlTVSources.Name = "pnlTVSources"
         Me.pnlTVSources.Size = New System.Drawing.Size(597, 353)
@@ -3838,7 +3858,7 @@ Partial Class dlgSettings
         '
         Me.GroupBox30.Controls.Add(Me.chkTVIgnoreLastScan)
         Me.GroupBox30.Controls.Add(Me.chkTVCleanDB)
-        Me.GroupBox30.Location = New System.Drawing.Point(5, 116)
+        Me.GroupBox30.Location = New System.Drawing.Point(6, 114)
         Me.GroupBox30.Name = "GroupBox30"
         Me.GroupBox30.Size = New System.Drawing.Size(211, 191)
         Me.GroupBox30.TabIndex = 5
@@ -3868,7 +3888,7 @@ Partial Class dlgSettings
         '
         Me.btnEditTVSource.Image = CType(resources.GetObject("btnEditTVSource.Image"), System.Drawing.Image)
         Me.btnEditTVSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditTVSource.Location = New System.Drawing.Point(485, 35)
+        Me.btnEditTVSource.Location = New System.Drawing.Point(480, 33)
         Me.btnEditTVSource.Name = "btnEditTVSource"
         Me.btnEditTVSource.Size = New System.Drawing.Size(104, 23)
         Me.btnEditTVSource.TabIndex = 2
@@ -3881,7 +3901,7 @@ Partial Class dlgSettings
         Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
         Me.lvTVSources.FullRowSelect = True
         Me.lvTVSources.HideSelection = False
-        Me.lvTVSources.Location = New System.Drawing.Point(5, 6)
+        Me.lvTVSources.Location = New System.Drawing.Point(6, 4)
         Me.lvTVSources.Name = "lvTVSources"
         Me.lvTVSources.Size = New System.Drawing.Size(466, 105)
         Me.lvTVSources.Sorting = System.Windows.Forms.SortOrder.Ascending
@@ -3907,7 +3927,7 @@ Partial Class dlgSettings
         '
         Me.btnRemTVSource.Image = CType(resources.GetObject("btnRemTVSource.Image"), System.Drawing.Image)
         Me.btnRemTVSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemTVSource.Location = New System.Drawing.Point(485, 88)
+        Me.btnRemTVSource.Location = New System.Drawing.Point(480, 86)
         Me.btnRemTVSource.Name = "btnRemTVSource"
         Me.btnRemTVSource.Size = New System.Drawing.Size(104, 23)
         Me.btnRemTVSource.TabIndex = 3
@@ -3919,7 +3939,7 @@ Partial Class dlgSettings
         '
         Me.btnAddTVSource.Image = CType(resources.GetObject("btnAddTVSource.Image"), System.Drawing.Image)
         Me.btnAddTVSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddTVSource.Location = New System.Drawing.Point(485, 6)
+        Me.btnAddTVSource.Location = New System.Drawing.Point(480, 4)
         Me.btnAddTVSource.Name = "btnAddTVSource"
         Me.btnAddTVSource.Size = New System.Drawing.Size(104, 23)
         Me.btnAddTVSource.TabIndex = 1
@@ -4096,6 +4116,204 @@ Partial Class dlgSettings
         Me.lstShowFilters.Size = New System.Drawing.Size(180, 108)
         Me.lstShowFilters.TabIndex = 1
         '
+        'TabControl2
+        '
+        Me.TabControl2.Controls.Add(Me.TabPage3)
+        Me.TabControl2.Controls.Add(Me.TabPage4)
+        Me.TabControl2.Location = New System.Drawing.Point(0, 3)
+        Me.TabControl2.Name = "TabControl2"
+        Me.TabControl2.SelectedIndex = 0
+        Me.TabControl2.Size = New System.Drawing.Size(596, 349)
+        Me.TabControl2.TabIndex = 6
+        '
+        'TabPage3
+        '
+        Me.TabPage3.Controls.Add(Me.lvTVSources)
+        Me.TabPage3.Controls.Add(Me.GroupBox30)
+        Me.TabPage3.Controls.Add(Me.btnAddTVSource)
+        Me.TabPage3.Controls.Add(Me.btnEditTVSource)
+        Me.TabPage3.Controls.Add(Me.btnRemTVSource)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(588, 323)
+        Me.TabPage3.TabIndex = 0
+        Me.TabPage3.Text = "General"
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.GroupBox31)
+        Me.TabPage4.Controls.Add(Me.btnEditShowRegex)
+        Me.TabPage4.Controls.Add(Me.btnRemoveShowRegex)
+        Me.TabPage4.Controls.Add(Me.lvShowRegex)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage4.Size = New System.Drawing.Size(588, 323)
+        Me.TabPage4.TabIndex = 1
+        Me.TabPage4.Text = "Options"
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'lvShowRegex
+        '
+        Me.lvShowRegex.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colSeason, Me.colSeasonApply, Me.colEpisode, Me.colEpApply})
+        Me.lvShowRegex.FullRowSelect = True
+        Me.lvShowRegex.HideSelection = False
+        Me.lvShowRegex.Location = New System.Drawing.Point(0, 1)
+        Me.lvShowRegex.Name = "lvShowRegex"
+        Me.lvShowRegex.Size = New System.Drawing.Size(588, 105)
+        Me.lvShowRegex.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvShowRegex.TabIndex = 1
+        Me.lvShowRegex.UseCompatibleStateImageBehavior = False
+        Me.lvShowRegex.View = System.Windows.Forms.View.Details
+        '
+        'colSeason
+        '
+        Me.colSeason.Text = "Season Regex"
+        Me.colSeason.Width = 224
+        '
+        'colSeasonApply
+        '
+        Me.colSeasonApply.Text = "Apply To"
+        Me.colSeasonApply.Width = 70
+        '
+        'colEpisode
+        '
+        Me.colEpisode.Text = "Episode Regex"
+        Me.colEpisode.Width = 219
+        '
+        'colEpApply
+        '
+        Me.colEpApply.Text = "Apply To"
+        Me.colEpApply.Width = 70
+        '
+        'btnAddShowRegex
+        '
+        Me.btnAddShowRegex.Image = CType(resources.GetObject("btnAddShowRegex.Image"), System.Drawing.Image)
+        Me.btnAddShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAddShowRegex.Location = New System.Drawing.Point(466, 119)
+        Me.btnAddShowRegex.Name = "btnAddShowRegex"
+        Me.btnAddShowRegex.Size = New System.Drawing.Size(104, 23)
+        Me.btnAddShowRegex.TabIndex = 4
+        Me.btnAddShowRegex.Text = "Add Regex"
+        Me.btnAddShowRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnAddShowRegex.UseVisualStyleBackColor = True
+        '
+        'btnEditShowRegex
+        '
+        Me.btnEditShowRegex.Image = CType(resources.GetObject("btnEditShowRegex.Image"), System.Drawing.Image)
+        Me.btnEditShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEditShowRegex.Location = New System.Drawing.Point(1, 108)
+        Me.btnEditShowRegex.Name = "btnEditShowRegex"
+        Me.btnEditShowRegex.Size = New System.Drawing.Size(104, 23)
+        Me.btnEditShowRegex.TabIndex = 5
+        Me.btnEditShowRegex.Text = "Edit Regex"
+        Me.btnEditShowRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnEditShowRegex.UseVisualStyleBackColor = True
+        '
+        'btnRemoveShowRegex
+        '
+        Me.btnRemoveShowRegex.Image = CType(resources.GetObject("btnRemoveShowRegex.Image"), System.Drawing.Image)
+        Me.btnRemoveShowRegex.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRemoveShowRegex.Location = New System.Drawing.Point(483, 108)
+        Me.btnRemoveShowRegex.Name = "btnRemoveShowRegex"
+        Me.btnRemoveShowRegex.Size = New System.Drawing.Size(104, 23)
+        Me.btnRemoveShowRegex.TabIndex = 6
+        Me.btnRemoveShowRegex.Text = "Remove"
+        Me.btnRemoveShowRegex.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnRemoveShowRegex.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox1.Location = New System.Drawing.Point(10, 40)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(417, 20)
+        Me.TextBox1.TabIndex = 7
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Items.AddRange(New Object() {"File Name", "Directory Name"})
+        Me.ComboBox1.Location = New System.Drawing.Point(443, 36)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox1.TabIndex = 8
+        '
+        'ComboBox2
+        '
+        Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox2.FormattingEnabled = True
+        Me.ComboBox2.Items.AddRange(New Object() {"File Name", "Directory Name", "Season Result"})
+        Me.ComboBox2.Location = New System.Drawing.Point(443, 84)
+        Me.ComboBox2.Name = "ComboBox2"
+        Me.ComboBox2.Size = New System.Drawing.Size(121, 21)
+        Me.ComboBox2.TabIndex = 10
+        '
+        'TextBox2
+        '
+        Me.TextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox2.Location = New System.Drawing.Point(9, 84)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(417, 20)
+        Me.TextBox2.TabIndex = 9
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Location = New System.Drawing.Point(8, 25)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(113, 13)
+        Me.Label33.TabIndex = 11
+        Me.Label33.Text = "Season Match Regex:"
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Location = New System.Drawing.Point(7, 69)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(115, 13)
+        Me.Label37.TabIndex = 12
+        Me.Label37.Text = "Episode Match Regex:"
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Location = New System.Drawing.Point(441, 21)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(76, 13)
+        Me.Label38.TabIndex = 13
+        Me.Label38.Text = "Retrieve From:"
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.Location = New System.Drawing.Point(441, 69)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(76, 13)
+        Me.Label39.TabIndex = 14
+        Me.Label39.Text = "Retrieve From:"
+        '
+        'GroupBox31
+        '
+        Me.GroupBox31.Controls.Add(Me.Label33)
+        Me.GroupBox31.Controls.Add(Me.btnAddShowRegex)
+        Me.GroupBox31.Controls.Add(Me.TextBox1)
+        Me.GroupBox31.Controls.Add(Me.Label39)
+        Me.GroupBox31.Controls.Add(Me.ComboBox1)
+        Me.GroupBox31.Controls.Add(Me.Label38)
+        Me.GroupBox31.Controls.Add(Me.TextBox2)
+        Me.GroupBox31.Controls.Add(Me.Label37)
+        Me.GroupBox31.Controls.Add(Me.ComboBox2)
+        Me.GroupBox31.Location = New System.Drawing.Point(6, 143)
+        Me.GroupBox31.Name = "GroupBox31"
+        Me.GroupBox31.Size = New System.Drawing.Size(576, 149)
+        Me.GroupBox31.TabIndex = 15
+        Me.GroupBox31.TabStop = False
+        Me.GroupBox31.Text = "Show Match Regex"
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -4110,15 +4328,15 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -4220,6 +4438,11 @@ Partial Class dlgSettings
         Me.gbEpFilter.PerformLayout()
         Me.gbShowFilter.ResumeLayout(False)
         Me.gbShowFilter.PerformLayout()
+        Me.TabControl2.ResumeLayout(False)
+        Me.TabPage3.ResumeLayout(False)
+        Me.TabPage4.ResumeLayout(False)
+        Me.GroupBox31.ResumeLayout(False)
+        Me.GroupBox31.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -4567,4 +4790,24 @@ Partial Class dlgSettings
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents cbTVShowTheme As System.Windows.Forms.ComboBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents TabControl2 As System.Windows.Forms.TabControl
+    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
+    Friend WithEvents lvShowRegex As System.Windows.Forms.ListView
+    Friend WithEvents colSeason As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colSeasonApply As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colEpisode As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colEpApply As System.Windows.Forms.ColumnHeader
+    Friend WithEvents btnAddShowRegex As System.Windows.Forms.Button
+    Friend WithEvents btnEditShowRegex As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveShowRegex As System.Windows.Forms.Button
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents ComboBox2 As System.Windows.Forms.ComboBox
+    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents Label33 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox31 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label39 As System.Windows.Forms.Label
+    Friend WithEvents Label38 As System.Windows.Forms.Label
+    Friend WithEvents Label37 As System.Windows.Forms.Label
 End Class

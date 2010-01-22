@@ -209,6 +209,7 @@ Public Class emmSettings
     Private _ignorelastscan As Boolean
     Private _tvcleandb As Boolean
     Private _tvignorelastscan As Boolean
+    Private _tvshowregexes As New List(Of TVShowRegEx)
 
     Public Property Version() As String
         Get
@@ -1866,6 +1867,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property TVShowRegexes() As List(Of TVShowRegEx)
+        Get
+            Return Me._tvshowregexes
+        End Get
+        Set(ByVal value As List(Of TVShowRegEx))
+            Me._tvshowregexes = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2055,9 +2065,11 @@ Public Class emmSettings
         Me._ignorelastscan = False
         Me._tvcleandb = True
         Me._tvignorelastscan = False
+        Me._tvshowregexes = New List(Of TVShowRegEx)
     End Sub
 
     Public Sub Save()
+
         Try
             Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
             Dim xmlWriter As New StreamWriter(Path.Combine(Master.AppPath, "Settings.xml"))
@@ -2069,6 +2081,7 @@ Public Class emmSettings
     End Sub
 
     Public Sub Load()
+
         Try
             Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
             If File.Exists(Path.Combine(Master.AppPath, "Settings.xml")) Then
@@ -2089,6 +2102,7 @@ Public Class emmSettings
     End Sub
 
     Public Sub SetDefaultsForLists()
+
         If Master.eSettings.FilterCustom.Count <= 0 AndAlso Not Master.eSettings.NoFilters Then
             Master.eSettings.FilterCustom.Add("[ _.-]\(?\d{4}\)?.*")
             Master.eSettings.FilterCustom.Add("(?i)[ _.-]blu[ _.-]?ray.*")
@@ -2178,9 +2192,17 @@ Public Class emmSettings
         If Master.eSettings.ValidExts.Count <= 0 Then
             Master.eSettings.ValidExts.AddRange(Strings.Split(".avi,.divx,.mkv,.iso,.mpg,.mp4,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb", ","))
         End If
+
+        If Master.eSettings.TVShowRegexes.Count <= 0 Then
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.SeasonRegex = "(s(eason[\W_]*)?(?<season>[0-9]+))[\W_]*((-|e(pisode[\W_]*)?)[0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "(-|e(pisode[\W_]*)?)(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.SeasonRegex = "([\W_])?(?<season>[0-9]+)([-x][0-9]+)+", .SeasonFromDirectory = False, .EpisodeRegex = "[-x](?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.SeasonRegex = "([\W_])?(?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9])", .SeasonFromDirectory = False, .EpisodeRegex = "(([0-9]+|-)(?<episode>[0-9][0-9]))", .EpisodeRetrieve = EpRetrieve.FromSeasonResult})
+            Master.eSettings.TVShowRegexes.Add(New TVShowRegEx With {.SeasonRegex = "^(s(eason)?)?([\W_])?(?<season>[0-9]+)$", .SeasonFromDirectory = True, .EpisodeRegex = "e(pisode[\W_]*)?(?<episode>[0-9]+)", .EpisodeRetrieve = EpRetrieve.FromFilename})
+        End If
     End Sub
 
     Public Class XBMCCom
+
         Private _xbmcname As String
         Private _xbmcport As String
         Private _xbmcip As String
@@ -2254,6 +2276,7 @@ Public Class emmSettings
     End Class
 
     Public Class MetadataPerType
+
         Private _filetype As String
         Private _metadata As MediaInfo.Fileinfo
 
@@ -2284,4 +2307,64 @@ Public Class emmSettings
             Me._metadata = New MediaInfo.Fileinfo
         End Sub
     End Class
+
+    Public Class TVShowRegEx
+        Private _seasonregex As String
+        Private _seasonfromdirectory As Boolean
+        Private _episoderegex As String
+        Private _episoderetrieve As EpRetrieve
+
+        Public Property SeasonRegex() As String
+            Get
+                Return Me._seasonregex
+            End Get
+            Set(ByVal value As String)
+                Me._seasonregex = value
+            End Set
+        End Property
+
+        Public Property SeasonFromDirectory() As Boolean
+            Get
+                Return Me._seasonfromdirectory
+            End Get
+            Set(ByVal value As Boolean)
+                Me._seasonfromdirectory = value
+            End Set
+        End Property
+
+        Public Property EpisodeRegex() As String
+            Get
+                Return Me._episoderegex
+            End Get
+            Set(ByVal value As String)
+                Me._episoderegex = value
+            End Set
+        End Property
+
+        Public Property EpisodeRetrieve() As EpRetrieve
+            Get
+                Return Me._episoderetrieve
+            End Get
+            Set(ByVal value As EpRetrieve)
+                Me._episoderetrieve = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._seasonregex = String.Empty
+            Me._seasonfromdirectory = True
+            Me._episoderegex = String.Empty
+            Me._episoderetrieve = EpRetrieve.FromSeasonResult
+        End Sub
+    End Class
+
+    Public Enum EpRetrieve As Integer
+        FromDirectory = 0
+        FromFilename = 1
+        FromSeasonResult = 2
+    End Enum
 End Class

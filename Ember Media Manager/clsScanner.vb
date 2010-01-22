@@ -1347,51 +1347,34 @@ Public Class Scanner
     Public Shared Function GetSeasons(ByVal sPath As String) As List(Of Seasons)
 
         Dim retSeason As New List(Of Seasons)
+        Dim epMatch As String = String.Empty
         Dim cSeason As Seasons
 
-        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "(s(eason[\W_]*)?(?<season>[0-9]+))[\W_]*((-|e(pisode[\W_]*)?)[0-9]+)+", RegexOptions.IgnoreCase)
-            cSeason = New Seasons
-            cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
-            For Each eMatch As Match In Regex.Matches(sMatch.Value, "(-|e(pisode[\W_]*)?)(?<episode>[0-9]+)", RegexOptions.IgnoreCase)
-                cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+        For Each rShow As emmSettings.TVShowRegEx In Master.eSettings.TVShowRegexes
+
+            For Each sMatch As Match In Regex.Matches(If(rShow.SeasonFromDirectory, Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath)), rShow.SeasonRegex, RegexOptions.IgnoreCase)
+                cSeason = New Seasons
+                cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
+
+                Select Case rShow.EpisodeRetrieve
+                    Case emmSettings.EpRetrieve.FromDirectory
+                        epMatch = Path.GetDirectoryName(sPath)
+                    Case emmSettings.EpRetrieve.FromFilename
+                        epMatch = Path.GetFileNameWithoutExtension(sPath)
+                    Case emmSettings.EpRetrieve.FromSeasonResult
+                        epMatch = sMatch.Value
+                End Select
+
+                For Each eMatch As Match In Regex.Matches(epMatch, rShow.EpisodeRegex, RegexOptions.IgnoreCase)
+                    cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
+                Next
+
+                retSeason.Add(cSeason)
             Next
-            retSeason.Add(cSeason)
+
+            If retSeason.Count > 0 Then Return retSeason
+
         Next
-
-        If retSeason.Count > 0 Then Return retSeason
-
-        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "([\W_])?(?<season>[0-9]+)([-x][0-9]+)+", RegexOptions.IgnoreCase)
-            cSeason = New Seasons
-            cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
-            For Each eMatch As Match In Regex.Matches(sMatch.Value, "[-x](?<episode>[0-9]+)", RegexOptions.IgnoreCase)
-                cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-            Next
-            retSeason.Add(cSeason)
-        Next
-
-        If retSeason.Count > 0 Then Return retSeason
-
-        For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "([\W_])?(?<season>[0-9]+)(-*[0-9][0-9])+(?![0-9])", RegexOptions.IgnoreCase)
-            cSeason = New Seasons
-            cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
-            For Each eMatch As Match In Regex.Matches(sMatch.Value, "(([0-9]+|-)(?<episode>[0-9][0-9]))", RegexOptions.IgnoreCase)
-                cSeason.Episodes.Add(Convert.ToInt32(eMatch.Groups("episode").Value))
-            Next
-            retSeason.Add(cSeason)
-        Next
-
-        If retSeason.Count > 0 Then Return retSeason
-
-        If Regex.IsMatch(Path.GetDirectoryName(sPath), "^(s(eason)?)?([\W_])?[0-9]+$", RegexOptions.IgnoreCase) Then
-            cSeason = New Seasons
-            cSeason.Season = Convert.ToInt32(Regex.Match(Path.GetDirectoryName(sPath), "^(s(eason)?)?([\W_])?(?<season>[0-9]+)$", RegexOptions.IgnoreCase).Groups("season").Value)
-            For Each sMatch As Match In Regex.Matches(Path.GetFileNameWithoutExtension(sPath), "e(pisode[\W_]*)?(?<episode>[0-9]+)", RegexOptions.IgnoreCase)
-                cSeason.Episodes.Add(Convert.ToInt32(sMatch.Groups("episode").Value))
-            Next
-            retSeason.Add(cSeason)
-        End If
-
-        If retSeason.Count > 0 Then Return retSeason
 
         'nothing found
         cSeason = New Seasons

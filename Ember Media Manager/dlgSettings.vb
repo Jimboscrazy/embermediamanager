@@ -29,6 +29,7 @@ Public Class dlgSettings
     Private XComs As List(Of emmSettings.XBMCCom)
     Private Meta As List(Of emmSettings.MetadataPerType)
     Private LangChanged As Boolean = False
+    Private ShowRegex As List(Of emmSettings.TVShowRegEx)
 
 #Region "Form/Controls"
 
@@ -1922,6 +1923,7 @@ Public Class dlgSettings
             Master.eSettings.IgnoreLastScan = Me.chkIgnoreLastScan.Checked
             Master.eSettings.TVCleanDB = Me.chkTVCleanDB.Checked
             Master.eSettings.TVIgnoreLastScan = Me.chkTVIgnoreLastScan.Checked
+            Master.eSettings.TVShowRegexes = Me.ShowRegex
 
             Master.eSettings.Save()
 
@@ -2155,6 +2157,8 @@ Public Class dlgSettings
             Me.chkIgnoreLastScan.Checked = Master.eSettings.IgnoreLastScan
             Me.chkTVCleanDB.Checked = Master.eSettings.TVCleanDB
             Me.chkTVIgnoreLastScan.Checked = Master.eSettings.TVIgnoreLastScan
+            Me.ShowRegex = Master.eSettings.TVShowRegexes
+            Me.LoadShowRegex()
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -2292,6 +2296,24 @@ Public Class dlgSettings
             End Using
         End Using
 
+    End Sub
+
+    Private Sub LoadShowRegex()
+        lvShowRegex.Items.Clear()
+        For Each rShow As emmSettings.TVShowRegEx In Me.ShowRegex
+            Dim lvItem As New ListViewItem(rShow.SeasonRegex)
+            lvItem.SubItems.Add(If(rShow.SeasonFromDirectory, "Directory", "File"))
+            lvItem.SubItems.Add(rShow.EpisodeRegex)
+            Select Case rShow.EpisodeRetrieve
+                Case emmSettings.EpRetrieve.FromDirectory
+                    lvItem.SubItems.Add("Directory")
+                Case emmSettings.EpRetrieve.FromFilename
+                    lvItem.SubItems.Add("File")
+                Case emmSettings.EpRetrieve.FromSeasonResult
+                    lvItem.SubItems.Add("Result")
+            End Select
+            lvShowRegex.Items.Add(lvItem)
+        Next
     End Sub
 
     Private Sub SetUp()
