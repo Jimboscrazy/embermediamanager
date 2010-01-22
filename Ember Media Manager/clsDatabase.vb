@@ -1571,10 +1571,10 @@ Public Class Database
     ''' <summary>
     ''' Iterates db entries to check if the paths to the movie files are valid. If not, remove all entries pertaining to the movie.
     ''' </summary>
-    Public Sub Clean()
+    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanTV As Boolean)
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = SQLcn.BeginTransaction
-                If Master.eSettings.CleanDB Then
+                If CleanMovies Then
                     Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommand.CommandText = "SELECT MoviePath, Id FROM movies ORDER BY ListTitle COLLATE NOCASE;"
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -1587,7 +1587,7 @@ Public Class Database
                     End Using
                 End If
 
-                If Master.eSettings.TVCleanDB Then
+                If CleanTV Then
                     Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommand.CommandText = "SELECT TVEpPath, Id FROM TVEpPaths;"
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()

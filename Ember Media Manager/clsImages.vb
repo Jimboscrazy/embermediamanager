@@ -83,13 +83,7 @@ Public Class Images
 
     Public Sub FromWeb(ByVal sURL As String)
         Try
-            Dim wrRequest As WebRequest = WebRequest.Create(sURL)
-            wrRequest.Timeout = 10000
-            Using wrResponse As WebResponse = wrRequest.GetResponse()
-                _image = Image.FromStream(wrResponse.GetResponseStream)
-                wrResponse.Close()
-            End Using
-            wrRequest = Nothing
+            _image = GenericFromWeb(sURL)
         Catch
         End Try
     End Sub
@@ -424,15 +418,15 @@ Public Class Images
         End Try
     End Function
 
-    Private Function GenericFromWeb(ByVal sURL As String) As Image
+    Public Shared Function GenericFromWeb(ByVal sURL As String) As Image
         Dim tmpImage As Image = Nothing
         Try
             If Regex.IsMatch(sURL, "^(https?://)?(([\w!~*'().&=+$%-]+: )?[\w!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([\w!~*'()-]+\.)*([\w^-][\w-]{0,61})?[\w]\.[a-z]{2,6})(:[0-9]{1,4})?((/*)|(/+[\w!~*'().;?:@&=+$,%#-]+)+/*)$", RegexOptions.IgnoreCase) Then
                 Dim wrRequest As WebRequest = WebRequest.Create(sURL)
-                wrRequest.Timeout = 10000
+                wrRequest.Timeout = 5000
                 Using wrResponse As WebResponse = wrRequest.GetResponse()
                     If wrResponse.ContentType.Contains("image") Then
-                        tmpImage = Image.FromStream(wrResponse.GetResponseStream)
+                        tmpImage = Image.FromStream(wrResponse.GetResponseStream, False, True)
                     End If
                 End Using
                 wrRequest = Nothing

@@ -48,31 +48,31 @@ Public Class HTTP
 
     Public Function DownloadData(ByVal URL As String) As String
         Dim sResponse As String = String.Empty
+        Dim cEncoding As System.Text.Encoding
+
         Me.Clear()
 
         Try
 
-            Dim wrRequest As WebRequest = HttpWebRequest.Create(URL)
+            Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
             wrRequest.Method = "GET"
             wrRequest.Timeout = 10000
             wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
-            Dim wrResponse As WebResponse = wrRequest.GetResponse()
-            Dim contentEncoding As String = String.Empty
-            For Each resKey As String In wrResponse.Headers.Keys
-                If Not IsNothing(resKey) Then
-                    If resKey.ToLower = "content-encoding" Then
-                        contentEncoding = wrResponse.Headers.Item(resKey)
-                        Exit For
-                    End If
-                End If
-            Next
+
+            Dim wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
+            Select Case True
+                Case wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                    cEncoding = System.Text.Encoding.UTF8
+                Case Else
+                    cEncoding = System.Text.Encoding.GetEncoding("windows-1252")
+            End Select
             Using Ms As Stream = wrResponse.GetResponseStream
-                If contentEncoding.ToLower = "gzip" Then
-                    sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress)).ReadToEnd
-                ElseIf contentEncoding.ToLower = "deflate" Then
-                    sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress)).ReadToEnd
+                If wrResponse.ContentEncoding.ToLower = "gzip" Then
+                    sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
+                ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
+                    sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
                 Else
-                    sResponse = New StreamReader(Ms).ReadToEnd
+                    sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
                 End If
             End Using
             Me._responseuri = wrResponse.ResponseUri.ToString
