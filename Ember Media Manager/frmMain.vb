@@ -120,6 +120,51 @@ Public Class frmMain
         Dim ID As Integer
     End Structure
 
+    Public Property PosterMaxWidth() As Integer
+        Get
+            Return _postermaxwidth
+        End Get
+        Set(ByVal value As Integer)
+            _postermaxwidth = value
+        End Set
+    End Property
+
+    Public Property PosterMaxHeight() As Integer
+        Get
+            Return _postermaxheight
+        End Get
+        Set(ByVal value As Integer)
+            _postermaxheight = value
+        End Set
+    End Property
+
+    Public Property IPUp() As Integer
+        Get
+            Return _ipup
+        End Get
+        Set(ByVal value As Integer)
+            _ipup = value
+        End Set
+    End Property
+
+    Public Property IPMid() As Integer
+        Get
+            Return _ipmid
+        End Get
+        Set(ByVal value As Integer)
+            _ipmid = value
+        End Set
+    End Property
+
+    Public Property GenrePanelColor() As Color
+        Get
+            Return _genrepanelcolor
+        End Get
+        Set(ByVal value As Color)
+            _genrepanelcolor = value
+        End Set
+    End Property
+
 #End Region '*** Declarations
 
 
@@ -1437,6 +1482,7 @@ Public Class frmMain
         End Try
         Me.tmrSearch.Enabled = False
     End Sub
+
     Private Sub tsbUpdateXBMC_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbUpdateXBMC.ButtonClick
         Try
             For Each xCom As emmSettings.XBMCCom In Master.eSettings.XBMCComs
@@ -3050,6 +3096,63 @@ Public Class frmMain
 
         Me.bwCleanDB.WorkerSupportsCancellation = True
         Me.bwCleanDB.RunWorkerAsync()
+    End Sub
+
+    Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
+
+        Me.ClearInfo()
+
+        Select Case tabsMain.SelectedIndex
+            Case 0
+                Me.pnlFilter.Visible = True
+                Me.pnlListTop.Height = 56
+                Me.btnMarkAll.Visible = True
+                Me.scTV.Visible = False
+                Me.dgvMediaList.Visible = True
+                Me.ApplyTheme(Theming.ThemeType.Movies)
+                If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+                If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                If Me.dgvMediaList.RowCount > 0 Then
+                    Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                    Me.SetControlsEnabled(True)
+                    Me.dgvMediaList.Focus()
+                End If
+            Case 1
+                Me.ToolsToolStripMenuItem.Enabled = False
+                Me.tsbAutoPilot.Enabled = False
+                Me.mnuMediaList.Enabled = False
+                Me.dgvMediaList.Visible = False
+                Me.pnlFilter.Visible = False
+                Me.pnlListTop.Height = 23
+                Me.btnMarkAll.Visible = False
+                Me.scTV.Visible = True
+                Me.ApplyTheme(Theming.ThemeType.Show)
+                If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
+                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
+                If Me.dgvTVEpisodes.RowCount > 0 Then
+                    Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                End If
+                If Me.dgvTVSeasons.RowCount > 0 Then
+                    Me.dgvTVSeasons.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    Me.dgvTVSeasons.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                End If
+                If Me.dgvTVShows.RowCount > 0 Then
+                    Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                    Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+
+                    If Me.currShowRow = -1 Then
+                        Me.dgvTVShows.ClearSelection()
+                        Me.dgvTVShows.Rows(0).Selected = True
+                        Me.currShowRow = 0
+                    End If
+
+                    Me.dgvTVShows.Focus()
+
+                End If
+        End Select
     End Sub
 #End Region '*** Form/Controls
 
@@ -6282,111 +6385,6 @@ doCancel:
         Me.dgvTVEpisodes.SelectedRows(0).Selected = False
         Me.dgvTVEpisodes.Enabled = True
     End Sub
-#End Region
-
-    '*** Routines/Functions
-
-    Private Sub tabsMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabsMain.SelectedIndexChanged
-
-        Me.ClearInfo()
-
-        Select Case tabsMain.SelectedIndex
-            Case 0
-                Me.pnlFilter.Visible = True
-                Me.pnlListTop.Height = 56
-                Me.btnMarkAll.Visible = True
-                Me.scTV.Visible = False
-                Me.dgvMediaList.Visible = True
-                Me.ApplyTheme(Theming.ThemeType.Movies)
-                If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
-                If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
-                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-                If Me.dgvMediaList.RowCount > 0 Then
-                    Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    Me.dgvMediaList.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-                    Me.SetControlsEnabled(True)
-                    Me.dgvMediaList.Focus()
-                End If
-            Case 1
-                Me.ToolsToolStripMenuItem.Enabled = False
-                Me.tsbAutoPilot.Enabled = False
-                Me.mnuMediaList.Enabled = False
-                Me.dgvMediaList.Visible = False
-                Me.pnlFilter.Visible = False
-                Me.pnlListTop.Height = 23
-                Me.btnMarkAll.Visible = False
-                Me.scTV.Visible = True
-                Me.ApplyTheme(Theming.ThemeType.Show)
-                If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
-                If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-                If Me.dgvTVEpisodes.RowCount > 0 Then
-                    Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    Me.dgvTVEpisodes.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-                End If
-                If Me.dgvTVSeasons.RowCount > 0 Then
-                    Me.dgvTVSeasons.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    Me.dgvTVSeasons.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-                End If
-                If Me.dgvTVShows.RowCount > 0 Then
-                    Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    Me.dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-
-                    If Me.currShowRow = -1 Then
-                        Me.dgvTVShows.ClearSelection()
-                        Me.dgvTVShows.Rows(0).Selected = True
-                        Me.currShowRow = 0
-                    End If
-
-                    Me.dgvTVShows.Focus()
-
-                End If
-        End Select
-    End Sub
-
-    Public Property PosterMaxWidth() As Integer
-        Get
-            Return _postermaxwidth
-        End Get
-        Set(ByVal value As Integer)
-            _postermaxwidth = value
-        End Set
-    End Property
-
-    Public Property PosterMaxHeight() As Integer
-        Get
-            Return _postermaxheight
-        End Get
-        Set(ByVal value As Integer)
-            _postermaxheight = value
-        End Set
-    End Property
-
-    Public Property IPUp() As Integer
-        Get
-            Return _ipup
-        End Get
-        Set(ByVal value As Integer)
-            _ipup = value
-        End Set
-    End Property
-
-    Public Property IPMid() As Integer
-        Get
-            Return _ipmid
-        End Get
-        Set(ByVal value As Integer)
-            _ipmid = value
-        End Set
-    End Property
-
-    Public Property GenrePanelColor() As Color
-        Get
-            Return _genrepanelcolor
-        End Get
-        Set(ByVal value As Color)
-            _genrepanelcolor = value
-        End Set
-    End Property
 
     Private Sub DonateToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DonateToolStripMenuItem.Click
         Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11135532")
@@ -6435,4 +6433,6 @@ doCancel:
         Me.tabsMain.Enabled = isEnabled
         Me.txtSearch.Enabled = isEnabled
     End Sub
+#End Region '*** Routines/Functions
+
 End Class

@@ -444,7 +444,7 @@ Public Class Theming
             End Select
 
             If Not xCon.Control = "pnlInfoPanel" Then xControl.Visible = xCon.Visible
-            If xControl.Visible Then
+            If xCon.Visible Then
                 If Not xCon.Control = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Width) Then xControl.Width = EvaluateFormula(xCon.Width)
                 If Not xCon.Control = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Height) Then xControl.Height = EvaluateFormula(xCon.Height)
                 If Not xCon.Control = "pnlInfoPanel" AndAlso Not String.IsNullOrEmpty(xCon.Left) Then xControl.Left = EvaluateFormula(xCon.Left)
