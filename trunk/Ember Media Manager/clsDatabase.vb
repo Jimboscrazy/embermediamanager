@@ -1187,24 +1187,28 @@ Public Class Database
             Dim PathID As Long = -1
             If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
             Using SQLpathcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLpathcommand.CommandText = String.Concat("INSERT OR IGNORE INTO TVEpPaths (", _
-                              "TVEpPath) VALUES (?); SELECT LAST_INSERT_ROWID() FROM TVEpPaths;")
+                SQLpathcommand.CommandText = "SELECT ID FROM TVEpPaths WHERE TVEpPath = (?);"
 
-                Dim parTVEpPath As SQLite.SQLiteParameter = SQLpathcommand.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPaths")
-                parTVEpPath.Value = _TVEpDB.Filename
+                Dim parPath As SQLite.SQLiteParameter = SQLpathcommand.Parameters.Add("parPath", DbType.String, 0, "TVEpPath")
+                parPath.Value = _TVEpDB.Filename
 
-                Using rdrTVEp As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader()
-                    If rdrTVEp.Read Then
-                        PathID = Convert.ToInt64(rdrTVEp(0))
+                Using SQLreader As SQLite.SQLiteDataReader = SQLpathcommand.ExecuteReader
+                    If SQLreader.HasRows Then
+                        PathID = Convert.ToInt64(SQLreader("ID"))
                     Else
-                        Master.eLog.WriteToErrorLog("Something very wrong here: SaveTVEpToDB", _TVEpDB.ToString, "Error")
-                        _TVEpDB.EpID = -1
-                        Exit Sub
+                        Using SQLpcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                            SQLpcommand.CommandText = String.Concat("INSERT INTO TVEpPaths (", _
+                                          "TVEpPath) VALUES (?); SELECT LAST_INSERT_ROWID() FROM TVEpPaths;")
+                            Dim parEpPath As SQLite.SQLiteParameter = SQLpcommand.Parameters.Add("parEpPath", DbType.String, 0, "TVEpPath")
+                            parEpPath.Value = _TVEpDB.Filename
+
+                            PathID = Convert.ToInt64(SQLpcommand.ExecuteScalar)
+                        End Using
                     End If
                 End Using
             End Using
 
-            If Not PathID = -1 Then
+            If Not PathID < 0 Then
                 Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                     If IsNew Then
                         SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO TVEps (", _
@@ -1685,7 +1689,7 @@ Public Class Database
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = SQLcn.BeginTransaction
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                SQLcommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = (SELECT TVEpPathID FROM TVEps WHERE ID = ", ID, ";")
+                SQLcommand.CommandText = String.Concat("DELETE FROM TVEpPaths WHERE ID = (SELECT TVEpPathID FROM TVEps WHERE ID = ", ID, ");")
                 SQLcommand.ExecuteNonQuery()
                 SQLcommand.CommandText = String.Concat("DELETE FROM TVEps WHERE ID = ", ID, ";")
                 SQLcommand.ExecuteNonQuery()
