@@ -6125,10 +6125,9 @@ doCancel:
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.tspbLoading.Value = 0
-
+            Me.tabsMain.Enabled = True
             Me.DoTitleCheck()
             Me.EnableFilters(True)
-
         End If
     End Sub
 
@@ -6430,8 +6429,8 @@ doCancel:
         Me.tsbAutoPilot.Enabled = isEnabled
         Me.tsbRefreshMedia.Enabled = isEnabled
         Me.mnuMediaList.Enabled = isEnabled
-        Me.tabsMain.Enabled = isEnabled
         Me.txtSearch.Enabled = isEnabled
+        Me.tabsMain.Enabled = isEnabled
     End Sub
 #End Region '*** Routines/Functions
 
