@@ -654,19 +654,33 @@ Namespace Media
         End Function
 
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
-            Dim tSet = From bSet As [Set] In _sets Where bSet.Set = SetName
-            If tSet.Count > 0 Then
-                If Order > 0 AndAlso Master.eSettings.YAMJSetsCompatible Then
-                    tSet(0).Order = Order.ToString
-                End If
-                Me._sets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
+            Dim sSets As List(Of [Set])
+            If Master.eSettings.YAMJSetsCompatible Then
+                sSets = Me._ysets.Sets
+            Else
+                sSets = Me._xsets
             End If
+
+            Dim tSet = From bSet As [Set] In sSets Where bSet.Set = SetName
+
+            If tSet.Count > 0 Then
+                sSets.Remove(tSet(0))
+            End If
+
+            sSets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
         End Sub
 
         Public Sub RemoveSet(ByVal SetName As String)
-            Dim tSet = From bSet As [Set] In _sets Where bSet.Set = SetName
+            Dim sSets As List(Of [Set])
+            If Master.eSettings.YAMJSetsCompatible Then
+                sSets = Me._ysets.Sets
+            Else
+                sSets = Me._xsets
+            End If
+
+            Dim tSet = From bSet As [Set] In sSets Where bSet.Set = SetName
             If tSet.Count > 0 Then
-                _sets.Remove(tSet(0))
+                sSets.Remove(tSet(0))
             End If
         End Sub
 
