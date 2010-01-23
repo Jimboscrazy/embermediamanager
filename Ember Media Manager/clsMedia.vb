@@ -58,7 +58,6 @@ Namespace Media
         Private _fileInfo As New MediaInfo.Fileinfo
         Private _xsets As New List(Of [Set])
         Private _ysets As New SetContainer
-        Private _sets As New List(Of [Set])
         Private _lev As Integer
 
         <XmlIgnore()> _
@@ -654,33 +653,19 @@ Namespace Media
         End Function
 
         Public Sub AddSet(ByVal SetName As String, ByVal Order As Integer)
-            Dim sSets As List(Of [Set])
-            If Master.eSettings.YAMJSetsCompatible Then
-                sSets = Me._ysets.Sets
-            Else
-                sSets = Me._xsets
-            End If
-
-            Dim tSet = From bSet As [Set] In sSets Where bSet.Set = SetName
+            Dim tSet = From bSet As [Set] In Sets Where bSet.Set = SetName
 
             If tSet.Count > 0 Then
-                sSets.Remove(tSet(0))
+                Sets.Remove(tSet(0))
             End If
 
-            sSets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
+            Sets.Add(New [Set] With {.Set = SetName, .Order = If(Order > 0, Order.ToString, String.Empty)})
         End Sub
 
         Public Sub RemoveSet(ByVal SetName As String)
-            Dim sSets As List(Of [Set])
-            If Master.eSettings.YAMJSetsCompatible Then
-                sSets = Me._ysets.Sets
-            Else
-                sSets = Me._xsets
-            End If
-
-            Dim tSet = From bSet As [Set] In sSets Where bSet.Set = SetName
+            Dim tSet = From bSet As [Set] In Sets Where bSet.Set = SetName
             If tSet.Count > 0 Then
-                sSets.Remove(tSet(0))
+                Sets.Remove(tSet(0))
             End If
         End Sub
 
@@ -729,7 +714,6 @@ Namespace Media
             Me._fileInfo = New MediaInfo.Fileinfo
             Me._ysets = New SetContainer
             Me._xsets.Clear()
-            Me._sets.Clear()
             Me._lev = 0
         End Sub
     End Class
