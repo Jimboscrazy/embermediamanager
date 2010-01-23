@@ -580,9 +580,9 @@ Public Class Database
             Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSets WHERE MovieID = ", MovieID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    Dim sets As Media.set
+                    Dim sets As Media.Set
                     While SQLreader.Read
-                        sets = New Media.set
+                        sets = New Media.Set
                         If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Set = SQLreader("SetName").ToString
                         If Not DBNull.Value.Equals(SQLreader("SetOrder")) Then sets.Order = SQLreader("SetOrder").ToString
                         _movieDB.Movie.Sets.Add(sets)
@@ -807,6 +807,9 @@ Public Class Database
 
                 If Not _movieDB.ID = -1 Then
                     Using SQLcommandActor As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommandActor.CommandText = String.Concat("DELETE FROM MoviesActors WHERE MovieID = ", _movieDB.ID, ";")
+                        SQLcommandActor.ExecuteNonQuery()
+
                         SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?)")
                         Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
                         Dim parActorThumb As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorThumb", DbType.String, 0, "thumb")
@@ -827,10 +830,13 @@ Public Class Database
                         Next
                     End Using
                     Using SQLcommandMoviesVStreams As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommandMoviesVStreams.CommandText = String.Concat("DELETE FROM MoviesVStreams WHERE MovieID = ", _movieDB.ID, ";")
+                        SQLcommandMoviesVStreams.ExecuteNonQuery()
+
                         SQLcommandMoviesVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesVStreams (", _
-                                "MovieID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
-                                "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage", _
-                                ") VALUES (?,?,?,?,?,?,?,?,?,?);")
+                                 "MovieID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
+                                 "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage", _
+                                 ") VALUES (?,?,?,?,?,?,?,?,?,?);")
                         Dim parVideo_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parVideo_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parVideo_Width As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
@@ -856,6 +862,9 @@ Public Class Database
                         Next
                     End Using
                     Using SQLcommandMoviesAStreams As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommandMoviesAStreams.CommandText = String.Concat("DELETE FROM MoviesAStreams WHERE MovieID = ", _movieDB.ID, ";")
+                        SQLcommandMoviesAStreams.ExecuteNonQuery()
+
                         SQLcommandMoviesAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesAStreams (", _
                                 "MovieID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel", _
                                 ") VALUES (?,?,?,?,?,?);")
@@ -876,9 +885,12 @@ Public Class Database
                         Next
                     End Using
                     Using SQLcommandMoviesSubs As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommandMoviesSubs.CommandText = String.Concat("DELETE FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, ";")
+                        SQLcommandMoviesSubs.ExecuteNonQuery()
+
                         SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (", _
-                                "MovieID, StreamID, Subs_Language, Subs_LongLanguage", _
-                                ") VALUES (?,?,?,?);")
+                                 "MovieID, StreamID, Subs_Language, Subs_LongLanguage", _
+                                 ") VALUES (?,?,?,?);")
                         Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
                         Dim parSubs_Language As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
@@ -893,9 +905,12 @@ Public Class Database
                     End Using
                     ' For what i understand this is used from Poster/Fanart Modules... will not be read/wrtire directly when load/save Movie
                     Using SQLcommandMoviesPosters As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommandMoviesPosters.CommandText = String.Concat("DELETE FROM MoviesPosters WHERE MovieID = ", _movieDB.ID, ";")
+                        SQLcommandMoviesPosters.ExecuteNonQuery()
+
                         SQLcommandMoviesPosters.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesPosters (", _
-                                "MovieID, thumbs", _
-                                ") VALUES (?,?);")
+                                 "MovieID, thumbs", _
+                                 ") VALUES (?,?);")
                         Dim parPosters_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parPosters_thumb As SQLite.SQLiteParameter = SQLcommandMoviesPosters.Parameters.Add("parPosters_thumb", DbType.String, 0, "thumbs")
                         For Each p As String In _movieDB.Movie.Thumb
@@ -905,9 +920,12 @@ Public Class Database
                         Next
                     End Using
                     Using SQLcommandMoviesFanart As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommandMoviesFanart.CommandText = String.Concat("DELETE FROM MoviesFanart WHERE MovieID = ", _movieDB.ID, ";")
+                        SQLcommandMoviesFanart.ExecuteNonQuery()
+
                         SQLcommandMoviesFanart.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesFanart (", _
-                                "MovieID, preview, thumbs", _
-                                ") VALUES (?,?,?);")
+                                   "MovieID, preview, thumbs", _
+                                   ") VALUES (?,?,?);")
                         Dim parFanart_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parFanart_Preview As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_Preview", DbType.String, 0, "Preview")
                         Dim parFanart_thumb As SQLite.SQLiteParameter = SQLcommandMoviesFanart.Parameters.Add("parFanart_thumb", DbType.String, 0, "thumb")
@@ -920,8 +938,8 @@ Public Class Database
                     End Using
                     Using SQLcommandSets As SQLite.SQLiteCommand = SQLcn.CreateCommand
                         SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO Sets (", _
-                                "SetName", _
-                                ") VALUES (?);")
+                                 "SetName", _
+                                 ") VALUES (?);")
                         Dim parSets_SetName As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_SetName", DbType.String, 0, "SetName")
                         For Each s As Media.Set In _movieDB.Movie.Sets
                             parSets_SetName.Value = s.Set
@@ -929,9 +947,12 @@ Public Class Database
                         Next
                     End Using
                     Using SQLcommandMoviesSets As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommandMoviesSets.CommandText = String.Concat("DELETE FROM MoviesSets WHERE MovieID = ", _movieDB.ID, ";")
+                        SQLcommandMoviesSets.ExecuteNonQuery()
+
                         SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
-                                "MovieID,SetName,SetOrder", _
-                                ") VALUES (?,?,?);")
+                                 "MovieID,SetName,SetOrder", _
+                                 ") VALUES (?,?,?);")
                         Dim parMovieSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_MovieID", DbType.UInt64, 0, "MovieID")
                         Dim parMovieSets_SetName As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_SetName", DbType.String, 0, "SetName")
                         Dim parMovieSets_SetOrder As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parMovieSets_SetOrder", DbType.String, 0, "SetOrder")
@@ -1293,7 +1314,10 @@ Public Class Database
 
                     If Not _TVEpDB.EpID = -1 Then
                         Using SQLcommandActor As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                            SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?)")
+                            SQLcommandActor.CommandText = String.Concat("DELETE FROM TVEpActors WHERE TVEpID = ", _TVEpDB.EpID, ";")
+                            SQLcommandActor.ExecuteNonQuery()
+
+                            SQLcommandActor.CommandText = "INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?)"
                             Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
                             Dim parActorThumb As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorThumb", DbType.String, 0, "thumb")
                             For Each actor As Media.Person In _TVEpDB.TVEp.Actors
@@ -1313,10 +1337,13 @@ Public Class Database
                             Next
                         End Using
                         Using SQLcommandTVVStreams As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                            SQLcommandTVVStreams.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", _TVEpDB.EpID, ";")
+                            SQLcommandTVVStreams.ExecuteNonQuery()
+
                             SQLcommandTVVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO TVVStreams (", _
-                                    "TVEpID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
-                                    "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage", _
-                                    ") VALUES (?,?,?,?,?,?,?,?,?,?);")
+                                     "TVEpID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration,", _
+                                     "Video_ScanType, Video_AspectDisplayRatio, Video_Language, Video_LongLanguage", _
+                                     ") VALUES (?,?,?,?,?,?,?,?,?,?);")
                             Dim parVideo_EpID As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_EpID", DbType.UInt64, 0, "TVEpID")
                             Dim parVideo_StreamID As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_StreamID", DbType.UInt64, 0, "StreamID")
                             Dim parVideo_Width As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
@@ -1342,9 +1369,12 @@ Public Class Database
                             Next
                         End Using
                         Using SQLcommandTVAStreams As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                            SQLcommandTVAStreams.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", _TVEpDB.EpID, ";")
+                            SQLcommandTVAStreams.ExecuteNonQuery()
+
                             SQLcommandTVAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO TVAStreams (", _
-                                    "TVEpID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel", _
-                                    ") VALUES (?,?,?,?,?,?);")
+                                     "TVEpID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel", _
+                                     ") VALUES (?,?,?,?,?,?);")
                             Dim parAudio_EpID As SQLite.SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_EpID", DbType.UInt64, 0, "TVEpID")
                             Dim parAudio_StreamID As SQLite.SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_StreamID", DbType.UInt64, 0, "StreamID")
                             Dim parAudio_Language As SQLite.SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_Language", DbType.String, 0, "Audio_Language")
@@ -1362,6 +1392,9 @@ Public Class Database
                             Next
                         End Using
                         Using SQLcommandTVSubs As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                            SQLcommandTVSubs.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", _TVEpDB.EpID, ";")
+                            SQLcommandTVSubs.ExecuteNonQuery()
+
                             SQLcommandTVSubs.CommandText = String.Concat("INSERT OR REPLACE INTO TVSubs (", _
                                     "TVEpID, StreamID, Subs_Language, Subs_LongLanguage", _
                                     ") VALUES (?,?,?,?);")
@@ -1378,6 +1411,9 @@ Public Class Database
                             Next
                         End Using
                         Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                            SQLcommandTVSeason.CommandText = String.Concat("DELETE FROM TVSeason WHERE TVEpID = ", _TVEpDB.EpID, ";")
+                            SQLcommandTVSeason.ExecuteNonQuery()
+
                             SQLcommandTVSeason.CommandText = String.Concat("INSERT OR REPLACE INTO TVSeason (", _
                                     "TVShowID, TVEpID, SeasonText, Season, HasPoster, PosterPath", _
                                     ") VALUES (?,?,?,?,?,?);")
@@ -1505,6 +1541,9 @@ Public Class Database
 
                 If Not _TVShowDB.ShowID = -1 Then
                     Using SQLcommandActor As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                        SQLcommandActor.CommandText = String.Concat("DELETE FROM TVShowActors WHERE TVShowID = ", _TVShowDB.EpID, ";")
+                        SQLcommandActor.ExecuteNonQuery()
+
                         SQLcommandActor.CommandText = String.Concat("INSERT OR REPLACE INTO Actors (Name,thumb) VALUES (?,?)")
                         Dim parActorName As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorName", DbType.String, 0, "Name")
                         Dim parActorThumb As SQLite.SQLiteParameter = SQLcommandActor.Parameters.Add("parActorThumb", DbType.String, 0, "thumb")
