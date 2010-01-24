@@ -913,7 +913,6 @@ Public Class dlgSettings
         Me.chkOverwriteTrailer.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkNoDLTrailer.Enabled = Me.chkDownloadTrailer.Checked
         Me.chkDeleteAllTrailers.Enabled = Me.chkDownloadTrailer.Checked
-        TrailerQualityEnableDisable()
 
         If Not Me.chkDownloadTrailer.Checked Then
             Me.chkUpdaterTrailer.Checked = False
@@ -926,37 +925,16 @@ Public Class dlgSettings
                 lbTrailerSites.SetItemChecked(i, False)
             Next
             Me.cbTrailerQuality.SelectedIndex = -1
+            Me.cbTrailerQuality.Enabled = False
         End If
     End Sub
 
     Private Sub lbTrailerSites_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles lbTrailerSites.ItemCheck
         Me.SetApplyButton(True)
-        'pass the item's index because this event occurs before the item's checked state is updated and won't be reflected in its properties
-        TrailerQualityEnableDisable(e.Index)
-    End Sub
-
-    Private Sub TrailerQualityEnableDisable(Optional ByVal ChangedItemIndex As Integer = -1)
-        If Me.chkDownloadTrailer.Checked Then
-            If lbTrailerSites.Items.Count > 0 Then
-                If ChangedItemIndex <> -1 AndAlso Not lbTrailerSites.GetItemChecked(ChangedItemIndex) Then
-                    'this item has just been requested to be checked
-                    If lbTrailerSites.Items(ChangedItemIndex).ToString.ToLower.Contains("allhtpc") Then
-                        Me.cbTrailerQuality.Enabled = True
-                        Return
-                    End If
-                End If
-
-                'now go through the items
-                For i As Integer = 0 To lbTrailerSites.Items.Count - 1
-                    If i <> ChangedItemIndex AndAlso lbTrailerSites.GetItemChecked(i) Then
-                        If lbTrailerSites.Items(i).ToString.ToLower.Contains("allhtpc") Then
-                            Me.cbTrailerQuality.Enabled = True
-                            Return
-                        End If
-                    End If
-                Next
-                Me.cbTrailerQuality.Enabled = False
-            End If
+        If e.Index = 0 AndAlso (e.NewValue = CheckState.Checked OrElse Me.lbTrailerSites.GetItemChecked(1)) Then
+            Me.cbTrailerQuality.Enabled = True
+        ElseIf e.Index = 1 AndAlso (e.NewValue = CheckState.Checked OrElse Me.lbTrailerSites.GetItemChecked(0)) Then
+            Me.cbTrailerQuality.Enabled = True
         Else
             Me.cbTrailerQuality.Enabled = False
         End If
@@ -1629,10 +1607,6 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkTVIgnoreLastScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVIgnoreLastScan.CheckedChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub lbTrailerSites_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailerSites.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
 
