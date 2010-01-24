@@ -906,6 +906,13 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public ReadOnly Property SetsSpecified() As Boolean
+            Get
+                Return Me._set.Count > 0
+            End Get
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -927,6 +934,13 @@ Namespace Media
             Set(ByVal value As String)
                 _set = value
             End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public ReadOnly Property SetSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._set)
+            End Get
         End Property
 
         <XmlAttribute("order")> _
