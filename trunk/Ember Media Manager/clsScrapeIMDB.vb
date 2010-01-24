@@ -251,7 +251,7 @@ Namespace IMDB
                 Dim Table As String = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
                 Dim qPopular = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
-                               Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                               Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
                                Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
                                                 Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(StringManip.FilterYear(sMovie).ToLower, StringManip.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
@@ -265,7 +265,7 @@ mPartial:
 
                 Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
                 Dim qpartial = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
-                    Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                    Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
                                      Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(StringManip.FilterYear(sMovie).ToLower, StringManip.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
@@ -281,7 +281,7 @@ mApprox:
                 Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
                 Dim qApprox = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
-                    Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                    Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
                     Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
                                      Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(StringManip.FilterYear(sMovie).ToLower, StringManip.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 
@@ -302,7 +302,7 @@ mExact:
                 Table = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
 
                 Dim qExact = From Mtr In Regex.Matches(Table, TITLE_PATTERN) _
-                               Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") And Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
+                               Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG") _
                                Select New Media.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString), _
                             Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString.ToString), Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringManip.ComputeLevenshtein(StringManip.FilterYear(sMovie).ToLower, StringManip.FilterYear(Web.HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
 

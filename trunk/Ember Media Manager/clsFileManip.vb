@@ -55,7 +55,7 @@ Namespace FileManip
                 Catch
                 End Try
 
-                If isCleaner And Master.eSettings.ExpertCleaner Then
+                If isCleaner AndAlso Master.eSettings.ExpertCleaner Then
 
                     For Each sFile As FileInfo In ioFi
                         If Not Master.eSettings.CleanWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((Master.eSettings.CleanWhitelistVideo AndAlso Not Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower)) OrElse Not Master.eSettings.CleanWhitelistVideo) Then
@@ -242,7 +242,7 @@ Namespace FileManip
                 Catch
                 End Try
 
-                If isCleaner And Master.eSettings.ExpertCleaner Then
+                If isCleaner AndAlso Master.eSettings.ExpertCleaner Then
 
                     For Each sFile As FileInfo In ioFi
                         If Not Master.eSettings.CleanWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((Master.eSettings.CleanWhitelistVideo AndAlso Not Master.eSettings.ValidExts.Contains(sFile.Extension.ToLower)) OrElse Not Master.eSettings.CleanWhitelistVideo) Then

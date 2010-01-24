@@ -291,7 +291,7 @@ Public Class dlgExportMovies
                 End If
 
                 If Not String.IsNullOrEmpty(tAudio.Channels) Then
-                    Dim xAChanFlag = From xAChan In XML.FlagsXML...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) And Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
+                    Dim xAChanFlag = From xAChan In XML.FlagsXML...<achan>...<name> Where Regex.IsMatch(tAudio.Channels, Regex.Replace(xAChan.@searchstring, "(\{[^\}]+\})", String.Empty)) AndAlso Regex.IsMatch(atypeRef, Regex.Match(xAChan.@searchstring, "\{atype=([^\}]+)\}").Groups(1).Value.ToString) Select xAChan.<icon>.Value
                     If xAChanFlag.Count > 0 Then
                         achanImage = Path.Combine(mePath, xAChanFlag(0).ToString)
                     End If
@@ -630,7 +630,7 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub txtSearch_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearch.TextChanged
-        If txtSearch.Text <> "" And cbSearch.Text <> "" Then
+        If txtSearch.Text <> "" AndAlso cbSearch.Text <> "" Then
             Search_Button.Enabled = True
         Else
             Search_Button.Enabled = False
@@ -638,7 +638,7 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub cbSearch_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearch.SelectedIndexChanged
-        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso cbFilterSource.Text <> "") OrElse txtSearch.Text <> "") And cbSearch.Text <> "" Then
+        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso cbFilterSource.Text <> "") OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
             Search_Button.Enabled = True
         Else
             Search_Button.Enabled = False
@@ -790,7 +790,7 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub cbFilterSource_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterSource.SelectedIndexChanged
-        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso cbFilterSource.Text <> "") OrElse txtSearch.Text <> "") And cbSearch.Text <> "" Then
+        If ((cbSearch.Text = Master.eLang.GetString(353, "Source Folder") AndAlso cbFilterSource.Text <> "") OrElse txtSearch.Text <> "") AndAlso cbSearch.Text <> "" Then
             Search_Button.Enabled = True
         Else
             Search_Button.Enabled = False
