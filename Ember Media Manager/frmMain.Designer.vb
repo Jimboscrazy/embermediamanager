@@ -310,6 +310,7 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
+        Me.tsSpring = New System.Windows.Forms.ToolStripStatusLabel
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -453,7 +454,7 @@ Partial Class frmMain
         'StatusStrip
         '
         Me.StatusStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
-        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tslLoading, Me.tspbLoading})
+        Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tsSpring, Me.tslLoading, Me.tspbLoading})
         Me.StatusStrip.Location = New System.Drawing.Point(0, 712)
         Me.StatusStrip.Name = "StatusStrip"
         Me.StatusStrip.Size = New System.Drawing.Size(1016, 22)
@@ -462,9 +463,8 @@ Partial Class frmMain
         '
         'tslStatus
         '
-        Me.tslStatus.AutoSize = False
         Me.tslStatus.Name = "tslStatus"
-        Me.tslStatus.Size = New System.Drawing.Size(525, 17)
+        Me.tslStatus.Size = New System.Drawing.Size(0, 17)
         Me.tslStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'tslLoading
@@ -472,14 +472,14 @@ Partial Class frmMain
         Me.tslLoading.AutoSize = False
         Me.tslLoading.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tslLoading.Name = "tslLoading"
-        Me.tslLoading.Padding = New System.Windows.Forms.Padding(100, 0, 0, 0)
-        Me.tslLoading.Size = New System.Drawing.Size(300, 17)
+        Me.tslLoading.Size = New System.Drawing.Size(424, 17)
         Me.tslLoading.Text = "Loading Media:"
         Me.tslLoading.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.tslLoading.Visible = False
         '
         'tspbLoading
         '
+        Me.tspbLoading.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.tspbLoading.AutoSize = False
         Me.tspbLoading.Name = "tspbLoading"
         Me.tspbLoading.Size = New System.Drawing.Size(150, 16)
@@ -2851,13 +2851,13 @@ Partial Class frmMain
         'mnuMoviesUpdate
         '
         Me.mnuMoviesUpdate.Name = "mnuMoviesUpdate"
-        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(152, 22)
+        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(125, 22)
         Me.mnuMoviesUpdate.Text = "Movies"
         '
         'mnuTVShowUpdate
         '
         Me.mnuTVShowUpdate.Name = "mnuTVShowUpdate"
-        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(125, 22)
         Me.mnuTVShowUpdate.Text = "TV Shows"
         '
         'tsbUpdateXBMC
@@ -2945,6 +2945,13 @@ Partial Class frmMain
         '
         'tmrLoadEp
         '
+        '
+        'tsSpring
+        '
+        Me.tsSpring.Name = "tsSpring"
+        Me.tsSpring.Size = New System.Drawing.Size(394, 17)
+        Me.tsSpring.Spring = True
+        Me.tsSpring.Text = "  "
         '
         'frmMain
         '
@@ -3321,4 +3328,5 @@ Partial Class frmMain
     Friend WithEvents tmrLoadSeason As System.Windows.Forms.Timer
     Friend WithEvents tmrWaitEp As System.Windows.Forms.Timer
     Friend WithEvents tmrLoadEp As System.Windows.Forms.Timer
+    Friend WithEvents tsSpring As System.Windows.Forms.ToolStripStatusLabel
 End Class

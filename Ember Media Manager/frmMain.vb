@@ -359,6 +359,7 @@ Public Class frmMain
 
         AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
         AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
+        AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ProgressUpdated, AddressOf ScannerProgressUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
 
@@ -4369,6 +4370,10 @@ doCancel:
 
         Try
             Me.tslStatus.Text = Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)...")
+            Me.tspbLoading.ProgressBar.Style = ProgressBarStyle.Marquee
+            Me.tspbLoading.MarqueeAnimationSpeed = 25
+            Me.tspbLoading.Visible = True
+
             Application.DoEvents()
 
             Me.ClearInfo()
@@ -6223,6 +6228,10 @@ doCancel:
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub ScannerUpdated(ByVal sText As String)
+        Me.tslStatus.Text = String.Concat("Scanning Files: ", sText)
     End Sub
 
     Private Sub ScannerProgressUpdated(ByVal iPercent As Integer, ByVal sText As String)
