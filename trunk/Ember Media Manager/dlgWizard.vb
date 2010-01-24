@@ -88,14 +88,14 @@ Public Class dlgWizard
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
-                            For i As Integer = lvMovies.SelectedItems.Count - 1 To 0 Step -1
-                                parSource.Value = lvMovies.SelectedItems(i).SubItems(1).Text
+                            While Me.lvMovies.SelectedItems.Count > 0
+                                parSource.Value = lvMovies.SelectedItems(0).SubItems(1).Text
                                 SQLcommand.CommandText = String.Concat("DELETE FROM movies WHERE source = (?);")
                                 SQLcommand.ExecuteNonQuery()
                                 SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
                                 SQLcommand.ExecuteNonQuery()
-                                lvMovies.Items.RemoveAt(i)
-                            Next
+                                lvMovies.Items.Remove(Me.lvMovies.SelectedItems(0))
+                            End While
                         End Using
                         SQLtransaction.Commit()
                     End Using
