@@ -345,9 +345,9 @@ Public Class dlgEditMovie
     Private Sub DeleteActors()
         Try
             If Me.lvActors.Items.Count > 0 Then
-                For i As Integer = Me.lvActors.SelectedItems.Count - 1 To 0 Step -1
-                    Me.lvActors.Items.Remove(Me.lvActors.SelectedItems(i))
-                Next
+                While Me.lvActors.SelectedItems.Count > 0
+                    Me.lvActors.Items.Remove(Me.lvActors.SelectedItems(0))
+                End While
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1161,13 +1161,13 @@ Public Class dlgEditMovie
     Private Sub DeleteExtraThumbs()
         Try
             Dim iIndex As Integer = 0
-            For i As Integer = (lvThumbs.SelectedItems.Count - 1) To 0 Step -1
-                iIndex = lvThumbs.SelectedItems(i).Index
+            While Me.lvThumbs.SelectedItems.Count > 0
+                iIndex = lvThumbs.SelectedItems(0).Index
                 DeleteList.Add(lvThumbs.Items(iIndex).Name)
-                lvThumbs.Items.Remove(lvThumbs.Items(iIndex))
+                lvThumbs.Items.Remove(lvThumbs.SelectedItems(0))
                 pbExtraThumbs.Image = Nothing
                 btnSetAsFanart.Enabled = False
-            Next
+            End While
             RenumberThumbs()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

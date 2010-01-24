@@ -1066,10 +1066,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnRemoveWhitelist_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveWhitelist.Click
-        If lstWhitelist.Items.Count > 0 AndAlso lstWhitelist.SelectedItems.Count > 0 Then
-            For Each i As Integer In lstWhitelist.SelectedIndices
-                lstWhitelist.Items.RemoveAt(i)
-            Next
+        If Me.lstWhitelist.Items.Count > 0 AndAlso Me.lstWhitelist.SelectedItems.Count > 0 Then
+            While Me.lstWhitelist.SelectedItems.Count > 0
+                lstWhitelist.Items.Remove(Me.lstWhitelist.SelectedItems(0))
+            End While
             Me.SetApplyButton(True)
         End If
     End Sub
@@ -2601,10 +2601,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub RemoveSortToken()
-        If lstSortTokens.Items.Count > 0 AndAlso lstSortTokens.SelectedItems.Count > 0 Then
-            For Each i As Integer In lstSortTokens.SelectedIndices
-                lstSortTokens.Items.RemoveAt(i)
-            Next
+        If Me.lstSortTokens.Items.Count > 0 AndAlso Me.lstSortTokens.SelectedItems.Count > 0 Then
+            While Me.lstSortTokens.SelectedItems.Count > 0
+                Me.lstSortTokens.Items.Remove(Me.lstSortTokens.SelectedItems(0))
+            End While
             Me.sResult.NeedsRefresh = True
             Me.SetApplyButton(True)
         End If
@@ -2620,9 +2620,9 @@ Public Class dlgSettings
 
     Private Sub RemoveFilter()
         If Me.lstFilters.Items.Count > 0 AndAlso Me.lstFilters.SelectedItems.Count > 0 Then
-            For Each i As Integer In lstFilters.SelectedIndices
-                lstFilters.Items.RemoveAt(i)
-            Next
+            While Me.lstFilters.SelectedItems.Count > 0
+                Me.lstFilters.Items.Remove(Me.lstFilters.SelectedItems(0))
+            End While
             Me.SetApplyButton(True)
             Me.sResult.NeedsRefresh = True
         End If
@@ -2630,9 +2630,9 @@ Public Class dlgSettings
 
     Private Sub RemoveShowFilter()
         If Me.lstShowFilters.Items.Count > 0 AndAlso Me.lstShowFilters.SelectedItems.Count > 0 Then
-            For Each i As Integer In lstShowFilters.SelectedIndices
-                lstShowFilters.Items.RemoveAt(i)
-            Next
+            While Me.lstShowFilters.SelectedItems.Count > 0
+                Me.lstShowFilters.Items.Remove(Me.lstShowFilters.SelectedItems(0))
+            End While
             Me.SetApplyButton(True)
             Me.sResult.NeedsRefresh = True
         End If
@@ -2640,9 +2640,9 @@ Public Class dlgSettings
 
     Private Sub RemoveEpFilter()
         If Me.lstEpFilters.Items.Count > 0 AndAlso Me.lstEpFilters.SelectedItems.Count > 0 Then
-            For Each i As Integer In lstEpFilters.SelectedIndices
-                lstEpFilters.Items.RemoveAt(i)
-            Next
+            While Me.lstEpFilters.SelectedItems.Count > 0
+                Me.lstEpFilters.Items.Remove(Me.lstEpFilters.SelectedItems(0))
+            End While
             Me.SetApplyButton(True)
             Me.sResult.NeedsRefresh = True
         End If
@@ -2650,9 +2650,9 @@ Public Class dlgSettings
 
     Private Sub RemoveMovieExt()
         If lstMovieExts.Items.Count > 0 AndAlso lstMovieExts.SelectedItems.Count > 0 Then
-            For Each i As Integer In lstMovieExts.SelectedIndices
-                lstMovieExts.Items.RemoveAt(i)
-            Next
+            While Me.lstMovieExts.SelectedItems.Count > 0
+                Me.lstMovieExts.Items.Remove(Me.lstMovieExts.SelectedItems(0))
+            End While
             Me.SetApplyButton(True)
             Me.sResult.NeedsUpdate = True
         End If
@@ -2660,9 +2660,9 @@ Public Class dlgSettings
 
     Private Sub RemoveNoStack()
         If lstNoStack.Items.Count > 0 AndAlso lstNoStack.SelectedItems.Count > 0 Then
-            For Each i As Integer In lstNoStack.SelectedIndices
-                lstNoStack.Items.RemoveAt(i)
-            Next
+            While Me.lstNoStack.SelectedItems.Count > 0
+                Me.lstNoStack.Items.Remove(Me.lstNoStack.SelectedItems(0))
+            End While
             Me.SetApplyButton(True)
             Me.sResult.NeedsUpdate = True
         End If
@@ -2690,8 +2690,8 @@ Public Class dlgSettings
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
-                            For i As Integer = lvMovies.SelectedItems.Count - 1 To 0 Step -1
-                                parSource.Value = lvMovies.SelectedItems(i).SubItems(1).Text
+                            While Me.lvMovies.SelectedItems.Count > 0
+                                parSource.Value = lvMovies.SelectedItems(0).SubItems(1).Text
                                 SQLcommand.CommandText = "SELECT Id FROM movies WHERE source = (?);"
                                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                                     While SQLReader.Read
@@ -2700,8 +2700,8 @@ Public Class dlgSettings
                                 End Using
                                 SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
                                 SQLcommand.ExecuteNonQuery()
-                                lvMovies.Items.RemoveAt(lvMovies.SelectedItems(i).Index)
-                            Next
+                                lvMovies.Items.Remove(lvMovies.SelectedItems(0))
+                            End While
                         End Using
                         SQLtransaction.Commit()
                     End Using
@@ -2730,8 +2730,8 @@ Public Class dlgSettings
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                             Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
-                            For i As Integer = lvTVSources.SelectedItems.Count - 1 To 0 Step -1
-                                parSource.Value = lvTVSources.SelectedItems(i).SubItems(1).Text
+                            While Me.lvTVSources.SelectedItems.Count > 0
+                                parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
                                 SQLcommand.CommandText = "SELECT Id FROM TVShows WHERE Source = (?);"
                                 Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                                     While SQLReader.Read
@@ -2740,8 +2740,8 @@ Public Class dlgSettings
                                 End Using
                                 SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
                                 SQLcommand.ExecuteNonQuery()
-                                lvTVSources.Items.RemoveAt(lvTVSources.SelectedItems(i).Index)
-                            Next
+                                lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
+                            End While
                         End Using
                         SQLtransaction.Commit()
                     End Using

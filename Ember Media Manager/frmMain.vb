@@ -94,7 +94,6 @@ Public Class frmMain
 
     'filters
     Private filSearch As String = String.Empty
-    Private isActorSearch As Boolean = False
     Private filGenre As String = String.Empty
     Private filYear As String = String.Empty
     Private filMissing As String = String.Empty
@@ -1434,10 +1433,12 @@ Public Class frmMain
         Me.currText = Me.txtSearch.Text
 
         Me.tmrSearchWait.Enabled = False
+        Me.tmrSearch.Enabled = False
         Me.tmrSearchWait.Enabled = True
     End Sub
 
     Private Sub tmrSearchWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait.Tick
+        Me.tmrSearch.Enabled = False
         If Me.prevText = Me.currText Then
             Me.tmrSearch.Enabled = True
         Else
@@ -1457,24 +1458,20 @@ Public Class frmMain
                     Case Master.eLang.GetString(21, "Title")
                         Me.filSearch = String.Concat("ListTitle LIKE '%", Me.txtSearch.Text, "%'")
                         Me.FilterArray.Add(Me.filSearch)
-                        isActorSearch = False
                     Case Master.eLang.GetString(100, "Actor")
                         Me.filSearch = Me.txtSearch.Text
-                        isActorSearch = True
                     Case Master.eLang.GetString(62, "Director")
                         Me.filSearch = String.Concat("Director LIKE '%", Me.txtSearch.Text, "%'")
                         Me.FilterArray.Add(Me.filSearch)
-                        isActorSearch = False
                 End Select
 
-                Me.RunFilter()
+                Me.RunFilter(Me.cbSearch.Text = Master.eLang.GetString(100, "Actor"))
 
             Else
                 If Not String.IsNullOrEmpty(Me.filSearch) Then
                     Me.FilterArray.Remove(Me.filSearch)
                     Me.filSearch = String.Empty
-                    Me.RunFilter(isActorSearch)
-                    isActorSearch = False
+                    Me.RunFilter(Me.cbSearch.Text = Master.eLang.GetString(100, "Actor"))
                 End If
             End If
 
@@ -1659,7 +1656,7 @@ Public Class frmMain
     Private Sub chkFilterDupe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterDupe.Click
 
         Try
-            Me.RunFilter(Not Me.chkFilterDupe.Checked)
+            Me.RunFilter(True)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -5902,16 +5899,7 @@ doCancel:
                     bsMedia.RemoveFilter()
                 End If
 
-                If Me.chkFilterDupe.Checked Then
-                    Me.FillList(0, True)
-                ElseIf Not String.IsNullOrEmpty(Me.filSearch) AndAlso isActorSearch Then
-                    Me.FillList(0, False, Me.filSearch)
-                Else
-                    If doFill Then
-                        Me.FillList(0)
-                    End If
-                End If
-
+                If doFill Then Me.FillList(0)
             End If
 
         Catch ex As Exception
@@ -5958,7 +5946,7 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub FillList(ByVal iIndex As Integer, Optional ByVal DupesOnly As Boolean = False, Optional ByVal Actor As String = "")
+    Private Sub FillList(ByVal iIndex As Integer)
         Try
             Me.bsMedia.DataSource = Nothing
             Me.dgvMediaList.DataSource = Nothing
@@ -5972,10 +5960,10 @@ doCancel:
             Me.ClearInfo()
             Application.DoEvents()
 
-            If Not String.IsNullOrEmpty(Actor) Then
-                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT * FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Actor, "%') ORDER BY ListTitle COLLATE NOCASE;"))
+            If Not String.IsNullOrEmpty(Me.filSearch) AndAlso Me.cbSearch.Text = Master.eLang.GetString(100, "Actor") Then
+                Master.DB.FillDataTable(Me.dtMedia, String.Concat("SELECT * FROM movies WHERE ID IN (SELECT MovieID FROM MoviesActors WHERE ActorName LIKE '%", Me.filSearch, "%') ORDER BY ListTitle COLLATE NOCASE;"))
             Else
-                If DupesOnly Then
+                If Me.chkFilterDupe.Checked Then
                     Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies WHERE imdb IN (SELECT imdb FROM movies WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ORDER BY ListTitle COLLATE NOCASE;")
                 Else
                     Master.DB.FillDataTable(Me.dtMedia, "SELECT * FROM movies ORDER BY ListTitle COLLATE NOCASE;")
