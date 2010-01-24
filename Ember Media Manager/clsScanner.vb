@@ -420,7 +420,7 @@ Public Class Scanner
                 Catch
                 End Try
 
-                Dim upDir = From uD As DirectoryInfo In Dirs Where (Master.eSettings.IgnoreLastScan Or uD.LastWriteTime > SourceLastScan) And isValidDir(uD.FullName)
+                Dim upDir = From uD As DirectoryInfo In Dirs Where (Master.eSettings.IgnoreLastScan OrElse uD.LastWriteTime > SourceLastScan) AndAlso isValidDir(uD.FullName)
                 If upDir.Count > 0 Then
                     For Each inDir As DirectoryInfo In upDir
                         If Me.bwPrelim.CancellationPending Then Return
@@ -832,7 +832,7 @@ Public Class Scanner
             Catch
             End Try
 
-            Dim pFile = From fFiles As String In fList Where fFiles.ToLower = Path.Combine(parPath, "season-all.tbn")
+            Dim pFile = From fFiles As String In fList Where fFiles.ToLower = Path.Combine(parPath, "season-all.tbn") OrElse fFiles.ToLower = Path.Combine(parPath, "folder.jpg")
             If pFile.Count > 0 Then
                 tShow.Poster = pFile(0).ToString
             End If

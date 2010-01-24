@@ -1694,6 +1694,10 @@ Public Class dlgSettings
     Private Sub lvShowRegex_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvShowRegex.KeyDown
         If e.KeyCode = Keys.Delete Then Me.RemoveRegex()
     End Sub
+
+    Private Sub cbTrailerQuality_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbTrailerQuality.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2655,7 +2659,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub RemoveNoStack()
-        If lstNoStack.Items.Count > 0 And lstNoStack.SelectedItems.Count > 0 Then
+        If lstNoStack.Items.Count > 0 AndAlso lstNoStack.SelectedItems.Count > 0 Then
             For Each i As Integer In lstNoStack.SelectedIndices
                 lstNoStack.Items.RemoveAt(i)
             Next

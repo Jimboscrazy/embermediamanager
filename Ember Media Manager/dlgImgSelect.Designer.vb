@@ -400,6 +400,7 @@ Partial Class dlgImgSelect
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgImgSelect"
+        Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Poster"
         Me.TableLayoutPanel1.ResumeLayout(False)

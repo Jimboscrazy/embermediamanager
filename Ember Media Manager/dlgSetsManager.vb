@@ -26,6 +26,7 @@ Public Class dlgSetsManager
     Private alSets As New List(Of String)
     Private currSet As New Sets
     Private needsSave As Boolean = False
+    Private sListTitle As String = String.Empty
     Friend WithEvents bwLoadMovies As New System.ComponentModel.BackgroundWorker
 
     Friend Class Sets
@@ -71,6 +72,7 @@ Public Class dlgSetsManager
     Friend Class Movies : Implements IComparable(Of Movies)
         Private _dbmovie As Master.DBMovie
         Private _order As Integer
+        Private _listtitle As String
 
         Public Function CompareTo(ByVal other As Movies) As Integer Implements IComparable(Of Movies).CompareTo
             Return (Me.Order).CompareTo(other.Order)
@@ -94,6 +96,15 @@ Public Class dlgSetsManager
             End Set
         End Property
 
+        Public Property ListTitle() As String
+            Get
+                Return Me._listtitle
+            End Get
+            Set(ByVal value As String)
+                Me._listtitle = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -101,8 +112,13 @@ Public Class dlgSetsManager
         Public Sub Clear()
             Me._dbmovie = New Master.DBMovie
             Me._order = 0
+            Me._listtitle = String.Empty
         End Sub
     End Class
+
+    Private Function FindMovie(ByVal lMov As Movies) As Boolean
+        If lMov.ListTitle = sListTitle Then Return True Else  : Return False
+    End Function
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Master.eSettings.Sets = alSets
@@ -167,7 +183,7 @@ Public Class dlgSetsManager
                             If bwLoadMovies.CancellationPending Then Return
                             tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("ID")))
                             If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
-                                lMovies.Add(New Movies With {.DBMovie = tmpMovie})
+                                lMovies.Add(New Movies With {.DBMovie = tmpMovie, .ListTitle = String.Concat(tmpMovie.Movie.Title, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty))})
                                 If tmpMovie.Movie.Sets.Count > 0 Then
                                     For Each mSet As Media.Set In tmpMovie.Movie.Sets
                                         If Not alSets.Contains(mSet.Set) AndAlso Not String.IsNullOrEmpty(mSet.Set) Then
@@ -206,9 +222,7 @@ Public Class dlgSetsManager
 
         Me.LoadSets()
 
-        For Each tMovie As Movies In lMovies
-            Me.lbMovies.Items.Add(tMovie.DBMovie.Movie.Title)
-        Next
+        Me.FillMovies()
 
         Me.pnlCancel.Visible = False
 
@@ -223,6 +237,21 @@ Public Class dlgSetsManager
         Me.btnEditSet.Enabled = True
         Me.btnRemoveSet.Enabled = True
 
+    End Sub
+
+    Private Sub FillMovies()
+        Try
+            Me.lbMovies.SuspendLayout()
+
+            Me.lbMovies.Items.Clear()
+            For Each lMov As Movies In lMovies
+                If Not Me.lbMoviesInSet.Items.Contains(lMov.ListTitle) Then Me.lbMovies.Items.Add(lMov.ListTitle)
+            Next
+
+            Me.lbMovies.ResumeLayout()
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
     Private Sub DoCancel()
@@ -259,7 +288,6 @@ Public Class dlgSetsManager
             If Me.lbSets.SelectedItems.Count > 0 Then
 
                 Me.lblCurrentSet.Text = Me.lbSets.SelectedItem.ToString
-
                 Me.currSet.Set = Me.lbSets.SelectedItem.ToString
 
                 For Each tMovie As Movies In lMovies
@@ -279,6 +307,8 @@ Public Class dlgSetsManager
                 Me.lblCurrentSet.Text = Master.eLang.GetString(368, "None Selected")
                 needsSave = False
             End If
+
+            Me.FillMovies()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -300,6 +330,8 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub LoadSets()
+        Me.lbSets.SuspendLayout()
+
         Me.lbSets.Items.Clear()
         Me.lbMoviesInSet.Items.Clear()
         Me.lblCurrentSet.Text = Master.eLang.GetString(368, "None Selected")
@@ -307,6 +339,8 @@ Public Class dlgSetsManager
         For Each mSet As String In alSets
             Me.lbSets.Items.Add(mSet)
         Next
+
+        Me.lbSets.ResumeLayout()
     End Sub
 
     Private Sub SaveSet(ByVal mSet As Sets)
@@ -350,13 +384,21 @@ Public Class dlgSetsManager
 
     Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
         Try
+            Dim lMov As New Movies
+
             If Me.lbSets.SelectedItems.Count > 0 Then
-                For i As Integer = 0 To lbMovies.SelectedItems.Count - 1
-                    If Not Me.lbMoviesInSet.Items.Contains(Me.lbMovies.SelectedItems(i)) Then
-                        Me.currSet.AddMovie(lMovies(Me.lbMovies.SelectedIndices(i)), Me.lbMoviesInSet.Items.Count + i)
-                        needsSave = True
+                While lbMovies.SelectedItems.Count > 0
+                    If Not Me.lbMoviesInSet.Items.Contains(lbMovies.SelectedItems(0)) Then
+                        Me.sListTitle = lbMovies.SelectedItems(0).ToString
+                        lMov = lMovies.Find(AddressOf FindMovie)
+                        If Not IsNothing(lMov) Then
+                            Me.currSet.AddMovie(lMov, Me.currSet.Movies.Count + 1)
+                            needsSave = True
+                            Me.lbMovies.Items.Remove(lbMovies.SelectedItems(0))
+                        End If
                     End If
-                Next
+                End While
+
                 lbMovies.SelectedIndex = -1
                 Me.LoadCurrSet()
             End If
@@ -367,22 +409,26 @@ Public Class dlgSetsManager
 
     Private Sub LoadCurrSet()
         Try
+            Me.lbMoviesInSet.SuspendLayout()
+
             Me.lbMoviesInSet.Items.Clear()
             Me.currSet.Movies.Sort()
             For Each tMovie As Movies In Me.currSet.Movies
-                Me.lbMoviesInSet.Items.Add(tMovie.DBMovie.Movie.Title)
+                Me.lbMoviesInSet.Items.Add(tMovie.ListTitle)
                 tMovie.Order = Me.lbMoviesInSet.Items.Count
             Next
+
+            Me.lbMoviesInSet.ResumeLayout()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
 
-    Private Sub RemoveFromSet(ByVal iIndex As Integer, ByVal isEdit As Boolean)
+    Private Sub RemoveFromSet(ByVal lMov As Movies, ByVal isEdit As Boolean)
         Try
-            Me.currSet.Movies(iIndex).DBMovie.Movie.RemoveSet(Me.currSet.Set)
-            Master.DB.SaveMovieToDB(Me.currSet.Movies(iIndex).DBMovie, False, False, True)
-            If Not isEdit Then Me.currSet.Movies.RemoveAt(iIndex)
+            lMov.DBMovie.Movie.RemoveSet(Me.currSet.Set)
+            Master.DB.SaveMovieToDB(lMov.DBMovie, False, False, True)
+            If Not isEdit Then Me.currSet.Movies.Remove(lMov)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -393,10 +439,21 @@ Public Class dlgSetsManager
     End Sub
 
     Private Sub DeleteFromSet()
+        Dim lMov As New Movies
+
         If Me.lbMoviesInSet.SelectedItems.Count > 0 Then
             Me.SetControlsEnabled(False)
-            Me.RemoveFromSet(Me.lbMoviesInSet.SelectedIndex, False)
+            While Me.lbMoviesInSet.SelectedItems.Count > 0
+                Me.sListTitle = Me.lbMoviesInSet.SelectedItems(0).ToString
+                lMov = Me.currSet.Movies.Find(AddressOf FindMovie)
+                If Not IsNothing(lMov) Then
+                    Me.RemoveFromSet(lMov, False)
+                Else
+                    Me.lbMoviesInSet.Items.Remove(Me.lbMoviesInSet.SelectedItems(0))
+                End If
+            End While
             Me.LoadCurrSet()
+            Me.FillMovies()
             Me.SetControlsEnabled(True)
         End If
     End Sub
@@ -443,12 +500,13 @@ Public Class dlgSetsManager
                 Using dNewSet As New dlgNewSet
                     Dim strSet As String = dNewSet.ShowDialog(Me.lbSets.SelectedItem.ToString)
                     If Not String.IsNullOrEmpty(strSet) AndAlso Not Me.alSets.Contains(strSet) Then
+                        Me.SetControlsEnabled(False)
                         For i As Integer = 0 To Me.alSets.Count - 1
                             If Me.alSets(i).ToString = Me.lbSets.SelectedItem.ToString Then
                                 'remove the old set from each movie.
                                 If lbMoviesInSet.Items.Count > 0 Then
-                                    For b As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
-                                        Me.RemoveFromSet(b, True)
+                                    For Each lMov As Movies In Me.currSet.Movies
+                                        Me.RemoveFromSet(lMov, True)
                                     Next
                                 End If
                                 'set the currset to have the updated title
@@ -476,17 +534,12 @@ Public Class dlgSetsManager
     Private Sub RemoveSet()
         Try
             If lbMoviesInSet.Items.Count > 0 Then
-                For i As Integer = lbMoviesInSet.Items.Count - 1 To 0 Step -1
-                    Me.RemoveFromSet(i, False)
+                For Each lMov As Movies In Me.currSet.Movies
+                    Me.RemoveFromSet(lMov, False)
                 Next
             End If
 
-            For i As Integer = 0 To Me.alSets.Count - 1
-                If Me.alSets(i).ToString = Me.lbSets.SelectedItem.ToString Then
-                    Me.alSets.RemoveAt(i)
-                    Exit For
-                End If
-            Next
+            Me.alSets.Remove(Me.lbSets.SelectedItem.ToString)
 
             Me.LoadSets()
         Catch ex As Exception

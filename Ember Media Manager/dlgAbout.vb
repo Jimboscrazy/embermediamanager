@@ -159,7 +159,7 @@ Public NotInheritable Class dlgAbout
 
             CurrentX = (Me.picDisplay.ClientSize.Width - e.Graphics.MeasureString(CredList(i).Text, CredList(i).Font).Width) / 2
 
-            If i = CredList.Count - 1 And CurrentY < -25 Then PicY = Me.picDisplay.ClientSize.Height
+            If i = CredList.Count - 1 AndAlso CurrentY < -25 Then PicY = Me.picDisplay.ClientSize.Height
 
             e.Graphics.DrawString(CredList(i).Text, CredList(i).Font, Brushes.Black, CurrentX, CurrentY)
 

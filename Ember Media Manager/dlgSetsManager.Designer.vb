@@ -218,6 +218,7 @@ Partial Class dlgSetsManager
         Me.lbMoviesInSet.FormattingEnabled = True
         Me.lbMoviesInSet.Location = New System.Drawing.Point(9, 46)
         Me.lbMoviesInSet.Name = "lbMoviesInSet"
+        Me.lbMoviesInSet.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lbMoviesInSet.Size = New System.Drawing.Size(209, 303)
         Me.lbMoviesInSet.TabIndex = 0
         '
@@ -371,6 +372,7 @@ Partial Class dlgSetsManager
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(702, 482)
+        Me.ControlBox = False
         Me.Controls.Add(Me.pnlSaving)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.OK_Button)
