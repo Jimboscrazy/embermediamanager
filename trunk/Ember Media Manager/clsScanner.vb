@@ -33,6 +33,7 @@ Public Class Scanner
     Friend WithEvents bwFolderData As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
 
+    Public Event ScannerUpdated(ByVal sText As String)
     Public Event ProgressUpdated(ByVal iPercent As Integer, ByVal sText As String)
     Public Event ScanningCompleted(ByVal iStatus As Integer, ByVal iMax As Integer)
 
@@ -449,7 +450,6 @@ Public Class Scanner
 
         Try
 
-            Dim tmpList As New List(Of String)
             Dim di As DirectoryInfo
             Dim lFi As New List(Of FileInfo)
             Dim SkipStack As Boolean = False
@@ -494,10 +494,15 @@ Public Class Scanner
                 End If
 
                 If vtsSingle AndAlso Not String.IsNullOrEmpty(tFile) Then
-                    If Not tmpList.Contains(tFile.ToLower) AndAlso Not MoviePaths.Contains(tFile.ToLower) AndAlso _
+                    If Not MoviePaths.Contains(StringManip.CleanStackingMarkers(tFile.ToLower)) AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("-trailer") AndAlso Not Path.GetFileName(tFile).ToLower.Contains("[trailer") AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("sample") Then
-                        tmpList.Add(tFile.ToLower)
+                        If Master.eSettings.NoStackExts.Contains(Path.GetExtension(tFile).ToLower) Then
+                            MoviePaths.Add(tFile.ToLower)
+                        Else
+                            MoviePaths.Add(StringManip.CleanStackingMarkers(tFile).ToLower)
+                        End If
+                        Me.bwPrelim.ReportProgress(0, Path.GetFileName(tFile))
                         fList.Add(New AllContainer With {.Type = MediaType.Movie, .MContainer = New MovieContainer With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder}})
                     End If
                 Else
@@ -505,16 +510,18 @@ Public Class Scanner
 
                     For Each lFile As FileInfo In lFi
 
-                        If Not MoviePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso Not tmpList.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) AndAlso _
+                        If Not MoviePaths.Contains(StringManip.CleanStackingMarkers(lFile.FullName.ToLower)) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                             Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                             ((Master.eSettings.SkipStackSizeCheck AndAlso StringManip.IsStacked(lFile.Name)) OrElse lFile.Length >= Master.eSettings.SkipLessThan * 1048576) Then
 
                             If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
-                                tmpList.Add(lFile.FullName.ToLower)
+                                MoviePaths.Add(lFile.FullName.ToLower)
                                 SkipStack = True
                             Else
-                                tmpList.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
+                                MoviePaths.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
                             End If
+
+                            Me.bwPrelim.ReportProgress(0, lFile.Name)
 
                             fList.Add(New AllContainer With {.Type = MediaType.Movie, .MContainer = New MovieContainer With {.Filename = lFile.FullName, .Source = sSource, .isSingle = bSingle, .UseFolder = If(bSingle, bUseFolder, False)}})
                             If bSingle AndAlso Not SkipStack Then Exit For
@@ -963,6 +970,7 @@ Public Class Scanner
                     If Not TVPaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                         Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                         lFile.Length >= Master.eSettings.SkipLessThan * 1048576 Then
+                        Me.bwPrelim.ReportProgress(0, lFile.Name)
                         tShow.Episodes.Add(New EpisodeContainer With {.Filename = lFile.FullName, .Source = tShow.Source})
                     End If
                 Next
@@ -976,6 +984,7 @@ Public Class Scanner
 
         Try
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Dim mPath As String = String.Empty
 
             Master.DB.SaveMovieList()
             Me.MediaList.Clear()
@@ -986,7 +995,12 @@ Public Class Scanner
                     SQLcommand.CommandText = "SELECT Movies.MoviePath FROM Movies;"
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
-                            MoviePaths.Add(SQLreader("MoviePath").ToString.ToLower)
+                            mPath = SQLreader("MoviePath").ToString.ToLower
+                            If Master.eSettings.NoStackExts.Contains(Path.GetExtension(mPath)) Then
+                                MoviePaths.Add(mPath)
+                            Else
+                                MoviePaths.Add(StringManip.CleanStackingMarkers(mPath))
+                            End If
                             If Me.bwPrelim.CancellationPending Then
                                 e.Cancel = True
                                 Return
@@ -1091,6 +1105,10 @@ Public Class Scanner
             e.Cancel = True
         End Try
 
+    End Sub
+
+    Private Sub bwPrelim_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwPrelim.ProgressChanged
+        RaiseEvent ScannerUpdated(e.UserState.ToString)
     End Sub
 
     Private Sub bwPrelim_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwPrelim.RunWorkerCompleted
