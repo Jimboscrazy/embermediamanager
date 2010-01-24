@@ -35,12 +35,17 @@ Public Class Trailers
 
     Public Sub New()
         Me.Clear()
+        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
     Public Sub Clear()
         Me._TrailerList.Clear()
         Me._ImdbID = String.Empty
         Me._ImdbTrailerPage = String.Empty
+    End Sub
+
+    Public Sub DownloadProgressUpdated(ByVal iPercent As Integer)
+        RaiseEvent ProgressUpdated(iPercent)
     End Sub
 
     Public Function GetTrailers(ByVal ImdbID As String, Optional ByVal BreakAfterFound As Boolean = True) As List(Of String)
