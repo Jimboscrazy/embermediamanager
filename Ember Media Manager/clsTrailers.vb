@@ -59,9 +59,9 @@ Public Class Trailers
             Try
                 Select Case TP
                     Case Master.TrailerPages.AllHTPC
-                        Me.GetAllHTPCTrailer()
+                        Me.GetAllHTPCTrailer(BreakAfterFound)
                     Case Master.TrailerPages.TMDB
-                        Me.GetTMDBTrailer()
+                        Me.GetTMDBTrailer(BreakAfterFound)
                     Case Master.TrailerPages.IMDB
                         Me.GetImdbTrailer()
                 End Select
@@ -114,50 +114,66 @@ Public Class Trailers
         End If
     End Sub
 
-    Private Sub GetAllHTPCTrailer()
+    Private Sub GetAllHTPCTrailer(ByVal GetFormats As Boolean)
         Dim AllHTPC As New AllHTPC.Scraper
         Dim YT As String = AllHTPC.GetTrailer(_ImdbID)
 
         If Not String.IsNullOrEmpty(YT) Then
-            Dim YTPage As String = WebPage.DownloadData(YT)
-            If Not String.IsNullOrEmpty(YTPage) Then
+            If GetFormats Then
+                Dim YTPage As String = WebPage.DownloadData(YT)
+                If Not String.IsNullOrEmpty(YTPage) Then
 
-                'new YouTube scraper
-                Dim scraper As New YouTube.Scraper()
-                scraper.GetVideoLinks(YT)
+                    'new YouTube scraper
+                    Dim scraper As New YouTube.Scraper()
+                    scraper.GetVideoLinks(YT)
 
-                With scraper.VideoLinks
-                    If .Count > 0 Then
-                        'check if we have preferred quality
-                        If .ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
-                            Me._TrailerList.Add(.Values(.IndexOfKey(Master.eSettings.PreferredTrailerQuality)).URL)
-                        Else
-                            'just add the first link (best available quality)
-                            Me._TrailerList.Add(.Values(0).URL)
+                    With scraper.VideoLinks
+                        If .Count > 0 Then
+                            'check if we have preferred quality
+                            If .ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
+                                Me._TrailerList.Add(.Values(.IndexOfKey(Master.eSettings.PreferredTrailerQuality)).URL)
+                            Else
+                                'just add the first link (best available quality)
+                                Me._TrailerList.Add(.Values(0).URL)
+                            End If
                         End If
-                    End If
-                End With
+                    End With
+                End If
+            Else
+                Me._TrailerList.Add(YT)
             End If
         End If
 
-        AllHTPC = Nothing
+            AllHTPC = Nothing
     End Sub
 
-    Private Sub GetTMDBTrailer()
+    Private Sub GetTMDBTrailer(ByVal GetFormats As Boolean)
         Dim TMDB As New TMDB.Scraper
         Dim YT As String = TMDB.GetTrailers(_ImdbID)
 
         If Not String.IsNullOrEmpty(YT) Then
-            Dim YTPage As String = WebPage.DownloadData(YT)
-            If Not String.IsNullOrEmpty(YTPage) Then
+            If GetFormats Then
+                Dim YTPage As String = WebPage.DownloadData(YT)
+                If Not String.IsNullOrEmpty(YTPage) Then
 
-                'new YouTube scraper
-                Dim scraper As New YouTube.Scraper()
-                scraper.GetVideoLinks(YT)
+                    'new YouTube scraper
+                    Dim scraper As New YouTube.Scraper()
+                    scraper.GetVideoLinks(YT)
 
-                If scraper.VideoLinks.Count > 0 Then
-                    Me._TrailerList.Add(scraper.VideoLinks.Values(0).URL)
+                    With scraper.VideoLinks
+                        If .Count > 0 Then
+                            'check if we have preferred quality
+                            If .ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
+                                Me._TrailerList.Add(.Values(.IndexOfKey(Master.eSettings.PreferredTrailerQuality)).URL)
+                            Else
+                                'just add the first link (best available quality)
+                                Me._TrailerList.Add(.Values(0).URL)
+                            End If
+                        End If
+                    End With
                 End If
+            Else
+                Me._TrailerList.Add(YT)
             End If
         End If
 
@@ -201,7 +217,7 @@ Public Class Trailers
         Return tURL
     End Function
 
-    Public Function DownloadYouTubeTrailer(ByVal sPath As String, ByVal sURL As String) As String
+    Public Function DownloadTrailer(ByVal sPath As String, ByVal sURL As String) As String
 
         Dim tURL As String = String.Empty
 
@@ -213,19 +229,6 @@ Public Class Trailers
                 If Master.eSettings.DeleteAllTrailers Then
                     Me.DeleteTrailers(sPath, tURL)
                 End If
-            End If
-        End If
-
-        Return tURL
-    End Function
-
-    Public Function DownloadSelectedTrailer(ByVal sPath As String, ByVal sIndex As Integer) As String
-        Dim tURL As String = WebPage.DownloadFile(Me._TrailerList.Item(sIndex).ToString, sPath, True, "trailer")
-
-        If Not String.IsNullOrEmpty(tURL) Then
-            'delete any other trailer if enabled in settings and download successful
-            If Master.eSettings.DeleteAllTrailers Then
-                Me.DeleteTrailers(sPath, tURL)
             End If
         End If
 
@@ -285,7 +288,5 @@ Public Class Trailers
             End If
         Next
     End Sub
-
-
 
 End Class

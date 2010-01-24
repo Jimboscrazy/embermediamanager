@@ -37,43 +37,54 @@ Public Class dlgTrailer
 
     Private Structure Arguments
         Dim Parameter As String
-        Dim iIndex As Integer
         Dim bType As Boolean
     End Structure
 
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
-        tURL = lbTrailers.SelectedItem.ToString
+        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+            tURL = Me.txtYouTube.Text
+        ElseIf Me.lbTrailers.SelectedItems.Count > 0 Then
+            tURL = lbTrailers.SelectedItem.ToString
+        End If
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+        Me.BeginDownload(True)
+    End Sub
+
+    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.bwCompileList.CancelAsync()
+        Me.bwDownloadTrailer.CancelAsync()
+
+        While Me.bwCompileList.IsBusy OrElse Me.bwDownloadTrailer.IsBusy
+            Application.DoEvents()
+        End While
+
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+    Private Sub BeginDownload(ByVal CloseDialog As Boolean)
+        Dim didCancel As Boolean = False
+
         Me.OK_Button.Enabled = False
-        Me.btnFetchFormats.Enabled = False
-        Me.Cancel_Button.Enabled = False
         Me.btnSetNfo.Enabled = False
         Me.btnPlayTrailer.Enabled = False
         Me.lbTrailers.Enabled = False
         Me.txtYouTube.Enabled = False
+        Me.txtManual.Enabled = False
+        Me.btnBrowse.Enabled = False
         Me.lblStatus.Text = Master.eLang.GetString(380, "Downloading selected trailer...")
         Me.pbStatus.Style = ProgressBarStyle.Continuous
         Me.pbStatus.Value = 0
         Me.pnlStatus.Visible = True
         Application.DoEvents()
 
-        If Me.txtManual.Text.Length > 0 AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
-            Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
-            FileManip.Common.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
-
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-        ElseIf Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") AndAlso lstFormats.SelectedItem IsNot Nothing Then
-            Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-            Me.bwDownloadTrailer.WorkerReportsProgress = True
-            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = DirectCast(lstFormats.SelectedItem, YouTube.VideoLinkItem).URL, .iIndex = -1, .bType = True})
-        Else
-            If Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
+        If Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
+            If CloseDialog Then
                 Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, Path.GetFileName(Me.prePath))
                 FileManip.Common.MoveFileWithStream(Me.prePath, Me.tURL)
 
@@ -82,23 +93,69 @@ Public Class dlgTrailer
                 Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Else
+                System.Diagnostics.Process.Start(String.Concat("""", Me.prePath, """"))
+                didCancel = True
+            End If
+        ElseIf Me.txtManual.Text.Length > 0 AndAlso Master.eSettings.ValidExts.Contains(Path.GetExtension(Me.txtManual.Text)) AndAlso File.Exists(Me.txtManual.Text) Then
+            If CloseDialog Then
+                Me.tURL = Path.Combine(Directory.GetParent(Me.sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(Me.sPath), If(Master.eSettings.DashTrailer, "-trailer", "[trailer]"), Path.GetExtension(Me.txtManual.Text)))
+                FileManip.Common.MoveFileWithStream(Me.txtManual.Text, Me.tURL)
+
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
+            Else
+                System.Diagnostics.Process.Start(String.Concat("""", Me.txtManual.Text, """"))
+                didCancel = True
+            End If
+        ElseIf Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+            Using dFormats As New dlgTrailerFormat
+                Dim sFormat As String = dFormats.ShowDialog(Me.txtYouTube.Text)
+
+                If Not String.IsNullOrEmpty(sFormat) Then
+                    Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                    Me.bwDownloadTrailer.WorkerReportsProgress = True
+                    Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
+                Else
+                    didCancel = True
+                End If
+            End Using
+        Else
+            If Regex.IsMatch(Me.lbTrailers.SelectedItem.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+                Using dFormats As New dlgTrailerFormat
+                    Dim sFormat As String = dFormats.ShowDialog(Me.lbTrailers.SelectedItem.ToString)
+
+                    If Not String.IsNullOrEmpty(sFormat) Then
+                        Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+                        Me.bwDownloadTrailer.WorkerReportsProgress = True
+                        Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
+                    Else
+                        didCancel = True
+                    End If
+                End Using
+            Else
                 Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadTrailer.WorkerReportsProgress = True
-                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.iIndex = lbTrailers.SelectedIndex, .bType = True})
+                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = lbTrailers.SelectedItem.ToString, .bType = CloseDialog})
             End If
         End If
 
+        If didCancel Then
+            Me.pnlStatus.Visible = False
+            Me.lbTrailers.Enabled = True
+            Me.txtYouTube.Enabled = True
+            Me.txtManual.Enabled = True
+            Me.btnBrowse.Enabled = True
+            Me.SetEnabled(False)
+        End If
     End Sub
-
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
-    End Sub
-
     Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
 
         Try
             tArray = cTrailer.GetTrailers(Me.imdbID, False)
+
+            If Me.bwCompileList.CancellationPending Then
+                e.Cancel = True
+            End If
         Catch
         End Try
 
@@ -106,34 +163,48 @@ Public Class dlgTrailer
 
     Private Sub bwCompileList_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCompileList.RunWorkerCompleted
 
-        If Me.tArray.Count > 0 Then
-            For Each tTrail As String In Me.tArray
-                Me.lbTrailers.Items.Add(tTrail)
-            Next
+        If Not e.Cancelled Then
+            If Me.tArray.Count > 0 Then
+                For Each tTrail As String In Me.tArray
+                    Me.lbTrailers.Items.Add(tTrail)
+                Next
+
+                Me.btnGetTrailers.Visible = False
+            Else
+                Me.btnGetTrailers.Enabled = False
+            End If
+
         End If
 
         Me.pnlStatus.Visible = False
-        Me.Cancel_Button.Enabled = True
-        DoEnableFetchFormats()
+        Me.lbTrailers.Enabled = True
+        Me.txtYouTube.Enabled = True
+        Me.txtManual.Enabled = True
+        Me.btnBrowse.Enabled = True
+        Me.SetEnabled(False)
+
     End Sub
 
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
 
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            If Args.bType AndAlso Args.iIndex >= 0 Then
-                tURL = cTrailer.DownloadSelectedTrailer(Me.sPath, Args.iIndex)
+
+            If Args.bType Then
+                Me.tURL = cTrailer.DownloadTrailer(Me.sPath, Args.Parameter)
             Else
-                If Args.bType Then
-                    tURL = cTrailer.DownloadYouTubeTrailer(Me.sPath, Args.Parameter)
-                Else
-                    Me.prePath = sHTTP.DownloadFile(Args.Parameter, Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), True, "trailer")
-                End If
+                Me.prePath = cTrailer.DownloadTrailer(Path.Combine(Master.TempPath, Path.GetFileName(Me.sPath)), Args.Parameter)
             End If
+
         Catch
         End Try
 
         e.Result = Args.bType
+
+        If Me.bwDownloadTrailer.CancellationPending Then
+            e.Cancel = True
+        End If
+
     End Sub
 
     Private Sub bwDownloadTrailer_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDownloadTrailer.ProgressChanged
@@ -142,17 +213,19 @@ Public Class dlgTrailer
 
     Private Sub bwDownloadTrailer_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadTrailer.RunWorkerCompleted
 
-        If Convert.ToBoolean(e.Result) Then
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-        Else
-            Me.pnlStatus.Visible = False
-            Me.btnPlayTrailer.Enabled = True
-            Me.OK_Button.Enabled = True
-            Me.btnSetNfo.Enabled = True
-            Me.Cancel_Button.Enabled = True
-
-            If Not String.IsNullOrEmpty(prePath) Then System.Diagnostics.Process.Start(String.Concat("""", prePath, """"))
+        If Not e.Cancelled Then
+            If Convert.ToBoolean(e.Result) Then
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
+                Me.Close()
+            Else
+                Me.pnlStatus.Visible = False
+                Me.lbTrailers.Enabled = True
+                Me.txtYouTube.Enabled = True
+                Me.txtManual.Enabled = True
+                Me.btnBrowse.Enabled = True
+                Me.SetEnabled(False)
+                If Not String.IsNullOrEmpty(Me.prePath) Then System.Diagnostics.Process.Start(String.Concat("""", prePath, """"))
+            End If
         End If
     End Sub
 
@@ -161,26 +234,15 @@ Public Class dlgTrailer
     End Sub
 
     Private Sub lbTrailers_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailers.SelectedIndexChanged
-        Me.OK_Button.Enabled = True
-        Me.btnSetNfo.Enabled = True
-        Me.btnPlayTrailer.Enabled = True
-
-        If File.Exists(Me.prePath) Then
-            File.Delete(Me.prePath)
-        End If
-        Me.prePath = String.Empty
+        Me.SetEnabled(True)
     End Sub
 
     Public Overloads Function ShowDialog(ByVal _imdbID As String, ByVal _sPath As String) As String
 
-        '//
-        ' Overload to pass data
-        '\\
-
         Me.imdbID = _imdbID
         Me.sPath = _sPath
 
-        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Return Me.tURL
         Else
             Return String.Empty
@@ -204,129 +266,26 @@ Public Class dlgTrailer
         Me.lblStatus.Text = Master.eLang.GetString(377, "Compiling trailer list...")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(378, "Preview Trailer")
         Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
-        Me.btnFetchFormats.Text = Master.eLang.GetString(645, "Fetch Formats")
         Me.Label2.Text = Master.eLang.GetString(644, "Local Trailer:")
     End Sub
 
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
-
-        Me.btnFetchFormats.Enabled = False
-        Me.pnlStatus.Visible = True
-        Me.bwCompileList = New System.ComponentModel.BackgroundWorker
-        Me.bwCompileList.WorkerSupportsCancellation = True
-        Me.bwCompileList.RunWorkerAsync()
     End Sub
 
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
         Try
-            Me.btnPlayTrailer.Enabled = False
-            Me.OK_Button.Enabled = False
-            Me.btnFetchFormats.Enabled = False
-            Me.btnSetNfo.Enabled = False
-            Me.Cancel_Button.Enabled = False
-
-            Me.lblStatus.Text = Master.eLang.GetString(381, "Downloading preview...")
-            Me.pbStatus.Style = ProgressBarStyle.Continuous
-            Me.pbStatus.Value = 0
-            Me.pnlStatus.Visible = True
-            Application.DoEvents()
-
-            Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
-            Me.bwDownloadTrailer.WorkerReportsProgress = True
-            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = Me.lbTrailers.SelectedItem.ToString, .iIndex = lbTrailers.SelectedIndex, .bType = False})
+            Me.BeginDownload(False)
         Catch
             MsgBox(Master.eLang.GetString(382, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), MsgBoxStyle.Critical, Master.eLang.GetString(383, "Error Playing Trailer"))
-        End Try
-    End Sub
-
-#Region " YouTube Stuff "
-
-    Private WithEvents YouTube As YouTube.Scraper
-
-    Private Sub FetchFormatsProgressUpdated(ByVal iProgress As Integer)
-        pbStatus.Value = iProgress
-    End Sub
-
-    Private Sub txtYouTube_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYouTube.TextChanged
-        Try
-            DoEnableFetchFormats()
-            lstFormats.DataSource = Nothing
-        Catch
-        End Try
-    End Sub
-
-    Private Sub DoEnableFetchFormats()
-        If bwCompileList.IsBusy OrElse bwDownloadTrailer.IsBusy Then
-            Me.btnFetchFormats.Enabled = False
-        Else
-            Me.btnFetchFormats.Enabled = Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*")
-        End If
-    End Sub
-
-    Private Sub lstFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstFormats.SelectedIndexChanged
-        Try
-            Me.OK_Button.Enabled = True
-            Me.btnSetNfo.Enabled = True
-            Me.btnPlayTrailer.Enabled = True
-
-            If File.Exists(Me.prePath) Then
-                File.Delete(Me.prePath)
-            End If
-            Me.prePath = String.Empty
-        Catch
-        End Try
-    End Sub
-
-    Private Sub btnFetchFormats_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFetchFormats.Click
-
-        Try
-
-            lstFormats.DataSource = Nothing
-            Me.btnPlayTrailer.Enabled = False
-            Me.Cancel_Button.Enabled = False
-            Application.DoEvents()
-
-            YouTube = New YouTube.Scraper
-            YouTube.GetVideoLinksAsync(txtYouTube.Text)
-
-            Me.OK_Button.Enabled = False
-            Me.btnFetchFormats.Enabled = False
-            Me.btnSetNfo.Enabled = False
-
-            Me.lblStatus.Text = Master.eLang.GetString(646, "Retrieving formats...")
-            Me.pbStatus.Style = ProgressBarStyle.Marquee
-            Me.pbStatus.Value = 0
-            Me.pnlStatus.Visible = True
-
-        Catch ex As Exception
-            MsgBox(Master.eLang.GetString(647, "The video format links could not be retrieved."), MsgBoxStyle.Critical, Master.eLang.GetString(648, "Error Retrieving Video Format Links"))
-        End Try
-
-    End Sub
-
-    Private Sub YouTube_VideoLinksRetrieved(ByVal bSuccess As Boolean) Handles YouTube.VideoLinksRetrieved
-        Try
-
-            If bSuccess Then
-                lstFormats.DataSource = YouTube.VideoLinks.Values.ToList
-                lstFormats.DisplayMember = "Description"
-                lstFormats.ValueMember = "URL"
-
-                If YouTube.VideoLinks.ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
-                    lstFormats.SelectedIndex = YouTube.VideoLinks.IndexOfKey(Master.eSettings.PreferredTrailerQuality)
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        Finally
             Me.pnlStatus.Visible = False
-            Me.Cancel_Button.Enabled = True
+            Me.lbTrailers.Enabled = True
+            Me.txtYouTube.Enabled = True
+            Me.txtManual.Enabled = True
+            Me.btnBrowse.Enabled = True
+            Me.SetEnabled(False)
         End Try
-
     End Sub
-
-#End Region
 
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
         Try
@@ -345,12 +304,53 @@ Public Class dlgTrailer
     End Sub
 
     Private Sub txtManual_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtManual.TextChanged
-        Me.OK_Button.Enabled = txtManual.Text.Length > 0
+        Me.SetEnabled(True)
     End Sub
 
     Protected Overrides Sub Finalize()
         cTrailer = Nothing
         sHTTP = Nothing
         MyBase.Finalize()
+    End Sub
+
+    Private Sub btnGetTrailers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetTrailers.Click
+        Me.OK_Button.Enabled = False
+        Me.btnSetNfo.Enabled = False
+        Me.btnPlayTrailer.Enabled = False
+        Me.lbTrailers.Enabled = False
+        Me.txtYouTube.Enabled = False
+        Me.txtManual.Enabled = False
+        Me.btnBrowse.Enabled = False
+        Me.pnlStatus.Visible = True
+
+        Me.bwCompileList = New System.ComponentModel.BackgroundWorker
+        Me.bwCompileList.WorkerSupportsCancellation = True
+        Me.bwCompileList.RunWorkerAsync()
+    End Sub
+
+    Private Sub txtYouTube_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtYouTube.TextChanged
+        Me.SetEnabled(True)
+    End Sub
+
+    Private Sub SetEnabled(ByVal DeletePre As Boolean)
+
+        If DeletePre AndAlso Not String.IsNullOrEmpty(Me.prePath) AndAlso File.Exists(Me.prePath) Then
+            File.Delete(Me.prePath)
+            Me.prePath = String.Empty
+        End If
+
+        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse Me.lbTrailers.SelectedItems.Count > 0 OrElse Me.txtManual.Text.Length > 0 Then
+            Me.OK_Button.Enabled = True
+            Me.btnPlayTrailer.Enabled = True
+            If Me.txtManual.Text.Length > 0 Then
+                Me.btnSetNfo.Enabled = False
+            Else
+                Me.btnSetNfo.Enabled = True
+            End If
+        Else
+            Me.OK_Button.Enabled = False
+            Me.btnPlayTrailer.Enabled = False
+            Me.btnSetNfo.Enabled = False
+        End If
     End Sub
 End Class

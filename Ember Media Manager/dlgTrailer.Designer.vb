@@ -22,23 +22,23 @@ Partial Class dlgTrailer
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrailer))
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.lbTrailers = New System.Windows.Forms.ListBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.btnGetTrailers = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
-        Me.lstFormats = New System.Windows.Forms.ListBox
+        Me.btnBrowse = New System.Windows.Forms.Button
+        Me.txtManual = New System.Windows.Forms.TextBox
+        Me.Label2 = New System.Windows.Forms.Label
         Me.txtYouTube = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
-        Me.btnFetchFormats = New System.Windows.Forms.Button
         Me.pnlStatus = New System.Windows.Forms.Panel
         Me.lblStatus = New System.Windows.Forms.Label
         Me.pbStatus = New System.Windows.Forms.ProgressBar
         Me.btnPlayTrailer = New System.Windows.Forms.Button
         Me.btnSetNfo = New System.Windows.Forms.Button
-        Me.txtManual = New System.Windows.Forms.TextBox
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.btnBrowse = New System.Windows.Forms.Button
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -47,9 +47,8 @@ Partial Class dlgTrailer
         '
         'OK_Button
         '
-        Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.OK_Button.Enabled = False
-        Me.OK_Button.Location = New System.Drawing.Point(296, 390)
+        Me.OK_Button.Location = New System.Drawing.Point(296, 334)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -57,10 +56,8 @@ Partial Class dlgTrailer
         '
         'Cancel_Button
         '
-        Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Enabled = False
-        Me.Cancel_Button.Location = New System.Drawing.Point(369, 390)
+        Me.Cancel_Button.Location = New System.Drawing.Point(369, 334)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -68,6 +65,7 @@ Partial Class dlgTrailer
         '
         'lbTrailers
         '
+        Me.lbTrailers.Enabled = False
         Me.lbTrailers.FormattingEnabled = True
         Me.lbTrailers.HorizontalScrollbar = True
         Me.lbTrailers.Location = New System.Drawing.Point(6, 19)
@@ -77,39 +75,68 @@ Partial Class dlgTrailer
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.GroupBox2)
         Me.GroupBox1.Controls.Add(Me.pnlStatus)
+        Me.GroupBox1.Controls.Add(Me.btnGetTrailers)
+        Me.GroupBox1.Controls.Add(Me.GroupBox2)
         Me.GroupBox1.Controls.Add(Me.lbTrailers)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(424, 372)
+        Me.GroupBox1.Size = New System.Drawing.Size(424, 319)
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Select Trailer to Download"
+        '
+        'btnGetTrailers
+        '
+        Me.btnGetTrailers.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGetTrailers.Image = CType(resources.GetObject("btnGetTrailers.Image"), System.Drawing.Image)
+        Me.btnGetTrailers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnGetTrailers.Location = New System.Drawing.Point(120, 82)
+        Me.btnGetTrailers.Name = "btnGetTrailers"
+        Me.btnGetTrailers.Size = New System.Drawing.Size(184, 23)
+        Me.btnGetTrailers.TabIndex = 71
+        Me.btnGetTrailers.Text = "Download Trailer List"
+        Me.btnGetTrailers.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnGetTrailers.UseVisualStyleBackColor = True
         '
         'GroupBox2
         '
         Me.GroupBox2.Controls.Add(Me.btnBrowse)
         Me.GroupBox2.Controls.Add(Me.txtManual)
         Me.GroupBox2.Controls.Add(Me.Label2)
-        Me.GroupBox2.Controls.Add(Me.lstFormats)
         Me.GroupBox2.Controls.Add(Me.txtYouTube)
         Me.GroupBox2.Controls.Add(Me.Label1)
-        Me.GroupBox2.Controls.Add(Me.btnFetchFormats)
         Me.GroupBox2.Location = New System.Drawing.Point(6, 201)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(411, 165)
+        Me.GroupBox2.Size = New System.Drawing.Size(411, 111)
         Me.GroupBox2.TabIndex = 70
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Manual Trailer Entry"
         '
-        'lstFormats
+        'btnBrowse
         '
-        Me.lstFormats.FormattingEnabled = True
-        Me.lstFormats.Location = New System.Drawing.Point(106, 50)
-        Me.lstFormats.Name = "lstFormats"
-        Me.lstFormats.Size = New System.Drawing.Size(78, 69)
-        Me.lstFormats.TabIndex = 2
+        Me.btnBrowse.Location = New System.Drawing.Point(376, 80)
+        Me.btnBrowse.Name = "btnBrowse"
+        Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
+        Me.btnBrowse.TabIndex = 5
+        Me.btnBrowse.Text = "..."
+        '
+        'txtManual
+        '
+        Me.txtManual.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtManual.Location = New System.Drawing.Point(9, 82)
+        Me.txtManual.Name = "txtManual"
+        Me.txtManual.Size = New System.Drawing.Size(365, 20)
+        Me.txtManual.TabIndex = 4
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(6, 68)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(68, 13)
+        Me.Label2.TabIndex = 3
+        Me.Label2.Text = "Local Trailer:"
         '
         'txtYouTube
         '
@@ -127,16 +154,6 @@ Partial Class dlgTrailer
         Me.Label1.Size = New System.Drawing.Size(79, 13)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "YouTube URL:"
-        '
-        'btnFetchFormats
-        '
-        Me.btnFetchFormats.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnFetchFormats.Enabled = False
-        Me.btnFetchFormats.Location = New System.Drawing.Point(9, 49)
-        Me.btnFetchFormats.Name = "btnFetchFormats"
-        Me.btnFetchFormats.Size = New System.Drawing.Size(93, 23)
-        Me.btnFetchFormats.TabIndex = 0
-        Me.btnFetchFormats.Text = "Fetch Formats"
         '
         'pnlStatus
         '
@@ -171,11 +188,10 @@ Partial Class dlgTrailer
         '
         'btnPlayTrailer
         '
-        Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnPlayTrailer.Enabled = False
         Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
         Me.btnPlayTrailer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(12, 390)
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(12, 334)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
         Me.btnPlayTrailer.Size = New System.Drawing.Size(100, 23)
         Me.btnPlayTrailer.TabIndex = 109
@@ -185,39 +201,12 @@ Partial Class dlgTrailer
         '
         'btnSetNfo
         '
-        Me.btnSetNfo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnSetNfo.Enabled = False
-        Me.btnSetNfo.Location = New System.Drawing.Point(223, 390)
+        Me.btnSetNfo.Location = New System.Drawing.Point(223, 334)
         Me.btnSetNfo.Name = "btnSetNfo"
         Me.btnSetNfo.Size = New System.Drawing.Size(67, 23)
         Me.btnSetNfo.TabIndex = 110
         Me.btnSetNfo.Text = "Set To Nfo"
-        '
-        'txtManual
-        '
-        Me.txtManual.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtManual.Location = New System.Drawing.Point(9, 139)
-        Me.txtManual.Name = "txtManual"
-        Me.txtManual.Size = New System.Drawing.Size(365, 20)
-        Me.txtManual.TabIndex = 4
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(6, 125)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(68, 13)
-        Me.Label2.TabIndex = 3
-        Me.Label2.Text = "Local Trailer:"
-        '
-        'btnBrowse
-        '
-        Me.btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnBrowse.Location = New System.Drawing.Point(376, 138)
-        Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(25, 23)
-        Me.btnBrowse.TabIndex = 5
-        Me.btnBrowse.Text = "..."
         '
         'dlgTrailer
         '
@@ -225,7 +214,7 @@ Partial Class dlgTrailer
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(450, 415)
+        Me.ClientSize = New System.Drawing.Size(450, 363)
         Me.ControlBox = False
         Me.Controls.Add(Me.btnSetNfo)
         Me.Controls.Add(Me.Cancel_Button)
@@ -236,6 +225,7 @@ Partial Class dlgTrailer
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgTrailer"
+        Me.ShowIcon = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Trailer"
         Me.GroupBox1.ResumeLayout(False)
@@ -258,11 +248,10 @@ Partial Class dlgTrailer
     Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txtYouTube As System.Windows.Forms.TextBox
-    Friend WithEvents lstFormats As System.Windows.Forms.ListBox
-    Friend WithEvents btnFetchFormats As System.Windows.Forms.Button
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
     Friend WithEvents txtManual As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ofdTrailer As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents btnGetTrailers As System.Windows.Forms.Button
 
 End Class

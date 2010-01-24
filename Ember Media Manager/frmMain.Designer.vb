@@ -695,7 +695,7 @@ Partial Class frmMain
         '
         Me.mnuMediaList.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTitle, Me.ToolStripSeparator3, Me.cmnuRefresh, Me.cmnuMark, Me.cmnuLock, Me.ToolStripMenuItem1, Me.cmnuEditMovie, Me.cmnuMetaData, Me.GenresToolStripMenuItem, Me.cmnuSep, Me.cmnuRescrape, Me.cmnuSearchNew, Me.cmnuSep2, Me.OpenContainingFolderToolStripMenuItem, Me.ToolStripSeparator2, Me.cmuRenamer, Me.ToolStripSeparator1, Me.RemoveToolStripMenuItem})
         Me.mnuMediaList.Name = "mnuMediaList"
-        Me.mnuMediaList.Size = New System.Drawing.Size(245, 326)
+        Me.mnuMediaList.Size = New System.Drawing.Size(245, 304)
         '
         'cmnuTitle
         '
@@ -2851,13 +2851,13 @@ Partial Class frmMain
         'mnuMoviesUpdate
         '
         Me.mnuMoviesUpdate.Name = "mnuMoviesUpdate"
-        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(125, 22)
+        Me.mnuMoviesUpdate.Size = New System.Drawing.Size(152, 22)
         Me.mnuMoviesUpdate.Text = "Movies"
         '
         'mnuTVShowUpdate
         '
         Me.mnuTVShowUpdate.Name = "mnuTVShowUpdate"
-        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(125, 22)
+        Me.mnuTVShowUpdate.Size = New System.Drawing.Size(152, 22)
         Me.mnuTVShowUpdate.Text = "TV Shows"
         '
         'tsbUpdateXBMC

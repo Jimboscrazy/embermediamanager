@@ -7,11 +7,9 @@ Namespace YouTube
 
         Public Event VideoLinksRetrieved(ByVal bSuccess As Boolean)
         Public Event Exception(ByVal ex As Exception)
-        Public Event ProgressUpdated(ByVal iPercent As Integer)
-
-
 
         Private _VideoLinks As VideoLinkItemCollection
+
         Public ReadOnly Property VideoLinks() As VideoLinkItemCollection
             Get
                 If _VideoLinks Is Nothing Then
@@ -24,9 +22,8 @@ Namespace YouTube
         Public Sub GetVideoLinksAsync(ByVal url As String)
             Try
                 If Not bwYT.IsBusy Then
-                    bwYT.WorkerReportsProgress = True
-                    bwYT.WorkerSupportsCancellation = True
                     _VideoLinks = Nothing
+                    bwYT.WorkerSupportsCancellation = True
                     bwYT.RunWorkerAsync(url)
                 End If
             Catch ex As Exception
@@ -34,18 +31,16 @@ Namespace YouTube
             End Try
         End Sub
 
-
         Public Sub GetVideoLinks(ByVal url As String)
             Try
-                _VideoLinks = ParseImdbForVideoLinks(url, False)
+                _VideoLinks = ParseYTFormats(url, False)
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
         End Sub
 
-
-        Private Function ParseImdbForVideoLinks(ByVal url As String, ByVal doProgress As Boolean) As VideoLinkItemCollection
+        Private Function ParseYTFormats(ByVal url As String, ByVal doProgress As Boolean) As VideoLinkItemCollection
             Dim DownloadLinks As New VideoLinkItemCollection
             Dim sHTTP As New HTTP
 
@@ -120,9 +115,7 @@ Namespace YouTube
                 sHTTP = Nothing
             End Try
 
-
         End Function
-
 
         Private Function GetSWFArgs(ByVal HTML As String) As Dictionary(Of String, String)
             Dim result As New Dictionary(Of String, String)
@@ -154,8 +147,6 @@ Namespace YouTube
             Return result
         End Function
 
-
-
         Public Sub CancelAsync()
             If bwYT.IsBusy Then bwYT.CancelAsync()
 
@@ -164,20 +155,14 @@ Namespace YouTube
             End While
         End Sub
 
-
-
         Private Sub bwYT_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwYT.DoWork
             Dim Url As String = DirectCast(e.Argument, String)
 
             Try
-                e.Result = ParseImdbForVideoLinks(Url, True)
+                e.Result = ParseYTFormats(Url, True)
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
-        End Sub
-
-        Private Sub bwYT_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwYT.ProgressChanged
-            RaiseEvent ProgressUpdated(e.ProgressPercentage)
         End Sub
 
         Private Sub bwYT_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwYT.RunWorkerCompleted
@@ -217,7 +202,6 @@ Namespace YouTube
             End Set
         End Property
 
-
         Private _URL As String
         Public Property URL() As String
             Get
@@ -227,7 +211,6 @@ Namespace YouTube
                 _URL = value
             End Set
         End Property
-
 
         Private _FormatQuality As Master.TrailerQuality
         Friend Property FormatQuality() As Master.TrailerQuality
