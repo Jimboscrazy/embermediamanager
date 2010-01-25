@@ -927,7 +927,7 @@ Public Class Scanner
                     End Try
 
                     For Each sDirs As DirectoryInfo In inDirs
-                        If Regex.IsMatch(sDirs.Name, "(s(eason)?)?([\._ ])?([0-9]+)", RegexOptions.IgnoreCase) AndAlso _
+                        If Regex.IsMatch(sDirs.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso _
                         (Master.eSettings.TVIgnoreLastScan OrElse sDirs.LastWriteTime > SourceLastScan) Then
                             Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                         End If
@@ -1170,6 +1170,7 @@ Public Class Scanner
                             If sFile.TVContainer.Episodes.Count > 0 Then
                                 If Not htTVShows.ContainsKey(sFile.TVContainer.ShowPath.ToLower) Then
                                     GetShowFolderContents(sFile.TVContainer)
+
                                     If Not String.IsNullOrEmpty(sFile.TVContainer.Nfo) Then
                                         tmpTVDB.TVShow = NFO.LoadTVShowFromNFO(sFile.TVContainer.Nfo)
                                     Else
@@ -1347,7 +1348,7 @@ Public Class Scanner
         Dim SeasonPath As String = String.Empty
         Dim fName As String = String.Empty
 
-        If Regex.IsMatch(Directory.GetParent(sPath).Name, "(s(eason)?)?([\._ ])?([0-9]+)", RegexOptions.IgnoreCase) Then
+        If Regex.IsMatch(Directory.GetParent(sPath).Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) Then
             SeasonPath = Directory.GetParent(Directory.GetParent(sPath).FullName).FullName
         Else
             SeasonPath = Directory.GetParent(sPath).FullName
@@ -1380,7 +1381,13 @@ Public Class Scanner
                 For Each sMatch As Match In Regex.Matches(If(rShow.SeasonFromDirectory, Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath)), rShow.SeasonRegex, RegexOptions.IgnoreCase)
                     Try
                         cSeason = New Seasons
-                        cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
+                        If IsNumeric(sMatch.Groups("season").Value) Then
+                            cSeason.Season = Convert.ToInt32(sMatch.Groups("season").Value)
+                        ElseIf Regex.IsMatch(sMatch.Groups("season").Value, "specials?", RegexOptions.IgnoreCase) Then
+                            cSeason.Season = 0
+                        Else
+                            cSeason.Season = -1
+                        End If
 
                         Select Case rShow.EpisodeRetrieve
                             Case emmSettings.EpRetrieve.FromDirectory
