@@ -1180,7 +1180,10 @@ Public Class Scanner
                                         'no title so assume it's an invalid nfo, clear nfo path if exists
                                         sFile.TVContainer.Nfo = String.Empty
                                         'set title based on show folder name
-                                        tmpTVDB.TVShow.Title = StringManip.FilterTVShowName(New DirectoryInfo(sFile.TVContainer.ShowPath).Name)
+                                        'looks funny to use getfilenamewithoutextension, but it works when passing a path with no file specified
+                                        'used as a workaround to "New DirectoryInfo(sFile.TVContainer.ShowPath).Name" as I suspect this is the
+                                        'root of the problem as reported in Issue #58
+                                        tmpTVDB.TVShow.Title = StringManip.FilterTVShowName(Path.GetFileNameWithoutExtension(sFile.TVContainer.ShowPath))
                                     End If
 
                                     tmpTVDB.ShowPath = sFile.TVContainer.ShowPath

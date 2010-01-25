@@ -323,7 +323,7 @@ Public Class StringManip
             End If
 
             'remove the show name from the episode name
-            TVEpName = Strings.Replace(TVEpName, TVShowName, String.Empty, 1, -1, CompareMethod.Text)
+            If Not String.IsNullOrEmpty(TVShowName) Then TVEpName = Strings.Replace(TVEpName, TVShowName, String.Empty, 1, -1, CompareMethod.Text)
 
             'Convert String To Proper Case
             If Master.eSettings.EpProperCase AndAlso doExtras Then
