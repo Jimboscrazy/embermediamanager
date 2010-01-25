@@ -348,6 +348,9 @@ Public Class dlgImgSelect
                     noImages = True
                 End If
             End If
+
+            Me.Activate()
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -861,7 +864,6 @@ Public Class dlgImgSelect
                 Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
                 Me.Close()
             End If
-            Me.Activate()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
