@@ -64,6 +64,8 @@ Public Class ThumbGenerator
     ''' </summary>
     Private Sub CreateRandom()
 
+        If Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(_movie.Filename).Name.ToLower = "bdmv" Then Exit Sub
+
         Try
             Dim pExt As String = Path.GetExtension(_movie.Filename).ToLower
             If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso _
@@ -78,6 +80,8 @@ Public Class ThumbGenerator
                     tPath = Path.Combine(Master.TempPath, "extrathumbs")
                 Else
                     If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(_movie.Filename).Name.ToLower = "video_ts" Then
+                        tPath = Path.Combine(Directory.GetParent(Directory.GetParent(_movie.Filename).FullName).FullName, "extrathumbs")
+                    ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(_movie.Filename).Name.ToLower = "bdmv" Then
                         tPath = Path.Combine(Directory.GetParent(Directory.GetParent(_movie.Filename).FullName).FullName, "extrathumbs")
                     Else
                         tPath = Path.Combine(Directory.GetParent(_movie.Filename).FullName, "extrathumbs")
@@ -96,7 +100,13 @@ Public Class ThumbGenerator
                 ffmpeg.StartInfo.RedirectStandardError = True
 
                 'first get the duration
-                ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", _movie.Filename)
+
+                If Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(_movie.Filename).Name.ToLower = "bdmv" Then
+                    ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", MediaInfo.GetBDMVMovieName(_movie.Filename))
+                Else
+                    ffmpeg.StartInfo.Arguments = String.Format("-i ""{0}"" -an", _movie.Filename)
+                End If
+
                 ffmpeg.Start()
                 Dim d As StreamReader = ffmpeg.StandardError
                 Do
@@ -132,7 +142,13 @@ Public Class ThumbGenerator
                         'check to see if file already exists... if so, don't bother running ffmpeg since we're not
                         'overwriting current thumbs anyway
                         If Not File.Exists(Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg"))) Then
-                            ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg ""{2}""", intSeconds, _movie.Filename, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
+
+                            If Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(_movie.Filename).Name.ToLower = "bdmv" Then
+                                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg ""{2}""", intSeconds, MediaInfo.GetBDMVMovieName(_movie.Filename), Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
+                            Else
+                                ffmpeg.StartInfo.Arguments = String.Format("-ss {0} -i ""{1}"" -an -f rawvideo -vframes 1 -vcodec mjpeg ""{2}""", intSeconds, _movie.Filename, Path.Combine(tPath, String.Concat("thumb", (i + 1), ".jpg")))
+                            End If
+                            
                             ffmpeg.Start()
                             ffmpeg.WaitForExit()
                             If isAborting Then Exit Sub
