@@ -94,9 +94,12 @@ Partial Class frmMain
         Me.DeleteMovieToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.scTV = New System.Windows.Forms.SplitContainer
         Me.dgvTVShows = New System.Windows.Forms.DataGridView
+        Me.mnuShows = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
         Me.dgvTVSeasons = New System.Windows.Forms.DataGridView
+        Me.mnuSeasons = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.dgvTVEpisodes = New System.Windows.Forms.DataGridView
+        Me.mnuEpisodes = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.pnlFilterSource = New System.Windows.Forms.Panel
         Me.lblSFilClose = New System.Windows.Forms.Label
         Me.Label8 = New System.Windows.Forms.Label
@@ -311,6 +314,9 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
+        Me.cmnuShowTitle = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuEditShow = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -322,6 +328,7 @@ Partial Class frmMain
         Me.scTV.Panel2.SuspendLayout()
         Me.scTV.SuspendLayout()
         CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.mnuShows.SuspendLayout()
         Me.SplitContainer2.Panel1.SuspendLayout()
         Me.SplitContainer2.Panel2.SuspendLayout()
         Me.SplitContainer2.SuspendLayout()
@@ -924,6 +931,7 @@ Partial Class frmMain
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.dgvTVShows.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvTVShows.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTVShows.ContextMenuStrip = Me.mnuShows
         Me.dgvTVShows.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvTVShows.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.dgvTVShows.Location = New System.Drawing.Point(0, 0)
@@ -936,6 +944,12 @@ Partial Class frmMain
         Me.dgvTVShows.Size = New System.Drawing.Size(349, 117)
         Me.dgvTVShows.StandardTab = True
         Me.dgvTVShows.TabIndex = 0
+        '
+        'mnuShows
+        '
+        Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuEditShow})
+        Me.mnuShows.Name = "mnuShows"
+        Me.mnuShows.Size = New System.Drawing.Size(153, 76)
         '
         'SplitContainer2
         '
@@ -968,6 +982,7 @@ Partial Class frmMain
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.dgvTVSeasons.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvTVSeasons.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTVSeasons.ContextMenuStrip = Me.mnuSeasons
         Me.dgvTVSeasons.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvTVSeasons.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.dgvTVSeasons.Location = New System.Drawing.Point(0, 0)
@@ -981,6 +996,11 @@ Partial Class frmMain
         Me.dgvTVSeasons.StandardTab = True
         Me.dgvTVSeasons.TabIndex = 0
         '
+        'mnuSeasons
+        '
+        Me.mnuSeasons.Name = "mnuSeasons"
+        Me.mnuSeasons.Size = New System.Drawing.Size(61, 4)
+        '
         'dgvTVEpisodes
         '
         Me.dgvTVEpisodes.AllowUserToAddRows = False
@@ -993,6 +1013,7 @@ Partial Class frmMain
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
         Me.dgvTVEpisodes.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvTVEpisodes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvTVEpisodes.ContextMenuStrip = Me.mnuEpisodes
         Me.dgvTVEpisodes.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvTVEpisodes.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
         Me.dgvTVEpisodes.Location = New System.Drawing.Point(0, 0)
@@ -1005,6 +1026,11 @@ Partial Class frmMain
         Me.dgvTVEpisodes.Size = New System.Drawing.Size(349, 211)
         Me.dgvTVEpisodes.StandardTab = True
         Me.dgvTVEpisodes.TabIndex = 0
+        '
+        'mnuEpisodes
+        '
+        Me.mnuEpisodes.Name = "mnuEpisodes"
+        Me.mnuEpisodes.Size = New System.Drawing.Size(61, 4)
         '
         'pnlFilterSource
         '
@@ -2953,6 +2979,26 @@ Partial Class frmMain
         'tmrLoadEp
         '
         '
+        'cmnuShowTitle
+        '
+        Me.cmnuShowTitle.Enabled = False
+        Me.cmnuShowTitle.Image = CType(resources.GetObject("cmnuShowTitle.Image"), System.Drawing.Image)
+        Me.cmnuShowTitle.Name = "cmnuShowTitle"
+        Me.cmnuShowTitle.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuShowTitle.Text = "Title"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(149, 6)
+        '
+        'cmnuEditShow
+        '
+        Me.cmnuEditShow.Image = CType(resources.GetObject("cmnuEditShow.Image"), System.Drawing.Image)
+        Me.cmnuEditShow.Name = "cmnuEditShow"
+        Me.cmnuEditShow.Size = New System.Drawing.Size(152, 22)
+        Me.cmnuEditShow.Text = "Edit Show"
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2981,6 +3027,7 @@ Partial Class frmMain
         Me.scTV.Panel2.ResumeLayout(False)
         Me.scTV.ResumeLayout(False)
         CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuShows.ResumeLayout(False)
         Me.SplitContainer2.Panel1.ResumeLayout(False)
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         Me.SplitContainer2.ResumeLayout(False)
@@ -3329,4 +3376,10 @@ Partial Class frmMain
     Friend WithEvents tmrWaitEp As System.Windows.Forms.Timer
     Friend WithEvents tmrLoadEp As System.Windows.Forms.Timer
     Friend WithEvents tsSpring As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents mnuShows As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents mnuSeasons As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents mnuEpisodes As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents cmnuShowTitle As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuEditShow As System.Windows.Forms.ToolStripMenuItem
 End Class

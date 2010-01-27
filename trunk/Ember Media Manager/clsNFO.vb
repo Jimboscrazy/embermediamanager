@@ -282,6 +282,16 @@ Public Class NFO
         End If
     End Function
 
+    Public Shared Function GetShowNfoPath(ByVal ShowPath As String) As String
+        Dim nPath As String = String.Empty
+
+        If File.Exists(Path.Combine(ShowPath, "tvshow.nfo")) Then
+            nPath = Path.Combine(ShowPath, "tvshow.nfo")
+        End If
+
+        Return nPath
+    End Function
+
     Public Shared Function GetNfoPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
 
         '//

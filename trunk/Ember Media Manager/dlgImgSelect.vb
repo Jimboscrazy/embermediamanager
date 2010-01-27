@@ -554,7 +554,6 @@ Public Class dlgImgSelect
                     Dim tImage As Media.Image
                     For Each sFile As FileInfo In lFi
                         tImage = New Media.Image
-                        tmpImage.FromFile(sFile.FullName)
                         tImage.WebImage.FromFile(sFile.FullName)
                         If Not IsNothing(tImage.WebImage.Image) Then
                             Select Case True
@@ -583,7 +582,6 @@ Public Class dlgImgSelect
                             tImage.URL = Regex.Match(sFile.Name, "\(url=(.*?)\)").Groups(1).ToString
                             Me.TMDBPosters.Add(tImage)
                         End If
-                        tmpImage.Clear()
                     Next
                     ProcessPics(TMDBPosters)
                     Me.pnlDLStatus.Visible = False
@@ -740,7 +738,7 @@ Public Class dlgImgSelect
                 If Not rbLarge.Checked AndAlso Not rbMedium.Checked AndAlso Not rbSmall.Checked AndAlso Not rbXLarge.Checked Then
                     Me.OK_Button.Enabled = False
                 End If
-                Me.tmpImage.Image = Nothing
+                Me.tmpImage.Clear()
             Else
                 Me.rbXLarge.Checked = False
                 Me.rbLarge.Checked = False
