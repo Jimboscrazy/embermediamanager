@@ -132,6 +132,8 @@ Public Class dlgEditMovie
         Dim mShortPath As String = Master.currMovie.Filename
         If Not String.IsNullOrEmpty(mShortPath) AndAlso Directory.GetParent(mShortPath).Name.ToLower = "video_ts" Then
             mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 3), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
+        ElseIf Master.eSettings.AutoDetectBDMV AndAlso Not String.IsNullOrEmpty(mShortPath) AndAlso Directory.GetParent(mShortPath).Name.ToLower = "bdmv" Then
+            mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 3), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
         Else
             mShortPath = String.Concat(Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 2), Path.DirectorySeparatorChar, mPathPieces(mPathPieces.Count - 1))
         End If
@@ -1122,6 +1124,8 @@ Public Class dlgEditMovie
         Try
             If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currMovie.Filename).Name.ToLower = "video_ts" Then
                 tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
+            ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(Master.currMovie.Filename).Name.ToLower = "bdmv" Then
+                tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
             Else
                 tPath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")
             End If
@@ -1395,6 +1399,8 @@ Public Class dlgEditMovie
             If Directory.Exists(Path.Combine(Master.TempPath, "extrathumbs")) Then
                 Dim ePath As String = String.Empty
                 If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Master.currMovie.Filename).Name.ToLower = "video_ts" Then
+                    ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
+                ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(Master.currMovie.Filename).Name.ToLower = "bdmv" Then
                     ePath = Path.Combine(Directory.GetParent(Directory.GetParent(Master.currMovie.Filename).FullName).FullName, "extrathumbs")
                 Else
                     ePath = Path.Combine(Directory.GetParent(Master.currMovie.Filename).FullName, "extrathumbs")

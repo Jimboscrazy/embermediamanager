@@ -73,6 +73,22 @@ Public Class MediaInfo
         End If
     End Function
 
+    Public Shared Function GetBDMVMovieName(ByVal sPath As String) As String
+
+        Dim lFileList As IO.FileInfo() = New DirectoryInfo(Path.Combine(Directory.GetParent(sPath).FullName, "STREAM")).GetFiles("*.m2ts")
+        Dim lFile As New List(Of String)
+
+        lFile.AddRange(From FI In lFileList Where (FI.Length > 1073741824) Order By FI.Length Descending Select FI.FullName)
+
+        If lFile.Count > 0 Then
+
+            Return lFile(0)
+
+        Else
+            Return ""
+        End If
+
+    End Function
     Public Sub GetMovieMIFromPath(ByRef fiInfo As Fileinfo, ByVal sPath As String)
 
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
@@ -215,6 +231,17 @@ Public Class MediaInfo
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
+
+            ElseIf Master.eSettings.AutoDetectBDMV AndAlso Path.GetFileNameWithoutExtension(sPath).ToLower = "index" Then
+
+                Try
+
+                    fiInfo = ScanMI(GetBDMVMovieName(sPath))
+                    Exit Sub
+
+                Catch
+                End Try
+
             Else
                 fiInfo = ScanMI(sPath)
             End If

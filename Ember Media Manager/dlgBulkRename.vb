@@ -158,6 +158,16 @@ Public Class dlgBulkRenamer
                                                             MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
                                                         MovieFile.IsVIDEO_TS = True
+                                                    ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(_curMovie.Filename).Name.ToLower = "bdmv" Then
+                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).Name
+                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName Then
+                                                            MovieFile.OldPath = String.Empty
+                                                            MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
+                                                        Else
+                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                        End If
+                                                        MovieFile.IsBDMV = True
+
                                                     Else
                                                         MovieFile.Parent = Directory.GetParent(_curMovie.Filename).Name
                                                         If MovieFile.BasePath = Directory.GetParent(_curMovie.Filename).FullName Then
@@ -170,12 +180,14 @@ Public Class dlgBulkRenamer
                                                 End If
                                             Next
 
-                                            If Not MovieFile.IsVIDEO_TS Then
+                                            If Not MovieFile.IsVIDEO_TS AndAlso Not MovieFile.IsBDMV Then
                                                 MovieFile.FileName = StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_curMovie.Filename))
                                                 Dim stackMark As String = Path.GetFileNameWithoutExtension(_curMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
                                                 If _curMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                                                     MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
                                                 End If
+                                            ElseIf MovieFile.IsBDMV Then
+                                                MovieFile.FileName = "BDMV"
                                             Else
                                                 MovieFile.FileName = "VIDEO_TS"
                                             End If

@@ -154,6 +154,8 @@ Public Class dlgImgSelect
                     Else
                         If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Me.tMovie.Filename).Name.ToLower = "video_ts" Then
                             extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(Me.tMovie.Filename).FullName).FullName, "extrathumbs")
+                        ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(Me.tMovie.Filename).Name.ToLower = "bdmv" Then
+                            extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(Me.tMovie.Filename).FullName).FullName, "extrathumbs")
                         Else
                             extraPath = Path.Combine(Directory.GetParent(Me.tMovie.Filename).FullName, "extrathumbs")
                         End If
