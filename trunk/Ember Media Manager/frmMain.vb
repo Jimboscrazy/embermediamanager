@@ -1175,7 +1175,7 @@ Public Class frmMain
 
         Try
             'icons
-            If e.ColumnIndex = 4 AndAlso e.RowIndex = -1 Then
+            If (e.ColumnIndex = 4 OrElse e.ColumnIndex = 5) AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -1197,7 +1197,7 @@ Public Class frmMain
 
         Try
             'icons
-            If (e.ColumnIndex = 3 OrElse e.ColumnIndex = 4) AndAlso e.RowIndex = -1 Then
+            If e.ColumnIndex >= 3 AndAlso e.ColumnIndex <= 5 AndAlso e.RowIndex = -1 Then
                 e.PaintBackground(e.ClipBounds, False)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -1206,11 +1206,7 @@ Public Class frmMain
                 pt.X += offset
                 pt.Y = 1
 
-                If e.ColumnIndex = 3 Then
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 3)
-                ElseIf e.ColumnIndex = 4 Then
-                    Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 2)
-                End If
+                Me.ilColumnIcons.Draw(e.Graphics, pt, e.ColumnIndex - 3)
 
                 e.Handled = True
             End If
@@ -6161,19 +6157,19 @@ doCancel:
                     .dgvTVShows.Columns(2).Resizable = DataGridViewTriState.False
                     .dgvTVShows.Columns(2).ReadOnly = True
                     .dgvTVShows.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvTVShows.Columns(2).Visible = Not Master.eSettings.MoviePosterCol
+                    .dgvTVShows.Columns(2).Visible = Not Master.eSettings.ShowPosterCol
                     .dgvTVShows.Columns(2).ToolTipText = Master.eLang.GetString(148, "Poster")
                     .dgvTVShows.Columns(3).Width = 20
                     .dgvTVShows.Columns(3).Resizable = DataGridViewTriState.False
                     .dgvTVShows.Columns(3).ReadOnly = True
                     .dgvTVShows.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvTVShows.Columns(3).Visible = Not Master.eSettings.MovieFanartCol
+                    .dgvTVShows.Columns(3).Visible = Not Master.eSettings.ShowFanartCol
                     .dgvTVShows.Columns(3).ToolTipText = Master.eLang.GetString(149, "Fanart")
                     .dgvTVShows.Columns(4).Width = 20
                     .dgvTVShows.Columns(4).Resizable = DataGridViewTriState.False
                     .dgvTVShows.Columns(4).ReadOnly = True
                     .dgvTVShows.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvTVShows.Columns(4).Visible = Not Master.eSettings.MovieInfoCol
+                    .dgvTVShows.Columns(4).Visible = Not Master.eSettings.ShowNfoCol
                     .dgvTVShows.Columns(4).ToolTipText = Master.eLang.GetString(150, "Nfo")
                     For i As Integer = 5 To .dgvTVShows.Columns.Count - 1
                         .dgvTVShows.Columns(i).Visible = False
@@ -6402,9 +6398,15 @@ doCancel:
                 .dgvTVSeasons.Columns(4).Resizable = DataGridViewTriState.False
                 .dgvTVSeasons.Columns(4).ReadOnly = True
                 .dgvTVSeasons.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
+                .dgvTVSeasons.Columns(4).Visible = Not Master.eSettings.SeasonPosterCol
                 .dgvTVSeasons.Columns(4).ToolTipText = Master.eLang.GetString(148, "Poster")
-                For i As Integer = 5 To .dgvTVSeasons.Columns.Count - 1
+                .dgvTVSeasons.Columns(5).Width = 20
+                .dgvTVSeasons.Columns(5).Resizable = DataGridViewTriState.False
+                .dgvTVSeasons.Columns(5).ReadOnly = True
+                .dgvTVSeasons.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVSeasons.Columns(5).Visible = Not Master.eSettings.SeasonFanartCol
+                .dgvTVSeasons.Columns(5).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                For i As Integer = 6 To .dgvTVSeasons.Columns.Count - 1
                     .dgvTVSeasons.Columns(i).Visible = False
                 Next
 
@@ -6451,15 +6453,21 @@ doCancel:
                 .dgvTVEpisodes.Columns(3).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(3).ReadOnly = True
                 .dgvTVEpisodes.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(3).Visible = Not Master.eSettings.MoviePosterCol
+                .dgvTVEpisodes.Columns(3).Visible = Not Master.eSettings.EpisodePosterCol
                 .dgvTVEpisodes.Columns(3).ToolTipText = Master.eLang.GetString(148, "Poster")
                 .dgvTVEpisodes.Columns(4).Width = 20
                 .dgvTVEpisodes.Columns(4).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(4).ReadOnly = True
                 .dgvTVEpisodes.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(4).Visible = Not Master.eSettings.MoviePosterCol
-                .dgvTVEpisodes.Columns(4).ToolTipText = Master.eLang.GetString(150, "Nfo")
-                For i As Integer = 5 To .dgvTVEpisodes.Columns.Count - 1
+                .dgvTVEpisodes.Columns(4).Visible = Not Master.eSettings.EpisodeFanartCol
+                .dgvTVEpisodes.Columns(4).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                .dgvTVEpisodes.Columns(5).Width = 20
+                .dgvTVEpisodes.Columns(5).Resizable = DataGridViewTriState.False
+                .dgvTVEpisodes.Columns(5).ReadOnly = True
+                .dgvTVEpisodes.Columns(5).SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvTVEpisodes.Columns(5).Visible = Not Master.eSettings.EpisodeNfoCol
+                .dgvTVEpisodes.Columns(5).ToolTipText = Master.eLang.GetString(150, "Nfo")
+                For i As Integer = 6 To .dgvTVEpisodes.Columns.Count - 1
                     .dgvTVEpisodes.Columns(i).Visible = False
                 Next
 

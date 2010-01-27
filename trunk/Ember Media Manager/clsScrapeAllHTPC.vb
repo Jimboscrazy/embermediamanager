@@ -30,7 +30,7 @@ Namespace AllHTPC
                 sHTTP = Nothing
 
                 If Not String.IsNullOrEmpty(sResults) Then
-                    Return Regex.Match(sResults, "(?<link>.*?)$", RegexOptions.Multiline Or RegexOptions.IgnorePatternWhitespace).Groups("link").Value.Trim
+                    Return sResults.Trim
                 End If
 
             Catch ex As Exception

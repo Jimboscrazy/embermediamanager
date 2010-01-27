@@ -156,10 +156,12 @@ Public Class Master
         Dim ShowFanartPath As String
         Dim ShowNfoPath As String
         Dim EpPosterPath As String
+        Dim EpFanartPath As String
         Dim EpNfoPath As String
         Dim Source As String
         Dim ShowPath As String
         Dim SeasonPosterPath As String
+        Dim SeasonFanartPath As String
     End Structure
 
     Public Structure ScrapeOptions

@@ -29,13 +29,14 @@ Partial Class dlgEditEpisode
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.btnStudio = New System.Windows.Forms.Button
+        Me.TextBox1 = New System.Windows.Forms.TextBox
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.Label5 = New System.Windows.Forms.Label
         Me.lblStudio = New System.Windows.Forms.Label
         Me.txtStudio = New System.Windows.Forms.TextBox
         Me.lblCredits = New System.Windows.Forms.Label
         Me.txtCredits = New System.Windows.Forms.TextBox
-        Me.lblMPAADesc = New System.Windows.Forms.Label
-        Me.txtMPAADesc = New System.Windows.Forms.TextBox
         Me.btnEditActor = New System.Windows.Forms.Button
         Me.btnAddActor = New System.Windows.Forms.Button
         Me.btnManual = New System.Windows.Forms.Button
@@ -81,10 +82,6 @@ Partial Class dlgEditEpisode
         Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
-        Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.TextBox2 = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -170,13 +167,10 @@ Partial Class dlgEditEpisode
         Me.TabPage1.Controls.Add(Me.Label4)
         Me.TabPage1.Controls.Add(Me.TextBox2)
         Me.TabPage1.Controls.Add(Me.Label5)
-        Me.TabPage1.Controls.Add(Me.btnStudio)
         Me.TabPage1.Controls.Add(Me.lblStudio)
         Me.TabPage1.Controls.Add(Me.txtStudio)
         Me.TabPage1.Controls.Add(Me.lblCredits)
         Me.TabPage1.Controls.Add(Me.txtCredits)
-        Me.TabPage1.Controls.Add(Me.lblMPAADesc)
-        Me.TabPage1.Controls.Add(Me.txtMPAADesc)
         Me.TabPage1.Controls.Add(Me.btnEditActor)
         Me.TabPage1.Controls.Add(Me.btnAddActor)
         Me.TabPage1.Controls.Add(Me.btnManual)
@@ -207,19 +201,44 @@ Partial Class dlgEditEpisode
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'btnStudio
+        'TextBox1
         '
-        Me.btnStudio.Image = CType(resources.GetObject("btnStudio.Image"), System.Drawing.Image)
-        Me.btnStudio.Location = New System.Drawing.Point(805, 353)
-        Me.btnStudio.Name = "btnStudio"
-        Me.btnStudio.Size = New System.Drawing.Size(23, 23)
-        Me.btnStudio.TabIndex = 104
-        Me.btnStudio.UseVisualStyleBackColor = True
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox1.Location = New System.Drawing.Point(59, 67)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(46, 20)
+        Me.TextBox1.TabIndex = 111
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(59, 51)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(48, 13)
+        Me.Label4.TabIndex = 113
+        Me.Label4.Text = "Episode:"
+        '
+        'TextBox2
+        '
+        Me.TextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox2.Location = New System.Drawing.Point(7, 67)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(46, 20)
+        Me.TextBox2.TabIndex = 110
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(7, 51)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(46, 13)
+        Me.Label5.TabIndex = 112
+        Me.Label5.Text = "Season:"
         '
         'lblStudio
         '
         Me.lblStudio.AutoSize = True
-        Me.lblStudio.Location = New System.Drawing.Point(635, 339)
+        Me.lblStudio.Location = New System.Drawing.Point(635, 271)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(40, 13)
         Me.lblStudio.TabIndex = 101
@@ -228,9 +247,9 @@ Partial Class dlgEditEpisode
         'txtStudio
         '
         Me.txtStudio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtStudio.Location = New System.Drawing.Point(635, 355)
+        Me.txtStudio.Location = New System.Drawing.Point(635, 287)
         Me.txtStudio.Name = "txtStudio"
-        Me.txtStudio.Size = New System.Drawing.Size(167, 20)
+        Me.txtStudio.Size = New System.Drawing.Size(193, 20)
         Me.txtStudio.TabIndex = 100
         '
         'lblCredits
@@ -249,24 +268,6 @@ Partial Class dlgEditEpisode
         Me.txtCredits.Name = "txtCredits"
         Me.txtCredits.Size = New System.Drawing.Size(408, 20)
         Me.txtCredits.TabIndex = 15
-        '
-        'lblMPAADesc
-        '
-        Me.lblMPAADesc.AutoSize = True
-        Me.lblMPAADesc.Location = New System.Drawing.Point(632, 247)
-        Me.lblMPAADesc.Name = "lblMPAADesc"
-        Me.lblMPAADesc.Size = New System.Drawing.Size(130, 13)
-        Me.lblMPAADesc.TabIndex = 89
-        Me.lblMPAADesc.Text = "MPAA Rating Description:"
-        '
-        'txtMPAADesc
-        '
-        Me.txtMPAADesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtMPAADesc.Location = New System.Drawing.Point(635, 264)
-        Me.txtMPAADesc.Multiline = True
-        Me.txtMPAADesc.Name = "txtMPAADesc"
-        Me.txtMPAADesc.Size = New System.Drawing.Size(193, 68)
-        Me.txtMPAADesc.TabIndex = 19
         '
         'btnEditActor
         '
@@ -344,7 +345,7 @@ Partial Class dlgEditEpisode
         Me.lbMPAA.FormattingEnabled = True
         Me.lbMPAA.Location = New System.Drawing.Point(635, 155)
         Me.lbMPAA.Name = "lbMPAA"
-        Me.lbMPAA.Size = New System.Drawing.Size(193, 82)
+        Me.lbMPAA.Size = New System.Drawing.Size(193, 108)
         Me.lbMPAA.TabIndex = 18
         '
         'lblMPAA
@@ -698,40 +699,6 @@ Partial Class dlgEditEpisode
         Me.OK_Button.TabIndex = 61
         Me.OK_Button.Text = "OK"
         '
-        'TextBox1
-        '
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox1.Location = New System.Drawing.Point(59, 67)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(46, 20)
-        Me.TextBox1.TabIndex = 111
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(59, 51)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(48, 13)
-        Me.Label4.TabIndex = 113
-        Me.Label4.Text = "Episode:"
-        '
-        'TextBox2
-        '
-        Me.TextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox2.Location = New System.Drawing.Point(7, 67)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(46, 20)
-        Me.TextBox2.TabIndex = 110
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(7, 51)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(46, 13)
-        Me.Label5.TabIndex = 112
-        Me.Label5.Text = "Season:"
-        '
         'dlgEditEpisode
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -778,13 +745,10 @@ Partial Class dlgEditEpisode
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents btnStudio As System.Windows.Forms.Button
     Friend WithEvents lblStudio As System.Windows.Forms.Label
     Friend WithEvents txtStudio As System.Windows.Forms.TextBox
     Friend WithEvents lblCredits As System.Windows.Forms.Label
     Friend WithEvents txtCredits As System.Windows.Forms.TextBox
-    Friend WithEvents lblMPAADesc As System.Windows.Forms.Label
-    Friend WithEvents txtMPAADesc As System.Windows.Forms.TextBox
     Friend WithEvents btnEditActor As System.Windows.Forms.Button
     Friend WithEvents btnAddActor As System.Windows.Forms.Button
     Friend WithEvents btnManual As System.Windows.Forms.Button
