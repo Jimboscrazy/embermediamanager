@@ -41,14 +41,30 @@ Public Class dlgTrailer
     End Structure
 
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
-        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
+        Dim didCancel As Boolean = False
+
+        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*", RegexOptions.IgnoreCase) Then
             tURL = Me.txtYouTube.Text
         ElseIf Me.lbTrailers.SelectedItems.Count > 0 Then
-            tURL = lbTrailers.SelectedItem.ToString
+            If Regex.IsMatch(Me.lbTrailers.SelectedItem.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*", RegexOptions.IgnoreCase) Then
+                Using dFormats As New dlgTrailerFormat
+                    Dim sFormat As String = dFormats.ShowDialog(Me.lbTrailers.SelectedItem.ToString)
+
+                    If Not String.IsNullOrEmpty(sFormat) Then
+                        tURL = sFormat
+                    Else
+                        didCancel = True
+                    End If
+                End Using
+            Else
+                tURL = lbTrailers.SelectedItem.ToString
+            End If
         End If
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        If Not didCancel Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+        End If
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -56,8 +72,8 @@ Public Class dlgTrailer
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.bwCompileList.CancelAsync()
-        Me.bwDownloadTrailer.CancelAsync()
+        If Me.bwCompileList.IsBusy Then Me.bwCompileList.CancelAsync()
+        If Me.bwDownloadTrailer.IsBusy Then Me.bwDownloadTrailer.CancelAsync()
 
         While Me.bwCompileList.IsBusy OrElse Me.bwDownloadTrailer.IsBusy
             Application.DoEvents()
@@ -114,6 +130,7 @@ Public Class dlgTrailer
                 If Not String.IsNullOrEmpty(sFormat) Then
                     Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                     Me.bwDownloadTrailer.WorkerReportsProgress = True
+                    Me.bwDownloadTrailer.WorkerSupportsCancellation = True
                     Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
                 Else
                     didCancel = True
@@ -127,6 +144,7 @@ Public Class dlgTrailer
                     If Not String.IsNullOrEmpty(sFormat) Then
                         Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                         Me.bwDownloadTrailer.WorkerReportsProgress = True
+                        Me.bwDownloadTrailer.WorkerSupportsCancellation = True
                         Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = sFormat, .bType = CloseDialog})
                     Else
                         didCancel = True
@@ -135,6 +153,7 @@ Public Class dlgTrailer
             Else
                 Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadTrailer.WorkerReportsProgress = True
+                Me.bwDownloadTrailer.WorkerSupportsCancellation = True
                 Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = lbTrailers.SelectedItem.ToString, .bType = CloseDialog})
             End If
         End If

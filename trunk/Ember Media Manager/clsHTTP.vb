@@ -64,7 +64,7 @@ Public Class HTTP
                 Case wrResponse.ContentType.ToLower.Contains("charset=utf-8")
                     cEncoding = System.Text.Encoding.UTF8
                 Case Else
-                    cEncoding = System.Text.Encoding.GetEncoding("windows-1252")
+                    cEncoding = System.Text.Encoding.GetEncoding(28591)
             End Select
             Using Ms As Stream = wrResponse.GetResponseStream
                 If wrResponse.ContentEncoding.ToLower = "gzip" Then

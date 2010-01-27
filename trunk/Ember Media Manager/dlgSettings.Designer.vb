@@ -32,7 +32,9 @@ Partial Class dlgSettings
         Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
         Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
         Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode8})
+        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9, TreeNode10})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -382,6 +384,9 @@ Partial Class dlgSettings
         Me.colEpisode = New System.Windows.Forms.ColumnHeader
         Me.colEpApply = New System.Windows.Forms.ColumnHeader
         Me.pnlShows = New System.Windows.Forms.Panel
+        Me.GroupBox32 = New System.Windows.Forms.GroupBox
+        Me.Label40 = New System.Windows.Forms.Label
+        Me.cbRatingRegion = New System.Windows.Forms.ComboBox
         Me.gbEpFilter = New System.Windows.Forms.GroupBox
         Me.btnEpFilterDown = New System.Windows.Forms.Button
         Me.btnEpFilterUp = New System.Windows.Forms.Button
@@ -398,6 +403,36 @@ Partial Class dlgSettings
         Me.btnAddShowFilter = New System.Windows.Forms.Button
         Me.txtShowFilter = New System.Windows.Forms.TextBox
         Me.lstShowFilters = New System.Windows.Forms.ListBox
+        Me.pnlTVImages = New System.Windows.Forms.Panel
+        Me.TabControl3 = New System.Windows.Forms.TabControl
+        Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.GroupBox37 = New System.Windows.Forms.GroupBox
+        Me.txtShowPosterWidth = New System.Windows.Forms.TextBox
+        Me.txtShowPosterHeight = New System.Windows.Forms.TextBox
+        Me.lblShowPosterQual = New System.Windows.Forms.Label
+        Me.tbShowPosterQual = New System.Windows.Forms.TrackBar
+        Me.Label51 = New System.Windows.Forms.Label
+        Me.Label52 = New System.Windows.Forms.Label
+        Me.Label53 = New System.Windows.Forms.Label
+        Me.chkResizeShowPoster = New System.Windows.Forms.CheckBox
+        Me.Label54 = New System.Windows.Forms.Label
+        Me.cbShowPosterSize = New System.Windows.Forms.ComboBox
+        Me.chkOverwriteShowPoster = New System.Windows.Forms.CheckBox
+        Me.GroupBox36 = New System.Windows.Forms.GroupBox
+        Me.txtShowFanartWidth = New System.Windows.Forms.TextBox
+        Me.txtShowFanartHeight = New System.Windows.Forms.TextBox
+        Me.chkShowFanartOnly = New System.Windows.Forms.CheckBox
+        Me.lblShowFanartQual = New System.Windows.Forms.Label
+        Me.tbShowFanartQual = New System.Windows.Forms.TrackBar
+        Me.Label46 = New System.Windows.Forms.Label
+        Me.Label47 = New System.Windows.Forms.Label
+        Me.Label48 = New System.Windows.Forms.Label
+        Me.chkResizeShowFanart = New System.Windows.Forms.CheckBox
+        Me.cbShowFanartSize = New System.Windows.Forms.ComboBox
+        Me.Label49 = New System.Windows.Forms.Label
+        Me.chkOverwriteShowFanart = New System.Windows.Forms.CheckBox
+        Me.TabPage6 = New System.Windows.Forms.TabPage
+        Me.pnlTVScraper = New System.Windows.Forms.Panel
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -458,8 +493,16 @@ Partial Class dlgSettings
         Me.TabPage4.SuspendLayout()
         Me.GroupBox31.SuspendLayout()
         Me.pnlShows.SuspendLayout()
+        Me.GroupBox32.SuspendLayout()
         Me.gbEpFilter.SuspendLayout()
         Me.gbShowFilter.SuspendLayout()
+        Me.pnlTVImages.SuspendLayout()
+        Me.TabControl3.SuspendLayout()
+        Me.TabPage5.SuspendLayout()
+        Me.GroupBox37.SuspendLayout()
+        CType(Me.tbShowPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox36.SuspendLayout()
+        CType(Me.tbShowFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -2460,12 +2503,22 @@ Partial Class dlgSettings
         TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode8.SelectedImageIndex = 5
         TreeNode8.Text = "Files and Sources"
-        TreeNode9.ImageIndex = 7
-        TreeNode9.Name = "nTV"
+        TreeNode9.ImageIndex = 3
+        TreeNode9.Name = "nTVScraper"
         TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 7
-        TreeNode9.Text = "TV Shows"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7, TreeNode9})
+        TreeNode9.SelectedImageIndex = 3
+        TreeNode9.Text = "Scraper - Data"
+        TreeNode10.ImageIndex = 6
+        TreeNode10.Name = "nTVImages"
+        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode10.SelectedImageIndex = 6
+        TreeNode10.Text = "Scraper - Images"
+        TreeNode11.ImageIndex = 7
+        TreeNode11.Name = "nTV"
+        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode11.SelectedImageIndex = 7
+        TreeNode11.Text = "TV Shows"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7, TreeNode11})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -4160,12 +4213,42 @@ Partial Class dlgSettings
         '
         Me.pnlShows.BackColor = System.Drawing.Color.White
         Me.pnlShows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlShows.Controls.Add(Me.GroupBox32)
         Me.pnlShows.Controls.Add(Me.gbEpFilter)
         Me.pnlShows.Controls.Add(Me.gbShowFilter)
         Me.pnlShows.Location = New System.Drawing.Point(208, 96)
         Me.pnlShows.Name = "pnlShows"
         Me.pnlShows.Size = New System.Drawing.Size(597, 353)
         Me.pnlShows.TabIndex = 70
+        '
+        'GroupBox32
+        '
+        Me.GroupBox32.Controls.Add(Me.Label40)
+        Me.GroupBox32.Controls.Add(Me.cbRatingRegion)
+        Me.GroupBox32.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox32.Name = "GroupBox32"
+        Me.GroupBox32.Size = New System.Drawing.Size(158, 100)
+        Me.GroupBox32.TabIndex = 2
+        Me.GroupBox32.TabStop = False
+        Me.GroupBox32.Text = "Miscellaneous"
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Location = New System.Drawing.Point(8, 21)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(95, 13)
+        Me.Label40.TabIndex = 1
+        Me.Label40.Text = "TV Rating Region:"
+        '
+        'cbRatingRegion
+        '
+        Me.cbRatingRegion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbRatingRegion.FormattingEnabled = True
+        Me.cbRatingRegion.Location = New System.Drawing.Point(8, 36)
+        Me.cbRatingRegion.Name = "cbRatingRegion"
+        Me.cbRatingRegion.Size = New System.Drawing.Size(142, 21)
+        Me.cbRatingRegion.TabIndex = 0
         '
         'gbEpFilter
         '
@@ -4176,9 +4259,9 @@ Partial Class dlgSettings
         Me.gbEpFilter.Controls.Add(Me.btnAddEpFilter)
         Me.gbEpFilter.Controls.Add(Me.txtEpFilter)
         Me.gbEpFilter.Controls.Add(Me.lstEpFilters)
-        Me.gbEpFilter.Location = New System.Drawing.Point(202, 6)
+        Me.gbEpFilter.Location = New System.Drawing.Point(400, 179)
         Me.gbEpFilter.Name = "gbEpFilter"
-        Me.gbEpFilter.Size = New System.Drawing.Size(192, 175)
+        Me.gbEpFilter.Size = New System.Drawing.Size(192, 169)
         Me.gbEpFilter.TabIndex = 1
         Me.gbEpFilter.TabStop = False
         Me.gbEpFilter.Text = "Episode Folder/File Name Filters"
@@ -4186,7 +4269,7 @@ Partial Class dlgSettings
         'btnEpFilterDown
         '
         Me.btnEpFilterDown.Image = CType(resources.GetObject("btnEpFilterDown.Image"), System.Drawing.Image)
-        Me.btnEpFilterDown.Location = New System.Drawing.Point(129, 146)
+        Me.btnEpFilterDown.Location = New System.Drawing.Point(129, 142)
         Me.btnEpFilterDown.Name = "btnEpFilterDown"
         Me.btnEpFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnEpFilterDown.TabIndex = 5
@@ -4195,7 +4278,7 @@ Partial Class dlgSettings
         'btnEpFilterUp
         '
         Me.btnEpFilterUp.Image = CType(resources.GetObject("btnEpFilterUp.Image"), System.Drawing.Image)
-        Me.btnEpFilterUp.Location = New System.Drawing.Point(105, 146)
+        Me.btnEpFilterUp.Location = New System.Drawing.Point(105, 142)
         Me.btnEpFilterUp.Name = "btnEpFilterUp"
         Me.btnEpFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnEpFilterUp.TabIndex = 4
@@ -4204,7 +4287,7 @@ Partial Class dlgSettings
         'chkEpProperCase
         '
         Me.chkEpProperCase.AutoSize = True
-        Me.chkEpProperCase.Location = New System.Drawing.Point(6, 16)
+        Me.chkEpProperCase.Location = New System.Drawing.Point(6, 14)
         Me.chkEpProperCase.Name = "chkEpProperCase"
         Me.chkEpProperCase.Size = New System.Drawing.Size(172, 17)
         Me.chkEpProperCase.TabIndex = 0
@@ -4214,7 +4297,7 @@ Partial Class dlgSettings
         'btnRemoveEpFilter
         '
         Me.btnRemoveEpFilter.Image = CType(resources.GetObject("btnRemoveEpFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveEpFilter.Location = New System.Drawing.Point(163, 146)
+        Me.btnRemoveEpFilter.Location = New System.Drawing.Point(163, 142)
         Me.btnRemoveEpFilter.Name = "btnRemoveEpFilter"
         Me.btnRemoveEpFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveEpFilter.TabIndex = 6
@@ -4223,7 +4306,7 @@ Partial Class dlgSettings
         'btnAddEpFilter
         '
         Me.btnAddEpFilter.Image = CType(resources.GetObject("btnAddEpFilter.Image"), System.Drawing.Image)
-        Me.btnAddEpFilter.Location = New System.Drawing.Point(68, 146)
+        Me.btnAddEpFilter.Location = New System.Drawing.Point(68, 142)
         Me.btnAddEpFilter.Name = "btnAddEpFilter"
         Me.btnAddEpFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddEpFilter.TabIndex = 3
@@ -4232,7 +4315,7 @@ Partial Class dlgSettings
         'txtEpFilter
         '
         Me.txtEpFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtEpFilter.Location = New System.Drawing.Point(6, 147)
+        Me.txtEpFilter.Location = New System.Drawing.Point(6, 143)
         Me.txtEpFilter.Name = "txtEpFilter"
         Me.txtEpFilter.Size = New System.Drawing.Size(61, 20)
         Me.txtEpFilter.TabIndex = 2
@@ -4240,7 +4323,7 @@ Partial Class dlgSettings
         'lstEpFilters
         '
         Me.lstEpFilters.FormattingEnabled = True
-        Me.lstEpFilters.Location = New System.Drawing.Point(6, 34)
+        Me.lstEpFilters.Location = New System.Drawing.Point(6, 31)
         Me.lstEpFilters.Name = "lstEpFilters"
         Me.lstEpFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lstEpFilters.Size = New System.Drawing.Size(180, 108)
@@ -4255,9 +4338,9 @@ Partial Class dlgSettings
         Me.gbShowFilter.Controls.Add(Me.btnAddShowFilter)
         Me.gbShowFilter.Controls.Add(Me.txtShowFilter)
         Me.gbShowFilter.Controls.Add(Me.lstShowFilters)
-        Me.gbShowFilter.Location = New System.Drawing.Point(6, 6)
+        Me.gbShowFilter.Location = New System.Drawing.Point(400, 4)
         Me.gbShowFilter.Name = "gbShowFilter"
-        Me.gbShowFilter.Size = New System.Drawing.Size(192, 175)
+        Me.gbShowFilter.Size = New System.Drawing.Size(192, 169)
         Me.gbShowFilter.TabIndex = 0
         Me.gbShowFilter.TabStop = False
         Me.gbShowFilter.Text = "Show Folder/File Name Filters"
@@ -4265,7 +4348,7 @@ Partial Class dlgSettings
         'btnShowFilterDown
         '
         Me.btnShowFilterDown.Image = CType(resources.GetObject("btnShowFilterDown.Image"), System.Drawing.Image)
-        Me.btnShowFilterDown.Location = New System.Drawing.Point(129, 146)
+        Me.btnShowFilterDown.Location = New System.Drawing.Point(129, 142)
         Me.btnShowFilterDown.Name = "btnShowFilterDown"
         Me.btnShowFilterDown.Size = New System.Drawing.Size(23, 23)
         Me.btnShowFilterDown.TabIndex = 5
@@ -4274,7 +4357,7 @@ Partial Class dlgSettings
         'btnShowFilterUp
         '
         Me.btnShowFilterUp.Image = CType(resources.GetObject("btnShowFilterUp.Image"), System.Drawing.Image)
-        Me.btnShowFilterUp.Location = New System.Drawing.Point(105, 146)
+        Me.btnShowFilterUp.Location = New System.Drawing.Point(105, 142)
         Me.btnShowFilterUp.Name = "btnShowFilterUp"
         Me.btnShowFilterUp.Size = New System.Drawing.Size(23, 23)
         Me.btnShowFilterUp.TabIndex = 4
@@ -4283,7 +4366,7 @@ Partial Class dlgSettings
         'chkShowProperCase
         '
         Me.chkShowProperCase.AutoSize = True
-        Me.chkShowProperCase.Location = New System.Drawing.Point(6, 16)
+        Me.chkShowProperCase.Location = New System.Drawing.Point(6, 14)
         Me.chkShowProperCase.Name = "chkShowProperCase"
         Me.chkShowProperCase.Size = New System.Drawing.Size(172, 17)
         Me.chkShowProperCase.TabIndex = 0
@@ -4293,7 +4376,7 @@ Partial Class dlgSettings
         'btnRemoveShowFilter
         '
         Me.btnRemoveShowFilter.Image = CType(resources.GetObject("btnRemoveShowFilter.Image"), System.Drawing.Image)
-        Me.btnRemoveShowFilter.Location = New System.Drawing.Point(163, 146)
+        Me.btnRemoveShowFilter.Location = New System.Drawing.Point(163, 142)
         Me.btnRemoveShowFilter.Name = "btnRemoveShowFilter"
         Me.btnRemoveShowFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveShowFilter.TabIndex = 6
@@ -4302,7 +4385,7 @@ Partial Class dlgSettings
         'btnAddShowFilter
         '
         Me.btnAddShowFilter.Image = CType(resources.GetObject("btnAddShowFilter.Image"), System.Drawing.Image)
-        Me.btnAddShowFilter.Location = New System.Drawing.Point(68, 146)
+        Me.btnAddShowFilter.Location = New System.Drawing.Point(68, 142)
         Me.btnAddShowFilter.Name = "btnAddShowFilter"
         Me.btnAddShowFilter.Size = New System.Drawing.Size(23, 23)
         Me.btnAddShowFilter.TabIndex = 3
@@ -4311,7 +4394,7 @@ Partial Class dlgSettings
         'txtShowFilter
         '
         Me.txtShowFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtShowFilter.Location = New System.Drawing.Point(6, 147)
+        Me.txtShowFilter.Location = New System.Drawing.Point(6, 143)
         Me.txtShowFilter.Name = "txtShowFilter"
         Me.txtShowFilter.Size = New System.Drawing.Size(61, 20)
         Me.txtShowFilter.TabIndex = 2
@@ -4319,11 +4402,327 @@ Partial Class dlgSettings
         'lstShowFilters
         '
         Me.lstShowFilters.FormattingEnabled = True
-        Me.lstShowFilters.Location = New System.Drawing.Point(6, 34)
+        Me.lstShowFilters.Location = New System.Drawing.Point(6, 31)
         Me.lstShowFilters.Name = "lstShowFilters"
         Me.lstShowFilters.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.lstShowFilters.Size = New System.Drawing.Size(180, 108)
         Me.lstShowFilters.TabIndex = 1
+        '
+        'pnlTVImages
+        '
+        Me.pnlTVImages.BackColor = System.Drawing.Color.White
+        Me.pnlTVImages.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVImages.Controls.Add(Me.TabControl3)
+        Me.pnlTVImages.Location = New System.Drawing.Point(208, 96)
+        Me.pnlTVImages.Name = "pnlTVImages"
+        Me.pnlTVImages.Size = New System.Drawing.Size(597, 353)
+        Me.pnlTVImages.TabIndex = 71
+        Me.pnlTVImages.Visible = False
+        '
+        'TabControl3
+        '
+        Me.TabControl3.Controls.Add(Me.TabPage5)
+        Me.TabControl3.Controls.Add(Me.TabPage6)
+        Me.TabControl3.Location = New System.Drawing.Point(3, 2)
+        Me.TabControl3.Name = "TabControl3"
+        Me.TabControl3.SelectedIndex = 0
+        Me.TabControl3.Size = New System.Drawing.Size(589, 346)
+        Me.TabControl3.TabIndex = 4
+        '
+        'TabPage5
+        '
+        Me.TabPage5.Controls.Add(Me.GroupBox37)
+        Me.TabPage5.Controls.Add(Me.GroupBox36)
+        Me.TabPage5.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage5.Name = "TabPage5"
+        Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage5.Size = New System.Drawing.Size(581, 320)
+        Me.TabPage5.TabIndex = 0
+        Me.TabPage5.Text = "TV Show"
+        Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'GroupBox37
+        '
+        Me.GroupBox37.Controls.Add(Me.txtShowPosterWidth)
+        Me.GroupBox37.Controls.Add(Me.txtShowPosterHeight)
+        Me.GroupBox37.Controls.Add(Me.lblShowPosterQual)
+        Me.GroupBox37.Controls.Add(Me.tbShowPosterQual)
+        Me.GroupBox37.Controls.Add(Me.Label51)
+        Me.GroupBox37.Controls.Add(Me.Label52)
+        Me.GroupBox37.Controls.Add(Me.Label53)
+        Me.GroupBox37.Controls.Add(Me.chkResizeShowPoster)
+        Me.GroupBox37.Controls.Add(Me.Label54)
+        Me.GroupBox37.Controls.Add(Me.cbShowPosterSize)
+        Me.GroupBox37.Controls.Add(Me.chkOverwriteShowPoster)
+        Me.GroupBox37.Location = New System.Drawing.Point(4, 6)
+        Me.GroupBox37.Name = "GroupBox37"
+        Me.GroupBox37.Size = New System.Drawing.Size(218, 170)
+        Me.GroupBox37.TabIndex = 2
+        Me.GroupBox37.TabStop = False
+        Me.GroupBox37.Text = "Poster"
+        '
+        'txtShowPosterWidth
+        '
+        Me.txtShowPosterWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtShowPosterWidth.Enabled = False
+        Me.txtShowPosterWidth.Location = New System.Drawing.Point(65, 94)
+        Me.txtShowPosterWidth.Name = "txtShowPosterWidth"
+        Me.txtShowPosterWidth.Size = New System.Drawing.Size(38, 20)
+        Me.txtShowPosterWidth.TabIndex = 3
+        '
+        'txtShowPosterHeight
+        '
+        Me.txtShowPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtShowPosterHeight.Enabled = False
+        Me.txtShowPosterHeight.Location = New System.Drawing.Point(172, 94)
+        Me.txtShowPosterHeight.Name = "txtShowPosterHeight"
+        Me.txtShowPosterHeight.Size = New System.Drawing.Size(38, 20)
+        Me.txtShowPosterHeight.TabIndex = 4
+        '
+        'lblShowPosterQual
+        '
+        Me.lblShowPosterQual.AutoSize = True
+        Me.lblShowPosterQual.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblShowPosterQual.Location = New System.Drawing.Point(183, 143)
+        Me.lblShowPosterQual.Name = "lblShowPosterQual"
+        Me.lblShowPosterQual.Size = New System.Drawing.Size(32, 16)
+        Me.lblShowPosterQual.TabIndex = 46
+        Me.lblShowPosterQual.Text = "100"
+        '
+        'tbShowPosterQual
+        '
+        Me.tbShowPosterQual.AutoSize = False
+        Me.tbShowPosterQual.BackColor = System.Drawing.Color.White
+        Me.tbShowPosterQual.LargeChange = 10
+        Me.tbShowPosterQual.Location = New System.Drawing.Point(7, 136)
+        Me.tbShowPosterQual.Maximum = 100
+        Me.tbShowPosterQual.Name = "tbShowPosterQual"
+        Me.tbShowPosterQual.Size = New System.Drawing.Size(179, 27)
+        Me.tbShowPosterQual.TabIndex = 5
+        Me.tbShowPosterQual.TickFrequency = 10
+        Me.tbShowPosterQual.Value = 100
+        '
+        'Label51
+        '
+        Me.Label51.AutoSize = True
+        Me.Label51.Location = New System.Drawing.Point(3, 119)
+        Me.Label51.Name = "Label51"
+        Me.Label51.Size = New System.Drawing.Size(75, 13)
+        Me.Label51.TabIndex = 44
+        Me.Label51.Text = "Poster Quality:"
+        '
+        'Label52
+        '
+        Me.Label52.AutoSize = True
+        Me.Label52.Location = New System.Drawing.Point(3, 98)
+        Me.Label52.Name = "Label52"
+        Me.Label52.Size = New System.Drawing.Size(61, 13)
+        Me.Label52.TabIndex = 43
+        Me.Label52.Text = "Max Width:"
+        '
+        'Label53
+        '
+        Me.Label53.AutoSize = True
+        Me.Label53.Location = New System.Drawing.Point(106, 98)
+        Me.Label53.Name = "Label53"
+        Me.Label53.Size = New System.Drawing.Size(64, 13)
+        Me.Label53.TabIndex = 42
+        Me.Label53.Text = "Max Height:"
+        '
+        'chkResizeShowPoster
+        '
+        Me.chkResizeShowPoster.AutoSize = True
+        Me.chkResizeShowPoster.Location = New System.Drawing.Point(6, 76)
+        Me.chkResizeShowPoster.Name = "chkResizeShowPoster"
+        Me.chkResizeShowPoster.Size = New System.Drawing.Size(159, 17)
+        Me.chkResizeShowPoster.TabIndex = 2
+        Me.chkResizeShowPoster.Text = "Automatically Resize Poster:"
+        Me.chkResizeShowPoster.UseVisualStyleBackColor = True
+        '
+        'Label54
+        '
+        Me.Label54.AutoSize = True
+        Me.Label54.Location = New System.Drawing.Point(3, 16)
+        Me.Label54.Name = "Label54"
+        Me.Label54.Size = New System.Drawing.Size(106, 13)
+        Me.Label54.TabIndex = 14
+        Me.Label54.Text = "Preferred Poster Size"
+        '
+        'cbShowPosterSize
+        '
+        Me.cbShowPosterSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbShowPosterSize.FormattingEnabled = True
+        Me.cbShowPosterSize.Location = New System.Drawing.Point(6, 33)
+        Me.cbShowPosterSize.Name = "cbShowPosterSize"
+        Me.cbShowPosterSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbShowPosterSize.TabIndex = 0
+        '
+        'chkOverwriteShowPoster
+        '
+        Me.chkOverwriteShowPoster.AutoSize = True
+        Me.chkOverwriteShowPoster.Location = New System.Drawing.Point(6, 57)
+        Me.chkOverwriteShowPoster.Name = "chkOverwriteShowPoster"
+        Me.chkOverwriteShowPoster.Size = New System.Drawing.Size(143, 17)
+        Me.chkOverwriteShowPoster.TabIndex = 1
+        Me.chkOverwriteShowPoster.Text = "Overwrite Existing Poster"
+        Me.chkOverwriteShowPoster.UseVisualStyleBackColor = True
+        '
+        'GroupBox36
+        '
+        Me.GroupBox36.Controls.Add(Me.txtShowFanartWidth)
+        Me.GroupBox36.Controls.Add(Me.txtShowFanartHeight)
+        Me.GroupBox36.Controls.Add(Me.chkShowFanartOnly)
+        Me.GroupBox36.Controls.Add(Me.lblShowFanartQual)
+        Me.GroupBox36.Controls.Add(Me.tbShowFanartQual)
+        Me.GroupBox36.Controls.Add(Me.Label46)
+        Me.GroupBox36.Controls.Add(Me.Label47)
+        Me.GroupBox36.Controls.Add(Me.Label48)
+        Me.GroupBox36.Controls.Add(Me.chkResizeShowFanart)
+        Me.GroupBox36.Controls.Add(Me.cbShowFanartSize)
+        Me.GroupBox36.Controls.Add(Me.Label49)
+        Me.GroupBox36.Controls.Add(Me.chkOverwriteShowFanart)
+        Me.GroupBox36.Location = New System.Drawing.Point(226, 6)
+        Me.GroupBox36.Name = "GroupBox36"
+        Me.GroupBox36.Size = New System.Drawing.Size(218, 170)
+        Me.GroupBox36.TabIndex = 3
+        Me.GroupBox36.TabStop = False
+        Me.GroupBox36.Text = "Fanart"
+        '
+        'txtShowFanartWidth
+        '
+        Me.txtShowFanartWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtShowFanartWidth.Enabled = False
+        Me.txtShowFanartWidth.Location = New System.Drawing.Point(65, 93)
+        Me.txtShowFanartWidth.Name = "txtShowFanartWidth"
+        Me.txtShowFanartWidth.Size = New System.Drawing.Size(38, 20)
+        Me.txtShowFanartWidth.TabIndex = 4
+        '
+        'txtShowFanartHeight
+        '
+        Me.txtShowFanartHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtShowFanartHeight.Enabled = False
+        Me.txtShowFanartHeight.Location = New System.Drawing.Point(172, 93)
+        Me.txtShowFanartHeight.Name = "txtShowFanartHeight"
+        Me.txtShowFanartHeight.Size = New System.Drawing.Size(38, 20)
+        Me.txtShowFanartHeight.TabIndex = 5
+        '
+        'chkShowFanartOnly
+        '
+        Me.chkShowFanartOnly.AutoSize = True
+        Me.chkShowFanartOnly.Location = New System.Drawing.Point(163, 34)
+        Me.chkShowFanartOnly.Name = "chkShowFanartOnly"
+        Me.chkShowFanartOnly.Size = New System.Drawing.Size(47, 17)
+        Me.chkShowFanartOnly.TabIndex = 1
+        Me.chkShowFanartOnly.Text = "Only"
+        Me.chkShowFanartOnly.UseVisualStyleBackColor = True
+        '
+        'lblShowFanartQual
+        '
+        Me.lblShowFanartQual.AutoSize = True
+        Me.lblShowFanartQual.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblShowFanartQual.Location = New System.Drawing.Point(183, 144)
+        Me.lblShowFanartQual.Name = "lblShowFanartQual"
+        Me.lblShowFanartQual.Size = New System.Drawing.Size(32, 16)
+        Me.lblShowFanartQual.TabIndex = 49
+        Me.lblShowFanartQual.Text = "100"
+        '
+        'tbShowFanartQual
+        '
+        Me.tbShowFanartQual.AutoSize = False
+        Me.tbShowFanartQual.BackColor = System.Drawing.Color.White
+        Me.tbShowFanartQual.LargeChange = 10
+        Me.tbShowFanartQual.Location = New System.Drawing.Point(6, 136)
+        Me.tbShowFanartQual.Maximum = 100
+        Me.tbShowFanartQual.Name = "tbShowFanartQual"
+        Me.tbShowFanartQual.Size = New System.Drawing.Size(180, 27)
+        Me.tbShowFanartQual.TabIndex = 6
+        Me.tbShowFanartQual.TickFrequency = 10
+        Me.tbShowFanartQual.Value = 100
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Location = New System.Drawing.Point(2, 119)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(75, 13)
+        Me.Label46.TabIndex = 47
+        Me.Label46.Text = "Fanart Quality:"
+        '
+        'Label47
+        '
+        Me.Label47.AutoSize = True
+        Me.Label47.Location = New System.Drawing.Point(3, 97)
+        Me.Label47.Name = "Label47"
+        Me.Label47.Size = New System.Drawing.Size(61, 13)
+        Me.Label47.TabIndex = 43
+        Me.Label47.Text = "Max Width:"
+        '
+        'Label48
+        '
+        Me.Label48.AutoSize = True
+        Me.Label48.Location = New System.Drawing.Point(106, 97)
+        Me.Label48.Name = "Label48"
+        Me.Label48.Size = New System.Drawing.Size(64, 13)
+        Me.Label48.TabIndex = 42
+        Me.Label48.Text = "Max Height:"
+        '
+        'chkResizeShowFanart
+        '
+        Me.chkResizeShowFanart.AutoSize = True
+        Me.chkResizeShowFanart.Location = New System.Drawing.Point(6, 76)
+        Me.chkResizeShowFanart.Name = "chkResizeShowFanart"
+        Me.chkResizeShowFanart.Size = New System.Drawing.Size(159, 17)
+        Me.chkResizeShowFanart.TabIndex = 3
+        Me.chkResizeShowFanart.Text = "Automatically Resize Fanart:"
+        Me.chkResizeShowFanart.UseVisualStyleBackColor = True
+        '
+        'cbShowFanartSize
+        '
+        Me.cbShowFanartSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbShowFanartSize.FormattingEnabled = True
+        Me.cbShowFanartSize.Location = New System.Drawing.Point(6, 30)
+        Me.cbShowFanartSize.Name = "cbShowFanartSize"
+        Me.cbShowFanartSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbShowFanartSize.TabIndex = 0
+        '
+        'Label49
+        '
+        Me.Label49.AutoSize = True
+        Me.Label49.Location = New System.Drawing.Point(3, 14)
+        Me.Label49.Name = "Label49"
+        Me.Label49.Size = New System.Drawing.Size(106, 13)
+        Me.Label49.TabIndex = 15
+        Me.Label49.Text = "Preferred Fanart Size"
+        '
+        'chkOverwriteShowFanart
+        '
+        Me.chkOverwriteShowFanart.AutoSize = True
+        Me.chkOverwriteShowFanart.Location = New System.Drawing.Point(6, 56)
+        Me.chkOverwriteShowFanart.Name = "chkOverwriteShowFanart"
+        Me.chkOverwriteShowFanart.Size = New System.Drawing.Size(143, 17)
+        Me.chkOverwriteShowFanart.TabIndex = 2
+        Me.chkOverwriteShowFanart.Text = "Overwrite Existing Fanart"
+        Me.chkOverwriteShowFanart.UseVisualStyleBackColor = True
+        '
+        'TabPage6
+        '
+        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage6.Name = "TabPage6"
+        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage6.Size = New System.Drawing.Size(581, 320)
+        Me.TabPage6.TabIndex = 1
+        Me.TabPage6.Text = "TV Episode"
+        Me.TabPage6.UseVisualStyleBackColor = True
+        '
+        'pnlTVScraper
+        '
+        Me.pnlTVScraper.BackColor = System.Drawing.Color.White
+        Me.pnlTVScraper.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVScraper.Location = New System.Drawing.Point(208, 96)
+        Me.pnlTVScraper.Name = "pnlTVScraper"
+        Me.pnlTVScraper.Size = New System.Drawing.Size(597, 353)
+        Me.pnlTVScraper.TabIndex = 72
+        Me.pnlTVScraper.Visible = False
         '
         'dlgSettings
         '
@@ -4332,6 +4731,8 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -4339,15 +4740,15 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlScraper)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlGeneral)
-        Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlScraper)
+        Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlExtensions)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -4450,10 +4851,21 @@ Partial Class dlgSettings
         Me.GroupBox31.ResumeLayout(False)
         Me.GroupBox31.PerformLayout()
         Me.pnlShows.ResumeLayout(False)
+        Me.GroupBox32.ResumeLayout(False)
+        Me.GroupBox32.PerformLayout()
         Me.gbEpFilter.ResumeLayout(False)
         Me.gbEpFilter.PerformLayout()
         Me.gbShowFilter.ResumeLayout(False)
         Me.gbShowFilter.PerformLayout()
+        Me.pnlTVImages.ResumeLayout(False)
+        Me.TabControl3.ResumeLayout(False)
+        Me.TabPage5.ResumeLayout(False)
+        Me.GroupBox37.ResumeLayout(False)
+        Me.GroupBox37.PerformLayout()
+        CType(Me.tbShowPosterQual, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox36.ResumeLayout(False)
+        Me.GroupBox36.PerformLayout()
+        CType(Me.tbShowFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -4822,4 +5234,37 @@ Partial Class dlgSettings
     Friend WithEvents Label38 As System.Windows.Forms.Label
     Friend WithEvents Label37 As System.Windows.Forms.Label
     Friend WithEvents colRegID As System.Windows.Forms.ColumnHeader
+    Friend WithEvents pnlTVImages As System.Windows.Forms.Panel
+    Friend WithEvents GroupBox36 As System.Windows.Forms.GroupBox
+    Friend WithEvents txtShowFanartWidth As System.Windows.Forms.TextBox
+    Friend WithEvents txtShowFanartHeight As System.Windows.Forms.TextBox
+    Friend WithEvents chkShowFanartOnly As System.Windows.Forms.CheckBox
+    Friend WithEvents lblShowFanartQual As System.Windows.Forms.Label
+    Friend WithEvents tbShowFanartQual As System.Windows.Forms.TrackBar
+    Friend WithEvents Label46 As System.Windows.Forms.Label
+    Friend WithEvents Label47 As System.Windows.Forms.Label
+    Friend WithEvents Label48 As System.Windows.Forms.Label
+    Friend WithEvents chkResizeShowFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents cbShowFanartSize As System.Windows.Forms.ComboBox
+    Friend WithEvents Label49 As System.Windows.Forms.Label
+    Friend WithEvents chkOverwriteShowFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox37 As System.Windows.Forms.GroupBox
+    Friend WithEvents txtShowPosterWidth As System.Windows.Forms.TextBox
+    Friend WithEvents txtShowPosterHeight As System.Windows.Forms.TextBox
+    Friend WithEvents lblShowPosterQual As System.Windows.Forms.Label
+    Friend WithEvents tbShowPosterQual As System.Windows.Forms.TrackBar
+    Friend WithEvents Label51 As System.Windows.Forms.Label
+    Friend WithEvents Label52 As System.Windows.Forms.Label
+    Friend WithEvents Label53 As System.Windows.Forms.Label
+    Friend WithEvents chkResizeShowPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents Label54 As System.Windows.Forms.Label
+    Friend WithEvents cbShowPosterSize As System.Windows.Forms.ComboBox
+    Friend WithEvents chkOverwriteShowPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents TabControl3 As System.Windows.Forms.TabControl
+    Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
+    Friend WithEvents pnlTVScraper As System.Windows.Forms.Panel
+    Friend WithEvents cbRatingRegion As System.Windows.Forms.ComboBox
+    Friend WithEvents GroupBox32 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label40 As System.Windows.Forms.Label
 End Class

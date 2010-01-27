@@ -41,6 +41,7 @@ Partial Class frmMain
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip = New System.Windows.Forms.StatusStrip
         Me.tslStatus = New System.Windows.Forms.ToolStripStatusLabel
+        Me.tsSpring = New System.Windows.Forms.ToolStripStatusLabel
         Me.tslLoading = New System.Windows.Forms.ToolStripStatusLabel
         Me.tspbLoading = New System.Windows.Forms.ToolStripProgressBar
         Me.tmrAni = New System.Windows.Forms.Timer(Me.components)
@@ -310,7 +311,6 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.tsSpring = New System.Windows.Forms.ToolStripStatusLabel
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -466,6 +466,13 @@ Partial Class frmMain
         Me.tslStatus.Name = "tslStatus"
         Me.tslStatus.Size = New System.Drawing.Size(0, 17)
         Me.tslStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'tsSpring
+        '
+        Me.tsSpring.Name = "tsSpring"
+        Me.tsSpring.Size = New System.Drawing.Size(1001, 17)
+        Me.tsSpring.Spring = True
+        Me.tsSpring.Text = "  "
         '
         'tslLoading
         '
@@ -2945,13 +2952,6 @@ Partial Class frmMain
         '
         'tmrLoadEp
         '
-        '
-        'tsSpring
-        '
-        Me.tsSpring.Name = "tsSpring"
-        Me.tsSpring.Size = New System.Drawing.Size(394, 17)
-        Me.tsSpring.Spring = True
-        Me.tsSpring.Text = "  "
         '
         'frmMain
         '

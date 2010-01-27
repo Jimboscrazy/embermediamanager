@@ -841,7 +841,7 @@ Namespace Media
     Public Class [Image]
         Private _url As String
         Private _description As String
-        Private _webimage As System.Drawing.Image
+        Private _webimage As Images
         Private _ischecked As Boolean
 
         Public Property URL() As String
@@ -862,11 +862,11 @@ Namespace Media
             End Set
         End Property
 
-        Public Property WebImage() As System.Drawing.Image
+        Public Property WebImage() As Images
             Get
                 Return Me._webimage
             End Get
-            Set(ByVal value As System.Drawing.Image)
+            Set(ByVal value As Images)
                 Me._webimage = value
             End Set
         End Property
@@ -887,7 +887,7 @@ Namespace Media
         Public Sub Clear()
             Me._url = String.Empty
             Me._description = String.Empty
-            Me._webimage = Nothing
+            Me._webimage = New Images
             Me._ischecked = False
         End Sub
 

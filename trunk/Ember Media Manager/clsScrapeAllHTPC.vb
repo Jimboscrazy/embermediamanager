@@ -26,7 +26,7 @@ Namespace AllHTPC
             Dim sHTTP As New HTTP
 
             Try
-                Dim sResults As String = sHTTP.DownloadData(String.Format("http://hdtrailers.allhtpc.com/search.php?imdbid={0}", imdbID))
+                Dim sResults As String = sHTTP.DownloadData(String.Format("http://hdtrailers.allhtpc.com/search/{0}", imdbID))
                 sHTTP = Nothing
 
                 If Not String.IsNullOrEmpty(sResults) Then

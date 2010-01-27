@@ -1355,16 +1355,19 @@ Public Class Scanner
         End If
 
         If sSeason = 0 Then
-            fName = String.Format("season-specials.tbn", sSeason)
+            fName = Path.Combine(SeasonPath, "season-specials.tbn")
+            If File.Exists(fName) Then Return fName
         Else
-            fName = String.Format("season{0}.tbn", sSeason.ToString.PadLeft(2, Convert.ToChar("0")))
+            fName = Path.Combine(SeasonPath, String.Format("season{0}.tbn", sSeason.ToString.PadLeft(2, Convert.ToChar("0"))))
+            If File.Exists(fName) Then
+                Return fName
+            Else
+                fName = Path.Combine(SeasonPath, String.Format("season{0}.tbn", sSeason.ToString))
+                Return fName
+            End If
         End If
 
-        If File.Exists(Path.Combine(SeasonPath, fName)) Then
-            Return Path.Combine(SeasonPath, fName)
-        Else
-            Return String.Empty
-        End If
+        Return String.Empty
 
     End Function
 

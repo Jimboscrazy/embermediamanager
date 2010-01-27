@@ -89,7 +89,7 @@ Public Class dlgAddEditActor
 
         Try
             If Not String.IsNullOrEmpty(Me.txtThumb.Text) Then
-                If Regex.IsMatch(Me.txtThumb.Text, "^(https?://)?(([\w!~*'().&=+$%-]+: )?[\w!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([\w!~*'()-]+\.)*([\w^-][\w-]{0,61})?[\w]\.[a-z]{2,6})(:[0-9]{1,4})?((/*)|(/+[\w!~*'().;?:@&=+$,%#-]+)+/*)$", RegexOptions.IgnoreCase) Then
+                If StringManip.isValidURL(Me.txtThumb.Text) Then
                     If Me.bwDownloadPic.IsBusy Then
                         Me.bwDownloadPic.CancelAsync()
                     End If
@@ -112,22 +112,8 @@ Public Class dlgAddEditActor
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
 
-        '//
-        ' Thread to download image from the internet (multi-threaded because sometimes
-        ' the web server is slow to respond or not reachable, hanging the GUI)
-        '\\
+        e.Result = Images.GenericFromWeb(Me.txtThumb.Text)
 
-        Dim dlImage As Image = Nothing
-        Dim wrRequest As WebRequest = WebRequest.Create(Me.txtThumb.Text)
-
-        wrRequest.Timeout = 10000
-        Using wrResponse As WebResponse = wrRequest.GetResponse()
-            If wrResponse.ContentType.Contains("image") Then
-                dlImage = Image.FromStream(wrResponse.GetResponseStream())
-            End If
-        End Using
-
-        e.Result = dlImage
     End Sub
 
     Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted

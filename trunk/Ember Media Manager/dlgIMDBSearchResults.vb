@@ -159,25 +159,8 @@ Public Class dlgIMDBSearchResults
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
 
-        '//
-        ' Thread to download image from the internet (multi-threaded because sometimes
-        ' the web server is slow to respond or not reachable, hanging the GUI)
-        '\\
-
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        Dim tImage As Image = Nothing
-        Try
-            Dim wrRequest As System.Net.WebRequest = System.Net.WebRequest.Create(Args.pURL)
-            wrRequest.Timeout = 10000
-            Using wrResponse As System.Net.WebResponse = wrRequest.GetResponse()
-                If wrResponse.ContentType.Contains("image") Then
-                    tImage = Image.FromStream(wrResponse.GetResponseStream())
-                End If
-            End Using
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        e.Result = New Results With {.Result = tImage}
+        e.Result = New Results With {.Result = Images.GenericFromWeb(Args.pURL)}
 
     End Sub
 

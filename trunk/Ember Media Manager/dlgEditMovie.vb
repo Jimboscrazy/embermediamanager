@@ -47,7 +47,7 @@ Public Class dlgEditMovie
 
             Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
 
-            Me.cleanup()
+            Me.CleanUp()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -111,13 +111,9 @@ Public Class dlgEditMovie
             dFileInfoEdit.BackColor = Color.White
             dFileInfoEdit.Cancel_Button.Visible = False
             Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
-            'dFileInfoEdit.Left = (pnlFileInfo.Width - dFileInfoEdit.Width) / 2
             Dim oldwidth As Integer = dFileInfoEdit.Width
             dFileInfoEdit.Width = pnlFileInfo.Width
             dFileInfoEdit.Height = pnlFileInfo.Height
-            'For Each c As Control In dFileInfoEdit.Controls
-            'c.Left = c.Left + (dFileInfoEdit.Width - oldwidth) / 2
-            'Next
             dFileInfoEdit.Show()
 
             Me.LoadGenres()
@@ -381,7 +377,7 @@ Public Class dlgEditMovie
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
 
         Try
-            If dlgManualEdit.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If dlgManualEdit.ShowDialog(Master.currMovie.NfoPath) = Windows.Forms.DialogResult.OK Then
                 Master.currMovie.Movie = NFO.LoadMovieFromNFO(Master.currMovie.NfoPath, Master.currMovie.isSingle)
                 Me.FillInfo(False)
             End If
@@ -528,9 +524,12 @@ Public Class dlgEditMovie
 
                 Me.SelectMPAA()
 
+                For i As Integer = 0 To .lbGenre.Items.Count - 1
+                    .lbGenre.SetItemChecked(i, False)
+                Next
                 If Not String.IsNullOrEmpty(Master.currMovie.Movie.Genre) Then
                     Dim genreArray() As String
-                    genreArray = Master.currMovie.Movie.Genre.Split(Convert.ToChar("/"))
+                    genreArray = Strings.Split(Master.currMovie.Movie.Genre, " / ")
                     For g As Integer = 0 To UBound(genreArray)
                         If .lbGenre.FindString(genreArray(g).Trim) > 0 Then
                             .lbGenre.SetItemChecked(.lbGenre.FindString(genreArray(g).Trim), True)
@@ -782,7 +781,7 @@ Public Class dlgEditMovie
                             .pbStar3.Image = My.Resources.star
                             .pbStar4.Image = My.Resources.star
                             .pbStar5.Image = My.Resources.starhalf
-                        Case Is <= 5
+                        Case Else
                             .pbStar1.Image = My.Resources.star
                             .pbStar2.Image = My.Resources.star
                             .pbStar3.Image = My.Resources.star
@@ -1056,17 +1055,15 @@ Public Class dlgEditMovie
 
                 If lFI.Count > 0 Then
                     lFI.Sort(AddressOf Master.SortThumbFileNames)
-                    Dim fsImage As FileStream
                     For Each thumb As FileInfo In lFI
                         If Not Me.DeleteList.Contains(thumb.Name) Then
-                            fsImage = New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
-                            Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})
-                            ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
-                            fsImage.Close()
+                            Using fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
+                                Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})
+                                ilThumbs.Images.Add(thumb.Name, Thumbs.Item(i).Image)
+                            End Using
                             i += 1
                         End If
                     Next
-                    fsImage = Nothing
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1226,7 +1223,7 @@ Public Class dlgEditMovie
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(Master.currMovie.Movie.MPAA) Then
             Try
-                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso XML.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
+                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso XML.RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
                     Dim l As Integer = Me.lbMPAA.FindString(Strings.Trim(Master.currMovie.Movie.MPAA))
                     Me.lbMPAA.SelectedIndex = l
                     If Me.lbMPAA.SelectedItems.Count = 0 Then
@@ -1380,10 +1377,10 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
-        If String.IsNullOrEmpty(txtTrailer.Text) Then
-            Me.btnPlayTrailer.Enabled = False
-        Else
+        If StringManip.isValidURL(txtTrailer.Text) Then
             Me.btnPlayTrailer.Enabled = True
+        Else
+            Me.btnPlayTrailer.Enabled = False
         End If
     End Sub
 
