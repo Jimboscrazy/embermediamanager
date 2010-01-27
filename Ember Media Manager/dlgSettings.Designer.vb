@@ -24,17 +24,17 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9, TreeNode10})
+        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode12, TreeNode13})
+        Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode15, TreeNode16, TreeNode17})
+        Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode19, TreeNode20, TreeNode21})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
@@ -354,6 +354,34 @@ Partial Class dlgSettings
         Me.pnlTVSources = New System.Windows.Forms.Panel
         Me.TabControl2 = New System.Windows.Forms.TabControl
         Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.GroupBox33 = New System.Windows.Forms.GroupBox
+        Me.Label41 = New System.Windows.Forms.Label
+        Me.GroupBox41 = New System.Windows.Forms.GroupBox
+        Me.chkEpisodeDotFanart = New System.Windows.Forms.CheckBox
+        Me.chkEpisodeDashFanart = New System.Windows.Forms.CheckBox
+        Me.GroupBox40 = New System.Windows.Forms.GroupBox
+        Me.chkEpisodeJPG = New System.Windows.Forms.CheckBox
+        Me.chkEpisodeTBN = New System.Windows.Forms.CheckBox
+        Me.GroupBox35 = New System.Windows.Forms.GroupBox
+        Me.chkSeasonDotFanart = New System.Windows.Forms.CheckBox
+        Me.chkSeasonDashFanart = New System.Windows.Forms.CheckBox
+        Me.chkSeasonFanartJPG = New System.Windows.Forms.CheckBox
+        Me.GroupBox34 = New System.Windows.Forms.GroupBox
+        Me.chkSeasonNameJPG = New System.Windows.Forms.CheckBox
+        Me.chkSeasonNameTBN = New System.Windows.Forms.CheckBox
+        Me.chkSeasonPosterJPG = New System.Windows.Forms.CheckBox
+        Me.chkSeasonPosterTBN = New System.Windows.Forms.CheckBox
+        Me.chkSeasonXTBN = New System.Windows.Forms.CheckBox
+        Me.chkSeasonXXTBN = New System.Windows.Forms.CheckBox
+        Me.GroupBox38 = New System.Windows.Forms.GroupBox
+        Me.chkShowDotFanart = New System.Windows.Forms.CheckBox
+        Me.chkShowDashFanart = New System.Windows.Forms.CheckBox
+        Me.chkShowFanartJPG = New System.Windows.Forms.CheckBox
+        Me.GroupBox39 = New System.Windows.Forms.GroupBox
+        Me.chkShowPosterJPG = New System.Windows.Forms.CheckBox
+        Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox
+        Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox
+        Me.chkShowSeasonAll = New System.Windows.Forms.CheckBox
         Me.lvTVSources = New System.Windows.Forms.ListView
         Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
@@ -384,6 +412,18 @@ Partial Class dlgSettings
         Me.colEpisode = New System.Windows.Forms.ColumnHeader
         Me.colEpApply = New System.Windows.Forms.ColumnHeader
         Me.pnlShows = New System.Windows.Forms.Panel
+        Me.GroupBox42 = New System.Windows.Forms.GroupBox
+        Me.GroupBox45 = New System.Windows.Forms.GroupBox
+        Me.chkEpisodeNfoCol = New System.Windows.Forms.CheckBox
+        Me.chkEpisodeFanartCol = New System.Windows.Forms.CheckBox
+        Me.chkEpisodePosterCol = New System.Windows.Forms.CheckBox
+        Me.GroupBox44 = New System.Windows.Forms.GroupBox
+        Me.chkSeasonFanartCol = New System.Windows.Forms.CheckBox
+        Me.chkSeasonPosterCol = New System.Windows.Forms.CheckBox
+        Me.GroupBox43 = New System.Windows.Forms.GroupBox
+        Me.chkShowNfoCol = New System.Windows.Forms.CheckBox
+        Me.chkShowFanartCol = New System.Windows.Forms.CheckBox
+        Me.chkShowPosterCol = New System.Windows.Forms.CheckBox
         Me.GroupBox32 = New System.Windows.Forms.GroupBox
         Me.Label40 = New System.Windows.Forms.Label
         Me.cbRatingRegion = New System.Windows.Forms.ComboBox
@@ -489,10 +529,21 @@ Partial Class dlgSettings
         Me.pnlTVSources.SuspendLayout()
         Me.TabControl2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
+        Me.GroupBox33.SuspendLayout()
+        Me.GroupBox41.SuspendLayout()
+        Me.GroupBox40.SuspendLayout()
+        Me.GroupBox35.SuspendLayout()
+        Me.GroupBox34.SuspendLayout()
+        Me.GroupBox38.SuspendLayout()
+        Me.GroupBox39.SuspendLayout()
         Me.GroupBox30.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.GroupBox31.SuspendLayout()
         Me.pnlShows.SuspendLayout()
+        Me.GroupBox42.SuspendLayout()
+        Me.GroupBox45.SuspendLayout()
+        Me.GroupBox44.SuspendLayout()
+        Me.GroupBox43.SuspendLayout()
         Me.GroupBox32.SuspendLayout()
         Me.gbEpFilter.SuspendLayout()
         Me.gbShowFilter.SuspendLayout()
@@ -2463,62 +2514,62 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode1.ImageIndex = 4
-        TreeNode1.Name = "nExts"
-        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode1.SelectedImageIndex = 4
-        TreeNode1.Text = "File System"
-        TreeNode2.ImageIndex = 1
-        TreeNode2.Name = "nXBMCCom"
-        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode2.SelectedImageIndex = 1
-        TreeNode2.Text = "XBMC Communication"
-        TreeNode3.ImageIndex = 0
-        TreeNode3.Name = "nGeneral"
-        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode3.SelectedImageIndex = 0
-        TreeNode3.Text = "General"
-        TreeNode4.ImageIndex = 5
-        TreeNode4.Name = "nSources"
-        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode4.SelectedImageIndex = 5
-        TreeNode4.Text = "Files and Sources"
-        TreeNode5.ImageIndex = 3
-        TreeNode5.Name = "nScraper"
-        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode5.SelectedImageIndex = 3
-        TreeNode5.Text = "Scraper - Data"
-        TreeNode6.ImageIndex = 6
-        TreeNode6.Name = "nImages"
-        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode6.SelectedImageIndex = 6
-        TreeNode6.Text = "Scraper - Images"
-        TreeNode7.ImageIndex = 2
-        TreeNode7.Name = "nMovies"
-        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode7.SelectedImageIndex = 2
-        TreeNode7.Text = "Movies"
-        TreeNode8.ImageIndex = 5
-        TreeNode8.Name = "nTVSources"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 5
-        TreeNode8.Text = "Files and Sources"
-        TreeNode9.ImageIndex = 3
-        TreeNode9.Name = "nTVScraper"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 3
-        TreeNode9.Text = "Scraper - Data"
-        TreeNode10.ImageIndex = 6
-        TreeNode10.Name = "nTVImages"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 6
-        TreeNode10.Text = "Scraper - Images"
-        TreeNode11.ImageIndex = 7
-        TreeNode11.Name = "nTV"
-        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode11.SelectedImageIndex = 7
-        TreeNode11.Text = "TV Shows"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7, TreeNode11})
+        TreeNode12.ImageIndex = 4
+        TreeNode12.Name = "nExts"
+        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode12.SelectedImageIndex = 4
+        TreeNode12.Text = "File System"
+        TreeNode13.ImageIndex = 1
+        TreeNode13.Name = "nXBMCCom"
+        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode13.SelectedImageIndex = 1
+        TreeNode13.Text = "XBMC Communication"
+        TreeNode14.ImageIndex = 0
+        TreeNode14.Name = "nGeneral"
+        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode14.SelectedImageIndex = 0
+        TreeNode14.Text = "General"
+        TreeNode15.ImageIndex = 5
+        TreeNode15.Name = "nSources"
+        TreeNode15.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode15.SelectedImageIndex = 5
+        TreeNode15.Text = "Files and Sources"
+        TreeNode16.ImageIndex = 3
+        TreeNode16.Name = "nScraper"
+        TreeNode16.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode16.SelectedImageIndex = 3
+        TreeNode16.Text = "Scraper - Data"
+        TreeNode17.ImageIndex = 6
+        TreeNode17.Name = "nImages"
+        TreeNode17.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode17.SelectedImageIndex = 6
+        TreeNode17.Text = "Scraper - Images"
+        TreeNode18.ImageIndex = 2
+        TreeNode18.Name = "nMovies"
+        TreeNode18.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode18.SelectedImageIndex = 2
+        TreeNode18.Text = "Movies"
+        TreeNode19.ImageIndex = 5
+        TreeNode19.Name = "nTVSources"
+        TreeNode19.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode19.SelectedImageIndex = 5
+        TreeNode19.Text = "Files and Sources"
+        TreeNode20.ImageIndex = 3
+        TreeNode20.Name = "nTVScraper"
+        TreeNode20.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode20.SelectedImageIndex = 3
+        TreeNode20.Text = "Scraper - Data"
+        TreeNode21.ImageIndex = 6
+        TreeNode21.Name = "nTVImages"
+        TreeNode21.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode21.SelectedImageIndex = 6
+        TreeNode21.Text = "Scraper - Images"
+        TreeNode22.ImageIndex = 7
+        TreeNode22.Name = "nTV"
+        TreeNode22.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode22.SelectedImageIndex = 7
+        TreeNode22.Text = "TV Shows"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode14, TreeNode18, TreeNode22})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -3920,6 +3971,7 @@ Partial Class dlgSettings
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.GroupBox33)
         Me.TabPage3.Controls.Add(Me.lvTVSources)
         Me.TabPage3.Controls.Add(Me.GroupBox30)
         Me.TabPage3.Controls.Add(Me.btnAddTVSource)
@@ -3932,6 +3984,305 @@ Partial Class dlgSettings
         Me.TabPage3.TabIndex = 0
         Me.TabPage3.Text = "General"
         Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'GroupBox33
+        '
+        Me.GroupBox33.Controls.Add(Me.Label41)
+        Me.GroupBox33.Controls.Add(Me.GroupBox41)
+        Me.GroupBox33.Controls.Add(Me.GroupBox40)
+        Me.GroupBox33.Controls.Add(Me.GroupBox35)
+        Me.GroupBox33.Controls.Add(Me.GroupBox34)
+        Me.GroupBox33.Controls.Add(Me.GroupBox38)
+        Me.GroupBox33.Controls.Add(Me.GroupBox39)
+        Me.GroupBox33.Location = New System.Drawing.Point(189, 115)
+        Me.GroupBox33.Name = "GroupBox33"
+        Me.GroupBox33.Size = New System.Drawing.Size(394, 203)
+        Me.GroupBox33.TabIndex = 6
+        Me.GroupBox33.TabStop = False
+        Me.GroupBox33.Text = "File Naming"
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.Location = New System.Drawing.Point(262, 143)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(133, 13)
+        Me.Label41.TabIndex = 7
+        Me.Label41.Text = " * - Inside Season directory"
+        '
+        'GroupBox41
+        '
+        Me.GroupBox41.Controls.Add(Me.chkEpisodeDotFanart)
+        Me.GroupBox41.Controls.Add(Me.chkEpisodeDashFanart)
+        Me.GroupBox41.Location = New System.Drawing.Point(263, 69)
+        Me.GroupBox41.Name = "GroupBox41"
+        Me.GroupBox41.Size = New System.Drawing.Size(123, 51)
+        Me.GroupBox41.TabIndex = 4
+        Me.GroupBox41.TabStop = False
+        Me.GroupBox41.Text = "Episode Fanart"
+        '
+        'chkEpisodeDotFanart
+        '
+        Me.chkEpisodeDotFanart.AutoSize = True
+        Me.chkEpisodeDotFanart.Location = New System.Drawing.Point(5, 31)
+        Me.chkEpisodeDotFanart.Name = "chkEpisodeDotFanart"
+        Me.chkEpisodeDotFanart.Size = New System.Drawing.Size(122, 17)
+        Me.chkEpisodeDotFanart.TabIndex = 2
+        Me.chkEpisodeDotFanart.Text = "<episode>.fanart.jpg"
+        Me.chkEpisodeDotFanart.UseVisualStyleBackColor = True
+        '
+        'chkEpisodeDashFanart
+        '
+        Me.chkEpisodeDashFanart.AutoSize = True
+        Me.chkEpisodeDashFanart.Location = New System.Drawing.Point(5, 15)
+        Me.chkEpisodeDashFanart.Name = "chkEpisodeDashFanart"
+        Me.chkEpisodeDashFanart.Size = New System.Drawing.Size(122, 17)
+        Me.chkEpisodeDashFanart.TabIndex = 1
+        Me.chkEpisodeDashFanart.Text = "<episode>-fanart.jpg"
+        Me.chkEpisodeDashFanart.UseVisualStyleBackColor = True
+        '
+        'GroupBox40
+        '
+        Me.GroupBox40.Controls.Add(Me.chkEpisodeJPG)
+        Me.GroupBox40.Controls.Add(Me.chkEpisodeTBN)
+        Me.GroupBox40.Location = New System.Drawing.Point(263, 17)
+        Me.GroupBox40.Name = "GroupBox40"
+        Me.GroupBox40.Size = New System.Drawing.Size(123, 52)
+        Me.GroupBox40.TabIndex = 6
+        Me.GroupBox40.TabStop = False
+        Me.GroupBox40.Text = "Episode Posters"
+        '
+        'chkEpisodeJPG
+        '
+        Me.chkEpisodeJPG.AutoSize = True
+        Me.chkEpisodeJPG.Location = New System.Drawing.Point(6, 31)
+        Me.chkEpisodeJPG.Name = "chkEpisodeJPG"
+        Me.chkEpisodeJPG.Size = New System.Drawing.Size(92, 17)
+        Me.chkEpisodeJPG.TabIndex = 1
+        Me.chkEpisodeJPG.Text = "<episode>.jpg"
+        Me.chkEpisodeJPG.UseVisualStyleBackColor = True
+        '
+        'chkEpisodeTBN
+        '
+        Me.chkEpisodeTBN.AutoSize = True
+        Me.chkEpisodeTBN.Location = New System.Drawing.Point(6, 15)
+        Me.chkEpisodeTBN.Name = "chkEpisodeTBN"
+        Me.chkEpisodeTBN.Size = New System.Drawing.Size(93, 17)
+        Me.chkEpisodeTBN.TabIndex = 0
+        Me.chkEpisodeTBN.Text = "<episode>.tbn"
+        Me.chkEpisodeTBN.UseVisualStyleBackColor = True
+        '
+        'GroupBox35
+        '
+        Me.GroupBox35.Controls.Add(Me.chkSeasonDotFanart)
+        Me.GroupBox35.Controls.Add(Me.chkSeasonDashFanart)
+        Me.GroupBox35.Controls.Add(Me.chkSeasonFanartJPG)
+        Me.GroupBox35.Location = New System.Drawing.Point(128, 131)
+        Me.GroupBox35.Name = "GroupBox35"
+        Me.GroupBox35.Size = New System.Drawing.Size(131, 66)
+        Me.GroupBox35.TabIndex = 3
+        Me.GroupBox35.TabStop = False
+        Me.GroupBox35.Text = "Season Fanart"
+        '
+        'chkSeasonDotFanart
+        '
+        Me.chkSeasonDotFanart.AutoSize = True
+        Me.chkSeasonDotFanart.Location = New System.Drawing.Point(6, 47)
+        Me.chkSeasonDotFanart.Name = "chkSeasonDotFanart"
+        Me.chkSeasonDotFanart.Size = New System.Drawing.Size(126, 17)
+        Me.chkSeasonDotFanart.TabIndex = 2
+        Me.chkSeasonDotFanart.Text = "<season>.fanart.jpg *"
+        Me.chkSeasonDotFanart.UseVisualStyleBackColor = True
+        '
+        'chkSeasonDashFanart
+        '
+        Me.chkSeasonDashFanart.AutoSize = True
+        Me.chkSeasonDashFanart.Location = New System.Drawing.Point(6, 31)
+        Me.chkSeasonDashFanart.Name = "chkSeasonDashFanart"
+        Me.chkSeasonDashFanart.Size = New System.Drawing.Size(126, 17)
+        Me.chkSeasonDashFanart.TabIndex = 1
+        Me.chkSeasonDashFanart.Text = "<season>-fanart.jpg *"
+        Me.chkSeasonDashFanart.UseVisualStyleBackColor = True
+        '
+        'chkSeasonFanartJPG
+        '
+        Me.chkSeasonFanartJPG.AutoSize = True
+        Me.chkSeasonFanartJPG.Location = New System.Drawing.Point(6, 15)
+        Me.chkSeasonFanartJPG.Name = "chkSeasonFanartJPG"
+        Me.chkSeasonFanartJPG.Size = New System.Drawing.Size(77, 17)
+        Me.chkSeasonFanartJPG.TabIndex = 0
+        Me.chkSeasonFanartJPG.Text = "fanart.jpg *"
+        Me.chkSeasonFanartJPG.UseVisualStyleBackColor = True
+        '
+        'GroupBox34
+        '
+        Me.GroupBox34.Controls.Add(Me.chkSeasonNameJPG)
+        Me.GroupBox34.Controls.Add(Me.chkSeasonNameTBN)
+        Me.GroupBox34.Controls.Add(Me.chkSeasonPosterJPG)
+        Me.GroupBox34.Controls.Add(Me.chkSeasonPosterTBN)
+        Me.GroupBox34.Controls.Add(Me.chkSeasonXTBN)
+        Me.GroupBox34.Controls.Add(Me.chkSeasonXXTBN)
+        Me.GroupBox34.Location = New System.Drawing.Point(127, 17)
+        Me.GroupBox34.Name = "GroupBox34"
+        Me.GroupBox34.Size = New System.Drawing.Size(131, 114)
+        Me.GroupBox34.TabIndex = 4
+        Me.GroupBox34.TabStop = False
+        Me.GroupBox34.Text = "Season Posters"
+        '
+        'chkSeasonNameJPG
+        '
+        Me.chkSeasonNameJPG.AutoSize = True
+        Me.chkSeasonNameJPG.Location = New System.Drawing.Point(6, 95)
+        Me.chkSeasonNameJPG.Name = "chkSeasonNameJPG"
+        Me.chkSeasonNameJPG.Size = New System.Drawing.Size(96, 17)
+        Me.chkSeasonNameJPG.TabIndex = 5
+        Me.chkSeasonNameJPG.Text = "<season>.jpg *"
+        Me.chkSeasonNameJPG.UseVisualStyleBackColor = True
+        '
+        'chkSeasonNameTBN
+        '
+        Me.chkSeasonNameTBN.AutoSize = True
+        Me.chkSeasonNameTBN.Location = New System.Drawing.Point(6, 79)
+        Me.chkSeasonNameTBN.Name = "chkSeasonNameTBN"
+        Me.chkSeasonNameTBN.Size = New System.Drawing.Size(97, 17)
+        Me.chkSeasonNameTBN.TabIndex = 4
+        Me.chkSeasonNameTBN.Text = "<season>.tbn *"
+        Me.chkSeasonNameTBN.UseVisualStyleBackColor = True
+        '
+        'chkSeasonPosterJPG
+        '
+        Me.chkSeasonPosterJPG.AutoSize = True
+        Me.chkSeasonPosterJPG.Location = New System.Drawing.Point(6, 63)
+        Me.chkSeasonPosterJPG.Name = "chkSeasonPosterJPG"
+        Me.chkSeasonPosterJPG.Size = New System.Drawing.Size(79, 17)
+        Me.chkSeasonPosterJPG.TabIndex = 3
+        Me.chkSeasonPosterJPG.Text = "poster.jpg *"
+        Me.chkSeasonPosterJPG.UseVisualStyleBackColor = True
+        '
+        'chkSeasonPosterTBN
+        '
+        Me.chkSeasonPosterTBN.AutoSize = True
+        Me.chkSeasonPosterTBN.Location = New System.Drawing.Point(6, 47)
+        Me.chkSeasonPosterTBN.Name = "chkSeasonPosterTBN"
+        Me.chkSeasonPosterTBN.Size = New System.Drawing.Size(80, 17)
+        Me.chkSeasonPosterTBN.TabIndex = 2
+        Me.chkSeasonPosterTBN.Text = "poster.tbn *"
+        Me.chkSeasonPosterTBN.UseVisualStyleBackColor = True
+        '
+        'chkSeasonXTBN
+        '
+        Me.chkSeasonXTBN.AutoSize = True
+        Me.chkSeasonXTBN.Location = New System.Drawing.Point(6, 31)
+        Me.chkSeasonXTBN.Name = "chkSeasonXTBN"
+        Me.chkSeasonXTBN.Size = New System.Drawing.Size(85, 17)
+        Me.chkSeasonXTBN.TabIndex = 1
+        Me.chkSeasonXTBN.Text = "seasonX.tbn"
+        Me.chkSeasonXTBN.UseVisualStyleBackColor = True
+        '
+        'chkSeasonXXTBN
+        '
+        Me.chkSeasonXXTBN.AutoSize = True
+        Me.chkSeasonXXTBN.Location = New System.Drawing.Point(6, 15)
+        Me.chkSeasonXXTBN.Name = "chkSeasonXXTBN"
+        Me.chkSeasonXXTBN.Size = New System.Drawing.Size(92, 17)
+        Me.chkSeasonXXTBN.TabIndex = 0
+        Me.chkSeasonXXTBN.Text = "seasonXX.tbn"
+        Me.chkSeasonXXTBN.UseVisualStyleBackColor = True
+        '
+        'GroupBox38
+        '
+        Me.GroupBox38.Controls.Add(Me.chkShowDotFanart)
+        Me.GroupBox38.Controls.Add(Me.chkShowDashFanart)
+        Me.GroupBox38.Controls.Add(Me.chkShowFanartJPG)
+        Me.GroupBox38.Location = New System.Drawing.Point(6, 100)
+        Me.GroupBox38.Name = "GroupBox38"
+        Me.GroupBox38.Size = New System.Drawing.Size(115, 70)
+        Me.GroupBox38.TabIndex = 2
+        Me.GroupBox38.TabStop = False
+        Me.GroupBox38.Text = "Show Fanart"
+        '
+        'chkShowDotFanart
+        '
+        Me.chkShowDotFanart.AutoSize = True
+        Me.chkShowDotFanart.Location = New System.Drawing.Point(6, 51)
+        Me.chkShowDotFanart.Name = "chkShowDotFanart"
+        Me.chkShowDotFanart.Size = New System.Drawing.Size(110, 17)
+        Me.chkShowDotFanart.TabIndex = 2
+        Me.chkShowDotFanart.Text = "<show>.fanart.jpg"
+        Me.chkShowDotFanart.UseVisualStyleBackColor = True
+        '
+        'chkShowDashFanart
+        '
+        Me.chkShowDashFanart.AutoSize = True
+        Me.chkShowDashFanart.Location = New System.Drawing.Point(6, 35)
+        Me.chkShowDashFanart.Name = "chkShowDashFanart"
+        Me.chkShowDashFanart.Size = New System.Drawing.Size(110, 17)
+        Me.chkShowDashFanart.TabIndex = 1
+        Me.chkShowDashFanart.Text = "<show>-fanart.jpg"
+        Me.chkShowDashFanart.UseVisualStyleBackColor = True
+        '
+        'chkShowFanartJPG
+        '
+        Me.chkShowFanartJPG.AutoSize = True
+        Me.chkShowFanartJPG.Location = New System.Drawing.Point(6, 19)
+        Me.chkShowFanartJPG.Name = "chkShowFanartJPG"
+        Me.chkShowFanartJPG.Size = New System.Drawing.Size(70, 17)
+        Me.chkShowFanartJPG.TabIndex = 0
+        Me.chkShowFanartJPG.Text = "fanart.jpg"
+        Me.chkShowFanartJPG.UseVisualStyleBackColor = True
+        '
+        'GroupBox39
+        '
+        Me.GroupBox39.Controls.Add(Me.chkShowPosterJPG)
+        Me.GroupBox39.Controls.Add(Me.chkShowPosterTBN)
+        Me.GroupBox39.Controls.Add(Me.chkShowFolderJPG)
+        Me.GroupBox39.Controls.Add(Me.chkShowSeasonAll)
+        Me.GroupBox39.Location = New System.Drawing.Point(6, 17)
+        Me.GroupBox39.Name = "GroupBox39"
+        Me.GroupBox39.Size = New System.Drawing.Size(116, 83)
+        Me.GroupBox39.TabIndex = 0
+        Me.GroupBox39.TabStop = False
+        Me.GroupBox39.Text = "Show Posters"
+        '
+        'chkShowPosterJPG
+        '
+        Me.chkShowPosterJPG.AutoSize = True
+        Me.chkShowPosterJPG.Location = New System.Drawing.Point(6, 63)
+        Me.chkShowPosterJPG.Name = "chkShowPosterJPG"
+        Me.chkShowPosterJPG.Size = New System.Drawing.Size(72, 17)
+        Me.chkShowPosterJPG.TabIndex = 3
+        Me.chkShowPosterJPG.Text = "poster.jpg"
+        Me.chkShowPosterJPG.UseVisualStyleBackColor = True
+        '
+        'chkShowPosterTBN
+        '
+        Me.chkShowPosterTBN.AutoSize = True
+        Me.chkShowPosterTBN.Location = New System.Drawing.Point(6, 47)
+        Me.chkShowPosterTBN.Name = "chkShowPosterTBN"
+        Me.chkShowPosterTBN.Size = New System.Drawing.Size(73, 17)
+        Me.chkShowPosterTBN.TabIndex = 2
+        Me.chkShowPosterTBN.Text = "poster.tbn"
+        Me.chkShowPosterTBN.UseVisualStyleBackColor = True
+        '
+        'chkShowFolderJPG
+        '
+        Me.chkShowFolderJPG.AutoSize = True
+        Me.chkShowFolderJPG.Location = New System.Drawing.Point(6, 31)
+        Me.chkShowFolderJPG.Name = "chkShowFolderJPG"
+        Me.chkShowFolderJPG.Size = New System.Drawing.Size(69, 17)
+        Me.chkShowFolderJPG.TabIndex = 1
+        Me.chkShowFolderJPG.Text = "folder.jpg"
+        Me.chkShowFolderJPG.UseVisualStyleBackColor = True
+        '
+        'chkShowSeasonAll
+        '
+        Me.chkShowSeasonAll.AutoSize = True
+        Me.chkShowSeasonAll.Location = New System.Drawing.Point(6, 15)
+        Me.chkShowSeasonAll.Name = "chkShowSeasonAll"
+        Me.chkShowSeasonAll.Size = New System.Drawing.Size(91, 17)
+        Me.chkShowSeasonAll.TabIndex = 0
+        Me.chkShowSeasonAll.Text = "season-all.tbn"
+        Me.chkShowSeasonAll.UseVisualStyleBackColor = True
         '
         'lvTVSources
         '
@@ -3966,7 +4317,7 @@ Partial Class dlgSettings
         Me.GroupBox30.Controls.Add(Me.chkTVCleanDB)
         Me.GroupBox30.Location = New System.Drawing.Point(6, 114)
         Me.GroupBox30.Name = "GroupBox30"
-        Me.GroupBox30.Size = New System.Drawing.Size(211, 191)
+        Me.GroupBox30.Size = New System.Drawing.Size(177, 203)
         Me.GroupBox30.TabIndex = 5
         Me.GroupBox30.TabStop = False
         Me.GroupBox30.Text = "Miscellaneous Options"
@@ -3975,17 +4326,16 @@ Partial Class dlgSettings
         '
         Me.chkTVIgnoreLastScan.Location = New System.Drawing.Point(6, 16)
         Me.chkTVIgnoreLastScan.Name = "chkTVIgnoreLastScan"
-        Me.chkTVIgnoreLastScan.Size = New System.Drawing.Size(199, 30)
+        Me.chkTVIgnoreLastScan.Size = New System.Drawing.Size(157, 30)
         Me.chkTVIgnoreLastScan.TabIndex = 72
         Me.chkTVIgnoreLastScan.Text = "Ignore last scan time when updating library"
         Me.chkTVIgnoreLastScan.UseVisualStyleBackColor = True
         '
         'chkTVCleanDB
         '
-        Me.chkTVCleanDB.AutoSize = True
         Me.chkTVCleanDB.Location = New System.Drawing.Point(7, 53)
         Me.chkTVCleanDB.Name = "chkTVCleanDB"
-        Me.chkTVCleanDB.Size = New System.Drawing.Size(198, 17)
+        Me.chkTVCleanDB.Size = New System.Drawing.Size(159, 34)
         Me.chkTVCleanDB.TabIndex = 71
         Me.chkTVCleanDB.Text = "Clean database after updating library"
         Me.chkTVCleanDB.UseVisualStyleBackColor = True
@@ -4213,6 +4563,7 @@ Partial Class dlgSettings
         '
         Me.pnlShows.BackColor = System.Drawing.Color.White
         Me.pnlShows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlShows.Controls.Add(Me.GroupBox42)
         Me.pnlShows.Controls.Add(Me.GroupBox32)
         Me.pnlShows.Controls.Add(Me.gbEpFilter)
         Me.pnlShows.Controls.Add(Me.gbShowFilter)
@@ -4221,11 +4572,138 @@ Partial Class dlgSettings
         Me.pnlShows.Size = New System.Drawing.Size(597, 353)
         Me.pnlShows.TabIndex = 70
         '
+        'GroupBox42
+        '
+        Me.GroupBox42.Controls.Add(Me.GroupBox45)
+        Me.GroupBox42.Controls.Add(Me.GroupBox44)
+        Me.GroupBox42.Controls.Add(Me.GroupBox43)
+        Me.GroupBox42.Location = New System.Drawing.Point(172, 4)
+        Me.GroupBox42.Name = "GroupBox42"
+        Me.GroupBox42.Size = New System.Drawing.Size(218, 337)
+        Me.GroupBox42.TabIndex = 5
+        Me.GroupBox42.TabStop = False
+        Me.GroupBox42.Text = "Media List Options"
+        '
+        'GroupBox45
+        '
+        Me.GroupBox45.Controls.Add(Me.chkEpisodeNfoCol)
+        Me.GroupBox45.Controls.Add(Me.chkEpisodeFanartCol)
+        Me.GroupBox45.Controls.Add(Me.chkEpisodePosterCol)
+        Me.GroupBox45.Location = New System.Drawing.Point(10, 143)
+        Me.GroupBox45.Name = "GroupBox45"
+        Me.GroupBox45.Size = New System.Drawing.Size(199, 68)
+        Me.GroupBox45.TabIndex = 7
+        Me.GroupBox45.TabStop = False
+        Me.GroupBox45.Text = "Episodes"
+        '
+        'chkEpisodeNfoCol
+        '
+        Me.chkEpisodeNfoCol.AutoSize = True
+        Me.chkEpisodeNfoCol.Location = New System.Drawing.Point(7, 48)
+        Me.chkEpisodeNfoCol.Name = "chkEpisodeNfoCol"
+        Me.chkEpisodeNfoCol.Size = New System.Drawing.Size(107, 17)
+        Me.chkEpisodeNfoCol.TabIndex = 5
+        Me.chkEpisodeNfoCol.Text = "Hide Info Column"
+        Me.chkEpisodeNfoCol.UseVisualStyleBackColor = True
+        '
+        'chkEpisodeFanartCol
+        '
+        Me.chkEpisodeFanartCol.AutoSize = True
+        Me.chkEpisodeFanartCol.Location = New System.Drawing.Point(7, 32)
+        Me.chkEpisodeFanartCol.Name = "chkEpisodeFanartCol"
+        Me.chkEpisodeFanartCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkEpisodeFanartCol.TabIndex = 4
+        Me.chkEpisodeFanartCol.Text = "Hide Fanart Column"
+        Me.chkEpisodeFanartCol.UseVisualStyleBackColor = True
+        '
+        'chkEpisodePosterCol
+        '
+        Me.chkEpisodePosterCol.AutoSize = True
+        Me.chkEpisodePosterCol.Location = New System.Drawing.Point(7, 16)
+        Me.chkEpisodePosterCol.Name = "chkEpisodePosterCol"
+        Me.chkEpisodePosterCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkEpisodePosterCol.TabIndex = 3
+        Me.chkEpisodePosterCol.Text = "Hide Poster Column"
+        Me.chkEpisodePosterCol.UseVisualStyleBackColor = True
+        '
+        'GroupBox44
+        '
+        Me.GroupBox44.Controls.Add(Me.chkSeasonFanartCol)
+        Me.GroupBox44.Controls.Add(Me.chkSeasonPosterCol)
+        Me.GroupBox44.Location = New System.Drawing.Point(10, 87)
+        Me.GroupBox44.Name = "GroupBox44"
+        Me.GroupBox44.Size = New System.Drawing.Size(199, 52)
+        Me.GroupBox44.TabIndex = 7
+        Me.GroupBox44.TabStop = False
+        Me.GroupBox44.Text = "Seasons"
+        '
+        'chkSeasonFanartCol
+        '
+        Me.chkSeasonFanartCol.AutoSize = True
+        Me.chkSeasonFanartCol.Location = New System.Drawing.Point(7, 32)
+        Me.chkSeasonFanartCol.Name = "chkSeasonFanartCol"
+        Me.chkSeasonFanartCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkSeasonFanartCol.TabIndex = 4
+        Me.chkSeasonFanartCol.Text = "Hide Fanart Column"
+        Me.chkSeasonFanartCol.UseVisualStyleBackColor = True
+        '
+        'chkSeasonPosterCol
+        '
+        Me.chkSeasonPosterCol.AutoSize = True
+        Me.chkSeasonPosterCol.Location = New System.Drawing.Point(7, 16)
+        Me.chkSeasonPosterCol.Name = "chkSeasonPosterCol"
+        Me.chkSeasonPosterCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkSeasonPosterCol.TabIndex = 3
+        Me.chkSeasonPosterCol.Text = "Hide Poster Column"
+        Me.chkSeasonPosterCol.UseVisualStyleBackColor = True
+        '
+        'GroupBox43
+        '
+        Me.GroupBox43.Controls.Add(Me.chkShowNfoCol)
+        Me.GroupBox43.Controls.Add(Me.chkShowFanartCol)
+        Me.GroupBox43.Controls.Add(Me.chkShowPosterCol)
+        Me.GroupBox43.Location = New System.Drawing.Point(9, 16)
+        Me.GroupBox43.Name = "GroupBox43"
+        Me.GroupBox43.Size = New System.Drawing.Size(199, 68)
+        Me.GroupBox43.TabIndex = 6
+        Me.GroupBox43.TabStop = False
+        Me.GroupBox43.Text = "Shows"
+        '
+        'chkShowNfoCol
+        '
+        Me.chkShowNfoCol.AutoSize = True
+        Me.chkShowNfoCol.Location = New System.Drawing.Point(7, 48)
+        Me.chkShowNfoCol.Name = "chkShowNfoCol"
+        Me.chkShowNfoCol.Size = New System.Drawing.Size(107, 17)
+        Me.chkShowNfoCol.TabIndex = 5
+        Me.chkShowNfoCol.Text = "Hide Info Column"
+        Me.chkShowNfoCol.UseVisualStyleBackColor = True
+        '
+        'chkShowFanartCol
+        '
+        Me.chkShowFanartCol.AutoSize = True
+        Me.chkShowFanartCol.Location = New System.Drawing.Point(7, 32)
+        Me.chkShowFanartCol.Name = "chkShowFanartCol"
+        Me.chkShowFanartCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkShowFanartCol.TabIndex = 4
+        Me.chkShowFanartCol.Text = "Hide Fanart Column"
+        Me.chkShowFanartCol.UseVisualStyleBackColor = True
+        '
+        'chkShowPosterCol
+        '
+        Me.chkShowPosterCol.AutoSize = True
+        Me.chkShowPosterCol.Location = New System.Drawing.Point(7, 16)
+        Me.chkShowPosterCol.Name = "chkShowPosterCol"
+        Me.chkShowPosterCol.Size = New System.Drawing.Size(119, 17)
+        Me.chkShowPosterCol.TabIndex = 3
+        Me.chkShowPosterCol.Text = "Hide Poster Column"
+        Me.chkShowPosterCol.UseVisualStyleBackColor = True
+        '
         'GroupBox32
         '
         Me.GroupBox32.Controls.Add(Me.Label40)
         Me.GroupBox32.Controls.Add(Me.cbRatingRegion)
-        Me.GroupBox32.Location = New System.Drawing.Point(6, 6)
+        Me.GroupBox32.Location = New System.Drawing.Point(6, 3)
         Me.GroupBox32.Name = "GroupBox32"
         Me.GroupBox32.Size = New System.Drawing.Size(158, 100)
         Me.GroupBox32.TabIndex = 2
@@ -4731,8 +5209,6 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(810, 484)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlCurrent)
         Me.Controls.Add(Me.tvSettings)
@@ -4740,6 +5216,8 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
@@ -4845,12 +5323,32 @@ Partial Class dlgSettings
         Me.pnlTVSources.ResumeLayout(False)
         Me.TabControl2.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
+        Me.GroupBox33.ResumeLayout(False)
+        Me.GroupBox33.PerformLayout()
+        Me.GroupBox41.ResumeLayout(False)
+        Me.GroupBox41.PerformLayout()
+        Me.GroupBox40.ResumeLayout(False)
+        Me.GroupBox40.PerformLayout()
+        Me.GroupBox35.ResumeLayout(False)
+        Me.GroupBox35.PerformLayout()
+        Me.GroupBox34.ResumeLayout(False)
+        Me.GroupBox34.PerformLayout()
+        Me.GroupBox38.ResumeLayout(False)
+        Me.GroupBox38.PerformLayout()
+        Me.GroupBox39.ResumeLayout(False)
+        Me.GroupBox39.PerformLayout()
         Me.GroupBox30.ResumeLayout(False)
-        Me.GroupBox30.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
         Me.GroupBox31.ResumeLayout(False)
         Me.GroupBox31.PerformLayout()
         Me.pnlShows.ResumeLayout(False)
+        Me.GroupBox42.ResumeLayout(False)
+        Me.GroupBox45.ResumeLayout(False)
+        Me.GroupBox45.PerformLayout()
+        Me.GroupBox44.ResumeLayout(False)
+        Me.GroupBox44.PerformLayout()
+        Me.GroupBox43.ResumeLayout(False)
+        Me.GroupBox43.PerformLayout()
         Me.GroupBox32.ResumeLayout(False)
         Me.GroupBox32.PerformLayout()
         Me.gbEpFilter.ResumeLayout(False)
@@ -5267,4 +5765,44 @@ Partial Class dlgSettings
     Friend WithEvents cbRatingRegion As System.Windows.Forms.ComboBox
     Friend WithEvents GroupBox32 As System.Windows.Forms.GroupBox
     Friend WithEvents Label40 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox33 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox38 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkShowDotFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowDashFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox39 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkShowPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowPosterTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowFolderJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowSeasonAll As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox34 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkSeasonPosterJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonPosterTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonXTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonXXTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox41 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkEpisodeDotFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkEpisodeDashFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox40 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkEpisodeJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkEpisodeTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox35 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkSeasonDotFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonDashFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonFanartJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonNameJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonNameTBN As System.Windows.Forms.CheckBox
+    Friend WithEvents Label41 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox42 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox45 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkEpisodeNfoCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkEpisodeFanartCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkEpisodePosterCol As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox44 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkSeasonFanartCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonPosterCol As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox43 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkShowNfoCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowFanartCol As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowPosterCol As System.Windows.Forms.CheckBox
 End Class

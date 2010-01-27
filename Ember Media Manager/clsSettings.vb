@@ -225,6 +225,34 @@ Public Class emmSettings
     Private _tvcleandb As Boolean
     Private _tvignorelastscan As Boolean
     Private _tvshowregexes As New List(Of TVShowRegEx)
+    Private _showseasonall As Boolean
+    Private _showfolderjpg As Boolean
+    Private _showpostertbn As Boolean
+    Private _showposterjpg As Boolean
+    Private _showfanartjpg As Boolean
+    Private _showdashfanart As Boolean
+    Private _showdotfanart As Boolean
+    Private _seasonxx As Boolean
+    Private _seasonx As Boolean
+    Private _seasonpostertbn As Boolean
+    Private _seasonposterjpg As Boolean
+    Private _seasonnametbn As Boolean
+    Private _seasonnamejpg As Boolean
+    Private _seasonfanartjpg As Boolean
+    Private _seasondashfanart As Boolean
+    Private _seasondotfanart As Boolean
+    Private _episodetbn As Boolean
+    Private _episodejpg As Boolean
+    Private _episodedashfanart As Boolean
+    Private _episodedotfanart As Boolean
+    Private _showpostercol As Boolean
+    Private _showfanartcol As Boolean
+    Private _shownfocol As Boolean
+    Private _seasonpostercol As Boolean
+    Private _seasonfanartcol As Boolean
+    Private _episodepostercol As Boolean
+    Private _episodefanartcol As Boolean
+    Private _episodenfocol As Boolean
 
     Public Property Version() As String
         Get
@@ -2025,6 +2053,258 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property ShowSeasonAll() As Boolean
+        Get
+            Return _showseasonall
+        End Get
+        Set(ByVal value As Boolean)
+            _showseasonall = value
+        End Set
+    End Property
+
+    Public Property ShowFolderJPG() As Boolean
+        Get
+            Return _showfolderjpg
+        End Get
+        Set(ByVal value As Boolean)
+            _showfolderjpg = value
+        End Set
+    End Property
+
+    Public Property ShowPosterTBN() As Boolean
+        Get
+            Return _showpostertbn
+        End Get
+        Set(ByVal value As Boolean)
+            _showpostertbn = value
+        End Set
+    End Property
+
+    Public Property ShowPosterJPG() As Boolean
+        Get
+            Return _showposterjpg
+        End Get
+        Set(ByVal value As Boolean)
+            _showposterjpg = value
+        End Set
+    End Property
+
+    Public Property ShowFanartJPG() As Boolean
+        Get
+            Return _showfanartjpg
+        End Get
+        Set(ByVal value As Boolean)
+            _showfanartjpg = value
+        End Set
+    End Property
+
+    Public Property ShowDashFanart() As Boolean
+        Get
+            Return _showdashfanart
+        End Get
+        Set(ByVal value As Boolean)
+            _showdashfanart = value
+        End Set
+    End Property
+
+    Public Property ShowDotFanart() As Boolean
+        Get
+            Return _showdotfanart
+        End Get
+        Set(ByVal value As Boolean)
+            _showdotfanart = value
+        End Set
+    End Property
+
+    Public Property SeasonXX() As Boolean
+        Get
+            Return _seasonxx
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonxx = value
+        End Set
+    End Property
+
+    Public Property SeasonX() As Boolean
+        Get
+            Return _seasonx
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonx = value
+        End Set
+    End Property
+
+    Public Property SeasonPosterTBN() As Boolean
+        Get
+            Return _seasonpostertbn
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonpostertbn = value
+        End Set
+    End Property
+
+    Public Property SeasonPosterJPG() As Boolean
+        Get
+            Return _seasonposterjpg
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonposterjpg = value
+        End Set
+    End Property
+
+    Public Property SeasonNameTBN() As Boolean
+        Get
+            Return _seasonnametbn
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonnametbn = value
+        End Set
+    End Property
+
+    Public Property SeasonNameJPG() As Boolean
+        Get
+            Return _seasonnamejpg
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonnamejpg = value
+        End Set
+    End Property
+
+    Public Property SeasonFanartJPG() As Boolean
+        Get
+            Return _seasonfanartjpg
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonfanartjpg = value
+        End Set
+    End Property
+
+    Public Property SeasonDashFanart() As Boolean
+        Get
+            Return _seasondashfanart
+        End Get
+        Set(ByVal value As Boolean)
+            _seasondashfanart = value
+        End Set
+    End Property
+
+    Public Property SeasonDotFanart() As Boolean
+        Get
+            Return _seasondotfanart
+        End Get
+        Set(ByVal value As Boolean)
+            _seasondotfanart = value
+        End Set
+    End Property
+
+    Public Property EpisodeTBN() As Boolean
+        Get
+            Return _episodetbn
+        End Get
+        Set(ByVal value As Boolean)
+            _episodetbn = value
+        End Set
+    End Property
+
+    Public Property EpisodeJPG() As Boolean
+        Get
+            Return _episodejpg
+        End Get
+        Set(ByVal value As Boolean)
+            _episodejpg = value
+        End Set
+    End Property
+
+    Public Property EpisodeDashFanart() As Boolean
+        Get
+            Return _episodedashfanart
+        End Get
+        Set(ByVal value As Boolean)
+            _episodedashfanart = value
+        End Set
+    End Property
+
+    Public Property EpisodeDotFanart() As Boolean
+        Get
+            Return _episodedotfanart
+        End Get
+        Set(ByVal value As Boolean)
+            _episodedotfanart = value
+        End Set
+    End Property
+
+    Public Property ShowPosterCol() As Boolean
+        Get
+            Return _showpostercol
+        End Get
+        Set(ByVal value As Boolean)
+            _showpostercol = value
+        End Set
+    End Property
+
+    Public Property ShowFanartCol() As Boolean
+        Get
+            Return _showfanartcol
+        End Get
+        Set(ByVal value As Boolean)
+            _showfanartcol = value
+        End Set
+    End Property
+
+    Public Property ShowNfoCol() As Boolean
+        Get
+            Return _shownfocol
+        End Get
+        Set(ByVal value As Boolean)
+            _shownfocol = value
+        End Set
+    End Property
+
+    Public Property SeasonPosterCol() As Boolean
+        Get
+            Return _seasonpostercol
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonpostercol = value
+        End Set
+    End Property
+
+    Public Property SeasonFanartCol() As Boolean
+        Get
+            Return _seasonfanartcol
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonfanartcol = value
+        End Set
+    End Property
+
+    Public Property EpisodePosterCol() As Boolean
+        Get
+            Return _episodepostercol
+        End Get
+        Set(ByVal value As Boolean)
+            _episodepostercol = value
+        End Set
+    End Property
+
+    Public Property EpisodeFanartCol() As Boolean
+        Get
+            Return _episodefanartcol
+        End Get
+        Set(ByVal value As Boolean)
+            _episodefanartcol = value
+        End Set
+    End Property
+
+    Public Property EpisodeNfoCol() As Boolean
+        Get
+            Return _episodenfocol
+        End Get
+        Set(ByVal value As Boolean)
+            _episodenfocol = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2230,6 +2510,34 @@ Public Class emmSettings
         Me._tvcleandb = True
         Me._tvignorelastscan = False
         Me._tvshowregexes = New List(Of TVShowRegEx)
+        Me._showseasonall = True
+        Me._showfolderjpg = False
+        Me._showpostertbn = False
+        Me._showposterjpg = False
+        Me._showfanartjpg = True
+        Me._showdashfanart = False
+        Me._showdotfanart = False
+        Me._seasonxx = True
+        Me._seasonx = False
+        Me._seasonpostertbn = False
+        Me._seasonposterjpg = False
+        Me._seasonnametbn = False
+        Me._seasonnamejpg = False
+        Me._seasonfanartjpg = False
+        Me._seasondashfanart = False
+        Me._seasondotfanart = False
+        Me._episodetbn = True
+        Me._episodejpg = False
+        Me._episodedashfanart = False
+        Me._episodedotfanart = False
+        Me._showpostercol = False
+        Me._showfanartcol = False
+        Me._shownfocol = False
+        Me._seasonpostercol = False
+        Me._seasonfanartcol = True
+        Me._episodepostercol = False
+        Me._episodefanartcol = True
+        Me._episodenfocol = False
     End Sub
 
     Public Sub Save()

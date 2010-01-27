@@ -1803,6 +1803,118 @@ Public Class dlgSettings
     Private Sub cbRatingRegion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbRatingRegion.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkShowSeasonAll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowSeasonAll.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowFolderJPG.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowPosterTBN.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowPosterJPG.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowFanartJPG.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowDashFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowDashFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowDotFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowDotFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonXXTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonXXTBN.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonXTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonXTBN.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonPosterTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonPosterTBN.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonPosterJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonPosterJPG.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonNameTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonNameTBN.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonNameJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonNameJPG.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonFanartJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonFanartJPG.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonDashFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonDashFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonDotFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonDotFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpisodeTBN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeTBN.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpisodeJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeJPG.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpisodeDashFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeDashFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpisodeDotFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeDotFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowPosterCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowPosterCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowFanartCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowFanartCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowNfoCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowNfoCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonPosterCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonPosterCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeasonFanartCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonFanartCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpisodePosterCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodePosterCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpisodeFanartCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeFanartCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkEpisodeNfoCol_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEpisodeNfoCol.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2101,6 +2213,34 @@ Public Class dlgSettings
             Master.eSettings.TVIgnoreLastScan = Me.chkTVIgnoreLastScan.Checked
             Master.eSettings.TVShowRegexes = Me.ShowRegex
             Master.eSettings.ShowRatingRegion = Me.cbRatingRegion.Text
+            Master.eSettings.ShowSeasonAll = Me.chkShowSeasonAll.Checked
+            Master.eSettings.ShowFolderJPG = Me.chkShowFolderJPG.Checked
+            Master.eSettings.ShowPosterTBN = Me.chkShowPosterTBN.Checked
+            Master.eSettings.ShowPosterJPG = Me.chkShowPosterJPG.Checked
+            Master.eSettings.ShowFanartJPG = Me.chkShowFanartJPG.Checked
+            Master.eSettings.ShowDashFanart = Me.chkShowDashFanart.Checked
+            Master.eSettings.ShowDotFanart = Me.chkShowDotFanart.Checked
+            Master.eSettings.SeasonXX = Me.chkSeasonXXTBN.Checked
+            Master.eSettings.SeasonX = Me.chkSeasonXTBN.Checked
+            Master.eSettings.SeasonPosterTBN = Me.chkSeasonPosterTBN.Checked
+            Master.eSettings.SeasonPosterJPG = Me.chkSeasonPosterJPG.Checked
+            Master.eSettings.SeasonNameTBN = Me.chkSeasonNameTBN.Checked
+            Master.eSettings.SeasonNameJPG = Me.chkSeasonNameJPG.Checked
+            Master.eSettings.SeasonFanartJPG = Me.chkSeasonFanartJPG.Checked
+            Master.eSettings.SeasonDashFanart = Me.chkSeasonDashFanart.Checked
+            Master.eSettings.SeasonDotFanart = Me.chkSeasonDotFanart.Checked
+            Master.eSettings.EpisodeTBN = Me.chkEpisodeTBN.Checked
+            Master.eSettings.EpisodeJPG = Me.chkEpisodeJPG.Checked
+            Master.eSettings.EpisodeDashFanart = Me.chkEpisodeDashFanart.Checked
+            Master.eSettings.EpisodeDotFanart = Me.chkEpisodeDotFanart.Checked
+            Master.eSettings.ShowPosterCol = Me.chkShowPosterCol.Checked
+            Master.eSettings.ShowFanartCol = Me.chkShowFanartCol.Checked
+            Master.eSettings.ShowNfoCol = Me.chkShowNfoCol.Checked
+            Master.eSettings.SeasonPosterCol = Me.chkSeasonPosterCol.Checked
+            Master.eSettings.SeasonFanartCol = Me.chkSeasonFanartCol.Checked
+            Master.eSettings.EpisodePosterCol = Me.chkEpisodePosterCol.Checked
+            Master.eSettings.EpisodeFanartCol = Me.chkEpisodeFanartCol.Checked
+            Master.eSettings.EpisodeNfoCol = Me.chkEpisodeNfoCol.Checked
 
             Master.eSettings.Save()
 
@@ -2354,6 +2494,34 @@ Public Class dlgSettings
             Me.ShowRegex = Master.eSettings.TVShowRegexes
             Me.LoadShowRegex()
             Me.cbRatingRegion.Text = Master.eSettings.ShowRatingRegion
+            Me.chkShowSeasonAll.Checked = Master.eSettings.ShowSeasonAll
+            Me.chkShowFolderJPG.Checked = Master.eSettings.ShowFolderJPG
+            Me.chkShowPosterTBN.Checked = Master.eSettings.ShowPosterTBN
+            Me.chkShowPosterJPG.Checked = Master.eSettings.ShowPosterJPG
+            Me.chkShowFanartJPG.Checked = Master.eSettings.ShowFanartJPG
+            Me.chkShowDashFanart.Checked = Master.eSettings.ShowDashFanart
+            Me.chkShowDotFanart.Checked = Master.eSettings.ShowDotFanart
+            Me.chkSeasonXXTBN.Checked = Master.eSettings.SeasonXX
+            Me.chkSeasonXTBN.Checked = Master.eSettings.SeasonX
+            Me.chkSeasonPosterTBN.Checked = Master.eSettings.SeasonPosterTBN
+            Me.chkSeasonPosterJPG.Checked = Master.eSettings.SeasonPosterJPG
+            Me.chkSeasonNameTBN.Checked = Master.eSettings.SeasonNameTBN
+            Me.chkSeasonNameJPG.Checked = Master.eSettings.SeasonNameJPG
+            Me.chkSeasonFanartJPG.Checked = Master.eSettings.SeasonFanartJPG
+            Me.chkSeasonDashFanart.Checked = Master.eSettings.SeasonDashFanart
+            Me.chkSeasonDotFanart.Checked = Master.eSettings.SeasonDotFanart
+            Me.chkEpisodeTBN.Checked = Master.eSettings.EpisodeTBN
+            Me.chkEpisodeJPG.Checked = Master.eSettings.EpisodeJPG
+            Me.chkEpisodeDashFanart.Checked = Master.eSettings.EpisodeDashFanart
+            Me.chkEpisodeDotFanart.Checked = Master.eSettings.EpisodeDotFanart
+            Me.chkShowPosterCol.Checked = Master.eSettings.ShowPosterCol
+            Me.chkShowFanartCol.Checked = Master.eSettings.ShowFanartCol
+            Me.chkShowNfoCol.Checked = Master.eSettings.ShowNfoCol
+            Me.chkSeasonPosterCol.Checked = Master.eSettings.SeasonPosterCol
+            Me.chkSeasonFanartCol.Checked = Master.eSettings.SeasonFanartCol
+            Me.chkEpisodePosterCol.Checked = Master.eSettings.EpisodePosterCol
+            Me.chkEpisodeFanartCol.Checked = Master.eSettings.EpisodeFanartCol
+            Me.chkEpisodeNfoCol.Checked = Master.eSettings.EpisodeNfoCol
 
             Me.RefreshSources()
             Me.RefreshTVSources()

@@ -279,11 +279,36 @@ Public Class Images
                 ImageManip.ResizeImage(_image, Master.eSettings.ShowPosterWidth, Master.eSettings.ShowPosterHeight)
             End If
 
-            pPath = Path.Combine(mShow.ShowPath, "season-all.tbn")
+            If Master.eSettings.ShowPosterJPG Then
+                pPath = Path.Combine(mShow.ShowPath, "poster.jpg")
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowPoster) Then
+                    Save(pPath, Master.eSettings.ShowPosterQuality)
+                    strReturn = pPath
+                End If
+            End If
 
-            If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowPoster) Then
-                Save(pPath, Master.eSettings.ShowPosterQuality)
-                strReturn = pPath
+            If Master.eSettings.ShowPosterTBN Then
+                pPath = Path.Combine(mShow.ShowPath, "poster.tbn")
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowPoster) Then
+                    Save(pPath, Master.eSettings.ShowPosterQuality)
+                    strReturn = pPath
+                End If
+            End If
+
+            If Master.eSettings.ShowFolderJPG Then
+                pPath = Path.Combine(mShow.ShowPath, "folder.jpg")
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowPoster) Then
+                    Save(pPath, Master.eSettings.ShowPosterQuality)
+                    strReturn = pPath
+                End If
+            End If
+
+            If Master.eSettings.ShowSeasonAll Then
+                pPath = Path.Combine(mShow.ShowPath, "season-all.tbn")
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowPoster) Then
+                    Save(pPath, Master.eSettings.ShowPosterQuality)
+                    strReturn = pPath
+                End If
             End If
 
         Catch ex As Exception
@@ -443,11 +468,28 @@ Public Class Images
                 ImageManip.ResizeImage(_image, Master.eSettings.ShowFanartWidth, Master.eSettings.ShowFanartHeight)
             End If
 
+            If Master.eSettings.ShowDotFanart Then
+                tPath = Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), ".fanart.jpg"))
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowFanart) Then
+                    Save(tPath, Master.eSettings.ShowFanartQuality)
+                    strReturn = tPath
+                End If
+            End If
 
-            tPath = Path.Combine(mShow.ShowPath, "fanart.jpg")
-            If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowFanart) Then
-                Save(tPath, Master.eSettings.ShowFanartQuality)
-                strReturn = tPath
+            If Master.eSettings.ShowDashFanart Then
+                tPath = Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), "-fanart.jpg"))
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowFanart) Then
+                    Save(tPath, Master.eSettings.ShowFanartQuality)
+                    strReturn = tPath
+                End If
+            End If
+
+            If Master.eSettings.ShowFanartJPG Then
+                tPath = Path.Combine(mShow.ShowPath, "fanart.jpg")
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowFanart) Then
+                    Save(tPath, Master.eSettings.ShowFanartQuality)
+                    strReturn = tPath
+                End If
             End If
 
         Catch ex As Exception

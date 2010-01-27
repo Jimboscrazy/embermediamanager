@@ -350,12 +350,11 @@ Public Class XML
             End If
 
             If Directory.Exists(Directory.GetParent(fPath).FullName) Then
-                Dim alF As New List(Of String)
                 Try
-                    alF.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
+                    alFlags.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.png"))
                 Catch
                 End Try
-                alFlags.AddRange(alF.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+                alFlags = alFlags.ConvertAll(Function(s) s.ToLower)
             End If
 
             Dim gPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar, "Genres.xml")
@@ -366,12 +365,11 @@ Public Class XML
             End If
 
             If Directory.Exists(Directory.GetParent(gPath).FullName) Then
-                Dim alG As New List(Of String)
                 Try
-                    alG.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
+                    alGenres.AddRange(Directory.GetFiles(Directory.GetParent(gPath).FullName, "*.jpg"))
                 Catch
                 End Try
-                alGenres.AddRange(alG.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+                alGenres = alGenres.ConvertAll(Function(s) s.ToLower)
             End If
 
             Dim sPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Studios", Path.DirectorySeparatorChar, "Studios.xml")
@@ -382,12 +380,11 @@ Public Class XML
             End If
 
             If Directory.Exists(Directory.GetParent(sPath).FullName) Then
-                Dim alS As New List(Of String)
                 Try
-                    alS.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png"))
+                    alStudios.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.png"))
                 Catch
                 End Try
-                alStudios.AddRange(alS.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+                alStudios = alStudios.ConvertAll(Function(s) s.ToLower)
             End If
 
             Dim rPath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings", Path.DirectorySeparatorChar, "Ratings.xml")

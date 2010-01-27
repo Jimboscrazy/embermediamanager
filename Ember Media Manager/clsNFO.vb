@@ -331,12 +331,11 @@ Public Class NFO
             Dim nPathWithStack As String = Path.Combine(Directory.GetParent(sPath).FullName, tmpNameNoStack).ToLower
 
             Dim fList As New List(Of String)
-            Dim tList As New List(Of String)
             Try
-                tList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.nfo"))
+                fList.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.nfo"))
             Catch
             End Try
-            fList.AddRange(tList.Cast(Of String)().Select(Function(AL) AL.ToLower).ToArray)
+            fList = fList.ConvertAll(Function(s) s.ToLower)
 
             If isSingle AndAlso Master.eSettings.MovieNFO AndAlso fList.Contains(Path.Combine(Directory.GetParent(sPath).FullName.ToLower, "movie.nfo")) Then
                 Return Path.Combine(Directory.GetParent(nPath).FullName.ToLower, "movie.nfo")
