@@ -456,10 +456,14 @@ Public Class Scanner
             Dim fList As New List(Of AllContainer)
             Dim tSingle As Boolean = False
             Dim vtsSingle As Boolean = False
+            Dim bdmvSingle As Boolean = False
             Dim tFile As String = String.Empty
 
             If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
                 di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
+                bSingle = True
+            ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.Exists(Path.Combine(sPath, "BDMV")) Then
+                di = New DirectoryInfo(Path.Combine(sPath, "BDMV"))
                 bSingle = True
             Else
                 di = New DirectoryInfo(sPath)
@@ -493,7 +497,22 @@ Public Class Scanner
                     Next
                 End If
 
-                If vtsSingle AndAlso Not String.IsNullOrEmpty(tFile) Then
+                If Master.eSettings.AutoDetectBDMV Then
+                    For Each lfile As FileInfo In lFi
+
+                        If Path.GetFileName(lfile.FullName) = "index.bdmv" Then
+                            bdmvSingle = True
+                            tFile = lfile.FullName
+                            Exit For
+                        End If
+
+                        If Me.bwPrelim.CancellationPending Then Return
+
+                    Next
+                End If
+
+
+                If (vtsSingle OrElse bdmvSingle) AndAlso Not String.IsNullOrEmpty(tFile) Then
                     If Not MoviePaths.Contains(StringManip.CleanStackingMarkers(tFile.ToLower)) AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("-trailer") AndAlso Not Path.GetFileName(tFile).ToLower.Contains("[trailer") AndAlso _
                     Not Path.GetFileName(tFile).ToLower.Contains("sample") Then
@@ -505,6 +524,7 @@ Public Class Scanner
                         Me.bwPrelim.ReportProgress(0, Path.GetFileName(tFile))
                         fList.Add(New AllContainer With {.Type = MediaType.Movie, .MContainer = New MovieContainer With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder}})
                     End If
+               
                 Else
                     lFi.Sort(AddressOf FileManip.Common.SortFileNames)
 
@@ -560,6 +580,7 @@ Public Class Scanner
             If Path.GetDirectoryName(sPath).ToLower = "extrathumbs" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "extras" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "video_ts" OrElse _
+            (Master.eSettings.AutoDetectBDMV AndAlso Path.GetDirectoryName(sPath).ToLower = "bdmv") OrElse _
             Path.GetDirectoryName(sPath).ToLower = "audio_ts" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "recycler" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "subs" OrElse _
@@ -673,6 +694,24 @@ Public Class Scanner
                 If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     Movie.Extra = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
+
+            ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(Movie.Filename).Name.ToLower = "bdmv" Then
+
+                isYAMJ = True
+
+                Try
+                    fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName))
+                Catch
+                End Try
+
+                parPath = Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName.ToLower
+                tmpName = Path.Combine(parPath, StringManip.CleanStackingMarkers(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).Name)).ToLower
+                tmpNameNoStack = Path.Combine(parPath, Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).Name).ToLower
+
+                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                    Movie.Extra = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                End If
+
             Else
                 If Movie.isSingle Then
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(Movie.Filename).FullName))
@@ -701,8 +740,8 @@ Public Class Scanner
                         OrElse ((Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
                                 ((Master.eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, "-fanart.jpg")) _
                                 OrElse (Master.eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpName, "-fanart.jpg")) _
-                                OrElse (Master.eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts-fanart.jpg")) _
-                                OrElse (Master.eSettings.MovieNameDotFanartJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.fanart.jpg")))) _
+                                OrElse (Master.eSettings.MovieNameFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts-fanart.jpg") OrElse (Master.eSettings.AutoDetectBDMV AndAlso fFile.ToLower = Path.Combine(parPath, "index-fanart.jpg"))))) _
+                                OrElse (Master.eSettings.MovieNameDotFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts.fanart.jpg") OrElse (Master.eSettings.AutoDetectBDMV AndAlso fFile.ToLower = Path.Combine(parPath, "index.fanart.jpg"))))) _
                         OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
                                 (((Master.eSettings.MovieNameDotFanartJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpName, ".fanart.jpg")) _
                                 OrElse ((Master.eSettings.MovieNameDotFanartJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".fanart.jpg")))) Then
@@ -722,6 +761,9 @@ Public Class Scanner
                         OrElse ((Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
                                 ((Master.eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.tbn")) _
                                 OrElse (Master.eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.jpg")))) _
+                        OrElse (Master.eSettings.AutoDetectBDMV AndAlso (Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
+                                ((Master.eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "index.tbn")) _
+                                OrElse (Master.eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "index.jpg")))) _
                         OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
                                 (((Master.eSettings.MovieNameTBN OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".tbn")) _
                                 OrElse ((Master.eSettings.MovieNameTBN OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpName, ".tbn")) _
@@ -1270,50 +1312,52 @@ Public Class Scanner
                                         'no title so assume it's an invalid nfo, clear nfo path if exists
                                         sFile.MContainer.Nfo = String.Empty
 
-                                        If Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "video_ts" Then
-                                            tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name)
-                                            tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name, False)
-                                        Else
-                                            If sFile.MContainer.UseFolder AndAlso sFile.MContainer.isSingle Then
-                                                tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.MContainer.Filename).Name)
-                                                tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(sFile.MContainer.Filename).Name, False)
-                                            Else
-                                                tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.MContainer.Filename))
-                                                tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.MContainer.Filename), False)
-                                            End If
-                                        End If
-                                        If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
+                                    If Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "video_ts" OrElse (Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "bdmv") Then
+                                        tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name)
+                                        tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name, False)
                                     Else
-                                        Dim tTitle As String = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
-                                        If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
-                                        If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
-                                            tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
+                                        If sFile.MContainer.UseFolder AndAlso sFile.MContainer.isSingle Then
+                                            tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.MContainer.Filename).Name)
+                                            tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(sFile.MContainer.Filename).Name, False)
                                         Else
-                                            tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
+                                            tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.MContainer.Filename))
+                                            tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(sFile.MContainer.Filename), False)
                                         End If
                                     End If
 
-                                    Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
-                                    If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
-                                        tmpMovieDB.NfoPath = sFile.MContainer.Nfo
-                                        tmpMovieDB.PosterPath = sFile.MContainer.Poster
-                                        tmpMovieDB.FanartPath = sFile.MContainer.Fanart
-                                        tmpMovieDB.TrailerPath = sFile.MContainer.Trailer
-                                        tmpMovieDB.SubPath = sFile.MContainer.Subs
-                                        tmpMovieDB.ExtraPath = sFile.MContainer.Extra
-                                        tmpMovieDB.Filename = sFile.MContainer.Filename
-                                        tmpMovieDB.isSingle = sFile.MContainer.isSingle
-                                        tmpMovieDB.UseFolder = sFile.MContainer.UseFolder
-                                        tmpMovieDB.Source = sFile.MContainer.Source
-                                        tmpMovieDB.FileSource = XML.GetFileSource(sFile.MContainer.Filename)
-                                        tmpMovieDB.IsNew = True
-                                        tmpMovieDB.IsLock = False
-                                        tmpMovieDB.IsMark = Master.eSettings.MarkNew
-                                        'Do the Save
-                                        tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
+                                    If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tmpMovieDB.ListTitle
+
+                                Else
+                                    Dim tTitle As String = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
+                                    If String.IsNullOrEmpty(tmpMovieDB.Movie.SortTitle) Then tmpMovieDB.Movie.SortTitle = tTitle
+                                    If Master.eSettings.DisplayYear AndAlso Not String.IsNullOrEmpty(tmpMovieDB.Movie.Year) Then
+                                        tmpMovieDB.ListTitle = String.Format("{0} ({1})", tTitle, tmpMovieDB.Movie.Year)
+                                    Else
+                                        tmpMovieDB.ListTitle = StringManip.FilterTokens(tmpMovieDB.Movie.Title)
                                     End If
-                                    currentIndex += 1
                                 End If
+
+                                Me.bwFolderData.ReportProgress(currentIndex, tmpMovieDB.ListTitle)
+                                If Not String.IsNullOrEmpty(tmpMovieDB.ListTitle) Then
+                                    tmpMovieDB.NfoPath = sFile.MContainer.Nfo
+                                    tmpMovieDB.PosterPath = sFile.MContainer.Poster
+                                    tmpMovieDB.FanartPath = sFile.MContainer.Fanart
+                                    tmpMovieDB.TrailerPath = sFile.MContainer.Trailer
+                                    tmpMovieDB.SubPath = sFile.MContainer.Subs
+                                    tmpMovieDB.ExtraPath = sFile.MContainer.Extra
+                                    tmpMovieDB.Filename = sFile.MContainer.Filename
+                                    tmpMovieDB.isSingle = sFile.MContainer.isSingle
+                                    tmpMovieDB.UseFolder = sFile.MContainer.UseFolder
+                                    tmpMovieDB.Source = sFile.MContainer.Source
+                                    tmpMovieDB.FileSource = XML.GetFileSource(sFile.MContainer.Filename)
+                                    tmpMovieDB.IsNew = True
+                                    tmpMovieDB.IsLock = False
+                                    tmpMovieDB.IsMark = Master.eSettings.MarkNew
+                                    'Do the Save
+                                    tmpMovieDB = Master.DB.SaveMovieToDB(tmpMovieDB, True, True)
+                                End If
+                                currentIndex += 1
+                            End If
                     End Select
                 Next
                 SQLtransaction.Commit()
@@ -1426,4 +1470,8 @@ Public Class Scanner
 
         Return retSeason
     End Function
+
+    Public Sub New()
+
+    End Sub
 End Class

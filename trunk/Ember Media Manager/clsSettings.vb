@@ -181,6 +181,7 @@ Public Class emmSettings
     Private _notokens As Boolean
     Private _levtolerance As Integer
     Private _autodetectvts As Boolean
+    Private _autodetectbdmv As Boolean
     Private _flaglang As String
     Private _language As String
     Private _fieldtitle As Boolean
@@ -1628,6 +1629,14 @@ Public Class emmSettings
             Me._autodetectvts = value
         End Set
     End Property
+    Public Property AutoDetectBDMV() As Boolean
+        Get
+            Return Me._autodetectbdmv
+        End Get
+        Set(ByVal value As Boolean)
+            Me._autodetectbdmv = value
+        End Set
+    End Property
 
     Public Property FlagLang() As String
         Get
@@ -2177,6 +2186,7 @@ Public Class emmSettings
         Me._notokens = False
         Me._levtolerance = 0
         Me._autodetectvts = True
+        Me._autodetectbdmv = False
         Me._flaglang = String.Empty
         Me._language = "English_(en_US)"
         Me._fieldtitle = True
