@@ -25,7 +25,7 @@ Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Bitmap
 Imports System.Text.RegularExpressions
-
+Imports System.Reflection
 
 Public Class frmMain
 
@@ -348,6 +348,9 @@ Public Class frmMain
         '//
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
+
+        aDoubleBuffered(dgvMediaList, True)
+
         Me.Visible = False
         Dim Args() As String = Environment.GetCommandLineArgs
 
@@ -6621,4 +6624,14 @@ doCancel:
         End Try
 
     End Sub
+
 End Class
+Public Module ExtensionMethods
+
+    Public Sub aDoubleBuffered(ByVal dgv As DataGridView, ByVal setting As Boolean)
+        Dim dgvType As Type = dgv.[GetType]()
+        Dim pi As PropertyInfo = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic)
+        pi.SetValue(dgv, setting, Nothing)
+    End Sub
+
+End Module
