@@ -1975,10 +1975,6 @@ Public Class frmMain
 
     Private Sub cmnuEditMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditMovie.Click
 
-        '//
-        ' Show the NFO Editor
-        '\\
-
         Try
             Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
@@ -3120,7 +3116,6 @@ Public Class frmMain
             Case 1
                 Me.ToolsToolStripMenuItem.Enabled = False
                 Me.tsbAutoPilot.Enabled = False
-                Me.mnuMediaList.Enabled = False
                 Me.dgvMediaList.Visible = False
                 Me.pnlFilter.Visible = False
                 Me.pnlListTop.Height = 23
@@ -3455,6 +3450,11 @@ Public Class frmMain
 
     Delegate Sub MydtMediaUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
     Sub dtMediaUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
+        drow.Item(i) = v
+    End Sub
+
+    Delegate Sub MydtShowsUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
+    Sub dtShowsUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
         drow.Item(i) = v
     End Sub
     Private Sub bwScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwScraper.DoWork
@@ -4876,8 +4876,7 @@ doCancel:
             Me.InfoCleared = False
 
             If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.tsbRefreshMedia.Enabled = True
-                Me.tabsMain.Enabled = True
+                Me.SetControlsEnabled(True)
             End If
 
         Catch ex As Exception
@@ -4978,8 +4977,7 @@ doCancel:
             Me.InfoCleared = False
 
             If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                Me.tsbRefreshMedia.Enabled = True
-                Me.tabsMain.Enabled = True
+                Me.SetControlsEnabled(True)
             End If
 
         Catch ex As Exception
@@ -5593,6 +5591,67 @@ doCancel:
         Return False
     End Function
 
+    Private Function RefreshShow(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
+        Dim dRow = From drvRow In dtShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
+        Dim tmpShowDb As New Master.DBTV
+        Dim tmpShow As New Media.TVShow
+
+        Dim myDelegate As New MydtShowsUpdate(AddressOf dtShowsUpdate)
+
+        Try
+
+            tmpShowDb = Master.DB.LoadTVShowFromDB(ID)
+
+            If Directory.Exists(tmpShowDb.ShowPath) Then
+
+                If FromNfo Then
+                    If String.IsNullOrEmpty(tmpShowDb.ShowNfoPath) Then
+                        Dim sNFO As String = NFO.GetShowNfoPath(tmpShowDb.ShowPath)
+                        tmpShowDb.ShowNfoPath = sNFO
+                        tmpShow = NFO.LoadTVShowFromNFO(sNFO)
+                    Else
+                        tmpShow = NFO.LoadTVShowFromNFO(tmpShowDb.ShowNfoPath)
+                    End If
+                    tmpShowDb.TVShow = tmpShow
+                End If
+
+                If String.IsNullOrEmpty(tmpShowDb.TVShow.Title) Then
+                    tmpShowDb.TVShow.Title = StringManip.FilterTVShowName(Path.GetFileNameWithoutExtension(tmpShowDb.ShowPath), False)
+                End If
+
+                Me.Invoke(myDelegate, New Object() {dRow(0), 1, tmpShowDb.TVShow.Title})
+
+                Dim sContainer As New Scanner.TVShowContainer With {.ShowPath = tmpShowDb.ShowPath}
+                fScanner.GetShowFolderContents(sContainer)
+                tmpShowDb.ShowPosterPath = sContainer.Poster
+                Me.Invoke(myDelegate, New Object() {dRow(0), 2, If(String.IsNullOrEmpty(sContainer.Poster), False, True)})
+                tmpShowDb.ShowFanartPath = sContainer.Fanart
+                Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(sContainer.Fanart), False, True)})
+                'assume invalid nfo if no title
+                tmpShowDb.ShowNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVShow.Title), String.Empty, sContainer.Nfo)
+                Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(tmpShowDb.ShowNfoPath), False, True)})
+
+                tmpShowDb.IsMarkShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(6))
+                tmpShowDb.IsLockShow = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(10))
+
+                Master.DB.SaveTVShowToDB(tmpShowDb, False, BatchMode, ToNfo)
+
+            Else
+                Master.DB.DeleteTVShowFromDB(ID, BatchMode)
+                Return True
+            End If
+
+            If Not BatchMode Then
+                Me.LoadShowInfo(Convert.ToInt32(ID))
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return False
+    End Function
+
     Private Sub SetMenus(ByVal ReloadFilters As Boolean)
 
         Dim mnuItem As ToolStripItem
@@ -6186,6 +6245,10 @@ doCancel:
                 Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
             End If
 
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                Me.mnuShows.Enabled = True
+            End If
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -6202,6 +6265,10 @@ doCancel:
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
             Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
+
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                Me.SetControlsEnabled(True)
+            End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -6223,6 +6290,10 @@ doCancel:
             Else
                 Me.ShowNoInfo(False)
                 Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value))
+            End If
+
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                Me.mnuEpisodes.Enabled = True
             End If
 
         Catch ex As Exception
@@ -6426,9 +6497,13 @@ doCancel:
         Me.tsbAutoPilot.Enabled = isEnabled
         Me.tsbRefreshMedia.Enabled = isEnabled
         Me.mnuMediaList.Enabled = isEnabled
+        Me.mnuShows.Enabled = isEnabled
+        Me.mnuSeasons.Enabled = isEnabled
+        Me.mnuEpisodes.Enabled = isEnabled
         Me.txtSearch.Enabled = isEnabled
         Me.tabsMain.Enabled = isEnabled
     End Sub
+
 #End Region '*** Routines/Functions
 
     Private Sub dgvTVShows_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellDoubleClick
@@ -6445,14 +6520,71 @@ doCancel:
 
                 Select Case dEditShow.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        'If Me.RefreshMovie(ID) Then
-                        '    Me.FillList(0)
-                        'End If
+                        If Me.RefreshShow(ID) Then
+                            Me.FillList(0)
+                        End If
                 End Select
 
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub dgvTVShows_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVShows.MouseDown
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVShows.RowCount > 0 Then
+                Dim dgvHTI As DataGridView.HitTestInfo = dgvTVShows.HitTest(e.X, e.Y)
+                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+
+                    If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
+                        Me.cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+                        Me.cmnuEditShow.Visible = False
+
+                    Else
+                        Me.cmnuEditShow.Visible = True
+
+                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.mnuShows.Enabled = False
+                        End If
+
+                        cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value, " <<")
+
+                        If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+
+                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.dgvTVShows.ClearSelection()
+                            Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
+                            Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item(3, dgvHTI.RowIndex)
+                        End If
+
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuEditShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditShow.Click
+        Try
+            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+            Master.currShow = Master.DB.LoadTVShowFromDB(ID)
+
+            Using dEditShow As New dlgEditShow
+
+                Select Case dEditShow.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        If Me.RefreshShow(ID) Then
+                            Me.FillList(0)
+                        End If
+                End Select
+
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
     End Sub
 End Class
