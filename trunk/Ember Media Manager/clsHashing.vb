@@ -76,6 +76,8 @@ Public Class HashFile
 
         If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
             tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
+        ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(sPath).Name.ToLower = "bdmv" Then
+            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
         Else
             tPath = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
         End If
