@@ -123,6 +123,7 @@ Public Class dlgSettings
             Me.LoadIntLangs()
             Me.LoadLangs()
             Me.LoadThemes()
+            Me.LoadRatingRegions()
             Me.FillSettings()
 
             Me.SetApplyButton(False)
@@ -652,6 +653,8 @@ Public Class dlgSettings
         pnlImages.Visible = False
         pnlShows.Visible = False
         pnlTVSources.Visible = False
+        pnlTVScraper.visible = False
+        pnlTVImages.Visible = False
 
         Select Case tvSettings.SelectedNode.Name
             Case "nGeneral"
@@ -672,6 +675,10 @@ Public Class dlgSettings
                 pnlShows.Visible = True
             Case "nTVSources"
                 pnlTVSources.Visible = True
+            Case "nTVScraper"
+                pnlTVScraper.Visible = True
+            Case "nTVImages"
+                pnlTVImages.Visible = True
         End Select
     End Sub
 
@@ -1672,6 +1679,130 @@ Public Class dlgSettings
     Private Sub cbTrailerQuality_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cbTrailerQuality.SelectedIndexChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub tbShowFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbShowFanartQual.ValueChanged
+        Me.SetApplyButton(True)
+        Me.lblShowFanartQual.Text = tbShowFanartQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblShowFanartQual
+            Select Case True
+                Case tbShowFanartQual.Value = 0
+                    .ForeColor = Color.Black
+                Case tbShowFanartQual.Value > 95 OrElse tbShowFanartQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbShowFanartQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbShowFanartQual.Value, 300 - tbShowFanartQual.Value, 0)
+                Case tbShowFanartQual.Value >= 80 AndAlso tbShowFanartQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbShowFanartQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbShowFanartQual.Value - 20)), 0)
+                Case tbShowFanartQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbShowFanartQual.Value - 50))), 255, 0)
+            End Select
+        End With
+    End Sub
+
+    Private Sub txtShowFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtShowFanartWidth.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtShowFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtShowFanartWidth.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtShowFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtShowFanartHeight.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtShowFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtShowFanartHeight.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkResizeShowFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkResizeShowFanart.CheckedChanged
+        Me.SetApplyButton(True)
+
+        txtShowFanartWidth.Enabled = chkResizeShowFanart.Checked
+        txtShowFanartHeight.Enabled = chkResizeShowFanart.Checked
+
+        If Not chkResizeShowFanart.Checked Then
+            txtShowFanartWidth.Text = String.Empty
+            txtShowFanartHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub chkOverwriteShowFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteShowFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkShowFanartOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowFanartOnly.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub cbShowFanartSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbShowFanartSize.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chShowPosterSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbShowPosterSize.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkOverwriteShowPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOverwriteShowPoster.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkResizeShowPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkResizeShowPoster.CheckedChanged
+        Me.SetApplyButton(True)
+
+        txtShowPosterWidth.Enabled = chkResizeShowPoster.Checked
+        txtShowPosterHeight.Enabled = chkResizeShowPoster.Checked
+
+        If Not chkResizeShowFanart.Checked Then
+            txtShowPosterWidth.Text = String.Empty
+            txtShowPosterHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtShowPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtShowPosterWidth.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtShowPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtShowPosterWidth.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtShowPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtShowPosterHeight.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtShowPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtShowPosterHeight.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub tbShowPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbShowPosterQual.ValueChanged
+        Me.SetApplyButton(True)
+        Me.lblShowPosterQual.Text = tbShowPosterQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblShowPosterQual
+            Select Case True
+                Case tbShowPosterQual.Value = 0
+                    .ForeColor = Color.Black
+                Case tbShowPosterQual.Value > 95 OrElse tbShowPosterQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbShowPosterQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbShowPosterQual.Value, 300 - tbShowPosterQual.Value, 0)
+                Case tbShowPosterQual.Value >= 80 AndAlso tbShowPosterQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbShowPosterQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbShowPosterQual.Value - 20)), 0)
+                Case tbShowPosterQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbShowPosterQual.Value - 50))), 255, 0)
+            End Select
+        End With
+    End Sub
+
+    Private Sub cbRatingRegion_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbRatingRegion.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -1767,13 +1898,20 @@ Public Class dlgSettings
             Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
             Master.eSettings.PreferredPosterSize = DirectCast(Me.cbPosterSize.SelectedIndex, Master.PosterSize)
             Master.eSettings.PreferredFanartSize = DirectCast(Me.cbFanartSize.SelectedIndex, Master.FanartSize)
+            Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbshowPosterSize.SelectedIndex, Master.PosterSize)
+            Master.eSettings.PreferredShowFanartSize = DirectCast(Me.cbShowFanartSize.SelectedIndex, Master.FanartSize)
             Master.eSettings.AutoET = Me.chkAutoETSize.Checked
             Master.eSettings.AutoETSize = DirectCast(Me.cbAutoETSize.SelectedIndex, Master.FanartSize)
             Master.eSettings.FanartPrefSizeOnly = Me.chkFanartOnly.Checked
+            Master.eSettings.ShowFanartPrefSizeOnly = Me.chkShowFanartOnly.Checked
             Master.eSettings.PosterQuality = Me.tbPosterQual.Value
             Master.eSettings.FanartQuality = Me.tbFanartQual.Value
             Master.eSettings.OverwritePoster = Me.chkOverwritePoster.Checked
             Master.eSettings.OverwriteFanart = Me.chkOverwriteFanart.Checked
+            Master.eSettings.ShowPosterQuality = Me.tbShowPosterQual.Value
+            Master.eSettings.ShowFanartQuality = Me.tbShowFanartQual.Value
+            Master.eSettings.OverwriteShowPoster = Me.chkOverwriteShowPoster.Checked
+            Master.eSettings.OverwriteShowFanart = Me.chkOverwriteShowFanart.Checked
             Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked
             Master.eSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
             Master.eSettings.MovieJPG = Me.chkMovieJPG.Checked
@@ -1805,6 +1943,12 @@ Public Class dlgSettings
             Master.eSettings.ResizePoster = Me.chkResizePoster.Checked
             Master.eSettings.PosterHeight = If(Not String.IsNullOrEmpty(Me.txtPosterHeight.Text), Convert.ToInt32(Me.txtPosterHeight.Text), 0)
             Master.eSettings.PosterWidth = If(Not String.IsNullOrEmpty(Me.txtPosterWidth.Text), Convert.ToInt32(Me.txtPosterWidth.Text), 0)
+            Master.eSettings.ResizeShowFanart = Me.chkResizeShowFanart.Checked
+            Master.eSettings.ShowFanartHeight = If(Not String.IsNullOrEmpty(Me.txtShowFanartHeight.Text), Convert.ToInt32(Me.txtShowFanartHeight.Text), 0)
+            Master.eSettings.ShowFanartWidth = If(Not String.IsNullOrEmpty(Me.txtShowFanartWidth.Text), Convert.ToInt32(Me.txtShowFanartWidth.Text), 0)
+            Master.eSettings.ResizeShowPoster = Me.chkResizeShowPoster.Checked
+            Master.eSettings.ShowPosterHeight = If(Not String.IsNullOrEmpty(Me.txtShowPosterHeight.Text), Convert.ToInt32(Me.txtShowPosterHeight.Text), 0)
+            Master.eSettings.ShowPosterWidth = If(Not String.IsNullOrEmpty(Me.txtShowPosterWidth.Text), Convert.ToInt32(Me.txtShowPosterWidth.Text), 0)
             Master.eSettings.UseOFDBTitle = Me.chkOFDBTitle.Checked
             Master.eSettings.UseOFDBOutline = Me.chkOFDBOutline.Checked
             Master.eSettings.UseOFDBPlot = Me.chkOFDBPlot.Checked
@@ -1956,6 +2100,7 @@ Public Class dlgSettings
             Master.eSettings.TVCleanDB = Me.chkTVCleanDB.Checked
             Master.eSettings.TVIgnoreLastScan = Me.chkTVIgnoreLastScan.Checked
             Master.eSettings.TVShowRegexes = Me.ShowRegex
+            Master.eSettings.ShowRatingRegion = Me.cbRatingRegion.Text
 
             Master.eSettings.Save()
 
@@ -2029,13 +2174,20 @@ Public Class dlgSettings
             Me.chkUseMPDB.Checked = Master.eSettings.UseMPDB
             Me.cbPosterSize.SelectedIndex = Master.eSettings.PreferredPosterSize
             Me.cbFanartSize.SelectedIndex = Master.eSettings.PreferredFanartSize
+            Me.cbShowPosterSize.SelectedIndex = Master.eSettings.PreferredShowPosterSize
+            Me.cbShowFanartSize.SelectedIndex = Master.eSettings.PreferredShowFanartSize
             Me.chkAutoETSize.Checked = Master.eSettings.AutoET
             Me.cbAutoETSize.SelectedIndex = Master.eSettings.AutoETSize
             Me.chkFanartOnly.Checked = Master.eSettings.FanartPrefSizeOnly
+            Me.chkShowFanartOnly.Checked = Master.eSettings.ShowFanartPrefSizeOnly
             Me.tbPosterQual.Value = Master.eSettings.PosterQuality
             Me.tbFanartQual.Value = Master.eSettings.FanartQuality
+            Me.tbShowPosterQual.Value = Master.eSettings.ShowPosterQuality
+            Me.tbShowFanartQual.Value = Master.eSettings.ShowFanartQuality
             Me.chkOverwritePoster.Checked = Master.eSettings.OverwritePoster
             Me.chkOverwriteFanart.Checked = Master.eSettings.OverwriteFanart
+            Me.chkOverwriteShowPoster.Checked = Master.eSettings.OverwriteShowPoster
+            Me.chkOverwriteShowFanart.Checked = Master.eSettings.OverwriteShowFanart
             Me.chkMovieTBN.Checked = Master.eSettings.MovieTBN
             Me.chkMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
             Me.chkMovieJPG.Checked = Master.eSettings.MovieJPG
@@ -2071,6 +2223,16 @@ Public Class dlgSettings
             If Master.eSettings.ResizePoster Then
                 Me.txtPosterWidth.Text = Master.eSettings.PosterWidth.ToString
                 Me.txtPosterHeight.Text = Master.eSettings.PosterHeight.ToString
+            End If
+            Me.chkResizeFanart.Checked = Master.eSettings.ResizeShowFanart
+            If Master.eSettings.ResizeShowFanart Then
+                Me.txtShowFanartWidth.Text = Master.eSettings.ShowFanartWidth.ToString
+                Me.txtShowFanartHeight.Text = Master.eSettings.ShowFanartHeight.ToString
+            End If
+            Me.chkResizeShowPoster.Checked = Master.eSettings.ResizeShowPoster
+            If Master.eSettings.ResizeShowPoster Then
+                Me.txtShowPosterWidth.Text = Master.eSettings.ShowPosterWidth.ToString
+                Me.txtShowPosterHeight.Text = Master.eSettings.ShowPosterHeight.ToString
             End If
             Me.chkOFDBTitle.Checked = Master.eSettings.UseOFDBTitle
             Me.chkOFDBOutline.Checked = Master.eSettings.UseOFDBOutline
@@ -2191,6 +2353,7 @@ Public Class dlgSettings
             Me.chkTVIgnoreLastScan.Checked = Master.eSettings.TVIgnoreLastScan
             Me.ShowRegex = Master.eSettings.TVShowRegexes
             Me.LoadShowRegex()
+            Me.cbRatingRegion.Text = Master.eSettings.ShowRatingRegion
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -2288,6 +2451,7 @@ Public Class dlgSettings
         End If
 
     End Sub
+
     Private Sub LoadMetadata()
         Me.lstMetaData.Items.Clear()
         For Each x As emmSettings.MetadataPerType In Meta
@@ -2570,6 +2734,8 @@ Public Class dlgSettings
         Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbAutoETSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbShowPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+        Me.cbShowFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
 
         LoadTrailerQualities()
     End Sub
@@ -2787,6 +2953,10 @@ Public Class dlgSettings
             End If
         Next
         Me.LoadShowRegex()
+    End Sub
+
+    Private Sub LoadRatingRegions()
+        Me.cbRatingRegion.Items.AddRange(XML.GetRatingRegions)
     End Sub
 #End Region '*** Routines/Functions
 

@@ -60,7 +60,7 @@ Public Class dlgImgManual
     End Sub
 
     Private Sub txtURL_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtURL.TextChanged
-        If Not String.IsNullOrEmpty(Me.txtURL.Text) AndAlso Regex.IsMatch(Me.txtURL.Text, "^(https?://)?(([\w!~*'().&=+$%-]+: )?[\w!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([\w!~*'()-]+\.)*([\w^-][\w-]{0,61})?[\w]\.[a-z]{2,6})(:[0-9]{1,4})?((/*)|(/+[\w!~*'().;?:@&=+$,%#-]+)+/*)$", RegexOptions.IgnoreCase) Then
+        If Not String.IsNullOrEmpty(Me.txtURL.Text) AndAlso StringManip.isValidURL(Me.txtURL.Text) Then
             Me.btnPreview.Enabled = True
             Me.OK_Button.Enabled = True
         Else

@@ -806,7 +806,7 @@ Public Class frmMain
             End Select
 
             'move focus somewhere to stop highlighting some info boxes
-            If Me.tabsMain.SelectedIndex = 0 Then Me.txtSearch.Focus()
+            If Me.tabsMain.SelectedIndex = 0 Then Me.txtSearch.Focus() Else  : Me.lblTitle.Focus()
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4793,7 +4793,7 @@ doCancel:
             End If
 
             If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
-                Dim tmpRatingImg As Image = XML.GetRatingImage(Master.currShow.TVShow.MPAA)
+                Dim tmpRatingImg As Image = XML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
                 If Not IsNothing(tmpRatingImg) Then
                     Me.pbMPAA.Image = tmpRatingImg
                     Me.MoveMPAA()
@@ -6431,4 +6431,28 @@ doCancel:
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub dgvTVShows_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellDoubleClick
+
+        Try
+
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+
+            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+            Master.currShow = Master.DB.LoadTVShowFromDB(ID)
+
+            Using dEditShow As New dlgEditShow
+
+                Select Case dEditShow.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        'If Me.RefreshMovie(ID) Then
+                        '    Me.FillList(0)
+                        'End If
+                End Select
+
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
 End Class

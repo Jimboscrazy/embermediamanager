@@ -31,6 +31,7 @@ Public Class emmSettings
     Private _epfiltercustom As New List(Of String)
     Private _certificationLang As String
     Private _usecertformpaa As Boolean
+    Private _showratingregion As String
     Private _forcetitle As String
     Private _scanmediainfo As Boolean
     Private _imdburl As String
@@ -64,13 +65,20 @@ Public Class emmSettings
     Private _useMPDB As Boolean
     Private _postersize As Master.PosterSize
     Private _fanartsize As Master.FanartSize
+    Private _showpostersize As Master.PosterSize
+    Private _showfanartsize As Master.FanartSize
     Private _autoET As Boolean
     Private _autoETsize As Master.FanartSize
     Private _fanartprefsizeonly As Boolean
+    Private _showfanartprefsizeonly As Boolean
     Private _posterQuality As Integer
     Private _fanartQuality As Integer
     Private _overwritePoster As Boolean
     Private _overwriteFanart As Boolean
+    Private _showposterQuality As Integer
+    Private _showfanartQuality As Integer
+    Private _overwriteShowPoster As Boolean
+    Private _overwriteShowFanart As Boolean
     Private _logerrors As Boolean
     Private _properCase As Boolean
     Private _showproperCase As Boolean
@@ -109,6 +117,12 @@ Public Class emmSettings
     Private _resizeposter As Boolean
     Private _posterheight As Integer
     Private _posterwidth As Integer
+    Private _resizeshowfanart As Boolean
+    Private _showfanartheight As Integer
+    Private _showfanartwidth As Integer
+    Private _resizeshowposter As Boolean
+    Private _showposterheight As Integer
+    Private _showposterwidth As Integer
     Private _useofdbtitle As Boolean
     Private _useofdboutline As Boolean
     Private _useofdbplot As Boolean
@@ -271,6 +285,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._usecertformpaa = value
+        End Set
+    End Property
+
+    Public Property ShowRatingRegion() As String
+        Get
+            Return Me._showratingregion
+        End Get
+        Set(ByVal value As String)
+            Me._showratingregion = value
         End Set
     End Property
 
@@ -562,6 +585,24 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property PreferredShowPosterSize() As Master.PosterSize
+        Get
+            Return Me._showpostersize
+        End Get
+        Set(ByVal value As Master.PosterSize)
+            Me._showpostersize = value
+        End Set
+    End Property
+
+    Public Property PreferredShowFanartSize() As Master.FanartSize
+        Get
+            Return Me._showfanartsize
+        End Get
+        Set(ByVal value As Master.FanartSize)
+            Me._showfanartsize = value
+        End Set
+    End Property
+
     Public Property AutoET() As Boolean
         Get
             Return Me._autoET
@@ -586,6 +627,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._fanartprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property ShowFanartPrefSizeOnly() As Boolean
+        Get
+            Return Me._showfanartprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._showfanartprefsizeonly = value
         End Set
     End Property
 
@@ -622,6 +672,42 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._overwriteFanart = value
+        End Set
+    End Property
+
+    Public Property ShowPosterQuality() As Integer
+        Get
+            Return Me._showposterQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._showposterQuality = value
+        End Set
+    End Property
+
+    Public Property ShowFanartQuality() As Integer
+        Get
+            Return Me._showfanartQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._showfanartQuality = value
+        End Set
+    End Property
+
+    Public Property OverwriteShowPoster() As Boolean
+        Get
+            Return Me._overwriteShowPoster
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteShowPoster = value
+        End Set
+    End Property
+
+    Public Property OverwriteShowFanart() As Boolean
+        Get
+            Return Me._overwriteShowFanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteShowFanart = value
         End Set
     End Property
 
@@ -964,6 +1050,60 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Integer)
             Me._posterheight = value
+        End Set
+    End Property
+
+    Public Property ResizeShowFanart() As Boolean
+        Get
+            Return Me._resizeshowfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeshowfanart = value
+        End Set
+    End Property
+
+    Public Property ShowFanartWidth() As Integer
+        Get
+            Return Me._showfanartwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._showfanartwidth = value
+        End Set
+    End Property
+
+    Public Property ShowFanartHeight() As Integer
+        Get
+            Return Me._showfanartheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._showfanartheight = value
+        End Set
+    End Property
+
+    Public Property ResizeShowPoster() As Boolean
+        Get
+            Return Me._resizeshowposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeshowposter = value
+        End Set
+    End Property
+
+    Public Property ShowPosterWidth() As Integer
+        Get
+            Return Me._showposterwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._showposterwidth = value
+        End Set
+    End Property
+
+    Public Property ShowPosterHeight() As Integer
+        Get
+            Return Me._showposterheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._showposterheight = value
         End Set
     End Property
 
@@ -1888,6 +2028,7 @@ Public Class emmSettings
         Me._forcetitle = String.Empty
         Me._certificationLang = String.Empty
         Me._usecertformpaa = False
+        Me._showratingregion = "usa"
         Me._scanmediainfo = True
         Me._imdburl = "akas.imdb.com"
         Me._fullcast = False
@@ -1920,13 +2061,20 @@ Public Class emmSettings
         Me._useMPDB = False
         Me._postersize = Master.PosterSize.Xlrg
         Me._fanartsize = Master.FanartSize.Lrg
+        Me._showpostersize = Master.PosterSize.Xlrg
+        Me._showfanartsize = Master.FanartSize.Lrg
         Me._autoET = False
         Me._autoETsize = Master.FanartSize.Lrg
         Me._fanartprefsizeonly = False
-        Me._posterQuality = 85
-        Me._fanartQuality = 85
+        Me._showfanartprefsizeonly = False
+        Me._posterQuality = 0
+        Me._fanartQuality = 0
         Me._overwritePoster = False
         Me._overwriteFanart = False
+        Me._showposterQuality = 0
+        Me._showfanartQuality = 0
+        Me._overwriteShowPoster = False
+        Me._overwriteShowFanart = False
         Me._logerrors = True
         Me._properCase = True
         Me._showproperCase = True
@@ -1965,6 +2113,12 @@ Public Class emmSettings
         Me._resizeposter = False
         Me._posterheight = 0
         Me._posterwidth = 0
+        Me._resizeshowfanart = False
+        Me._showfanartheight = 0
+        Me._showfanartwidth = 0
+        Me._resizeshowposter = False
+        Me._showposterheight = 0
+        Me._showposterwidth = 0
         Me._useofdbtitle = False
         Me._useofdboutline = False
         Me._useofdbplot = False

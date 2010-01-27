@@ -366,4 +366,7 @@ Public Class StringManip
         Return result.ToString()
     End Function
 
+    Public Shared Function isValidURL(ByVal sToCheck As String) As Boolean
+        Return Regex.IsMatch(sToCheck, "^((ht|f)tps?\:\/\/|~\/|\/)?(\w+:\w+@)?(([-\w]+\.)+(com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))\/", RegexOptions.IgnoreCase)
+    End Function
 End Class

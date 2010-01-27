@@ -29,12 +29,10 @@ Partial Class dlgEditShow
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.txtPremiered = New System.Windows.Forms.TextBox
         Me.lbGenre = New System.Windows.Forms.CheckedListBox
-        Me.btnStudio = New System.Windows.Forms.Button
         Me.lblStudio = New System.Windows.Forms.Label
         Me.txtStudio = New System.Windows.Forms.TextBox
-        Me.lblMPAADesc = New System.Windows.Forms.Label
-        Me.txtMPAADesc = New System.Windows.Forms.TextBox
         Me.btnEditActor = New System.Windows.Forms.Button
         Me.btnAddActor = New System.Windows.Forms.Button
         Me.btnManual = New System.Windows.Forms.Button
@@ -55,7 +53,6 @@ Partial Class dlgEditShow
         Me.pbStar2 = New System.Windows.Forms.PictureBox
         Me.pbStar1 = New System.Windows.Forms.PictureBox
         Me.lblRating = New System.Windows.Forms.Label
-        Me.mtxtYear = New System.Windows.Forms.MaskedTextBox
         Me.lblYear = New System.Windows.Forms.Label
         Me.lblTitle = New System.Windows.Forms.Label
         Me.txtTitle = New System.Windows.Forms.TextBox
@@ -75,6 +72,7 @@ Partial Class dlgEditShow
         Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
+        Me.ofdImage = New System.Windows.Forms.OpenFileDialog
         Me.pnlTop.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
@@ -150,12 +148,10 @@ Partial Class dlgEditShow
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.txtPremiered)
         Me.TabPage1.Controls.Add(Me.lbGenre)
-        Me.TabPage1.Controls.Add(Me.btnStudio)
         Me.TabPage1.Controls.Add(Me.lblStudio)
         Me.TabPage1.Controls.Add(Me.txtStudio)
-        Me.TabPage1.Controls.Add(Me.lblMPAADesc)
-        Me.TabPage1.Controls.Add(Me.txtMPAADesc)
         Me.TabPage1.Controls.Add(Me.btnEditActor)
         Me.TabPage1.Controls.Add(Me.btnAddActor)
         Me.TabPage1.Controls.Add(Me.btnManual)
@@ -173,7 +169,6 @@ Partial Class dlgEditShow
         Me.TabPage1.Controls.Add(Me.pbStar2)
         Me.TabPage1.Controls.Add(Me.pbStar1)
         Me.TabPage1.Controls.Add(Me.lblRating)
-        Me.TabPage1.Controls.Add(Me.mtxtYear)
         Me.TabPage1.Controls.Add(Me.lblYear)
         Me.TabPage1.Controls.Add(Me.lblTitle)
         Me.TabPage1.Controls.Add(Me.txtTitle)
@@ -184,6 +179,14 @@ Partial Class dlgEditShow
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'txtPremiered
+        '
+        Me.txtPremiered.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtPremiered.Location = New System.Drawing.Point(7, 69)
+        Me.txtPremiered.Name = "txtPremiered"
+        Me.txtPremiered.Size = New System.Drawing.Size(192, 20)
+        Me.txtPremiered.TabIndex = 106
         '
         'lbGenre
         '
@@ -196,19 +199,10 @@ Partial Class dlgEditShow
         Me.lbGenre.Sorted = True
         Me.lbGenre.TabIndex = 105
         '
-        'btnStudio
-        '
-        Me.btnStudio.Image = CType(resources.GetObject("btnStudio.Image"), System.Drawing.Image)
-        Me.btnStudio.Location = New System.Drawing.Point(805, 353)
-        Me.btnStudio.Name = "btnStudio"
-        Me.btnStudio.Size = New System.Drawing.Size(23, 23)
-        Me.btnStudio.TabIndex = 104
-        Me.btnStudio.UseVisualStyleBackColor = True
-        '
         'lblStudio
         '
         Me.lblStudio.AutoSize = True
-        Me.lblStudio.Location = New System.Drawing.Point(635, 339)
+        Me.lblStudio.Location = New System.Drawing.Point(635, 273)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(40, 13)
         Me.lblStudio.TabIndex = 101
@@ -217,28 +211,10 @@ Partial Class dlgEditShow
         'txtStudio
         '
         Me.txtStudio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtStudio.Location = New System.Drawing.Point(635, 355)
+        Me.txtStudio.Location = New System.Drawing.Point(635, 289)
         Me.txtStudio.Name = "txtStudio"
-        Me.txtStudio.Size = New System.Drawing.Size(167, 20)
+        Me.txtStudio.Size = New System.Drawing.Size(193, 20)
         Me.txtStudio.TabIndex = 100
-        '
-        'lblMPAADesc
-        '
-        Me.lblMPAADesc.AutoSize = True
-        Me.lblMPAADesc.Location = New System.Drawing.Point(632, 247)
-        Me.lblMPAADesc.Name = "lblMPAADesc"
-        Me.lblMPAADesc.Size = New System.Drawing.Size(130, 13)
-        Me.lblMPAADesc.TabIndex = 89
-        Me.lblMPAADesc.Text = "MPAA Rating Description:"
-        '
-        'txtMPAADesc
-        '
-        Me.txtMPAADesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtMPAADesc.Location = New System.Drawing.Point(635, 264)
-        Me.txtMPAADesc.Multiline = True
-        Me.txtMPAADesc.Name = "txtMPAADesc"
-        Me.txtMPAADesc.Size = New System.Drawing.Size(193, 68)
-        Me.txtMPAADesc.TabIndex = 19
         '
         'btnEditActor
         '
@@ -316,7 +292,7 @@ Partial Class dlgEditShow
         Me.lbMPAA.FormattingEnabled = True
         Me.lbMPAA.Location = New System.Drawing.Point(635, 155)
         Me.lbMPAA.Name = "lbMPAA"
-        Me.lbMPAA.Size = New System.Drawing.Size(193, 82)
+        Me.lbMPAA.Size = New System.Drawing.Size(193, 108)
         Me.lbMPAA.TabIndex = 18
         '
         'lblGenre
@@ -404,16 +380,6 @@ Partial Class dlgEditShow
         Me.lblRating.Size = New System.Drawing.Size(41, 13)
         Me.lblRating.TabIndex = 60
         Me.lblRating.Text = "Rating:"
-        '
-        'mtxtYear
-        '
-        Me.mtxtYear.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.mtxtYear.Location = New System.Drawing.Point(7, 69)
-        Me.mtxtYear.Mask = "####"
-        Me.mtxtYear.Name = "mtxtYear"
-        Me.mtxtYear.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
-        Me.mtxtYear.Size = New System.Drawing.Size(192, 20)
-        Me.mtxtYear.TabIndex = 2
         '
         'lblYear
         '
@@ -671,11 +637,8 @@ Partial Class dlgEditShow
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
     Friend WithEvents lbGenre As System.Windows.Forms.CheckedListBox
-    Friend WithEvents btnStudio As System.Windows.Forms.Button
     Friend WithEvents lblStudio As System.Windows.Forms.Label
     Friend WithEvents txtStudio As System.Windows.Forms.TextBox
-    Friend WithEvents lblMPAADesc As System.Windows.Forms.Label
-    Friend WithEvents txtMPAADesc As System.Windows.Forms.TextBox
     Friend WithEvents btnEditActor As System.Windows.Forms.Button
     Friend WithEvents btnAddActor As System.Windows.Forms.Button
     Friend WithEvents btnManual As System.Windows.Forms.Button
@@ -696,7 +659,6 @@ Partial Class dlgEditShow
     Friend WithEvents pbStar2 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar1 As System.Windows.Forms.PictureBox
     Friend WithEvents lblRating As System.Windows.Forms.Label
-    Friend WithEvents mtxtYear As System.Windows.Forms.MaskedTextBox
     Friend WithEvents lblYear As System.Windows.Forms.Label
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
@@ -716,5 +678,7 @@ Partial Class dlgEditShow
     Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents txtPremiered As System.Windows.Forms.TextBox
+    Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
 
 End Class

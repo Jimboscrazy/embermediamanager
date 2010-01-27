@@ -40,7 +40,6 @@ Public Class dlgManualEdit
     Private ErrStr As String
     Private lineInf As IXmlLineInfo
 
-
 #End Region
 
 
@@ -345,7 +344,6 @@ Public Class dlgManualEdit
     Private Sub Editor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.SetUp()
 
-        currFile = Master.currMovie.NfoPath
         If File.Exists(currFile) Then
             RichTextBox1.LoadFile(currFile, RichTextBoxStreamType.PlainText)
         End If
@@ -444,6 +442,12 @@ Public Class dlgManualEdit
         RichTextBox1.Focus()
     End Sub
 
+    Public Overloads Function ShowDialog(ByVal nfoPath As String) As Windows.Forms.DialogResult
+
+        Me.currFile = nfoPath
+
+        Return MyBase.ShowDialog()
+    End Function
 #End Region
 
 End Class

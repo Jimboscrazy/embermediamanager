@@ -267,13 +267,49 @@ Public Class XML
 
             Try
 
-                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
-                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Where strRating.ToLower = xRat.@searchstring.ToLower Select xRat.<icon>.Value
+                If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<tv>.Descendants.Count > 0 Then
+                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower Select xRat.<icon>.Value
                     If xRating.Count > 0 Then
                         imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
                     End If
                 Else
-                    Dim xRating = From xRat In RatingXML...<usa>...<name> Where strRating.ToLower.StartsWith(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
+                    Dim xRating = From xRat In RatingXML...<usa>...<movie>...<name> Where strRating.ToLower.StartsWith(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
+                    If xRating.Count > 0 Then
+                        imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
+                    End If
+                End If
+
+                If Not String.IsNullOrEmpty(imgRatingStr) AndAlso File.Exists(imgRatingStr) Then
+                    Using fsImage As New FileStream(imgRatingStr, FileMode.Open, FileAccess.Read)
+                        imgRating = Image.FromStream(fsImage)
+                    End Using
+                End If
+
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End If
+
+        Return imgRating
+    End Function
+
+    Public Shared Function GetTVRatingImage(ByVal strRating As String) As Image
+
+        Dim imgRating As Image = Nothing
+        Dim imgRatingStr As String = String.Empty
+
+        If RatingXML.Nodes.Count > 0 Then
+            Dim mePath As String = String.Concat(Master.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
+
+            Try
+
+                If Master.eSettings.ShowRatingRegion = "usa" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower)...<tv>.Descendants.Count > 0 Then
+                    Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower)...<tv>...<name> Where strRating.ToLower = xRat.@searchstring.ToLower Select xRat.<icon>.Value
+                    If xRating.Count > 0 Then
+                        imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
+                    End If
+                Else
+                    Dim xRating = From xRat In RatingXML...<usa>...<tv>...<name> Where strRating.ToLower.StartsWith(xRat.@searchstring.ToLower) Select xRat.<icon>.Value
                     If xRating.Count > 0 Then
                         imgRatingStr = Path.Combine(mePath, xRating(xRating.Count - 1).ToString)
                     End If
@@ -402,13 +438,34 @@ Public Class XML
     Public Shared Function GetRatingList() As Object()
         Dim retRatings As New List(Of String)
         Try
-            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso XML.RatingXML.Element("ratings").Descendants(Master.eSettings.CertificationLang.ToLower).Count > 0 Then
-                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<name> Select xRat.@searchstring
+            If Master.eSettings.UseCertForMPAA AndAlso Not Master.eSettings.CertificationLang = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower).Descendants("movie").Count > 0 Then
+                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.CertificationLang.ToLower)...<movie>...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
                     retRatings.AddRange(xRating.ToArray)
                 End If
             Else
-                Dim xRating = From xRat In RatingXML...<usa>...<name> Select xRat.@searchstring
+                Dim xRating = From xRat In RatingXML...<usa>...<movie>...<name> Select xRat.@searchstring
+                If xRating.Count > 0 Then
+                    retRatings.AddRange(xRating.ToArray)
+                End If
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return retRatings.ToArray
+    End Function
+
+    Public Shared Function GetTVRatingList() As Object()
+        Dim retRatings As New List(Of String)
+        Try
+            If Not Master.eSettings.ShowRatingRegion = "USA" AndAlso RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower).Descendants("tv").Count > 0 Then
+                Dim xRating = From xRat In RatingXML.Element("ratings").Element(Master.eSettings.ShowRatingRegion.ToLower)...<tv>...<name> Select xRat.@searchstring
+                If xRating.Count > 0 Then
+                    retRatings.AddRange(xRating.ToArray)
+                End If
+            Else
+                Dim xRating = From xRat In RatingXML...<usa>...<tv>...<name> Select xRat.@searchstring
                 If xRating.Count > 0 Then
                     retRatings.AddRange(xRating.ToArray)
                 End If
@@ -467,5 +524,18 @@ Public Class XML
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
         Return retSources.ToArray
+    End Function
+
+    Public Shared Function GetRatingRegions() As Object()
+        Dim retRatings As New List(Of String)
+        Try
+            Dim xRating = From xRat In RatingXML...<ratings>.Elements.Descendants("tv") Select (xRat.Parent.Name.ToString)
+            If xRating.Count > 0 Then
+                retRatings.AddRange(xRating.toarray)
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return retRatings.ToArray
     End Function
 End Class

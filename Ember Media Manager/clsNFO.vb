@@ -668,7 +668,7 @@ Public Class NFO
             Dim doesExist As Boolean = False
             Dim fAtt As New FileAttributes
 
-            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(tvShowToSave.Filename).FullName).FullName, "tvshow.nfo")
+            tPath = Path.Combine(tvShowToSave.ShowPath, "tvshow.nfo")
 
             'If Not Master.eSettings.OverwriteNfo Then
             '    RenameNonConfNfo(tPath, False)
