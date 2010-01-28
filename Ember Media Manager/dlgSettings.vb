@@ -2031,6 +2031,10 @@ Public Class dlgSettings
             End Select
         End With
     End Sub
+
+    Private Sub chkSeasonFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonFolderJPG.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2354,6 +2358,7 @@ Public Class dlgSettings
             Master.eSettings.SeasonPosterJPG = Me.chkSeasonPosterJPG.Checked
             Master.eSettings.SeasonNameTBN = Me.chkSeasonNameTBN.Checked
             Master.eSettings.SeasonNameJPG = Me.chkSeasonNameJPG.Checked
+            Master.eSettings.SeasonFolderJPG = Me.chkSeasonFolderJPG.Checked
             Master.eSettings.SeasonFanartJPG = Me.chkSeasonFanartJPG.Checked
             Master.eSettings.SeasonDashFanart = Me.chkSeasonDashFanart.Checked
             Master.eSettings.SeasonDotFanart = Me.chkSeasonDotFanart.Checked
@@ -2652,6 +2657,7 @@ Public Class dlgSettings
             Me.chkSeasonPosterJPG.Checked = Master.eSettings.SeasonPosterJPG
             Me.chkSeasonNameTBN.Checked = Master.eSettings.SeasonNameTBN
             Me.chkSeasonNameJPG.Checked = Master.eSettings.SeasonNameJPG
+            Me.chkSeasonFolderJPG.Checked = Master.eSettings.SeasonFolderJPG
             Me.chkSeasonFanartJPG.Checked = Master.eSettings.SeasonFanartJPG
             Me.chkSeasonDashFanart.Checked = Master.eSettings.SeasonDashFanart
             Me.chkSeasonDotFanart.Checked = Master.eSettings.SeasonDotFanart
