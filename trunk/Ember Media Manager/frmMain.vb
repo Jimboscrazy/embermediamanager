@@ -72,6 +72,7 @@ Public Class frmMain
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
     Private isCL As Boolean = False
+    Private sHTTP As New HTTP
 
     'Loading Delays
     Private currRow As Integer = -1
@@ -3391,7 +3392,7 @@ Public Class frmMain
 
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Dim dImage As Image = Images.GenericFromWeb(Args.pURL)
+            Dim dImage As Image = sHTTP.DownloadImage(Args.pURL)
 
             If Me.bwDownloadPic.CancellationPending Then
                 e.Cancel = True
@@ -6248,13 +6249,14 @@ doCancel:
 
     Private Sub DoXCom(ByVal xCom As emmSettings.XBMCCom)
         Try
-            Dim Wr As WebRequest = HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port))
-            Wr.Method = "GET"
+            Dim Wr As HttpWebRequest = DirectCast(HttpWebRequest.Create(String.Format("http://{0}:{1}/xbmcCmds/xbmcHttp?command=ExecBuiltIn&parameter=XBMC.updatelibrary(video)", xCom.IP, xCom.Port)), HttpWebRequest)
             Wr.Timeout = 2500
+
             If Not String.IsNullOrEmpty(xCom.Username) AndAlso Not String.IsNullOrEmpty(xCom.Password) Then
                 Wr.Credentials = New NetworkCredential(xCom.Username, xCom.Password)
             End If
-            Using Wres As WebResponse = Wr.GetResponse
+
+            Using Wres As HttpWebResponse = DirectCast(Wr.GetResponse, HttpWebResponse)
                 Dim Sr As String = New StreamReader(Wres.GetResponseStream()).ReadToEnd
                 If Not Sr.Contains("OK") Then
                     MsgBox(String.Format(Master.eLang.GetString(146, "There was a problem communicating with {0}{1}. Please ensure that the XBMC webserver is enabled and that you have entered the correct IP and Port in Settings."), xCom.Name, vbNewLine), MsgBoxStyle.Exclamation, String.Format(Master.eLang.GetString(147, "Unable to Start XBMC Update for {0}"), xCom.Name))

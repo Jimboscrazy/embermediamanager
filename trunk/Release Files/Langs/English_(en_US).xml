@@ -209,9 +209,9 @@
   <string id="207">Edit Set</string>
   <string id="208">Add New Set</string>
   <string id="209">A New Version Is Available</string>
-  <string id="210">Version r{0} is now available.</string>
+  <string id="210">Version r{0} is now available on Ember Media Manager's Google Code page.</string>
   <string id="211">Click Here</string>
-  <string id="212">to visit embermm.com.</string>
+  <string id="212">to visit the Google Code page.</string>
   <string id="213">Sort Files Into Folders</string>
   <string id="214">Go</string>
   <string id="215">Status</string>
@@ -420,7 +420,7 @@
   <string id="418">Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database.</string>
   <string id="419">Meta Data is not available for this movie. Try rescanning.</string>
   <string id="420">Settings</string>
-  <string id="421">XBMC Communication</string>
+  <string id="421">Communication</string>
   <string id="422">Commit Edit</string>
   <string id="423">Name:</string>
   <string id="424">Add New</string>
@@ -643,12 +643,4 @@
   <string id="641">Renaming Directory/Files...</string>
   <string id="642">Sort Title</string>
   <string id="643">YAMJ Compatible Sets Saving</string>
-  <string id="644">Local Trailer:</string>
-  <string id="645">Fetch Formats</string>
-  <string id="646">Retrieving formats...</string>
-  <string id="647">The video format links could not be retrieved.</string>
-  <string id="648">Error Retrieving Video Format Links</string>
-  <string id="649">Confirm Items To Be Deleted</string>
-  <string id="650">Toggle All Files</string>
-  <string id="651">IMDB Rating</string>
 </strings>

@@ -267,6 +267,9 @@ Public Class emmSettings
     Private _episodepostercol As Boolean
     Private _episodefanartcol As Boolean
     Private _episodenfocol As Boolean
+    Private _proxyuri As String
+    Private _proxyport As Integer
+    Private _proxycredentials As New NetworkCredential
 
     Public Property Version() As String
         Get
@@ -2445,6 +2448,33 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property ProxyURI() As String
+        Get
+            Return _proxyuri
+        End Get
+        Set(ByVal value As String)
+            _proxyuri = value
+        End Set
+    End Property
+
+    Public Property ProxyPort() As Integer
+        Get
+            Return _proxyport
+        End Get
+        Set(ByVal value As Integer)
+            _proxyport = value
+        End Set
+    End Property
+
+    Public Property ProxyCreds() As NetworkCredential
+        Get
+            Return _proxycredentials
+        End Get
+        Set(ByVal value As NetworkCredential)
+            _proxycredentials = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2692,6 +2722,9 @@ Public Class emmSettings
         Me._episodepostercol = False
         Me._episodefanartcol = True
         Me._episodenfocol = False
+        Me._proxyuri = String.Empty
+        Me._proxyport = -1
+        Me._proxycredentials = New NetworkCredential
     End Sub
 
     Public Sub Save()

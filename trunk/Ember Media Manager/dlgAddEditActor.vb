@@ -25,6 +25,7 @@ Imports System.Text.RegularExpressions
 Public Class dlgAddEditActor
     Private eActor As Media.Person
     Private isNew As Boolean = True
+    Private sHTTP As New HTTP
     Public Shared selIndex As Integer = 0
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -112,7 +113,7 @@ Public Class dlgAddEditActor
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
 
-        e.Result = Images.GenericFromWeb(Me.txtThumb.Text)
+        e.Result = sHTTP.DownloadImage(Me.txtThumb.Text)
 
     End Sub
 
