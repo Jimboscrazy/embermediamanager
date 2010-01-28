@@ -1474,8 +1474,8 @@ Public Class frmMain
                 If Not String.IsNullOrEmpty(Me.filSearch) Then
                     Me.FilterArray.Remove(Me.filSearch)
                     Me.filSearch = String.Empty
-                    Me.RunFilter(Me.cbSearch.Text = Master.eLang.GetString(100, "Actor"))
                 End If
+                Me.RunFilter(True)
             End If
 
         Catch
