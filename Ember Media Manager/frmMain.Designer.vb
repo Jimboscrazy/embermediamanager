@@ -103,6 +103,9 @@ Partial Class frmMain
         Me.mnuSeasons = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.dgvTVEpisodes = New System.Windows.Forms.DataGridView
         Me.mnuEpisodes = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.cmnuEpTitle = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuEditEpisode = New System.Windows.Forms.ToolStripMenuItem
         Me.pnlFilterSource = New System.Windows.Forms.Panel
         Me.lblSFilClose = New System.Windows.Forms.Label
         Me.Label8 = New System.Windows.Forms.Label
@@ -317,9 +320,6 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.cmnuEpTitle = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
-        Me.cmnuEditEpisode = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -1056,6 +1056,26 @@ Partial Class frmMain
         Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuEditEpisode})
         Me.mnuEpisodes.Name = "mnuEpisodes"
         Me.mnuEpisodes.Size = New System.Drawing.Size(139, 54)
+        '
+        'cmnuEpTitle
+        '
+        Me.cmnuEpTitle.Enabled = False
+        Me.cmnuEpTitle.Image = CType(resources.GetObject("cmnuEpTitle.Image"), System.Drawing.Image)
+        Me.cmnuEpTitle.Name = "cmnuEpTitle"
+        Me.cmnuEpTitle.Size = New System.Drawing.Size(138, 22)
+        Me.cmnuEpTitle.Text = "Title"
+        '
+        'ToolStripSeparator6
+        '
+        Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(135, 6)
+        '
+        'cmnuEditEpisode
+        '
+        Me.cmnuEditEpisode.Image = CType(resources.GetObject("cmnuEditEpisode.Image"), System.Drawing.Image)
+        Me.cmnuEditEpisode.Name = "cmnuEditEpisode"
+        Me.cmnuEditEpisode.Size = New System.Drawing.Size(138, 22)
+        Me.cmnuEditEpisode.Text = "Edit Episode"
         '
         'pnlFilterSource
         '
@@ -3003,26 +3023,6 @@ Partial Class frmMain
         '
         'tmrLoadEp
         '
-        '
-        'cmnuEpTitle
-        '
-        Me.cmnuEpTitle.Enabled = False
-        Me.cmnuEpTitle.Image = CType(resources.GetObject("cmnuEpTitle.Image"), System.Drawing.Image)
-        Me.cmnuEpTitle.Name = "cmnuEpTitle"
-        Me.cmnuEpTitle.Size = New System.Drawing.Size(138, 22)
-        Me.cmnuEpTitle.Text = "Title"
-        '
-        'ToolStripSeparator6
-        '
-        Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(135, 6)
-        '
-        'cmnuEditEpisode
-        '
-        Me.cmnuEditEpisode.Image = CType(resources.GetObject("cmnuEditEpisode.Image"), System.Drawing.Image)
-        Me.cmnuEditEpisode.Name = "cmnuEditEpisode"
-        Me.cmnuEditEpisode.Size = New System.Drawing.Size(138, 22)
-        Me.cmnuEditEpisode.Text = "Edit Episode"
         '
         'frmMain
         '
