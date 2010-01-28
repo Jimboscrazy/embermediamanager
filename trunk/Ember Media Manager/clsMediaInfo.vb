@@ -232,7 +232,7 @@ Public Class MediaInfo
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
 
-            ElseIf Master.eSettings.AutoDetectBDMV AndAlso Path.GetFileNameWithoutExtension(sPath).ToLower = "index" Then
+            ElseIf Path.GetFileNameWithoutExtension(sPath).ToLower = "index" Then
 
                 Try
 

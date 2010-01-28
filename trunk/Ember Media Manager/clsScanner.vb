@@ -473,7 +473,7 @@ Public Class Scanner
             If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
                 di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
                 bSingle = True
-            ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.Exists(Path.Combine(sPath, "BDMV")) Then
+            ElseIf Directory.Exists(Path.Combine(sPath, "BDMV")) Then
                 di = New DirectoryInfo(Path.Combine(sPath, "BDMV"))
                 bSingle = True
             Else
@@ -521,7 +521,6 @@ Public Class Scanner
 
                     Next
                 End If
-
 
                 If (vtsSingle OrElse bdmvSingle) AndAlso Not String.IsNullOrEmpty(tFile) Then
                     If Not MoviePaths.Contains(StringManip.CleanStackingMarkers(tFile.ToLower)) AndAlso _
@@ -690,24 +689,7 @@ Public Class Scanner
         Dim fList As New List(Of String)
 
         Try
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(Movie.Filename).Name.ToLower = "video_ts" Then
-                isYAMJ = True
-
-                Try
-                    fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName))
-                Catch
-                End Try
-
-                parPath = Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName.ToLower
-                tmpName = Path.Combine(parPath, StringManip.CleanStackingMarkers(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).Name)).ToLower
-                tmpNameNoStack = Path.Combine(parPath, Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).Name).ToLower
-
-                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
-                    Movie.Extra = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
-                End If
-
-            ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(Movie.Filename).Name.ToLower = "bdmv" Then
-
+            If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(Movie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(Movie.Filename).Name.ToLower = "bdmv") Then
                 isYAMJ = True
 
                 Try
@@ -751,8 +733,8 @@ Public Class Scanner
                         OrElse ((Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
                                 ((Master.eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, "-fanart.jpg")) _
                                 OrElse (Master.eSettings.MovieNameFanartJPG AndAlso fFile.ToLower = String.Concat(tmpName, "-fanart.jpg")) _
-                                OrElse (Master.eSettings.MovieNameFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts-fanart.jpg") OrElse (Master.eSettings.AutoDetectBDMV AndAlso fFile.ToLower = Path.Combine(parPath, "index-fanart.jpg"))))) _
-                                OrElse (Master.eSettings.MovieNameDotFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts.fanart.jpg") OrElse (Master.eSettings.AutoDetectBDMV AndAlso fFile.ToLower = Path.Combine(parPath, "index.fanart.jpg"))))) _
+                                OrElse (Master.eSettings.MovieNameFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts-fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index-fanart.jpg")))) _
+                                OrElse (Master.eSettings.MovieNameDotFanartJPG AndAlso (fFile.ToLower = Path.Combine(parPath, "video_ts.fanart.jpg") OrElse fFile.ToLower = Path.Combine(parPath, "index.fanart.jpg")))) _
                         OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
                                 (((Master.eSettings.MovieNameDotFanartJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpName, ".fanart.jpg")) _
                                 OrElse ((Master.eSettings.MovieNameDotFanartJPG OrElse isYAMJ) AndAlso fFile.ToLower = String.Concat(tmpNameNoStack, ".fanart.jpg")))) Then
@@ -772,7 +754,7 @@ Public Class Scanner
                         OrElse ((Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
                                 ((Master.eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.tbn")) _
                                 OrElse (Master.eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "video_ts.jpg")))) _
-                        OrElse (Master.eSettings.AutoDetectBDMV AndAlso (Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
+                        OrElse ((Not Movie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
                                 ((Master.eSettings.MovieNameTBN AndAlso fFile.ToLower = Path.Combine(parPath, "index.tbn")) _
                                 OrElse (Master.eSettings.MovieNameJPG AndAlso fFile.ToLower = Path.Combine(parPath, "index.jpg")))) _
                         OrElse ((Not Movie.isSingle OrElse isYAMJ OrElse Not Master.eSettings.MovieNameMultiOnly) AndAlso _
@@ -1359,7 +1341,7 @@ Public Class Scanner
                                         'no title so assume it's an invalid nfo, clear nfo path if exists
                                         sFile.MContainer.Nfo = String.Empty
 
-                                    If Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "video_ts" OrElse (Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "bdmv") Then
+                                    If Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "bdmv" Then
                                         tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name)
                                         tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name, False)
                                     Else

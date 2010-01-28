@@ -158,7 +158,7 @@ Public Class dlgBulkRenamer
                                                             MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
                                                         MovieFile.IsVIDEO_TS = True
-                                                    ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(_curMovie.Filename).Name.ToLower = "bdmv" Then
+                                                    ElseIf Directory.GetParent(_curMovie.Filename).Name.ToLower = "bdmv" Then
                                                         MovieFile.Parent = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).Name
                                                         If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName Then
                                                             MovieFile.OldPath = String.Empty
@@ -167,7 +167,6 @@ Public Class dlgBulkRenamer
                                                             MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
                                                         MovieFile.IsBDMV = True
-
                                                     Else
                                                         MovieFile.Parent = Directory.GetParent(_curMovie.Filename).Name
                                                         If MovieFile.BasePath = Directory.GetParent(_curMovie.Filename).FullName Then

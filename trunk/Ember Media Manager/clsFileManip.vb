@@ -37,9 +37,7 @@ Namespace FileManip
             Dim fScanner As New Scanner
 
             Try
-                If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
-                    dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".ext")
-                ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv") Then
                     dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".ext")
                 Else
                     dPath = mMovie.Filename
@@ -72,13 +70,7 @@ Namespace FileManip
                         Dim fPath As String = mMovie.FanartPath
                         Dim tPath As String = String.Empty
                         If Not String.IsNullOrEmpty(fPath) Then
-                            If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
-                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                    tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
-                                Else
-                                    tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
-                                End If
-                            ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(fPath).Name.ToLower = "bdmv" Then
+                            If Directory.GetParent(fPath).Name.ToLower = "video_ts" OrElse Directory.GetParent(fPath).Name.ToLower = "bdmv" Then
                                 If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
                                     tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
                                 Else
@@ -98,9 +90,7 @@ Namespace FileManip
                     End If
 
                     If Not isCleaner AndAlso mMovie.isSingle AndAlso Not Master.SourcesList.Contains(Directory.GetParent(mMovie.Filename).FullName) Then
-                        If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
-                            DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
-                        ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                        If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
                             DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
                         Else
                             'check if there are other folders with movies in them
@@ -131,7 +121,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".tbn") _
                                 OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.tbn") _
-                                OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.tbn")) _
+                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.tbn") _
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".tbn") Then
                                     File.Delete(lFI.FullName)
                                     bReturn = True
@@ -142,7 +132,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, "-fanart.jpg") _
                                     OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts-fanart.jpg") _
-                                    OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index-fanart.jpg")) _
+                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index-fanart.jpg") _
                                     OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), "-fanart.jpg") Then
                                     File.Delete(lFI.FullName)
                                     bReturn = True
@@ -153,7 +143,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".nfo") _
                                     OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.nfo") _
-                                    OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.nfo")) _
+                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.nfo") _
                                     OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".nfo") Then
                                     File.Delete(lFI.FullName)
                                     bReturn = True
@@ -164,7 +154,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".fanart.jpg") _
                                     OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.fanart.jpg") _
-                                    OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.fanart.jpg")) _
+                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.fanart.jpg") _
                                     OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".fanart.jpg") Then
                                     File.Delete(lFI.FullName)
                                     bReturn = True
@@ -175,7 +165,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".jpg") _
                                     OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.jpg") _
-                                    OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.jpg")) _
+                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.jpg") _
                                     OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".jpg") Then
                                     File.Delete(lFI.FullName)
                                     bReturn = True
@@ -239,9 +229,7 @@ Namespace FileManip
                 Dim MovieFile As New FileInfo(mMovie.Filename)
                 Dim MovieDir As DirectoryInfo = MovieFile.Directory
 
-                If Master.eSettings.VideoTSParent AndAlso MovieDir.Name.ToLower = "video_ts" Then
-                    dPath = String.Concat(Path.Combine(MovieDir.Parent.FullName, MovieDir.Parent.Name), ".ext")
-                ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso MovieDir.Name.ToLower = "bdmv" Then
+                If Master.eSettings.VideoTSParent AndAlso (MovieDir.Name.ToLower = "video_ts" OrElse MovieDir.Name.ToLower = "bdmv") Then
                     dPath = String.Concat(Path.Combine(MovieDir.Parent.FullName, MovieDir.Parent.Name), ".ext")
                 Else
                     dPath = mMovie.Filename
@@ -274,13 +262,7 @@ Namespace FileManip
                         Dim fPath As String = mMovie.FanartPath
                         Dim tPath As String = String.Empty
                         If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                            If Directory.GetParent(fPath).Name.ToLower = "video_ts" Then
-                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                    tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
-                                Else
-                                    tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
-                                End If
-                            ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(fPath).Name.ToLower = "bdmv" Then
+                            If Directory.GetParent(fPath).Name.ToLower = "video_ts" OrElse Directory.GetParent(fPath).Name.ToLower = "bdmv" Then
                                 If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
                                     tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
                                 Else
@@ -302,9 +284,7 @@ Namespace FileManip
                     End If
 
                     If Not isCleaner AndAlso mMovie.isSingle AndAlso Not Master.SourcesList.Contains(MovieDir.Parent.ToString) Then
-                        If MovieDir.Name.ToLower = "video_ts" Then
-                            ItemsToDelete.Add(MovieDir.Parent)
-                        ElseIf Master.eSettings.AutoDetectBDMV AndAlso MovieDir.Name.ToLower = "bdmv" Then
+                        If MovieDir.Name.ToLower = "video_ts" OrElse MovieDir.Name.ToLower = "bdmv" Then
                             ItemsToDelete.Add(MovieDir.Parent)
                         Else
                             'check if there are other folders with movies in them
@@ -335,7 +315,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".tbn") _
                                 OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.tbn") _
-                                OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.tbn")) _
+                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.tbn") _
                                 OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".tbn") Then
                                     If isCleaner Then
                                         File.Delete(lFI.FullName)
@@ -350,7 +330,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, "-fanart.jpg") _
                                     OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts-fanart.jpg") _
-                                    OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index-fanart.jpg")) _
+                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index-fanart.jpg") _
                                     OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), "-fanart.jpg") Then
                                     If isCleaner Then
                                         File.Delete(lFI.FullName)
@@ -365,7 +345,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".nfo") _
                                     OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.nfo") _
-                                    OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.nfo")) _
+                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.nfo") _
                                     OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".nfo") Then
                                     If isCleaner Then
                                         File.Delete(lFI.FullName)
@@ -380,7 +360,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".fanart.jpg") _
                                     OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.fanart.jpg") _
-                                    OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.fanart.jpg")) _
+                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.fanart.jpg") _
                                     OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".fanart.jpg") Then
                                     If isCleaner Then
                                         File.Delete(lFI.FullName)
@@ -395,7 +375,7 @@ Namespace FileManip
                             If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
                                 If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".jpg") _
                                     OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.jpg") _
-                                    OrElse (Master.eSettings.AutoDetectBDMV AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.jpg")) _
+                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.jpg") _
                                     OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".jpg") Then
                                     If isCleaner Then
                                         File.Delete(lFI.FullName)
