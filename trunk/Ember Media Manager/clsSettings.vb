@@ -67,10 +67,13 @@ Public Class emmSettings
     Private _fanartsize As Master.FanartSize
     Private _showpostersize As Master.PosterSize
     Private _showfanartsize As Master.FanartSize
+    Private _eppostersize As Master.PosterSize
+    Private _epfanartsize As Master.FanartSize
     Private _autoET As Boolean
     Private _autoETsize As Master.FanartSize
     Private _fanartprefsizeonly As Boolean
     Private _showfanartprefsizeonly As Boolean
+    Private _epfanartprefsizeonly As Boolean
     Private _posterQuality As Integer
     Private _fanartQuality As Integer
     Private _overwritePoster As Boolean
@@ -79,6 +82,10 @@ Public Class emmSettings
     Private _showfanartQuality As Integer
     Private _overwriteShowPoster As Boolean
     Private _overwriteShowFanart As Boolean
+    Private _epposterQuality As Integer
+    Private _epfanartQuality As Integer
+    Private _overwriteEpPoster As Boolean
+    Private _overwriteEpFanart As Boolean
     Private _logerrors As Boolean
     Private _properCase As Boolean
     Private _showproperCase As Boolean
@@ -123,6 +130,12 @@ Public Class emmSettings
     Private _resizeshowposter As Boolean
     Private _showposterheight As Integer
     Private _showposterwidth As Integer
+    Private _resizeepfanart As Boolean
+    Private _epfanartheight As Integer
+    Private _epfanartwidth As Integer
+    Private _resizeepposter As Boolean
+    Private _epposterheight As Integer
+    Private _epposterwidth As Integer
     Private _useofdbtitle As Boolean
     Private _useofdboutline As Boolean
     Private _useofdbplot As Boolean
@@ -632,6 +645,24 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property PreferredEpPosterSize() As Master.PosterSize
+        Get
+            Return Me._eppostersize
+        End Get
+        Set(ByVal value As Master.PosterSize)
+            Me._eppostersize = value
+        End Set
+    End Property
+
+    Public Property PreferredEpFanartSize() As Master.FanartSize
+        Get
+            Return Me._epfanartsize
+        End Get
+        Set(ByVal value As Master.FanartSize)
+            Me._epfanartsize = value
+        End Set
+    End Property
+
     Public Property AutoET() As Boolean
         Get
             Return Me._autoET
@@ -665,6 +696,15 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._showfanartprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property EpFanartPrefSizeOnly() As Boolean
+        Get
+            Return Me._epfanartprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._epfanartprefsizeonly = value
         End Set
     End Property
 
@@ -737,6 +777,42 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._overwriteShowFanart = value
+        End Set
+    End Property
+
+    Public Property EpPosterQuality() As Integer
+        Get
+            Return Me._epposterQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._epposterQuality = value
+        End Set
+    End Property
+
+    Public Property EpFanartQuality() As Integer
+        Get
+            Return Me._epfanartQuality
+        End Get
+        Set(ByVal value As Integer)
+            Me._epfanartQuality = value
+        End Set
+    End Property
+
+    Public Property OverwriteEpPoster() As Boolean
+        Get
+            Return Me._overwriteEpPoster
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteEpPoster = value
+        End Set
+    End Property
+
+    Public Property OverwriteEpFanart() As Boolean
+        Get
+            Return Me._overwriteEpFanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._overwriteEpFanart = value
         End Set
     End Property
 
@@ -1133,6 +1209,60 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Integer)
             Me._showposterheight = value
+        End Set
+    End Property
+
+    Public Property ResizeEpFanart() As Boolean
+        Get
+            Return Me._resizeepfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeepfanart = value
+        End Set
+    End Property
+
+    Public Property EpFanartWidth() As Integer
+        Get
+            Return Me._epfanartwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._epfanartwidth = value
+        End Set
+    End Property
+
+    Public Property EpFanartHeight() As Integer
+        Get
+            Return Me._epfanartheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._epfanartheight = value
+        End Set
+    End Property
+
+    Public Property ResizeEpPoster() As Boolean
+        Get
+            Return Me._resizeepposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._resizeepposter = value
+        End Set
+    End Property
+
+    Public Property EpPosterWidth() As Integer
+        Get
+            Return Me._epposterwidth
+        End Get
+        Set(ByVal value As Integer)
+            Me._epposterwidth = value
+        End Set
+    End Property
+
+    Public Property EpPosterHeight() As Integer
+        Get
+            Return Me._epposterheight
+        End Get
+        Set(ByVal value As Integer)
+            Me._epposterheight = value
         End Set
     End Property
 
@@ -2352,10 +2482,13 @@ Public Class emmSettings
         Me._fanartsize = Master.FanartSize.Lrg
         Me._showpostersize = Master.PosterSize.Xlrg
         Me._showfanartsize = Master.FanartSize.Lrg
+        Me._eppostersize = Master.PosterSize.Xlrg
+        Me._epfanartsize = Master.FanartSize.Lrg
         Me._autoET = False
         Me._autoETsize = Master.FanartSize.Lrg
         Me._fanartprefsizeonly = False
         Me._showfanartprefsizeonly = False
+        Me._epfanartprefsizeonly = False
         Me._posterQuality = 0
         Me._fanartQuality = 0
         Me._overwritePoster = False
@@ -2364,6 +2497,10 @@ Public Class emmSettings
         Me._showfanartQuality = 0
         Me._overwriteShowPoster = False
         Me._overwriteShowFanart = False
+        Me._epposterQuality = 0
+        Me._epfanartQuality = 0
+        Me._overwriteEpPoster = False
+        Me._overwriteEpFanart = False
         Me._logerrors = True
         Me._properCase = True
         Me._showproperCase = True
@@ -2408,6 +2545,12 @@ Public Class emmSettings
         Me._resizeshowposter = False
         Me._showposterheight = 0
         Me._showposterwidth = 0
+        Me._resizeepfanart = False
+        Me._epfanartheight = 0
+        Me._epfanartwidth = 0
+        Me._resizeepposter = False
+        Me._epposterheight = 0
+        Me._epposterwidth = 0
         Me._useofdbtitle = False
         Me._useofdboutline = False
         Me._useofdbplot = False

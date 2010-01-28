@@ -472,6 +472,31 @@ Partial Class dlgSettings
         Me.Label49 = New System.Windows.Forms.Label
         Me.chkOverwriteShowFanart = New System.Windows.Forms.CheckBox
         Me.TabPage6 = New System.Windows.Forms.TabPage
+        Me.GroupBox46 = New System.Windows.Forms.GroupBox
+        Me.txtEpPosterWidth = New System.Windows.Forms.TextBox
+        Me.txtEpPosterHeight = New System.Windows.Forms.TextBox
+        Me.lblEpPosterQual = New System.Windows.Forms.Label
+        Me.tbEpPosterQual = New System.Windows.Forms.TrackBar
+        Me.Label43 = New System.Windows.Forms.Label
+        Me.Label44 = New System.Windows.Forms.Label
+        Me.Label45 = New System.Windows.Forms.Label
+        Me.chkResizeEpPoster = New System.Windows.Forms.CheckBox
+        Me.Label50 = New System.Windows.Forms.Label
+        Me.cbEpPosterSize = New System.Windows.Forms.ComboBox
+        Me.chkOverwriteEpPoster = New System.Windows.Forms.CheckBox
+        Me.GroupBox47 = New System.Windows.Forms.GroupBox
+        Me.txtEpFanartWidth = New System.Windows.Forms.TextBox
+        Me.txtEpFanartHeight = New System.Windows.Forms.TextBox
+        Me.chkEpFanartOnly = New System.Windows.Forms.CheckBox
+        Me.lblEpFanartQual = New System.Windows.Forms.Label
+        Me.tbEpFanartQual = New System.Windows.Forms.TrackBar
+        Me.Label56 = New System.Windows.Forms.Label
+        Me.Label57 = New System.Windows.Forms.Label
+        Me.Label58 = New System.Windows.Forms.Label
+        Me.chkResizeEpFanart = New System.Windows.Forms.CheckBox
+        Me.cbEpFanartSize = New System.Windows.Forms.ComboBox
+        Me.Label59 = New System.Windows.Forms.Label
+        Me.chkOverwriteEpFanart = New System.Windows.Forms.CheckBox
         Me.pnlTVScraper = New System.Windows.Forms.Panel
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -554,6 +579,11 @@ Partial Class dlgSettings
         CType(Me.tbShowPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox36.SuspendLayout()
         CType(Me.tbShowFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage6.SuspendLayout()
+        Me.GroupBox46.SuspendLayout()
+        CType(Me.tbEpPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox47.SuspendLayout()
+        CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -4932,7 +4962,7 @@ Partial Class dlgSettings
         Me.GroupBox37.Controls.Add(Me.Label54)
         Me.GroupBox37.Controls.Add(Me.cbShowPosterSize)
         Me.GroupBox37.Controls.Add(Me.chkOverwriteShowPoster)
-        Me.GroupBox37.Location = New System.Drawing.Point(4, 6)
+        Me.GroupBox37.Location = New System.Drawing.Point(4, 5)
         Me.GroupBox37.Name = "GroupBox37"
         Me.GroupBox37.Size = New System.Drawing.Size(218, 170)
         Me.GroupBox37.TabIndex = 2
@@ -5059,7 +5089,7 @@ Partial Class dlgSettings
         Me.GroupBox36.Controls.Add(Me.cbShowFanartSize)
         Me.GroupBox36.Controls.Add(Me.Label49)
         Me.GroupBox36.Controls.Add(Me.chkOverwriteShowFanart)
-        Me.GroupBox36.Location = New System.Drawing.Point(226, 6)
+        Me.GroupBox36.Location = New System.Drawing.Point(226, 5)
         Me.GroupBox36.Name = "GroupBox36"
         Me.GroupBox36.Size = New System.Drawing.Size(218, 170)
         Me.GroupBox36.TabIndex = 3
@@ -5184,6 +5214,8 @@ Partial Class dlgSettings
         '
         'TabPage6
         '
+        Me.TabPage6.Controls.Add(Me.GroupBox46)
+        Me.TabPage6.Controls.Add(Me.GroupBox47)
         Me.TabPage6.Location = New System.Drawing.Point(4, 22)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
@@ -5191,6 +5223,269 @@ Partial Class dlgSettings
         Me.TabPage6.TabIndex = 1
         Me.TabPage6.Text = "TV Episode"
         Me.TabPage6.UseVisualStyleBackColor = True
+        '
+        'GroupBox46
+        '
+        Me.GroupBox46.Controls.Add(Me.txtEpPosterWidth)
+        Me.GroupBox46.Controls.Add(Me.txtEpPosterHeight)
+        Me.GroupBox46.Controls.Add(Me.lblEpPosterQual)
+        Me.GroupBox46.Controls.Add(Me.tbEpPosterQual)
+        Me.GroupBox46.Controls.Add(Me.Label43)
+        Me.GroupBox46.Controls.Add(Me.Label44)
+        Me.GroupBox46.Controls.Add(Me.Label45)
+        Me.GroupBox46.Controls.Add(Me.chkResizeEpPoster)
+        Me.GroupBox46.Controls.Add(Me.Label50)
+        Me.GroupBox46.Controls.Add(Me.cbEpPosterSize)
+        Me.GroupBox46.Controls.Add(Me.chkOverwriteEpPoster)
+        Me.GroupBox46.Location = New System.Drawing.Point(4, 5)
+        Me.GroupBox46.Name = "GroupBox46"
+        Me.GroupBox46.Size = New System.Drawing.Size(218, 170)
+        Me.GroupBox46.TabIndex = 4
+        Me.GroupBox46.TabStop = False
+        Me.GroupBox46.Text = "Poster"
+        '
+        'txtEpPosterWidth
+        '
+        Me.txtEpPosterWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEpPosterWidth.Enabled = False
+        Me.txtEpPosterWidth.Location = New System.Drawing.Point(65, 94)
+        Me.txtEpPosterWidth.Name = "txtEpPosterWidth"
+        Me.txtEpPosterWidth.Size = New System.Drawing.Size(38, 20)
+        Me.txtEpPosterWidth.TabIndex = 3
+        '
+        'txtEpPosterHeight
+        '
+        Me.txtEpPosterHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEpPosterHeight.Enabled = False
+        Me.txtEpPosterHeight.Location = New System.Drawing.Point(172, 94)
+        Me.txtEpPosterHeight.Name = "txtEpPosterHeight"
+        Me.txtEpPosterHeight.Size = New System.Drawing.Size(38, 20)
+        Me.txtEpPosterHeight.TabIndex = 4
+        '
+        'lblEpPosterQual
+        '
+        Me.lblEpPosterQual.AutoSize = True
+        Me.lblEpPosterQual.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblEpPosterQual.Location = New System.Drawing.Point(183, 143)
+        Me.lblEpPosterQual.Name = "lblEpPosterQual"
+        Me.lblEpPosterQual.Size = New System.Drawing.Size(32, 16)
+        Me.lblEpPosterQual.TabIndex = 46
+        Me.lblEpPosterQual.Text = "100"
+        '
+        'tbEpPosterQual
+        '
+        Me.tbEpPosterQual.AutoSize = False
+        Me.tbEpPosterQual.BackColor = System.Drawing.Color.White
+        Me.tbEpPosterQual.LargeChange = 10
+        Me.tbEpPosterQual.Location = New System.Drawing.Point(7, 136)
+        Me.tbEpPosterQual.Maximum = 100
+        Me.tbEpPosterQual.Name = "tbEpPosterQual"
+        Me.tbEpPosterQual.Size = New System.Drawing.Size(179, 27)
+        Me.tbEpPosterQual.TabIndex = 5
+        Me.tbEpPosterQual.TickFrequency = 10
+        Me.tbEpPosterQual.Value = 100
+        '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Location = New System.Drawing.Point(3, 119)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(75, 13)
+        Me.Label43.TabIndex = 44
+        Me.Label43.Text = "Poster Quality:"
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Location = New System.Drawing.Point(3, 98)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(61, 13)
+        Me.Label44.TabIndex = 43
+        Me.Label44.Text = "Max Width:"
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.Location = New System.Drawing.Point(106, 98)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(64, 13)
+        Me.Label45.TabIndex = 42
+        Me.Label45.Text = "Max Height:"
+        '
+        'chkResizeEpPoster
+        '
+        Me.chkResizeEpPoster.AutoSize = True
+        Me.chkResizeEpPoster.Location = New System.Drawing.Point(6, 76)
+        Me.chkResizeEpPoster.Name = "chkResizeEpPoster"
+        Me.chkResizeEpPoster.Size = New System.Drawing.Size(159, 17)
+        Me.chkResizeEpPoster.TabIndex = 2
+        Me.chkResizeEpPoster.Text = "Automatically Resize Poster:"
+        Me.chkResizeEpPoster.UseVisualStyleBackColor = True
+        '
+        'Label50
+        '
+        Me.Label50.AutoSize = True
+        Me.Label50.Location = New System.Drawing.Point(3, 16)
+        Me.Label50.Name = "Label50"
+        Me.Label50.Size = New System.Drawing.Size(106, 13)
+        Me.Label50.TabIndex = 14
+        Me.Label50.Text = "Preferred Poster Size"
+        '
+        'cbEpPosterSize
+        '
+        Me.cbEpPosterSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbEpPosterSize.FormattingEnabled = True
+        Me.cbEpPosterSize.Location = New System.Drawing.Point(6, 33)
+        Me.cbEpPosterSize.Name = "cbEpPosterSize"
+        Me.cbEpPosterSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbEpPosterSize.TabIndex = 0
+        '
+        'chkOverwriteEpPoster
+        '
+        Me.chkOverwriteEpPoster.AutoSize = True
+        Me.chkOverwriteEpPoster.Location = New System.Drawing.Point(6, 57)
+        Me.chkOverwriteEpPoster.Name = "chkOverwriteEpPoster"
+        Me.chkOverwriteEpPoster.Size = New System.Drawing.Size(143, 17)
+        Me.chkOverwriteEpPoster.TabIndex = 1
+        Me.chkOverwriteEpPoster.Text = "Overwrite Existing Poster"
+        Me.chkOverwriteEpPoster.UseVisualStyleBackColor = True
+        '
+        'GroupBox47
+        '
+        Me.GroupBox47.Controls.Add(Me.txtEpFanartWidth)
+        Me.GroupBox47.Controls.Add(Me.txtEpFanartHeight)
+        Me.GroupBox47.Controls.Add(Me.chkEpFanartOnly)
+        Me.GroupBox47.Controls.Add(Me.lblEpFanartQual)
+        Me.GroupBox47.Controls.Add(Me.tbEpFanartQual)
+        Me.GroupBox47.Controls.Add(Me.Label56)
+        Me.GroupBox47.Controls.Add(Me.Label57)
+        Me.GroupBox47.Controls.Add(Me.Label58)
+        Me.GroupBox47.Controls.Add(Me.chkResizeEpFanart)
+        Me.GroupBox47.Controls.Add(Me.cbEpFanartSize)
+        Me.GroupBox47.Controls.Add(Me.Label59)
+        Me.GroupBox47.Controls.Add(Me.chkOverwriteEpFanart)
+        Me.GroupBox47.Location = New System.Drawing.Point(226, 5)
+        Me.GroupBox47.Name = "GroupBox47"
+        Me.GroupBox47.Size = New System.Drawing.Size(218, 170)
+        Me.GroupBox47.TabIndex = 5
+        Me.GroupBox47.TabStop = False
+        Me.GroupBox47.Text = "Fanart"
+        '
+        'txtEpFanartWidth
+        '
+        Me.txtEpFanartWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEpFanartWidth.Enabled = False
+        Me.txtEpFanartWidth.Location = New System.Drawing.Point(65, 93)
+        Me.txtEpFanartWidth.Name = "txtEpFanartWidth"
+        Me.txtEpFanartWidth.Size = New System.Drawing.Size(38, 20)
+        Me.txtEpFanartWidth.TabIndex = 4
+        '
+        'txtEpFanartHeight
+        '
+        Me.txtEpFanartHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEpFanartHeight.Enabled = False
+        Me.txtEpFanartHeight.Location = New System.Drawing.Point(172, 93)
+        Me.txtEpFanartHeight.Name = "txtEpFanartHeight"
+        Me.txtEpFanartHeight.Size = New System.Drawing.Size(38, 20)
+        Me.txtEpFanartHeight.TabIndex = 5
+        '
+        'chkEpFanartOnly
+        '
+        Me.chkEpFanartOnly.AutoSize = True
+        Me.chkEpFanartOnly.Location = New System.Drawing.Point(163, 34)
+        Me.chkEpFanartOnly.Name = "chkEpFanartOnly"
+        Me.chkEpFanartOnly.Size = New System.Drawing.Size(47, 17)
+        Me.chkEpFanartOnly.TabIndex = 1
+        Me.chkEpFanartOnly.Text = "Only"
+        Me.chkEpFanartOnly.UseVisualStyleBackColor = True
+        '
+        'lblEpFanartQual
+        '
+        Me.lblEpFanartQual.AutoSize = True
+        Me.lblEpFanartQual.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblEpFanartQual.Location = New System.Drawing.Point(183, 144)
+        Me.lblEpFanartQual.Name = "lblEpFanartQual"
+        Me.lblEpFanartQual.Size = New System.Drawing.Size(32, 16)
+        Me.lblEpFanartQual.TabIndex = 49
+        Me.lblEpFanartQual.Text = "100"
+        '
+        'tbEpFanartQual
+        '
+        Me.tbEpFanartQual.AutoSize = False
+        Me.tbEpFanartQual.BackColor = System.Drawing.Color.White
+        Me.tbEpFanartQual.LargeChange = 10
+        Me.tbEpFanartQual.Location = New System.Drawing.Point(6, 136)
+        Me.tbEpFanartQual.Maximum = 100
+        Me.tbEpFanartQual.Name = "tbEpFanartQual"
+        Me.tbEpFanartQual.Size = New System.Drawing.Size(180, 27)
+        Me.tbEpFanartQual.TabIndex = 6
+        Me.tbEpFanartQual.TickFrequency = 10
+        Me.tbEpFanartQual.Value = 100
+        '
+        'Label56
+        '
+        Me.Label56.AutoSize = True
+        Me.Label56.Location = New System.Drawing.Point(2, 119)
+        Me.Label56.Name = "Label56"
+        Me.Label56.Size = New System.Drawing.Size(75, 13)
+        Me.Label56.TabIndex = 47
+        Me.Label56.Text = "Fanart Quality:"
+        '
+        'Label57
+        '
+        Me.Label57.AutoSize = True
+        Me.Label57.Location = New System.Drawing.Point(3, 97)
+        Me.Label57.Name = "Label57"
+        Me.Label57.Size = New System.Drawing.Size(61, 13)
+        Me.Label57.TabIndex = 43
+        Me.Label57.Text = "Max Width:"
+        '
+        'Label58
+        '
+        Me.Label58.AutoSize = True
+        Me.Label58.Location = New System.Drawing.Point(106, 97)
+        Me.Label58.Name = "Label58"
+        Me.Label58.Size = New System.Drawing.Size(64, 13)
+        Me.Label58.TabIndex = 42
+        Me.Label58.Text = "Max Height:"
+        '
+        'chkResizeEpFanart
+        '
+        Me.chkResizeEpFanart.AutoSize = True
+        Me.chkResizeEpFanart.Location = New System.Drawing.Point(6, 76)
+        Me.chkResizeEpFanart.Name = "chkResizeEpFanart"
+        Me.chkResizeEpFanart.Size = New System.Drawing.Size(159, 17)
+        Me.chkResizeEpFanart.TabIndex = 3
+        Me.chkResizeEpFanart.Text = "Automatically Resize Fanart:"
+        Me.chkResizeEpFanart.UseVisualStyleBackColor = True
+        '
+        'cbEpFanartSize
+        '
+        Me.cbEpFanartSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbEpFanartSize.FormattingEnabled = True
+        Me.cbEpFanartSize.Location = New System.Drawing.Point(6, 30)
+        Me.cbEpFanartSize.Name = "cbEpFanartSize"
+        Me.cbEpFanartSize.Size = New System.Drawing.Size(148, 21)
+        Me.cbEpFanartSize.TabIndex = 0
+        '
+        'Label59
+        '
+        Me.Label59.AutoSize = True
+        Me.Label59.Location = New System.Drawing.Point(3, 14)
+        Me.Label59.Name = "Label59"
+        Me.Label59.Size = New System.Drawing.Size(106, 13)
+        Me.Label59.TabIndex = 15
+        Me.Label59.Text = "Preferred Fanart Size"
+        '
+        'chkOverwriteEpFanart
+        '
+        Me.chkOverwriteEpFanart.AutoSize = True
+        Me.chkOverwriteEpFanart.Location = New System.Drawing.Point(6, 56)
+        Me.chkOverwriteEpFanart.Name = "chkOverwriteEpFanart"
+        Me.chkOverwriteEpFanart.Size = New System.Drawing.Size(143, 17)
+        Me.chkOverwriteEpFanart.TabIndex = 2
+        Me.chkOverwriteEpFanart.Text = "Overwrite Existing Fanart"
+        Me.chkOverwriteEpFanart.UseVisualStyleBackColor = True
         '
         'pnlTVScraper
         '
@@ -5216,10 +5511,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
@@ -5227,6 +5518,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlTVSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -5364,6 +5659,13 @@ Partial Class dlgSettings
         Me.GroupBox36.ResumeLayout(False)
         Me.GroupBox36.PerformLayout()
         CType(Me.tbShowFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage6.ResumeLayout(False)
+        Me.GroupBox46.ResumeLayout(False)
+        Me.GroupBox46.PerformLayout()
+        CType(Me.tbEpPosterQual, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox47.ResumeLayout(False)
+        Me.GroupBox47.PerformLayout()
+        CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -5805,4 +6107,29 @@ Partial Class dlgSettings
     Friend WithEvents chkShowNfoCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowFanartCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowPosterCol As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox46 As System.Windows.Forms.GroupBox
+    Friend WithEvents txtEpPosterWidth As System.Windows.Forms.TextBox
+    Friend WithEvents txtEpPosterHeight As System.Windows.Forms.TextBox
+    Friend WithEvents lblEpPosterQual As System.Windows.Forms.Label
+    Friend WithEvents tbEpPosterQual As System.Windows.Forms.TrackBar
+    Friend WithEvents Label43 As System.Windows.Forms.Label
+    Friend WithEvents Label44 As System.Windows.Forms.Label
+    Friend WithEvents Label45 As System.Windows.Forms.Label
+    Friend WithEvents chkResizeEpPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents Label50 As System.Windows.Forms.Label
+    Friend WithEvents cbEpPosterSize As System.Windows.Forms.ComboBox
+    Friend WithEvents chkOverwriteEpPoster As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox47 As System.Windows.Forms.GroupBox
+    Friend WithEvents txtEpFanartWidth As System.Windows.Forms.TextBox
+    Friend WithEvents txtEpFanartHeight As System.Windows.Forms.TextBox
+    Friend WithEvents chkEpFanartOnly As System.Windows.Forms.CheckBox
+    Friend WithEvents lblEpFanartQual As System.Windows.Forms.Label
+    Friend WithEvents tbEpFanartQual As System.Windows.Forms.TrackBar
+    Friend WithEvents Label56 As System.Windows.Forms.Label
+    Friend WithEvents Label57 As System.Windows.Forms.Label
+    Friend WithEvents Label58 As System.Windows.Forms.Label
+    Friend WithEvents chkResizeEpFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents cbEpFanartSize As System.Windows.Forms.ComboBox
+    Friend WithEvents Label59 As System.Windows.Forms.Label
+    Friend WithEvents chkOverwriteEpFanart As System.Windows.Forms.CheckBox
 End Class

@@ -95,6 +95,9 @@ Partial Class frmMain
         Me.scTV = New System.Windows.Forms.SplitContainer
         Me.dgvTVShows = New System.Windows.Forms.DataGridView
         Me.mnuShows = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.cmnuShowTitle = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuEditShow = New System.Windows.Forms.ToolStripMenuItem
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
         Me.dgvTVSeasons = New System.Windows.Forms.DataGridView
         Me.mnuSeasons = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -314,9 +317,9 @@ Partial Class frmMain
         Me.tmrLoadSeason = New System.Windows.Forms.Timer(Me.components)
         Me.tmrWaitEp = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoadEp = New System.Windows.Forms.Timer(Me.components)
-        Me.cmnuShowTitle = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator
-        Me.cmnuEditShow = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuEpTitle = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuEditEpisode = New System.Windows.Forms.ToolStripMenuItem
         Me.StatusStrip.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.scMain.Panel1.SuspendLayout()
@@ -334,6 +337,7 @@ Partial Class frmMain
         Me.SplitContainer2.SuspendLayout()
         CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.mnuEpisodes.SuspendLayout()
         Me.pnlFilterSource.SuspendLayout()
         Me.pnlFilterGenre.SuspendLayout()
         Me.pnlListTop.SuspendLayout()
@@ -949,7 +953,27 @@ Partial Class frmMain
         '
         Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuEditShow})
         Me.mnuShows.Name = "mnuShows"
-        Me.mnuShows.Size = New System.Drawing.Size(153, 76)
+        Me.mnuShows.Size = New System.Drawing.Size(127, 54)
+        '
+        'cmnuShowTitle
+        '
+        Me.cmnuShowTitle.Enabled = False
+        Me.cmnuShowTitle.Image = CType(resources.GetObject("cmnuShowTitle.Image"), System.Drawing.Image)
+        Me.cmnuShowTitle.Name = "cmnuShowTitle"
+        Me.cmnuShowTitle.Size = New System.Drawing.Size(126, 22)
+        Me.cmnuShowTitle.Text = "Title"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(123, 6)
+        '
+        'cmnuEditShow
+        '
+        Me.cmnuEditShow.Image = CType(resources.GetObject("cmnuEditShow.Image"), System.Drawing.Image)
+        Me.cmnuEditShow.Name = "cmnuEditShow"
+        Me.cmnuEditShow.Size = New System.Drawing.Size(126, 22)
+        Me.cmnuEditShow.Text = "Edit Show"
         '
         'SplitContainer2
         '
@@ -1029,8 +1053,9 @@ Partial Class frmMain
         '
         'mnuEpisodes
         '
+        Me.mnuEpisodes.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpTitle, Me.ToolStripSeparator6, Me.cmnuEditEpisode})
         Me.mnuEpisodes.Name = "mnuEpisodes"
-        Me.mnuEpisodes.Size = New System.Drawing.Size(61, 4)
+        Me.mnuEpisodes.Size = New System.Drawing.Size(139, 54)
         '
         'pnlFilterSource
         '
@@ -2979,25 +3004,25 @@ Partial Class frmMain
         'tmrLoadEp
         '
         '
-        'cmnuShowTitle
+        'cmnuEpTitle
         '
-        Me.cmnuShowTitle.Enabled = False
-        Me.cmnuShowTitle.Image = CType(resources.GetObject("cmnuShowTitle.Image"), System.Drawing.Image)
-        Me.cmnuShowTitle.Name = "cmnuShowTitle"
-        Me.cmnuShowTitle.Size = New System.Drawing.Size(152, 22)
-        Me.cmnuShowTitle.Text = "Title"
+        Me.cmnuEpTitle.Enabled = False
+        Me.cmnuEpTitle.Image = CType(resources.GetObject("cmnuEpTitle.Image"), System.Drawing.Image)
+        Me.cmnuEpTitle.Name = "cmnuEpTitle"
+        Me.cmnuEpTitle.Size = New System.Drawing.Size(138, 22)
+        Me.cmnuEpTitle.Text = "Title"
         '
-        'ToolStripMenuItem2
+        'ToolStripSeparator6
         '
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(135, 6)
         '
-        'cmnuEditShow
+        'cmnuEditEpisode
         '
-        Me.cmnuEditShow.Image = CType(resources.GetObject("cmnuEditShow.Image"), System.Drawing.Image)
-        Me.cmnuEditShow.Name = "cmnuEditShow"
-        Me.cmnuEditShow.Size = New System.Drawing.Size(152, 22)
-        Me.cmnuEditShow.Text = "Edit Show"
+        Me.cmnuEditEpisode.Image = CType(resources.GetObject("cmnuEditEpisode.Image"), System.Drawing.Image)
+        Me.cmnuEditEpisode.Name = "cmnuEditEpisode"
+        Me.cmnuEditEpisode.Size = New System.Drawing.Size(138, 22)
+        Me.cmnuEditEpisode.Text = "Edit Episode"
         '
         'frmMain
         '
@@ -3033,6 +3058,7 @@ Partial Class frmMain
         Me.SplitContainer2.ResumeLayout(False)
         CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuEpisodes.ResumeLayout(False)
         Me.pnlFilterSource.ResumeLayout(False)
         Me.pnlFilterSource.PerformLayout()
         Me.pnlFilterGenre.ResumeLayout(False)
@@ -3382,4 +3408,7 @@ Partial Class frmMain
     Friend WithEvents cmnuShowTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuEditShow As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuEpTitle As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuEditEpisode As System.Windows.Forms.ToolStripMenuItem
 End Class

@@ -292,6 +292,16 @@ Public Class NFO
         Return nPath
     End Function
 
+    Public Shared Function GetEpNfoPath(ByVal EpPath As String) As String
+        Dim nPath As String = String.Empty
+
+        If File.Exists(String.Concat(FileManip.Common.RemoveExtFromPath(EpPath), ".nfo")) Then
+            nPath = String.Concat(FileManip.Common.RemoveExtFromPath(EpPath), ".nfo")
+        End If
+
+        Return nPath
+    End Function
+
     Public Shared Function GetNfoPath(ByVal sPath As String, ByVal isSingle As Boolean) As String
 
         '//
