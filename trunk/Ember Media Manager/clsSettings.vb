@@ -251,6 +251,7 @@ Public Class emmSettings
     Private _seasonposterjpg As Boolean
     Private _seasonnametbn As Boolean
     Private _seasonnamejpg As Boolean
+    Private _seasonfolderjpg As Boolean
     Private _seasonfanartjpg As Boolean
     Private _seasondashfanart As Boolean
     Private _seasondotfanart As Boolean
@@ -2300,6 +2301,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property SeasonFolderJPG() As Boolean
+        Get
+            Return _seasonfolderjpg
+        End Get
+        Set(ByVal value As Boolean)
+            _seasonfolderjpg = value
+        End Set
+    End Property
+
     Public Property SeasonFanartJPG() As Boolean
         Get
             Return _seasonfanartjpg
@@ -2666,6 +2676,7 @@ Public Class emmSettings
         Me._seasonposterjpg = False
         Me._seasonnametbn = False
         Me._seasonnamejpg = False
+        Me._seasonfolderjpg = False
         Me._seasonfanartjpg = False
         Me._seasondashfanart = False
         Me._seasondotfanart = False

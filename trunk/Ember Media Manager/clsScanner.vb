@@ -1469,10 +1469,10 @@ Public Class Scanner
         End If
 
         If bInside AndAlso ((Master.eSettings.SeasonPosterTBN OrElse Master.eSettings.SeasonPosterJPG OrElse _
-                            Master.eSettings.SeasonNameTBN OrElse Master.eSettings.SeasonNameJPG AndAlso _
-                            String.IsNullOrEmpty(TVDB.SeasonPosterPath)) OrElse (Master.eSettings.SeasonFanartJPG OrElse _
-                            Master.eSettings.SeasonDashFanart OrElse Master.eSettings.SeasonDotFanart AndAlso _
-                            String.IsNullOrEmpty(TVDB.SeasonFanartPath))) Then
+                            Master.eSettings.SeasonNameTBN OrElse Master.eSettings.SeasonNameJPG OrElse _
+                            Master.eSettings.SeasonFolderJPG AndAlso String.IsNullOrEmpty(TVDB.SeasonPosterPath)) OrElse _
+                            (Master.eSettings.SeasonFanartJPG OrElse Master.eSettings.SeasonDashFanart OrElse _
+                             Master.eSettings.SeasonDotFanart AndAlso String.IsNullOrEmpty(TVDB.SeasonFanartPath))) Then
             SeasonPath = Directory.GetParent(TVDB.Filename).FullName
 
             lFiles.Clear()
@@ -1499,6 +1499,11 @@ Public Class Scanner
 
                 If String.IsNullOrEmpty(TVDB.SeasonPosterPath) AndAlso Master.eSettings.SeasonNameJPG Then
                     fName = Path.Combine(SeasonPath, String.Concat(Directory.GetParent(TVDB.Filename).Name, ".jpg"))
+                    TVDB.SeasonPosterPath = lFiles.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
+                End If
+
+                If String.IsNullOrEmpty(TVDB.SeasonPosterPath) AndAlso Master.eSettings.SeasonFolderJPG Then
+                    fName = Path.Combine(SeasonPath, "folder.jpg")
                     TVDB.SeasonPosterPath = lFiles.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
                 End If
             End If

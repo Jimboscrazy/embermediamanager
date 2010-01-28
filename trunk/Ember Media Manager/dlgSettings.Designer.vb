@@ -367,6 +367,7 @@ Partial Class dlgSettings
         Me.chkSeasonDashFanart = New System.Windows.Forms.CheckBox
         Me.chkSeasonFanartJPG = New System.Windows.Forms.CheckBox
         Me.GroupBox34 = New System.Windows.Forms.GroupBox
+        Me.chkSeasonFolderJPG = New System.Windows.Forms.CheckBox
         Me.chkSeasonNameJPG = New System.Windows.Forms.CheckBox
         Me.chkSeasonNameTBN = New System.Windows.Forms.CheckBox
         Me.chkSeasonPosterJPG = New System.Windows.Forms.CheckBox
@@ -4024,9 +4025,9 @@ Partial Class dlgSettings
         Me.GroupBox33.Controls.Add(Me.GroupBox34)
         Me.GroupBox33.Controls.Add(Me.GroupBox38)
         Me.GroupBox33.Controls.Add(Me.GroupBox39)
-        Me.GroupBox33.Location = New System.Drawing.Point(189, 115)
+        Me.GroupBox33.Location = New System.Drawing.Point(189, 110)
         Me.GroupBox33.Name = "GroupBox33"
-        Me.GroupBox33.Size = New System.Drawing.Size(394, 203)
+        Me.GroupBox33.Size = New System.Drawing.Size(394, 211)
         Me.GroupBox33.TabIndex = 6
         Me.GroupBox33.TabStop = False
         Me.GroupBox33.Text = "File Naming"
@@ -4034,7 +4035,7 @@ Partial Class dlgSettings
         'Label41
         '
         Me.Label41.AutoSize = True
-        Me.Label41.Location = New System.Drawing.Point(262, 143)
+        Me.Label41.Location = New System.Drawing.Point(262, 187)
         Me.Label41.Name = "Label41"
         Me.Label41.Size = New System.Drawing.Size(133, 13)
         Me.Label41.TabIndex = 7
@@ -4044,7 +4045,7 @@ Partial Class dlgSettings
         '
         Me.GroupBox41.Controls.Add(Me.chkEpisodeDotFanart)
         Me.GroupBox41.Controls.Add(Me.chkEpisodeDashFanart)
-        Me.GroupBox41.Location = New System.Drawing.Point(263, 69)
+        Me.GroupBox41.Location = New System.Drawing.Point(263, 65)
         Me.GroupBox41.Name = "GroupBox41"
         Me.GroupBox41.Size = New System.Drawing.Size(123, 51)
         Me.GroupBox41.TabIndex = 4
@@ -4075,7 +4076,7 @@ Partial Class dlgSettings
         '
         Me.GroupBox40.Controls.Add(Me.chkEpisodeJPG)
         Me.GroupBox40.Controls.Add(Me.chkEpisodeTBN)
-        Me.GroupBox40.Location = New System.Drawing.Point(263, 17)
+        Me.GroupBox40.Location = New System.Drawing.Point(263, 13)
         Me.GroupBox40.Name = "GroupBox40"
         Me.GroupBox40.Size = New System.Drawing.Size(123, 52)
         Me.GroupBox40.TabIndex = 6
@@ -4107,7 +4108,7 @@ Partial Class dlgSettings
         Me.GroupBox35.Controls.Add(Me.chkSeasonDotFanart)
         Me.GroupBox35.Controls.Add(Me.chkSeasonDashFanart)
         Me.GroupBox35.Controls.Add(Me.chkSeasonFanartJPG)
-        Me.GroupBox35.Location = New System.Drawing.Point(128, 131)
+        Me.GroupBox35.Location = New System.Drawing.Point(128, 142)
         Me.GroupBox35.Name = "GroupBox35"
         Me.GroupBox35.Size = New System.Drawing.Size(131, 66)
         Me.GroupBox35.TabIndex = 3
@@ -4146,18 +4147,29 @@ Partial Class dlgSettings
         '
         'GroupBox34
         '
+        Me.GroupBox34.Controls.Add(Me.chkSeasonFolderJPG)
         Me.GroupBox34.Controls.Add(Me.chkSeasonNameJPG)
         Me.GroupBox34.Controls.Add(Me.chkSeasonNameTBN)
         Me.GroupBox34.Controls.Add(Me.chkSeasonPosterJPG)
         Me.GroupBox34.Controls.Add(Me.chkSeasonPosterTBN)
         Me.GroupBox34.Controls.Add(Me.chkSeasonXTBN)
         Me.GroupBox34.Controls.Add(Me.chkSeasonXXTBN)
-        Me.GroupBox34.Location = New System.Drawing.Point(127, 17)
+        Me.GroupBox34.Location = New System.Drawing.Point(127, 13)
         Me.GroupBox34.Name = "GroupBox34"
-        Me.GroupBox34.Size = New System.Drawing.Size(131, 114)
+        Me.GroupBox34.Size = New System.Drawing.Size(131, 130)
         Me.GroupBox34.TabIndex = 4
         Me.GroupBox34.TabStop = False
         Me.GroupBox34.Text = "Season Posters"
+        '
+        'chkSeasonFolderJPG
+        '
+        Me.chkSeasonFolderJPG.AutoSize = True
+        Me.chkSeasonFolderJPG.Location = New System.Drawing.Point(6, 111)
+        Me.chkSeasonFolderJPG.Name = "chkSeasonFolderJPG"
+        Me.chkSeasonFolderJPG.Size = New System.Drawing.Size(76, 17)
+        Me.chkSeasonFolderJPG.TabIndex = 6
+        Me.chkSeasonFolderJPG.Text = "folder.jpg *"
+        Me.chkSeasonFolderJPG.UseVisualStyleBackColor = True
         '
         'chkSeasonNameJPG
         '
@@ -4224,7 +4236,7 @@ Partial Class dlgSettings
         Me.GroupBox38.Controls.Add(Me.chkShowDotFanart)
         Me.GroupBox38.Controls.Add(Me.chkShowDashFanart)
         Me.GroupBox38.Controls.Add(Me.chkShowFanartJPG)
-        Me.GroupBox38.Location = New System.Drawing.Point(6, 100)
+        Me.GroupBox38.Location = New System.Drawing.Point(6, 96)
         Me.GroupBox38.Name = "GroupBox38"
         Me.GroupBox38.Size = New System.Drawing.Size(115, 70)
         Me.GroupBox38.TabIndex = 2
@@ -4267,7 +4279,7 @@ Partial Class dlgSettings
         Me.GroupBox39.Controls.Add(Me.chkShowPosterTBN)
         Me.GroupBox39.Controls.Add(Me.chkShowFolderJPG)
         Me.GroupBox39.Controls.Add(Me.chkShowSeasonAll)
-        Me.GroupBox39.Location = New System.Drawing.Point(6, 17)
+        Me.GroupBox39.Location = New System.Drawing.Point(6, 13)
         Me.GroupBox39.Name = "GroupBox39"
         Me.GroupBox39.Size = New System.Drawing.Size(116, 83)
         Me.GroupBox39.TabIndex = 0
@@ -4345,9 +4357,9 @@ Partial Class dlgSettings
         '
         Me.GroupBox30.Controls.Add(Me.chkTVIgnoreLastScan)
         Me.GroupBox30.Controls.Add(Me.chkTVCleanDB)
-        Me.GroupBox30.Location = New System.Drawing.Point(6, 114)
+        Me.GroupBox30.Location = New System.Drawing.Point(6, 110)
         Me.GroupBox30.Name = "GroupBox30"
-        Me.GroupBox30.Size = New System.Drawing.Size(177, 203)
+        Me.GroupBox30.Size = New System.Drawing.Size(177, 211)
         Me.GroupBox30.TabIndex = 5
         Me.GroupBox30.TabStop = False
         Me.GroupBox30.Text = "Miscellaneous Options"
@@ -5511,6 +5523,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
@@ -5521,7 +5534,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -6132,4 +6144,5 @@ Partial Class dlgSettings
     Friend WithEvents cbEpFanartSize As System.Windows.Forms.ComboBox
     Friend WithEvents Label59 As System.Windows.Forms.Label
     Friend WithEvents chkOverwriteEpFanart As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonFolderJPG As System.Windows.Forms.CheckBox
 End Class
