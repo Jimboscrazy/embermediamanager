@@ -56,9 +56,9 @@ Public Class XML
                 Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV)
                 Dim sourceCheck As String = String.Empty
 
-                If Directory.GetParent(fName).Name.ToLower = "video_ts" Then
-                    sourceCheck = Directory.GetParent(Directory.GetParent(fName).FullName).Name.ToLower
-                ElseIf Directory.GetParent(fName).Name.ToLower = "bdmv" Then
+                If FileManip.Common.isVideoTS(fName) Then
+                    sourceCheck = "dvd"
+                ElseIf FileManip.Common.isBDRip(fName) Then
                     sourceCheck = "bluray"
                 Else
                     sourceCheck = String.Concat(Directory.GetParent(fName).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(fName).ToLower)
@@ -493,9 +493,9 @@ Public Class XML
         Dim sourceCheck As String = String.Empty
 
         Try
-            If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-                sourceCheck = Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower
-            ElseIf Directory.GetParent(sPath).Name.ToLower = "bdmv" Then
+            If FileManip.Common.isVideoTS(sPath) Then
+                sourceCheck = "dvd"
+            ElseIf FileManip.Common.isBDRip(sPath) Then
                 sourceCheck = "bluray"
             Else
                 sourceCheck = String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower)

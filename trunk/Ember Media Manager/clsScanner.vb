@@ -473,8 +473,8 @@ Public Class Scanner
             If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
                 di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
                 bSingle = True
-            ElseIf Directory.Exists(Path.Combine(sPath, "BDMV")) Then
-                di = New DirectoryInfo(Path.Combine(sPath, "BDMV"))
+            ElseIf Directory.Exists(Path.Combine(sPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))) Then
+                di = New DirectoryInfo(Path.Combine(sPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")))
                 bSingle = True
             Else
                 di = New DirectoryInfo(sPath)
@@ -508,19 +508,22 @@ Public Class Scanner
                     Next
                 End If
 
-                If Master.eSettings.AutoDetectBDMV Then
-                    For Each lfile As FileInfo In lFi
+                If Not vtsSingle Then
+                    If Master.eSettings.AutoDetectBDMV Then
+                        For Each lfile As FileInfo In lFi
 
-                        If Path.GetFileName(lfile.FullName) = "index.bdmv" Then
-                            bdmvSingle = True
-                            tFile = lfile.FullName
-                            Exit For
-                        End If
+                            If Path.GetFileName(lfile.FullName) = "index.bdmv" Then
+                                bdmvSingle = True
+                                tFile = lfile.FullName
+                                Exit For
+                            End If
 
-                        If Me.bwPrelim.CancellationPending Then Return
+                            If Me.bwPrelim.CancellationPending Then Return
 
-                    Next
+                        Next
+                    End If
                 End If
+
 
                 If (vtsSingle OrElse bdmvSingle) AndAlso Not String.IsNullOrEmpty(tFile) Then
                     If Not MoviePaths.Contains(StringManip.CleanStackingMarkers(tFile.ToLower)) AndAlso _
@@ -534,7 +537,7 @@ Public Class Scanner
                         Me.bwPrelim.ReportProgress(0, Path.GetFileName(tFile))
                         fList.Add(New AllContainer With {.Type = MediaType.Movie, .MContainer = New MovieContainer With {.Filename = tFile, .Source = sSource, .isSingle = bSingle, .UseFolder = bUseFolder}})
                     End If
-               
+
                 Else
                     lFi.Sort(AddressOf FileManip.Common.SortFileNames)
 
@@ -590,7 +593,7 @@ Public Class Scanner
             If Path.GetDirectoryName(sPath).ToLower = "extrathumbs" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "extras" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "video_ts" OrElse _
-            (Master.eSettings.AutoDetectBDMV AndAlso Path.GetDirectoryName(sPath).ToLower = "bdmv") OrElse _
+            Path.GetDirectoryName(sPath).ToLower = "bdmv" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "audio_ts" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "recycler" OrElse _
             Path.GetDirectoryName(sPath).ToLower = "subs" OrElse _
@@ -689,7 +692,7 @@ Public Class Scanner
         Dim fList As New List(Of String)
 
         Try
-            If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(Movie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(Movie.Filename).Name.ToLower = "bdmv") Then
+            If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(Movie.Filename) Then
                 isYAMJ = True
 
                 Try
@@ -704,7 +707,21 @@ Public Class Scanner
                 If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
                     Movie.Extra = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
                 End If
+            ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(Movie.Filename) Then
+                isYAMJ = True
 
+                Try
+                    fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).FullName))
+                Catch
+                End Try
+
+                parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).FullName.ToLower
+                tmpName = Path.Combine(parPath, StringManip.CleanStackingMarkers(Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).Name)).ToLower
+                tmpNameNoStack = Path.Combine(parPath, Directory.GetParent(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName).Name).ToLower
+
+                If Movie.isSingle AndAlso File.Exists(String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")) Then
+                    Movie.Extra = String.Concat(Directory.GetParent(Directory.GetParent(Movie.Filename).FullName).FullName, Path.DirectorySeparatorChar, "extrathumbs", Path.DirectorySeparatorChar, "thumb1.jpg")
+                End If
             Else
                 If Movie.isSingle Then
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(Movie.Filename).FullName))
@@ -1341,9 +1358,12 @@ Public Class Scanner
                                         'no title so assume it's an invalid nfo, clear nfo path if exists
                                         sFile.MContainer.Nfo = String.Empty
 
-                                    If Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(sFile.MContainer.Filename).Name.ToLower = "bdmv" Then
+                                    If FileManip.Common.isVideoTS(sFile.MContainer.Filename) Then
                                         tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name)
                                         tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).Name, False)
+                                    ElseIf FileManip.Common.isBDRip(sFile.MContainer.Filename) Then
+                                        tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).FullName).Name)
+                                        tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.MContainer.Filename).FullName).FullName).Name, False)
                                     Else
                                         If sFile.MContainer.UseFolder AndAlso sFile.MContainer.isSingle Then
                                             tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.MContainer.Filename).Name)

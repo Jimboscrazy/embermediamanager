@@ -159,7 +159,7 @@ Public Class Images
                 ImageManip.ResizeImage(_image, Master.eSettings.PosterWidth, Master.eSettings.PosterHeight)
             End If
 
-            If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv") Then
+            If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(mMovie.Filename) Then
 
                 If Master.eSettings.MovieNameJPG OrElse Master.eSettings.MovieJPG OrElse Master.eSettings.FolderJPG OrElse Master.eSettings.PosterJPG Then
                     pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".jpg")
@@ -169,6 +169,21 @@ Public Class Images
                     End If
                 ElseIf Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieTBN OrElse Master.eSettings.PosterTBN Then
                     pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".tbn")
+                    If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+                        Save(pPath, Master.eSettings.PosterQuality)
+                        strReturn = pPath
+                    End If
+                End If
+            ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(mMovie.Filename) Then
+
+                If Master.eSettings.MovieNameJPG OrElse Master.eSettings.MovieJPG OrElse Master.eSettings.FolderJPG OrElse Master.eSettings.PosterJPG Then
+                    pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name), ".jpg")
+                    If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+                        Save(pPath, Master.eSettings.PosterQuality)
+                        strReturn = pPath
+                    End If
+                ElseIf Master.eSettings.MovieNameTBN OrElse Master.eSettings.MovieTBN OrElse Master.eSettings.PosterTBN Then
+                    pPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name), ".tbn")
                     If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                         Save(pPath, Master.eSettings.PosterQuality)
                         strReturn = pPath
@@ -204,9 +219,9 @@ Public Class Images
                 End If
 
                 If Master.eSettings.MovieNameJPG AndAlso (Not mMovie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
-                    If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                    If FileManip.Common.isVideoTS(mMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "video_ts.jpg")
-                    ElseIf Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                    ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "index.jpg")
                     Else
                         tPath = String.Concat(pPath, ".jpg")
@@ -226,9 +241,9 @@ Public Class Images
                 End If
 
                 If Master.eSettings.MovieNameTBN AndAlso (Not mMovie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
-                    If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                    If FileManip.Common.isVideoTS(mMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "video_ts.tbn")
-                    ElseIf Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                    ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "index.tbn")
                     Else
                         tPath = String.Concat(pPath, ".tbn")
@@ -353,8 +368,10 @@ Public Class Images
         Dim iVal As Integer = 1
         Dim extraPath As String = String.Empty
 
-        If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(inPath).Name.ToLower = "video_ts" OrElse Directory.GetParent(inPath).Name.ToLower = "bdmv") Then
+        If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(inPath) Then
             extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(inPath).FullName).FullName, "extrathumbs")
+        ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(inPath) Then
+            extraPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(inPath).FullName).FullName).FullName, "extrathumbs")
         Else
             extraPath = Path.Combine(Directory.GetParent(inPath).FullName, "extrathumbs")
         End If
@@ -382,8 +399,17 @@ Public Class Images
                 ImageManip.ResizeImage(_image, Master.eSettings.FanartWidth, Master.eSettings.FanartHeight)
             End If
 
-            If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv") Then
+            If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(mMovie.Filename) Then
                 fPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".fanart.jpg")
+                If Not File.Exists(fPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
+                    Save(fPath, Master.eSettings.FanartQuality)
+                    strReturn = fPath
+                    If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
+                        Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath)), Master.eSettings.FanartQuality)
+                    End If
+                End If
+            ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(mMovie.Filename) Then
+                fPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name), ".fanart.jpg")
                 If Not File.Exists(fPath) OrElse (IsEdit OrElse Master.eSettings.OverwritePoster) Then
                     Save(fPath, Master.eSettings.FanartQuality)
                     strReturn = fPath
@@ -396,9 +422,9 @@ Public Class Images
                 fPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, tmpName)
 
                 If Master.eSettings.MovieNameDotFanartJPG AndAlso (Not mMovie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
-                    If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                    If FileManip.Common.isVideoTS(mMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "video_ts.fanart.jpg")
-                    ElseIf Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                    ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "index.fanart.jpg")
                     Else
                         tPath = String.Concat(fPath, ".fanart.jpg")
@@ -407,8 +433,10 @@ Public Class Images
                         Save(tPath, Master.eSettings.FanartQuality)
                         strReturn = tPath
                         If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
-                            If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                            If FileManip.Common.isVideoTS(mMovie.Filename) Then
                                 Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
+                            ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
+                                Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
                             Else
                                 Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(tPath)), Master.eSettings.FanartQuality)
                             End If
@@ -417,19 +445,22 @@ Public Class Images
                 End If
 
                 If Master.eSettings.MovieNameFanartJPG AndAlso (Not mMovie.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
-                    If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                    If FileManip.Common.isVideoTS(mMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "video_ts-fanart.jpg")
-                    ElseIf Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                    ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
                         tPath = Path.Combine(Directory.GetParent(mMovie.Filename).FullName, "index-fanart.jpg")
                     Else
                         tPath = String.Concat(fPath, "-fanart.jpg")
                     End If
+
                     If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteFanart) Then
                         Save(tPath, Master.eSettings.FanartQuality)
                         strReturn = tPath
                         If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
-                            If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                            If FileManip.Common.isVideoTS(mMovie.Filename) Then
                                 Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
+                            ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
+                                Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
                             Else
                                 Save(Path.Combine(Master.eSettings.BDPath, Path.GetFileName(tPath)), Master.eSettings.FanartQuality)
                             End If
@@ -443,8 +474,10 @@ Public Class Images
                         Save(tPath, Master.eSettings.FanartQuality)
                         strReturn = tPath
                         If Master.eSettings.AutoBD AndAlso Directory.Exists(Master.eSettings.BDPath) Then
-                            If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                            If FileManip.Common.isVideoTS(mMovie.Filename) Then
                                 Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
+                            ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
+                                Save(Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name, "-fanart.jpg")), Master.eSettings.FanartQuality)
                             Else
                                 Save(Path.Combine(Master.eSettings.BDPath, String.Concat(tmpName, "-fanart.jpg")), Master.eSettings.FanartQuality)
                             End If
@@ -1413,10 +1446,14 @@ foundIT:
         Try
             Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
 
-            If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv") Then
+            If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(mMovie.Filename) Then
                 Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".jpg"))
                 Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".tbn"))
+            ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(mMovie.Filename) Then
+                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".jpg"))
+                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".tbn"))
             Else
+
                 If mMovie.isSingle Then
                     Delete(Path.Combine(tPath, "movie.tbn"))
                     Delete(Path.Combine(tPath, "movie.jpg"))
@@ -1425,10 +1462,10 @@ foundIT:
                     Delete(Path.Combine(tPath, "folder.jpg"))
                 End If
 
-                If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                If FileManip.Common.isVideoTS(mMovie.Filename) Then
                     Delete(Path.Combine(tPath, "video_ts.tbn"))
                     Delete(Path.Combine(tPath, "video_ts.jpg"))
-                ElseIf Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
                     Delete(Path.Combine(tPath, "index.tbn"))
                     Delete(Path.Combine(tPath, "index.jpg"))
                 Else
@@ -1473,15 +1510,17 @@ foundIT:
         Try
             Dim tPath As String = Directory.GetParent(mMovie.Filename).FullName
 
-            If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv") Then
+            If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(mMovie.Filename) Then
                 Delete(String.Concat(Path.Combine(Directory.GetParent(tPath).FullName, Directory.GetParent(tPath).Name), ".fanart.jpg"))
+            ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(mMovie.Filename) Then
+                Delete(String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(tPath).FullName).FullName, Directory.GetParent(Directory.GetParent(tPath).FullName).Name), ".fanart.jpg"))
             Else
                 If mMovie.isSingle Then Delete(Path.Combine(tPath, "fanart.jpg"))
 
-                If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" Then
+                If FileManip.Common.isVideoTS(mMovie.Filename) Then
                     Delete(Path.Combine(tPath, "video_ts-fanart.jpg"))
                     Delete(Path.Combine(tPath, "video_ts.fanart.jpg"))
-                ElseIf Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
                     Delete(Path.Combine(tPath, "index-fanart.jpg"))
                     Delete(Path.Combine(tPath, "index.fanart.jpg"))
                 Else

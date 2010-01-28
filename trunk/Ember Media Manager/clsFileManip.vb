@@ -37,8 +37,10 @@ Namespace FileManip
             Dim fScanner As New Scanner
 
             Try
-                If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv") Then
+                If Master.eSettings.VideoTSParent AndAlso Common.isVideoTS(mMovie.Filename) Then
                     dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).Name), ".ext")
+                ElseIf Master.eSettings.VideoTSParent AndAlso Common.isBDRip(mMovie.Filename) Then
+                    dPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).Name), ".ext")
                 Else
                     dPath = mMovie.Filename
                 End If
@@ -70,9 +72,15 @@ Namespace FileManip
                         Dim fPath As String = mMovie.FanartPath
                         Dim tPath As String = String.Empty
                         If Not String.IsNullOrEmpty(fPath) Then
-                            If Directory.GetParent(fPath).Name.ToLower = "video_ts" OrElse Directory.GetParent(fPath).Name.ToLower = "bdmv" Then
+                            If FileManip.Common.isVideoTS(fPath) Then
                                 If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
                                     tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
+                                Else
+                                    tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
+                                End If
+                            ElseIf FileManip.Common.isBDRip(fPath) Then
+                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
+                                    tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).Name, "-fanart.jpg"))
                                 Else
                                     tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
                                 End If
@@ -90,8 +98,10 @@ Namespace FileManip
                     End If
 
                     If Not isCleaner AndAlso mMovie.isSingle AndAlso Not Master.SourcesList.Contains(Directory.GetParent(mMovie.Filename).FullName) Then
-                        If Directory.GetParent(mMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(mMovie.Filename).Name.ToLower = "bdmv" Then
+                        If FileManip.Common.isVideoTS(mMovie.Filename) Then
                             DeleteDirectory(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName)
+                        ElseIf FileManip.Common.isBDRip(mMovie.Filename) Then
+                            DeleteDirectory(Directory.GetParent(Directory.GetParent(Directory.GetParent(mMovie.Filename).FullName).FullName).FullName)
                         Else
                             'check if there are other folders with movies in them
                             If Not fScanner.SubDirsHaveMovies(New DirectoryInfo(Directory.GetParent(mMovie.Filename).FullName)) Then
@@ -229,8 +239,10 @@ Namespace FileManip
                 Dim MovieFile As New FileInfo(mMovie.Filename)
                 Dim MovieDir As DirectoryInfo = MovieFile.Directory
 
-                If Master.eSettings.VideoTSParent AndAlso (MovieDir.Name.ToLower = "video_ts" OrElse MovieDir.Name.ToLower = "bdmv") Then
+                If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(MovieDir.FullName) Then
                     dPath = String.Concat(Path.Combine(MovieDir.Parent.FullName, MovieDir.Parent.Name), ".ext")
+                ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(MovieDir.FullName) Then
+                    dPath = String.Concat(Path.Combine(MovieDir.Parent.Parent.FullName, MovieDir.Parent.Parent.Name), ".ext")
                 Else
                     dPath = mMovie.Filename
                 End If
@@ -262,9 +274,15 @@ Namespace FileManip
                         Dim fPath As String = mMovie.FanartPath
                         Dim tPath As String = String.Empty
                         If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                            If Directory.GetParent(fPath).Name.ToLower = "video_ts" OrElse Directory.GetParent(fPath).Name.ToLower = "bdmv" Then
+                            If Common.isVideoTS(fPath) Then
                                 If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
                                     tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
+                                Else
+                                    tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
+                                End If
+                            ElseIf Common.isBDRip(fPath) Then
+                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
+                                    tPath = Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).Name, "-fanart.jpg"))
                                 Else
                                     tPath = Path.Combine(Master.eSettings.BDPath, Path.GetFileName(fPath))
                                 End If
@@ -284,8 +302,10 @@ Namespace FileManip
                     End If
 
                     If Not isCleaner AndAlso mMovie.isSingle AndAlso Not Master.SourcesList.Contains(MovieDir.Parent.ToString) Then
-                        If MovieDir.Name.ToLower = "video_ts" OrElse MovieDir.Name.ToLower = "bdmv" Then
+                        If Common.isVideoTS(MovieDir.FullName) Then
                             ItemsToDelete.Add(MovieDir.Parent)
+                        ElseIf Common.isBDRip(MovieDir.FullName) Then
+                            ItemsToDelete.Add(MovieDir.Parent.Parent)
                         Else
                             'check if there are other folders with movies in them
                             If Not fScanner.SubDirsHaveMovies(MovieDir) Then
@@ -533,6 +553,28 @@ Namespace FileManip
                 Return 0
             End Try
 
+        End Function
+
+        Public Shared Function GetLongestFromRip(ByVal sPath As String) As String
+
+            Dim lFileList As New List(Of FileInfo)
+            Select Case True
+                Case isBDRip(sPath)
+                    lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.m2ts"))
+                Case isVideoTS(sPath)
+                    lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.vob"))
+            End Select
+
+            Return lFileList.Where(Function(s) s.Length > 1073741824).OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
+
+        End Function
+
+        Public Shared Function isBDRip(ByVal sPath As String) As Boolean
+            Return Directory.GetParent(sPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower = "bdmv"
+        End Function
+
+        Public Shared Function isVideoTS(ByVal sPath As String) As Boolean
+            Return Directory.GetParent(sPath).Name.ToLower = "video_ts"
         End Function
     End Class
 End Namespace

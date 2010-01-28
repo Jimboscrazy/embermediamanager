@@ -513,8 +513,10 @@ Public Class frmMain
                                 If String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
                                     'no title so assume it's an invalid nfo, clear nfo path if exists
                                     sFile.Nfo = String.Empty
-                                    If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(sFile.Filename).Name.ToLower = "bdmv" Then
+                                    If FileManip.Common.isVideoTS(sFile.Filename) Then
                                         Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
+                                    ElseIf FileManip.Common.isBDRip(sFile.Filename) Then
+                                        Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).FullName).Name)
                                     Else
                                         If sFile.UseFolder AndAlso sFile.isSingle Then
                                             Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(sFile.Filename).Name)
@@ -3814,10 +3816,10 @@ Public Class frmMain
                                         scrapeMovie.ListTitle = tTitle
                                     End If
                                 Else
-                                    If Directory.GetParent(drvRow.Item(1).ToString).Name.ToLower = "video_ts" Then
+                                    If FileManip.Common.isVideoTS(drvRow.Item(1).ToString) Then
                                         scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
-                                    ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(drvRow.Item(1).ToString).Name.ToLower = "bdmv" Then
-                                        scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
+                                    ElseIf FileManip.Common.isBDRip(drvRow.Item(1).ToString) Then
+                                        scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).FullName).Name)
                                     Else
                                         If Convert.ToBoolean(drvRow.Item(46)) AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
                                             scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
@@ -3987,10 +3989,10 @@ Public Class frmMain
                                             scrapeMovie.ListTitle = tTitle
                                         End If
                                     Else
-                                        If Directory.GetParent(drvRow.Item(1).ToString).Name.ToLower = "video_ts" Then
+                                        If FileManip.Common.isVideoTS(drvRow.Item(1).ToString) Then
                                             scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
-                                        ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(drvRow.Item(1).ToString).Name.ToLower = "bdmv" Then
-                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).Name)
+                                        ElseIf FileManip.Common.isBDRip(drvRow.Item(1).ToString) Then
+                                            scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Item(1).ToString).FullName).FullName).Name)
                                         Else
                                             If Convert.ToBoolean(drvRow.Item(46)) AndAlso Convert.ToBoolean(drvRow.Item(2)) Then
                                                 scrapeMovie.ListTitle = StringManip.FilterName(Directory.GetParent(drvRow.Item(1).ToString).Name)
@@ -4047,7 +4049,7 @@ Public Class frmMain
                                 If Me.bwScraper.CancellationPending Then GoTo doCancel
                                 sPath = drvRow.Item(40).ToString
                                 If Not String.IsNullOrEmpty(sPath) Then
-                                    If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
+                                    If FileManip.Common.isVideoTS(sPath) Then
                                         If Master.eSettings.VideoTSParent Then
                                             FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
                                         Else
@@ -4057,19 +4059,16 @@ Public Class frmMain
                                                 FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
                                             End If
                                         End If
-                                    ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(sPath).Name.ToLower = "bdmv" Then
-
+                                    ElseIf FileManip.Common.isBDRip(sPath) Then
                                         If Master.eSettings.VideoTSParent Then
-                                            FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
+                                            FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
                                         Else
                                             If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                                FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
+                                                FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
                                             Else
                                                 FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, Path.GetFileName(sPath)))
-
                                             End If
                                         End If
-
                                     Else
                                         If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
                                             FileManip.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.BDPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item(1).ToString), "-fanart.jpg")))
@@ -5709,12 +5708,12 @@ doCancel:
                 End If
 
                 If String.IsNullOrEmpty(tmpMovieDb.Movie.Title) Then
-                    If Directory.GetParent(tmpMovieDb.Filename).Name.ToLower = "video_ts" Then
+                    If FileManip.Common.isVideoTS(tmpMovieDb.Filename) Then
                         tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name)
                         tmpMovieDb.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name, False)
-                    ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(tmpMovieDb.Filename).Name.ToLower = "bdmv" Then
-                        tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name)
-                        tmpMovieDb.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).Name, False)
+                    ElseIf FileManip.Common.isBDRip(tmpMovieDb.Filename) Then
+                        tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name)
+                        tmpMovieDb.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(tmpMovieDb.Filename).FullName).FullName).Name, False)
                     Else
                         If tmpMovieDb.UseFolder AndAlso tmpMovieDb.isSingle Then
                             tmpMovieDb.ListTitle = StringManip.FilterName(Directory.GetParent(tmpMovieDb.Filename).Name)
@@ -6085,11 +6084,10 @@ doCancel:
                     For Each drvRow As DataGridViewRow In Me.dgvMediaList.Rows
 
                         If Master.eSettings.LevTolerance > 0 Then
-                            If Directory.GetParent(drvRow.Cells(1).Value.ToString).Name.ToLower = "video_ts" Then
+                            If FileManip.Common.isVideoTS(drvRow.Cells(1).Value.ToString) Then
                                 pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).Name
-                            ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(drvRow.Cells(1).Value.ToString).Name.ToLower = "bdmv" Then
-                                pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).Name
-
+                            ElseIf FileManip.Common.isBDRip(drvRow.Cells(1).Value.ToString) Then
+                                pTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Cells(1).Value.ToString).FullName).FullName).Name
                             Else
                                 If Convert.ToBoolean(drvRow.Cells(46).Value) AndAlso Convert.ToBoolean(drvRow.Cells(2).Value) Then
                                     pTitle = Directory.GetParent(drvRow.Cells(1).Value.ToString).Name

@@ -222,8 +222,10 @@ Public Class dlgExportMovies
                 Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV)
                 Dim sourceCheck As String = String.Empty
 
-                If Directory.GetParent(AVMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(AVMovie.Filename).Name.ToLower = "bdmv" Then
-                    sourceCheck = Directory.GetParent(Directory.GetParent(AVMovie.Filename).FullName).Name.ToLower
+                If FileManip.Common.isVideoTS(AVMovie.Filename) Then
+                    sourceCheck = "dvd"
+                ElseIf FileManip.Common.isBDRip(AVMovie.Filename) Then
+                    sourceCheck = "bluray"
                 Else
                     sourceCheck = String.Concat(Directory.GetParent(AVMovie.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.Filename).ToLower)
                 End If
