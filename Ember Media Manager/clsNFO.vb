@@ -310,19 +310,7 @@ Public Class NFO
 
         Dim nPath As String = String.Empty
 
-        If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
-            nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
-            If File.Exists(nPath) Then
-                Return nPath
-            Else
-                If Not isSingle Then
-                    Return String.Empty
-                Else
-                    'return movie path so we can use it for looking for non-conforming nfos
-                    Return sPath
-                End If
-            End If
-        ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(sPath).Name.ToLower = "bdmv" Then
+        If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(sPath).Name.ToLower = "video_ts" OrElse Directory.GetParent(sPath).Name.ToLower = "bdmv") Then
             nPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), ".nfo")
             If File.Exists(nPath) Then
                 Return nPath
@@ -553,29 +541,7 @@ Public Class NFO
             Dim doesExist As Boolean = False
             Dim fAtt As New FileAttributes
 
-            If Master.eSettings.VideoTSParent AndAlso Directory.GetParent(movieToSave.Filename).Name.ToLower = "video_ts" Then
-                tPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).Name), ".nfo")
-
-                If Not Master.eSettings.OverwriteNfo Then
-                    RenameNonConfNfo(tPath, False)
-                End If
-
-                doesExist = File.Exists(tPath)
-                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                    If doesExist Then
-                        fAtt = File.GetAttributes(tPath)
-                        File.SetAttributes(tPath, FileAttributes.Normal)
-                    End If
-
-                    Using xmlSW As New StreamWriter(tPath)
-                        movieToSave.NfoPath = tPath
-                        xmlSer.Serialize(xmlSW, movieToSave.Movie)
-                    End Using
-
-                    If doesExist Then File.SetAttributes(tPath, fAtt)
-                End If
-            ElseIf Master.eSettings.VideoTSParent AndAlso Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(movieToSave.Filename).Name.ToLower = "bdmv" Then
+            If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(movieToSave.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(movieToSave.Filename).Name.ToLower = "bdmv") Then
                 tPath = String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).FullName, Directory.GetParent(Directory.GetParent(movieToSave.Filename).FullName).Name), ".nfo")
 
                 If Not Master.eSettings.OverwriteNfo Then
@@ -604,7 +570,7 @@ Public Class NFO
                 If Master.eSettings.MovieNameNFO AndAlso (Not movieToSave.isSingle OrElse Not Master.eSettings.MovieNameMultiOnly) Then
                     If Directory.GetParent(movieToSave.Filename).Name.ToLower = "video_ts" Then
                         tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "video_ts.nfo")
-                    ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(movieToSave.Filename).Name.ToLower = "bdmv" Then
+                    ElseIf Directory.GetParent(movieToSave.Filename).Name.ToLower = "bdmv" Then
                         tPath = Path.Combine(Directory.GetParent(movieToSave.Filename).FullName, "index.nfo")
                     Else
                         tPath = String.Concat(nPath, ".nfo")

@@ -513,9 +513,7 @@ Public Class frmMain
                                 If String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
                                     'no title so assume it's an invalid nfo, clear nfo path if exists
                                     sFile.Nfo = String.Empty
-                                    If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" Then
-                                        Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
-                                    ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(sFile.Filename).Name.ToLower = "bdmv" Then
+                                    If Directory.GetParent(sFile.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(sFile.Filename).Name.ToLower = "bdmv" Then
                                         Master.currMovie.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
                                     Else
                                         If sFile.UseFolder AndAlso sFile.isSingle Then

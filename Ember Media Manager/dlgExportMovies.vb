@@ -222,9 +222,7 @@ Public Class dlgExportMovies
                 Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV)
                 Dim sourceCheck As String = String.Empty
 
-                If Directory.GetParent(AVMovie.Filename).Name.ToLower = "video_ts" Then
-                    sourceCheck = Directory.GetParent(Directory.GetParent(AVMovie.Filename).FullName).Name.ToLower
-                ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(AVMovie.Filename).Name.ToLower = "bdmv" Then
+                If Directory.GetParent(AVMovie.Filename).Name.ToLower = "video_ts" OrElse Directory.GetParent(AVMovie.Filename).Name.ToLower = "bdmv" Then
                     sourceCheck = Directory.GetParent(Directory.GetParent(AVMovie.Filename).FullName).Name.ToLower
                 Else
                     sourceCheck = String.Concat(Directory.GetParent(AVMovie.Filename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(AVMovie.Filename).ToLower)

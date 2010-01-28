@@ -625,7 +625,7 @@ Public Class FileFolderRenamer
                         MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName.Replace(i, String.Empty)
                     End If
                     MovieFile.IsVIDEO_TS = True
-                ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(_tmpMovie.Filename).Name.ToLower = "bdmv" Then
+                ElseIf Directory.GetParent(_tmpMovie.Filename).Name.ToLower = "bdmv" Then
                     MovieFile.Parent = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).Name
                     If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName Then
                         MovieFile.OldPath = String.Empty

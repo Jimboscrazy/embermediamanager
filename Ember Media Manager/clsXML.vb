@@ -58,7 +58,7 @@ Public Class XML
 
                 If Directory.GetParent(fName).Name.ToLower = "video_ts" Then
                     sourceCheck = Directory.GetParent(Directory.GetParent(fName).FullName).Name.ToLower
-                ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(fName).Name.ToLower = "bdmv" Then
+                ElseIf Directory.GetParent(fName).Name.ToLower = "bdmv" Then
                     sourceCheck = "bluray"
                 Else
                     sourceCheck = String.Concat(Directory.GetParent(fName).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(fName).ToLower)
@@ -495,7 +495,7 @@ Public Class XML
         Try
             If Directory.GetParent(sPath).Name.ToLower = "video_ts" Then
                 sourceCheck = Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower
-            ElseIf Master.eSettings.AutoDetectBDMV AndAlso Directory.GetParent(sPath).Name.ToLower = "bdmv" Then
+            ElseIf Directory.GetParent(sPath).Name.ToLower = "bdmv" Then
                 sourceCheck = "bluray"
             Else
                 sourceCheck = String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower)
