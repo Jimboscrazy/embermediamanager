@@ -3148,6 +3148,170 @@ Public Class frmMain
                 End If
         End Select
     End Sub
+
+    Private Sub dgvTVShows_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellDoubleClick
+
+        Try
+
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+
+            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+            Master.currShow = Master.DB.LoadTVShowFromDB(ID)
+
+            Using dEditShow As New dlgEditShow
+
+                Select Case dEditShow.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        If Me.RefreshShow(ID) Then
+                            Me.FillList(0)
+                        End If
+                End Select
+
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub dgvTVShows_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVShows.MouseDown
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVShows.RowCount > 0 Then
+                Dim dgvHTI As DataGridView.HitTestInfo = dgvTVShows.HitTest(e.X, e.Y)
+                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+
+                    If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
+                        Me.cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+                        Me.cmnuEditShow.Visible = False
+
+                    Else
+                        Me.cmnuEditShow.Visible = True
+
+                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.mnuShows.Enabled = False
+                        End If
+
+                        cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value, " <<")
+
+                        If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+
+                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.dgvTVShows.ClearSelection()
+                            Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
+                            Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item(3, dgvHTI.RowIndex)
+                        End If
+
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuEditShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditShow.Click
+        Try
+            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
+            Master.currShow = Master.DB.LoadTVShowFromDB(ID)
+
+            Using dEditShow As New dlgEditShow
+
+                Select Case dEditShow.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        If Me.RefreshShow(ID) Then
+                            Me.FillList(0)
+                        End If
+                End Select
+
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
+    Private Sub dgvTVEpisodes_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellDoubleClick
+
+        Try
+
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+
+            Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+            Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
+
+            Using dEditEpisode As New dlgEditEpisode
+
+                Select Case dEditEpisode.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        If Me.RefreshEpisode(ID, Master.currShow.TVEp.Episode) Then
+                            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
+                        End If
+                End Select
+
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub dgvTVEpisodes_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVEpisodes.MouseDown
+        Try
+            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVEpisodes.RowCount > 0 Then
+                Dim dgvHTI As DataGridView.HitTestInfo = dgvTVEpisodes.HitTest(e.X, e.Y)
+                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+
+                    If Me.dgvTVEpisodes.SelectedRows.Count > 1 AndAlso Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
+                        Me.cmnuEpTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+                        Me.cmnuEditEpisode.Visible = False
+
+                    Else
+                        Me.cmnuEditEpisode.Visible = True
+
+                        If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.mnuEpisodes.Enabled = False
+                        End If
+
+                        cmnuEpTitle.Text = String.Concat(">> ", Me.dgvTVEpisodes.Item(2, dgvHTI.RowIndex).Value, " <<")
+
+                        If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+
+                        If Not Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
+                            Me.dgvTVEpisodes.ClearSelection()
+                            Me.dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected = True
+                            Me.dgvTVEpisodes.CurrentCell = Me.dgvTVEpisodes.Item(2, dgvHTI.RowIndex)
+                        End If
+
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Private Sub cmnuEditEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditEpisode.Click
+        Try
+            Dim indX As Integer = Me.dgvTVEpisodes.SelectedRows(0).Index
+            Dim ID As Integer = Convert.ToInt32(Me.dgvTVEpisodes.Item(0, indX).Value)
+            Master.currShow = Master.DB.LoadTVEpFromDB(ID, True)
+
+            Using dEditEpisode As New dlgEditEpisode
+
+                Select Case dEditEpisode.ShowDialog()
+                    Case Windows.Forms.DialogResult.OK
+                        If Me.RefreshEpisode(ID, Master.currShow.TVEp.Episode) Then
+                            Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
+                        End If
+                End Select
+
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -3458,6 +3622,12 @@ Public Class frmMain
     Sub dtShowsUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
         drow.Item(i) = v
     End Sub
+
+    Delegate Sub MydtEpsUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
+    Sub dtEpsUpdate(ByVal drow As DataRow, ByVal i As Integer, ByVal v As Object)
+        drow.Item(i) = v
+    End Sub
+
     Private Sub bwScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwScraper.DoWork
 
         '//
@@ -5674,6 +5844,67 @@ doCancel:
         Return False
     End Function
 
+    Private Function RefreshEpisode(ByVal ID As Long, ByVal EpNum As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
+        Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
+        Dim tmpShowDb As New Master.DBTV
+        Dim tmpEp As New Media.EpisodeDetails
+
+        Dim myDelegate As New MydtShowsUpdate(AddressOf dtShowsUpdate)
+
+        Try
+
+            tmpShowDb = Master.DB.LoadTVEpFromDB(ID, True)
+
+            If Directory.Exists(tmpShowDb.ShowPath) Then
+
+                If FromNfo Then
+                    If String.IsNullOrEmpty(tmpShowDb.EpNfoPath) Then
+                        Dim sNFO As String = NFO.GetEpNfoPath(tmpShowDb.Filename)
+                        tmpShowDb.EpNfoPath = sNFO
+                        tmpEp = NFO.LoadTVEpFromNFO(sNFO, EpNum)
+                    Else
+                        tmpEp = NFO.LoadTVEpFromNFO(tmpShowDb.EpNfoPath, EpNum)
+                    End If
+                    tmpShowDb.TVEp = tmpEp
+                End If
+
+                If String.IsNullOrEmpty(tmpShowDb.TVEp.Title) Then
+                    tmpShowDb.TVEp.Title = StringManip.FilterTVEpName(Path.GetFileNameWithoutExtension(tmpShowDb.Filename), tmpShowDb.TVShow.Title, False)
+                End If
+
+                Me.Invoke(myDelegate, New Object() {dRow(0), 2, tmpShowDb.TVEp.Title})
+
+                Dim eContainer As New Scanner.EpisodeContainer With {.Filename = tmpShowDb.Filename}
+                fScanner.GetEpFolderContents(eContainer)
+                tmpShowDb.EpPosterPath = eContainer.Poster
+                Me.Invoke(myDelegate, New Object() {dRow(0), 3, If(String.IsNullOrEmpty(eContainer.Poster), False, True)})
+                tmpShowDb.EpFanartPath = eContainer.Fanart
+                Me.Invoke(myDelegate, New Object() {dRow(0), 4, If(String.IsNullOrEmpty(eContainer.Fanart), False, True)})
+                'assume invalid nfo if no title
+                tmpShowDb.EpNfoPath = If(String.IsNullOrEmpty(tmpShowDb.TVEp.Title), String.Empty, eContainer.Nfo)
+                Me.Invoke(myDelegate, New Object() {dRow(0), 5, If(String.IsNullOrEmpty(tmpShowDb.EpNfoPath), False, True)})
+
+                tmpShowDb.IsMarkEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(6))
+                tmpShowDb.IsLockEp = Convert.ToBoolean(DirectCast(dRow(0), DataRow).Item(10))
+
+                Master.DB.SaveTVEpToDB(tmpShowDb, False, BatchMode, ToNfo)
+
+            Else
+                Master.DB.DeleteTVEpFromDB(ID, BatchMode)
+                Return True
+            End If
+
+            If Not BatchMode Then
+                Me.LoadEpisodeInfo(Convert.ToInt32(ID))
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return False
+    End Function
+
     Private Sub SetMenus(ByVal ReloadFilters As Boolean)
 
         Dim mnuItem As ToolStripItem
@@ -6543,89 +6774,8 @@ doCancel:
 
 #End Region '*** Routines/Functions
 
-    Private Sub dgvTVShows_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellDoubleClick
-
-        Try
-
-            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
-
-            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
-            Master.currShow = Master.DB.LoadTVShowFromDB(ID)
-
-            Using dEditShow As New dlgEditShow
-
-                Select Case dEditShow.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        If Me.RefreshShow(ID) Then
-                            Me.FillList(0)
-                        End If
-                End Select
-
-            End Using
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub dgvTVShows_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVShows.MouseDown
-        Try
-            If e.Button = Windows.Forms.MouseButtons.Right And Me.dgvTVShows.RowCount > 0 Then
-                Dim dgvHTI As DataGridView.HitTestInfo = dgvTVShows.HitTest(e.X, e.Y)
-                If dgvHTI.Type = DataGridViewHitTestType.Cell Then
-
-                    If Me.dgvTVShows.SelectedRows.Count > 1 AndAlso Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
-                        Me.cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                        Me.cmnuEditShow.Visible = False
-
-                    Else
-                        Me.cmnuEditShow.Visible = True
-
-                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
-                            Me.mnuShows.Enabled = False
-                        End If
-
-                        cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value, " <<")
-
-                        If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
-
-                        If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
-                            Me.dgvTVShows.ClearSelection()
-                            Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
-                            Me.dgvTVShows.CurrentCell = Me.dgvTVShows.Item(3, dgvHTI.RowIndex)
-                        End If
-
-                    End If
-                End If
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
-
-    Private Sub cmnuEditShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEditShow.Click
-        Try
-            Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
-            Master.currShow = Master.DB.LoadTVShowFromDB(ID)
-
-            Using dEditShow As New dlgEditShow
-
-                Select Case dEditShow.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        If Me.RefreshShow(ID) Then
-                            Me.FillList(0)
-                        End If
-                End Select
-
-            End Using
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-
-    End Sub
-
 End Class
+
 Public Module ExtensionMethods
 
     Public Sub aDoubleBuffered(ByVal dgv As DataGridView, ByVal setting As Boolean)

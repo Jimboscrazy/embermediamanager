@@ -257,10 +257,6 @@ Public Class dlgEditShow
                 File.Delete(Path.Combine(Master.TempPath, "fanart.jpg"))
             End If
 
-            If File.Exists(Path.Combine(Master.TempPath, "frame.jpg")) Then
-                File.Delete(Path.Combine(Master.TempPath, "frame.jpg"))
-            End If
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

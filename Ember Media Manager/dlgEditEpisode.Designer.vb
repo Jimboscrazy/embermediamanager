@@ -29,12 +29,11 @@ Partial Class dlgEditEpisode
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.TextBox1 = New System.Windows.Forms.TextBox
+        Me.txtAired = New System.Windows.Forms.TextBox
+        Me.txtEpisode = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
-        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.txtSeason = New System.Windows.Forms.TextBox
         Me.Label5 = New System.Windows.Forms.Label
-        Me.lblStudio = New System.Windows.Forms.Label
-        Me.txtStudio = New System.Windows.Forms.TextBox
         Me.lblCredits = New System.Windows.Forms.Label
         Me.txtCredits = New System.Windows.Forms.TextBox
         Me.btnEditActor = New System.Windows.Forms.Button
@@ -46,8 +45,6 @@ Partial Class dlgEditEpisode
         Me.colName = New System.Windows.Forms.ColumnHeader
         Me.colRole = New System.Windows.Forms.ColumnHeader
         Me.colThumb = New System.Windows.Forms.ColumnHeader
-        Me.lbMPAA = New System.Windows.Forms.ListBox
-        Me.lblMPAA = New System.Windows.Forms.Label
         Me.lblDirector = New System.Windows.Forms.Label
         Me.txtDirector = New System.Windows.Forms.TextBox
         Me.lblPlot = New System.Windows.Forms.Label
@@ -58,7 +55,6 @@ Partial Class dlgEditEpisode
         Me.pbStar2 = New System.Windows.Forms.PictureBox
         Me.pbStar1 = New System.Windows.Forms.PictureBox
         Me.lblRating = New System.Windows.Forms.Label
-        Me.mtxtYear = New System.Windows.Forms.MaskedTextBox
         Me.lblYear = New System.Windows.Forms.Label
         Me.lblTitle = New System.Windows.Forms.Label
         Me.txtTitle = New System.Windows.Forms.TextBox
@@ -69,6 +65,13 @@ Partial Class dlgEditEpisode
         Me.btnSetPosterScrape = New System.Windows.Forms.Button
         Me.btnSetPoster = New System.Windows.Forms.Button
         Me.pbPoster = New System.Windows.Forms.PictureBox
+        Me.TabPage3 = New System.Windows.Forms.TabPage
+        Me.lblFanartSize = New System.Windows.Forms.Label
+        Me.btnSetFanartDL = New System.Windows.Forms.Button
+        Me.btnRemoveFanart = New System.Windows.Forms.Button
+        Me.btnSetFanartScrape = New System.Windows.Forms.Button
+        Me.btnSetFanart = New System.Windows.Forms.Button
+        Me.pbFanart = New System.Windows.Forms.PictureBox
         Me.TabPage4 = New System.Windows.Forms.TabPage
         Me.btnFrameSave = New System.Windows.Forms.Button
         Me.pnlFrameProgress = New System.Windows.Forms.Panel
@@ -93,6 +96,8 @@ Partial Class dlgEditEpisode
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage2.SuspendLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage3.SuspendLayout()
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage4.SuspendLayout()
         Me.pnlFrameProgress.SuspendLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -153,6 +158,7 @@ Partial Class dlgEditEpisode
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage4)
         Me.TabControl1.Controls.Add(Me.TabPage6)
         Me.TabControl1.Location = New System.Drawing.Point(4, 70)
@@ -163,12 +169,11 @@ Partial Class dlgEditEpisode
         '
         'TabPage1
         '
-        Me.TabPage1.Controls.Add(Me.TextBox1)
+        Me.TabPage1.Controls.Add(Me.txtAired)
+        Me.TabPage1.Controls.Add(Me.txtEpisode)
         Me.TabPage1.Controls.Add(Me.Label4)
-        Me.TabPage1.Controls.Add(Me.TextBox2)
+        Me.TabPage1.Controls.Add(Me.txtSeason)
         Me.TabPage1.Controls.Add(Me.Label5)
-        Me.TabPage1.Controls.Add(Me.lblStudio)
-        Me.TabPage1.Controls.Add(Me.txtStudio)
         Me.TabPage1.Controls.Add(Me.lblCredits)
         Me.TabPage1.Controls.Add(Me.txtCredits)
         Me.TabPage1.Controls.Add(Me.btnEditActor)
@@ -177,8 +182,6 @@ Partial Class dlgEditEpisode
         Me.TabPage1.Controls.Add(Me.btnRemove)
         Me.TabPage1.Controls.Add(Me.lblActors)
         Me.TabPage1.Controls.Add(Me.lvActors)
-        Me.TabPage1.Controls.Add(Me.lbMPAA)
-        Me.TabPage1.Controls.Add(Me.lblMPAA)
         Me.TabPage1.Controls.Add(Me.lblDirector)
         Me.TabPage1.Controls.Add(Me.txtDirector)
         Me.TabPage1.Controls.Add(Me.lblPlot)
@@ -189,7 +192,6 @@ Partial Class dlgEditEpisode
         Me.TabPage1.Controls.Add(Me.pbStar2)
         Me.TabPage1.Controls.Add(Me.pbStar1)
         Me.TabPage1.Controls.Add(Me.lblRating)
-        Me.TabPage1.Controls.Add(Me.mtxtYear)
         Me.TabPage1.Controls.Add(Me.lblYear)
         Me.TabPage1.Controls.Add(Me.lblTitle)
         Me.TabPage1.Controls.Add(Me.txtTitle)
@@ -201,13 +203,21 @@ Partial Class dlgEditEpisode
         Me.TabPage1.Text = "Details"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'TextBox1
+        'txtAired
         '
-        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox1.Location = New System.Drawing.Point(59, 67)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(46, 20)
-        Me.TextBox1.TabIndex = 111
+        Me.txtAired.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtAired.Location = New System.Drawing.Point(111, 67)
+        Me.txtAired.Name = "txtAired"
+        Me.txtAired.Size = New System.Drawing.Size(88, 20)
+        Me.txtAired.TabIndex = 114
+        '
+        'txtEpisode
+        '
+        Me.txtEpisode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtEpisode.Location = New System.Drawing.Point(59, 67)
+        Me.txtEpisode.Name = "txtEpisode"
+        Me.txtEpisode.Size = New System.Drawing.Size(46, 20)
+        Me.txtEpisode.TabIndex = 111
         '
         'Label4
         '
@@ -218,13 +228,13 @@ Partial Class dlgEditEpisode
         Me.Label4.TabIndex = 113
         Me.Label4.Text = "Episode:"
         '
-        'TextBox2
+        'txtSeason
         '
-        Me.TextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TextBox2.Location = New System.Drawing.Point(7, 67)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(46, 20)
-        Me.TextBox2.TabIndex = 110
+        Me.txtSeason.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSeason.Location = New System.Drawing.Point(7, 67)
+        Me.txtSeason.Name = "txtSeason"
+        Me.txtSeason.Size = New System.Drawing.Size(46, 20)
+        Me.txtSeason.TabIndex = 110
         '
         'Label5
         '
@@ -234,23 +244,6 @@ Partial Class dlgEditEpisode
         Me.Label5.Size = New System.Drawing.Size(46, 13)
         Me.Label5.TabIndex = 112
         Me.Label5.Text = "Season:"
-        '
-        'lblStudio
-        '
-        Me.lblStudio.AutoSize = True
-        Me.lblStudio.Location = New System.Drawing.Point(635, 271)
-        Me.lblStudio.Name = "lblStudio"
-        Me.lblStudio.Size = New System.Drawing.Size(40, 13)
-        Me.lblStudio.TabIndex = 101
-        Me.lblStudio.Text = "Studio:"
-        '
-        'txtStudio
-        '
-        Me.txtStudio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtStudio.Location = New System.Drawing.Point(635, 287)
-        Me.txtStudio.Name = "txtStudio"
-        Me.txtStudio.Size = New System.Drawing.Size(193, 20)
-        Me.txtStudio.TabIndex = 100
         '
         'lblCredits
         '
@@ -340,23 +333,6 @@ Partial Class dlgEditEpisode
         Me.colThumb.Text = "Thumb"
         Me.colThumb.Width = 174
         '
-        'lbMPAA
-        '
-        Me.lbMPAA.FormattingEnabled = True
-        Me.lbMPAA.Location = New System.Drawing.Point(635, 155)
-        Me.lbMPAA.Name = "lbMPAA"
-        Me.lbMPAA.Size = New System.Drawing.Size(193, 108)
-        Me.lbMPAA.TabIndex = 18
-        '
-        'lblMPAA
-        '
-        Me.lblMPAA.AutoSize = True
-        Me.lblMPAA.Location = New System.Drawing.Point(632, 139)
-        Me.lblMPAA.Name = "lblMPAA"
-        Me.lblMPAA.Size = New System.Drawing.Size(74, 13)
-        Me.lblMPAA.TabIndex = 78
-        Me.lblMPAA.Text = "MPAA Rating:"
-        '
         'lblDirector
         '
         Me.lblDirector.AutoSize = True
@@ -441,16 +417,6 @@ Partial Class dlgEditEpisode
         Me.lblRating.Size = New System.Drawing.Size(41, 13)
         Me.lblRating.TabIndex = 60
         Me.lblRating.Text = "Rating:"
-        '
-        'mtxtYear
-        '
-        Me.mtxtYear.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.mtxtYear.Location = New System.Drawing.Point(111, 67)
-        Me.mtxtYear.Mask = "####"
-        Me.mtxtYear.Name = "mtxtYear"
-        Me.mtxtYear.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
-        Me.mtxtYear.Size = New System.Drawing.Size(88, 20)
-        Me.mtxtYear.TabIndex = 2
         '
         'lblYear
         '
@@ -563,6 +529,92 @@ Partial Class dlgEditEpisode
         Me.pbPoster.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbPoster.TabIndex = 0
         Me.pbPoster.TabStop = False
+        '
+        'TabPage3
+        '
+        Me.TabPage3.Controls.Add(Me.lblFanartSize)
+        Me.TabPage3.Controls.Add(Me.btnSetFanartDL)
+        Me.TabPage3.Controls.Add(Me.btnRemoveFanart)
+        Me.TabPage3.Controls.Add(Me.btnSetFanartScrape)
+        Me.TabPage3.Controls.Add(Me.btnSetFanart)
+        Me.TabPage3.Controls.Add(Me.pbFanart)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(836, 452)
+        Me.TabPage3.TabIndex = 6
+        Me.TabPage3.Text = "Fanart"
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'lblFanartSize
+        '
+        Me.lblFanartSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblFanartSize.Location = New System.Drawing.Point(8, 8)
+        Me.lblFanartSize.Name = "lblFanartSize"
+        Me.lblFanartSize.Size = New System.Drawing.Size(104, 23)
+        Me.lblFanartSize.TabIndex = 35
+        Me.lblFanartSize.Text = "Size: (XXXXxXXXX)"
+        Me.lblFanartSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.lblFanartSize.Visible = False
+        '
+        'btnSetFanartDL
+        '
+        Me.btnSetFanartDL.Image = CType(resources.GetObject("btnSetFanartDL.Image"), System.Drawing.Image)
+        Me.btnSetFanartDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetFanartDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetFanartDL.Name = "btnSetFanartDL"
+        Me.btnSetFanartDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetFanartDL.TabIndex = 34
+        Me.btnSetFanartDL.Text = "Change Fanart (Download)"
+        Me.btnSetFanartDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetFanartDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveFanart
+        '
+        Me.btnRemoveFanart.Image = CType(resources.GetObject("btnRemoveFanart.Image"), System.Drawing.Image)
+        Me.btnRemoveFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveFanart.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveFanart.Name = "btnRemoveFanart"
+        Me.btnRemoveFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveFanart.TabIndex = 33
+        Me.btnRemoveFanart.Text = "Remove Fanart"
+        Me.btnRemoveFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveFanart.UseVisualStyleBackColor = True
+        '
+        'btnSetFanartScrape
+        '
+        Me.btnSetFanartScrape.Image = CType(resources.GetObject("btnSetFanartScrape.Image"), System.Drawing.Image)
+        Me.btnSetFanartScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetFanartScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetFanartScrape.Name = "btnSetFanartScrape"
+        Me.btnSetFanartScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetFanartScrape.TabIndex = 32
+        Me.btnSetFanartScrape.Text = "Change Fanart (Scrape)"
+        Me.btnSetFanartScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetFanartScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetFanart
+        '
+        Me.btnSetFanart.Image = CType(resources.GetObject("btnSetFanart.Image"), System.Drawing.Image)
+        Me.btnSetFanart.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetFanart.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetFanart.Name = "btnSetFanart"
+        Me.btnSetFanart.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetFanart.TabIndex = 31
+        Me.btnSetFanart.Text = "Change Fanart (Local)"
+        Me.btnSetFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetFanart.UseVisualStyleBackColor = True
+        '
+        'pbFanart
+        '
+        Me.pbFanart.BackColor = System.Drawing.Color.DimGray
+        Me.pbFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pbFanart.Location = New System.Drawing.Point(6, 6)
+        Me.pbFanart.Name = "pbFanart"
+        Me.pbFanart.Size = New System.Drawing.Size(724, 440)
+        Me.pbFanart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbFanart.TabIndex = 30
+        Me.pbFanart.TabStop = False
         '
         'TabPage4
         '
@@ -729,6 +781,8 @@ Partial Class dlgEditEpisode
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage2.ResumeLayout(False)
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage3.ResumeLayout(False)
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage4.PerformLayout()
         Me.pnlFrameProgress.ResumeLayout(False)
@@ -745,8 +799,6 @@ Partial Class dlgEditEpisode
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents lblStudio As System.Windows.Forms.Label
-    Friend WithEvents txtStudio As System.Windows.Forms.TextBox
     Friend WithEvents lblCredits As System.Windows.Forms.Label
     Friend WithEvents txtCredits As System.Windows.Forms.TextBox
     Friend WithEvents btnEditActor As System.Windows.Forms.Button
@@ -758,8 +810,6 @@ Partial Class dlgEditEpisode
     Friend WithEvents colName As System.Windows.Forms.ColumnHeader
     Friend WithEvents colRole As System.Windows.Forms.ColumnHeader
     Friend WithEvents colThumb As System.Windows.Forms.ColumnHeader
-    Friend WithEvents lbMPAA As System.Windows.Forms.ListBox
-    Friend WithEvents lblMPAA As System.Windows.Forms.Label
     Friend WithEvents lblDirector As System.Windows.Forms.Label
     Friend WithEvents txtDirector As System.Windows.Forms.TextBox
     Friend WithEvents lblPlot As System.Windows.Forms.Label
@@ -770,7 +820,6 @@ Partial Class dlgEditEpisode
     Friend WithEvents pbStar2 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar1 As System.Windows.Forms.PictureBox
     Friend WithEvents lblRating As System.Windows.Forms.Label
-    Friend WithEvents mtxtYear As System.Windows.Forms.MaskedTextBox
     Friend WithEvents lblYear As System.Windows.Forms.Label
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
@@ -794,9 +843,17 @@ Partial Class dlgEditEpisode
     Friend WithEvents pnlFileInfo As System.Windows.Forms.Panel
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents txtEpisode As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSeason As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
+    Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
+    Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button
+    Friend WithEvents btnSetFanartScrape As System.Windows.Forms.Button
+    Friend WithEvents btnSetFanart As System.Windows.Forms.Button
+    Friend WithEvents pbFanart As System.Windows.Forms.PictureBox
+    Friend WithEvents lblFanartSize As System.Windows.Forms.Label
+    Friend WithEvents txtAired As System.Windows.Forms.TextBox
 
 End Class

@@ -318,6 +318,40 @@ Public Class Images
         Return strReturn
     End Function
 
+    Public Function SaveAsEpPoster(ByVal mShow As Master.DBTV) As String
+
+        Dim strReturn As String = String.Empty
+
+        Try
+            Dim pPath As String = String.Empty
+
+            If Master.eSettings.ResizeEpPoster AndAlso (_image.Width > Master.eSettings.EpPosterWidth OrElse _image.Height > Master.eSettings.EpPosterHeight) Then
+                ImageManip.ResizeImage(_image, Master.eSettings.EpPosterWidth, Master.eSettings.EpPosterHeight)
+            End If
+
+            If Master.eSettings.EpisodeJPG Then
+                pPath = String.Concat(FileManip.Common.RemoveExtFromPath(mShow.Filename), ".jpg")
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteEpPoster) Then
+                    Save(pPath, Master.eSettings.EpPosterQuality)
+                    strReturn = pPath
+                End If
+            End If
+
+            If Master.eSettings.EpisodeTBN Then
+                pPath = String.Concat(FileManip.Common.RemoveExtFromPath(mShow.Filename), ".tbn")
+                If Not File.Exists(pPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteEpPoster) Then
+                    Save(pPath, Master.eSettings.EpPosterQuality)
+                    strReturn = pPath
+                End If
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return strReturn
+    End Function
+
     Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
         Me.FromFile(fromPath)
         If Not Master.eSettings.ETNative Then
@@ -487,6 +521,40 @@ Public Class Images
                 tPath = Path.Combine(mShow.ShowPath, "fanart.jpg")
                 If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteShowFanart) Then
                     Save(tPath, Master.eSettings.ShowFanartQuality)
+                    strReturn = tPath
+                End If
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return strReturn
+    End Function
+
+    Public Function SaveAsEpFanart(ByVal mShow As Master.DBTV) As String
+
+        Dim strReturn As String = String.Empty
+
+        Try
+            Dim tPath As String = String.Empty
+
+            If Master.eSettings.ResizeEpFanart AndAlso (_image.Width > Master.eSettings.EpFanartWidth OrElse _image.Height > Master.eSettings.EpFanartHeight) Then
+                ImageManip.ResizeImage(_image, Master.eSettings.EpFanartWidth, Master.eSettings.EpFanartHeight)
+            End If
+
+            If Master.eSettings.EpisodeDotFanart Then
+                tPath = String.Concat(FileManip.Common.RemoveExtFromPath(mShow.Filename), ".fanart.jpg")
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteEpFanart) Then
+                    Save(tPath, Master.eSettings.EpFanartQuality)
+                    strReturn = tPath
+                End If
+            End If
+
+            If Master.eSettings.EpisodeDashFanart Then
+                tPath = String.Concat(FileManip.Common.RemoveExtFromPath(mShow.Filename), "-fanart.jpg")
+                If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.OverwriteEpFanart) Then
+                    Save(tPath, Master.eSettings.EpFanartQuality)
                     strReturn = tPath
                 End If
             End If
@@ -1438,6 +1506,20 @@ foundIT:
 
             Delete(Path.Combine(tPath, "season-all.tbn"))
             Delete(Path.Combine(tPath, "folder.jpg"))
+            Delete(Path.Combine(tPath, "poster.tbn"))
+            Delete(Path.Combine(tPath, "poster.jpg"))
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Sub DeleteEpPosters(ByVal mShow As Master.DBTV)
+        Try
+            Dim tPath As String = FileManip.Common.RemoveExtFromPath(mShow.Filename)
+
+            Delete(String.Concat(tPath, ".tbn"))
+            Delete(String.Concat(tPath, ".jpg"))
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1476,6 +1558,17 @@ foundIT:
     Public Sub DeleteShowFanart(ByVal mShow As Master.DBTV)
         Try
             Delete(Path.Combine(mShow.ShowPath, "fanart.jpg"))
+            Delete(Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), "-fanart.jpg")))
+            Delete(Path.Combine(mShow.ShowPath, String.Concat(Path.GetFileNameWithoutExtension(mShow.ShowPath), ".fanart.jpg")))
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+    End Sub
+
+    Public Sub DeleteEpFanart(ByVal mShow As Master.DBTV)
+        Try
+            Delete(String.Concat(FileManip.Common.RemoveExtFromPath(mShow.ShowPath), "-fanart.jpg"))
+            Delete(String.Concat(FileManip.Common.RemoveExtFromPath(mShow.ShowPath), ".fanart.jpg"))
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
