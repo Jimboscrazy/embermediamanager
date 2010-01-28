@@ -25,6 +25,7 @@ Public Class dlgIMDBSearchResults
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
 
     Private IMDB As New IMDB.Scraper
+    Private sHTTP As New HTTP
 
     Private Structure Results
         Dim Result As Image
@@ -160,7 +161,7 @@ Public Class dlgIMDBSearchResults
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
 
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        e.Result = New Results With {.Result = Images.GenericFromWeb(Args.pURL)}
+        e.Result = New Results With {.Result = sHTTP.DownloadImage(Args.pURL)}
 
     End Sub
 

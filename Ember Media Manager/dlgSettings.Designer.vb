@@ -25,7 +25,7 @@ Partial Class dlgSettings
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
         Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("XBMC Communication", 1, 1)
+        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Communication", 1, 1)
         Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode12, TreeNode13})
         Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
         Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
@@ -37,7 +37,9 @@ Partial Class dlgSettings
         Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode19, TreeNode20, TreeNode21})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
+        Me.btnRemoveCom = New System.Windows.Forms.Button
         Me.txtName = New System.Windows.Forms.TextBox
+        Me.lbXBMCCom = New System.Windows.Forms.ListBox
         Me.Label16 = New System.Windows.Forms.Label
         Me.txtPassword = New System.Windows.Forms.TextBox
         Me.btnAddCom = New System.Windows.Forms.Button
@@ -227,8 +229,20 @@ Partial Class dlgSettings
         Me.pnlGeneral = New System.Windows.Forms.Panel
         Me.gbInterface = New System.Windows.Forms.GroupBox
         Me.pnlXBMCCom = New System.Windows.Forms.Panel
-        Me.btnRemoveCom = New System.Windows.Forms.Button
-        Me.lbXBMCCom = New System.Windows.Forms.ListBox
+        Me.GroupBox48 = New System.Windows.Forms.GroupBox
+        Me.GroupBox49 = New System.Windows.Forms.GroupBox
+        Me.txtProxyDomain = New System.Windows.Forms.TextBox
+        Me.Label62 = New System.Windows.Forms.Label
+        Me.txtProxyPassword = New System.Windows.Forms.TextBox
+        Me.txtProxyUsername = New System.Windows.Forms.TextBox
+        Me.Label60 = New System.Windows.Forms.Label
+        Me.Label61 = New System.Windows.Forms.Label
+        Me.chkEnableCredentials = New System.Windows.Forms.CheckBox
+        Me.Label55 = New System.Windows.Forms.Label
+        Me.Label42 = New System.Windows.Forms.Label
+        Me.txtProxyPort = New System.Windows.Forms.TextBox
+        Me.txtProxyURI = New System.Windows.Forms.TextBox
+        Me.chkEnableProxy = New System.Windows.Forms.CheckBox
         Me.pnlMovies = New System.Windows.Forms.Panel
         Me.gbGenreFilter = New System.Windows.Forms.GroupBox
         Me.gbFilters = New System.Windows.Forms.GroupBox
@@ -528,6 +542,8 @@ Partial Class dlgSettings
         Me.pnlGeneral.SuspendLayout()
         Me.gbInterface.SuspendLayout()
         Me.pnlXBMCCom.SuspendLayout()
+        Me.GroupBox48.SuspendLayout()
+        Me.GroupBox49.SuspendLayout()
         Me.pnlMovies.SuspendLayout()
         Me.gbGenreFilter.SuspendLayout()
         Me.gbFilters.SuspendLayout()
@@ -590,7 +606,9 @@ Partial Class dlgSettings
         'GroupBox11
         '
         Me.GroupBox11.Controls.Add(Me.btnEditCom)
+        Me.GroupBox11.Controls.Add(Me.btnRemoveCom)
         Me.GroupBox11.Controls.Add(Me.txtName)
+        Me.GroupBox11.Controls.Add(Me.lbXBMCCom)
         Me.GroupBox11.Controls.Add(Me.Label16)
         Me.GroupBox11.Controls.Add(Me.txtPassword)
         Me.GroupBox11.Controls.Add(Me.btnAddCom)
@@ -601,9 +619,9 @@ Partial Class dlgSettings
         Me.GroupBox11.Controls.Add(Me.Label6)
         Me.GroupBox11.Controls.Add(Me.txtPort)
         Me.GroupBox11.Controls.Add(Me.txtIP)
-        Me.GroupBox11.Location = New System.Drawing.Point(266, 6)
+        Me.GroupBox11.Location = New System.Drawing.Point(282, 5)
         Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Size = New System.Drawing.Size(308, 141)
+        Me.GroupBox11.Size = New System.Drawing.Size(308, 340)
         Me.GroupBox11.TabIndex = 2
         Me.GroupBox11.TabStop = False
         Me.GroupBox11.Text = "XBMC Communication"
@@ -613,7 +631,7 @@ Partial Class dlgSettings
         Me.btnEditCom.Enabled = False
         Me.btnEditCom.Image = CType(resources.GetObject("btnEditCom.Image"), System.Drawing.Image)
         Me.btnEditCom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditCom.Location = New System.Drawing.Point(14, 110)
+        Me.btnEditCom.Location = New System.Drawing.Point(17, 308)
         Me.btnEditCom.Name = "btnEditCom"
         Me.btnEditCom.Size = New System.Drawing.Size(91, 23)
         Me.btnEditCom.TabIndex = 5
@@ -621,18 +639,41 @@ Partial Class dlgSettings
         Me.btnEditCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnEditCom.UseVisualStyleBackColor = True
         '
+        'btnRemoveCom
+        '
+        Me.btnRemoveCom.Image = CType(resources.GetObject("btnRemoveCom.Image"), System.Drawing.Image)
+        Me.btnRemoveCom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRemoveCom.Location = New System.Drawing.Point(160, 182)
+        Me.btnRemoveCom.Name = "btnRemoveCom"
+        Me.btnRemoveCom.Size = New System.Drawing.Size(123, 23)
+        Me.btnRemoveCom.TabIndex = 1
+        Me.btnRemoveCom.Text = "Remove Selected"
+        Me.btnRemoveCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnRemoveCom.UseVisualStyleBackColor = True
+        '
         'txtName
         '
         Me.txtName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtName.Location = New System.Drawing.Point(55, 18)
+        Me.txtName.Location = New System.Drawing.Point(58, 216)
         Me.txtName.Name = "txtName"
         Me.txtName.Size = New System.Drawing.Size(238, 20)
         Me.txtName.TabIndex = 0
         '
+        'lbXBMCCom
+        '
+        Me.lbXBMCCom.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbXBMCCom.FormattingEnabled = True
+        Me.lbXBMCCom.ItemHeight = 16
+        Me.lbXBMCCom.Location = New System.Drawing.Point(29, 15)
+        Me.lbXBMCCom.Name = "lbXBMCCom"
+        Me.lbXBMCCom.Size = New System.Drawing.Size(254, 164)
+        Me.lbXBMCCom.Sorted = True
+        Me.lbXBMCCom.TabIndex = 0
+        '
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(11, 22)
+        Me.Label16.Location = New System.Drawing.Point(14, 220)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(38, 13)
         Me.Label16.TabIndex = 12
@@ -641,7 +682,7 @@ Partial Class dlgSettings
         'txtPassword
         '
         Me.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPassword.Location = New System.Drawing.Point(221, 78)
+        Me.txtPassword.Location = New System.Drawing.Point(224, 276)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.Size = New System.Drawing.Size(72, 20)
         Me.txtPassword.TabIndex = 4
@@ -651,7 +692,7 @@ Partial Class dlgSettings
         '
         Me.btnAddCom.Image = CType(resources.GetObject("btnAddCom.Image"), System.Drawing.Image)
         Me.btnAddCom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddCom.Location = New System.Drawing.Point(216, 110)
+        Me.btnAddCom.Location = New System.Drawing.Point(219, 308)
         Me.btnAddCom.Name = "btnAddCom"
         Me.btnAddCom.Size = New System.Drawing.Size(77, 23)
         Me.btnAddCom.TabIndex = 6
@@ -662,7 +703,7 @@ Partial Class dlgSettings
         'txtUsername
         '
         Me.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtUsername.Location = New System.Drawing.Point(83, 78)
+        Me.txtUsername.Location = New System.Drawing.Point(86, 276)
         Me.txtUsername.Name = "txtUsername"
         Me.txtUsername.Size = New System.Drawing.Size(72, 20)
         Me.txtUsername.TabIndex = 3
@@ -670,7 +711,7 @@ Partial Class dlgSettings
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(12, 80)
+        Me.Label13.Location = New System.Drawing.Point(15, 278)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(58, 13)
         Me.Label13.TabIndex = 11
@@ -679,7 +720,7 @@ Partial Class dlgSettings
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(156, 81)
+        Me.Label14.Location = New System.Drawing.Point(159, 279)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(56, 13)
         Me.Label14.TabIndex = 10
@@ -688,7 +729,7 @@ Partial Class dlgSettings
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(11, 52)
+        Me.Label7.Location = New System.Drawing.Point(14, 250)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(53, 13)
         Me.Label7.TabIndex = 7
@@ -697,7 +738,7 @@ Partial Class dlgSettings
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(178, 50)
+        Me.Label6.Location = New System.Drawing.Point(181, 248)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(62, 13)
         Me.Label6.TabIndex = 6
@@ -706,7 +747,7 @@ Partial Class dlgSettings
         'txtPort
         '
         Me.txtPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtPort.Location = New System.Drawing.Point(242, 47)
+        Me.txtPort.Location = New System.Drawing.Point(245, 245)
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(51, 20)
         Me.txtPort.TabIndex = 2
@@ -714,7 +755,7 @@ Partial Class dlgSettings
         'txtIP
         '
         Me.txtIP.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtIP.Location = New System.Drawing.Point(70, 47)
+        Me.txtIP.Location = New System.Drawing.Point(73, 245)
         Me.txtIP.Name = "txtIP"
         Me.txtIP.Size = New System.Drawing.Size(85, 20)
         Me.txtIP.TabIndex = 1
@@ -2554,7 +2595,7 @@ Partial Class dlgSettings
         TreeNode13.Name = "nXBMCCom"
         TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode13.SelectedImageIndex = 1
-        TreeNode13.Text = "XBMC Communication"
+        TreeNode13.Text = "Communication"
         TreeNode14.ImageIndex = 0
         TreeNode14.Name = "nGeneral"
         TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -2636,8 +2677,7 @@ Partial Class dlgSettings
         '
         Me.pnlXBMCCom.BackColor = System.Drawing.Color.White
         Me.pnlXBMCCom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlXBMCCom.Controls.Add(Me.btnRemoveCom)
-        Me.pnlXBMCCom.Controls.Add(Me.lbXBMCCom)
+        Me.pnlXBMCCom.Controls.Add(Me.GroupBox48)
         Me.pnlXBMCCom.Controls.Add(Me.GroupBox11)
         Me.pnlXBMCCom.Location = New System.Drawing.Point(208, 97)
         Me.pnlXBMCCom.Name = "pnlXBMCCom"
@@ -2645,28 +2685,148 @@ Partial Class dlgSettings
         Me.pnlXBMCCom.TabIndex = 60
         Me.pnlXBMCCom.Visible = False
         '
-        'btnRemoveCom
+        'GroupBox48
         '
-        Me.btnRemoveCom.Image = CType(resources.GetObject("btnRemoveCom.Image"), System.Drawing.Image)
-        Me.btnRemoveCom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveCom.Location = New System.Drawing.Point(137, 225)
-        Me.btnRemoveCom.Name = "btnRemoveCom"
-        Me.btnRemoveCom.Size = New System.Drawing.Size(123, 23)
-        Me.btnRemoveCom.TabIndex = 1
-        Me.btnRemoveCom.Text = "Remove Selected"
-        Me.btnRemoveCom.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnRemoveCom.UseVisualStyleBackColor = True
+        Me.GroupBox48.Controls.Add(Me.GroupBox49)
+        Me.GroupBox48.Controls.Add(Me.Label55)
+        Me.GroupBox48.Controls.Add(Me.Label42)
+        Me.GroupBox48.Controls.Add(Me.txtProxyPort)
+        Me.GroupBox48.Controls.Add(Me.txtProxyURI)
+        Me.GroupBox48.Controls.Add(Me.chkEnableProxy)
+        Me.GroupBox48.Location = New System.Drawing.Point(3, 5)
+        Me.GroupBox48.Name = "GroupBox48"
+        Me.GroupBox48.Size = New System.Drawing.Size(271, 209)
+        Me.GroupBox48.TabIndex = 3
+        Me.GroupBox48.TabStop = False
+        Me.GroupBox48.Text = "Proxy"
         '
-        'lbXBMCCom
+        'GroupBox49
         '
-        Me.lbXBMCCom.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbXBMCCom.FormattingEnabled = True
-        Me.lbXBMCCom.ItemHeight = 16
-        Me.lbXBMCCom.Location = New System.Drawing.Point(6, 6)
-        Me.lbXBMCCom.Name = "lbXBMCCom"
-        Me.lbXBMCCom.Size = New System.Drawing.Size(254, 212)
-        Me.lbXBMCCom.Sorted = True
-        Me.lbXBMCCom.TabIndex = 0
+        Me.GroupBox49.Controls.Add(Me.txtProxyDomain)
+        Me.GroupBox49.Controls.Add(Me.Label62)
+        Me.GroupBox49.Controls.Add(Me.txtProxyPassword)
+        Me.GroupBox49.Controls.Add(Me.txtProxyUsername)
+        Me.GroupBox49.Controls.Add(Me.Label60)
+        Me.GroupBox49.Controls.Add(Me.Label61)
+        Me.GroupBox49.Controls.Add(Me.chkEnableCredentials)
+        Me.GroupBox49.Enabled = False
+        Me.GroupBox49.Location = New System.Drawing.Point(5, 106)
+        Me.GroupBox49.Name = "GroupBox49"
+        Me.GroupBox49.Size = New System.Drawing.Size(262, 99)
+        Me.GroupBox49.TabIndex = 6
+        Me.GroupBox49.TabStop = False
+        Me.GroupBox49.Text = "Credentials"
+        '
+        'txtProxyDomain
+        '
+        Me.txtProxyDomain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtProxyDomain.Enabled = False
+        Me.txtProxyDomain.Location = New System.Drawing.Point(64, 65)
+        Me.txtProxyDomain.Name = "txtProxyDomain"
+        Me.txtProxyDomain.Size = New System.Drawing.Size(191, 20)
+        Me.txtProxyDomain.TabIndex = 16
+        '
+        'Label62
+        '
+        Me.Label62.AutoSize = True
+        Me.Label62.Location = New System.Drawing.Point(3, 67)
+        Me.Label62.Name = "Label62"
+        Me.Label62.Size = New System.Drawing.Size(46, 13)
+        Me.Label62.TabIndex = 17
+        Me.Label62.Text = "Domain:"
+        '
+        'txtProxyPassword
+        '
+        Me.txtProxyPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtProxyPassword.Enabled = False
+        Me.txtProxyPassword.Location = New System.Drawing.Point(191, 39)
+        Me.txtProxyPassword.Name = "txtProxyPassword"
+        Me.txtProxyPassword.Size = New System.Drawing.Size(64, 20)
+        Me.txtProxyPassword.TabIndex = 13
+        Me.txtProxyPassword.UseSystemPasswordChar = True
+        '
+        'txtProxyUsername
+        '
+        Me.txtProxyUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtProxyUsername.Enabled = False
+        Me.txtProxyUsername.Location = New System.Drawing.Point(64, 39)
+        Me.txtProxyUsername.Name = "txtProxyUsername"
+        Me.txtProxyUsername.Size = New System.Drawing.Size(64, 20)
+        Me.txtProxyUsername.TabIndex = 12
+        '
+        'Label60
+        '
+        Me.Label60.AutoSize = True
+        Me.Label60.Location = New System.Drawing.Point(3, 41)
+        Me.Label60.Name = "Label60"
+        Me.Label60.Size = New System.Drawing.Size(58, 13)
+        Me.Label60.TabIndex = 15
+        Me.Label60.Text = "Username:"
+        '
+        'Label61
+        '
+        Me.Label61.AutoSize = True
+        Me.Label61.Location = New System.Drawing.Point(132, 42)
+        Me.Label61.Name = "Label61"
+        Me.Label61.Size = New System.Drawing.Size(56, 13)
+        Me.Label61.TabIndex = 14
+        Me.Label61.Text = "Password:"
+        '
+        'chkEnableCredentials
+        '
+        Me.chkEnableCredentials.AutoSize = True
+        Me.chkEnableCredentials.Location = New System.Drawing.Point(8, 14)
+        Me.chkEnableCredentials.Name = "chkEnableCredentials"
+        Me.chkEnableCredentials.Size = New System.Drawing.Size(114, 17)
+        Me.chkEnableCredentials.TabIndex = 0
+        Me.chkEnableCredentials.Text = "Enable Credentials"
+        Me.chkEnableCredentials.UseVisualStyleBackColor = True
+        '
+        'Label55
+        '
+        Me.Label55.AutoSize = True
+        Me.Label55.Location = New System.Drawing.Point(9, 81)
+        Me.Label55.Name = "Label55"
+        Me.Label55.Size = New System.Drawing.Size(58, 13)
+        Me.Label55.TabIndex = 5
+        Me.Label55.Text = "Proxy Port:"
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Location = New System.Drawing.Point(10, 40)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(58, 13)
+        Me.Label42.TabIndex = 4
+        Me.Label42.Text = "Proxy URI:"
+        '
+        'txtProxyPort
+        '
+        Me.txtProxyPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtProxyPort.Enabled = False
+        Me.txtProxyPort.Location = New System.Drawing.Point(68, 79)
+        Me.txtProxyPort.Name = "txtProxyPort"
+        Me.txtProxyPort.Size = New System.Drawing.Size(51, 20)
+        Me.txtProxyPort.TabIndex = 3
+        '
+        'txtProxyURI
+        '
+        Me.txtProxyURI.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtProxyURI.Enabled = False
+        Me.txtProxyURI.Location = New System.Drawing.Point(11, 54)
+        Me.txtProxyURI.Name = "txtProxyURI"
+        Me.txtProxyURI.Size = New System.Drawing.Size(249, 20)
+        Me.txtProxyURI.TabIndex = 1
+        '
+        'chkEnableProxy
+        '
+        Me.chkEnableProxy.AutoSize = True
+        Me.chkEnableProxy.Location = New System.Drawing.Point(11, 17)
+        Me.chkEnableProxy.Name = "chkEnableProxy"
+        Me.chkEnableProxy.Size = New System.Drawing.Size(88, 17)
+        Me.chkEnableProxy.TabIndex = 0
+        Me.chkEnableProxy.Text = "Enable Proxy"
+        Me.chkEnableProxy.UseVisualStyleBackColor = True
         '
         'pnlMovies
         '
@@ -5523,6 +5683,7 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlImages)
@@ -5533,7 +5694,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlXBMCCom)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -5588,6 +5748,10 @@ Partial Class dlgSettings
         Me.gbInterface.ResumeLayout(False)
         Me.gbInterface.PerformLayout()
         Me.pnlXBMCCom.ResumeLayout(False)
+        Me.GroupBox48.ResumeLayout(False)
+        Me.GroupBox48.PerformLayout()
+        Me.GroupBox49.ResumeLayout(False)
+        Me.GroupBox49.PerformLayout()
         Me.pnlMovies.ResumeLayout(False)
         Me.gbGenreFilter.ResumeLayout(False)
         Me.gbFilters.ResumeLayout(False)
@@ -6145,4 +6309,18 @@ Partial Class dlgSettings
     Friend WithEvents Label59 As System.Windows.Forms.Label
     Friend WithEvents chkOverwriteEpFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonFolderJPG As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox48 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox49 As System.Windows.Forms.GroupBox
+    Friend WithEvents chkEnableCredentials As System.Windows.Forms.CheckBox
+    Friend WithEvents Label55 As System.Windows.Forms.Label
+    Friend WithEvents Label42 As System.Windows.Forms.Label
+    Friend WithEvents txtProxyPort As System.Windows.Forms.TextBox
+    Friend WithEvents txtProxyURI As System.Windows.Forms.TextBox
+    Friend WithEvents chkEnableProxy As System.Windows.Forms.CheckBox
+    Friend WithEvents txtProxyDomain As System.Windows.Forms.TextBox
+    Friend WithEvents Label62 As System.Windows.Forms.Label
+    Friend WithEvents txtProxyPassword As System.Windows.Forms.TextBox
+    Friend WithEvents txtProxyUsername As System.Windows.Forms.TextBox
+    Friend WithEvents Label60 As System.Windows.Forms.Label
+    Friend WithEvents Label61 As System.Windows.Forms.Label
 End Class

@@ -2375,6 +2375,21 @@ Public Class dlgSettings
             Master.eSettings.EpisodeFanartCol = Me.chkEpisodeFanartCol.Checked
             Master.eSettings.EpisodeNfoCol = Me.chkEpisodeNfoCol.Checked
 
+            If Not String.IsNullOrEmpty(Me.txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(Me.txtProxyPort.Text) Then
+                Master.eSettings.ProxyURI = Me.txtProxyURI.Text
+                Master.eSettings.ProxyPort = Convert.ToInt32(Me.txtProxyPort.Text)
+
+                If Not String.IsNullOrEmpty(Me.txtProxyUsername.Text) AndAlso Not String.IsNullOrEmpty(Me.txtProxyPassword.Text) Then
+                    Master.eSettings.ProxyCreds.UserName = Me.txtProxyUsername.Text
+                    Master.eSettings.ProxyCreds.Password = Me.txtProxyPassword.Text
+                    Master.eSettings.ProxyCreds.Domain = Me.txtProxyDomain.Text
+                Else
+                    Master.eSettings.ProxyCreds = New NetworkCredential
+                End If
+            Else
+                Master.eSettings.ProxyURI = String.Empty
+                Master.eSettings.ProxyPort = -1
+            End If
             Master.eSettings.Save()
 
             Master.CreateDefaultOptions()
@@ -2673,6 +2688,19 @@ Public Class dlgSettings
             Me.chkEpisodePosterCol.Checked = Master.eSettings.EpisodePosterCol
             Me.chkEpisodeFanartCol.Checked = Master.eSettings.EpisodeFanartCol
             Me.chkEpisodeNfoCol.Checked = Master.eSettings.EpisodeNfoCol
+
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
+                Me.chkEnableProxy.Checked = True
+                Me.txtProxyURI.Text = Master.eSettings.ProxyURI
+                Me.txtProxyPort.Text = Master.eSettings.ProxyPort.ToString
+
+                If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
+                    Me.chkEnableCredentials.Checked = True
+                    Me.txtProxyUsername.Text = Master.eSettings.ProxyCreds.UserName
+                    Me.txtProxyPassword.Text = Master.eSettings.ProxyCreds.Password
+                    Me.txtProxyDomain.Text = Master.eSettings.ProxyCreds.Domain
+                End If
+            End If
 
             Me.RefreshSources()
             Me.RefreshTVSources()
@@ -3033,7 +3061,7 @@ Public Class dlgSettings
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
-        Me.tvSettings.Nodes(0).Nodes(1).Text = Master.eLang.GetString(554, "XBMC Communication")
+        Me.tvSettings.Nodes(0).Nodes(1).Text = Master.eLang.GetString(554, "Communication")
         Me.tvSettings.Nodes(1).Text = Master.eLang.GetString(36, "Movies")
         Me.tvSettings.Nodes(1).Nodes(0).Text = Master.eLang.GetString(555, "Files and Sources")
         Me.tvSettings.Nodes(1).Nodes(1).Text = Master.eLang.GetString(556, "Scraper - Data")
@@ -3055,6 +3083,8 @@ Public Class dlgSettings
         Me.cbAutoETSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbShowPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbShowFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbEpPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+        Me.cbEpFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
 
         LoadTrailerQualities()
     End Sub
@@ -3279,4 +3309,56 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub chkEnableProxy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableProxy.CheckedChanged
+        Me.SetApplyButton(True)
+        Me.txtProxyURI.Enabled = Me.chkEnableProxy.Checked
+        Me.txtProxyPort.Enabled = Me.chkEnableProxy.Checked
+        Me.GroupBox49.Enabled = Me.chkEnableProxy.Checked
+
+        If Not Me.chkEnableProxy.Checked Then
+            Me.txtProxyURI.Text = String.Empty
+            Me.txtProxyPort.Text = String.Empty
+            Me.chkEnableCredentials.Checked = False
+            Me.txtProxyUsername.Text = String.Empty
+            Me.txtProxyPassword.Text = String.Empty
+            Me.txtProxyDomain.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub chkEnableCredentials_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableCredentials.CheckedChanged
+        Me.SetApplyButton(True)
+        Me.txtProxyUsername.Enabled = Me.chkEnableCredentials.Checked
+        Me.txtProxyPassword.Enabled = Me.chkEnableCredentials.Checked
+        Me.txtProxyDomain.Enabled = Me.chkEnableCredentials.Checked
+
+        If Not Me.chkEnableCredentials.Checked Then
+            Me.txtProxyUsername.Text = String.Empty
+            Me.txtProxyPassword.Text = String.Empty
+            Me.txtProxyDomain.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtProxyPort.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtProxyPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyPort.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub pnlTop_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlTop.Paint
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtProxyUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyUsername.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtProxyPassword_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyPassword.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtProxyDomain_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyDomain.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
 End Class

@@ -446,4 +446,12 @@ Public Class dlgEditEpisode
     Private Sub pbStar5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar5.Click
         Me.tmpRating = Me.pbStar5.Tag.ToString
     End Sub
+
+    Private Sub txtEpisode_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtEpisode.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar, True)
+    End Sub
+
+    Private Sub txtSeason_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSeason.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar, True)
+    End Sub
 End Class

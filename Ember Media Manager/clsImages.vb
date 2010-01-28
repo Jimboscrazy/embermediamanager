@@ -30,6 +30,7 @@ Public Class Images
     Private _isedit As Boolean
     Private Ret As Byte()
     Private ms As MemoryStream = New MemoryStream()
+    Private sHTTP As New HTTP
 
     Public Property [Image]() As Image
         Get
@@ -83,7 +84,7 @@ Public Class Images
 
     Public Sub FromWeb(ByVal sURL As String)
         Try
-            _image = GenericFromWeb(sURL)
+            _image = sHTTP.DownloadImage(sURL)
         Catch
         End Try
     End Sub
@@ -613,27 +614,6 @@ Public Class Images
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
-    End Function
-
-    Public Shared Function GenericFromWeb(ByVal sURL As String) As Image
-        Dim tmpImage As Image = Nothing
-        Dim rBuffer(4096) As Byte
-        Dim rSize As Integer = 0
-        Try
-            If StringManip.isValidURL(sURL) Then
-                Dim wrRequest As WebRequest = WebRequest.Create(sURL)
-                wrRequest.Timeout = 5000
-
-                Using wrResponse As WebResponse = wrRequest.GetResponse()
-                    If wrResponse.ContentType.ToLower.Contains("image") Then
-                        tmpImage = New Bitmap(wrResponse.GetResponseStream)
-                    End If
-                End Using
-                wrRequest = Nothing
-            End If
-        Catch
-        End Try
-        Return tmpImage
     End Function
 
     Public Function GetPreferredImage(ByVal IMDBID As String, ByVal iType As Master.ImageType, ByRef imgResult As Master.ImgResult, ByVal sPath As String, ByVal doETs As Boolean, Optional ByVal doAsk As Boolean = False) As Boolean
