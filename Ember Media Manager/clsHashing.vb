@@ -74,8 +74,10 @@ Public Class HashFile
         Dim ETHashes As New List(Of String)
         Dim tPath As String = String.Empty
 
-        If Master.eSettings.VideoTSParent AndAlso (Directory.GetParent(sPath).Name.ToLower = "video_ts" OrElse Directory.GetParent(sPath).Name.ToLower = "bdmv") Then
+        If Master.eSettings.VideoTSParent AndAlso FileManip.Common.isVideoTS(sPath) Then
             tPath = Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, "extrathumbs")
+        ElseIf Master.eSettings.VideoTSParent AndAlso FileManip.Common.isBDRip(sPath) Then
+            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, "extrathumbs")
         Else
             tPath = Path.Combine(Directory.GetParent(sPath).FullName, "extrathumbs")
         End If

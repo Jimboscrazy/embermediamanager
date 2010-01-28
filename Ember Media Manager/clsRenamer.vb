@@ -248,7 +248,7 @@ Public Class FileFolderRenamer
                 If f.IsVIDEO_TS Then
                     f.NewFileName = "VIDEO_TS"
                 ElseIf f.IsBDMV Then
-                    f.NewFileName = "BDMV"
+                    f.NewFileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
                 Else
                     f.NewFileName = ProccessPattern(f, filePattern).Trim
                 End If
@@ -470,8 +470,8 @@ Public Class FileFolderRenamer
                             srcDir = Path.Combine(srcDir, "VIDEO_TS")
                             destDir = Path.Combine(destDir, "VIDEO_TS")
                         ElseIf f.IsBDMV Then
-                            srcDir = Path.Combine(srcDir, "BDMV")
-                            destDir = Path.Combine(destDir, "BDMV")
+                            srcDir = Path.Combine(srcDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
+                            destDir = Path.Combine(destDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
                         End If
 
                         If Not f.ID = -1 Then
@@ -616,7 +616,7 @@ Public Class FileFolderRenamer
         For Each i As String In mFolders
             If _tmpMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
                 MovieFile.BasePath = i
-                If Directory.GetParent(_tmpMovie.Filename).Name.ToLower = "video_ts" Then
+                If FileManip.Common.isVideoTS(_tmpMovie.Filename) Then
                     MovieFile.Parent = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).Name
                     If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName Then
                         MovieFile.OldPath = String.Empty
@@ -625,15 +625,15 @@ Public Class FileFolderRenamer
                         MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName.Replace(i, String.Empty)
                     End If
                     MovieFile.IsVIDEO_TS = True
-                ElseIf Directory.GetParent(_tmpMovie.Filename).Name.ToLower = "bdmv" Then
-                    MovieFile.Parent = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).Name
-                    If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName Then
+                ElseIf FileManip.Common.isBDRip(_tmpMovie.Filename) Then
+                    MovieFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).Name
+                    If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName Then
                         MovieFile.OldPath = String.Empty
                         MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
                     Else
-                        MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName.Replace(i, String.Empty)
+                        MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(_tmpMovie.Filename).FullName).FullName).FullName).FullName.Replace(i, String.Empty)
                     End If
-                    MovieFile.IsBDMV = True
+                    MovieFile.IsVIDEO_TS = True
                 Else
                     MovieFile.Parent = Directory.GetParent(_tmpMovie.Filename).Name
                     If MovieFile.BasePath = Directory.GetParent(_tmpMovie.Filename).FullName Then
@@ -664,7 +664,7 @@ Public Class FileFolderRenamer
                 MovieFile.FileName = Path.GetFileNameWithoutExtension(_tmpMovie.Filename)
             End If
         ElseIf MovieFile.IsBDMV Then
-            MovieFile.FileName = "BDMV"
+            MovieFile.FileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
         Else
             MovieFile.FileName = "VIDEO_TS"
         End If
@@ -692,8 +692,8 @@ Public Class FileFolderRenamer
                     destDir = Path.Combine(destDir, "VIDEO_TS")
 
                 ElseIf _frename.IsBDMV Then
-                    srcDir = Path.Combine(srcDir, "BDMV")
-                    destDir = Path.Combine(destDir, "BDMV")
+                    srcDir = Path.Combine(srcDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
+                    destDir = Path.Combine(destDir, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))
                 End If
 
                 'Rename Directory

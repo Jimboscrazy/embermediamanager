@@ -1791,6 +1791,7 @@ Public Class emmSettings
             Me._autodetectvts = value
         End Set
     End Property
+
     Public Property AutoDetectBDMV() As Boolean
         Get
             Return Me._autodetectbdmv

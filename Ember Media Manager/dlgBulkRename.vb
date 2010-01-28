@@ -149,7 +149,7 @@ Public Class dlgBulkRenamer
                                             For Each i As String In FFRenamer.MovieFolders
                                                 If _curMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
                                                     MovieFile.BasePath = If(i.EndsWith(Path.DirectorySeparatorChar), i.Substring(0, i.Length - 1), i)
-                                                    If Directory.GetParent(_curMovie.Filename).Name.ToLower = "video_ts" Then
+                                                    If FileManip.Common.isVideoTS(_curMovie.Filename) Then
                                                         MovieFile.Parent = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).Name
                                                         If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName Then
                                                             MovieFile.OldPath = String.Empty
@@ -158,13 +158,13 @@ Public Class dlgBulkRenamer
                                                             MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
                                                         MovieFile.IsVIDEO_TS = True
-                                                    ElseIf Directory.GetParent(_curMovie.Filename).Name.ToLower = "bdmv" Then
-                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).Name
-                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName Then
+                                                    ElseIf FileManip.Common.isBDRip(_curMovie.Filename) Then
+                                                        MovieFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).Name
+                                                        If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName Then
                                                             MovieFile.OldPath = String.Empty
                                                             MovieFile.BasePath = Directory.GetParent(MovieFile.BasePath).FullName
                                                         Else
-                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
+                                                            MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
                                                         MovieFile.IsBDMV = True
                                                     Else
@@ -186,7 +186,7 @@ Public Class dlgBulkRenamer
                                                     MovieFile.FileName = Path.GetFileNameWithoutExtension(_curMovie.Filename)
                                                 End If
                                             ElseIf MovieFile.IsBDMV Then
-                                                MovieFile.FileName = "BDMV"
+                                                MovieFile.FileName = String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")
                                             Else
                                                 MovieFile.FileName = "VIDEO_TS"
                                             End If
