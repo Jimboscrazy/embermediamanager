@@ -2035,6 +2035,59 @@ Public Class dlgSettings
     Private Sub chkSeasonFolderJPG_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeasonFolderJPG.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkEnableProxy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableProxy.CheckedChanged
+        Me.SetApplyButton(True)
+        Me.txtProxyURI.Enabled = Me.chkEnableProxy.Checked
+        Me.txtProxyPort.Enabled = Me.chkEnableProxy.Checked
+        Me.gbCreds.Enabled = Me.chkEnableProxy.Checked
+
+        If Not Me.chkEnableProxy.Checked Then
+            Me.txtProxyURI.Text = String.Empty
+            Me.txtProxyPort.Text = String.Empty
+            Me.chkEnableCredentials.Checked = False
+            Me.txtProxyUsername.Text = String.Empty
+            Me.txtProxyPassword.Text = String.Empty
+            Me.txtProxyDomain.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub chkEnableCredentials_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableCredentials.CheckedChanged
+        Me.SetApplyButton(True)
+        Me.txtProxyUsername.Enabled = Me.chkEnableCredentials.Checked
+        Me.txtProxyPassword.Enabled = Me.chkEnableCredentials.Checked
+        Me.txtProxyDomain.Enabled = Me.chkEnableCredentials.Checked
+
+        If Not Me.chkEnableCredentials.Checked Then
+            Me.txtProxyUsername.Text = String.Empty
+            Me.txtProxyPassword.Text = String.Empty
+            Me.txtProxyDomain.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtProxyPort.KeyPress
+        e.Handled = StringManip.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtProxyPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyPort.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub pnlTop_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlTop.Paint
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtProxyUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyUsername.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtProxyPassword_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyPassword.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtProxyDomain_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyDomain.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2863,7 +2916,7 @@ Public Class dlgSettings
     Private Sub SetUp()
         Me.btnAddShowRegex.Tag = String.Empty
         Me.Text = Master.eLang.GetString(420, "Settings")
-        Me.GroupBox11.Text = Master.eLang.GetString(421, "XBMC Communication")
+        Me.GroupBox11.Text = Master.eLang.GetString(554, "XBMC Communication")
         Me.btnEditCom.Text = Master.eLang.GetString(422, "Commit Edit")
         Me.Label16.Text = Master.eLang.GetString(423, "Name:")
         Me.btnAddCom.Text = Master.eLang.GetString(424, "Add New")
@@ -2909,6 +2962,7 @@ Public Class dlgSettings
         Me.chkMovieFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
         Me.chkMoviePosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
         Me.GroupBox8.Text = Master.eLang.GetString(471, "File Naming")
+        Me.gbTVNaming.Text = Master.eLang.GetString(471, "File Naming")
         Me.chkMovieNameMultiOnly.Text = Master.eLang.GetString(472, "Use <movie> Only for Folders with Multiple Movies")
         Me.GroupBox21.Text = Master.eLang.GetString(151, "Trailer")
         Me.chkVideoTSParent.Text = Master.eLang.GetString(473, "YAMJ Compatible VIDEO_TS File Placement/Naming")
@@ -2920,7 +2974,9 @@ Public Class dlgSettings
         Me.colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
         Me.colSingle.Text = Master.eLang.GetString(413, "Single Video")
         Me.btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
+        Me.btnRemTVSource.Text = Master.eLang.GetString(30, "Remove")
         Me.btnMovieAddFolder.Text = Master.eLang.GetString(407, "Add Source")
+        Me.btnAddTVSource.Text = Master.eLang.GetString(407, "Add Source")
         Me.chkOFDBGenre.Text = Master.eLang.GetString(474, "Use OFDB Genre")
         Me.chkOFDBPlot.Text = Master.eLang.GetString(475, "Use OFDB Plot")
         Me.chkOFDBOutline.Text = Master.eLang.GetString(476, "Use OFDB Outline")
@@ -2992,9 +3048,11 @@ Public Class dlgSettings
         Me.gbRenamerPatterns.Text = Master.eLang.GetString(531, "Default Renaming Patterns")
         Me.lblFilePattern.Text = Master.eLang.GetString(532, "Files Pattern")
         Me.lblFolderPattern.Text = Master.eLang.GetString(533, "Folders Pattern")
-        Me.GroupBox18.Text = Master.eLang.GetString(534, "Valid Movie Extensions")
+        Me.GroupBox18.Text = Master.eLang.GetString(534, "Valid Video Extensions")
         Me.btnEditSource.Text = Master.eLang.GetString(535, "Edit Source")
+        Me.btnEditTVSource.Text = Master.eLang.GetString(535, "Edit Source")
         Me.GroupBox19.Text = Master.eLang.GetString(536, "Miscellaneous Options")
+        Me.gbMiscTVSourceOpts.Text = Master.eLang.GetString(536, "Miscellaneous Options")
         Me.chkAutoDetectVTS.Text = Master.eLang.GetString(537, "Automatically Detect VIDEO_TS Folders Even if They Are Not Named ""VIDEO_TS""")
         Me.chkSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         Me.Label21.Text = Master.eLang.GetString(539, "Megabytes")
@@ -3047,6 +3105,8 @@ Public Class dlgSettings
         Me.chkRenameSingle.Text = Master.eLang.GetString(593, "Automatically Rename Files During Single-Scraper")
         Me.chkAutoETSize.Text = Master.eLang.GetString(599, "Download All Fanart Images of the Following Size as Extrathumbs")
         Me.Label35.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
+        Me.Label1.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
+        Me.Label3.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
         Me.btnDLTrans.Text = Master.eLang.GetString(443, "Download Addons")
         Me.Label36.Text = Master.eLang.GetString(621, "You must restart Ember before changes will take effect.")
         Me.GroupBox28.Text = Master.eLang.GetString(625, "Meta Data Defaults by File Type")
@@ -3054,20 +3114,103 @@ Public Class dlgSettings
         Me.chkIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.GroupBox29.Text = Master.eLang.GetString(629, "Themes")
         Me.chkYAMJCompatibleSets.Text = Master.eLang.GetString(643, "YAMJ Compatible Sets")
-        Me.chkCleanDB.Text = Master.eLang.GetString(999, "Clean database after updating library")
-        Me.chkIgnoreLastScan.Text = Master.eLang.GetString(999, "Ignore last scan time when updating library")
-        Me.gbShowFilter.Text = Master.eLang.GetString(999, "Show Folder/File Name Filters")
-        Me.gbEpFilter.Text = Master.eLang.GetString(999, "Episode Folder/File Name Filters")
+        Me.chkCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
+        Me.chkTVCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
+        Me.chkIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
+        Me.chkTVIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
+        Me.gbShowFilter.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
+        Me.gbEpFilter.Text = Master.eLang.GetString(671, "Episode Folder/File Name Filters")
+        Me.gbProxy.Text = Master.eLang.GetString(672, "Proxy")
+        Me.chkEnableProxy.Text = Master.eLang.GetString(673, "Enable Proxy")
+        Me.lblProxyURI.Text = Master.eLang.GetString(674, "Proxy URL:")
+        Me.lblProxyPort.Text = Master.eLang.GetString(675, "Proxy Port:")
+        Me.gbCreds.Text = Master.eLang.GetString(676, "Credentials")
+        Me.chkEnableCredentials.Text = Master.eLang.GetString(677, "Enable Credentials")
+        Me.lblProxyUN.Text = Master.eLang.GetString(425, "Username:")
+        Me.lblProxyPW.Text = Master.eLang.GetString(426, "Password:")
+        Me.lblProxyDomain.Text = Master.eLang.GetString(678, "Domain:")
+        Me.gbTVMisc.Text = Master.eLang.GetString(429, "Miscellaneous")
+        Me.lblRatingRegion.Text = Master.eLang.GetString(679, "TV Rating Region")
+        Me.gbTVListOptions.Text = Master.eLang.GetString(460, "Media List Options")
+        Me.gbShowListOptions.Text = Master.eLang.GetString(680, "Shows")
+        Me.gbSeasonListOptions.Text = Master.eLang.GetString(681, "Seasons")
+        Me.gbEpisodeListOptions.Text = Master.eLang.GetString(682, "Episodes")
+        Me.chkShowPosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
+        Me.chkSeasonPosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
+        Me.chkEpisodePosterCol.Text = Master.eLang.GetString(470, "Hide Poster Column")
+        Me.chkShowFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
+        Me.chkSeasonFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
+        Me.chkEpisodeFanartCol.Text = Master.eLang.GetString(469, "Hide Fanart Column")
+        Me.chkShowNfoCol.Text = Master.eLang.GetString(468, "Hide Info Column")
+        Me.chkEpisodeNfoCol.Text = Master.eLang.GetString(468, "Hide Info Column")
+        Me.gbShowPosters.Text = Master.eLang.GetString(683, "Show Posters")
+        Me.gbShowFanart.Text = Master.eLang.GetString(684, "Show Fanart")
+        Me.gbSeasonPosters.Text = Master.eLang.GetString(685, "Season Posters")
+        Me.gbSeasonFanart.Text = Master.eLang.GetString(686, "Season Fanart")
+        Me.gbEpisodePosters.Text = Master.eLang.GetString(687, "Episode Posters")
+        Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
+        Me.lblInsideSeason.Text = Master.eLang.GetString(689, "* Inside Season directory")
+        Me.btnEditShowRegex.Text = Master.eLang.GetString(690, "Edit Regex")
+        Me.btnRemoveShowRegex.Text =  = Master.eLang.GetString(30, "Remove")
+        Me.gbShowRegex.Text = Master.eLang.GetString(691, "Show Match Regex")
+        Me.lblSeasonMatch.Text = Master.eLang.GetString(692, "Season Match Regex:")
+        Me.lblEpisodeMatch.Text = Master.eLang.GetString(693, "Episode Match Regex:")
+        Me.lblSeasonRetrieve.Text = String.Concat(Master.eLang.GetString(694, "Apply To"), ":")
+        Me.lblEpisodeRetrieve.Text = String.Concat(Master.eLang.GetString(694, "Apply To"), ":")
+        Me.btnAddShowRegex.Text = Master.eLang.GetString(695, "Edit Regex")
+        Me.lvTVSources.Columns(0).Text = Master.eLang.GetString(232, "Name")
+        Me.lvTVSources.Columns(1).Text = Master.eLang.GetString(410, "Path")
+        Me.lvShowRegex.Columns(0).Text = Master.eLang.GetString(696, "Show Regex")
+        Me.lvShowRegex.Columns(1).Text = Master.eLang.GetString(694, "Apply To")
+        Me.lvShowRegex.Columns(2).Text = Master.eLang.GetString(697, "Episode Regex")
+        Me.lvShowRegex.Columns(3).Text = Master.eLang.GetString(693, "Apply To")
+        Me.lvMovies.Columns(0).Text = Master.eLang.GetString(232, "Name")
+        Me.lvMovies.Columns(1).Text = Master.eLang.GetString(410, "Path")
+        Me.lvMovies.Columns(2).Text = Master.eLang.GetString(411, "Recursive")
+        Me.lvMovies.Columns(3).Text = Master.eLang.GetString(412, "Use Folder Name")
+        Me.lvMovies.Columns(4).Text = Master.eLang.GetString(413, "Single Video")
 
         Me.tvSettings.Nodes(0).Text = Master.eLang.GetString(38, "General")
         Me.tvSettings.Nodes(0).Nodes(0).Text = Master.eLang.GetString(553, "File System")
-        Me.tvSettings.Nodes(0).Nodes(1).Text = Master.eLang.GetString(554, "Communication")
+        Me.tvSettings.Nodes(0).Nodes(1).Text = Master.eLang.GetString(421, "Communication")
         Me.tvSettings.Nodes(1).Text = Master.eLang.GetString(36, "Movies")
         Me.tvSettings.Nodes(1).Nodes(0).Text = Master.eLang.GetString(555, "Files and Sources")
         Me.tvSettings.Nodes(1).Nodes(1).Text = Master.eLang.GetString(556, "Scraper - Data")
         Me.tvSettings.Nodes(1).Nodes(2).Text = Master.eLang.GetString(557, "Scraper - Images")
-        Me.tvSettings.Nodes(2).Text = Master.eLang.GetString(999, "TV Shows")
+        Me.tvSettings.Nodes(2).Text = Master.eLang.GetString(698, "TV Shows")
         Me.tvSettings.Nodes(2).Nodes(0).Text = Master.eLang.GetString(555, "Files and Sources")
+        Me.tvSettings.Nodes(2).Nodes(1).Text = Master.eLang.GetString(556, "Scraper - Data")
+        Me.tvSettings.Nodes(2).Nodes(2).Text = Master.eLang.GetString(557, "Scraper - Images")
+        Me.gbShowPosterOpts.Text = Master.eLang.GetString(148, "Poster")
+        Me.lblShowPosterSize.Text = Master.eLang.GetString(482, "Preferred Poster Size")
+        Me.chkOverwriteShowPoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
+        Me.chkResizeShowPoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
+        Me.lblShowPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
+        Me.lblShowFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
+        Me.lblShowPosterQ.Text = Master.eLang.GetString(478, "Poster Quality:")
+        Me.gbShowFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
+        Me.lblShowFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
+        Me.chkOverwriteShowFanart.Text = Master.eLang.GetString(487, "Overwrite Existing Fanart")
+        Me.chkResizeShowFanart.Text = Master.eLang.GetString(485, "Automatically Resize Fanart:")
+        Me.lblShowFanartWidth.Text = Master.eLang.GetString(479, "Max Width:")
+        Me.lblShowFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
+        Me.lblShowFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
+        Me.chkShowFanartOnly.Text = Master.eLang.GetString(145, "Only")
+        Me.gbEpPosterOpts.Text = Master.eLang.GetString(148, "Poster")
+        Me.lblEpPosterSize.Text = Master.eLang.GetString(482, "Preferred Poster Size")
+        Me.chkOverwriteEpPoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
+        Me.chkResizeEpPoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
+        Me.lblEpPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
+        Me.lblEpFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
+        Me.lblEpPosterQ.Text = Master.eLang.GetString(478, "Poster Quality:")
+        Me.gbEpFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
+        Me.lblEpFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
+        Me.chkOverwriteEpFanart.Text = Master.eLang.GetString(487, "Overwrite Existing Fanart")
+        Me.chkResizeEpFanart.Text = Master.eLang.GetString(485, "Automatically Resize Fanart:")
+        Me.lblEpFanartWidth.Text = Master.eLang.GetString(479, "Max Width:")
+        Me.lblEpFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
+        Me.lblEpFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
+        Me.chkEpFanartOnly.Text = Master.eLang.GetString(145, "Only")
 
         If Not IsNothing(tvSettings.SelectedNode) Then
             Me.lblCurrent.Text = tvSettings.SelectedNode.Text
@@ -3077,6 +3220,10 @@ Public Class dlgSettings
 
         Me.TabPage1.Text = Master.eLang.GetString(38, "General")
         Me.TabPage2.Text = Master.eLang.GetString(390, "Options")
+        Me.TabPage3.Text = Master.eLang.GetString(38, "General")
+        Me.TabPage4.Text = Master.eLang.GetString(699, "Regex")
+        Me.TabPage5.Text = Master.eLang.GetString(700, "TV Show")
+        Me.TabPage6.Text = Master.eLang.GetString(701, "TV Episode")
 
         Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
@@ -3309,56 +3456,4 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub chkEnableProxy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableProxy.CheckedChanged
-        Me.SetApplyButton(True)
-        Me.txtProxyURI.Enabled = Me.chkEnableProxy.Checked
-        Me.txtProxyPort.Enabled = Me.chkEnableProxy.Checked
-        Me.GroupBox49.Enabled = Me.chkEnableProxy.Checked
-
-        If Not Me.chkEnableProxy.Checked Then
-            Me.txtProxyURI.Text = String.Empty
-            Me.txtProxyPort.Text = String.Empty
-            Me.chkEnableCredentials.Checked = False
-            Me.txtProxyUsername.Text = String.Empty
-            Me.txtProxyPassword.Text = String.Empty
-            Me.txtProxyDomain.Text = String.Empty
-        End If
-    End Sub
-
-    Private Sub chkEnableCredentials_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnableCredentials.CheckedChanged
-        Me.SetApplyButton(True)
-        Me.txtProxyUsername.Enabled = Me.chkEnableCredentials.Checked
-        Me.txtProxyPassword.Enabled = Me.chkEnableCredentials.Checked
-        Me.txtProxyDomain.Enabled = Me.chkEnableCredentials.Checked
-
-        If Not Me.chkEnableCredentials.Checked Then
-            Me.txtProxyUsername.Text = String.Empty
-            Me.txtProxyPassword.Text = String.Empty
-            Me.txtProxyDomain.Text = String.Empty
-        End If
-    End Sub
-
-    Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtProxyPort.KeyPress
-        e.Handled = StringManip.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtProxyPort_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyPort.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub pnlTop_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlTop.Paint
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtProxyUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyUsername.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtProxyPassword_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyPassword.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub txtProxyDomain_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyDomain.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
 End Class

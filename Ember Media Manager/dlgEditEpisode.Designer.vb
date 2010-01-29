@@ -31,9 +31,9 @@ Partial Class dlgEditEpisode
         Me.TabPage1 = New System.Windows.Forms.TabPage
         Me.txtAired = New System.Windows.Forms.TextBox
         Me.txtEpisode = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
+        Me.lblEpisode = New System.Windows.Forms.Label
         Me.txtSeason = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
+        Me.lblSeason = New System.Windows.Forms.Label
         Me.lblCredits = New System.Windows.Forms.Label
         Me.txtCredits = New System.Windows.Forms.TextBox
         Me.btnEditActor = New System.Windows.Forms.Button
@@ -55,7 +55,7 @@ Partial Class dlgEditEpisode
         Me.pbStar2 = New System.Windows.Forms.PictureBox
         Me.pbStar1 = New System.Windows.Forms.PictureBox
         Me.lblRating = New System.Windows.Forms.Label
-        Me.lblYear = New System.Windows.Forms.Label
+        Me.lblAired = New System.Windows.Forms.Label
         Me.lblTitle = New System.Windows.Forms.Label
         Me.txtTitle = New System.Windows.Forms.TextBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
@@ -171,9 +171,9 @@ Partial Class dlgEditEpisode
         '
         Me.TabPage1.Controls.Add(Me.txtAired)
         Me.TabPage1.Controls.Add(Me.txtEpisode)
-        Me.TabPage1.Controls.Add(Me.Label4)
+        Me.TabPage1.Controls.Add(Me.lblEpisode)
         Me.TabPage1.Controls.Add(Me.txtSeason)
-        Me.TabPage1.Controls.Add(Me.Label5)
+        Me.TabPage1.Controls.Add(Me.lblSeason)
         Me.TabPage1.Controls.Add(Me.lblCredits)
         Me.TabPage1.Controls.Add(Me.txtCredits)
         Me.TabPage1.Controls.Add(Me.btnEditActor)
@@ -192,7 +192,7 @@ Partial Class dlgEditEpisode
         Me.TabPage1.Controls.Add(Me.pbStar2)
         Me.TabPage1.Controls.Add(Me.pbStar1)
         Me.TabPage1.Controls.Add(Me.lblRating)
-        Me.TabPage1.Controls.Add(Me.lblYear)
+        Me.TabPage1.Controls.Add(Me.lblAired)
         Me.TabPage1.Controls.Add(Me.lblTitle)
         Me.TabPage1.Controls.Add(Me.txtTitle)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
@@ -219,14 +219,14 @@ Partial Class dlgEditEpisode
         Me.txtEpisode.Size = New System.Drawing.Size(46, 20)
         Me.txtEpisode.TabIndex = 111
         '
-        'Label4
+        'lblEpisode
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(59, 51)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(48, 13)
-        Me.Label4.TabIndex = 113
-        Me.Label4.Text = "Episode:"
+        Me.lblEpisode.AutoSize = True
+        Me.lblEpisode.Location = New System.Drawing.Point(59, 51)
+        Me.lblEpisode.Name = "lblEpisode"
+        Me.lblEpisode.Size = New System.Drawing.Size(48, 13)
+        Me.lblEpisode.TabIndex = 113
+        Me.lblEpisode.Text = "Episode:"
         '
         'txtSeason
         '
@@ -236,14 +236,14 @@ Partial Class dlgEditEpisode
         Me.txtSeason.Size = New System.Drawing.Size(46, 20)
         Me.txtSeason.TabIndex = 110
         '
-        'Label5
+        'lblSeason
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(7, 51)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(46, 13)
-        Me.Label5.TabIndex = 112
-        Me.Label5.Text = "Season:"
+        Me.lblSeason.AutoSize = True
+        Me.lblSeason.Location = New System.Drawing.Point(7, 51)
+        Me.lblSeason.Name = "lblSeason"
+        Me.lblSeason.Size = New System.Drawing.Size(46, 13)
+        Me.lblSeason.TabIndex = 112
+        Me.lblSeason.Text = "Season:"
         '
         'lblCredits
         '
@@ -418,14 +418,14 @@ Partial Class dlgEditEpisode
         Me.lblRating.TabIndex = 60
         Me.lblRating.Text = "Rating:"
         '
-        'lblYear
+        'lblAired
         '
-        Me.lblYear.AutoSize = True
-        Me.lblYear.Location = New System.Drawing.Point(111, 51)
-        Me.lblYear.Name = "lblYear"
-        Me.lblYear.Size = New System.Drawing.Size(34, 13)
-        Me.lblYear.TabIndex = 58
-        Me.lblYear.Text = "Aired:"
+        Me.lblAired.AutoSize = True
+        Me.lblAired.Location = New System.Drawing.Point(111, 51)
+        Me.lblAired.Name = "lblAired"
+        Me.lblAired.Size = New System.Drawing.Size(34, 13)
+        Me.lblAired.TabIndex = 58
+        Me.lblAired.Text = "Aired:"
         '
         'lblTitle
         '
@@ -701,7 +701,7 @@ Partial Class dlgEditEpisode
         Me.btnFrameLoad.Name = "btnFrameLoad"
         Me.btnFrameLoad.Size = New System.Drawing.Size(96, 83)
         Me.btnFrameLoad.TabIndex = 1
-        Me.btnFrameLoad.Text = "Load Movie"
+        Me.btnFrameLoad.Text = "Load Episode"
         Me.btnFrameLoad.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnFrameLoad.UseVisualStyleBackColor = True
         '
@@ -820,7 +820,7 @@ Partial Class dlgEditEpisode
     Friend WithEvents pbStar2 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar1 As System.Windows.Forms.PictureBox
     Friend WithEvents lblRating As System.Windows.Forms.Label
-    Friend WithEvents lblYear As System.Windows.Forms.Label
+    Friend WithEvents lblAired As System.Windows.Forms.Label
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
@@ -844,9 +844,9 @@ Partial Class dlgEditEpisode
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents txtEpisode As System.Windows.Forms.TextBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents lblEpisode As System.Windows.Forms.Label
     Friend WithEvents txtSeason As System.Windows.Forms.TextBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents lblSeason As System.Windows.Forms.Label
     Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
     Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
     Friend WithEvents btnRemoveFanart As System.Windows.Forms.Button

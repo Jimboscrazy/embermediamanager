@@ -29,6 +29,7 @@ Public Class dlgTrailerFormat
 
     Private Sub dlgTrailerFormat_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
+            Me.SetUp()
 
             lstFormats.DataSource = Nothing
 
@@ -76,4 +77,11 @@ Public Class dlgTrailerFormat
 
     End Sub
 
+    Private Sub SetUp()
+        Me.Text = Master.eLang.GetString(702, "Select Format")
+        Me.lblStatus.Text = Master.eLang.GetString(703, "Getting available formats...")
+        Me.GroupBox1.Text = Master.eLang.GetString(704, "Available Formats")
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+    End Sub
 End Class

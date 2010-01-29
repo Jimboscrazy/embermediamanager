@@ -53,7 +53,7 @@ Partial Class dlgEditShow
         Me.pbStar2 = New System.Windows.Forms.PictureBox
         Me.pbStar1 = New System.Windows.Forms.PictureBox
         Me.lblRating = New System.Windows.Forms.Label
-        Me.lblYear = New System.Windows.Forms.Label
+        Me.lblPremiered = New System.Windows.Forms.Label
         Me.lblTitle = New System.Windows.Forms.Label
         Me.txtTitle = New System.Windows.Forms.TextBox
         Me.TabPage2 = New System.Windows.Forms.TabPage
@@ -169,7 +169,7 @@ Partial Class dlgEditShow
         Me.TabPage1.Controls.Add(Me.pbStar2)
         Me.TabPage1.Controls.Add(Me.pbStar1)
         Me.TabPage1.Controls.Add(Me.lblRating)
-        Me.TabPage1.Controls.Add(Me.lblYear)
+        Me.TabPage1.Controls.Add(Me.lblPremiered)
         Me.TabPage1.Controls.Add(Me.lblTitle)
         Me.TabPage1.Controls.Add(Me.txtTitle)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
@@ -381,14 +381,14 @@ Partial Class dlgEditShow
         Me.lblRating.TabIndex = 60
         Me.lblRating.Text = "Rating:"
         '
-        'lblYear
+        'lblPremiered
         '
-        Me.lblYear.AutoSize = True
-        Me.lblYear.Location = New System.Drawing.Point(7, 53)
-        Me.lblYear.Name = "lblYear"
-        Me.lblYear.Size = New System.Drawing.Size(57, 13)
-        Me.lblYear.TabIndex = 58
-        Me.lblYear.Text = "Premiered:"
+        Me.lblPremiered.AutoSize = True
+        Me.lblPremiered.Location = New System.Drawing.Point(7, 53)
+        Me.lblPremiered.Name = "lblPremiered"
+        Me.lblPremiered.Size = New System.Drawing.Size(57, 13)
+        Me.lblPremiered.TabIndex = 58
+        Me.lblPremiered.Text = "Premiered:"
         '
         'lblTitle
         '
@@ -659,7 +659,7 @@ Partial Class dlgEditShow
     Friend WithEvents pbStar2 As System.Windows.Forms.PictureBox
     Friend WithEvents pbStar1 As System.Windows.Forms.PictureBox
     Friend WithEvents lblRating As System.Windows.Forms.Label
-    Friend WithEvents lblYear As System.Windows.Forms.Label
+    Friend WithEvents lblPremiered As System.Windows.Forms.Label
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage

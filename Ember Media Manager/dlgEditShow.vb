@@ -48,6 +48,7 @@ Public Class dlgEditShow
     End Sub
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Me.SetUp()
 
         Me.lvwActorSorter = New ListViewColumnSorter()
         Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
@@ -597,4 +598,38 @@ Public Class dlgEditShow
         Me.pbFanart.Image = Nothing
         Me.Fanart.Image = Nothing
     End Sub
+
+    Private Sub SetUp()
+        Dim mTitle As String = Master.currShow.TVShow.Title
+        Dim sTitle As String = String.Concat(Master.eLang.GetString(663, "Edit Show"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
+        Me.Text = sTitle
+        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Me.Label2.Text = Master.eLang.GetString(664, "Edit the details for the selected show.")
+        Me.Label1.Text = Master.eLang.GetString(663, "Edit Show")
+        Me.TabPage1.Text = Master.eLang.GetString(26, "Details")
+        Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
+        Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
+        Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
+        Me.colName.Text = Master.eLang.GetString(232, "Name")
+        Me.colRole.Text = Master.eLang.GetString(233, "Role")
+        Me.colThumb.Text = Master.eLang.GetString(234, "Thumb")
+        Me.lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
+        Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
+        Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
+        Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
+        Me.lblPremiered.Text = Master.eLang.GetString(665, "Premiered:")
+        Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
+        Me.TabPage2.Text = Master.eLang.GetString(148, "Poster")
+        Me.btnRemovePoster.Text = Master.eLang.GetString(247, "Remove Poster")
+        Me.btnSetPosterScrape.Text = Master.eLang.GetString(248, "Change Poster (Scrape)")
+        Me.btnSetPoster.Text = Master.eLang.GetString(249, "Change Poster (Local)")
+        Me.TabPage3.Text = Master.eLang.GetString(149, "Fanart")
+        Me.btnRemoveFanart.Text = Master.eLang.GetString(250, "Remove Fanart")
+        Me.btnSetFanartScrape.Text = Master.eLang.GetString(251, "Change Fanart (Scrape)")
+        Me.btnSetFanart.Text = Master.eLang.GetString(252, "Change Fanart (Local)")
+        Me.btnSetPosterDL.Text = Master.eLang.GetString(265, "Change Poster (Download)")
+        Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
+    End Sub
+
 End Class
