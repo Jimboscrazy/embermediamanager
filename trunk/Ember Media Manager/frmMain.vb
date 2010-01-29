@@ -3090,7 +3090,7 @@ Public Class frmMain
         Me.tspbLoading.Style = ProgressBarStyle.Marquee
         Me.EnableFilters(False)
 
-        Me.tslLoading.Text = Master.eLang.GetString(999, "Cleaning Database:")
+        Me.tslLoading.Text = Master.eLang.GetString(644, "Cleaning Database:")
         Me.tspbLoading.Visible = True
         Me.tslLoading.Visible = True
 
@@ -4436,11 +4436,12 @@ doCancel:
                 .cmnuRescrape.Text = Master.eLang.GetString(31, "Re-scrape IMDB")
                 .cmnuSearchNew.Text = Master.eLang.GetString(32, "Change Movie")
                 .OpenContainingFolderToolStripMenuItem.Text = Master.eLang.GetString(33, "Open Containing Folder")
-                .RemoveToolStripMenuItem.Text = Master.eLang.GetString(999, "Remove")
+                .RemoveToolStripMenuItem.Text = Master.eLang.GetString(30, "Remove")
                 .DeleteMovieToolStripMenuItem.Text = Master.eLang.GetString(34, "Delete Movie")
-                .RemoveFromDatabaseToolStripMenuItem.Text = Master.eLang.GetString(999, "Remove From Database")
+                .RemoveFromDatabaseToolStripMenuItem.Text = Master.eLang.GetString(646, "Remove From Database")
                 .btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
                 .tabMovies.Text = Master.eLang.GetString(36, "Movies")
+                .tabTV.Text = Master.eLang.GetString(653, "TV")
                 .btnClearFilters.Text = Master.eLang.GetString(37, "Clear Filters")
                 .GroupBox3.Text = Master.eLang.GetString(38, "General")
                 .chkFilterTolerance.Text = Master.eLang.GetString(39, "Out of Tolerance")
@@ -4554,6 +4555,10 @@ doCancel:
                 .mnuFilterAskExtra.Text = .mnuAllAutoExtra.Text
                 .mnuFilterAskTrailer.Text = .mnuAllAutoTrailer.Text
                 .mnuFilterAskMI.Text = .mnuAllAutoMI.Text
+                .mnuMoviesUpdate.Text = Master.eLang.GetString(36, "Movies")
+                .mnuTVShowUpdate.Text = Master.eLang.GetString(698, "TV Shows")
+                .cmnuEditEpisode.Text = Master.eLang.GetString(656, "Edit Episode")
+                .cmnuEditShow.Text = Master.eLang.GetString(663, "Edit Show")
                 .CustomUpdaterToolStripMenuItem.Text = Master.eLang.GetString(81, "Custom Scraper...")
                 .tsbRefreshMedia.Text = Master.eLang.GetString(82, "Update Library")
                 .tsbUpdateXBMC.Text = Master.eLang.GetString(83, "Initiate XBMC Update")
@@ -4645,6 +4650,7 @@ doCancel:
 
             Me.SetControlsEnabled(False)
             Me.tabMovies.Text = Master.eLang.GetString(36, "Movies")
+            Me.tabTV.Text = Master.eLang.GetString(653, "TV")
             Me.txtSearch.Text = String.Empty
 
             Me.fScanner.CancelAndWait()
@@ -5054,7 +5060,7 @@ doCancel:
             End If
 
             Me.txtPlot.Text = Master.currShow.TVShow.Plot
-            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(999, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
+            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
 
             Me.alActors = New List(Of String)
 
@@ -5187,7 +5193,7 @@ doCancel:
             End If
 
             Me.txtPlot.Text = Master.currShow.TVShow.Plot
-            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(999, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
+            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
 
             Me.alActors = New List(Of String)
 
@@ -5306,9 +5312,9 @@ doCancel:
             Me.txtPlot.Text = Master.currShow.TVEp.Plot
             Me.lblDirector.Text = Master.currShow.TVEp.Director
             Me.txtFilePath.Text = Master.currShow.Filename
-            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(999, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEp.Aired), "?", Master.currShow.TVEp.Aired))
+            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVEp.Aired), "?", Master.currShow.TVEp.Aired))
 
-            Me.lblTagline.Text = String.Format(Master.eLang.GetString(999, "Season: {0}, Episode: {1}"), _
+            Me.lblTagline.Text = String.Format(Master.eLang.GetString(648, "Season: {0}, Episode: {1}"), _
                             If(String.IsNullOrEmpty(Master.currShow.TVEp.Season.ToString), "?", Master.currShow.TVEp.Season.ToString), _
                             If(String.IsNullOrEmpty(Master.currShow.TVEp.Episode.ToString), "?", Master.currShow.TVEp.Episode.ToString))
 
@@ -6231,7 +6237,7 @@ doCancel:
                 End Using
 
                 Me.mnuMoviesUpdate.DropDownItems.Clear()
-                mnuItem = Me.mnuMoviesUpdate.DropDownItems.Add(Master.eLang.GetString(999, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
+                mnuItem = Me.mnuMoviesUpdate.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
                 mnuItem.Tag = String.Empty
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
@@ -6244,7 +6250,7 @@ doCancel:
                 End Using
 
                 Me.mnuTVShowUpdate.DropDownItems.Clear()
-                mnuItem = Me.mnuTVShowUpdate.DropDownItems.Add(Master.eLang.GetString(999, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
+                mnuItem = Me.mnuTVShowUpdate.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
                 mnuItem.Tag = String.Empty
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
                     SQLNewcommand.CommandText = String.Concat("SELECT Name FROM TVSources;")
@@ -6870,8 +6876,8 @@ doCancel:
                 .dgvTVSeasons.Columns(2).ReadOnly = True
                 .dgvTVSeasons.Columns(2).MinimumWidth = 83
                 .dgvTVSeasons.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns(2).ToolTipText = Master.eLang.GetString(999, "Season")
-                .dgvTVSeasons.Columns(2).HeaderText = Master.eLang.GetString(999, "Season")
+                .dgvTVSeasons.Columns(2).ToolTipText = Master.eLang.GetString(650, "Season")
+                .dgvTVSeasons.Columns(2).HeaderText = Master.eLang.GetString(650, "Season")
                 .dgvTVSeasons.Columns(3).Visible = False
                 .dgvTVSeasons.Columns(4).Width = 20
                 .dgvTVSeasons.Columns(4).Resizable = DataGridViewTriState.False
@@ -6926,8 +6932,8 @@ doCancel:
                 .dgvTVEpisodes.Columns(2).ReadOnly = True
                 .dgvTVEpisodes.Columns(2).MinimumWidth = 83
                 .dgvTVEpisodes.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns(2).ToolTipText = Master.eLang.GetString(999, "Title")
-                .dgvTVEpisodes.Columns(2).HeaderText = Master.eLang.GetString(999, "Title")
+                .dgvTVEpisodes.Columns(2).ToolTipText = Master.eLang.GetString(21, "Title")
+                .dgvTVEpisodes.Columns(2).HeaderText = Master.eLang.GetString(21, "Title")
                 .dgvTVEpisodes.Columns(3).Width = 20
                 .dgvTVEpisodes.Columns(3).Resizable = DataGridViewTriState.False
                 .dgvTVEpisodes.Columns(3).ReadOnly = True
@@ -6977,10 +6983,10 @@ doCancel:
                     Me.Label1.Text = Master.eLang.GetString(55, "No Information is Available for This Movie")
                     If Not Me.currThemeType = Theming.ThemeType.Movies Then Me.ApplyTheme(Theming.ThemeType.Movies)
                 Case 1
-                    Me.Label1.Text = Master.eLang.GetString(999, "No Information is Available for This Show")
+                    Me.Label1.Text = Master.eLang.GetString(651, "No Information is Available for This Show")
                     If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Case 2
-                    Me.Label1.Text = Master.eLang.GetString(999, "No Information is Available for This Episode")
+                    Me.Label1.Text = Master.eLang.GetString(652, "No Information is Available for This Episode")
                     If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
             End Select
         End If
@@ -7001,7 +7007,7 @@ doCancel:
         End Using
 
         If ShowCount > 0 AndAlso EpCount > 0 Then
-            Me.tabTV.Text = String.Format("{0} ({1}/{2})", Master.eLang.GetString(999, "TV"), ShowCount, EpCount)
+            Me.tabTV.Text = String.Format("{0} ({1}/{2})", Master.eLang.GetString(653, "TV"), ShowCount, EpCount)
         End If
     End Sub
 

@@ -28,10 +28,6 @@ Public Class dlgNewVersion
 
     Public Overloads Function ShowDialog(ByVal iNew As Integer) As Windows.Forms.DialogResult
 
-        '//
-        ' Overload to pass data
-        '\\
-
         Me.lblNew.Text = String.Format(Master.eLang.GetString(210, "Version r{0} is now available."), iNew)
         Me.txtChangelog.Text = Master.GetChangelog.Replace("\n", vbNewLine)
 

@@ -342,11 +342,11 @@ Public Class StringManip
 
     Public Shared Function FormatSeasonText(ByVal sSeason As Integer) As String
         If sSeason > 0 Then
-            Return String.Concat(Master.eLang.GetString(999, "Season "), sSeason.ToString.PadLeft(2, Convert.ToChar("0")))
+            Return String.Concat(Master.eLang.GetString(654, "Season "), sSeason.ToString.PadLeft(2, Convert.ToChar("0")))
         ElseIf sSeason = 0 Then
-            Return Master.eLang.GetString(999, "Season Specials")
+            Return Master.eLang.GetString(655, "Season Specials")
         Else
-            Return Master.eLang.GetString(999, "Unknown")
+            Return Master.eLang.GetString(283, "Unknown")
         End If
     End Function
 

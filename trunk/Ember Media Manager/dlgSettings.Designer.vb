@@ -24,17 +24,17 @@ Partial Class dlgSettings
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSettings))
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
-        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Communication", 1, 1)
-        Dim TreeNode3 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode1, TreeNode2})
-        Dim TreeNode4 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode5 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode6 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode7 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode4, TreeNode5, TreeNode6})
-        Dim TreeNode8 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
-        Dim TreeNode9 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
-        Dim TreeNode10 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
-        Dim TreeNode11 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode8, TreeNode9, TreeNode10})
+        Dim TreeNode12 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("File System", 4, 4)
+        Dim TreeNode13 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Communication", 1, 1)
+        Dim TreeNode14 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("General", 0, 0, New System.Windows.Forms.TreeNode() {TreeNode12, TreeNode13})
+        Dim TreeNode15 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode16 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode17 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode18 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Movies", 2, 2, New System.Windows.Forms.TreeNode() {TreeNode15, TreeNode16, TreeNode17})
+        Dim TreeNode19 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Files and Sources", 5, 5)
+        Dim TreeNode20 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Data", 3, 3)
+        Dim TreeNode21 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("Scraper - Images", 6, 6)
+        Dim TreeNode22 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("TV Shows", 7, 7, New System.Windows.Forms.TreeNode() {TreeNode19, TreeNode20, TreeNode21})
         Me.GroupBox11 = New System.Windows.Forms.GroupBox
         Me.btnEditCom = New System.Windows.Forms.Button
         Me.btnRemoveCom = New System.Windows.Forms.Button
@@ -229,17 +229,17 @@ Partial Class dlgSettings
         Me.pnlGeneral = New System.Windows.Forms.Panel
         Me.gbInterface = New System.Windows.Forms.GroupBox
         Me.pnlXBMCCom = New System.Windows.Forms.Panel
-        Me.GroupBox48 = New System.Windows.Forms.GroupBox
-        Me.GroupBox49 = New System.Windows.Forms.GroupBox
+        Me.gbProxy = New System.Windows.Forms.GroupBox
+        Me.gbCreds = New System.Windows.Forms.GroupBox
         Me.txtProxyDomain = New System.Windows.Forms.TextBox
-        Me.Label62 = New System.Windows.Forms.Label
+        Me.lblProxyDomain = New System.Windows.Forms.Label
         Me.txtProxyPassword = New System.Windows.Forms.TextBox
         Me.txtProxyUsername = New System.Windows.Forms.TextBox
-        Me.Label60 = New System.Windows.Forms.Label
-        Me.Label61 = New System.Windows.Forms.Label
+        Me.lblProxyUN = New System.Windows.Forms.Label
+        Me.lblProxyPW = New System.Windows.Forms.Label
         Me.chkEnableCredentials = New System.Windows.Forms.CheckBox
-        Me.Label55 = New System.Windows.Forms.Label
-        Me.Label42 = New System.Windows.Forms.Label
+        Me.lblProxyPort = New System.Windows.Forms.Label
+        Me.lblProxyURI = New System.Windows.Forms.Label
         Me.txtProxyPort = New System.Windows.Forms.TextBox
         Me.txtProxyURI = New System.Windows.Forms.TextBox
         Me.chkEnableProxy = New System.Windows.Forms.CheckBox
@@ -368,19 +368,19 @@ Partial Class dlgSettings
         Me.pnlTVSources = New System.Windows.Forms.Panel
         Me.TabControl2 = New System.Windows.Forms.TabControl
         Me.TabPage3 = New System.Windows.Forms.TabPage
-        Me.GroupBox33 = New System.Windows.Forms.GroupBox
-        Me.Label41 = New System.Windows.Forms.Label
-        Me.GroupBox41 = New System.Windows.Forms.GroupBox
+        Me.gbTVNaming = New System.Windows.Forms.GroupBox
+        Me.lblInsideSeason = New System.Windows.Forms.Label
+        Me.gbEpisodeFanart = New System.Windows.Forms.GroupBox
         Me.chkEpisodeDotFanart = New System.Windows.Forms.CheckBox
         Me.chkEpisodeDashFanart = New System.Windows.Forms.CheckBox
-        Me.GroupBox40 = New System.Windows.Forms.GroupBox
+        Me.gbEpisodePosters = New System.Windows.Forms.GroupBox
         Me.chkEpisodeJPG = New System.Windows.Forms.CheckBox
         Me.chkEpisodeTBN = New System.Windows.Forms.CheckBox
-        Me.GroupBox35 = New System.Windows.Forms.GroupBox
+        Me.gbSeasonFanart = New System.Windows.Forms.GroupBox
         Me.chkSeasonDotFanart = New System.Windows.Forms.CheckBox
         Me.chkSeasonDashFanart = New System.Windows.Forms.CheckBox
         Me.chkSeasonFanartJPG = New System.Windows.Forms.CheckBox
-        Me.GroupBox34 = New System.Windows.Forms.GroupBox
+        Me.gbSeasonPosters = New System.Windows.Forms.GroupBox
         Me.chkSeasonFolderJPG = New System.Windows.Forms.CheckBox
         Me.chkSeasonNameJPG = New System.Windows.Forms.CheckBox
         Me.chkSeasonNameTBN = New System.Windows.Forms.CheckBox
@@ -388,11 +388,11 @@ Partial Class dlgSettings
         Me.chkSeasonPosterTBN = New System.Windows.Forms.CheckBox
         Me.chkSeasonXTBN = New System.Windows.Forms.CheckBox
         Me.chkSeasonXXTBN = New System.Windows.Forms.CheckBox
-        Me.GroupBox38 = New System.Windows.Forms.GroupBox
+        Me.gbShowFanart = New System.Windows.Forms.GroupBox
         Me.chkShowDotFanart = New System.Windows.Forms.CheckBox
         Me.chkShowDashFanart = New System.Windows.Forms.CheckBox
         Me.chkShowFanartJPG = New System.Windows.Forms.CheckBox
-        Me.GroupBox39 = New System.Windows.Forms.GroupBox
+        Me.gbShowPosters = New System.Windows.Forms.GroupBox
         Me.chkShowPosterJPG = New System.Windows.Forms.CheckBox
         Me.chkShowPosterTBN = New System.Windows.Forms.CheckBox
         Me.chkShowFolderJPG = New System.Windows.Forms.CheckBox
@@ -401,22 +401,22 @@ Partial Class dlgSettings
         Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
-        Me.GroupBox30 = New System.Windows.Forms.GroupBox
+        Me.gbMiscTVSourceOpts = New System.Windows.Forms.GroupBox
         Me.chkTVIgnoreLastScan = New System.Windows.Forms.CheckBox
         Me.chkTVCleanDB = New System.Windows.Forms.CheckBox
         Me.btnAddTVSource = New System.Windows.Forms.Button
         Me.btnEditTVSource = New System.Windows.Forms.Button
         Me.btnRemTVSource = New System.Windows.Forms.Button
         Me.TabPage4 = New System.Windows.Forms.TabPage
-        Me.GroupBox31 = New System.Windows.Forms.GroupBox
-        Me.Label33 = New System.Windows.Forms.Label
+        Me.gbShowRegex = New System.Windows.Forms.GroupBox
+        Me.lblSeasonMatch = New System.Windows.Forms.Label
         Me.btnAddShowRegex = New System.Windows.Forms.Button
         Me.txtSeasonRegex = New System.Windows.Forms.TextBox
-        Me.Label39 = New System.Windows.Forms.Label
+        Me.lblEpisodeRetrieve = New System.Windows.Forms.Label
         Me.cboSeasonRetrieve = New System.Windows.Forms.ComboBox
-        Me.Label38 = New System.Windows.Forms.Label
+        Me.lblSeasonRetrieve = New System.Windows.Forms.Label
         Me.txtEpRegex = New System.Windows.Forms.TextBox
-        Me.Label37 = New System.Windows.Forms.Label
+        Me.lblEpisodeMatch = New System.Windows.Forms.Label
         Me.cboEpRetrieve = New System.Windows.Forms.ComboBox
         Me.btnEditShowRegex = New System.Windows.Forms.Button
         Me.btnRemoveShowRegex = New System.Windows.Forms.Button
@@ -427,20 +427,20 @@ Partial Class dlgSettings
         Me.colEpisode = New System.Windows.Forms.ColumnHeader
         Me.colEpApply = New System.Windows.Forms.ColumnHeader
         Me.pnlShows = New System.Windows.Forms.Panel
-        Me.GroupBox42 = New System.Windows.Forms.GroupBox
-        Me.GroupBox45 = New System.Windows.Forms.GroupBox
+        Me.gbTVListOptions = New System.Windows.Forms.GroupBox
+        Me.gbEpisodeListOptions = New System.Windows.Forms.GroupBox
         Me.chkEpisodeNfoCol = New System.Windows.Forms.CheckBox
         Me.chkEpisodeFanartCol = New System.Windows.Forms.CheckBox
         Me.chkEpisodePosterCol = New System.Windows.Forms.CheckBox
-        Me.GroupBox44 = New System.Windows.Forms.GroupBox
+        Me.gbSeasonListOptions = New System.Windows.Forms.GroupBox
         Me.chkSeasonFanartCol = New System.Windows.Forms.CheckBox
         Me.chkSeasonPosterCol = New System.Windows.Forms.CheckBox
-        Me.GroupBox43 = New System.Windows.Forms.GroupBox
+        Me.gbShowListOptions = New System.Windows.Forms.GroupBox
         Me.chkShowNfoCol = New System.Windows.Forms.CheckBox
         Me.chkShowFanartCol = New System.Windows.Forms.CheckBox
         Me.chkShowPosterCol = New System.Windows.Forms.CheckBox
-        Me.GroupBox32 = New System.Windows.Forms.GroupBox
-        Me.Label40 = New System.Windows.Forms.Label
+        Me.gbTVMisc = New System.Windows.Forms.GroupBox
+        Me.lblRatingRegion = New System.Windows.Forms.Label
         Me.cbRatingRegion = New System.Windows.Forms.ComboBox
         Me.gbEpFilter = New System.Windows.Forms.GroupBox
         Me.btnEpFilterDown = New System.Windows.Forms.Button
@@ -461,56 +461,56 @@ Partial Class dlgSettings
         Me.pnlTVImages = New System.Windows.Forms.Panel
         Me.TabControl3 = New System.Windows.Forms.TabControl
         Me.TabPage5 = New System.Windows.Forms.TabPage
-        Me.GroupBox37 = New System.Windows.Forms.GroupBox
+        Me.gbShowPosterOpts = New System.Windows.Forms.GroupBox
         Me.txtShowPosterWidth = New System.Windows.Forms.TextBox
         Me.txtShowPosterHeight = New System.Windows.Forms.TextBox
         Me.lblShowPosterQual = New System.Windows.Forms.Label
         Me.tbShowPosterQual = New System.Windows.Forms.TrackBar
-        Me.Label51 = New System.Windows.Forms.Label
-        Me.Label52 = New System.Windows.Forms.Label
-        Me.Label53 = New System.Windows.Forms.Label
+        Me.lblShowPosterQ = New System.Windows.Forms.Label
+        Me.lblShowPosterWidth = New System.Windows.Forms.Label
+        Me.lblShowPosterHeight = New System.Windows.Forms.Label
         Me.chkResizeShowPoster = New System.Windows.Forms.CheckBox
-        Me.Label54 = New System.Windows.Forms.Label
+        Me.lblShowPosterSize = New System.Windows.Forms.Label
         Me.cbShowPosterSize = New System.Windows.Forms.ComboBox
         Me.chkOverwriteShowPoster = New System.Windows.Forms.CheckBox
-        Me.GroupBox36 = New System.Windows.Forms.GroupBox
+        Me.gbShowFanartOpts = New System.Windows.Forms.GroupBox
         Me.txtShowFanartWidth = New System.Windows.Forms.TextBox
         Me.txtShowFanartHeight = New System.Windows.Forms.TextBox
         Me.chkShowFanartOnly = New System.Windows.Forms.CheckBox
         Me.lblShowFanartQual = New System.Windows.Forms.Label
         Me.tbShowFanartQual = New System.Windows.Forms.TrackBar
-        Me.Label46 = New System.Windows.Forms.Label
-        Me.Label47 = New System.Windows.Forms.Label
-        Me.Label48 = New System.Windows.Forms.Label
+        Me.lblShowFanartQ = New System.Windows.Forms.Label
+        Me.lblShowFanartWidth = New System.Windows.Forms.Label
+        Me.lblShowFanartHeight = New System.Windows.Forms.Label
         Me.chkResizeShowFanart = New System.Windows.Forms.CheckBox
         Me.cbShowFanartSize = New System.Windows.Forms.ComboBox
-        Me.Label49 = New System.Windows.Forms.Label
+        Me.lblShowFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteShowFanart = New System.Windows.Forms.CheckBox
         Me.TabPage6 = New System.Windows.Forms.TabPage
-        Me.GroupBox46 = New System.Windows.Forms.GroupBox
+        Me.gbEpPosterOpts = New System.Windows.Forms.GroupBox
         Me.txtEpPosterWidth = New System.Windows.Forms.TextBox
         Me.txtEpPosterHeight = New System.Windows.Forms.TextBox
         Me.lblEpPosterQual = New System.Windows.Forms.Label
         Me.tbEpPosterQual = New System.Windows.Forms.TrackBar
-        Me.Label43 = New System.Windows.Forms.Label
-        Me.Label44 = New System.Windows.Forms.Label
-        Me.Label45 = New System.Windows.Forms.Label
+        Me.lblEpPosterQ = New System.Windows.Forms.Label
+        Me.lblEpPosterWidth = New System.Windows.Forms.Label
+        Me.lblEpPosterHeight = New System.Windows.Forms.Label
         Me.chkResizeEpPoster = New System.Windows.Forms.CheckBox
-        Me.Label50 = New System.Windows.Forms.Label
+        Me.lblEpPosterSize = New System.Windows.Forms.Label
         Me.cbEpPosterSize = New System.Windows.Forms.ComboBox
         Me.chkOverwriteEpPoster = New System.Windows.Forms.CheckBox
-        Me.GroupBox47 = New System.Windows.Forms.GroupBox
+        Me.gbEpFanartOpts = New System.Windows.Forms.GroupBox
         Me.txtEpFanartWidth = New System.Windows.Forms.TextBox
         Me.txtEpFanartHeight = New System.Windows.Forms.TextBox
         Me.chkEpFanartOnly = New System.Windows.Forms.CheckBox
         Me.lblEpFanartQual = New System.Windows.Forms.Label
         Me.tbEpFanartQual = New System.Windows.Forms.TrackBar
-        Me.Label56 = New System.Windows.Forms.Label
-        Me.Label57 = New System.Windows.Forms.Label
-        Me.Label58 = New System.Windows.Forms.Label
+        Me.lblEpFanartQ = New System.Windows.Forms.Label
+        Me.lblEpFanartWidth = New System.Windows.Forms.Label
+        Me.lblEpFanartHeight = New System.Windows.Forms.Label
         Me.chkResizeEpFanart = New System.Windows.Forms.CheckBox
         Me.cbEpFanartSize = New System.Windows.Forms.ComboBox
-        Me.Label59 = New System.Windows.Forms.Label
+        Me.lblEpFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteEpFanart = New System.Windows.Forms.CheckBox
         Me.pnlTVScraper = New System.Windows.Forms.Panel
         Me.GroupBox11.SuspendLayout()
@@ -542,8 +542,8 @@ Partial Class dlgSettings
         Me.pnlGeneral.SuspendLayout()
         Me.gbInterface.SuspendLayout()
         Me.pnlXBMCCom.SuspendLayout()
-        Me.GroupBox48.SuspendLayout()
-        Me.GroupBox49.SuspendLayout()
+        Me.gbProxy.SuspendLayout()
+        Me.gbCreds.SuspendLayout()
         Me.pnlMovies.SuspendLayout()
         Me.gbGenreFilter.SuspendLayout()
         Me.gbFilters.SuspendLayout()
@@ -571,35 +571,35 @@ Partial Class dlgSettings
         Me.pnlTVSources.SuspendLayout()
         Me.TabControl2.SuspendLayout()
         Me.TabPage3.SuspendLayout()
-        Me.GroupBox33.SuspendLayout()
-        Me.GroupBox41.SuspendLayout()
-        Me.GroupBox40.SuspendLayout()
-        Me.GroupBox35.SuspendLayout()
-        Me.GroupBox34.SuspendLayout()
-        Me.GroupBox38.SuspendLayout()
-        Me.GroupBox39.SuspendLayout()
-        Me.GroupBox30.SuspendLayout()
+        Me.gbTVNaming.SuspendLayout()
+        Me.gbEpisodeFanart.SuspendLayout()
+        Me.gbEpisodePosters.SuspendLayout()
+        Me.gbSeasonFanart.SuspendLayout()
+        Me.gbSeasonPosters.SuspendLayout()
+        Me.gbShowFanart.SuspendLayout()
+        Me.gbShowPosters.SuspendLayout()
+        Me.gbMiscTVSourceOpts.SuspendLayout()
         Me.TabPage4.SuspendLayout()
-        Me.GroupBox31.SuspendLayout()
+        Me.gbShowRegex.SuspendLayout()
         Me.pnlShows.SuspendLayout()
-        Me.GroupBox42.SuspendLayout()
-        Me.GroupBox45.SuspendLayout()
-        Me.GroupBox44.SuspendLayout()
-        Me.GroupBox43.SuspendLayout()
-        Me.GroupBox32.SuspendLayout()
+        Me.gbTVListOptions.SuspendLayout()
+        Me.gbEpisodeListOptions.SuspendLayout()
+        Me.gbSeasonListOptions.SuspendLayout()
+        Me.gbShowListOptions.SuspendLayout()
+        Me.gbTVMisc.SuspendLayout()
         Me.gbEpFilter.SuspendLayout()
         Me.gbShowFilter.SuspendLayout()
         Me.pnlTVImages.SuspendLayout()
         Me.TabControl3.SuspendLayout()
         Me.TabPage5.SuspendLayout()
-        Me.GroupBox37.SuspendLayout()
+        Me.gbShowPosterOpts.SuspendLayout()
         CType(Me.tbShowPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox36.SuspendLayout()
+        Me.gbShowFanartOpts.SuspendLayout()
         CType(Me.tbShowFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage6.SuspendLayout()
-        Me.GroupBox46.SuspendLayout()
+        Me.gbEpPosterOpts.SuspendLayout()
         CType(Me.tbEpPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox47.SuspendLayout()
+        Me.gbEpFanartOpts.SuspendLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -2586,62 +2586,62 @@ Partial Class dlgSettings
         Me.tvSettings.ImageList = Me.ilSettings
         Me.tvSettings.Location = New System.Drawing.Point(4, 70)
         Me.tvSettings.Name = "tvSettings"
-        TreeNode1.ImageIndex = 4
-        TreeNode1.Name = "nExts"
-        TreeNode1.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode1.SelectedImageIndex = 4
-        TreeNode1.Text = "File System"
-        TreeNode2.ImageIndex = 1
-        TreeNode2.Name = "nXBMCCom"
-        TreeNode2.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode2.SelectedImageIndex = 1
-        TreeNode2.Text = "Communication"
-        TreeNode3.ImageIndex = 0
-        TreeNode3.Name = "nGeneral"
-        TreeNode3.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode3.SelectedImageIndex = 0
-        TreeNode3.Text = "General"
-        TreeNode4.ImageIndex = 5
-        TreeNode4.Name = "nSources"
-        TreeNode4.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode4.SelectedImageIndex = 5
-        TreeNode4.Text = "Files and Sources"
-        TreeNode5.ImageIndex = 3
-        TreeNode5.Name = "nScraper"
-        TreeNode5.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode5.SelectedImageIndex = 3
-        TreeNode5.Text = "Scraper - Data"
-        TreeNode6.ImageIndex = 6
-        TreeNode6.Name = "nImages"
-        TreeNode6.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode6.SelectedImageIndex = 6
-        TreeNode6.Text = "Scraper - Images"
-        TreeNode7.ImageIndex = 2
-        TreeNode7.Name = "nMovies"
-        TreeNode7.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode7.SelectedImageIndex = 2
-        TreeNode7.Text = "Movies"
-        TreeNode8.ImageIndex = 5
-        TreeNode8.Name = "nTVSources"
-        TreeNode8.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode8.SelectedImageIndex = 5
-        TreeNode8.Text = "Files and Sources"
-        TreeNode9.ImageIndex = 3
-        TreeNode9.Name = "nTVScraper"
-        TreeNode9.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode9.SelectedImageIndex = 3
-        TreeNode9.Text = "Scraper - Data"
-        TreeNode10.ImageIndex = 6
-        TreeNode10.Name = "nTVImages"
-        TreeNode10.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode10.SelectedImageIndex = 6
-        TreeNode10.Text = "Scraper - Images"
-        TreeNode11.ImageIndex = 7
-        TreeNode11.Name = "nTV"
-        TreeNode11.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        TreeNode11.SelectedImageIndex = 7
-        TreeNode11.Text = "TV Shows"
-        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode3, TreeNode7, TreeNode11})
+        TreeNode12.ImageIndex = 4
+        TreeNode12.Name = "nExts"
+        TreeNode12.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode12.SelectedImageIndex = 4
+        TreeNode12.Text = "File System"
+        TreeNode13.ImageIndex = 1
+        TreeNode13.Name = "nXBMCCom"
+        TreeNode13.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode13.SelectedImageIndex = 1
+        TreeNode13.Text = "Communication"
+        TreeNode14.ImageIndex = 0
+        TreeNode14.Name = "nGeneral"
+        TreeNode14.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode14.SelectedImageIndex = 0
+        TreeNode14.Text = "General"
+        TreeNode15.ImageIndex = 5
+        TreeNode15.Name = "nSources"
+        TreeNode15.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode15.SelectedImageIndex = 5
+        TreeNode15.Text = "Files and Sources"
+        TreeNode16.ImageIndex = 3
+        TreeNode16.Name = "nScraper"
+        TreeNode16.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode16.SelectedImageIndex = 3
+        TreeNode16.Text = "Scraper - Data"
+        TreeNode17.ImageIndex = 6
+        TreeNode17.Name = "nImages"
+        TreeNode17.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode17.SelectedImageIndex = 6
+        TreeNode17.Text = "Scraper - Images"
+        TreeNode18.ImageIndex = 2
+        TreeNode18.Name = "nMovies"
+        TreeNode18.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode18.SelectedImageIndex = 2
+        TreeNode18.Text = "Movies"
+        TreeNode19.ImageIndex = 5
+        TreeNode19.Name = "nTVSources"
+        TreeNode19.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode19.SelectedImageIndex = 5
+        TreeNode19.Text = "Files and Sources"
+        TreeNode20.ImageIndex = 3
+        TreeNode20.Name = "nTVScraper"
+        TreeNode20.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode20.SelectedImageIndex = 3
+        TreeNode20.Text = "Scraper - Data"
+        TreeNode21.ImageIndex = 6
+        TreeNode21.Name = "nTVImages"
+        TreeNode21.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode21.SelectedImageIndex = 6
+        TreeNode21.Text = "Scraper - Images"
+        TreeNode22.ImageIndex = 7
+        TreeNode22.Name = "nTV"
+        TreeNode22.NodeFont = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode22.SelectedImageIndex = 7
+        TreeNode22.Text = "TV Shows"
+        Me.tvSettings.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode14, TreeNode18, TreeNode22})
         Me.tvSettings.SelectedImageIndex = 0
         Me.tvSettings.ShowLines = False
         Me.tvSettings.ShowPlusMinus = False
@@ -2677,7 +2677,7 @@ Partial Class dlgSettings
         '
         Me.pnlXBMCCom.BackColor = System.Drawing.Color.White
         Me.pnlXBMCCom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlXBMCCom.Controls.Add(Me.GroupBox48)
+        Me.pnlXBMCCom.Controls.Add(Me.gbProxy)
         Me.pnlXBMCCom.Controls.Add(Me.GroupBox11)
         Me.pnlXBMCCom.Location = New System.Drawing.Point(208, 97)
         Me.pnlXBMCCom.Name = "pnlXBMCCom"
@@ -2685,37 +2685,37 @@ Partial Class dlgSettings
         Me.pnlXBMCCom.TabIndex = 60
         Me.pnlXBMCCom.Visible = False
         '
-        'GroupBox48
+        'gbProxy
         '
-        Me.GroupBox48.Controls.Add(Me.GroupBox49)
-        Me.GroupBox48.Controls.Add(Me.Label55)
-        Me.GroupBox48.Controls.Add(Me.Label42)
-        Me.GroupBox48.Controls.Add(Me.txtProxyPort)
-        Me.GroupBox48.Controls.Add(Me.txtProxyURI)
-        Me.GroupBox48.Controls.Add(Me.chkEnableProxy)
-        Me.GroupBox48.Location = New System.Drawing.Point(3, 5)
-        Me.GroupBox48.Name = "GroupBox48"
-        Me.GroupBox48.Size = New System.Drawing.Size(271, 209)
-        Me.GroupBox48.TabIndex = 3
-        Me.GroupBox48.TabStop = False
-        Me.GroupBox48.Text = "Proxy"
+        Me.gbProxy.Controls.Add(Me.gbCreds)
+        Me.gbProxy.Controls.Add(Me.lblProxyPort)
+        Me.gbProxy.Controls.Add(Me.lblProxyURI)
+        Me.gbProxy.Controls.Add(Me.txtProxyPort)
+        Me.gbProxy.Controls.Add(Me.txtProxyURI)
+        Me.gbProxy.Controls.Add(Me.chkEnableProxy)
+        Me.gbProxy.Location = New System.Drawing.Point(3, 5)
+        Me.gbProxy.Name = "gbProxy"
+        Me.gbProxy.Size = New System.Drawing.Size(271, 209)
+        Me.gbProxy.TabIndex = 3
+        Me.gbProxy.TabStop = False
+        Me.gbProxy.Text = "Proxy"
         '
-        'GroupBox49
+        'gbCreds
         '
-        Me.GroupBox49.Controls.Add(Me.txtProxyDomain)
-        Me.GroupBox49.Controls.Add(Me.Label62)
-        Me.GroupBox49.Controls.Add(Me.txtProxyPassword)
-        Me.GroupBox49.Controls.Add(Me.txtProxyUsername)
-        Me.GroupBox49.Controls.Add(Me.Label60)
-        Me.GroupBox49.Controls.Add(Me.Label61)
-        Me.GroupBox49.Controls.Add(Me.chkEnableCredentials)
-        Me.GroupBox49.Enabled = False
-        Me.GroupBox49.Location = New System.Drawing.Point(5, 106)
-        Me.GroupBox49.Name = "GroupBox49"
-        Me.GroupBox49.Size = New System.Drawing.Size(262, 99)
-        Me.GroupBox49.TabIndex = 6
-        Me.GroupBox49.TabStop = False
-        Me.GroupBox49.Text = "Credentials"
+        Me.gbCreds.Controls.Add(Me.txtProxyDomain)
+        Me.gbCreds.Controls.Add(Me.lblProxyDomain)
+        Me.gbCreds.Controls.Add(Me.txtProxyPassword)
+        Me.gbCreds.Controls.Add(Me.txtProxyUsername)
+        Me.gbCreds.Controls.Add(Me.lblProxyUN)
+        Me.gbCreds.Controls.Add(Me.lblProxyPW)
+        Me.gbCreds.Controls.Add(Me.chkEnableCredentials)
+        Me.gbCreds.Enabled = False
+        Me.gbCreds.Location = New System.Drawing.Point(5, 106)
+        Me.gbCreds.Name = "gbCreds"
+        Me.gbCreds.Size = New System.Drawing.Size(262, 99)
+        Me.gbCreds.TabIndex = 6
+        Me.gbCreds.TabStop = False
+        Me.gbCreds.Text = "Credentials"
         '
         'txtProxyDomain
         '
@@ -2726,14 +2726,14 @@ Partial Class dlgSettings
         Me.txtProxyDomain.Size = New System.Drawing.Size(191, 20)
         Me.txtProxyDomain.TabIndex = 16
         '
-        'Label62
+        'lblProxyDomain
         '
-        Me.Label62.AutoSize = True
-        Me.Label62.Location = New System.Drawing.Point(3, 67)
-        Me.Label62.Name = "Label62"
-        Me.Label62.Size = New System.Drawing.Size(46, 13)
-        Me.Label62.TabIndex = 17
-        Me.Label62.Text = "Domain:"
+        Me.lblProxyDomain.AutoSize = True
+        Me.lblProxyDomain.Location = New System.Drawing.Point(3, 67)
+        Me.lblProxyDomain.Name = "lblProxyDomain"
+        Me.lblProxyDomain.Size = New System.Drawing.Size(46, 13)
+        Me.lblProxyDomain.TabIndex = 17
+        Me.lblProxyDomain.Text = "Domain:"
         '
         'txtProxyPassword
         '
@@ -2754,23 +2754,23 @@ Partial Class dlgSettings
         Me.txtProxyUsername.Size = New System.Drawing.Size(64, 20)
         Me.txtProxyUsername.TabIndex = 12
         '
-        'Label60
+        'lblProxyUN
         '
-        Me.Label60.AutoSize = True
-        Me.Label60.Location = New System.Drawing.Point(3, 41)
-        Me.Label60.Name = "Label60"
-        Me.Label60.Size = New System.Drawing.Size(58, 13)
-        Me.Label60.TabIndex = 15
-        Me.Label60.Text = "Username:"
+        Me.lblProxyUN.AutoSize = True
+        Me.lblProxyUN.Location = New System.Drawing.Point(3, 41)
+        Me.lblProxyUN.Name = "lblProxyUN"
+        Me.lblProxyUN.Size = New System.Drawing.Size(58, 13)
+        Me.lblProxyUN.TabIndex = 15
+        Me.lblProxyUN.Text = "Username:"
         '
-        'Label61
+        'lblProxyPW
         '
-        Me.Label61.AutoSize = True
-        Me.Label61.Location = New System.Drawing.Point(132, 42)
-        Me.Label61.Name = "Label61"
-        Me.Label61.Size = New System.Drawing.Size(56, 13)
-        Me.Label61.TabIndex = 14
-        Me.Label61.Text = "Password:"
+        Me.lblProxyPW.AutoSize = True
+        Me.lblProxyPW.Location = New System.Drawing.Point(132, 42)
+        Me.lblProxyPW.Name = "lblProxyPW"
+        Me.lblProxyPW.Size = New System.Drawing.Size(56, 13)
+        Me.lblProxyPW.TabIndex = 14
+        Me.lblProxyPW.Text = "Password:"
         '
         'chkEnableCredentials
         '
@@ -2782,23 +2782,23 @@ Partial Class dlgSettings
         Me.chkEnableCredentials.Text = "Enable Credentials"
         Me.chkEnableCredentials.UseVisualStyleBackColor = True
         '
-        'Label55
+        'lblProxyPort
         '
-        Me.Label55.AutoSize = True
-        Me.Label55.Location = New System.Drawing.Point(9, 81)
-        Me.Label55.Name = "Label55"
-        Me.Label55.Size = New System.Drawing.Size(58, 13)
-        Me.Label55.TabIndex = 5
-        Me.Label55.Text = "Proxy Port:"
+        Me.lblProxyPort.AutoSize = True
+        Me.lblProxyPort.Location = New System.Drawing.Point(9, 81)
+        Me.lblProxyPort.Name = "lblProxyPort"
+        Me.lblProxyPort.Size = New System.Drawing.Size(58, 13)
+        Me.lblProxyPort.TabIndex = 5
+        Me.lblProxyPort.Text = "Proxy Port:"
         '
-        'Label42
+        'lblProxyURI
         '
-        Me.Label42.AutoSize = True
-        Me.Label42.Location = New System.Drawing.Point(10, 40)
-        Me.Label42.Name = "Label42"
-        Me.Label42.Size = New System.Drawing.Size(58, 13)
-        Me.Label42.TabIndex = 4
-        Me.Label42.Text = "Proxy URI:"
+        Me.lblProxyURI.AutoSize = True
+        Me.lblProxyURI.Location = New System.Drawing.Point(10, 40)
+        Me.lblProxyURI.Name = "lblProxyURI"
+        Me.lblProxyURI.Size = New System.Drawing.Size(58, 13)
+        Me.lblProxyURI.TabIndex = 4
+        Me.lblProxyURI.Text = "Proxy URI:"
         '
         'txtProxyPort
         '
@@ -3790,7 +3790,7 @@ Partial Class dlgSettings
         Me.GroupBox18.Size = New System.Drawing.Size(192, 342)
         Me.GroupBox18.TabIndex = 0
         Me.GroupBox18.TabStop = False
-        Me.GroupBox18.Text = "Valid Movie Extensions"
+        Me.GroupBox18.Text = "Valid Video Extensions"
         '
         'btnRemMovieExt
         '
@@ -4162,9 +4162,9 @@ Partial Class dlgSettings
         '
         'TabPage3
         '
-        Me.TabPage3.Controls.Add(Me.GroupBox33)
+        Me.TabPage3.Controls.Add(Me.gbTVNaming)
         Me.TabPage3.Controls.Add(Me.lvTVSources)
-        Me.TabPage3.Controls.Add(Me.GroupBox30)
+        Me.TabPage3.Controls.Add(Me.gbMiscTVSourceOpts)
         Me.TabPage3.Controls.Add(Me.btnAddTVSource)
         Me.TabPage3.Controls.Add(Me.btnEditTVSource)
         Me.TabPage3.Controls.Add(Me.btnRemTVSource)
@@ -4176,41 +4176,41 @@ Partial Class dlgSettings
         Me.TabPage3.Text = "General"
         Me.TabPage3.UseVisualStyleBackColor = True
         '
-        'GroupBox33
+        'gbTVNaming
         '
-        Me.GroupBox33.Controls.Add(Me.Label41)
-        Me.GroupBox33.Controls.Add(Me.GroupBox41)
-        Me.GroupBox33.Controls.Add(Me.GroupBox40)
-        Me.GroupBox33.Controls.Add(Me.GroupBox35)
-        Me.GroupBox33.Controls.Add(Me.GroupBox34)
-        Me.GroupBox33.Controls.Add(Me.GroupBox38)
-        Me.GroupBox33.Controls.Add(Me.GroupBox39)
-        Me.GroupBox33.Location = New System.Drawing.Point(189, 110)
-        Me.GroupBox33.Name = "GroupBox33"
-        Me.GroupBox33.Size = New System.Drawing.Size(394, 211)
-        Me.GroupBox33.TabIndex = 6
-        Me.GroupBox33.TabStop = False
-        Me.GroupBox33.Text = "File Naming"
+        Me.gbTVNaming.Controls.Add(Me.lblInsideSeason)
+        Me.gbTVNaming.Controls.Add(Me.gbEpisodeFanart)
+        Me.gbTVNaming.Controls.Add(Me.gbEpisodePosters)
+        Me.gbTVNaming.Controls.Add(Me.gbSeasonFanart)
+        Me.gbTVNaming.Controls.Add(Me.gbSeasonPosters)
+        Me.gbTVNaming.Controls.Add(Me.gbShowFanart)
+        Me.gbTVNaming.Controls.Add(Me.gbShowPosters)
+        Me.gbTVNaming.Location = New System.Drawing.Point(189, 110)
+        Me.gbTVNaming.Name = "gbTVNaming"
+        Me.gbTVNaming.Size = New System.Drawing.Size(394, 211)
+        Me.gbTVNaming.TabIndex = 6
+        Me.gbTVNaming.TabStop = False
+        Me.gbTVNaming.Text = "File Naming"
         '
-        'Label41
+        'lblInsideSeason
         '
-        Me.Label41.AutoSize = True
-        Me.Label41.Location = New System.Drawing.Point(262, 187)
-        Me.Label41.Name = "Label41"
-        Me.Label41.Size = New System.Drawing.Size(133, 13)
-        Me.Label41.TabIndex = 7
-        Me.Label41.Text = " * - Inside Season directory"
+        Me.lblInsideSeason.AutoSize = True
+        Me.lblInsideSeason.Location = New System.Drawing.Point(262, 187)
+        Me.lblInsideSeason.Name = "lblInsideSeason"
+        Me.lblInsideSeason.Size = New System.Drawing.Size(133, 13)
+        Me.lblInsideSeason.TabIndex = 7
+        Me.lblInsideSeason.Text = " * - Inside Season directory"
         '
-        'GroupBox41
+        'gbEpisodeFanart
         '
-        Me.GroupBox41.Controls.Add(Me.chkEpisodeDotFanart)
-        Me.GroupBox41.Controls.Add(Me.chkEpisodeDashFanart)
-        Me.GroupBox41.Location = New System.Drawing.Point(263, 65)
-        Me.GroupBox41.Name = "GroupBox41"
-        Me.GroupBox41.Size = New System.Drawing.Size(123, 51)
-        Me.GroupBox41.TabIndex = 4
-        Me.GroupBox41.TabStop = False
-        Me.GroupBox41.Text = "Episode Fanart"
+        Me.gbEpisodeFanart.Controls.Add(Me.chkEpisodeDotFanart)
+        Me.gbEpisodeFanart.Controls.Add(Me.chkEpisodeDashFanart)
+        Me.gbEpisodeFanart.Location = New System.Drawing.Point(263, 65)
+        Me.gbEpisodeFanart.Name = "gbEpisodeFanart"
+        Me.gbEpisodeFanart.Size = New System.Drawing.Size(123, 51)
+        Me.gbEpisodeFanart.TabIndex = 4
+        Me.gbEpisodeFanart.TabStop = False
+        Me.gbEpisodeFanart.Text = "Episode Fanart"
         '
         'chkEpisodeDotFanart
         '
@@ -4232,16 +4232,16 @@ Partial Class dlgSettings
         Me.chkEpisodeDashFanart.Text = "<episode>-fanart.jpg"
         Me.chkEpisodeDashFanart.UseVisualStyleBackColor = True
         '
-        'GroupBox40
+        'gbEpisodePosters
         '
-        Me.GroupBox40.Controls.Add(Me.chkEpisodeJPG)
-        Me.GroupBox40.Controls.Add(Me.chkEpisodeTBN)
-        Me.GroupBox40.Location = New System.Drawing.Point(263, 13)
-        Me.GroupBox40.Name = "GroupBox40"
-        Me.GroupBox40.Size = New System.Drawing.Size(123, 52)
-        Me.GroupBox40.TabIndex = 6
-        Me.GroupBox40.TabStop = False
-        Me.GroupBox40.Text = "Episode Posters"
+        Me.gbEpisodePosters.Controls.Add(Me.chkEpisodeJPG)
+        Me.gbEpisodePosters.Controls.Add(Me.chkEpisodeTBN)
+        Me.gbEpisodePosters.Location = New System.Drawing.Point(263, 13)
+        Me.gbEpisodePosters.Name = "gbEpisodePosters"
+        Me.gbEpisodePosters.Size = New System.Drawing.Size(123, 52)
+        Me.gbEpisodePosters.TabIndex = 6
+        Me.gbEpisodePosters.TabStop = False
+        Me.gbEpisodePosters.Text = "Episode Posters"
         '
         'chkEpisodeJPG
         '
@@ -4263,17 +4263,17 @@ Partial Class dlgSettings
         Me.chkEpisodeTBN.Text = "<episode>.tbn"
         Me.chkEpisodeTBN.UseVisualStyleBackColor = True
         '
-        'GroupBox35
+        'gbSeasonFanart
         '
-        Me.GroupBox35.Controls.Add(Me.chkSeasonDotFanart)
-        Me.GroupBox35.Controls.Add(Me.chkSeasonDashFanart)
-        Me.GroupBox35.Controls.Add(Me.chkSeasonFanartJPG)
-        Me.GroupBox35.Location = New System.Drawing.Point(128, 142)
-        Me.GroupBox35.Name = "GroupBox35"
-        Me.GroupBox35.Size = New System.Drawing.Size(131, 66)
-        Me.GroupBox35.TabIndex = 3
-        Me.GroupBox35.TabStop = False
-        Me.GroupBox35.Text = "Season Fanart"
+        Me.gbSeasonFanart.Controls.Add(Me.chkSeasonDotFanart)
+        Me.gbSeasonFanart.Controls.Add(Me.chkSeasonDashFanart)
+        Me.gbSeasonFanart.Controls.Add(Me.chkSeasonFanartJPG)
+        Me.gbSeasonFanart.Location = New System.Drawing.Point(128, 142)
+        Me.gbSeasonFanart.Name = "gbSeasonFanart"
+        Me.gbSeasonFanart.Size = New System.Drawing.Size(131, 66)
+        Me.gbSeasonFanart.TabIndex = 3
+        Me.gbSeasonFanart.TabStop = False
+        Me.gbSeasonFanart.Text = "Season Fanart"
         '
         'chkSeasonDotFanart
         '
@@ -4305,21 +4305,21 @@ Partial Class dlgSettings
         Me.chkSeasonFanartJPG.Text = "fanart.jpg *"
         Me.chkSeasonFanartJPG.UseVisualStyleBackColor = True
         '
-        'GroupBox34
+        'gbSeasonPosters
         '
-        Me.GroupBox34.Controls.Add(Me.chkSeasonFolderJPG)
-        Me.GroupBox34.Controls.Add(Me.chkSeasonNameJPG)
-        Me.GroupBox34.Controls.Add(Me.chkSeasonNameTBN)
-        Me.GroupBox34.Controls.Add(Me.chkSeasonPosterJPG)
-        Me.GroupBox34.Controls.Add(Me.chkSeasonPosterTBN)
-        Me.GroupBox34.Controls.Add(Me.chkSeasonXTBN)
-        Me.GroupBox34.Controls.Add(Me.chkSeasonXXTBN)
-        Me.GroupBox34.Location = New System.Drawing.Point(127, 13)
-        Me.GroupBox34.Name = "GroupBox34"
-        Me.GroupBox34.Size = New System.Drawing.Size(131, 130)
-        Me.GroupBox34.TabIndex = 4
-        Me.GroupBox34.TabStop = False
-        Me.GroupBox34.Text = "Season Posters"
+        Me.gbSeasonPosters.Controls.Add(Me.chkSeasonFolderJPG)
+        Me.gbSeasonPosters.Controls.Add(Me.chkSeasonNameJPG)
+        Me.gbSeasonPosters.Controls.Add(Me.chkSeasonNameTBN)
+        Me.gbSeasonPosters.Controls.Add(Me.chkSeasonPosterJPG)
+        Me.gbSeasonPosters.Controls.Add(Me.chkSeasonPosterTBN)
+        Me.gbSeasonPosters.Controls.Add(Me.chkSeasonXTBN)
+        Me.gbSeasonPosters.Controls.Add(Me.chkSeasonXXTBN)
+        Me.gbSeasonPosters.Location = New System.Drawing.Point(127, 13)
+        Me.gbSeasonPosters.Name = "gbSeasonPosters"
+        Me.gbSeasonPosters.Size = New System.Drawing.Size(131, 130)
+        Me.gbSeasonPosters.TabIndex = 4
+        Me.gbSeasonPosters.TabStop = False
+        Me.gbSeasonPosters.Text = "Season Posters"
         '
         'chkSeasonFolderJPG
         '
@@ -4391,17 +4391,17 @@ Partial Class dlgSettings
         Me.chkSeasonXXTBN.Text = "seasonXX.tbn"
         Me.chkSeasonXXTBN.UseVisualStyleBackColor = True
         '
-        'GroupBox38
+        'gbShowFanart
         '
-        Me.GroupBox38.Controls.Add(Me.chkShowDotFanart)
-        Me.GroupBox38.Controls.Add(Me.chkShowDashFanart)
-        Me.GroupBox38.Controls.Add(Me.chkShowFanartJPG)
-        Me.GroupBox38.Location = New System.Drawing.Point(6, 96)
-        Me.GroupBox38.Name = "GroupBox38"
-        Me.GroupBox38.Size = New System.Drawing.Size(115, 70)
-        Me.GroupBox38.TabIndex = 2
-        Me.GroupBox38.TabStop = False
-        Me.GroupBox38.Text = "Show Fanart"
+        Me.gbShowFanart.Controls.Add(Me.chkShowDotFanart)
+        Me.gbShowFanart.Controls.Add(Me.chkShowDashFanart)
+        Me.gbShowFanart.Controls.Add(Me.chkShowFanartJPG)
+        Me.gbShowFanart.Location = New System.Drawing.Point(6, 96)
+        Me.gbShowFanart.Name = "gbShowFanart"
+        Me.gbShowFanart.Size = New System.Drawing.Size(115, 70)
+        Me.gbShowFanart.TabIndex = 2
+        Me.gbShowFanart.TabStop = False
+        Me.gbShowFanart.Text = "Show Fanart"
         '
         'chkShowDotFanart
         '
@@ -4433,18 +4433,18 @@ Partial Class dlgSettings
         Me.chkShowFanartJPG.Text = "fanart.jpg"
         Me.chkShowFanartJPG.UseVisualStyleBackColor = True
         '
-        'GroupBox39
+        'gbShowPosters
         '
-        Me.GroupBox39.Controls.Add(Me.chkShowPosterJPG)
-        Me.GroupBox39.Controls.Add(Me.chkShowPosterTBN)
-        Me.GroupBox39.Controls.Add(Me.chkShowFolderJPG)
-        Me.GroupBox39.Controls.Add(Me.chkShowSeasonAll)
-        Me.GroupBox39.Location = New System.Drawing.Point(6, 13)
-        Me.GroupBox39.Name = "GroupBox39"
-        Me.GroupBox39.Size = New System.Drawing.Size(116, 83)
-        Me.GroupBox39.TabIndex = 0
-        Me.GroupBox39.TabStop = False
-        Me.GroupBox39.Text = "Show Posters"
+        Me.gbShowPosters.Controls.Add(Me.chkShowPosterJPG)
+        Me.gbShowPosters.Controls.Add(Me.chkShowPosterTBN)
+        Me.gbShowPosters.Controls.Add(Me.chkShowFolderJPG)
+        Me.gbShowPosters.Controls.Add(Me.chkShowSeasonAll)
+        Me.gbShowPosters.Location = New System.Drawing.Point(6, 13)
+        Me.gbShowPosters.Name = "gbShowPosters"
+        Me.gbShowPosters.Size = New System.Drawing.Size(116, 83)
+        Me.gbShowPosters.TabIndex = 0
+        Me.gbShowPosters.TabStop = False
+        Me.gbShowPosters.Text = "Show Posters"
         '
         'chkShowPosterJPG
         '
@@ -4513,16 +4513,16 @@ Partial Class dlgSettings
         Me.ColumnHeader3.Text = "Path"
         Me.ColumnHeader3.Width = 368
         '
-        'GroupBox30
+        'gbMiscTVSourceOpts
         '
-        Me.GroupBox30.Controls.Add(Me.chkTVIgnoreLastScan)
-        Me.GroupBox30.Controls.Add(Me.chkTVCleanDB)
-        Me.GroupBox30.Location = New System.Drawing.Point(6, 110)
-        Me.GroupBox30.Name = "GroupBox30"
-        Me.GroupBox30.Size = New System.Drawing.Size(177, 211)
-        Me.GroupBox30.TabIndex = 5
-        Me.GroupBox30.TabStop = False
-        Me.GroupBox30.Text = "Miscellaneous Options"
+        Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVIgnoreLastScan)
+        Me.gbMiscTVSourceOpts.Controls.Add(Me.chkTVCleanDB)
+        Me.gbMiscTVSourceOpts.Location = New System.Drawing.Point(6, 110)
+        Me.gbMiscTVSourceOpts.Name = "gbMiscTVSourceOpts"
+        Me.gbMiscTVSourceOpts.Size = New System.Drawing.Size(177, 211)
+        Me.gbMiscTVSourceOpts.TabIndex = 5
+        Me.gbMiscTVSourceOpts.TabStop = False
+        Me.gbMiscTVSourceOpts.Text = "Miscellaneous Options"
         '
         'chkTVIgnoreLastScan
         '
@@ -4580,7 +4580,7 @@ Partial Class dlgSettings
         '
         'TabPage4
         '
-        Me.TabPage4.Controls.Add(Me.GroupBox31)
+        Me.TabPage4.Controls.Add(Me.gbShowRegex)
         Me.TabPage4.Controls.Add(Me.btnEditShowRegex)
         Me.TabPage4.Controls.Add(Me.btnRemoveShowRegex)
         Me.TabPage4.Controls.Add(Me.lvShowRegex)
@@ -4592,32 +4592,32 @@ Partial Class dlgSettings
         Me.TabPage4.Text = "Regex"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
-        'GroupBox31
+        'gbShowRegex
         '
-        Me.GroupBox31.Controls.Add(Me.Label33)
-        Me.GroupBox31.Controls.Add(Me.btnAddShowRegex)
-        Me.GroupBox31.Controls.Add(Me.txtSeasonRegex)
-        Me.GroupBox31.Controls.Add(Me.Label39)
-        Me.GroupBox31.Controls.Add(Me.cboSeasonRetrieve)
-        Me.GroupBox31.Controls.Add(Me.Label38)
-        Me.GroupBox31.Controls.Add(Me.txtEpRegex)
-        Me.GroupBox31.Controls.Add(Me.Label37)
-        Me.GroupBox31.Controls.Add(Me.cboEpRetrieve)
-        Me.GroupBox31.Location = New System.Drawing.Point(6, 169)
-        Me.GroupBox31.Name = "GroupBox31"
-        Me.GroupBox31.Size = New System.Drawing.Size(576, 149)
-        Me.GroupBox31.TabIndex = 15
-        Me.GroupBox31.TabStop = False
-        Me.GroupBox31.Text = "Show Match Regex"
+        Me.gbShowRegex.Controls.Add(Me.lblSeasonMatch)
+        Me.gbShowRegex.Controls.Add(Me.btnAddShowRegex)
+        Me.gbShowRegex.Controls.Add(Me.txtSeasonRegex)
+        Me.gbShowRegex.Controls.Add(Me.lblEpisodeRetrieve)
+        Me.gbShowRegex.Controls.Add(Me.cboSeasonRetrieve)
+        Me.gbShowRegex.Controls.Add(Me.lblSeasonRetrieve)
+        Me.gbShowRegex.Controls.Add(Me.txtEpRegex)
+        Me.gbShowRegex.Controls.Add(Me.lblEpisodeMatch)
+        Me.gbShowRegex.Controls.Add(Me.cboEpRetrieve)
+        Me.gbShowRegex.Location = New System.Drawing.Point(6, 169)
+        Me.gbShowRegex.Name = "gbShowRegex"
+        Me.gbShowRegex.Size = New System.Drawing.Size(576, 149)
+        Me.gbShowRegex.TabIndex = 15
+        Me.gbShowRegex.TabStop = False
+        Me.gbShowRegex.Text = "Show Match Regex"
         '
-        'Label33
+        'lblSeasonMatch
         '
-        Me.Label33.AutoSize = True
-        Me.Label33.Location = New System.Drawing.Point(8, 25)
-        Me.Label33.Name = "Label33"
-        Me.Label33.Size = New System.Drawing.Size(113, 13)
-        Me.Label33.TabIndex = 11
-        Me.Label33.Text = "Season Match Regex:"
+        Me.lblSeasonMatch.AutoSize = True
+        Me.lblSeasonMatch.Location = New System.Drawing.Point(8, 25)
+        Me.lblSeasonMatch.Name = "lblSeasonMatch"
+        Me.lblSeasonMatch.Size = New System.Drawing.Size(113, 13)
+        Me.lblSeasonMatch.TabIndex = 11
+        Me.lblSeasonMatch.Text = "Season Match Regex:"
         '
         'btnAddShowRegex
         '
@@ -4640,14 +4640,14 @@ Partial Class dlgSettings
         Me.txtSeasonRegex.Size = New System.Drawing.Size(417, 20)
         Me.txtSeasonRegex.TabIndex = 7
         '
-        'Label39
+        'lblEpisodeRetrieve
         '
-        Me.Label39.AutoSize = True
-        Me.Label39.Location = New System.Drawing.Point(441, 69)
-        Me.Label39.Name = "Label39"
-        Me.Label39.Size = New System.Drawing.Size(76, 13)
-        Me.Label39.TabIndex = 14
-        Me.Label39.Text = "Retrieve From:"
+        Me.lblEpisodeRetrieve.AutoSize = True
+        Me.lblEpisodeRetrieve.Location = New System.Drawing.Point(441, 69)
+        Me.lblEpisodeRetrieve.Name = "lblEpisodeRetrieve"
+        Me.lblEpisodeRetrieve.Size = New System.Drawing.Size(52, 13)
+        Me.lblEpisodeRetrieve.TabIndex = 14
+        Me.lblEpisodeRetrieve.Text = "Apply To:"
         '
         'cboSeasonRetrieve
         '
@@ -4659,14 +4659,14 @@ Partial Class dlgSettings
         Me.cboSeasonRetrieve.Size = New System.Drawing.Size(121, 21)
         Me.cboSeasonRetrieve.TabIndex = 8
         '
-        'Label38
+        'lblSeasonRetrieve
         '
-        Me.Label38.AutoSize = True
-        Me.Label38.Location = New System.Drawing.Point(441, 21)
-        Me.Label38.Name = "Label38"
-        Me.Label38.Size = New System.Drawing.Size(76, 13)
-        Me.Label38.TabIndex = 13
-        Me.Label38.Text = "Retrieve From:"
+        Me.lblSeasonRetrieve.AutoSize = True
+        Me.lblSeasonRetrieve.Location = New System.Drawing.Point(441, 21)
+        Me.lblSeasonRetrieve.Name = "lblSeasonRetrieve"
+        Me.lblSeasonRetrieve.Size = New System.Drawing.Size(52, 13)
+        Me.lblSeasonRetrieve.TabIndex = 13
+        Me.lblSeasonRetrieve.Text = "Apply To:"
         '
         'txtEpRegex
         '
@@ -4676,14 +4676,14 @@ Partial Class dlgSettings
         Me.txtEpRegex.Size = New System.Drawing.Size(417, 20)
         Me.txtEpRegex.TabIndex = 9
         '
-        'Label37
+        'lblEpisodeMatch
         '
-        Me.Label37.AutoSize = True
-        Me.Label37.Location = New System.Drawing.Point(7, 69)
-        Me.Label37.Name = "Label37"
-        Me.Label37.Size = New System.Drawing.Size(115, 13)
-        Me.Label37.TabIndex = 12
-        Me.Label37.Text = "Episode Match Regex:"
+        Me.lblEpisodeMatch.AutoSize = True
+        Me.lblEpisodeMatch.Location = New System.Drawing.Point(7, 69)
+        Me.lblEpisodeMatch.Name = "lblEpisodeMatch"
+        Me.lblEpisodeMatch.Size = New System.Drawing.Size(115, 13)
+        Me.lblEpisodeMatch.TabIndex = 12
+        Me.lblEpisodeMatch.Text = "Episode Match Regex:"
         '
         'cboEpRetrieve
         '
@@ -4765,8 +4765,8 @@ Partial Class dlgSettings
         '
         Me.pnlShows.BackColor = System.Drawing.Color.White
         Me.pnlShows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlShows.Controls.Add(Me.GroupBox42)
-        Me.pnlShows.Controls.Add(Me.GroupBox32)
+        Me.pnlShows.Controls.Add(Me.gbTVListOptions)
+        Me.pnlShows.Controls.Add(Me.gbTVMisc)
         Me.pnlShows.Controls.Add(Me.gbEpFilter)
         Me.pnlShows.Controls.Add(Me.gbShowFilter)
         Me.pnlShows.Location = New System.Drawing.Point(208, 96)
@@ -4774,29 +4774,29 @@ Partial Class dlgSettings
         Me.pnlShows.Size = New System.Drawing.Size(597, 353)
         Me.pnlShows.TabIndex = 70
         '
-        'GroupBox42
+        'gbTVListOptions
         '
-        Me.GroupBox42.Controls.Add(Me.GroupBox45)
-        Me.GroupBox42.Controls.Add(Me.GroupBox44)
-        Me.GroupBox42.Controls.Add(Me.GroupBox43)
-        Me.GroupBox42.Location = New System.Drawing.Point(172, 4)
-        Me.GroupBox42.Name = "GroupBox42"
-        Me.GroupBox42.Size = New System.Drawing.Size(218, 337)
-        Me.GroupBox42.TabIndex = 5
-        Me.GroupBox42.TabStop = False
-        Me.GroupBox42.Text = "Media List Options"
+        Me.gbTVListOptions.Controls.Add(Me.gbEpisodeListOptions)
+        Me.gbTVListOptions.Controls.Add(Me.gbSeasonListOptions)
+        Me.gbTVListOptions.Controls.Add(Me.gbShowListOptions)
+        Me.gbTVListOptions.Location = New System.Drawing.Point(172, 4)
+        Me.gbTVListOptions.Name = "gbTVListOptions"
+        Me.gbTVListOptions.Size = New System.Drawing.Size(218, 337)
+        Me.gbTVListOptions.TabIndex = 5
+        Me.gbTVListOptions.TabStop = False
+        Me.gbTVListOptions.Text = "Media List Options"
         '
-        'GroupBox45
+        'gbEpisodeListOptions
         '
-        Me.GroupBox45.Controls.Add(Me.chkEpisodeNfoCol)
-        Me.GroupBox45.Controls.Add(Me.chkEpisodeFanartCol)
-        Me.GroupBox45.Controls.Add(Me.chkEpisodePosterCol)
-        Me.GroupBox45.Location = New System.Drawing.Point(10, 143)
-        Me.GroupBox45.Name = "GroupBox45"
-        Me.GroupBox45.Size = New System.Drawing.Size(199, 68)
-        Me.GroupBox45.TabIndex = 7
-        Me.GroupBox45.TabStop = False
-        Me.GroupBox45.Text = "Episodes"
+        Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodeNfoCol)
+        Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodeFanartCol)
+        Me.gbEpisodeListOptions.Controls.Add(Me.chkEpisodePosterCol)
+        Me.gbEpisodeListOptions.Location = New System.Drawing.Point(10, 143)
+        Me.gbEpisodeListOptions.Name = "gbEpisodeListOptions"
+        Me.gbEpisodeListOptions.Size = New System.Drawing.Size(199, 68)
+        Me.gbEpisodeListOptions.TabIndex = 7
+        Me.gbEpisodeListOptions.TabStop = False
+        Me.gbEpisodeListOptions.Text = "Episodes"
         '
         'chkEpisodeNfoCol
         '
@@ -4828,16 +4828,16 @@ Partial Class dlgSettings
         Me.chkEpisodePosterCol.Text = "Hide Poster Column"
         Me.chkEpisodePosterCol.UseVisualStyleBackColor = True
         '
-        'GroupBox44
+        'gbSeasonListOptions
         '
-        Me.GroupBox44.Controls.Add(Me.chkSeasonFanartCol)
-        Me.GroupBox44.Controls.Add(Me.chkSeasonPosterCol)
-        Me.GroupBox44.Location = New System.Drawing.Point(10, 87)
-        Me.GroupBox44.Name = "GroupBox44"
-        Me.GroupBox44.Size = New System.Drawing.Size(199, 52)
-        Me.GroupBox44.TabIndex = 7
-        Me.GroupBox44.TabStop = False
-        Me.GroupBox44.Text = "Seasons"
+        Me.gbSeasonListOptions.Controls.Add(Me.chkSeasonFanartCol)
+        Me.gbSeasonListOptions.Controls.Add(Me.chkSeasonPosterCol)
+        Me.gbSeasonListOptions.Location = New System.Drawing.Point(10, 87)
+        Me.gbSeasonListOptions.Name = "gbSeasonListOptions"
+        Me.gbSeasonListOptions.Size = New System.Drawing.Size(199, 52)
+        Me.gbSeasonListOptions.TabIndex = 7
+        Me.gbSeasonListOptions.TabStop = False
+        Me.gbSeasonListOptions.Text = "Seasons"
         '
         'chkSeasonFanartCol
         '
@@ -4859,17 +4859,17 @@ Partial Class dlgSettings
         Me.chkSeasonPosterCol.Text = "Hide Poster Column"
         Me.chkSeasonPosterCol.UseVisualStyleBackColor = True
         '
-        'GroupBox43
+        'gbShowListOptions
         '
-        Me.GroupBox43.Controls.Add(Me.chkShowNfoCol)
-        Me.GroupBox43.Controls.Add(Me.chkShowFanartCol)
-        Me.GroupBox43.Controls.Add(Me.chkShowPosterCol)
-        Me.GroupBox43.Location = New System.Drawing.Point(9, 16)
-        Me.GroupBox43.Name = "GroupBox43"
-        Me.GroupBox43.Size = New System.Drawing.Size(199, 68)
-        Me.GroupBox43.TabIndex = 6
-        Me.GroupBox43.TabStop = False
-        Me.GroupBox43.Text = "Shows"
+        Me.gbShowListOptions.Controls.Add(Me.chkShowNfoCol)
+        Me.gbShowListOptions.Controls.Add(Me.chkShowFanartCol)
+        Me.gbShowListOptions.Controls.Add(Me.chkShowPosterCol)
+        Me.gbShowListOptions.Location = New System.Drawing.Point(9, 16)
+        Me.gbShowListOptions.Name = "gbShowListOptions"
+        Me.gbShowListOptions.Size = New System.Drawing.Size(199, 68)
+        Me.gbShowListOptions.TabIndex = 6
+        Me.gbShowListOptions.TabStop = False
+        Me.gbShowListOptions.Text = "Shows"
         '
         'chkShowNfoCol
         '
@@ -4901,25 +4901,25 @@ Partial Class dlgSettings
         Me.chkShowPosterCol.Text = "Hide Poster Column"
         Me.chkShowPosterCol.UseVisualStyleBackColor = True
         '
-        'GroupBox32
+        'gbTVMisc
         '
-        Me.GroupBox32.Controls.Add(Me.Label40)
-        Me.GroupBox32.Controls.Add(Me.cbRatingRegion)
-        Me.GroupBox32.Location = New System.Drawing.Point(6, 3)
-        Me.GroupBox32.Name = "GroupBox32"
-        Me.GroupBox32.Size = New System.Drawing.Size(158, 100)
-        Me.GroupBox32.TabIndex = 2
-        Me.GroupBox32.TabStop = False
-        Me.GroupBox32.Text = "Miscellaneous"
+        Me.gbTVMisc.Controls.Add(Me.lblRatingRegion)
+        Me.gbTVMisc.Controls.Add(Me.cbRatingRegion)
+        Me.gbTVMisc.Location = New System.Drawing.Point(6, 3)
+        Me.gbTVMisc.Name = "gbTVMisc"
+        Me.gbTVMisc.Size = New System.Drawing.Size(158, 100)
+        Me.gbTVMisc.TabIndex = 2
+        Me.gbTVMisc.TabStop = False
+        Me.gbTVMisc.Text = "Miscellaneous"
         '
-        'Label40
+        'lblRatingRegion
         '
-        Me.Label40.AutoSize = True
-        Me.Label40.Location = New System.Drawing.Point(8, 21)
-        Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(95, 13)
-        Me.Label40.TabIndex = 1
-        Me.Label40.Text = "TV Rating Region:"
+        Me.lblRatingRegion.AutoSize = True
+        Me.lblRatingRegion.Location = New System.Drawing.Point(8, 21)
+        Me.lblRatingRegion.Name = "lblRatingRegion"
+        Me.lblRatingRegion.Size = New System.Drawing.Size(95, 13)
+        Me.lblRatingRegion.TabIndex = 1
+        Me.lblRatingRegion.Text = "TV Rating Region:"
         '
         'cbRatingRegion
         '
@@ -5111,8 +5111,8 @@ Partial Class dlgSettings
         '
         'TabPage5
         '
-        Me.TabPage5.Controls.Add(Me.GroupBox37)
-        Me.TabPage5.Controls.Add(Me.GroupBox36)
+        Me.TabPage5.Controls.Add(Me.gbShowPosterOpts)
+        Me.TabPage5.Controls.Add(Me.gbShowFanartOpts)
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
@@ -5121,25 +5121,25 @@ Partial Class dlgSettings
         Me.TabPage5.Text = "TV Show"
         Me.TabPage5.UseVisualStyleBackColor = True
         '
-        'GroupBox37
+        'gbShowPosterOpts
         '
-        Me.GroupBox37.Controls.Add(Me.txtShowPosterWidth)
-        Me.GroupBox37.Controls.Add(Me.txtShowPosterHeight)
-        Me.GroupBox37.Controls.Add(Me.lblShowPosterQual)
-        Me.GroupBox37.Controls.Add(Me.tbShowPosterQual)
-        Me.GroupBox37.Controls.Add(Me.Label51)
-        Me.GroupBox37.Controls.Add(Me.Label52)
-        Me.GroupBox37.Controls.Add(Me.Label53)
-        Me.GroupBox37.Controls.Add(Me.chkResizeShowPoster)
-        Me.GroupBox37.Controls.Add(Me.Label54)
-        Me.GroupBox37.Controls.Add(Me.cbShowPosterSize)
-        Me.GroupBox37.Controls.Add(Me.chkOverwriteShowPoster)
-        Me.GroupBox37.Location = New System.Drawing.Point(4, 5)
-        Me.GroupBox37.Name = "GroupBox37"
-        Me.GroupBox37.Size = New System.Drawing.Size(218, 170)
-        Me.GroupBox37.TabIndex = 2
-        Me.GroupBox37.TabStop = False
-        Me.GroupBox37.Text = "Poster"
+        Me.gbShowPosterOpts.Controls.Add(Me.txtShowPosterWidth)
+        Me.gbShowPosterOpts.Controls.Add(Me.txtShowPosterHeight)
+        Me.gbShowPosterOpts.Controls.Add(Me.lblShowPosterQual)
+        Me.gbShowPosterOpts.Controls.Add(Me.tbShowPosterQual)
+        Me.gbShowPosterOpts.Controls.Add(Me.lblShowPosterQ)
+        Me.gbShowPosterOpts.Controls.Add(Me.lblShowPosterWidth)
+        Me.gbShowPosterOpts.Controls.Add(Me.lblShowPosterHeight)
+        Me.gbShowPosterOpts.Controls.Add(Me.chkResizeShowPoster)
+        Me.gbShowPosterOpts.Controls.Add(Me.lblShowPosterSize)
+        Me.gbShowPosterOpts.Controls.Add(Me.cbShowPosterSize)
+        Me.gbShowPosterOpts.Controls.Add(Me.chkOverwriteShowPoster)
+        Me.gbShowPosterOpts.Location = New System.Drawing.Point(4, 5)
+        Me.gbShowPosterOpts.Name = "gbShowPosterOpts"
+        Me.gbShowPosterOpts.Size = New System.Drawing.Size(218, 170)
+        Me.gbShowPosterOpts.TabIndex = 2
+        Me.gbShowPosterOpts.TabStop = False
+        Me.gbShowPosterOpts.Text = "Poster"
         '
         'txtShowPosterWidth
         '
@@ -5182,32 +5182,32 @@ Partial Class dlgSettings
         Me.tbShowPosterQual.TickFrequency = 10
         Me.tbShowPosterQual.Value = 100
         '
-        'Label51
+        'lblShowPosterQ
         '
-        Me.Label51.AutoSize = True
-        Me.Label51.Location = New System.Drawing.Point(3, 119)
-        Me.Label51.Name = "Label51"
-        Me.Label51.Size = New System.Drawing.Size(75, 13)
-        Me.Label51.TabIndex = 44
-        Me.Label51.Text = "Poster Quality:"
+        Me.lblShowPosterQ.AutoSize = True
+        Me.lblShowPosterQ.Location = New System.Drawing.Point(3, 119)
+        Me.lblShowPosterQ.Name = "lblShowPosterQ"
+        Me.lblShowPosterQ.Size = New System.Drawing.Size(75, 13)
+        Me.lblShowPosterQ.TabIndex = 44
+        Me.lblShowPosterQ.Text = "Poster Quality:"
         '
-        'Label52
+        'lblShowPosterWidth
         '
-        Me.Label52.AutoSize = True
-        Me.Label52.Location = New System.Drawing.Point(3, 98)
-        Me.Label52.Name = "Label52"
-        Me.Label52.Size = New System.Drawing.Size(61, 13)
-        Me.Label52.TabIndex = 43
-        Me.Label52.Text = "Max Width:"
+        Me.lblShowPosterWidth.AutoSize = True
+        Me.lblShowPosterWidth.Location = New System.Drawing.Point(3, 98)
+        Me.lblShowPosterWidth.Name = "lblShowPosterWidth"
+        Me.lblShowPosterWidth.Size = New System.Drawing.Size(61, 13)
+        Me.lblShowPosterWidth.TabIndex = 43
+        Me.lblShowPosterWidth.Text = "Max Width:"
         '
-        'Label53
+        'lblShowPosterHeight
         '
-        Me.Label53.AutoSize = True
-        Me.Label53.Location = New System.Drawing.Point(106, 98)
-        Me.Label53.Name = "Label53"
-        Me.Label53.Size = New System.Drawing.Size(64, 13)
-        Me.Label53.TabIndex = 42
-        Me.Label53.Text = "Max Height:"
+        Me.lblShowPosterHeight.AutoSize = True
+        Me.lblShowPosterHeight.Location = New System.Drawing.Point(106, 98)
+        Me.lblShowPosterHeight.Name = "lblShowPosterHeight"
+        Me.lblShowPosterHeight.Size = New System.Drawing.Size(64, 13)
+        Me.lblShowPosterHeight.TabIndex = 42
+        Me.lblShowPosterHeight.Text = "Max Height:"
         '
         'chkResizeShowPoster
         '
@@ -5219,14 +5219,14 @@ Partial Class dlgSettings
         Me.chkResizeShowPoster.Text = "Automatically Resize Poster:"
         Me.chkResizeShowPoster.UseVisualStyleBackColor = True
         '
-        'Label54
+        'lblShowPosterSize
         '
-        Me.Label54.AutoSize = True
-        Me.Label54.Location = New System.Drawing.Point(3, 16)
-        Me.Label54.Name = "Label54"
-        Me.Label54.Size = New System.Drawing.Size(106, 13)
-        Me.Label54.TabIndex = 14
-        Me.Label54.Text = "Preferred Poster Size"
+        Me.lblShowPosterSize.AutoSize = True
+        Me.lblShowPosterSize.Location = New System.Drawing.Point(3, 16)
+        Me.lblShowPosterSize.Name = "lblShowPosterSize"
+        Me.lblShowPosterSize.Size = New System.Drawing.Size(106, 13)
+        Me.lblShowPosterSize.TabIndex = 14
+        Me.lblShowPosterSize.Text = "Preferred Poster Size"
         '
         'cbShowPosterSize
         '
@@ -5247,26 +5247,26 @@ Partial Class dlgSettings
         Me.chkOverwriteShowPoster.Text = "Overwrite Existing Poster"
         Me.chkOverwriteShowPoster.UseVisualStyleBackColor = True
         '
-        'GroupBox36
+        'gbShowFanartOpts
         '
-        Me.GroupBox36.Controls.Add(Me.txtShowFanartWidth)
-        Me.GroupBox36.Controls.Add(Me.txtShowFanartHeight)
-        Me.GroupBox36.Controls.Add(Me.chkShowFanartOnly)
-        Me.GroupBox36.Controls.Add(Me.lblShowFanartQual)
-        Me.GroupBox36.Controls.Add(Me.tbShowFanartQual)
-        Me.GroupBox36.Controls.Add(Me.Label46)
-        Me.GroupBox36.Controls.Add(Me.Label47)
-        Me.GroupBox36.Controls.Add(Me.Label48)
-        Me.GroupBox36.Controls.Add(Me.chkResizeShowFanart)
-        Me.GroupBox36.Controls.Add(Me.cbShowFanartSize)
-        Me.GroupBox36.Controls.Add(Me.Label49)
-        Me.GroupBox36.Controls.Add(Me.chkOverwriteShowFanart)
-        Me.GroupBox36.Location = New System.Drawing.Point(226, 5)
-        Me.GroupBox36.Name = "GroupBox36"
-        Me.GroupBox36.Size = New System.Drawing.Size(218, 170)
-        Me.GroupBox36.TabIndex = 3
-        Me.GroupBox36.TabStop = False
-        Me.GroupBox36.Text = "Fanart"
+        Me.gbShowFanartOpts.Controls.Add(Me.txtShowFanartWidth)
+        Me.gbShowFanartOpts.Controls.Add(Me.txtShowFanartHeight)
+        Me.gbShowFanartOpts.Controls.Add(Me.chkShowFanartOnly)
+        Me.gbShowFanartOpts.Controls.Add(Me.lblShowFanartQual)
+        Me.gbShowFanartOpts.Controls.Add(Me.tbShowFanartQual)
+        Me.gbShowFanartOpts.Controls.Add(Me.lblShowFanartQ)
+        Me.gbShowFanartOpts.Controls.Add(Me.lblShowFanartWidth)
+        Me.gbShowFanartOpts.Controls.Add(Me.lblShowFanartHeight)
+        Me.gbShowFanartOpts.Controls.Add(Me.chkResizeShowFanart)
+        Me.gbShowFanartOpts.Controls.Add(Me.cbShowFanartSize)
+        Me.gbShowFanartOpts.Controls.Add(Me.lblShowFanartSize)
+        Me.gbShowFanartOpts.Controls.Add(Me.chkOverwriteShowFanart)
+        Me.gbShowFanartOpts.Location = New System.Drawing.Point(226, 5)
+        Me.gbShowFanartOpts.Name = "gbShowFanartOpts"
+        Me.gbShowFanartOpts.Size = New System.Drawing.Size(218, 170)
+        Me.gbShowFanartOpts.TabIndex = 3
+        Me.gbShowFanartOpts.TabStop = False
+        Me.gbShowFanartOpts.Text = "Fanart"
         '
         'txtShowFanartWidth
         '
@@ -5319,32 +5319,32 @@ Partial Class dlgSettings
         Me.tbShowFanartQual.TickFrequency = 10
         Me.tbShowFanartQual.Value = 100
         '
-        'Label46
+        'lblShowFanartQ
         '
-        Me.Label46.AutoSize = True
-        Me.Label46.Location = New System.Drawing.Point(2, 119)
-        Me.Label46.Name = "Label46"
-        Me.Label46.Size = New System.Drawing.Size(75, 13)
-        Me.Label46.TabIndex = 47
-        Me.Label46.Text = "Fanart Quality:"
+        Me.lblShowFanartQ.AutoSize = True
+        Me.lblShowFanartQ.Location = New System.Drawing.Point(2, 119)
+        Me.lblShowFanartQ.Name = "lblShowFanartQ"
+        Me.lblShowFanartQ.Size = New System.Drawing.Size(75, 13)
+        Me.lblShowFanartQ.TabIndex = 47
+        Me.lblShowFanartQ.Text = "Fanart Quality:"
         '
-        'Label47
+        'lblShowFanartWidth
         '
-        Me.Label47.AutoSize = True
-        Me.Label47.Location = New System.Drawing.Point(3, 97)
-        Me.Label47.Name = "Label47"
-        Me.Label47.Size = New System.Drawing.Size(61, 13)
-        Me.Label47.TabIndex = 43
-        Me.Label47.Text = "Max Width:"
+        Me.lblShowFanartWidth.AutoSize = True
+        Me.lblShowFanartWidth.Location = New System.Drawing.Point(3, 97)
+        Me.lblShowFanartWidth.Name = "lblShowFanartWidth"
+        Me.lblShowFanartWidth.Size = New System.Drawing.Size(61, 13)
+        Me.lblShowFanartWidth.TabIndex = 43
+        Me.lblShowFanartWidth.Text = "Max Width:"
         '
-        'Label48
+        'lblShowFanartHeight
         '
-        Me.Label48.AutoSize = True
-        Me.Label48.Location = New System.Drawing.Point(106, 97)
-        Me.Label48.Name = "Label48"
-        Me.Label48.Size = New System.Drawing.Size(64, 13)
-        Me.Label48.TabIndex = 42
-        Me.Label48.Text = "Max Height:"
+        Me.lblShowFanartHeight.AutoSize = True
+        Me.lblShowFanartHeight.Location = New System.Drawing.Point(106, 97)
+        Me.lblShowFanartHeight.Name = "lblShowFanartHeight"
+        Me.lblShowFanartHeight.Size = New System.Drawing.Size(64, 13)
+        Me.lblShowFanartHeight.TabIndex = 42
+        Me.lblShowFanartHeight.Text = "Max Height:"
         '
         'chkResizeShowFanart
         '
@@ -5365,14 +5365,14 @@ Partial Class dlgSettings
         Me.cbShowFanartSize.Size = New System.Drawing.Size(148, 21)
         Me.cbShowFanartSize.TabIndex = 0
         '
-        'Label49
+        'lblShowFanartSize
         '
-        Me.Label49.AutoSize = True
-        Me.Label49.Location = New System.Drawing.Point(3, 14)
-        Me.Label49.Name = "Label49"
-        Me.Label49.Size = New System.Drawing.Size(106, 13)
-        Me.Label49.TabIndex = 15
-        Me.Label49.Text = "Preferred Fanart Size"
+        Me.lblShowFanartSize.AutoSize = True
+        Me.lblShowFanartSize.Location = New System.Drawing.Point(3, 14)
+        Me.lblShowFanartSize.Name = "lblShowFanartSize"
+        Me.lblShowFanartSize.Size = New System.Drawing.Size(106, 13)
+        Me.lblShowFanartSize.TabIndex = 15
+        Me.lblShowFanartSize.Text = "Preferred Fanart Size"
         '
         'chkOverwriteShowFanart
         '
@@ -5386,8 +5386,8 @@ Partial Class dlgSettings
         '
         'TabPage6
         '
-        Me.TabPage6.Controls.Add(Me.GroupBox46)
-        Me.TabPage6.Controls.Add(Me.GroupBox47)
+        Me.TabPage6.Controls.Add(Me.gbEpPosterOpts)
+        Me.TabPage6.Controls.Add(Me.gbEpFanartOpts)
         Me.TabPage6.Location = New System.Drawing.Point(4, 22)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
@@ -5396,25 +5396,25 @@ Partial Class dlgSettings
         Me.TabPage6.Text = "TV Episode"
         Me.TabPage6.UseVisualStyleBackColor = True
         '
-        'GroupBox46
+        'gbEpPosterOpts
         '
-        Me.GroupBox46.Controls.Add(Me.txtEpPosterWidth)
-        Me.GroupBox46.Controls.Add(Me.txtEpPosterHeight)
-        Me.GroupBox46.Controls.Add(Me.lblEpPosterQual)
-        Me.GroupBox46.Controls.Add(Me.tbEpPosterQual)
-        Me.GroupBox46.Controls.Add(Me.Label43)
-        Me.GroupBox46.Controls.Add(Me.Label44)
-        Me.GroupBox46.Controls.Add(Me.Label45)
-        Me.GroupBox46.Controls.Add(Me.chkResizeEpPoster)
-        Me.GroupBox46.Controls.Add(Me.Label50)
-        Me.GroupBox46.Controls.Add(Me.cbEpPosterSize)
-        Me.GroupBox46.Controls.Add(Me.chkOverwriteEpPoster)
-        Me.GroupBox46.Location = New System.Drawing.Point(4, 5)
-        Me.GroupBox46.Name = "GroupBox46"
-        Me.GroupBox46.Size = New System.Drawing.Size(218, 170)
-        Me.GroupBox46.TabIndex = 4
-        Me.GroupBox46.TabStop = False
-        Me.GroupBox46.Text = "Poster"
+        Me.gbEpPosterOpts.Controls.Add(Me.txtEpPosterWidth)
+        Me.gbEpPosterOpts.Controls.Add(Me.txtEpPosterHeight)
+        Me.gbEpPosterOpts.Controls.Add(Me.lblEpPosterQual)
+        Me.gbEpPosterOpts.Controls.Add(Me.tbEpPosterQual)
+        Me.gbEpPosterOpts.Controls.Add(Me.lblEpPosterQ)
+        Me.gbEpPosterOpts.Controls.Add(Me.lblEpPosterWidth)
+        Me.gbEpPosterOpts.Controls.Add(Me.lblEpPosterHeight)
+        Me.gbEpPosterOpts.Controls.Add(Me.chkResizeEpPoster)
+        Me.gbEpPosterOpts.Controls.Add(Me.lblEpPosterSize)
+        Me.gbEpPosterOpts.Controls.Add(Me.cbEpPosterSize)
+        Me.gbEpPosterOpts.Controls.Add(Me.chkOverwriteEpPoster)
+        Me.gbEpPosterOpts.Location = New System.Drawing.Point(4, 5)
+        Me.gbEpPosterOpts.Name = "gbEpPosterOpts"
+        Me.gbEpPosterOpts.Size = New System.Drawing.Size(218, 170)
+        Me.gbEpPosterOpts.TabIndex = 4
+        Me.gbEpPosterOpts.TabStop = False
+        Me.gbEpPosterOpts.Text = "Poster"
         '
         'txtEpPosterWidth
         '
@@ -5457,32 +5457,32 @@ Partial Class dlgSettings
         Me.tbEpPosterQual.TickFrequency = 10
         Me.tbEpPosterQual.Value = 100
         '
-        'Label43
+        'lblEpPosterQ
         '
-        Me.Label43.AutoSize = True
-        Me.Label43.Location = New System.Drawing.Point(3, 119)
-        Me.Label43.Name = "Label43"
-        Me.Label43.Size = New System.Drawing.Size(75, 13)
-        Me.Label43.TabIndex = 44
-        Me.Label43.Text = "Poster Quality:"
+        Me.lblEpPosterQ.AutoSize = True
+        Me.lblEpPosterQ.Location = New System.Drawing.Point(3, 119)
+        Me.lblEpPosterQ.Name = "lblEpPosterQ"
+        Me.lblEpPosterQ.Size = New System.Drawing.Size(75, 13)
+        Me.lblEpPosterQ.TabIndex = 44
+        Me.lblEpPosterQ.Text = "Poster Quality:"
         '
-        'Label44
+        'lblEpPosterWidth
         '
-        Me.Label44.AutoSize = True
-        Me.Label44.Location = New System.Drawing.Point(3, 98)
-        Me.Label44.Name = "Label44"
-        Me.Label44.Size = New System.Drawing.Size(61, 13)
-        Me.Label44.TabIndex = 43
-        Me.Label44.Text = "Max Width:"
+        Me.lblEpPosterWidth.AutoSize = True
+        Me.lblEpPosterWidth.Location = New System.Drawing.Point(3, 98)
+        Me.lblEpPosterWidth.Name = "lblEpPosterWidth"
+        Me.lblEpPosterWidth.Size = New System.Drawing.Size(61, 13)
+        Me.lblEpPosterWidth.TabIndex = 43
+        Me.lblEpPosterWidth.Text = "Max Width:"
         '
-        'Label45
+        'lblEpPosterHeight
         '
-        Me.Label45.AutoSize = True
-        Me.Label45.Location = New System.Drawing.Point(106, 98)
-        Me.Label45.Name = "Label45"
-        Me.Label45.Size = New System.Drawing.Size(64, 13)
-        Me.Label45.TabIndex = 42
-        Me.Label45.Text = "Max Height:"
+        Me.lblEpPosterHeight.AutoSize = True
+        Me.lblEpPosterHeight.Location = New System.Drawing.Point(106, 98)
+        Me.lblEpPosterHeight.Name = "lblEpPosterHeight"
+        Me.lblEpPosterHeight.Size = New System.Drawing.Size(64, 13)
+        Me.lblEpPosterHeight.TabIndex = 42
+        Me.lblEpPosterHeight.Text = "Max Height:"
         '
         'chkResizeEpPoster
         '
@@ -5494,14 +5494,14 @@ Partial Class dlgSettings
         Me.chkResizeEpPoster.Text = "Automatically Resize Poster:"
         Me.chkResizeEpPoster.UseVisualStyleBackColor = True
         '
-        'Label50
+        'lblEpPosterSize
         '
-        Me.Label50.AutoSize = True
-        Me.Label50.Location = New System.Drawing.Point(3, 16)
-        Me.Label50.Name = "Label50"
-        Me.Label50.Size = New System.Drawing.Size(106, 13)
-        Me.Label50.TabIndex = 14
-        Me.Label50.Text = "Preferred Poster Size"
+        Me.lblEpPosterSize.AutoSize = True
+        Me.lblEpPosterSize.Location = New System.Drawing.Point(3, 16)
+        Me.lblEpPosterSize.Name = "lblEpPosterSize"
+        Me.lblEpPosterSize.Size = New System.Drawing.Size(106, 13)
+        Me.lblEpPosterSize.TabIndex = 14
+        Me.lblEpPosterSize.Text = "Preferred Poster Size"
         '
         'cbEpPosterSize
         '
@@ -5522,26 +5522,26 @@ Partial Class dlgSettings
         Me.chkOverwriteEpPoster.Text = "Overwrite Existing Poster"
         Me.chkOverwriteEpPoster.UseVisualStyleBackColor = True
         '
-        'GroupBox47
+        'gbEpFanartOpts
         '
-        Me.GroupBox47.Controls.Add(Me.txtEpFanartWidth)
-        Me.GroupBox47.Controls.Add(Me.txtEpFanartHeight)
-        Me.GroupBox47.Controls.Add(Me.chkEpFanartOnly)
-        Me.GroupBox47.Controls.Add(Me.lblEpFanartQual)
-        Me.GroupBox47.Controls.Add(Me.tbEpFanartQual)
-        Me.GroupBox47.Controls.Add(Me.Label56)
-        Me.GroupBox47.Controls.Add(Me.Label57)
-        Me.GroupBox47.Controls.Add(Me.Label58)
-        Me.GroupBox47.Controls.Add(Me.chkResizeEpFanart)
-        Me.GroupBox47.Controls.Add(Me.cbEpFanartSize)
-        Me.GroupBox47.Controls.Add(Me.Label59)
-        Me.GroupBox47.Controls.Add(Me.chkOverwriteEpFanart)
-        Me.GroupBox47.Location = New System.Drawing.Point(226, 5)
-        Me.GroupBox47.Name = "GroupBox47"
-        Me.GroupBox47.Size = New System.Drawing.Size(218, 170)
-        Me.GroupBox47.TabIndex = 5
-        Me.GroupBox47.TabStop = False
-        Me.GroupBox47.Text = "Fanart"
+        Me.gbEpFanartOpts.Controls.Add(Me.txtEpFanartWidth)
+        Me.gbEpFanartOpts.Controls.Add(Me.txtEpFanartHeight)
+        Me.gbEpFanartOpts.Controls.Add(Me.chkEpFanartOnly)
+        Me.gbEpFanartOpts.Controls.Add(Me.lblEpFanartQual)
+        Me.gbEpFanartOpts.Controls.Add(Me.tbEpFanartQual)
+        Me.gbEpFanartOpts.Controls.Add(Me.lblEpFanartQ)
+        Me.gbEpFanartOpts.Controls.Add(Me.lblEpFanartWidth)
+        Me.gbEpFanartOpts.Controls.Add(Me.lblEpFanartHeight)
+        Me.gbEpFanartOpts.Controls.Add(Me.chkResizeEpFanart)
+        Me.gbEpFanartOpts.Controls.Add(Me.cbEpFanartSize)
+        Me.gbEpFanartOpts.Controls.Add(Me.lblEpFanartSize)
+        Me.gbEpFanartOpts.Controls.Add(Me.chkOverwriteEpFanart)
+        Me.gbEpFanartOpts.Location = New System.Drawing.Point(226, 5)
+        Me.gbEpFanartOpts.Name = "gbEpFanartOpts"
+        Me.gbEpFanartOpts.Size = New System.Drawing.Size(218, 170)
+        Me.gbEpFanartOpts.TabIndex = 5
+        Me.gbEpFanartOpts.TabStop = False
+        Me.gbEpFanartOpts.Text = "Fanart"
         '
         'txtEpFanartWidth
         '
@@ -5594,32 +5594,32 @@ Partial Class dlgSettings
         Me.tbEpFanartQual.TickFrequency = 10
         Me.tbEpFanartQual.Value = 100
         '
-        'Label56
+        'lblEpFanartQ
         '
-        Me.Label56.AutoSize = True
-        Me.Label56.Location = New System.Drawing.Point(2, 119)
-        Me.Label56.Name = "Label56"
-        Me.Label56.Size = New System.Drawing.Size(75, 13)
-        Me.Label56.TabIndex = 47
-        Me.Label56.Text = "Fanart Quality:"
+        Me.lblEpFanartQ.AutoSize = True
+        Me.lblEpFanartQ.Location = New System.Drawing.Point(2, 119)
+        Me.lblEpFanartQ.Name = "lblEpFanartQ"
+        Me.lblEpFanartQ.Size = New System.Drawing.Size(75, 13)
+        Me.lblEpFanartQ.TabIndex = 47
+        Me.lblEpFanartQ.Text = "Fanart Quality:"
         '
-        'Label57
+        'lblEpFanartWidth
         '
-        Me.Label57.AutoSize = True
-        Me.Label57.Location = New System.Drawing.Point(3, 97)
-        Me.Label57.Name = "Label57"
-        Me.Label57.Size = New System.Drawing.Size(61, 13)
-        Me.Label57.TabIndex = 43
-        Me.Label57.Text = "Max Width:"
+        Me.lblEpFanartWidth.AutoSize = True
+        Me.lblEpFanartWidth.Location = New System.Drawing.Point(3, 97)
+        Me.lblEpFanartWidth.Name = "lblEpFanartWidth"
+        Me.lblEpFanartWidth.Size = New System.Drawing.Size(61, 13)
+        Me.lblEpFanartWidth.TabIndex = 43
+        Me.lblEpFanartWidth.Text = "Max Width:"
         '
-        'Label58
+        'lblEpFanartHeight
         '
-        Me.Label58.AutoSize = True
-        Me.Label58.Location = New System.Drawing.Point(106, 97)
-        Me.Label58.Name = "Label58"
-        Me.Label58.Size = New System.Drawing.Size(64, 13)
-        Me.Label58.TabIndex = 42
-        Me.Label58.Text = "Max Height:"
+        Me.lblEpFanartHeight.AutoSize = True
+        Me.lblEpFanartHeight.Location = New System.Drawing.Point(106, 97)
+        Me.lblEpFanartHeight.Name = "lblEpFanartHeight"
+        Me.lblEpFanartHeight.Size = New System.Drawing.Size(64, 13)
+        Me.lblEpFanartHeight.TabIndex = 42
+        Me.lblEpFanartHeight.Text = "Max Height:"
         '
         'chkResizeEpFanart
         '
@@ -5640,14 +5640,14 @@ Partial Class dlgSettings
         Me.cbEpFanartSize.Size = New System.Drawing.Size(148, 21)
         Me.cbEpFanartSize.TabIndex = 0
         '
-        'Label59
+        'lblEpFanartSize
         '
-        Me.Label59.AutoSize = True
-        Me.Label59.Location = New System.Drawing.Point(3, 14)
-        Me.Label59.Name = "Label59"
-        Me.Label59.Size = New System.Drawing.Size(106, 13)
-        Me.Label59.TabIndex = 15
-        Me.Label59.Text = "Preferred Fanart Size"
+        Me.lblEpFanartSize.AutoSize = True
+        Me.lblEpFanartSize.Location = New System.Drawing.Point(3, 14)
+        Me.lblEpFanartSize.Name = "lblEpFanartSize"
+        Me.lblEpFanartSize.Size = New System.Drawing.Size(106, 13)
+        Me.lblEpFanartSize.TabIndex = 15
+        Me.lblEpFanartSize.Text = "Preferred Fanart Size"
         '
         'chkOverwriteEpFanart
         '
@@ -5683,6 +5683,10 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
@@ -5690,10 +5694,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlMovies)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -5748,10 +5748,10 @@ Partial Class dlgSettings
         Me.gbInterface.ResumeLayout(False)
         Me.gbInterface.PerformLayout()
         Me.pnlXBMCCom.ResumeLayout(False)
-        Me.GroupBox48.ResumeLayout(False)
-        Me.GroupBox48.PerformLayout()
-        Me.GroupBox49.ResumeLayout(False)
-        Me.GroupBox49.PerformLayout()
+        Me.gbProxy.ResumeLayout(False)
+        Me.gbProxy.PerformLayout()
+        Me.gbCreds.ResumeLayout(False)
+        Me.gbCreds.PerformLayout()
         Me.pnlMovies.ResumeLayout(False)
         Me.gbGenreFilter.ResumeLayout(False)
         Me.gbFilters.ResumeLayout(False)
@@ -5794,34 +5794,34 @@ Partial Class dlgSettings
         Me.pnlTVSources.ResumeLayout(False)
         Me.TabControl2.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
-        Me.GroupBox33.ResumeLayout(False)
-        Me.GroupBox33.PerformLayout()
-        Me.GroupBox41.ResumeLayout(False)
-        Me.GroupBox41.PerformLayout()
-        Me.GroupBox40.ResumeLayout(False)
-        Me.GroupBox40.PerformLayout()
-        Me.GroupBox35.ResumeLayout(False)
-        Me.GroupBox35.PerformLayout()
-        Me.GroupBox34.ResumeLayout(False)
-        Me.GroupBox34.PerformLayout()
-        Me.GroupBox38.ResumeLayout(False)
-        Me.GroupBox38.PerformLayout()
-        Me.GroupBox39.ResumeLayout(False)
-        Me.GroupBox39.PerformLayout()
-        Me.GroupBox30.ResumeLayout(False)
+        Me.gbTVNaming.ResumeLayout(False)
+        Me.gbTVNaming.PerformLayout()
+        Me.gbEpisodeFanart.ResumeLayout(False)
+        Me.gbEpisodeFanart.PerformLayout()
+        Me.gbEpisodePosters.ResumeLayout(False)
+        Me.gbEpisodePosters.PerformLayout()
+        Me.gbSeasonFanart.ResumeLayout(False)
+        Me.gbSeasonFanart.PerformLayout()
+        Me.gbSeasonPosters.ResumeLayout(False)
+        Me.gbSeasonPosters.PerformLayout()
+        Me.gbShowFanart.ResumeLayout(False)
+        Me.gbShowFanart.PerformLayout()
+        Me.gbShowPosters.ResumeLayout(False)
+        Me.gbShowPosters.PerformLayout()
+        Me.gbMiscTVSourceOpts.ResumeLayout(False)
         Me.TabPage4.ResumeLayout(False)
-        Me.GroupBox31.ResumeLayout(False)
-        Me.GroupBox31.PerformLayout()
+        Me.gbShowRegex.ResumeLayout(False)
+        Me.gbShowRegex.PerformLayout()
         Me.pnlShows.ResumeLayout(False)
-        Me.GroupBox42.ResumeLayout(False)
-        Me.GroupBox45.ResumeLayout(False)
-        Me.GroupBox45.PerformLayout()
-        Me.GroupBox44.ResumeLayout(False)
-        Me.GroupBox44.PerformLayout()
-        Me.GroupBox43.ResumeLayout(False)
-        Me.GroupBox43.PerformLayout()
-        Me.GroupBox32.ResumeLayout(False)
-        Me.GroupBox32.PerformLayout()
+        Me.gbTVListOptions.ResumeLayout(False)
+        Me.gbEpisodeListOptions.ResumeLayout(False)
+        Me.gbEpisodeListOptions.PerformLayout()
+        Me.gbSeasonListOptions.ResumeLayout(False)
+        Me.gbSeasonListOptions.PerformLayout()
+        Me.gbShowListOptions.ResumeLayout(False)
+        Me.gbShowListOptions.PerformLayout()
+        Me.gbTVMisc.ResumeLayout(False)
+        Me.gbTVMisc.PerformLayout()
         Me.gbEpFilter.ResumeLayout(False)
         Me.gbEpFilter.PerformLayout()
         Me.gbShowFilter.ResumeLayout(False)
@@ -5829,18 +5829,18 @@ Partial Class dlgSettings
         Me.pnlTVImages.ResumeLayout(False)
         Me.TabControl3.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
-        Me.GroupBox37.ResumeLayout(False)
-        Me.GroupBox37.PerformLayout()
+        Me.gbShowPosterOpts.ResumeLayout(False)
+        Me.gbShowPosterOpts.PerformLayout()
         CType(Me.tbShowPosterQual, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox36.ResumeLayout(False)
-        Me.GroupBox36.PerformLayout()
+        Me.gbShowFanartOpts.ResumeLayout(False)
+        Me.gbShowFanartOpts.PerformLayout()
         CType(Me.tbShowFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage6.ResumeLayout(False)
-        Me.GroupBox46.ResumeLayout(False)
-        Me.GroupBox46.PerformLayout()
+        Me.gbEpPosterOpts.ResumeLayout(False)
+        Me.gbEpPosterOpts.PerformLayout()
         CType(Me.tbEpPosterQual, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox47.ResumeLayout(False)
-        Me.GroupBox47.PerformLayout()
+        Me.gbEpFanartOpts.ResumeLayout(False)
+        Me.gbEpFanartOpts.PerformLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -6179,7 +6179,7 @@ Partial Class dlgSettings
     Friend WithEvents txtFilter As System.Windows.Forms.TextBox
     Friend WithEvents lstFilters As System.Windows.Forms.ListBox
     Friend WithEvents gbGenreFilter As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox30 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbMiscTVSourceOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkTVIgnoreLastScan As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVCleanDB As System.Windows.Forms.CheckBox
     Friend WithEvents cbTrailerQuality As System.Windows.Forms.ComboBox
@@ -6204,36 +6204,36 @@ Partial Class dlgSettings
     Friend WithEvents cboEpRetrieve As System.Windows.Forms.ComboBox
     Friend WithEvents txtEpRegex As System.Windows.Forms.TextBox
     Friend WithEvents cboSeasonRetrieve As System.Windows.Forms.ComboBox
-    Friend WithEvents Label33 As System.Windows.Forms.Label
-    Friend WithEvents GroupBox31 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label39 As System.Windows.Forms.Label
-    Friend WithEvents Label38 As System.Windows.Forms.Label
-    Friend WithEvents Label37 As System.Windows.Forms.Label
+    Friend WithEvents lblSeasonMatch As System.Windows.Forms.Label
+    Friend WithEvents gbShowRegex As System.Windows.Forms.GroupBox
+    Friend WithEvents lblEpisodeRetrieve As System.Windows.Forms.Label
+    Friend WithEvents lblSeasonRetrieve As System.Windows.Forms.Label
+    Friend WithEvents lblEpisodeMatch As System.Windows.Forms.Label
     Friend WithEvents colRegID As System.Windows.Forms.ColumnHeader
     Friend WithEvents pnlTVImages As System.Windows.Forms.Panel
-    Friend WithEvents GroupBox36 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbShowFanartOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtShowFanartWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtShowFanartHeight As System.Windows.Forms.TextBox
     Friend WithEvents chkShowFanartOnly As System.Windows.Forms.CheckBox
     Friend WithEvents lblShowFanartQual As System.Windows.Forms.Label
     Friend WithEvents tbShowFanartQual As System.Windows.Forms.TrackBar
-    Friend WithEvents Label46 As System.Windows.Forms.Label
-    Friend WithEvents Label47 As System.Windows.Forms.Label
-    Friend WithEvents Label48 As System.Windows.Forms.Label
+    Friend WithEvents lblShowFanartQ As System.Windows.Forms.Label
+    Friend WithEvents lblShowFanartWidth As System.Windows.Forms.Label
+    Friend WithEvents lblShowFanartHeight As System.Windows.Forms.Label
     Friend WithEvents chkResizeShowFanart As System.Windows.Forms.CheckBox
     Friend WithEvents cbShowFanartSize As System.Windows.Forms.ComboBox
-    Friend WithEvents Label49 As System.Windows.Forms.Label
+    Friend WithEvents lblShowFanartSize As System.Windows.Forms.Label
     Friend WithEvents chkOverwriteShowFanart As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox37 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbShowPosterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtShowPosterWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtShowPosterHeight As System.Windows.Forms.TextBox
     Friend WithEvents lblShowPosterQual As System.Windows.Forms.Label
     Friend WithEvents tbShowPosterQual As System.Windows.Forms.TrackBar
-    Friend WithEvents Label51 As System.Windows.Forms.Label
-    Friend WithEvents Label52 As System.Windows.Forms.Label
-    Friend WithEvents Label53 As System.Windows.Forms.Label
+    Friend WithEvents lblShowPosterQ As System.Windows.Forms.Label
+    Friend WithEvents lblShowPosterWidth As System.Windows.Forms.Label
+    Friend WithEvents lblShowPosterHeight As System.Windows.Forms.Label
     Friend WithEvents chkResizeShowPoster As System.Windows.Forms.CheckBox
-    Friend WithEvents Label54 As System.Windows.Forms.Label
+    Friend WithEvents lblShowPosterSize As System.Windows.Forms.Label
     Friend WithEvents cbShowPosterSize As System.Windows.Forms.ComboBox
     Friend WithEvents chkOverwriteShowPoster As System.Windows.Forms.CheckBox
     Friend WithEvents TabControl3 As System.Windows.Forms.TabControl
@@ -6241,86 +6241,86 @@ Partial Class dlgSettings
     Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
     Friend WithEvents pnlTVScraper As System.Windows.Forms.Panel
     Friend WithEvents cbRatingRegion As System.Windows.Forms.ComboBox
-    Friend WithEvents GroupBox32 As System.Windows.Forms.GroupBox
-    Friend WithEvents Label40 As System.Windows.Forms.Label
-    Friend WithEvents GroupBox33 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox38 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbTVMisc As System.Windows.Forms.GroupBox
+    Friend WithEvents lblRatingRegion As System.Windows.Forms.Label
+    Friend WithEvents gbTVNaming As System.Windows.Forms.GroupBox
+    Friend WithEvents gbShowFanart As System.Windows.Forms.GroupBox
     Friend WithEvents chkShowDotFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowDashFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowFanartJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox39 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbShowPosters As System.Windows.Forms.GroupBox
     Friend WithEvents chkShowPosterJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowPosterTBN As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowFolderJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowSeasonAll As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox34 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbSeasonPosters As System.Windows.Forms.GroupBox
     Friend WithEvents chkSeasonPosterJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonPosterTBN As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonXTBN As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonXXTBN As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox41 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbEpisodeFanart As System.Windows.Forms.GroupBox
     Friend WithEvents chkEpisodeDotFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkEpisodeDashFanart As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox40 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbEpisodePosters As System.Windows.Forms.GroupBox
     Friend WithEvents chkEpisodeJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkEpisodeTBN As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox35 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbSeasonFanart As System.Windows.Forms.GroupBox
     Friend WithEvents chkSeasonDotFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonDashFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonFanartJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonNameJPG As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonNameTBN As System.Windows.Forms.CheckBox
-    Friend WithEvents Label41 As System.Windows.Forms.Label
-    Friend WithEvents GroupBox42 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox45 As System.Windows.Forms.GroupBox
+    Friend WithEvents lblInsideSeason As System.Windows.Forms.Label
+    Friend WithEvents gbTVListOptions As System.Windows.Forms.GroupBox
+    Friend WithEvents gbEpisodeListOptions As System.Windows.Forms.GroupBox
     Friend WithEvents chkEpisodeNfoCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkEpisodeFanartCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkEpisodePosterCol As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox44 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbSeasonListOptions As System.Windows.Forms.GroupBox
     Friend WithEvents chkSeasonFanartCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonPosterCol As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox43 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbShowListOptions As System.Windows.Forms.GroupBox
     Friend WithEvents chkShowNfoCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowFanartCol As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowPosterCol As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox46 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbEpPosterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtEpPosterWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtEpPosterHeight As System.Windows.Forms.TextBox
     Friend WithEvents lblEpPosterQual As System.Windows.Forms.Label
     Friend WithEvents tbEpPosterQual As System.Windows.Forms.TrackBar
-    Friend WithEvents Label43 As System.Windows.Forms.Label
-    Friend WithEvents Label44 As System.Windows.Forms.Label
-    Friend WithEvents Label45 As System.Windows.Forms.Label
+    Friend WithEvents lblEpPosterQ As System.Windows.Forms.Label
+    Friend WithEvents lblEpPosterWidth As System.Windows.Forms.Label
+    Friend WithEvents lblEpPosterHeight As System.Windows.Forms.Label
     Friend WithEvents chkResizeEpPoster As System.Windows.Forms.CheckBox
-    Friend WithEvents Label50 As System.Windows.Forms.Label
+    Friend WithEvents lblEpPosterSize As System.Windows.Forms.Label
     Friend WithEvents cbEpPosterSize As System.Windows.Forms.ComboBox
     Friend WithEvents chkOverwriteEpPoster As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox47 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbEpFanartOpts As System.Windows.Forms.GroupBox
     Friend WithEvents txtEpFanartWidth As System.Windows.Forms.TextBox
     Friend WithEvents txtEpFanartHeight As System.Windows.Forms.TextBox
     Friend WithEvents chkEpFanartOnly As System.Windows.Forms.CheckBox
     Friend WithEvents lblEpFanartQual As System.Windows.Forms.Label
     Friend WithEvents tbEpFanartQual As System.Windows.Forms.TrackBar
-    Friend WithEvents Label56 As System.Windows.Forms.Label
-    Friend WithEvents Label57 As System.Windows.Forms.Label
-    Friend WithEvents Label58 As System.Windows.Forms.Label
+    Friend WithEvents lblEpFanartQ As System.Windows.Forms.Label
+    Friend WithEvents lblEpFanartWidth As System.Windows.Forms.Label
+    Friend WithEvents lblEpFanartHeight As System.Windows.Forms.Label
     Friend WithEvents chkResizeEpFanart As System.Windows.Forms.CheckBox
     Friend WithEvents cbEpFanartSize As System.Windows.Forms.ComboBox
-    Friend WithEvents Label59 As System.Windows.Forms.Label
+    Friend WithEvents lblEpFanartSize As System.Windows.Forms.Label
     Friend WithEvents chkOverwriteEpFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonFolderJPG As System.Windows.Forms.CheckBox
-    Friend WithEvents GroupBox48 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox49 As System.Windows.Forms.GroupBox
+    Friend WithEvents gbProxy As System.Windows.Forms.GroupBox
+    Friend WithEvents gbCreds As System.Windows.Forms.GroupBox
     Friend WithEvents chkEnableCredentials As System.Windows.Forms.CheckBox
-    Friend WithEvents Label55 As System.Windows.Forms.Label
-    Friend WithEvents Label42 As System.Windows.Forms.Label
+    Friend WithEvents lblProxyPort As System.Windows.Forms.Label
+    Friend WithEvents lblProxyURI As System.Windows.Forms.Label
     Friend WithEvents txtProxyPort As System.Windows.Forms.TextBox
     Friend WithEvents txtProxyURI As System.Windows.Forms.TextBox
     Friend WithEvents chkEnableProxy As System.Windows.Forms.CheckBox
     Friend WithEvents txtProxyDomain As System.Windows.Forms.TextBox
-    Friend WithEvents Label62 As System.Windows.Forms.Label
+    Friend WithEvents lblProxyDomain As System.Windows.Forms.Label
     Friend WithEvents txtProxyPassword As System.Windows.Forms.TextBox
     Friend WithEvents txtProxyUsername As System.Windows.Forms.TextBox
-    Friend WithEvents Label60 As System.Windows.Forms.Label
-    Friend WithEvents Label61 As System.Windows.Forms.Label
+    Friend WithEvents lblProxyUN As System.Windows.Forms.Label
+    Friend WithEvents lblProxyPW As System.Windows.Forms.Label
 End Class
