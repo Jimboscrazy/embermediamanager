@@ -3251,7 +3251,7 @@ Public Class frmMain
 
                 Select Case dEditEpisode.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        If Me.RefreshEpisode(ID, Master.currShow.TVEp.Episode) Then
+                        If Me.RefreshEpisode(ID, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode) Then
                             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
                 End Select
@@ -3307,7 +3307,7 @@ Public Class frmMain
 
                 Select Case dEditEpisode.ShowDialog()
                     Case Windows.Forms.DialogResult.OK
-                        If Me.RefreshEpisode(ID, Master.currShow.TVEp.Episode) Then
+                        If Me.RefreshEpisode(ID, Master.currShow.TVEp.Season, Master.currShow.TVEp.Episode) Then
                             Me.FillEpisodes(Convert.ToInt32(Master.currShow.ShowID), Master.currShow.TVEp.Season)
                         End If
                 End Select
@@ -3648,7 +3648,7 @@ Public Class frmMain
             End If
 
             If Not Master.eSettings.NoDisplayFanart Then
-                If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then
+                If Not String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then
                     Me.MainFanart.FromFile(Master.currShow.EpFanartPath)
                 Else
                     Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
@@ -4654,7 +4654,16 @@ doCancel:
             Me.txtSearch.Text = String.Empty
 
             Me.fScanner.CancelAndWait()
-            Me.dgvMediaList.DataSource = Nothing
+
+            If Scan.Movies Then
+                Me.dgvMediaList.DataSource = Nothing
+            End If
+
+            If Scan.TV Then
+                Me.dgvTVShows.DataSource = Nothing
+                Me.dgvTVSeasons.DataSource = Nothing
+                Me.dgvTVEpisodes.DataSource = Nothing
+            End If
 
             Me.fScanner.Start(Scan, SourceName)
 
@@ -4981,19 +4990,6 @@ doCancel:
 
             Me.txtMetaData.Text = NFO.FIToString(Master.currMovie.Movie.FileInfo)
 
-            If Not IsNothing(Me.MainFanart.Image) Then
-                Me.pbFanartCache.Image = Me.MainFanart.Image
-            Else
-                If Not IsNothing(Me.pbFanartCache.Image) Then
-                    Me.pbFanartCache.Image.Dispose()
-                    Me.pbFanartCache.Image = Nothing
-                End If
-                If Not IsNothing(Me.pbFanart.Image) Then
-                    Me.pbFanart.Image.Dispose()
-                    Me.pbFanart.Image = Nothing
-                End If
-            End If
-
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
@@ -5020,17 +5016,30 @@ doCancel:
                 End If
             End If
 
-            ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-            Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+            If Not IsNothing(Me.MainFanart.Image) Then
+                Me.pbFanartCache.Image = Me.MainFanart.Image
 
-            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
-                g = Graphics.FromImage(pbFanart.Image)
-                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanart.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                End If
+            Else
+                If Not IsNothing(Me.pbFanartCache.Image) Then
+                    Me.pbFanartCache.Image.Dispose()
+                    Me.pbFanartCache.Image = Nothing
+                End If
+                If Not IsNothing(Me.pbFanart.Image) Then
+                    Me.pbFanart.Image.Dispose()
+                    Me.pbFanart.Image = Nothing
+                End If
             End If
 
             Me.InfoCleared = False
@@ -5115,19 +5124,6 @@ doCancel:
             Me.pnlInfoIcons.Width = pbStudio.Width + 1
             Me.pbStudio.Left = 0
 
-            If Not IsNothing(Me.MainFanart.Image) Then
-                Me.pbFanartCache.Image = Me.MainFanart.Image
-            Else
-                If Not IsNothing(Me.pbFanartCache.Image) Then
-                    Me.pbFanartCache.Image.Dispose()
-                    Me.pbFanartCache.Image = Nothing
-                End If
-                If Not IsNothing(Me.pbFanart.Image) Then
-                    Me.pbFanart.Image.Dispose()
-                    Me.pbFanart.Image = Nothing
-                End If
-            End If
-
             If Not IsNothing(Me.MainPoster.Image) Then
                 Me.pbPosterCache.Image = Me.MainPoster.Image
                 ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
@@ -5154,17 +5150,30 @@ doCancel:
                 End If
             End If
 
-            ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-            Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+            If Not IsNothing(Me.MainFanart.Image) Then
+                Me.pbFanartCache.Image = Me.MainFanart.Image
 
-            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
-                g = Graphics.FromImage(pbFanart.Image)
-                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanart.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                End If
+            Else
+                If Not IsNothing(Me.pbFanartCache.Image) Then
+                    Me.pbFanartCache.Image.Dispose()
+                    Me.pbFanartCache.Image = Nothing
+                End If
+                If Not IsNothing(Me.pbFanart.Image) Then
+                    Me.pbFanart.Image.Dispose()
+                    Me.pbFanart.Image = Nothing
+                End If
             End If
 
             Me.InfoCleared = False
@@ -5274,17 +5283,30 @@ doCancel:
                 End If
             End If
 
-            ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-            Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+            If Not IsNothing(Me.MainFanart.Image) Then
+                Me.pbFanartCache.Image = Me.MainFanart.Image
 
-            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
-                g = Graphics.FromImage(pbFanart.Image)
-                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanart.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                End If
+            Else
+                If Not IsNothing(Me.pbFanartCache.Image) Then
+                    Me.pbFanartCache.Image.Dispose()
+                    Me.pbFanartCache.Image = Nothing
+                End If
+                If Not IsNothing(Me.pbFanart.Image) Then
+                    Me.pbFanart.Image.Dispose()
+                    Me.pbFanart.Image = Nothing
+                End If
             End If
 
             Me.InfoCleared = False
@@ -5388,17 +5410,30 @@ doCancel:
                 End If
             End If
 
-            ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
-            Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+            If Not IsNothing(Me.MainFanart.Image) Then
+                Me.pbFanartCache.Image = Me.MainFanart.Image
 
-            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
-                g = Graphics.FromImage(pbFanart.Image)
-                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
-                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
-                ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+                Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+                If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbFanart.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+                End If
+            Else
+                If Not IsNothing(Me.pbFanartCache.Image) Then
+                    Me.pbFanartCache.Image.Dispose()
+                    Me.pbFanartCache.Image = Nothing
+                End If
+                If Not IsNothing(Me.pbFanart.Image) Then
+                    Me.pbFanart.Image.Dispose()
+                    Me.pbFanart.Image = Nothing
+                End If
             End If
 
             Me.InfoCleared = False
@@ -6082,7 +6117,7 @@ doCancel:
         Return False
     End Function
 
-    Private Function RefreshEpisode(ByVal ID As Long, ByVal EpNum As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
+    Private Function RefreshEpisode(ByVal ID As Long, ByVal SeasonNum As Integer, ByVal EpNum As Integer, Optional ByVal BatchMode As Boolean = False, Optional ByVal FromNfo As Boolean = True, Optional ByVal ToNfo As Boolean = False) As Boolean
         Dim dRow = From drvRow In dtEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item(0)) = ID Select drvRow
         Dim tmpShowDb As New Master.DBTV
         Dim tmpEp As New Media.EpisodeDetails
@@ -6099,9 +6134,9 @@ doCancel:
                     If String.IsNullOrEmpty(tmpShowDb.EpNfoPath) Then
                         Dim sNFO As String = NFO.GetEpNfoPath(tmpShowDb.Filename)
                         tmpShowDb.EpNfoPath = sNFO
-                        tmpEp = NFO.LoadTVEpFromNFO(sNFO, EpNum)
+                        tmpEp = NFO.LoadTVEpFromNFO(sNFO, SeasonNum, EpNum)
                     Else
-                        tmpEp = NFO.LoadTVEpFromNFO(tmpShowDb.EpNfoPath, EpNum)
+                        tmpEp = NFO.LoadTVEpFromNFO(tmpShowDb.EpNfoPath, SeasonNum, EpNum)
                     End If
                     tmpShowDb.TVEp = tmpEp
                 End If
@@ -6594,73 +6629,83 @@ doCancel:
 
                         .dgvMediaList.Sort(.dgvMediaList.Columns(3), ComponentModel.ListSortDirection.Ascending)
 
-                        If .dgvMediaList.RowCount > 0 Then
+                        If .dgvMediaList.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 0 Then
                             'Set current cell and automatically load the info for the first movie in the list
                             .dgvMediaList.Rows(iIndex).Cells(3).Selected = True
                             .dgvMediaList.CurrentCell = .dgvMediaList.Rows(iIndex).Cells(3)
+
+                            Me.SetControlsEnabled(True)
                         End If
 
-                        Me.SetControlsEnabled(True)
                     End With
-                Else
+                End If
+
+                Me.dgvTVShows.Enabled = False
+                Master.DB.FillDataTable(Me.dtShows, "SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
+
+                If Me.dtShows.Rows.Count > 0 Then
+
+                    With Me
+                        .bsShows.DataSource = .dtShows
+                        .dgvTVShows.DataSource = .bsShows
+
+                        .dgvTVShows.Columns(0).Visible = False
+                        .dgvTVShows.Columns(1).Resizable = DataGridViewTriState.True
+                        .dgvTVShows.Columns(1).ReadOnly = True
+                        .dgvTVShows.Columns(1).MinimumWidth = 83
+                        .dgvTVShows.Columns(1).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvTVShows.Columns(1).ToolTipText = Master.eLang.GetString(21, "Title")
+                        .dgvTVShows.Columns(1).HeaderText = Master.eLang.GetString(21, "Title")
+                        .dgvTVShows.Columns(2).Width = 20
+                        .dgvTVShows.Columns(2).Resizable = DataGridViewTriState.False
+                        .dgvTVShows.Columns(2).ReadOnly = True
+                        .dgvTVShows.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvTVShows.Columns(2).Visible = Not Master.eSettings.ShowPosterCol
+                        .dgvTVShows.Columns(2).ToolTipText = Master.eLang.GetString(148, "Poster")
+                        .dgvTVShows.Columns(3).Width = 20
+                        .dgvTVShows.Columns(3).Resizable = DataGridViewTriState.False
+                        .dgvTVShows.Columns(3).ReadOnly = True
+                        .dgvTVShows.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvTVShows.Columns(3).Visible = Not Master.eSettings.ShowFanartCol
+                        .dgvTVShows.Columns(3).ToolTipText = Master.eLang.GetString(149, "Fanart")
+                        .dgvTVShows.Columns(4).Width = 20
+                        .dgvTVShows.Columns(4).Resizable = DataGridViewTriState.False
+                        .dgvTVShows.Columns(4).ReadOnly = True
+                        .dgvTVShows.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvTVShows.Columns(4).Visible = Not Master.eSettings.ShowNfoCol
+                        .dgvTVShows.Columns(4).ToolTipText = Master.eLang.GetString(150, "Nfo")
+                        For i As Integer = 5 To .dgvTVShows.Columns.Count - 1
+                            .dgvTVShows.Columns(i).Visible = False
+                        Next
+
+                        .dgvTVShows.Columns(0).ValueType = GetType(Int32)
+
+                        'Trick to autosize the first column, but still allow resizing by user
+                        .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                        .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+
+                        .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
+
+                        If .dgvTVShows.RowCount > 0 AndAlso Me.tabsMain.SelectedIndex = 1 Then
+                            'Set current cell and automatically load the info for the first movie in the list
+                            .dgvTVShows.Rows(iIndex).Cells(3).Selected = True
+                            .dgvTVShows.CurrentCell = .dgvTVShows.Rows(iIndex).Cells(3)
+
+                            Me.SetControlsEnabled(True)
+                        End If
+
+                        Me.SetTVCount()
+
+                    End With
+                End If
+                Me.dgvTVShows.Enabled = True
+
+                If Me.dtMedia.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
                     Me.SetControlsEnabled(False)
                     Me.tslStatus.Text = String.Empty
                     Me.ClearInfo()
                 End If
             End If
-
-            Me.dgvTVShows.Enabled = False
-            Master.DB.FillDataTable(Me.dtShows, "SELECT * FROM TVShows ORDER BY Title COLLATE NOCASE;")
-
-            If Me.dtShows.Rows.Count > 0 Then
-
-                With Me
-                    .bsShows.DataSource = .dtShows
-                    .dgvTVShows.DataSource = .bsShows
-
-                    .dgvTVShows.Columns(0).Visible = False
-                    .dgvTVShows.Columns(1).Resizable = DataGridViewTriState.True
-                    .dgvTVShows.Columns(1).ReadOnly = True
-                    .dgvTVShows.Columns(1).MinimumWidth = 83
-                    .dgvTVShows.Columns(1).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvTVShows.Columns(1).ToolTipText = Master.eLang.GetString(21, "Title")
-                    .dgvTVShows.Columns(1).HeaderText = Master.eLang.GetString(21, "Title")
-                    .dgvTVShows.Columns(2).Width = 20
-                    .dgvTVShows.Columns(2).Resizable = DataGridViewTriState.False
-                    .dgvTVShows.Columns(2).ReadOnly = True
-                    .dgvTVShows.Columns(2).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvTVShows.Columns(2).Visible = Not Master.eSettings.ShowPosterCol
-                    .dgvTVShows.Columns(2).ToolTipText = Master.eLang.GetString(148, "Poster")
-                    .dgvTVShows.Columns(3).Width = 20
-                    .dgvTVShows.Columns(3).Resizable = DataGridViewTriState.False
-                    .dgvTVShows.Columns(3).ReadOnly = True
-                    .dgvTVShows.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvTVShows.Columns(3).Visible = Not Master.eSettings.ShowFanartCol
-                    .dgvTVShows.Columns(3).ToolTipText = Master.eLang.GetString(149, "Fanart")
-                    .dgvTVShows.Columns(4).Width = 20
-                    .dgvTVShows.Columns(4).Resizable = DataGridViewTriState.False
-                    .dgvTVShows.Columns(4).ReadOnly = True
-                    .dgvTVShows.Columns(4).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvTVShows.Columns(4).Visible = Not Master.eSettings.ShowNfoCol
-                    .dgvTVShows.Columns(4).ToolTipText = Master.eLang.GetString(150, "Nfo")
-                    For i As Integer = 5 To .dgvTVShows.Columns.Count - 1
-                        .dgvTVShows.Columns(i).Visible = False
-                    Next
-
-                    .dgvTVShows.Columns(0).ValueType = GetType(Int32)
-
-                    'Trick to autosize the first column, but still allow resizing by user
-                    .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    .dgvTVShows.Columns(1).AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-
-                    .dgvTVShows.Sort(.dgvTVShows.Columns(1), ComponentModel.ListSortDirection.Ascending)
-
-                    .dgvTVShows.SelectedRows(0).Selected = False
-
-                    Me.SetTVCount()
-                End With
-            End If
-            Me.dgvTVShows.Enabled = True
         Catch ex As Exception
             Me.LoadingDone = True
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -6790,7 +6835,7 @@ doCancel:
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
-            If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) Then
+            If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 2)
                 Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, iRow).Value), True)

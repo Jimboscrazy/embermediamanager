@@ -184,7 +184,6 @@
     <Compile Include="clsStringManip.vb" />
     <Compile Include="clsTheming.vb" />
     <Compile Include="clsTrailers.vb" />
-    <Compile Include="clsUtility.vb" />
     <Compile Include="clsXML.vb" />
     <Compile Include="dlgEditEpisode.Designer.vb">
       <DependentUpon>dlgEditEpisode.vb</DependentUpon>

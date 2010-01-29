@@ -54,7 +54,7 @@ Public Class Master
     Public Enum FanartSize As Integer
         Lrg = 0
         Mid = 1
-        Small = 3
+        Small = 2
     End Enum
 
     Public Enum ScrapeType As Integer

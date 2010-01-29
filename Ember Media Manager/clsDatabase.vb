@@ -1097,7 +1097,7 @@ Public Class Database
             End Using
 
             If _TVDB.ShowID > -1 AndAlso WithShow Then
-                _TVDB.TVShow = LoadTVShowOnlyFromDB(_TVDB.ShowID)
+                FillTVShowFromDB(_TVDB)
 
                 Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
                     SQLcommandTVSeason.CommandText = String.Concat("SELECT PosterPath, FanartPath FROM TVSeason WHERE TVShowID = ", _TVDB.ShowID, " AND TVEpID = ", EpID, ";")
@@ -1126,7 +1126,8 @@ Public Class Database
     Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Long) As Master.DBTV
         Dim _TVDB As New Master.DBTV
         Try
-            _TVDB.TVShow = LoadTVShowOnlyFromDB(ShowID)
+            _TVDB.ShowID = ShowID
+            FillTVShowFromDB(_TVDB)
 
             Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
                 SQLcommandTVSeason.CommandText = String.Concat("SELECT PosterPath, FanartPath FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
@@ -1171,13 +1172,21 @@ Public Class Database
     ''' <summary>
     ''' Load all the information for a TV Show.
     ''' </summary>
-    ''' <param name="id">ID of the show to load, as stored in the database</param>
-    ''' <returns>Media.TVShow object</returns>
-    Public Function LoadTVShowOnlyFromDB(ByVal ShowID As Long) As Media.TVShow
-        Dim _TVDB As New Master.DBTV
-        _TVDB = LoadTVShowFromDB(ShowID)
-        Return _TVDB.TVShow
-    End Function
+    ''' <param name="_TVDB">Master.DBTV container to fill</param>
+    Public Sub FillTVShowFromDB(ByRef _TVDB As Master.DBTV)
+        Dim _tmpTVDB As New Master.DBTV
+        _tmpTVDB = LoadTVShowFromDB(_TVDB.ShowID)
+
+        _TVDB.IsLockShow = _tmpTVDB.IsLockShow
+        _TVDB.IsMarkShow = _tmpTVDB.IsMarkShow
+        _TVDB.IsNewShow = _tmpTVDB.IsNewShow
+        _TVDB.ShowFanartPath = _tmpTVDB.ShowFanartPath
+        _TVDB.ShowPosterPath = _tmpTVDB.ShowPosterPath
+        _TVDB.ShowNeedsSave = _tmpTVDB.ShowNeedsSave
+        _TVDB.ShowNfoPath = _tmpTVDB.ShowNfoPath
+        _TVDB.ShowPath = _tmpTVDB.ShowPath
+        _TVDB.TVShow = _tmpTVDB.TVShow
+    End Sub
 
     ''' <summary>
     ''' Load all the information for a TV Show.

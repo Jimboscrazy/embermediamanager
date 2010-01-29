@@ -1254,7 +1254,7 @@ Public Class Scanner
                     Select Case sFile.Type
                         Case MediaType.TVShow
                             tmpTVDB = New Master.DBTV
-                            'TODO: Handle video_ts and files with multiple seasons/episodes
+                            'TODO: Handle video_ts
                             If sFile.TVContainer.Episodes.Count > 0 Then
                                 If Not htTVShows.ContainsKey(sFile.TVContainer.ShowPath.ToLower) Then
                                     GetShowFolderContents(sFile.TVContainer)
@@ -1309,9 +1309,9 @@ Public Class Scanner
                                                     tmpTVDB.TVEp = New Media.EpisodeDetails
 
                                                     If Not String.IsNullOrEmpty(Episode.Nfo) Then
-                                                        tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo, i)
+                                                        tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Nfo, sSeasons.Season, i)
                                                     Else
-                                                        tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Filename, i)
+                                                        tmpTVDB.TVEp = NFO.LoadTVEpFromNFO(Episode.Filename, sSeasons.Season, i)
                                                     End If
 
                                                     If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
