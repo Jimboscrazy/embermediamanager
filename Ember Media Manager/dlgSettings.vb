@@ -3151,7 +3151,7 @@ Public Class dlgSettings
         Me.gbEpisodeFanart.Text = Master.eLang.GetString(688, "Episode Fanart")
         Me.lblInsideSeason.Text = Master.eLang.GetString(689, "* Inside Season directory")
         Me.btnEditShowRegex.Text = Master.eLang.GetString(690, "Edit Regex")
-        Me.btnRemoveShowRegex.Text =  = Master.eLang.GetString(30, "Remove")
+        Me.btnRemoveShowRegex.Text = Master.eLang.GetString(30, "Remove")
         Me.gbShowRegex.Text = Master.eLang.GetString(691, "Show Match Regex")
         Me.lblSeasonMatch.Text = Master.eLang.GetString(692, "Season Match Regex:")
         Me.lblEpisodeMatch.Text = Master.eLang.GetString(693, "Episode Match Regex:")
