@@ -37,6 +37,7 @@ Public Class frmMain
     Friend WithEvents bwMediaInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadSeasonInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadEpInfo As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwScraper As New System.ComponentModel.BackgroundWorker
@@ -118,6 +119,7 @@ Public Class frmMain
         Dim Path As String
         Dim Movie As Master.DBMovie
         Dim ID As Integer
+        Dim Season As Integer
     End Structure
 
     Public Property PosterMaxWidth() As Integer
@@ -222,6 +224,7 @@ Public Class frmMain
             If Me.bwMediaInfo.IsBusy Then Me.bwMediaInfo.CancelAsync()
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
             If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
@@ -237,7 +240,8 @@ Public Class frmMain
 
             While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy _
             OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
-            OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy
+            OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy _
+            OrElse Me.bwLoadSeasonInfo.IsBusy
                 Application.DoEvents()
             End While
 
@@ -460,13 +464,13 @@ Public Class frmMain
                     Case "-all"
                         Master.SetScraperMod(Master.ModType.All, True)
                     Case "-nfo"
-                        Master.SetScraperMod(Master.ModType.NFO, True, True)
+                        Master.SetScraperMod(Master.ModType.NFO, True)
                     Case "-posters"
-                        Master.SetScraperMod(Master.ModType.Poster, True, True)
+                        Master.SetScraperMod(Master.ModType.Poster, True)
                     Case "-fanart"
-                        Master.SetScraperMod(Master.ModType.Fanart, True, True)
+                        Master.SetScraperMod(Master.ModType.Fanart, True)
                     Case "-extra"
-                        Master.SetScraperMod(Master.ModType.Extra, True, True)
+                        Master.SetScraperMod(Master.ModType.Extra, True)
                     Case "--verbose"
                         clAsk = True
                     Case Else
@@ -2095,28 +2099,28 @@ Public Class frmMain
 
     Private Sub mnuAllAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True, True)
+        Master.SetScraperMod(Master.ModType.NFO, True)
         Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True, True)
+        Master.SetScraperMod(Master.ModType.Poster, True)
         Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True, True)
+        Master.SetScraperMod(Master.ModType.Fanart, True)
         Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True, True)
+        Master.SetScraperMod(Master.ModType.Extra, True)
         Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
 
     End Sub
@@ -2130,28 +2134,28 @@ Public Class frmMain
 
     Private Sub mnuAllAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True, True)
+        Master.SetScraperMod(Master.ModType.NFO, True)
         Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True, True)
+        Master.SetScraperMod(Master.ModType.Poster, True)
         Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True, True)
+        Master.SetScraperMod(Master.ModType.Fanart, True)
         Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuAllAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True, True)
+        Master.SetScraperMod(Master.ModType.Extra, True)
         Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
 
     End Sub
@@ -2165,28 +2169,28 @@ Public Class frmMain
 
     Private Sub mnuMissAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True, True)
+        Master.SetScraperMod(Master.ModType.NFO, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True, True)
+        Master.SetScraperMod(Master.ModType.Poster, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True, True)
+        Master.SetScraperMod(Master.ModType.Fanart, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True, True)
+        Master.SetScraperMod(Master.ModType.Extra, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
 
     End Sub
@@ -2200,28 +2204,28 @@ Public Class frmMain
 
     Private Sub mnuMissAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True, True)
+        Master.SetScraperMod(Master.ModType.NFO, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True, True)
+        Master.SetScraperMod(Master.ModType.Poster, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True, True)
+        Master.SetScraperMod(Master.ModType.Fanart, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMissAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True, True)
+        Master.SetScraperMod(Master.ModType.Extra, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
 
     End Sub
@@ -2235,28 +2239,28 @@ Public Class frmMain
 
     Private Sub mnuNewAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True, True)
+        Master.SetScraperMod(Master.ModType.NFO, True)
         Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True, True)
+        Master.SetScraperMod(Master.ModType.Poster, True)
         Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True, True)
+        Master.SetScraperMod(Master.ModType.Fanart, True)
         Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True, True)
+        Master.SetScraperMod(Master.ModType.Extra, True)
         Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
 
     End Sub
@@ -2270,28 +2274,28 @@ Public Class frmMain
 
     Private Sub mnuNewAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True, True)
+        Master.SetScraperMod(Master.ModType.NFO, True)
         Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True, True)
+        Master.SetScraperMod(Master.ModType.Poster, True)
         Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True, True)
+        Master.SetScraperMod(Master.ModType.Fanart, True)
         Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuNewAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True, True)
+        Master.SetScraperMod(Master.ModType.Extra, True)
         Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
 
     End Sub
@@ -2305,28 +2309,28 @@ Public Class frmMain
 
     Private Sub mnuMarkAutoNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True, True)
+        Master.SetScraperMod(Master.ModType.NFO, True)
         Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True, True)
+        Master.SetScraperMod(Master.ModType.Poster, True)
         Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True, True)
+        Master.SetScraperMod(Master.ModType.Fanart, True)
         Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAutoExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True, True)
+        Master.SetScraperMod(Master.ModType.Extra, True)
         Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
 
     End Sub
@@ -2340,28 +2344,28 @@ Public Class frmMain
 
     Private Sub mnuMarkAskNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskNfo.Click
 
-        Master.SetScraperMod(Master.ModType.NFO, True, True)
+        Master.SetScraperMod(Master.ModType.NFO, True)
         Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskPoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskPoster.Click
 
-        Master.SetScraperMod(Master.ModType.Poster, True, True)
+        Master.SetScraperMod(Master.ModType.Poster, True)
         Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskFanart.Click
 
-        Master.SetScraperMod(Master.ModType.Fanart, True, True)
+        Master.SetScraperMod(Master.ModType.Fanart, True)
         Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
 
     Private Sub mnuMarkAskExtra_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskExtra.Click
 
-        Master.SetScraperMod(Master.ModType.Extra, True, True)
+        Master.SetScraperMod(Master.ModType.Extra, True)
         Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
 
     End Sub
@@ -2673,42 +2677,42 @@ Public Class frmMain
     End Sub
 
     Private Sub mnuAllAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True, True)
+        Master.SetScraperMod(Master.ModType.Trailer, True)
         Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuAllAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True, True)
+        Master.SetScraperMod(Master.ModType.Trailer, True)
         Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMissAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAutoTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True, True)
+        Master.SetScraperMod(Master.ModType.Trailer, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMissAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMissAskTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True, True)
+        Master.SetScraperMod(Master.ModType.Trailer, True)
         Me.ScrapeData(Master.ScrapeType.UpdateAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True, True)
+        Master.SetScraperMod(Master.ModType.Trailer, True)
         Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True, True)
+        Master.SetScraperMod(Master.ModType.Trailer, True)
         Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAutoTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True, True)
+        Master.SetScraperMod(Master.ModType.Trailer, True)
         Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAskTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskTrailer.Click
-        Master.SetScraperMod(Master.ModType.Trailer, True, True)
+        Master.SetScraperMod(Master.ModType.Trailer, True)
         Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
 
@@ -2723,32 +2727,32 @@ Public Class frmMain
     End Sub
 
     Private Sub mnuAllAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAutoMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True, True)
+        Master.SetScraperMod(Master.ModType.Meta, True)
         Me.ScrapeData(Master.ScrapeType.FullAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuAllAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAllAskMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True, True)
+        Master.SetScraperMod(Master.ModType.Meta, True)
         Me.ScrapeData(Master.ScrapeType.FullAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAutoMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True, True)
+        Master.SetScraperMod(Master.ModType.Meta, True)
         Me.ScrapeData(Master.ScrapeType.NewAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuNewAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuNewAskMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True, True)
+        Master.SetScraperMod(Master.ModType.Meta, True)
         Me.ScrapeData(Master.ScrapeType.NewAsk, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAutoMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAutoMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True, True)
+        Master.SetScraperMod(Master.ModType.Meta, True)
         Me.ScrapeData(Master.ScrapeType.MarkAuto, Master.DefaultOptions)
     End Sub
 
     Private Sub mnuMarkAskMI_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMarkAskMI.Click
-        Master.SetScraperMod(Master.ModType.Meta, True, True)
+        Master.SetScraperMod(Master.ModType.Meta, True)
         Me.ScrapeData(Master.ScrapeType.MarkAsk, Master.DefaultOptions)
     End Sub
 
@@ -3107,6 +3111,7 @@ Public Class frmMain
                 Me.dgvMediaList.Visible = True
                 Me.ApplyTheme(Theming.ThemeType.Movies)
                 If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+                If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
                 If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
                 If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
                 If Me.dgvMediaList.RowCount > 0 Then
@@ -3154,7 +3159,7 @@ Public Class frmMain
 
         Try
 
-            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
+            If Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy OrElse Me.bwRefreshMovies.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvTVShows.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(Me.dgvTVShows.Item(0, indX).Value)
@@ -3525,11 +3530,6 @@ Public Class frmMain
 
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
 
-            'wait for mediainfo to update the nfo
-            While bwMediaInfo.IsBusy
-                Application.DoEvents()
-            End While
-
             If bwLoadShowInfo.CancellationPending Then
                 e.Cancel = True
                 Return
@@ -3559,19 +3559,81 @@ Public Class frmMain
 
     End Sub
 
+    Private Sub bwLoadSeasonInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadSeasonInfo.DoWork
+
+        Try
+
+            Dim Args As Arguments = DirectCast(e.Argument, Arguments)
+            Me.MainPoster.Clear()
+            Me.MainFanart.Clear()
+
+            Master.currShow = Master.DB.LoadTVSeasonFromDB(Args.ID, Args.Season)
+
+            If bwLoadSeasonInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Not Master.eSettings.NoDisplayPoster Then
+                If Not String.IsNullOrEmpty(Master.currShow.SeasonPosterPath) Then
+                    Me.MainPoster.FromFile(Master.currShow.SeasonPosterPath)
+                Else
+                    Me.MainPoster.FromFile(Master.currShow.ShowPosterPath)
+                End If
+            End If
+
+            If bwLoadSeasonInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Not Master.eSettings.NoDisplayFanart Then
+                If Not String.IsNullOrEmpty(Master.currShow.SeasonFanartPath) Then
+                    Me.MainFanart.FromFile(Master.currShow.SeasonFanartPath)
+                Else
+                    Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
+                End If
+            End If
+
+            If bwLoadSeasonInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            e.Cancel = True
+        End Try
+
+
+    End Sub
+
+    Private Sub bwLoadSeasonInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadSeasonInfo.RunWorkerCompleted
+
+        Try
+            If Not e.Cancelled Then
+                Me.fillScreenInfoWithSeason()
+            End If
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
     Private Sub bwLoadEpInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadEpInfo.DoWork
 
         Try
 
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Me.MainPoster.Clear()
+            Me.MainFanart.Clear()
 
             If bwLoadEpInfo.CancellationPending Then
                 e.Cancel = True
                 Return
             End If
 
-            Master.currShow = Master.DB.LoadTVEpFromDB(Args.ID, False)
+            Master.currShow = Master.DB.LoadTVEpFromDB(Args.ID, True)
 
             If bwLoadEpInfo.CancellationPending Then
                 e.Cancel = True
@@ -3579,6 +3641,19 @@ Public Class frmMain
             End If
 
             If Not Master.eSettings.NoDisplayPoster Then Me.MainPoster.FromFile(Master.currShow.EpPosterPath)
+
+            If bwLoadEpInfo.CancellationPending Then
+                e.Cancel = True
+                Return
+            End If
+
+            If Not Master.eSettings.NoDisplayFanart Then
+                If String.IsNullOrEmpty(Master.currShow.EpFanartPath) Then
+                    Me.MainFanart.FromFile(Master.currShow.EpFanartPath)
+                Else
+                    Me.MainFanart.FromFile(Master.currShow.ShowFanartPath)
+                End If
+            End If
 
             'wait for mediainfo to update the nfo
             While bwMediaInfo.IsBusy
@@ -3589,6 +3664,7 @@ Public Class frmMain
                 e.Cancel = True
                 Return
             End If
+
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -4645,6 +4721,32 @@ doCancel:
 
     End Sub
 
+    Private Sub LoadSeasonInfo(ByVal ShowID As Integer, ByVal Season As Integer)
+
+        Try
+            Me.ToolsToolStripMenuItem.Enabled = False
+            Me.tsbAutoPilot.Enabled = False
+            Me.tsbRefreshMedia.Enabled = False
+            Me.tabsMain.Enabled = False
+            Me.ShowNoInfo(False)
+
+            If Not Me.currThemeType = Theming.ThemeType.Show Then
+                Me.ApplyTheme(Theming.ThemeType.Show)
+                Me.ClearInfo()
+            End If
+
+            Me.bwLoadSeasonInfo = New System.ComponentModel.BackgroundWorker
+            Me.bwLoadSeasonInfo.WorkerSupportsCancellation = True
+            Me.bwLoadSeasonInfo.RunWorkerAsync(New Arguments With {.ID = ShowID, .Season = Season})
+
+            Me.FillEpisodes(ShowID, Season)
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
+
     Private Sub LoadEpisodeInfo(ByVal ID As Integer)
 
         Try
@@ -4656,7 +4758,7 @@ doCancel:
 
             If Not Me.currThemeType = Theming.ThemeType.Episode Then Me.ApplyTheme(Theming.ThemeType.Episode)
 
-            Me.ClearInfo(False)
+            Me.ClearInfo()
 
             Me.bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
             Me.bwLoadEpInfo.WorkerSupportsCancellation = True
@@ -4667,7 +4769,7 @@ doCancel:
 
     End Sub
 
-    Public Sub ClearInfo(Optional ByVal IncludeFanart As Boolean = True)
+    Public Sub ClearInfo()
 
         '//
         ' Reset all info fields
@@ -4679,15 +4781,14 @@ doCancel:
                 If .bwDownloadPic.IsBusy Then .bwDownloadPic.CancelAsync()
                 If .bwLoadInfo.IsBusy Then .bwLoadInfo.CancelAsync()
                 If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
+                If .bwLoadSeasonInfo.IsBusy Then .bwLoadSeasonInfo.CancelAsync()
                 If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
 
-                If IncludeFanart Then
-                    If Not IsNothing(.pbFanart.Image) Then
-                        .pbFanart.Image.Dispose()
-                        .pbFanart.Image = Nothing
-                    End If
-                    .MainFanart.Clear()
+                If Not IsNothing(.pbFanart.Image) Then
+                    .pbFanart.Image.Dispose()
+                    .pbFanart.Image = Nothing
                 End If
+                .MainFanart.Clear()
 
                 If Not IsNothing(.pbPoster.Image) Then
                     .pbPoster.Image.Dispose()
@@ -5072,6 +5173,126 @@ doCancel:
         Me.ResumeLayout()
     End Sub
 
+    Private Sub fillScreenInfoWithSeason()
+        Dim g As Graphics
+        Dim strSize As String
+        Dim lenSize As Integer
+        Dim rect As Rectangle
+
+        Try
+            Me.SuspendLayout()
+            Me.pnlTop.Visible = True
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Title) Then
+                Me.lblTitle.Text = Master.currShow.TVShow.Title
+            End If
+
+            Me.txtPlot.Text = Master.currShow.TVShow.Plot
+            Me.lblRuntime.Text = String.Format(Master.eLang.GetString(999, "Premiered: {0}"), If(String.IsNullOrEmpty(Master.currShow.TVShow.Premiered), "?", Master.currShow.TVShow.Premiered))
+
+            Me.alActors = New List(Of String)
+
+            If Master.currShow.TVShow.Actors.Count > 0 Then
+                Me.pbActors.Image = My.Resources.actor_silhouette
+                For Each imdbAct As Media.Person In Master.currShow.TVShow.Actors
+                    If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
+                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 AndAlso Not Strings.InStr(imdbAct.Thumb.ToLower, "no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.Thumb)
+                        Else
+                            Me.alActors.Add("none")
+                        End If
+                    Else
+                        Me.alActors.Add("none")
+                    End If
+
+                    If String.IsNullOrEmpty(imdbAct.Role.Trim) Then
+                        Me.lstActors.Items.Add(imdbAct.Name.Trim)
+                    Else
+                        Me.lstActors.Items.Add(String.Format("{0} as {1}", imdbAct.Name.Trim, imdbAct.Role.Trim))
+                    End If
+                Next
+                Me.lstActors.SelectedIndex = 0
+            End If
+
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.MPAA) Then
+                Dim tmpRatingImg As Image = XML.GetTVRatingImage(Master.currShow.TVShow.MPAA)
+                If Not IsNothing(tmpRatingImg) Then
+                    Me.pbMPAA.Image = tmpRatingImg
+                    Me.MoveMPAA()
+                    Me.pnlMPAA.Visible = True
+                Else
+                    Me.pnlMPAA.Visible = False
+                End If
+            End If
+
+            Dim tmpRating As Single = Master.ConvertToSingle(Master.currShow.TVShow.Rating)
+            If tmpRating > 0 Then
+                Me.BuildStars(tmpRating)
+            End If
+
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Genre) Then
+                Me.createGenreThumbs(Master.currShow.TVShow.Genre)
+            End If
+
+            If Not String.IsNullOrEmpty(Master.currShow.TVShow.Studio) Then
+                Me.pbStudio.Image = XML.GetStudioImage(Master.currShow.TVShow.Studio)
+            Else
+                Me.pbStudio.Image = XML.GetStudioImage("####")
+            End If
+
+            Me.pnlInfoIcons.Width = pbStudio.Width + 1
+            Me.pbStudio.Left = 0
+
+            If Not IsNothing(Me.MainPoster.Image) Then
+                Me.pbPosterCache.Image = Me.MainPoster.Image
+                ImageManip.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
+                ImageManip.SetGlassOverlay(Me.pbPoster)
+                Me.pnlPoster.Size = New Size(Me.pbPoster.Width + 10, Me.pbPoster.Height + 10)
+
+                If Master.eSettings.ShowDims Then
+                    g = Graphics.FromImage(pbPoster.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2 - 15), Me.pbPoster.Height - 25, lenSize + 30, 25)
+                    ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbPoster.Image.Width - lenSize) / 2), Me.pbPoster.Height - 20)
+                End If
+
+                Me.pbPoster.Location = New Point(4, 4)
+                Me.pnlPoster.Visible = True
+            Else
+                If Not IsNothing(Me.pbPoster.Image) Then
+                    Me.pbPoster.Image.Dispose()
+                    Me.pbPoster.Image = Nothing
+                    Me.pnlPoster.Visible = False
+                End If
+            End If
+
+            ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+            Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                g = Graphics.FromImage(pbFanart.Image)
+                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
+            End If
+
+            Me.InfoCleared = False
+
+            If Not bwScraper.IsBusy AndAlso Not bwRefreshMovies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+                Me.SetControlsEnabled(True)
+            End If
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Me.ResumeLayout()
+    End Sub
+
     Private Sub fillScreenInfoWithEpisode()
         Dim g As Graphics
         Dim strSize As String
@@ -5159,6 +5380,19 @@ doCancel:
                     Me.pbPoster.Image = Nothing
                     Me.pnlPoster.Visible = False
                 End If
+            End If
+
+            ImageManip.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)
+            Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
+
+            If Not IsNothing(pbFanart.Image) AndAlso Master.eSettings.ShowDims Then
+                g = Graphics.FromImage(pbFanart.Image)
+                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                strSize = String.Format("{0} x {1}", Me.MainFanart.Image.Width, Me.MainFanart.Image.Height)
+                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                rect = New Rectangle((pbFanart.Image.Width - lenSize) - 40, 10, lenSize + 30, 25)
+                ImageManip.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), (pbFanart.Image.Width - lenSize) - 25, 15)
             End If
 
             Me.InfoCleared = False
@@ -6460,6 +6694,7 @@ doCancel:
         Try
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
@@ -6473,7 +6708,7 @@ doCancel:
                 Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, iRow).Value), Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                 Me.mnuMediaList.Enabled = True
             End If
         Catch ex As Exception
@@ -6487,6 +6722,7 @@ doCancel:
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
+            If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
             If Not Convert.ToBoolean(Me.dgvTVShows.Item(2, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(4, iRow).Value) Then
@@ -6499,7 +6735,7 @@ doCancel:
                 Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
             End If
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                 Me.mnuShows.Enabled = True
             End If
 
@@ -6515,12 +6751,22 @@ doCancel:
 
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
-            Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
+            If String.IsNullOrEmpty(Master.currShow.ShowPosterPath) AndAlso String.IsNullOrEmpty(Master.currShow.ShowFanartPath) AndAlso _
+               String.IsNullOrEmpty(Master.currShow.ShowNfoPath) AndAlso Not Convert.ToBoolean(Me.dgvTVSeasons.Item(4, iRow).Value) AndAlso _
+               Not Convert.ToBoolean(Me.dgvTVSeasons.Item(5, iRow).Value) Then
+                Me.ClearInfo()
+                Me.ShowNoInfo(True, 1)
+                Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
+            Else
+                Me.ShowNoInfo(False)
+                Me.LoadSeasonInfo(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
+            End If
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                 Me.SetControlsEnabled(True)
             End If
 
@@ -6534,11 +6780,12 @@ doCancel:
         Try
             If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
             If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
+            If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
             If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
             If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
 
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) Then
-                Me.ClearInfo(False)
+                Me.ClearInfo()
                 Me.ShowNoInfo(True, 2)
                 Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, iRow).Value), True)
             Else
@@ -6546,7 +6793,7 @@ doCancel:
                 Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value))
             End If
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                 Me.mnuEpisodes.Enabled = True
             End If
 

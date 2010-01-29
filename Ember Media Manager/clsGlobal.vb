@@ -267,9 +267,9 @@ Public Class Master
         End With
     End Sub
 
-    Public Shared Sub SetScraperMod(ByVal MType As ModType, ByVal MValue As Boolean, Optional ByVal Clear As Boolean = False)
+    Public Shared Sub SetScraperMod(ByVal MType As ModType, ByVal MValue As Boolean, Optional ByVal DoClear As Boolean = True)
         With GlobalScrapeMod
-            If Clear Then
+            If DoClear Then
                 .Extra = False
                 .Fanart = False
                 .Meta = False
