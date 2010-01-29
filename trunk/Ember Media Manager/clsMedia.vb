@@ -1378,4 +1378,5 @@ Namespace Media
             _fileInfo = New MediaInfo.Fileinfo
         End Sub
     End Class
+
 End Namespace

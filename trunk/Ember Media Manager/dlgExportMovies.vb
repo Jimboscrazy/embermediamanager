@@ -405,11 +405,11 @@ Public Class dlgExportMovies
 
                 'now check if we need to include this movie
                 If bSearch Then
-                    If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso Utility.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso Utility.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(21, "Title") AndAlso Utility.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(278, "Year") AndAlso Utility.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) OrElse _
-                       (strIn = Master.eLang.GetString(353, "Source Folder") AndAlso Utility.Wildcard.IsMatch(_curMovie.Source, strFilter)) Then
+                    If (strIn = Master.eLang.GetString(279, "Video Flag") AndAlso StringManip.Wildcard.IsMatch(_vidDetails, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(280, "Audio Flag") AndAlso StringManip.Wildcard.IsMatch(_audDetails, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(21, "Title") AndAlso StringManip.Wildcard.IsMatch(_curMovie.Movie.Title, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(278, "Year") AndAlso StringManip.Wildcard.IsMatch(_curMovie.Movie.Year, strFilter)) OrElse _
+                       (strIn = Master.eLang.GetString(353, "Source Folder") AndAlso StringManip.Wildcard.IsMatch(_curMovie.Source, strFilter)) Then
                         'included - build the output
                     Else
                         'filtered out - exclude this one

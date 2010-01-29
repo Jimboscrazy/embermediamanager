@@ -752,9 +752,7 @@ Public Class NFO
 
     Public Shared Sub SaveTVEpToNFO(ByRef tvEpToSave As Master.DBTV)
 
-        '//
-        ' Serialize Media.EpisodeDetails to an NFO
-        '\\
+        'TODO: Support for multiple episodes in the same nfo
 
         Try
 
@@ -763,6 +761,8 @@ Public Class NFO
             Dim tPath As String = String.Empty
             Dim doesExist As Boolean = False
             Dim fAtt As New FileAttributes
+            Dim EpList As New List(Of Media.EpisodeDetails)
+            Dim sBuilder As New StringBuilder
 
             Dim tmpName As String = Path.GetFileNameWithoutExtension(tvEpToSave.Filename)
             tPath = String.Concat(Path.Combine(Directory.GetParent(tvEpToSave.Filename).FullName, tmpName), ".nfo")
@@ -779,11 +779,41 @@ Public Class NFO
                     File.SetAttributes(tPath, FileAttributes.Normal)
                 End If
 
-                Using xmlSW As New StreamWriter(tPath)
-                    tvEpToSave.EpNfoPath = tPath
-                    xmlSer.Serialize(xmlSW, tvEpToSave.TVEp)
-                End Using
+                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
+                    SQLCommand.CommandText = "SELECT ID FROM TVEps WHERE ID <> (?) AND TVEpPathID IN (SELECT ID FROM TVEpPaths WHERE TVEpPath = (?)) ORDER BY Episode"
+                    Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "ID")
+                    Dim parTVEpPath As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parTVEpPath", DbType.String, 0, "TVEpPath")
 
+                    parID.Value = tvEpToSave.EpID
+                    parTVEpPath.Value = tvEpToSave.Filename
+
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                        While SQLreader.Read
+                            EpList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLreader("ID")), False).TVEp)
+                        End While
+                    End Using
+
+                    EpList.Add(tvEpToSave.TVEp)
+
+                    For Each tvEp As Media.EpisodeDetails In EpList.OrderBy(Function(s) s.Season)
+                        Using xmlSW As New StringWriter
+                            xmlSer.Serialize(xmlSW, tvEp)
+                            If sBuilder.Length > 0 Then
+                                sBuilder.Append(vbNewLine)
+                                xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(vbNewLine) + 1)
+                            End If
+                            sBuilder.Append(xmlSW.ToString)
+                        End Using
+                    Next
+
+                    tvEpToSave.EpNfoPath = tPath
+
+                    If sBuilder.Length > 0 Then
+                        Using fSW As New StreamWriter(tPath)
+                            fSW.Write(sBuilder.ToString)
+                        End Using
+                    End If
+                End Using
                 If doesExist Then File.SetAttributes(tPath, fAtt)
             End If
 
@@ -792,7 +822,7 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Function LoadTVEpFromNFO(ByVal sPath As String, ByVal EpisodeNumber As Integer) As Media.EpisodeDetails
+    Public Shared Function LoadTVEpFromNFO(ByVal sPath As String, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer) As Media.EpisodeDetails
         Dim xmlSer As XmlSerializer = New XmlSerializer(GetType(Media.EpisodeDetails))
         Dim xmlEp As New Media.EpisodeDetails
         Try
@@ -812,7 +842,7 @@ Public Class NFO
                         For Each xmlReg As Match In rMatches
                             Using xmlRead As StringReader = New StringReader(xmlReg.Value)
                                 xmlEp = DirectCast(xmlSer.Deserialize(xmlRead), Media.EpisodeDetails)
-                                If xmlEp.Episode = EpisodeNumber Then
+                                If xmlEp.Episode = EpisodeNumber AndAlso xmlEp.Season = SeasonNumber Then
                                     xmlSer = Nothing
                                     Return xmlEp
                                 End If
