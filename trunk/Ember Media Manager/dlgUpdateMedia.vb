@@ -327,32 +327,32 @@ Public Class dlgUpdateMedia
     End Sub
 
     Private Sub chkNFOMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkNFOMod.Click
-        Master.SetScraperMod(Master.ModType.NFO, chkNFOMod.Checked)
+        Master.SetScraperMod(Master.ModType.NFO, chkNFOMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkPosterMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkPosterMod.Click
-        Master.SetScraperMod(Master.ModType.Poster, chkPosterMod.Checked)
+        Master.SetScraperMod(Master.ModType.Poster, chkPosterMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkFanartMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFanartMod.Click
-        Master.SetScraperMod(Master.ModType.Fanart, chkFanartMod.Checked)
+        Master.SetScraperMod(Master.ModType.Fanart, chkFanartMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkMetaMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMetaMod.Click
-        Master.SetScraperMod(Master.ModType.Meta, chkMetaMod.Checked)
+        Master.SetScraperMod(Master.ModType.Meta, chkMetaMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkExtraMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkExtraMod.Click
-        Master.SetScraperMod(Master.ModType.Extra, chkExtraMod.Checked)
+        Master.SetScraperMod(Master.ModType.Extra, chkExtraMod.Checked, False)
         CheckEnable()
     End Sub
 
     Private Sub chkTrailerMod_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkTrailerMod.Click
-        Master.SetScraperMod(Master.ModType.Trailer, chkTrailerMod.Checked)
+        Master.SetScraperMod(Master.ModType.Trailer, chkTrailerMod.Checked, False)
         CheckEnable()
     End Sub
 

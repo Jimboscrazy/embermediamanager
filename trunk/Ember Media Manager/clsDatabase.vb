@@ -1118,6 +1118,33 @@ Public Class Database
     End Function
 
     ''' <summary>
+    ''' Load all the information for a TV Season.
+    ''' </summary>
+    ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
+    ''' <param name="iSeason">Number of the season to load, as stored in the database</param>
+    ''' <returns>Master.DBTV object</returns>
+    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Long) As Master.DBTV
+        Dim _TVDB As New Master.DBTV
+        Try
+            _TVDB.TVShow = LoadTVShowOnlyFromDB(ShowID)
+
+            Using SQLcommandTVSeason As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                SQLcommandTVSeason.CommandText = String.Concat("SELECT PosterPath, FanartPath FROM TVSeason WHERE TVShowID = ", ShowID, " AND Season = ", iSeason, ";")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
+                    If SQLReader.HasRows Then
+                        If Not DBNull.Value.Equals(SQLReader("PosterPath")) Then _TVDB.SeasonPosterPath = SQLReader("PosterPath").ToString
+                        If Not DBNull.Value.Equals(SQLReader("FanartPath")) Then _TVDB.SeasonFanartPath = SQLReader("FanartPath").ToString
+                    End If
+                End Using
+            End Using
+
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+        Return _TVDB
+    End Function
+
+    ''' <summary>
     ''' Load all the information for a TV Episode (by episode path)
     ''' </summary>
     ''' <param name="sPath">Full path to the episode file</param>
