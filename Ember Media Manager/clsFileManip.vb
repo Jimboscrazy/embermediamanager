@@ -532,11 +532,11 @@ Namespace FileManip
 
         End Sub
 
-        Public Shared Function GetLongestFromRip(ByVal sPath As String) As String
+        Public Shared Function GetLongestFromRip(ByVal sPath As String, Optional ByVal ForceBDMV As Boolean = False) As String
 
             Dim lFileList As New List(Of FileInfo)
             Select Case True
-                Case isBDRip(sPath)
+                Case isBDRip(sPath) OrElse ForceBDMV
                     lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.m2ts"))
                 Case isVideoTS(sPath)
                     lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.vob"))
