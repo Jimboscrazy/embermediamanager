@@ -18,8 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-
 Public Class dlgStudioSelect
 
     Private _imdbid As String = String.Empty

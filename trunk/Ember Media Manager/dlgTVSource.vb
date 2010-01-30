@@ -18,8 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
-Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
 
