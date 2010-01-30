@@ -124,6 +124,7 @@ Public Class dlgBulkRenamer
                                             Else
                                                 MovieFile.Title = _curMovie.Movie.Title
                                             End If
+                                            MovieFile.ListTitle = _curMovie.ListTitle
                                             MovieFile.MPAARate = FileFolderRenamer.SelectMPAA(_curMovie.Movie)
                                             MovieFile.OriginalTitle = _curMovie.Movie.OriginalTitle
                                             MovieFile.Year = _curMovie.Movie.Year

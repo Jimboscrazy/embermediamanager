@@ -237,6 +237,7 @@ Public Class dlgOfflineHolder
                 ' Apply default pattern to the Folder Name
                 Dim ff As New FileFolderRenamer.FileRename
                 ff.Title = tMovie.Movie.Title
+                ff.ListTitle = tMovie.ListTitle
                 ff.Year = tMovie.Movie.Year
                 ff.FileName = ""
                 Me.txtMovieName.Text = String.Concat(FileFolderRenamer.ProccessPattern(ff, Master.eSettings.FoldersPattern), " [Offline]")
