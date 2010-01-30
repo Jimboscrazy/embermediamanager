@@ -21,6 +21,7 @@
 
 
 Imports System.IO
+Imports System.Reflection
 Imports System.Globalization
 Imports System.Text.RegularExpressions
 Imports Microsoft.Win32
@@ -527,6 +528,12 @@ Public Class Master
                 End While
             End Using
         End Using
+    End Sub
+
+    Public Shared Sub DoubleBuffer(ByVal iCon As Control)
+        Dim conType As Type = iCon.GetType
+        Dim pi As PropertyInfo = conType.GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic)
+        pi.SetValue(iCon, True, Nothing)
     End Sub
 
 End Class
