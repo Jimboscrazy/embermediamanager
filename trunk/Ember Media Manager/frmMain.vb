@@ -25,7 +25,6 @@ Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Bitmap
 Imports System.Text.RegularExpressions
-Imports System.Reflection
 
 Public Class frmMain
 
@@ -354,8 +353,6 @@ Public Class frmMain
         ' Add our handlers, load settings, set form colors, and try to load movies at startup
         '\\
 
-        aDoubleBuffered(dgvMediaList, True)
-
         Me.Visible = False
         Dim Args() As String = Environment.GetCommandLineArgs
 
@@ -369,6 +366,8 @@ Public Class frmMain
         AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
+
+        Master.DoubleBuffer(Me.dgvMediaList)
 
         Dim sPath As String = String.Concat(Master.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
         If File.Exists(sPath) Then
@@ -7051,16 +7050,8 @@ doCancel:
     Private Sub SetStatus(ByVal sText As String)
         Me.tslStatus.Text = sText.Replace("&", "&&")
     End Sub
+
 #End Region '*** Routines/Functions
 
 End Class
 
-Public Module ExtensionMethods
-
-    Public Sub aDoubleBuffered(ByVal dgv As DataGridView, ByVal setting As Boolean)
-        Dim dgvType As Type = dgv.[GetType]()
-        Dim pi As PropertyInfo = dgvType.GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic)
-        pi.SetValue(dgv, setting, Nothing)
-    End Sub
-
-End Module
