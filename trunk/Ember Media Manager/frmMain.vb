@@ -813,9 +813,6 @@ Public Class frmMain
                     End If
             End Select
 
-            'move focus somewhere to stop highlighting some info boxes
-            If Me.tabsMain.SelectedIndex = 0 Then Me.txtSearch.Focus() Else  : Me.lblTitle.Focus()
-
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -7038,8 +7035,10 @@ doCancel:
         Me.btnMarkAll.Enabled = isEnabled
 
         If withLists Then
-            'focus away from the lists so it doesn't select one of them
-            Me.lblTitle.Focus()
+            Me.dgvMediaList.TabStop = isEnabled
+            Me.dgvTVShows.TabStop = isEnabled
+            Me.dgvTVSeasons.TabStop = isEnabled
+            Me.dgvTVEpisodes.TabStop = isEnabled
             Me.dgvMediaList.Enabled = isEnabled
             Me.dgvTVShows.Enabled = isEnabled
             Me.dgvTVSeasons.Enabled = isEnabled

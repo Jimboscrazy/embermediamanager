@@ -682,20 +682,22 @@ Public Class FileFolderRenamer
                                 Dim fileCount As Integer = 0
                                 Dim dirCount As Integer = 0
 
-                                Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
+                                If Directory.Exists(srcDir) Then
+                                    Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
 
-                                Try
-                                    fileCount = di.GetFiles().Count
-                                Catch
-                                End Try
+                                    Try
+                                        fileCount = di.GetFiles().Count
+                                    Catch
+                                    End Try
 
-                                Try
-                                    dirCount = di.GetDirectories().Count
-                                Catch
-                                End Try
+                                    Try
+                                        dirCount = di.GetDirectories().Count
+                                    Catch
+                                    End Try
 
-                                If fileCount = 0 AndAlso dirCount = 0 Then
-                                    di.Delete()
+                                    If fileCount = 0 AndAlso dirCount = 0 Then
+                                        di.Delete()
+                                    End If
                                 End If
                             End If
                         End If
@@ -718,6 +720,7 @@ Public Class FileFolderRenamer
         MovieFile.ListTitle = _tmpMovie.ListTitle
         MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
         MovieFile.Year = _tmpMovie.Movie.Year
+        MovieFile.IsSingle = _tmpMovie.isSingle
 
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
@@ -888,20 +891,22 @@ Public Class FileFolderRenamer
                     Dim fileCount As Integer = 0
                     Dim dirCount As Integer = 0
 
-                    Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
+                    If Directory.Exists(srcDir) Then
+                        Dim di As DirectoryInfo = New DirectoryInfo(srcDir)
 
-                    Try
-                        fileCount = di.GetFiles().Count
-                    Catch
-                    End Try
+                        Try
+                            fileCount = di.GetFiles().Count
+                        Catch
+                        End Try
 
-                    Try
-                        dirCount = di.GetDirectories().Count
-                    Catch
-                    End Try
+                        Try
+                            dirCount = di.GetDirectories().Count
+                        Catch
+                        End Try
 
-                    If fileCount = 0 AndAlso dirCount = 0 Then
-                        di.Delete()
+                        If fileCount = 0 AndAlso dirCount = 0 Then
+                            di.Delete()
+                        End If
                     End If
                 End If
 

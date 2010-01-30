@@ -74,8 +74,8 @@ Public Class Images
                     ms.SetLength(fsImage.Length)
                     fsImage.Read(ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
                     ms.Flush()
+                    _image = New Bitmap(ms)
                 End Using
-                _image = New Bitmap(ms)
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
