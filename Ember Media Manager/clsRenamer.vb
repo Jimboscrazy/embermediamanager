@@ -25,30 +25,37 @@ Imports System.Text.RegularExpressions
 
 Public Class FileFolderRenamer
     Class FileRename
-        Public ID As Integer = -1 ' support for bulkRenamer 
-        Private _title As String = String.Empty
-        Private _listtitle As String = String.Empty
-        Public Year As String = String.Empty
-        Public BasePath As String = String.Empty
-        Private _oldpath As String = String.Empty
-        Private _path As String = String.Empty
-        Private _fileName As String = String.Empty
-        Private _newPath As String = String.Empty
-        Private _newFileName As String = String.Empty
-        Private _parent As String = String.Empty
-        Private _islocked As Boolean = False ' support for bulkRenamer 
-        Private _dirExist As Boolean = True ' support for bulkRenamer 
-        Private _fileExist As Boolean = True ' support for bulkRenamer 
-        Private _isSingle As Boolean = True ' support for bulkRenamer
-        Private _isRenamed As Boolean = False ' support for bulkRenamer
-        Public MPAARate As String = String.Empty
-        Public Resolution As String = String.Empty
-        Public Audio As String = String.Empty
-        Public OriginalTitle As String = String.Empty
-        Public IsVIDEO_TS As Boolean = False
-        Public IsBDMV As Boolean = False
+        Private _id As Integer
+        Private _title As String
+        Private _listtitle As String
+        Private _year As String
+        Private _basePath As String
+        Private _oldpath As String
+        Private _path As String
+        Private _fileName As String
+        Private _newPath As String
+        Private _newFileName As String
+        Private _parent As String
+        Private _islocked As Boolean
+        Private _dirExist As Boolean
+        Private _fileExist As Boolean
+        Private _isSingle As Boolean
+        Private _isRenamed As Boolean
+        Private _mpaarate As String
+        Private _resolution As String
+        Private _audio As String
+        Private _originalTitle As String
+        Private _isvideo_ts As Boolean
+        Private _isbdmv As Boolean
 
-
+        Public Property ID() As Integer
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As Integer)
+                Me._id = value
+            End Set
+        End Property
         Public Property Title() As String
             Get
                 Return Me._title
@@ -58,12 +65,30 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property OriginalTitle() As String
+            Get
+                Return Me._originalTitle
+            End Get
+            Set(ByVal value As String)
+                Me._originalTitle = value.Trim
+            End Set
+        End Property
+
         Public Property ListTitle() As String
             Get
                 Return Me._listtitle
             End Get
             Set(ByVal value As String)
                 Me._listtitle = value.Trim
+            End Set
+        End Property
+
+        Public Property Year() As String
+            Get
+                Return Me._year
+            End Get
+            Set(ByVal value As String)
+                Me._year = value
             End Set
         End Property
 
@@ -102,6 +127,7 @@ Public Class FileFolderRenamer
                 Me._fileName = value.Trim
             End Set
         End Property
+
         Public Property NewPath() As String
             Get
                 Return Me._newPath
@@ -110,6 +136,7 @@ Public Class FileFolderRenamer
                 Me._newPath = value.Trim
             End Set
         End Property
+
         Public Property NewFileName() As String
             Get
                 Return Me._newFileName
@@ -118,6 +145,34 @@ Public Class FileFolderRenamer
                 Me._newFileName = value.Trim
             End Set
         End Property
+
+        Public Property Resolution() As String
+            Get
+                Return Me._resolution
+            End Get
+            Set(ByVal value As String)
+                Me._resolution = value
+            End Set
+        End Property
+
+        Public Property Audio() As String
+            Get
+                Return Me._audio
+            End Get
+            Set(ByVal value As String)
+                Me._audio = value
+            End Set
+        End Property
+
+        Public Property MPAARate() As String
+            Get
+                Return Me._mpaarate
+            End Get
+            Set(ByVal value As String)
+                Me._mpaarate = value
+            End Set
+        End Property
+
         Public Property IsLocked() As Boolean
             Get
                 Return Me._islocked
@@ -126,6 +181,7 @@ Public Class FileFolderRenamer
                 Me._islocked = value
             End Set
         End Property
+
         Public Property DirExist() As Boolean
             Get
                 Return Me._dirExist
@@ -134,6 +190,7 @@ Public Class FileFolderRenamer
                 Me._dirExist = value
             End Set
         End Property
+
         Public Property FileExist() As Boolean
             Get
                 Return Me._fileExist
@@ -160,6 +217,58 @@ Public Class FileFolderRenamer
                 Me._isRenamed = value
             End Set
         End Property
+
+        Public Property BasePath() As String
+            Get
+                Return Me._basePath
+            End Get
+            Set(ByVal value As String)
+                _basePath = value
+            End Set
+        End Property
+
+        Public Property IsVideo_TS() As Boolean
+            Get
+                Return Me._isvideo_ts
+            End Get
+            Set(ByVal value As Boolean)
+                _isvideo_ts = value
+            End Set
+        End Property
+
+        Public Property IsBDMV() As Boolean
+            Get
+                Return Me._isbdmv
+            End Get
+            Set(ByVal value As Boolean)
+                _isbdmv = value
+            End Set
+        End Property
+
+        Public Sub Clear()
+            _id = -1
+            _title = String.Empty
+            _listtitle = String.Empty
+            _year = String.Empty
+            _basePath = String.Empty
+            _oldpath = String.Empty
+            _path = String.Empty
+            _fileName = String.Empty
+            _newPath = String.Empty
+            _newFileName = String.Empty
+            _parent = String.Empty
+            _islocked = False
+            _dirExist = True
+            _fileExist = True
+            _isSingle = True
+            _isRenamed = False
+            _mpaarate = String.Empty
+            _resolution = String.Empty
+            _audio = String.Empty
+            _originalTitle = String.Empty
+            _isvideo_ts = False
+            _isbdmv = False
+        End Sub
     End Class
 
     Private _movies As New List(Of FileRename)
