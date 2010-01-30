@@ -725,9 +725,7 @@ Public Class Images
                         Next
 
                         If Not doAsk Then
-                            'image not found sort by size then pick the first one
-                            tmpListTMDB.Sort(AddressOf SortImages)
-                            _image = tmpListTMDB(0).WebImage.Image
+                            _image = tmpListTMDB.OrderBy(Function(i) i.WebImage.Image.Height + i.WebImage.Image.Height).FirstOrDefault.WebImage.Image
                         End If
                     End If
                 Else
@@ -1090,9 +1088,7 @@ Public Class Images
                             Me.Clear()
 
                             If Not doAsk Then
-                                'image not found sort by size then pick the first one
-                                tmpListTMDB.Sort(AddressOf SortImages)
-                                _image = tmpListTMDB(0).WebImage.Image
+                                _image = tmpListTMDB.OrderBy(Function(i) i.WebImage.Image.Height + i.WebImage.Image.Height).FirstOrDefault.WebImage.Image
                             End If
 
                         End If
@@ -1429,17 +1425,6 @@ foundIT:
             Return False
         End Try
 
-    End Function
-
-    Private Function SortImages(ByVal x As Media.Image, ByVal y As Media.Image) As Integer
-        Try
-            Dim xS As Integer = x.WebImage.Image.Width + x.WebImage.Image.Height
-            Dim yS As Integer = y.WebImage.Image.Width + y.WebImage.Image.Height
-            'larger first
-            Return yS.CompareTo(xS)
-        Catch
-            Return 0
-        End Try
     End Function
 
     Public Sub DeletePosters(ByVal mMovie As Master.DBMovie)

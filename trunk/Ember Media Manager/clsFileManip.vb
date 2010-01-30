@@ -532,29 +532,6 @@ Namespace FileManip
 
         End Sub
 
-        ''' <summary>
-        ''' Function to compare filenames for programmatic sorting (utilizes CompareTo)
-        ''' </summary>
-        ''' <param name="x">Fileinfo object</param>
-        ''' <param name="y">Fileinfo object</param>
-        ''' <returns>Integer (-1 = x first, 0 = same, 1 = y first)</returns>
-        Public Shared Function SortFileNames(ByVal x As FileInfo, ByVal y As FileInfo) As Integer
-
-            Try
-                If String.IsNullOrEmpty(x.Name) Then
-                    Return -1
-                End If
-                If String.IsNullOrEmpty(y.Name) Then
-                    Return 1
-                End If
-
-                Return x.Name.CompareTo(y.Name)
-            Catch
-                Return 0
-            End Try
-
-        End Function
-
         Public Shared Function GetLongestFromRip(ByVal sPath As String) As String
 
             Dim lFileList As New List(Of FileInfo)

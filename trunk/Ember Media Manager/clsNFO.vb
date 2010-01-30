@@ -752,8 +752,6 @@ Public Class NFO
 
     Public Shared Sub SaveTVEpToNFO(ByRef tvEpToSave As Master.DBTV)
 
-        'TODO: Support for multiple episodes in the same nfo
-
         Try
 
             Dim xmlSer As New XmlSerializer(GetType(Media.EpisodeDetails))
