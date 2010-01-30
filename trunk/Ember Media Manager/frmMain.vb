@@ -368,7 +368,6 @@ Public Class frmMain
         AddHandler IMDB.MovieInfoDownloaded, AddressOf MovieInfoDownloaded
         AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
-        AddHandler fScanner.ProgressUpdated, AddressOf ScannerProgressUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
 
         Dim sPath As String = String.Concat(Master.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
@@ -840,9 +839,9 @@ Public Class frmMain
             If Me.dgvMediaList.RowCount > 0 Then
                 Me.tmpTitle = Me.dgvMediaList.SelectedRows(0).Cells(15).Value.ToString
                 If Me.dgvMediaList.SelectedRows.Count > 1 Then
-                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
+                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count))
                 ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString
+                    Me.SetStatus(Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString)
                 End If
             End If
 
@@ -854,9 +853,9 @@ Public Class frmMain
         If Me.dgvTVShows.SelectedRows.Count > 0 Then
             If Me.dgvTVShows.RowCount > 0 Then
                 If Me.dgvTVShows.SelectedRows.Count > 1 Then
-                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count)
+                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
                 ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvTVShows.SelectedRows(0).Cells(1).Value.ToString
+                    Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells(1).Value.ToString)
                 End If
             End If
 
@@ -868,9 +867,9 @@ Public Class frmMain
         If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
             If Me.dgvTVSeasons.RowCount > 0 Then
                 If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
-                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count)
+                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count))
                 ElseIf Me.dgvTVSeasons.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value.ToString
+                    Me.SetStatus(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value.ToString)
                 End If
             End If
 
@@ -883,9 +882,9 @@ Public Class frmMain
         If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
             If Me.dgvTVEpisodes.RowCount > 0 Then
                 If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count)
+                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count))
                 ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvTVEpisodes.SelectedRows(0).Cells(2).Value.ToString
+                    Me.SetStatus(Me.dgvTVEpisodes.SelectedRows(0).Cells(2).Value.ToString)
                 End If
             End If
 
@@ -1324,9 +1323,9 @@ Public Class frmMain
             If Me.dgvMediaList.SelectedRows.Count > 0 Then
 
                 If Me.dgvMediaList.SelectedRows.Count > 1 Then
-                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count)
+                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvMediaList.SelectedRows.Count))
                 ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString
+                    Me.SetStatus(Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString)
                 End If
 
                 Me.SelectRow(Me.dgvMediaList.SelectedRows(0).Index)
@@ -1356,9 +1355,9 @@ Public Class frmMain
             If Me.dgvTVShows.SelectedRows.Count > 0 Then
 
                 If Me.dgvTVShows.SelectedRows.Count > 1 Then
-                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count)
+                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVShows.SelectedRows.Count))
                 ElseIf Me.dgvTVShows.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvTVShows.SelectedRows(0).Cells(1).Value.ToString
+                    Me.SetStatus(Me.dgvTVShows.SelectedRows(0).Cells(1).Value.ToString)
                 End If
 
                 Me.SelectShowRow(Me.dgvTVShows.SelectedRows(0).Index)
@@ -1388,9 +1387,9 @@ Public Class frmMain
             If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
 
                 If Me.dgvTVSeasons.SelectedRows.Count > 1 Then
-                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count)
+                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVSeasons.SelectedRows.Count))
                 ElseIf Me.dgvMediaList.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value.ToString
+                    Me.SetStatus(Me.dgvTVSeasons.SelectedRows(0).Cells(2).Value.ToString)
                 End If
 
                 Me.SelectSeasonRow(Me.dgvTVSeasons.SelectedRows(0).Index)
@@ -1420,9 +1419,9 @@ Public Class frmMain
             If Me.dgvTVEpisodes.SelectedRows.Count > 0 Then
 
                 If Me.dgvTVEpisodes.SelectedRows.Count > 1 Then
-                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count)
+                    Me.SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), Me.dgvTVEpisodes.SelectedRows.Count))
                 ElseIf Me.dgvTVEpisodes.SelectedRows.Count = 1 Then
-                    Me.tslStatus.Text = Me.dgvTVEpisodes.SelectedRows(0).Cells(2).Value.ToString
+                    Me.SetStatus(Me.dgvTVEpisodes.SelectedRows(0).Cells(2).Value.ToString)
                 End If
 
                 Me.SelectEpisodeRow(Me.dgvTVEpisodes.SelectedRows(0).Index)
@@ -1689,7 +1688,7 @@ Public Class frmMain
                 Dim indX As Integer = Me.dgvMediaList.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMediaList.Item(0, indX).Value)
                 Master.currMovie = Master.DB.LoadMovieFromDB(ID)
-                Me.tslStatus.Text = Master.currMovie.Filename
+                Me.SetStatus(Master.currMovie.Filename)
                 Me.tmpTitle = Me.dgvMediaList.Item(15, indX).Value.ToString
 
                 Using dEditMovie As New dlgEditMovie
@@ -3012,7 +3011,7 @@ Public Class frmMain
             If Me.RefreshMovie(ID) Then
                 Me.FillList(0)
             End If
-            Me.tslStatus.Text = Master.currMovie.Filename
+            Me.SetStatus(Master.currMovie.Filename)
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -3029,7 +3028,7 @@ Public Class frmMain
                     If Me.RefreshMovie(ID) Then
                         Me.FillList(0)
                     End If
-                    Me.tslStatus.Text = Master.currMovie.Filename
+                    Me.SetStatus(Master.currMovie.Filename)
             End Select
         End Using
     End Sub
@@ -4203,7 +4202,7 @@ doCancel:
                     Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.SelectedRows(0).Cells(0).Value), Me.dgvMediaList.SelectedRows(0).Cells(1).Value.ToString, True, False)
                 End If
             Else
-                Me.tslStatus.Text = e.UserState.ToString
+                Me.SetStatus(e.UserState.ToString)
                 Me.tspbLoading.Value = e.ProgressPercentage
             End If
         End If
@@ -4241,7 +4240,7 @@ doCancel:
             End If
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
-            Me.tslStatus.Text = String.Empty
+            Me.SetStatus(String.Empty)
 
             SetControlsEnabled(True)
             Me.EnableFilters(True)
@@ -4266,7 +4265,7 @@ doCancel:
     End Sub
 
     Private Sub bwRefreshMovies_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwRefreshMovies.ProgressChanged
-        Me.tslStatus.Text = e.UserState.ToString
+        Me.SetStatus(e.UserState.ToString)
         Me.tspbLoading.Value = e.ProgressPercentage
     End Sub
 
@@ -4637,7 +4636,7 @@ doCancel:
 
 
         Try
-            Me.tslStatus.Text = Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)...")
+            Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Me.tspbLoading.ProgressBar.Style = ProgressBarStyle.Marquee
             Me.tspbLoading.MarqueeAnimationSpeed = 25
             Me.tspbLoading.Visible = True
@@ -5582,7 +5581,7 @@ doCancel:
             Dim nfoPath As String = String.Empty
 
             If Not isCL Then
-                Me.tslStatus.Text = String.Empty 'clear status for scrapers that do not report
+                Me.SetStatus(String.Empty) 'clear status for scrapers that do not report
                 Me.SetControlsEnabled(False)
                 Me.tspbLoading.Style = ProgressBarStyle.Continuous
                 Me.EnableFilters(False)
@@ -5675,7 +5674,7 @@ doCancel:
                         Else
                             Me.tslLoading.Visible = False
                             Me.tspbLoading.Visible = False
-                            Me.tslStatus.Text = String.Empty
+                            Me.SetStatus(String.Empty)
                             Me.SetControlsEnabled(True)
                             Me.EnableFilters(True)
                             Me.btnMarkAll.Enabled = True
@@ -5684,7 +5683,7 @@ doCancel:
                     End If
                 Case Master.ScrapeType.SingleScrape
                     Me.ClearInfo()
-                    Me.tslStatus.Text = String.Format(Master.eLang.GetString(138, "Re-scraping {0}"), Master.currMovie.Movie.Title)
+                    Me.SetStatus(String.Format(Master.eLang.GetString(138, "Re-scraping {0}"), Master.currMovie.Movie.Title))
                     Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
                     Me.tspbLoading.Maximum = 13
                     Me.ReportDownloadPercent = True
@@ -5750,7 +5749,7 @@ doCancel:
                                 If dSearch.ShowDialog(Me.tmpTitle) = Windows.Forms.DialogResult.OK Then
                                     If Not String.IsNullOrEmpty(Master.tmpMovie.IMDBID) Then
                                         Me.ClearInfo()
-                                        Me.tslStatus.Text = String.Format(Master.eLang.GetString(138, "Re-scraping {0}"), Master.tmpMovie.Title)
+                                        Me.SetStatus(String.Format(Master.eLang.GetString(138, "Re-scraping {0}"), Master.tmpMovie.Title))
                                         Me.tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
                                         Me.tspbLoading.Maximum = 13
                                         Me.tspbLoading.Style = ProgressBarStyle.Continuous
@@ -5773,7 +5772,7 @@ doCancel:
                                         Me.dgvMediaList.Enabled = True
                                         Me.tslLoading.Visible = False
                                         Me.tspbLoading.Visible = False
-                                        Me.tslStatus.Text = String.Empty
+                                        Me.SetStatus(String.Empty)
                                         Me.SetControlsEnabled(True)
                                         Me.EnableFilters(True)
                                         Me.LoadInfo(ID, Master.currMovie.Filename, True, False)
@@ -5949,7 +5948,7 @@ doCancel:
             Me.dgvMediaList.Enabled = True
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
-            Me.tslStatus.Text = String.Empty
+            Me.SetStatus(String.Empty)
             Me.SetControlsEnabled(True)
             Me.EnableFilters(True)
         End If
@@ -6702,7 +6701,7 @@ doCancel:
 
                 If Me.dtMedia.Rows.Count = 0 AndAlso Me.dtShows.Rows.Count = 0 Then
                     Me.SetControlsEnabled(False)
-                    Me.tslStatus.Text = String.Empty
+                    Me.SetStatus(String.Empty)
                     Me.ClearInfo()
                 End If
             End If
@@ -6853,47 +6852,25 @@ doCancel:
         End Try
     End Sub
 
-    Private Sub ScannerUpdated(ByVal sText As String)
-        Me.tslStatus.Text = String.Concat("Scanning Files: ", sText)
-    End Sub
-
-    Private Sub ScannerProgressUpdated(ByVal iPercent As Integer, ByVal sText As String)
-        '//
-        ' Update the status bar with the name of the current media name and increase progress bar
-        '\\
-
-        If Not isCL Then
-            Me.tspbLoading.Value = iPercent
-            Me.tslStatus.Text = sText
-        End If
-    End Sub
-
-    Private Sub ScanningCompleted(ByVal iStatus As Integer, ByVal iMax As Integer)
-
-        Select Case iStatus
-            Case 0
-                If isCL Then
-                    Me.ScraperDone = True
-                Else
-                    Me.FillList(0)
-                    'Me.tslStatus.Text = Master.eLang.GetString(111, "Unable to load directories. Please check settings.")
-                    Me.tspbLoading.Visible = False
-                    Me.tslLoading.Visible = False
-                    Me.SetControlsEnabled(False)
-                End If
+    Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
+        Select Case iType
             Case 1
-                Me.tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
-                Me.tspbLoading.Style = ProgressBarStyle.Continuous
-                Me.tslLoading.Visible = True
-                Me.tspbLoading.Visible = True
-                Me.tspbLoading.Maximum = iMax
-            Case 2
-                Me.FillList(0)
-
-                Me.tspbLoading.Visible = False
-                Me.tslLoading.Visible = False
-                Me.SetControlsEnabled(True)
+                Me.SetStatus(String.Concat("Added Episode: ", sText))
+            Case Else
+                Me.SetStatus(String.Concat("Added Movie: ", sText))
         End Select
+    End Sub
+
+    Private Sub ScanningCompleted()
+
+        If isCL Then
+            Me.ScraperDone = True
+        Else
+            Me.FillList(0)
+
+            Me.tspbLoading.Visible = False
+            Me.tslLoading.Visible = False
+        End If
 
     End Sub
 
@@ -7068,6 +7045,9 @@ doCancel:
         Me.tabsMain.Enabled = isEnabled
     End Sub
 
+    Private Sub SetStatus(ByVal sText As String)
+        Me.tslStatus.Text = sText.Replace("&", "&&")
+    End Sub
 #End Region '*** Routines/Functions
 
 End Class
