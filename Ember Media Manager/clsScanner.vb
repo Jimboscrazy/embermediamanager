@@ -363,12 +363,11 @@ Public Class Scanner
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
     Public Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
+        If Directory.Exists(sPath) Then
+            Dim sMoviePath As String = String.Empty
+            Dim dInfo As New DirectoryInfo(sPath)
 
-        Dim sMoviePath As String = String.Empty
-        Dim dInfo As New DirectoryInfo(sPath)
-
-        Try
-            If Directory.Exists(sPath) Then
+            Try
 
                 'check if there are any movies in the parent folder
                 ScanForFiles(sPath, sSource, bUseFolder, bSingle)
@@ -383,13 +382,13 @@ Public Class Scanner
                     End If
                 Next
 
-            End If
 
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
 
-        dInfo = Nothing
+            dInfo = Nothing
+        End If
 
     End Sub
 
@@ -897,12 +896,13 @@ Public Class Scanner
     ''' <param name="sPath">Path of source.</param>
     Public Sub ScanTVSourceDir(ByVal sSource As String, ByVal sPath As String, Optional ByVal isInner As Boolean = False)
 
-        Dim currShowContainer As TVShowContainer
-        Dim dInfo As New DirectoryInfo(sPath)
-        Dim inInfo As DirectoryInfo
+        If Directory.Exists(sPath) Then
 
-        Try
-            If Directory.Exists(sPath) Then
+            Dim currShowContainer As TVShowContainer
+            Dim dInfo As New DirectoryInfo(sPath)
+            Dim inInfo As DirectoryInfo
+
+            Try
 
 
                 For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d.FullName)).OrderBy(Function(d) d.Name)
@@ -920,12 +920,12 @@ Public Class Scanner
                     LoadShow(currShowContainer)
                 Next
 
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-        dInfo = Nothing
-        inInfo = Nothing
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+            dInfo = Nothing
+            inInfo = Nothing
+        End If
     End Sub
 
     ''' <summary>

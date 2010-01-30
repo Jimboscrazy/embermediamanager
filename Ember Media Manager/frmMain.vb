@@ -2769,7 +2769,7 @@ Public Class frmMain
     Private Sub cmnuRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRefresh.Click
         Try
             Me.dgvMediaList.Cursor = Cursors.WaitCursor
-            Me.dgvMediaList.Enabled = False
+            Me.SetControlsEnabled(False, True)
 
             Dim doFill As Boolean = False
             Dim doBatch As Boolean = Me.dgvMediaList.SelectedRows.Count > 1
@@ -2782,7 +2782,7 @@ Public Class frmMain
             End Using
 
             Me.dgvMediaList.Cursor = Cursors.Default
-            Me.dgvMediaList.Enabled = True
+            Me.SetControlsEnabled(True, True)
 
             If doFill Then FillList(0) Else DoTitleCheck()
         Catch ex As Exception
@@ -4242,10 +4242,9 @@ doCancel:
             Me.tspbLoading.Visible = False
             Me.SetStatus(String.Empty)
 
-            SetControlsEnabled(True)
+            Me.SetControlsEnabled(True, True)
             Me.EnableFilters(True)
 
-            Me.btnMarkAll.Enabled = True
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -5582,7 +5581,7 @@ doCancel:
 
             If Not isCL Then
                 Me.SetStatus(String.Empty) 'clear status for scrapers that do not report
-                Me.SetControlsEnabled(False)
+                Me.SetControlsEnabled(False, True)
                 Me.tspbLoading.Style = ProgressBarStyle.Continuous
                 Me.EnableFilters(False)
 
@@ -5655,10 +5654,8 @@ doCancel:
                             Case Master.ScrapeType.NewAuto
                                 Me.tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
                             Case Master.ScrapeType.MarkAsk
-                                Me.btnMarkAll.Enabled = False
                                 Me.tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
                             Case Master.ScrapeType.MarkAuto
-                                Me.btnMarkAll.Enabled = False
                                 Me.tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
                         End Select
                         Me.tspbLoading.Maximum = chkCount
@@ -5675,9 +5672,8 @@ doCancel:
                             Me.tslLoading.Visible = False
                             Me.tspbLoading.Visible = False
                             Me.SetStatus(String.Empty)
-                            Me.SetControlsEnabled(True)
+                            Me.SetControlsEnabled(True, True)
                             Me.EnableFilters(True)
-                            Me.btnMarkAll.Enabled = True
                             Me.pnlCancel.Visible = False
                         End If
                     End If
@@ -5689,8 +5685,7 @@ doCancel:
                     Me.ReportDownloadPercent = True
                     Me.tslLoading.Visible = True
                     Me.tspbLoading.Visible = True
-                    Me.dgvMediaList.Enabled = False
-
+                    Me.SetControlsEnabled(False, True)
 
                     If isCL AndAlso doSearch = False Then
                         Dim Poster As New Images
@@ -5769,11 +5764,10 @@ doCancel:
                                     If isCL Then
                                         Me.ScraperDone = True
                                     Else
-                                        Me.dgvMediaList.Enabled = True
                                         Me.tslLoading.Visible = False
                                         Me.tspbLoading.Visible = False
                                         Me.SetStatus(String.Empty)
-                                        Me.SetControlsEnabled(True)
+                                        Me.SetControlsEnabled(True, True)
                                         Me.EnableFilters(True)
                                         Me.LoadInfo(ID, Master.currMovie.Filename, True, False)
                                     End If
@@ -5945,11 +5939,10 @@ doCancel:
         If isCL Then
             Me.ScraperDone = True
         Else
-            Me.dgvMediaList.Enabled = True
             Me.tslLoading.Visible = False
             Me.tspbLoading.Visible = False
             Me.SetStatus(String.Empty)
-            Me.SetControlsEnabled(True)
+            Me.SetControlsEnabled(True, True)
             Me.EnableFilters(True)
         End If
     End Sub
@@ -7033,7 +7026,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
+    Private Sub SetControlsEnabled(ByVal isEnabled As Boolean, Optional ByVal withLists As Boolean = False)
         Me.ToolsToolStripMenuItem.Enabled = isEnabled
         Me.tsbAutoPilot.Enabled = isEnabled
         Me.tsbRefreshMedia.Enabled = isEnabled
@@ -7043,6 +7036,16 @@ doCancel:
         Me.mnuEpisodes.Enabled = isEnabled
         Me.txtSearch.Enabled = isEnabled
         Me.tabsMain.Enabled = isEnabled
+        Me.btnMarkAll.Enabled = isEnabled
+
+        If withLists Then
+            'focus away from the lists so it doesn't select one of them
+            Me.lblTitle.Focus()
+            Me.dgvMediaList.Enabled = isEnabled
+            Me.dgvTVShows.Enabled = isEnabled
+            Me.dgvTVSeasons.Enabled = isEnabled
+            Me.dgvTVEpisodes.Enabled = isEnabled
+        End If
     End Sub
 
     Private Sub SetStatus(ByVal sText As String)

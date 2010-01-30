@@ -149,7 +149,7 @@ Public Class dlgBulkRenamer
 
                                             For Each i As String In FFRenamer.MovieFolders
                                                 If _curMovie.Filename.StartsWith(i, StringComparison.OrdinalIgnoreCase) Then
-                                                    MovieFile.BasePath = If(i.EndsWith(Path.DirectorySeparatorChar), i.Substring(0, i.Length - 1), i)
+                                                    MovieFile.BasePath = If(i.EndsWith(Path.DirectorySeparatorChar.ToString), i.Substring(0, i.Length - 1), i)
                                                     If FileManip.Common.isVideoTS(_curMovie.Filename) Then
                                                         MovieFile.Parent = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).Name
                                                         If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName Then
@@ -158,7 +158,7 @@ Public Class dlgBulkRenamer
                                                         Else
                                                             MovieFile.OldPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName.Replace(MovieFile.BasePath, String.Empty)
                                                         End If
-                                                        MovieFile.IsVIDEO_TS = True
+                                                        MovieFile.IsVideo_TS = True
                                                     ElseIf FileManip.Common.isBDRip(_curMovie.Filename) Then
                                                         MovieFile.Parent = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).Name
                                                         If MovieFile.BasePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(_curMovie.Filename).FullName).FullName).FullName Then

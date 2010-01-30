@@ -364,6 +364,9 @@ Public Class FileFolderRenamer
                     localFolderPattern = folderPatternIsNotSingle
                 End If
 
+                f.Path = Path.Combine(f.OldPath, f.Parent)
+                f.Path = If(f.Path.StartsWith(Path.DirectorySeparatorChar), f.Path.Substring(1), f.Path)
+
                 If f.IsVIDEO_TS Then
                     f.NewFileName = "VIDEO_TS"
                 ElseIf f.IsBDMV Then
@@ -378,9 +381,6 @@ Public Class FileFolderRenamer
                     f.NewPath = Path.Combine(f.OldPath, ProccessPattern(f, localFolderPattern).Trim)
                 End If
                 f.NewPath = If(f.NewPath.StartsWith(Path.DirectorySeparatorChar), f.NewPath.Substring(1), f.NewPath)
-
-                f.Path = Path.Combine(f.OldPath, f.Parent)
-                f.Path = If(f.Path.StartsWith(Path.DirectorySeparatorChar), f.Path.Substring(1), f.Path)
 
                 f.FileExist = File.Exists(Path.Combine(f.BasePath, Path.Combine(f.NewPath, f.NewFileName))) AndAlso Not (f.FileName = f.NewFileName)
                 f.DirExist = File.Exists(Path.Combine(f.BasePath, f.NewPath)) AndAlso Not (f.Path = f.NewPath)
@@ -432,14 +432,11 @@ Public Class FileFolderRenamer
         Try
             Dim pattern As String = opattern
             Dim strSource As String = String.Empty
-            Try
-                Dim xVSourceFlag = From xVSource In XML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
-                'Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Select xVSource.@searchstring
-                If xVSourceFlag.Count > 0 Then
-                    strSource = xVSourceFlag(0).ToString
-                End If
-            Catch ex As Exception
-            End Try
+            Dim xVSourceFlag = From xVSource In XML.FlagsXML...<vsource>...<name> Where Regex.IsMatch(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring) Select Regex.Match(Path.Combine(f.Path.ToLower, f.FileName.ToLower), xVSource.@searchstring)
+            'Dim xVSourceFlag = From xVSource In xmlFlags...<vsource>...<name> Select xVSource.@searchstring
+            If xVSourceFlag.Count > 0 Then
+                strSource = xVSourceFlag(0).ToString
+            End If
             'pattern = "$T{($S.$S)}"
             Dim nextC = pattern.IndexOf("$")
             Dim nextIB = pattern.IndexOf("{")
@@ -770,15 +767,7 @@ Public Class FileFolderRenamer
         MovieFile.Path = Path.Combine(MovieFile.OldPath, MovieFile.Parent)
         MovieFile.Path = If(MovieFile.Path.StartsWith(Path.DirectorySeparatorChar), MovieFile.Path.Substring(1), MovieFile.Path)
 
-
-        If HaveBase(folderPattern) Then
-            MovieFile.NewPath = ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim
-        Else
-            MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim)
-        End If
-        MovieFile.NewPath = If(MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar), MovieFile.NewPath.Substring(1), MovieFile.NewPath)
-
-        If Not MovieFile.IsVIDEO_TS AndAlso Not MovieFile.IsBDMV Then
+        If Not MovieFile.IsVideo_TS AndAlso Not MovieFile.IsBDMV Then
             MovieFile.FileName = Path.GetFileNameWithoutExtension(StringManip.CleanStackingMarkers(_tmpMovie.Filename))
             Dim stackMark As String = Path.GetFileNameWithoutExtension(_tmpMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
             If _tmpMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
@@ -789,6 +778,13 @@ Public Class FileFolderRenamer
         Else
             MovieFile.FileName = "VIDEO_TS"
         End If
+
+        If HaveBase(folderPattern) Then
+            MovieFile.NewPath = ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim
+        Else
+            MovieFile.NewPath = Path.Combine(MovieFile.OldPath, ProccessPattern(MovieFile, If(_tmpMovie.isSingle, folderPattern, "$D")).Trim)
+        End If
+        MovieFile.NewPath = If(MovieFile.NewPath.StartsWith(Path.DirectorySeparatorChar), MovieFile.NewPath.Substring(1), MovieFile.NewPath)
 
         MovieFile.NewFileName = ProccessPattern(MovieFile, filePattern).Trim
 
