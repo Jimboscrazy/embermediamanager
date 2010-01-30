@@ -220,7 +220,7 @@ Public Class MediaInfo
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                 End Try
-
+            Else
                 fiInfo = ScanMI(sPath)
             End If
         End If
