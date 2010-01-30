@@ -2690,9 +2690,9 @@ Public Class emmSettings
         Me._enableifoscan = True
         Me._yamjsetscompatible = False
         Me._cleandb = True
-        Me._ignorelastscan = False
+        Me._ignorelastscan = True
         Me._tvcleandb = True
-        Me._tvignorelastscan = False
+        Me._tvignorelastscan = True
         Me._tvshowregexes = New List(Of TVShowRegEx)
         Me._showseasonall = True
         Me._showfolderjpg = False
