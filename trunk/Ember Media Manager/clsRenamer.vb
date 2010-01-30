@@ -27,6 +27,7 @@ Public Class FileFolderRenamer
     Class FileRename
         Public ID As Integer = -1 ' support for bulkRenamer 
         Private _title As String = String.Empty
+        Private _listtitle As String = String.Empty
         Public Year As String = String.Empty
         Public BasePath As String = String.Empty
         Private _oldpath As String = String.Empty
@@ -54,6 +55,15 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As String)
                 Me._title = value.Trim
+            End Set
+        End Property
+
+        Public Property ListTitle() As String
+            Get
+                Return Me._listtitle
+            End Get
+            Set(ByVal value As String)
+                Me._listtitle = value.Trim
             End Set
         End Property
 
@@ -343,8 +353,9 @@ Public Class FileFolderRenamer
                     strCond = ApplyPattern(strCond, "S", strSource)
                     strCond = ApplyPattern(strCond, "M", f.MPAARate)
                     strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
+                    strCond = ApplyPattern(strCond, "L", f.ListTitle)
 
-                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[DFTOYRASMB]))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                    strNoFlags = Regex.Replace(strNoFlags, "\$((?:[DFTOYRASMBL]))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                     If strCond.Trim = strNoFlags.Trim Then
                         strCond = String.Empty
                     Else
@@ -368,6 +379,7 @@ Public Class FileFolderRenamer
             pattern = ApplyPattern(pattern, "S", strSource)
             pattern = ApplyPattern(pattern, "M", f.MPAARate)
             pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
+            pattern = ApplyPattern(pattern, "L", f.ListTitle)
             nextC = pattern.IndexOf("$X")
             If Not nextC = -1 AndAlso pattern.Length > nextC + 2 Then
                 strCond = pattern.Substring(nextC + 2, 1)
@@ -597,6 +609,7 @@ Public Class FileFolderRenamer
         End If
 
         MovieFile.Title = _tmpMovie.Movie.Title
+        MovieFile.ListTitle = _tmpMovie.ListTitle
         MovieFile.OriginalTitle = _tmpMovie.Movie.OriginalTitle
         MovieFile.Year = _tmpMovie.Movie.Year
 
