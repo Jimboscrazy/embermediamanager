@@ -329,11 +329,9 @@ Public Class dlgImgSelect
             End If
 
             If posters.Count > 0 Then
-                posters.Sort(AddressOf SortImages)
-
-                For i As Integer = 0 To posters.Count - 1
-                    If Not IsNothing(posters.Item(i).WebImage.Image) AndAlso (Me.DLType = Master.ImageType.Fanart OrElse Not (posters.Item(i).URL.ToLower.Contains("themoviedb.org") AndAlso Not posters.Item(i).Description = "cover")) Then
-                        Me.AddImage(posters.Item(i).WebImage.Image, posters.Item(i).Description, iIndex, posters.Item(i).URL, posters.Item(i).isChecked)
+                For Each xPoster As Media.Image In posters.OrderBy(Function(p) p.URL)
+                    If Not IsNothing(xPoster.WebImage.Image) AndAlso (Me.DLType = Master.ImageType.Fanart OrElse Not (xPoster.URL.ToLower.Contains("themoviedb.org") AndAlso Not xPoster.Description = "cover")) Then
+                        Me.AddImage(xPoster.WebImage.Image, xPoster.Description, iIndex, xPoster.URL, xPoster.isChecked)
                         iIndex += 1
                     End If
                 Next
@@ -615,17 +613,6 @@ Public Class dlgImgSelect
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-
-    Private Function SortImages(ByVal x As Media.Image, ByVal y As Media.Image) As Integer
-        If String.IsNullOrEmpty(x.URL) Then
-            Return -1
-        End If
-        If String.IsNullOrEmpty(y.URL) Then
-            Return 1
-        End If
-
-        Return x.URL.CompareTo(y.URL)
-    End Function
 
     Private Sub AddImage(ByVal iImage As Image, ByVal sDescription As String, ByVal iIndex As Integer, ByVal sURL As String, ByVal isChecked As Boolean)
 

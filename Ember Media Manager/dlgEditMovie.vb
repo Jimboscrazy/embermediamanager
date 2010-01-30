@@ -1056,8 +1056,7 @@ Public Class dlgEditMovie
                 End Try
 
                 If lFI.Count > 0 Then
-                    lFI.Sort(AddressOf Master.SortThumbFileNames)
-                    For Each thumb As FileInfo In lFI
+                    For Each thumb As FileInfo In lFI.OrderBy(Function(t) Convert.ToInt32(Regex.Match(t.Name, "(\d+)").Groups(0).ToString))
                         If Not Me.DeleteList.Contains(thumb.Name) Then
                             Using fsImage As New FileStream(thumb.FullName, FileMode.Open, FileAccess.Read)
                                 Thumbs.Add(New ExtraThumbs With {.Image = Image.FromStream(fsImage), .Name = thumb.Name, .Index = i, .Path = thumb.FullName})

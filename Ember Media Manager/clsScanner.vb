@@ -539,9 +539,8 @@ Public Class Scanner
                     End If
 
                 Else
-                    lFi.Sort(AddressOf FileManip.Common.SortFileNames)
 
-                    For Each lFile As FileInfo In lFi
+                    For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
 
                         If Not MoviePaths.Contains(StringManip.CleanStackingMarkers(lFile.FullName.ToLower)) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                             Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
@@ -661,9 +660,7 @@ Public Class Scanner
             Catch
             End Try
 
-            lFi.Sort(AddressOf FileManip.Common.SortFileNames)
-
-            For Each lFile As FileInfo In lFi
+            For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
 
                 If Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                     Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso _
@@ -1052,9 +1049,7 @@ Public Class Scanner
 
             If lFi.Count > 0 Then
 
-                lFi.Sort(AddressOf FileManip.Common.SortFileNames)
-
-                For Each lFile As FileInfo In lFi
+                For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
                     If Not TVPaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.ValidExts.Contains(lFile.Extension.ToLower) AndAlso _
                         Not lFile.Name.ToLower.Contains("-trailer") AndAlso Not lFile.Name.ToLower.Contains("[trailer") AndAlso Not lFile.Name.ToLower.Contains("sample") AndAlso _
                         lFile.Length >= Master.eSettings.SkipLessThan * 1048576 Then

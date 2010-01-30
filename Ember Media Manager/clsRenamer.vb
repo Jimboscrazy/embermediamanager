@@ -528,10 +528,9 @@ Public Class FileFolderRenamer
                                 Catch
                                 End Try
                                 If lFi.Count > 0 Then
-                                    lFi.Sort(AddressOf FileManip.Common.SortFileNames)
                                     Dim srcFile As String
                                     Dim dstFile As String
-                                    For Each lFile As FileInfo In lFi
+                                    For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
                                         srcFile = lFile.FullName
                                         dstFile = Path.Combine(destDir, lFile.Name.Replace(f.FileName.Trim, f.NewFileName.Trim))
 
@@ -736,10 +735,9 @@ Public Class FileFolderRenamer
                         Catch
                         End Try
                         If lFi.Count > 0 Then
-                            lFi.Sort(AddressOf FileManip.Common.SortFileNames)
                             Dim srcFile As String
                             Dim dstFile As String
-                            For Each lFile As FileInfo In lFi
+                            For Each lFile As FileInfo In lFi.OrderBy(Function(s) s.Name)
                                 srcFile = lFile.FullName
                                 dstFile = Path.Combine(destDir, lFile.Name.Replace(_frename.FileName.Trim, _frename.NewFileName.Trim))
                                 If Not srcFile = dstFile Then

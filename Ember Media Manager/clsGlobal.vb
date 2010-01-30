@@ -312,31 +312,6 @@ Public Class Master
     End Function
 
     ''' <summary>
-    ''' Function to compare extrathumb number (thumb#.jpg) for programmatic sorting (utilizes ObjectCompare)
-    ''' </summary>
-    ''' <param name="x">FileInfo object</param>
-    ''' <param name="y">FileInfo object</param>
-    ''' <returns>Integer (-1 = x first, 0 = same, 1 = y first)</returns>
-    Public Shared Function SortThumbFileNames(ByVal x As FileInfo, ByVal y As FileInfo) As Integer
-
-        Try
-            Dim ObjectCompare As New CaseInsensitiveComparer
-
-            If String.IsNullOrEmpty(x.Name) Then
-                Return -1
-            End If
-            If String.IsNullOrEmpty(y.Name) Then
-                Return 1
-            End If
-
-            Return ObjectCompare.Compare(Convert.ToInt32(Regex.Match(x.Name, "(\d+)").Groups(0).ToString), Convert.ToInt32(Regex.Match(y.Name, "(\d+)").Groups(0).ToString))
-        Catch
-            Return 0
-        End Try
-
-    End Function
-
-    ''' <summary>
     ''' Get the number of the last sequential extrathumb to make sure we're not overwriting current ones.
     ''' </summary>
     ''' <param name="sPath">Full path to extrathumbs directory</param>
