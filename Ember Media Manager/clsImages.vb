@@ -110,7 +110,7 @@ Public Class Images
                 Using msSave As New MemoryStream
                     Dim retSave() As Byte
                     Dim ICI As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
-                    Dim EncPars As EncoderParameters = New EncoderParameters()
+                    Dim EncPars As EncoderParameters = New EncoderParameters(If(iQuality > 0, 2, 1))
 
                     EncPars.Param(0) = New EncoderParameter(Encoder.RenderMethod, EncoderValue.RenderNonProgressive)
 
