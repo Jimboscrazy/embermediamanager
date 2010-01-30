@@ -372,7 +372,7 @@ Public Class Scanner
                 'check if there are any movies in the parent folder
                 ScanForFiles(sPath, sSource, bUseFolder, bSingle)
 
-                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s.FullName)).OrderBy(Function(d) d.Name)
+                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s.FullName)).OrderBy(Function(d) d.Name)
                     If Me.bwPrelim.CancellationPending Then Return
                     ScanForFiles(inDir.FullName, sSource, bUseFolder, bSingle)
                     If bRecur Then
