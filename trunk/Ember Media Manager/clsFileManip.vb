@@ -553,5 +553,12 @@ Namespace FileManip
         Public Shared Function isVideoTS(ByVal sPath As String) As Boolean
             Return Directory.GetParent(sPath).Name.ToLower = "video_ts"
         End Function
+
+        Public Shared Function GetDirectory(ByVal sPath As String) As String
+            If sPath.EndsWith("\") Then sPath = sPath.Substring(0, sPath.Length - 1)
+            sPath = sPath.Replace(Path.GetDirectoryName(sPath), String.Empty).Trim
+            If sPath.StartsWith("\") Then sPath = sPath.Substring(1)
+            Return sPath
+        End Function
     End Class
 End Namespace
