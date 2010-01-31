@@ -1672,6 +1672,7 @@ Public Class Database
     ''' Iterates db entries to check if the paths to the movie files are valid. If not, remove all entries pertaining to the movie.
     ''' </summary>
     Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanTV As Boolean)
+        Dim fInfo As FileInfo
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = SQLcn.BeginTransaction
                 If CleanMovies Then
@@ -1681,30 +1682,35 @@ Public Class Database
                             While SQLReader.Read
                                 If Not File.Exists(SQLReader("MoviePath").ToString) Then
                                     Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                ElseIf Master.eSettings.SkipLessThan > 0 Then
+                                    fInfo = New FileInfo(SQLReader("MoviePath").ToString)
+                                    If ((Not Master.eSettings.SkipStackSizeCheck OrElse Not StringManip.IsStacked(fInfo.Name)) AndAlso fInfo.Length < Master.eSettings.SkipLessThan * 1048576) Then
+                                        Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
+                                    End If
                                 End If
                             End While
                         End Using
                     End Using
                 End If
 
-                If CleanTV Then
-                    Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
-                        SQLcommand.CommandText = "SELECT TVEpPath, Id FROM TVEpPaths;"
-                        Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            While SQLReader.Read
-                                If Not File.Exists(SQLReader("TVEpPath").ToString) Then
-                                    Me.DeleteTVEpFromDBByPathID(Convert.ToInt64(SQLReader("ID")), True)
-                                End If
-                            End While
-                        End Using
-                        SQLcommand.CommandText = String.Concat("DELETE FROM TVShows WHERE ID NOT IN (SELECT TVShowID FROM TVEps);")
-                        SQLcommand.ExecuteNonQuery()
-                        SQLcommand.CommandText = String.Concat("DELETE FROM TVShowActors WHERE TVShowID NOT IN (SELECT ID FROM TVShows);")
-                        SQLcommand.ExecuteNonQuery()
+            If CleanTV Then
+                Using SQLcommand As SQLite.SQLiteCommand = SQLcn.CreateCommand
+                    SQLcommand.CommandText = "SELECT TVEpPath, Id FROM TVEpPaths;"
+                    Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                        While SQLReader.Read
+                            If Not File.Exists(SQLReader("TVEpPath").ToString) Then
+                                Me.DeleteTVEpFromDBByPathID(Convert.ToInt64(SQLReader("ID")), True)
+                            End If
+                        End While
                     End Using
-                End If
+                    SQLcommand.CommandText = String.Concat("DELETE FROM TVShows WHERE ID NOT IN (SELECT TVShowID FROM TVEps);")
+                    SQLcommand.ExecuteNonQuery()
+                    SQLcommand.CommandText = String.Concat("DELETE FROM TVShowActors WHERE TVShowID NOT IN (SELECT ID FROM TVShows);")
+                    SQLcommand.ExecuteNonQuery()
+                End Using
+            End If
 
-                SQLtransaction.Commit()
+            SQLtransaction.Commit()
             End Using
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
