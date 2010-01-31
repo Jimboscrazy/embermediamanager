@@ -486,8 +486,8 @@ Public Class Scanner
                             End If
 
                             fList.Add(lFile.FullName)
-                            If bSingle AndAlso Not SkipStack Then Exit For
                         End If
+                        If bSingle AndAlso Not SkipStack Then Exit For
                         If Me.bwPrelim.CancellationPending Then Return
                     Next
 
