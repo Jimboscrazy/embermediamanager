@@ -4793,6 +4793,11 @@ doCancel:
                 If .bwLoadSeasonInfo.IsBusy Then .bwLoadSeasonInfo.CancelAsync()
                 If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
 
+                While .bwDownloadPic.IsBusy OrElse .bwLoadInfo.IsBusy OrElse .bwLoadShowInfo.IsBusy OrElse _
+                        .bwLoadSeasonInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy
+                    Application.DoEvents()
+                End While
+
                 If Not IsNothing(.pbFanart.Image) Then
                     .pbFanart.Image.Dispose()
                     .pbFanart.Image = Nothing
@@ -6731,12 +6736,6 @@ doCancel:
     Private Sub SelectRow(ByVal iRow As Integer)
 
         Try
-            If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
-            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
-            If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
-            If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
-            If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-
             Me.tmpTitle = Me.dgvMediaList.Item(15, iRow).Value.ToString
             If Not Convert.ToBoolean(Me.dgvMediaList.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(5, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvMediaList.Item(6, iRow).Value) Then
                 Me.ClearInfo()
@@ -6758,12 +6757,6 @@ doCancel:
     Private Sub SelectShowRow(ByVal iRow As Integer)
 
         Try
-            If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
-            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
-            If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
-            If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
-            If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-
             If Not Convert.ToBoolean(Me.dgvTVShows.Item(2, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVShows.Item(4, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 1)
@@ -6786,18 +6779,11 @@ doCancel:
     Private Sub SelectSeasonRow(ByVal iRow As Integer)
 
         Try
-            If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
-
-            If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
-            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
-            If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
-            If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
-            If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-
             If String.IsNullOrEmpty(Master.currShow.ShowPosterPath) AndAlso String.IsNullOrEmpty(Master.currShow.ShowFanartPath) AndAlso _
                String.IsNullOrEmpty(Master.currShow.ShowNfoPath) AndAlso Not Convert.ToBoolean(Me.dgvTVSeasons.Item(4, iRow).Value) AndAlso _
                Not Convert.ToBoolean(Me.dgvTVSeasons.Item(5, iRow).Value) Then
                 Me.ClearInfo()
+                If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Me.ShowNoInfo(True, 1)
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
             Else
@@ -6817,12 +6803,6 @@ doCancel:
     Private Sub SelectEpisodeRow(ByVal iRow As Integer)
 
         Try
-            If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
-            If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
-            If Me.bwLoadSeasonInfo.IsBusy Then Me.bwLoadSeasonInfo.CancelAsync()
-            If Me.bwLoadEpInfo.IsBusy Then Me.bwLoadEpInfo.CancelAsync()
-            If Me.bwDownloadPic.IsBusy Then Me.bwDownloadPic.CancelAsync()
-
             If Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(3, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(4, iRow).Value) AndAlso Not Convert.ToBoolean(Me.dgvTVEpisodes.Item(5, iRow).Value) Then
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 2)
