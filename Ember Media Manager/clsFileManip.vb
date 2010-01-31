@@ -547,11 +547,19 @@ Namespace FileManip
         End Function
 
         Public Shared Function isBDRip(ByVal sPath As String) As Boolean
-            Return Directory.GetParent(sPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower = "bdmv"
+            If Path.HasExtension(sPath) Then
+                Return Directory.GetParent(sPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower = "bdmv"
+            Else
+                Return GetDirectory(sPath).ToLower = "stream" AndAlso Directory.GetParent(sPath).Name.ToLower = "bdmv"
+            End If
         End Function
 
         Public Shared Function isVideoTS(ByVal sPath As String) As Boolean
-            Return Directory.GetParent(sPath).Name.ToLower = "video_ts"
+            If Path.HasExtension(sPath) Then
+                Return Directory.GetParent(sPath).Name.ToLower = "video_ts"
+            Else
+                Return GetDirectory(sPath).ToLower = "video_ts"
+            End If
         End Function
 
         Public Shared Function GetDirectory(ByVal sPath As String) As String
