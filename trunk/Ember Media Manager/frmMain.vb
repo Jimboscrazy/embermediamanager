@@ -2060,8 +2060,6 @@ Public Class frmMain
 
                         cmnuTitle.Text = String.Concat(">> ", Me.dgvMediaList.Item(3, dgvHTI.RowIndex).Value, " <<")
 
-                        If Me.bwLoadInfo.IsBusy Then Me.bwLoadInfo.CancelAsync()
-
                         If Not Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected Then
                             Me.dgvMediaList.ClearSelection()
                             Me.dgvMediaList.Rows(dgvHTI.RowIndex).Selected = True
@@ -3193,8 +3191,6 @@ Public Class frmMain
                         End If
 
                         cmnuShowTitle.Text = String.Concat(">> ", Me.dgvTVShows.Item(1, dgvHTI.RowIndex).Value, " <<")
-
-                        If Me.bwLoadShowInfo.IsBusy Then Me.bwLoadShowInfo.CancelAsync()
 
                         If Not Me.dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
                             Me.dgvTVShows.ClearSelection()
@@ -6741,14 +6737,14 @@ doCancel:
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 0)
                 Master.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMediaList.Item(0, iRow).Value))
+
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                    Me.mnuMediaList.Enabled = True
+                End If
             Else
-                Me.ShowNoInfo(False)
                 Me.LoadInfo(Convert.ToInt32(Me.dgvMediaList.Item(0, iRow).Value), Me.dgvMediaList.Item(1, iRow).Value.ToString, True, False)
             End If
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
-                Me.mnuMediaList.Enabled = True
-            End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -6762,13 +6758,12 @@ doCancel:
                 Me.ShowNoInfo(True, 1)
                 Master.currShow = Master.DB.LoadTVShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item(0, iRow).Value))
                 Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
-            Else
-                Me.ShowNoInfo(False)
-                Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
-            End If
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
-                Me.mnuShows.Enabled = True
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                    Me.mnuShows.Enabled = True
+                End If
+            Else
+                Me.LoadShowInfo(Convert.ToInt32(Me.dgvTVShows.Item(0, iRow).Value))
             End If
 
         Catch ex As Exception
@@ -6786,14 +6781,14 @@ doCancel:
                 If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Me.ShowNoInfo(True, 1)
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
+
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                    Me.mnuSeasons.Enabled = True
+                End If
             Else
-                Me.ShowNoInfo(False)
                 Me.LoadSeasonInfo(Convert.ToInt32(Me.dgvTVSeasons.Item(0, iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item(3, iRow).Value))
             End If
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
-                Me.SetControlsEnabled(True)
-            End If
 
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -6807,13 +6802,12 @@ doCancel:
                 Me.ClearInfo()
                 Me.ShowNoInfo(True, 2)
                 Master.currShow = Master.DB.LoadTVEpFromDB(Convert.ToInt32(Me.dgvTVEpisodes.Item(0, iRow).Value), True)
-            Else
-                Me.ShowNoInfo(False)
-                Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value))
-            End If
 
-            If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
-                Me.mnuEpisodes.Enabled = True
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMediaInfo.IsBusy AndAlso Not Me.bwLoadInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwRefreshMovies.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
+                    Me.mnuEpisodes.Enabled = True
+                End If
+            Else
+                Me.LoadEpisodeInfo(Convert.ToInt32(Me.dgvTVEpisodes.SelectedRows(0).Cells(0).Value))
             End If
 
         Catch ex As Exception
