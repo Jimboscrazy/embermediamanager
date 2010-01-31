@@ -81,7 +81,7 @@ Partial Class dlgEditEpisode
         Me.tbFrame = New System.Windows.Forms.TrackBar
         Me.btnFrameLoad = New System.Windows.Forms.Button
         Me.pbFrame = New System.Windows.Forms.PictureBox
-        Me.TabPage6 = New System.Windows.Forms.TabPage
+        Me.TabPage5 = New System.Windows.Forms.TabPage
         Me.pnlFileInfo = New System.Windows.Forms.Panel
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.OK_Button = New System.Windows.Forms.Button
@@ -102,7 +102,7 @@ Partial Class dlgEditEpisode
         Me.pnlFrameProgress.SuspendLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabPage6.SuspendLayout()
+        Me.TabPage5.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -160,7 +160,7 @@ Partial Class dlgEditEpisode
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage4)
-        Me.TabControl1.Controls.Add(Me.TabPage6)
+        Me.TabControl1.Controls.Add(Me.TabPage5)
         Me.TabControl1.Location = New System.Drawing.Point(4, 70)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
@@ -716,16 +716,16 @@ Partial Class dlgEditEpisode
         Me.pbFrame.TabIndex = 8
         Me.pbFrame.TabStop = False
         '
-        'TabPage6
+        'TabPage5
         '
-        Me.TabPage6.Controls.Add(Me.pnlFileInfo)
-        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage6.Name = "TabPage6"
-        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(836, 452)
-        Me.TabPage6.TabIndex = 5
-        Me.TabPage6.Text = "Meta Data"
-        Me.TabPage6.UseVisualStyleBackColor = True
+        Me.TabPage5.Controls.Add(Me.pnlFileInfo)
+        Me.TabPage5.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage5.Name = "TabPage5"
+        Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage5.Size = New System.Drawing.Size(836, 452)
+        Me.TabPage5.TabIndex = 5
+        Me.TabPage5.Text = "Meta Data"
+        Me.TabPage5.UseVisualStyleBackColor = True
         '
         'pnlFileInfo
         '
@@ -789,7 +789,7 @@ Partial Class dlgEditEpisode
         Me.pnlFrameProgress.PerformLayout()
         CType(Me.tbFrame, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFrame, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabPage6.ResumeLayout(False)
+        Me.TabPage5.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -839,7 +839,7 @@ Partial Class dlgEditEpisode
     Friend WithEvents tbFrame As System.Windows.Forms.TrackBar
     Friend WithEvents btnFrameLoad As System.Windows.Forms.Button
     Friend WithEvents pbFrame As System.Windows.Forms.PictureBox
-    Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
     Friend WithEvents pnlFileInfo As System.Windows.Forms.Panel
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents OK_Button As System.Windows.Forms.Button

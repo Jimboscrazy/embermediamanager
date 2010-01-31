@@ -77,7 +77,7 @@ Public Class Images
                     _image = New Bitmap(ms)
                 End Using
             Catch ex As Exception
-                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error: " & sPath)
             End Try
         End If
     End Sub

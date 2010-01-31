@@ -114,7 +114,7 @@ Public Class dlgEditMovie
             Dim oldwidth As Integer = dFileInfoEdit.Width
             dFileInfoEdit.Width = pnlFileInfo.Width
             dFileInfoEdit.Height = pnlFileInfo.Height
-            dFileInfoEdit.Show()
+            dFileInfoEdit.Show(False)
 
             Me.LoadGenres()
             Me.LoadRatings()
