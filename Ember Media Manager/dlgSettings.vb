@@ -1489,7 +1489,7 @@ Public Class dlgSettings
         If Not txtDefFIExt.Text.StartsWith(".") Then txtDefFIExt.Text = String.Concat(".", txtDefFIExt.Text)
         Using dEditMeta As New dlgFileInfo
             Dim fi As New MediaInfo.Fileinfo
-            fi = dEditMeta.ShowDialog(fi)
+            fi = dEditMeta.ShowDialog(fi, False)
             If Not fi Is Nothing Then
                 Dim m As New emmSettings.MetadataPerType
                 m.FileType = txtDefFIExt.Text
@@ -1509,7 +1509,7 @@ Public Class dlgSettings
             Dim fi As New MediaInfo.Fileinfo
             For Each x As emmSettings.MetadataPerType In Meta
                 If x.FileType = lstMetaData.SelectedItems(0).ToString Then
-                    fi = dEditMeta.ShowDialog(x.MetaData)
+                    fi = dEditMeta.ShowDialog(x.MetaData, False)
                     If Not fi Is Nothing Then
                         Meta.Remove(x)
                         Dim m As New emmSettings.MetadataPerType
@@ -1536,7 +1536,7 @@ Public Class dlgSettings
                 Dim fi As New MediaInfo.Fileinfo
                 For Each x As emmSettings.MetadataPerType In Meta
                     If x.FileType = lstMetaData.SelectedItems(0).ToString Then
-                        fi = dEditMeta.ShowDialog(x.MetaData)
+                        fi = dEditMeta.ShowDialog(x.MetaData, False)
                         If Not fi Is Nothing Then
                             Meta.Remove(x)
                             Dim m As New emmSettings.MetadataPerType
@@ -3186,7 +3186,7 @@ Public Class dlgSettings
         Me.chkOverwriteShowPoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
         Me.chkResizeShowPoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
         Me.lblShowPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
-        Me.lblShowFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
+        Me.lblShowPosterHeight.Text = Master.eLang.GetString(480, "Max Height:")
         Me.lblShowPosterQ.Text = Master.eLang.GetString(478, "Poster Quality:")
         Me.gbShowFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
         Me.lblShowFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
@@ -3201,7 +3201,7 @@ Public Class dlgSettings
         Me.chkOverwriteEpPoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
         Me.chkResizeEpPoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
         Me.lblEpPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
-        Me.lblEpFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
+        Me.lblEpPosterHeight.Text = Master.eLang.GetString(480, "Max Height:")
         Me.lblEpPosterQ.Text = Master.eLang.GetString(478, "Poster Quality:")
         Me.gbEpFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
         Me.lblEpFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
@@ -3211,6 +3211,7 @@ Public Class dlgSettings
         Me.lblEpFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
         Me.lblEpFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
         Me.chkEpFanartOnly.Text = Master.eLang.GetString(145, "Only")
+        Me.chkForceTitle.Text = Master.eLang.GetString(710, "Force Title Language:")
 
         If Not IsNothing(tvSettings.SelectedNode) Then
             Me.lblCurrent.Text = tvSettings.SelectedNode.Text

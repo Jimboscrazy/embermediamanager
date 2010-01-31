@@ -59,6 +59,17 @@ Public Class dlgEditEpisode
             Me.pnlTop.BackgroundImage = iBackground
         End Using
 
+        Dim dFileInfoEdit As New dlgFileInfo
+        dFileInfoEdit.TopLevel = False
+        dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
+        dFileInfoEdit.BackColor = Color.White
+        dFileInfoEdit.Cancel_Button.Visible = False
+        Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
+        Dim oldwidth As Integer = dFileInfoEdit.Width
+        dFileInfoEdit.Width = pnlFileInfo.Width
+        dFileInfoEdit.Height = pnlFileInfo.Height
+        dFileInfoEdit.Show(True)
+
         If Not (Master.eSettings.EpisodeDashFanart OrElse Master.eSettings.EpisodeDotFanart) Then
             Me.TabControl1.TabPages.Remove(TabPage3)
         End If
@@ -489,8 +500,10 @@ Public Class dlgEditEpisode
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
         Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
         Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
+        Me.TabPage4.Text = Master.eLang.GetString(256, "Frame Extraction")
         Me.btnFrameLoad.Text = Master.eLang.GetString(661, "Load Episode")
         Me.btnFrameSave.Text = Master.eLang.GetString(662, "Save as Poster")
+        Me.TabPage5.Text = Master.eLang.GetString(59, "Meta Data")
 
     End Sub
 End Class

@@ -22,16 +22,27 @@ Public Class dlgFileInfo
     Private NeedToRefresh As Boolean = False
     Private _FileInfo As MediaInfo.Fileinfo
     Private SettingDefaults As Boolean = False
+    Private _isEpisode As Boolean = False
 
-    Public Overloads Function ShowDialog(ByVal fi As MediaInfo.Fileinfo) As MediaInfo.Fileinfo
+    Public Overloads Function ShowDialog(ByVal fi As MediaInfo.Fileinfo, ByVal isEpisode As Boolean) As MediaInfo.Fileinfo
         SettingDefaults = True
         _FileInfo = fi
+        _isEpisode = isEpisode
         If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Return _FileInfo
         Else
             Return Nothing
         End If
     End Function
+
+    Public Overloads Function ShowDialog(ByVal isEpisode As Boolean) As System.Windows.Forms.DialogResult
+        Return MyBase.ShowDialog
+    End Function
+
+    Public Overloads Sub Show(ByVal isEpisode As Boolean)
+        _isEpisode = isEpisode
+        MyBase.Show()
+    End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         If NeedToRefresh Then
@@ -45,7 +56,7 @@ Public Class dlgFileInfo
     Private Sub dlgFileInfo_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUp()
         If Not SettingDefaults Then
-            _FileInfo = Master.currMovie.Movie.FileInfo
+            _FileInfo = If(_isEpisode, Master.currShow.TVEp.FileInfo, Master.currMovie.Movie.FileInfo)
         End If
         LoadInfo()
     End Sub
@@ -221,7 +232,11 @@ Public Class dlgFileInfo
             If lvStreams.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvStreams.SelectedItems(0)
                 If Not SettingDefaults Then
-                    Master.currMovie.Movie.FileInfo = _FileInfo
+                    If _isEpisode Then
+                        Master.currShow.TVEp.FileInfo = _FileInfo
+                    Else
+                        Master.currMovie.Movie.FileInfo = _FileInfo
+                    End If
                 End If
                 If i.Tag.ToString = Master.eLang.GetString(595, "Video Stream") Then
                     _FileInfo.StreamDetails.Video.RemoveAt(Convert.ToInt16(i.Text))
@@ -233,7 +248,11 @@ Public Class dlgFileInfo
                     _FileInfo.StreamDetails.Subtitle.RemoveAt(Convert.ToInt16(i.Text))
                 End If
                 If Cancel_Button.Visible = True Then 'Only Save imediatly when running stand alone
-                    Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
+                    If _isEpisode Then
+                        Master.DB.SaveTVEpToDB(Master.currShow, False, False, True)
+                    Else
+                        Master.DB.SaveMovieToDB(Master.currMovie, False, False, True)
+                    End If
                     NeedToRefresh = True
                 End If
                 LoadInfo()
