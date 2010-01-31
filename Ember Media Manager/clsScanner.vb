@@ -401,7 +401,7 @@ Public Class Scanner
 
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
-        Dim fList As New List(Of FileInfo)
+        Dim fList As New List(Of String)
         Dim SkipStack As Boolean = False
         Dim vtsSingle As Boolean = False
         Dim bdmvSingle As Boolean = False
@@ -466,16 +466,15 @@ Public Class Scanner
                         Else
                             MoviePaths.Add(StringManip.CleanStackingMarkers(tFile).ToLower)
                         End If
-                        LoadMovie(New MovieContainer With {.Filename = tFile, .Source = sSource, .isSingle = True, .UseFolder = bUseFolder})
+                        LoadMovie(New MovieContainer With {.Filename = tFile, .Source = sSource, .isSingle = True, .UseFolder = True})
                     End If
 
                 Else
-                    fList.AddRange(lFi.Where(Function(f) Master.eSettings.ValidExts.Contains(f.Extension.ToLower) AndAlso _
+
+                    For Each lFile As FileInfo In lFi.Where(Function(f) Master.eSettings.ValidExts.Contains(f.Extension.ToLower) AndAlso _
                             Not f.Name.ToLower.Contains("-trailer") AndAlso Not f.Name.ToLower.Contains("[trailer") AndAlso _
                             Not f.Name.ToLower.Contains("sample") AndAlso ((Master.eSettings.SkipStackSizeCheck AndAlso _
-                            StringManip.IsStacked(f.Name)) OrElse f.Length >= Master.eSettings.SkipLessThan * 1048576)))
-
-                    For Each lFile As FileInfo In fList
+                            StringManip.IsStacked(f.Name)) OrElse f.Length >= Master.eSettings.SkipLessThan * 1048576))
                         If Not MoviePaths.Contains(StringManip.CleanStackingMarkers(lFile.FullName.ToLower)) Then
                             If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
                                 MoviePaths.Add(lFile.FullName.ToLower)
@@ -484,13 +483,16 @@ Public Class Scanner
                                 MoviePaths.Add(StringManip.CleanStackingMarkers(lFile.FullName).ToLower)
                             End If
 
-                            LoadMovie(New MovieContainer With {.Filename = lFile.FullName, .Source = sSource, .isSingle = If(fList.Count = 1, True, bSingle), .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)})
+                            fList.Add(lFile.FullName)
                             If bSingle AndAlso Not SkipStack Then Exit For
                         End If
                         If Me.bwPrelim.CancellationPending Then Return
                     Next
                 End If
 
+                For Each s As String In fList
+                    LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = If(fList.Count = 1, True, bSingle), .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)})
+                Next
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
