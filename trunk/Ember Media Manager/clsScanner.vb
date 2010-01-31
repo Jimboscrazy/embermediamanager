@@ -488,11 +488,12 @@ Public Class Scanner
                         End If
                         If Me.bwPrelim.CancellationPending Then Return
                     Next
+
+                    For Each s As String In fList
+                        LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = If(fList.Count = 1, True, bSingle), .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)})
+                    Next
                 End If
 
-                For Each s As String In fList
-                    LoadMovie(New MovieContainer With {.Filename = s, .Source = sSource, .isSingle = If(fList.Count = 1, True, bSingle), .UseFolder = If(bSingle OrElse fList.Count = 1, bUseFolder, False)})
-                Next
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
