@@ -362,7 +362,7 @@ Public Class Scanner
     ''' <param name="bRecur">Scan directory recursively?</param>
     ''' <param name="bUseFolder">Use the folder name for initial title? (else uses file name)</param>
     ''' <param name="bSingle">Only detect one movie from each folder?</param>
-    Public Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean)
+    Public Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal doScan As Boolean)
         If Directory.Exists(sPath) Then
             Dim sMoviePath As String = String.Empty
             Dim dInfo As New DirectoryInfo(sPath)
@@ -370,13 +370,14 @@ Public Class Scanner
             Try
 
                 'check if there are any movies in the parent folder
-                ScanForFiles(sPath, sSource, bUseFolder, bSingle)
+                If doScan Then ScanForFiles(sPath, sSource, bUseFolder, bSingle)
 
-                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s.FullName)).OrderBy(Function(d) d.Name)
+                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(s) (Master.eSettings.IgnoreLastScan OrElse bRecur OrElse s.LastWriteTime > SourceLastScan) AndAlso isValidDir(s)).OrderBy(Function(d) d.Name)
+
                     If Me.bwPrelim.CancellationPending Then Return
                     ScanForFiles(inDir.FullName, sSource, bUseFolder, bSingle)
                     If bRecur Then
-                        ScanSourceDir(sSource, inDir.FullName, bRecur, bUseFolder, bSingle)
+                        ScanSourceDir(sSource, inDir.FullName, bRecur, bUseFolder, bSingle, False)
                     End If
                 Next
 
@@ -474,8 +475,9 @@ Public Class Scanner
                     For Each lFile As FileInfo In lFi.Where(Function(f) Master.eSettings.ValidExts.Contains(f.Extension.ToLower) AndAlso _
                             Not f.Name.ToLower.Contains("-trailer") AndAlso Not f.Name.ToLower.Contains("[trailer") AndAlso _
                             Not f.Name.ToLower.Contains("sample") AndAlso ((Master.eSettings.SkipStackSizeCheck AndAlso _
-                            StringManip.IsStacked(f.Name)) OrElse f.Length >= Master.eSettings.SkipLessThan * 1048576))
-                        If Not MoviePaths.Contains(StringManip.CleanStackingMarkers(lFile.FullName.ToLower)) Then
+                            StringManip.IsStacked(f.Name)) OrElse f.Length >= Master.eSettings.SkipLessThan * 1048576)).OrderBy(Function(f) f.FullName)
+
+                        If Not MoviePaths.Contains(StringManip.CleanStackingMarkers(lFile.FullName).ToLower) Then
                             If Master.eSettings.NoStackExts.Contains(lFile.Extension.ToLower) Then
                                 MoviePaths.Add(lFile.FullName.ToLower)
                                 SkipStack = True
@@ -509,28 +511,27 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sPath">Full path of the directory to check</param>
     ''' <returns>True if directory is valid, false if not.</returns>
-    Public Function isValidDir(ByVal sPath As String) As Boolean
+    Public Function isValidDir(ByVal dInfo As DirectoryInfo) As Boolean
 
         Try
 
-            sPath = sPath.Remove(0, sPath.IndexOf("\"))
-            If Path.GetDirectoryName(sPath).ToLower = "extrathumbs" OrElse _
-            Path.GetDirectoryName(sPath).ToLower = "extras" OrElse _
-            Path.GetDirectoryName(sPath).ToLower = "video_ts" OrElse _
-            Path.GetDirectoryName(sPath).ToLower = "bdmv" OrElse _
-            Path.GetDirectoryName(sPath).ToLower = "audio_ts" OrElse _
-            Path.GetDirectoryName(sPath).ToLower = "recycler" OrElse _
-            Path.GetDirectoryName(sPath).ToLower = "subs" OrElse _
-            Path.GetDirectoryName(sPath).ToLower = "subtitles" OrElse _
-            sPath.ToLower.Contains("-trailer") OrElse _
-            sPath.ToLower.Contains("[trailer") OrElse _
-            sPath.ToLower.Contains("temporary files") OrElse _
-            sPath.ToLower.Contains("(noscan)") OrElse _
-            sPath.ToLower.Contains("$recycle.bin") OrElse _
-            sPath.ToLower.Contains("lost+found") OrElse _
-            sPath.ToLower.Contains("system volume information") OrElse _
-            sPath.ToLower.Contains("sample") OrElse _
-            sPath.Contains(":") Then
+            If dInfo.Name.ToLower = "extrathumbs" OrElse _
+            dInfo.Name.ToLower = "extras" OrElse _
+            dInfo.Name.ToLower = "video_ts" OrElse _
+            dInfo.Name.ToLower = "bdmv" OrElse _
+            dInfo.Name.ToLower = "audio_ts" OrElse _
+            dInfo.Name.ToLower = "recycler" OrElse _
+            dInfo.Name.ToLower = "subs" OrElse _
+            dInfo.Name.ToLower = "subtitles" OrElse _
+            dInfo.Name.ToLower.Contains("-trailer") OrElse _
+            dInfo.Name.ToLower.Contains("[trailer") OrElse _
+            dInfo.Name.ToLower.Contains("temporary files") OrElse _
+            dInfo.Name.ToLower.Contains("(noscan)") OrElse _
+            dInfo.Name.ToLower.Contains("$recycle.bin") OrElse _
+            dInfo.Name.ToLower.Contains("lost+found") OrElse _
+            dInfo.Name.ToLower.Contains("system volume information") OrElse _
+            dInfo.Name.ToLower.Contains("sample") OrElse _
+            dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":") Then
                 Return False
             End If
 
@@ -551,7 +552,7 @@ Public Class Scanner
             If Directory.Exists(MovieDir.FullName) Then
 
                 For Each inDir As DirectoryInfo In MovieDir.GetDirectories
-                    If isValidDir(inDir.FullName) Then
+                    If isValidDir(inDir) Then
                         If ScanSubs(inDir) Then Return True
                         SubDirsHaveMovies(inDir)
                     End If
@@ -839,12 +840,12 @@ Public Class Scanner
             End If
 
             If String.IsNullOrEmpty(tShow.Fanart) AndAlso Master.eSettings.ShowDashFanart Then
-                fName = Path.Combine(parPath, String.Concat(Path.GetFileNameWithoutExtension(parPath), "-fanart.jpg"))
+                fName = Path.Combine(parPath, String.Concat(FileManip.Common.GetDirectory(parPath), "-fanart.jpg"))
                 tShow.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
             End If
 
             If String.IsNullOrEmpty(tShow.Fanart) AndAlso Master.eSettings.ShowDotFanart Then
-                fName = Path.Combine(parPath, String.Concat(Path.GetFileNameWithoutExtension(parPath), ".fanart.jpg"))
+                fName = Path.Combine(parPath, String.Concat(FileManip.Common.GetDirectory(parPath), ".fanart.jpg"))
                 tShow.Fanart = fList.FirstOrDefault(Function(s) s.ToLower = fName.ToLower)
             End If
 
@@ -906,7 +907,7 @@ Public Class Scanner
             Try
 
 
-                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d.FullName)).OrderBy(Function(d) d.Name)
+                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d)).OrderBy(Function(d) d.Name)
                     currShowContainer = New TVShowContainer
                     currShowContainer.ShowPath = inDir.FullName
                     currShowContainer.Source = sSource
@@ -914,7 +915,7 @@ Public Class Scanner
 
                     inInfo = New DirectoryInfo(inDir.FullName)
 
-                    For Each sDirs As DirectoryInfo In inInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d.FullName)).OrderBy(Function(d) d.Name)
+                    For Each sDirs As DirectoryInfo In inInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
                         Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                     Next
 
@@ -999,7 +1000,7 @@ Public Class Scanner
                                         parLastScan.Value = Now
                                         parID.Value = SQLreader("ID")
                                         SQLUpdatecommand.ExecuteNonQuery()
-                                        ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")))
+                                        ScanSourceDir(SQLreader("Name").ToString, SQLreader("Path").ToString, Convert.ToBoolean(SQLreader("Recursive")), Convert.ToBoolean(SQLreader("Foldername")), Convert.ToBoolean(SQLreader("Single")), True)
                                     End If
                                     If Me.bwPrelim.CancellationPending Then
                                         e.Cancel = True
@@ -1205,7 +1206,7 @@ Public Class Scanner
 
             Try
 
-                For Each sMatch As Match In Regex.Matches(If(rShow.SeasonFromDirectory, Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath)), rShow.SeasonRegex, RegexOptions.IgnoreCase)
+                For Each sMatch As Match In Regex.Matches(If(rShow.SeasonFromDirectory, Directory.GetParent(sPath).Name, Path.GetFileNameWithoutExtension(sPath)), rShow.SeasonRegex, RegexOptions.IgnoreCase)
                     Try
                         cSeason = New Seasons
                         If IsNumeric(sMatch.Groups("season").Value) Then
@@ -1218,7 +1219,7 @@ Public Class Scanner
 
                         Select Case rShow.EpisodeRetrieve
                             Case emmSettings.EpRetrieve.FromDirectory
-                                epMatch = Path.GetDirectoryName(sPath)
+                                epMatch = Directory.GetParent(sPath).Name
                             Case emmSettings.EpRetrieve.FromFilename
                                 epMatch = Path.GetFileNameWithoutExtension(sPath)
                             Case emmSettings.EpRetrieve.FromSeasonResult
@@ -1342,7 +1343,7 @@ Public Class Scanner
                         'looks funny to use getfilenamewithoutextension, but it works when passing a path with no file specified
                         'used as a workaround to "New DirectoryInfo(sFile.TVContainer.ShowPath).Name" as I suspect this is the
                         'root of the problem as reported in Issue #58
-                        tmpTVDB.TVShow.Title = StringManip.FilterTVShowName(Path.GetFileNameWithoutExtension(TVContainer.ShowPath))
+                        tmpTVDB.TVShow.Title = StringManip.FilterTVShowName(FileManip.Common.GetDirectory(TVContainer.ShowPath))
                     End If
 
                     tmpTVDB.ShowPath = TVContainer.ShowPath

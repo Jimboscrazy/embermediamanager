@@ -4155,7 +4155,7 @@ Public Class frmMain
                                 scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
 
                                 If Not String.IsNullOrEmpty(scrapeMovie.Movie.Studio) AndAlso scrapeMovie.Movie.Studio.Contains(" / ") Then
-                                    scrapeMovie.Movie.Studio = Strings.Trim(Strings.Left(scrapeMovie.Movie.Studio, Strings.InStr(scrapeMovie.Movie.Studio, " / ") - 1))
+                                    scrapeMovie.Movie.Studio = Strings.Trim(Strings.Left(scrapeMovie.Movie.Studio, scrapeMovie.Movie.Studio.IndexOf(" / ") - 1))
                                     Master.DB.SaveMovieToDB(scrapeMovie, False, True, True)
                                 End If
                             Next
@@ -4921,7 +4921,7 @@ doCancel:
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As Media.Person In Master.currMovie.Movie.Actors
                     If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
-                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 AndAlso Not Strings.InStr(imdbAct.Thumb.ToLower, "no_photo") > 0 Then
+                        If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.Thumb)
                         Else
                             Me.alActors.Add("none")
@@ -5072,7 +5072,7 @@ doCancel:
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As Media.Person In Master.currShow.TVShow.Actors
                     If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
-                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 AndAlso Not Strings.InStr(imdbAct.Thumb.ToLower, "no_photo") > 0 Then
+                        If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.Thumb)
                         Else
                             Me.alActors.Add("none")
@@ -5205,7 +5205,7 @@ doCancel:
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As Media.Person In Master.currShow.TVShow.Actors
                     If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
-                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 AndAlso Not Strings.InStr(imdbAct.Thumb.ToLower, "no_photo") > 0 Then
+                        If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.Thumb)
                         Else
                             Me.alActors.Add("none")
@@ -5343,7 +5343,7 @@ doCancel:
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As Media.Person In Master.currShow.TVEp.Actors
                     If Not String.IsNullOrEmpty(imdbAct.Thumb) Then
-                        If Not Strings.InStr(imdbAct.Thumb.ToLower, "addtiny.gif") > 0 AndAlso Not Strings.InStr(imdbAct.Thumb.ToLower, "no_photo") > 0 Then
+                        If Not imdbAct.Thumb.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.Thumb.ToLower.IndexOf("no_photo") > 0 Then
                             Me.alActors.Add(imdbAct.Thumb)
                         Else
                             Me.alActors.Add("none")

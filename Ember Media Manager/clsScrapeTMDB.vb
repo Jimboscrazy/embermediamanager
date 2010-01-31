@@ -100,7 +100,7 @@ Namespace TMDB
 
                                 Dim Trailers = From tNode In xmlTMDB...<OpenSearchDescription>...<movies>...<movie> Select tNode.<trailer>
                                 If Trailers.Count > 0 AndAlso Not String.IsNullOrEmpty(Trailers(0).Value) Then
-                                    If InStr(Trailers(0).Value.ToLower, "youtube.com") <> -1 Then
+                                    If Trailers(0).Value.ToLower.IndexOf("youtube.com") > 0 Then
                                         Return Trailers(0).Value
                                     End If
                                 End If

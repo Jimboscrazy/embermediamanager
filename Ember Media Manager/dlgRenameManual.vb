@@ -48,7 +48,7 @@ Public Class dlgRenameManual
             FileName = Path.GetFileNameWithoutExtension(Master.currMovie.Filename)
         End If
         If Master.currMovie.isSingle Then
-            txtFolder.Text = Path.GetFileName(Path.GetDirectoryName(Master.currMovie.Filename))
+            txtFolder.Text = Directory.GetParent(Master.currMovie.Filename).Name
         Else
             txtFolder.Text = "$D"
             txtFolder.Visible = False

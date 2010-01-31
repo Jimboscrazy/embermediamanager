@@ -187,7 +187,7 @@ Public Class StringManip
                 If Master.eSettings.FilterCustom.Count > 0 Then
                     For Each Str As String In Master.eSettings.FilterCustom
 
-                        If Strings.InStr(Str, "[->]") > 0 Then
+                        If Str.IndexOf("[->]") > 0 Then
                             strSplit = Strings.Split(Str, "[->]")
                             movieName = Strings.Replace(movieName, Regex.Match(movieName, strSplit.First).ToString, strSplit.Last)
                         Else
@@ -272,7 +272,7 @@ Public Class StringManip
             If Master.eSettings.ShowFilterCustom.Count > 0 Then
                 For Each Str As String In Master.eSettings.ShowFilterCustom
 
-                    If Strings.InStr(Str, "[->]") > 0 Then
+                    If Str.IndexOf("[->]") > 0 Then
                         strSplit = Strings.Split(Str, "[->]")
                         TVShowName = Strings.Replace(TVShowName, Regex.Match(TVShowName, strSplit.First).ToString, strSplit.Last)
                     Else
@@ -312,7 +312,7 @@ Public Class StringManip
             If Master.eSettings.EpFilterCustom.Count > 0 Then
                 For Each Str As String In Master.eSettings.EpFilterCustom
 
-                    If Strings.InStr(Str, "[->]") > 0 Then
+                    If Str.IndexOf("[->]") > 0 Then
                         strSplit = Strings.Split(Str, "[->]")
                         TVEpName = Strings.Replace(TVEpName, Regex.Match(TVEpName, strSplit.First).ToString, strSplit.Last)
                     Else
