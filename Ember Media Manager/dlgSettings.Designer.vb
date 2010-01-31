@@ -513,6 +513,7 @@ Partial Class dlgSettings
         Me.lblEpFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteEpFanart = New System.Windows.Forms.CheckBox
         Me.pnlTVScraper = New System.Windows.Forms.Panel
+        Me.chkSourceFromFolder = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -762,6 +763,7 @@ Partial Class dlgSettings
         '
         'GroupBox4
         '
+        Me.GroupBox4.Controls.Add(Me.chkSourceFromFolder)
         Me.GroupBox4.Controls.Add(Me.chkInfoPanelAnim)
         Me.GroupBox4.Controls.Add(Me.chkUpdates)
         Me.GroupBox4.Controls.Add(Me.chkOverwriteNfo)
@@ -5669,6 +5671,15 @@ Partial Class dlgSettings
         Me.pnlTVScraper.TabIndex = 72
         Me.pnlTVScraper.Visible = False
         '
+        'chkSourceFromFolder
+        '
+        Me.chkSourceFromFolder.Location = New System.Drawing.Point(10, 114)
+        Me.chkSourceFromFolder.Name = "chkSourceFromFolder"
+        Me.chkSourceFromFolder.Size = New System.Drawing.Size(172, 34)
+        Me.chkSourceFromFolder.TabIndex = 16
+        Me.chkSourceFromFolder.Text = "Include Folder Name in Source Type Check"
+        Me.chkSourceFromFolder.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -5683,17 +5694,17 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlImages)
-        Me.Controls.Add(Me.pnlSources)
-        Me.Controls.Add(Me.pnlMovies)
-        Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
         Me.Controls.Add(Me.pnlExtensions)
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlXBMCCom)
         Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlImages)
+        Me.Controls.Add(Me.pnlSources)
+        Me.Controls.Add(Me.pnlMovies)
+        Me.Controls.Add(Me.pnlScraper)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -6323,4 +6334,5 @@ Partial Class dlgSettings
     Friend WithEvents txtProxyUsername As System.Windows.Forms.TextBox
     Friend WithEvents lblProxyUN As System.Windows.Forms.Label
     Friend WithEvents lblProxyPW As System.Windows.Forms.Label
+    Friend WithEvents chkSourceFromFolder As System.Windows.Forms.CheckBox
 End Class

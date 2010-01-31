@@ -5580,7 +5580,7 @@ doCancel:
 
             If Not isCL Then
                 Me.SetStatus(String.Empty) 'clear status for scrapers that do not report
-                Me.SetControlsEnabled(False, True)
+                Me.SetControlsEnabled(False)
                 Me.tspbLoading.Style = ProgressBarStyle.Continuous
                 Me.EnableFilters(False)
 

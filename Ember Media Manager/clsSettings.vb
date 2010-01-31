@@ -270,6 +270,7 @@ Public Class emmSettings
     Private _proxyuri As String
     Private _proxyport As Integer
     Private _proxycredentials As New NetworkCredential
+    Private _sourcefromfolder As Boolean
 
     Public Property Version() As String
         Get
@@ -2476,6 +2477,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property SourceFromFolder() As Boolean
+        Get
+            Return _sourcefromfolder
+        End Get
+        Set(ByVal value As Boolean)
+            _sourcefromfolder = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2726,6 +2736,7 @@ Public Class emmSettings
         Me._proxyuri = String.Empty
         Me._proxyport = -1
         Me._proxycredentials = New NetworkCredential
+        Me._sourcefromfolder = False
     End Sub
 
     Public Sub Save()

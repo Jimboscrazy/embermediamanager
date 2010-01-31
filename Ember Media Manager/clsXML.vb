@@ -61,7 +61,7 @@ Public Class XML
                 ElseIf FileManip.Common.isBDRip(fName) Then
                     sourceCheck = "bluray"
                 Else
-                    sourceCheck = String.Concat(Directory.GetParent(fName).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(fName).ToLower)
+                    sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(fName).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(fName).ToLower), Path.GetFileName(fName).ToLower)
                 End If
 
                 'video resolution
@@ -498,7 +498,7 @@ Public Class XML
             ElseIf FileManip.Common.isBDRip(sPath) Then
                 sourceCheck = "bluray"
             Else
-                sourceCheck = String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower)
+                sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower))
             End If
 
             Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.@searchstring
