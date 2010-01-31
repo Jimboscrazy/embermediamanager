@@ -4557,7 +4557,7 @@ doCancel:
                 .btnSortDate.Text = Master.eLang.GetString(601, "Date Added")
                 .cmnuMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
                 .btnSortTitle.Text = Master.eLang.GetString(642, "Sort Title")
-                .btnIMDBRating.Text = Master.eLang.GetString(651, "IMDB Rating")
+                .btnIMDBRating.Text = Master.eLang.GetString(707, "IMDB Rating")
 
                 Dim TT As ToolTip = New System.Windows.Forms.ToolTip(.components)
                 .tsbAutoPilot.ToolTipText = Master.eLang.GetString(84, "Scrape/download data from the internet for multiple movies.")
