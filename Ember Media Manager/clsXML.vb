@@ -498,7 +498,7 @@ Public Class XML
             ElseIf FileManip.Common.isBDRip(sPath) Then
                 sourceCheck = "bluray"
             Else
-                sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower))
+                sourceCheck = If(Master.eSettings.SourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
             End If
 
             Dim xVSourceFlag = From xVSource In FlagsXML...<vsource>...<name> Where Regex.IsMatch(sourceCheck, xVSource.@searchstring) Select xVSource.@searchstring
