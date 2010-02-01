@@ -711,4 +711,5 @@
   <string id="709">Clean Database</string>
   <string id="710">Force Title Language:</string>
   <string id="711">Include Folder Name in Source Type Check</string>
+  <string id="712">Sort files into folders before each library update</string>
 </strings>

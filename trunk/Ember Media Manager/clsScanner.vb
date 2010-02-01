@@ -365,6 +365,17 @@ Public Class Scanner
     Public Sub ScanSourceDir(ByVal sSource As String, ByVal sPath As String, ByVal bRecur As Boolean, ByVal bUseFolder As Boolean, ByVal bSingle As Boolean, ByVal doScan As Boolean)
         If Directory.Exists(sPath) Then
             Dim sMoviePath As String = String.Empty
+
+            Try
+                If Master.eSettings.SortBeforeScan Then
+                    Dim fSorter As New FileManip.FileSorter
+                    fSorter.SortFiles(sPath)
+                    fSorter = Nothing
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+
             Dim dInfo As New DirectoryInfo(sPath)
 
             Try

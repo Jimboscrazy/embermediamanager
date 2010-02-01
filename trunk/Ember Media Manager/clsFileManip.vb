@@ -19,6 +19,7 @@
 '################################################################################
 
 Imports System.IO
+Imports System.Text.RegularExpressions
 
 Namespace FileManip
     Public Class Delete
@@ -485,6 +486,51 @@ Namespace FileManip
                     Next
 
                     Directory.Delete(sPath, True)
+                End If
+            Catch ex As Exception
+                Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+            End Try
+        End Sub
+    End Class
+
+    Public Class FileSorter
+        Public Event ProgressUpdated(ByVal iPercent As Integer, ByVal sStatus As String)
+
+        Public Sub SortFiles(ByVal sPath As String)
+            Dim tmpAL As New List(Of String)
+            Dim tmpPath As String = String.Empty
+            Dim tmpName As String = String.Empty
+            Dim iCount As Integer = 0
+            Try
+                If Directory.Exists(sPath) Then
+                    Dim di As New DirectoryInfo(sPath)
+                    Dim lFi As New List(Of FileInfo)
+
+                    Try
+                        lFi.AddRange(di.GetFiles())
+                    Catch
+                    End Try
+
+                    RaiseEvent ProgressUpdated(lFi.Count, String.Empty)
+
+                    For Each sFile As FileInfo In lFi
+                        RaiseEvent ProgressUpdated(iCount, String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
+                        tmpName = StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sFile.Name))
+                        tmpName = tmpName.Replace(".fanart", String.Empty)
+                        tmpName = tmpName.Replace("-fanart", String.Empty)
+                        tmpName = tmpName.Replace("-trailer", String.Empty)
+                        tmpName = Regex.Replace(tmpName, "\[trailer(\d+)\]", String.Empty)
+                        tmpPath = Path.Combine(sPath, tmpName)
+                        If Not Directory.Exists(tmpPath) Then
+                            Directory.CreateDirectory(tmpPath)
+                        End If
+
+                        File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
+                        iCount += 1
+                    Next
+
+                    lFi = Nothing
+                    di = Nothing
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")

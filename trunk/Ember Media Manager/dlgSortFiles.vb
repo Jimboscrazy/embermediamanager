@@ -25,6 +25,7 @@ Imports System.Text.RegularExpressions
 
 Public Class dlgSortFiles
     Private _hitgo As Boolean = False
+    Private fSorter As New FileManip.FileSorter
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = If(Me._hitgo, System.Windows.Forms.DialogResult.OK, System.Windows.Forms.DialogResult.Cancel)
@@ -39,7 +40,7 @@ Public Class dlgSortFiles
         If Not String.IsNullOrEmpty(Me.txtPath.Text) AndAlso Directory.Exists(Me.txtPath.Text) Then
             If MsgBox(String.Concat(Master.eLang.GetString(220, "WARNING: If you continue, all files will be sorted into separate folders."), vbNewLine, vbNewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), MsgBoxStyle.Critical Or MsgBoxStyle.YesNo, Master.eLang.GetString(104, "Are you sure?")) = MsgBoxResult.Yes Then
                 Me._hitgo = True
-                SortFiles(Me.txtPath.Text)
+                fSorter.SortFiles(Me.txtPath.Text)
                 lblStatus.Text = "Done!"
                 pbStatus.Value = 0
 
@@ -49,48 +50,6 @@ Public Class dlgSortFiles
             MsgBox(Master.eLang.GetString(221, "The folder you entered does not exist. Please enter a valid path."), MsgBoxStyle.Exclamation, Master.eLang.GetString(222, "Directory Not Found"))
             Me.txtPath.Focus()
         End If
-    End Sub
-
-    Private Sub SortFiles(ByVal sPath As String)
-        Dim tmpAL As New List(Of String)
-        Dim tmpPath As String = String.Empty
-        Dim tmpName As String = String.Empty
-        Dim iCount As Integer = 0
-        Try
-            If Directory.Exists(sPath) Then
-                Dim di As New DirectoryInfo(sPath)
-                Dim lFi As New List(Of FileInfo)
-
-                Try
-                    lFi.AddRange(di.GetFiles())
-                Catch
-                End Try
-
-                pbStatus.Maximum = lFi.Count
-
-                For Each sFile As FileInfo In lFi
-                    lblStatus.Text = String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name)
-                    tmpName = StringManip.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sFile.Name))
-                    tmpName = tmpName.Replace(".fanart", String.Empty)
-                    tmpName = tmpName.Replace("-fanart", String.Empty)
-                    tmpName = tmpName.Replace("-trailer", String.Empty)
-                    tmpName = Regex.Replace(tmpName, "\[trailer(\d+)\]", String.Empty)
-                    tmpPath = Path.Combine(sPath, tmpName)
-                    If Not Directory.Exists(tmpPath) Then
-                        Directory.CreateDirectory(tmpPath)
-                    End If
-
-                    File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
-                    pbStatus.Value = iCount
-                    iCount += 1
-                Next
-
-                lFi = Nothing
-                di = Nothing
-            End If
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
     End Sub
 
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
@@ -103,7 +62,17 @@ Public Class dlgSortFiles
         End With
     End Sub
 
+    Private Sub UpdateProgress(ByVal iPercent As Integer, ByVal sStatus As String)
+        If String.IsNullOrEmpty(sStatus) Then
+            pbStatus.Maximum = iPercent
+        Else
+            lblStatus.Text = sStatus
+            pbStatus.Value = iPercent
+        End If
+    End Sub
+
     Private Sub dlgSortFiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        AddHandler fSorter.ProgressUpdated, AddressOf UpdateProgress
         Me.SetUp()
         Me.txtPath.Text = Master.eSettings.SortPath
     End Sub
