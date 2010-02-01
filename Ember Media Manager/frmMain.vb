@@ -6830,8 +6830,8 @@ doCancel:
         If isCL Then
             Me.ScraperDone = True
         Else
+            Me.SetStatus(String.Empty)
             Me.FillList(0)
-
             Me.tspbLoading.Visible = False
             Me.tslLoading.Visible = False
         End If

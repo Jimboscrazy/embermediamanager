@@ -917,8 +917,13 @@ Public Class Scanner
 
             Try
 
-
                 For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d)).OrderBy(Function(d) d.Name)
+                    'first check if user added a show folder as a source
+                    If inDir.GetDirectories.Where(Function(s) Not Regex.IsMatch(s.Name, "^s(eason)?[\W_]*[0-9]+$", RegexOptions.IgnoreCase)).Count = 0 Then
+                        'all folders match the season regex... assume it's a single show folder and move dInfo up one directory
+                        inDir = New DirectoryInfo(inDir.Parent.FullName)
+                    End If
+
                     currShowContainer = New TVShowContainer
                     currShowContainer.ShowPath = inDir.FullName
                     currShowContainer.Source = sSource
@@ -1282,16 +1287,32 @@ Public Class Scanner
                 If FileManip.Common.isVideoTS(mContainer.Filename) Then
                     tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name)
                     tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name, False)
+                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                        tmpMovieDB.ListTitle = Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name
+                        tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).Name
+                    End If
                 ElseIf FileManip.Common.isBDRip(mContainer.Filename) Then
                     tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name)
                     tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name, False)
+                    If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                        tmpMovieDB.ListTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name
+                        tmpMovieDB.Movie.Title = Directory.GetParent(Directory.GetParent(Directory.GetParent(mContainer.Filename).FullName).FullName).Name
+                    End If
                 Else
                     If mContainer.UseFolder AndAlso mContainer.isSingle Then
                         tmpMovieDB.ListTitle = StringManip.FilterName(Directory.GetParent(mContainer.Filename).Name)
                         tmpMovieDB.Movie.Title = StringManip.FilterName(Directory.GetParent(mContainer.Filename).Name, False)
+                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                            tmpMovieDB.ListTitle = Directory.GetParent(mContainer.Filename).Name
+                            tmpMovieDB.Movie.Title = Directory.GetParent(mContainer.Filename).Name
+                        End If
                     Else
                         tmpMovieDB.ListTitle = StringManip.FilterName(Path.GetFileNameWithoutExtension(mContainer.Filename))
                         tmpMovieDB.Movie.Title = StringManip.FilterName(Path.GetFileNameWithoutExtension(mContainer.Filename), False)
+                        If String.IsNullOrEmpty(tmpMovieDB.Movie.Title) Then
+                            tmpMovieDB.ListTitle = Path.GetFileNameWithoutExtension(mContainer.Filename)
+                            tmpMovieDB.Movie.Title = Path.GetFileNameWithoutExtension(mContainer.Filename)
+                        End If
                     End If
                 End If
 
@@ -1350,11 +1371,10 @@ Public Class Scanner
                     If String.IsNullOrEmpty(tmpTVDB.TVShow.Title) Then
                         'no title so assume it's an invalid nfo, clear nfo path if exists
                         TVContainer.Nfo = String.Empty
-                        'set title based on show folder name
-                        'looks funny to use getfilenamewithoutextension, but it works when passing a path with no file specified
-                        'used as a workaround to "New DirectoryInfo(sFile.TVContainer.ShowPath).Name" as I suspect this is the
-                        'root of the problem as reported in Issue #58
                         tmpTVDB.TVShow.Title = StringManip.FilterTVShowName(FileManip.Common.GetDirectory(TVContainer.ShowPath))
+
+                        'everything was filtered out... just set to directory name
+                        If String.IsNullOrEmpty(tmpTVDB.TVShow.Title) Then tmpTVDB.TVShow.Title = FileManip.Common.GetDirectory(TVContainer.ShowPath)
                     End If
 
                     tmpTVDB.ShowPath = TVContainer.ShowPath
@@ -1407,8 +1427,8 @@ Public Class Scanner
                                     If tmpTVDB.TVEp.Episode < 0 Then tmpTVDB.TVEp.Episode = i
 
                                     If String.IsNullOrEmpty(tmpTVDB.TVEp.Title) Then
-                                        'nothing usable in the title after filters have run
-                                        tmpTVDB.TVEp.Title = String.Format("{0} S{1}E{2}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Season, tmpTVDB.TVEp.Episode)
+                                        'nothing usable in the title after filters have runs
+                                        tmpTVDB.TVEp.Title = String.Format("{0} S{1}E{2}", tmpTVDB.TVShow.Title, tmpTVDB.TVEp.Season.ToString.PadLeft(2, Convert.ToChar("0")), tmpTVDB.TVEp.Episode.ToString.PadLeft(2, Convert.ToChar("0")))
                                     End If
 
                                     If String.IsNullOrEmpty(tmpTVDB.SeasonPosterPath) OrElse String.IsNullOrEmpty(tmpTVDB.SeasonFanartPath) Then Me.GetSeasonImages(tmpTVDB, tmpTVDB.TVEp.Season)

@@ -144,7 +144,7 @@ Partial Class dlgImgSelect
         Me.btnPreview.Location = New System.Drawing.Point(593, 5)
         Me.btnPreview.Name = "btnPreview"
         Me.btnPreview.Size = New System.Drawing.Size(75, 23)
-        Me.btnPreview.TabIndex = 4
+        Me.btnPreview.TabIndex = 6
         Me.btnPreview.Text = "Preview"
         Me.btnPreview.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnPreview.UseVisualStyleBackColor = True
@@ -156,7 +156,7 @@ Partial Class dlgImgSelect
         Me.rbSmall.Location = New System.Drawing.Point(475, 8)
         Me.rbSmall.Name = "rbSmall"
         Me.rbSmall.Size = New System.Drawing.Size(50, 17)
-        Me.rbSmall.TabIndex = 3
+        Me.rbSmall.TabIndex = 5
         Me.rbSmall.TabStop = True
         Me.rbSmall.Text = "Small"
         Me.rbSmall.UseVisualStyleBackColor = True
@@ -167,7 +167,7 @@ Partial Class dlgImgSelect
         Me.rbMedium.Location = New System.Drawing.Point(322, 8)
         Me.rbMedium.Name = "rbMedium"
         Me.rbMedium.Size = New System.Drawing.Size(62, 17)
-        Me.rbMedium.TabIndex = 2
+        Me.rbMedium.TabIndex = 4
         Me.rbMedium.TabStop = True
         Me.rbMedium.Text = "Medium"
         Me.rbMedium.UseVisualStyleBackColor = True
@@ -179,7 +179,7 @@ Partial Class dlgImgSelect
         Me.rbLarge.Location = New System.Drawing.Point(179, 8)
         Me.rbLarge.Name = "rbLarge"
         Me.rbLarge.Size = New System.Drawing.Size(52, 17)
-        Me.rbLarge.TabIndex = 1
+        Me.rbLarge.TabIndex = 3
         Me.rbLarge.TabStop = True
         Me.rbLarge.Text = "Large"
         Me.rbLarge.UseVisualStyleBackColor = True
@@ -191,7 +191,7 @@ Partial Class dlgImgSelect
         Me.rbXLarge.Location = New System.Drawing.Point(26, 8)
         Me.rbXLarge.Name = "rbXLarge"
         Me.rbXLarge.Size = New System.Drawing.Size(62, 17)
-        Me.rbXLarge.TabIndex = 0
+        Me.rbXLarge.TabIndex = 2
         Me.rbXLarge.TabStop = True
         Me.rbXLarge.Text = "X-Large"
         Me.rbXLarge.UseVisualStyleBackColor = True
@@ -215,7 +215,7 @@ Partial Class dlgImgSelect
         Me.chkThumb.Location = New System.Drawing.Point(231, 8)
         Me.chkThumb.Name = "chkThumb"
         Me.chkThumb.Size = New System.Drawing.Size(107, 17)
-        Me.chkThumb.TabIndex = 2
+        Me.chkThumb.TabIndex = 9
         Me.chkThumb.Text = "Check All Thumb"
         Me.chkThumb.UseVisualStyleBackColor = True
         '
@@ -225,7 +225,7 @@ Partial Class dlgImgSelect
         Me.chkMid.Location = New System.Drawing.Point(131, 8)
         Me.chkMid.Name = "chkMid"
         Me.chkMid.Size = New System.Drawing.Size(91, 17)
-        Me.chkMid.TabIndex = 1
+        Me.chkMid.TabIndex = 7
         Me.chkMid.Text = "Check All Mid"
         Me.chkMid.UseVisualStyleBackColor = True
         '
@@ -235,7 +235,7 @@ Partial Class dlgImgSelect
         Me.chkOriginal.Location = New System.Drawing.Point(7, 8)
         Me.chkOriginal.Name = "chkOriginal"
         Me.chkOriginal.Size = New System.Drawing.Size(109, 17)
-        Me.chkOriginal.TabIndex = 0
+        Me.chkOriginal.TabIndex = 8
         Me.chkOriginal.Text = "Check All Original"
         Me.chkOriginal.UseVisualStyleBackColor = True
         '

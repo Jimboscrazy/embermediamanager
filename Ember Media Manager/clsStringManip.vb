@@ -187,6 +187,9 @@ Public Class StringManip
                 If Master.eSettings.FilterCustom.Count > 0 Then
                     For Each Str As String In Master.eSettings.FilterCustom
 
+                        'everything was already filtered out, return an empty string
+                        If String.IsNullOrEmpty(movieName) Then Return String.Empty
+
                         If Str.IndexOf("[->]") > 0 Then
                             strSplit = Strings.Split(Str, "[->]")
                             movieName = Strings.Replace(movieName, Regex.Match(movieName, strSplit.First).ToString, strSplit.Last)
@@ -272,6 +275,9 @@ Public Class StringManip
             If Master.eSettings.ShowFilterCustom.Count > 0 Then
                 For Each Str As String In Master.eSettings.ShowFilterCustom
 
+                    'everything was already filtered out, return an empty string
+                    If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
+
                     If Str.IndexOf("[->]") > 0 Then
                         strSplit = Strings.Split(Str, "[->]")
                         TVShowName = Strings.Replace(TVShowName, Regex.Match(TVShowName, strSplit.First).ToString, strSplit.Last)
@@ -311,6 +317,9 @@ Public Class StringManip
             'run through each of the custom filters
             If Master.eSettings.EpFilterCustom.Count > 0 Then
                 For Each Str As String In Master.eSettings.EpFilterCustom
+
+                    'everything was already filtered out, return an empty string
+                    If String.IsNullOrEmpty(TVEpName) Then Return String.Empty
 
                     If Str.IndexOf("[->]") > 0 Then
                         strSplit = Strings.Split(Str, "[->]")

@@ -726,6 +726,8 @@ Public Class dlgImgSelect
                 Me.SetupSizes(sURL)
                 If Not rbLarge.Checked AndAlso Not rbMedium.Checked AndAlso Not rbSmall.Checked AndAlso Not rbXLarge.Checked Then
                     Me.OK_Button.Enabled = False
+                Else
+                    Me.OK_Button.Focus()
                 End If
                 Me.tmpImage.Clear()
             Else
@@ -734,6 +736,7 @@ Public Class dlgImgSelect
                 Me.rbMedium.Checked = False
                 Me.rbSmall.Checked = False
                 Me.OK_Button.Enabled = True
+                Me.OK_Button.Focus()
                 Me.tmpImage.Image = Me.pbImage(iIndex).Image
             End If
 
@@ -801,6 +804,8 @@ Public Class dlgImgSelect
             End Select
 
             pnlSize.Visible = True
+
+            Me.Invalidate()
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -817,15 +822,15 @@ Public Class dlgImgSelect
         End Try
     End Sub
 
-    Private Sub pbImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub pbImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Me.DoSelect(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(sender, PictureBox).Tag.ToString)
     End Sub
 
-    Private Sub pnlImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub pnlImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Me.DoSelect(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(sender, Panel).Tag.ToString)
     End Sub
 
-    Private Sub lblImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub lblImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
         Me.DoSelect(Convert.ToInt32(DirectCast(sender, Label).Name), DirectCast(sender, Label).Tag.ToString)
     End Sub
 
