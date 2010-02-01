@@ -917,9 +917,8 @@ Public Class Scanner
 
             Try
                 'first check if user added a show folder as a source
-                If dInfo.GetDirectories.Where(Function(s) Not Regex.IsMatch(s.Name, "^s(eason)?[\W_]*[0-9]+$", RegexOptions.IgnoreCase)).Count = 0 Then
-                    'all folders match the season regex... assume it's a single show folder and move dInfo up one directory
-                    dInfo = New DirectoryInfo(sPath)
+                If (dInfo.GetDirectories.Count = 0 AndAlso dInfo.GetFiles.Count > 0) OrElse dInfo.GetDirectories.Where(Function(s) Not Regex.IsMatch(s.Name, "^s(eason)?[\W_]*[0-9]+$", RegexOptions.IgnoreCase)).Count = 0 Then
+                    'only files in the folder or all folders match the season regex... assume it's a single show folder
                     currShowContainer = New TVShowContainer
                     currShowContainer.ShowPath = dInfo.FullName
                     currShowContainer.Source = sSource
@@ -961,8 +960,8 @@ Public Class Scanner
     ''' <summary>
     ''' Find all related files in a directory.
     ''' </summary>
-    ''' <param name="sPath">Full path of the directory.</param>
-    ''' <param name="sSource">Name of source.</param>
+    ''' <param name="tShow">TVShowContainer object</param>
+    ''' <param name="sPath">Path of folder contianing the episodes</param>
     Public Sub ScanForTVFiles(ByRef tShow As TVShowContainer, ByVal sPath As String)
 
         Dim di As New DirectoryInfo(sPath)
