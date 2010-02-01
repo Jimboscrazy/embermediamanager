@@ -916,27 +916,39 @@ Public Class Scanner
             Dim inInfo As DirectoryInfo
 
             Try
-
-                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d)).OrderBy(Function(d) d.Name)
-                    'first check if user added a show folder as a source
-                    If inDir.GetDirectories.Where(Function(s) Not Regex.IsMatch(s.Name, "^s(eason)?[\W_]*[0-9]+$", RegexOptions.IgnoreCase)).Count = 0 Then
-                        'all folders match the season regex... assume it's a single show folder and move dInfo up one directory
-                        inDir = New DirectoryInfo(inDir.Parent.FullName)
-                    End If
-
+                'first check if user added a show folder as a source
+                If dInfo.GetDirectories.Where(Function(s) Not Regex.IsMatch(s.Name, "^s(eason)?[\W_]*[0-9]+$", RegexOptions.IgnoreCase)).Count = 0 Then
+                    'all folders match the season regex... assume it's a single show folder and move dInfo up one directory
+                    dInfo = New DirectoryInfo(sPath)
                     currShowContainer = New TVShowContainer
-                    currShowContainer.ShowPath = inDir.FullName
+                    currShowContainer.ShowPath = dInfo.FullName
                     currShowContainer.Source = sSource
-                    Me.ScanForTVFiles(currShowContainer, inDir.FullName)
+                    Me.ScanForTVFiles(currShowContainer, dInfo.FullName)
 
-                    inInfo = New DirectoryInfo(inDir.FullName)
-
-                    For Each sDirs As DirectoryInfo In inInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
+                    For Each sDirs As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
                         Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
                     Next
 
                     LoadShow(currShowContainer)
-                Next
+                Else
+                    For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) isValidDir(d)).OrderBy(Function(d) d.Name)
+
+                        currShowContainer = New TVShowContainer
+                        currShowContainer.ShowPath = inDir.FullName
+                        currShowContainer.Source = sSource
+                        Me.ScanForTVFiles(currShowContainer, inDir.FullName)
+
+                        inInfo = New DirectoryInfo(inDir.FullName)
+
+                        For Each sDirs As DirectoryInfo In inInfo.GetDirectories.Where(Function(d) Regex.IsMatch(d.Name, "((s(eason)?)?([\W_])?([0-9]+))|specials?", RegexOptions.IgnoreCase) AndAlso (Master.eSettings.TVIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d)).OrderBy(Function(d) d.Name)
+                            Me.ScanForTVFiles(currShowContainer, sDirs.FullName)
+                        Next
+
+                        LoadShow(currShowContainer)
+                    Next
+
+                End If
+
 
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
