@@ -2092,6 +2092,10 @@ Public Class dlgSettings
     Private Sub chkSourceFromFolder_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSourceFromFolder.CheckedChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkSortBeforeScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSortBeforeScan.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
 #End Region '*** Form/Controls
 
 
@@ -2432,6 +2436,7 @@ Public Class dlgSettings
             Master.eSettings.EpisodeFanartCol = Me.chkEpisodeFanartCol.Checked
             Master.eSettings.EpisodeNfoCol = Me.chkEpisodeNfoCol.Checked
             Master.eSettings.SourceFromFolder = Me.chkSourceFromFolder.Checked
+            Master.eSettings.SortBeforeScan = Me.chkSortBeforeScan.Checked
 
             If Not String.IsNullOrEmpty(Me.txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(Me.txtProxyPort.Text) Then
                 Master.eSettings.ProxyURI = Me.txtProxyURI.Text
@@ -2747,6 +2752,7 @@ Public Class dlgSettings
             Me.chkEpisodeFanartCol.Checked = Master.eSettings.EpisodeFanartCol
             Me.chkEpisodeNfoCol.Checked = Master.eSettings.EpisodeNfoCol
             Me.chkSourceFromFolder.Checked = Master.eSettings.SourceFromFolder
+            Me.chkSortBeforeScan.Checked = Master.eSettings.SortBeforeScan
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Me.chkEnableProxy.Checked = True
@@ -3219,6 +3225,7 @@ Public Class dlgSettings
         Me.chkEpFanartOnly.Text = Master.eLang.GetString(145, "Only")
         Me.chkForceTitle.Text = Master.eLang.GetString(710, "Force Title Language:")
         Me.chkSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
+        Me.chkSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
 
         If Not IsNothing(tvSettings.SelectedNode) Then
             Me.lblCurrent.Text = tvSettings.SelectedNode.Text

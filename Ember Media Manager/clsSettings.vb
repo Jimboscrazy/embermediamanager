@@ -271,6 +271,7 @@ Public Class emmSettings
     Private _proxyport As Integer
     Private _proxycredentials As New NetworkCredential
     Private _sourcefromfolder As Boolean
+    Private _sortbeforescan As Boolean
 
     Public Property Version() As String
         Get
@@ -2486,6 +2487,15 @@ Public Class emmSettings
         End Set
     End Property
 
+    Public Property SortBeforeScan() As Boolean
+        Get
+            Return _sortbeforescan
+        End Get
+        Set(ByVal value As Boolean)
+            _sortbeforescan = value
+        End Set
+    End Property
+
     Public Sub New()
         Me.Clear()
     End Sub
@@ -2737,6 +2747,7 @@ Public Class emmSettings
         Me._proxyport = -1
         Me._proxycredentials = New NetworkCredential
         Me._sourcefromfolder = False
+        Me._sortbeforescan = False
     End Sub
 
     Public Sub Save()
