@@ -71,7 +71,8 @@ Public Class HTTP
 
             Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
                 Select Case True
-                    Case wrResponse.ContentType.ToLower.Contains("charset=utf-8")
+                    'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
+                    Case wrResponse.ContentType.ToLower.Contains("application/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
                         cEncoding = System.Text.Encoding.UTF8
                     Case Else
                         cEncoding = System.Text.Encoding.GetEncoding(28591)

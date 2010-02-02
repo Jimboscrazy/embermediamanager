@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="clsScrapeTVDB.vb" />
     <Compile Include="clsDatabase.vb" />
     <Compile Include="clsFileManip.vb" />
     <Compile Include="clsDVD.vb" />
@@ -201,6 +202,12 @@
       <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgTrailerFormat.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgTVDBSearchResults.Designer.vb">
+      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgTVDBSearchResults.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgTVSource.Designer.vb">
@@ -412,6 +419,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTrailerFormat.resx">
       <DependentUpon>dlgTrailerFormat.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgTVDBSearchResults.resx">
+      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTVSource.resx">
       <DependentUpon>dlgTVSource.vb</DependentUpon>

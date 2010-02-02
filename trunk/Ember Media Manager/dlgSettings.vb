@@ -2285,7 +2285,7 @@ Public Class dlgSettings
             Master.eSettings.NoSaveImagesToNfo = Me.chkNoSaveImagesToNfo.Checked
 
             If Me.cbTrailerQuality.SelectedValue IsNot Nothing Then
-                Master.eSettings.PreferredTrailerQuality = CType(Me.cbTrailerQuality.SelectedValue, Master.TrailerQuality)
+                Master.eSettings.PreferredTrailerQuality = DirectCast(Me.cbTrailerQuality.SelectedValue, Master.TrailerQuality)
             End If
 
             Master.eSettings.TrailerSites.Clear()
@@ -2437,6 +2437,13 @@ Public Class dlgSettings
             Master.eSettings.EpisodeNfoCol = Me.chkEpisodeNfoCol.Checked
             Master.eSettings.SourceFromFolder = Me.chkSourceFromFolder.Checked
             Master.eSettings.SortBeforeScan = Me.chkSortBeforeScan.Checked
+            Master.eSettings.TVDBLanguage = Me.cbTVLanguage.SelectedValue.ToString
+            Master.eSettings.TVDBLanguages = DirectCast(Me.cbTVLanguage.DataSource, List(Of TVDB.TVDBLanguage))
+            If Not String.IsNullOrEmpty(Me.txtTVDBMirror.Text) Then
+                Master.eSettings.TVDBMirror = Strings.Replace(Me.txtTVDBMirror.Text, "http://", String.Empty)
+            Else
+                Master.eSettings.TVDBMirror = "thetvdb.com"
+            End If
 
             If Not String.IsNullOrEmpty(Me.txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(Me.txtProxyPort.Text) Then
                 Master.eSettings.ProxyURI = Me.txtProxyURI.Text
@@ -2753,6 +2760,13 @@ Public Class dlgSettings
             Me.chkEpisodeNfoCol.Checked = Master.eSettings.EpisodeNfoCol
             Me.chkSourceFromFolder.Checked = Master.eSettings.SourceFromFolder
             Me.chkSortBeforeScan.Checked = Master.eSettings.SortBeforeScan
+            Me.cbTVLanguage.DataSource = Master.eSettings.TVDBLanguages
+            Me.cbTVLanguage.DisplayMember = "LongLang"
+            Me.cbTVLanguage.ValueMember = "ShortLang"
+            If Me.cbTVLanguage.Items.Count > 0 Then
+                Me.cbTVLanguage.SelectedValue = Master.eSettings.TVDBLanguage
+            End If
+            Me.txtTVDBMirror.Text = Master.eSettings.TVDBMirror
 
             If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
                 Me.chkEnableProxy.Checked = True
@@ -2872,12 +2886,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub RefreshSources()
+        Dim lvItem As ListViewItem
+
         lvMovies.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLcommand.CommandText = "SELECT * FROM sources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    Dim lvItem As New ListViewItem(SQLreader("ID").ToString)
+                    lvItem = New ListViewItem(SQLreader("ID").ToString)
                     lvItem.SubItems.Add(SQLreader("Name").ToString)
                     lvItem.SubItems.Add(SQLreader("Path").ToString)
                     lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Recursive")), "Yes", "No"))
@@ -2891,12 +2907,13 @@ Public Class dlgSettings
     End Sub
 
     Private Sub RefreshTVSources()
+        Dim lvItem As ListViewItem
         lvTVSources.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
             SQLcommand.CommandText = "SELECT * FROM TVSources;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    Dim lvItem As New ListViewItem(SQLreader("ID").ToString)
+                    lvItem = New ListViewItem(SQLreader("ID").ToString)
                     lvItem.SubItems.Add(SQLreader("Name").ToString)
                     lvItem.SubItems.Add(SQLreader("Path").ToString)
                     lvTVSources.Items.Add(lvItem)
@@ -2907,9 +2924,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub LoadShowRegex()
+        Dim lvItem As ListViewItem
         lvShowRegex.Items.Clear()
         For Each rShow As emmSettings.TVShowRegEx In Me.ShowRegex
-            Dim lvItem As New ListViewItem(rShow.ID.ToString)
+            lvItem = New ListViewItem(rShow.ID.ToString)
             lvItem.SubItems.Add(rShow.SeasonRegex)
             lvItem.SubItems.Add(If(rShow.SeasonFromDirectory, "Directory", "File"))
             lvItem.SubItems.Add(rShow.EpisodeRegex)
@@ -2921,7 +2939,7 @@ Public Class dlgSettings
                 Case emmSettings.EpRetrieve.FromSeasonResult
                     lvItem.SubItems.Add("Result")
             End Select
-            lvShowRegex.Items.Add(lvItem)
+            Me.lvShowRegex.Items.Add(lvItem)
         Next
     End Sub
 
@@ -3471,4 +3489,18 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
+        Dim tvdbLang As New TVDB.Scraper
+        Me.cbTVLanguage.DataSource = tvdbLang.GetLangs
+        Me.cbTVLanguage.DisplayMember = "LongLang"
+        Me.cbTVLanguage.ValueMember = "ShortLang"
+    End Sub
+
+    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
 End Class
