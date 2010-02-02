@@ -209,7 +209,6 @@ Public Class dlgIMDBSearchResults
         Me.lblTitle.Visible = areVisible
         Me.lblDirector.Visible = areVisible
         Me.lblGenre.Visible = areVisible
-        Me.txtOutline.Visible = areVisible
         Me.lblIMDB.Visible = areVisible
         Me.pbPoster.Visible = areVisible
     End Sub

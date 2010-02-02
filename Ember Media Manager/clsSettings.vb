@@ -272,6 +272,10 @@ Public Class emmSettings
     Private _proxycredentials As New NetworkCredential
     Private _sourcefromfolder As Boolean
     Private _sortbeforescan As Boolean
+    Private _tvdbmirror As String
+    Private _tvdblanguage As String
+    Private _tvdblanguages As New List(Of TVDB.TVDBLanguage)
+
 
     Public Property Version() As String
         Get
@@ -2192,307 +2196,334 @@ Public Class emmSettings
 
     Public Property ShowSeasonAll() As Boolean
         Get
-            Return _showseasonall
+            Return Me._showseasonall
         End Get
         Set(ByVal value As Boolean)
-            _showseasonall = value
+            Me._showseasonall = value
         End Set
     End Property
 
     Public Property ShowFolderJPG() As Boolean
         Get
-            Return _showfolderjpg
+            Return Me._showfolderjpg
         End Get
         Set(ByVal value As Boolean)
-            _showfolderjpg = value
+            Me._showfolderjpg = value
         End Set
     End Property
 
     Public Property ShowPosterTBN() As Boolean
         Get
-            Return _showpostertbn
+            Return Me._showpostertbn
         End Get
         Set(ByVal value As Boolean)
-            _showpostertbn = value
+            Me._showpostertbn = value
         End Set
     End Property
 
     Public Property ShowPosterJPG() As Boolean
         Get
-            Return _showposterjpg
+            Return Me._showposterjpg
         End Get
         Set(ByVal value As Boolean)
-            _showposterjpg = value
+            Me._showposterjpg = value
         End Set
     End Property
 
     Public Property ShowFanartJPG() As Boolean
         Get
-            Return _showfanartjpg
+            Return Me._showfanartjpg
         End Get
         Set(ByVal value As Boolean)
-            _showfanartjpg = value
+            Me._showfanartjpg = value
         End Set
     End Property
 
     Public Property ShowDashFanart() As Boolean
         Get
-            Return _showdashfanart
+            Return Me._showdashfanart
         End Get
         Set(ByVal value As Boolean)
-            _showdashfanart = value
+            Me._showdashfanart = value
         End Set
     End Property
 
     Public Property ShowDotFanart() As Boolean
         Get
-            Return _showdotfanart
+            Return Me._showdotfanart
         End Get
         Set(ByVal value As Boolean)
-            _showdotfanart = value
+            Me._showdotfanart = value
         End Set
     End Property
 
     Public Property SeasonXX() As Boolean
         Get
-            Return _seasonxx
+            Return Me._seasonxx
         End Get
         Set(ByVal value As Boolean)
-            _seasonxx = value
+            Me._seasonxx = value
         End Set
     End Property
 
     Public Property SeasonX() As Boolean
         Get
-            Return _seasonx
+            Return Me._seasonx
         End Get
         Set(ByVal value As Boolean)
-            _seasonx = value
+            Me._seasonx = value
         End Set
     End Property
 
     Public Property SeasonPosterTBN() As Boolean
         Get
-            Return _seasonpostertbn
+            Return Me._seasonpostertbn
         End Get
         Set(ByVal value As Boolean)
-            _seasonpostertbn = value
+            Me._seasonpostertbn = value
         End Set
     End Property
 
     Public Property SeasonPosterJPG() As Boolean
         Get
-            Return _seasonposterjpg
+            Return Me._seasonposterjpg
         End Get
         Set(ByVal value As Boolean)
-            _seasonposterjpg = value
+            Me._seasonposterjpg = value
         End Set
     End Property
 
     Public Property SeasonNameTBN() As Boolean
         Get
-            Return _seasonnametbn
+            Return Me._seasonnametbn
         End Get
         Set(ByVal value As Boolean)
-            _seasonnametbn = value
+            Me._seasonnametbn = value
         End Set
     End Property
 
     Public Property SeasonNameJPG() As Boolean
         Get
-            Return _seasonnamejpg
+            Return Me._seasonnamejpg
         End Get
         Set(ByVal value As Boolean)
-            _seasonnamejpg = value
+            Me._seasonnamejpg = value
         End Set
     End Property
 
     Public Property SeasonFolderJPG() As Boolean
         Get
-            Return _seasonfolderjpg
+            Return Me._seasonfolderjpg
         End Get
         Set(ByVal value As Boolean)
-            _seasonfolderjpg = value
+            Me._seasonfolderjpg = value
         End Set
     End Property
 
     Public Property SeasonFanartJPG() As Boolean
         Get
-            Return _seasonfanartjpg
+            Return Me._seasonfanartjpg
         End Get
         Set(ByVal value As Boolean)
-            _seasonfanartjpg = value
+            Me._seasonfanartjpg = value
         End Set
     End Property
 
     Public Property SeasonDashFanart() As Boolean
         Get
-            Return _seasondashfanart
+            Return Me._seasondashfanart
         End Get
         Set(ByVal value As Boolean)
-            _seasondashfanart = value
+            Me._seasondashfanart = value
         End Set
     End Property
 
     Public Property SeasonDotFanart() As Boolean
         Get
-            Return _seasondotfanart
+            Return Me._seasondotfanart
         End Get
         Set(ByVal value As Boolean)
-            _seasondotfanart = value
+            Me._seasondotfanart = value
         End Set
     End Property
 
     Public Property EpisodeTBN() As Boolean
         Get
-            Return _episodetbn
+            Return Me._episodetbn
         End Get
         Set(ByVal value As Boolean)
-            _episodetbn = value
+            Me._episodetbn = value
         End Set
     End Property
 
     Public Property EpisodeJPG() As Boolean
         Get
-            Return _episodejpg
+            Return Me._episodejpg
         End Get
         Set(ByVal value As Boolean)
-            _episodejpg = value
+            Me._episodejpg = value
         End Set
     End Property
 
     Public Property EpisodeDashFanart() As Boolean
         Get
-            Return _episodedashfanart
+            Return Me._episodedashfanart
         End Get
         Set(ByVal value As Boolean)
-            _episodedashfanart = value
+            Me._episodedashfanart = value
         End Set
     End Property
 
     Public Property EpisodeDotFanart() As Boolean
         Get
-            Return _episodedotfanart
+            Return Me._episodedotfanart
         End Get
         Set(ByVal value As Boolean)
-            _episodedotfanart = value
+            Me._episodedotfanart = value
         End Set
     End Property
 
     Public Property ShowPosterCol() As Boolean
         Get
-            Return _showpostercol
+            Return Me._showpostercol
         End Get
         Set(ByVal value As Boolean)
-            _showpostercol = value
+            Me._showpostercol = value
         End Set
     End Property
 
     Public Property ShowFanartCol() As Boolean
         Get
-            Return _showfanartcol
+            Return Me._showfanartcol
         End Get
         Set(ByVal value As Boolean)
-            _showfanartcol = value
+            Me._showfanartcol = value
         End Set
     End Property
 
     Public Property ShowNfoCol() As Boolean
         Get
-            Return _shownfocol
+            Return Me._shownfocol
         End Get
         Set(ByVal value As Boolean)
-            _shownfocol = value
+            Me._shownfocol = value
         End Set
     End Property
 
     Public Property SeasonPosterCol() As Boolean
         Get
-            Return _seasonpostercol
+            Return Me._seasonpostercol
         End Get
         Set(ByVal value As Boolean)
-            _seasonpostercol = value
+            Me._seasonpostercol = value
         End Set
     End Property
 
     Public Property SeasonFanartCol() As Boolean
         Get
-            Return _seasonfanartcol
+            Return Me._seasonfanartcol
         End Get
         Set(ByVal value As Boolean)
-            _seasonfanartcol = value
+            Me._seasonfanartcol = value
         End Set
     End Property
 
     Public Property EpisodePosterCol() As Boolean
         Get
-            Return _episodepostercol
+            Return Me._episodepostercol
         End Get
         Set(ByVal value As Boolean)
-            _episodepostercol = value
+            Me._episodepostercol = value
         End Set
     End Property
 
     Public Property EpisodeFanartCol() As Boolean
         Get
-            Return _episodefanartcol
+            Return Me._episodefanartcol
         End Get
         Set(ByVal value As Boolean)
-            _episodefanartcol = value
+            Me._episodefanartcol = value
         End Set
     End Property
 
     Public Property EpisodeNfoCol() As Boolean
         Get
-            Return _episodenfocol
+            Return Me._episodenfocol
         End Get
         Set(ByVal value As Boolean)
-            _episodenfocol = value
+            Me._episodenfocol = value
         End Set
     End Property
 
     Public Property ProxyURI() As String
         Get
-            Return _proxyuri
+            Return Me._proxyuri
         End Get
         Set(ByVal value As String)
-            _proxyuri = value
+            Me._proxyuri = value
         End Set
     End Property
 
     Public Property ProxyPort() As Integer
         Get
-            Return _proxyport
+            Return Me._proxyport
         End Get
         Set(ByVal value As Integer)
-            _proxyport = value
+            Me._proxyport = value
         End Set
     End Property
 
     Public Property ProxyCreds() As NetworkCredential
         Get
-            Return _proxycredentials
+            Return Me._proxycredentials
         End Get
         Set(ByVal value As NetworkCredential)
-            _proxycredentials = value
+            Me._proxycredentials = value
         End Set
     End Property
 
     Public Property SourceFromFolder() As Boolean
         Get
-            Return _sourcefromfolder
+            Return Me._sourcefromfolder
         End Get
         Set(ByVal value As Boolean)
-            _sourcefromfolder = value
+            Me._sourcefromfolder = value
         End Set
     End Property
 
     Public Property SortBeforeScan() As Boolean
         Get
-            Return _sortbeforescan
+            Return Me._sortbeforescan
         End Get
         Set(ByVal value As Boolean)
-            _sortbeforescan = value
+            Me._sortbeforescan = value
+        End Set
+    End Property
+
+    Public Property TVDBMirror() As String
+        Get
+            Return Me._tvdbmirror
+        End Get
+        Set(ByVal value As String)
+            Me._tvdbmirror = value
+        End Set
+    End Property
+
+    Public Property TVDBLanguage() As String
+        Get
+            Return Me._tvdblanguage
+        End Get
+        Set(ByVal value As String)
+            Me._tvdblanguage = value
+        End Set
+    End Property
+
+    Public Property TVDBLanguages() As List(Of TVDB.TVDBLanguage)
+        Get
+            Return Me._tvdblanguages
+        End Get
+        Set(ByVal value As List(Of TVDB.TVDBLanguage))
+            Me._tvdblanguages = value
         End Set
     End Property
 
@@ -2748,6 +2779,9 @@ Public Class emmSettings
         Me._proxycredentials = New NetworkCredential
         Me._sourcefromfolder = False
         Me._sortbeforescan = False
+        Me._tvdbmirror = "thetvdb.com"
+        Me._tvdblanguage = "en"
+        Me._tvdblanguages = New List(Of TVDB.TVDBLanguage)
     End Sub
 
     Public Sub Save()
@@ -2768,7 +2802,7 @@ Public Class emmSettings
             Dim xmlSerial As New XmlSerializer(GetType(emmSettings))
             If File.Exists(Path.Combine(Master.AppPath, "Settings.xml")) Then
                 Dim strmReader As New StreamReader(Path.Combine(Master.AppPath, "Settings.xml"))
-                Master.eSettings = CType(xmlSerial.Deserialize(strmReader), emmSettings)
+                Master.eSettings = DirectCast(xmlSerial.Deserialize(strmReader), emmSettings)
                 strmReader.Close()
             Else
                 Master.eSettings = New emmSettings

@@ -44,8 +44,8 @@ Public Class ListViewColumnSorter
 
         Try
             ' Cast the objects to be compared to ListViewItem objects.
-            listviewX = CType(x, ListViewItem)
-            listviewY = CType(y, ListViewItem)
+            listviewX = DirectCast(x, ListViewItem)
+            listviewY = DirectCast(y, ListViewItem)
 
             ' Compare the two items.
             If ByText Then

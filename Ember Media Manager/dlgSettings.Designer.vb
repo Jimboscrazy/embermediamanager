@@ -515,6 +515,13 @@ Partial Class dlgSettings
         Me.lblEpFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteEpFanart = New System.Windows.Forms.CheckBox
         Me.pnlTVScraper = New System.Windows.Forms.Panel
+        Me.gbTVScraperOptions = New System.Windows.Forms.GroupBox
+        Me.lblTVDBMirror = New System.Windows.Forms.Label
+        Me.txtTVDBMirror = New System.Windows.Forms.TextBox
+        Me.gbLanguage = New System.Windows.Forms.GroupBox
+        Me.lblTVLanguagePreferred = New System.Windows.Forms.Label
+        Me.btnTVLanguageFetch = New System.Windows.Forms.Button
+        Me.cbTVLanguage = New System.Windows.Forms.ComboBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -603,6 +610,9 @@ Partial Class dlgSettings
         CType(Me.tbEpPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbEpFanartOpts.SuspendLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlTVScraper.SuspendLayout()
+        Me.gbTVScraperOptions.SuspendLayout()
+        Me.gbLanguage.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -5691,11 +5701,80 @@ Partial Class dlgSettings
         '
         Me.pnlTVScraper.BackColor = System.Drawing.Color.White
         Me.pnlTVScraper.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlTVScraper.Controls.Add(Me.gbTVScraperOptions)
         Me.pnlTVScraper.Location = New System.Drawing.Point(208, 96)
         Me.pnlTVScraper.Name = "pnlTVScraper"
         Me.pnlTVScraper.Size = New System.Drawing.Size(597, 353)
         Me.pnlTVScraper.TabIndex = 72
         Me.pnlTVScraper.Visible = False
+        '
+        'gbTVScraperOptions
+        '
+        Me.gbTVScraperOptions.Controls.Add(Me.lblTVDBMirror)
+        Me.gbTVScraperOptions.Controls.Add(Me.txtTVDBMirror)
+        Me.gbTVScraperOptions.Controls.Add(Me.gbLanguage)
+        Me.gbTVScraperOptions.Location = New System.Drawing.Point(3, 3)
+        Me.gbTVScraperOptions.Name = "gbTVScraperOptions"
+        Me.gbTVScraperOptions.Size = New System.Drawing.Size(200, 215)
+        Me.gbTVScraperOptions.TabIndex = 0
+        Me.gbTVScraperOptions.TabStop = False
+        Me.gbTVScraperOptions.Text = "Options"
+        '
+        'lblTVDBMirror
+        '
+        Me.lblTVDBMirror.AutoSize = True
+        Me.lblTVDBMirror.Location = New System.Drawing.Point(6, 17)
+        Me.lblTVDBMirror.Name = "lblTVDBMirror"
+        Me.lblTVDBMirror.Size = New System.Drawing.Size(68, 13)
+        Me.lblTVDBMirror.TabIndex = 2
+        Me.lblTVDBMirror.Text = "TVDB Mirror:"
+        '
+        'txtTVDBMirror
+        '
+        Me.txtTVDBMirror.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtTVDBMirror.Location = New System.Drawing.Point(6, 32)
+        Me.txtTVDBMirror.Name = "txtTVDBMirror"
+        Me.txtTVDBMirror.Size = New System.Drawing.Size(189, 20)
+        Me.txtTVDBMirror.TabIndex = 1
+        '
+        'gbLanguage
+        '
+        Me.gbLanguage.Controls.Add(Me.lblTVLanguagePreferred)
+        Me.gbLanguage.Controls.Add(Me.btnTVLanguageFetch)
+        Me.gbLanguage.Controls.Add(Me.cbTVLanguage)
+        Me.gbLanguage.Location = New System.Drawing.Point(5, 63)
+        Me.gbLanguage.Name = "gbLanguage"
+        Me.gbLanguage.Size = New System.Drawing.Size(190, 100)
+        Me.gbLanguage.TabIndex = 0
+        Me.gbLanguage.TabStop = False
+        Me.gbLanguage.Text = "Language"
+        '
+        'lblTVLanguagePreferred
+        '
+        Me.lblTVLanguagePreferred.AutoSize = True
+        Me.lblTVLanguagePreferred.Location = New System.Drawing.Point(13, 22)
+        Me.lblTVLanguagePreferred.Name = "lblTVLanguagePreferred"
+        Me.lblTVLanguagePreferred.Size = New System.Drawing.Size(104, 13)
+        Me.lblTVLanguagePreferred.TabIndex = 2
+        Me.lblTVLanguagePreferred.Text = "Preferred Language:"
+        '
+        'btnTVLanguageFetch
+        '
+        Me.btnTVLanguageFetch.Location = New System.Drawing.Point(12, 68)
+        Me.btnTVLanguageFetch.Name = "btnTVLanguageFetch"
+        Me.btnTVLanguageFetch.Size = New System.Drawing.Size(166, 23)
+        Me.btnTVLanguageFetch.TabIndex = 1
+        Me.btnTVLanguageFetch.Text = "Fetch Available Languages"
+        Me.btnTVLanguageFetch.UseVisualStyleBackColor = True
+        '
+        'cbTVLanguage
+        '
+        Me.cbTVLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVLanguage.FormattingEnabled = True
+        Me.cbTVLanguage.Location = New System.Drawing.Point(12, 39)
+        Me.cbTVLanguage.Name = "cbTVLanguage"
+        Me.cbTVLanguage.Size = New System.Drawing.Size(166, 21)
+        Me.cbTVLanguage.TabIndex = 0
         '
         'dlgSettings
         '
@@ -5711,6 +5790,9 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.pnlTVSources)
+        Me.Controls.Add(Me.pnlTVImages)
+        Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
         Me.Controls.Add(Me.pnlMovies)
         Me.Controls.Add(Me.pnlScraper)
@@ -5719,9 +5801,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlShows)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVImages)
-        Me.Controls.Add(Me.pnlImages)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -5870,6 +5949,11 @@ Partial Class dlgSettings
         Me.gbEpFanartOpts.ResumeLayout(False)
         Me.gbEpFanartOpts.PerformLayout()
         CType(Me.tbEpFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlTVScraper.ResumeLayout(False)
+        Me.gbTVScraperOptions.ResumeLayout(False)
+        Me.gbTVScraperOptions.PerformLayout()
+        Me.gbLanguage.ResumeLayout(False)
+        Me.gbLanguage.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -6353,4 +6437,11 @@ Partial Class dlgSettings
     Friend WithEvents lblProxyPW As System.Windows.Forms.Label
     Friend WithEvents chkSourceFromFolder As System.Windows.Forms.CheckBox
     Friend WithEvents chkSortBeforeScan As System.Windows.Forms.CheckBox
+    Friend WithEvents gbTVScraperOptions As System.Windows.Forms.GroupBox
+    Friend WithEvents gbLanguage As System.Windows.Forms.GroupBox
+    Friend WithEvents lblTVLanguagePreferred As System.Windows.Forms.Label
+    Friend WithEvents btnTVLanguageFetch As System.Windows.Forms.Button
+    Friend WithEvents cbTVLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents txtTVDBMirror As System.Windows.Forms.TextBox
+    Friend WithEvents lblTVDBMirror As System.Windows.Forms.Label
 End Class
