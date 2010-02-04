@@ -52,8 +52,14 @@ Public Class dlgTVDBSearchResults
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+
+        If Me.lvSearchResults.SelectedItems.Count > 0 Then
+            Me.Label3.Text = Master.eLang.GetString(999, "Downloading show info...")
+            Me.pnlLoading.Visible = True
+
+            TVDB.DownloadSeriesAsync(DirectCast(Me.lvSearchResults.SelectedItems(0).Tag, TVDB.TVSearchResults).ID)
+        End If
+
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -73,6 +79,7 @@ Public Class dlgTVDBSearchResults
     Private Sub dlgTVDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             AddHandler TVDB.SearchResultsDownloaded, AddressOf SearchResultsDownloaded
+            AddHandler TVDB.ShowDownloaded, AddressOf ShowDownloaded
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -82,6 +89,13 @@ Public Class dlgTVDBSearchResults
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
+    End Sub
+
+    Private Sub ShowDownloaded(ByVal tvdbShow As TVDB.TVDBShow)
+        Master.tmpTVDBShow = tvdbShow
+
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.Close()
     End Sub
 
     Private Sub SearchResultsDownloaded(ByVal sResults As List(Of TVDB.TVSearchResults))
@@ -137,6 +151,7 @@ Public Class dlgTVDBSearchResults
             Me.lblTitle.Text = SelectedShow.Name
             Me.txtOutline.Text = SelectedShow.Overview
             Me.lblAired.Text = SelectedShow.Aired
+            Me.OK_Button.Enabled = True
         End If
         Me.ControlsVisible(True)
     End Sub

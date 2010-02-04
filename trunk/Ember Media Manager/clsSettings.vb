@@ -2664,7 +2664,7 @@ Public Class emmSettings
         Me._usehmforruntime = False
         Me._genrefilter = "[All]"
         Me._useetasfa = False
-        Me._useimgcache = True
+        Me._useimgcache = False
         Me._useimgcacheupdater = False
         Me._persistimagecache = False
         Me._skiplessthan = 0

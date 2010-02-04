@@ -46,6 +46,34 @@ Public Class HTTP
         Me._responseuri = String.Empty
     End Sub
 
+    Public Function DownloadZip(ByVal URL As String) As Byte()
+        Dim sResponse As Byte()
+
+        Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+        wrRequest.Timeout = 10000
+
+        If Not String.IsNullOrEmpty(Master.eSettings.ProxyURI) AndAlso Master.eSettings.ProxyPort >= 0 Then
+            Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
+            wProxy.BypassProxyOnLocal = True
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyCreds.UserName) Then
+                wProxy.Credentials = Master.eSettings.ProxyCreds
+            Else
+                wProxy.Credentials = CredentialCache.DefaultCredentials
+            End If
+            wrRequest.Proxy = wProxy
+        End If
+
+        Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
+            Using rStream As Stream = wrResponse.GetResponseStream
+                Dim rLength As Integer = Convert.ToInt32(rStream.Length)
+                sResponse = New Byte(rLength) {}
+                rStream.Read(sResponse, 0, rLength)
+            End Using
+        End Using
+
+        Return sResponse
+    End Function
+
     Public Function DownloadData(ByVal URL As String) As String
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding

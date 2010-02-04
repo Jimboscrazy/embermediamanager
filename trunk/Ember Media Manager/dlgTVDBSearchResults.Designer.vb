@@ -49,6 +49,7 @@ Partial Class dlgTVDBSearchResults
         '
         'OK_Button
         '
+        Me.OK_Button.Enabled = False
         Me.OK_Button.Location = New System.Drawing.Point(486, 319)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
