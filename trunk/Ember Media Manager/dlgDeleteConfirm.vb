@@ -43,8 +43,8 @@ Public Class dlgDeleteConfirm
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(649, "Confirm Items To Be Deleted")
-        Me.btnToggleAllFiles.Text = Master.eLang.GetString(650, "Toggle All Files")
+        Me.Text = Master.eLang.GetString(714, "Confirm Items To Be Deleted")
+        Me.btnToggleAllFiles.Text = Master.eLang.GetString(715, "Toggle All Files")
 
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")

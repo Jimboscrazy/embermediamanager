@@ -278,7 +278,7 @@ Public Class dlgTrailer
         Me.lblStatus.Text = Master.eLang.GetString(377, "Compiling trailer list...")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(378, "Preview Trailer")
         Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
-        Me.Label2.Text = Master.eLang.GetString(644, "Local Trailer:")
+        Me.Label2.Text = Master.eLang.GetString(713, "Local Trailer:")
     End Sub
 
     Private Sub dlgTrailer_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
