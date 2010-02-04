@@ -44,19 +44,7 @@ Public Class dlgTrailer
         If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*", RegexOptions.IgnoreCase) Then
             tURL = Me.txtYouTube.Text
         ElseIf Me.lbTrailers.SelectedItems.Count > 0 Then
-            If Regex.IsMatch(Me.lbTrailers.SelectedItem.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*", RegexOptions.IgnoreCase) Then
-                Using dFormats As New dlgTrailerFormat
-                    Dim sFormat As String = dFormats.ShowDialog(Me.lbTrailers.SelectedItem.ToString)
-
-                    If Not String.IsNullOrEmpty(sFormat) Then
-                        tURL = sFormat
-                    Else
-                        didCancel = True
-                    End If
-                End Using
-            Else
-                tURL = lbTrailers.SelectedItem.ToString
-            End If
+            tURL = lbTrailers.SelectedItem.ToString
         End If
 
         If Not didCancel Then
