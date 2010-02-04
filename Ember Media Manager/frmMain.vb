@@ -249,9 +249,7 @@ Public Class frmMain
             If Not isCL Then Master.DB.Close()
 
             If Not Master.eSettings.PersistImgCache Then
-                If Directory.Exists(Master.TempPath) Then
-                    FileManip.Delete.DeleteDirectory(Master.TempPath)
-                End If
+                Me.ClearCache()
             End If
         Catch
             'force close
@@ -367,7 +365,7 @@ Public Class frmMain
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
 
-        Master.DoubleBuffer(Me.dgvMediaList)
+        Master.DGVDoubleBuffer(Me.dgvMediaList)
 
         Dim sPath As String = String.Concat(Master.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
         If File.Exists(sPath) Then
@@ -2572,11 +2570,7 @@ Public Class frmMain
     End Sub
 
     Private Sub ClearAllCachesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearAllCachesToolStripMenuItem.Click
-        If Directory.Exists(Master.TempPath) Then
-            FileManip.Delete.DeleteDirectory(Master.TempPath)
-        End If
-
-        Directory.CreateDirectory(Master.TempPath)
+        Me.ClearCache()
     End Sub
 
     Private Sub btnFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp.Click
@@ -7025,6 +7019,20 @@ doCancel:
         Me.tslStatus.Text = sText.Replace("&", "&&")
     End Sub
 
+    Private Sub ClearCache()
+        If Directory.Exists(Master.TempPath) Then
+            Dim dInfo As New DirectoryInfo(Master.TempPath)
+            For Each dDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) Not d.Name.ToLower = "shows")
+                FileManip.Delete.DeleteDirectory(dDir.FullName)
+            Next
+
+            For Each fFile As FileInfo In dInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly)
+                fFile.Delete()
+            Next
+        Else
+            Directory.CreateDirectory(Master.TempPath)
+        End If
+    End Sub
 #End Region '*** Routines/Functions
 
 End Class

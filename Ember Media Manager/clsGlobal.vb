@@ -42,6 +42,7 @@ Public Class Master
     Public Shared CanScanDiscImage As Boolean
     Public Shared SourcesList As New List(Of String)
     Public Shared tmpMovie As New Media.Movie
+    Public Shared tmpTVDBShow As New TVDB.TVDBShow
 
     'Global Enums
     Public Enum PosterSize As Integer
@@ -530,10 +531,18 @@ Public Class Master
         End Using
     End Sub
 
-    Public Shared Sub DoubleBuffer(ByVal iCon As Control)
-        Dim conType As Type = iCon.GetType
+    Public Shared Sub DGVDoubleBuffer(ByRef cDGV As DataGridView)
+        Dim conType As Type = cDGV.GetType
         Dim pi As PropertyInfo = conType.GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic)
-        pi.SetValue(iCon, True, Nothing)
+        pi.SetValue(cDGV, True, Nothing)
     End Sub
 
+    Public Shared Function StringToSize(ByVal sString As String) As Size
+        If Regex.IsMatch(sString, "^[0-9]+x[0-9]+$", RegexOptions.IgnoreCase) Then
+            Dim SplitSize() As String = Strings.Split(sString, "x")
+            Return New Size With {.Width = Convert.ToInt32(SplitSize(0)), .Height = Convert.ToInt32(SplitSize(1))}
+        Else
+            Return New Size With {.Width = 0, .Height = 0}
+        End If
+    End Function
 End Class

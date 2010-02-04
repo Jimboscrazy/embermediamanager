@@ -1184,6 +1184,7 @@ Namespace Media
         Private _credits As String
         Private _actors As New List(Of Person)
         Private _fileInfo As New MediaInfo.Fileinfo
+        Private _posterurl As String
 
         <XmlElement("title")> _
         Public Property Title() As String
@@ -1361,6 +1362,16 @@ Namespace Media
             End Get
         End Property
 
+        <XmlIgnore()> _
+        Public Property PosterURL() As String
+            Get
+                Return Me._posterurl
+            End Get
+            Set(ByVal value As String)
+                Me._posterurl = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -1376,6 +1387,7 @@ Namespace Media
             _credits = String.Empty
             _actors.Clear()
             _fileInfo = New MediaInfo.Fileinfo
+            _posterurl = String.Empty
         End Sub
     End Class
 
