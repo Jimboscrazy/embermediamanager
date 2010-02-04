@@ -943,7 +943,11 @@ Public Class dlgSettings
         ElseIf e.Index = 1 AndAlso (e.NewValue = CheckState.Checked OrElse Me.lbTrailerSites.GetItemChecked(0)) Then
             Me.cbTrailerQuality.Enabled = True
         Else
-            Me.cbTrailerQuality.Enabled = False
+            If Me.lbTrailerSites.GetItemChecked(0) OrElse Me.lbTrailerSites.GetItemChecked(1) Then
+                Me.cbTrailerQuality.Enabled = True
+            Else
+                Me.cbTrailerQuality.Enabled = False
+            End If
         End If
     End Sub
 
@@ -3502,5 +3506,9 @@ Public Class dlgSettings
 
     Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
         Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub lbTrailerSites_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailerSites.SelectedIndexChanged
+
     End Sub
 End Class

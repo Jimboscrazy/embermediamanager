@@ -59,9 +59,9 @@ Public Class Trailers
             Try
                 Select Case TP
                     Case Master.TrailerPages.AllHTPC
-                        Me.GetAllHTPCTrailer(BreakAfterFound)
+                        Me.GetAllHTPCTrailer()
                     Case Master.TrailerPages.TMDB
-                        Me.GetTMDBTrailer(BreakAfterFound)
+                        Me.GetTMDBTrailer()
                     Case Master.TrailerPages.IMDB
                         Me.GetImdbTrailer()
                 End Select
@@ -114,67 +114,23 @@ Public Class Trailers
         End If
     End Sub
 
-    Private Sub GetAllHTPCTrailer(ByVal GetFormats As Boolean)
+    Private Sub GetAllHTPCTrailer()
         Dim AllHTPC As New AllHTPC.Scraper
         Dim YT As String = AllHTPC.GetTrailer(_ImdbID)
 
         If Not String.IsNullOrEmpty(YT) Then
-            If GetFormats Then
-                Dim YTPage As String = WebPage.DownloadData(YT)
-                If Not String.IsNullOrEmpty(YTPage) Then
-
-                    'new YouTube scraper
-                    Dim scraper As New YouTube.Scraper()
-                    scraper.GetVideoLinks(YT)
-
-                    With scraper.VideoLinks
-                        If .Count > 0 Then
-                            'check if we have preferred quality
-                            If .ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
-                                Me._TrailerList.Add(.Values(.IndexOfKey(Master.eSettings.PreferredTrailerQuality)).URL)
-                            Else
-                                'just add the first link (best available quality)
-                                Me._TrailerList.Add(.Values(0).URL)
-                            End If
-                        End If
-                    End With
-                End If
-            Else
-                Me._TrailerList.Add(YT)
-            End If
+            Me._TrailerList.Add(YT)
         End If
 
-            AllHTPC = Nothing
+        AllHTPC = Nothing
     End Sub
 
-    Private Sub GetTMDBTrailer(ByVal GetFormats As Boolean)
+    Private Sub GetTMDBTrailer()
         Dim TMDB As New TMDB.Scraper
         Dim YT As String = TMDB.GetTrailers(_ImdbID)
 
         If Not String.IsNullOrEmpty(YT) Then
-            If GetFormats Then
-                Dim YTPage As String = WebPage.DownloadData(YT)
-                If Not String.IsNullOrEmpty(YTPage) Then
-
-                    'new YouTube scraper
-                    Dim scraper As New YouTube.Scraper()
-                    scraper.GetVideoLinks(YT)
-
-                    With scraper.VideoLinks
-                        If .Count > 0 Then
-                            'check if we have preferred quality
-                            If .ContainsKey(Master.eSettings.PreferredTrailerQuality) Then
-                                Me._TrailerList.Add(.Values(.IndexOfKey(Master.eSettings.PreferredTrailerQuality)).URL)
-                            Else
-                                'just add the first link (best available quality)
-                                Me._TrailerList.Add(.Values(0).URL)
-                            End If
-                        End If
-                    End With
-                End If
-            Else
-                Me._TrailerList.Add(YT)
-            End If
+            Me._TrailerList.Add(YT)
         End If
 
         TMDB = Nothing
