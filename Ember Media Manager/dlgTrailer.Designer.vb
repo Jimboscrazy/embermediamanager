@@ -27,6 +27,9 @@ Partial Class dlgTrailer
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.lbTrailers = New System.Windows.Forms.ListBox
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.pnlStatus = New System.Windows.Forms.Panel
+        Me.lblStatus = New System.Windows.Forms.Label
+        Me.pbStatus = New System.Windows.Forms.ProgressBar
         Me.btnGetTrailers = New System.Windows.Forms.Button
         Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.btnBrowse = New System.Windows.Forms.Button
@@ -34,15 +37,12 @@ Partial Class dlgTrailer
         Me.Label2 = New System.Windows.Forms.Label
         Me.txtYouTube = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
-        Me.pnlStatus = New System.Windows.Forms.Panel
-        Me.lblStatus = New System.Windows.Forms.Label
-        Me.pbStatus = New System.Windows.Forms.ProgressBar
         Me.btnPlayTrailer = New System.Windows.Forms.Button
         Me.btnSetNfo = New System.Windows.Forms.Button
         Me.ofdTrailer = New System.Windows.Forms.OpenFileDialog
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -85,6 +85,37 @@ Partial Class dlgTrailer
         Me.GroupBox1.TabIndex = 2
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Select Trailer to Download"
+        '
+        'pnlStatus
+        '
+        Me.pnlStatus.BackColor = System.Drawing.Color.White
+        Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlStatus.Controls.Add(Me.lblStatus)
+        Me.pnlStatus.Controls.Add(Me.pbStatus)
+        Me.pnlStatus.Location = New System.Drawing.Point(112, 82)
+        Me.pnlStatus.Name = "pnlStatus"
+        Me.pnlStatus.Size = New System.Drawing.Size(200, 54)
+        Me.pnlStatus.TabIndex = 69
+        Me.pnlStatus.Visible = False
+        '
+        'lblStatus
+        '
+        Me.lblStatus.AutoSize = True
+        Me.lblStatus.Location = New System.Drawing.Point(3, 10)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Size = New System.Drawing.Size(104, 13)
+        Me.lblStatus.TabIndex = 1
+        Me.lblStatus.Text = "Compiling trailer list..."
+        Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'pbStatus
+        '
+        Me.pbStatus.Location = New System.Drawing.Point(3, 32)
+        Me.pbStatus.MarqueeAnimationSpeed = 25
+        Me.pbStatus.Name = "pbStatus"
+        Me.pbStatus.Size = New System.Drawing.Size(192, 17)
+        Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.pbStatus.TabIndex = 0
         '
         'btnGetTrailers
         '
@@ -151,40 +182,9 @@ Partial Class dlgTrailer
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(6, 14)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(79, 13)
+        Me.Label1.Size = New System.Drawing.Size(145, 13)
         Me.Label1.TabIndex = 0
-        Me.Label1.Text = "YouTube URL:"
-        '
-        'pnlStatus
-        '
-        Me.pnlStatus.BackColor = System.Drawing.Color.White
-        Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlStatus.Controls.Add(Me.lblStatus)
-        Me.pnlStatus.Controls.Add(Me.pbStatus)
-        Me.pnlStatus.Location = New System.Drawing.Point(112, 82)
-        Me.pnlStatus.Name = "pnlStatus"
-        Me.pnlStatus.Size = New System.Drawing.Size(200, 54)
-        Me.pnlStatus.TabIndex = 69
-        Me.pnlStatus.Visible = False
-        '
-        'lblStatus
-        '
-        Me.lblStatus.AutoSize = True
-        Me.lblStatus.Location = New System.Drawing.Point(3, 10)
-        Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(104, 13)
-        Me.lblStatus.TabIndex = 1
-        Me.lblStatus.Text = "Compiling trailer list..."
-        Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'pbStatus
-        '
-        Me.pbStatus.Location = New System.Drawing.Point(3, 32)
-        Me.pbStatus.MarqueeAnimationSpeed = 25
-        Me.pbStatus.Name = "pbStatus"
-        Me.pbStatus.Size = New System.Drawing.Size(192, 17)
-        Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.pbStatus.TabIndex = 0
+        Me.Label1.Text = "Direct Link or YouTube URL:"
         '
         'btnPlayTrailer
         '
@@ -229,10 +229,10 @@ Partial Class dlgTrailer
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Trailer"
         Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
         Me.pnlStatus.ResumeLayout(False)
         Me.pnlStatus.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub

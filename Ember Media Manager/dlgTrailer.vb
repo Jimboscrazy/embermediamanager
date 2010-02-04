@@ -41,10 +41,12 @@ Public Class dlgTrailer
     Private Sub btnSetNfo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetNfo.Click
         Dim didCancel As Boolean = False
 
-        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*", RegexOptions.IgnoreCase) Then
+        If StringManip.isValidURL(Me.txtYouTube.Text) Then
             tURL = Me.txtYouTube.Text
         ElseIf Me.lbTrailers.SelectedItems.Count > 0 Then
             tURL = lbTrailers.SelectedItem.ToString
+        Else
+            didCancel = True
         End If
 
         If Not didCancel Then
@@ -122,6 +124,11 @@ Public Class dlgTrailer
                     didCancel = True
                 End If
             End Using
+        ElseIf StringManip.isValidURL(Me.txtYouTube.Text) Then
+            Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
+            Me.bwDownloadTrailer.WorkerReportsProgress = True
+            Me.bwDownloadTrailer.WorkerSupportsCancellation = True
+            Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = Me.txtYouTube.Text, .bType = CloseDialog})
         Else
             If Regex.IsMatch(Me.lbTrailers.SelectedItem.ToString, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") Then
                 Using dFormats As New dlgTrailerFormat
@@ -267,7 +274,7 @@ Public Class dlgTrailer
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         Me.GroupBox1.Text = Master.eLang.GetString(374, "Select Trailer to Download")
         Me.GroupBox2.Text = Master.eLang.GetString(375, "Manual Trailer Entry")
-        Me.Label1.Text = Master.eLang.GetString(376, "YouTube URL:")
+        Me.Label1.Text = Master.eLang.GetString(376, "Direct Link or YouTube URL:")
         Me.lblStatus.Text = Master.eLang.GetString(377, "Compiling trailer list...")
         Me.btnPlayTrailer.Text = Master.eLang.GetString(378, "Preview Trailer")
         Me.btnSetNfo.Text = Master.eLang.GetString(379, "Set To Nfo")
@@ -344,7 +351,7 @@ Public Class dlgTrailer
             Me.prePath = String.Empty
         End If
 
-        If Regex.IsMatch(Me.txtYouTube.Text, "http:\/\/.*youtube.*\/watch\?v=(.{11})&?.*") OrElse Me.lbTrailers.SelectedItems.Count > 0 OrElse Me.txtManual.Text.Length > 0 Then
+        If StringManip.isValidURL(Me.txtYouTube.Text) OrElse Me.lbTrailers.SelectedItems.Count > 0 OrElse Me.txtManual.Text.Length > 0 Then
             Me.OK_Button.Enabled = True
             Me.btnPlayTrailer.Enabled = True
             If Me.txtManual.Text.Length > 0 Then
