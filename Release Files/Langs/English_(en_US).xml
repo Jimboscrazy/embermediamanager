@@ -712,4 +712,7 @@
   <string id="710">Force Title Language:</string>
   <string id="711">Include Folder Name in Source Type Check</string>
   <string id="712">Sort files into folders before each library update</string>
+  <string id="713">Local Trailer:</string>
+  <string id="714">Confirm Items To Be Deleted</string>
+  <string id="715">Toggle All Files</string>
 </strings>
