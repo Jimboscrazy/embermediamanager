@@ -29,6 +29,11 @@ Public Class dlgModuleSettings
         If lstModules.SelectedItems.Count > 0 Then
             btnSetup.Enabled = True
             btnEnable.Enabled = True
+            If lstModules.SelectedItems.Item(0).SubItems(1).Text = "Enabled" Then
+                btnEnable.Text = "Disable"
+            Else
+                btnEnable.Text = "Enable"
+            End If
         Else
             btnSetup.Enabled = False
             btnEnable.Enabled = False
@@ -42,6 +47,20 @@ Public Class dlgModuleSettings
     End Sub
 
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+        ModulesManager.SaveSettings()
         Me.Close()
+    End Sub
+
+    Private Sub btnEnable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEnable.Click
+        If btnEnable.Text = "Enable" Then
+            btnEnable.Text = "Disable"
+            lstModules.SelectedItems.Item(0).SubItems(1).Text = "Enabled"
+            ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, True)
+        Else
+            btnEnable.Text = "Enable"
+            lstModules.SelectedItems.Item(0).SubItems(1).Text = "Disabled"
+            ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, False)
+        End If
+
     End Sub
 End Class

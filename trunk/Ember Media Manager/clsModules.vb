@@ -2,6 +2,8 @@
 Option Strict Off
 Imports System
 Imports System.IO
+Imports System.Xml
+Imports System.Xml.Serialization
 
 Public Interface EmberExternalModule
     Sub Enable()
@@ -13,6 +15,11 @@ Public Interface EmberExternalModule
 End Interface
 
 Public Class EmberModules
+    <XmlRoot("EmberModule")> _
+    Class _XMLEmberModuleClass
+        Public Enabled As Boolean
+        Public AssemblyName As String
+    End Class
     Class _externalProcessorModuleClass
         Public ProcessorModule As Object
         Public Enabled As Boolean
@@ -53,8 +60,18 @@ Public Class EmberModules
                         Dim _externalProcessorModule As New _externalProcessorModuleClass
                         _externalProcessorModule.ProcessorModule = ProcessorModule
                         _externalProcessorModule.AssemblyName = Path.GetFileName(file)
+                        For Each i In Master.eSettings.EmberModules
+                            If i.AssemblyName = _externalProcessorModule.AssemblyName Then
+                                _externalProcessorModule.Enabled = i.Enabled
+                            End If
+                        Next
                         externalProcessorModules.Add(_externalProcessorModule)
                         ProcessorModule.Init(EmberAPI)
+                        If _externalProcessorModule.Enabled Then
+                            ProcessorModule.Enable()
+                        Else
+                            ProcessorModule.Disable()
+                        End If
                     End If
                 Catch ex As Exception
                 End Try
@@ -84,5 +101,24 @@ Public Class EmberModules
                 _externalProcessorModule.ProcessorModule.Setup()
             End If
         Next
+    End Sub
+    Public Sub SetModuleEnable(ByVal ModuleAssembly As String, ByVal value As Boolean)
+        For Each _externalProcessorModule In externalProcessorModules
+            If _externalProcessorModule.AssemblyName = ModuleAssembly Then
+                _externalProcessorModule.Enabled = value
+            End If
+        Next
+    End Sub
+    Public Sub SaveSettings()
+        Dim tmpForXML As New List(Of _XMLEmberModuleClass)
+
+        For Each _externalProcessorModule As _externalProcessorModuleClass In externalProcessorModules
+            Dim t As New _XMLEmberModuleClass
+            t.AssemblyName = _externalProcessorModule.AssemblyName
+            t.Enabled = _externalProcessorModule.Enabled
+            tmpForXML.Add(t)
+        Next
+        Master.eSettings.EmberModules = tmpForXML
+        Master.eSettings.Save()
     End Sub
 End Class
