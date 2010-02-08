@@ -545,4 +545,28 @@ Public Class Master
             Return New Size With {.Width = 0, .Height = 0}
         End If
     End Function
+
+    Public Shared Function ReadStreamToEnd(ByVal rStream As Stream) As Byte()
+        Dim StreamBuffer(4096) As Byte
+        Dim BlockSize As Integer = 0
+        Using mStream As MemoryStream = New MemoryStream()
+            Do
+                BlockSize = rStream.Read(StreamBuffer, 0, StreamBuffer.Length)
+                If BlockSize > 0 Then mStream.Write(StreamBuffer, 0, BlockSize)
+            Loop While BlockSize > 0
+            Return mStream.ToArray
+        End Using
+    End Function
+
+    Public Shared Function ReadImageStreamToEnd(ByVal rStream As Stream) As Image
+        Dim StreamBuffer(4096) As Byte
+        Dim BlockSize As Integer = 0
+        Using mStream As MemoryStream = New MemoryStream()
+            Do
+                BlockSize = rStream.Read(StreamBuffer, 0, StreamBuffer.Length)
+                If BlockSize > 0 Then mStream.Write(StreamBuffer, 0, BlockSize)
+            Loop While BlockSize > 0
+            Return Image.FromStream(mStream)
+        End Using
+    End Function
 End Class

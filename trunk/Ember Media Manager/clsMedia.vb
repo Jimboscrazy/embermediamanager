@@ -1185,6 +1185,7 @@ Namespace Media
         Private _actors As New List(Of Person)
         Private _fileInfo As New MediaInfo.Fileinfo
         Private _posterurl As String
+        Private _localfile As String
 
         <XmlElement("title")> _
         Public Property Title() As String
@@ -1372,22 +1373,33 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
 
         Public Sub Clear()
-            _title = String.Empty
-            _season = -1
-            _episode = -1
-            _aired = String.Empty
-            _rating = String.Empty
-            _plot = String.Empty
-            _director = String.Empty
-            _credits = String.Empty
-            _actors.Clear()
-            _fileInfo = New MediaInfo.Fileinfo
-            _posterurl = String.Empty
+            Me._title = String.Empty
+            Me._season = -1
+            Me._episode = -1
+            Me._aired = String.Empty
+            Me._rating = String.Empty
+            Me._plot = String.Empty
+            Me._director = String.Empty
+            Me._credits = String.Empty
+            Me._actors.Clear()
+            Me._fileInfo = New MediaInfo.Fileinfo
+            Me._posterurl = String.Empty
+            Me._localfile = String.Empty
         End Sub
     End Class
 

@@ -47,8 +47,6 @@ Public Class HTTP
     End Sub
 
     Public Function DownloadZip(ByVal URL As String) As Byte()
-        Dim sResponse As Byte()
-
         Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
         wrRequest.Timeout = 10000
 
@@ -64,14 +62,9 @@ Public Class HTTP
         End If
 
         Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-            Using rStream As Stream = wrResponse.GetResponseStream
-                Dim rLength As Integer = Convert.ToInt32(rStream.Length)
-                sResponse = New Byte(rLength) {}
-                rStream.Read(sResponse, 0, rLength)
-            End Using
+            Return Master.ReadStreamToEnd(wrResponse.GetResponseStream)
         End Using
 
-        Return sResponse
     End Function
 
     Public Function DownloadData(ByVal URL As String) As String
@@ -230,8 +223,6 @@ Public Class HTTP
 
     Public Function DownloadImage(ByVal sURL As String) As Image
         Dim tmpImage As Image = Nothing
-        Dim rBuffer(4096) As Byte
-        Dim rSize As Integer = 0
         Try
             If StringManip.isValidURL(sURL) Then
                 Dim wrRequest As HttpWebRequest = DirectCast(HttpWebRequest.Create(sURL), HttpWebRequest)
@@ -251,7 +242,7 @@ Public Class HTTP
 
                 Using wrResponse As WebResponse = wrRequest.GetResponse()
                     If wrResponse.ContentType.ToLower.Contains("image") Then
-                        tmpImage = New Bitmap(wrResponse.GetResponseStream)
+                        tmpImage = Master.ReadImageStreamToEnd(wrResponse.GetResponseStream)
                     End If
                 End Using
                 wrRequest = Nothing

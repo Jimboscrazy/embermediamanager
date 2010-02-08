@@ -106,6 +106,9 @@ Partial Class frmMain
         Me.cmnuShowTitle = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripSeparator
         Me.cmnuEditShow = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
+        Me.cmnuRescrapeShow = New System.Windows.Forms.ToolStripMenuItem
+        Me.cmnuChangeShow = New System.Windows.Forms.ToolStripMenuItem
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
         Me.dgvTVSeasons = New System.Windows.Forms.DataGridView
         Me.mnuSeasons = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -1051,29 +1054,46 @@ Partial Class frmMain
         '
         'mnuShows
         '
-        Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuEditShow})
+        Me.mnuShows.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuEditShow, Me.ToolStripSeparator7, Me.cmnuRescrapeShow, Me.cmnuChangeShow})
         Me.mnuShows.Name = "mnuShows"
-        Me.mnuShows.Size = New System.Drawing.Size(127, 54)
+        Me.mnuShows.Size = New System.Drawing.Size(176, 104)
         '
         'cmnuShowTitle
         '
         Me.cmnuShowTitle.Enabled = False
         Me.cmnuShowTitle.Image = CType(resources.GetObject("cmnuShowTitle.Image"), System.Drawing.Image)
         Me.cmnuShowTitle.Name = "cmnuShowTitle"
-        Me.cmnuShowTitle.Size = New System.Drawing.Size(126, 22)
+        Me.cmnuShowTitle.Size = New System.Drawing.Size(175, 22)
         Me.cmnuShowTitle.Text = "Title"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(123, 6)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(172, 6)
         '
         'cmnuEditShow
         '
         Me.cmnuEditShow.Image = CType(resources.GetObject("cmnuEditShow.Image"), System.Drawing.Image)
         Me.cmnuEditShow.Name = "cmnuEditShow"
-        Me.cmnuEditShow.Size = New System.Drawing.Size(126, 22)
+        Me.cmnuEditShow.Size = New System.Drawing.Size(175, 22)
         Me.cmnuEditShow.Text = "Edit Show"
+        '
+        'ToolStripSeparator7
+        '
+        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(172, 6)
+        '
+        'cmnuRescrapeShow
+        '
+        Me.cmnuRescrapeShow.Name = "cmnuRescrapeShow"
+        Me.cmnuRescrapeShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuRescrapeShow.Text = "Re-scrape theTVDB"
+        '
+        'cmnuChangeShow
+        '
+        Me.cmnuChangeShow.Name = "cmnuChangeShow"
+        Me.cmnuChangeShow.Size = New System.Drawing.Size(175, 22)
+        Me.cmnuChangeShow.Text = "Change Show"
         '
         'SplitContainer2
         '
@@ -3411,4 +3431,7 @@ Partial Class frmMain
     Friend WithEvents cmnuEpTitle As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuEditEpisode As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents cmnuRescrapeShow As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuChangeShow As System.Windows.Forms.ToolStripMenuItem
 End Class

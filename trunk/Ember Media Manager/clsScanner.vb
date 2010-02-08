@@ -440,8 +440,8 @@ Public Class Scanner
 
             If lFi.Count > 0 Then
 
-                If Master.eSettings.AutoDetectBDMV AndAlso autoCheck Then
-                    If lFi.Contains(New FileInfo(Path.Combine(sPath, "index.bdmv"))) Then
+                If Master.eSettings.AutoDetectVTS AndAlso autoCheck Then
+                    If lFi.Where(Function(s) s.Name.ToLower = "index.bdmv").Count > 0 Then
                         bdmvSingle = True
                         tFile = FileManip.Common.GetLongestFromRip(sPath, True)
                         If Me.bwPrelim.CancellationPending Then Return
