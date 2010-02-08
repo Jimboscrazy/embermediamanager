@@ -649,6 +649,7 @@ Public Class dlgSettings
         pnlMovies.Visible = False
         pnlSources.Visible = False
         pnlScraper.Visible = False
+        pnlTrailers.Visible = False
         pnlExtensions.Visible = False
         pnlImages.Visible = False
         pnlShows.Visible = False
@@ -667,6 +668,8 @@ Public Class dlgSettings
                 pnlSources.Visible = True
             Case "nScraper"
                 pnlScraper.Visible = True
+            Case "nTrailers"
+                pnlTrailers.Visible = True
             Case "nExts"
                 pnlExtensions.Visible = True
             Case "nImages"
@@ -3509,6 +3512,14 @@ Public Class dlgSettings
     End Sub
 
     Private Sub lbTrailerSites_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailerSites.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub Panel2_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlTrailers.Paint
+
+    End Sub
+
+    Private Sub lblLimit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblLimit.Click
 
     End Sub
 End Class
