@@ -38,7 +38,8 @@ Namespace My
                 Master.eSettings.Load()
                 Master.eLang.LoadLanguage(Master.eSettings.Language)
                 Master.CreateDefaultOptions()
-
+                Dim ExternalModules As New EmberModules
+                'aa.loadModules()
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
             End Try
