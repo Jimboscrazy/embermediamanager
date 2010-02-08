@@ -7042,7 +7042,7 @@ doCancel:
                 If dTVDBSearch.ShowDialog(Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString) = Windows.Forms.DialogResult.OK Then
                     Master.currShow.TVShow = Master.tmpTVDBShow.Show
                     Using dEditShow As New dlgEditShow
-                        If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                        If dEditShow.ShowDialog(True) = Windows.Forms.DialogResult.OK Then
                             ParseTVDBShow(Convert.ToInt64(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
                         End If
                     End Using
@@ -7054,7 +7054,7 @@ doCancel:
             If Master.tmpTVDBShow.Show.ID.Length > 0 Then
                 Master.currShow.TVShow = Master.tmpTVDBShow.Show
                 Using dEditShow As New dlgEditShow
-                    If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    If dEditShow.ShowDialog(True) = Windows.Forms.DialogResult.OK Then
                         ParseTVDBShow(Convert.ToInt64(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
                     End If
                 End Using
@@ -7063,7 +7063,7 @@ doCancel:
                     If dTVDBSearch.ShowDialog(Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString) = Windows.Forms.DialogResult.OK Then
                         Master.currShow.TVShow = Master.tmpTVDBShow.Show
                         Using dEditShow As New dlgEditShow
-                            If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                            If dEditShow.ShowDialog(True) = Windows.Forms.DialogResult.OK Then
                                 ParseTVDBShow(Convert.ToInt64(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
                             End If
                         End Using
