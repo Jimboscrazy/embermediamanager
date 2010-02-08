@@ -84,7 +84,7 @@ Public Class Images
 
     Public Sub FromWeb(ByVal sURL As String)
         Try
-            _image = sHTTP.DownloadImage(sURL)
+            _image = New Bitmap(sHTTP.DownloadImage(sURL))
         Catch
         End Try
     End Sub
@@ -97,6 +97,8 @@ Public Class Images
 
     Public Sub Save(ByVal sPath As String, Optional ByVal iQuality As Long = 0)
         Try
+            If IsNothing(_image) Then Exit Sub
+
             Dim doesExist As Boolean = File.Exists(sPath)
             Dim fAtt As New FileAttributes
             If Not String.IsNullOrEmpty(sPath) AndAlso (Not doesExist OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly))) Then
@@ -353,6 +355,17 @@ Public Class Images
         Return strReturn
     End Function
 
+    Public Function SaveAsSeasonPoster(ByVal mShow As Master.DBTV) As String
+        Dim strReturn As String = String.Empty
+
+        Try
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return strReturn
+    End Function
+
     Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
         Me.FromFile(fromPath)
         If Not Master.eSettings.ETNative Then
@@ -561,6 +574,17 @@ Public Class Images
                 End If
             End If
 
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+        Return strReturn
+    End Function
+
+    Public Function SaveAsSeasonFanart(ByVal mShow As Master.DBTV) As String
+        Dim strReturn As String = String.Empty
+
+        Try
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try

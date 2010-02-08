@@ -33,7 +33,7 @@ Imports System.ComponentModel
 
 
 Public Class frmMainSetup
-    Public DEBUG As Boolean = False  ' So I can Debug without a Web Server
+    Public DEBUG As Boolean = True  ' So I can Debug without a Web Server
     Public emberPath As String
     Public emberAllFounds As New List(Of String)
     Public Final As Boolean = False
@@ -190,10 +190,14 @@ Public Class frmMainSetup
                 Return GetURLDataBin(String.Concat("http://www.embermm.com/Updates/", url), localfile)
             Else
                 ' So I can Debug without a Web Server
-                'File.Copy(Path.Combine(AppPath, String.Concat("site\", url.Replace("/", "\"))), localfile)
-                'Return True
+                Try
+                    File.Copy(Path.Combine(AppPath, String.Concat("site\", url.Replace("/", "\"))), localfile)
+                Catch ex As Exception
+                End Try
+
+                Return True
                 'Now I have a local Web Server
-                Return GetURLDataBin(String.Concat("http://127.0.0.1/updates/", url), localfile)
+                'Return GetURLDataBin(String.Concat("http://127.0.0.1/updates/", url), localfile)
             End If
         Catch ex As Exception
             LogWrite(String.Format("+++ GetURL Error: {0}", ex.Message))

@@ -236,12 +236,11 @@ Namespace IMDB
 
 
                 'Check if we've been redirected straight to the movie page
-                If Regex.Match(rUri, IMDB_ID_REGEX).Success Then
+                If Regex.IsMatch(rUri, IMDB_ID_REGEX) Then
                     Dim lNewMovie As Media.Movie = New Media.Movie(Regex.Match(rUri, IMDB_ID_REGEX).ToString, _
                                                                 StringManip.ProperCase(sMovie), Regex.Match(Regex.Match(rUri, MOVIE_TITLE_PATTERN).ToString, "(?<=\()\d+(?=.*\))").ToString, 0)
                     R.ExactMatches.Add(lNewMovie)
                     Return R
-                    Exit Function
                 End If
 
                 D = HTML.IndexOf("<b>Popular Titles</b>")

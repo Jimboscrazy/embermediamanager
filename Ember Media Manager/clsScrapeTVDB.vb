@@ -71,27 +71,24 @@ Namespace TVDB
             Dim gURL As String = String.Format("http://{0}/api/{1}/series/{2}/all/{3}.zip", Master.eSettings.TVDBMirror, APIKey, sID, Master.eSettings.TVDBLanguage)
 
             Try
-                If Not File.Exists(Path.Combine(Master.TempPath, Path.Combine("Shows", String.Format("{0}_{1}.zip", sID, Master.eSettings.TVDBLanguage)))) Then
+                If Not File.Exists(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip"))) Then
                     Dim sHTTP As New HTTP
                     Dim xZip As Byte() = sHTTP.DownloadZip(gURL)
                     sHTTP = Nothing
 
                     If Not IsNothing(xZip) AndAlso xZip.Length > 0 Then
                         'save it to the temp dir
-                        Using fStream As FileStream = New FileStream(Path.Combine(Master.TempPath, Path.Combine("Shows", String.Format("{0}_{1}.zip", sID, Master.eSettings.TVDBLanguage))), FileMode.Create, FileAccess.Write)
+                        Directory.CreateDirectory(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID)))
+                        Using fStream As FileStream = New FileStream(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip")), FileMode.Create, FileAccess.Write)
                             fStream.Write(xZip, 0, xZip.Length)
                         End Using
 
                         Return ProcessTVDBZip(xZip, gURL)
                     End If
                 Else
-                    Using fStream As FileStream = New FileStream(Path.Combine(Master.TempPath, Path.Combine("Shows", String.Format("{0}_{1}.zip", sID, Master.eSettings.TVDBLanguage))), FileMode.Open, FileAccess.Read)
-                        If fStream.Length > 0 Then
-                            Dim fZip(Convert.ToInt32(fStream.Length - 1)) As Byte
-                            fStream.Read(fZip, 0, Convert.ToInt32(fStream.Length))
-
-                            Return ProcessTVDBZip(fZip, gURL)
-                        End If
+                    Using fStream As FileStream = New FileStream(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, Master.eSettings.TVDBLanguage, ".zip")), FileMode.Open, FileAccess.Read)
+                        Dim fZip As Byte() = Master.ReadStreamToEnd(fStream)
+                        Return ProcessTVDBZip(fZip, gURL)
                     End Using
                 End If
             Catch ex As Exception
@@ -102,8 +99,6 @@ Namespace TVDB
         End Function
 
         Public Function ProcessTVDBZip(ByVal tvZip As Byte(), ByVal gURL As String) As TVDBShow
-            Dim zBuffer As Byte()
-            Dim zCount As Integer = 0
             Dim sXML As String = String.Empty
             Dim bXML As String = String.Empty
             Dim aXML As String = String.Empty
@@ -113,8 +108,7 @@ Namespace TVDB
                     Dim zEntry As ZipEntry = zStream.GetNextEntry
 
                     While Not IsNothing(zEntry)
-                        zBuffer = New Byte(Convert.ToInt32(zStream.Length)) {}
-                        zCount = zStream.Read(zBuffer, 0, Convert.ToInt32(zStream.Length))
+                        Dim zBuffer As Byte() = Master.ReadStreamToEnd(zStream)
 
                         Select Case True
                             Case zEntry.Name.Equals(String.Concat(Master.eSettings.TVDBLanguage, ".xml"))
@@ -137,6 +131,7 @@ Namespace TVDB
 
         Public Function ShowFromXML(ByRef tShow As TVDBShow, ByVal sXML As String, ByVal aXML As String, ByVal bXML As String, ByVal gURL As String) As TVDBShow
             Dim Actors As New List(Of Media.Person)
+            Dim sID As String = String.Empty
 
             'get the actors first
             Try
@@ -144,7 +139,7 @@ Namespace TVDB
                     Dim xdActors As XDocument = XDocument.Parse(aXML)
                     Dim xA = From xActor In xdActors.Descendants("Actor")
                     For Each Actor As XElement In xA
-                        Actors.Add(New Media.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", Actor.Element("Image").Value))})
+                        Actors.Add(New Media.Person With {.Name = Actor.Element("Name").Value, .Role = Actor.Element("Role").Value, .Thumb = If(IsNothing(Actor.Element("Image")) OrElse String.IsNullOrEmpty(Actor.Element("Image").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Actor.Element("Image").Value))})
                     Next
                 End If
             Catch ex As Exception
@@ -155,11 +150,12 @@ Namespace TVDB
             Try
                 If Not String.IsNullOrEmpty(sXML) Then
                     Dim xdShow As XDocument = XDocument.Parse(sXML)
-                    Dim xS = From xShow In xdShow.Descendants("series")
+                    Dim xS = From xShow In xdShow.Descendants("Series")
                     If xS.Count > 0 Then
                         tShow.Show = New Media.TVShow
                         With tShow.Show
-                            .ID = xS(0).Element("ID").Value
+                            sID = xS(0).Element("id").Value
+                            .ID = sID
                             .Title = xS(0).Element("SeriesName").Value
                             'TODO: Should we have a setting for the APIKey to save to the nfo? Else, XBMC will be using our APIKey for updating (assuming they just use the URL direct from the nfo).
                             .EpisodeGuideURL = gURL
@@ -185,7 +181,8 @@ Namespace TVDB
                                                    .Director = Episode.Element("Director").Value, _
                                                    .Credits = CreditsString(Episode.Element("GuestStars").Value, Episode.Element("Writer").Value), _
                                                    .Actors = Actors, _
-                                                   .PosterURL = If(IsNothing(Episode.Element("fileame")) OrElse String.IsNullOrEmpty(Episode.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Episode.Element("filename").Value))})
+                                                   .PosterURL = If(IsNothing(Episode.Element("filename")) OrElse String.IsNullOrEmpty(Episode.Element("filename").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, Episode.Element("filename").Value)), _
+                                                   .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "episodeposters", Path.DirectorySeparatorChar, Episode.Element("filename").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                             Catch ex As Exception
                                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
                             End Try
@@ -210,20 +207,24 @@ Namespace TVDB
                                     tShow.Fanart.Add(New TVDBFanart With { _
                                                          .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
                                                          .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/_cache/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
-                                                         .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, Master.StringToSize(tImage.Element("BannerType2").Value))})
+                                                         .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, Master.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                         .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                 Case "poster"
                                     tShow.Posters.Add(New TVDBPoster With { _
                                                           .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                          .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, Master.StringToSize(tImage.Element("BannerType2").Value))})
+                                                          .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, Master.StringToSize(tImage.Element("BannerType2").Value)), _
+                                                          .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "posters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                 Case "season"
                                     tShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
                                                             .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
                                                             .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                            .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value))})
+                                                            .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                            .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                 Case "series"
                                     tShow.ShowPosters.Add(New TVDBShowPoster With { _
                                                           .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                          .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), ShowPosterType.None, StringToShowPosterType(tImage.Element("BannerType2").Value))})
+                                                          .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), ShowPosterType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
+                                                          .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                             End Select
                         End If
                     Next
@@ -234,6 +235,20 @@ Namespace TVDB
 
             Return tShow
         End Function
+
+        Public Sub SaveToCache(ByVal sID As String, ByVal sURL As String, ByVal sPath As String)
+            Dim sHTTP As New HTTP
+            Dim sImage As New Images
+
+            sImage.Image = sHTTP.DownloadImage(sURL)
+
+            If Not IsNothing(sImage.Image) Then
+                sImage.Save(Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, sPath.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))))
+            End If
+
+            sImage = Nothing
+            sHTTP = Nothing
+        End Sub
 
         Public Function CreditsString(ByVal sGStars As String, ByVal sWriters As String) As String
             Dim cString As New List(Of String)
@@ -260,7 +275,7 @@ Namespace TVDB
                 If Not bwTVDB.IsBusy Then
                     bwTVDB.WorkerReportsProgress = False
                     bwTVDB.WorkerSupportsCancellation = True
-                    bwTVDB.RunWorkerAsync(New Arguments With {.Parameter = iID.ToString})
+                    bwTVDB.RunWorkerAsync(New Arguments With {.Type = 1, .Parameter = iID.ToString})
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -272,7 +287,7 @@ Namespace TVDB
                 If Not bwTVDB.IsBusy Then
                     bwTVDB.WorkerReportsProgress = False
                     bwTVDB.WorkerSupportsCancellation = True
-                    bwTVDB.RunWorkerAsync(New Arguments With {.Parameter = sName})
+                    bwTVDB.RunWorkerAsync(New Arguments With {.Type = 0, .Parameter = sName})
                 End If
             Catch ex As Exception
                 Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -574,6 +589,7 @@ Namespace TVDB
         Private _url As String
         Private _thumbnailurl As String
         Private _size As Size
+        Private _localfile As String
 
         Public Property URL() As String
             Get
@@ -602,6 +618,15 @@ Namespace TVDB
             End Set
         End Property
 
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -610,6 +635,7 @@ Namespace TVDB
             Me._url = String.Empty
             Me._thumbnailurl = String.Empty
             Me._size = New Size
+            Me._localfile = String.Empty
         End Sub
     End Class
 
@@ -623,6 +649,7 @@ Namespace TVDB
     Public Class TVDBShowPoster
         Private _url As String
         Private _type As ShowPosterType
+        Private _localfile As String
 
         Public Property URL() As String
             Get
@@ -642,6 +669,15 @@ Namespace TVDB
             End Set
         End Property
 
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -649,6 +685,7 @@ Namespace TVDB
         Public Sub Clear()
             Me._url = String.Empty
             Me._type = ShowPosterType.None
+            Me._localfile = String.Empty
         End Sub
     End Class
 
@@ -662,6 +699,7 @@ Namespace TVDB
         Private _url As String
         Private _season As Integer
         Private _type As SeasonPosterType
+        Private _localfile As String
 
         Public Property URL() As String
             Get
@@ -690,6 +728,15 @@ Namespace TVDB
             End Set
         End Property
 
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -698,6 +745,7 @@ Namespace TVDB
             Me._url = String.Empty
             Me._season = 0
             Me._type = SeasonPosterType.None
+            Me._localfile = String.Empty
         End Sub
     End Class
 
@@ -708,6 +756,7 @@ Namespace TVDB
     Public Class TVDBPoster
         Private _url As String
         Private _size As Size
+        Private _localfile As String
 
         Public Property URL() As String
             Get
@@ -727,6 +776,15 @@ Namespace TVDB
             End Set
         End Property
 
+        Public Property LocalFile() As String
+            Get
+                Return Me._localfile
+            End Get
+            Set(ByVal value As String)
+                Me._localfile = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -734,6 +792,7 @@ Namespace TVDB
         Public Sub Clear()
             Me._url = String.Empty
             Me._size = New Size
+            Me._localfile = String.Empty
         End Sub
     End Class
 
