@@ -25,12 +25,13 @@ Public Class dlgEditShow
     Private tmpRating As String
     Private Poster As New Images With {.IsEdit = True}
     Private Fanart As New Images With {.IsEdit = True}
+    Private _fromscraper As Boolean = False
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Try
             Me.SetInfo()
 
-            Master.DB.SaveTVShowToDB(Master.currShow, False, False, True)
+            If Not _fromscraper Then Master.DB.SaveTVShowToDB(Master.currShow, False, False, True)
 
             Me.CleanUp()
 
@@ -110,23 +111,25 @@ Public Class dlgEditShow
 
             Me.SelectMPAA()
 
-            Fanart.FromFile(Master.currShow.ShowFanartPath)
-            If Not IsNothing(Fanart.Image) Then
-                .pbFanart.Image = Fanart.Image
+            If Not _fromscraper Then
+                Fanart.FromFile(Master.currShow.ShowFanartPath)
+                If Not IsNothing(Fanart.Image) Then
+                    .pbFanart.Image = Fanart.Image
 
-                .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
-                .lblFanartSize.Visible = True
+                    .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
+                    .lblFanartSize.Visible = True
+                End If
+                .btnSetFanartScrape.Enabled = False
+
+                Poster.FromFile(Master.currShow.ShowPosterPath)
+                If Not IsNothing(Poster.Image) Then
+                    .pbPoster.Image = Poster.Image
+
+                    .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
+                    .lblPosterSize.Visible = True
+                End If
+                .btnSetPosterScrape.Enabled = False
             End If
-            .btnSetFanartScrape.Enabled = False
-
-            Poster.FromFile(Master.currShow.ShowPosterPath)
-            If Not IsNothing(Poster.Image) Then
-                .pbPoster.Image = Poster.Image
-
-                .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
-                .lblPosterSize.Visible = True
-            End If
-            .btnSetPosterScrape.Enabled = False
         End With
     End Sub
 
@@ -304,20 +307,22 @@ Public Class dlgEditShow
                     Next
                 End If
 
-                If Not IsNothing(.Fanart.Image) Then
-                    Dim fPath As String = .Fanart.SaveAsShowFanart(Master.currShow)
-                    Master.currShow.ShowFanartPath = fPath
-                Else
-                    .Fanart.DeleteShowFanart(Master.currShow)
-                    Master.currShow.ShowFanartPath = String.Empty
-                End If
+                If Not _fromscraper Then
+                    If Not IsNothing(.Fanart.Image) Then
+                        Dim fPath As String = .Fanart.SaveAsShowFanart(Master.currShow)
+                        Master.currShow.ShowFanartPath = fPath
+                    Else
+                        .Fanart.DeleteShowFanart(Master.currShow)
+                        Master.currShow.ShowFanartPath = String.Empty
+                    End If
 
-                If Not IsNothing(.Poster.Image) Then
-                    Dim pPath As String = .Poster.SaveAsShowPoster(Master.currShow)
-                    Master.currShow.ShowPosterPath = pPath
-                Else
-                    .Poster.DeleteShowPosters(Master.currShow)
-                    Master.currShow.ShowPosterPath = String.Empty
+                    If Not IsNothing(.Poster.Image) Then
+                        Dim pPath As String = .Poster.SaveAsShowPoster(Master.currShow)
+                        Master.currShow.ShowPosterPath = pPath
+                    Else
+                        .Poster.DeleteShowPosters(Master.currShow)
+                        Master.currShow.ShowPosterPath = String.Empty
+                    End If
                 End If
             End With
         Catch ex As Exception
@@ -632,4 +637,14 @@ Public Class dlgEditShow
         Me.btnSetFanartDL.Text = Master.eLang.GetString(266, "Change Fanart (Download)")
     End Sub
 
+    Public Overloads Function ShowDialog(ByVal FromScraper As Boolean) As System.Windows.Forms.DialogResult
+
+        _fromscraper = FromScraper
+        If FromScraper Then
+            Me.TabControl1.TabPages.Remove(Me.TabPage2)
+            Me.TabControl1.TabPages.Remove(Me.TabPage3)
+        End If
+
+        Return MyBase.ShowDialog
+    End Function
 End Class
