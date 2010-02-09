@@ -22,6 +22,8 @@
 Imports System
 Imports System.IO
 
+'TODO: Implement settings for TV Season images
+
 Public Class dlgSettings
 
     Private didApply As Boolean = False
@@ -3263,7 +3265,8 @@ Public Class dlgSettings
         Me.TabPage3.Text = Master.eLang.GetString(38, "General")
         Me.TabPage4.Text = Master.eLang.GetString(699, "Regex")
         Me.TabPage5.Text = Master.eLang.GetString(700, "TV Show")
-        Me.TabPage6.Text = Master.eLang.GetString(701, "TV Episode")
+        Me.TabPage7.Text = Master.eLang.GetString(999, "TV Season")
+        Me.TabPage7.Text = Master.eLang.GetString(701, "TV Episode")
 
         Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})

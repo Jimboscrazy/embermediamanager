@@ -25,24 +25,26 @@ Partial Class dlgTVImageSelect
         Me.tvList = New System.Windows.Forms.TreeView
         Me.pnlImages = New System.Windows.Forms.Panel
         Me.pbCurrent = New System.Windows.Forms.PictureBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.pnlImages.SuspendLayout()
+        Me.pnlStatus = New System.Windows.Forms.Panel
+        Me.lblStatus = New System.Windows.Forms.Label
+        Me.pbStatus = New System.Windows.Forms.ProgressBar
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlStatus.SuspendLayout()
         Me.SuspendLayout()
         '
         'tvList
         '
+        Me.tvList.Enabled = False
         Me.tvList.Location = New System.Drawing.Point(3, 4)
         Me.tvList.Name = "tvList"
         Me.tvList.Size = New System.Drawing.Size(214, 280)
         Me.tvList.TabIndex = 0
+        Me.tvList.Visible = False
         '
         'pnlImages
         '
         Me.pnlImages.AutoScroll = True
-        Me.pnlImages.BackColor = System.Drawing.Color.DimGray
-        Me.pnlImages.Controls.Add(Me.Label1)
+        Me.pnlImages.BackColor = System.Drawing.SystemColors.Control
         Me.pnlImages.Location = New System.Drawing.Point(222, 4)
         Me.pnlImages.Name = "pnlImages"
         Me.pnlImages.Size = New System.Drawing.Size(622, 421)
@@ -50,7 +52,7 @@ Partial Class dlgTVImageSelect
         '
         'pbCurrent
         '
-        Me.pbCurrent.BackColor = System.Drawing.Color.DimGray
+        Me.pbCurrent.BackColor = System.Drawing.SystemColors.Control
         Me.pbCurrent.Location = New System.Drawing.Point(3, 293)
         Me.pbCurrent.Name = "pbCurrent"
         Me.pbCurrent.Size = New System.Drawing.Size(214, 157)
@@ -58,46 +60,56 @@ Partial Class dlgTVImageSelect
         Me.pbCurrent.TabIndex = 2
         Me.pbCurrent.TabStop = False
         '
-        'Label1
+        'pnlStatus
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.BackColor = System.Drawing.SystemColors.Control
-        Me.Label1.Location = New System.Drawing.Point(266, 206)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(110, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Available images here"
+        Me.pnlStatus.BackColor = System.Drawing.Color.White
+        Me.pnlStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlStatus.Controls.Add(Me.lblStatus)
+        Me.pnlStatus.Controls.Add(Me.pbStatus)
+        Me.pnlStatus.Location = New System.Drawing.Point(264, 192)
+        Me.pnlStatus.Name = "pnlStatus"
+        Me.pnlStatus.Size = New System.Drawing.Size(321, 75)
+        Me.pnlStatus.TabIndex = 10
         '
-        'Label2
+        'lblStatus
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(64, 372)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(99, 13)
-        Me.Label2.TabIndex = 3
-        Me.Label2.Text = "Current Image Here"
+        Me.lblStatus.Location = New System.Drawing.Point(5, 10)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Size = New System.Drawing.Size(310, 13)
+        Me.lblStatus.TabIndex = 7
+        Me.lblStatus.Text = "Gathering Data..."
+        '
+        'pbStatus
+        '
+        Me.pbStatus.Location = New System.Drawing.Point(6, 52)
+        Me.pbStatus.MarqueeAnimationSpeed = 25
+        Me.pbStatus.Name = "pbStatus"
+        Me.pbStatus.Size = New System.Drawing.Size(309, 19)
+        Me.pbStatus.Step = 1
+        Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.pbStatus.TabIndex = 6
         '
         'dlgTVImageSelect
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(849, 459)
-        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.pnlStatus)
         Me.Controls.Add(Me.pbCurrent)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.tvList)
         Me.Name = "dlgTVImageSelect"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "dlgTVImageSelect"
-        Me.pnlImages.ResumeLayout(False)
-        Me.pnlImages.PerformLayout()
         CType(Me.pbCurrent, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlStatus.ResumeLayout(False)
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
     Friend WithEvents tvList As System.Windows.Forms.TreeView
     Friend WithEvents pnlImages As System.Windows.Forms.Panel
     Friend WithEvents pbCurrent As System.Windows.Forms.PictureBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents pnlStatus As System.Windows.Forms.Panel
+    Friend WithEvents lblStatus As System.Windows.Forms.Label
+    Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
 End Class

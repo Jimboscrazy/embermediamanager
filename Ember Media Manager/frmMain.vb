@@ -7043,7 +7043,10 @@ doCancel:
                     Master.currShow.TVShow = Master.tmpTVDBShow.Show
                     Using dEditShow As New dlgEditShow
                         If dEditShow.ShowDialog(True) = Windows.Forms.DialogResult.OK Then
-                            ParseTVDBShow(Convert.ToInt64(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
+                            Dim dTVImageSel As New dlgTVImageSelect
+                            If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
+                                ''do something
+                            End If
                         End If
                     End Using
                 End If
@@ -7055,7 +7058,10 @@ doCancel:
                 Master.currShow.TVShow = Master.tmpTVDBShow.Show
                 Using dEditShow As New dlgEditShow
                     If dEditShow.ShowDialog(True) = Windows.Forms.DialogResult.OK Then
-                        ParseTVDBShow(Convert.ToInt64(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
+                        Dim dTVImageSel As New dlgTVImageSelect
+                        If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
+                            ''do something
+                        End If
                     End If
                 End Using
             Else
@@ -7064,7 +7070,10 @@ doCancel:
                         Master.currShow.TVShow = Master.tmpTVDBShow.Show
                         Using dEditShow As New dlgEditShow
                             If dEditShow.ShowDialog(True) = Windows.Forms.DialogResult.OK Then
-                                ParseTVDBShow(Convert.ToInt64(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
+                                Dim dTVImageSel As New dlgTVImageSelect
+                                If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
+                                    ''do something
+                                End If
                             End If
                         End Using
                     End If
@@ -7074,30 +7083,5 @@ doCancel:
 
     End Sub
 
-    Private Sub ParseTVDBShow(ByVal ShowID As Long)
-        Dim tmpTVList As New List(Of Master.DBTV)
-        Dim iSeason As Integer = -1
-        Dim iEpisode As Integer = -1
-
-        Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-            Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLCommand.CommandText = String.Concat("SELECT * FROM TVEps WHERE TVShowID = ", ShowID, ";")
-                Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                    While SQLReader.Read
-                        tmpTVList.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
-                    End While
-                End Using
-
-                If tmpTVList.Count > 0 Then
-                    Dim dTVImageSel As New dlgTVImageSelect
-                    If dTVImageSel.ShowDialog(tmpTVList) = Windows.Forms.DialogResult.OK Then
-                        ''do something
-                    End If
-                End If
-
-            End Using
-            SQLTrans.Commit()
-        End Using
-    End Sub
 End Class
 
