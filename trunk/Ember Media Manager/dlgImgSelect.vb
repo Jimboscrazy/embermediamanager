@@ -18,7 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
+'TODO: Implement saving, filters, and remove references to season and episode fanart if they are not enabled in settings
 
 Imports System.IO
 Imports System.IO.Compression
