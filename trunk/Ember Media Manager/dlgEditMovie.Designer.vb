@@ -322,7 +322,7 @@ Partial Class dlgEditMovie
         Me.lblLocalTrailer.AutoSize = True
         Me.lblLocalTrailer.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblLocalTrailer.ForeColor = System.Drawing.Color.Green
-        Me.lblLocalTrailer.Location = New System.Drawing.Point(480, 412)
+        Me.lblLocalTrailer.Location = New System.Drawing.Point(480, 414)
         Me.lblLocalTrailer.Name = "lblLocalTrailer"
         Me.lblLocalTrailer.Size = New System.Drawing.Size(90, 9)
         Me.lblLocalTrailer.TabIndex = 109
@@ -333,7 +333,7 @@ Partial Class dlgEditMovie
         '
         Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(576, 422)
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(576, 423)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
         Me.btnPlayTrailer.Size = New System.Drawing.Size(23, 23)
         Me.btnPlayTrailer.TabIndex = 108
@@ -342,7 +342,7 @@ Partial Class dlgEditMovie
         'btnDLTrailer
         '
         Me.btnDLTrailer.Image = CType(resources.GetObject("btnDLTrailer.Image"), System.Drawing.Image)
-        Me.btnDLTrailer.Location = New System.Drawing.Point(602, 422)
+        Me.btnDLTrailer.Location = New System.Drawing.Point(602, 423)
         Me.btnDLTrailer.Name = "btnDLTrailer"
         Me.btnDLTrailer.Size = New System.Drawing.Size(23, 23)
         Me.btnDLTrailer.TabIndex = 107
@@ -362,7 +362,7 @@ Partial Class dlgEditMovie
         'btnStudio
         '
         Me.btnStudio.Image = CType(resources.GetObject("btnStudio.Image"), System.Drawing.Image)
-        Me.btnStudio.Location = New System.Drawing.Point(805, 353)
+        Me.btnStudio.Location = New System.Drawing.Point(805, 343)
         Me.btnStudio.Name = "btnStudio"
         Me.btnStudio.Size = New System.Drawing.Size(23, 23)
         Me.btnStudio.TabIndex = 104
@@ -371,7 +371,7 @@ Partial Class dlgEditMovie
         'lblStudio
         '
         Me.lblStudio.AutoSize = True
-        Me.lblStudio.Location = New System.Drawing.Point(635, 339)
+        Me.lblStudio.Location = New System.Drawing.Point(632, 330)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(40, 13)
         Me.lblStudio.TabIndex = 101
@@ -380,7 +380,7 @@ Partial Class dlgEditMovie
         'txtStudio
         '
         Me.txtStudio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtStudio.Location = New System.Drawing.Point(635, 355)
+        Me.txtStudio.Location = New System.Drawing.Point(635, 345)
         Me.txtStudio.Name = "txtStudio"
         Me.txtStudio.Size = New System.Drawing.Size(167, 20)
         Me.txtStudio.TabIndex = 100
@@ -388,7 +388,7 @@ Partial Class dlgEditMovie
         'lblTrailer
         '
         Me.lblTrailer.AutoSize = True
-        Me.lblTrailer.Location = New System.Drawing.Point(217, 408)
+        Me.lblTrailer.Location = New System.Drawing.Point(214, 410)
         Me.lblTrailer.Name = "lblTrailer"
         Me.lblTrailer.Size = New System.Drawing.Size(64, 13)
         Me.lblTrailer.TabIndex = 99
@@ -397,7 +397,7 @@ Partial Class dlgEditMovie
         'txtTrailer
         '
         Me.txtTrailer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtTrailer.Location = New System.Drawing.Point(217, 424)
+        Me.txtTrailer.Location = New System.Drawing.Point(217, 425)
         Me.txtTrailer.Name = "txtTrailer"
         Me.txtTrailer.Size = New System.Drawing.Size(353, 20)
         Me.txtTrailer.TabIndex = 17
@@ -422,7 +422,7 @@ Partial Class dlgEditMovie
         'lblCredits
         '
         Me.lblCredits.AutoSize = True
-        Me.lblCredits.Location = New System.Drawing.Point(217, 324)
+        Me.lblCredits.Location = New System.Drawing.Point(214, 330)
         Me.lblCredits.Name = "lblCredits"
         Me.lblCredits.Size = New System.Drawing.Size(42, 13)
         Me.lblCredits.TabIndex = 95
@@ -431,7 +431,7 @@ Partial Class dlgEditMovie
         'txtCredits
         '
         Me.txtCredits.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtCredits.Location = New System.Drawing.Point(217, 340)
+        Me.txtCredits.Location = New System.Drawing.Point(217, 345)
         Me.txtCredits.Name = "txtCredits"
         Me.txtCredits.Size = New System.Drawing.Size(408, 20)
         Me.txtCredits.TabIndex = 15
@@ -439,7 +439,7 @@ Partial Class dlgEditMovie
         'lblCerts
         '
         Me.lblCerts.AutoSize = True
-        Me.lblCerts.Location = New System.Drawing.Point(217, 366)
+        Me.lblCerts.Location = New System.Drawing.Point(214, 370)
         Me.lblCerts.Name = "lblCerts"
         Me.lblCerts.Size = New System.Drawing.Size(76, 13)
         Me.lblCerts.TabIndex = 93
@@ -448,7 +448,7 @@ Partial Class dlgEditMovie
         'txtCerts
         '
         Me.txtCerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtCerts.Location = New System.Drawing.Point(217, 382)
+        Me.txtCerts.Location = New System.Drawing.Point(217, 385)
         Me.txtCerts.Name = "txtCerts"
         Me.txtCerts.Size = New System.Drawing.Size(408, 20)
         Me.txtCerts.TabIndex = 16
@@ -485,13 +485,13 @@ Partial Class dlgEditMovie
         Me.txtMPAADesc.Location = New System.Drawing.Point(635, 260)
         Me.txtMPAADesc.Multiline = True
         Me.txtMPAADesc.Name = "txtMPAADesc"
-        Me.txtMPAADesc.Size = New System.Drawing.Size(193, 68)
+        Me.txtMPAADesc.Size = New System.Drawing.Size(193, 64)
         Me.txtMPAADesc.TabIndex = 19
         '
         'btnEditActor
         '
         Me.btnEditActor.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
-        Me.btnEditActor.Location = New System.Drawing.Point(246, 291)
+        Me.btnEditActor.Location = New System.Drawing.Point(246, 301)
         Me.btnEditActor.Name = "btnEditActor"
         Me.btnEditActor.Size = New System.Drawing.Size(23, 23)
         Me.btnEditActor.TabIndex = 13
@@ -500,7 +500,7 @@ Partial Class dlgEditMovie
         'btnAddActor
         '
         Me.btnAddActor.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
-        Me.btnAddActor.Location = New System.Drawing.Point(217, 291)
+        Me.btnAddActor.Location = New System.Drawing.Point(217, 301)
         Me.btnAddActor.Name = "btnAddActor"
         Me.btnAddActor.Size = New System.Drawing.Size(23, 23)
         Me.btnAddActor.TabIndex = 12
@@ -518,7 +518,7 @@ Partial Class dlgEditMovie
         'btnRemove
         '
         Me.btnRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
-        Me.btnRemove.Location = New System.Drawing.Point(602, 291)
+        Me.btnRemove.Location = New System.Drawing.Point(602, 301)
         Me.btnRemove.Name = "btnRemove"
         Me.btnRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnRemove.TabIndex = 14
@@ -527,7 +527,7 @@ Partial Class dlgEditMovie
         'lblActors
         '
         Me.lblActors.AutoSize = True
-        Me.lblActors.Location = New System.Drawing.Point(215, 141)
+        Me.lblActors.Location = New System.Drawing.Point(214, 141)
         Me.lblActors.Name = "lblActors"
         Me.lblActors.Size = New System.Drawing.Size(40, 13)
         Me.lblActors.TabIndex = 83
@@ -539,7 +539,7 @@ Partial Class dlgEditMovie
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(217, 155)
         Me.lvActors.Name = "lvActors"
-        Me.lvActors.Size = New System.Drawing.Size(408, 132)
+        Me.lvActors.Size = New System.Drawing.Size(408, 143)
         Me.lvActors.TabIndex = 11
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
@@ -847,7 +847,7 @@ Partial Class dlgEditMovie
         Me.btnSetPoster.Name = "btnSetPoster"
         Me.btnSetPoster.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPoster.TabIndex = 23
-        Me.btnSetPoster.Text = "Change Poster (Local)"
+        Me.btnSetPoster.Text = "Change Poster (Local Browse)"
         Me.btnSetPoster.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetPoster.UseVisualStyleBackColor = True
         '
@@ -932,7 +932,7 @@ Partial Class dlgEditMovie
         Me.btnSetFanart.Name = "btnSetFanart"
         Me.btnSetFanart.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanart.TabIndex = 25
-        Me.btnSetFanart.Text = "Change Fanart (Local)"
+        Me.btnSetFanart.Text = "Change Fanart (Local Browse)"
         Me.btnSetFanart.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetFanart.UseVisualStyleBackColor = True
         '
@@ -1153,7 +1153,7 @@ Partial Class dlgEditMovie
         Me.btnFrameSave.Enabled = False
         Me.btnFrameSave.Image = CType(resources.GetObject("btnFrameSave.Image"), System.Drawing.Image)
         Me.btnFrameSave.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnFrameSave.Location = New System.Drawing.Point(735, 362)
+        Me.btnFrameSave.Location = New System.Drawing.Point(735, 363)
         Me.btnFrameSave.Name = "btnFrameSave"
         Me.btnFrameSave.Size = New System.Drawing.Size(96, 83)
         Me.btnFrameSave.TabIndex = 7
@@ -1312,10 +1312,10 @@ Partial Class dlgEditMovie
         Me.Controls.Add(Me.btnChangeMovie)
         Me.Controls.Add(Me.btnRescrape)
         Me.Controls.Add(Me.chkMark)
-        Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Cancel_Button)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.pnlTop)
+        Me.Controls.Add(Me.TabControl1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

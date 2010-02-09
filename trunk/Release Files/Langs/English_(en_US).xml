@@ -248,10 +248,10 @@
   <string id="246">Title:</string>
   <string id="247">Remove Poster</string>
   <string id="248">Change Poster (Scrape)</string>
-  <string id="249">Change Poster (Local)</string>
+  <string id="249">Change Poster (Local Browse)</string>
   <string id="250">Remove Fanart</string>
   <string id="251">Change Fanart (Scrape)</string>
-  <string id="252">Change Fanart (Local)</string>
+  <string id="252">Change Fanart (Local Browse)</string>
   <string id="253">You have extrathumbs queued to be transferred to the movie directory.</string>
   <string id="254">Transfer Now</string>
   <string id="255">Set As Fanart</string>
@@ -460,7 +460,7 @@
   <string id="458">(New movies will still display in green if not checked.)</string>
   <string id="459">Mark New Movies</string>
   <string id="460">Media List Options</string>
-  <string id="461">Tolerance:</string>
+  <string id="461">Mismatch Tolerance:</string>
   <string id="462">Check Title Match Confidence</string>
   <string id="463">Sort Tokens to Ignore</string>
   <string id="464">Display Year in List Title</string>
