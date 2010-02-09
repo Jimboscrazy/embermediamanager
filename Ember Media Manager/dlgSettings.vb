@@ -2082,10 +2082,6 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub pnlTop_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlTop.Paint
-        Me.SetApplyButton(True)
-    End Sub
-
     Private Sub txtProxyUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProxyUsername.TextChanged
         Me.SetApplyButton(True)
     End Sub
@@ -2103,6 +2099,21 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkSortBeforeScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSortBeforeScan.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
+        Dim tvdbLang As New TVDB.Scraper
+        Me.cbTVLanguage.DataSource = tvdbLang.GetLangs
+        Me.cbTVLanguage.DisplayMember = "LongLang"
+        Me.cbTVLanguage.ValueMember = "ShortLang"
+    End Sub
+
+    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
         Me.SetApplyButton(True)
     End Sub
 #End Region '*** Form/Controls
@@ -2796,6 +2807,7 @@ Public Class dlgSettings
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
     Private Sub FillGenres()
         If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
             Dim genreArray() As String
@@ -3499,30 +3511,4 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
-    Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-        Dim tvdbLang As New TVDB.Scraper
-        Me.cbTVLanguage.DataSource = tvdbLang.GetLangs
-        Me.cbTVLanguage.DisplayMember = "LongLang"
-        Me.cbTVLanguage.ValueMember = "ShortLang"
-    End Sub
-
-    Private Sub cbTVLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbTVLanguage.SelectedIndexChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
-        Me.SetApplyButton(True)
-    End Sub
-
-    Private Sub lbTrailerSites_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbTrailerSites.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub Panel2_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles pnlTrailers.Paint
-
-    End Sub
-
-    Private Sub lblLimit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblLimit.Click
-
-    End Sub
 End Class
