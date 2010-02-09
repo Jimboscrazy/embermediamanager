@@ -135,7 +135,7 @@ Partial Class dlgModuleSettings
         '
         'ColumnHeader2
         '
-        Me.ColumnHeader2.Text = "Enabled"
+        Me.ColumnHeader2.Text = "Status"
         Me.ColumnHeader2.Width = 85
         '
         'btnEnable
