@@ -92,6 +92,11 @@ Public Class EmberModules
         Dim modulesSetup As New dlgModuleSettings
         For Each _externalProcessorModule In externalProcessorModules
             Dim li As ListViewItem = modulesSetup.lstModules.Items.Add(_externalProcessorModule.ProcessorModule.ModuleName())
+            If _externalProcessorModule.Enabled Then
+                li.SubItems.Add("Enabled")
+            Else
+                li.SubItems.Add("Disabled")
+            End If
             li.SubItems.Add("Disabled")
             li.Tag = _externalProcessorModule.AssemblyName
         Next
@@ -109,6 +114,11 @@ Public Class EmberModules
         For Each _externalProcessorModule In externalProcessorModules
             If _externalProcessorModule.AssemblyName = ModuleAssembly Then
                 _externalProcessorModule.Enabled = value
+                If value = True Then
+                    _externalProcessorModule.ProcessorModule.Enable()
+                Else
+                    _externalProcessorModule.ProcessorModule.Disable()
+                End If
             End If
         Next
     End Sub
