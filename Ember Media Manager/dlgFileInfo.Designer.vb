@@ -48,7 +48,7 @@ Partial Class dlgFileInfo
         'Cancel_Button
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(501, 324)
+        Me.Cancel_Button.Location = New System.Drawing.Point(501, 326)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -121,7 +121,7 @@ Partial Class dlgFileInfo
         Me.btnRemoveSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnRemoveSet.Enabled = False
         Me.btnRemoveSet.Image = CType(resources.GetObject("btnRemoveSet.Image"), System.Drawing.Image)
-        Me.btnRemoveSet.Location = New System.Drawing.Point(269, 328)
+        Me.btnRemoveSet.Location = New System.Drawing.Point(269, 326)
         Me.btnRemoveSet.Name = "btnRemoveSet"
         Me.btnRemoveSet.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveSet.TabIndex = 34
@@ -133,7 +133,7 @@ Partial Class dlgFileInfo
         Me.btnEditSet.Enabled = False
         Me.btnEditSet.Image = CType(resources.GetObject("btnEditSet.Image"), System.Drawing.Image)
         Me.btnEditSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditSet.Location = New System.Drawing.Point(240, 328)
+        Me.btnEditSet.Location = New System.Drawing.Point(240, 326)
         Me.btnEditSet.Name = "btnEditSet"
         Me.btnEditSet.Size = New System.Drawing.Size(23, 23)
         Me.btnEditSet.TabIndex = 33
@@ -146,7 +146,7 @@ Partial Class dlgFileInfo
         Me.btnNewSet.Enabled = False
         Me.btnNewSet.Image = CType(resources.GetObject("btnNewSet.Image"), System.Drawing.Image)
         Me.btnNewSet.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewSet.Location = New System.Drawing.Point(192, 328)
+        Me.btnNewSet.Location = New System.Drawing.Point(192, 326)
         Me.btnNewSet.Name = "btnNewSet"
         Me.btnNewSet.Size = New System.Drawing.Size(23, 23)
         Me.btnNewSet.TabIndex = 32
@@ -156,7 +156,7 @@ Partial Class dlgFileInfo
         'Label4
         '
         Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Label4.Location = New System.Drawing.Point(12, 332)
+        Me.Label4.Location = New System.Drawing.Point(6, 330)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(78, 15)
         Me.Label4.TabIndex = 36
@@ -169,7 +169,7 @@ Partial Class dlgFileInfo
         Me.cbStreamType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbStreamType.FormattingEnabled = True
         Me.cbStreamType.Items.AddRange(New Object() {"Video", "Audio", "Subtitle"})
-        Me.cbStreamType.Location = New System.Drawing.Point(96, 330)
+        Me.cbStreamType.Location = New System.Drawing.Point(96, 327)
         Me.cbStreamType.Name = "cbStreamType"
         Me.cbStreamType.Size = New System.Drawing.Size(93, 21)
         Me.cbStreamType.TabIndex = 35
