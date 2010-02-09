@@ -405,7 +405,7 @@ Partial Class dlgSettings
         Me.cbShowFanartSize = New System.Windows.Forms.ComboBox
         Me.lblShowFanartSize = New System.Windows.Forms.Label
         Me.chkOverwriteShowFanart = New System.Windows.Forms.CheckBox
-        Me.TabPage6 = New System.Windows.Forms.TabPage
+        Me.TabPage7 = New System.Windows.Forms.TabPage
         Me.gbEpPosterOpts = New System.Windows.Forms.GroupBox
         Me.txtEpPosterWidth = New System.Windows.Forms.TextBox
         Me.txtEpPosterHeight = New System.Windows.Forms.TextBox
@@ -525,6 +525,55 @@ Partial Class dlgSettings
         Me.chkDownloadTrailer = New System.Windows.Forms.CheckBox
         Me.pnlScraper = New System.Windows.Forms.Panel
         Me.pnlTrailers = New System.Windows.Forms.Panel
+        Me.TabPage6 = New System.Windows.Forms.TabPage
+        Me.TextBox1 = New System.Windows.Forms.TextBox
+        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.Label33 = New System.Windows.Forms.Label
+        Me.TrackBar1 = New System.Windows.Forms.TrackBar
+        Me.Label37 = New System.Windows.Forms.Label
+        Me.Label38 = New System.Windows.Forms.Label
+        Me.Label39 = New System.Windows.Forms.Label
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox
+        Me.Label40 = New System.Windows.Forms.Label
+        Me.ComboBox1 = New System.Windows.Forms.ComboBox
+        Me.CheckBox2 = New System.Windows.Forms.CheckBox
+        Me.TextBox3 = New System.Windows.Forms.TextBox
+        Me.TextBox4 = New System.Windows.Forms.TextBox
+        Me.CheckBox3 = New System.Windows.Forms.CheckBox
+        Me.Label41 = New System.Windows.Forms.Label
+        Me.TrackBar2 = New System.Windows.Forms.TrackBar
+        Me.Label42 = New System.Windows.Forms.Label
+        Me.Label43 = New System.Windows.Forms.Label
+        Me.Label44 = New System.Windows.Forms.Label
+        Me.CheckBox4 = New System.Windows.Forms.CheckBox
+        Me.ComboBox2 = New System.Windows.Forms.ComboBox
+        Me.Label45 = New System.Windows.Forms.Label
+        Me.CheckBox5 = New System.Windows.Forms.CheckBox
+        Me.GroupBox31 = New System.Windows.Forms.GroupBox
+        Me.TextBox5 = New System.Windows.Forms.TextBox
+        Me.TextBox6 = New System.Windows.Forms.TextBox
+        Me.Label46 = New System.Windows.Forms.Label
+        Me.TrackBar3 = New System.Windows.Forms.TrackBar
+        Me.Label47 = New System.Windows.Forms.Label
+        Me.Label48 = New System.Windows.Forms.Label
+        Me.Label49 = New System.Windows.Forms.Label
+        Me.CheckBox6 = New System.Windows.Forms.CheckBox
+        Me.Label50 = New System.Windows.Forms.Label
+        Me.ComboBox3 = New System.Windows.Forms.ComboBox
+        Me.CheckBox7 = New System.Windows.Forms.CheckBox
+        Me.GroupBox32 = New System.Windows.Forms.GroupBox
+        Me.TextBox7 = New System.Windows.Forms.TextBox
+        Me.TextBox8 = New System.Windows.Forms.TextBox
+        Me.CheckBox8 = New System.Windows.Forms.CheckBox
+        Me.Label51 = New System.Windows.Forms.Label
+        Me.TrackBar4 = New System.Windows.Forms.TrackBar
+        Me.Label52 = New System.Windows.Forms.Label
+        Me.Label53 = New System.Windows.Forms.Label
+        Me.Label54 = New System.Windows.Forms.Label
+        Me.CheckBox9 = New System.Windows.Forms.CheckBox
+        Me.ComboBox4 = New System.Windows.Forms.ComboBox
+        Me.Label55 = New System.Windows.Forms.Label
+        Me.CheckBox10 = New System.Windows.Forms.CheckBox
         Me.GroupBox11.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox29.SuspendLayout()
@@ -596,7 +645,7 @@ Partial Class dlgSettings
         CType(Me.tbShowPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbShowFanartOpts.SuspendLayout()
         CType(Me.tbShowFanartQual, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabPage6.SuspendLayout()
+        Me.TabPage7.SuspendLayout()
         Me.gbEpPosterOpts.SuspendLayout()
         CType(Me.tbEpPosterQual, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbEpFanartOpts.SuspendLayout()
@@ -618,6 +667,13 @@ Partial Class dlgSettings
         Me.GroupBox20.SuspendLayout()
         Me.pnlScraper.SuspendLayout()
         Me.pnlTrailers.SuspendLayout()
+        Me.TabPage6.SuspendLayout()
+        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox31.SuspendLayout()
+        CType(Me.TrackBar3, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox32.SuspendLayout()
+        CType(Me.TrackBar4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox11
@@ -4234,6 +4290,7 @@ Partial Class dlgSettings
         '
         Me.TabControl3.Controls.Add(Me.TabPage5)
         Me.TabControl3.Controls.Add(Me.TabPage6)
+        Me.TabControl3.Controls.Add(Me.TabPage7)
         Me.TabControl3.Location = New System.Drawing.Point(3, 2)
         Me.TabControl3.Name = "TabControl3"
         Me.TabControl3.SelectedIndex = 0
@@ -4515,17 +4572,17 @@ Partial Class dlgSettings
         Me.chkOverwriteShowFanart.Text = "Overwrite Existing Fanart"
         Me.chkOverwriteShowFanart.UseVisualStyleBackColor = True
         '
-        'TabPage6
+        'TabPage7
         '
-        Me.TabPage6.Controls.Add(Me.gbEpPosterOpts)
-        Me.TabPage6.Controls.Add(Me.gbEpFanartOpts)
-        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage6.Name = "TabPage6"
-        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(581, 320)
-        Me.TabPage6.TabIndex = 1
-        Me.TabPage6.Text = "TV Episode"
-        Me.TabPage6.UseVisualStyleBackColor = True
+        Me.TabPage7.Controls.Add(Me.gbEpPosterOpts)
+        Me.TabPage7.Controls.Add(Me.gbEpFanartOpts)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage7.Name = "TabPage7"
+        Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage7.Size = New System.Drawing.Size(581, 320)
+        Me.TabPage7.TabIndex = 1
+        Me.TabPage7.Text = "TV Episode"
+        Me.TabPage7.UseVisualStyleBackColor = True
         '
         'gbEpPosterOpts
         '
@@ -5804,6 +5861,502 @@ Partial Class dlgSettings
         Me.pnlTrailers.TabIndex = 73
         Me.pnlTrailers.Visible = False
         '
+        'TabPage6
+        '
+        Me.TabPage6.Controls.Add(Me.GroupBox31)
+        Me.TabPage6.Controls.Add(Me.GroupBox32)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage6.Name = "TabPage6"
+        Me.TabPage6.Size = New System.Drawing.Size(581, 320)
+        Me.TabPage6.TabIndex = 2
+        Me.TabPage6.Text = "TV Season"
+        Me.TabPage6.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox1.Enabled = False
+        Me.TextBox1.Location = New System.Drawing.Point(65, 94)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(38, 20)
+        Me.TextBox1.TabIndex = 3
+        '
+        'TextBox2
+        '
+        Me.TextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox2.Enabled = False
+        Me.TextBox2.Location = New System.Drawing.Point(172, 94)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(38, 20)
+        Me.TextBox2.TabIndex = 4
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label33.Location = New System.Drawing.Point(183, 143)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(32, 16)
+        Me.Label33.TabIndex = 46
+        Me.Label33.Text = "100"
+        '
+        'TrackBar1
+        '
+        Me.TrackBar1.AutoSize = False
+        Me.TrackBar1.BackColor = System.Drawing.Color.White
+        Me.TrackBar1.LargeChange = 10
+        Me.TrackBar1.Location = New System.Drawing.Point(7, 136)
+        Me.TrackBar1.Maximum = 100
+        Me.TrackBar1.Name = "TrackBar1"
+        Me.TrackBar1.Size = New System.Drawing.Size(179, 27)
+        Me.TrackBar1.TabIndex = 5
+        Me.TrackBar1.TickFrequency = 10
+        Me.TrackBar1.Value = 100
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Location = New System.Drawing.Point(3, 119)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(75, 13)
+        Me.Label37.TabIndex = 44
+        Me.Label37.Text = "Poster Quality:"
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Location = New System.Drawing.Point(3, 98)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(61, 13)
+        Me.Label38.TabIndex = 43
+        Me.Label38.Text = "Max Width:"
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.Location = New System.Drawing.Point(106, 98)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(64, 13)
+        Me.Label39.TabIndex = 42
+        Me.Label39.Text = "Max Height:"
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(6, 76)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(159, 17)
+        Me.CheckBox1.TabIndex = 2
+        Me.CheckBox1.Text = "Automatically Resize Poster:"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Location = New System.Drawing.Point(3, 16)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(106, 13)
+        Me.Label40.TabIndex = 14
+        Me.Label40.Text = "Preferred Poster Size"
+        '
+        'ComboBox1
+        '
+        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox1.FormattingEnabled = True
+        Me.ComboBox1.Location = New System.Drawing.Point(6, 33)
+        Me.ComboBox1.Name = "ComboBox1"
+        Me.ComboBox1.Size = New System.Drawing.Size(148, 21)
+        Me.ComboBox1.TabIndex = 0
+        '
+        'CheckBox2
+        '
+        Me.CheckBox2.AutoSize = True
+        Me.CheckBox2.Location = New System.Drawing.Point(6, 57)
+        Me.CheckBox2.Name = "CheckBox2"
+        Me.CheckBox2.Size = New System.Drawing.Size(143, 17)
+        Me.CheckBox2.TabIndex = 1
+        Me.CheckBox2.Text = "Overwrite Existing Poster"
+        Me.CheckBox2.UseVisualStyleBackColor = True
+        '
+        'TextBox3
+        '
+        Me.TextBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox3.Enabled = False
+        Me.TextBox3.Location = New System.Drawing.Point(65, 93)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(38, 20)
+        Me.TextBox3.TabIndex = 4
+        '
+        'TextBox4
+        '
+        Me.TextBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox4.Enabled = False
+        Me.TextBox4.Location = New System.Drawing.Point(172, 93)
+        Me.TextBox4.Name = "TextBox4"
+        Me.TextBox4.Size = New System.Drawing.Size(38, 20)
+        Me.TextBox4.TabIndex = 5
+        '
+        'CheckBox3
+        '
+        Me.CheckBox3.AutoSize = True
+        Me.CheckBox3.Location = New System.Drawing.Point(163, 34)
+        Me.CheckBox3.Name = "CheckBox3"
+        Me.CheckBox3.Size = New System.Drawing.Size(47, 17)
+        Me.CheckBox3.TabIndex = 1
+        Me.CheckBox3.Text = "Only"
+        Me.CheckBox3.UseVisualStyleBackColor = True
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label41.Location = New System.Drawing.Point(183, 144)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(32, 16)
+        Me.Label41.TabIndex = 49
+        Me.Label41.Text = "100"
+        '
+        'TrackBar2
+        '
+        Me.TrackBar2.AutoSize = False
+        Me.TrackBar2.BackColor = System.Drawing.Color.White
+        Me.TrackBar2.LargeChange = 10
+        Me.TrackBar2.Location = New System.Drawing.Point(6, 136)
+        Me.TrackBar2.Maximum = 100
+        Me.TrackBar2.Name = "TrackBar2"
+        Me.TrackBar2.Size = New System.Drawing.Size(180, 27)
+        Me.TrackBar2.TabIndex = 6
+        Me.TrackBar2.TickFrequency = 10
+        Me.TrackBar2.Value = 100
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Location = New System.Drawing.Point(2, 119)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(75, 13)
+        Me.Label42.TabIndex = 47
+        Me.Label42.Text = "Fanart Quality:"
+        '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Location = New System.Drawing.Point(3, 97)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(61, 13)
+        Me.Label43.TabIndex = 43
+        Me.Label43.Text = "Max Width:"
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Location = New System.Drawing.Point(106, 97)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(64, 13)
+        Me.Label44.TabIndex = 42
+        Me.Label44.Text = "Max Height:"
+        '
+        'CheckBox4
+        '
+        Me.CheckBox4.AutoSize = True
+        Me.CheckBox4.Location = New System.Drawing.Point(6, 76)
+        Me.CheckBox4.Name = "CheckBox4"
+        Me.CheckBox4.Size = New System.Drawing.Size(159, 17)
+        Me.CheckBox4.TabIndex = 3
+        Me.CheckBox4.Text = "Automatically Resize Fanart:"
+        Me.CheckBox4.UseVisualStyleBackColor = True
+        '
+        'ComboBox2
+        '
+        Me.ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox2.FormattingEnabled = True
+        Me.ComboBox2.Location = New System.Drawing.Point(6, 30)
+        Me.ComboBox2.Name = "ComboBox2"
+        Me.ComboBox2.Size = New System.Drawing.Size(148, 21)
+        Me.ComboBox2.TabIndex = 0
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.Location = New System.Drawing.Point(3, 14)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(106, 13)
+        Me.Label45.TabIndex = 15
+        Me.Label45.Text = "Preferred Fanart Size"
+        '
+        'CheckBox5
+        '
+        Me.CheckBox5.AutoSize = True
+        Me.CheckBox5.Location = New System.Drawing.Point(6, 56)
+        Me.CheckBox5.Name = "CheckBox5"
+        Me.CheckBox5.Size = New System.Drawing.Size(143, 17)
+        Me.CheckBox5.TabIndex = 2
+        Me.CheckBox5.Text = "Overwrite Existing Fanart"
+        Me.CheckBox5.UseVisualStyleBackColor = True
+        '
+        'GroupBox31
+        '
+        Me.GroupBox31.Controls.Add(Me.TextBox5)
+        Me.GroupBox31.Controls.Add(Me.TextBox6)
+        Me.GroupBox31.Controls.Add(Me.Label46)
+        Me.GroupBox31.Controls.Add(Me.TrackBar3)
+        Me.GroupBox31.Controls.Add(Me.Label47)
+        Me.GroupBox31.Controls.Add(Me.Label48)
+        Me.GroupBox31.Controls.Add(Me.Label49)
+        Me.GroupBox31.Controls.Add(Me.CheckBox6)
+        Me.GroupBox31.Controls.Add(Me.Label50)
+        Me.GroupBox31.Controls.Add(Me.ComboBox3)
+        Me.GroupBox31.Controls.Add(Me.CheckBox7)
+        Me.GroupBox31.Location = New System.Drawing.Point(4, 5)
+        Me.GroupBox31.Name = "GroupBox31"
+        Me.GroupBox31.Size = New System.Drawing.Size(218, 170)
+        Me.GroupBox31.TabIndex = 4
+        Me.GroupBox31.TabStop = False
+        Me.GroupBox31.Text = "Poster"
+        '
+        'TextBox5
+        '
+        Me.TextBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox5.Enabled = False
+        Me.TextBox5.Location = New System.Drawing.Point(65, 94)
+        Me.TextBox5.Name = "TextBox5"
+        Me.TextBox5.Size = New System.Drawing.Size(38, 20)
+        Me.TextBox5.TabIndex = 3
+        '
+        'TextBox6
+        '
+        Me.TextBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox6.Enabled = False
+        Me.TextBox6.Location = New System.Drawing.Point(172, 94)
+        Me.TextBox6.Name = "TextBox6"
+        Me.TextBox6.Size = New System.Drawing.Size(38, 20)
+        Me.TextBox6.TabIndex = 4
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label46.Location = New System.Drawing.Point(183, 143)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(32, 16)
+        Me.Label46.TabIndex = 46
+        Me.Label46.Text = "100"
+        '
+        'TrackBar3
+        '
+        Me.TrackBar3.AutoSize = False
+        Me.TrackBar3.BackColor = System.Drawing.Color.White
+        Me.TrackBar3.LargeChange = 10
+        Me.TrackBar3.Location = New System.Drawing.Point(7, 136)
+        Me.TrackBar3.Maximum = 100
+        Me.TrackBar3.Name = "TrackBar3"
+        Me.TrackBar3.Size = New System.Drawing.Size(179, 27)
+        Me.TrackBar3.TabIndex = 5
+        Me.TrackBar3.TickFrequency = 10
+        Me.TrackBar3.Value = 100
+        '
+        'Label47
+        '
+        Me.Label47.AutoSize = True
+        Me.Label47.Location = New System.Drawing.Point(3, 119)
+        Me.Label47.Name = "Label47"
+        Me.Label47.Size = New System.Drawing.Size(75, 13)
+        Me.Label47.TabIndex = 44
+        Me.Label47.Text = "Poster Quality:"
+        '
+        'Label48
+        '
+        Me.Label48.AutoSize = True
+        Me.Label48.Location = New System.Drawing.Point(3, 98)
+        Me.Label48.Name = "Label48"
+        Me.Label48.Size = New System.Drawing.Size(61, 13)
+        Me.Label48.TabIndex = 43
+        Me.Label48.Text = "Max Width:"
+        '
+        'Label49
+        '
+        Me.Label49.AutoSize = True
+        Me.Label49.Location = New System.Drawing.Point(106, 98)
+        Me.Label49.Name = "Label49"
+        Me.Label49.Size = New System.Drawing.Size(64, 13)
+        Me.Label49.TabIndex = 42
+        Me.Label49.Text = "Max Height:"
+        '
+        'CheckBox6
+        '
+        Me.CheckBox6.AutoSize = True
+        Me.CheckBox6.Location = New System.Drawing.Point(6, 76)
+        Me.CheckBox6.Name = "CheckBox6"
+        Me.CheckBox6.Size = New System.Drawing.Size(159, 17)
+        Me.CheckBox6.TabIndex = 2
+        Me.CheckBox6.Text = "Automatically Resize Poster:"
+        Me.CheckBox6.UseVisualStyleBackColor = True
+        '
+        'Label50
+        '
+        Me.Label50.AutoSize = True
+        Me.Label50.Location = New System.Drawing.Point(3, 16)
+        Me.Label50.Name = "Label50"
+        Me.Label50.Size = New System.Drawing.Size(106, 13)
+        Me.Label50.TabIndex = 14
+        Me.Label50.Text = "Preferred Poster Size"
+        '
+        'ComboBox3
+        '
+        Me.ComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox3.FormattingEnabled = True
+        Me.ComboBox3.Location = New System.Drawing.Point(6, 33)
+        Me.ComboBox3.Name = "ComboBox3"
+        Me.ComboBox3.Size = New System.Drawing.Size(148, 21)
+        Me.ComboBox3.TabIndex = 0
+        '
+        'CheckBox7
+        '
+        Me.CheckBox7.AutoSize = True
+        Me.CheckBox7.Location = New System.Drawing.Point(6, 57)
+        Me.CheckBox7.Name = "CheckBox7"
+        Me.CheckBox7.Size = New System.Drawing.Size(143, 17)
+        Me.CheckBox7.TabIndex = 1
+        Me.CheckBox7.Text = "Overwrite Existing Poster"
+        Me.CheckBox7.UseVisualStyleBackColor = True
+        '
+        'GroupBox32
+        '
+        Me.GroupBox32.Controls.Add(Me.TextBox7)
+        Me.GroupBox32.Controls.Add(Me.TextBox8)
+        Me.GroupBox32.Controls.Add(Me.CheckBox8)
+        Me.GroupBox32.Controls.Add(Me.Label51)
+        Me.GroupBox32.Controls.Add(Me.TrackBar4)
+        Me.GroupBox32.Controls.Add(Me.Label52)
+        Me.GroupBox32.Controls.Add(Me.Label53)
+        Me.GroupBox32.Controls.Add(Me.Label54)
+        Me.GroupBox32.Controls.Add(Me.CheckBox9)
+        Me.GroupBox32.Controls.Add(Me.ComboBox4)
+        Me.GroupBox32.Controls.Add(Me.Label55)
+        Me.GroupBox32.Controls.Add(Me.CheckBox10)
+        Me.GroupBox32.Location = New System.Drawing.Point(226, 5)
+        Me.GroupBox32.Name = "GroupBox32"
+        Me.GroupBox32.Size = New System.Drawing.Size(218, 170)
+        Me.GroupBox32.TabIndex = 5
+        Me.GroupBox32.TabStop = False
+        Me.GroupBox32.Text = "Fanart"
+        '
+        'TextBox7
+        '
+        Me.TextBox7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox7.Enabled = False
+        Me.TextBox7.Location = New System.Drawing.Point(65, 93)
+        Me.TextBox7.Name = "TextBox7"
+        Me.TextBox7.Size = New System.Drawing.Size(38, 20)
+        Me.TextBox7.TabIndex = 4
+        '
+        'TextBox8
+        '
+        Me.TextBox8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.TextBox8.Enabled = False
+        Me.TextBox8.Location = New System.Drawing.Point(172, 93)
+        Me.TextBox8.Name = "TextBox8"
+        Me.TextBox8.Size = New System.Drawing.Size(38, 20)
+        Me.TextBox8.TabIndex = 5
+        '
+        'CheckBox8
+        '
+        Me.CheckBox8.AutoSize = True
+        Me.CheckBox8.Location = New System.Drawing.Point(163, 34)
+        Me.CheckBox8.Name = "CheckBox8"
+        Me.CheckBox8.Size = New System.Drawing.Size(47, 17)
+        Me.CheckBox8.TabIndex = 1
+        Me.CheckBox8.Text = "Only"
+        Me.CheckBox8.UseVisualStyleBackColor = True
+        '
+        'Label51
+        '
+        Me.Label51.AutoSize = True
+        Me.Label51.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label51.Location = New System.Drawing.Point(183, 144)
+        Me.Label51.Name = "Label51"
+        Me.Label51.Size = New System.Drawing.Size(32, 16)
+        Me.Label51.TabIndex = 49
+        Me.Label51.Text = "100"
+        '
+        'TrackBar4
+        '
+        Me.TrackBar4.AutoSize = False
+        Me.TrackBar4.BackColor = System.Drawing.Color.White
+        Me.TrackBar4.LargeChange = 10
+        Me.TrackBar4.Location = New System.Drawing.Point(6, 136)
+        Me.TrackBar4.Maximum = 100
+        Me.TrackBar4.Name = "TrackBar4"
+        Me.TrackBar4.Size = New System.Drawing.Size(180, 27)
+        Me.TrackBar4.TabIndex = 6
+        Me.TrackBar4.TickFrequency = 10
+        Me.TrackBar4.Value = 100
+        '
+        'Label52
+        '
+        Me.Label52.AutoSize = True
+        Me.Label52.Location = New System.Drawing.Point(2, 119)
+        Me.Label52.Name = "Label52"
+        Me.Label52.Size = New System.Drawing.Size(75, 13)
+        Me.Label52.TabIndex = 47
+        Me.Label52.Text = "Fanart Quality:"
+        '
+        'Label53
+        '
+        Me.Label53.AutoSize = True
+        Me.Label53.Location = New System.Drawing.Point(3, 97)
+        Me.Label53.Name = "Label53"
+        Me.Label53.Size = New System.Drawing.Size(61, 13)
+        Me.Label53.TabIndex = 43
+        Me.Label53.Text = "Max Width:"
+        '
+        'Label54
+        '
+        Me.Label54.AutoSize = True
+        Me.Label54.Location = New System.Drawing.Point(106, 97)
+        Me.Label54.Name = "Label54"
+        Me.Label54.Size = New System.Drawing.Size(64, 13)
+        Me.Label54.TabIndex = 42
+        Me.Label54.Text = "Max Height:"
+        '
+        'CheckBox9
+        '
+        Me.CheckBox9.AutoSize = True
+        Me.CheckBox9.Location = New System.Drawing.Point(6, 76)
+        Me.CheckBox9.Name = "CheckBox9"
+        Me.CheckBox9.Size = New System.Drawing.Size(159, 17)
+        Me.CheckBox9.TabIndex = 3
+        Me.CheckBox9.Text = "Automatically Resize Fanart:"
+        Me.CheckBox9.UseVisualStyleBackColor = True
+        '
+        'ComboBox4
+        '
+        Me.ComboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ComboBox4.FormattingEnabled = True
+        Me.ComboBox4.Location = New System.Drawing.Point(6, 30)
+        Me.ComboBox4.Name = "ComboBox4"
+        Me.ComboBox4.Size = New System.Drawing.Size(148, 21)
+        Me.ComboBox4.TabIndex = 0
+        '
+        'Label55
+        '
+        Me.Label55.AutoSize = True
+        Me.Label55.Location = New System.Drawing.Point(3, 14)
+        Me.Label55.Name = "Label55"
+        Me.Label55.Size = New System.Drawing.Size(106, 13)
+        Me.Label55.TabIndex = 15
+        Me.Label55.Text = "Preferred Fanart Size"
+        '
+        'CheckBox10
+        '
+        Me.CheckBox10.AutoSize = True
+        Me.CheckBox10.Location = New System.Drawing.Point(6, 56)
+        Me.CheckBox10.Name = "CheckBox10"
+        Me.CheckBox10.Size = New System.Drawing.Size(143, 17)
+        Me.CheckBox10.TabIndex = 2
+        Me.CheckBox10.Text = "Overwrite Existing Fanart"
+        Me.CheckBox10.UseVisualStyleBackColor = True
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -5818,11 +6371,6 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.btnOK)
-        Me.Controls.Add(Me.pnlExtensions)
-        Me.Controls.Add(Me.pnlShows)
-        Me.Controls.Add(Me.pnlTVScraper)
-        Me.Controls.Add(Me.pnlXBMCCom)
-        Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlImages)
         Me.Controls.Add(Me.pnlSources)
@@ -5830,6 +6378,11 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlTrailers)
         Me.Controls.Add(Me.pnlScraper)
         Me.Controls.Add(Me.pnlGeneral)
+        Me.Controls.Add(Me.pnlExtensions)
+        Me.Controls.Add(Me.pnlShows)
+        Me.Controls.Add(Me.pnlTVScraper)
+        Me.Controls.Add(Me.pnlXBMCCom)
+        Me.Controls.Add(Me.pnlTVSources)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
@@ -5953,7 +6506,7 @@ Partial Class dlgSettings
         Me.gbShowFanartOpts.ResumeLayout(False)
         Me.gbShowFanartOpts.PerformLayout()
         CType(Me.tbShowFanartQual, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabPage6.ResumeLayout(False)
+        Me.TabPage7.ResumeLayout(False)
         Me.gbEpPosterOpts.ResumeLayout(False)
         Me.gbEpPosterOpts.PerformLayout()
         CType(Me.tbEpPosterQual, System.ComponentModel.ISupportInitialize).EndInit()
@@ -5986,6 +6539,15 @@ Partial Class dlgSettings
         Me.GroupBox20.PerformLayout()
         Me.pnlScraper.ResumeLayout(False)
         Me.pnlTrailers.ResumeLayout(False)
+        Me.TabPage6.ResumeLayout(False)
+        CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox31.ResumeLayout(False)
+        Me.GroupBox31.PerformLayout()
+        CType(Me.TrackBar3, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox32.ResumeLayout(False)
+        Me.GroupBox32.PerformLayout()
+        CType(Me.TrackBar4, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -6298,7 +6860,7 @@ Partial Class dlgSettings
     Friend WithEvents chkOverwriteShowPoster As System.Windows.Forms.CheckBox
     Friend WithEvents TabControl3 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
-    Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage7 As System.Windows.Forms.TabPage
     Friend WithEvents pnlTVScraper As System.Windows.Forms.Panel
     Friend WithEvents cbRatingRegion As System.Windows.Forms.ComboBox
     Friend WithEvents gbTVMisc As System.Windows.Forms.GroupBox
@@ -6478,4 +7040,53 @@ Partial Class dlgSettings
     Friend WithEvents pnlScraper As System.Windows.Forms.Panel
     Friend WithEvents pnlTrailers As System.Windows.Forms.Panel
     Friend WithEvents GroupBox30 As System.Windows.Forms.GroupBox
+    Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
+    Friend WithEvents GroupBox31 As System.Windows.Forms.GroupBox
+    Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
+    Friend WithEvents Label46 As System.Windows.Forms.Label
+    Friend WithEvents TrackBar3 As System.Windows.Forms.TrackBar
+    Friend WithEvents Label47 As System.Windows.Forms.Label
+    Friend WithEvents Label48 As System.Windows.Forms.Label
+    Friend WithEvents Label49 As System.Windows.Forms.Label
+    Friend WithEvents CheckBox6 As System.Windows.Forms.CheckBox
+    Friend WithEvents Label50 As System.Windows.Forms.Label
+    Friend WithEvents ComboBox3 As System.Windows.Forms.ComboBox
+    Friend WithEvents CheckBox7 As System.Windows.Forms.CheckBox
+    Friend WithEvents GroupBox32 As System.Windows.Forms.GroupBox
+    Friend WithEvents TextBox7 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBox8 As System.Windows.Forms.TextBox
+    Friend WithEvents CheckBox8 As System.Windows.Forms.CheckBox
+    Friend WithEvents Label51 As System.Windows.Forms.Label
+    Friend WithEvents TrackBar4 As System.Windows.Forms.TrackBar
+    Friend WithEvents Label52 As System.Windows.Forms.Label
+    Friend WithEvents Label53 As System.Windows.Forms.Label
+    Friend WithEvents Label54 As System.Windows.Forms.Label
+    Friend WithEvents CheckBox9 As System.Windows.Forms.CheckBox
+    Friend WithEvents ComboBox4 As System.Windows.Forms.ComboBox
+    Friend WithEvents Label55 As System.Windows.Forms.Label
+    Friend WithEvents CheckBox10 As System.Windows.Forms.CheckBox
+    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents Label33 As System.Windows.Forms.Label
+    Friend WithEvents TrackBar1 As System.Windows.Forms.TrackBar
+    Friend WithEvents Label37 As System.Windows.Forms.Label
+    Friend WithEvents Label38 As System.Windows.Forms.Label
+    Friend WithEvents Label39 As System.Windows.Forms.Label
+    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
+    Friend WithEvents Label40 As System.Windows.Forms.Label
+    Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
+    Friend WithEvents CheckBox2 As System.Windows.Forms.CheckBox
+    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents CheckBox3 As System.Windows.Forms.CheckBox
+    Friend WithEvents Label41 As System.Windows.Forms.Label
+    Friend WithEvents TrackBar2 As System.Windows.Forms.TrackBar
+    Friend WithEvents Label42 As System.Windows.Forms.Label
+    Friend WithEvents Label43 As System.Windows.Forms.Label
+    Friend WithEvents Label44 As System.Windows.Forms.Label
+    Friend WithEvents CheckBox4 As System.Windows.Forms.CheckBox
+    Friend WithEvents ComboBox2 As System.Windows.Forms.ComboBox
+    Friend WithEvents Label45 As System.Windows.Forms.Label
+    Friend WithEvents CheckBox5 As System.Windows.Forms.CheckBox
 End Class

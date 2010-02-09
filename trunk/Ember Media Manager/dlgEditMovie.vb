@@ -1575,8 +1575,4 @@ Public Class dlgEditMovie
         DelayTimer.Stop()
         GrabTheFrame()
     End Sub
-
-    Private Sub txtTitle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTitle.TextChanged
-
-    End Sub
 End Class

@@ -40,43 +40,46 @@ Public Class EmberModules
 
     Public EmberAPI As New _EmberAPI
     Public externalProcessorModules As New List(Of _externalProcessorModuleClass)
-    Private moduleLocation As String = Path.Combine(Application.StartupPath, "Modules")
+    Private moduleLocation As String = Path.Combine(Master.AppPath, "Modules")
     Public Sub loadModules()
-        'Assembly to load the file
-        Dim assembly As System.Reflection.Assembly
-        'For each .dll file in the module directory
-        For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
-            'Load the assembly
-            assembly = System.Reflection.Assembly.LoadFrom(file)
-            'Loop through each of the assemeblies type
-            For Each fileType As Type In assembly.GetTypes
-                Try
-                    'Activate the located module
-                    Dim t As Type = fileType.GetInterface("EmberExternalModule")
-                    If Not t Is Nothing Then
-                        Dim ProcessorModule As New Object
-                        ProcessorModule = Activator.CreateInstance(fileType)
-                        'Add the activated module to the arraylist
-                        Dim _externalProcessorModule As New _externalProcessorModuleClass
-                        _externalProcessorModule.ProcessorModule = ProcessorModule
-                        _externalProcessorModule.AssemblyName = Path.GetFileName(file)
-                        For Each i In Master.eSettings.EmberModules
-                            If i.AssemblyName = _externalProcessorModule.AssemblyName Then
-                                _externalProcessorModule.Enabled = i.Enabled
+
+        If Directory.Exists(moduleLocation) Then
+            'Assembly to load the file
+            Dim assembly As System.Reflection.Assembly
+            'For each .dll file in the module directory
+            For Each file As String In System.IO.Directory.GetFiles(moduleLocation, "*.dll")
+                'Load the assembly
+                assembly = System.Reflection.Assembly.LoadFrom(file)
+                'Loop through each of the assemeblies type
+                For Each fileType As Type In assembly.GetTypes
+                    Try
+                        'Activate the located module
+                        Dim t As Type = fileType.GetInterface("EmberExternalModule")
+                        If Not t Is Nothing Then
+                            Dim ProcessorModule As New Object
+                            ProcessorModule = Activator.CreateInstance(fileType)
+                            'Add the activated module to the arraylist
+                            Dim _externalProcessorModule As New _externalProcessorModuleClass
+                            _externalProcessorModule.ProcessorModule = ProcessorModule
+                            _externalProcessorModule.AssemblyName = Path.GetFileName(file)
+                            For Each i In Master.eSettings.EmberModules
+                                If i.AssemblyName = _externalProcessorModule.AssemblyName Then
+                                    _externalProcessorModule.Enabled = i.Enabled
+                                End If
+                            Next
+                            externalProcessorModules.Add(_externalProcessorModule)
+                            ProcessorModule.Init(EmberAPI)
+                            If _externalProcessorModule.Enabled Then
+                                ProcessorModule.Enable()
+                            Else
+                                ProcessorModule.Disable()
                             End If
-                        Next
-                        externalProcessorModules.Add(_externalProcessorModule)
-                        ProcessorModule.Init(EmberAPI)
-                        If _externalProcessorModule.Enabled Then
-                            ProcessorModule.Enable()
-                        Else
-                            ProcessorModule.Disable()
                         End If
-                    End If
-                Catch ex As Exception
-                End Try
+                    Catch ex As Exception
+                    End Try
+                Next
             Next
-        Next
+        End If
     End Sub
 
     Dim WithEvents ModulesMenu As New System.Windows.Forms.ToolStripMenuItem
