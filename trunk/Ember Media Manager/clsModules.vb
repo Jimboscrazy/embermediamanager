@@ -15,6 +15,20 @@ Public Interface EmberExternalModule
 End Interface
 
 Public Class EmberModules
+    Class _EmberAPI
+        Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
+        Public EmberAPP As Object = frmMain
+        Public AppPAth As Object = Master.AppPath
+        Sub New()
+            _MenuMediaList = frmMain.mnuMediaList
+        End Sub
+        Public ReadOnly Property MenuMediaList() As System.Windows.Forms.ContextMenuStrip
+            Get
+                Return _MenuMediaList
+            End Get
+        End Property
+    End Class
+
     <XmlRoot("EmberModule")> _
     Class _XMLEmberModuleClass
         Public Enabled As Boolean
@@ -24,18 +38,6 @@ Public Class EmberModules
         Public ProcessorModule As Object
         Public Enabled As Boolean
         Public AssemblyName As String
-    End Class
-    Class _EmberAPI
-        Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
-        Public EmberAPP As Object = frmMain
-        Sub New()
-            _MenuMediaList = frmMain.mnuMediaList
-        End Sub
-        Public ReadOnly Property MenuMediaList() As System.Windows.Forms.ContextMenuStrip
-            Get
-                Return _MenuMediaList
-            End Get
-        End Property
     End Class
 
     Public EmberAPI As New _EmberAPI
