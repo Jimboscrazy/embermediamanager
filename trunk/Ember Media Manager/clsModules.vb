@@ -17,14 +17,23 @@ End Interface
 Public Class EmberModules
     Class _EmberAPI
         Private _MenuMediaList As System.Windows.Forms.ContextMenuStrip
+        Private _MediaList As System.Windows.Forms.DataGridView
         Public EmberAPP As Object = frmMain
+        Public DB As Object = Master.DB
+        Public FileDelete As New FileManip.Delete
         Public AppPAth As Object = Master.AppPath
         Sub New()
             _MenuMediaList = frmMain.mnuMediaList
+            _MediaList = frmMain.dgvMediaList
         End Sub
         Public ReadOnly Property MenuMediaList() As System.Windows.Forms.ContextMenuStrip
             Get
                 Return _MenuMediaList
+            End Get
+        End Property
+        Public ReadOnly Property MediaList() As System.Windows.Forms.DataGridView
+            Get
+                Return _MediaList
             End Get
         End Property
     End Class
