@@ -33,7 +33,7 @@ Public Class dlgTVImageSelect
     Private GenericPosterList As New List(Of Poster)
 
     Private _showposter As New Images
-    Private _showfanart As New Images
+    Private _showfanart As New FanartImage
     Private _seasonimagelist As New List(Of SeasonImage)
     Private _episodeimagelist As New List(Of EpisodeImage)
 
@@ -50,12 +50,60 @@ Public Class dlgTVImageSelect
 
     Friend WithEvents bwLoadData As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadImages As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwDownloadFanart As New System.ComponentModel.BackgroundWorker
 
+    Private Structure FanartTag
+        Dim URL As String
+        Dim Path As String
+    End Structure
+
+    Private Class FanartImage
+        Private _image As Images
+        Private _url As String
+        Private _path As String
+
+        Public Property Image() As Images
+            Get
+                Return Me._image
+            End Get
+            Set(ByVal value As Images)
+                Me._image = value
+            End Set
+        End Property
+
+        Public Property URL() As String
+            Get
+                Return Me._url
+            End Get
+            Set(ByVal value As String)
+                Me._url = value
+            End Set
+        End Property
+
+        Public Property Path() As String
+            Get
+                Return Me._path
+            End Get
+            Set(ByVal value As String)
+                Me._path = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._image = New Images
+            Me._url = String.Empty
+            Me._path = String.Empty
+        End Sub
+    End Class
 
     Private Class SeasonImage
         Private _season As Integer
         Private _poster As Images
-        Private _fanart As Images
+        Private _fanart As FanartImage
         Private _posterneedssave As Boolean
         Private _fanartneedssave As Boolean
 
@@ -77,11 +125,11 @@ Public Class dlgTVImageSelect
             End Set
         End Property
 
-        Public Property Fanart() As Images
+        Public Property Fanart() As FanartImage
             Get
                 Return Me._fanart
             End Get
-            Set(ByVal value As Images)
+            Set(ByVal value As FanartImage)
                 Me._fanart = value
             End Set
         End Property
@@ -111,7 +159,7 @@ Public Class dlgTVImageSelect
         Public Sub Clear()
             Me._season = -1
             Me._poster = New Images
-            Me._fanart = New Images
+            Me._fanart = New FanartImage
             Me._posterneedssave = False
             Me._fanartneedssave = False
         End Sub
@@ -121,7 +169,7 @@ Public Class dlgTVImageSelect
         Private _season As Integer
         Private _episode As Integer
         Private _poster As Images
-        Private _fanart As Images
+        Private _fanart As FanartImage
         Private _posterneedssave As Boolean
         Private _fanartneedssave As Boolean
 
@@ -152,11 +200,11 @@ Public Class dlgTVImageSelect
             End Set
         End Property
 
-        Public Property Fanart() As Images
+        Public Property Fanart() As FanartImage
             Get
                 Return Me._fanart
             End Get
-            Set(ByVal value As Images)
+            Set(ByVal value As FanartImage)
                 Me._fanart = value
             End Set
         End Property
@@ -187,7 +235,7 @@ Public Class dlgTVImageSelect
             Me._season = -1
             Me._episode = -1
             Me._poster = New Images
-            Me._fanart = New Images
+            Me._fanart = New FanartImage
             Me._posterneedssave = False
             Me._fanartneedssave = False
         End Sub
@@ -227,7 +275,7 @@ Public Class dlgTVImageSelect
 
     Private Class Fanart
         Private _info As TVDB.TVDBFanart
-        Private _image As Images
+        Private _fanart As FanartImage
 
         Public Property Info() As TVDB.TVDBFanart
             Get
@@ -238,12 +286,12 @@ Public Class dlgTVImageSelect
             End Set
         End Property
 
-        Public Property Image() As Images
+        Public Property Fanart() As FanartImage
             Get
-                Return Me._image
+                Return Me._fanart
             End Get
-            Set(ByVal value As Images)
-                Me._image = value
+            Set(ByVal value As FanartImage)
+                Me._fanart = value
             End Set
         End Property
 
@@ -253,7 +301,7 @@ Public Class dlgTVImageSelect
 
         Public Sub Clear()
             Me._info = New TVDB.TVDBFanart
-            Me._image = New Images
+            Me._fanart = New FanartImage
         End Sub
     End Class
 
@@ -470,16 +518,16 @@ Public Class dlgTVImageSelect
                 Try
                     cShowF = New Fanart
                     cShowF.Info = SFan
-                    If Not File.Exists(SFan.LocalFile) Then
-                        If Not String.IsNullOrEmpty(SFan.URL) Then
-                            cShowF.Image.FromWeb(SFan.URL)
-                            Directory.CreateDirectory(Directory.GetParent(SFan.LocalFile).FullName)
-                            cShowF.Image.Save(SFan.LocalFile)
+                    If Not File.Exists(SFan.LocalThumb) Then
+                        If Not String.IsNullOrEmpty(SFan.ThumbnailURL) Then
+                            cShowF.Fanart.Image.FromWeb(SFan.ThumbnailURL)
+                            Directory.CreateDirectory(Directory.GetParent(SFan.LocalThumb).FullName)
+                            cShowF.Fanart.Image.Save(SFan.LocalThumb)
                         Else
-                            cShowF.Image.Image = Nothing
+                            cShowF.Fanart.Image = Nothing
                         End If
                     Else
-                        cShowF.Image.FromFile(SFan.LocalFile)
+                        cShowF.Fanart.Image.FromFile(SFan.LocalThumb)
                     End If
                     FanartList.Add(cShowF)
                     Me.bwLoadImages.ReportProgress(iProgress, "progress")
@@ -534,9 +582,17 @@ Public Class dlgTVImageSelect
             End If
             Me.bwLoadData.ReportProgress(1, "progress")
 
-            If IsNothing(Me._showfanart.Image) Then
-                Dim tSF As Fanart = FanartList.SingleOrDefault(Function(f) Not IsNothing(f.Image.Image))
-                If Not IsNothing(tSF) Then Me._showfanart.Image = tSF.Image.Image
+            If IsNothing(Me._showfanart.Image.Image) Then
+                Dim tSF As Fanart = FanartList.SingleOrDefault(Function(f) Not IsNothing(f.Fanart.Image))
+                If Not IsNothing(tSF) Then
+                    If Not String.IsNullOrEmpty(tSF.Fanart.Path) AndAlso File.Exists(tSF.Fanart.Path) Then
+                        Me._showfanart.Image.FromFile(tSF.Fanart.Path)
+                    ElseIf Not String.IsNullOrEmpty(tSF.Fanart.Path) AndAlso Not String.IsNullOrEmpty(tSF.Fanart.URL) Then
+                        Me._showfanart.Image.FromWeb(tSF.Fanart.URL)
+                        Directory.CreateDirectory(Directory.GetParent(tSF.Fanart.Path).FullName)
+                        Me._showfanart.Image.Save(tSF.Fanart.Path)
+                    End If
+                End If
             End If
             Me.bwLoadData.ReportProgress(2, "progress")
 
@@ -547,7 +603,7 @@ Public Class dlgTVImageSelect
                         tSea = SeasonList.SingleOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Info.Season = iSeason)
                         If Not IsNothing(tSea) Then cSeason.Poster.Image = tSea.Image.Image
                     End If
-                    If IsNothing(cSeason.Fanart.Image) AndAlso Not IsNothing(Me._showfanart.Image) Then cSeason.Fanart.Image = Me._showfanart.Image
+                    If IsNothing(cSeason.Fanart.Image.Image) AndAlso Not IsNothing(Me._showfanart.Image.Image) Then cSeason.Fanart.Image.Image = Me._showfanart.Image.Image
 
                     Me.bwLoadData.ReportProgress(iProgress, "progress")
                     iProgress += 1
@@ -564,7 +620,7 @@ Public Class dlgTVImageSelect
                         tEp = EpisodeList.SingleOrDefault(Function(p) Not IsNothing(p.Image.Image) AndAlso p.Episode = iEpisode AndAlso p.Season = iSeason)
                         If Not IsNothing(tEp) Then cEpisode.Poster.Image = tEp.Image.Image
                     End If
-                    If IsNothing(cEpisode.Fanart.Image) AndAlso Not IsNothing(Me._showfanart.Image) Then cEpisode.Fanart.Image = Me._showfanart.Image
+                    If IsNothing(cEpisode.Fanart.Image.Image) AndAlso Not IsNothing(Me._showfanart.Image.Image) Then cEpisode.Fanart.Image.Image = Me._showfanart.Image.Image
                     Me.bwLoadData.ReportProgress(iProgress, "progress")
                     iProgress += 1
                 Catch ex As Exception
@@ -579,12 +635,23 @@ Public Class dlgTVImageSelect
     Private Sub SaveAll()
         Dim iEp As Integer = -1
         Dim iSea As Integer = -1
-
+        Dim sfPath As String = String.Empty
         Try
             Dim spPath As String = Me._showposter.SaveAsShowPoster(Me._dbtvlist(0))
-            Dim sfPath As String = Me._showposter.SaveAsShowFanart(Me._dbtvlist(0))
+            If Not String.IsNullOrEmpty(Me._showfanart.Path) AndAlso File.Exists(Me._showfanart.Path) Then
+                Me._showfanart.Image.FromFile(Me._showfanart.Path)
+                sfPath = Me._showfanart.Image.SaveAsShowFanart(Me._dbtvlist(0))
+            ElseIf Not String.IsNullOrEmpty(Me._showfanart.URL) AndAlso Not String.IsNullOrEmpty(Me._showfanart.Path) Then
+                Me._showfanart.Image.FromWeb(Me._showfanart.URL)
+                If Not IsNothing(Me._showfanart.Image.Image) Then
+                    Directory.CreateDirectory(Directory.GetParent(Me._showfanart.Path).FullName)
+                    Me._showfanart.Image.Save(Me._showfanart.Path)
+                    sfPath = Me._showfanart.Image.SaveAsShowFanart(Me._dbtvlist(0))
+                End If
+            End If
 
             For Each Episode As Master.DBTV In Me._dbtvlist
+
                 Try
                     Episode.ShowPosterPath = spPath
                     Episode.ShowFanartPath = sfPath
@@ -594,13 +661,37 @@ Public Class dlgTVImageSelect
                     Dim cEp = From cEpisode As EpisodeImage In _episodeimagelist Where cEpisode.Episode = iEp AndAlso cEpisode.Season = iSea Take 1
                     If cEp.Count > 0 Then
                         If Not IsNothing(cEp(0).Poster.Image) AndAlso cEp(0).PosterNeedsSave Then Episode.EpPosterPath = cEp(0).Poster.SaveAsEpPoster(Episode)
-                        If Not IsNothing(cEp(0).Fanart.Image) AndAlso cEp(0).FanartNeedsSave Then Episode.EpFanartPath = cEp(0).Fanart.SaveAsEpFanart(Episode)
+                        If cEp(0).FanartNeedsSave Then
+                            If Not String.IsNullOrEmpty(cEp(0).Fanart.Path) AndAlso File.Exists(cEp(0).Fanart.Path) Then
+                                cEp(0).Fanart.Image.FromFile(cEp(0).Fanart.Path)
+                                Episode.EpFanartPath = cEp(0).Fanart.Image.SaveAsEpFanart(Episode)
+                            ElseIf Not String.IsNullOrEmpty(cEp(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cEp(0).Fanart.Path) Then
+                                cEp(0).Fanart.Image.FromWeb(cEp(0).Fanart.URL)
+                                If Not IsNothing(cEp(0).Fanart.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(cEp(0).Fanart.Path).FullName)
+                                    cEp(0).Fanart.Image.Save(cEp(0).Fanart.Path)
+                                    Episode.EpFanartPath = cEp(0).Fanart.Image.SaveAsEpFanart(Episode)
+                                End If
+                            End If
+                        End If
                     End If
 
                     Dim cSea = From cSeason As SeasonImage In _seasonimagelist Where cSeason.Season = iSea Take 1
                     If cSea.Count > 0 Then
                         If Not IsNothing(cSea(0).Poster.Image) AndAlso cSea(0).PosterNeedsSave Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsSeasonPoster(Episode)
-                        If Not IsNothing(cSea(0).Fanart.Image) AndAlso cSea(0).FanartNeedsSave Then Episode.SeasonFanartPath = cSea(0).Fanart.SaveAsSeasonFanart(Episode)
+                        If cSea(0).FanartNeedsSave Then
+                            If Not String.IsNullOrEmpty(cSea(0).Fanart.Path) AndAlso File.Exists(cSea(0).Fanart.Path) Then
+                                cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.Path)
+                                Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
+                            ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.Path) Then
+                                cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
+                                If Not IsNothing(cSea(0).Fanart.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.Path).FullName)
+                                    cSea(0).Fanart.Image.Save(cSea(0).Fanart.Path)
+                                    Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
+                                End If
+                            End If
+                        End If
                     End If
                 Catch ex As Exception
                     Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -628,18 +719,18 @@ Public Class dlgTVImageSelect
                     Me.pbCurrent.Image = Me._showposter.Image
                     iCount = ShowPosterList.Count
                     For i = 0 To iCount - 1
-                        Me.AddImage(ShowPosterList(i).Image.Image, String.Format("{0}x{1}", ShowPosterList(i).Image.Image.Width, ShowPosterList(i).Image.Image.Height), i)
+                        Me.AddImage(ShowPosterList(i).Image.Image, String.Format("{0}x{1}", ShowPosterList(i).Image.Image.Width, ShowPosterList(i).Image.Image.Height), i, Nothing)
                     Next
 
                     For i = 0 To GenericPosterList.Count - 1
-                        Me.AddImage(GenericPosterList(i).Image.Image, String.Format("{0}x{1}", GenericPosterList(i).Image.Image.Width, GenericPosterList(i).Image.Image.Height), i + iCount)
+                        Me.AddImage(GenericPosterList(i).Image.Image, String.Format("{0}x{1}", GenericPosterList(i).Image.Image.Width, GenericPosterList(i).Image.Image.Height), i + iCount, Nothing)
                     Next
                 ElseIf e.Node.Tag.ToString = "showf" Then
                     Me.SelSeason = -999
                     Me.SelIsPoster = False
-                    Me.pbCurrent.Image = Me._showfanart.Image
+                    Me.pbCurrent.Image = Me._showfanart.Image.Image
                     For i = 0 To FanartList.Count - 1
-                        Me.AddImage(FanartList(i).Image.Image, String.Format("{0}x{1}", FanartList(i).Image.Image.Width, FanartList(i).Image.Image.Height), i)
+                        Me.AddImage(FanartList(i).Fanart.Image.Image, String.Format("{0}x{1}", FanartList(i).Fanart.Image.Image.Width, FanartList(i).Fanart.Image.Image.Height), i, New FanartTag With {.URL = FanartList(i).Info.URL, .Path = FanartList(i).Info.LocalFile})
                     Next
                 Else
                     Dim tMatch As Match = Regex.Match(e.Node.Tag.ToString, "(?<type>f|p)(?<num>[0-9]+)")
@@ -647,9 +738,9 @@ Public Class dlgTVImageSelect
                         If tMatch.Groups("type").Value = "f" Then
                             Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
                             Me.SelIsPoster = False
-                            Me.pbCurrent.Image = Me._seasonimagelist.SingleOrDefault(Function(f) f.Season = Convert.ToInt32(tMatch.Groups("num").Value)).Fanart.Image
+                            Me.pbCurrent.Image = Me._seasonimagelist.SingleOrDefault(Function(f) f.Season = Convert.ToInt32(tMatch.Groups("num").Value)).Fanart.Image.Image
                             For i = 0 To FanartList.Count - 1
-                                Me.AddImage(FanartList(i).Image.Image, String.Format("{0}x{1}", FanartList(i).Image.Image.Width, FanartList(i).Image.Image.Height), i)
+                                Me.AddImage(FanartList(i).Fanart.Image.Image, String.Format("{0}x{1}", FanartList(i).Fanart.Image.Image.Width, FanartList(i).Fanart.Image.Image.Height), i, New FanartTag With {.URL = FanartList(i).Info.URL, .Path = FanartList(i).Info.LocalFile})
                             Next
                         ElseIf tMatch.Groups("type").Value = "p" Then
                             Me.SelSeason = Convert.ToInt32(tMatch.Groups("num").Value)
@@ -657,7 +748,7 @@ Public Class dlgTVImageSelect
                             Me.pbCurrent.Image = Me._seasonimagelist.SingleOrDefault(Function(f) f.Season = Convert.ToInt32(tMatch.Groups("num").Value)).Poster.Image
                             iCount = 0
                             For Each SImage As Season In SeasonList.Where(Function(s) s.Info.Season = Convert.ToInt32(tMatch.Groups("num").Value))
-                                Me.AddImage(SImage.Image.Image, String.Format("{0}x{1}", SImage.Image.Image.Width, SImage.Image.Image.Height), iCount)
+                                Me.AddImage(SImage.Image.Image, String.Format("{0}x{1}", SImage.Image.Image.Width, SImage.Image.Image.Height), iCount, Nothing)
                                 iCount += 1
                             Next
                         End If
@@ -669,7 +760,7 @@ Public Class dlgTVImageSelect
         End Try
     End Sub
 
-    Private Sub AddImage(ByVal iImage As Image, ByVal sDescription As String, ByVal iIndex As Integer)
+    Private Sub AddImage(ByVal iImage As Image, ByVal sDescription As String, ByVal iIndex As Integer, ByVal fTag As FanartTag)
 
         Try
             ReDim Preserve Me.pnlImage(iIndex)
@@ -698,6 +789,9 @@ Public Class dlgTVImageSelect
             Me.pnlImage(iIndex).Top = iTop
             Me.pbImage(iIndex).Top = 3
             Me.lblImage(iIndex).Top = 151
+            Me.pnlImage(iIndex).Tag = fTag
+            Me.pbImage(iIndex).Tag = fTag
+            Me.lblImage(iIndex).Tag = fTag
             Me.pnlImages.Controls.Add(Me.pnlImage(iIndex))
             Me.pnlImage(iIndex).Controls.Add(Me.pbImage(iIndex))
             Me.pnlImage(iIndex).Controls.Add(Me.lblImage(iIndex))
@@ -727,17 +821,27 @@ Public Class dlgTVImageSelect
     End Sub
 
     Private Sub pbImage_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim tImage As Image = Nothing
+        Dim fTag As FanartTag = DirectCast(DirectCast(sender, PictureBox).Tag, FanartTag)
+        If Not IsNothing(fTag) Then
+            tImage = DownloadFanart(fTag)
+        Else
+            tImage = DirectCast(sender, PictureBox).Image
+        End If
+
         Using dImgView As New dlgImgView
-            dImgView.ShowDialog(DirectCast(sender, PictureBox).Image)
+            dImgView.ShowDialog(tImage)
         End Using
     End Sub
 
     Private Sub pnlImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelect(Convert.ToInt32(DirectCast(sender, Panel).Name), Me.pbImage(Convert.ToInt32(DirectCast(sender, Panel).Name)).Image)
+        Dim iIndex As Integer = Convert.ToInt32(DirectCast(sender, Panel).Name)
+        Me.DoSelect(iIndex, Me.pbImage(iIndex).Image)
     End Sub
 
     Private Sub lblImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelect(Convert.ToInt32(DirectCast(sender, Label).Name), Me.pbImage(Convert.ToInt32(DirectCast(sender, Label).Name)).Image)
+        Dim iindex As Integer = Convert.ToInt32(DirectCast(sender, Label).Name)
+        Me.DoSelect(iindex, Me.pbImage(iindex).Image)
     End Sub
 
     Private Sub ClearImages()
@@ -777,13 +881,13 @@ Public Class dlgTVImageSelect
                 If Me.SelIsPoster Then
                     Me._showposter.Image = SelImage
                 Else
-                    Me._showfanart.Image = SelImage
+                    Me._showfanart.Image.Image = SelImage
                 End If
             Else
                 If Me.SelIsPoster Then
                     Me._seasonimagelist.SingleOrDefault(Function(s) s.Season = Me.SelSeason).Poster.Image = SelImage
                 Else
-                    Me._seasonimagelist.SingleOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.Image = SelImage
+                    Me._seasonimagelist.SingleOrDefault(Function(s) s.Season = Me.SelSeason).Fanart.Image.Image = SelImage
                 End If
             End If
         Catch ex As Exception
@@ -828,8 +932,9 @@ Public Class dlgTVImageSelect
                     Me._showposter.FromFile(sEpisode.ShowPosterPath)
                 End If
 
-                If IsNothing(Me._showfanart.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowFanartPath) Then
-                    Me._showfanart.FromFile(sEpisode.ShowFanartPath)
+                If IsNothing(Me._showfanart.Image.Image) AndAlso Not String.IsNullOrEmpty(sEpisode.ShowFanartPath) Then
+                    Me._showfanart.Image.FromFile(sEpisode.ShowFanartPath)
+                    Me._showfanart.Path = sEpisode.ShowFanartPath
                 End If
 
                 cEI = New EpisodeImage
@@ -841,9 +946,10 @@ Public Class dlgTVImageSelect
                     cEI.Poster.Image = Nothing
                 End If
                 If Not String.IsNullOrEmpty(sEpisode.EpFanartPath) Then
-                    cEI.Fanart.FromFile(sEpisode.EpFanartPath)
+                    cEI.Fanart.Image.FromFile(sEpisode.EpFanartPath)
+                    cEI.Fanart.Path = sEpisode.EpFanartPath
                 Else
-                    cEI.Fanart.Image = Nothing
+                    cEI.Fanart.Image.Image = Nothing
                 End If
                 Me._episodeimagelist.Add(cEI)
 
@@ -856,9 +962,10 @@ Public Class dlgTVImageSelect
                         cSI.Poster.Image = Nothing
                     End If
                     If Not String.IsNullOrEmpty(sEpisode.SeasonFanartPath) Then
-                        cSI.Fanart.FromFile(sEpisode.SeasonFanartPath)
+                        cSI.Fanart.Image.FromFile(sEpisode.SeasonFanartPath)
+                        cSI.Fanart.Path = sEpisode.SeasonFanartPath
                     Else
-                        cSI.Fanart.Image = Nothing
+                        cSI.Fanart.Image.Image = Nothing
                     End If
                     Me._seasonimagelist.Add(cSI)
                 End If
@@ -942,4 +1049,30 @@ Public Class dlgTVImageSelect
         End If
 
     End Sub
+
+    Private Function DownloadFanart(ByVal fTag As FanartTag) As Image
+        Dim sHTTP As New HTTP
+
+        Using tImage As New Images
+            If Not String.IsNullOrEmpty(fTag.Path) AndAlso File.Exists(fTag.Path) Then
+                tImage.FromFile(fTag.Path)
+            ElseIf Not String.IsNullOrEmpty(fTag.Path) AndAlso Not String.IsNullOrEmpty(fTag.URL) Then
+                Me.lblStatus.Text = Master.eLang.GetString(999, "Downloading Fullsize Fanart Image...")
+                Me.pbStatus.Style = ProgressBarStyle.Marquee
+                Me.pnlStatus.Visible = True
+
+                Application.DoEvents()
+
+                tImage.FromWeb(fTag.URL)
+                Directory.CreateDirectory(Directory.GetParent(fTag.Path).FullName)
+                tImage.Save(fTag.Path)
+
+                sHTTP = Nothing
+
+                Me.pnlStatus.Visible = False
+            End If
+
+            Return tImage.Image
+        End Using
+    End Function
 End Class
