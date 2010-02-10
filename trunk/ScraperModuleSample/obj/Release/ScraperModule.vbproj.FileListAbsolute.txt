@@ -1,9 +1,0 @@
-C:\Ember Media Manager\SVN-trunk\scraperModule\obj\Release\ResolveAssemblyReference.cache
-C:\Ember Media Manager\SVN-trunk\scraperModule\obj\Release\ScraperModule.vbproj.GenerateResource.Cache
-C:\Ember Media Manager\Modules\EmberScraperModule.dll
-C:\Ember Media Manager\Modules\EmberScraperModule.pdb
-C:\Ember Media Manager\Modules\EmberScraperModule.xml
-C:\Ember Media Manager\SVN-trunk\scraperModule\obj\Release\EmberScraperModule.Resources.resources
-C:\Ember Media Manager\SVN-trunk\scraperModule\obj\Release\EmberScraperModule.dll
-C:\Ember Media Manager\SVN-trunk\scraperModule\obj\Release\EmberScraperModule.xml
-C:\Ember Media Manager\SVN-trunk\scraperModule\obj\Release\EmberScraperModule.pdb
