@@ -38,8 +38,13 @@ Partial Class dlgModuleSettings
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.btnEnable = New System.Windows.Forms.Button
         Me.btnSetup = New System.Windows.Forms.Button
+        Me.TabControl1 = New System.Windows.Forms.TabControl
+        Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.TabPage2 = New System.Windows.Forms.TabPage
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTop.SuspendLayout()
+        Me.TabControl1.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
         Me.SuspendLayout()
         '
         'ilSettings
@@ -61,7 +66,7 @@ Partial Class dlgModuleSettings
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(549, 278)
+        Me.btnOK.Location = New System.Drawing.Point(561, 326)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 22
@@ -112,7 +117,7 @@ Partial Class dlgModuleSettings
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(630, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(639, 64)
         Me.pnlTop.TabIndex = 57
         '
         'lstModules
@@ -121,7 +126,7 @@ Partial Class dlgModuleSettings
         Me.lstModules.FullRowSelect = True
         Me.lstModules.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.lstModules.HideSelection = False
-        Me.lstModules.Location = New System.Drawing.Point(8, 70)
+        Me.lstModules.Location = New System.Drawing.Point(3, 0)
         Me.lstModules.Name = "lstModules"
         Me.lstModules.Size = New System.Drawing.Size(535, 231)
         Me.lstModules.TabIndex = 58
@@ -141,7 +146,7 @@ Partial Class dlgModuleSettings
         'btnEnable
         '
         Me.btnEnable.Enabled = False
-        Me.btnEnable.Location = New System.Drawing.Point(549, 92)
+        Me.btnEnable.Location = New System.Drawing.Point(544, 22)
         Me.btnEnable.Name = "btnEnable"
         Me.btnEnable.Size = New System.Drawing.Size(75, 23)
         Me.btnEnable.TabIndex = 59
@@ -151,22 +156,53 @@ Partial Class dlgModuleSettings
         'btnSetup
         '
         Me.btnSetup.Enabled = False
-        Me.btnSetup.Location = New System.Drawing.Point(549, 121)
+        Me.btnSetup.Location = New System.Drawing.Point(544, 51)
         Me.btnSetup.Name = "btnSetup"
         Me.btnSetup.Size = New System.Drawing.Size(75, 23)
         Me.btnSetup.TabIndex = 60
         Me.btnSetup.Text = "Setup"
         Me.btnSetup.UseVisualStyleBackColor = True
         '
+        'TabControl1
+        '
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Location = New System.Drawing.Point(0, 63)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.Size = New System.Drawing.Size(636, 261)
+        Me.TabControl1.TabIndex = 61
+        '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.lstModules)
+        Me.TabPage1.Controls.Add(Me.btnSetup)
+        Me.TabPage1.Controls.Add(Me.btnEnable)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(628, 235)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Generic"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(628, 235)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Scrapers"
+        Me.TabPage2.UseVisualStyleBackColor = True
+        '
         'dlgModuleSettings
         '
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(630, 313)
-        Me.Controls.Add(Me.btnSetup)
-        Me.Controls.Add(Me.btnEnable)
-        Me.Controls.Add(Me.lstModules)
+        Me.ClientSize = New System.Drawing.Size(639, 353)
+        Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.btnOK)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -179,6 +215,8 @@ Partial Class dlgModuleSettings
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
+        Me.TabControl1.ResumeLayout(False)
+        Me.TabPage1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -196,4 +234,7 @@ Partial Class dlgModuleSettings
     Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
     Friend WithEvents btnEnable As System.Windows.Forms.Button
     Friend WithEvents btnSetup As System.Windows.Forms.Button
+    Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
+    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
 End Class
