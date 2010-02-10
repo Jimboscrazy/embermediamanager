@@ -77,7 +77,7 @@ Partial Class dlgFIStreamEditor
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 7
+        Me.OK_Button.TabIndex = 9
         Me.OK_Button.Text = "OK"
         '
         'Cancel_Button
@@ -87,7 +87,7 @@ Partial Class dlgFIStreamEditor
         Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 8
+        Me.Cancel_Button.TabIndex = 10
         Me.Cancel_Button.Text = "Cancel"
         '
         'GroupBox1
@@ -132,8 +132,7 @@ Partial Class dlgFIStreamEditor
         Me.cbVideoLanguage.Location = New System.Drawing.Point(76, 165)
         Me.cbVideoLanguage.Name = "cbVideoLanguage"
         Me.cbVideoLanguage.Size = New System.Drawing.Size(93, 21)
-        Me.cbVideoLanguage.Sorted = True
-        Me.cbVideoLanguage.TabIndex = 6
+        Me.cbVideoLanguage.TabIndex = 8
         '
         'Label5
         '
@@ -150,7 +149,7 @@ Partial Class dlgFIStreamEditor
         Me.txtARatio.Location = New System.Drawing.Point(76, 115)
         Me.txtARatio.Name = "txtARatio"
         Me.txtARatio.Size = New System.Drawing.Size(48, 20)
-        Me.txtARatio.TabIndex = 4
+        Me.txtARatio.TabIndex = 6
         '
         'rbInterlaced
         '
@@ -208,7 +207,7 @@ Partial Class dlgFIStreamEditor
         Me.txtDuration.Location = New System.Drawing.Point(76, 139)
         Me.txtDuration.Name = "txtDuration"
         Me.txtDuration.Size = New System.Drawing.Size(68, 20)
-        Me.txtDuration.TabIndex = 5
+        Me.txtDuration.TabIndex = 7
         '
         'Label2
         '
@@ -234,7 +233,7 @@ Partial Class dlgFIStreamEditor
         Me.txtHeight.Location = New System.Drawing.Point(76, 91)
         Me.txtHeight.Name = "txtHeight"
         Me.txtHeight.Size = New System.Drawing.Size(48, 20)
-        Me.txtHeight.TabIndex = 3
+        Me.txtHeight.TabIndex = 5
         '
         'txtWidth
         '
@@ -242,7 +241,7 @@ Partial Class dlgFIStreamEditor
         Me.txtWidth.Location = New System.Drawing.Point(76, 68)
         Me.txtWidth.Name = "txtWidth"
         Me.txtWidth.Size = New System.Drawing.Size(48, 20)
-        Me.txtWidth.TabIndex = 2
+        Me.txtWidth.TabIndex = 4
         '
         'GroupBox2
         '
