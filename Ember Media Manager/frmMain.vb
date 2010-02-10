@@ -43,6 +43,7 @@ Public Class frmMain
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
 
+    Private ExternalModules As EmberModules
     Private bsMedia As New BindingSource
     Private bsShows As New BindingSource
     Private bsSeasons As New BindingSource
@@ -353,7 +354,7 @@ Public Class frmMain
 
         Me.Visible = False
         Dim Args() As String = Environment.GetCommandLineArgs
-
+        ExternalModules = New EmberModules
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)

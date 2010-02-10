@@ -27,40 +27,54 @@ Public Class dlgModuleSettings
 
     Private Sub lstModules_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstModules.SelectedIndexChanged
         If lstModules.SelectedItems.Count > 0 Then
-            btnSetup.Enabled = True
-            btnEnable.Enabled = True
+            btnEditSet.Enabled = True
+            btnNewSet.Enabled = True
             If lstModules.SelectedItems.Item(0).SubItems(1).Text = "Enabled" Then
-                btnEnable.Text = "Disable"
+                btnNewSet.Enabled = False
+                btnRemoveSet.Enabled = True
             Else
-                btnEnable.Text = "Enable"
+                btnNewSet.Enabled = True
+                btnRemoveSet.Enabled = False
             End If
         Else
-            btnSetup.Enabled = False
-            btnEnable.Enabled = False
+            btnRemoveSet.Enabled = False
+            btnNewSet.Enabled = True
+            btnEditSet.Enabled = True
         End If
     End Sub
 
-    Private Sub btnSetup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetup.Click
-        If lstModules.SelectedItems.Count > 0 Then
-            ModulesManager.RunModuleSetup(lstModules.SelectedItems.Item(0).Tag().ToString)
-        End If
-    End Sub
 
     Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         ModulesManager.SaveSettings()
         Me.Close()
     End Sub
 
-    Private Sub btnEnable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEnable.Click
-        If btnEnable.Text = "Enable" Then
-            btnEnable.Text = "Disable"
-            lstModules.SelectedItems.Item(0).SubItems(1).Text = "Enabled"
-            ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, True)
-        Else
-            btnEnable.Text = "Enable"
-            lstModules.SelectedItems.Item(0).SubItems(1).Text = "Disabled"
-            ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, False)
+
+    Private Sub TabPage1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TabPage1.Click
+
+    End Sub
+
+    Private Sub btnEditSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditSet.Click
+        If lstModules.SelectedItems.Count > 0 Then
+            ModulesManager.RunModuleSetup(lstModules.SelectedItems.Item(0).Tag().ToString)
         End If
+    End Sub
+
+    Private Sub btnNewSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewSet.Click
+
+        btnNewSet.Enabled = False
+        btnRemoveSet.Enabled = True
+        lstModules.SelectedItems.Item(0).SubItems(1).Text = "Enabled"
+        ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, True)
+
+    End Sub
+
+    Private Sub btnRemoveSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSet.Click
+
+        btnRemoveSet.Enabled = False
+        btnNewSet.Enabled = True
+        lstModules.SelectedItems.Item(0).SubItems(1).Text = "Disabled"
+        ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, False)
 
     End Sub
 End Class
