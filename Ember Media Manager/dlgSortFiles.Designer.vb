@@ -54,7 +54,6 @@ Partial Class dlgSortFiles
         '
         'txtPath
         '
-        Me.txtPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPath.Location = New System.Drawing.Point(12, 29)
         Me.txtPath.Name = "txtPath"
         Me.txtPath.Size = New System.Drawing.Size(365, 20)
@@ -83,9 +82,10 @@ Partial Class dlgSortFiles
         'lblStatus
         '
         Me.lblStatus.AutoSize = True
+        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblStatus.Location = New System.Drawing.Point(6, 25)
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(179, 13)
+        Me.lblStatus.Size = New System.Drawing.Size(192, 13)
         Me.lblStatus.TabIndex = 1
         Me.lblStatus.Text = "Enter Path and Press ""Go"" to Begin."
         '
@@ -100,9 +100,10 @@ Partial Class dlgSortFiles
         'Label1
         '
         Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.Location = New System.Drawing.Point(9, 9)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(66, 13)
+        Me.Label1.Size = New System.Drawing.Size(72, 13)
         Me.Label1.TabIndex = 5
         Me.Label1.Text = "Path to Sort:"
         '

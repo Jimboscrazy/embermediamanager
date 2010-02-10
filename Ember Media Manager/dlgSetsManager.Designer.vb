@@ -247,7 +247,7 @@ Partial Class dlgSetsManager
         '
         'lblCompiling
         '
-        Me.lblCompiling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCompiling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblCompiling.Location = New System.Drawing.Point(3, 11)
         Me.lblCompiling.Name = "lblCompiling"
         Me.lblCompiling.Size = New System.Drawing.Size(203, 20)
@@ -258,7 +258,7 @@ Partial Class dlgSetsManager
         '
         'lblFile
         '
-        Me.lblFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFile.Location = New System.Drawing.Point(3, 57)
         Me.lblFile.Name = "lblFile"
         Me.lblFile.Size = New System.Drawing.Size(395, 13)
@@ -306,10 +306,11 @@ Partial Class dlgSetsManager
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(61, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(182, 13)
+        Me.Label2.Size = New System.Drawing.Size(202, 13)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "Add and configure movie boxed sets."
         '
@@ -317,11 +318,11 @@ Partial Class dlgSetsManager
         '
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.White
         Me.Label4.Location = New System.Drawing.Point(58, 3)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(174, 29)
+        Me.Label4.Size = New System.Drawing.Size(170, 32)
         Me.Label4.TabIndex = 1
         Me.Label4.Text = "Sets Manager"
         '
@@ -351,9 +352,10 @@ Partial Class dlgSetsManager
         'Label3
         '
         Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label3.Location = New System.Drawing.Point(2, 7)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(49, 13)
+        Me.Label3.Size = New System.Drawing.Size(51, 13)
         Me.Label3.TabIndex = 1
         Me.Label3.Text = "Saving..."
         '

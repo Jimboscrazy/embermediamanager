@@ -106,9 +106,10 @@ Partial Class dlgTranslationDL
         'lblStatus
         '
         Me.lblStatus.AutoSize = True
+        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblStatus.Location = New System.Drawing.Point(3, 10)
         Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Size = New System.Drawing.Size(171, 13)
+        Me.lblStatus.Size = New System.Drawing.Size(191, 13)
         Me.lblStatus.TabIndex = 1
         Me.lblStatus.Text = "Downloading available addon list..."
         Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft

@@ -49,7 +49,7 @@ Partial Class dlgAddEditActor
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(220, 165)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(220, 171)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -77,24 +77,21 @@ Partial Class dlgAddEditActor
         '
         'txtName
         '
-        Me.txtName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtName.Location = New System.Drawing.Point(12, 26)
+        Me.txtName.Location = New System.Drawing.Point(12, 24)
         Me.txtName.Name = "txtName"
         Me.txtName.Size = New System.Drawing.Size(174, 20)
         Me.txtName.TabIndex = 0
         '
         'txtRole
         '
-        Me.txtRole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtRole.Location = New System.Drawing.Point(192, 26)
+        Me.txtRole.Location = New System.Drawing.Point(192, 24)
         Me.txtRole.Name = "txtRole"
         Me.txtRole.Size = New System.Drawing.Size(174, 20)
         Me.txtRole.TabIndex = 1
         '
         'txtThumb
         '
-        Me.txtThumb.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtThumb.Location = New System.Drawing.Point(12, 68)
+        Me.txtThumb.Location = New System.Drawing.Point(12, 67)
         Me.txtThumb.Name = "txtThumb"
         Me.txtThumb.Size = New System.Drawing.Size(354, 20)
         Me.txtThumb.TabIndex = 2
@@ -102,27 +99,30 @@ Partial Class dlgAddEditActor
         'lblName
         '
         Me.lblName.AutoSize = True
-        Me.lblName.Location = New System.Drawing.Point(9, 9)
+        Me.lblName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblName.Location = New System.Drawing.Point(10, 9)
         Me.lblName.Name = "lblName"
-        Me.lblName.Size = New System.Drawing.Size(66, 13)
+        Me.lblName.Size = New System.Drawing.Size(72, 13)
         Me.lblName.TabIndex = 4
         Me.lblName.Text = "Actor Name:"
         '
         'lblRole
         '
         Me.lblRole.AutoSize = True
+        Me.lblRole.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblRole.Location = New System.Drawing.Point(192, 10)
         Me.lblRole.Name = "lblRole"
-        Me.lblRole.Size = New System.Drawing.Size(60, 13)
+        Me.lblRole.Size = New System.Drawing.Size(64, 13)
         Me.lblRole.TabIndex = 5
         Me.lblRole.Text = "Actor Role:"
         '
         'lblThumb
         '
         Me.lblThumb.AutoSize = True
-        Me.lblThumb.Location = New System.Drawing.Point(12, 52)
+        Me.lblThumb.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblThumb.Location = New System.Drawing.Point(10, 52)
         Me.lblThumb.Name = "lblThumb"
-        Me.lblThumb.Size = New System.Drawing.Size(102, 13)
+        Me.lblThumb.Size = New System.Drawing.Size(110, 13)
         Me.lblThumb.TabIndex = 6
         Me.lblThumb.Text = "Actor Thumb (URL):"
         '

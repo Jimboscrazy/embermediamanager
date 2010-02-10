@@ -85,10 +85,11 @@ Partial Class dlgBulkRenamer
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(64, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(125, 13)
+        Me.Label2.Size = New System.Drawing.Size(136, 13)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "Rename movies and files"
         '
@@ -96,11 +97,11 @@ Partial Class dlgBulkRenamer
         '
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.White
         Me.Label4.Location = New System.Drawing.Point(61, 3)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(177, 29)
+        Me.Label4.Size = New System.Drawing.Size(174, 32)
         Me.Label4.TabIndex = 1
         Me.Label4.Text = "Bulk Renamer"
         '
@@ -141,8 +142,8 @@ Partial Class dlgBulkRenamer
         '
         'lblCompiling
         '
-        Me.lblCompiling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCompiling.Location = New System.Drawing.Point(3, 11)
+        Me.lblCompiling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCompiling.Location = New System.Drawing.Point(3, 12)
         Me.lblCompiling.Name = "lblCompiling"
         Me.lblCompiling.Size = New System.Drawing.Size(186, 20)
         Me.lblCompiling.TabIndex = 4
@@ -152,16 +153,16 @@ Partial Class dlgBulkRenamer
         '
         'lblFile
         '
-        Me.lblFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFile.Location = New System.Drawing.Point(3, 57)
+        Me.lblFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFile.Location = New System.Drawing.Point(6, 57)
         Me.lblFile.Name = "lblFile"
-        Me.lblFile.Size = New System.Drawing.Size(395, 13)
+        Me.lblFile.Size = New System.Drawing.Size(390, 13)
         Me.lblFile.TabIndex = 3
         Me.lblFile.Text = "File ..."
         '
         'lblCanceling
         '
-        Me.lblCanceling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCanceling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblCanceling.Location = New System.Drawing.Point(110, 12)
         Me.lblCanceling.Name = "lblCanceling"
         Me.lblCanceling.Size = New System.Drawing.Size(186, 20)
@@ -252,6 +253,7 @@ Partial Class dlgBulkRenamer
         '
         'lblFolderPattern
         '
+        Me.lblFolderPattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFolderPattern.Location = New System.Drawing.Point(12, 401)
         Me.lblFolderPattern.Name = "lblFolderPattern"
         Me.lblFolderPattern.Size = New System.Drawing.Size(298, 13)
@@ -261,6 +263,7 @@ Partial Class dlgBulkRenamer
         '
         'lblFilePattern
         '
+        Me.lblFilePattern.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFilePattern.Location = New System.Drawing.Point(522, 401)
         Me.lblFilePattern.Name = "lblFilePattern"
         Me.lblFilePattern.Size = New System.Drawing.Size(140, 13)
@@ -270,7 +273,6 @@ Partial Class dlgBulkRenamer
         '
         'txtFile
         '
-        Me.txtFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFile.Location = New System.Drawing.Point(668, 398)
         Me.txtFile.Name = "txtFile"
         Me.txtFile.Size = New System.Drawing.Size(224, 20)
@@ -279,7 +281,6 @@ Partial Class dlgBulkRenamer
         '
         'txtFolder
         '
-        Me.txtFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFolder.Location = New System.Drawing.Point(316, 398)
         Me.txtFolder.Name = "txtFolder"
         Me.txtFolder.Size = New System.Drawing.Size(200, 20)
@@ -299,7 +300,6 @@ Partial Class dlgBulkRenamer
         '
         'txtFolderNotSingle
         '
-        Me.txtFolderNotSingle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFolderNotSingle.Location = New System.Drawing.Point(316, 419)
         Me.txtFolderNotSingle.Name = "txtFolderNotSingle"
         Me.txtFolderNotSingle.Size = New System.Drawing.Size(200, 20)
@@ -308,6 +308,7 @@ Partial Class dlgBulkRenamer
         '
         'Label1
         '
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.Location = New System.Drawing.Point(12, 422)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(296, 13)

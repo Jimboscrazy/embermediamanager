@@ -284,6 +284,7 @@ Partial Class dlgImgSelect
         '
         'lblDL3
         '
+        Me.lblDL3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblDL3.Location = New System.Drawing.Point(5, 10)
         Me.lblDL3.Name = "lblDL3"
         Me.lblDL3.Size = New System.Drawing.Size(310, 13)
@@ -340,6 +341,7 @@ Partial Class dlgImgSelect
         '
         'lblDL1
         '
+        Me.lblDL1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblDL1.Location = New System.Drawing.Point(5, 6)
         Me.lblDL1.Name = "lblDL1"
         Me.lblDL1.Size = New System.Drawing.Size(310, 13)
@@ -368,6 +370,7 @@ Partial Class dlgImgSelect
         '
         'Label2
         '
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.Location = New System.Drawing.Point(5, 10)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(310, 13)

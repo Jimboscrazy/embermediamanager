@@ -105,10 +105,11 @@ Partial Class dlgEditShow
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(61, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(183, 13)
+        Me.Label2.Size = New System.Drawing.Size(201, 13)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "Edit the details for the selected show."
         '
@@ -116,11 +117,11 @@ Partial Class dlgEditShow
         '
         Me.Label1.AutoSize = True
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.White
         Me.Label1.Location = New System.Drawing.Point(58, 3)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(131, 29)
+        Me.Label1.Size = New System.Drawing.Size(127, 32)
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "Edit Show"
         '
@@ -182,7 +183,6 @@ Partial Class dlgEditShow
         '
         'txtPremiered
         '
-        Me.txtPremiered.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPremiered.Location = New System.Drawing.Point(7, 69)
         Me.txtPremiered.Name = "txtPremiered"
         Me.txtPremiered.Size = New System.Drawing.Size(192, 20)
@@ -202,15 +202,15 @@ Partial Class dlgEditShow
         'lblStudio
         '
         Me.lblStudio.AutoSize = True
+        Me.lblStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblStudio.Location = New System.Drawing.Point(635, 273)
         Me.lblStudio.Name = "lblStudio"
-        Me.lblStudio.Size = New System.Drawing.Size(40, 13)
+        Me.lblStudio.Size = New System.Drawing.Size(44, 13)
         Me.lblStudio.TabIndex = 101
         Me.lblStudio.Text = "Studio:"
         '
         'txtStudio
         '
-        Me.txtStudio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtStudio.Location = New System.Drawing.Point(635, 289)
         Me.txtStudio.Name = "txtStudio"
         Me.txtStudio.Size = New System.Drawing.Size(193, 20)
@@ -255,9 +255,10 @@ Partial Class dlgEditShow
         'lblActors
         '
         Me.lblActors.AutoSize = True
+        Me.lblActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblActors.Location = New System.Drawing.Point(218, 139)
         Me.lblActors.Name = "lblActors"
-        Me.lblActors.Size = New System.Drawing.Size(40, 13)
+        Me.lblActors.Size = New System.Drawing.Size(43, 13)
         Me.lblActors.TabIndex = 83
         Me.lblActors.Text = "Actors:"
         '
@@ -298,34 +299,36 @@ Partial Class dlgEditShow
         'lblGenre
         '
         Me.lblGenre.AutoSize = True
+        Me.lblGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblGenre.Location = New System.Drawing.Point(7, 144)
         Me.lblGenre.Name = "lblGenre"
-        Me.lblGenre.Size = New System.Drawing.Size(39, 13)
+        Me.lblGenre.Size = New System.Drawing.Size(41, 13)
         Me.lblGenre.TabIndex = 80
         Me.lblGenre.Text = "Genre:"
         '
         'lblMPAA
         '
         Me.lblMPAA.AutoSize = True
+        Me.lblMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMPAA.Location = New System.Drawing.Point(632, 139)
         Me.lblMPAA.Name = "lblMPAA"
-        Me.lblMPAA.Size = New System.Drawing.Size(74, 13)
+        Me.lblMPAA.Size = New System.Drawing.Size(81, 13)
         Me.lblMPAA.TabIndex = 78
         Me.lblMPAA.Text = "MPAA Rating:"
         '
         'lblPlot
         '
         Me.lblPlot.AutoSize = True
+        Me.lblPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblPlot.Location = New System.Drawing.Point(218, 7)
         Me.lblPlot.Name = "lblPlot"
-        Me.lblPlot.Size = New System.Drawing.Size(28, 13)
+        Me.lblPlot.Size = New System.Drawing.Size(31, 13)
         Me.lblPlot.TabIndex = 73
         Me.lblPlot.Text = "Plot:"
         '
         'txtPlot
         '
         Me.txtPlot.AcceptsReturn = True
-        Me.txtPlot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPlot.Location = New System.Drawing.Point(217, 26)
         Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
@@ -375,33 +378,35 @@ Partial Class dlgEditShow
         'lblRating
         '
         Me.lblRating.AutoSize = True
+        Me.lblRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblRating.Location = New System.Drawing.Point(7, 96)
         Me.lblRating.Name = "lblRating"
-        Me.lblRating.Size = New System.Drawing.Size(41, 13)
+        Me.lblRating.Size = New System.Drawing.Size(44, 13)
         Me.lblRating.TabIndex = 60
         Me.lblRating.Text = "Rating:"
         '
         'lblPremiered
         '
         Me.lblPremiered.AutoSize = True
+        Me.lblPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblPremiered.Location = New System.Drawing.Point(7, 53)
         Me.lblPremiered.Name = "lblPremiered"
-        Me.lblPremiered.Size = New System.Drawing.Size(57, 13)
+        Me.lblPremiered.Size = New System.Drawing.Size(63, 13)
         Me.lblPremiered.TabIndex = 58
         Me.lblPremiered.Text = "Premiered:"
         '
         'lblTitle
         '
         Me.lblTitle.AutoSize = True
+        Me.lblTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTitle.Location = New System.Drawing.Point(7, 7)
         Me.lblTitle.Name = "lblTitle"
-        Me.lblTitle.Size = New System.Drawing.Size(30, 13)
+        Me.lblTitle.Size = New System.Drawing.Size(32, 13)
         Me.lblTitle.TabIndex = 57
         Me.lblTitle.Text = "Title:"
         '
         'txtTitle
         '
-        Me.txtTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTitle.Location = New System.Drawing.Point(7, 26)
         Me.txtTitle.Name = "txtTitle"
         Me.txtTitle.Size = New System.Drawing.Size(192, 20)

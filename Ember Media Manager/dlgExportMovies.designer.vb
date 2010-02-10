@@ -30,6 +30,7 @@ Partial Class dlgExportMovies
         Me.Label2 = New System.Windows.Forms.Label
         Me.cbTemplate = New System.Windows.Forms.ComboBox
         Me.pnlSearch = New System.Windows.Forms.Panel
+        Me.cbFilterSource = New System.Windows.Forms.ComboBox
         Me.Reset_Button = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.Search_Button = New System.Windows.Forms.Button
@@ -44,7 +45,6 @@ Partial Class dlgExportMovies
         Me.lblCanceling = New System.Windows.Forms.Label
         Me.pnlBG = New System.Windows.Forms.Panel
         Me.wbMovieList = New System.Windows.Forms.WebBrowser
-        Me.cbFilterSource = New System.Windows.Forms.ComboBox
         Me.TableLayoutPanel1.SuspendLayout()
         Me.pnlBottomMain.SuspendLayout()
         Me.pnlSearch.SuspendLayout()
@@ -103,9 +103,10 @@ Partial Class dlgExportMovies
         'Label2
         '
         Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.Location = New System.Drawing.Point(11, 17)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(51, 13)
+        Me.Label2.Size = New System.Drawing.Size(55, 13)
         Me.Label2.TabIndex = 8
         Me.Label2.Text = "Template"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -134,6 +135,16 @@ Partial Class dlgExportMovies
         Me.pnlSearch.Size = New System.Drawing.Size(489, 28)
         Me.pnlSearch.TabIndex = 6
         '
+        'cbFilterSource
+        '
+        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilterSource.FormattingEnabled = True
+        Me.cbFilterSource.Location = New System.Drawing.Point(74, 4)
+        Me.cbFilterSource.Name = "cbFilterSource"
+        Me.cbFilterSource.Size = New System.Drawing.Size(123, 21)
+        Me.cbFilterSource.TabIndex = 31
+        Me.cbFilterSource.Visible = False
+        '
         'Reset_Button
         '
         Me.Reset_Button.Enabled = False
@@ -145,6 +156,7 @@ Partial Class dlgExportMovies
         '
         'Label1
         '
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.Location = New System.Drawing.Point(17, 6)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(51, 14)
@@ -163,6 +175,7 @@ Partial Class dlgExportMovies
         '
         'lblIn
         '
+        Me.lblIn.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblIn.Location = New System.Drawing.Point(203, 7)
         Me.lblIn.Name = "lblIn"
         Me.lblIn.Size = New System.Drawing.Size(34, 13)
@@ -224,7 +237,7 @@ Partial Class dlgExportMovies
         '
         'lblCompiling
         '
-        Me.lblCompiling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCompiling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblCompiling.Location = New System.Drawing.Point(3, 11)
         Me.lblCompiling.Name = "lblCompiling"
         Me.lblCompiling.Size = New System.Drawing.Size(395, 20)
@@ -235,7 +248,7 @@ Partial Class dlgExportMovies
         '
         'lblFile
         '
-        Me.lblFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblFile.Location = New System.Drawing.Point(3, 57)
         Me.lblFile.Name = "lblFile"
         Me.lblFile.Size = New System.Drawing.Size(395, 13)
@@ -273,16 +286,6 @@ Partial Class dlgExportMovies
         Me.wbMovieList.Size = New System.Drawing.Size(854, 495)
         Me.wbMovieList.TabIndex = 0
         Me.wbMovieList.Visible = False
-        '
-        'cbFilterSource
-        '
-        Me.cbFilterSource.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilterSource.FormattingEnabled = True
-        Me.cbFilterSource.Location = New System.Drawing.Point(74, 4)
-        Me.cbFilterSource.Name = "cbFilterSource"
-        Me.cbFilterSource.Size = New System.Drawing.Size(123, 21)
-        Me.cbFilterSource.TabIndex = 31
-        Me.cbFilterSource.Visible = False
         '
         'dlgExportMovies
         '

@@ -78,7 +78,6 @@ Partial Class dlgRenameManual
         'txtFolder
         '
         Me.txtFolder.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFolder.Location = New System.Drawing.Point(89, 42)
         Me.txtFolder.Name = "txtFolder"
         Me.txtFolder.Size = New System.Drawing.Size(318, 20)
@@ -86,6 +85,7 @@ Partial Class dlgRenameManual
         '
         'Label1
         '
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.Location = New System.Drawing.Point(6, 43)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(77, 19)
@@ -95,6 +95,7 @@ Partial Class dlgRenameManual
         '
         'Label2
         '
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.Location = New System.Drawing.Point(6, 69)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(77, 19)
@@ -105,7 +106,6 @@ Partial Class dlgRenameManual
         'txtFile
         '
         Me.txtFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtFile.Location = New System.Drawing.Point(89, 68)
         Me.txtFile.Name = "txtFile"
         Me.txtFile.Size = New System.Drawing.Size(318, 20)
@@ -113,6 +113,7 @@ Partial Class dlgRenameManual
         '
         'lblTitle
         '
+        Me.lblTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTitle.Location = New System.Drawing.Point(6, 12)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(77, 19)
@@ -123,7 +124,6 @@ Partial Class dlgRenameManual
         'txtTitle
         '
         Me.txtTitle.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTitle.Location = New System.Drawing.Point(89, 11)
         Me.txtTitle.Name = "txtTitle"
         Me.txtTitle.ReadOnly = True
@@ -153,6 +153,7 @@ Partial Class dlgRenameManual
         '
         'Label3
         '
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label3.Location = New System.Drawing.Point(5, 10)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(310, 13)
