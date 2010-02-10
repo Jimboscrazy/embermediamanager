@@ -86,20 +86,20 @@ Public Class dlgFIStreamEditor
                     stream_v.Height = txtHeight.Text
                     stream_v.Scantype = If(rbProgressive.Checked, Master.eLang.GetString(616, "Progressive"), Master.eLang.GetString(615, "Interlaced"))
                     stream_v.Duration = txtDuration.Text
-                    stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
-                    stream_v.Language = ConvertL(cbVideoLanguage.SelectedItem.ToString)
+                    If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.LongLanguage = cbVideoLanguage.SelectedItem.ToString
+                    If Not cbVideoLanguage.SelectedItem Is Nothing Then stream_v.Language = ConvertL(cbVideoLanguage.SelectedItem.ToString)
                     Return stream_v
                 End If
                 If stream_type = Master.eLang.GetString(596, "Audio Stream") Then
                     stream_a.Codec = If(cbAudioCodec.SelectedItem Is Nothing, "", cbAudioCodec.SelectedItem.ToString)
-                    stream_a.LongLanguage = cbAudioLanguage.SelectedItem.ToString
-                    stream_a.Language = ConvertL(cbAudioLanguage.SelectedItem.ToString)
-                    stream_a.Channels = cbAudioChannels.SelectedItem.ToString
+                    If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.LongLanguage = cbAudioLanguage.SelectedItem.ToString
+                    If Not cbAudioLanguage.SelectedItem Is Nothing Then stream_a.Language = ConvertL(cbAudioLanguage.SelectedItem.ToString)
+                    If Not cbAudioChannels.SelectedItem Is Nothing Then stream_a.Channels = cbAudioChannels.SelectedItem.ToString
                     Return stream_a
                 End If
                 If stream_type = Master.eLang.GetString(597, "Subtitle Stream") Then
-                    stream_s.LongLanguage = If(cbSubsLanguage.SelectedItem Is Nothing, "", cbSubsLanguage.SelectedItem.ToString)
-                    stream_s.Language = ConvertL(cbSubsLanguage.SelectedItem.ToString)
+                    If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.LongLanguage = If(cbSubsLanguage.SelectedItem Is Nothing, "", cbSubsLanguage.SelectedItem.ToString)
+                    If Not cbSubsLanguage.SelectedItem Is Nothing Then stream_s.Language = ConvertL(cbSubsLanguage.SelectedItem.ToString)
                     Return stream_s
                 End If
                 Return Nothing

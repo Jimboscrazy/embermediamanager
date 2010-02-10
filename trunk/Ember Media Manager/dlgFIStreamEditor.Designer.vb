@@ -26,6 +26,8 @@ Partial Class dlgFIStreamEditor
         Me.OK_Button = New System.Windows.Forms.Button
         Me.Cancel_Button = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.Label8 = New System.Windows.Forms.Label
+        Me.cbVideoLanguage = New System.Windows.Forms.ComboBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.txtARatio = New System.Windows.Forms.TextBox
         Me.rbInterlaced = New System.Windows.Forms.RadioButton
@@ -48,8 +50,6 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.Label10 = New System.Windows.Forms.Label
         Me.cbSubsLanguage = New System.Windows.Forms.ComboBox
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.cbVideoLanguage = New System.Windows.Forms.ComboBox
         Me.TableLayoutPanel1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -77,7 +77,7 @@ Partial Class dlgFIStreamEditor
         Me.OK_Button.Location = New System.Drawing.Point(3, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
+        Me.OK_Button.TabIndex = 7
         Me.OK_Button.Text = "OK"
         '
         'Cancel_Button
@@ -87,7 +87,7 @@ Partial Class dlgFIStreamEditor
         Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 1
+        Me.Cancel_Button.TabIndex = 8
         Me.Cancel_Button.Text = "Cancel"
         '
         'GroupBox1
@@ -114,6 +114,27 @@ Partial Class dlgFIStreamEditor
         Me.GroupBox1.Text = "Video Streams"
         Me.GroupBox1.Visible = False
         '
+        'Label8
+        '
+        Me.Label8.Location = New System.Drawing.Point(4, 167)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(68, 19)
+        Me.Label8.TabIndex = 17
+        Me.Label8.Text = "Language"
+        Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'cbVideoLanguage
+        '
+        Me.cbVideoLanguage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.cbVideoLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
+        Me.cbVideoLanguage.DropDownWidth = 120
+        Me.cbVideoLanguage.FormattingEnabled = True
+        Me.cbVideoLanguage.Location = New System.Drawing.Point(76, 165)
+        Me.cbVideoLanguage.Name = "cbVideoLanguage"
+        Me.cbVideoLanguage.Size = New System.Drawing.Size(93, 21)
+        Me.cbVideoLanguage.Sorted = True
+        Me.cbVideoLanguage.TabIndex = 6
+        '
         'Label5
         '
         Me.Label5.Location = New System.Drawing.Point(5, 116)
@@ -129,7 +150,7 @@ Partial Class dlgFIStreamEditor
         Me.txtARatio.Location = New System.Drawing.Point(76, 115)
         Me.txtARatio.Name = "txtARatio"
         Me.txtARatio.Size = New System.Drawing.Size(48, 20)
-        Me.txtARatio.TabIndex = 12
+        Me.txtARatio.TabIndex = 4
         '
         'rbInterlaced
         '
@@ -137,7 +158,8 @@ Partial Class dlgFIStreamEditor
         Me.rbInterlaced.Location = New System.Drawing.Point(111, 45)
         Me.rbInterlaced.Name = "rbInterlaced"
         Me.rbInterlaced.Size = New System.Drawing.Size(72, 17)
-        Me.rbInterlaced.TabIndex = 11
+        Me.rbInterlaced.TabIndex = 3
+        Me.rbInterlaced.TabStop = True
         Me.rbInterlaced.Text = "Interlaced"
         Me.rbInterlaced.UseVisualStyleBackColor = True
         '
@@ -148,7 +170,7 @@ Partial Class dlgFIStreamEditor
         Me.rbProgressive.Location = New System.Drawing.Point(25, 45)
         Me.rbProgressive.Name = "rbProgressive"
         Me.rbProgressive.Size = New System.Drawing.Size(80, 17)
-        Me.rbProgressive.TabIndex = 10
+        Me.rbProgressive.TabIndex = 2
         Me.rbProgressive.TabStop = True
         Me.rbProgressive.Text = "Progressive"
         Me.rbProgressive.UseVisualStyleBackColor = True
@@ -169,7 +191,7 @@ Partial Class dlgFIStreamEditor
         Me.cbVideoCodec.Location = New System.Drawing.Point(76, 19)
         Me.cbVideoCodec.Name = "cbVideoCodec"
         Me.cbVideoCodec.Size = New System.Drawing.Size(93, 21)
-        Me.cbVideoCodec.TabIndex = 8
+        Me.cbVideoCodec.TabIndex = 1
         '
         'Label3
         '
@@ -186,7 +208,7 @@ Partial Class dlgFIStreamEditor
         Me.txtDuration.Location = New System.Drawing.Point(76, 139)
         Me.txtDuration.Name = "txtDuration"
         Me.txtDuration.Size = New System.Drawing.Size(68, 20)
-        Me.txtDuration.TabIndex = 6
+        Me.txtDuration.TabIndex = 5
         '
         'Label2
         '
@@ -327,27 +349,6 @@ Partial Class dlgFIStreamEditor
         Me.cbSubsLanguage.Size = New System.Drawing.Size(93, 21)
         Me.cbSubsLanguage.Sorted = True
         Me.cbSubsLanguage.TabIndex = 21
-        '
-        'Label8
-        '
-        Me.Label8.Location = New System.Drawing.Point(4, 167)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(68, 19)
-        Me.Label8.TabIndex = 17
-        Me.Label8.Text = "Language"
-        Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'cbVideoLanguage
-        '
-        Me.cbVideoLanguage.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
-        Me.cbVideoLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems
-        Me.cbVideoLanguage.DropDownWidth = 120
-        Me.cbVideoLanguage.FormattingEnabled = True
-        Me.cbVideoLanguage.Location = New System.Drawing.Point(76, 165)
-        Me.cbVideoLanguage.Name = "cbVideoLanguage"
-        Me.cbVideoLanguage.Size = New System.Drawing.Size(93, 21)
-        Me.cbVideoLanguage.Sorted = True
-        Me.cbVideoLanguage.TabIndex = 16
         '
         'dlgFIStreamEditor
         '
