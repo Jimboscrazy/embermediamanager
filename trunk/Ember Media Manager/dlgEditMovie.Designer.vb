@@ -303,7 +303,7 @@ Partial Class dlgEditMovie
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(4, 47)
+        Me.Label6.Location = New System.Drawing.Point(5, 47)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(52, 13)
         Me.Label6.TabIndex = 111
@@ -311,6 +311,7 @@ Partial Class dlgEditMovie
         '
         'txtSortTitle
         '
+        Me.txtSortTitle.BackColor = System.Drawing.SystemColors.Window
         Me.txtSortTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSortTitle.Location = New System.Drawing.Point(7, 62)
         Me.txtSortTitle.Name = "txtSortTitle"
@@ -322,7 +323,7 @@ Partial Class dlgEditMovie
         Me.lblLocalTrailer.AutoSize = True
         Me.lblLocalTrailer.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblLocalTrailer.ForeColor = System.Drawing.Color.Green
-        Me.lblLocalTrailer.Location = New System.Drawing.Point(480, 414)
+        Me.lblLocalTrailer.Location = New System.Drawing.Point(487, 414)
         Me.lblLocalTrailer.Name = "lblLocalTrailer"
         Me.lblLocalTrailer.Size = New System.Drawing.Size(90, 9)
         Me.lblLocalTrailer.TabIndex = 109
@@ -333,7 +334,7 @@ Partial Class dlgEditMovie
         '
         Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(576, 423)
+        Me.btnPlayTrailer.Location = New System.Drawing.Point(579, 423)
         Me.btnPlayTrailer.Name = "btnPlayTrailer"
         Me.btnPlayTrailer.Size = New System.Drawing.Size(23, 23)
         Me.btnPlayTrailer.TabIndex = 108
@@ -350,6 +351,8 @@ Partial Class dlgEditMovie
         '
         'lbGenre
         '
+        Me.lbGenre.BackColor = System.Drawing.SystemColors.Window
+        Me.lbGenre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbGenre.CheckOnClick = True
         Me.lbGenre.FormattingEnabled = True
         Me.lbGenre.IntegralHeight = False
@@ -371,7 +374,7 @@ Partial Class dlgEditMovie
         'lblStudio
         '
         Me.lblStudio.AutoSize = True
-        Me.lblStudio.Location = New System.Drawing.Point(632, 330)
+        Me.lblStudio.Location = New System.Drawing.Point(633, 330)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(40, 13)
         Me.lblStudio.TabIndex = 101
@@ -379,6 +382,7 @@ Partial Class dlgEditMovie
         '
         'txtStudio
         '
+        Me.txtStudio.BackColor = System.Drawing.SystemColors.Window
         Me.txtStudio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtStudio.Location = New System.Drawing.Point(635, 345)
         Me.txtStudio.Name = "txtStudio"
@@ -388,7 +392,7 @@ Partial Class dlgEditMovie
         'lblTrailer
         '
         Me.lblTrailer.AutoSize = True
-        Me.lblTrailer.Location = New System.Drawing.Point(214, 410)
+        Me.lblTrailer.Location = New System.Drawing.Point(215, 410)
         Me.lblTrailer.Name = "lblTrailer"
         Me.lblTrailer.Size = New System.Drawing.Size(64, 13)
         Me.lblTrailer.TabIndex = 99
@@ -396,14 +400,16 @@ Partial Class dlgEditMovie
         '
         'txtTrailer
         '
+        Me.txtTrailer.BackColor = System.Drawing.SystemColors.Window
         Me.txtTrailer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTrailer.Location = New System.Drawing.Point(217, 425)
         Me.txtTrailer.Name = "txtTrailer"
-        Me.txtTrailer.Size = New System.Drawing.Size(353, 20)
+        Me.txtTrailer.Size = New System.Drawing.Size(360, 20)
         Me.txtTrailer.TabIndex = 17
         '
         'txtReleaseDate
         '
+        Me.txtReleaseDate.BackColor = System.Drawing.SystemColors.Window
         Me.txtReleaseDate.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtReleaseDate.Location = New System.Drawing.Point(79, 184)
         Me.txtReleaseDate.Name = "txtReleaseDate"
@@ -422,7 +428,7 @@ Partial Class dlgEditMovie
         'lblCredits
         '
         Me.lblCredits.AutoSize = True
-        Me.lblCredits.Location = New System.Drawing.Point(214, 330)
+        Me.lblCredits.Location = New System.Drawing.Point(215, 330)
         Me.lblCredits.Name = "lblCredits"
         Me.lblCredits.Size = New System.Drawing.Size(42, 13)
         Me.lblCredits.TabIndex = 95
@@ -430,6 +436,7 @@ Partial Class dlgEditMovie
         '
         'txtCredits
         '
+        Me.txtCredits.BackColor = System.Drawing.SystemColors.Window
         Me.txtCredits.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtCredits.Location = New System.Drawing.Point(217, 345)
         Me.txtCredits.Name = "txtCredits"
@@ -439,7 +446,7 @@ Partial Class dlgEditMovie
         'lblCerts
         '
         Me.lblCerts.AutoSize = True
-        Me.lblCerts.Location = New System.Drawing.Point(214, 370)
+        Me.lblCerts.Location = New System.Drawing.Point(215, 370)
         Me.lblCerts.Name = "lblCerts"
         Me.lblCerts.Size = New System.Drawing.Size(76, 13)
         Me.lblCerts.TabIndex = 93
@@ -447,6 +454,7 @@ Partial Class dlgEditMovie
         '
         'txtCerts
         '
+        Me.txtCerts.BackColor = System.Drawing.SystemColors.Window
         Me.txtCerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtCerts.Location = New System.Drawing.Point(217, 385)
         Me.txtCerts.Name = "txtCerts"
@@ -456,7 +464,7 @@ Partial Class dlgEditMovie
         'lblRuntime
         '
         Me.lblRuntime.AutoSize = True
-        Me.lblRuntime.Location = New System.Drawing.Point(4, 209)
+        Me.lblRuntime.Location = New System.Drawing.Point(5, 209)
         Me.lblRuntime.Name = "lblRuntime"
         Me.lblRuntime.Size = New System.Drawing.Size(49, 13)
         Me.lblRuntime.TabIndex = 91
@@ -464,6 +472,7 @@ Partial Class dlgEditMovie
         '
         'txtRuntime
         '
+        Me.txtRuntime.BackColor = System.Drawing.SystemColors.Window
         Me.txtRuntime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtRuntime.Location = New System.Drawing.Point(7, 224)
         Me.txtRuntime.Name = "txtRuntime"
@@ -473,7 +482,7 @@ Partial Class dlgEditMovie
         'lblMPAADesc
         '
         Me.lblMPAADesc.AutoSize = True
-        Me.lblMPAADesc.Location = New System.Drawing.Point(632, 245)
+        Me.lblMPAADesc.Location = New System.Drawing.Point(633, 245)
         Me.lblMPAADesc.Name = "lblMPAADesc"
         Me.lblMPAADesc.Size = New System.Drawing.Size(130, 13)
         Me.lblMPAADesc.TabIndex = 89
@@ -481,6 +490,7 @@ Partial Class dlgEditMovie
         '
         'txtMPAADesc
         '
+        Me.txtMPAADesc.BackColor = System.Drawing.SystemColors.Window
         Me.txtMPAADesc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtMPAADesc.Location = New System.Drawing.Point(635, 260)
         Me.txtMPAADesc.Multiline = True
@@ -491,7 +501,7 @@ Partial Class dlgEditMovie
         'btnEditActor
         '
         Me.btnEditActor.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
-        Me.btnEditActor.Location = New System.Drawing.Point(246, 301)
+        Me.btnEditActor.Location = New System.Drawing.Point(246, 303)
         Me.btnEditActor.Name = "btnEditActor"
         Me.btnEditActor.Size = New System.Drawing.Size(23, 23)
         Me.btnEditActor.TabIndex = 13
@@ -500,7 +510,7 @@ Partial Class dlgEditMovie
         'btnAddActor
         '
         Me.btnAddActor.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
-        Me.btnAddActor.Location = New System.Drawing.Point(217, 301)
+        Me.btnAddActor.Location = New System.Drawing.Point(217, 303)
         Me.btnAddActor.Name = "btnAddActor"
         Me.btnAddActor.Size = New System.Drawing.Size(23, 23)
         Me.btnAddActor.TabIndex = 12
@@ -508,7 +518,7 @@ Partial Class dlgEditMovie
         '
         'btnManual
         '
-        Me.btnManual.Location = New System.Drawing.Point(755, 423)
+        Me.btnManual.Location = New System.Drawing.Point(753, 424)
         Me.btnManual.Name = "btnManual"
         Me.btnManual.Size = New System.Drawing.Size(75, 23)
         Me.btnManual.TabIndex = 20
@@ -518,7 +528,7 @@ Partial Class dlgEditMovie
         'btnRemove
         '
         Me.btnRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
-        Me.btnRemove.Location = New System.Drawing.Point(602, 301)
+        Me.btnRemove.Location = New System.Drawing.Point(602, 303)
         Me.btnRemove.Name = "btnRemove"
         Me.btnRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnRemove.TabIndex = 14
@@ -527,7 +537,7 @@ Partial Class dlgEditMovie
         'lblActors
         '
         Me.lblActors.AutoSize = True
-        Me.lblActors.Location = New System.Drawing.Point(214, 141)
+        Me.lblActors.Location = New System.Drawing.Point(215, 141)
         Me.lblActors.Name = "lblActors"
         Me.lblActors.Size = New System.Drawing.Size(40, 13)
         Me.lblActors.TabIndex = 83
@@ -535,11 +545,13 @@ Partial Class dlgEditMovie
         '
         'lvActors
         '
+        Me.lvActors.BackColor = System.Drawing.SystemColors.Window
+        Me.lvActors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colName, Me.colRole, Me.colThumb})
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(217, 155)
         Me.lvActors.Name = "lvActors"
-        Me.lvActors.Size = New System.Drawing.Size(408, 143)
+        Me.lvActors.Size = New System.Drawing.Size(408, 147)
         Me.lvActors.TabIndex = 11
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
@@ -561,16 +573,18 @@ Partial Class dlgEditMovie
         '
         'lbMPAA
         '
+        Me.lbMPAA.BackColor = System.Drawing.SystemColors.Window
+        Me.lbMPAA.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lbMPAA.FormattingEnabled = True
         Me.lbMPAA.Location = New System.Drawing.Point(635, 155)
         Me.lbMPAA.Name = "lbMPAA"
-        Me.lbMPAA.Size = New System.Drawing.Size(193, 82)
+        Me.lbMPAA.Size = New System.Drawing.Size(193, 80)
         Me.lbMPAA.TabIndex = 18
         '
         'lblGenre
         '
         Me.lblGenre.AutoSize = True
-        Me.lblGenre.Location = New System.Drawing.Point(4, 289)
+        Me.lblGenre.Location = New System.Drawing.Point(5, 289)
         Me.lblGenre.Name = "lblGenre"
         Me.lblGenre.Size = New System.Drawing.Size(39, 13)
         Me.lblGenre.TabIndex = 80
@@ -579,7 +593,7 @@ Partial Class dlgEditMovie
         'lblMPAA
         '
         Me.lblMPAA.AutoSize = True
-        Me.lblMPAA.Location = New System.Drawing.Point(632, 141)
+        Me.lblMPAA.Location = New System.Drawing.Point(633, 141)
         Me.lblMPAA.Name = "lblMPAA"
         Me.lblMPAA.Size = New System.Drawing.Size(74, 13)
         Me.lblMPAA.TabIndex = 78
@@ -588,7 +602,7 @@ Partial Class dlgEditMovie
         'lblDirector
         '
         Me.lblDirector.AutoSize = True
-        Me.lblDirector.Location = New System.Drawing.Point(4, 249)
+        Me.lblDirector.Location = New System.Drawing.Point(5, 249)
         Me.lblDirector.Name = "lblDirector"
         Me.lblDirector.Size = New System.Drawing.Size(47, 13)
         Me.lblDirector.TabIndex = 77
@@ -596,6 +610,7 @@ Partial Class dlgEditMovie
         '
         'txtDirector
         '
+        Me.txtDirector.BackColor = System.Drawing.SystemColors.Window
         Me.txtDirector.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtDirector.Location = New System.Drawing.Point(7, 264)
         Me.txtDirector.Name = "txtDirector"
@@ -604,6 +619,7 @@ Partial Class dlgEditMovie
         '
         'txtTop250
         '
+        Me.txtTop250.BackColor = System.Drawing.SystemColors.Window
         Me.txtTop250.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTop250.Location = New System.Drawing.Point(156, 184)
         Me.txtTop250.Name = "txtTop250"
@@ -622,7 +638,7 @@ Partial Class dlgEditMovie
         'lblPlot
         '
         Me.lblPlot.AutoSize = True
-        Me.lblPlot.Location = New System.Drawing.Point(440, 7)
+        Me.lblPlot.Location = New System.Drawing.Point(441, 7)
         Me.lblPlot.Name = "lblPlot"
         Me.lblPlot.Size = New System.Drawing.Size(28, 13)
         Me.lblPlot.TabIndex = 73
@@ -631,6 +647,7 @@ Partial Class dlgEditMovie
         'txtPlot
         '
         Me.txtPlot.AcceptsReturn = True
+        Me.txtPlot.BackColor = System.Drawing.SystemColors.Window
         Me.txtPlot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPlot.Location = New System.Drawing.Point(443, 22)
         Me.txtPlot.Multiline = True
@@ -641,7 +658,7 @@ Partial Class dlgEditMovie
         'lblOutline
         '
         Me.lblOutline.AutoSize = True
-        Me.lblOutline.Location = New System.Drawing.Point(214, 7)
+        Me.lblOutline.Location = New System.Drawing.Point(215, 7)
         Me.lblOutline.Name = "lblOutline"
         Me.lblOutline.Size = New System.Drawing.Size(43, 13)
         Me.lblOutline.TabIndex = 71
@@ -650,6 +667,7 @@ Partial Class dlgEditMovie
         'txtOutline
         '
         Me.txtOutline.AcceptsReturn = True
+        Me.txtOutline.BackColor = System.Drawing.SystemColors.Window
         Me.txtOutline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtOutline.Location = New System.Drawing.Point(217, 22)
         Me.txtOutline.Multiline = True
@@ -660,7 +678,7 @@ Partial Class dlgEditMovie
         'lblTagline
         '
         Me.lblTagline.AutoSize = True
-        Me.lblTagline.Location = New System.Drawing.Point(4, 87)
+        Me.lblTagline.Location = New System.Drawing.Point(5, 87)
         Me.lblTagline.Name = "lblTagline"
         Me.lblTagline.Size = New System.Drawing.Size(45, 13)
         Me.lblTagline.TabIndex = 69
@@ -668,6 +686,7 @@ Partial Class dlgEditMovie
         '
         'txtTagline
         '
+        Me.txtTagline.BackColor = System.Drawing.SystemColors.Window
         Me.txtTagline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTagline.Location = New System.Drawing.Point(7, 102)
         Me.txtTagline.Name = "txtTagline"
@@ -716,6 +735,7 @@ Partial Class dlgEditMovie
         '
         'txtVotes
         '
+        Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
         Me.txtVotes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtVotes.Location = New System.Drawing.Point(7, 184)
         Me.txtVotes.Name = "txtVotes"
@@ -725,7 +745,7 @@ Partial Class dlgEditMovie
         'lblVotes
         '
         Me.lblVotes.AutoSize = True
-        Me.lblVotes.Location = New System.Drawing.Point(3, 169)
+        Me.lblVotes.Location = New System.Drawing.Point(5, 169)
         Me.lblVotes.Name = "lblVotes"
         Me.lblVotes.Size = New System.Drawing.Size(37, 13)
         Me.lblVotes.TabIndex = 61
@@ -734,7 +754,7 @@ Partial Class dlgEditMovie
         'lblRating
         '
         Me.lblRating.AutoSize = True
-        Me.lblRating.Location = New System.Drawing.Point(76, 127)
+        Me.lblRating.Location = New System.Drawing.Point(77, 127)
         Me.lblRating.Name = "lblRating"
         Me.lblRating.Size = New System.Drawing.Size(41, 13)
         Me.lblRating.TabIndex = 60
@@ -742,6 +762,7 @@ Partial Class dlgEditMovie
         '
         'mtxtYear
         '
+        Me.mtxtYear.BackColor = System.Drawing.SystemColors.Window
         Me.mtxtYear.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.mtxtYear.Location = New System.Drawing.Point(7, 142)
         Me.mtxtYear.Mask = "####"
@@ -753,7 +774,7 @@ Partial Class dlgEditMovie
         'lblYear
         '
         Me.lblYear.AutoSize = True
-        Me.lblYear.Location = New System.Drawing.Point(4, 127)
+        Me.lblYear.Location = New System.Drawing.Point(5, 127)
         Me.lblYear.Name = "lblYear"
         Me.lblYear.Size = New System.Drawing.Size(32, 13)
         Me.lblYear.TabIndex = 58
@@ -762,7 +783,7 @@ Partial Class dlgEditMovie
         'lblTitle
         '
         Me.lblTitle.AutoSize = True
-        Me.lblTitle.Location = New System.Drawing.Point(4, 7)
+        Me.lblTitle.Location = New System.Drawing.Point(5, 7)
         Me.lblTitle.Name = "lblTitle"
         Me.lblTitle.Size = New System.Drawing.Size(30, 13)
         Me.lblTitle.TabIndex = 57
@@ -770,6 +791,7 @@ Partial Class dlgEditMovie
         '
         'txtTitle
         '
+        Me.txtTitle.BackColor = System.Drawing.SystemColors.Window
         Me.txtTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTitle.Location = New System.Drawing.Point(7, 22)
         Me.txtTitle.Name = "txtTitle"
