@@ -206,9 +206,10 @@ Namespace TVDB
                                 Case "fanart"
                                     tShow.Fanart.Add(New TVDBFanart With { _
                                                          .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                         .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/_cache/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
+                                                         .ThumbnailURL = If(IsNothing(tImage.Element("ThumbnailPath")) OrElse String.IsNullOrEmpty(tImage.Element("ThumbnailPath").Value), String.Empty, String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("ThumbnailPath").Value)), _
                                                          .Size = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), New Size With {.Width = 0, .Height = 0}, Master.StringToSize(tImage.Element("BannerType2").Value)), _
-                                                         .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
+                                                         .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar))), _
+                                                         .LocalThumb = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "fanart", Path.DirectorySeparatorChar, tImage.Element("ThumbnailPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                 Case "poster"
                                     tShow.Posters.Add(New TVDBPoster With { _
                                                           .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
@@ -590,6 +591,7 @@ Namespace TVDB
         Private _thumbnailurl As String
         Private _size As Size
         Private _localfile As String
+        Private _localthumb As String
 
         Public Property URL() As String
             Get
@@ -627,6 +629,15 @@ Namespace TVDB
             End Set
         End Property
 
+        Public Property LocalThumb() As String
+            Get
+                Return Me._localthumb
+            End Get
+            Set(ByVal value As String)
+                Me._localthumb = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -636,6 +647,7 @@ Namespace TVDB
             Me._thumbnailurl = String.Empty
             Me._size = New Size
             Me._localfile = String.Empty
+            Me._localthumb = String.Empty
         End Sub
     End Class
 

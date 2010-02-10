@@ -24,7 +24,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Drawing.Imaging
 
-Public Class Images
+Public Class Images : Implements IDisposable
 
     Private _image As Image
     Private _isedit As Boolean
@@ -59,7 +59,7 @@ Public Class Images
         _image = Nothing
     End Sub
 
-    Public Sub Dispose()
+    Public Sub Dispose() Implements IDisposable.Dispose
         ms.Flush()
         ms.Close()
         ms.Dispose()
