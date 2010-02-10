@@ -69,7 +69,6 @@ Partial Class dlgImgManual
         '
         'txtURL
         '
-        Me.txtURL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtURL.Location = New System.Drawing.Point(12, 25)
         Me.txtURL.Name = "txtURL"
         Me.txtURL.Size = New System.Drawing.Size(335, 20)
@@ -91,9 +90,10 @@ Partial Class dlgImgManual
         'Label1
         '
         Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.Location = New System.Drawing.Point(12, 9)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(104, 13)
+        Me.Label1.Size = New System.Drawing.Size(110, 13)
         Me.Label1.TabIndex = 6
         Me.Label1.Text = "Enter URL to Image:"
         '

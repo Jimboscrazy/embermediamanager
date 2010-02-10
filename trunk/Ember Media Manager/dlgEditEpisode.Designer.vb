@@ -122,10 +122,11 @@ Partial Class dlgEditEpisode
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(61, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(195, 13)
+        Me.Label2.Size = New System.Drawing.Size(214, 13)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "Edit the details for the selected episode."
         '
@@ -133,11 +134,11 @@ Partial Class dlgEditEpisode
         '
         Me.Label1.AutoSize = True
         Me.Label1.BackColor = System.Drawing.Color.Transparent
-        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.White
         Me.Label1.Location = New System.Drawing.Point(58, 3)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(163, 29)
+        Me.Label1.Size = New System.Drawing.Size(155, 32)
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "Edit Episode"
         '
@@ -205,7 +206,6 @@ Partial Class dlgEditEpisode
         '
         'txtAired
         '
-        Me.txtAired.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtAired.Location = New System.Drawing.Point(111, 67)
         Me.txtAired.Name = "txtAired"
         Me.txtAired.Size = New System.Drawing.Size(88, 20)
@@ -213,7 +213,6 @@ Partial Class dlgEditEpisode
         '
         'txtEpisode
         '
-        Me.txtEpisode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtEpisode.Location = New System.Drawing.Point(59, 67)
         Me.txtEpisode.Name = "txtEpisode"
         Me.txtEpisode.Size = New System.Drawing.Size(46, 20)
@@ -222,15 +221,15 @@ Partial Class dlgEditEpisode
         'lblEpisode
         '
         Me.lblEpisode.AutoSize = True
+        Me.lblEpisode.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblEpisode.Location = New System.Drawing.Point(59, 51)
         Me.lblEpisode.Name = "lblEpisode"
-        Me.lblEpisode.Size = New System.Drawing.Size(48, 13)
+        Me.lblEpisode.Size = New System.Drawing.Size(56, 13)
         Me.lblEpisode.TabIndex = 113
         Me.lblEpisode.Text = "Episode:"
         '
         'txtSeason
         '
-        Me.txtSeason.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSeason.Location = New System.Drawing.Point(7, 67)
         Me.txtSeason.Name = "txtSeason"
         Me.txtSeason.Size = New System.Drawing.Size(46, 20)
@@ -239,24 +238,25 @@ Partial Class dlgEditEpisode
         'lblSeason
         '
         Me.lblSeason.AutoSize = True
+        Me.lblSeason.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblSeason.Location = New System.Drawing.Point(7, 51)
         Me.lblSeason.Name = "lblSeason"
-        Me.lblSeason.Size = New System.Drawing.Size(46, 13)
+        Me.lblSeason.Size = New System.Drawing.Size(53, 13)
         Me.lblSeason.TabIndex = 112
         Me.lblSeason.Text = "Season:"
         '
         'lblCredits
         '
         Me.lblCredits.AutoSize = True
+        Me.lblCredits.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblCredits.Location = New System.Drawing.Point(217, 139)
         Me.lblCredits.Name = "lblCredits"
-        Me.lblCredits.Size = New System.Drawing.Size(42, 13)
+        Me.lblCredits.Size = New System.Drawing.Size(50, 13)
         Me.lblCredits.TabIndex = 95
         Me.lblCredits.Text = "Credits:"
         '
         'txtCredits
         '
-        Me.txtCredits.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtCredits.Location = New System.Drawing.Point(217, 155)
         Me.txtCredits.Name = "txtCredits"
         Me.txtCredits.Size = New System.Drawing.Size(408, 20)
@@ -301,9 +301,10 @@ Partial Class dlgEditEpisode
         'lblActors
         '
         Me.lblActors.AutoSize = True
+        Me.lblActors.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblActors.Location = New System.Drawing.Point(7, 188)
         Me.lblActors.Name = "lblActors"
-        Me.lblActors.Size = New System.Drawing.Size(40, 13)
+        Me.lblActors.Size = New System.Drawing.Size(47, 13)
         Me.lblActors.TabIndex = 83
         Me.lblActors.Text = "Actors:"
         '
@@ -336,15 +337,15 @@ Partial Class dlgEditEpisode
         'lblDirector
         '
         Me.lblDirector.AutoSize = True
+        Me.lblDirector.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblDirector.Location = New System.Drawing.Point(7, 139)
         Me.lblDirector.Name = "lblDirector"
-        Me.lblDirector.Size = New System.Drawing.Size(47, 13)
+        Me.lblDirector.Size = New System.Drawing.Size(56, 13)
         Me.lblDirector.TabIndex = 77
         Me.lblDirector.Text = "Director:"
         '
         'txtDirector
         '
-        Me.txtDirector.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtDirector.Location = New System.Drawing.Point(7, 155)
         Me.txtDirector.Name = "txtDirector"
         Me.txtDirector.Size = New System.Drawing.Size(192, 20)
@@ -353,16 +354,16 @@ Partial Class dlgEditEpisode
         'lblPlot
         '
         Me.lblPlot.AutoSize = True
+        Me.lblPlot.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblPlot.Location = New System.Drawing.Point(217, 7)
         Me.lblPlot.Name = "lblPlot"
-        Me.lblPlot.Size = New System.Drawing.Size(28, 13)
+        Me.lblPlot.Size = New System.Drawing.Size(33, 13)
         Me.lblPlot.TabIndex = 73
         Me.lblPlot.Text = "Plot:"
         '
         'txtPlot
         '
         Me.txtPlot.AcceptsReturn = True
-        Me.txtPlot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtPlot.Location = New System.Drawing.Point(217, 26)
         Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
@@ -412,33 +413,35 @@ Partial Class dlgEditEpisode
         'lblRating
         '
         Me.lblRating.AutoSize = True
+        Me.lblRating.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblRating.Location = New System.Drawing.Point(7, 94)
         Me.lblRating.Name = "lblRating"
-        Me.lblRating.Size = New System.Drawing.Size(41, 13)
+        Me.lblRating.Size = New System.Drawing.Size(48, 13)
         Me.lblRating.TabIndex = 60
         Me.lblRating.Text = "Rating:"
         '
         'lblAired
         '
         Me.lblAired.AutoSize = True
+        Me.lblAired.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblAired.Location = New System.Drawing.Point(111, 51)
         Me.lblAired.Name = "lblAired"
-        Me.lblAired.Size = New System.Drawing.Size(34, 13)
+        Me.lblAired.Size = New System.Drawing.Size(40, 13)
         Me.lblAired.TabIndex = 58
         Me.lblAired.Text = "Aired:"
         '
         'lblTitle
         '
         Me.lblTitle.AutoSize = True
+        Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTitle.Location = New System.Drawing.Point(7, 7)
         Me.lblTitle.Name = "lblTitle"
-        Me.lblTitle.Size = New System.Drawing.Size(30, 13)
+        Me.lblTitle.Size = New System.Drawing.Size(36, 13)
         Me.lblTitle.TabIndex = 57
         Me.lblTitle.Text = "Title:"
         '
         'txtTitle
         '
-        Me.txtTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTitle.Location = New System.Drawing.Point(7, 26)
         Me.txtTitle.Name = "txtTitle"
         Me.txtTitle.Size = New System.Drawing.Size(192, 20)

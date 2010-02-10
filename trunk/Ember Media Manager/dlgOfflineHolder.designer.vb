@@ -97,10 +97,11 @@ Partial Class dlgOfflineHolder
         '
         Me.Label2.AutoSize = True
         Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.White
         Me.Label2.Location = New System.Drawing.Point(64, 38)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(90, 13)
+        Me.Label2.Size = New System.Drawing.Size(102, 13)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "Add Offline movie"
         '
@@ -108,11 +109,11 @@ Partial Class dlgOfflineHolder
         '
         Me.Label4.AutoSize = True
         Me.Label4.BackColor = System.Drawing.Color.Transparent
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.White
         Me.Label4.Location = New System.Drawing.Point(61, 3)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(278, 29)
+        Me.Label4.Size = New System.Drawing.Size(280, 32)
         Me.Label4.TabIndex = 1
         Me.Label4.Text = "Offline Media Manager"
         '
@@ -139,15 +140,15 @@ Partial Class dlgOfflineHolder
         'lblSources
         '
         Me.lblSources.AutoSize = True
+        Me.lblSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblSources.Location = New System.Drawing.Point(8, 71)
         Me.lblSources.Name = "lblSources"
-        Me.lblSources.Size = New System.Drawing.Size(78, 13)
+        Me.lblSources.Size = New System.Drawing.Size(84, 13)
         Me.lblSources.TabIndex = 60
         Me.lblSources.Text = "Add to Source:"
         '
         'txtMovieName
         '
-        Me.txtMovieName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtMovieName.Location = New System.Drawing.Point(9, 133)
         Me.txtMovieName.Name = "txtMovieName"
         Me.txtMovieName.Size = New System.Drawing.Size(313, 20)
@@ -156,9 +157,10 @@ Partial Class dlgOfflineHolder
         'lblMovie
         '
         Me.lblMovie.AutoSize = True
+        Me.lblMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMovie.Location = New System.Drawing.Point(6, 116)
         Me.lblMovie.Name = "lblMovie"
-        Me.lblMovie.Size = New System.Drawing.Size(168, 13)
+        Me.lblMovie.Size = New System.Drawing.Size(183, 13)
         Me.lblMovie.TabIndex = 62
         Me.lblMovie.Text = "Place Holder Folder/Movie Name:"
         '
@@ -236,15 +238,15 @@ Partial Class dlgOfflineHolder
         'lblTagline
         '
         Me.lblTagline.AutoSize = True
+        Me.lblTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblTagline.Location = New System.Drawing.Point(6, 295)
         Me.lblTagline.Name = "lblTagline"
-        Me.lblTagline.Size = New System.Drawing.Size(139, 13)
+        Me.lblTagline.Size = New System.Drawing.Size(149, 13)
         Me.lblTagline.TabIndex = 70
         Me.lblTagline.Text = "Place Holder Video Tagline:"
         '
         'txtTagline
         '
-        Me.txtTagline.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTagline.Location = New System.Drawing.Point(9, 312)
         Me.txtTagline.Name = "txtTagline"
         Me.txtTagline.Size = New System.Drawing.Size(220, 20)
@@ -264,6 +266,7 @@ Partial Class dlgOfflineHolder
         '
         'Label1
         '
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.Location = New System.Drawing.Point(235, 321)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(100, 13)
@@ -307,9 +310,10 @@ Partial Class dlgOfflineHolder
         'Label6
         '
         Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label6.Location = New System.Drawing.Point(6, 338)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(136, 13)
+        Me.Label6.Size = New System.Drawing.Size(148, 13)
         Me.Label6.TabIndex = 83
         Me.Label6.Text = "Place Holder Video Format:"
         '
@@ -318,9 +322,9 @@ Partial Class dlgOfflineHolder
         Me.cbFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbFormat.FormattingEnabled = True
         Me.cbFormat.Items.AddRange(New Object() {"Standard", "HDV", "DV PAL"})
-        Me.cbFormat.Location = New System.Drawing.Point(142, 333)
+        Me.cbFormat.Location = New System.Drawing.Point(156, 333)
         Me.cbFormat.Name = "cbFormat"
-        Me.cbFormat.Size = New System.Drawing.Size(87, 21)
+        Me.cbFormat.Size = New System.Drawing.Size(73, 21)
         Me.cbFormat.TabIndex = 70
         '
         'chkBackground
@@ -330,7 +334,7 @@ Partial Class dlgOfflineHolder
         Me.chkBackground.Enabled = False
         Me.chkBackground.Location = New System.Drawing.Point(9, 398)
         Me.chkBackground.Name = "chkBackground"
-        Me.chkBackground.Size = New System.Drawing.Size(192, 22)
+        Me.chkBackground.Size = New System.Drawing.Size(176, 22)
         Me.chkBackground.TabIndex = 73
         Me.chkBackground.Text = "Use Tagline background"
         Me.chkBackground.UseVisualStyleBackColor = True
@@ -349,9 +353,10 @@ Partial Class dlgOfflineHolder
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(207, 401)
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label5.Location = New System.Drawing.Point(191, 401)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(132, 13)
+        Me.Label5.Size = New System.Drawing.Size(145, 13)
         Me.Label5.TabIndex = 80
         Me.Label5.Text = "Tagline background Color:"
         '
@@ -369,16 +374,15 @@ Partial Class dlgOfflineHolder
         '
         'btnFont
         '
-        Me.btnFont.Location = New System.Drawing.Point(235, 341)
+        Me.btnFont.Location = New System.Drawing.Point(258, 341)
         Me.btnFont.Name = "btnFont"
-        Me.btnFont.Size = New System.Drawing.Size(127, 23)
+        Me.btnFont.Size = New System.Drawing.Size(104, 23)
         Me.btnFont.TabIndex = 78
         Me.btnFont.Text = "Select Font..."
         Me.btnFont.UseVisualStyleBackColor = True
         '
         'txtTop
         '
-        Me.txtTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtTop.Location = New System.Drawing.Point(325, 295)
         Me.txtTop.Name = "txtTop"
         Me.txtTop.Size = New System.Drawing.Size(36, 20)
@@ -388,6 +392,7 @@ Partial Class dlgOfflineHolder
         '
         'Label3
         '
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label3.Location = New System.Drawing.Point(238, 296)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(88, 13)

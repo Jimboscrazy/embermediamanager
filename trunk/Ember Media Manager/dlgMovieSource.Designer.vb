@@ -83,7 +83,6 @@ Partial Class dlgMovieSource
         '
         'txtSourceName
         '
-        Me.txtSourceName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSourceName.Location = New System.Drawing.Point(15, 29)
         Me.txtSourceName.Name = "txtSourceName"
         Me.txtSourceName.Size = New System.Drawing.Size(130, 20)
@@ -92,24 +91,25 @@ Partial Class dlgMovieSource
         'Label1
         '
         Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.Location = New System.Drawing.Point(12, 12)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(75, 13)
+        Me.Label1.Size = New System.Drawing.Size(79, 13)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "Source Name:"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.Location = New System.Drawing.Point(12, 85)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(69, 13)
+        Me.Label2.Size = New System.Drawing.Size(72, 13)
         Me.Label2.TabIndex = 4
         Me.Label2.Text = "Source Path:"
         '
         'txtSourcePath
         '
-        Me.txtSourcePath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtSourcePath.Location = New System.Drawing.Point(15, 101)
         Me.txtSourcePath.Name = "txtSourcePath"
         Me.txtSourcePath.Size = New System.Drawing.Size(376, 20)

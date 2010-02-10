@@ -116,6 +116,7 @@ Partial Class dlgFIStreamEditor
         '
         'Label8
         '
+        Me.Label8.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label8.Location = New System.Drawing.Point(4, 167)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(68, 19)
@@ -136,6 +137,7 @@ Partial Class dlgFIStreamEditor
         '
         'Label5
         '
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label5.Location = New System.Drawing.Point(5, 116)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(68, 19)
@@ -145,7 +147,6 @@ Partial Class dlgFIStreamEditor
         '
         'txtARatio
         '
-        Me.txtARatio.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtARatio.Location = New System.Drawing.Point(76, 115)
         Me.txtARatio.Name = "txtARatio"
         Me.txtARatio.Size = New System.Drawing.Size(48, 20)
@@ -154,9 +155,10 @@ Partial Class dlgFIStreamEditor
         'rbInterlaced
         '
         Me.rbInterlaced.AutoSize = True
+        Me.rbInterlaced.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbInterlaced.Location = New System.Drawing.Point(111, 45)
         Me.rbInterlaced.Name = "rbInterlaced"
-        Me.rbInterlaced.Size = New System.Drawing.Size(72, 17)
+        Me.rbInterlaced.Size = New System.Drawing.Size(76, 17)
         Me.rbInterlaced.TabIndex = 3
         Me.rbInterlaced.TabStop = True
         Me.rbInterlaced.Text = "Interlaced"
@@ -166,9 +168,10 @@ Partial Class dlgFIStreamEditor
         '
         Me.rbProgressive.AutoSize = True
         Me.rbProgressive.Checked = True
+        Me.rbProgressive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.rbProgressive.Location = New System.Drawing.Point(25, 45)
         Me.rbProgressive.Name = "rbProgressive"
-        Me.rbProgressive.Size = New System.Drawing.Size(80, 17)
+        Me.rbProgressive.Size = New System.Drawing.Size(85, 17)
         Me.rbProgressive.TabIndex = 2
         Me.rbProgressive.TabStop = True
         Me.rbProgressive.Text = "Progressive"
@@ -176,6 +179,7 @@ Partial Class dlgFIStreamEditor
         '
         'Label4
         '
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label4.Location = New System.Drawing.Point(22, 21)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(51, 15)
@@ -194,6 +198,7 @@ Partial Class dlgFIStreamEditor
         '
         'Label3
         '
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label3.Location = New System.Drawing.Point(17, 143)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(56, 13)
@@ -203,7 +208,6 @@ Partial Class dlgFIStreamEditor
         '
         'txtDuration
         '
-        Me.txtDuration.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtDuration.Location = New System.Drawing.Point(76, 139)
         Me.txtDuration.Name = "txtDuration"
         Me.txtDuration.Size = New System.Drawing.Size(68, 20)
@@ -211,6 +215,7 @@ Partial Class dlgFIStreamEditor
         '
         'Label2
         '
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label2.Location = New System.Drawing.Point(17, 93)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(56, 16)
@@ -220,6 +225,7 @@ Partial Class dlgFIStreamEditor
         '
         'Label1
         '
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.Label1.Location = New System.Drawing.Point(20, 69)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(53, 19)
@@ -229,7 +235,6 @@ Partial Class dlgFIStreamEditor
         '
         'txtHeight
         '
-        Me.txtHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtHeight.Location = New System.Drawing.Point(76, 91)
         Me.txtHeight.Name = "txtHeight"
         Me.txtHeight.Size = New System.Drawing.Size(48, 20)
@@ -237,7 +242,6 @@ Partial Class dlgFIStreamEditor
         '
         'txtWidth
         '
-        Me.txtWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtWidth.Location = New System.Drawing.Point(76, 68)
         Me.txtWidth.Name = "txtWidth"
         Me.txtWidth.Size = New System.Drawing.Size(48, 20)
