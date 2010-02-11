@@ -1186,6 +1186,8 @@ Namespace Media
         Private _fileInfo As New MediaInfo.Fileinfo
         Private _posterurl As String
         Private _localfile As String
+        Private _poster As Images
+        Private _fanart As Images
 
         <XmlElement("title")> _
         Public Property Title() As String
@@ -1383,6 +1385,26 @@ Namespace Media
             End Set
         End Property
 
+        <XmlIgnore()> _
+        Public Property Poster() As Images
+            Get
+                Return Me._poster
+            End Get
+            Set(ByVal value As Images)
+                Me._poster = value
+            End Set
+        End Property
+
+        <XmlIgnore()> _
+        Public Property Fanart() As Images
+            Get
+                Return Me._fanart
+            End Get
+            Set(ByVal value As Images)
+                Me._fanart = value
+            End Set
+        End Property
+
         Public Sub New()
             Me.Clear()
         End Sub
@@ -1400,6 +1422,8 @@ Namespace Media
             Me._fileInfo = New MediaInfo.Fileinfo
             Me._posterurl = String.Empty
             Me._localfile = String.Empty
+            Me._poster = New Images
+            Me._fanart = New Images
         End Sub
     End Class
 
