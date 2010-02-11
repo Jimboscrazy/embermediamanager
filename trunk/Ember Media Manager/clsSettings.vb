@@ -3194,4 +3194,12 @@ Public Class emmSettings
         FromFilename = 1
         FromSeasonResult = 2
     End Enum
+
+    Public Function SeasonFanartEnabled() As Boolean
+        Return Me._seasonfanartjpg OrElse Me._seasondashfanart OrElse Me._seasondotfanart
+    End Function
+
+    Public Function EpisodeFanartEnabled() As Boolean
+        Return Me._episodedashfanart OrElse Me._episodedotfanart
+    End Function
 End Class

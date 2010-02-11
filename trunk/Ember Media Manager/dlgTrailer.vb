@@ -272,7 +272,7 @@ Public Class dlgTrailer
         Me.Text = Master.eLang.GetString(372, "Select Trailer")
         Me.OK_Button.Text = Master.eLang.GetString(373, "Download")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.GroupBox1.Text = Master.eLang.GetString(374, "Select Trailer to Download")
+        Me.GroupBox1.Text = Master.eLang.GetString(374, "Select Trailer to Scrape")
         Me.GroupBox2.Text = Master.eLang.GetString(375, "Manual Trailer Entry")
         Me.Label1.Text = Master.eLang.GetString(376, "Direct Link or YouTube URL:")
         Me.lblStatus.Text = Master.eLang.GetString(377, "Compiling trailer list...")

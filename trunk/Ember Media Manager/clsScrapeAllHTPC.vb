@@ -29,7 +29,7 @@ Namespace AllHTPC
                 Dim sResults As String = sHTTP.DownloadData(String.Format("http://hdtrailers.allhtpc.com/search/{0}", imdbID))
                 sHTTP = Nothing
 
-                If Not sResults.ToLower.Contains("no movies in the database") Then
+                If Not sResults.ToLower.Contains("no movies in the database") AndAlso Not sResults.ToLower.Contains("not been verified yet") Then
                     Return sResults.Trim
                 End If
 
