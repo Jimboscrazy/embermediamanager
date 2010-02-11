@@ -367,6 +367,9 @@ Public Class frmMain
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
 
         Master.DGVDoubleBuffer(Me.dgvMediaList)
+        Master.DGVDoubleBuffer(Me.dgvTVShows)
+        Master.DGVDoubleBuffer(Me.dgvTVSeasons)
+        Master.DGVDoubleBuffer(Me.dgvTVEpisodes)
 
         Dim sPath As String = String.Concat(Master.AppPath, "Log", Path.DirectorySeparatorChar, "errlog.txt")
         If File.Exists(sPath) Then
@@ -7037,8 +7040,6 @@ doCancel:
 #End Region '*** Routines/Functions
 
     Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeShow.Click
-
-        'TODO: Scraper to background worker
 
         Master.LoadAllEpisodes(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
 

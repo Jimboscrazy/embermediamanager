@@ -156,7 +156,6 @@ Namespace TVDB
                             sID = xS(0).Element("id").Value
                             .ID = sID
                             .Title = xS(0).Element("SeriesName").Value
-                            'TODO: Should we have a setting for the APIKey to save to the nfo? Else, XBMC will be using our APIKey for updating (assuming they just use the URL direct from the nfo).
                             .EpisodeGuideURL = gURL
                             .Genre = Strings.Join(xS(0).Element("Genre").Value.Split(Convert.ToChar("|")), " / ")
                             .MPAA = xS(0).Element("ContentRating").Value
@@ -199,8 +198,6 @@ Namespace TVDB
             End Try
 
             'and finally the images
-            'TODO: Modify settings to reflect the proper types
-            'TODO: Add setting for defaulting to english posters if posters are not available in the selected language
             Try
                 If Not String.IsNullOrEmpty(bXML) Then
                     Dim xdImage As XDocument = XDocument.Parse(bXML)

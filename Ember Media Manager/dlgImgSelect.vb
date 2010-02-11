@@ -18,8 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-'TODO: Implement saving, filters, and remove references to season and episode fanart if they are not enabled in settings
-
 Imports System.IO
 Imports System.IO.Compression
 Imports System.Text
@@ -236,6 +234,8 @@ Public Class dlgImgSelect
             AddHandler IMPADone, AddressOf IMPADoneDownloading
             AddHandler TMDBDone, AddressOf TMDBDoneDownloading
             AddHandler MPDBDone, AddressOf MPDBDoneDownloading
+
+            Master.PNLDoubleBuffer(Me.pnlBG)
 
             If Me.DLType = Master.ImageType.Posters Then
                 Me.Text = String.Concat(Master.eLang.GetString(308, "Select Poster - "), If(Not String.IsNullOrEmpty(Me.tMovie.Movie.Title), Me.tMovie.Movie.Title, Me.tMovie.ListTitle))

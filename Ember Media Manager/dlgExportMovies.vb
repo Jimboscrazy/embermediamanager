@@ -430,7 +430,6 @@ Public Class dlgExportMovies
                 Else
                     row = row.Replace("<$MOVIENAME>", StringManip.HtmlEncode(_curMovie.ListTitle))
                 End If
-                'TODO: write extension method to create a comma-separated string from the actors list
                 row = row.Replace("<$ACTORS>", StringManip.HtmlEncode(Master.ListToStringWithSeparator(_curMovie.Movie.Actors, ",")))
                 row = row.Replace("<$DIRECTOR>", StringManip.HtmlEncode(_curMovie.Movie.Director))
                 row = row.Replace("<$CERTIFICATION>", StringManip.HtmlEncode(_curMovie.Movie.Certification))
