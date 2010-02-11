@@ -60,6 +60,19 @@ Public Class Master
         Small = 2
     End Enum
 
+    Public Enum ShowPosterType As Integer
+        None = 0
+        Blank = 1
+        Graphical = 2
+        Text = 3
+    End Enum
+
+    Public Enum SeasonPosterType As Integer
+        None = 0
+        Poster = 1
+        Wide = 2
+    End Enum
+
     Public Enum ScrapeType As Integer
         SingleScrape = 0
         FullAuto = 1

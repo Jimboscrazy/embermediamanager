@@ -20,7 +20,6 @@
 
 'TODO: Image Selection - filters, remove current image, revert to default
 'TODO: Image Selection - Remove references to season and episode fanart if they are not enabled in settings
-'TODO: Fix tv image settings
 'TODO: Add setting to only get posters for the specified language and default to english posters if posters are not available in the selected language
 'TODO: TV Scraper to background worker
 'TODO: Show/Season/Episode Locking and Marking
