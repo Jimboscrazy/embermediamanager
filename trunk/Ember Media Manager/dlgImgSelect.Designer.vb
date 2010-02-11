@@ -318,6 +318,7 @@ Partial Class dlgImgSelect
         '
         'lblDL2
         '
+        Me.lblDL2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDL2.Location = New System.Drawing.Point(5, 10)
         Me.lblDL2.Name = "lblDL2"
         Me.lblDL2.Size = New System.Drawing.Size(310, 13)
