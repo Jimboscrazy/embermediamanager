@@ -87,7 +87,6 @@ Public Class Master
         FilterAuto = 11
         FilterAsk = 12
         CopyBD = 13
-        RevertStudios = 14
     End Enum
 
     Public Enum ImageType As Integer

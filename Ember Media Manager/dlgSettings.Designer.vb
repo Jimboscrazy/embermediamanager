@@ -2440,12 +2440,12 @@ Partial Class dlgSettings
         Me.tvSettings.Name = "tvSettings"
         TreeNode1.ImageIndex = 4
         TreeNode1.Name = "nExts"
-        TreeNode1.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode1.NodeFont = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode1.SelectedImageIndex = 4
         TreeNode1.Text = "File System"
         TreeNode2.ImageIndex = 1
         TreeNode2.Name = "nXBMCCom"
-        TreeNode2.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode2.NodeFont = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode2.SelectedImageIndex = 1
         TreeNode2.Text = "Communication"
         TreeNode3.ImageIndex = 0
@@ -2455,22 +2455,22 @@ Partial Class dlgSettings
         TreeNode3.Text = "General"
         TreeNode4.ImageIndex = 5
         TreeNode4.Name = "nSources"
-        TreeNode4.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode4.NodeFont = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode4.SelectedImageIndex = 5
         TreeNode4.Text = "Files and Sources"
         TreeNode5.ImageIndex = 3
         TreeNode5.Name = "nScraper"
-        TreeNode5.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode5.NodeFont = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode5.SelectedImageIndex = 3
         TreeNode5.Text = "Scraper - Data"
         TreeNode6.ImageIndex = 6
         TreeNode6.Name = "nImages"
-        TreeNode6.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode6.NodeFont = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode6.SelectedImageIndex = 6
         TreeNode6.Text = "Scraper - Images"
         TreeNode7.ImageIndex = 8
         TreeNode7.Name = "nTrailers"
-        TreeNode7.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode7.NodeFont = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode7.SelectedImageIndex = 8
         TreeNode7.Text = "Scraper - Trailers"
         TreeNode8.ImageIndex = 2
@@ -2480,17 +2480,17 @@ Partial Class dlgSettings
         TreeNode8.Text = "Movies"
         TreeNode9.ImageIndex = 5
         TreeNode9.Name = "nTVSources"
-        TreeNode9.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode9.NodeFont = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode9.SelectedImageIndex = 5
         TreeNode9.Text = "Files and Sources"
         TreeNode10.ImageIndex = 3
         TreeNode10.Name = "nTVScraper"
-        TreeNode10.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode10.NodeFont = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode10.SelectedImageIndex = 3
         TreeNode10.Text = "Scraper - Data"
         TreeNode11.ImageIndex = 6
         TreeNode11.Name = "nTVImages"
-        TreeNode11.NodeFont = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        TreeNode11.NodeFont = New System.Drawing.Font("Segoe UI Semibold", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         TreeNode11.SelectedImageIndex = 6
         TreeNode11.Text = "Scraper - Images"
         TreeNode12.ImageIndex = 7
@@ -6406,7 +6406,7 @@ Partial Class dlgSettings
         Me.lbTrailerSites.Items.AddRange(New Object() {"YouTube/AllHTPC", "YouTube/TMDB", "IMDB"})
         Me.lbTrailerSites.Location = New System.Drawing.Point(343, 28)
         Me.lbTrailerSites.Name = "lbTrailerSites"
-        Me.lbTrailerSites.Size = New System.Drawing.Size(120, 79)
+        Me.lbTrailerSites.Size = New System.Drawing.Size(120, 72)
         Me.lbTrailerSites.TabIndex = 6
         '
         'chkDownloadTrailer

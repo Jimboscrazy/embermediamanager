@@ -616,6 +616,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\modulesmenu.png" />
+    <None Include="Resources\puzzle.png" />
     <Content Include="television.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

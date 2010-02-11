@@ -50,7 +50,6 @@ Partial Class frmMain
         Me.CleanFoldersToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ConvertFileSourceToFolderSourceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
-        Me.mnuRevertStudioTags = New System.Windows.Forms.ToolStripMenuItem
         Me.RenamerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
         Me.SetsManagerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
@@ -522,7 +521,7 @@ Partial Class frmMain
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.mnuRevertStudioTags, Me.RenamerToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem, Me.ToolStripSeparator5, Me.ClearAllCachesToolStripMenuItem, Me.RefreshAllMoviesToolStripMenuItem, Me.CleanDatabaseToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CleanFoldersToolStripMenuItem, Me.ConvertFileSourceToFolderSourceToolStripMenuItem, Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem, Me.RenamerToolStripMenuItem, Me.ToolStripSeparator4, Me.SetsManagerToolStripMenuItem, Me.OfflineMediaManagerToolStripMenuItem, Me.ToolStripMenuItem3, Me.ExportMoviesListToolStripMenuItem, Me.ToolStripSeparator5, Me.ClearAllCachesToolStripMenuItem, Me.RefreshAllMoviesToolStripMenuItem, Me.CleanDatabaseToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.ToolsToolStripMenuItem.Text = "&Tools"
@@ -553,15 +552,6 @@ Partial Class frmMain
                     Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Size = New System.Drawing.Size(356, 22)
         Me.CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = "Copy Existing Fanart To &Backdrops Folder"
-        '
-        'mnuRevertStudioTags
-        '
-        Me.mnuRevertStudioTags.Image = CType(resources.GetObject("mnuRevertStudioTags.Image"), System.Drawing.Image)
-        Me.mnuRevertStudioTags.Name = "mnuRevertStudioTags"
-        Me.mnuRevertStudioTags.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
-                    Or System.Windows.Forms.Keys.T), System.Windows.Forms.Keys)
-        Me.mnuRevertStudioTags.Size = New System.Drawing.Size(356, 22)
-        Me.mnuRevertStudioTags.Text = "Revert Meta Data Studio &Tags"
         '
         'RenamerToolStripMenuItem
         '
@@ -1085,12 +1075,14 @@ Partial Class frmMain
         '
         'cmnuRescrapeShow
         '
+        Me.cmnuRescrapeShow.Image = CType(resources.GetObject("cmnuRescrapeShow.Image"), System.Drawing.Image)
         Me.cmnuRescrapeShow.Name = "cmnuRescrapeShow"
         Me.cmnuRescrapeShow.Size = New System.Drawing.Size(175, 22)
         Me.cmnuRescrapeShow.Text = "Re-scrape theTVDB"
         '
         'cmnuChangeShow
         '
+        Me.cmnuChangeShow.Image = CType(resources.GetObject("cmnuChangeShow.Image"), System.Drawing.Image)
         Me.cmnuChangeShow.Name = "cmnuChangeShow"
         Me.cmnuChangeShow.Size = New System.Drawing.Size(175, 22)
         Me.cmnuChangeShow.Text = "Change Show"
@@ -3320,7 +3312,6 @@ Partial Class frmMain
     Friend WithEvents btnFilterUp As System.Windows.Forms.Button
     Friend WithEvents tmrFilterAni As System.Windows.Forms.Timer
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents mnuRevertStudioTags As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents OfflineMediaManagerToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuAllAutoTrailer As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuAllAskTrailer As System.Windows.Forms.ToolStripMenuItem
