@@ -59,16 +59,24 @@ Public Class FileManagerExternalModule
             eSettings.ModuleSettings.Add(s)
         Next
         Save()
-        PopulateFolders()
+        'PopulateFolders()
+        PopulateFolders(MySubMenu1)
+        PopulateFolders(MySubMenu2)
     End Sub
     Sub Enable() Implements EmberExternalModule.Enable
         MyMenu.Text = "Media File Manager"
-        MySubMenu.Text = "Move To"
-        MyMenu.DropDownItems.Add(MySubMenu)
+        MySubMenu1.Text = "Move To"
+        MySubMenu1.Tag = "MOVE"
+        MySubMenu2.Text = "Copy To"
+        MySubMenu2.Tag = "COPY"
+        MyMenu.DropDownItems.Add(MySubMenu1)
+        MyMenu.DropDownItems.Add(MySubMenu2)
         emmAPI.MenuMediaList.Items.Add(MyMenuSep)
         emmAPI.MenuMediaList.Items.Add(MyMenu)
 
-        PopulateFolders()
+        'PopulateFolders()
+        PopulateFolders(MySubMenu1)
+        PopulateFolders(MySubMenu2)
     End Sub
     Sub Disable() Implements EmberExternalModule.Disable
         emmAPI.MenuMediaList.Items.Remove(MyMenuSep)
@@ -92,10 +100,14 @@ Public Class FileManagerExternalModule
     End Property
     Dim MyMenuSep As New System.Windows.Forms.ToolStripSeparator
     Dim MyMenu As New System.Windows.Forms.ToolStripMenuItem
-    Dim WithEvents MySubMenu As New System.Windows.Forms.ToolStripMenuItem
+    Dim WithEvents MySubMenu1 As New System.Windows.Forms.ToolStripMenuItem
+    Dim WithEvents MySubMenu2 As New System.Windows.Forms.ToolStripMenuItem
     Dim FolderSubMenus As New List(Of System.Windows.Forms.ToolStripMenuItem)
-    Private Sub MySubMenuItem_MouseHover(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MySubMenu.MouseHover
-
+    Private Sub MySubMenuItem1_MouseHover(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MySubMenu1.MouseHover
+        'PopulateFolders(sender)
+    End Sub
+    Private Sub MySubMenuItem2_MouseHover(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MySubMenu2.MouseHover
+        'PopulateFolders(sender)
     End Sub
     Private Sub FolderSubMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) 'Handles FolderSubMenus.Click
         Try
@@ -116,7 +128,13 @@ Public Class FileManagerExternalModule
                     ItemsToWork = emmAPI.FileDelete.GetItemsToDelete(False, mMovie)
                     'Dim dPath As String = mMovie.Filename
                     'Dim sPathShort As String = Directory.GetParent(dPath).FullName
-                    MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
+                    Select Case sender.parent.tag
+                        Case "MOVE"
+                            MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
+                        Case "COPY"
+                            MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
+                    End Select
+
                 Next
             End If
 
@@ -124,7 +142,7 @@ Public Class FileManagerExternalModule
             'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
-    Sub PopulateFolders()
+    Sub PopulateFolders(ByVal mnu As System.Windows.Forms.ToolStripMenuItem)
         FolderSubMenus.RemoveAll(Function(b) True)
         For Each e In eSettings.ModuleSettings
             Dim FolderSubMenuItem As New System.Windows.Forms.ToolStripMenuItem
@@ -133,9 +151,9 @@ Public Class FileManagerExternalModule
             FolderSubMenus.Add(FolderSubMenuItem)
             AddHandler FolderSubMenuItem.Click, AddressOf Me.FolderSubMenuItem_Click
         Next
-        MySubMenu.DropDownItems.Clear()
+        mnu.DropDownItems.Clear()
         For Each i In FolderSubMenus
-            MySubMenu.DropDownItems.Add(i)
+            mnu.DropDownItems.Add(i)
         Next
     End Sub
 
@@ -182,4 +200,48 @@ Public Class FileManagerExternalModule
             End Set
         End Property
     End Class
+    Private Sub DirectoryCopy(ByVal sourceDirName As String, ByVal destDirName As String)
+        Dim dir As New DirectoryInfo(sourceDirName)
+        ' If the source directory does not exist, throw an exception.
+        If Not dir.Exists Then
+            'Throw New DirectoryNotFoundException(Master.eLang.GetString(364, "Source directory does not exist or could not be found: ") + sourceDirName)
+        End If
+        ' If the destination directory does not exist, create it.
+        If Not Directory.Exists(destDirName) Then
+            Directory.CreateDirectory(destDirName)
+        End If
+        ' Get the file contents of the directory to copy.
+        Dim Files As New List(Of FileInfo)
+
+        Try
+            Files.AddRange(dir.GetFiles())
+        Catch
+        End Try
+
+        For Each sFile As FileInfo In Files
+            MoveFileWithStream(sFile.FullName, Path.Combine(destDirName, sFile.Name))
+        Next
+
+        Files = Nothing
+        dir = Nothing
+    End Sub
+    Public Shared Sub MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String)
+
+        Try
+            Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
+                Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
+                    Dim StreamBuffer(Convert.ToInt32(SourceStream.Length - 1)) As Byte
+
+                    SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
+                    DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
+
+                    StreamBuffer = Nothing
+                End Using
+            End Using
+        Catch ex As Exception
+            'Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
+
+    End Sub
 End Class
+

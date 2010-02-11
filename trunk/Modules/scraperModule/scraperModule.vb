@@ -20,7 +20,8 @@
 
 Public Interface EmberScraperModule
     Sub Setup()
-    Function Scraper(ByVal MovieTitle As String, ByVal Id As String) As Media.Movie
+    'Title or Id must be field in, all movie is past because some scrapper may run to update only some fields (defined in setup)
+    Function Scraper(ByVal Movie As Media.Movie) As Media.Movie
     Function PostScraper(ByVal Movie As Media.Movie) As Media.Movie
     ReadOnly Property ModuleName() As String
     ReadOnly Property ModuleVersion() As String
@@ -41,14 +42,14 @@ Public Class TestEmberScraperModule
     End Property
     ReadOnly Property IsPostScraper() As Boolean Implements EmberScraperModule.IsPostScraper
         Get
-            Return False
+            Return True
         End Get
     End Property
     Sub Setup() Implements EmberScraperModule.Setup
         Dim _setup As New frmSetup
         _setup.ShowDialog()
     End Sub
-    Function Scraper(ByVal MovieTitle As String, ByVal Id As String) As Media.Movie Implements EmberScraperModule.Scraper
+    Function Scraper(ByVal Movie As Media.Movie) As Media.Movie Implements EmberScraperModule.Scraper
         Return Nothing
     End Function
     Function PostScraper(ByVal Movie As Media.Movie) As Media.Movie Implements EmberScraperModule.PostScraper

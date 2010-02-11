@@ -259,6 +259,12 @@ Public Class EmberModules
             t.Enabled = _externalProcessorModule.Enabled
             tmpForXML.Add(t)
         Next
+        For Each _externalScraperModule As _externalScraperModuleClass In externalScrapersModules
+            Dim t As New _XMLEmberModuleClass
+            t.AssemblyName = _externalScraperModule.AssemblyName
+            t.Enabled = _externalScraperModule.Enabled
+            tmpForXML.Add(t)
+        Next
         Master.eSettings.EmberModules = tmpForXML
         Master.eSettings.Save()
     End Sub
