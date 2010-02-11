@@ -44,10 +44,16 @@ Partial Class dlgModuleSettings
         Me.btnRemoveSet = New System.Windows.Forms.Button
         Me.btnEditSet = New System.Windows.Forms.Button
         Me.btnNewSet = New System.Windows.Forms.Button
+        Me.lstScrapers = New System.Windows.Forms.ListView
+        Me.ColumnHeader3 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader4 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader5 = New System.Windows.Forms.ColumnHeader
+        Me.ColumnHeader6 = New System.Windows.Forms.ColumnHeader
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlTop.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
         Me.SuspendLayout()
         '
         'ilSettings
@@ -170,6 +176,7 @@ Partial Class dlgModuleSettings
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.lstScrapers)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -235,6 +242,39 @@ Partial Class dlgModuleSettings
         Me.btnNewSet.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnNewSet.UseVisualStyleBackColor = True
         '
+        'lstScrapers
+        '
+        Me.lstScrapers.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader4})
+        Me.lstScrapers.FullRowSelect = True
+        Me.lstScrapers.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lstScrapers.HideSelection = False
+        Me.lstScrapers.Location = New System.Drawing.Point(2, 2)
+        Me.lstScrapers.Name = "lstScrapers"
+        Me.lstScrapers.Size = New System.Drawing.Size(535, 231)
+        Me.lstScrapers.TabIndex = 59
+        Me.lstScrapers.UseCompatibleStateImageBehavior = False
+        Me.lstScrapers.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Module"
+        Me.ColumnHeader3.Width = 335
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Status"
+        Me.ColumnHeader4.Width = 73
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Scraper"
+        Me.ColumnHeader5.Width = 53
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Post"
+        Me.ColumnHeader6.Width = 47
+        '
         'dlgModuleSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -261,6 +301,7 @@ Partial Class dlgModuleSettings
         Me.pnlTop.PerformLayout()
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
+        Me.TabPage2.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -284,4 +325,9 @@ Partial Class dlgModuleSettings
     Friend WithEvents btnRemoveSet As System.Windows.Forms.Button
     Friend WithEvents btnEditSet As System.Windows.Forms.Button
     Friend WithEvents btnNewSet As System.Windows.Forms.Button
+    Friend WithEvents lstScrapers As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader6 As System.Windows.Forms.ColumnHeader
 End Class
