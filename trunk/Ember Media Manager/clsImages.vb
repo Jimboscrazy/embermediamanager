@@ -369,7 +369,7 @@ Public Class Images : Implements IDisposable
             Master.eSettings.SeasonNameJPG OrElse Master.eSettings.FolderJPG Then
                 Dim tPath As String = String.Empty
                 Dim tDir As New DirectoryInfo(mShow.ShowPath)
-                tPath = tDir.GetDirectories(mShow.ShowPath).SingleOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
+                tPath = tDir.GetDirectories(mShow.ShowPath).FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
                 If Not String.IsNullOrEmpty(tPath) Then
                     If Master.eSettings.SeasonPosterTBN Then
                         pPath = Path.Combine(tPath, "Poster.tbn")
@@ -673,7 +673,7 @@ Public Class Images : Implements IDisposable
                 Dim tPath As String = String.Empty
                 Dim tDir As New DirectoryInfo(mShow.ShowPath)
 
-                tPath = tDir.GetDirectories(mShow.ShowPath).SingleOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
+                tPath = tDir.GetDirectories(mShow.ShowPath).FirstOrDefault(Function(s) Regex.IsMatch(s.Name, String.Concat("^(s(eason)?)?[\W_]*0?", mShow.TVEp.Season.ToString, "$"))).FullName
                 If Not String.IsNullOrEmpty(tPath) Then
                     If Master.eSettings.SeasonDotFanart Then
                         pPath = Path.Combine(tPath, String.Concat(FileManip.Common.GetDirectory(tPath), ".fanart.jpg"))
@@ -1678,4 +1678,48 @@ foundIT:
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
     End Sub
+
+    Public Class SeasonImage
+        Private _season As Integer
+        Private _poster As Images
+        Private _fanart As TVDB.TVDBFanart
+
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+        Public Property Poster() As Images
+            Get
+                Return Me._poster
+            End Get
+            Set(ByVal value As Images)
+                Me._poster = value
+            End Set
+        End Property
+
+        Public Property Fanart() As TVDB.TVDBFanart
+            Get
+                Return Me._fanart
+            End Get
+            Set(ByVal value As TVDB.TVDBFanart)
+                Me._fanart = value
+            End Set
+        End Property
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+        Public Sub Clear()
+            Me._season = -1
+            Me._poster = New Images
+            Me._fanart = New TVDB.TVDBFanart
+        End Sub
+    End Class
+
 End Class

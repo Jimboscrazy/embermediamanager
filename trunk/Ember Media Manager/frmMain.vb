@@ -7038,43 +7038,50 @@ doCancel:
 
     Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeShow.Click
 
+        'TODO: Scraper to background worker
+
+        Master.LoadAllEpisodes(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
+
         If String.IsNullOrEmpty(Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString) Then
             Using dTVDBSearch As New dlgTVDBSearchResults
                 If dTVDBSearch.ShowDialog(Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString) = Windows.Forms.DialogResult.OK Then
-                    Master.currShow.TVShow = Master.tmpTVDBShow.Show
-                    Using dEditShow As New dlgEditShow
-                        If dEditShow.ShowDialog(True) = Windows.Forms.DialogResult.OK Then
-                            Dim dTVImageSel As New dlgTVImageSelect
-                            If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
-                                ''do something
-                            End If
+                    Master.currShow.TVShow = Master.tmpTVDBShow.Show.TVShow
+                    Using dTVImageSel As New dlgTVImageSelect
+                        If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
+                            Using dEditShow As New dlgEditShow
+                                If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                                    Me.SaveAllTVInfo()
+                                End If
+                            End Using
                         End If
                     End Using
                 End If
             End Using
         Else
             Dim TVDB = New TVDB.Scraper
-            Master.tmpTVDBShow = TVDB.DownloadSeries(Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString)
-            If Master.tmpTVDBShow.Show.ID.Length > 0 Then
-                Master.currShow.TVShow = Master.tmpTVDBShow.Show
-                Using dEditShow As New dlgEditShow
-                    If dEditShow.ShowDialog(True) = Windows.Forms.DialogResult.OK Then
-                        Dim dTVImageSel As New dlgTVImageSelect
-                        If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
-                            ''do something
-                        End If
+            TVDB.DownloadSeries(Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString)
+            If Master.tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
+                Master.currShow.TVShow = Master.tmpTVDBShow.Show.TVShow
+                Using dTVImageSel As New dlgTVImageSelect
+                    If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
+                        Using dEditShow As New dlgEditShow
+                            If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                                Me.SaveAllTVInfo()
+                            End If
+                        End Using
                     End If
                 End Using
             Else
                 Using dTVDBSearch As New dlgTVDBSearchResults
                     If dTVDBSearch.ShowDialog(Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString) = Windows.Forms.DialogResult.OK Then
-                        Master.currShow.TVShow = Master.tmpTVDBShow.Show
-                        Using dEditShow As New dlgEditShow
-                            If dEditShow.ShowDialog(True) = Windows.Forms.DialogResult.OK Then
-                                Dim dTVImageSel As New dlgTVImageSelect
-                                If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
-                                    ''do something
-                                End If
+                        Master.currShow.TVShow = Master.tmpTVDBShow.Show.TVShow
+                        Using dTVImageSel As New dlgTVImageSelect
+                            If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
+                                Using dEditShow As New dlgEditShow
+                                    If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                                        Me.SaveAllTVInfo()
+                                    End If
+                                End Using
                             End If
                         End Using
                     End If
@@ -7082,6 +7089,54 @@ doCancel:
             End If
         End If
 
+    End Sub
+
+    Private Sub SaveAllTVInfo()
+        Dim iEp As Integer = -1
+        Dim iSea As Integer = -1
+
+        Try
+
+            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
+                For Each Episode As Master.DBTV In Master.tmpTVDBShow.Episodes
+
+                    Try
+                        Episode.ShowID = Master.currShow.ShowID
+
+                        iEp = Episode.TVEp.Episode
+                        iSea = Episode.TVEp.Season
+
+                        If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsEpPoster(Episode)
+                        If Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsEpFanart(Episode)
+
+                        Dim cSea = From cSeason As Images.SeasonImage In Master.tmpTVImages.SeasonImageList Where cSeason.Season = iSea Take 1
+                        If cSea.Count > 0 Then
+                            If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsSeasonPoster(Episode)
+                            If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
+                                cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
+                                Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
+                            ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
+                                cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
+                                If Not IsNothing(cSea(0).Fanart.Image.Image) Then
+                                    Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
+                                    cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile)
+                                    Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
+                                End If
+                            End If
+                        End If
+
+                        Master.DB.SaveTVEpToDB(Episode, False, True, True)
+                    Catch ex As Exception
+                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+                    End Try
+                Next
+
+                Me.RefreshShow(Master.currShow.ShowID, True, False, False)
+                SQLTrans.Commit()
+            End Using
+        Catch ex As Exception
+            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
+        End Try
     End Sub
 
 End Class

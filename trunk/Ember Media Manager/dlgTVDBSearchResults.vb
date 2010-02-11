@@ -91,9 +91,7 @@ Public Class dlgTVDBSearchResults
         End Try
     End Sub
 
-    Private Sub ShowDownloaded(ByVal tvdbShow As TVDB.TVDBShow)
-        Master.tmpTVDBShow = tvdbShow
-
+    Private Sub ShowDownloaded()
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
