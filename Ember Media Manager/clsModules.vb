@@ -18,6 +18,13 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+' Nuno Reminders:
+' TODO: Need to do "strings" on all this stuff..
+' TODO: Need to background work some of the functions
+' TODO: Need to change names of some of the buttons
+'
+'
+
 Option Strict Off
 Imports System
 Imports System.IO
@@ -35,7 +42,8 @@ End Interface
 
 Public Interface EmberScraperModule
     Sub Setup()
-    Function Scraper(ByVal MovieTitle As String, ByVal Id As String) As Media.Movie
+    'Title or Id must be field in, all movie is past because some scrapper may run to update only some fields (defined in setup)
+    Function Scraper(ByVal Movie As Media.Movie) As Media.Movie
     Function PostScraper(ByVal Movie As Media.Movie) As Media.Movie
     ReadOnly Property ModuleName() As String
     ReadOnly Property ModuleVersion() As String
@@ -150,6 +158,8 @@ Public Class EmberModules
                             Dim _externalScraperModule As New _externalScraperModuleClass
                             _externalScraperModule.ProcessorModule = ProcessorModule
                             _externalScraperModule.AssemblyName = Path.GetFileName(file)
+                            _externalScraperModule.IsScraper = ProcessorModule.IsScraper
+                            _externalScraperModule.IsPostScraper = ProcessorModule.IsPostScraper
                             For Each i In Master.eSettings.EmberModules
                                 If i.AssemblyName = _externalScraperModule.AssemblyName Then
                                     _externalScraperModule.Enabled = i.Enabled
@@ -163,6 +173,28 @@ Public Class EmberModules
             Next
         End If
     End Sub
+    'TODO : Bellow functions should go to Background worker
+    Public Function FullScrape(ByVal movie As Media.Movie) As Media.Movie
+        movie = ScrapeOnly(movie)
+        movie = PostScrapeOnly(movie)
+        Return movie
+    End Function
+    Public Function ScrapeOnly(ByVal movie As Media.Movie) As Media.Movie
+        For Each _externalScraperModule In externalScrapersModules
+            If _externalScraperModule.IsScraper Then
+                movie = _externalScraperModule.ProcessorModule.Scraper(movie)
+            End If
+        Next
+        Return movie
+    End Function
+    Public Function PostScrapeOnly(ByVal movie As Media.Movie) As Media.Movie
+        For Each _externalScraperModule In externalScrapersModules
+            If _externalScraperModule.IsPostScraper Then
+                movie = _externalScraperModule.ProcessorModule.Scraper(movie)
+            End If
+        Next
+        Return movie
+    End Function
 
     Dim WithEvents ModulesMenu As New System.Windows.Forms.ToolStripMenuItem
     Sub New()
@@ -183,6 +215,18 @@ Public Class EmberModules
             End If
             li.SubItems.Add("Disabled")
             li.Tag = _externalProcessorModule.AssemblyName
+        Next
+        For Each _externalScraperModule In externalScrapersModules
+            Dim li As ListViewItem = modulesSetup.lstScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
+            li.SubItems.Add(If(_externalScraperModule.IsScraper, "Yes", "No"))
+            li.SubItems.Add(If(_externalScraperModule.IsPostScraper, "Yes", "No"))
+            If _externalScraperModule.Enabled Then
+                li.SubItems.Add("Enabled")
+            Else
+                li.SubItems.Add("Disabled")
+            End If
+            li.SubItems.Add("Disabled")
+            li.Tag = _externalScraperModule.AssemblyName
         Next
         modulesSetup.ModulesManager = Me
         modulesSetup.ShowDialog()
