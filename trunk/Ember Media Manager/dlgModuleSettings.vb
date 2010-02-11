@@ -50,7 +50,7 @@ Public Class dlgModuleSettings
     End Sub
 
 
-    Private Sub TabPage1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TabPage1.Click
+    Private Sub TabPage1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabGenreic.Click
 
     End Sub
 
@@ -76,5 +76,20 @@ Public Class dlgModuleSettings
         lstModules.SelectedItems.Item(0).SubItems(1).Text = "Disabled"
         ModulesManager.SetModuleEnable(lstModules.SelectedItems.Item(0).Tag().ToString, False)
 
+    End Sub
+
+    Private Sub TabPage1_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabGenreic.Enter
+        CurrentTab("Generic")
+    End Sub
+    Private Sub TabPage2_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabScraper.Enter
+        CurrentTab("Scraper")
+        btnRemoveSet.Enabled = False
+        btnNewSet.Enabled = False
+        btnEditSet.Enabled = False
+    End Sub
+
+    Dim Mytab As String = "Generic"
+    Sub CurrentTab(ByVal t As String)
+        Mytab = t
     End Sub
 End Class
