@@ -166,7 +166,8 @@ Public Class EmberModules
 
     Dim WithEvents ModulesMenu As New System.Windows.Forms.ToolStripMenuItem
     Sub New()
-        ModulesMenu.Text = "Modules Settings"
+        ModulesMenu.Text = Master.eLang.GetString(999, "Module Settings")
+        ModulesMenu.Image = My.Resources.ModulesMenu
         frmMain.EditToolStripMenuItem.DropDownItems.Add(ModulesMenu)
         loadModules()
         loadScrapersModules()

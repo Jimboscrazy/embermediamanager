@@ -1680,7 +1680,7 @@ Public Class Database
                         SQLcommand.CommandText = "SELECT MoviePath, Id FROM movies ORDER BY ListTitle COLLATE NOCASE;"
                         Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                             While SQLReader.Read
-                                If Not File.Exists(SQLReader("MoviePath").ToString) Then
+                                If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) Then
                                     Me.DeleteFromDB(Convert.ToInt64(SQLReader("ID")), True)
                                 ElseIf Master.eSettings.SkipLessThan > 0 Then
                                     fInfo = New FileInfo(SQLReader("MoviePath").ToString)
@@ -1698,9 +1698,9 @@ Public Class Database
                     SQLcommand.CommandText = "SELECT TVEpPath, Id FROM TVEpPaths;"
                     Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLReader.Read
-                            If Not File.Exists(SQLReader("TVEpPath").ToString) Then
-                                Me.DeleteTVEpFromDBByPathID(Convert.ToInt64(SQLReader("ID")), True)
-                            End If
+                                If Not File.Exists(SQLReader("TVEpPath").ToString) OrElse Not Master.eSettings.ValidExts.Contains(Path.GetExtension(SQLReader("TVEpPath").ToString).ToLower) Then
+                                    Me.DeleteTVEpFromDBByPathID(Convert.ToInt64(SQLReader("ID")), True)
+                                End If
                         End While
                     End Using
                     SQLcommand.CommandText = String.Concat("DELETE FROM TVShows WHERE ID NOT IN (SELECT TVShowID FROM TVEps);")

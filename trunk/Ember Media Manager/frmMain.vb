@@ -2652,12 +2652,6 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub mnuRevertStudioTags_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRevertStudioTags.Click
-
-        Me.ScrapeData(Master.ScrapeType.RevertStudios, Nothing, Nothing)
-
-    End Sub
-
     Private Sub OfflineMediaManagerToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OfflineMediaManagerToolStripMenuItem.Click
         Using dOfflineHolder As New dlgOfflineHolder
             If dOfflineHolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -4143,20 +4137,6 @@ Public Class frmMain
                                     End If
                                 End If
                             Next
-                        Case Master.ScrapeType.RevertStudios
-                            For Each drvRow As DataRow In Me.dtMedia.Rows
-                                Me.bwScraper.ReportProgress(iCount, drvRow.Item(15).ToString)
-                                iCount += 1
-                                If Me.bwScraper.CancellationPending Then GoTo doCancel
-
-                                scrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(drvRow.Item(0)))
-
-                                If Not String.IsNullOrEmpty(scrapeMovie.Movie.Studio) AndAlso scrapeMovie.Movie.Studio.Contains(" / ") Then
-                                    scrapeMovie.Movie.Studio = Strings.Trim(Strings.Left(scrapeMovie.Movie.Studio, scrapeMovie.Movie.Studio.IndexOf(" / ") - 1))
-                                    Master.DB.SaveMovieToDB(scrapeMovie, False, True, True)
-                                End If
-                            Next
-
                     End Select
                 End If
 
@@ -4396,7 +4376,6 @@ doCancel:
                 .CleanFoldersToolStripMenuItem.Text = Master.eLang.GetString(9, "&Clean Files")
                 .ConvertFileSourceToFolderSourceToolStripMenuItem.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
                 .CopyExistingFanartToBackdropsFolderToolStripMenuItem.Text = Master.eLang.GetString(11, "Copy Existing Fanart To &Backdrops Folder")
-                .mnuRevertStudioTags.Text = Master.eLang.GetString(12, "Revert Meta Data Studio &Tags")
                 .RenamerToolStripMenuItem.Text = Master.eLang.GetString(13, "Bulk &Renamer")
                 .SetsManagerToolStripMenuItem.Text = Master.eLang.GetString(14, "Sets &Manager")
                 .OfflineMediaManagerToolStripMenuItem.Text = Master.eLang.GetString(15, "&Offline Media Manager")
@@ -5589,9 +5568,6 @@ doCancel:
                         Case Master.ScrapeType.CopyBD
                             lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
                             btnCancel.Text = Master.eLang.GetString(122, "Cancel Copy")
-                        Case Master.ScrapeType.RevertStudios
-                            lblCanceling.Text = Master.eLang.GetString(123, "Canceling Reversion...")
-                            btnCancel.Text = Master.eLang.GetString(124, "Cancel Reversion")
                         Case Else
                             lblCanceling.Text = Master.eLang.GetString(125, "Canceling Scraper...")
                             btnCancel.Text = Master.eLang.GetString(126, "Cancel Scraper")
@@ -5604,7 +5580,7 @@ doCancel:
             End If
 
             Select Case sType
-                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD, Master.ScrapeType.RevertStudios, Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto, Master.ScrapeType.FilterAsk, Master.ScrapeType.FilterAuto
+                Case Master.ScrapeType.FullAsk, Master.ScrapeType.FullAuto, Master.ScrapeType.CleanFolders, Master.ScrapeType.CopyBD, Master.ScrapeType.UpdateAsk, Master.ScrapeType.UpdateAuto, Master.ScrapeType.FilterAsk, Master.ScrapeType.FilterAuto
                     Me.tspbLoading.Maximum = Me.dtMedia.Rows.Count
                     Select Case sType
                         Case Master.ScrapeType.FullAsk
@@ -5615,8 +5591,6 @@ doCancel:
                             Me.tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
                         Case Master.ScrapeType.CopyBD
                             Me.tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
-                        Case Master.ScrapeType.RevertStudios
-                            Me.tslLoading.Text = Master.eLang.GetString(131, "Reverting Meta Data Studio Tags:")
                         Case Master.ScrapeType.UpdateAuto
                             Me.tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
                         Case Master.ScrapeType.UpdateAsk
