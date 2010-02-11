@@ -235,6 +235,9 @@ Public Class dlgImgSelect
             AddHandler TMDBDone, AddressOf TMDBDoneDownloading
             AddHandler MPDBDone, AddressOf MPDBDoneDownloading
 
+            AddHandler MyBase.MouseWheel, AddressOf MouseWheelEvent
+            AddHandler pnlBG.MouseWheel, AddressOf MouseWheelEvent
+
             Master.PNLDoubleBuffer(Me.pnlBG)
 
             If Me.DLType = Master.ImageType.Posters Then
@@ -642,6 +645,9 @@ Public Class dlgImgSelect
             AddHandler pbImage(iIndex).DoubleClick, AddressOf pbImage_DoubleClick
             AddHandler pnlImage(iIndex).Click, AddressOf pnlImage_Click
 
+            AddHandler pbImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+            AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+
             If Me.DLType = Master.ImageType.Fanart Then
                 ReDim Preserve Me.chkImage(iIndex)
                 Me.chkImage(iIndex) = New CheckBox()
@@ -655,6 +661,7 @@ Public Class dlgImgSelect
                 Me.chkImage(iIndex).Top = 250
                 Me.chkImage(iIndex).Checked = isChecked
                 Me.pnlImage(iIndex).Controls.Add(Me.chkImage(iIndex))
+                AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             Else
                 ReDim Preserve Me.lblImage(iIndex)
                 Me.lblImage(iIndex) = New Label()
@@ -673,6 +680,7 @@ Public Class dlgImgSelect
                 Me.lblImage(iIndex).Top = 250
                 Me.pnlImage(iIndex).Controls.Add(Me.lblImage(iIndex))
                 AddHandler lblImage(iIndex).Click, AddressOf lblImage_Click
+                AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
             End If
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
@@ -1212,7 +1220,7 @@ Public Class dlgImgSelect
 
     End Sub
 
-    Private Sub dlgImgSelect_MouseWheel(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseWheel
+    Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         If e.Delta < 0 Then
             If (pnlBG.VerticalScroll.Value + 50) <= pnlBG.VerticalScroll.Maximum Then
                 pnlBG.VerticalScroll.Value += 50
@@ -1227,7 +1235,6 @@ Public Class dlgImgSelect
             End If
         End If
     End Sub
-
 End Class
 
 

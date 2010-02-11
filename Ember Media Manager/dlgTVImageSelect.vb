@@ -420,6 +420,11 @@ Public Class dlgTVImageSelect
             AddHandler pnlImage(iIndex).Click, AddressOf pnlImage_Click
             AddHandler lblImage(iIndex).Click, AddressOf lblImage_Click
 
+            AddHandler pbImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+            AddHandler pnlImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+            AddHandler lblImage(iIndex).MouseWheel, AddressOf MouseWheelEvent
+
+
         Catch ex As Exception
             Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
         End Try
@@ -640,10 +645,14 @@ Public Class dlgTVImageSelect
     End Sub
 
     Private Sub dlgTVImageSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        AddHandler pnlImages.MouseWheel, AddressOf MouseWheelEvent
+        AddHandler MyBase.MouseWheel, AddressOf MouseWheelEvent
+        AddHandler tvList.MouseWheel, AddressOf MouseWheelEvent
+
         Master.PNLDoubleBuffer(Me.pnlImages)
     End Sub
 
-    Private Sub dlgTVImageSelect_MouseWheel(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseWheel
+    Private Sub MouseWheelEvent(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         If e.Delta < 0 Then
             If (pnlImages.VerticalScroll.Value + 50) <= pnlImages.VerticalScroll.Maximum Then
                 pnlImages.VerticalScroll.Value += 50
