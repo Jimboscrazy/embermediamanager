@@ -544,6 +544,12 @@ Public Class Master
         pi.SetValue(cDGV, True, Nothing)
     End Sub
 
+    Public Shared Sub PNLDoubleBuffer(ByRef cPNL As Panel)
+        Dim conType As Type = cPNL.GetType
+        Dim pi As PropertyInfo = conType.GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic)
+        pi.SetValue(cPNL, True, Nothing)
+    End Sub
+
     Public Shared Function StringToSize(ByVal sString As String) As Size
         If Regex.IsMatch(sString, "^[0-9]+x[0-9]+$", RegexOptions.IgnoreCase) Then
             Dim SplitSize() As String = Strings.Split(sString, "x")

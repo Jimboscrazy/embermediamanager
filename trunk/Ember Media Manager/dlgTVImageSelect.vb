@@ -18,7 +18,24 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-'TODO: Filters, remove current image, revert to default
+'TODO: Image Selection - filters, remove current image, revert to default
+'TODO: Image Selection - Remove references to season and episode fanart if they are not enabled in settings
+'TODO: Fix tv image settings
+'TODO: Add setting to only get posters for the specified language and default to english posters if posters are not available in the selected language
+'TODO: TV Scraper to background worker
+'TODO: Show/Season/Episode Locking and Marking
+'TODO: Show and Episode field locks
+'TODO: Enable/Disable scraper info fields
+'TODO: Fall back to episode title when trying to match scraper episodes and no season or episode # is available
+'TODO: TV Show renaming
+'TODO: Scrape individual episode
+'TODO: Change season images
+'TODO: Check if we have information for a show or episode when first scanning in
+'TODO: Support VIDEO_TS/BDMV folders for TV Shows
+'TODO: Setting for the APIKey to save to the nfo.
+'TODO: ?????
+'TODO: PROFIT!!!!
+
 
 Imports System.IO
 Imports System.Text.RegularExpressions
@@ -620,6 +637,26 @@ Public Class dlgTVImageSelect
             Me.bwLoadImages.RunWorkerAsync()
         End If
 
+    End Sub
+
+    Private Sub dlgTVImageSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Master.PNLDoubleBuffer(Me.pnlImages)
+    End Sub
+
+    Private Sub dlgTVImageSelect_MouseWheel(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseWheel
+        If e.Delta < 0 Then
+            If (pnlImages.VerticalScroll.Value + 50) <= pnlImages.VerticalScroll.Maximum Then
+                pnlImages.VerticalScroll.Value += 50
+            Else
+                pnlImages.VerticalScroll.Value = pnlImages.VerticalScroll.Maximum
+            End If
+        Else
+            If (pnlImages.VerticalScroll.Value - 50) >= pnlImages.VerticalScroll.Minimum Then
+                pnlImages.VerticalScroll.Value -= 50
+            Else
+                pnlImages.VerticalScroll.Value = pnlImages.VerticalScroll.Minimum
+            End If
+        End If
     End Sub
 
     Private Sub dlgTVImageSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown

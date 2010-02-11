@@ -22,8 +22,6 @@
 Imports System
 Imports System.IO
 
-'TODO: Implement settings for TV Season images
-
 Public Class dlgSettings
 
     Private didApply As Boolean = False
@@ -656,7 +654,7 @@ Public Class dlgSettings
         pnlImages.Visible = False
         pnlShows.Visible = False
         pnlTVSources.Visible = False
-        pnlTVScraper.visible = False
+        pnlTVScraper.Visible = False
         pnlTVImages.Visible = False
 
         Select Case tvSettings.SelectedNode.Name
@@ -2211,7 +2209,7 @@ Public Class dlgSettings
             Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
             Master.eSettings.PreferredPosterSize = DirectCast(Me.cbPosterSize.SelectedIndex, Master.PosterSize)
             Master.eSettings.PreferredFanartSize = DirectCast(Me.cbFanartSize.SelectedIndex, Master.FanartSize)
-            Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbshowPosterSize.SelectedIndex, Master.PosterSize)
+            Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbShowPosterSize.SelectedIndex, Master.PosterSize)
             Master.eSettings.PreferredShowFanartSize = DirectCast(Me.cbShowFanartSize.SelectedIndex, Master.FanartSize)
             Master.eSettings.PreferredEpPosterSize = DirectCast(Me.cbEpPosterSize.SelectedIndex, Master.PosterSize)
             Master.eSettings.PreferredEpFanartSize = DirectCast(Me.cbEpFanartSize.SelectedIndex, Master.FanartSize)

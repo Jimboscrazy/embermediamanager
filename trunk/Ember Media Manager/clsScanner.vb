@@ -1367,7 +1367,6 @@ Public Class Scanner
 
     Private Sub LoadShow(ByVal TVContainer As TVShowContainer)
         Dim tmpTVDB As New Master.DBTV
-        'TODO: Handle video_ts
         Try
             If TVContainer.Episodes.Count > 0 Then
                 If Not htTVShows.ContainsKey(TVContainer.ShowPath.ToLower) Then
