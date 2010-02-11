@@ -1,0 +1,10 @@
+C:\Ember Media Manager\SVN-trunk\ExtternalModule\obj\Release\ResolveAssemblyReference.cache
+C:\Ember Media Manager\SVN-trunk\ExtternalModule\obj\Release\EmberExternalModule.Resources.resources
+C:\Ember Media Manager\SVN-trunk\ExtternalModule\obj\Release\ExternalModule.vbproj.GenerateResource.Cache
+C:\Ember Media Manager\SVN-trunk\ExtternalModule\obj\Release\EmberExternalModule.dll
+C:\Ember Media Manager\SVN-trunk\ExtternalModule\obj\Release\EmberExternalModule.xml
+C:\Ember Media Manager\SVN-trunk\ExtternalModule\obj\Release\EmberExternalModule.pdb
+C:\Ember Media Manager\Modules\EmberExternalModule.dll
+C:\Ember Media Manager\Modules\EmberExternalModule.pdb
+C:\Ember Media Manager\Modules\EmberExternalModule.xml
+C:\Ember Media Manager\SVN-trunk\ExtternalModule\obj\Release\EmberExternalModule.frmSetup.resources
