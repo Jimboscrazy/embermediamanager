@@ -221,12 +221,12 @@ Namespace TVDB
                                     Master.tmpTVDBShow.SeasonPosters.Add(New TVDBSeasonPoster With { _
                                                             .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
                                                             .Season = If(IsNothing(tImage.Element("Season")) OrElse String.IsNullOrEmpty(tImage.Element("Season").Value), 0, Convert.ToInt32(tImage.Element("Season").Value)), _
-                                                            .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
+                                                            .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Master.SeasonPosterType.None, StringToSeasonPosterType(tImage.Element("BannerType2").Value)), _
                                                             .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seasonposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                                 Case "series"
                                     Master.tmpTVDBShow.ShowPosters.Add(New TVDBShowPoster With { _
                                                           .URL = String.Format("http://{0}/banners/{1}", Master.eSettings.TVDBMirror, tImage.Element("BannerPath").Value), _
-                                                          .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), ShowPosterType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
+                                                          .Type = If(IsNothing(tImage.Element("BannerType2")) OrElse String.IsNullOrEmpty(tImage.Element("BannerType2").Value), Master.ShowPosterType.None, StringToShowPosterType(tImage.Element("BannerType2").Value)), _
                                                           .LocalFile = Path.Combine(Master.TempPath, String.Concat("Shows", Path.DirectorySeparatorChar, sID, Path.DirectorySeparatorChar, "seriesposters", Path.DirectorySeparatorChar, tImage.Element("BannerPath").Value.Replace(Convert.ToChar("/"), Path.DirectorySeparatorChar)))})
                             End Select
                         End If
@@ -379,27 +379,27 @@ Namespace TVDB
 
         End Sub
 
-        Public Function StringToSeasonPosterType(ByVal sType As String) As SeasonPosterType
+        Public Function StringToSeasonPosterType(ByVal sType As String) As Master.SeasonPosterType
             Select Case sType.ToLower
                 Case "season"
-                    Return SeasonPosterType.Poster
+                    Return Master.SeasonPosterType.Poster
                 Case "seasonwide"
-                    Return SeasonPosterType.Wide
+                    Return Master.SeasonPosterType.Wide
                 Case Else
-                    Return SeasonPosterType.None
+                    Return Master.SeasonPosterType.None
             End Select
         End Function
 
-        Public Function StringToShowPosterType(ByVal sType As String) As ShowPosterType
+        Public Function StringToShowPosterType(ByVal sType As String) As Master.ShowPosterType
             Select Case sType.ToLower
                 Case "blank"
-                    Return ShowPosterType.Blank
+                    Return Master.ShowPosterType.Blank
                 Case "graphical"
-                    Return ShowPosterType.Graphical
+                    Return Master.ShowPosterType.Graphical
                 Case "text"
-                    Return ShowPosterType.Text
+                    Return Master.ShowPosterType.Text
                 Case Else
-                    Return ShowPosterType.None
+                    Return Master.ShowPosterType.None
             End Select
         End Function
     End Class
@@ -664,16 +664,9 @@ Namespace TVDB
         End Sub
     End Class
 
-    Public Enum ShowPosterType As Integer
-        None = 0
-        Blank = 1
-        Graphical = 2
-        Text = 3
-    End Enum
-
     Public Class TVDBShowPoster
         Private _url As String
-        Private _type As ShowPosterType
+        Private _type As Master.ShowPosterType
         Private _localfile As String
         Private _image As Images
 
@@ -686,11 +679,11 @@ Namespace TVDB
             End Set
         End Property
 
-        Public Property Type() As ShowPosterType
+        Public Property Type() As Master.ShowPosterType
             Get
                 Return Me._type
             End Get
-            Set(ByVal value As ShowPosterType)
+            Set(ByVal value As Master.ShowPosterType)
                 Me._type = value
             End Set
         End Property
@@ -719,22 +712,16 @@ Namespace TVDB
 
         Public Sub Clear()
             Me._url = String.Empty
-            Me._type = ShowPosterType.None
+            Me._type = Master.ShowPosterType.None
             Me._localfile = String.Empty
             Me._image = New Images
         End Sub
     End Class
 
-    Public Enum SeasonPosterType As Integer
-        None = 0
-        Poster = 1
-        Wide = 2
-    End Enum
-
     Public Class TVDBSeasonPoster
         Private _url As String
         Private _season As Integer
-        Private _type As SeasonPosterType
+        Private _type As Master.SeasonPosterType
         Private _localfile As String
         Private _image As Images
 
@@ -756,11 +743,11 @@ Namespace TVDB
             End Set
         End Property
 
-        Public Property Type() As SeasonPosterType
+        Public Property Type() As Master.SeasonPosterType
             Get
                 Return Me._type
             End Get
-            Set(ByVal value As SeasonPosterType)
+            Set(ByVal value As Master.SeasonPosterType)
                 Me._type = value
             End Set
         End Property
@@ -790,15 +777,11 @@ Namespace TVDB
         Public Sub Clear()
             Me._url = String.Empty
             Me._season = 0
-            Me._type = SeasonPosterType.None
+            Me._type = Master.SeasonPosterType.None
             Me._localfile = String.Empty
             Me._image = New Images
         End Sub
     End Class
-
-    Public Enum PosterType As Integer
-        None = 0
-    End Enum
 
     Public Class TVDBPoster
         Private _url As String

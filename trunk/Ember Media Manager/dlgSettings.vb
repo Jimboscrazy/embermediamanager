@@ -1741,7 +1741,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chkShowFanartOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkShowFanartOnly.CheckedChanged
+    Private Sub chkShowFanartOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -1923,7 +1923,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
     End Sub
 
-    Private Sub chEpPosterSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEpPosterSize.SelectedIndexChanged
+    Private Sub chEpPosterSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Me.SetApplyButton(True)
     End Sub
 
@@ -2114,6 +2114,107 @@ Public Class dlgSettings
     Private Sub txtTVDBMirror_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVDBMirror.TextChanged
         Me.SetApplyButton(True)
     End Sub
+
+    Private Sub chkSeaOverwritePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeaOverwritePoster.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeaResizePoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeaResizePoster.CheckedChanged
+        Me.SetApplyButton(True)
+
+        txtSeaPosterWidth.Enabled = chkSeaResizePoster.Checked
+        txtSeaPosterHeight.Enabled = chkSeaResizePoster.Checked
+
+        If Not chkSeaResizePoster.Checked Then
+            txtSeaPosterWidth.Text = String.Empty
+            txtSeaPosterHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub cbSeaPosterSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSeaPosterSize.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtSeaPosterWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSeaPosterWidth.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtSeaPosterHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSeaPosterHeight.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub tbSeaPosterQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbSeaPosterQual.ValueChanged
+        Me.SetApplyButton(True)
+        Me.lblSeaPosterQual.Text = tbSeaPosterQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblSeaPosterQual
+            Select Case True
+                Case tbSeaPosterQual.Value = 0
+                    .ForeColor = Color.Black
+                Case tbSeaPosterQual.Value > 95 OrElse tbSeaPosterQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbSeaPosterQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbSeaPosterQual.Value, 300 - tbSeaPosterQual.Value, 0)
+                Case tbSeaPosterQual.Value >= 80 AndAlso tbSeaPosterQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbSeaPosterQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbSeaPosterQual.Value - 20)), 0)
+                Case tbSeaPosterQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbSeaPosterQual.Value - 50))), 255, 0)
+            End Select
+        End With
+    End Sub
+
+    Private Sub cbSeaFanartSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSeaFanartSize.SelectedIndexChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeaOverwriteFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeaOverwriteFanart.CheckedChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub chkSeaResizeFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSeaResizeFanart.CheckedChanged
+        Me.SetApplyButton(True)
+
+        txtSeaFanartWidth.Enabled = chkSeaResizeFanart.Checked
+        txtSeaFanartHeight.Enabled = chkSeaResizeFanart.Checked
+
+        If Not chkSeaResizeFanart.Checked Then
+            txtSeaFanartWidth.Text = String.Empty
+            txtSeaFanartHeight.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub txtSeaFanartWidth_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSeaFanartWidth.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub txtSeaFanartHeight_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSeaFanartHeight.TextChanged
+        Me.SetApplyButton(True)
+    End Sub
+
+    Private Sub tbSeaFanartQual_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tbSeaFanartQual.ValueChanged
+        Me.SetApplyButton(True)
+        Me.lblSeaFanartQual.Text = tbSeaFanartQual.Value.ToString
+        'change text color to indicate recommendations
+        With Me.lblSeaFanartQual
+            Select Case True
+                Case tbSeaFanartQual.Value = 0
+                    .ForeColor = Color.Black
+                Case tbSeaFanartQual.Value > 95 OrElse tbSeaFanartQual.Value < 20
+                    .ForeColor = Color.Red
+                Case tbSeaFanartQual.Value > 85
+                    .ForeColor = Color.FromArgb(255, 155 + tbSeaFanartQual.Value, 300 - tbSeaFanartQual.Value, 0)
+                Case tbSeaFanartQual.Value >= 80 AndAlso tbSeaFanartQual.Value <= 85
+                    .ForeColor = Color.Blue
+                Case tbSeaFanartQual.Value <= 50
+                    .ForeColor = Color.FromArgb(255, 255, Convert.ToInt32(8.5 * (tbSeaFanartQual.Value - 20)), 0)
+                Case tbSeaFanartQual.Value < 80
+                    .ForeColor = Color.FromArgb(255, Convert.ToInt32(255 - (8.5 * (tbSeaFanartQual.Value - 50))), 255, 0)
+            End Select
+        End With
+    End Sub
+
 #End Region '*** Form/Controls
 
 
@@ -2209,15 +2310,14 @@ Public Class dlgSettings
             Master.eSettings.UseMPDB = Me.chkUseMPDB.Checked
             Master.eSettings.PreferredPosterSize = DirectCast(Me.cbPosterSize.SelectedIndex, Master.PosterSize)
             Master.eSettings.PreferredFanartSize = DirectCast(Me.cbFanartSize.SelectedIndex, Master.FanartSize)
-            Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbShowPosterSize.SelectedIndex, Master.PosterSize)
+            Master.eSettings.PreferredShowPosterSize = DirectCast(Me.cbShowPosterSize.SelectedIndex, Master.ShowPosterType)
             Master.eSettings.PreferredShowFanartSize = DirectCast(Me.cbShowFanartSize.SelectedIndex, Master.FanartSize)
-            Master.eSettings.PreferredEpPosterSize = DirectCast(Me.cbEpPosterSize.SelectedIndex, Master.PosterSize)
             Master.eSettings.PreferredEpFanartSize = DirectCast(Me.cbEpFanartSize.SelectedIndex, Master.FanartSize)
+            Master.eSettings.PreferredSeasonPosterSize = DirectCast(Me.cbSeaPosterSize.SelectedIndex, Master.SeasonPosterType)
+            Master.eSettings.PreferredEpFanartSize = DirectCast(Me.cbSeaFanartSize.SelectedIndex, Master.FanartSize)
             Master.eSettings.AutoET = Me.chkAutoETSize.Checked
             Master.eSettings.AutoETSize = DirectCast(Me.cbAutoETSize.SelectedIndex, Master.FanartSize)
             Master.eSettings.FanartPrefSizeOnly = Me.chkFanartOnly.Checked
-            Master.eSettings.ShowFanartPrefSizeOnly = Me.chkShowFanartOnly.Checked
-            Master.eSettings.EpFanartPrefSizeOnly = Me.chkEpFanartOnly.Checked
             Master.eSettings.PosterQuality = Me.tbPosterQual.Value
             Master.eSettings.FanartQuality = Me.tbFanartQual.Value
             Master.eSettings.OverwritePoster = Me.chkOverwritePoster.Checked
@@ -2230,6 +2330,10 @@ Public Class dlgSettings
             Master.eSettings.EpFanartQuality = Me.tbEpFanartQual.Value
             Master.eSettings.OverwriteEpPoster = Me.chkOverwriteEpPoster.Checked
             Master.eSettings.OverwriteEpFanart = Me.chkOverwriteEpFanart.Checked
+            Master.eSettings.SeasonPosterQuality = Me.tbSeaPosterQual.Value
+            Master.eSettings.SeasonFanartQuality = Me.tbSeaFanartQual.Value
+            Master.eSettings.OverwriteSeasonPoster = Me.chkSeaOverwritePoster.Checked
+            Master.eSettings.OverwriteSeasonFanart = Me.chkSeaOverwriteFanart.Checked
             Master.eSettings.MovieTBN = Me.chkMovieTBN.Checked
             Master.eSettings.MovieNameTBN = Me.chkMovieNameTBN.Checked
             Master.eSettings.MovieJPG = Me.chkMovieJPG.Checked
@@ -2273,6 +2377,12 @@ Public Class dlgSettings
             Master.eSettings.ResizeEpPoster = Me.chkResizeEpPoster.Checked
             Master.eSettings.EpPosterHeight = If(Not String.IsNullOrEmpty(Me.txtEpPosterHeight.Text), Convert.ToInt32(Me.txtEpPosterHeight.Text), 0)
             Master.eSettings.EpPosterWidth = If(Not String.IsNullOrEmpty(Me.txtEpPosterWidth.Text), Convert.ToInt32(Me.txtEpPosterWidth.Text), 0)
+            Master.eSettings.ResizeSeasonFanart = Me.chkSeaResizeFanart.Checked
+            Master.eSettings.SeasonFanartHeight = If(Not String.IsNullOrEmpty(Me.txtSeaFanartHeight.Text), Convert.ToInt32(Me.txtSeaFanartHeight.Text), 0)
+            Master.eSettings.SeasonFanartWidth = If(Not String.IsNullOrEmpty(Me.txtSeaFanartWidth.Text), Convert.ToInt32(Me.txtSeaFanartWidth.Text), 0)
+            Master.eSettings.ResizeSeasonPoster = Me.chkSeaResizePoster.Checked
+            Master.eSettings.SeasonPosterHeight = If(Not String.IsNullOrEmpty(Me.txtSeaPosterHeight.Text), Convert.ToInt32(Me.txtSeaPosterHeight.Text), 0)
+            Master.eSettings.SeasonPosterWidth = If(Not String.IsNullOrEmpty(Me.txtSeaPosterWidth.Text), Convert.ToInt32(Me.txtSeaPosterWidth.Text), 0)
             Master.eSettings.UseOFDBTitle = Me.chkOFDBTitle.Checked
             Master.eSettings.UseOFDBOutline = Me.chkOFDBOutline.Checked
             Master.eSettings.UseOFDBPlot = Me.chkOFDBPlot.Checked
@@ -2552,25 +2662,28 @@ Public Class dlgSettings
             Me.cbFanartSize.SelectedIndex = Master.eSettings.PreferredFanartSize
             Me.cbShowPosterSize.SelectedIndex = Master.eSettings.PreferredShowPosterSize
             Me.cbShowFanartSize.SelectedIndex = Master.eSettings.PreferredShowFanartSize
-            Me.cbEpPosterSize.SelectedIndex = Master.eSettings.PreferredEpPosterSize
             Me.cbEpFanartSize.SelectedIndex = Master.eSettings.PreferredEpFanartSize
+            Me.cbSeaPosterSize.SelectedIndex = Master.eSettings.PreferredSeasonPosterSize
+            Me.cbSeaFanartSize.SelectedIndex = Master.eSettings.PreferredSeasonFanartSize
             Me.chkAutoETSize.Checked = Master.eSettings.AutoET
             Me.cbAutoETSize.SelectedIndex = Master.eSettings.AutoETSize
             Me.chkFanartOnly.Checked = Master.eSettings.FanartPrefSizeOnly
-            Me.chkShowFanartOnly.Checked = Master.eSettings.ShowFanartPrefSizeOnly
-            Me.chkEpFanartOnly.Checked = Master.eSettings.EpFanartPrefSizeOnly
             Me.tbPosterQual.Value = Master.eSettings.PosterQuality
             Me.tbFanartQual.Value = Master.eSettings.FanartQuality
             Me.tbShowPosterQual.Value = Master.eSettings.ShowPosterQuality
             Me.tbShowFanartQual.Value = Master.eSettings.ShowFanartQuality
             Me.tbEpPosterQual.Value = Master.eSettings.EpPosterQuality
             Me.tbEpFanartQual.Value = Master.eSettings.EpFanartQuality
+            Me.tbSeaPosterQual.Value = Master.eSettings.SeasonPosterQuality
+            Me.tbSeaFanartQual.Value = Master.eSettings.SeasonFanartQuality
             Me.chkOverwritePoster.Checked = Master.eSettings.OverwritePoster
             Me.chkOverwriteFanart.Checked = Master.eSettings.OverwriteFanart
             Me.chkOverwriteShowPoster.Checked = Master.eSettings.OverwriteShowPoster
             Me.chkOverwriteShowFanart.Checked = Master.eSettings.OverwriteShowFanart
             Me.chkOverwriteEpPoster.Checked = Master.eSettings.OverwriteEpPoster
             Me.chkOverwriteEpFanart.Checked = Master.eSettings.OverwriteEpFanart
+            Me.chkSeaOverwritePoster.Checked = Master.eSettings.OverwriteSeasonPoster
+            Me.chkSeaOverwriteFanart.Checked = Master.eSettings.OverwriteSeasonFanart
             Me.chkMovieTBN.Checked = Master.eSettings.MovieTBN
             Me.chkMovieNameTBN.Checked = Master.eSettings.MovieNameTBN
             Me.chkMovieJPG.Checked = Master.eSettings.MovieJPG
@@ -2626,6 +2739,16 @@ Public Class dlgSettings
             If Master.eSettings.ResizeEpPoster Then
                 Me.txtEpPosterWidth.Text = Master.eSettings.EpPosterWidth.ToString
                 Me.txtEpPosterHeight.Text = Master.eSettings.EpPosterHeight.ToString
+            End If
+            Me.chkSeaResizeFanart.Checked = Master.eSettings.ResizeSeasonFanart
+            If Master.eSettings.ResizeSeasonFanart Then
+                Me.txtSeaFanartWidth.Text = Master.eSettings.SeasonFanartWidth.ToString
+                Me.txtSeaFanartHeight.Text = Master.eSettings.SeasonFanartHeight.ToString
+            End If
+            Me.chkSeaResizePoster.Checked = Master.eSettings.ResizeSeasonPoster
+            If Master.eSettings.ResizeSeasonPoster Then
+                Me.txtSeaPosterWidth.Text = Master.eSettings.SeasonPosterWidth.ToString
+                Me.txtSeaPosterHeight.Text = Master.eSettings.SeasonPosterHeight.ToString
             End If
             Me.chkOFDBTitle.Checked = Master.eSettings.UseOFDBTitle
             Me.chkOFDBOutline.Checked = Master.eSettings.UseOFDBOutline
@@ -3231,7 +3354,7 @@ Public Class dlgSettings
         Me.tvSettings.Nodes(2).Nodes(1).Text = Master.eLang.GetString(556, "Scraper - Data")
         Me.tvSettings.Nodes(2).Nodes(2).Text = Master.eLang.GetString(557, "Scraper - Images")
         Me.gbShowPosterOpts.Text = Master.eLang.GetString(148, "Poster")
-        Me.lblShowPosterSize.Text = Master.eLang.GetString(482, "Preferred Poster Size")
+        Me.lblShowPosterSize.Text = Master.eLang.GetString(999, "Preferred Poster Type")
         Me.chkOverwriteShowPoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
         Me.chkResizeShowPoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
         Me.lblShowPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
@@ -3244,9 +3367,7 @@ Public Class dlgSettings
         Me.lblShowFanartWidth.Text = Master.eLang.GetString(479, "Max Width:")
         Me.lblShowFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
         Me.lblShowFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
-        Me.chkShowFanartOnly.Text = Master.eLang.GetString(145, "Only")
         Me.gbEpPosterOpts.Text = Master.eLang.GetString(148, "Poster")
-        Me.lblEpPosterSize.Text = Master.eLang.GetString(482, "Preferred Poster Size")
         Me.chkOverwriteEpPoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
         Me.chkResizeEpPoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
         Me.lblEpPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
@@ -3259,7 +3380,23 @@ Public Class dlgSettings
         Me.lblEpFanartWidth.Text = Master.eLang.GetString(479, "Max Width:")
         Me.lblEpFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
         Me.lblEpFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
-        Me.chkEpFanartOnly.Text = Master.eLang.GetString(145, "Only")
+        Me.gbSeaPosterOpts.Text = Master.eLang.GetString(148, "Poster")
+        Me.lblSeaPosterSize.Text = Master.eLang.GetString(999, "Preferred Poster Type")
+        Me.chkSeaOverwritePoster.Text = Master.eLang.GetString(483, "Overwrite Existing Poster")
+        Me.chkSeaResizePoster.Text = Master.eLang.GetString(481, "Automatically Resize Poster:")
+        Me.lblSeaPosterWidth.Text = Master.eLang.GetString(479, "Max Width:")
+        Me.lblSeaPosterHeight.Text = Master.eLang.GetString(480, "Max Height:")
+        Me.lblSeaPosterQ.Text = Master.eLang.GetString(478, "Poster Quality:")
+        Me.gbSeaFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
+        Me.lblSeaFanartSize.Text = Master.eLang.GetString(486, "Preferred Fanart Size")
+        Me.chkSeaOverwriteFanart.Text = Master.eLang.GetString(487, "Overwrite Existing Fanart")
+        Me.chkSeaResizeFanart.Text = Master.eLang.GetString(485, "Automatically Resize Fanart:")
+        Me.lblSeaFanartWidth.Text = Master.eLang.GetString(479, "Max Width:")
+        Me.lblSeaFanartHeight.Text = Master.eLang.GetString(480, "Max Height:")
+        Me.lblSeaFanartQ.Text = Master.eLang.GetString(484, "Fanart Quality:")
+
+
+
         Me.chkForceTitle.Text = Master.eLang.GetString(710, "Force Title Language:")
         Me.chkSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
         Me.chkSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
@@ -3281,10 +3418,11 @@ Public Class dlgSettings
         Me.cbPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
         Me.cbAutoETSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
-        Me.cbShowPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
+        Me.cbShowPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(999, "None"), Master.eLang.GetString(999, "Blank"), Master.eLang.GetString(999, "Graphical"), Master.eLang.GetString(999, "Text")})
         Me.cbShowFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
-        Me.cbEpPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(322, "X-Large"), Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small"), Master.eLang.GetString(558, "Wide")})
         Me.cbEpFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
+        Me.cbSeaPosterSize.Items.AddRange(New Object() {Master.eLang.GetString(999, "None"), Master.eLang.GetString(999, "Poster"), Master.eLang.GetString(558, "Wide")})
+        Me.cbSeaFanartSize.Items.AddRange(New Object() {Master.eLang.GetString(323, "Large"), Master.eLang.GetString(324, "Medium"), Master.eLang.GetString(325, "Small")})
 
         LoadTrailerQualities()
     End Sub
@@ -3509,4 +3647,7 @@ Public Class dlgSettings
     End Sub
 #End Region '*** Routines/Functions
 
+    Private Sub lblShowPosterHeight_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblShowPosterHeight.Click
+
+    End Sub
 End Class

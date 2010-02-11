@@ -65,18 +65,14 @@ Public Class emmSettings
     Private _useMPDB As Boolean
     Private _postersize As Master.PosterSize
     Private _fanartsize As Master.FanartSize
-    Private _showpostersize As Master.PosterSize
+    Private _showpostersize As Master.ShowPosterType
     Private _showfanartsize As Master.FanartSize
-    Private _eppostersize As Master.PosterSize
     Private _epfanartsize As Master.FanartSize
-    Private _seasonpostersize As Master.PosterSize
+    Private _seasonpostersize As Master.SeasonPosterType
     Private _seasonfanartsize As Master.FanartSize
     Private _autoET As Boolean
     Private _autoETsize As Master.FanartSize
     Private _fanartprefsizeonly As Boolean
-    Private _showfanartprefsizeonly As Boolean
-    Private _epfanartprefsizeonly As Boolean
-    Private _seasonfanartprefsizeonly As Boolean
     Private _posterQuality As Integer
     Private _fanartQuality As Integer
     Private _overwritePoster As Boolean
@@ -649,11 +645,11 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property PreferredShowPosterSize() As Master.PosterSize
+    Public Property PreferredShowPosterSize() As Master.ShowPosterType
         Get
             Return Me._showpostersize
         End Get
-        Set(ByVal value As Master.PosterSize)
+        Set(ByVal value As Master.ShowPosterType)
             Me._showpostersize = value
         End Set
     End Property
@@ -667,15 +663,6 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property PreferredEpPosterSize() As Master.PosterSize
-        Get
-            Return Me._eppostersize
-        End Get
-        Set(ByVal value As Master.PosterSize)
-            Me._eppostersize = value
-        End Set
-    End Property
-
     Public Property PreferredEpFanartSize() As Master.FanartSize
         Get
             Return Me._epfanartsize
@@ -685,11 +672,11 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property PreferredSeasonPosterSize() As Master.PosterSize
+    Public Property PreferredSeasonPosterSize() As Master.SeasonPosterType
         Get
             Return Me._seasonpostersize
         End Get
-        Set(ByVal value As Master.PosterSize)
+        Set(ByVal value As Master.SeasonPosterType)
             Me._seasonpostersize = value
         End Set
     End Property
@@ -727,33 +714,6 @@ Public Class emmSettings
         End Get
         Set(ByVal value As Boolean)
             Me._fanartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property ShowFanartPrefSizeOnly() As Boolean
-        Get
-            Return Me._showfanartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            Me._showfanartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property EpFanartPrefSizeOnly() As Boolean
-        Get
-            Return Me._epfanartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            Me._epfanartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property SeasonFanartPrefSizeOnly() As Boolean
-        Get
-            Return Me._seasonfanartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            Me._seasonfanartprefsizeonly = value
         End Set
     End Property
 
@@ -2634,7 +2594,7 @@ Public Class emmSettings
             Return Me._tvdblanguage
         End Get
         Set(ByVal value As String)
-            Me._tvdblanguage = value
+            Me._tvdblanguage = If(String.IsNullOrEmpty(value), "en", value)
         End Set
     End Property
 
@@ -2702,18 +2662,14 @@ Public Class emmSettings
         Me._useMPDB = False
         Me._postersize = Master.PosterSize.Xlrg
         Me._fanartsize = Master.FanartSize.Lrg
-        Me._showpostersize = Master.PosterSize.Xlrg
+        Me._showpostersize = Master.ShowPosterType.None
         Me._showfanartsize = Master.FanartSize.Lrg
-        Me._eppostersize = Master.PosterSize.Xlrg
         Me._epfanartsize = Master.FanartSize.Lrg
-        Me._seasonpostersize = Master.PosterSize.Xlrg
+        Me._seasonpostersize = Master.SeasonPosterType.None
         Me._seasonfanartsize = Master.FanartSize.Lrg
         Me._autoET = False
         Me._autoETsize = Master.FanartSize.Lrg
         Me._fanartprefsizeonly = False
-        Me._showfanartprefsizeonly = False
-        Me._epfanartprefsizeonly = False
-        Me._seasonfanartprefsizeonly = False
         Me._posterQuality = 0
         Me._fanartQuality = 0
         Me._overwritePoster = False
