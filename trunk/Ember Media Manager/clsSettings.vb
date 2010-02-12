@@ -22,6 +22,7 @@
 
 Imports System.IO
 Imports System.Xml.Serialization
+Imports EmberAPI
 
 <Serializable()> _
 Public Class emmSettings
@@ -282,7 +283,7 @@ Public Class emmSettings
     Private _sortbeforescan As Boolean
     Private _tvdbmirror As String
     Private _tvdblanguage As String
-    Private _tvdblanguages As New List(Of TVDB.TVDBLanguage)
+    Private _tvdblanguages As New List(Of Containers.TVLanguage)
     Private _emberModules As New List(Of EmberModules._XMLEmberModuleClass)
 
     Public Property Version() As String
@@ -2598,14 +2599,15 @@ Public Class emmSettings
         End Set
     End Property
 
-    Public Property TVDBLanguages() As List(Of TVDB.TVDBLanguage)
+    Public Property TVDBLanguages() As List(Of Containers.TVLanguage)
         Get
             Return Me._tvdblanguages
         End Get
-        Set(ByVal value As List(Of TVDB.TVDBLanguage))
+        Set(ByVal value As List(Of Containers.TVLanguage))
             Me._tvdblanguages = value
         End Set
     End Property
+
     <XmlArray("EmberModules")> _
     <XmlArrayItem("Module")> _
     Public Property EmberModules() As List(Of EmberModules._XMLEmberModuleClass)
@@ -2879,7 +2881,7 @@ Public Class emmSettings
         Me._sortbeforescan = False
         Me._tvdbmirror = "thetvdb.com"
         Me._tvdblanguage = "en"
-        Me._tvdblanguages = New List(Of TVDB.TVDBLanguage)
+        Me._tvdblanguages = New List(Of Containers.TVLanguage)
         Me._emberModules = New List(Of EmberModules._XMLEmberModuleClass)
     End Sub
 
@@ -3202,4 +3204,5 @@ Public Class emmSettings
     Public Function EpisodeFanartEnabled() As Boolean
         Return Me._episodedashfanart OrElse Me._episodedotfanart
     End Function
+
 End Class

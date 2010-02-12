@@ -21,6 +21,7 @@
 
 Imports System
 Imports System.IO
+Imports EmberAPI
 
 Public Class dlgSettings
 
@@ -2101,8 +2102,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVLanguageFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVLanguageFetch.Click
-        Dim tvdbLang As New TVDB.Scraper
-        Me.cbTVLanguage.DataSource = tvdbLang.GetLangs
+        Me.cbTVLanguage.DataSource = Master.TVScraper.GetLangs(Master.eSettings.TVDBMirror)
         Me.cbTVLanguage.DisplayMember = "LongLang"
         Me.cbTVLanguage.ValueMember = "ShortLang"
     End Sub
@@ -2566,7 +2566,7 @@ Public Class dlgSettings
             Master.eSettings.SourceFromFolder = Me.chkSourceFromFolder.Checked
             Master.eSettings.SortBeforeScan = Me.chkSortBeforeScan.Checked
             Master.eSettings.TVDBLanguage = Me.cbTVLanguage.SelectedValue.ToString
-            Master.eSettings.TVDBLanguages = DirectCast(Me.cbTVLanguage.DataSource, List(Of TVDB.TVDBLanguage))
+            Master.eSettings.TVDBLanguages = DirectCast(Me.cbTVLanguage.DataSource, List(Of containers.TVLanguage))
             If Not String.IsNullOrEmpty(Me.txtTVDBMirror.Text) Then
                 Master.eSettings.TVDBMirror = Strings.Replace(Me.txtTVDBMirror.Text, "http://", String.Empty)
             Else

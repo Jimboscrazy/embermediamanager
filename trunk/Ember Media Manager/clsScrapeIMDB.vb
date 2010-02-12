@@ -75,7 +75,7 @@ Namespace IMDB
         Private Const TABLE_PATTERN As String = "<table.*?>(.*?)</table>"
         Private Const HREF_PATTERN As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_2 As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>"
-        Private Const HREF_PATTERN_3 As String = "<a href=""/List\?certificates=[^""]*"">([^<]*):([^<]*)</a>[^<]*(<i>([^<]*)</i>)?"
+        Private Const HREF_PATTERN_3 As String = "<a href=""/search/title\?certificates=[^""]*"">([^<]*):([^<]*)</a>[^<]*(<i>([^<]*)</i>)?"
         Private Const HREF_PATTERN_4 As String = "<a.*?href=[""']/(title/tt\d{7}/|name/nm\d{7}/)[""'].*?>(?<text>.*?)</a>"
         Private Const TITLE_PATTERN As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>((\s)+?(\((?<year>\d{4})(\/.*?)?\)))?((\s)+?(\((?<type>.*?)\)))?"
         Private Const IMG_PATTERN As String = "<img src=""(?<thumb>.*?)"" width=""\d{1,3}"" height=""\d{1,3}"" border="".{1,3}"">"
@@ -461,17 +461,19 @@ mResult:
                         W = HTML.IndexOf("</div>", D)
                         Dim rCert As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN_3)
 
-                        Dim Cert = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Descending Where N.Contains(Master.eSettings.CertificationLang)
+                        If rCert.Count > 0 Then
+                            Dim Cert = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Descending Where N.Contains(Master.eSettings.CertificationLang)
 
-                        If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
-                            If Cert.Count > 0 Then
-                                IMDBMovie.Certification = Cert(0).ToString.Replace("West", String.Empty).Trim
-                                If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(IMDBMovie.MPAA))) Then
-                                    IMDBMovie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringManip.USACertToMPAA(IMDBMovie.Certification), IMDBMovie.Certification)
+                            If Not String.IsNullOrEmpty(Master.eSettings.CertificationLang) Then
+                                If Cert.Count > 0 Then
+                                    IMDBMovie.Certification = Cert(0).ToString.Replace("West", String.Empty).Trim
+                                    If Master.eSettings.UseCertForMPAA AndAlso (Not Master.eSettings.CertificationLang = "USA" OrElse (Master.eSettings.CertificationLang = "USA" AndAlso String.IsNullOrEmpty(IMDBMovie.MPAA))) Then
+                                        IMDBMovie.MPAA = If(Master.eSettings.CertificationLang = "USA", StringManip.USACertToMPAA(IMDBMovie.Certification), IMDBMovie.Certification)
+                                    End If
                                 End If
+                            Else
+                                IMDBMovie.Certification = Strings.Join(Cert.ToArray, " / ").Trim
                             End If
-                        Else
-                            IMDBMovie.Certification = Strings.Join(Cert.ToArray, " / ").Trim
                         End If
                     End If
                 End If

@@ -230,6 +230,7 @@ Public Class frmMain
             If Me.bwScraper.IsBusy Then Me.bwScraper.CancelAsync()
             If Me.bwRefreshMovies.IsBusy Then Me.bwRefreshMovies.CancelAsync()
             If Me.bwCleanDB.IsBusy Then Me.bwCleanDB.CancelAsync()
+            If Master.TVScraper.IsBusy Then Master.TVScraper.Cancel()
 
             lblCanceling.Text = Master.eLang.GetString(99, "Canceling All Processes...")
             btnCancel.Visible = False
@@ -241,7 +242,7 @@ Public Class frmMain
             While Me.fScanner.IsBusy OrElse Me.bwMediaInfo.IsBusy OrElse Me.bwLoadInfo.IsBusy _
             OrElse Me.bwDownloadPic.IsBusy OrElse Me.bwScraper.IsBusy OrElse Me.bwRefreshMovies.IsBusy _
             OrElse Me.bwCleanDB.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwLoadEpInfo.IsBusy _
-            OrElse Me.bwLoadSeasonInfo.IsBusy
+            OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Master.TVScraper.IsBusy
                 Application.DoEvents()
             End While
 
@@ -365,6 +366,7 @@ Public Class frmMain
         AddHandler IMDB.ProgressUpdated, AddressOf MovieInfoDownloadedPercent
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
+        AddHandler Master.TVScraper.ScraperEvent, AddressOf TVScraperEvent
 
         Master.DGVDoubleBuffer(Me.dgvMediaList)
         Master.DGVDoubleBuffer(Me.dgvTVShows)
@@ -7015,103 +7017,65 @@ doCancel:
 
     Private Sub cmnuRescrapeShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRescrapeShow.Click
 
-        Master.LoadAllEpisodes(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value))
-
-        If String.IsNullOrEmpty(Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString) Then
-            Using dTVDBSearch As New dlgTVDBSearchResults
-                If dTVDBSearch.ShowDialog(Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString) = Windows.Forms.DialogResult.OK Then
-                    Master.currShow.TVShow = Master.tmpTVDBShow.Show.TVShow
-                    Using dTVImageSel As New dlgTVImageSelect
-                        If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
-                            Using dEditShow As New dlgEditShow
-                                If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                                    Me.SaveAllTVInfo()
-                                End If
-                            End Using
-                        End If
-                    End Using
-                End If
-            End Using
-        Else
-            Dim TVDB = New TVDB.Scraper
-            TVDB.DownloadSeries(Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString)
-            If Master.tmpTVDBShow.Show.TVShow.ID.Length > 0 Then
-                Master.currShow.TVShow = Master.tmpTVDBShow.Show.TVShow
-                Using dTVImageSel As New dlgTVImageSelect
-                    If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
-                        Using dEditShow As New dlgEditShow
-                            If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                                Me.SaveAllTVInfo()
-                            End If
-                        End Using
-                    End If
-                End Using
-            Else
-                Using dTVDBSearch As New dlgTVDBSearchResults
-                    If dTVDBSearch.ShowDialog(Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString) = Windows.Forms.DialogResult.OK Then
-                        Master.currShow.TVShow = Master.tmpTVDBShow.Show.TVShow
-                        Using dTVImageSel As New dlgTVImageSelect
-                            If dTVImageSel.ShowDialog(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value)) = Windows.Forms.DialogResult.OK Then
-                                Using dEditShow As New dlgEditShow
-                                    If dEditShow.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                                        Me.SaveAllTVInfo()
-                                    End If
-                                End Using
-                            End If
-                        End Using
-                    End If
-                End Using
-            End If
-        End If
+        Master.TVScraper.SingleScrape(Convert.ToInt32(Me.dgvTVShows.Item(0, Me.dgvTVShows.SelectedRows(0).Index).Value), Me.dgvTVShows.Item(1, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Me.dgvTVShows.Item(9, Me.dgvTVShows.SelectedRows(0).Index).Value.ToString, Master.eSettings.TVDBMirror, Master.eSettings.TVDBLanguage, Master.eSettings.TVDBLanguages)
 
     End Sub
 
-    Private Sub SaveAllTVInfo()
-        Dim iEp As Integer = -1
-        Dim iSea As Integer = -1
-
-        Try
-
-            Using SQLTrans As SQLite.SQLiteTransaction = Master.DB.BeginTransaction
-                For Each Episode As Master.DBTV In Master.tmpTVDBShow.Episodes
-
-                    Try
-                        Episode.ShowID = Master.currShow.ShowID
-
-                        iEp = Episode.TVEp.Episode
-                        iSea = Episode.TVEp.Season
-
-                        If Not IsNothing(Episode.TVEp.Poster.Image) Then Episode.EpPosterPath = Episode.TVEp.Poster.SaveAsEpPoster(Episode)
-                        If Not IsNothing(Episode.TVEp.Fanart.Image) Then Episode.EpFanartPath = Episode.TVEp.Fanart.SaveAsEpFanart(Episode)
-
-                        Dim cSea = From cSeason As Images.SeasonImage In Master.tmpTVImages.SeasonImageList Where cSeason.Season = iSea Take 1
-                        If cSea.Count > 0 Then
-                            If Not IsNothing(cSea(0).Poster.Image) Then Episode.SeasonPosterPath = cSea(0).Poster.SaveAsSeasonPoster(Episode)
-                            If Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) AndAlso File.Exists(cSea(0).Fanart.LocalFile) Then
-                                cSea(0).Fanart.Image.FromFile(cSea(0).Fanart.LocalFile)
-                                Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
-                            ElseIf Not String.IsNullOrEmpty(cSea(0).Fanart.URL) AndAlso Not String.IsNullOrEmpty(cSea(0).Fanart.LocalFile) Then
-                                cSea(0).Fanart.Image.FromWeb(cSea(0).Fanart.URL)
-                                If Not IsNothing(cSea(0).Fanart.Image.Image) Then
-                                    Directory.CreateDirectory(Directory.GetParent(cSea(0).Fanart.LocalFile).FullName)
-                                    cSea(0).Fanart.Image.Save(cSea(0).Fanart.LocalFile)
-                                    Episode.SeasonFanartPath = cSea(0).Fanart.Image.SaveAsSeasonFanart(Episode)
-                                End If
-                            End If
-                        End If
-
-                        Master.DB.SaveTVEpToDB(Episode, False, True, True)
-                    Catch ex As Exception
-                        Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-                    End Try
-                Next
-
+    Private Sub TVScraperEvent(ByVal eType As TVDB.Scraper.EventType, ByVal iProgress As Integer, ByVal Parameter As Object)
+        Select Case eType
+            Case Ember_Media_Manager.TVDB.Scraper.EventType.LoadingEpisodes
+                Me.tspbLoading.Style = ProgressBarStyle.Marquee
+                Me.tspbLoading.MarqueeAnimationSpeed = 25
+                Me.tslLoading.Text = Master.eLang.GetString(999, "Loading All Episodes:")
+                Me.tspbLoading.Visible = True
+                Me.tslLoading.Visible = True
+            Case Ember_Media_Manager.TVDB.Scraper.EventType.SavingStarted
+                Me.tspbLoading.Style = ProgressBarStyle.Marquee
+                Me.tspbLoading.MarqueeAnimationSpeed = 25
+                Me.tslLoading.Text = Master.eLang.GetString(999, "Saving All Images:")
+                Me.tspbLoading.Visible = True
+                Me.tslLoading.Visible = True
+            Case Ember_Media_Manager.TVDB.Scraper.EventType.ScraperDone
                 Me.RefreshShow(Master.currShow.ShowID, True, False, False)
-                SQLTrans.Commit()
-            End Using
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
+
+                Me.tspbLoading.Visible = False
+                Me.tslLoading.Visible = False
+                Me.tslStatus.Visible = False
+            Case Ember_Media_Manager.TVDB.Scraper.EventType.Searching
+                Me.tspbLoading.Style = ProgressBarStyle.Marquee
+                Me.tspbLoading.MarqueeAnimationSpeed = 25
+                Me.tslLoading.Text = Master.eLang.GetString(999, "Searching theTVDB:")
+                Me.tspbLoading.Visible = True
+                Me.tslLoading.Visible = True
+            Case Ember_Media_Manager.TVDB.Scraper.EventType.SelectImages
+                Me.tspbLoading.Style = ProgressBarStyle.Marquee
+                Me.tspbLoading.MarqueeAnimationSpeed = 25
+                Me.tslLoading.Text = Master.eLang.GetString(999, "Select Images:")
+                Me.tspbLoading.Visible = True
+                Me.tslLoading.Visible = True
+            Case Ember_Media_Manager.TVDB.Scraper.EventType.StartingDownload
+                Me.tspbLoading.Style = ProgressBarStyle.Marquee
+                Me.tspbLoading.MarqueeAnimationSpeed = 25
+                Me.tslLoading.Text = Master.eLang.GetString(999, "Downloading Show Zip:")
+                Me.tspbLoading.Visible = True
+                Me.tslLoading.Visible = True
+            Case Ember_Media_Manager.TVDB.Scraper.EventType.Verifying
+                Me.tspbLoading.Style = ProgressBarStyle.Marquee
+                Me.tspbLoading.MarqueeAnimationSpeed = 25
+                Me.tslLoading.Text = Master.eLang.GetString(999, "Verifying TV Show:")
+                Me.tspbLoading.Visible = True
+                Me.tslLoading.Visible = True
+            Case Ember_Media_Manager.TVDB.Scraper.EventType.Progress
+                Select Case Parameter.ToString
+                    Case "max"
+                        Me.tspbLoading.Style = ProgressBarStyle.Continuous
+                        Me.tspbLoading.Maximum = iProgress
+                    Case "progress"
+                        Me.tspbLoading.Value = iProgress
+                End Select
+                Me.tspbLoading.Visible = True
+                Me.tslLoading.Visible = True
+        End Select
     End Sub
 
 End Class

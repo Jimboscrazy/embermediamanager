@@ -42,8 +42,8 @@ Public Class Master
     Public Shared CanScanDiscImage As Boolean
     Public Shared SourcesList As New List(Of String)
     Public Shared tmpMovie As New Media.Movie
-    Public Shared tmpTVDBShow As New TVDB.TVDBShow
-    Public Shared tmpTVImages As New TVImages
+
+    Public Shared TVScraper As New TVDB.Scraper
 
     'Global Enums
     Public Enum PosterSize As Integer
@@ -177,12 +177,6 @@ Public Class Master
         Dim ShowPath As String
         Dim SeasonPosterPath As String
         Dim SeasonFanartPath As String
-    End Structure
-
-    Public Structure TVImages
-        Dim ShowPoster As TVDB.TVDBShowPoster
-        Dim ShowFanart As TVDB.TVDBFanart
-        Dim SeasonImageList As List(Of Images.SeasonImage)
     End Structure
 
     Public Structure ScrapeOptions
@@ -594,32 +588,5 @@ Public Class Master
             Return Image.FromStream(mStream)
         End Using
     End Function
-
-    Public Shared Sub LoadAllEpisodes(ByVal _ID As Integer)
-        Try
-
-            tmpTVDBShow = New TVDB.TVDBShow
-
-            tmpTVDBShow.Show = Master.DB.LoadTVShowFromDB(_ID)
-
-            Using SQLCount As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                SQLCount.CommandText = String.Concat("SELECT COUNT(ID) AS eCount FROM TVEps WHERE TVShowID = ", _ID, ";")
-                Using SQLRCount As SQLite.SQLiteDataReader = SQLCount.ExecuteReader
-                    If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
-                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.CreateCommand
-                            SQLCommand.CommandText = String.Concat("SELECT ID FROM TVEps WHERE TVShowID = ", _ID, ";")
-                            Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                                While SQLReader.Read
-                                    tmpTVDBShow.Episodes.Add(Master.DB.LoadTVEpFromDB(Convert.ToInt64(SQLReader("ID")), True))
-                                End While
-                            End Using
-                        End Using
-                    End If
-                End Using
-            End Using
-        Catch ex As Exception
-            Master.eLog.WriteToErrorLog(ex.Message, ex.StackTrace, "Error")
-        End Try
-    End Sub
 
 End Class
