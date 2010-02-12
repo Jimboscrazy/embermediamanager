@@ -25,11 +25,12 @@
 '
 '
 
-Option Strict Off
+'Option Strict Off
 Imports System
 Imports System.IO
 Imports System.Xml
 Imports System.Xml.Serialization
+Imports System.Reflection
 
 
 
@@ -62,9 +63,10 @@ Public Class EmberModules
         Public AssemblyName As String
     End Class
     Class _externalProcessorModuleClass
-        Public ProcessorModule As Object
+        Public ProcessorModule As Object ' EmberAPI.EmberExternalModule
         Public Enabled As Boolean
         Public AssemblyName As String
+        Public aType As Type
     End Class
     Class _externalScraperModuleClass
         Public ProcessorModule As Object
@@ -72,6 +74,7 @@ Public Class EmberModules
         Public AssemblyName As String
         Public IsScraper As Boolean
         Public IsPostScraper As Boolean
+        Public aType As Type
     End Class
 
     Public EmberAPI As New _EmberAPI
@@ -94,10 +97,13 @@ Public Class EmberModules
                         'Activate the located module
                         Dim t As Type = fileType.GetInterface("EmberExternalModule")
                         If Not t Is Nothing Then
-                            Dim ProcessorModule As New Object
+                            Dim ProcessorModule As Object
+                            'ProcessorModule = CType(Activator.CreateInstance(fileType), EmberAPI.EmberExternalModule)
+                            Dim t1 As Type = GetType(EmberAPI.EmberExternalModule)
                             ProcessorModule = Activator.CreateInstance(fileType)
                             'Add the activated module to the arraylist
                             Dim _externalProcessorModule As New _externalProcessorModuleClass
+                            _externalProcessorModule.aType = t
                             _externalProcessorModule.ProcessorModule = ProcessorModule
                             _externalProcessorModule.AssemblyName = Path.GetFileName(file)
                             For Each i In Master.eSettings.EmberModules
@@ -106,11 +112,14 @@ Public Class EmberModules
                                 End If
                             Next
                             externalProcessorModules.Add(_externalProcessorModule)
-                            ProcessorModule.Init(EmberAPI)
+                            Dim mymethod As MethodInfo = t.GetMethod("Init")
+                            t.InvokeMember("Init", BindingFlags.InvokeMethod, Nothing, _externalProcessorModule.ProcessorModule, New Object() {DirectCast(EmberAPI, Object)})
                             If _externalProcessorModule.Enabled Then
-                                ProcessorModule.Enable()
+                                'ProcessorModule.Enable()
+                                t.InvokeMember("Enable", BindingFlags.InvokeMethod, Nothing, _externalProcessorModule.ProcessorModule, Nothing)
                             Else
-                                ProcessorModule.Disable()
+                                'ProcessorModule.Disable()
+                                t.InvokeMember("Disable", BindingFlags.InvokeMethod, Nothing, _externalProcessorModule.ProcessorModule, Nothing)
                             End If
                         End If
                     Catch ex As Exception
@@ -134,14 +143,15 @@ Public Class EmberModules
                         'Activate the located module
                         Dim t As Type = fileType.GetInterface("EmberScraperModule")
                         If Not t Is Nothing Then
-                            Dim ProcessorModule As New Object
+                            Dim ProcessorModule As Object
                             ProcessorModule = Activator.CreateInstance(fileType)
                             'Add the activated module to the arraylist
                             Dim _externalScraperModule As New _externalScraperModuleClass
+                            _externalScraperModule.aType = t
                             _externalScraperModule.ProcessorModule = ProcessorModule
                             _externalScraperModule.AssemblyName = Path.GetFileName(file)
-                            _externalScraperModule.IsScraper = ProcessorModule.IsScraper
-                            _externalScraperModule.IsPostScraper = ProcessorModule.IsPostScraper
+                            '_externalScraperModule.IsScraper = ProcessorModule.IsScraper
+                            '_externalScraperModule.IsPostScraper = ProcessorModule.IsPostScraper
                             For Each i In Master.eSettings.EmberModules
                                 If i.AssemblyName = _externalScraperModule.AssemblyName Then
                                     _externalScraperModule.Enabled = i.Enabled
@@ -164,7 +174,7 @@ Public Class EmberModules
     Public Function ScrapeOnly(ByVal movie As Media.Movie) As Media.Movie
         For Each _externalScraperModule In externalScrapersModules
             If _externalScraperModule.IsScraper Then
-                movie = _externalScraperModule.ProcessorModule.Scraper(movie)
+                'movie = _externalScraperModule.ProcessorModule.Scraper(movie)
             End If
         Next
         Return movie
@@ -172,7 +182,7 @@ Public Class EmberModules
     Public Function PostScrapeOnly(ByVal movie As Media.Movie) As Media.Movie
         For Each _externalScraperModule In externalScrapersModules
             If _externalScraperModule.IsPostScraper Then
-                movie = _externalScraperModule.ProcessorModule.Scraper(movie)
+                'movie = _externalScraperModule.ProcessorModule.Scraper(movie)
             End If
         Next
         Return movie
@@ -189,7 +199,9 @@ Public Class EmberModules
     Private Sub ModulesMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ModulesMenu.Click
         Dim modulesSetup As New dlgModuleSettings
         For Each _externalProcessorModule In externalProcessorModules
-            Dim li As ListViewItem = modulesSetup.lstModules.Items.Add(_externalProcessorModule.ProcessorModule.ModuleName())
+            Dim s As String = CType(_externalProcessorModule.aType.InvokeMember("ModuleName", BindingFlags.GetProperty, Nothing, _externalProcessorModule.ProcessorModule, Nothing), String)
+            '_externalProcessorModule.aType.InvokeMember("ModuleName", BindingFlags.InvokeMethod, Nothing, _externalProcessorModule.ProcessorModule, Nothing)
+            Dim li As ListViewItem = modulesSetup.lstModules.Items.Add(s)
             If _externalProcessorModule.Enabled Then
                 li.SubItems.Add("Enabled")
             Else
@@ -199,7 +211,8 @@ Public Class EmberModules
             li.Tag = _externalProcessorModule.AssemblyName
         Next
         For Each _externalScraperModule In externalScrapersModules
-            Dim li As ListViewItem = modulesSetup.lstScrapers.Items.Add(_externalScraperModule.ProcessorModule.ModuleName())
+            Dim s As String = CType(_externalScraperModule.aType.InvokeMember("ModuleName", BindingFlags.GetProperty, Nothing, _externalScraperModule.ProcessorModule, Nothing), String)
+            Dim li As ListViewItem = modulesSetup.lstScrapers.Items.Add(s)
             li.SubItems.Add(If(_externalScraperModule.IsScraper, "Yes", "No"))
             li.SubItems.Add(If(_externalScraperModule.IsPostScraper, "Yes", "No"))
             If _externalScraperModule.Enabled Then
@@ -216,7 +229,9 @@ Public Class EmberModules
     Public Sub RunModuleSetup(ByVal ModuleAssembly As String)
         For Each _externalProcessorModule In externalProcessorModules
             If _externalProcessorModule.AssemblyName = ModuleAssembly Then
-                _externalProcessorModule.ProcessorModule.Setup()
+                '_externalProcessorModule.ProcessorModule.Setup()
+                _externalProcessorModule.aType.InvokeMember("Setup", BindingFlags.InvokeMethod, Nothing, _externalProcessorModule.ProcessorModule, Nothing)
+
             End If
         Next
     End Sub
@@ -225,9 +240,11 @@ Public Class EmberModules
             If _externalProcessorModule.AssemblyName = ModuleAssembly Then
                 _externalProcessorModule.Enabled = value
                 If value = True Then
-                    _externalProcessorModule.ProcessorModule.Enable()
+                    '_externalProcessorModule.ProcessorModule.Enable()
+                    _externalProcessorModule.aType.InvokeMember("Enable", BindingFlags.InvokeMethod, Nothing, _externalProcessorModule.ProcessorModule, Nothing)
                 Else
-                    _externalProcessorModule.ProcessorModule.Disable()
+                    '_externalProcessorModule.ProcessorModule.Disable()
+                    _externalProcessorModule.aType.InvokeMember("Disable", BindingFlags.InvokeMethod, Nothing, _externalProcessorModule.ProcessorModule, Nothing)
                 End If
             End If
         Next
