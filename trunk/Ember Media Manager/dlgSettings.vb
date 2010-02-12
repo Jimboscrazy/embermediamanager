@@ -3649,4 +3649,8 @@ Public Class dlgSettings
     Private Sub lblShowPosterHeight_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblShowPosterHeight.Click
 
     End Sub
+
+    Private Sub Label46_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label46.Click
+
+    End Sub
 End Class
