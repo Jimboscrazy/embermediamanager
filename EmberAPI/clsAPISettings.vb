@@ -282,7 +282,7 @@ Public Class Settings
     Private _tvdbmirror As String
     Private _tvdblanguage As String
     Private _tvdblanguages As New List(Of Containers.TVLanguage)
-    Private _emberModules As New List(Of EmberModules._XMLEmberModuleClass)
+    Private _emberModules As New List(Of ModulesManager._XMLEmberModuleClass)
 
     Public Property Version() As String
         Get
@@ -2608,11 +2608,11 @@ Public Class Settings
 
     <XmlArray("EmberModules")> _
     <XmlArrayItem("Module")> _
-    Public Property EmberModules() As List(Of EmberModules._XMLEmberModuleClass)
+    Public Property EmberModules() As List(Of ModulesManager._XMLEmberModuleClass)
         Get
             Return Me._emberModules
         End Get
-        Set(ByVal value As List(Of EmberModules._XMLEmberModuleClass))
+        Set(ByVal value As List(Of ModulesManager._XMLEmberModuleClass))
             Me._emberModules = value
         End Set
     End Property
@@ -2880,7 +2880,7 @@ Public Class Settings
         Me._tvdbmirror = "thetvdb.com"
         Me._tvdblanguage = "en"
         Me._tvdblanguages = New List(Of Containers.TVLanguage)
-        Me._emberModules = New List(Of EmberModules._XMLEmberModuleClass)
+        Me._emberModules = New List(Of ModulesManager._XMLEmberModuleClass)
     End Sub
 
     Public Sub Save()

@@ -29,7 +29,7 @@ Imports System.Xml.Serialization
 
 Public Class FileManagerExternalModule
     Implements EmberAPI.Interfaces.EmberExternalModule
-    Dim emmAPI As New EmberModules.RuntimeObjects
+    Dim emmRuntimeObjects As New ModulesManager.EmberRuntimeObjects
     Private _Name As String = "Media File Manager"
     Private _Version As String = "0.1"
 
@@ -69,19 +69,19 @@ Public Class FileManagerExternalModule
         MySubMenu2.Tag = "COPY"
         MyMenu.DropDownItems.Add(MySubMenu1)
         MyMenu.DropDownItems.Add(MySubMenu2)
-        emmAPI.MenuMediaList.Items.Add(MyMenuSep)
-        emmAPI.MenuMediaList.Items.Add(MyMenu)
+        emmRuntimeObjects.MenuMediaList.Items.Add(MyMenuSep)
+        emmRuntimeObjects.MenuMediaList.Items.Add(MyMenu)
 
         'PopulateFolders()
         PopulateFolders(MySubMenu1)
         PopulateFolders(MySubMenu2)
     End Sub
     Sub Disable() Implements EmberAPI.Interfaces.EmberExternalModule.Disable
-        emmAPI.MenuMediaList.Items.Remove(MyMenuSep)
-        emmAPI.MenuMediaList.Items.Remove(MyMenu)
+        emmRuntimeObjects.MenuMediaList.Items.Remove(MyMenuSep)
+        emmRuntimeObjects.MenuMediaList.Items.Remove(MyMenu)
     End Sub
-    Sub Init(ByRef emm As EmberModules.RuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
-        emmAPI = emm
+    Sub Init(ByRef emm As ModulesManager.EmberRuntimeObjects) Implements EmberAPI.Interfaces.EmberExternalModule.Init
+        emmRuntimeObjects = emm
         MyPath = Path.Combine(Functions.AppPath, "Modules")
         Load()
     End Sub
@@ -109,7 +109,7 @@ Public Class FileManagerExternalModule
             Dim MoviesToWork As New List(Of Long)
             Dim MovieId As Int64 = -1
 
-            For Each sRow As DataGridViewRow In emmAPI.MediaList.SelectedRows
+            For Each sRow As DataGridViewRow In emmRuntimeObjects.MediaList.SelectedRows
                 MovieId = Convert.ToInt64(sRow.Cells(0).Value)
                 If Not MoviesToWork.Contains(MovieId) Then
                     MoviesToWork.Add(MovieId)
@@ -121,15 +121,19 @@ Public Class FileManagerExternalModule
                 For Each Id As Long In MoviesToWork
                     mMovie = Master.DB.LoadMovieFromDB(Id)
                     ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
-                    'Dim dPath As String = mMovie.Filename
-                    'Dim sPathShort As String = Directory.GetParent(dPath).FullName
-                    Select Case sender.OwnerItem.Tag
-                        Case "MOVE"
-                            MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
-                        Case "COPY"
-                            MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
-                    End Select
-
+                    If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
+                        Select Case sender.OwnerItem.Tag
+                            Case "MOVE"
+                                MsgBox("Move from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
+                                'TODO:  Before activate this, need to test it better and move to background worker
+                                'DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)))
+                                'Directory.Delete(ItemsToWork(0).ToString, True)
+                            Case "COPY"
+                                MsgBox("Copy from " + ItemsToWork(0).ToString + " To " + Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)), MsgBoxStyle.Information, "Move")
+                                'TODO:  Before activate this, need to test it better and move to background worker
+                                'DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(sender.tag, Path.GetFileName(ItemsToWork(0).ToString)))
+                        End Select
+                    End If
                 Next
             End If
 

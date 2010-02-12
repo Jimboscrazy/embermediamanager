@@ -43,7 +43,7 @@ Public Class frmMain
     Friend WithEvents bwRefreshMovies As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
 
-    Private ExternalModules As EmberModules
+    Private ExternalModulesManager As ModulesManager
     Private bsMedia As New BindingSource
     Private bsShows As New BindingSource
     Private bsSeasons As New BindingSource
@@ -355,10 +355,11 @@ Public Class frmMain
 
         Me.Visible = False
         Dim Args() As String = Environment.GetCommandLineArgs
-        ExternalModules = New EmberModules
-        ExternalModules.ModuleAPI.MenuMediaList = Me.mnuMediaList
-        ExternalModules.ModuleAPI.MediaList = Me.dgvMediaList
-        ExternalModules.LoadAllModules()
+        'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
+        ExternalModulesManager = New ModulesManager
+        ExternalModulesManager.RuntimeObjects.MenuMediaList = Me.mnuMediaList
+        ExternalModulesManager.RuntimeObjects.MediaList = Me.dgvMediaList
+        ExternalModulesManager.LoadAllModules()
         'setup some dummies so we don't get exceptions when resizing form/info panel
         ReDim Preserve Me.pnlGenre(0)
         ReDim Preserve Me.pbGenre(0)
@@ -7100,7 +7101,7 @@ doCancel:
     End Sub
 
     Private Sub ModuleSettingToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ModuleSettingToolStripMenuItem.Click
-        ExternalModules.Setup()
+        ExternalModulesManager.Setup()
     End Sub
 End Class
 
